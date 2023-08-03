@@ -5,7 +5,9 @@ const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+const customerRoute = require("./routes/customers");
 const userRoute = require("./routes/users");
+const quickNotesRoute = require("./routes/quicknotes");
 
 dotenv.config();
 app.use(cors());
@@ -20,7 +22,9 @@ mongoose
   .then(console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 
+  app.use("/api/customers", customerRoute);
 app.use("/api/users", userRoute);
+app.use("/api/quicknotes", quickNotesRoute);
 
 app.listen("3000", () => {
   console.log("Backend is running.");

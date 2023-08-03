@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Typography,
   Button,
   TextareaAutosize,
   Paper,
-  Box,
   TableFooter,
-  Input,
   TextField,
 } from "@mui/material";
 import axios from "axios";
@@ -16,15 +14,24 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const QuickNotes = ({ quickNotes }) => {
+const QuickNotes = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [notes, setNotes] = useState([]);
   const [noteText, setNoteText] = useState("");
   const [editableNote, setEditableNote] = useState({ _id: null, body: "" });
 
-  useEffect(() => {
-    setNotes(quickNotes);
-  }, [quickNotes]);
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/quicknotes");
+        console.log("response", response.data);
+        setNotes(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleAddNote = async () => {
     try {
@@ -75,10 +82,6 @@ const QuickNotes = ({ quickNotes }) => {
     setEditableNote({ _id: null, body: "" });
   };
 
-  const handleCancelEdit = () => {
-    setEditableNote({ _id: null, body: "" });
-  };
-
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
   };
@@ -95,7 +98,7 @@ const QuickNotes = ({ quickNotes }) => {
       alignItems="center"
       sx={{ mt: 2 }}
     >
-      {/* {notes.map((note, index) => (
+      {notes.map((note, index) => (
         <Paper
           key={index}
           item
@@ -123,7 +126,7 @@ const QuickNotes = ({ quickNotes }) => {
               onChange={(e) =>
                 setEditableNote({ ...editableNote, body: e.target.value })
               }
-              onBlur={handleSaveNote} // Ao desfocar o TextField, salva a nota
+              onBlur={handleSaveNote}
               autoFocus
               fullWidth
             />
@@ -161,7 +164,7 @@ const QuickNotes = ({ quickNotes }) => {
             </Grid>
           )}
         </Paper>
-      ))} */}
+      ))}
 
       <Grid
         container

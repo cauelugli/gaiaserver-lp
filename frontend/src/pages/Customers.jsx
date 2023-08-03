@@ -3,7 +3,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import UserTable from "../tables/UserTable";
+import CustomerTable from "../tables/CustomerTable";
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -19,7 +19,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Users({ selectedCustomer }) {
+export default function CustomerTab({ customers }) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -27,19 +27,19 @@ export default function Users({ selectedCustomer }) {
   };
 
   return (
-    <Box sx={{ minWidth: "120%" }}>
-      <Typography variant="h4">Funcionários</Typography>
+    <Box sx={{ minWidth: "121%" }}>
+      <Typography variant="h4">Clientes</Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Colaboradores" />
-          <Tab label="Gerentes" />
+          <Tab label="Clientes" />
+          <Tab label="Something" />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <UserTable />
+        <CustomerTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        Managers
+        Coming soon
       </CustomTabPanel>
     </Box>
   );

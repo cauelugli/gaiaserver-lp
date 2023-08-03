@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 
-const CustomerTab = ({ selectedCustomer }) => {
+const CustomerBar = ({ selectedCustomer }) => {
   return (
     <>
       <FormControl>
@@ -56,4 +56,4 @@ const CustomerTab = ({ selectedCustomer }) => {
   );
 };
 
-export default CustomerTab;
+export default CustomerBar;

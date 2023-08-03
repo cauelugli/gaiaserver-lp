@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import {
   Box,
@@ -22,40 +23,56 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import WorkIcon from "@mui/icons-material/Work";
 
 const SideBar = ({ sidebarOpen }) => {
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
   const handleClickOption = (index) => {
     setSelectedIndex(index);
   };
 
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-
   return (
     <List>
-      <ListItemButton
-        selected={selectedIndex === 0}
-        onClick={""}
-        sx={{
-          color: selectedIndex === 0 ? "white" : "",
-          "&:hover": {
-            backgroundColor: "#aaa",
-          },
+      <Link
+        to="/"
+        style={{
+          textDecoration: "none",
+          color: "black",
         }}
       >
-        <DashboardIcon />
-        {sidebarOpen && <Typography sx={{ ml: 1 }}>Dashboard</Typography>}
-      </ListItemButton>
-      <ListItemButton
-        selected={selectedIndex === 1}
-        onClick={""}
-        sx={{
-          color: selectedIndex === 1 ? "white" : "",
-          "&:hover": {
-            backgroundColor: "#aaa",
-          },
+        <ListItemButton
+          selected={selectedIndex === 0}
+          onClick={""}
+          sx={{
+            color: selectedIndex === 0 ? "white" : "",
+            "&:hover": {
+              backgroundColor: "#aaa",
+            },
+          }}
+        >
+          <DashboardIcon />
+          {sidebarOpen && <Typography sx={{ ml: 1 }}>Dashboard</Typography>}
+        </ListItemButton>
+      </Link>
+      <Link
+        to="/users"
+        style={{
+          textDecoration: "none",
+          color: "black",
         }}
       >
-        <GroupIcon />
-        {sidebarOpen && <Typography sx={{ ml: 1 }}>Funcionários</Typography>}
-      </ListItemButton>
+        <ListItemButton
+          selected={selectedIndex === 1}
+          onClick={""}
+          sx={{
+            color: selectedIndex === 1 ? "white" : "",
+            "&:hover": {
+              backgroundColor: "#aaa",
+            },
+          }}
+        >
+          <GroupIcon />
+          {sidebarOpen && <Typography sx={{ ml: 1 }}>Funcionários</Typography>}
+        </ListItemButton>
+      </Link>
       <ListItemButton
         selected={selectedIndex === 2}
         onClick={""}
@@ -87,6 +104,7 @@ const SideBar = ({ sidebarOpen }) => {
       <ListItemButton
         selected={selectedIndex === 4}
         onClick={""}
+        disabled
         sx={{
           color: selectedIndex === 4 ? "white" : "",
           "&:hover": {
@@ -100,6 +118,7 @@ const SideBar = ({ sidebarOpen }) => {
       <ListItemButton
         selected={selectedIndex === 5}
         onClick={""}
+        disabled
         sx={{
           color: selectedIndex === 5 ? "white" : "",
           "&:hover": {
@@ -111,19 +130,27 @@ const SideBar = ({ sidebarOpen }) => {
         {sidebarOpen && <Typography sx={{ ml: 1 }}>Financeiro</Typography>}
       </ListItemButton>
       <Divider sx={{ my: 2 }} />
-      <ListItemButton
-        selected={selectedIndex === 6}
-        onClick={""}
-        sx={{
-          color: selectedIndex === 6 ? "white" : "",
-          "&:hover": {
-            backgroundColor: "#aaa",
-          },
+      <Link
+        to="/customers"
+        style={{
+          textDecoration: "none",
+          color: "black",
         }}
       >
-        <WorkIcon />
-        {sidebarOpen && <Typography sx={{ ml: 1 }}>Clientes</Typography>}
-      </ListItemButton>
+        <ListItemButton
+          selected={selectedIndex === 6}
+          onClick={""}
+          sx={{
+            color: selectedIndex === 6 ? "white" : "",
+            "&:hover": {
+              backgroundColor: "#aaa",
+            },
+          }}
+        >
+          <WorkIcon />
+          {sidebarOpen && <Typography sx={{ ml: 1 }}>Clientes</Typography>}
+        </ListItemButton>
+      </Link>
       <ListItemButton
         selected={selectedIndex === 7}
         disabled
