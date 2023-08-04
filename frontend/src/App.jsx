@@ -13,6 +13,7 @@ import QuickNotes from "./components/QuickNotes";
 import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
 import Customers from "./pages/Customers";
+import Departments from "./pages/Departments";
 
 export default function App() {
   const [sidebarStatus, setSidebarStatus] = React.useState(false);
@@ -51,9 +52,9 @@ export default function App() {
         >
           <Paper
             sx={{
-              p: 1,
+              p: 3,
               height: "95%",
-              backgroundColor: "lightblue",
+              backgroundColor: "#0c4",
               borderRadius: "00px 10px 10px 00px",
             }}
           >
@@ -63,6 +64,7 @@ export default function App() {
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/users" element={<Users />} />
                   <Route path="/customers" element={<Customers />} />
+                  <Route path="/departments" element={<Departments />} />
                 </Routes>
               </Grid>
             </Grid>

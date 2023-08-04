@@ -2,13 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import {
-  Box,
-  Button,
   Divider,
-  Grid,
   List,
   ListItemButton,
-  Paper,
   Typography,
 } from "@mui/material";
 
@@ -70,7 +66,28 @@ const SideBar = ({ sidebarOpen }) => {
           }}
         >
           <GroupIcon />
-          {sidebarOpen && <Typography sx={{ ml: 1 }}>Funcionários</Typography>}
+          {sidebarOpen && <Typography sx={{ ml: 1 }}>Colaboradores</Typography>}
+        </ListItemButton>
+      </Link>
+      <Link
+        to="/departments"
+        style={{
+          textDecoration: "none",
+          color: "black",
+        }}
+      >
+        <ListItemButton
+          selected={selectedIndex === 3}
+          onClick={""}
+          sx={{
+            color: selectedIndex === 3 ? "white" : "",
+            "&:hover": {
+              backgroundColor: "#aaa",
+            },
+          }}
+        >
+          <LanIcon />
+          {sidebarOpen && <Typography sx={{ ml: 1 }}>Departamentos</Typography>}
         </ListItemButton>
       </Link>
       <ListItemButton
@@ -87,20 +104,7 @@ const SideBar = ({ sidebarOpen }) => {
         <ComputerIcon />
         {sidebarOpen && <Typography sx={{ ml: 1 }}>Ativos</Typography>}
       </ListItemButton>
-      <ListItemButton
-        selected={selectedIndex === 3}
-        onClick={""}
-        disabled
-        sx={{
-          color: selectedIndex === 3 ? "white" : "",
-          "&:hover": {
-            backgroundColor: "#aaa",
-          },
-        }}
-      >
-        <LanIcon />
-        {sidebarOpen && <Typography sx={{ ml: 1 }}>Departamentos</Typography>}
-      </ListItemButton>
+
       <ListItemButton
         selected={selectedIndex === 4}
         onClick={""}

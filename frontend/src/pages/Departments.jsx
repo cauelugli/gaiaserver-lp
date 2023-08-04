@@ -1,8 +1,7 @@
-import * as React from "react";
+import React from 'react'
 
 import { Box, Tab, Tabs, Typography } from '@mui/material'
-
-import CustomerTable from "../tables/CustomerTable";
+import DepartmentTable from '../tables/DepartmentTable';
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -18,7 +17,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function CustomerTab({ customers }) {
+export default function Departments() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -27,19 +26,19 @@ export default function CustomerTab({ customers }) {
 
   return (
     <Box sx={{ minWidth: "121%" }}>
-      <Typography variant="h4">Clientes</Typography>
+      <Typography variant="h4">Departamentos</Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Clientes" sx={{ color: "#eee" }} />
-          <Tab label="Contatos Principais" sx={{ color: "#eee" }} />
+          <Tab label="Setores" sx={{ color: "#eee" }} />
+          <Tab label="Something" sx={{ color: "#eee" }} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <CustomerTable />
+        <DepartmentTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         Coming soon
       </CustomTabPanel>
     </Box>
-  );
+  )
 }

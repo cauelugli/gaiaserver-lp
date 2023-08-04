@@ -225,8 +225,8 @@ export default function UserTable({ selectedCustomer }) {
   return (
     <>
       <Button onClick={() => handleOpen(setOption("add"))}>
-        <Typography variant="h6" color="grey">
-          + Novo Usuário
+        <Typography variant="h6" color="#eee">
+          + Novo
         </Typography>
       </Button>
       <TableContainer component={Paper}>

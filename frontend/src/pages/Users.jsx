@@ -1,8 +1,7 @@
 import * as React from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+
+import { Box, Tab, Tabs, Typography } from '@mui/material'
+
 import UserTable from "../tables/UserTable";
 
 function CustomTabPanel(props) {
@@ -28,18 +27,22 @@ export default function Users({ selectedCustomer }) {
 
   return (
     <Box sx={{ minWidth: "120%" }}>
-      <Typography variant="h4">Funcionários</Typography>
+      <Typography variant="h4">Colaboradores</Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Colaboradores" />
-          <Tab label="Gerentes" />
+          <Tab label="Funcionários" sx={{ color: "#eee" }} />
+          <Tab label="Gerência" sx={{ color: "#eee" }} />
+          <Tab label="Diretoria" sx={{ color: "#eee" }}/>
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <UserTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        Managers
+        <UserTable managers={"managers"} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <UserTable owners={"owners"} />
       </CustomTabPanel>
     </Box>
   );
