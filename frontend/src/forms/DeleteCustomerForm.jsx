@@ -8,7 +8,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const DeleteCustomerForm = ({ selectedCustomer, setOpenDelete, fetchData }) => {
+const DeleteCustomerForm = ({ selectedCustomer, openDelete, setOpenDelete, fetchData }) => {
   const customer = selectedCustomer;
 
   const handleDelete = async () => {
@@ -45,7 +45,7 @@ const DeleteCustomerForm = ({ selectedCustomer, setOpenDelete, fetchData }) => {
           <Button
             variant="contained"
             color="error"
-            // onClick={() => openDelete(!openDelete)}
+            onClick={() => setOpenDelete(!openDelete)}
           >
             X
           </Button>

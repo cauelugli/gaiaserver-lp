@@ -1,10 +1,12 @@
+/* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
 
 import {
   Button,
   Dialog,
-  DialogTitle,
+  Box,
+  Collapse,
   IconButton,
   Paper,
   Table,
@@ -16,25 +18,28 @@ import {
   Typography,
 } from "@mui/material";
 
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import ModeEditIcon from "@mui/icons-material/ModeEdit";
-// import DeleteCustomerForm from "../forms/DeleteCustomerForm";
-
+import DeleteIcon from "@mui/icons-material/Delete";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import AddCustomerForm from "../forms/AddCustomerForm";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+
+import EditCustomerForm from "../forms/EditCustomerForm";
+import AddDepartmentForm from "../forms/AddDepartmentForm";
+import DeleteCustomerForm from "../forms/DeleteCustomerForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function DepartmentTable() {
+export default function DepartmentTable({ selectedCustomer }) {
   const [openAdd, setOpenAdd] = React.useState(false);
-  // const [openEdit, setOpenEdit] = React.useState(false);
-  // const [openDelete, setOpenDelete] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
+  const [selectedDepartment, setSelectedDepartment] = React.useState([]);
 
   const [departments, setDepartments] = React.useState([]);
+  const [filteredDepartments, setFilteredDepartments] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -46,48 +51,36 @@ export default function DepartmentTable() {
       }
     };
     fetchData();
-  }, []);
+    setFilteredDepartments(
+      departments.filter(
+        (department) => department.customerId === selectedCustomer._id
+      )
+    );
+  }, [departments, selectedCustomer._id]);
 
-  // const handleEdit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const res = await api.put("/customers", {
-  //       customer: "selectedCustomer._id",
-  //       name,
-  //       address,
-  //       phone,
-  //       mainContactName,
-  //       mainContactEmail,
-  //       mainContactPosition,
-  //       segment,
-  //       domain,
-  //       employees,
-  //       website,
-  //       cnpj,
-  //     });
-  //     res.data && alert("Editado com sucesso!");
-  //     setOpenEdit(!openEdit);
-  //   } catch (err) {
-  //     alert("Vish, editei não...");
-  //     console.log(err);
-  //   }
-  // };
+  const fetchData = async () => {
+    try {
+      const response = await api.get("/departments");
+      setDepartments(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
-  // const handleConfirmDelete = (customer) => {
-  //   setOpenDelete(!openDelete);
-  //   setSelectedCustomer(customer);
-  // };
+  const handleOpenDetail = (department) => {
+    setOpenDetail(!openDetail);
+    setSelectedDepartment(department.name);
+  };
 
-  // const handleDelete = async (selectedCustomer) => {
-  //   try {
-  //     const res = await api.delete(`/customers/${selectedCustomer._id}`);
-  //     res.status === 200 && alert("Cliente deletado com sucesso!");
-  //     setOpenDelete(!openDelete);
-  //   } catch (err) {
-  //     alert("Vish, deletou não..");
-  //     console.log(err);
-  //   }
-  // };
+  const handleOpenEdit = (department) => {
+    setOpenEdit(!openEdit);
+    setSelectedDepartment(department);
+  };
+
+  const handleConfirmDelete = (department) => {
+    setSelectedDepartment(department);
+    setOpenDelete(!openDelete);
+  };
 
   return (
     <>
@@ -97,62 +90,132 @@ export default function DepartmentTable() {
         </Typography>
       </Button>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }}>
-          <TableHead sx={{ height: "7vw" }}>
-            <TableRow>
-              <TableCell>Nome</TableCell>
-            </TableRow>
-          </TableHead>
+        <Table sx={{ minWidth: "100%" }}>
           <TableBody>
-            {departments.map((department) => (
-              <TableRow
-                key={department._id}
-                sx={{ height: "7vw", "&:hover": { backgroundColor: "#ccc " } }}
-              >
-                <IconButton
-                  aria-label="expand row"
-                  size="small"
-                  onClick={() => setOpenDetail(!openDetail, "department")}
+            {filteredDepartments.map((department) => (
+              <>
+                <TableRow
+                  key={department._id}
+                  sx={{
+                    height: "4vw",
+                    "&:hover": { backgroundColor: "#ccc " },
+                  }}
                 >
-                  {openDetail ? (
-                    <KeyboardArrowUpIcon />
-                  ) : (
-                    <KeyboardArrowDownIcon />
-                  )}
-                </IconButton>
-                <TableCell cursor="pointer" align="left">
-                  {department.name}
-                </TableCell>
-
-                {/* <DeleteIcon
+                  <TableCell sx={{ width: "5%" }} cursor="pointer" align="left">
+                    <IconButton size="small">
+                      {openDetail && selectedDepartment === department.name ? (
+                        <KeyboardArrowUpIcon />
+                      ) : (
+                        <KeyboardArrowDownIcon />
+                      )}
+                    </IconButton>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(department)}
                     cursor="pointer"
-                    option="delete"
-                    onClick={() => handleConfirmDelete(customer)}
-                    sx={{ color: "#ff4444" }}
-                  /> */}
-              </TableRow>
+                    align="left"
+                  >
+                    {department.name}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell
+                    style={{ paddingBottom: 0, paddingTop: 0 }}
+                    colSpan={6}
+                  >
+                    <Collapse
+                      in={openDetail && selectedDepartment === department.name}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <Box sx={{ m: 1, p: 4 }}>
+                        <Typography variant="h6" gutterBottom component="div">
+                          Detalhes
+                        </Typography>
+                        <Table size="small">
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>Nome do Departamento</TableCell>
+                              <TableCell>Telefone</TableCell>
+                              <TableCell>E-mail</TableCell>
+                              <TableCell>Gerente</TableCell>
+                              <TableCell>Colaboradores</TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell component="th" scope="row">
+                                {department.name}
+                              </TableCell>
+                              <TableCell>{department.phone}</TableCell>
+                              <TableCell>{department.email}</TableCell>
+                              <TableCell>{department.manager}</TableCell>
+                              <TableCell>{department.members}</TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                        <Box sx={{ mt: 3, ml: "95%" }}>
+                          <ModeEditIcon
+                            cursor="pointer"
+                            option="delete"
+                            onClick={() => handleOpenEdit(department)}
+                            sx={{ color: "grey", mr: 2 }}
+                          />
+                          <DeleteIcon
+                            cursor="pointer"
+                            option="delete"
+                            onClick={() => handleConfirmDelete(department)}
+                            sx={{ color: "#ff4444" }}
+                          />
+                        </Box>
+                      </Box>
+                    </Collapse>
+                  </TableCell>
+                </TableRow>
+              </>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      {openDetail && (
-        <Dialog open={openDetail} onClose={() => setOpenDetail(!openDetail)}>
-          {/* <form onSubmit={handleEdit}>edit me</form> */}
-          Detalhes do department=department
-        </Dialog>
-      )}
       {openAdd && (
-        <Dialog open={openAdd} onClose={() => setOpenAdd(!openAdd)}>
-          <DialogTitle>Novo Departmento - {"selectedCustomer.name"}</DialogTitle>
-          {/* <AddCustomerForm /> */}
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAdd}
+          onClose={() => setOpenAdd(!openAdd)}
+        >
+          <AddDepartmentForm
+            selectedCustomer={selectedCustomer}
+            openAdd={openAdd}
+            setOpenAdd={setOpenAdd}
+            fetchData={fetchData}
+          />
         </Dialog>
       )}
-      {/* {openDelete && (
-        <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-          <DialogTitle>{`Deletar Cliete ${selectedCustomer.name} ?`}</DialogTitle>
-          <DeleteCustomerForm selectedCustomer={selectedCustomer} />
+      {openEdit && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditCustomerForm
+            openEdit={openEdit}
+            selectedDepartment={selectedDepartment}
+            setOpenEdit={setOpenEdit}
+            fetchData={fetchData}
+          />
         </Dialog>
-      )} */}
+      )}
+      {openDelete && (
+        <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
+          <DeleteCustomerForm
+            selectedDepartment={selectedDepartment}
+            setOpenDelete={setOpenDelete}
+            fetchData={fetchData}
+          />
+        </Dialog>
+      )}
     </>
   );
 }

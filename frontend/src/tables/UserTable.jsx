@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
 
@@ -36,7 +37,10 @@ export default function UserTable({ selectedCustomer }) {
   const [selectedUser, setSelectedUser] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [option, setOption] = React.useState("");
+
   const [users, setUsers] = React.useState([]);
+  const [managers, setManagers] = React.useState([]);
+  const [departments, setDepartments] = React.useState([]);
 
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("@");
@@ -133,6 +137,29 @@ export default function UserTable({ selectedCustomer }) {
   }
 
   const avatarColor = getAvatarColor();
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/customers");
+        const filteredUsers = response.data.filter(
+          (user) => user.customerId === selectedCustomer._id
+        );
+        const filteredManagers = response.data.filter(
+          (manager) => manager.customerId === selectedCustomer._id
+        );
+        const filteredDepartments = response.data.filter(
+          (department) => department.customerId === selectedCustomer._id
+        );
+        setUsers(filteredUsers);
+        setManagers(filteredManagers);
+        setDepartments(filteredDepartments);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [selectedCustomer._id]);
 
   const handleOpen = (user) => {
     setSelectedUser(user);
@@ -342,15 +369,14 @@ export default function UserTable({ selectedCustomer }) {
                   <FormControl sx={{ m: 1, width: 125 }}>
                     <InputLabel>Acesso</InputLabel>
                     <Select
-                      label={!editing ? "Acesso" : selectedUser.position}
-                      value={!editing ? selectedUser.position : position}
-                      disabled={!editing}
+                      label="Acesso"
+                      value={position}
                       onChange={(e) => setPosition(e.target.value)}
                       required
                     >
-                      <MenuItem value={"Comum"}>Comum</MenuItem>
-                      <MenuItem value={"Supervisor"}>Supervisor</MenuItem>
-                      <MenuItem value={"Admin"}>Admin</MenuItem>
+                      <MenuItem value={"Funcionário"}>Comum</MenuItem>
+                      <MenuItem value={"Gerente"}>Gerente</MenuItem>
+                      <MenuItem value={"Proprietário"}>Proprietário</MenuItem>
                     </Select>
                   </FormControl>
 
@@ -411,7 +437,7 @@ export default function UserTable({ selectedCustomer }) {
           {option === "add" && (
             <>
               <DialogTitle>
-                Novo Usuário - {"selectedCustomer.name"}
+                Novo Usuário - {selectedCustomer.name}
               </DialogTitle>
               <form onSubmit={handleAdd}>
                 <DialogContent>
@@ -453,11 +479,10 @@ export default function UserTable({ selectedCustomer }) {
                       value={manager}
                       onChange={(e) => setManager(e.target.value)}
                       label="Gerente"
-                      required
                     >
-                      {/* {filteredManagers.map((item) => (
-                        <MenuItem value={item.name}>{item.name}</MenuItem>
-                      ))} */}
+                      {managers.map((item) => (
+                        <MenuItem key={item} value={item.name}>{item.name}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
 
@@ -469,23 +494,22 @@ export default function UserTable({ selectedCustomer }) {
                       label="Acesso"
                       required
                     >
-                      <MenuItem value={"Comum"}>Comum</MenuItem>
-                      <MenuItem value={"Supervisor"}>Supervisor</MenuItem>
-                      <MenuItem value={"Admin"}>Admin</MenuItem>
+                      <MenuItem value={"Funcionário"}>Comum</MenuItem>
+                      <MenuItem value={"Gerente"}>Gerente</MenuItem>
+                      <MenuItem value={"Proprietário"}>Proprietário</MenuItem>
                     </Select>
                   </FormControl>
 
                   <FormControl sx={{ m: 1, width: 125 }}>
                     <InputLabel>Departamento</InputLabel>
                     <Select
-                      required
                       value={department}
                       onChange={(e) => setDepartment(e.target.value)}
                       label="Departamento"
                     >
-                      {/* {filteredDepartments.map((item) => (
-                        <MenuItem value={item.name}>{item.name}</MenuItem>
-                      ))} */}
+                      {departments.map((item) => (
+                        <MenuItem key={item} value={item.name}>{item.name}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </DialogContent>

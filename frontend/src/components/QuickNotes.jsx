@@ -87,7 +87,13 @@ const QuickNotes = () => {
   };
 
   const handleMouseLeave = () => {
-    setHoveredIndex(null);
+    // Defina o tempo de atraso desejado em milissegundos (por exemplo, 1000 ms = 1 segundo)
+    const delayTime = 3000;
+  
+    // Use setTimeout para agendar a execução da função após o atraso
+    setTimeout(() => {
+      setHoveredIndex(null);
+    }, delayTime);
   };
 
   return (

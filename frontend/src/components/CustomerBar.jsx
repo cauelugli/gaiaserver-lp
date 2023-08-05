@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 
 import {
@@ -8,12 +9,12 @@ import {
   Typography,
 } from "@mui/material";
 
-const CustomerBar = ({ selectedCustomer }) => {
+const CustomerBar = ({ customers, selectedCustomer, setSelectedCustomer }) => {
   return (
     <>
       <FormControl>
         <Select
-          onChange={"handleSelectCustomer"}
+          onChange={(e) => setSelectedCustomer(e.target.value)}
           value={selectedCustomer}
           displayEmpty
           sx={{ mt: 1, fontSize: "70%" }}
@@ -23,11 +24,11 @@ const CustomerBar = ({ selectedCustomer }) => {
               <strong>CLIENTES</strong>
             </Typography>
           </MenuItem>
-          {/* {customers.map((item) => (
+          {customers.map((item) => (
             <MenuItem value={item} key={item._id} sx={{ fontSize: "100%" }}>
               {item.name}
             </MenuItem>
-          ))} */}
+          ))}
         </Select>
       </FormControl>
       {selectedCustomer && (

@@ -4,7 +4,6 @@ import axios from "axios";
 import {
   Button,
   Dialog,
-  DialogTitle,
   Box,
   Collapse,
   IconButton,
@@ -77,7 +76,7 @@ export default function CustomerTable() {
   };
 
   return (
-    <>
+    <Box>
       <Button onClick={() => setOpenAdd(true)}>
         <Typography variant="h6" color="#eee">
           + Novo
@@ -91,12 +90,15 @@ export default function CustomerTable() {
                 <TableRow
                   key={customer._id}
                   sx={{
-                    height: "5vw",
+                    height: "4vw",
+                    cursor: "pointer",
+                    backgroundColor:
+                      (selectedCustomer === customer.name && openDetail) ? "#95dd95" : "none",
                     "&:hover": { backgroundColor: "#ccc " },
                   }}
                 >
                   <TableCell sx={{ width: "5%" }} cursor="pointer" align="left">
-                    <IconButton size="small">
+                    <IconButton disabled size="small">
                       {openDetail && selectedCustomer === customer.name ? (
                         <KeyboardArrowUpIcon />
                       ) : (
@@ -122,7 +124,7 @@ export default function CustomerTable() {
                       timeout="auto"
                       unmountOnExit
                     >
-                      <Box sx={{ m: 1, p:4 }}>
+                      <Box sx={{ m: 1, p: 4 }}>
                         <Typography variant="h6" gutterBottom component="div">
                           Detalhes
                         </Typography>
@@ -213,11 +215,12 @@ export default function CustomerTable() {
         <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
           <DeleteCustomerForm
             selectedCustomer={selectedCustomer}
+            openDelete={openDelete}
             setOpenDelete={setOpenDelete}
             fetchData={fetchData}
           />
         </Dialog>
       )}
-    </>
+    </Box>
   );
 }

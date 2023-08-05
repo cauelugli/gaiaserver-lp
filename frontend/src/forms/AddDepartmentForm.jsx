@@ -1,27 +1,25 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
 
 import {
-  Box,
   Button,
-  Checkbox,
   DialogActions,
   DialogContent,
-  Divider,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
+  DialogTitle,
   TextField,
-  Typography,
 } from "@mui/material";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddDepartmentForm = () => {
-  const [customer, setCustomer] = React.useState("");
+const AddDepartmentForm = ({
+  selectedCustomer,
+  openAdd,
+  setOpenAdd,
+  fetchData,
+}) => {
   const [name, setName] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -32,7 +30,7 @@ const AddDepartmentForm = () => {
     e.preventDefault();
     try {
       const res = await api.post("/departments", {
-        customer,
+        customerId: selectedCustomer._id,
         name,
         phone,
         email,
@@ -40,32 +38,18 @@ const AddDepartmentForm = () => {
         members,
       });
       res.data && alert("Departamento Adicionado!");
-      //   setOpenAdd(!openAdd);
+      setOpenAdd(!openAdd);
+      fetchData();
     } catch (err) {
       alert("Vish, deu não...");
       console.log(err);
     }
-    // try {
-    //   const response = await api.get("/customers");
-    //   setCustomers(response.data);
-    // } catch (error) {
-    //   console.error("Error fetching data:", error);
-    // }
   };
 
   return (
     <form onSubmit={handleAdd}>
+      <DialogTitle>Novo Departamento - {selectedCustomer.name}</DialogTitle>
       <DialogContent>
-        <Typography sx={{ my: 1 }}>Geral</Typography>
-        <TextField
-          label="Cliente"
-          margin="dense"
-          variant="outlined"
-          value={customer}
-          required
-          onChange={(e) => setCustomer(e.target.value)}
-          sx={{ mr: 1, width: 240 }}
-        />
         <TextField
           label="Nome"
           margin="dense"
@@ -120,7 +104,7 @@ const AddDepartmentForm = () => {
         <Button
           variant="contained"
           color="error"
-          //   onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenAdd(!openAdd)}
         >
           X
         </Button>

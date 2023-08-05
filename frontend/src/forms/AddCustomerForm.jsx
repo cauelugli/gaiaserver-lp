@@ -11,12 +11,15 @@ import {
   DialogTitle,
   Divider,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
+
+import { IMaskInput } from "react-imask";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -78,10 +81,10 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData }) => {
           onChange={(e) => setName(e.target.value)}
           required
           variant="outlined"
-          sx={{ mr: 1, width: 700 }}
+          sx={{ mr: 1, width: 400 }}
         />
         <TextField
-          sx={{ mr: 1, width: 700 }}
+          sx={{ mr: 1, width: 400 }}
           margin="dense"
           required
           value={address}
@@ -89,68 +92,93 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData }) => {
           variant="outlined"
           label="Endereço"
         />
-        <TextField
-          label="Telefone"
-          margin="dense"
-          id="phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          required
-          variant="outlined"
-          sx={{ mr: 1, width: 160 }}
-        />
-        <TextField
-          margin="dense"
-          variant="outlined"
-          label="CNPJ"
-          value={cnpj}
-          required
-          onChange={(e) => setCnpj(e.target.value)}
-          sx={{ mr: 1, width: 240 }}
-        />
-        <TextField
-          margin="dense"
-          variant="outlined"
-          label="Segmento"
-          value={segment}
-          required
-          onChange={(e) => setSegment(e.target.value)}
-          sx={{ mr: 1, width: 285 }}
-        />
+        <Grid
+          container
+          sx={{ pr: "4%", mt:2 }}
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Grid item>
+            <Typography>Telefone</Typography>
+            <IMaskInput
+              style={{
+                padding: "3%",
+                marginRight: "2%",
+                marginTop: "1%",
+                borderColor: "#eee",
+              }}
+              mask="(00) 00000-0000"
+              definitions={{
+                "#": /[1-9]/,
+              }}
+              onAccept={(value) => setPhone(value)}
+              overwrite
+              value={phone}
+            />
+          </Grid>
+          <Grid item>
+            <Typography>CNPJ</Typography>
+            <IMaskInput
+              style={{
+                padding: "3%",
+                marginRight: "2%",
+                marginTop: "1%",
+                borderColor: "#eee",
+              }}
+              mask="00.000.000/0000-00"
+              definitions={{
+                "#": /[1-9]/,
+              }}
+              onAccept={(value) => setCnpj(value)}
+              overwrite
+              value={cnpj}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              margin="dense"
+              variant="outlined"
+              label="Segmento"
+              value={segment}
+              required
+              onChange={(e) => setSegment(e.target.value)}
+              sx={{ mr: 1, width: 205 }}
+            />
+          </Grid>
+        </Grid>
+
         <Divider sx={{ my: 2 }} />
         <Typography>Contato Principal</Typography>
         <TextField
           label="Nome"
           margin="dense"
-          id="mainContactName"
           value={mainContactName}
           onChange={(e) => setMainContactName(e.target.value)}
           required
           variant="outlined"
-          sx={{ mr: 1, width: 270 }}
+          sx={{ mr: 1, width: 340 }}
         />
         <TextField
           label="Email"
           margin="dense"
-          id="mainContactEmail"
           value={mainContactEmail}
           onChange={(e) => setMainContactEmail(e.target.value)}
           required
           variant="outlined"
-          sx={{ mr: 1, width: 270 }}
+          sx={{ mr: 1, width: 300 }}
         />
 
-        <FormControl sx={{ my: 1, width: 145 }}>
+        <FormControl sx={{ my: 1, width: 155 }}>
           <InputLabel>Posição</InputLabel>
           <Select
-            id="mainContactPosition"
             value={mainContactPosition}
             onChange={(e) => setMainContactPosition(e.target.value)}
-            label="Posição"
+            label="Posiçã"
             required
           >
-            <MenuItem value={"Supervisor"}>Supervisor</MenuItem>
-            <MenuItem value={"Diretor"}>Diretor</MenuItem>
+            <MenuItem value={"Funcionário"}>Funcionário</MenuItem>
+            <MenuItem value={"Gerente"}>Gerente</MenuItem>
             <MenuItem value={"Proprietário"}>Proprietário</MenuItem>
           </Select>
         </FormControl>

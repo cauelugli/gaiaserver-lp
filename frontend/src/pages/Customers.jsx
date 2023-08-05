@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import * as React from "react";
 
 import { Box, Tab, Tabs, Typography } from '@mui/material'
@@ -18,7 +19,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function CustomerTab({ customers }) {
+export default function Customers() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {

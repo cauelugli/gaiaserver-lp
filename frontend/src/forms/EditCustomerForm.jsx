@@ -141,8 +141,7 @@ const EditCustomerForm = ({
             value={mainContactPosition}
             onChange={(e) => setMainContactPosition(e.target.value)}
           >
-            <MenuItem value={"Supervisor"}>Supervisor</MenuItem>
-            <MenuItem value={"Diretor"}>Diretor</MenuItem>
+            <MenuItem value={"Gerente"}>Gerente</MenuItem>
             <MenuItem value={"Proprietário"}>Proprietário</MenuItem>
           </Select>
         </FormControl>

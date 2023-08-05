@@ -39,12 +39,6 @@ const customerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  users: {
-    type: Array,
-  },
-  assets: {
-    type: Array,
-  },
   isActive: {
     type: Boolean,
     default: true,
