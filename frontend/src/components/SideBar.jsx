@@ -1,12 +1,8 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import { Link } from "react-router-dom";
 
-import {
-  Divider,
-  List,
-  ListItemButton,
-  Typography,
-} from "@mui/material";
+import { Divider, List, ListItemButton, Typography } from "@mui/material";
 
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
@@ -28,6 +24,7 @@ const SideBar = ({ sidebarOpen }) => {
   return (
     <List>
       <Link
+        onClick={() => handleClickOption(0)}
         to="/"
         style={{
           textDecoration: "none",
@@ -49,6 +46,7 @@ const SideBar = ({ sidebarOpen }) => {
         </ListItemButton>
       </Link>
       <Link
+        onClick={() => handleClickOption(1)}
         to="/users"
         style={{
           textDecoration: "none",
@@ -70,6 +68,7 @@ const SideBar = ({ sidebarOpen }) => {
         </ListItemButton>
       </Link>
       <Link
+        onClick={() => handleClickOption(3)}
         to="/departments"
         style={{
           textDecoration: "none",
@@ -135,6 +134,7 @@ const SideBar = ({ sidebarOpen }) => {
       </ListItemButton>
       <Divider sx={{ my: 2 }} />
       <Link
+        onClick={() => handleClickOption(6)}
         to="/customers"
         style={{
           textDecoration: "none",

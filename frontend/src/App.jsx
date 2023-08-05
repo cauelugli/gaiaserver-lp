@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 
 import { Box, Button, Grid, Paper } from "@mui/material";
 
@@ -22,6 +22,7 @@ const api = axios.create({
 
 export default function App() {
   const [sidebarStatus, setSidebarStatus] = React.useState(false);
+  const [customertabStatus, setCustomertabStatus] = React.useState(true);
 
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState("");
@@ -44,6 +45,12 @@ export default function App() {
       : setSidebarStatus(Boolean(false));
   };
 
+  const handleCustomerTabStatusChange = () => {
+    !customertabStatus
+      ? setCustomertabStatus(Boolean(true))
+      : setCustomertabStatus(Boolean(false));
+  };
+
   return (
     <Router>
       <Grid container sx={{ backgroundColor: "#ccc", height: "100vw" }}>
@@ -61,11 +68,7 @@ export default function App() {
           </Box>
         </Grid>
 
-        <Grid
-          item
-          xs={sidebarStatus ? 9 : 9.9}
-          xl={sidebarStatus ? 9.3 : 10.1}
-        >
+        <Grid item xs={sidebarStatus ? 9 : 9.9} xl={sidebarStatus ? 9.3 : 10.1}>
           <Paper
             sx={{
               p: 3,
@@ -78,9 +81,22 @@ export default function App() {
               <Grid item xs={10}>
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
-                  <Route path="/users" element={<Users selectedCustomer={selectedCustomer} customers={customers}/>} />
+                  <Route
+                    path="/users"
+                    element={
+                      <Users
+                        selectedCustomer={selectedCustomer}
+                        customers={customers}
+                      />
+                    }
+                  />
                   <Route path="/customers" element={<Customers />} />
-                  <Route path="/departments" element={<Departments selectedCustomer={selectedCustomer}/>} />
+                  <Route
+                    path="/departments"
+                    element={
+                      <Departments selectedCustomer={selectedCustomer} />
+                    }
+                  />
                 </Routes>
               </Grid>
             </Grid>
@@ -94,8 +110,22 @@ export default function App() {
           xs={1.5}
           xl={1.5}
         >
-          <CustomerBar customers={customers} selectedCustomer={selectedCustomer} setSelectedCustomer={setSelectedCustomer}/>
-          <QuickNotes quickNotes={""} />
+          <Button
+            onClick={handleCustomerTabStatusChange}
+            sx={{ color: "black" }}
+          >
+            {customertabStatus ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </Button>
+          {customertabStatus && (
+            <>
+              <CustomerBar
+                customers={customers}
+                selectedCustomer={selectedCustomer}
+                setSelectedCustomer={setSelectedCustomer}
+              />
+              <QuickNotes quickNotes={""} />
+            </>
+          )}
         </Grid>
       </Grid>
     </Router>
