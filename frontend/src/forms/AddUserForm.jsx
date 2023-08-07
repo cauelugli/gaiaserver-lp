@@ -29,21 +29,27 @@ const AddUserForm = ({
   fetchData,
 }) => {
   const [name, setName] = React.useState("");
-  const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [position, setPosition] = React.useState("");
+  const [department, setDepartment] = React.useState("");
   const [manager, setManager] = React.useState("");
 
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/departments", {
+      const res = await api.post("/users", {
         customerId: selectedCustomer._id,
         name,
-        phone,
         email,
-        manager,
+        phone,
+        position,
+        department: { id: department.id, name: department.name },
+        manager: { id: manager.id, name: manager.name },
+        avatar: name[0],
+        avatarColor: avatarColor,
       });
-      res.data && alert("Departamento Adicionado!");
+      res.data && alert("Usuário Adicionado!");
       setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {
@@ -51,8 +57,6 @@ const AddUserForm = ({
       console.log(err);
     }
   };
-
-  console.log("managers", managers);
 
   function getAvatarColor() {
     const colors = [
@@ -143,7 +147,7 @@ const AddUserForm = ({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Departamento - {selectedCustomer.name}</DialogTitle>
+      <DialogTitle>Novo Usuário - {selectedCustomer.name}</DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -182,7 +186,7 @@ const AddUserForm = ({
                 borderColor: "#eee",
                 borderRadius: 4,
               }}
-              mask="(00) 0000-0000"
+              mask="(00) 00000-0000"
               definitions={{
                 "#": /[1-9]/,
               }}
@@ -193,31 +197,57 @@ const AddUserForm = ({
           </Grid>
           <Grid item sx={{ mt: 3 }}>
             <Typography>Gerente</Typography>
-            <TextField
-              size="small"
-              value={manager}
-              required
-              onChange={(e) => setManager(e.target.value)}
-              sx={{ mr: 1, width: 300 }}
-            />
             <FormControl>
               <Select
                 onChange={(e) => setManager(e.target.value)}
                 value={manager}
-                displayEmpty
-                sx={{ mt: 1, fontSize: "70%" }}
+                sx={{ mt: 1 }}
+                renderValue={(selected) => selected.name}
               >
                 {managers.map((item) => (
-                  <MenuItem
-                    value={item}
-                    key={item._id}
-                    sx={{ fontSize: "100%" }}
-                  >
+                  <MenuItem value={item} key={item._id}>
                     {item.name}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
+            <Grid item sx={{ mt: 3 }}>
+              <Typography>Acesso</Typography>
+              <FormControl>
+                <Select
+                  onChange={(e) => setPosition(e.target.value)}
+                  value={position}
+                  sx={{ mt: 1 }}
+                >
+                  <MenuItem value={"Comum"} sx={{ fontSize: "100%" }}>
+                    Funcionário
+                  </MenuItem>
+                  <MenuItem value={"Gerente"} sx={{ fontSize: "100%" }}>
+                    Gerente
+                  </MenuItem>
+                  <MenuItem value={"Admin"} sx={{ fontSize: "100%" }}>
+                    Proprietáio
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item sx={{ mt: 3 }}>
+              <Typography>Departamento</Typography>
+              <FormControl>
+                <Select
+                  onChange={(e) => setDepartment(e.target.value)}
+                  value={department}
+                  sx={{ mt: 1 }}
+                  renderValue={(selected) => selected.name}
+                >
+                  {departments.map((item) => (
+                    <MenuItem value={item} key={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
         </Grid>
       </DialogContent>

@@ -4,6 +4,8 @@ import * as React from "react";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 
 import UserTable from "../tables/UserTable";
+import ManagerTable from "../tables/ManagerTable";
+import AdminTable from "../tables/AdminTable";
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -19,7 +21,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Users({ customers, selectedCustomer }) {
+export default function Users({ selectedCustomer }) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -50,13 +52,13 @@ export default function Users({ customers, selectedCustomer }) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <UserTable customers={customers} selectedCustomer={selectedCustomer} />
+        <UserTable selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <UserTable selectedCustomer={selectedCustomer} />
+        <ManagerTable selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <UserTable selectedCustomer={selectedCustomer} />
+        <AdminTable selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
     </Box>
   );

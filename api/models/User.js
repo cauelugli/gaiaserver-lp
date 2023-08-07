@@ -20,10 +20,10 @@ userSchema = new mongoose.Schema({
     type: String,
   },
   department: {
-    type: Array,
+    type: Object,
   },
   manager: {
-    type: String,
+    type: Object,
   },
   avatar: {
     type: String,

@@ -17,12 +17,6 @@ departmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  manager: {
-    type: String,
-  },
-  members: {
-    type: Array,
-  },
   isActive: {
     type: Boolean,
     default: true,

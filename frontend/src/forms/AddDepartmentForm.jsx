@@ -18,8 +18,9 @@ const api = axios.create({
 });
 
 const AddDepartmentForm = ({
-  selectedCustomer,
   openAdd,
+  selectedCustomer,
+  users,
   setOpenAdd,
   fetchData,
 }) => {
@@ -28,6 +29,8 @@ const AddDepartmentForm = ({
   const [email, setEmail] = React.useState("");
   const [manager, setManager] = React.useState("");
   const [members, setMembers] = React.useState("");
+
+  console.log('users', users)
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -99,15 +102,14 @@ const AddDepartmentForm = ({
               value={phone}
             />
           </Grid>
-          <Grid item sx={{ mt: 3 }}>
-            <Typography>Gerente</Typography>
+          {/* <Grid item sx={{ mt: 3 }}> */}
+            {/* <Typography>Gerente</Typography>
             <TextField
               size="small"
               value={manager}
-              required
-              onChange={(e) => setManager(e.target.value)}
+              requiredonChange={(e) => setManager(e.target.value)}
               sx={{ mr: 1, width: 300 }}
-            />
+            /> */}
             {/* <FormControl>
               <Select
                 onChange={(e) => setManager(e.target.value)}
@@ -126,7 +128,7 @@ const AddDepartmentForm = ({
                 ))}
               </Select>
             </FormControl> */}
-          </Grid>
+          {/* </Grid>
           <Grid item sx={{ mt: 3 }}>
             <Typography>Membros</Typography>
             <TextField
@@ -136,7 +138,7 @@ const AddDepartmentForm = ({
               onChange={(e) => setMembers(e.target.value)}
               sx={{ mr: 1, width: 270 }}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </DialogContent>
       <DialogActions>

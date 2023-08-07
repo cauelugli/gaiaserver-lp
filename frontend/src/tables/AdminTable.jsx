@@ -23,7 +23,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function UserTable({ selectedCustomer }) {
+export default function AdminTable({ selectedCustomer }) {
   const [selectedUser, setSelectedUser] = React.useState(null);
   const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -32,6 +32,7 @@ export default function UserTable({ selectedCustomer }) {
 
   const [users, setUsers] = React.useState([]);
   const [managers, setManagers] = React.useState([]);
+  const [admins, setAdmins] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
 
   React.useEffect(() => {
@@ -42,22 +43,26 @@ export default function UserTable({ selectedCustomer }) {
         const filteredUsers = response.data.filter(
           (user) => user.customerId === selectedCustomer._id
         );
+        
         const filteredManagers = filteredUsers.filter(
           (user) => user.position === "Gerente"
         );
-        const filteredDepartments = responseDepartments.data
-          .filter((department) => department.customerId === selectedCustomer._id)
-          .map((department) => ({ id: department._id, name: department.name }));
+        const filteredAdmins = filteredUsers.filter(
+          (user) => user.position === "Admin"
+        );
+        const filteredDepartments = responseDepartments.data.filter(
+          (department) => department.customerId === selectedCustomer._id
+        );
         setUsers(filteredUsers);
         setManagers(filteredManagers);
+        setAdmins(filteredAdmins);
         setDepartments(filteredDepartments);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [selectedCustomer._id, users]);
-  
+  }, [selectedCustomer._id]);
 
   const fetchData = async () => {
     try {
@@ -69,11 +74,15 @@ export default function UserTable({ selectedCustomer }) {
       const filteredManagers = filteredUsers.filter(
         (user) => user.position === "Gerente"
       );
-      const filteredDepartments = responseDepartments.data
-        .filter((department) => department.customerId === selectedCustomer._id)
-        .map((department) => ({ id: department._id, name: department.name }));
+      const filteredAdmins = filteredUsers.filter(
+        (user) => user.position === "Admin"
+      );
+      const filteredDepartments = responseDepartments.filter(
+        (department) => department.customerId === selectedCustomer._id
+      );
       setUsers(filteredUsers);
       setManagers(filteredManagers);
+      setAdmins(filteredAdmins);
       setDepartments(filteredDepartments);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -109,14 +118,11 @@ export default function UserTable({ selectedCustomer }) {
               <TableCell>Nome</TableCell>
               <TableCell align="right">E-mail</TableCell>
               <TableCell align="right">Telefone</TableCell>
-              <TableCell align="right">Departamento</TableCell>
-              <TableCell align="right">Posição</TableCell>
-              <TableCell align="right">Gerente</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users &&
-              users.map((user) => (
+            {admins &&    
+              admins.map((user) => (
                 <TableRow
                   key={user._id}
                   sx={{ "&:hover": { backgroundColor: "#ccc " } }}
@@ -129,15 +135,6 @@ export default function UserTable({ selectedCustomer }) {
                   </TableCell>
                   <TableCell cursor="pointer" align="right">
                     {user.phone}
-                  </TableCell>
-                  <TableCell cursor="pointer" align="right">
-                    {user.department.name}
-                  </TableCell>
-                  <TableCell cursor="pointer" align="right">
-                    {user.position}
-                  </TableCell>
-                  <TableCell cursor="pointer" align="right">
-                    {user.manager.name}
                   </TableCell>
                 </TableRow>
               ))}

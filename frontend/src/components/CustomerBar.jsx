@@ -16,8 +16,8 @@ const CustomerBar = ({ customers, selectedCustomer, setSelectedCustomer }) => {
         <Select
           onChange={(e) => setSelectedCustomer(e.target.value)}
           value={selectedCustomer}
-          displayEmpty
           sx={{ mt: 1, fontSize: "70%" }}
+          renderValue={(selected) => selected.name}
         >
           <MenuItem disabled value="">
             <Typography>

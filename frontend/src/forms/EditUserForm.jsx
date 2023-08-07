@@ -47,7 +47,7 @@ const EditUserForm = ({
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.put("/customers", {
+      const res = await api.put("/users", {
         customer: selectedCustomer._id,
         name,
         address,

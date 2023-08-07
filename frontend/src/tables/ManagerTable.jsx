@@ -23,7 +23,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function UserTable({ selectedCustomer }) {
+export default function ManagerTable({ selectedCustomer }) {
   const [selectedUser, setSelectedUser] = React.useState(null);
   const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -45,9 +45,9 @@ export default function UserTable({ selectedCustomer }) {
         const filteredManagers = filteredUsers.filter(
           (user) => user.position === "Gerente"
         );
-        const filteredDepartments = responseDepartments.data
-          .filter((department) => department.customerId === selectedCustomer._id)
-          .map((department) => ({ id: department._id, name: department.name }));
+        const filteredDepartments = responseDepartments.data.filter(
+          (department) => department.customerId === selectedCustomer._id
+        );
         setUsers(filteredUsers);
         setManagers(filteredManagers);
         setDepartments(filteredDepartments);
@@ -56,8 +56,7 @@ export default function UserTable({ selectedCustomer }) {
       }
     };
     fetchData();
-  }, [selectedCustomer._id, users]);
-  
+  }, [selectedCustomer._id]);
 
   const fetchData = async () => {
     try {
@@ -69,9 +68,9 @@ export default function UserTable({ selectedCustomer }) {
       const filteredManagers = filteredUsers.filter(
         (user) => user.position === "Gerente"
       );
-      const filteredDepartments = responseDepartments.data
-        .filter((department) => department.customerId === selectedCustomer._id)
-        .map((department) => ({ id: department._id, name: department.name }));
+      const filteredDepartments = responseDepartments.filter(
+        (department) => department.customerId === selectedCustomer._id
+      );
       setUsers(filteredUsers);
       setManagers(filteredManagers);
       setDepartments(filteredDepartments);
@@ -111,12 +110,11 @@ export default function UserTable({ selectedCustomer }) {
               <TableCell align="right">Telefone</TableCell>
               <TableCell align="right">Departamento</TableCell>
               <TableCell align="right">Posição</TableCell>
-              <TableCell align="right">Gerente</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users &&
-              users.map((user) => (
+            {managers &&
+              managers.map((user) => (
                 <TableRow
                   key={user._id}
                   sx={{ "&:hover": { backgroundColor: "#ccc " } }}
@@ -135,9 +133,6 @@ export default function UserTable({ selectedCustomer }) {
                   </TableCell>
                   <TableCell cursor="pointer" align="right">
                     {user.position}
-                  </TableCell>
-                  <TableCell cursor="pointer" align="right">
-                    {user.manager.name}
                   </TableCell>
                 </TableRow>
               ))}

@@ -53,6 +53,14 @@ router.put("/", async (req, res) => {
       },
       { new: true }
     );
+    // UPDATE MEMBER USERS (if there is a manager change)
+    {
+      req.body.manager &&
+        (await User.updateMany(
+          { "manager.id": req.body.managerId },
+          { $set: { "manager.name": req.body.manager.name } }
+        ));
+    }
     res.status(200).json(updatedUser);
   } catch (err) {
     res.status(500).json(err);

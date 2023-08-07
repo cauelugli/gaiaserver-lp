@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Department = require("../models/Department");
+const User = require("../models/User");
 
 // GET ALL DEPARTMENT
 router.get("/", async (req, res) => {
@@ -14,6 +15,7 @@ router.get("/", async (req, res) => {
 
 // CREATE DEPARTMENT
 router.post("/", async (req, res) => {
+  console.log('req.body', req.body)
   const newDepartment = new Department(req.body);
   try {
     const savedDepartment = await newDepartment.save();
@@ -44,11 +46,16 @@ router.put("/", async (req, res) => {
         name: req.body.name,
         email: req.body.email,
         phone: req.body.phone,
-        avatar: req.body.avatar,
-        avatarColor: req.body.avatarColor,
+        manager: req.body.manager,
+        members: req.body.members,
         isActive: req.body.isActive,
       },
       { new: true }
+    );
+    // UPDATE MEMBER USERS
+    await User.updateMany(
+      { 'department.id': req.body.departmentId },
+      { $set: { 'department.name': req.body.name } }
     );
     res.status(200).json(updatedDepartment);
   } catch (err) {

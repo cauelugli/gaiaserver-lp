@@ -39,6 +39,7 @@ export default function DepartmentTable({ selectedCustomer }) {
   const [selectedDepartment, setSelectedDepartment] = React.useState([]);
 
   const [departments, setDepartments] = React.useState([]);
+  const [users, setUsers] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +48,11 @@ export default function DepartmentTable({ selectedCustomer }) {
         const filteredDepartments = response.data.filter(
           (department) => department.customerId === selectedCustomer._id
         );
+        const filteredUsers = response.data.filter(
+          (user) => user.customerId === selectedCustomer._id
+        );
         setDepartments(filteredDepartments);
+        setUsers(filteredUsers);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -190,6 +195,7 @@ export default function DepartmentTable({ selectedCustomer }) {
           <AddDepartmentForm
             openAdd={openAdd}
             selectedCustomer={selectedCustomer}
+            users={users}
             setOpenAdd={setOpenAdd}
             fetchData={fetchData}
           />
@@ -205,6 +211,7 @@ export default function DepartmentTable({ selectedCustomer }) {
           <EditDepartmentForm
             openEdit={openEdit}
             selectedCustomer={selectedCustomer}
+            users={users}
             selectedDepartment={selectedDepartment}
             setOpenEdit={setOpenEdit}
             fetchData={fetchData}

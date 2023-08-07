@@ -21,6 +21,7 @@ const EditDepartmentForm = ({
   openEdit,
   setOpenEdit,
   selectedCustomer,
+  users,
   selectedDepartment,
   fetchData,
 }) => {
@@ -34,13 +35,14 @@ const EditDepartmentForm = ({
     e.preventDefault();
     try {
       const res = await api.put("/departments", {
-        customer: selectedCustomer._id,
+        departmentId: selectedDepartment._id,
         name,
         phone,
         email,
         manager,
         members,
       });
+      console.log('res.data', res.data)
       res.data && alert("Editado com sucesso!");
       setOpenEdit(!openEdit);
       fetchData();
@@ -100,7 +102,7 @@ const EditDepartmentForm = ({
               value={phone}
             />
           </Grid>
-          <Grid item sx={{ mt: 3 }}>
+          {/* <Grid item sx={{ mt: 3 }}>
             <Typography>Gerente</Typography>
             <TextField
               size="small"
@@ -108,7 +110,7 @@ const EditDepartmentForm = ({
               required
               onChange={(e) => setManager(e.target.value)}
               sx={{ mr: 1, width: 300 }}
-            />
+            /> */}
             {/* <FormControl>
               <Select
                 onChange={(e) => setManager(e.target.value)}
@@ -127,7 +129,7 @@ const EditDepartmentForm = ({
                 ))}
               </Select>
             </FormControl> */}
-          </Grid>
+          {/* </Grid>
           <Grid item sx={{ mt: 3 }}>
             <Typography>Membros</Typography>
             <TextField
@@ -137,7 +139,7 @@ const EditDepartmentForm = ({
               onChange={(e) => setMembers(e.target.value)}
               sx={{ mr: 1, width: 270 }}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
         
       </DialogContent>
