@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 
-import { Box, Tab, Tabs, Typography } from '@mui/material'
+import { Box, Tab, Tabs, Typography } from "@mui/material";
 
 import UserTable from "../tables/UserTable";
 
@@ -30,20 +30,33 @@ export default function Users({ customers, selectedCustomer }) {
     <Box sx={{ minWidth: "120%" }}>
       <Typography variant="h4">Colaboradores</Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={value} onChange={handleChange}>
-          <Tab label="Funcionários" sx={{ color: "#eee" }} />
-          <Tab label="Gerência" sx={{ color: "#eee" }} />
-          <Tab label="Diretoria" sx={{ color: "#eee" }}/>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          TabIndicatorProps={{ style: { backgroundColor: "black" } }}
+        >
+          <Tab
+            label="Funcionários"
+            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
+          />
+          <Tab
+            label="Gerência"
+            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
+          />
+          <Tab
+            label="Diretoria"
+            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <UserTable customers={customers} selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <UserTable managers={"managers"} />
+        <UserTable selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <UserTable owners={"owners"} />
+        <UserTable selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
     </Box>
   );

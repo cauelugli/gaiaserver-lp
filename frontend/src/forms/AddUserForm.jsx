@@ -7,7 +7,10 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
   Grid,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -17,8 +20,10 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddDepartmentForm = ({
+const AddUserForm = ({
   selectedCustomer,
+  managers,
+  departments,
   openAdd,
   setOpenAdd,
   fetchData,
@@ -27,7 +32,6 @@ const AddDepartmentForm = ({
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [manager, setManager] = React.useState("");
-  const [members, setMembers] = React.useState("");
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -38,7 +42,6 @@ const AddDepartmentForm = ({
         phone,
         email,
         manager,
-        members,
       });
       res.data && alert("Departamento Adicionado!");
       setOpenAdd(!openAdd);
@@ -48,6 +51,95 @@ const AddDepartmentForm = ({
       console.log(err);
     }
   };
+
+  console.log("managers", managers);
+
+  function getAvatarColor() {
+    const colors = [
+      "#FF0000",
+      "#FF4500",
+      "#FFA500",
+      "#FFFF00",
+      "#ADFF2F",
+      "#00FF00",
+      "#00FF7F",
+      "#00CED1",
+      "#00BFFF",
+      "#0000FF",
+      "#8A2BE2",
+      "#FF00FF",
+      "#FF1493",
+      "#FF69B4",
+      "#FFC0CB",
+      "#FFD700",
+      "#FF8C00",
+      "#FF6347",
+      "#CD5C5C",
+      "#F08080",
+      "#FA8072",
+      "#E9967A",
+      "#DC143C",
+      "#B22222",
+      "#8B0000",
+      "#808000",
+      "#556B2F",
+      "#6B8E23",
+      "#808000",
+      "#2E8B57",
+      "#3CB371",
+      "#20B2AA",
+      "#5F9EA0",
+      "#4682B4",
+      "#87CEEB",
+      "#1E90FF",
+      "#6495ED",
+      "#0000CD",
+      "#8A2BE2",
+      "#9400D3",
+      "#9932CC",
+      "#8A2BE2",
+      "#BA55D3",
+      "#FF00FF",
+      "#FF1493",
+      "#FF69B4",
+      "#FFC0CB",
+      "#FFD700",
+      "#FF8C00",
+      "#FF6347",
+      "#DC143C",
+      "#B22222",
+      "#8B0000",
+      "#CD5C5C",
+      "#F08080",
+      "#FA8072",
+      "#E9967A",
+      "#FF4500",
+      "#FF6347",
+      "#FFA500",
+      "#FFD700",
+      "#FFFF00",
+      "#ADFF2F",
+      "#7CFC00",
+      "#32CD32",
+      "#00FF7F",
+      "#00FF00",
+      "#00FA9A",
+      "#00CED1",
+      "#00BFFF",
+      "#1E90FF",
+      "#4682B4",
+      "#8A2BE2",
+      "#FF00FF",
+      "#FF1493",
+      "#FF69B4",
+      "#FFC0CB",
+    ];
+
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+  }
+
+  const avatarColor = getAvatarColor();
 
   return (
     <form onSubmit={handleAdd}>
@@ -108,14 +200,14 @@ const AddDepartmentForm = ({
               onChange={(e) => setManager(e.target.value)}
               sx={{ mr: 1, width: 300 }}
             />
-            {/* <FormControl>
+            <FormControl>
               <Select
                 onChange={(e) => setManager(e.target.value)}
                 value={manager}
                 displayEmpty
                 sx={{ mt: 1, fontSize: "70%" }}
               >
-                {manager.map((item) => (
+                {managers.map((item) => (
                   <MenuItem
                     value={item}
                     key={item._id}
@@ -125,17 +217,7 @@ const AddDepartmentForm = ({
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl> */}
-          </Grid>
-          <Grid item sx={{ mt: 3 }}>
-            <Typography>Membros</Typography>
-            <TextField
-              size="small"
-              value={members}
-              required
-              onChange={(e) => setMembers(e.target.value)}
-              sx={{ mr: 1, width: 270 }}
-            />
+            </FormControl>
           </Grid>
         </Grid>
       </DialogContent>
@@ -155,4 +237,4 @@ const AddDepartmentForm = ({
   );
 };
 
-export default AddDepartmentForm;
+export default AddUserForm;

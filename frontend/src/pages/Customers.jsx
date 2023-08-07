@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 
-import { Box, Tab, Tabs, Typography } from '@mui/material'
+import { Box, Tab, Tabs, Typography } from "@mui/material";
 
 import CustomerTable from "../tables/CustomerTable";
 
@@ -30,9 +30,19 @@ export default function Customers() {
     <Box sx={{ minWidth: "121%" }}>
       <Typography variant="h4">Clientes</Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={value} onChange={handleChange}>
-          <Tab label="Clientes" sx={{ color: "#eee" }} />
-          <Tab label="Contatos Principais" sx={{ color: "#eee" }} />
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          TabIndicatorProps={{ style: { backgroundColor: "black" } }}
+        >
+          <Tab
+            label="Clientes"
+            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
+          />
+          <Tab
+            label="Contatos Principais"
+            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>

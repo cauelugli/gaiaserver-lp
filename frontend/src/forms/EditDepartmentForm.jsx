@@ -17,43 +17,44 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddDepartmentForm = ({
+const EditDepartmentForm = ({
+  openEdit,
+  setOpenEdit,
   selectedCustomer,
-  openAdd,
-  setOpenAdd,
+  selectedDepartment,
   fetchData,
 }) => {
-  const [name, setName] = React.useState("");
-  const [phone, setPhone] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [manager, setManager] = React.useState("");
-  const [members, setMembers] = React.useState("");
+  const [name, setName] = React.useState(selectedDepartment.name);
+  const [phone, setPhone] = React.useState(selectedDepartment.phone);
+  const [email, setEmail] = React.useState(selectedDepartment.email);
+  const [manager, setManager] = React.useState(selectedDepartment.manager);
+  const [members, setMembers] = React.useState(selectedDepartment.members);
 
-  const handleAdd = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/departments", {
-        customerId: selectedCustomer._id,
+      const res = await api.put("/departments", {
+        customer: selectedCustomer._id,
         name,
         phone,
         email,
         manager,
         members,
       });
-      res.data && alert("Departamento Adicionado!");
-      setOpenAdd(!openAdd);
+      res.data && alert("Editado com sucesso!");
+      setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {
-      alert("Vish, deu não...");
+      alert("Vish, editei não...");
       console.log(err);
     }
   };
 
   return (
-    <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Departamento - {selectedCustomer.name}</DialogTitle>
+    <form onSubmit={handleEdit}>
+      <DialogTitle>Editando Cliente {selectedCustomer.name}</DialogTitle>
       <DialogContent>
-        <Grid
+      <Grid
           container
           sx={{ pr: "4%", mt: 2 }}
           direction="row"
@@ -138,6 +139,7 @@ const AddDepartmentForm = ({
             />
           </Grid>
         </Grid>
+        
       </DialogContent>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
@@ -146,7 +148,7 @@ const AddDepartmentForm = ({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenEdit(!openEdit)}
         >
           X
         </Button>
@@ -155,4 +157,4 @@ const AddDepartmentForm = ({
   );
 };
 
-export default AddDepartmentForm;
+export default EditDepartmentForm;
