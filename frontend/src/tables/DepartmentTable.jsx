@@ -105,7 +105,7 @@ export default function DepartmentTable({ selectedCustomer }) {
                     height: "4vw",
                     cursor: "pointer",
                     backgroundColor: department.color,
-                    "&:hover": { backgroundColor: "#ccc " },
+                    "&:hover": { backgroundColor: "#ccc" },
                   }}
                 >
                   <TableCell sx={{ width: "5%" }} cursor="pointer" align="left">
@@ -121,6 +121,7 @@ export default function DepartmentTable({ selectedCustomer }) {
                     onClick={() => handleOpenDetail(department)}
                     cursor="pointer"
                     align="left"
+                    sx={{ color: "white", "&:hover": { color: "black" } }}
                   >
                     {department.name}
                   </TableCell>

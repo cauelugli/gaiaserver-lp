@@ -252,7 +252,7 @@ const EditUserForm = ({
                     <MenuItem
                       value={item}
                       key={item.id}
-                      sx={{ backgroundColor: item.color }}
+                      sx={{ backgroundColor: item.color, color:"white" }}
                     >
                       {item.name}
                     </MenuItem>

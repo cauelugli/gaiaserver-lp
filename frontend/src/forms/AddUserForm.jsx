@@ -230,13 +230,13 @@ const AddUserForm = ({
                   value={position}
                   sx={{ mt: 1 }}
                 >
-                  <MenuItem value={"Comum"} sx={{ fontSize: "100%" }}>
+                  <MenuItem value={"Comum"}>
                     Funcionário
                   </MenuItem>
-                  <MenuItem value={"Gerente"} sx={{ fontSize: "100%" }}>
+                  <MenuItem value={"Gerente"}>
                     Gerente
                   </MenuItem>
-                  <MenuItem value={"Admin"} sx={{ fontSize: "100%" }}>
+                  <MenuItem value={"Admin"}>
                     Proprietário
                   </MenuItem>
                 </Select>
@@ -255,7 +255,7 @@ const AddUserForm = ({
                     <MenuItem
                       value={item}
                       key={item.id}
-                      sx={{ backgroundColor: item.color }}
+                      sx={{ backgroundColor: item.color, color:"white" }}
                     >
                       {item.name}
                     </MenuItem>
