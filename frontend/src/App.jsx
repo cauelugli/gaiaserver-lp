@@ -32,12 +32,13 @@ export default function App() {
       try {
         const response = await api.get("/customers");
         setCustomers(response.data);
+        selectedCustomer === "" && setSelectedCustomer(response.data[0])
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [customers]);
+  }, [selectedCustomer, customers]);
 
   const handleSidebarStatusChange = () => {
     !sidebarStatus
