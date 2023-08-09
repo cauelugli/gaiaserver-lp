@@ -57,7 +57,11 @@ export default function GeneralUserTable({ selectedCustomer }) {
           .filter(
             (department) => department.customerId === selectedCustomer._id
           )
-          .map((department) => ({ id: department._id, name: department.name }));
+          .map((department) => ({
+            id: department._id,
+            name: department.name,
+            color: department.color,
+          }));
         setUsers(filteredUsers);
         setManagers(filteredManagers);
         setDepartments(filteredDepartments);
@@ -122,7 +126,7 @@ export default function GeneralUserTable({ selectedCustomer }) {
                     height: "4vw",
                     cursor: "pointer",
                     backgroundColor:
-                    selectedUser.name === user.name && openDetail
+                      selectedUser.name === user.name && openDetail
                         ? "#95dd95"
                         : "none",
                     "&:hover": { backgroundColor: "#ccc " },
@@ -175,7 +179,9 @@ export default function GeneralUserTable({ selectedCustomer }) {
                               </TableCell>
                               <TableCell>{user.phone}</TableCell>
                               <TableCell>{user.department.name}</TableCell>
-                              <TableCell>{user.manager ? user.manager.name : "N/A"}</TableCell>
+                              <TableCell>
+                                {user.manager ? user.manager.name : "N/A"}
+                              </TableCell>
                             </TableRow>
                           </TableBody>
                         </Table>

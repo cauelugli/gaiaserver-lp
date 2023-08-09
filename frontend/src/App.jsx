@@ -114,7 +114,7 @@ export default function App() {
             onClick={handleCustomerTabStatusChange}
             sx={{ color: "black" }}
           >
-            {customertabStatus ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            {customertabStatus ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </Button>
           {customertabStatus && (
             <>

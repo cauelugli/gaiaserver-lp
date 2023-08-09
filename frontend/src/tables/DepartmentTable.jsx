@@ -104,10 +104,7 @@ export default function DepartmentTable({ selectedCustomer }) {
                   sx={{
                     height: "4vw",
                     cursor: "pointer",
-                    backgroundColor:
-                    selectedDepartment === department.name && openDetail
-                        ? "#95dd95"
-                        : "none",
+                    backgroundColor: department.color,
                     "&:hover": { backgroundColor: "#ccc " },
                   }}
                 >
@@ -162,7 +159,7 @@ export default function DepartmentTable({ selectedCustomer }) {
                             </TableRow>
                           </TableBody>
                         </Table>
-                        <Box sx={{ mt: 3, ml: "95%" }}>
+                        <Box sx={{ mt: 3, ml: "90%" }}>
                           <ModeEditIcon
                             cursor="pointer"
                             option="delete"

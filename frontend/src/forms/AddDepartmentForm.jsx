@@ -11,7 +11,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
 import { IMaskInput } from "react-imask";
+import ColorPicker from "../components/small/ColorPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -27,10 +29,25 @@ const AddDepartmentForm = ({
   const [name, setName] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
-  const [manager, setManager] = React.useState("");
-  const [members, setMembers] = React.useState("");
+  // const [manager, setManager] = React.useState("");
+  // const [members, setMembers] = React.useState("");
+  const [color, setColor] = React.useState("#ffffff");
+  const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
 
-  console.log('users', users)
+  const handleClickColor = (event) => {
+    setColorAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseColor = () => {
+    setColorAnchorEl(null);
+  };
+
+  const handleChangeColor = (selectedColor) => {
+    setColor(selectedColor.hex);
+    handleCloseColor();
+  };
+
+  console.log("users", users);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -40,8 +57,9 @@ const AddDepartmentForm = ({
         name,
         phone,
         email,
-        manager,
-        members,
+        color,
+        // manager,
+        // members,
       });
       res.data && alert("Departamento Adicionado!");
       setOpenAdd(!openAdd);
@@ -103,14 +121,14 @@ const AddDepartmentForm = ({
             />
           </Grid>
           {/* <Grid item sx={{ mt: 3 }}> */}
-            {/* <Typography>Gerente</Typography>
+          {/* <Typography>Gerente</Typography>
             <TextField
               size="small"
               value={manager}
               requiredonChange={(e) => setManager(e.target.value)}
               sx={{ mr: 1, width: 300 }}
             /> */}
-            {/* <FormControl>
+          {/* <FormControl>
               <Select
                 onChange={(e) => setManager(e.target.value)}
                 value={manager}
@@ -139,6 +157,17 @@ const AddDepartmentForm = ({
               sx={{ mr: 1, width: 270 }}
             />
           </Grid> */}
+
+          <Grid item sx={{m:"1%"}}>
+            <ColorPicker 
+            handleClickColor={handleClickColor}
+            color={color}
+            colorAnchorEl={colorAnchorEl}
+            handleCloseColor={handleCloseColor}
+            handleChangeColor={handleChangeColor}
+            />
+          </Grid>
+
         </Grid>
       </DialogContent>
       <DialogActions>

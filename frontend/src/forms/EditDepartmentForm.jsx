@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { IMaskInput } from "react-imask";
+import ColorPicker from "../components/small/ColorPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -21,15 +22,30 @@ const EditDepartmentForm = ({
   openEdit,
   setOpenEdit,
   selectedCustomer,
-  users,
+  // users,
   selectedDepartment,
   fetchData,
 }) => {
   const [name, setName] = React.useState(selectedDepartment.name);
   const [phone, setPhone] = React.useState(selectedDepartment.phone);
   const [email, setEmail] = React.useState(selectedDepartment.email);
-  const [manager, setManager] = React.useState(selectedDepartment.manager);
-  const [members, setMembers] = React.useState(selectedDepartment.members);
+  // const [manager, setManager] = React.useState(selectedDepartment.manager);
+  // const [members, setMembers] = React.useState(selectedDepartment.members);
+  const [color, setColor] = React.useState(selectedDepartment.color);
+  const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
+
+  const handleClickColor = (event) => {
+    setColorAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseColor = () => {
+    setColorAnchorEl(null);
+  };
+
+  const handleChangeColor = (selectedColor) => {
+    setColor(selectedColor.hex);
+    handleCloseColor();
+  };
 
   const handleEdit = async (e) => {
     e.preventDefault();
@@ -39,10 +55,11 @@ const EditDepartmentForm = ({
         name,
         phone,
         email,
-        manager,
-        members,
+        color,
+        // manager,
+        // members,
       });
-      console.log('res.data', res.data)
+      console.log("res.data", res.data);
       res.data && alert("Editado com sucesso!");
       setOpenEdit(!openEdit);
       fetchData();
@@ -56,7 +73,7 @@ const EditDepartmentForm = ({
     <form onSubmit={handleEdit}>
       <DialogTitle>Editando Cliente {selectedCustomer.name}</DialogTitle>
       <DialogContent>
-      <Grid
+        <Grid
           container
           sx={{ pr: "4%", mt: 2 }}
           direction="row"
@@ -111,7 +128,7 @@ const EditDepartmentForm = ({
               onChange={(e) => setManager(e.target.value)}
               sx={{ mr: 1, width: 300 }}
             /> */}
-            {/* <FormControl>
+          {/* <FormControl>
               <Select
                 onChange={(e) => setManager(e.target.value)}
                 value={manager}
@@ -140,8 +157,16 @@ const EditDepartmentForm = ({
               sx={{ mr: 1, width: 270 }}
             />
           </Grid> */}
+          <Grid item sx={{ m: "1%" }}>
+            <ColorPicker
+              handleClickColor={handleClickColor}
+              color={color}
+              colorAnchorEl={colorAnchorEl}
+              handleCloseColor={handleCloseColor}
+              handleChangeColor={handleChangeColor}
+            />
+          </Grid>
         </Grid>
-        
       </DialogContent>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">

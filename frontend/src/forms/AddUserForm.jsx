@@ -44,12 +44,16 @@ const AddUserForm = ({
         email,
         phone,
         position,
-        department: { id: department.id, name: department.name },
+        department: {
+          id: department.id,
+          name: department.name,
+          color: department.color,
+        },
         manager:
           position === "Admin" || position === "Gerente"
             ? { id: selectedCustomer._id, name: position }
             : { id: manager._id, name: manager.name },
-          avatar: name[0],
+        avatar: name[0],
         avatarColor: avatarColor,
       });
       res.data && alert("Usuário Adicionado!");
@@ -248,7 +252,11 @@ const AddUserForm = ({
                   renderValue={(selected) => selected.name}
                 >
                   {departments.map((item) => (
-                    <MenuItem value={item} key={item.id}>
+                    <MenuItem
+                      value={item}
+                      key={item.id}
+                      sx={{ backgroundColor: item.color }}
+                    >
                       {item.name}
                     </MenuItem>
                   ))}

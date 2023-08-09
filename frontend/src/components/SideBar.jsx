@@ -6,7 +6,6 @@ import { Divider, List, ListItemButton, Typography } from "@mui/material";
 
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
-import ComputerIcon from "@mui/icons-material/Computer";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";

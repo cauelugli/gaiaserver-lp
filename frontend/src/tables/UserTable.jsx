@@ -60,7 +60,11 @@ export default function UserTable({ selectedCustomer }) {
           .filter(
             (department) => department.customerId === selectedCustomer._id
           )
-          .map((department) => ({ id: department._id, name: department.name }));
+          .map((department) => ({
+            id: department._id,
+            name: department.name,
+            color: department.color,
+          }));
         setUsers(filteredWorkers);
         setManagers(filteredManagers);
         setDepartments(filteredDepartments);
@@ -86,7 +90,11 @@ export default function UserTable({ selectedCustomer }) {
       );
       const filteredDepartments = responseDepartments.data
         .filter((department) => department.customerId === selectedCustomer._id)
-        .map((department) => ({ id: department._id, name: department.name }));
+        .map((department) => ({
+          id: department._id,
+          name: department.name,
+          color: department.color,
+        }));
       setUsers(filteredWorkers);
       setManagers(filteredManagers);
       setDepartments(filteredDepartments);

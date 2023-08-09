@@ -57,7 +57,11 @@ export default function ManagerTable({ selectedCustomer }) {
           .filter(
             (department) => department.customerId === selectedCustomer._id
           )
-          .map((department) => ({ id: department._id, name: department.name }));
+          .map((department) => ({
+            id: department._id,
+            name: department.name,
+            color: department.color,
+          }));
         setUsers(filteredManagers);
         setManagers(filteredManagers);
         setDepartments(filteredDepartments);
@@ -80,7 +84,11 @@ export default function ManagerTable({ selectedCustomer }) {
       );
       const filteredDepartments = responseDepartments.data
         .filter((department) => department.customerId === selectedCustomer._id)
-        .map((department) => ({ id: department._id, name: department.name }));
+        .map((department) => ({
+          id: department._id,
+          name: department.name,
+          color: department.color,
+        }));
       setUsers(filteredManagers);
       setManagers(filteredManagers);
       setDepartments(filteredDepartments);
@@ -174,7 +182,9 @@ export default function ManagerTable({ selectedCustomer }) {
                                 {user.name}
                               </TableCell>
                               <TableCell>{user.phone}</TableCell>
-                              <TableCell>{user.department ? user.department.name : "N/A"}</TableCell>
+                              <TableCell>
+                                {user.department ? user.department.name : "N/A"}
+                              </TableCell>
                               <TableCell>
                                 {user.manager ? user.manager.name : "N/A"}
                               </TableCell>

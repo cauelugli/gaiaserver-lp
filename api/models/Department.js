@@ -17,6 +17,9 @@ departmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  color: {
+    type: String,
+  },
   isActive: {
     type: Boolean,
     default: true,

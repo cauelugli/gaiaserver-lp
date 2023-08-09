@@ -54,6 +54,7 @@ router.put("/", async (req, res) => {
         phone: req.body.phone,
         manager: req.body.manager,
         members: req.body.members,
+        color: req.body.color,
         isActive: req.body.isActive,
       },
       { new: true }
