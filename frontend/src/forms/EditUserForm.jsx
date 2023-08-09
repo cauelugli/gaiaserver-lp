@@ -7,14 +7,14 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Divider,
   FormControl,
-  InputLabel,
+  Grid,
   MenuItem,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
+import { IMaskInput } from "react-imask";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -22,44 +22,36 @@ const api = axios.create({
 
 const EditUserForm = ({
   openEdit,
+  selectedUser,
+  managers,
+  departments,
   setOpenEdit,
-  selectedCustomer,
   fetchData,
 }) => {
-  const [name, setName] = React.useState(selectedCustomer.name);
-  const [address, setAddress] = React.useState(selectedCustomer.address);
-  const [phone, setPhone] = React.useState(selectedCustomer.phone);
-  const [mainContactName, setMainContactName] = React.useState(
-    selectedCustomer.mainContactName
-  );
-  const [mainContactEmail, setMainContactEmail] = React.useState(
-    selectedCustomer.mainContactEmail
-  );
-  const [mainContactPosition, setMainContactPosition] = React.useState(
-    selectedCustomer.mainContactPosition
-  );
-  const [domain, setDomain] = React.useState(selectedCustomer.domain);
-  const [website, setWebsite] = React.useState(selectedCustomer.website);
-  const [cnpj, setCnpj] = React.useState(selectedCustomer.cnpj);
-  const [segment, setSegment] = React.useState(selectedCustomer.segment);
-  const [employees, setEmployees] = React.useState(selectedCustomer.employees);
+  const [name, setName] = React.useState(selectedUser.name);
+  const [email, setEmail] = React.useState(selectedUser.email);
+  const [phone, setPhone] = React.useState(selectedUser.phone);
+  const [position, setPosition] = React.useState(selectedUser.position);
+  const [department, setDepartment] = React.useState(selectedUser.department);
+  const [manager, setManager] = React.useState(selectedUser.manager);
 
+  console.log('selectedUser', selectedUser);
+  console.log('managers', managers);
+  console.log('manager', manager);
+  
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
       const res = await api.put("/users", {
-        customer: selectedCustomer._id,
+        userId: selectedUser._id,
         name,
-        address,
+        email,
         phone,
-        mainContactName,
-        mainContactEmail,
-        mainContactPosition,
-        segment,
-        domain,
-        employees,
-        website,
-        cnpj,
+        position,
+        department: { id: department.id, name: department.name },
+        manager: { id: manager._id, name: manager.name },
+        avatar: name[0],
+        avatarColor: avatarColor,
       });
       res.data && alert("Editado com sucesso!");
       setOpenEdit(!openEdit);
@@ -70,115 +62,198 @@ const EditUserForm = ({
     }
   };
 
+  function getAvatarColor() {
+    const colors = [
+      "#FF0000",
+      "#FF4500",
+      "#FFA500",
+      "#FFFF00",
+      "#ADFF2F",
+      "#00FF00",
+      "#00FF7F",
+      "#00CED1",
+      "#00BFFF",
+      "#0000FF",
+      "#8A2BE2",
+      "#FF00FF",
+      "#FF1493",
+      "#FF69B4",
+      "#FFC0CB",
+      "#FFD700",
+      "#FF8C00",
+      "#FF6347",
+      "#CD5C5C",
+      "#F08080",
+      "#FA8072",
+      "#E9967A",
+      "#DC143C",
+      "#B22222",
+      "#8B0000",
+      "#808000",
+      "#556B2F",
+      "#6B8E23",
+      "#808000",
+      "#2E8B57",
+      "#3CB371",
+      "#20B2AA",
+      "#5F9EA0",
+      "#4682B4",
+      "#87CEEB",
+      "#1E90FF",
+      "#6495ED",
+      "#0000CD",
+      "#8A2BE2",
+      "#9400D3",
+      "#9932CC",
+      "#8A2BE2",
+      "#BA55D3",
+      "#FF00FF",
+      "#FF1493",
+      "#FF69B4",
+      "#FFC0CB",
+      "#FFD700",
+      "#FF8C00",
+      "#FF6347",
+      "#DC143C",
+      "#B22222",
+      "#8B0000",
+      "#CD5C5C",
+      "#F08080",
+      "#FA8072",
+      "#E9967A",
+      "#FF4500",
+      "#FF6347",
+      "#FFA500",
+      "#FFD700",
+      "#FFFF00",
+      "#ADFF2F",
+      "#7CFC00",
+      "#32CD32",
+      "#00FF7F",
+      "#00FF00",
+      "#00FA9A",
+      "#00CED1",
+      "#00BFFF",
+      "#1E90FF",
+      "#4682B4",
+      "#8A2BE2",
+      "#FF00FF",
+      "#FF1493",
+      "#FF69B4",
+      "#FFC0CB",
+    ];
+
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+  }
+
+  const avatarColor = getAvatarColor();
+
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle>Editando Cliente {selectedCustomer.name}</DialogTitle>
+      <DialogTitle>Editando Usuário {selectedUser.name}</DialogTitle>
       <DialogContent>
-        <Typography sx={{ my: 1 }}>Geral</Typography>
-        <TextField
-          label="Nome da Empresa"
-          margin="dense"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          variant="outlined"
-          sx={{ mr: 1, width: 700 }}
-        />
-        <TextField
-          label="Endereço"
-          margin="dense"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          variant="outlined"
-          sx={{ mr: 1, width: 700 }}
-        />
-        <TextField
-          label="Telefone"
-          margin="dense"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          variant="outlined"
-          sx={{ mr: 1, width: 160 }}
-        />
-        <TextField
-          label="CNPJ"
-          margin="dense"
-          variant="outlined"
-          value={cnpj}
-          onChange={(e) => setCnpj(e.target.value)}
-          sx={{ mr: 1, width: 240 }}
-        />
-        <TextField
-          label="Segmento"
-          margin="dense"
-          variant="outlined"
-          value={segment}
-          onChange={(e) => setSegment(e.target.value)}
-          sx={{ mr: 1, width: 285 }}
-        />
-        <Divider sx={{ my: 2 }} />
-        <Typography sx={{ my: 1 }}>Contato Principal</Typography>
-        <TextField
-          label="Nome"
-          margin="dense"
-          value={mainContactName}
-          onChange={(e) => setMainContactName(e.target.value)}
-          variant="outlined"
-          sx={{ mr: 1, width: 270 }}
-        />
-        <TextField
-          label="Email"
-          margin="dense"
-          value={mainContactEmail}
-          onChange={(e) => setMainContactEmail(e.target.value)}
-          variant="outlined"
-          sx={{ mr: 1, width: 270 }}
-        />
-
-        <FormControl sx={{ my: 1, width: 145 }}>
-          <InputLabel>Posição</InputLabel>
-          <Select
-            label="Posição"
-            value={mainContactPosition}
-            onChange={(e) => setMainContactPosition(e.target.value)}
-          >
-            <MenuItem value={"Gerente"}>Gerente</MenuItem>
-            <MenuItem value={"Proprietário"}>Proprietário</MenuItem>
-          </Select>
-        </FormControl>
-
-        <Divider sx={{ my: 2 }} />
-        <Typography sx={{ my: 1 }}>Etc</Typography>
-        <TextField
-          margin="dense"
-          variant="outlined"
-          label="Website"
-          value={website}
-          onChange={(e) => setWebsite(e.target.value)}
-          sx={{ mr: 1, width: 270 }}
-        />
-        <TextField
-          margin="dense"
-          variant="outlined"
-          label="Domínio"
-          value={domain}
-          onChange={(e) => setDomain(e.target.value)}
-          sx={{ mr: 1, width: 250 }}
-        />
-
-        <FormControl sx={{ mt: 1, width: 165 }}>
-          <InputLabel>Colaboradores</InputLabel>
-          <Select
-            value={employees}
-            onChange={(e) => setEmployees(e.target.value)}
-            label="Colaboradores"
-          >
-            <MenuItem value={"1-9"}>1 à 9</MenuItem>
-            <MenuItem value={"10-50"}>10 à 50</MenuItem>
-            <MenuItem value={"51-100"}>51 à 100</MenuItem>
-            <MenuItem value={"101-200"}>100 à 200</MenuItem>
-            <MenuItem value={"+201"}>201 ou mais</MenuItem>
-          </Select>
-        </FormControl>
+        <Grid
+          container
+          sx={{ pr: "4%", mt: 2 }}
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <Grid item>
+            <Typography>Nome</Typography>
+            <TextField
+              size="small"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              sx={{ mr: 1, width: 300 }}
+            />
+          </Grid>
+          <Grid item>
+            <Typography>Email</Typography>
+            <TextField
+              value={email}
+              size="small"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+              sx={{ mr: 1, width: 285 }}
+            />
+          </Grid>
+          <Grid item>
+            <Typography>Telefone</Typography>
+            <IMaskInput
+              style={{
+                padding: "5%",
+                marginRight: "4%",
+                marginTop: "1%",
+                borderColor: "#eee",
+                borderRadius: 4,
+              }}
+              mask="(00) 00000-0000"
+              definitions={{
+                "#": /[1-9]/,
+              }}
+              onAccept={(value) => setPhone(value)}
+              overwrite
+              value={phone}
+            />
+          </Grid>
+          <Grid item sx={{ mt: 3 }}>
+            <Typography>Gerente</Typography>
+            <FormControl>
+              <Select
+                onChange={(e) => setManager(e.target.value)}
+                value={manager}
+                sx={{ mt: 1 }}
+                renderValue={(selected) => selected.name}
+              >
+                {managers.map((item) => (
+                  <MenuItem value={item} key={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Grid item sx={{ mt: 3 }}>
+              <Typography>Acesso</Typography>
+              <FormControl>
+                <Select
+                  onChange={(e) => setPosition(e.target.value)}
+                  value={position}
+                  sx={{ mt: 1 }}
+                >
+                  <MenuItem value={"Comum"} sx={{ fontSize: "100%" }}>
+                    Funcionário
+                  </MenuItem>
+                  <MenuItem value={"Gerente"} sx={{ fontSize: "100%" }}>
+                    Gerente
+                  </MenuItem>
+                  <MenuItem value={"Admin"} sx={{ fontSize: "100%" }}>
+                    Proprietário
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item sx={{ mt: 3 }}>
+              <Typography>Departamento</Typography>
+              <FormControl>
+                <Select
+                  onChange={(e) => setDepartment(e.target.value)}
+                  value={department}
+                  sx={{ mt: 1 }}
+                  renderValue={(selected) => selected.name}
+                >
+                  {departments.map((item) => (
+                    <MenuItem value={item} key={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">

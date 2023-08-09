@@ -31,7 +31,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ManagerTable({ selectedCustomer }) {
+export default function GeneralUserTable({ selectedCustomer }) {
   const [selectedUser, setSelectedUser] = React.useState("");
   const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -58,7 +58,7 @@ export default function ManagerTable({ selectedCustomer }) {
             (department) => department.customerId === selectedCustomer._id
           )
           .map((department) => ({ id: department._id, name: department.name }));
-        setUsers(filteredManagers);
+        setUsers(filteredUsers);
         setManagers(filteredManagers);
         setDepartments(filteredDepartments);
       } catch (error) {
@@ -81,7 +81,7 @@ export default function ManagerTable({ selectedCustomer }) {
       const filteredDepartments = responseDepartments.data
         .filter((department) => department.customerId === selectedCustomer._id)
         .map((department) => ({ id: department._id, name: department.name }));
-      setUsers(filteredManagers);
+      setUsers(filteredUsers);
       setManagers(filteredManagers);
       setDepartments(filteredDepartments);
     } catch (error) {
@@ -122,7 +122,7 @@ export default function ManagerTable({ selectedCustomer }) {
                     height: "4vw",
                     cursor: "pointer",
                     backgroundColor:
-                      selectedUser.name === user.name && openDetail
+                    selectedUser.name === user.name && openDetail
                         ? "#95dd95"
                         : "none",
                     "&:hover": { backgroundColor: "#ccc " },
@@ -174,10 +174,8 @@ export default function ManagerTable({ selectedCustomer }) {
                                 {user.name}
                               </TableCell>
                               <TableCell>{user.phone}</TableCell>
-                              <TableCell>{user.department ? user.department.name : "N/A"}</TableCell>
-                              <TableCell>
-                                {user.manager ? user.manager.name : "N/A"}
-                              </TableCell>
+                              <TableCell>{user.department.name}</TableCell>
+                              <TableCell>{user.manager ? user.manager.name : "N/A"}</TableCell>
                             </TableRow>
                           </TableBody>
                         </Table>

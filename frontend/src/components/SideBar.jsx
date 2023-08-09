@@ -33,7 +33,6 @@ const SideBar = ({ sidebarOpen }) => {
       >
         <ListItemButton
           selected={selectedIndex === 0}
-          onClick={""}
           sx={{
             color: selectedIndex === 0 ? "white" : "",
             "&:hover": {
@@ -55,7 +54,6 @@ const SideBar = ({ sidebarOpen }) => {
       >
         <ListItemButton
           selected={selectedIndex === 1}
-          onClick={""}
           sx={{
             color: selectedIndex === 1 ? "white" : "",
             "&:hover": {
@@ -77,7 +75,6 @@ const SideBar = ({ sidebarOpen }) => {
       >
         <ListItemButton
           selected={selectedIndex === 3}
-          onClick={""}
           sx={{
             color: selectedIndex === 3 ? "white" : "",
             "&:hover": {
@@ -89,24 +86,9 @@ const SideBar = ({ sidebarOpen }) => {
           {sidebarOpen && <Typography sx={{ ml: 1 }}>Departamentos</Typography>}
         </ListItemButton>
       </Link>
-      <ListItemButton
-        selected={selectedIndex === 2}
-        onClick={""}
-        disabled
-        sx={{
-          color: selectedIndex === 2 ? "white" : "",
-          "&:hover": {
-            backgroundColor: "#aaa",
-          },
-        }}
-      >
-        <ComputerIcon />
-        {sidebarOpen && <Typography sx={{ ml: 1 }}>Ativos</Typography>}
-      </ListItemButton>
 
       <ListItemButton
         selected={selectedIndex === 4}
-        onClick={""}
         disabled
         sx={{
           color: selectedIndex === 4 ? "white" : "",
@@ -120,7 +102,6 @@ const SideBar = ({ sidebarOpen }) => {
       </ListItemButton>
       <ListItemButton
         selected={selectedIndex === 5}
-        onClick={""}
         disabled
         sx={{
           color: selectedIndex === 5 ? "white" : "",
@@ -143,7 +124,6 @@ const SideBar = ({ sidebarOpen }) => {
       >
         <ListItemButton
           selected={selectedIndex === 6}
-          onClick={""}
           sx={{
             color: selectedIndex === 6 ? "white" : "",
             "&:hover": {
@@ -158,7 +138,6 @@ const SideBar = ({ sidebarOpen }) => {
       <ListItemButton
         selected={selectedIndex === 7}
         disabled
-        onClick={""}
         sx={{
           color: selectedIndex === 7 ? "white" : "",
           "&:hover": {

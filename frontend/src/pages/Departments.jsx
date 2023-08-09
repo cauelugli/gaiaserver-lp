@@ -35,20 +35,13 @@ export default function Departments({ selectedCustomer }) {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label="Setores"
-            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
-          />
-          <Tab
-            label="Something"
+            label="Geral"
             sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
           />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <DepartmentTable selectedCustomer={selectedCustomer} />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        Coming soon
       </CustomTabPanel>
     </Box>
   );

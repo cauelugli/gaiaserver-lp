@@ -36,20 +36,13 @@ export default function Customers() {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label="Clientes"
-            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
-          />
-          <Tab
-            label="Contatos Principais"
+            label="Geral"
             sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
           />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <CustomerTable />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        Coming soon
       </CustomTabPanel>
     </Box>
   );

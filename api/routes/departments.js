@@ -15,7 +15,6 @@ router.get("/", async (req, res) => {
 
 // CREATE DEPARTMENT
 router.post("/", async (req, res) => {
-  console.log('req.body', req.body)
   const newDepartment = new Department(req.body);
   try {
     const savedDepartment = await newDepartment.save();
@@ -31,6 +30,13 @@ router.delete("/:id", async (req, res) => {
   const departmentId = req.params.id;
   try {
     const deletedDepartment = await Department.findByIdAndDelete(departmentId);
+    const updatedMembers = await User.updateMany(
+      { "department.id": departmentId },
+      {
+        "department.id": "N/A",
+        "department.name": "N/A",
+      }
+    );
     res.status(200).json(deletedDepartment);
   } catch (err) {
     res.status(500).json(err);
@@ -54,8 +60,13 @@ router.put("/", async (req, res) => {
     );
     // UPDATE MEMBER USERS
     await User.updateMany(
-      { 'department.id': req.body.departmentId },
-      { $set: { 'department.name': req.body.name } }
+      { "department.id": req.body.departmentId },
+      {
+        $set: {
+          "department.id": req.body.departmentId,
+          "department.name": req.body.name,
+        },
+      }
     );
     res.status(200).json(updatedDepartment);
   } catch (err) {

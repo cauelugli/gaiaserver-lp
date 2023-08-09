@@ -3,8 +3,11 @@ import * as React from "react";
 import axios from "axios";
 
 import {
+  Box,
   Button,
+  Collapse,
   Dialog,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -15,16 +18,21 @@ import {
   Typography,
 } from "@mui/material";
 
+import DeleteIcon from "@mui/icons-material/Delete";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+
 import AddUserForm from "../forms/AddUserForm";
 import DeleteUserForm from "../forms/DeleteUserForm";
-import EditUserForm from "../forms/DeleteUserForm";
+import EditUserForm from "../forms/EditUserForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
 export default function UserTable({ selectedCustomer }) {
-  const [selectedUser, setSelectedUser] = React.useState(null);
+  const [selectedUser, setSelectedUser] = React.useState("");
   const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -42,13 +50,18 @@ export default function UserTable({ selectedCustomer }) {
         const filteredUsers = response.data.filter(
           (user) => user.customerId === selectedCustomer._id
         );
+        const filteredWorkers = filteredUsers.filter(
+          (user) => user.position === "Comum"
+        );
         const filteredManagers = filteredUsers.filter(
           (user) => user.position === "Gerente"
         );
         const filteredDepartments = responseDepartments.data
-          .filter((department) => department.customerId === selectedCustomer._id)
+          .filter(
+            (department) => department.customerId === selectedCustomer._id
+          )
           .map((department) => ({ id: department._id, name: department.name }));
-        setUsers(filteredUsers);
+        setUsers(filteredWorkers);
         setManagers(filteredManagers);
         setDepartments(filteredDepartments);
       } catch (error) {
@@ -57,7 +70,6 @@ export default function UserTable({ selectedCustomer }) {
     };
     fetchData();
   }, [selectedCustomer._id, users]);
-  
 
   const fetchData = async () => {
     try {
@@ -66,13 +78,16 @@ export default function UserTable({ selectedCustomer }) {
       const filteredUsers = response.data.filter(
         (user) => user.customerId === selectedCustomer._id
       );
+      const filteredWorkers = filteredUsers.filter(
+        (user) => user.position === "Comum"
+      );
       const filteredManagers = filteredUsers.filter(
         (user) => user.position === "Gerente"
       );
       const filteredDepartments = responseDepartments.data
         .filter((department) => department.customerId === selectedCustomer._id)
         .map((department) => ({ id: department._id, name: department.name }));
-      setUsers(filteredUsers);
+      setUsers(filteredWorkers);
       setManagers(filteredManagers);
       setDepartments(filteredDepartments);
     } catch (error) {
@@ -96,51 +111,100 @@ export default function UserTable({ selectedCustomer }) {
   };
 
   return (
-    <>
+    <Box>
       <Button onClick={() => setOpenAdd(true)}>
         <Typography variant="h6" color="#eee">
-          + Novo {selectedCustomer.name}
+          + Novo
         </Typography>
       </Button>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Nome</TableCell>
-              <TableCell align="right">E-mail</TableCell>
-              <TableCell align="right">Telefone</TableCell>
-              <TableCell align="right">Departamento</TableCell>
-              <TableCell align="right">Posição</TableCell>
-              <TableCell align="right">Gerente</TableCell>
-            </TableRow>
-          </TableHead>
+        <Table sx={{ minWidth: "100%" }}>
           <TableBody>
-            {users &&
-              users.map((user) => (
+            {users.map((user) => (
+              <>
                 <TableRow
                   key={user._id}
-                  sx={{ "&:hover": { backgroundColor: "#ccc " } }}
+                  sx={{
+                    height: "4vw",
+                    cursor: "pointer",
+                    backgroundColor:
+                      selectedUser.name === user.name && openDetail
+                        ? "#95dd95"
+                        : "none",
+                    "&:hover": { backgroundColor: "#ccc " },
+                  }}
                 >
-                  <TableCell cursor="pointer" align="left">
+                  <TableCell sx={{ width: "5%" }} cursor="pointer" align="left">
+                    <IconButton disabled size="small">
+                      {openDetail && selectedUser.name === user.name ? (
+                        <KeyboardArrowUpIcon />
+                      ) : (
+                        <KeyboardArrowDownIcon />
+                      )}
+                    </IconButton>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(user)}
+                    cursor="pointer"
+                    align="left"
+                  >
                     {user.name}
                   </TableCell>
-                  <TableCell cursor="pointer" align="right">
-                    {user.email}
-                  </TableCell>
-                  <TableCell cursor="pointer" align="right">
-                    {user.phone}
-                  </TableCell>
-                  <TableCell cursor="pointer" align="right">
-                    {user.department.name}
-                  </TableCell>
-                  <TableCell cursor="pointer" align="right">
-                    {user.position}
-                  </TableCell>
-                  <TableCell cursor="pointer" align="right">
-                    {user.manager.name}
+                </TableRow>
+                <TableRow>
+                  <TableCell
+                    style={{ paddingBottom: 0, paddingTop: 0 }}
+                    colSpan={6}
+                  >
+                    <Collapse
+                      in={openDetail && selectedUser.name === user.name}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <Box sx={{ m: 1, p: 4 }}>
+                        <Typography variant="h6" gutterBottom component="div">
+                          Detalhes
+                        </Typography>
+                        <Table size="small">
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>Nome</TableCell>
+                              <TableCell>Telefone</TableCell>
+                              <TableCell>Departamento</TableCell>
+                              <TableCell>Gerente</TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell component="th" scope="row">
+                                {user.name}
+                              </TableCell>
+                              <TableCell>{user.phone}</TableCell>
+                              <TableCell>{user.department.name}</TableCell>
+                              <TableCell>
+                                {user.manager ? user.manager.name : "N/A"}
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                        <Box sx={{ mt: 3, ml: "90%" }}>
+                          <ModeEditIcon
+                            cursor="pointer"
+                            onClick={() => handleOpenEdit(user)}
+                            sx={{ color: "grey", mr: 2 }}
+                          />
+                          <DeleteIcon
+                            cursor="pointer"
+                            onClick={() => handleConfirmDelete(user)}
+                            sx={{ color: "#ff4444" }}
+                          />
+                        </Box>
+                      </Box>
+                    </Collapse>
                   </TableCell>
                 </TableRow>
-              ))}
+              </>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -154,6 +218,7 @@ export default function UserTable({ selectedCustomer }) {
           <AddUserForm
             openAdd={openAdd}
             selectedCustomer={selectedCustomer}
+            users={users}
             managers={managers}
             departments={departments}
             setOpenAdd={setOpenAdd}
@@ -171,6 +236,8 @@ export default function UserTable({ selectedCustomer }) {
           <EditUserForm
             openEdit={openEdit}
             selectedUser={selectedUser}
+            managers={managers}
+            departments={departments}
             setOpenEdit={setOpenEdit}
             fetchData={fetchData}
           />
@@ -179,6 +246,7 @@ export default function UserTable({ selectedCustomer }) {
       {openDelete && (
         <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
           <DeleteUserForm
+            selectedCustomer={selectedCustomer}
             selectedUser={selectedUser}
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}
@@ -186,6 +254,6 @@ export default function UserTable({ selectedCustomer }) {
           />
         </Dialog>
       )}
-    </>
+    </Box>
   );
 }

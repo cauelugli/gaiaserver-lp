@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 import axios from "axios";
 
@@ -8,13 +9,13 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const DeleteUserForm = ({ selectedCustomer, openDelete, setOpenDelete, fetchData }) => {
-  const customer = selectedCustomer;
+const DeleteUserForm = ({ selectedUser, openDelete, setOpenDelete, fetchData }) => {
+  const user = selectedUser;
 
   const handleDelete = async () => {
     try {
-      const res = await api.delete(`/customers/${customer._id}`);
-      res.status === 200 && alert("Cliente deletado com sucesso!");
+      const res = await api.delete(`/users/${user._id}`);
+      res.status === 200 && alert("Usuário deletado com sucesso!");
       setOpenDelete(false);
       fetchData();
     } catch (err) {
@@ -25,7 +26,7 @@ const DeleteUserForm = ({ selectedCustomer, openDelete, setOpenDelete, fetchData
 
   return (
     <>
-      <DialogTitle>{`Deletar Cliente ${customer.name} ?`}</DialogTitle>
+      <DialogTitle>{`Deletar Usuário ${user.name} ?`}</DialogTitle>
       <DialogContent>
         <Grid
           container

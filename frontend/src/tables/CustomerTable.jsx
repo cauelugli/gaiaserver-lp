@@ -131,7 +131,7 @@ export default function CustomerTable() {
                         <Table size="small">
                           <TableHead>
                             <TableRow>
-                              <TableCell>Nome do Cliente</TableCell>
+                              <TableCell>Nome</TableCell>
                               <TableCell>Endereço</TableCell>
                               <TableCell>Telefone</TableCell>
                               <TableCell>Contato Principal</TableCell>

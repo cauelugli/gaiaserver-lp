@@ -45,8 +45,11 @@ const AddUserForm = ({
         phone,
         position,
         department: { id: department.id, name: department.name },
-        manager: { id: manager.id, name: manager.name },
-        avatar: name[0],
+        manager:
+          position === "Admin" || position === "Gerente"
+            ? { id: selectedCustomer._id, name: position }
+            : { id: manager._id, name: manager.name },
+          avatar: name[0],
         avatarColor: avatarColor,
       });
       res.data && alert("Usuário Adicionado!");
@@ -145,6 +148,9 @@ const AddUserForm = ({
 
   const avatarColor = getAvatarColor();
 
+  console.log("managers", managers);
+  console.log("departments", departments);
+
   return (
     <form onSubmit={handleAdd}>
       <DialogTitle>Novo Usuário - {selectedCustomer.name}</DialogTitle>
@@ -202,10 +208,11 @@ const AddUserForm = ({
                 onChange={(e) => setManager(e.target.value)}
                 value={manager}
                 sx={{ mt: 1 }}
+                disabled={position !== "Comum"}
                 renderValue={(selected) => selected.name}
               >
                 {managers.map((item) => (
-                  <MenuItem value={item} key={item._id}>
+                  <MenuItem value={item} key={item.id}>
                     {item.name}
                   </MenuItem>
                 ))}
@@ -226,7 +233,7 @@ const AddUserForm = ({
                     Gerente
                   </MenuItem>
                   <MenuItem value={"Admin"} sx={{ fontSize: "100%" }}>
-                    Proprietáio
+                    Proprietário
                   </MenuItem>
                 </Select>
               </FormControl>
