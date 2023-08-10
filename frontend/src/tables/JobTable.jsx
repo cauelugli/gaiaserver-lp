@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
 
@@ -23,69 +22,56 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
-import AddDepartmentForm from "../forms/AddDepartmentForm";
-import EditDepartmentForm from "../forms/EditDepartmentForm";
-import DeleteDepartmentForm from "../forms/DeleteDepartmentForm";
+import AddJobForm from "../forms/AddJobForm";
+import EditJobForm from "../forms/EditJobForm";
+import DeleteJobForm from "../forms/DeleteJobForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function DepartmentTable({ selectedCustomer }) {
-  const [openAdd, setOpenAdd] = React.useState(true);
+export default function JobTable() {
+  const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
-  const [selectedDepartment, setSelectedDepartment] = React.useState([]);
+  const [selectedJob, setSelectedJob] = React.useState([]);
 
-  const [departments, setDepartments] = React.useState([]);
-  const [users, setUsers] = React.useState([]);
+  const [jobs, setJobs] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/departments");
-        const responseUsers = await api.get("/users");
-        const filteredDepartments = response.data.filter(
-          (department) => department.customerId === selectedCustomer._id
-        );
-        const filteredUsers = responseUsers.data.filter(
-          (user) => user.customerId === selectedCustomer._id
-        );
-        setDepartments(filteredDepartments);
-        setUsers(filteredUsers);
-        console.log('departments after fetch', departments)
+        const response = await api.get("/jobs");
+        setJobs(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [selectedCustomer._id, departments]);
+  }, []);
 
   const fetchData = async () => {
     try {
-      const response = await api.get("/departments");
-      const filteredDepartments = response.data.filter(
-        (department) => department.customerId === selectedCustomer._id
-      );
-      setDepartments(filteredDepartments);
+      const response = await api.get("/jobs");
+      setJobs(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  const handleOpenDetail = (customer) => {
+  const handleOpenDetail = (job) => {
     setOpenDetail(!openDetail);
-    setSelectedDepartment(customer.name);
+    setSelectedJob(job.name);
   };
 
-  const handleOpenEdit = (customer) => {
+  const handleOpenEdit = (job) => {
     setOpenEdit(!openEdit);
-    setSelectedDepartment(customer);
+    setSelectedJob(job);
   };
 
-  const handleConfirmDelete = (customer) => {
-    setSelectedDepartment(customer);
+  const handleConfirmDelete = (job) => {
+    setSelectedJob(job);
     setOpenDelete(!openDelete);
   };
 
@@ -99,20 +85,21 @@ export default function DepartmentTable({ selectedCustomer }) {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
-            {departments.map((department) => (
+            {jobs.map((job) => (
               <>
                 <TableRow
-                  key={department._id}
+                  key={job._id}
                   sx={{
                     height: "4vw",
                     cursor: "pointer",
-                    backgroundColor: department.color,
-                    "&:hover": { backgroundColor: "#ccc" },
+                    backgroundColor:
+                      (setSelectedJob === job.name && openDetail) ? "#95dd95" : "none",
+                    "&:hover": { backgroundColor: "#ccc " },
                   }}
                 >
                   <TableCell sx={{ width: "5%" }} cursor="pointer" align="left">
                     <IconButton disabled size="small">
-                      {openDetail && selectedDepartment === department.name ? (
+                      {openDetail && setSelectedJob === job.name ? (
                         <KeyboardArrowUpIcon />
                       ) : (
                         <KeyboardArrowDownIcon />
@@ -120,12 +107,11 @@ export default function DepartmentTable({ selectedCustomer }) {
                     </IconButton>
                   </TableCell>
                   <TableCell
-                    onClick={() => handleOpenDetail(department)}
+                    onClick={() => handleOpenDetail(job)}
                     cursor="pointer"
                     align="left"
-                    sx={{ color: "white", "&:hover": { color: "black" } }}
                   >
-                    {department.name}
+                    {job.name}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -134,7 +120,7 @@ export default function DepartmentTable({ selectedCustomer }) {
                     colSpan={6}
                   >
                     <Collapse
-                      in={openDetail && selectedDepartment === department.name}
+                      in={openDetail && setSelectedJob === job.name}
                       timeout="auto"
                       unmountOnExit
                     >
@@ -145,34 +131,45 @@ export default function DepartmentTable({ selectedCustomer }) {
                         <Table size="small">
                           <TableHead>
                             <TableRow>
-                              <TableCell>Nome do Departamento</TableCell>
+                              <TableCell>Nome</TableCell>
+                              <TableCell>Endereço</TableCell>
                               <TableCell>Telefone</TableCell>
-                              <TableCell>Gerente</TableCell>
-                              <TableCell>Membros</TableCell>
+                              <TableCell>Contato Principal</TableCell>
+                              <TableCell>Website</TableCell>
+                              <TableCell>Domínio</TableCell>
+                              <TableCell>Segmento</TableCell>
+                              <TableCell>Colaboradores</TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
                             <TableRow>
                               <TableCell component="th" scope="row">
-                                {department.name}
+                                {job.name}
                               </TableCell>
-                              <TableCell>{department.phone}</TableCell>
-                              <TableCell>{department.manager.name}</TableCell>
-                              <TableCell>{department.members}</TableCell>
+                              <TableCell>{job.address}</TableCell>
+                              <TableCell>{job.phone}</TableCell>
+                              <TableCell>
+                                {job.mainContactName} -{" "}
+                                {job.mainContactEmail}
+                              </TableCell>
+                              <TableCell>{job.website}</TableCell>
+                              <TableCell>{job.domain}</TableCell>
+                              <TableCell>{job.segment}</TableCell>
+                              <TableCell>{job.employees}</TableCell>
                             </TableRow>
                           </TableBody>
                         </Table>
-                        <Box sx={{ mt: 3, ml: "90%" }}>
+                        <Box sx={{ mt: 3, ml: "95%" }}>
                           <ModeEditIcon
                             cursor="pointer"
                             option="delete"
-                            onClick={() => handleOpenEdit(department)}
+                            onClick={() => handleOpenEdit(job)}
                             sx={{ color: "grey", mr: 2 }}
                           />
                           <DeleteIcon
                             cursor="pointer"
                             option="delete"
-                            onClick={() => handleConfirmDelete(department)}
+                            onClick={() => handleConfirmDelete(job)}
                             sx={{ color: "#ff4444" }}
                           />
                         </Box>
@@ -192,10 +189,8 @@ export default function DepartmentTable({ selectedCustomer }) {
           open={openAdd}
           onClose={() => setOpenAdd(!openAdd)}
         >
-          <AddDepartmentForm
+          <AddJobForm
             openAdd={openAdd}
-            selectedCustomer={selectedCustomer}
-            users={users}
             setOpenAdd={setOpenAdd}
             fetchData={fetchData}
           />
@@ -208,11 +203,9 @@ export default function DepartmentTable({ selectedCustomer }) {
           open={openEdit}
           onClose={() => setOpenEdit(!openEdit)}
         >
-          <EditDepartmentForm
+          <EditJobForm
             openEdit={openEdit}
-            selectedCustomer={selectedCustomer}
-            users={users}
-            selectedDepartment={selectedDepartment}
+            selectedJob={selectedJob}
             setOpenEdit={setOpenEdit}
             fetchData={fetchData}
           />
@@ -220,9 +213,8 @@ export default function DepartmentTable({ selectedCustomer }) {
       )}
       {openDelete && (
         <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-          <DeleteDepartmentForm
-            selectedCustomer={selectedCustomer}
-            selectedDepartment={selectedDepartment}
+          <DeleteJobForm
+            selectedJob={selectedJob}
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}
             fetchData={fetchData}

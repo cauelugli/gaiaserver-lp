@@ -152,9 +152,6 @@ const AddUserForm = ({
 
   const avatarColor = getAvatarColor();
 
-  console.log("managers", managers);
-  console.log("departments", departments);
-
   return (
     <form onSubmit={handleAdd}>
       <DialogTitle>Novo Usuário - {selectedCustomer.name}</DialogTitle>
@@ -230,15 +227,9 @@ const AddUserForm = ({
                   value={position}
                   sx={{ mt: 1 }}
                 >
-                  <MenuItem value={"Comum"}>
-                    Funcionário
-                  </MenuItem>
-                  <MenuItem value={"Gerente"}>
-                    Gerente
-                  </MenuItem>
-                  <MenuItem value={"Admin"}>
-                    Proprietário
-                  </MenuItem>
+                  <MenuItem value={"Comum"}>Funcionário</MenuItem>
+                  <MenuItem value={"Gerente"}>Gerente</MenuItem>
+                  <MenuItem value={"Admin"}>Proprietário</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -248,14 +239,20 @@ const AddUserForm = ({
                 <Select
                   onChange={(e) => setDepartment(e.target.value)}
                   value={department}
-                  sx={{ mt: 1 }}
                   renderValue={(selected) => selected.name}
                 >
                   {departments.map((item) => (
                     <MenuItem
                       value={item}
                       key={item.id}
-                      sx={{ backgroundColor: item.color, color:"white" }}
+                      sx={{
+                        backgroundColor: item.color,
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: item.color,
+                          color: "white",
+                        },
+                      }}
                     >
                       {item.name}
                     </MenuItem>

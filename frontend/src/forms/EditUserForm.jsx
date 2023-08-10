@@ -245,14 +245,20 @@ const EditUserForm = ({
                 <Select
                   onChange={(e) => setDepartment(e.target.value)}
                   value={department}
-                  sx={{ mt: 1 }}
                   renderValue={(selected) => selected.name}
                 >
                   {departments.map((item) => (
                     <MenuItem
                       value={item}
                       key={item.id}
-                      sx={{ backgroundColor: item.color, color:"white" }}
+                      sx={{
+                        backgroundColor: item.color,
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: item.color,
+                          color: "white",
+                        },
+                      }}
                     >
                       {item.name}
                     </MenuItem>

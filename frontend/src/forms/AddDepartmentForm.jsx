@@ -8,12 +8,15 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
 
 import { IMaskInput } from "react-imask";
 import ColorPicker from "../components/small/ColorPicker";
+import Members from "../components/small/Members";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -29,10 +32,12 @@ const AddDepartmentForm = ({
   const [name, setName] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
-  // const [manager, setManager] = React.useState("");
-  // const [members, setMembers] = React.useState("");
+  const [manager, setManager] = React.useState("");
+  const [selectedUsers, setSelectedUsers] = React.useState([]);
   const [color, setColor] = React.useState("#ffffff");
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
+
+  const managers = users.filter((user) => user.position === "Gerente");
 
   const handleClickColor = (event) => {
     setColorAnchorEl(event.currentTarget);
@@ -47,8 +52,6 @@ const AddDepartmentForm = ({
     handleCloseColor();
   };
 
-  console.log("users", users);
-
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
@@ -58,8 +61,8 @@ const AddDepartmentForm = ({
         phone,
         email,
         color,
-        // manager,
-        // members,
+        manager: { id: manager._id, name: manager.name },
+        members: selectedUsers.map((user) => user.name),
       });
       res.data && alert("Departamento Adicionado!");
       setOpenAdd(!openAdd);
@@ -68,6 +71,12 @@ const AddDepartmentForm = ({
       alert("Vish, deu não...");
       console.log(err);
     }
+  };
+
+  const handleChipDelete = (user) => {
+    setSelectedUsers(
+      selectedUsers.filter((selectedUser) => selectedUser._id !== user._id)
+    );
   };
 
   return (
@@ -120,54 +129,41 @@ const AddDepartmentForm = ({
               value={phone}
             />
           </Grid>
-          {/* <Grid item sx={{ mt: 3 }}> */}
-          {/* <Typography>Gerente</Typography>
-            <TextField
-              size="small"
-              value={manager}
-              requiredonChange={(e) => setManager(e.target.value)}
-              sx={{ mr: 1, width: 300 }}
-            /> */}
-          {/* <FormControl>
-              <Select
-                onChange={(e) => setManager(e.target.value)}
-                value={manager}
-                displayEmpty
-                sx={{ mt: 1, fontSize: "70%" }}
-              >
-                {manager.map((item) => (
-                  <MenuItem
-                    value={item}
-                    key={item._id}
-                    sx={{ fontSize: "100%" }}
-                  >
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl> */}
-          {/* </Grid>
           <Grid item sx={{ mt: 3 }}>
-            <Typography>Membros</Typography>
-            <TextField
-              size="small"
-              value={members}
-              required
-              onChange={(e) => setMembers(e.target.value)}
-              sx={{ mr: 1, width: 270 }}
-            />
-          </Grid> */}
-
-          <Grid item sx={{m:"1%"}}>
-            <ColorPicker 
-            handleClickColor={handleClickColor}
-            color={color}
-            colorAnchorEl={colorAnchorEl}
-            handleCloseColor={handleCloseColor}
-            handleChangeColor={handleChangeColor}
+            <Typography>Gerente</Typography>
+            <Select
+              onChange={(e) => setManager(e.target.value)}
+              value={manager}
+              sx={{ minWidth: 250 }}
+              renderValue={(selected) => selected.name}
+            >
+              {managers.map((item) => (
+                <MenuItem value={item} key={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+          <Grid item sx={{ p: "5%" }}>
+            <ColorPicker
+              handleClickColor={handleClickColor}
+              color={color}
+              colorAnchorEl={colorAnchorEl}
+              handleCloseColor={handleCloseColor}
+              handleChangeColor={handleChangeColor}
             />
           </Grid>
-
+        </Grid>
+        <Grid>
+          <Grid item sx={{ mt: 3 }}>
+            <Typography>Membros</Typography>
+            <Members
+              users={users}
+              value={selectedUsers}
+              onChange={setSelectedUsers}
+              handleChipDelete={handleChipDelete}
+            />
+          </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>

@@ -15,6 +15,7 @@ router.get("/", async (req, res) => {
 
 // CREATE DEPARTMENT
 router.post("/", async (req, res) => {
+  console.log('req.body', req.body)
   const newDepartment = new Department(req.body);
   try {
     const savedDepartment = await newDepartment.save();

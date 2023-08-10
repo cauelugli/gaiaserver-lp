@@ -8,6 +8,8 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -21,18 +23,21 @@ const api = axios.create({
 const EditDepartmentForm = ({
   openEdit,
   setOpenEdit,
-  selectedCustomer,
-  // users,
+  users,
   selectedDepartment,
   fetchData,
 }) => {
   const [name, setName] = React.useState(selectedDepartment.name);
   const [phone, setPhone] = React.useState(selectedDepartment.phone);
   const [email, setEmail] = React.useState(selectedDepartment.email);
-  // const [manager, setManager] = React.useState(selectedDepartment.manager);
+  const [manager, setManager] = React.useState(selectedDepartment.manager);
   // const [members, setMembers] = React.useState(selectedDepartment.members);
   const [color, setColor] = React.useState(selectedDepartment.color);
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
+
+  const [managers, setManagers] = React.useState(
+    users.filter((user) => user.position === "Gerente")
+  );
 
   const handleClickColor = (event) => {
     setColorAnchorEl(event.currentTarget);
@@ -56,10 +61,9 @@ const EditDepartmentForm = ({
         phone,
         email,
         color,
-        // manager,
+        manager: { id: manager._id, name: manager.name },
         // members,
       });
-      console.log("res.data", res.data);
       res.data && alert("Editado com sucesso!");
       setOpenEdit(!openEdit);
       fetchData();
@@ -71,7 +75,7 @@ const EditDepartmentForm = ({
 
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle>Editando Cliente {selectedCustomer.name}</DialogTitle>
+      <DialogTitle>Editando Departamento {selectedDepartment.name}</DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -119,44 +123,22 @@ const EditDepartmentForm = ({
               value={phone}
             />
           </Grid>
-          {/* <Grid item sx={{ mt: 3 }}>
-            <Typography>Gerente</Typography>
-            <TextField
-              size="small"
-              value={manager}
-              required
-              onChange={(e) => setManager(e.target.value)}
-              sx={{ mr: 1, width: 300 }}
-            /> */}
-          {/* <FormControl>
-              <Select
-                onChange={(e) => setManager(e.target.value)}
-                value={manager}
-                displayEmpty
-                sx={{ mt: 1, fontSize: "70%" }}
-              >
-                {manager.map((item) => (
-                  <MenuItem
-                    value={item}
-                    key={item._id}
-                    sx={{ fontSize: "100%" }}
-                  >
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl> */}
-          {/* </Grid>
+          
           <Grid item sx={{ mt: 3 }}>
-            <Typography>Membros</Typography>
-            <TextField
-              size="small"
-              value={members}
-              required
-              onChange={(e) => setMembers(e.target.value)}
-              sx={{ mr: 1, width: 270 }}
-            />
-          </Grid> */}
+            <Typography>Gerente</Typography>
+            <Select
+              onChange={(e) => setManager(e.target.value)}
+              value={manager}
+              sx={{ minWidth: 250 }}
+              renderValue={(selected) => selected.name}
+            >
+              {managers.map((item) => (
+                <MenuItem value={item} key={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
           <Grid item sx={{ m: "1%" }}>
             <ColorPicker
               handleClickColor={handleClickColor}

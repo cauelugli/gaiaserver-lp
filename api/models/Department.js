@@ -17,6 +17,13 @@ departmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  manager: {
+    type: Object,
+    required: true,
+  },
+  members: {
+    type: Array,
+  },
   color: {
     type: String,
   },
