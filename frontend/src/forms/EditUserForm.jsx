@@ -54,7 +54,6 @@ const EditUserForm = ({
           color: department.color,
         },
         manager: { id: manager._id, name: manager.name },
-        avatar: name[0],
         avatarColor: avatarColor,
       });
       res.data && alert("Editado com sucesso!");

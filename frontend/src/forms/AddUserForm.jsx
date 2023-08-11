@@ -53,7 +53,6 @@ const AddUserForm = ({
           position === "Admin" || position === "Gerente"
             ? { id: selectedCustomer._id, name: position }
             : { id: manager._id, name: manager.name },
-        avatar: name[0],
         avatarColor: avatarColor,
       });
       res.data && alert("Usuário Adicionado!");

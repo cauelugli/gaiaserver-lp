@@ -16,6 +16,8 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Chip,
+  Avatar,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -32,7 +34,7 @@ const api = axios.create({
 });
 
 export default function DepartmentTable({ selectedCustomer }) {
-  const [openAdd, setOpenAdd] = React.useState(true);
+  const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -54,7 +56,7 @@ export default function DepartmentTable({ selectedCustomer }) {
         );
         setDepartments(filteredDepartments);
         setUsers(filteredUsers);
-        console.log('departments after fetch', departments)
+        console.log("departments after fetch", departments);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -158,7 +160,26 @@ export default function DepartmentTable({ selectedCustomer }) {
                               </TableCell>
                               <TableCell>{department.phone}</TableCell>
                               <TableCell>{department.manager.name}</TableCell>
-                              <TableCell>{department.members}</TableCell>
+                              <TableCell>
+                                {department.members.map((user) => (
+                                  <Chip
+                                    sx={{ m: 0.5 }}
+                                    size="small"
+                                    key={user.id}
+                                    avatar={
+                                      <Avatar
+                                        sizes="small"
+                                        sx={{
+                                          backgroundColor: user.avatarColor,
+                                        }}
+                                      >
+                                        {user.name[0].toUpperCase()}
+                                      </Avatar>
+                                    }
+                                    label={user.name}
+                                  />
+                                ))}
+                              </TableCell>
                             </TableRow>
                           </TableBody>
                         </Table>

@@ -25,9 +25,6 @@ userSchema = new mongoose.Schema({
   manager: {
     type: Object,
   },
-  avatar: {
-    type: String,
-  },
   avatarColor: {
     type: String,
   },

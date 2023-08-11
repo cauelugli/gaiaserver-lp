@@ -55,6 +55,12 @@ const AddDepartmentForm = ({
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
+      const membersData = selectedUsers.map((user) => ({
+        id: user._id,
+        name: user.name,
+        avatarColor: user.avatarColor,
+      }));
+
       const res = await api.post("/departments", {
         customerId: selectedCustomer._id,
         name,
@@ -62,7 +68,7 @@ const AddDepartmentForm = ({
         email,
         color,
         manager: { id: manager._id, name: manager.name },
-        members: selectedUsers.map((user) => user.name),
+        members: membersData,
       });
       res.data && alert("Departamento Adicionado!");
       setOpenAdd(!openAdd);
@@ -161,7 +167,6 @@ const AddDepartmentForm = ({
               users={users}
               value={selectedUsers}
               onChange={setSelectedUsers}
-              handleChipDelete={handleChipDelete}
             />
           </Grid>
         </Grid>

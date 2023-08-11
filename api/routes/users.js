@@ -63,7 +63,6 @@ router.put("/", async (req, res) => {
         position: req.body.position,
         department: req.body.department,
         manager: req.body.manager,
-        avatar: req.body.avatar,
         avatarColor: req.body.avatarColor,
         isActive: req.body.isActive,
       },
