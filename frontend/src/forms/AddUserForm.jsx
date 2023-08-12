@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { IMaskInput } from "react-imask";
+import ColorPicker from "../components/small/ColorPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -31,6 +32,21 @@ const AddUserForm = ({
   const [phone, setPhone] = React.useState("");
   const [position, setPosition] = React.useState("Comum");
   const [department, setDepartment] = React.useState("");
+  const [avatarColor, setAvatarColor] = React.useState("#ffffff");
+  const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
+
+  const handleClickColor = (event) => {
+    setColorAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseColor = () => {
+    setColorAnchorEl(null);
+  };
+
+  const handleChangeColor = (selectedColor) => {
+    setAvatarColor(selectedColor.hex);
+    handleCloseColor();
+  };
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -115,20 +131,9 @@ const AddUserForm = ({
           justifyContent="flex-start"
           alignItems="center"
         >
+          
           <Grid item>
-            <Typography>Acesso</Typography>
-            <Select
-              onChange={(e) => setPosition(e.target.value)}
-              value={position}
-              sx={{ mt: 1 }}
-            >
-              <MenuItem value={"Comum"}>Funcionário</MenuItem>
-              <MenuItem value={"Gerente"}>Gerente</MenuItem>
-              <MenuItem value={"Admin"}>Proprietário</MenuItem>
-            </Select>
-          </Grid>
-          <Grid item>
-            <Typography>Departamento</Typography>
+            <Typography sx={{mb:1}}>Departamento</Typography>
             <Select
               onChange={(e) => setDepartment(e.target.value)}
               value={department}
@@ -151,6 +156,36 @@ const AddUserForm = ({
                 </MenuItem>
               ))}
             </Select>
+          </Grid>
+          <Grid item>
+            <Typography>Acesso</Typography>
+            <Select
+              onChange={(e) => setPosition(e.target.value)}
+              value={position}
+              sx={{ mt: 1 }}
+            >
+              <MenuItem value={"Comum"}>Funcionário</MenuItem>
+              <MenuItem value={"Gerente"}>Gerente</MenuItem>
+              <MenuItem value={"Admin"}>Proprietário</MenuItem>
+            </Select>
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          sx={{ pr: "4%", mt: 2 }}
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <Grid item>
+            <Typography>Avatar</Typography>
+            <ColorPicker
+              handleClickColor={handleClickColor}
+              color={avatarColor}
+              colorAnchorEl={colorAnchorEl}
+              handleCloseColor={handleCloseColor}
+              handleChangeColor={handleChangeColor}
+            />
           </Grid>
         </Grid>
       </DialogContent>

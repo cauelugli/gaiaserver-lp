@@ -6,7 +6,13 @@ import { Popover, Typography } from "@mui/material";
 
 import { CirclePicker } from "react-color";
 
-const ColorPicker = ({handleClickColor, color, colorAnchorEl, handleCloseColor, handleChangeColor}) => {
+const ColorPicker = ({
+  handleClickColor,
+  color,
+  colorAnchorEl,
+  handleCloseColor,
+  handleChangeColor,
+}) => {
   const colors = [
     "#FF0000",
     "#FF4500",
@@ -86,9 +92,9 @@ const ColorPicker = ({handleClickColor, color, colorAnchorEl, handleCloseColor, 
     "#FF69B4",
     "#FFC0CB",
   ];
+
   return (
     <>
-      <Typography>Cor</Typography>
       <div onClick={handleClickColor}>
         <div
           style={{
@@ -111,7 +117,7 @@ const ColorPicker = ({handleClickColor, color, colorAnchorEl, handleCloseColor, 
         }}
       >
         <CirclePicker
-        colors={colors}
+          colors={colors}
           color={color}
           onChange={handleChangeColor}
           styles={{

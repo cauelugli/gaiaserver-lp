@@ -38,94 +38,8 @@ const AddDepartmentForm = ({
   const [managerPhone, setManagerPhone] = React.useState("");
   const [selectedUsers, setSelectedUsers] = React.useState([]);
   const [color, setColor] = React.useState("#ffffff");
-  const [newManager, setNewManager] = React.useState(false);
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
-  function getAvatarColor() {
-    const colors = [
-      "#FF0000",
-      "#FF4500",
-      "#FFA500",
-      "#FFFF00",
-      "#ADFF2F",
-      "#00FF00",
-      "#00FF7F",
-      "#00CED1",
-      "#00BFFF",
-      "#0000FF",
-      "#8A2BE2",
-      "#FF00FF",
-      "#FF1493",
-      "#FF69B4",
-      "#FFC0CB",
-      "#FFD700",
-      "#FF8C00",
-      "#FF6347",
-      "#CD5C5C",
-      "#F08080",
-      "#FA8072",
-      "#E9967A",
-      "#DC143C",
-      "#B22222",
-      "#8B0000",
-      "#808000",
-      "#556B2F",
-      "#6B8E23",
-      "#808000",
-      "#2E8B57",
-      "#3CB371",
-      "#20B2AA",
-      "#5F9EA0",
-      "#4682B4",
-      "#87CEEB",
-      "#1E90FF",
-      "#6495ED",
-      "#0000CD",
-      "#8A2BE2",
-      "#9400D3",
-      "#9932CC",
-      "#8A2BE2",
-      "#BA55D3",
-      "#FF00FF",
-      "#FF1493",
-      "#FF69B4",
-      "#FFC0CB",
-      "#FFD700",
-      "#FF8C00",
-      "#FF6347",
-      "#DC143C",
-      "#B22222",
-      "#8B0000",
-      "#CD5C5C",
-      "#F08080",
-      "#FA8072",
-      "#E9967A",
-      "#FF4500",
-      "#FF6347",
-      "#FFA500",
-      "#FFD700",
-      "#FFFF00",
-      "#ADFF2F",
-      "#7CFC00",
-      "#32CD32",
-      "#00FF7F",
-      "#00FF00",
-      "#00FA9A",
-      "#00CED1",
-      "#00BFFF",
-      "#1E90FF",
-      "#4682B4",
-      "#8A2BE2",
-      "#FF00FF",
-      "#FF1493",
-      "#FF69B4",
-      "#FFC0CB",
-    ];
-
-    const randomIndex = Math.floor(Math.random() * colors.length);
-    return colors[randomIndex];
-  }
-
-  const avatarColor = getAvatarColor();
+  const [newManager, setNewManager] = React.useState(false);
 
   const handleNewManager = (event) => {
     setNewManager(event.target.checked);
@@ -159,7 +73,7 @@ const AddDepartmentForm = ({
         email: managerEmail,
         phone: managerPhone,
         position: "Gerente",
-        avatarColor: avatarColor,
+        avatarColor: color,
       });
 
       const res = await api.post("/departments", {
@@ -251,7 +165,7 @@ const AddDepartmentForm = ({
             />
           </Grid>
           {newManager ? (
-            <Grid container direction="row">
+            <Grid container direction="row" justifyContent="flex-end">
               <Grid item>
                 <TextField
                   label="Nome do Gerente"
@@ -260,7 +174,7 @@ const AddDepartmentForm = ({
                   onChange={(e) => setManagerName(e.target.value)}
                   required
                   variant="outlined"
-                  sx={{ mr: 1, mt: 4, width: 300 }}
+                  sx={{ mt: 1, width: 300 }}
                 />
               </Grid>
               <Grid item>
@@ -274,12 +188,12 @@ const AddDepartmentForm = ({
                   sx={{ mt: 1, width: 300 }}
                 />
               </Grid>
-              <Grid item sx={{mt:1}}>
+              <Grid item sx={{mt:1, mr:2}}>
                 <Typography>Telefone</Typography>
                 <IMaskInput
                   style={{
                     padding: "5%",
-                    marginRight: "4%",
+                    marginRight: "6%",
                     marginBottom: "1%",
                     borderColor: "#eee",
                     borderRadius: 4,
@@ -298,7 +212,6 @@ const AddDepartmentForm = ({
             <Grid container direction="row">
               <Grid item>
                 <Select>
-
                 </Select>
               </Grid>
             </Grid>
@@ -306,7 +219,7 @@ const AddDepartmentForm = ({
         </Grid>
 
         <Divider sx={{ my: 2 }} />
-        <Typography>Etc</Typography>
+        <Typography>Customização</Typography>
         <Grid item sx={{ m: "1%" }}>
           <ColorPicker
             handleClickColor={handleClickColor}
