@@ -6,7 +6,6 @@ import { Box, Tab, Tabs, Typography } from "@mui/material";
 import UserTable from "../tables/UserTable";
 import ManagerTable from "../tables/ManagerTable";
 import AdminTable from "../tables/AdminTable";
-import GeneralUserTable from "../tables/GeneralUserTable";
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -39,10 +38,6 @@ export default function Users({ selectedCustomer }) {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label="Geral"
-            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
-          />
-          <Tab
             label="Funcionários"
             sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
           />
@@ -57,15 +52,12 @@ export default function Users({ selectedCustomer }) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <GeneralUserTable selectedCustomer={selectedCustomer} />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
         <UserTable selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
+      <CustomTabPanel value={value} index={1}>
         <ManagerTable selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={3}>
+      <CustomTabPanel value={value} index={2}>
         <AdminTable selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
     </Box>

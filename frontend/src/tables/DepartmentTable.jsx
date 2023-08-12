@@ -34,7 +34,7 @@ const api = axios.create({
 });
 
 export default function DepartmentTable({ selectedCustomer }) {
-  const [openAdd, setOpenAdd] = React.useState(false);
+  const [openAdd, setOpenAdd] = React.useState(true);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -159,7 +159,7 @@ export default function DepartmentTable({ selectedCustomer }) {
                                 {department.name}
                               </TableCell>
                               <TableCell>{department.phone}</TableCell>
-                              <TableCell>{department.manager.name}</TableCell>
+                              <TableCell>{department.manager ? department.manager.name : "N/A"}</TableCell>
                               <TableCell>
                                 {department.members.map((user) => (
                                   <Chip

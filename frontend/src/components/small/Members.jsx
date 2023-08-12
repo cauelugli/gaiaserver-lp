@@ -11,6 +11,7 @@ const Members = ({ users, value, onChange }) => {
     <Box>
       <Autocomplete
         multiple
+        size="small"
         options={filteredUsers}
         value={value}
         onChange={(event, newValue) => {

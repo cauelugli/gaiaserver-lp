@@ -37,7 +37,6 @@ export default function AdminTable({ selectedCustomer }) {
   const [openDetail, setOpenDetail] = React.useState(false);
 
   const [users, setUsers] = React.useState([]);
-  const [managers, setManagers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
 
   React.useEffect(() => {
@@ -61,7 +60,6 @@ export default function AdminTable({ selectedCustomer }) {
             color: department.color,
           }));
         setUsers(filteredAdmins);
-        setManagers(filteredAdmins);
         setDepartments(filteredDepartments);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -78,7 +76,7 @@ export default function AdminTable({ selectedCustomer }) {
         (user) => user.customerId === selectedCustomer._id
       );
       const filteredAdmins = filteredUsers.filter(
-        (user) => user.position === "Gerente"
+        (user) => user.position === "Admin"
       );
       const filteredDepartments = responseDepartments.data
         .filter((department) => department.customerId === selectedCustomer._id)
@@ -88,7 +86,6 @@ export default function AdminTable({ selectedCustomer }) {
           color: department.color,
         }));
       setUsers(filteredAdmins);
-      setManagers(filteredAdmins);
       setDepartments(filteredDepartments);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -220,7 +217,6 @@ export default function AdminTable({ selectedCustomer }) {
             openAdd={openAdd}
             selectedCustomer={selectedCustomer}
             users={users}
-            managers={managers}
             departments={departments}
             setOpenAdd={setOpenAdd}
             fetchData={fetchData}

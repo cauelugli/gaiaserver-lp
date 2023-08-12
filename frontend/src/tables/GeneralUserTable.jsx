@@ -39,7 +39,6 @@ export default function GeneralUserTable({ selectedCustomer }) {
   const [openDetail, setOpenDetail] = React.useState(false);
 
   const [users, setUsers] = React.useState([]);
-  const [managers, setManagers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
 
   React.useEffect(() => {
@@ -49,9 +48,6 @@ export default function GeneralUserTable({ selectedCustomer }) {
         const responseDepartments = await api.get("/departments");
         const filteredUsers = response.data.filter(
           (user) => user.customerId === selectedCustomer._id
-        );
-        const filteredManagers = filteredUsers.filter(
-          (user) => user.position === "Gerente"
         );
         const filteredDepartments = responseDepartments.data
           .filter(
@@ -63,7 +59,6 @@ export default function GeneralUserTable({ selectedCustomer }) {
             color: department.color,
           }));
         setUsers(filteredUsers);
-        setManagers(filteredManagers);
         setDepartments(filteredDepartments);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -79,14 +74,10 @@ export default function GeneralUserTable({ selectedCustomer }) {
       const filteredUsers = response.data.filter(
         (user) => user.customerId === selectedCustomer._id
       );
-      const filteredManagers = filteredUsers.filter(
-        (user) => user.position === "Gerente"
-      );
       const filteredDepartments = responseDepartments.data
         .filter((department) => department.customerId === selectedCustomer._id)
         .map((department) => ({ id: department._id, name: department.name }));
       setUsers(filteredUsers);
-      setManagers(filteredManagers);
       setDepartments(filteredDepartments);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -169,7 +160,6 @@ export default function GeneralUserTable({ selectedCustomer }) {
                               <TableCell>Nome</TableCell>
                               <TableCell>Telefone</TableCell>
                               <TableCell>Departamento</TableCell>
-                              <TableCell>Gerente</TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
@@ -178,10 +168,7 @@ export default function GeneralUserTable({ selectedCustomer }) {
                                 {user.name}
                               </TableCell>
                               <TableCell>{user.phone}</TableCell>
-                              <TableCell>{user.department.name}</TableCell>
-                              <TableCell>
-                                {user.manager ? user.manager.name : "N/A"}
-                              </TableCell>
+                              <TableCell>{user.department ? user.department.name : "N/A" }</TableCell>
                             </TableRow>
                           </TableBody>
                         </Table>
@@ -217,7 +204,6 @@ export default function GeneralUserTable({ selectedCustomer }) {
             openAdd={openAdd}
             selectedCustomer={selectedCustomer}
             users={users}
-            managers={managers}
             departments={departments}
             setOpenAdd={setOpenAdd}
             fetchData={fetchData}
@@ -234,7 +220,6 @@ export default function GeneralUserTable({ selectedCustomer }) {
           <EditUserForm
             openEdit={openEdit}
             selectedUser={selectedUser}
-            managers={managers}
             departments={departments}
             setOpenEdit={setOpenEdit}
             fetchData={fetchData}

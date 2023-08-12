@@ -11,8 +11,8 @@ import {
   DialogTitle,
   Divider,
   FormControl,
+  FormHelperText,
   Grid,
-  InputLabel,
   MenuItem,
   Select,
   TextField,
@@ -31,7 +31,8 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData }) => {
   const [phone, setPhone] = React.useState("");
   const [mainContactName, setMainContactName] = React.useState("");
   const [mainContactEmail, setMainContactEmail] = React.useState("");
-  const [mainContactPosition, setMainContactPosition] = React.useState("");
+  const [mainContactPosition, setMainContactPosition] =
+    React.useState("Proprietário");
   const [domain, setDomain] = React.useState("");
   const [website, setWebsite] = React.useState("");
   const [cnpj, setCnpj] = React.useState("");
@@ -72,29 +73,28 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData }) => {
     <form onSubmit={handleAdd}>
       <DialogTitle>Novo Cliente</DialogTitle>
       <DialogContent>
-        <Typography sx={{ my: 1 }}>Geral</Typography>
+        <Typography sx={{ my: 2 }}>Geral</Typography>
         <TextField
           label="Nome da Empresa"
-          margin="dense"
-          id="name"
           value={name}
+          size="small"
           onChange={(e) => setName(e.target.value)}
           required
           variant="outlined"
-          sx={{ mr: 1, width: 400 }}
+          sx={{ mr: 1, width: 350 }}
         />
         <TextField
-          sx={{ mr: 1, width: 400 }}
-          margin="dense"
+          sx={{ mr: 1, width: 450 }}
           required
           value={address}
+          size="small"
           onChange={(e) => setAddress(e.target.value)}
           variant="outlined"
           label="Endereço"
         />
         <Grid
           container
-          sx={{ pr: "4%", mt:2 }}
+          sx={{ pr: "4%", mt: 2 }}
           direction="row"
           justifyContent="space-between"
           alignItems="center"
@@ -137,49 +137,47 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData }) => {
           </Grid>
           <Grid item>
             <TextField
-              margin="dense"
               variant="outlined"
               label="Segmento"
+              size="small"
               value={segment}
               required
               onChange={(e) => setSegment(e.target.value)}
-              sx={{ mr: 1, width: 205 }}
+              sx={{ mr: 1, mt:1, width: 205 }}
             />
           </Grid>
         </Grid>
 
         <Divider sx={{ my: 2 }} />
-        <Typography>Contato Principal</Typography>
+        <Typography sx={{ my: 2 }}>Contato Principal</Typography>
         <TextField
           label="Nome"
-          margin="dense"
           value={mainContactName}
           onChange={(e) => setMainContactName(e.target.value)}
           required
+          size="small"
           variant="outlined"
           sx={{ mr: 1, width: 340 }}
         />
         <TextField
           label="Email"
-          margin="dense"
           value={mainContactEmail}
           onChange={(e) => setMainContactEmail(e.target.value)}
           required
+          size="small"
           variant="outlined"
           sx={{ mr: 1, width: 300 }}
         />
 
-        <FormControl sx={{ my: 1, width: 155 }}>
-          <InputLabel>Posição</InputLabel>
+        <FormControl sx={{ mb: 1, width: 155 }}>
           <Select
             value={mainContactPosition}
             onChange={(e) => setMainContactPosition(e.target.value)}
-            label="Posiçã"
+            size="small"
             required
           >
-            <MenuItem value={"Funcionário"}>Funcionário</MenuItem>
-            <MenuItem value={"Gerente"}>Gerente</MenuItem>
-            <MenuItem value={"Proprietário"}>Proprietário</MenuItem>
+            <MenuItem value={"Admin2"}>Sócio</MenuItem>
+            <MenuItem value={"Admin"}>Proprietário</MenuItem>
           </Select>
         </FormControl>
 
@@ -193,30 +191,29 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData }) => {
         {showAdditionalOptions && (
           <Box>
             <Divider sx={{ my: 2 }} />
-            <Typography>Etc</Typography>
+            <Typography sx={{ my: 2 }}>Domínio</Typography>
             <TextField
-              margin="dense"
               variant="outlined"
               label="Website"
+              size="small"
               value={website}
               onChange={(e) => setWebsite(e.target.value)}
               sx={{ mr: 1, width: 270 }}
             />
             <TextField
-              margin="dense"
               variant="outlined"
               label="Domínio"
+              size="small"
               value={domain}
               onChange={(e) => setDomain(e.target.value)}
               sx={{ mr: 1, width: 250 }}
             />
 
-            <FormControl sx={{ mt: 1, width: 165 }}>
-              <InputLabel>Colaboradores</InputLabel>
+            <FormControl sx={{ width: 165 }}>
               <Select
                 value={employees}
+                size="small"
                 onChange={(e) => setEmployees(e.target.value)}
-                label="Colaboradores"
               >
                 <MenuItem value={"1-9"}>1 à 9</MenuItem>
                 <MenuItem value={"10-50"}>10 à 50</MenuItem>
@@ -224,6 +221,7 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData }) => {
                 <MenuItem value={"101-200"}>100 à 200</MenuItem>
                 <MenuItem value={"+201"}>201 ou mais</MenuItem>
               </Select>
+              <FormHelperText># de Colaboradores</FormHelperText>
             </FormControl>
           </Box>
         )}

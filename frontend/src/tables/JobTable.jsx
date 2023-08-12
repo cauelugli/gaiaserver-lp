@@ -159,7 +159,7 @@ export default function JobTable() {
                             </TableRow>
                           </TableBody>
                         </Table>
-                        <Box sx={{ mt: 3, ml: "95%" }}>
+                        <Box sx={{ mt: 3, ml: "90%" }}>
                           <ModeEditIcon
                             cursor="pointer"
                             option="delete"

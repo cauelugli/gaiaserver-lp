@@ -23,7 +23,6 @@ const api = axios.create({
 const EditUserForm = ({
   openEdit,
   selectedUser,
-  managers,
   departments,
   setOpenEdit,
   fetchData,
@@ -33,11 +32,6 @@ const EditUserForm = ({
   const [phone, setPhone] = React.useState(selectedUser.phone);
   const [position, setPosition] = React.useState(selectedUser.position);
   const [department, setDepartment] = React.useState(selectedUser.department);
-  const [manager, setManager] = React.useState(selectedUser.manager);
-
-  console.log("selectedUser", selectedUser);
-  console.log("managers", managers);
-  console.log("manager", manager);
 
   const handleEdit = async (e) => {
     e.preventDefault();
@@ -53,7 +47,6 @@ const EditUserForm = ({
           name: department.name,
           color: department.color,
         },
-        manager: { id: manager._id, name: manager.name },
         avatarColor: avatarColor,
       });
       res.data && alert("Editado com sucesso!");
@@ -203,21 +196,6 @@ const EditUserForm = ({
             />
           </Grid>
           <Grid item sx={{ mt: 3 }}>
-            <Typography>Gerente</Typography>
-            <FormControl>
-              <Select
-                onChange={(e) => setManager(e.target.value)}
-                value={manager}
-                sx={{ mt: 1 }}
-                renderValue={(selected) => selected.name}
-              >
-                {managers.map((item) => (
-                  <MenuItem value={item} key={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
             <Grid item sx={{ mt: 3 }}>
               <Typography>Acesso</Typography>
               <FormControl>

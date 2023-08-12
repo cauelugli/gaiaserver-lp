@@ -3,18 +3,21 @@ import React from "react";
 import axios from "axios";
 
 import {
+  Box,
   Button,
   DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
   FormControl,
-  InputLabel,
+  FormHelperText,
+  Grid,
   MenuItem,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
+import { IMaskInput } from "react-imask";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -74,111 +77,149 @@ const EditCustomerForm = ({
     <form onSubmit={handleEdit}>
       <DialogTitle>Editando Cliente {selectedCustomer.name}</DialogTitle>
       <DialogContent>
-        <Typography sx={{ my: 1 }}>Geral</Typography>
+        <Typography sx={{ my: 2 }}>Geral</Typography>
         <TextField
           label="Nome da Empresa"
-          margin="dense"
           value={name}
+          size="small"
           onChange={(e) => setName(e.target.value)}
+          required
           variant="outlined"
-          sx={{ mr: 1, width: 700 }}
+          sx={{ mr: 1, width: 350 }}
         />
         <TextField
-          label="Endereço"
-          margin="dense"
+          sx={{ mr: 1, width: 450 }}
+          required
           value={address}
+          size="small"
           onChange={(e) => setAddress(e.target.value)}
           variant="outlined"
-          sx={{ mr: 1, width: 700 }}
+          label="Endereço"
         />
-        <TextField
-          label="Telefone"
-          margin="dense"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          variant="outlined"
-          sx={{ mr: 1, width: 160 }}
-        />
-        <TextField
-          label="CNPJ"
-          margin="dense"
-          variant="outlined"
-          value={cnpj}
-          onChange={(e) => setCnpj(e.target.value)}
-          sx={{ mr: 1, width: 240 }}
-        />
-        <TextField
-          label="Segmento"
-          margin="dense"
-          variant="outlined"
-          value={segment}
-          onChange={(e) => setSegment(e.target.value)}
-          sx={{ mr: 1, width: 285 }}
-        />
+        <Grid
+          container
+          sx={{ pr: "4%", mt: 2 }}
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Grid item>
+            <Typography>Telefone</Typography>
+            <IMaskInput
+              style={{
+                padding: "3%",
+                marginRight: "2%",
+                marginTop: "1%",
+                borderColor: "#eee",
+              }}
+              mask="(00) 00000-0000"
+              definitions={{
+                "#": /[1-9]/,
+              }}
+              onAccept={(value) => setPhone(value)}
+              overwrite
+              value={phone}
+            />
+          </Grid>
+          <Grid item>
+            <Typography>CNPJ</Typography>
+            <IMaskInput
+              style={{
+                padding: "3%",
+                marginRight: "2%",
+                marginTop: "1%",
+                borderColor: "#eee",
+              }}
+              mask="00.000.000/0000-00"
+              definitions={{
+                "#": /[1-9]/,
+              }}
+              onAccept={(value) => setCnpj(value)}
+              overwrite
+              value={cnpj}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              variant="outlined"
+              label="Segmento"
+              size="small"
+              value={segment}
+              required
+              onChange={(e) => setSegment(e.target.value)}
+              sx={{ mr: 1, mt: 1, width: 205 }}
+            />
+          </Grid>
+        </Grid>
+
         <Divider sx={{ my: 2 }} />
-        <Typography sx={{ my: 1 }}>Contato Principal</Typography>
+        <Typography sx={{ my: 2 }}>Contato Principal</Typography>
         <TextField
           label="Nome"
-          margin="dense"
           value={mainContactName}
           onChange={(e) => setMainContactName(e.target.value)}
+          required
+          size="small"
           variant="outlined"
-          sx={{ mr: 1, width: 270 }}
+          sx={{ mr: 1, width: 340 }}
         />
         <TextField
           label="Email"
-          margin="dense"
           value={mainContactEmail}
           onChange={(e) => setMainContactEmail(e.target.value)}
+          required
+          size="small"
           variant="outlined"
-          sx={{ mr: 1, width: 270 }}
+          sx={{ mr: 1, width: 300 }}
         />
 
-        <FormControl sx={{ my: 1, width: 145 }}>
-          <InputLabel>Posição</InputLabel>
+        <FormControl sx={{ mb: 1, width: 155 }}>
           <Select
-            label="Posição"
             value={mainContactPosition}
             onChange={(e) => setMainContactPosition(e.target.value)}
+            size="small"
+            required
           >
-            <MenuItem value={"Gerente"}>Gerente</MenuItem>
-            <MenuItem value={"Proprietário"}>Proprietário</MenuItem>
+            <MenuItem value={"Admin2"}>Sócio</MenuItem>
+            <MenuItem value={"Admin"}>Proprietário</MenuItem>
           </Select>
         </FormControl>
 
-        <Divider sx={{ my: 2 }} />
-        <Typography sx={{ my: 1 }}>Etc</Typography>
-        <TextField
-          margin="dense"
-          variant="outlined"
-          label="Website"
-          value={website}
-          onChange={(e) => setWebsite(e.target.value)}
-          sx={{ mr: 1, width: 270 }}
-        />
-        <TextField
-          margin="dense"
-          variant="outlined"
-          label="Domínio"
-          value={domain}
-          onChange={(e) => setDomain(e.target.value)}
-          sx={{ mr: 1, width: 250 }}
-        />
+        <Box>
+          <Divider sx={{ my: 2 }} />
+          <Typography sx={{ my: 2 }}>Domínio</Typography>
+          <TextField
+            variant="outlined"
+            label="Website"
+            size="small"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            sx={{ mr: 1, width: 270 }}
+          />
+          <TextField
+            variant="outlined"
+            label="Domínio"
+            size="small"
+            value={domain}
+            onChange={(e) => setDomain(e.target.value)}
+            sx={{ mr: 1, width: 250 }}
+          />
 
-        <FormControl sx={{ mt: 1, width: 165 }}>
-          <InputLabel>Colaboradores</InputLabel>
-          <Select
-            value={employees}
-            onChange={(e) => setEmployees(e.target.value)}
-            label="Colaboradores"
-          >
-            <MenuItem value={"1-9"}>1 à 9</MenuItem>
-            <MenuItem value={"10-50"}>10 à 50</MenuItem>
-            <MenuItem value={"51-100"}>51 à 100</MenuItem>
-            <MenuItem value={"101-200"}>100 à 200</MenuItem>
-            <MenuItem value={"+201"}>201 ou mais</MenuItem>
-          </Select>
-        </FormControl>
+          <FormControl sx={{ width: 165 }}>
+            <Select
+              value={employees}
+              size="small"
+              onChange={(e) => setEmployees(e.target.value)}
+            >
+              <MenuItem value={"1-9"}>1 à 9</MenuItem>
+              <MenuItem value={"10-50"}>10 à 50</MenuItem>
+              <MenuItem value={"51-100"}>51 à 100</MenuItem>
+              <MenuItem value={"101-200"}>100 à 200</MenuItem>
+              <MenuItem value={"+201"}>201 ou mais</MenuItem>
+            </Select>
+            <FormHelperText># de Colaboradores</FormHelperText>
+          </FormControl>
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">

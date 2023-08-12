@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
-const Department = require("../models/Department");
 
 // GET ALL USERS
 router.get("/", async (req, res) => {
@@ -37,15 +36,7 @@ router.delete("/:id", async (req, res) => {
         "manager.name": "N/A",
       }
     );
-    // UPDATE DEPARTMENT MANAGER (if the call is a manager position change)
-    const updatedManager = await Department.updateMany(
-      { "manager.id": userId },
-      {
-        "manager.id": "N/A",
-        "manager.name": "N/A",
-      }
-    );
-    res.status(200).json({ deletedUser, updatedSubordinates });
+    res.status(200).json({deletedUser, updatedSubordinates});
   } catch (err) {
     res.status(500).json(err);
   }
@@ -62,7 +53,6 @@ router.put("/", async (req, res) => {
         phone: req.body.phone,
         position: req.body.position,
         department: req.body.department,
-        manager: req.body.manager,
         avatarColor: req.body.avatarColor,
         isActive: req.body.isActive,
       },
@@ -70,16 +60,6 @@ router.put("/", async (req, res) => {
     );
     // UPDATE SUBORDINATE USERS (if the call is a manager position change)
     const updatedSubordinates = await User.updateMany(
-      { "manager.id": req.body.userId },
-      {
-        $set: {
-          "manager.id": req.body.userId,
-          "manager.name": req.body.name,
-        },
-      }
-    );
-    // UPDATE DEPARTMENT MANAGER (if the call is a manager position change)
-    const updatedManager = await Department.updateMany(
       { "manager.id": req.body.userId },
       {
         $set: {

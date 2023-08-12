@@ -173,7 +173,6 @@ export default function ManagerTable({ selectedCustomer }) {
                               <TableCell>Nome</TableCell>
                               <TableCell>Telefone</TableCell>
                               <TableCell>Departamento</TableCell>
-                              <TableCell>Gerente</TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
@@ -184,9 +183,6 @@ export default function ManagerTable({ selectedCustomer }) {
                               <TableCell>{user.phone}</TableCell>
                               <TableCell>
                                 {user.department ? user.department.name : "N/A"}
-                              </TableCell>
-                              <TableCell>
-                                {user.manager ? user.manager.name : "N/A"}
                               </TableCell>
                             </TableRow>
                           </TableBody>

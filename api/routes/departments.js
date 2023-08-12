@@ -15,11 +15,39 @@ router.get("/", async (req, res) => {
 
 // CREATE DEPARTMENT
 router.post("/", async (req, res) => {
-  console.log('req.body', req.body)
   const newDepartment = new Department(req.body);
+  const memberIds = req.body.members.map((member) => member.id);
+  const updatedMembers = [];
   try {
     const savedDepartment = await newDepartment.save();
-    res.status(200).json(savedDepartment);
+    for (const memberId of memberIds) {
+      const updatedMember = await User.updateOne(
+        { _id: memberId },
+        {
+          $set: {
+            "department.id": savedDepartment._id,
+            "department.name": savedDepartment.name,
+            "department.phone": savedDepartment.phone,
+            "department.email": savedDepartment.email,
+            "department.color": savedDepartment.color,
+          },
+        }
+      );
+      updatedMembers.push(updatedMember);
+    }
+    const updatedManager = await User.findOneAndUpdate(
+      { _id: req.body.manager._id },
+      {
+        $set: {
+          "department.id": savedDepartment._id,
+          "department.name": savedDepartment.name,
+          "department.phone": savedDepartment.phone,
+          "department.email": savedDepartment.email,
+          "department.color": savedDepartment.color,
+        },
+      }
+    );
+    res.status(200).json({ savedDepartment, updatedMembers, updatedManager });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -29,23 +57,53 @@ router.post("/", async (req, res) => {
 // DELETE DEPARTMENT
 router.delete("/:id", async (req, res) => {
   const departmentId = req.params.id;
+  console.log('departmentId', departmentId)
   try {
     const deletedDepartment = await Department.findByIdAndDelete(departmentId);
-    const updatedMembers = await User.updateMany(
-      { "department.id": departmentId },
+    console.log('deletedDepartment', deletedDepartment)
+    const memberIds = deletedDepartment.members.map((member) => member.id);
+    const updatedMembers = await Promise.all(
+      memberIds.map(async (memberId) => {
+        return await User.updateOne(
+          { _id: memberId },
+          {
+            $set: {
+              "department.id": "N/A",
+              "department.name": "N/A",
+              "department.phone": "N/A",
+              "department.email": "N/A",
+              "department.color": "N/A",
+            },
+          }
+        );
+      })
+    );
+    const updatedManager = await User.updateOne(
+      { _id: deletedDepartment.manager._id },
       {
-        "department.id": "N/A",
-        "department.name": "N/A",
+        $set: {
+          "department.id": "N/A",
+          "department.name": "N/A",
+          "department.phone": "N/A",
+          "department.email": "N/A",
+          "department.color": "N/A",
+        },
       }
     );
-    res.status(200).json(deletedDepartment);
+    res.status(200).json({
+      deletedDepartment,
+      updatedMembers,
+      updatedManager,
+    });
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
 
 // UPDATE DEPARTMENT
 router.put("/", async (req, res) => {
+  console.log('req.body', req.body)
   try {
     const updatedDepartment = await Department.findByIdAndUpdate(
       req.body.departmentId,
@@ -61,16 +119,18 @@ router.put("/", async (req, res) => {
       { new: true }
     );
     // UPDATE MEMBER USERS
-    await User.updateMany(
+    const updatedMembers = await User.updateMany(
       { "department.id": req.body.departmentId },
       {
         $set: {
-          "department.id": req.body.departmentId,
+          "department.id": req.body.userId,
           "department.name": req.body.name,
+          "department.email": req.body.email,
+          "department.phone": req.body.phone,
         },
       }
     );
-    res.status(200).json(updatedDepartment);
+    res.status(200).json({updatedDepartment, updatedMembers});
   } catch (err) {
     res.status(500).json(err);
   }

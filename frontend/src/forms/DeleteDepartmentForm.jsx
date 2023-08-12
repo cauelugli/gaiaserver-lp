@@ -13,6 +13,7 @@ const DeleteDepartmentForm = ({ selectedDepartment, openDelete, setOpenDelete, f
 
   const handleDelete = async () => {
     try {
+      console.log('department', department)
       const res = await api.delete(`/departments/${department._id}`);
       res.status === 200 && alert("Departamento deletado com sucesso!");
       setOpenDelete(false);
