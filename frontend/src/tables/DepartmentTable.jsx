@@ -56,13 +56,12 @@ export default function DepartmentTable({ selectedCustomer }) {
         );
         setDepartments(filteredDepartments);
         setUsers(filteredUsers);
-        console.log("departments after fetch", departments);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [selectedCustomer._id, departments]);
+  }, [selectedCustomer._id]);
 
   const fetchData = async () => {
     try {

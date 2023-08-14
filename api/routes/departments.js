@@ -15,6 +15,7 @@ router.get("/", async (req, res) => {
 
 // CREATE DEPARTMENT
 router.post("/", async (req, res) => {
+  console.log('req.body', req.body)
   const newDepartment = new Department(req.body);
   const memberIds = req.body.members.map((member) => member.id);
   const updatedMembers = [];
@@ -27,6 +28,7 @@ router.post("/", async (req, res) => {
           $set: {
             "department.id": savedDepartment._id,
             "department.name": savedDepartment.name,
+            "department.description": savedDepartment.description,
             "department.phone": savedDepartment.phone,
             "department.email": savedDepartment.email,
             "department.color": savedDepartment.color,
@@ -41,6 +43,7 @@ router.post("/", async (req, res) => {
         $set: {
           "department.id": savedDepartment._id,
           "department.name": savedDepartment.name,
+          "department.description": savedDepartment.description,
           "department.phone": savedDepartment.phone,
           "department.email": savedDepartment.email,
           "department.color": savedDepartment.color,
@@ -70,6 +73,7 @@ router.delete("/:id", async (req, res) => {
             $set: {
               "department.id": "N/A",
               "department.name": "N/A",
+              "department.description": "N/A",
               "department.phone": "N/A",
               "department.email": "N/A",
               "department.color": "N/A",
@@ -84,6 +88,7 @@ router.delete("/:id", async (req, res) => {
         $set: {
           "department.id": "N/A",
           "department.name": "N/A",
+          "department.description": "N/A",
           "department.phone": "N/A",
           "department.email": "N/A",
           "department.color": "N/A",
@@ -110,6 +115,7 @@ router.put("/", async (req, res) => {
       {
         name: req.body.name,
         email: req.body.email,
+        description: req.body.description,
         phone: req.body.phone,
         manager: req.body.manager,
         members: req.body.members,
@@ -125,6 +131,7 @@ router.put("/", async (req, res) => {
         $set: {
           "department.id": req.body.userId,
           "department.name": req.body.name,
+          "department.description": req.body.description,
           "department.email": req.body.email,
           "department.phone": req.body.phone,
         },
