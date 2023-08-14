@@ -15,7 +15,6 @@ router.get("/", async (req, res) => {
 
 // CREATE DEPARTMENT
 router.post("/", async (req, res) => {
-  console.log('req.body', req.body)
   const newDepartment = new Department(req.body);
   const memberIds = req.body.members.map((member) => member.id);
   const updatedMembers = [];
@@ -60,10 +59,8 @@ router.post("/", async (req, res) => {
 // DELETE DEPARTMENT
 router.delete("/:id", async (req, res) => {
   const departmentId = req.params.id;
-  console.log('departmentId', departmentId)
   try {
     const deletedDepartment = await Department.findByIdAndDelete(departmentId);
-    console.log('deletedDepartment', deletedDepartment)
     const memberIds = deletedDepartment.members.map((member) => member.id);
     const updatedMembers = await Promise.all(
       memberIds.map(async (memberId) => {
@@ -108,7 +105,6 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE DEPARTMENT
 router.put("/", async (req, res) => {
-  console.log('req.body', req.body)
   try {
     const updatedDepartment = await Department.findByIdAndUpdate(
       req.body.departmentId,

@@ -24,7 +24,6 @@ const QuickNotes = () => {
     const fetchData = async () => {
       try {
         const response = await api.get("/quicknotes");
-        console.log("response", response.data);
         setNotes(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
