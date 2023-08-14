@@ -34,7 +34,7 @@ const api = axios.create({
 });
 
 export default function DepartmentTable({ selectedCustomer }) {
-  const [openAdd, setOpenAdd] = React.useState(true);
+  const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);

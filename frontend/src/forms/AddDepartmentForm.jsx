@@ -160,7 +160,7 @@ const AddDepartmentForm = ({
         <Grid item>
           <Typography sx={{ my: 2 }}>Membros</Typography>
           <Members
-            users={users}
+            users={users.filter((user) => user.position === "Comum")}
             value={selectedUsers}
             onChange={setSelectedUsers}
           />

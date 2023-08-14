@@ -33,7 +33,7 @@ const api = axios.create({
 
 export default function UserTable({ selectedCustomer }) {
   const [selectedUser, setSelectedUser] = React.useState("");
-  const [openAdd, setOpenAdd] = React.useState(true);
+  const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);

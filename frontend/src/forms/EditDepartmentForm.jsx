@@ -9,6 +9,8 @@ import {
   DialogTitle,
   Divider,
   Grid,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -22,118 +24,27 @@ const api = axios.create({
 });
 
 const EditDepartmentForm = ({
-  openAdd,
-  selectedCustomer,
+  openEdit,
   selectedDepartment,
   users,
-  setOpenAdd,
+  setOpenEdit,
   fetchData,
 }) => {
   const [name, setName] = React.useState(selectedDepartment.name);
+  const [description, setDescription] = React.useState(
+    selectedDepartment.description
+  );
   const [phone, setPhone] = React.useState(selectedDepartment.phone);
   const [email, setEmail] = React.useState(selectedDepartment.email);
-
-  const [managerName, setManagerName] = React.useState(
-    selectedDepartment.manager ? selectedDepartment.manager.name : "N/A"
-  );
-  const [managerEmail, setManagerEmail] = React.useState(
-    selectedDepartment.manager ? selectedDepartment.manager.email : "N/A"
-  );
-  const [managerPhone, setManagerPhone] = React.useState(
-    selectedDepartment.manager ? selectedDepartment.manager.phone : "N/A"
-  );
+  const previousManager = selectedDepartment.manager;
+  const [manager, setManager] = React.useState(previousManager);
   const [selectedUsers, setSelectedUsers] = React.useState(
     selectedDepartment.members
   );
   const [color, setColor] = React.useState(selectedDepartment.color);
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
+  const managers = users.filter((user) => user.position === "Gerente");
 
-  function getAvatarColor() {
-    const colors = [
-      "#FF0000",
-      "#FF4500",
-      "#FFA500",
-      "#FFFF00",
-      "#ADFF2F",
-      "#00FF00",
-      "#00FF7F",
-      "#00CED1",
-      "#00BFFF",
-      "#0000FF",
-      "#8A2BE2",
-      "#FF00FF",
-      "#FF1493",
-      "#FF69B4",
-      "#FFC0CB",
-      "#FFD700",
-      "#FF8C00",
-      "#FF6347",
-      "#CD5C5C",
-      "#F08080",
-      "#FA8072",
-      "#E9967A",
-      "#DC143C",
-      "#B22222",
-      "#8B0000",
-      "#808000",
-      "#556B2F",
-      "#6B8E23",
-      "#808000",
-      "#2E8B57",
-      "#3CB371",
-      "#20B2AA",
-      "#5F9EA0",
-      "#4682B4",
-      "#87CEEB",
-      "#1E90FF",
-      "#6495ED",
-      "#0000CD",
-      "#8A2BE2",
-      "#9400D3",
-      "#9932CC",
-      "#8A2BE2",
-      "#BA55D3",
-      "#FF00FF",
-      "#FF1493",
-      "#FF69B4",
-      "#FFC0CB",
-      "#FFD700",
-      "#FF8C00",
-      "#FF6347",
-      "#DC143C",
-      "#B22222",
-      "#8B0000",
-      "#CD5C5C",
-      "#F08080",
-      "#FA8072",
-      "#E9967A",
-      "#FF4500",
-      "#FF6347",
-      "#FFA500",
-      "#FFD700",
-      "#FFFF00",
-      "#ADFF2F",
-      "#7CFC00",
-      "#32CD32",
-      "#00FF7F",
-      "#00FF00",
-      "#00FA9A",
-      "#00CED1",
-      "#00BFFF",
-      "#1E90FF",
-      "#4682B4",
-      "#8A2BE2",
-      "#FF00FF",
-      "#FF1493",
-      "#FF69B4",
-      "#FFC0CB",
-    ];
-
-    const randomIndex = Math.floor(Math.random() * colors.length);
-    return colors[randomIndex];
-  }
-
-  const avatarColor = getAvatarColor();
 
   const handleClickColor = (event) => {
     setColorAnchorEl(event.currentTarget);
@@ -157,25 +68,19 @@ const EditDepartmentForm = ({
         avatarColor: user.avatarColor,
       }));
 
-      const editManager = {
-        customerId: selectedCustomer._id,
-        name: managerName,
-        email: managerEmail,
-        phone: managerPhone,
-        avatarColor: avatarColor,
-      };
-
       const res = await api.put("/departments", {
         departmentId: selectedDepartment._id,
         name,
+        description,
         phone,
         email,
         color,
-        manager: editManager.data,
+        previousManager,
+        manager,
         members: membersData,
       });
-      res.data && alert("Departamento Adicionado!");
-      setOpenAdd(!openAdd);
+      res.data && alert("Departamento Editado!");
+      setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {
       alert("Vish, deu não...");
@@ -231,65 +136,61 @@ const EditDepartmentForm = ({
             />
           </Grid>
         </Grid>
+        <Grid container direction="row">
+          <TextField
+            value={description}
+            size="small"
+            label="Descrição"
+            fullWidth
+            onChange={(e) => setDescription(e.target.value)}
+            sx={{ mt: 2 }}
+          />
+        </Grid>
 
         <Divider sx={{ my: 2 }} />
         <Grid item>
           <Typography sx={{ my: 2 }}>Membros</Typography>
           <Members
-            users={users}
+            users={users.filter((user) => user.position === "Comum")}
             value={selectedUsers}
             onChange={setSelectedUsers}
           />
         </Grid>
 
-        <Divider sx={{ my: 2 }} />
-        <Typography>Gerência</Typography>
-        <Grid container direction="row">
+        <Divider sx={{ mt: 2, mb: 1 }} />
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          width="50%"
+        >
           <Grid item>
-            <TextField
-              label="Nome do Gerente"
-              value={managerName}
-              size="small"
-              onChange={(e) => setManagerName(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ mr: 1, mt: 3, width: 300 }}
-            />
+            <Typography sx={{ mt: 1 }}>Gerência</Typography>
           </Grid>
-          <Grid item>
-            <TextField
-              label="E-mail Gerente"
-              value={managerEmail}
-              size="small"
-              onChange={(e) => setManagerEmail(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ mr: 1, mt: 3, width: 285 }}
-            />
-          </Grid>
-          <Grid item>
-            <Typography>Telefone</Typography>
-            <IMaskInput
-              style={{
-                padding: "5%",
-                marginRight: "4%",
-                marginBottom: "1%",
-                borderColor: "#eee",
-                borderRadius: 4,
-              }}
-              mask="(00) 00000-0000"
-              definitions={{
-                "#": /[1-9]/,
-              }}
-              onAccept={(value) => setManagerPhone(value)}
-              overwrite
-              value={managerPhone}
-            />
+          <Grid container direction="row">
+            <Grid item>
+              <Select
+                size="small"
+                onChange={(e) => setManager(e.target.value)}
+                value={manager}
+                renderValue={(selected) => selected.name}
+              >
+                {managers.map((manager) => (
+                  <MenuItem
+                    value={manager}
+                    key={manager._id}
+                    sx={{ fontSize: "100%" }}
+                  >
+                    {manager.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
           </Grid>
         </Grid>
 
         <Divider sx={{ my: 2 }} />
-        <Typography>Etc</Typography>
+        <Typography>Customização</Typography>
         <Grid item sx={{ m: "1%" }}>
           <ColorPicker
             handleClickColor={handleClickColor}
@@ -307,7 +208,7 @@ const EditDepartmentForm = ({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenEdit(!openEdit)}
         >
           X
         </Button>

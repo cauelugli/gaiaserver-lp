@@ -120,6 +120,32 @@ router.put("/", async (req, res) => {
       },
       { new: true }
     );
+    const updatedManager = await User.updateOne(
+      { _id: req.body.manager._id },
+      {
+        $set: {
+          "department.id": req.body._id,
+          "department.name": req.body.name,
+          "department.description": req.body.description,
+          "department.phone": req.body.phone,
+          "department.email": req.body.email,
+          "department.color": req.body.color,
+        },
+      }
+    );
+    const updatedPreviousManager = await User.updateOne(
+      { _id: req.body.previousManager._id },
+      {
+        $set: {
+          "department.id": "N/A",
+          "department.name": "N/A",
+          "department.description": "N/A",
+          "department.phone": "N/A",
+          "department.email": "N/A",
+          "department.color": "N/A",
+        },
+      }
+    );
     // UPDATE MEMBER USERS
     const updatedMembers = await User.updateMany(
       { "department.id": req.body.departmentId },
@@ -133,8 +159,9 @@ router.put("/", async (req, res) => {
         },
       }
     );
-    res.status(200).json({updatedDepartment, updatedMembers});
+    res.status(200).json({updatedDepartment, updatedPreviousManager, updatedManager, updatedMembers});
   } catch (err) {
+    console.log(err)
     res.status(500).json(err);
   }
 });
