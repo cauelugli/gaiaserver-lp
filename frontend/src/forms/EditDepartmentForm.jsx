@@ -37,14 +37,12 @@ const EditDepartmentForm = ({
   const [phone, setPhone] = React.useState(selectedDepartment.phone);
   const [email, setEmail] = React.useState(selectedDepartment.email);
   const previousManager = selectedDepartment.manager;
+  const previousMembers = selectedDepartment.members;
   const [manager, setManager] = React.useState(previousManager);
-  const [selectedUsers, setSelectedUsers] = React.useState(
-    selectedDepartment.members
-  );
+  const [selectedUsers, setSelectedUsers] = React.useState(previousMembers);
   const [color, setColor] = React.useState(selectedDepartment.color);
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
   const managers = users.filter((user) => user.position === "Gerente");
-
 
   const handleClickColor = (event) => {
     setColorAnchorEl(event.currentTarget);
@@ -63,7 +61,7 @@ const EditDepartmentForm = ({
     e.preventDefault();
     try {
       const membersData = selectedUsers.map((user) => ({
-        id: user._id,
+        id: user._id || user.id,
         name: user.name,
         avatarColor: user.avatarColor,
       }));
@@ -77,6 +75,7 @@ const EditDepartmentForm = ({
         color,
         previousManager,
         manager,
+        previousMembers,
         members: membersData,
       });
       res.data && alert("Departamento Editado!");
@@ -86,6 +85,10 @@ const EditDepartmentForm = ({
       alert("Vish, deu não...");
       console.log(err);
     }
+  };
+
+  const handleUserSelectionChange = (newSelectedUsers) => {
+    setSelectedUsers(newSelectedUsers);
   };
 
   return (
@@ -153,7 +156,7 @@ const EditDepartmentForm = ({
           <Members
             users={users.filter((user) => user.position === "Comum")}
             value={selectedUsers}
-            onChange={setSelectedUsers}
+            onChange={handleUserSelectionChange}
           />
         </Grid>
 

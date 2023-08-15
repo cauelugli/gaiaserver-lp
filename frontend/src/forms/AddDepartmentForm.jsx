@@ -274,7 +274,7 @@ const AddDepartmentForm = ({
                 height: "50px",
                 border: "2px solid lightgrey",
                 borderRadius: "30%",
-                backgroundColor: color,
+                backgroundColor: "white",
                 cursor: "pointer",
               }}
             ></div>

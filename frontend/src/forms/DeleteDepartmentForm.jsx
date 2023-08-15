@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -8,12 +9,21 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const DeleteDepartmentForm = ({ selectedDepartment, openDelete, setOpenDelete, fetchData }) => {
+const DeleteDepartmentForm = ({
+  selectedDepartment,
+  openDelete,
+  setOpenDelete,
+  fetchData,
+}) => {
   const department = selectedDepartment;
 
   const handleDelete = async () => {
     try {
-      const res = await api.delete(`/departments/${department._id}`);
+      const res = await api.delete(
+        `/departments/${department._id}?selectedDepartment=${JSON.stringify(
+          department
+        )}`
+      );
       res.status === 200 && alert("Departamento deletado com sucesso!");
       setOpenDelete(false);
       fetchData();
