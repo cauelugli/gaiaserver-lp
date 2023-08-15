@@ -139,9 +139,9 @@ const AddUserForm = ({
               sx={{ mt: 1, minWidth: "150px" }}
               size="small"
             >
-              <MenuItem value={"Comum"}>Funcionário (p)</MenuItem>
-              <MenuItem value={"Gerente"}>Gerente (g)</MenuItem>
-              <MenuItem disabled value={"Admin"}>Proprietário (c)</MenuItem>
+              <MenuItem value={"Comum"}>Funcionário 👤</MenuItem>
+              <MenuItem value={"Gerente"}>Gerente 💼</MenuItem>
+              <MenuItem disabled value={"Admin"}>Proprietário 🏆</MenuItem>
             </Select>
           </Grid>
           <Grid item>
