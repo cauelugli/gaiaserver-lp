@@ -182,7 +182,7 @@ export default function ManagerTable({ selectedCustomer }) {
                               </TableCell>
                               <TableCell>{user.phone}</TableCell>
                               <TableCell>
-                                {user.department ? user.department.name : "N/A"}
+                                {user.department ? user.department.name : "-"}
                               </TableCell>
                             </TableRow>
                           </TableBody>

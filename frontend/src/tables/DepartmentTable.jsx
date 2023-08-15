@@ -158,7 +158,7 @@ export default function DepartmentTable({ selectedCustomer }) {
                                 {department.name}
                               </TableCell>
                               <TableCell>{department.phone}</TableCell>
-                              <TableCell>{department.manager ? department.manager.name : "N/A"}</TableCell>
+                              <TableCell>{department.manager ? department.manager.name : "-"}</TableCell>
                               <TableCell>
                                 {department.members.map((user) => (
                                   <Chip

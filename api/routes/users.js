@@ -32,8 +32,8 @@ router.delete("/:id", async (req, res) => {
     const updatedSubordinates = await User.updateMany(
       { "manager.id": userId },
       {
-        "manager.id": "N/A",
-        "manager.name": "N/A",
+        "manager.id": "-",
+        "manager.name": "-",
       }
     );
     res.status(200).json({deletedUser, updatedSubordinates});
@@ -44,6 +44,7 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE USER
 router.put("/", async (req, res) => {
+  console.log('req.body', req.body)
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.body.userId,
@@ -58,16 +59,7 @@ router.put("/", async (req, res) => {
       },
       { new: true }
     );
-    // UPDATE SUBORDINATE USERS (if the call is a manager position change)
-    const updatedSubordinates = await User.updateMany(
-      { "manager.id": req.body.userId },
-      {
-        $set: {
-          "manager.id": req.body.userId,
-          "manager.name": req.body.name,
-        },
-      }
-    );
+    
     res.status(200).json({ updatedUser, updatedSubordinates });
   } catch (err) {
     res.status(500).json(err);

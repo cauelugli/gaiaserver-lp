@@ -24,6 +24,4 @@ const Members = ({ users, value, onChange }) => {
   );
 };
 
-
-
 export default Members;

@@ -68,12 +68,12 @@ router.delete("/:id", async (req, res) => {
         { _id: member.id },
         {
           $set: {
-            "department.id": "N/A",
-            "department.name": "N/A",
-            "department.description": "N/A",
-            "department.phone": "N/A",
-            "department.email": "N/A",
-            "department.color": "N/A",
+            "department.id": "-",
+            "department.name": "-",
+            "department.description": "-",
+            "department.phone": "-",
+            "department.email": "-",
+            "department.color": "-",
           },
         }
       );
@@ -83,12 +83,12 @@ router.delete("/:id", async (req, res) => {
       { _id: deletedDepartment.manager._id },
       {
         $set: {
-          "department.id": "N/A",
-          "department.name": "N/A",
-          "department.description": "N/A",
-          "department.phone": "N/A",
-          "department.email": "N/A",
-          "department.color": "N/A",
+          "department.id": "-",
+          "department.name": "-",
+          "department.description": "-",
+          "department.phone": "-",
+          "department.email": "-",
+          "department.color": "-",
         },
       }
     );
@@ -105,9 +105,6 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE DEPARTMENT
 router.put("/", async (req, res) => {
-
-  console.log('req.body.previousMembers', req.body.previousMembers);
-  console.log('req.body.members', req.body.members);
   try {
     const updatedDepartment = await Department.findByIdAndUpdate(
       req.body.departmentId,
@@ -148,12 +145,12 @@ router.put("/", async (req, res) => {
     );
     for (const removedMember of removedMembers) {
       await User.findByIdAndUpdate(removedMember.id, {
-        "department.id": "N/A",
-        "department.name": "N/A",
-        "department.description": "N/A",
-        "department.phone": "N/A",
-        "department.email": "N/A",
-        "department.color": "N/A",
+        "department.id": "-",
+        "department.name": "-",
+        "department.description": "-",
+        "department.phone": "-",
+        "department.email": "-",
+        "department.color": "-",
       });
     }
 
@@ -174,12 +171,12 @@ router.put("/", async (req, res) => {
       { _id: req.body.previousManager._id },
       {
         $set: {
-          "department.id": "N/A",
-          "department.name": "N/A",
-          "department.description": "N/A",
-          "department.phone": "N/A",
-          "department.email": "N/A",
-          "department.color": "N/A",
+          "department.id": "-",
+          "department.name": "-",
+          "department.description": "-",
+          "department.phone": "-",
+          "department.email": "-",
+          "department.color": "-",
         },
       }
     ) : "";

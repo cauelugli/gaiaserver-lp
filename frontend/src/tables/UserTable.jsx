@@ -183,7 +183,7 @@ export default function UserTable({ selectedCustomer }) {
                                   {user.name}
                                 </TableCell>
                                 <TableCell>{user.phone}</TableCell>
-                                <TableCell>{user.department ? user.department.name : "N/A"}</TableCell>
+                                <TableCell>{user.department ? user.department.name : "-"}</TableCell>
                               </TableRow>
                             </TableBody>
                           </Table>
