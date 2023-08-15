@@ -70,7 +70,7 @@ export default function App() {
           </Box>
         </Grid>
 
-        <Grid item xs={sidebarStatus ? 9 : 9.9} xl={sidebarStatus ? 9.3 : 10.1}>
+        <Grid item xs={sidebarStatus ? (customertabStatus ? 9 : 9.5) : (customertabStatus ? 9.9 : 10.4)} xl={sidebarStatus ? 9.3 : 10.1}>
           <Paper
             sx={{
               p: 3,
@@ -80,7 +80,7 @@ export default function App() {
             }}
           >
             <Grid container spacing={1}>
-              <Grid item xs={10}>
+              <Grid item xs={customertabStatus ? 10 : 11  }>
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route
@@ -115,8 +115,9 @@ export default function App() {
           container
           direction="column"
           alignItems="center"
-          xs={1.5}
+          xs={customertabStatus ? 1.5 : 1}
           xl={1.5}
+          sx={{backgroundColor: customertabStatus ? "none" : "#93c3c7"}}
         >
           <Button
             onClick={handleCustomerTabStatusChange}
