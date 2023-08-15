@@ -71,14 +71,16 @@ const AddDepartmentForm = ({
         avatarColor: user.avatarColor,
       }));
 
-      const newManagerCreated = newManager ? await api.post("/users", {
-        customerId: selectedCustomer._id,
-        name: managerName,
-        email: managerEmail,
-        phone: managerPhone,
-        position: "Gerente",
-        avatarColor: color,
-      }) : "";
+      const newManagerCreated = newManager
+        ? await api.post("/users", {
+            customerId: selectedCustomer._id,
+            name: managerName,
+            email: managerEmail,
+            phone: managerPhone,
+            position: "Gerente",
+            avatarColor: color,
+          })
+        : "";
 
       const res = await api.post("/departments", {
         customerId: selectedCustomer._id,
@@ -119,7 +121,7 @@ const AddDepartmentForm = ({
             <TextField
               value={email}
               size="small"
-              label="E-mail Departamento"
+              label="E-mail do Departamento"
               required
               onChange={(e) => setEmail(e.target.value)}
               sx={{ mr: 1, mt: 3, width: 285 }}
@@ -251,15 +253,32 @@ const AddDepartmentForm = ({
         </Grid>
 
         <Divider sx={{ my: 2 }} />
-        <Typography>Customização</Typography>
-        <Grid item sx={{ m: "1%" }}>
-          <ColorPicker
-            handleClickColor={handleClickColor}
-            color={color}
-            colorAnchorEl={colorAnchorEl}
-            handleCloseColor={handleCloseColor}
-            handleChangeColor={handleChangeColor}
-          />
+
+        <Typography>Personalização</Typography>
+        <Grid container direction="row" justifyContent="space-evenly">
+          <Grid item sx={{ ml: "15%" }}>
+            <Typography>Cor</Typography>
+            <ColorPicker
+              handleClickColor={handleClickColor}
+              color={color}
+              colorAnchorEl={colorAnchorEl}
+              handleCloseColor={handleCloseColor}
+              handleChangeColor={handleChangeColor}
+            />
+          </Grid>
+          <Grid item sx={{ mr: "20%" }}>
+            <Typography>Ícone</Typography>
+            <div
+              style={{
+                width: "50px",
+                height: "50px",
+                border: "2px solid lightgrey",
+                borderRadius: "30%",
+                backgroundColor: color,
+                cursor: "pointer",
+              }}
+            ></div>
+          </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>

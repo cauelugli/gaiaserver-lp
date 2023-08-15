@@ -126,18 +126,32 @@ const AddUserForm = ({
         </Grid>
         <Grid
           container
-          sx={{ pr: "4%", mt: 2 }}
+          sx={{ mt: 2 }}
           direction="row"
           justifyContent="flex-start"
           alignItems="center"
         >
-          
+          <Grid item sx={{ mr: "10%" }}>
+            <Typography>Acesso</Typography>
+            <Select
+              onChange={(e) => setPosition(e.target.value)}
+              value={position}
+              sx={{ mt: 1, minWidth: "150px" }}
+              size="small"
+            >
+              <MenuItem value={"Comum"}>Funcionário (p)</MenuItem>
+              <MenuItem value={"Gerente"}>Gerente (g)</MenuItem>
+              <MenuItem disabled value={"Admin"}>Proprietário (c)</MenuItem>
+            </Select>
+          </Grid>
           <Grid item>
-            <Typography sx={{mb:1}}>Departamento</Typography>
+            <Typography sx={{ mb: 1 }}>Departamento</Typography>
             <Select
               onChange={(e) => setDepartment(e.target.value)}
               value={department}
               renderValue={(selected) => selected.name}
+              size="small"
+              sx={{ minWidth: "200px" }}
             >
               {departments.map((item) => (
                 <MenuItem
@@ -155,18 +169,6 @@ const AddUserForm = ({
                   {item.name}
                 </MenuItem>
               ))}
-            </Select>
-          </Grid>
-          <Grid item>
-            <Typography>Acesso</Typography>
-            <Select
-              onChange={(e) => setPosition(e.target.value)}
-              value={position}
-              sx={{ mt: 1 }}
-            >
-              <MenuItem value={"Comum"}>Funcionário</MenuItem>
-              <MenuItem value={"Gerente"}>Gerente</MenuItem>
-              <MenuItem value={"Admin"}>Proprietário</MenuItem>
             </Select>
           </Grid>
         </Grid>

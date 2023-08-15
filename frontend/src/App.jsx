@@ -55,14 +55,14 @@ export default function App() {
 
   return (
     <Router>
-      <Grid container sx={{ backgroundColor: "#ccc", height: "100vw" }}>
+      <Grid container sx={{ backgroundColor: "#ccc", height: "100vw", m:-1 }}>
         <Grid
           item
           xs={sidebarStatus ? 1.5 : 0.6}
           xl={sidebarStatus ? 1.2 : 0.4}
           sx={{ textAlign: "center" }}
         >
-          <Box sx={{ backgroundColor: "#ccc" }}>
+          <Box>
             <Button onClick={handleSidebarStatusChange} sx={{ color: "black" }}>
               {sidebarStatus ? <ChevronLeftIcon /> : <ChevronRightIcon />}
             </Button>
