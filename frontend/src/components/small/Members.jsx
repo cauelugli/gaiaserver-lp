@@ -5,7 +5,12 @@ import { TextField, Box } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 
 const Members = ({ users, value, onChange }) => {
-  const filteredUsers = users.filter(user => !value.some(selectedUser => selectedUser._id === user._id));
+  const filteredUsers = users.filter(
+    (user) =>
+      !value.some((selectedUser) => selectedUser._id === user._id) &&
+      !value.some((prevUser) => prevUser.id === user._id)
+  );
+
 
   return (
     <Box>
