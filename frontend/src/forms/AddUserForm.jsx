@@ -57,11 +57,7 @@ const AddUserForm = ({
         email,
         phone,
         position,
-        department: {
-          id: department.id,
-          name: department.name,
-          color: department.color,
-        },
+        department: department === "" ? { isAllocated: false } : department,
         avatarColor: avatarColor,
       });
       res.data && alert("Usuário Adicionado!");
@@ -141,36 +137,40 @@ const AddUserForm = ({
             >
               <MenuItem value={"Comum"}>Funcionário 👤</MenuItem>
               <MenuItem value={"Gerente"}>Gerente 💼</MenuItem>
-              <MenuItem disabled value={"Admin"}>Proprietário 🏆</MenuItem>
+              <MenuItem disabled value={"Admin"}>
+                Proprietário 🏆
+              </MenuItem>
             </Select>
           </Grid>
-          <Grid item>
-            <Typography sx={{ mb: 1 }}>Departamento</Typography>
-            <Select
-              onChange={(e) => setDepartment(e.target.value)}
-              value={department}
-              renderValue={(selected) => selected.name}
-              size="small"
-              sx={{ minWidth: "200px" }}
-            >
-              {departments.map((item) => (
-                <MenuItem
-                  value={item}
-                  key={item.id}
-                  sx={{
-                    backgroundColor: item.color,
-                    color: "white",
-                    "&:hover": {
+          {position === "Comum" && (
+            <Grid item>
+              <Typography sx={{ mb: 1 }}>Departamento</Typography>
+              <Select
+                onChange={(e) => setDepartment(e.target.value)}
+                value={department}
+                renderValue={(selected) => selected.name}
+                size="small"
+                sx={{ minWidth: "200px" }}
+              >
+                {departments.map((item) => (
+                  <MenuItem
+                    value={item}
+                    key={item.id}
+                    sx={{
                       backgroundColor: item.color,
                       color: "white",
-                    },
-                  }}
-                >
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </Grid>
+                      "&:hover": {
+                        backgroundColor: item.color,
+                        color: "white",
+                      },
+                    }}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
+          )}
         </Grid>
         <Grid
           container

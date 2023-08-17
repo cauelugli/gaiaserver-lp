@@ -66,10 +66,15 @@ export default function DepartmentTable({ selectedCustomer }) {
   const fetchData = async () => {
     try {
       const response = await api.get("/departments");
+      const responseUsers = await api.get("/users");
       const filteredDepartments = response.data.filter(
         (department) => department.customerId === selectedCustomer._id
       );
+      const filteredUsers = responseUsers.data.filter(
+        (user) => user.customerId === selectedCustomer._id
+      );
       setDepartments(filteredDepartments);
+      setUsers(filteredUsers);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

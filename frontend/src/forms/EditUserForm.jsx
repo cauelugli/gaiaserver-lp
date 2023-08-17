@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 import {
@@ -8,6 +9,7 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
+  FormHelperText,
   Grid,
   MenuItem,
   Select,
@@ -32,6 +34,7 @@ const EditUserForm = ({
   const [phone, setPhone] = React.useState(selectedUser.phone);
   const [position, setPosition] = React.useState(selectedUser.position);
   const [department, setDepartment] = React.useState(selectedUser.department);
+  const [previousData, setPreviousData] = React.useState(selectedUser);
 
   const handleEdit = async (e) => {
     e.preventDefault();
@@ -48,6 +51,7 @@ const EditUserForm = ({
           color: department.color,
         },
         avatarColor: avatarColor,
+        previousData: previousData,
       });
       res.data && alert("Editado com sucesso!");
       setOpenEdit(!openEdit);
@@ -196,53 +200,57 @@ const EditUserForm = ({
             />
           </Grid>
           <Grid item sx={{ mt: 3 }}>
-            <Grid item sx={{ mt: 3 }}>
-              <Typography>Acesso</Typography>
-              <FormControl>
-                <Select
-                  onChange={(e) => setPosition(e.target.value)}
-                  value={position}
-                  sx={{ mt: 1 }}
-                >
-                  <MenuItem value={"Comum"} sx={{ fontSize: "100%" }}>
-                    Funcionário
-                  </MenuItem>
-                  <MenuItem value={"Gerente"} sx={{ fontSize: "100%" }}>
-                    Gerente
-                  </MenuItem>
-                  <MenuItem value={"Admin"} sx={{ fontSize: "100%" }}>
-                    Proprietário
-                  </MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item sx={{ mt: 3 }}>
-              <Typography>Departamento</Typography>
-              <FormControl>
-                <Select
-                  onChange={(e) => setDepartment(e.target.value)}
-                  value={department}
-                  renderValue={(selected) => selected.name}
-                >
-                  {departments.map((item) => (
-                    <MenuItem
-                      value={item}
-                      key={item.id}
-                      sx={{
+            <Typography>Acesso</Typography>
+            <TextField
+              size="small"
+              value={position}
+              disabled
+              sx={{ width: 120 }}
+            />
+          </Grid>
+          <Grid item sx={{ mt: 3, ml: "10%" }}>
+            <Typography>Departamento</Typography>
+            <FormControl>
+              <Select
+                onChange={(e) => setDepartment(e.target.value)}
+                value={department}
+                disabled={position !== "Comum"}
+                renderValue={(selected) => selected.name}
+                sx={{ mt: 1 }}
+                size="small"
+              >
+                {departments.map((item) => (
+                  <MenuItem
+                    value={item}
+                    key={item.id}
+                    sx={{
+                      backgroundColor: item.color,
+                      color: "none",
+                      "&:hover": {
                         backgroundColor: item.color,
                         color: "white",
-                        "&:hover": {
-                          backgroundColor: item.color,
-                          color: "white",
-                        },
-                      }}
-                    >
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
+                      },
+                    }}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              {position === "Gerente" && (
+                <FormHelperText>
+                  Para alterar o Gerente, visite{" "}
+                  <Link
+                    to="/departments"
+                    style={{
+                      textDecoration: "none",
+                      color: "black",
+                    }}
+                  >
+                    Departamentos
+                  </Link>
+                </FormHelperText>
+              )}
+            </FormControl>
           </Grid>
         </Grid>
       </DialogContent>

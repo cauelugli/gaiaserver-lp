@@ -164,6 +164,7 @@ router.put("/", async (req, res) => {
           "department.phone": req.body.phone,
           "department.email": req.body.email,
           "department.color": req.body.color,
+          "department.isAllocated": true,
         },
       }
     );
@@ -177,6 +178,7 @@ router.put("/", async (req, res) => {
           "department.phone": "-",
           "department.email": "-",
           "department.color": "-",
+          "department.isAllocated": false,
         },
       }
     ) : "";

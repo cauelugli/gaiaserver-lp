@@ -9,6 +9,7 @@ import {
   DialogTitle,
   Divider,
   Grid,
+  ListSubheader,
   MenuItem,
   Select,
   TextField,
@@ -172,22 +173,38 @@ const EditDepartmentForm = ({
           </Grid>
           <Grid container direction="row">
             <Grid item>
-              <Select
-                size="small"
-                onChange={(e) => setManager(e.target.value)}
-                value={manager}
-                renderValue={(selected) => selected.name}
-              >
-                {managers.map((manager) => (
-                  <MenuItem
-                    value={manager}
-                    key={manager._id}
-                    sx={{ fontSize: "100%" }}
-                  >
-                    {manager.name}
-                  </MenuItem>
-                ))}
-              </Select>
+            <Select
+                  size="small"
+                  onChange={(e) => setManager(e.target.value)}
+                  value={manager}
+                  renderValue={(selected) => selected.name}
+                >
+                  <ListSubheader sx={{color:"green", m:-1}}>Disponíveis</ListSubheader>
+                  {managers
+                    .filter((manager) => !manager.department.isAllocated)
+                    .map((manager) => (
+                      <MenuItem
+                        value={manager}
+                        key={manager._id}
+                        sx={{ fontSize: "100%" }}
+                      >
+                        {manager.name}
+                      </MenuItem>
+                    ))}
+                  <ListSubheader sx={{color:"red", m:-1, mt:0}}>Alocados</ListSubheader>
+                  {managers
+                    .filter((manager) => manager.department.isAllocated)
+                    .map((manager) => (
+                      <MenuItem
+                        disabled
+                        value={manager}
+                        key={manager._id}
+                        sx={{ fontSize: "100%" }}
+                      >
+                        {manager.name}
+                      </MenuItem>
+                    ))}
+                </Select>
             </Grid>
           </Grid>
         </Grid>
