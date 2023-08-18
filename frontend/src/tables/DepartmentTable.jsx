@@ -3,11 +3,9 @@ import * as React from "react";
 import axios from "axios";
 
 import {
-  Button,
   Dialog,
   Box,
   Collapse,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -22,8 +20,6 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 import AddDepartmentForm from "../forms/AddDepartmentForm";
 import EditDepartmentForm from "../forms/EditDepartmentForm";
@@ -108,28 +104,18 @@ export default function DepartmentTable({
                 <TableRow
                   key={department._id}
                   sx={{
-                    height: "4vw",
                     cursor: "pointer",
                     backgroundColor: department.color,
                     "&:hover": { backgroundColor: "#ccc" },
                   }}
                 >
-                  <TableCell sx={{ width: "5%" }} cursor="pointer" align="left">
-                    <IconButton disabled size="small">
-                      {openDetail && selectedDepartment === department.name ? (
-                        <KeyboardArrowUpIcon />
-                      ) : (
-                        <KeyboardArrowDownIcon />
-                      )}
-                    </IconButton>
-                  </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(department)}
                     cursor="pointer"
                     align="left"
                     sx={{ color: "white", "&:hover": { color: "black" } }}
                   >
-                    {department.name}
+                    <Typography>{department.name}</Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -142,49 +128,124 @@ export default function DepartmentTable({
                       timeout="auto"
                       unmountOnExit
                     >
-                      <Box sx={{ m: 1, p: 4 }}>
-                        <Typography variant="h6" gutterBottom component="div">
-                          Detalhes
-                        </Typography>
+                      <Box sx={{ my: 4, px: 6 }}>
+                        <Typography variant="h6">Geral</Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
-                              <TableCell>Nome do Departamento</TableCell>
-                              <TableCell>Telefone</TableCell>
-                              <TableCell>Gerente</TableCell>
-                              <TableCell>Membros</TableCell>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  Nome do Departamento
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  Telefone
+                                </Typography>
+                              </TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
                             <TableRow>
                               <TableCell component="th" scope="row">
-                                {department.name}
-                              </TableCell>
-                              <TableCell>{department.phone}</TableCell>
-                              <TableCell>
-                                {department.manager
-                                  ? department.manager.name
-                                  : "-"}
+                                <Typography>{department.name}</Typography>
                               </TableCell>
                               <TableCell>
-                                {department.members.map((user) => (
-                                  <Chip
-                                    sx={{ m: 0.5 }}
-                                    size="small"
-                                    key={user.id}
-                                    avatar={
-                                      <Avatar
-                                        sizes="small"
-                                        sx={{
-                                          backgroundColor: user.avatarColor,
-                                        }}
-                                      >
-                                        {user.name[0].toUpperCase()}
-                                      </Avatar>
-                                    }
-                                    label={user.name}
-                                  />
-                                ))}
+                                <Typography>{department.phone}</Typography>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </Box>
+
+                      <Box sx={{ my: 4, px: 6 }}>
+                        <Typography variant="h6">Gerência</Typography>
+                        <Table size="small">
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  Nome do Gerente
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  E-mail
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  Telefone
+                                </Typography>
+                              </TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell>
+                                <Typography>
+                                  {department.manager
+                                    ? department.manager.name
+                                    : "-"}
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography>
+                                  {department.manager
+                                    ? department.manager.email
+                                    : "-"}
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography>
+                                  {department.manager
+                                    ? department.manager.phone
+                                    : "-"}
+                                </Typography>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </Box>
+
+                      <Box sx={{ my: 4, px: 6 }}>
+                        <Typography variant="h6">
+                          Membros ({department.members.length})
+                        </Typography>
+                        <Table size="small">
+                          <TableBody>
+                            <TableRow>
+                              <TableCell>
+                                <Typography>
+                                  {department.members.map((user) => (
+                                    <Chip
+                                      sx={{ m: 0.5 }}
+                                      size="small"
+                                      key={user.id}
+                                      avatar={
+                                        <Avatar
+                                          sizes="small"
+                                          sx={{
+                                            backgroundColor: user.avatarColor,
+                                          }}
+                                        >
+                                          {user.name[0].toUpperCase()}
+                                        </Avatar>
+                                      }
+                                      label={user.name}
+                                    />
+                                  ))}
+                                </Typography>
                               </TableCell>
                             </TableRow>
                           </TableBody>

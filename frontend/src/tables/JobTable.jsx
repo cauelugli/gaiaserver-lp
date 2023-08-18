@@ -6,7 +6,6 @@ import {
   Dialog,
   Box,
   Collapse,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -19,8 +18,6 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 import AddJobForm from "../forms/AddJobForm";
 import EditJobForm from "../forms/EditJobForm";
@@ -97,15 +94,6 @@ export default function JobTable() {
                     "&:hover": { backgroundColor: "#ccc " },
                   }}
                 >
-                  <TableCell sx={{ width: "5%" }} cursor="pointer" align="left">
-                    <IconButton disabled size="small">
-                      {openDetail && setSelectedJob === job.name ? (
-                        <KeyboardArrowUpIcon />
-                      ) : (
-                        <KeyboardArrowDownIcon />
-                      )}
-                    </IconButton>
-                  </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(job)}
                     cursor="pointer"

@@ -40,7 +40,7 @@ export default function Departments({ selectedCustomer }) {
         <Button
           onClick={() => setOpenAdd(true)}
           variant="outlined"
-          sx={{ borderColor: "#eee", borderRadius: 3, mb: 1 }}
+          sx={{ borderColor: "#eee", borderRadius: 3, mb: 1, "&:hover": { borderColor: "#eee" }, }}
         >
           <Typography variant="h6" color="#eee">
             + Novo

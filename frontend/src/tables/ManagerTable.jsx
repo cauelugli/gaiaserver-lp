@@ -6,7 +6,6 @@ import {
   Box,
   Collapse,
   Dialog,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -19,8 +18,6 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 import AddUserForm from "../forms/AddUserForm";
 import DeleteUserForm from "../forms/DeleteUserForm";
@@ -121,7 +118,6 @@ export default function ManagerTable({ selectedCustomer }) {
                 <TableRow
                   key={user._id}
                   sx={{
-                    height: "4vw",
                     cursor: "pointer",
                     backgroundColor:
                       selectedUser.name === user.name && openDetail
@@ -130,21 +126,12 @@ export default function ManagerTable({ selectedCustomer }) {
                     "&:hover": { backgroundColor: "#ccc " },
                   }}
                 >
-                  <TableCell sx={{ width: "5%" }} cursor="pointer" align="left">
-                    <IconButton disabled size="small">
-                      {openDetail && selectedUser.name === user.name ? (
-                        <KeyboardArrowUpIcon />
-                      ) : (
-                        <KeyboardArrowDownIcon />
-                      )}
-                    </IconButton>
-                  </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(user)}
                     cursor="pointer"
                     align="left"
                   >
-                    {user.name}
+                    <Typography>{user.name}</Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -164,19 +151,29 @@ export default function ManagerTable({ selectedCustomer }) {
                         <Table size="small">
                           <TableHead>
                             <TableRow>
-                              <TableCell>Nome</TableCell>
-                              <TableCell>Telefone</TableCell>
-                              <TableCell>Departamento</TableCell>
+                              <TableCell>
+                                <Typography sx={{ fontSize: "14px", color: "#777" }}>Nome</Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography sx={{ fontSize: "14px", color: "#777" }}>Telefone</Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography sx={{ fontSize: "14px", color: "#777" }}>Departamento</Typography>
+                              </TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
                             <TableRow>
                               <TableCell component="th" scope="row">
-                                {user.name}
+                                <Typography>{user.name}</Typography>
                               </TableCell>
-                              <TableCell>{user.phone}</TableCell>
                               <TableCell>
-                                {user.department ? user.department.name : "-"}
+                                <Typography>{user.phone}</Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography>
+                                  {user.department ? user.department.name : "-"}
+                                </Typography>
                               </TableCell>
                             </TableRow>
                           </TableBody>
