@@ -35,7 +35,7 @@ export default function Requests() {
         justifyContent="flex-start"
         alignItems="flex-start"
       >
-        <Typography variant="h4" sx={{ mr: 1 }}>
+        <Typography variant="h4" sx={{ mr: 2 }}>
           Pedidos
         </Typography>
         <Button

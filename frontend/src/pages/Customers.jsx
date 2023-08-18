@@ -35,7 +35,7 @@ export default function Customers() {
         justifyContent="flex-start"
         alignItems="flex-start"
       >
-        <Typography variant="h4" sx={{ mr: 1 }}>
+        <Typography variant="h4" sx={{ mr: 2 }}>
           Clientes
         </Typography>
         <Button

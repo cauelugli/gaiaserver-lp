@@ -34,7 +34,7 @@ export default function Departments({ selectedCustomer }) {
         justifyContent="flex-start"
         alignItems="flex-start"
       >
-        <Typography variant="h4" sx={{ mr: 1 }}>
+        <Typography variant="h4" sx={{ mr: 2 }}>
           Departamentos
         </Typography>
         <Button

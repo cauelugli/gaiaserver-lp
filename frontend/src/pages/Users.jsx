@@ -105,7 +105,7 @@ export default function Users({ selectedCustomer }) {
         justifyContent="flex-start"
         alignItems="flex-start"
       >
-        <Typography variant="h4" sx={{mr:1}}>Colaboradores</Typography>
+        <Typography variant="h4" sx={{mr:2}}>Colaboradores</Typography>
         <Button
           onClick={() => setOpenAdd(true)}
           variant="outlined"
