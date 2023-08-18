@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import { Link } from "react-router-dom";
@@ -17,6 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 import { IMaskInput } from "react-imask";
+import ColorPicker from "../components/small/ColorPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -33,8 +35,23 @@ const EditUserForm = ({
   const [email, setEmail] = React.useState(selectedUser.email);
   const [phone, setPhone] = React.useState(selectedUser.phone);
   const [position, setPosition] = React.useState(selectedUser.position);
+  const [avatarColor, setAvatarColor] = React.useState(selectedUser.avatarColor);
   const [department, setDepartment] = React.useState(selectedUser.department);
   const [previousData, setPreviousData] = React.useState(selectedUser);
+  const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
+
+  const handleClickColor = (event) => {
+    setColorAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseColor = () => {
+    setColorAnchorEl(null);
+  };
+
+  const handleChangeColor = (selectedColor) => {
+    setAvatarColor(selectedColor.hex);
+    handleCloseColor();
+  };
 
   const handleEdit = async (e) => {
     e.preventDefault();
@@ -50,7 +67,7 @@ const EditUserForm = ({
           name: department.name,
           color: department.color,
         },
-        avatarColor: avatarColor,
+        avatarColor,
         previousData: previousData,
       });
       res.data && alert("Editado com sucesso!");
@@ -61,93 +78,6 @@ const EditUserForm = ({
       console.log(err);
     }
   };
-
-  function getAvatarColor() {
-    const colors = [
-      "#FF0000",
-      "#FF4500",
-      "#FFA500",
-      "#FFFF00",
-      "#ADFF2F",
-      "#00FF00",
-      "#00FF7F",
-      "#00CED1",
-      "#00BFFF",
-      "#0000FF",
-      "#8A2BE2",
-      "#FF00FF",
-      "#FF1493",
-      "#FF69B4",
-      "#FFC0CB",
-      "#FFD700",
-      "#FF8C00",
-      "#FF6347",
-      "#CD5C5C",
-      "#F08080",
-      "#FA8072",
-      "#E9967A",
-      "#DC143C",
-      "#B22222",
-      "#8B0000",
-      "#808000",
-      "#556B2F",
-      "#6B8E23",
-      "#808000",
-      "#2E8B57",
-      "#3CB371",
-      "#20B2AA",
-      "#5F9EA0",
-      "#4682B4",
-      "#87CEEB",
-      "#1E90FF",
-      "#6495ED",
-      "#0000CD",
-      "#8A2BE2",
-      "#9400D3",
-      "#9932CC",
-      "#8A2BE2",
-      "#BA55D3",
-      "#FF00FF",
-      "#FF1493",
-      "#FF69B4",
-      "#FFC0CB",
-      "#FFD700",
-      "#FF8C00",
-      "#FF6347",
-      "#DC143C",
-      "#B22222",
-      "#8B0000",
-      "#CD5C5C",
-      "#F08080",
-      "#FA8072",
-      "#E9967A",
-      "#FF4500",
-      "#FF6347",
-      "#FFA500",
-      "#FFD700",
-      "#FFFF00",
-      "#ADFF2F",
-      "#7CFC00",
-      "#32CD32",
-      "#00FF7F",
-      "#00FF00",
-      "#00FA9A",
-      "#00CED1",
-      "#00BFFF",
-      "#1E90FF",
-      "#4682B4",
-      "#8A2BE2",
-      "#FF00FF",
-      "#FF1493",
-      "#FF69B4",
-      "#FFC0CB",
-    ];
-
-    const randomIndex = Math.floor(Math.random() * colors.length);
-    return colors[randomIndex];
-  }
-
-  const avatarColor = getAvatarColor();
 
   return (
     <form onSubmit={handleEdit}>
@@ -251,6 +181,24 @@ const EditUserForm = ({
                 </FormHelperText>
               )}
             </FormControl>
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          sx={{ pr: "4%", mt: 2 }}
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <Grid item>
+            <Typography>Avatar</Typography>
+            <ColorPicker
+              handleClickColor={handleClickColor}
+              color={avatarColor}
+              colorAnchorEl={colorAnchorEl}
+              handleCloseColor={handleCloseColor}
+              handleChangeColor={handleChangeColor}
+            />
           </Grid>
         </Grid>
       </DialogContent>

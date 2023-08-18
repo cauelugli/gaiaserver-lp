@@ -58,7 +58,7 @@ const AddUserForm = ({
         phone,
         position,
         department: department === "" ? { isAllocated: false } : department,
-        avatarColor: avatarColor,
+        avatarColor,
       });
       res.data && alert("Usuário Adicionado!");
       setOpenAdd(!openAdd);

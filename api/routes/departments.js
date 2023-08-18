@@ -46,6 +46,7 @@ router.post("/", async (req, res) => {
           "department.phone": savedDepartment.phone,
           "department.email": savedDepartment.email,
           "department.color": savedDepartment.color,
+          "department.isAllocated": true,
         },
       }
     );
