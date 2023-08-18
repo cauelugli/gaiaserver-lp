@@ -13,7 +13,7 @@ import QuickNotes from "./components/QuickNotes";
 
 import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
-import Jobs from "./pages/Jobs";
+import Requests from "./pages/Requests";
 import Customers from "./pages/Customers";
 import Departments from "./pages/Departments";
 
@@ -100,9 +100,9 @@ export default function App() {
                     }
                   />
                   <Route
-                    path="/jobs"
+                    path="/requests"
                     element={
-                      <Jobs selectedCustomer={selectedCustomer} />
+                      <Requests selectedCustomer={selectedCustomer} />
                     }
                   />
                 </Routes>

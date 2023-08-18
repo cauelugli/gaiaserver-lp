@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-jobSchema = new mongoose.Schema({
+requestSchema = new mongoose.Schema({
   customerId: {
     type: String,
     required: true,
@@ -59,6 +59,6 @@ jobSchema = new mongoose.Schema({
   },
 });
 
-const Job = mongoose.model("Job", jobSchema);
+const Request = mongoose.model("Request", requestSchema);
 
-module.exports = Job;
+module.exports = Request;

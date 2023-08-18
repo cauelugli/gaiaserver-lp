@@ -19,28 +19,28 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
-import AddJobForm from "../forms/AddJobForm";
-import EditJobForm from "../forms/EditJobForm";
-import DeleteJobForm from "../forms/DeleteJobForm";
+import AddRequestForm from "../forms/AddRequestForm";
+import EditRequestForm from "../forms/EditRequestForm";
+import DeleteRequestForm from "../forms/DeleteRequestForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function JobTable() {
+export default function RequestTable() {
   const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
-  const [selectedJob, setSelectedJob] = React.useState([]);
+  const [selectedRequest, setSelectedRequest] = React.useState([]);
 
-  const [jobs, setJobs] = React.useState([]);
+  const [requests, setRequests] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/jobs");
-        setJobs(response.data);
+        const response = await api.get("/requests");
+        setRequests(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -50,25 +50,25 @@ export default function JobTable() {
 
   const fetchData = async () => {
     try {
-      const response = await api.get("/jobs");
-      setJobs(response.data);
+      const response = await api.get("/requests");
+      setRequests(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  const handleOpenDetail = (job) => {
+  const handleOpenDetail = (request) => {
     setOpenDetail(!openDetail);
-    setSelectedJob(job.name);
+    setSelectedRequest(request.name);
   };
 
-  const handleOpenEdit = (job) => {
+  const handleOpenEdit = (request) => {
     setOpenEdit(!openEdit);
-    setSelectedJob(job);
+    setSelectedRequest(request);
   };
 
-  const handleConfirmDelete = (job) => {
-    setSelectedJob(job);
+  const handleConfirmDelete = (request) => {
+    setSelectedRequest(request);
     setOpenDelete(!openDelete);
   };
 
@@ -82,24 +82,24 @@ export default function JobTable() {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
-            {jobs.map((job) => (
+            {requests.map((request) => (
               <>
                 <TableRow
-                  key={job._id}
+                  key={request._id}
                   sx={{
                     height: "4vw",
                     cursor: "pointer",
                     backgroundColor:
-                      (setSelectedJob === job.name && openDetail) ? "#95dd95" : "none",
+                      (setSelectedRequest === request.name && openDetail) ? "#95dd95" : "none",
                     "&:hover": { backgroundColor: "#ccc " },
                   }}
                 >
                   <TableCell
-                    onClick={() => handleOpenDetail(job)}
+                    onClick={() => handleOpenDetail(request)}
                     cursor="pointer"
                     align="left"
                   >
-                    {job.name}
+                    {request.name}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -108,7 +108,7 @@ export default function JobTable() {
                     colSpan={6}
                   >
                     <Collapse
-                      in={openDetail && setSelectedJob === job.name}
+                      in={openDetail && setSelectedRequest === request.name}
                       timeout="auto"
                       unmountOnExit
                     >
@@ -132,18 +132,18 @@ export default function JobTable() {
                           <TableBody>
                             <TableRow>
                               <TableCell component="th" scope="row">
-                                {job.name}
+                                {request.name}
                               </TableCell>
-                              <TableCell>{job.address}</TableCell>
-                              <TableCell>{job.phone}</TableCell>
+                              <TableCell>{request.address}</TableCell>
+                              <TableCell>{request.phone}</TableCell>
                               <TableCell>
-                                {job.mainContactName} -{" "}
-                                {job.mainContactEmail}
+                                {request.mainContactName} -{" "}
+                                {request.mainContactEmail}
                               </TableCell>
-                              <TableCell>{job.website}</TableCell>
-                              <TableCell>{job.domain}</TableCell>
-                              <TableCell>{job.segment}</TableCell>
-                              <TableCell>{job.employees}</TableCell>
+                              <TableCell>{request.website}</TableCell>
+                              <TableCell>{request.domain}</TableCell>
+                              <TableCell>{request.segment}</TableCell>
+                              <TableCell>{request.employees}</TableCell>
                             </TableRow>
                           </TableBody>
                         </Table>
@@ -151,13 +151,13 @@ export default function JobTable() {
                           <ModeEditIcon
                             cursor="pointer"
                             option="delete"
-                            onClick={() => handleOpenEdit(job)}
+                            onClick={() => handleOpenEdit(request)}
                             sx={{ color: "grey", mr: 2 }}
                           />
                           <DeleteIcon
                             cursor="pointer"
                             option="delete"
-                            onClick={() => handleConfirmDelete(job)}
+                            onClick={() => handleConfirmDelete(request)}
                             sx={{ color: "#ff4444" }}
                           />
                         </Box>
@@ -177,7 +177,7 @@ export default function JobTable() {
           open={openAdd}
           onClose={() => setOpenAdd(!openAdd)}
         >
-          <AddJobForm
+          <AddRequestForm
             openAdd={openAdd}
             setOpenAdd={setOpenAdd}
             fetchData={fetchData}
@@ -191,9 +191,9 @@ export default function JobTable() {
           open={openEdit}
           onClose={() => setOpenEdit(!openEdit)}
         >
-          <EditJobForm
+          <EditRequestForm
             openEdit={openEdit}
-            selectedJob={selectedJob}
+            selectedRequest={selectedRequest}
             setOpenEdit={setOpenEdit}
             fetchData={fetchData}
           />
@@ -201,8 +201,8 @@ export default function JobTable() {
       )}
       {openDelete && (
         <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-          <DeleteJobForm
-            selectedJob={selectedJob}
+          <DeleteRequestForm
+            selectedRequest={selectedRequest}
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}
             fetchData={fetchData}

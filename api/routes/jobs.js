@@ -1,35 +1,35 @@
 const express = require("express");
 const router = express.Router();
-const Job = require("../models/Job");
+const Request = require("../models/Request");
 
-// GET ALL JOBS
+// GET ALL REQUESTS
 router.get("/", async (req, res) => {
   try {
-    const jobs = await Job.find();
-    res.status(200).json(jobs);
+    const requests = await Request.find();
+    res.status(200).json(requests);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// CREATE JOB
+// CREATE REQUEST
 router.post("/", async (req, res) => {
-  const newJob = new Job(req.body);
+  const newRequest = new Request(req.body);
   try {
-    const savedJob = await newJob.save();
-    res.status(200).json(savedJob);
+    const savedRequest = await newRequest.save();
+    res.status(200).json(savedRequest);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
   }
 });
 
-// DELETE JOB
+// DELETE REQUEST
 router.delete("/:id", async (req, res) => {
-  const jobId = req.params.id;
+  const requestId = req.params.id;
   try {
-    const deletedJob = await Job.findByIdAndDelete(jobId);
-    res.status(200).json(deletedJob);
+    const deletedRequest = await Request.findByIdAndDelete(requestId);
+    res.status(200).json(deletedRequest);
   } catch (err) {
     res.status(500).json(err);
   }

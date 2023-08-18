@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -8,7 +9,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const DeleteJobForm = ({ selectedCustomer, openDelete, setOpenDelete, fetchData }) => {
+const DeleteRequestForm = ({ selectedCustomer, openDelete, setOpenDelete, fetchData }) => {
   const customer = selectedCustomer;
 
   const handleDelete = async () => {
@@ -55,4 +56,4 @@ const DeleteJobForm = ({ selectedCustomer, openDelete, setOpenDelete, fetchData 
   );
 };
 
-export default DeleteJobForm;
+export default DeleteRequestForm;

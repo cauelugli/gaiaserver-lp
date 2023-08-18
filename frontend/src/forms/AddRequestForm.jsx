@@ -25,7 +25,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddJobForm = ({ openAdd, setOpenAdd, fetchData }) => {
+const AddRequestForm = ({ openAdd, setOpenAdd, fetchData }) => {
   const [name, setName] = React.useState("");
   const [address, setAddress] = React.useState("");
   const [phone, setPhone] = React.useState("");
@@ -244,4 +244,4 @@ const AddJobForm = ({ openAdd, setOpenAdd, fetchData }) => {
   );
 };
 
-export default AddJobForm;
+export default AddRequestForm;

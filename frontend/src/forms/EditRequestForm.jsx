@@ -20,7 +20,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const EditJobForm = ({
+const EditRequestForm = ({
   openEdit,
   setOpenEdit,
   selectedCustomer,
@@ -196,4 +196,4 @@ const EditJobForm = ({
   );
 };
 
-export default EditJobForm;
+export default EditRequestForm;
