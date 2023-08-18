@@ -4,7 +4,6 @@ import axios from "axios";
 
 import {
   Box,
-  Button,
   Collapse,
   Dialog,
   IconButton,
@@ -23,7 +22,6 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
-import AddUserForm from "../forms/AddUserForm";
 import DeleteUserForm from "../forms/DeleteUserForm";
 import EditUserForm from "../forms/EditUserForm";
 
@@ -33,7 +31,6 @@ const api = axios.create({
 
 export default function UserTable({ selectedCustomer }) {
   const [selectedUser, setSelectedUser] = React.useState("");
-  const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -112,11 +109,6 @@ export default function UserTable({ selectedCustomer }) {
   return (
     <>
       <Box>
-        <Button onClick={() => setOpenAdd(true)}>
-          <Typography variant="h6" color="#eee">
-            + Novo
-          </Typography>
-        </Button>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }}>
             <TableBody>
@@ -183,7 +175,9 @@ export default function UserTable({ selectedCustomer }) {
                                   {user.name}
                                 </TableCell>
                                 <TableCell>{user.phone}</TableCell>
-                                <TableCell>{user.department ? user.department.name : "-"}</TableCell>
+                                <TableCell>
+                                  {user.department ? user.department.name : "-"}
+                                </TableCell>
                               </TableRow>
                             </TableBody>
                           </Table>
@@ -208,23 +202,7 @@ export default function UserTable({ selectedCustomer }) {
             </TableBody>
           </Table>
         </TableContainer>
-        {openAdd && (
-          <Dialog
-            fullWidth
-            maxWidth="md"
-            open={openAdd}
-            onClose={() => setOpenAdd(!openAdd)}
-          >
-            <AddUserForm
-              openAdd={openAdd}
-              selectedCustomer={selectedCustomer}
-              users={users}
-              departments={departments}
-              setOpenAdd={setOpenAdd}
-              fetchData={fetchData}
-            />
-          </Dialog>
-        )}
+
         {openEdit && (
           <Dialog
             fullWidth

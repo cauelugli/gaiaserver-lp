@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 
-import { Box, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, Grid, Tab, Tabs, Typography } from "@mui/material";
 
 import CustomerTable from "../tables/CustomerTable";
 
@@ -21,6 +21,7 @@ function CustomTabPanel(props) {
 
 export default function Customers() {
   const [value, setValue] = React.useState(0);
+  const [openAdd, setOpenAdd] = React.useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -28,7 +29,25 @@ export default function Customers() {
 
   return (
     <Box sx={{ minWidth: "121%" }}>
-      <Typography variant="h4">Clientes</Typography>
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
+        <Typography variant="h4" sx={{ mr: 1 }}>
+          Clientes
+        </Typography>
+        <Button
+          onClick={() => setOpenAdd(true)}
+          variant="outlined"
+          sx={{ borderColor: "#eee", borderRadius: 3, mb: 1 }}
+        >
+          <Typography variant="h6" color="#eee">
+            + Novo
+          </Typography>
+        </Button>
+      </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -42,7 +61,7 @@ export default function Customers() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <CustomerTable />
+        <CustomerTable openAdd={openAdd} setOpenAdd={setOpenAdd} />
       </CustomTabPanel>
     </Box>
   );

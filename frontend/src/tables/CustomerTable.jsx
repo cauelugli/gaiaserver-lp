@@ -1,8 +1,8 @@
+/* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
 
 import {
-  Button,
   Dialog,
   Box,
   Collapse,
@@ -30,8 +30,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function CustomerTable() {
-  const [openAdd, setOpenAdd] = React.useState(false);
+export default function CustomerTable({ openAdd, setOpenAdd }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -77,11 +76,6 @@ export default function CustomerTable() {
 
   return (
     <Box>
-      <Button onClick={() => setOpenAdd(true)}>
-        <Typography variant="h6" color="#eee">
-          + Novo
-        </Typography>
-      </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
@@ -93,7 +87,9 @@ export default function CustomerTable() {
                     height: "4vw",
                     cursor: "pointer",
                     backgroundColor:
-                      (selectedCustomer === customer.name && openDetail) ? "#95dd95" : "none",
+                      selectedCustomer === customer.name && openDetail
+                        ? "#95dd95"
+                        : "none",
                     "&:hover": { backgroundColor: "#ccc " },
                   }}
                 >

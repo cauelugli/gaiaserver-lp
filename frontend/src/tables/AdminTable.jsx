@@ -4,9 +4,7 @@ import axios from "axios";
 
 import {
   Box,
-  Button,
   Collapse,
-  Dialog,
   IconButton,
   Paper,
   Table,
@@ -23,44 +21,27 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
-import AddUserForm from "../forms/AddUserForm";
-import DeleteUserForm from "../forms/DeleteUserForm";
-
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
 export default function AdminTable({ selectedCustomer }) {
   const [selectedUser, setSelectedUser] = React.useState("");
-  const [openAdd, setOpenAdd] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
 
   const [users, setUsers] = React.useState([]);
-  const [departments, setDepartments] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await api.get("/users");
-        const responseDepartments = await api.get("/departments");
         const filteredUsers = response.data.filter(
           (user) => user.customerId === selectedCustomer._id
         );
         const filteredAdmins = filteredUsers.filter(
-          (user) => user.position === "Admin"
+          (user) => user.position === "Proprietário"
         );
-        const filteredDepartments = responseDepartments.data
-          .filter(
-            (department) => department.customerId === selectedCustomer._id
-          )
-          .map((department) => ({
-            id: department._id,
-            name: department.name,
-            color: department.color,
-          }));
         setUsers(filteredAdmins);
-        setDepartments(filteredDepartments);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -68,51 +49,21 @@ export default function AdminTable({ selectedCustomer }) {
     fetchData();
   }, [selectedCustomer._id, users]);
 
-  const fetchData = async () => {
-    try {
-      const response = await api.get("/users");
-      const responseDepartments = await api.get("/departments");
-      const filteredUsers = response.data.filter(
-        (user) => user.customerId === selectedCustomer._id
-      );
-      const filteredAdmins = filteredUsers.filter(
-        (user) => user.position === "Admin"
-      );
-      const filteredDepartments = responseDepartments.data
-        .filter((department) => department.customerId === selectedCustomer._id)
-        .map((department) => ({
-          id: department._id,
-          name: department.name,
-          color: department.color,
-        }));
-      setUsers(filteredAdmins);
-      setDepartments(filteredDepartments);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
   const handleOpenDetail = (user) => {
     setOpenDetail(!openDetail);
     setSelectedUser(user);
   };
 
   const handleOpenEdit = () => {
-    alert("Não é possível editar proprietários! Apenas excluí-los!");
+    alert("Não é possível editar proprietários!!");
   };
 
-  const handleConfirmDelete = (user) => {
-    setOpenDelete(!openDelete);
-    setSelectedUser(user);
+  const handleConfirmDelete = () => {
+    alert("Não é possível deletar proprietários!!");
   };
 
   return (
     <Box>
-      <Button onClick={() => setOpenAdd(true)}>
-        <Typography variant="h6" color="#eee">
-          + Novo
-        </Typography>
-      </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
@@ -206,34 +157,6 @@ export default function AdminTable({ selectedCustomer }) {
           </TableBody>
         </Table>
       </TableContainer>
-      {openAdd && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openAdd}
-          onClose={() => setOpenAdd(!openAdd)}
-        >
-          <AddUserForm
-            openAdd={openAdd}
-            selectedCustomer={selectedCustomer}
-            users={users}
-            departments={departments}
-            setOpenAdd={setOpenAdd}
-            fetchData={fetchData}
-          />
-        </Dialog>
-      )}
-      {openDelete && (
-        <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-          <DeleteUserForm
-            selectedCustomer={selectedCustomer}
-            selectedUser={selectedUser}
-            openDelete={openDelete}
-            setOpenDelete={setOpenDelete}
-            fetchData={fetchData}
-          />
-        </Dialog>
-      )}
     </Box>
   );
 }

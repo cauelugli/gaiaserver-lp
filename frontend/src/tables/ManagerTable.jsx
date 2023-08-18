@@ -4,7 +4,6 @@ import axios from "axios";
 
 import {
   Box,
-  Button,
   Collapse,
   Dialog,
   IconButton,
@@ -114,11 +113,6 @@ export default function ManagerTable({ selectedCustomer }) {
 
   return (
     <Box>
-      <Button onClick={() => setOpenAdd(true)}>
-        <Typography variant="h6" color="#eee">
-          + Novo
-        </Typography>
-      </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>

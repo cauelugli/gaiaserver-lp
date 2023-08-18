@@ -33,8 +33,11 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function DepartmentTable({ selectedCustomer }) {
-  const [openAdd, setOpenAdd] = React.useState(false);
+export default function DepartmentTable({
+  openAdd,
+  setOpenAdd,
+  selectedCustomer,
+}) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -97,11 +100,6 @@ export default function DepartmentTable({ selectedCustomer }) {
 
   return (
     <Box>
-      <Button onClick={() => setOpenAdd(true)}>
-        <Typography variant="h6" color="#eee">
-          + Novo
-        </Typography>
-      </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
@@ -163,7 +161,11 @@ export default function DepartmentTable({ selectedCustomer }) {
                                 {department.name}
                               </TableCell>
                               <TableCell>{department.phone}</TableCell>
-                              <TableCell>{department.manager ? department.manager.name : "-"}</TableCell>
+                              <TableCell>
+                                {department.manager
+                                  ? department.manager.name
+                                  : "-"}
+                              </TableCell>
                               <TableCell>
                                 {department.members.map((user) => (
                                   <Chip
