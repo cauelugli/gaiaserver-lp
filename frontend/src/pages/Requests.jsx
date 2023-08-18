@@ -1,7 +1,21 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 
-import { Box, Button, Grid, Tab, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
+
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import SellIcon from '@mui/icons-material/Sell';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 import CustomerTable from "../tables/CustomerTable";
 
@@ -22,6 +36,14 @@ function CustomTabPanel(props) {
 export default function Requests() {
   const [value, setValue] = React.useState(0);
   const [openAdd, setOpenAdd] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -39,7 +61,9 @@ export default function Requests() {
           Pedidos
         </Typography>
         <Button
-          onClick={() => setOpenAdd(true)}
+          id="basic-button"
+          aria-controls={open ? "basic-menu" : undefined}
+          onClick={handleClick}
           variant="outlined"
           sx={{
             borderColor: "#eee",
@@ -52,6 +76,31 @@ export default function Requests() {
             + Novo
           </Typography>
         </Button>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+        >
+          <MenuItem>
+            <ListItemIcon>
+              <EngineeringIcon fontSize="small" />
+              <Typography>Serviço</Typography>
+            </ListItemIcon>
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <SellIcon fontSize="small" />
+              <Typography>Venda</Typography>
+            </ListItemIcon>
+          </MenuItem>
+          <MenuItem onClick="">
+            <ListItemIcon>
+              <SupportAgentIcon fontSize="small" />
+              <Typography>Suporte</Typography>
+            </ListItemIcon>
+          </MenuItem>
+        </Menu>
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
