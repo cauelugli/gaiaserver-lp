@@ -21,9 +21,9 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
-import AddDepartmentForm from "../forms/AddDepartmentForm";
-import EditDepartmentForm from "../forms/EditDepartmentForm";
-import DeleteDepartmentForm from "../forms/DeleteDepartmentForm";
+import AddDepartmentForm from "../forms/add/AddDepartmentForm";
+import EditDepartmentForm from "../forms/edit/EditDepartmentForm";
+import DeleteDepartmentForm from "../forms/delete/DeleteDepartmentForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

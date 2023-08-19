@@ -16,11 +16,11 @@ import {
   Typography,
 } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-import DeleteUserForm from "../forms/DeleteUserForm";
-import EditUserForm from "../forms/EditUserForm";
+import EditUserForm from "../forms/edit/EditUserForm";
+import DeleteUserForm from "../forms/delete/DeleteUserForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

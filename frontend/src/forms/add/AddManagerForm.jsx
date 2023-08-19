@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 import {
@@ -9,37 +7,27 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  FormHelperText,
   Grid,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
 import { IMaskInput } from "react-imask";
-import ColorPicker from "../components/small/ColorPicker";
+import ColorPicker from "../../components/small/ColorPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const EditUserForm = ({
-  openEdit,
-  selectedUser,
-  departments,
-  setOpenEdit,
+const AddManagerForm = ({
+  openAdd,
+  selectedCustomer,
+  setOpenAdd,
   fetchData,
 }) => {
-  const [name, setName] = React.useState(selectedUser.name);
-  const [email, setEmail] = React.useState(selectedUser.email);
-  const [phone, setPhone] = React.useState(selectedUser.phone);
-  const [position, setPosition] = React.useState(selectedUser.position);
-  const [avatarColor, setAvatarColor] = React.useState(
-    selectedUser.avatarColor
-  );
-  const [department, setDepartment] = React.useState(selectedUser.department);
-  const [previousData, setPreviousData] = React.useState(selectedUser);
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [avatarColor, setAvatarColor] = React.useState("#ffffff");
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
 
   const handleClickColor = (event) => {
@@ -55,35 +43,28 @@ const EditUserForm = ({
     handleCloseColor();
   };
 
-  const handleEdit = async (e) => {
+  const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.put("/users", {
-        userId: selectedUser._id,
+      const res = await api.post("/managers", {
+        customerId: selectedCustomer._id,
         name,
         email,
         phone,
-        position,
-        department: {
-          id: department.id,
-          name: department.name,
-          color: department.color,
-        },
         avatarColor,
-        previousData: previousData,
       });
-      res.data && alert("Editado com sucesso!");
-      setOpenEdit(!openEdit);
+      res.data && alert("Gerente Adicionado!");
+      setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {
-      alert("Vish, editei não...");
+      alert("Vish, deu não...");
       console.log(err);
     }
   };
 
   return (
-    <form onSubmit={handleEdit}>
-      <DialogTitle>Editando Colaborador - {selectedUser.name}</DialogTitle>
+    <form onSubmit={handleAdd}>
+      <DialogTitle>Novo Gerente - {selectedCustomer.name}</DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -131,43 +112,15 @@ const EditUserForm = ({
               value={phone}
             />
           </Grid>
-          </Grid>
-
-          <Grid
+        </Grid>
+        <Grid
           container
-          sx={{ mt: 2 }}
+          sx={{ pr: "4%", mt: 2 }}
           direction="row"
           justifyContent="flex-start"
           alignItems="center"
         >
           <Grid item>
-            <Typography sx={{ mb: 1 }}>Departamento</Typography>
-            <Select
-              onChange={(e) => setDepartment(e.target.value)}
-              value={department}
-              renderValue={(selected) => selected.name}
-              size="small"
-              sx={{ minWidth: "200px" }}
-            >
-              {departments.map((item) => (
-                <MenuItem
-                  value={item}
-                  key={item.id}
-                  sx={{
-                    backgroundColor: item.color,
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: item.color,
-                      color: "white",
-                    },
-                  }}
-                >
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </Grid>
-          <Grid item sx={{ml:"10%"}}>
             <Typography>Avatar</Typography>
             <ColorPicker
               handleClickColor={handleClickColor}
@@ -186,7 +139,7 @@ const EditUserForm = ({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenEdit(!openEdit)}
+          onClick={() => setOpenAdd(!openAdd)}
         >
           X
         </Button>
@@ -195,4 +148,4 @@ const EditUserForm = ({
   );
 };
 
-export default EditUserForm;
+export default AddManagerForm;

@@ -24,8 +24,8 @@ import UserTable from "../tables/UserTable";
 import ManagerTable from "../tables/ManagerTable";
 import AdminTable from "../tables/AdminTable";
 
-import AddUserForm from "../forms/AddUserForm";
-import AddManagerForm from "../forms/AddManagerForm";
+import AddUserForm from "../forms/add/AddUserForm";
+import AddManagerForm from "../forms/add/AddManagerForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

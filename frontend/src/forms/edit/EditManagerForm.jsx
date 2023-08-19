@@ -18,7 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 import { IMaskInput } from "react-imask";
-import ColorPicker from "../components/small/ColorPicker";
+import ColorPicker from "../../components/small/ColorPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

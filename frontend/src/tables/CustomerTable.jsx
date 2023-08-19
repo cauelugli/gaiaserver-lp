@@ -18,10 +18,10 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteCustomerForm from "../forms/DeleteCustomerForm";
 
-import AddCustomerForm from "../forms/AddCustomerForm";
-import EditCustomerForm from "../forms/EditCustomerForm";
+import AddCustomerForm from "../forms/add/AddCustomerForm";
+import EditCustomerForm from "../forms/edit/EditCustomerForm";
+import DeleteCustomerForm from "../forms/delete/DeleteCustomerForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

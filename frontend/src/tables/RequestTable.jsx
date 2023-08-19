@@ -19,9 +19,9 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
-import AddRequestForm from "../forms/AddRequestForm";
-import EditRequestForm from "../forms/EditRequestForm";
-import DeleteRequestForm from "../forms/DeleteRequestForm";
+import AddRequestForm from "../forms/add/AddRequestForm";
+import EditRequestForm from "../forms/edit/EditRequestForm";
+import DeleteRequestForm from "../forms/delete/DeleteRequestForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

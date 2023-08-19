@@ -8,25 +8,29 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
 import { IMaskInput } from "react-imask";
-import ColorPicker from "../components/small/ColorPicker";
+import ColorPicker from "../../components/small/ColorPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddManagerForm = ({
+const AddUserForm = ({
   openAdd,
   selectedCustomer,
+  departments,
   setOpenAdd,
   fetchData,
 }) => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
+  const [department, setDepartment] = React.useState("");
   const [avatarColor, setAvatarColor] = React.useState("#ffffff");
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
 
@@ -46,14 +50,15 @@ const AddManagerForm = ({
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/managers", {
+      const res = await api.post("/users", {
         customerId: selectedCustomer._id,
         name,
         email,
         phone,
+        department,
         avatarColor,
       });
-      res.data && alert("Gerente Adicionado!");
+      res.data && alert("Colaborador Adicionado!");
       setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {
@@ -64,7 +69,7 @@ const AddManagerForm = ({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Gerente - {selectedCustomer.name}</DialogTitle>
+      <DialogTitle>Novo Colaborador - {selectedCustomer.name}</DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -115,12 +120,39 @@ const AddManagerForm = ({
         </Grid>
         <Grid
           container
-          sx={{ pr: "4%", mt: 2 }}
+          sx={{ mt: 2 }}
           direction="row"
           justifyContent="flex-start"
           alignItems="center"
         >
           <Grid item>
+            <Typography sx={{ mb: 1 }}>Departamento</Typography>
+            <Select
+              onChange={(e) => setDepartment(e.target.value)}
+              value={department}
+              renderValue={(selected) => selected.name}
+              size="small"
+              sx={{ minWidth: "200px" }}
+            >
+              {departments.map((item) => (
+                <MenuItem
+                  value={item}
+                  key={item.id}
+                  sx={{
+                    backgroundColor: item.color,
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: item.color,
+                      color: "white",
+                    },
+                  }}
+                >
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+          <Grid item sx={{ml:"10%"}}>
             <Typography>Avatar</Typography>
             <ColorPicker
               handleClickColor={handleClickColor}
@@ -131,6 +163,8 @@ const AddManagerForm = ({
             />
           </Grid>
         </Grid>
+        
+          
       </DialogContent>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
@@ -148,4 +182,4 @@ const AddManagerForm = ({
   );
 };
 
-export default AddManagerForm;
+export default AddUserForm;

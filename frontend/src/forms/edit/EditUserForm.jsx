@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 import {
@@ -7,6 +9,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  FormHelperText,
   Grid,
   MenuItem,
   Select,
@@ -14,24 +18,28 @@ import {
   Typography,
 } from "@mui/material";
 import { IMaskInput } from "react-imask";
-import ColorPicker from "../components/small/ColorPicker";
+import ColorPicker from "../../components/small/ColorPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddUserForm = ({
-  openAdd,
-  selectedCustomer,
+const EditUserForm = ({
+  openEdit,
+  selectedUser,
   departments,
-  setOpenAdd,
+  setOpenEdit,
   fetchData,
 }) => {
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [phone, setPhone] = React.useState("");
-  const [department, setDepartment] = React.useState("");
-  const [avatarColor, setAvatarColor] = React.useState("#ffffff");
+  const [name, setName] = React.useState(selectedUser.name);
+  const [email, setEmail] = React.useState(selectedUser.email);
+  const [phone, setPhone] = React.useState(selectedUser.phone);
+  const [position, setPosition] = React.useState(selectedUser.position);
+  const [avatarColor, setAvatarColor] = React.useState(
+    selectedUser.avatarColor
+  );
+  const [department, setDepartment] = React.useState(selectedUser.department);
+  const [previousData, setPreviousData] = React.useState(selectedUser);
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
 
   const handleClickColor = (event) => {
@@ -47,29 +55,35 @@ const AddUserForm = ({
     handleCloseColor();
   };
 
-  const handleAdd = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/users", {
-        customerId: selectedCustomer._id,
+      const res = await api.put("/users", {
+        userId: selectedUser._id,
         name,
         email,
         phone,
-        department,
+        position,
+        department: {
+          id: department.id,
+          name: department.name,
+          color: department.color,
+        },
         avatarColor,
+        previousData: previousData,
       });
-      res.data && alert("Colaborador Adicionado!");
-      setOpenAdd(!openAdd);
+      res.data && alert("Editado com sucesso!");
+      setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {
-      alert("Vish, deu não...");
+      alert("Vish, editei não...");
       console.log(err);
     }
   };
 
   return (
-    <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Colaborador - {selectedCustomer.name}</DialogTitle>
+    <form onSubmit={handleEdit}>
+      <DialogTitle>Editando Colaborador - {selectedUser.name}</DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -117,8 +131,9 @@ const AddUserForm = ({
               value={phone}
             />
           </Grid>
-        </Grid>
-        <Grid
+          </Grid>
+
+          <Grid
           container
           sx={{ mt: 2 }}
           direction="row"
@@ -163,8 +178,6 @@ const AddUserForm = ({
             />
           </Grid>
         </Grid>
-        
-          
       </DialogContent>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
@@ -173,7 +186,7 @@ const AddUserForm = ({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenEdit(!openEdit)}
         >
           X
         </Button>
@@ -182,4 +195,4 @@ const AddUserForm = ({
   );
 };
 
-export default AddUserForm;
+export default EditUserForm;
