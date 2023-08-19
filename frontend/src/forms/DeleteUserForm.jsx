@@ -15,7 +15,7 @@ const DeleteUserForm = ({ selectedUser, openDelete, setOpenDelete, fetchData }) 
   const handleDelete = async () => {
     try {
       const res = await api.delete(`/users/${user._id}`);
-      res.status === 200 && alert("Usuário deletado com sucesso!");
+      res.status === 200 && alert("Colaborador deletado com sucesso!");
       setOpenDelete(false);
       fetchData();
     } catch (err) {
@@ -26,7 +26,7 @@ const DeleteUserForm = ({ selectedUser, openDelete, setOpenDelete, fetchData }) 
 
   return (
     <>
-      <DialogTitle>{`Deletar Usuário ${user.name} ?`}</DialogTitle>
+      <DialogTitle>{`Deletar Colaborador ${user.name} ?`}</DialogTitle>
       <DialogContent>
         <Grid
           container

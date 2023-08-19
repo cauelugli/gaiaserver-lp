@@ -156,12 +156,12 @@ export default function Users({ selectedCustomer }) {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuList sx={{ width: 150 }}>
+            <MenuList sx={{ width: 170 }}>
               <MenuItem onClick={() => setOpenAddUser(true)}>
                 <ListItemIcon>
                   <PersonIcon />
                 </ListItemIcon>
-                <ListItemText>Usuário</ListItemText>
+                <ListItemText>Colaborador</ListItemText>
               </MenuItem>
               <MenuItem onClick={() => setOpenAddManager(true)}>
                 <ListItemIcon>

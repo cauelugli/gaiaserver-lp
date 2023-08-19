@@ -83,7 +83,7 @@ const EditUserForm = ({
 
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle>Editando Usuário - {selectedUser.name}</DialogTitle>
+      <DialogTitle>Editando Colaborador - {selectedUser.name}</DialogTitle>
       <DialogContent>
         <Grid
           container

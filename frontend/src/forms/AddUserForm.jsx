@@ -58,7 +58,7 @@ const AddUserForm = ({
         department,
         avatarColor,
       });
-      res.data && alert("Usuário Adicionado!");
+      res.data && alert("Colaborador Adicionado!");
       setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {
@@ -69,7 +69,7 @@ const AddUserForm = ({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Usuário - {selectedCustomer.name}</DialogTitle>
+      <DialogTitle>Novo Colaborador - {selectedCustomer.name}</DialogTitle>
       <DialogContent>
         <Grid
           container
