@@ -21,16 +21,15 @@ const api = axios.create({
 });
 
 const AddUserForm = ({
+  openAdd,
   selectedCustomer,
   departments,
-  openAdd,
   setOpenAdd,
   fetchData,
 }) => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
-  const [position, setPosition] = React.useState("Comum");
   const [department, setDepartment] = React.useState("");
   const [avatarColor, setAvatarColor] = React.useState("#ffffff");
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
@@ -56,8 +55,7 @@ const AddUserForm = ({
         name,
         email,
         phone,
-        position,
-        department: department === "" ? { isAllocated: false } : department,
+        department,
         avatarColor,
       });
       res.data && alert("Usuário Adicionado!");
@@ -127,59 +125,34 @@ const AddUserForm = ({
           justifyContent="flex-start"
           alignItems="center"
         >
-          <Grid item sx={{ mr: "10%" }}>
-            <Typography>Acesso</Typography>
+          <Grid item>
+            <Typography sx={{ mb: 1 }}>Departamento</Typography>
             <Select
-              onChange={(e) => setPosition(e.target.value)}
-              value={position}
-              sx={{ mt: 1, minWidth: "150px" }}
+              onChange={(e) => setDepartment(e.target.value)}
+              value={department}
+              renderValue={(selected) => selected.name}
               size="small"
+              sx={{ minWidth: "200px" }}
             >
-              <MenuItem value={"Comum"}>Funcionário 👤</MenuItem>
-              <MenuItem value={"Gerente"}>Gerente 💼</MenuItem>
-              <MenuItem disabled value={"Admin"}>
-                Proprietário 🏆
-              </MenuItem>
-            </Select>
-          </Grid>
-          {position === "Comum" && (
-            <Grid item>
-              <Typography sx={{ mb: 1 }}>Departamento</Typography>
-              <Select
-                onChange={(e) => setDepartment(e.target.value)}
-                value={department}
-                renderValue={(selected) => selected.name}
-                size="small"
-                sx={{ minWidth: "200px" }}
-              >
-                {departments.map((item) => (
-                  <MenuItem
-                    value={item}
-                    key={item.id}
-                    sx={{
+              {departments.map((item) => (
+                <MenuItem
+                  value={item}
+                  key={item.id}
+                  sx={{
+                    backgroundColor: item.color,
+                    color: "white",
+                    "&:hover": {
                       backgroundColor: item.color,
                       color: "white",
-                      "&:hover": {
-                        backgroundColor: item.color,
-                        color: "white",
-                      },
-                    }}
-                  >
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-          )}
-        </Grid>
-        <Grid
-          container
-          sx={{ pr: "4%", mt: 2 }}
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="center"
-        >
-          <Grid item>
+                    },
+                  }}
+                >
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+          <Grid item sx={{ml:"10%"}}>
             <Typography>Avatar</Typography>
             <ColorPicker
               handleClickColor={handleClickColor}
@@ -190,6 +163,8 @@ const AddUserForm = ({
             />
           </Grid>
         </Grid>
+        
+          
       </DialogContent>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">

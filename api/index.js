@@ -9,6 +9,7 @@ const customerRoute = require("./routes/customers");
 const departmentRoute = require("./routes/departments");
 const requestsRoutes = require("./routes/requests");
 const userRoute = require("./routes/users");
+const managerRoute = require("./routes/managers");
 const quickNotesRoute = require("./routes/quicknotes");
 
 dotenv.config();
@@ -28,6 +29,7 @@ app.use("/api/customers", customerRoute);
 app.use("/api/departments", departmentRoute);
 app.use("/api/requests", requestsRoutes);
 app.use("/api/users", userRoute);
+app.use("/api/managers", managerRoute);
 app.use("/api/quicknotes", quickNotesRoute);
 
 app.listen("3000", () => {

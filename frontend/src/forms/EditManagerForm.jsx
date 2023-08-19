@@ -24,22 +24,20 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const EditUserForm = ({
+const EditManagerForm = ({
   openEdit,
-  selectedUser,
+  selectedManager,
   departments,
   setOpenEdit,
   fetchData,
 }) => {
-  const [name, setName] = React.useState(selectedUser.name);
-  const [email, setEmail] = React.useState(selectedUser.email);
-  const [phone, setPhone] = React.useState(selectedUser.phone);
-  const [position, setPosition] = React.useState(selectedUser.position);
+  const [name, setName] = React.useState(selectedManager.name);
+  const [email, setEmail] = React.useState(selectedManager.email);
+  const [phone, setPhone] = React.useState(selectedManager.phone);
   const [avatarColor, setAvatarColor] = React.useState(
-    selectedUser.avatarColor
+    selectedManager.avatarColor
   );
-  const [department, setDepartment] = React.useState(selectedUser.department);
-  const [previousData, setPreviousData] = React.useState(selectedUser);
+  const previousData = React.useState(selectedManager);
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
 
   const handleClickColor = (event) => {
@@ -58,21 +56,15 @@ const EditUserForm = ({
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.put("/users", {
-        userId: selectedUser._id,
+      const res = await api.put("/managers", {
+        managerId: selectedManager._id,
         name,
         email,
         phone,
-        position,
-        department: {
-          id: department.id,
-          name: department.name,
-          color: department.color,
-        },
         avatarColor,
         previousData: previousData,
       });
-      res.data && alert("Editado com sucesso!");
+      res.data && alert("Gerente editado com sucesso!");
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {
@@ -83,7 +75,7 @@ const EditUserForm = ({
 
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle>Editando Usuário - {selectedUser.name}</DialogTitle>
+      <DialogTitle>Editando Gerente - {selectedManager.name}</DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -131,43 +123,15 @@ const EditUserForm = ({
               value={phone}
             />
           </Grid>
-          </Grid>
-
-          <Grid
+        </Grid>
+        <Grid
           container
-          sx={{ mt: 2 }}
+          sx={{ pr: "4%", mt: 2 }}
           direction="row"
           justifyContent="flex-start"
           alignItems="center"
         >
           <Grid item>
-            <Typography sx={{ mb: 1 }}>Departamento</Typography>
-            <Select
-              onChange={(e) => setDepartment(e.target.value)}
-              value={department}
-              renderValue={(selected) => selected.name}
-              size="small"
-              sx={{ minWidth: "200px" }}
-            >
-              {departments.map((item) => (
-                <MenuItem
-                  value={item}
-                  key={item.id}
-                  sx={{
-                    backgroundColor: item.color,
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: item.color,
-                      color: "white",
-                    },
-                  }}
-                >
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </Grid>
-          <Grid item sx={{ml:"10%"}}>
             <Typography>Avatar</Typography>
             <ColorPicker
               handleClickColor={handleClickColor}
@@ -195,4 +159,4 @@ const EditUserForm = ({
   );
 };
 
-export default EditUserForm;
+export default EditManagerForm;

@@ -43,9 +43,6 @@ export default function UserTable({ selectedCustomer }) {
         const filteredUsers = response.data.filter(
           (user) => user.customerId === selectedCustomer._id
         );
-        const filteredWorkers = filteredUsers.filter(
-          (user) => user.position === "Comum"
-        );
         const filteredDepartments = responseDepartments.data
           .filter(
             (department) => department.customerId === selectedCustomer._id
@@ -55,7 +52,7 @@ export default function UserTable({ selectedCustomer }) {
             name: department.name,
             color: department.color,
           }));
-        setUsers(filteredWorkers);
+        setUsers(filteredUsers);
         setDepartments(filteredDepartments);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -71,9 +68,6 @@ export default function UserTable({ selectedCustomer }) {
       const filteredUsers = response.data.filter(
         (user) => user.customerId === selectedCustomer._id
       );
-      const filteredWorkers = filteredUsers.filter(
-        (user) => user.position === "Comum"
-      );
       const filteredDepartments = responseDepartments.data
         .filter((department) => department.customerId === selectedCustomer._id)
         .map((department) => ({
@@ -81,7 +75,7 @@ export default function UserTable({ selectedCustomer }) {
           name: department.name,
           color: department.color,
         }));
-      setUsers(filteredWorkers);
+      setUsers(filteredUsers);
       setDepartments(filteredDepartments);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -158,6 +152,13 @@ export default function UserTable({ selectedCustomer }) {
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
                                   >
+                                    E-mail
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
                                     Telefone
                                   </Typography>
                                 </TableCell>
@@ -174,6 +175,9 @@ export default function UserTable({ selectedCustomer }) {
                               <TableRow>
                                 <TableCell component="th" scope="row">
                                   <Typography>{user.name}</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>{user.email}</Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography>{user.phone}</Typography>

@@ -7,15 +7,25 @@ import {
   Button,
   Dialog,
   Grid,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  MenuList,
   Tab,
   Tabs,
   Typography,
 } from "@mui/material";
 
+import PersonIcon from "@mui/icons-material/Person";
+import Person4Icon from "@mui/icons-material/Person4";
+
 import UserTable from "../tables/UserTable";
 import ManagerTable from "../tables/ManagerTable";
 import AdminTable from "../tables/AdminTable";
+
 import AddUserForm from "../forms/AddUserForm";
+import AddManagerForm from "../forms/AddManagerForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -41,7 +51,17 @@ export default function Users({ selectedCustomer }) {
   const [users, setUsers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
 
-  const [openAdd, setOpenAdd] = React.useState(false);
+  const [openAddUser, setOpenAddUser] = React.useState(false);
+  const [openAddManager, setOpenAddManager] = React.useState(false);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openAddButton = Boolean(anchorEl);
+  const handleClickAddButton = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseAddButton = () => {
+    setAnchorEl(null);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -105,16 +125,53 @@ export default function Users({ selectedCustomer }) {
         justifyContent="flex-start"
         alignItems="flex-start"
       >
-        <Typography variant="h4" sx={{mr:2}}>Colaboradores</Typography>
-        <Button
-          onClick={() => setOpenAdd(true)}
-          variant="outlined"
-          sx={{ borderColor: "#eee", borderRadius:3, mb:1, "&:hover": { borderColor: "#eee" }, }}
-        >
-          <Typography variant="h6" color="#eee">
-            + Novo
-          </Typography>
-        </Button>
+        <Typography variant="h4" sx={{ mr: 2 }}>
+          Colaboradores
+        </Typography>
+        <div>
+          <Button
+            id="basic-button"
+            aria-controls={openAddButton ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={openAddButton ? "true" : undefined}
+            onClick={handleClickAddButton}
+            variant="outlined"
+            sx={{
+              borderColor: "#eee",
+              borderRadius: 3,
+              mb: 1,
+              "&:hover": { borderColor: "#eee" },
+            }}
+          >
+            <Typography variant="h6" color="#eee">
+              + Novo
+            </Typography>
+          </Button>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={openAddButton}
+            onClick={handleCloseAddButton}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <MenuList sx={{ width: 150 }}>
+              <MenuItem onClick={() => setOpenAddUser(true)}>
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText>Usuário</ListItemText>
+              </MenuItem>
+              <MenuItem onClick={() => setOpenAddManager(true)}>
+                <ListItemIcon>
+                  <Person4Icon />
+                </ListItemIcon>
+                <ListItemText>Gerente</ListItemText>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </div>
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -145,19 +202,33 @@ export default function Users({ selectedCustomer }) {
       <CustomTabPanel value={value} index={2}>
         <AdminTable selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
-      {openAdd && (
+      {openAddUser && (
         <Dialog
           fullWidth
           maxWidth="md"
-          open={openAdd}
-          onClose={() => setOpenAdd(!openAdd)}
+          open={openAddUser}
+          onClose={() => setOpenAddUser(!openAddUser)}
         >
           <AddUserForm
-            openAdd={openAdd}
+            openAdd={openAddUser}
             selectedCustomer={selectedCustomer}
-            users={users}
             departments={departments}
-            setOpenAdd={setOpenAdd}
+            setOpenAdd={setOpenAddUser}
+            fetchData={fetchData}
+          />
+        </Dialog>
+      )}
+      {openAddManager && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddManager}
+          onClose={() => setOpenAddManager(!openAddManager)}
+        >
+          <AddManagerForm
+            openAdd={openAddManager}
+            selectedCustomer={selectedCustomer}
+            setOpenAdd={setOpenAddManager}
             fetchData={fetchData}
           />
         </Dialog>

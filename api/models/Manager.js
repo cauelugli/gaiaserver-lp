@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-userSchema = new mongoose.Schema({
+managerSchema = new mongoose.Schema({
   customerId: {
     type: String,
     required: true,
@@ -35,6 +35,6 @@ userSchema = new mongoose.Schema({
   },
 });
 
-const User = mongoose.model("User", userSchema);
+const Manager = mongoose.model("Manager", managerSchema);
 
-module.exports = User;
+module.exports = Manager;

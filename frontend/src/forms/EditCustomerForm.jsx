@@ -75,7 +75,7 @@ const EditCustomerForm = ({
 
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle>Editando Cliente {selectedCustomer.name}</DialogTitle>
+      <DialogTitle>Editando Cliente - {selectedCustomer.name}</DialogTitle>
       <DialogContent>
         <Typography sx={{ my: 2 }}>Geral</Typography>
         <TextField
