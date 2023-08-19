@@ -228,7 +228,7 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                                 <Typography
                                   sx={{ fontSize: "14px", color: "#777" }}
                                 >
-                                Telefone
+                                Posição
                                 </Typography>
                               </TableCell>
                             </TableRow>
@@ -242,7 +242,7 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                                 <Typography>{customer.mainContactEmail}</Typography>
                               </TableCell>
                               <TableCell>
-                                <Typography>{customer.mainContactPhone}</Typography>
+                                <Typography>{customer.mainContactPosition}</Typography>
                               </TableCell>
                             </TableRow>
                           </TableBody>

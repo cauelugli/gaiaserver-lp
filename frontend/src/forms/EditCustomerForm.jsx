@@ -180,8 +180,8 @@ const EditCustomerForm = ({
             size="small"
             required
           >
-            <MenuItem value={"Admin2"}>Sócio</MenuItem>
-            <MenuItem value={"Admin"}>Proprietário</MenuItem>
+            <MenuItem value={"Sócio"}>Sócio</MenuItem>
+            <MenuItem value={"Proprietário"}>Proprietário</MenuItem>
           </Select>
         </FormControl>
 
