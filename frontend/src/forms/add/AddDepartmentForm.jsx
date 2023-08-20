@@ -29,6 +29,7 @@ const AddDepartmentForm = ({
   openAdd,
   selectedCustomer,
   users,
+  managers,
   setOpenAdd,
   fetchData,
 }) => {
@@ -44,7 +45,6 @@ const AddDepartmentForm = ({
   const [color, setColor] = React.useState("#ffffff");
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
   const [newManager, setNewManager] = React.useState(false);
-  const managers = users.filter((user) => user.position === "Gerente");
 
   const handleNewManager = (event) => {
     setNewManager(event.target.checked);

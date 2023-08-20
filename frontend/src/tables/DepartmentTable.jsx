@@ -41,20 +41,26 @@ export default function DepartmentTable({
 
   const [departments, setDepartments] = React.useState([]);
   const [users, setUsers] = React.useState([]);
+  const [managers, setManagers] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await api.get("/departments");
         const responseUsers = await api.get("/users");
+        const responseManagers = await api.get("/managers");
         const filteredDepartments = response.data.filter(
           (department) => department.customerId === selectedCustomer._id
         );
         const filteredUsers = responseUsers.data.filter(
           (user) => user.customerId === selectedCustomer._id
         );
+        const filteredManagers = responseManagers.data.filter(
+          (user) => user.customerId === selectedCustomer._id
+        );
         setDepartments(filteredDepartments);
         setUsers(filteredUsers);
+        setManagers(filteredManagers);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -66,14 +72,19 @@ export default function DepartmentTable({
     try {
       const response = await api.get("/departments");
       const responseUsers = await api.get("/users");
+      const responseManagers = await api.get("/managers");
       const filteredDepartments = response.data.filter(
         (department) => department.customerId === selectedCustomer._id
       );
       const filteredUsers = responseUsers.data.filter(
         (user) => user.customerId === selectedCustomer._id
       );
+      const filteredManagers = responseManagers.data.filter(
+        (user) => user.customerId === selectedCustomer._id
+      );
       setDepartments(filteredDepartments);
       setUsers(filteredUsers);
+      setManagers(filteredManagers);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -284,6 +295,7 @@ export default function DepartmentTable({
             openAdd={openAdd}
             selectedCustomer={selectedCustomer}
             users={users}
+            managers={managers}
             setOpenAdd={setOpenAdd}
             fetchData={fetchData}
           />

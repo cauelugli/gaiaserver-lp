@@ -1,23 +1,31 @@
 const mongoose = require("mongoose");
 
-requestSchema = new mongoose.Schema({
+requestJobSchema = new mongoose.Schema({
   customerId: {
     type: String,
     required: true,
   },
-  requesterUserId: {
+  type: {
+    type: String,
+    default: "Job",
+  },
+  requester: {
     type: String,
     required: true,
   },
-  workerUserId: {
-    type: String,
+  worker: {
+    type: Object,
+    required: true,
+  },
+  manager: {
+    type: Object,
+    required: true,
+  },
+  department: {
+    type: Object,
     required: true,
   },
   title: {
-    type: String,
-    required: true,
-  },
-  type: {
     type: String,
     required: true,
   },
@@ -27,7 +35,9 @@ requestSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    required: true,
+  },
+  procedure: {
+    type: Object,
   },
   price: {
     type: Number,
@@ -35,17 +45,17 @@ requestSchema = new mongoose.Schema({
     required: true,
   },
   cost: {
-    type: Number,
-    default: 0,
-    required: true,
+    type: Object,
   },
-  profit: {
-    type: Number,
-    required: true,
+  local: {
+    type: String,
   },
-  scheduledDate: {
+  scheduledTo: {
     type: Date,
     required: true,
+  },
+  executedIn: {
+    type: Date,
   },
   createdAt: {
     type: Date,
@@ -59,6 +69,6 @@ requestSchema = new mongoose.Schema({
   },
 });
 
-const Request = mongoose.model("Request", requestSchema);
+const RequestJob = mongoose.model("RequestJob", requestJobSchema);
 
-module.exports = Request;
+module.exports = RequestJob;
