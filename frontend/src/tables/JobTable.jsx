@@ -79,7 +79,6 @@ export default function JobTable() {
                 <TableRow
                   key={request._id}
                   sx={{
-                    height: "4vw",
                     cursor: "pointer",
                     backgroundColor:
                       (setSelectedRequest === request.title && openDetail) ? "#95dd95" : "none",
