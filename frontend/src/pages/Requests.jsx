@@ -22,13 +22,9 @@ import EngineeringIcon from "@mui/icons-material/Engineering";
 import SellIcon from "@mui/icons-material/Sell";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 
-import UserTable from "../tables/UserTable";
+import JobTable from "../tables/JobTable";
 
-import AddJobForm from "../forms/add/AddJobForm";
-import AddSaleForm from "../forms/add/AddSaleForm";
-import AddSupportForm from "../forms/add/AddSupportForm";
-// import AddUserForm from "../forms/add/Add UserForm";
-// import AddManagerForm from "../forms/add/AddManagerForm";
+import AddRequestForm from "../forms/add/AddRequestForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -53,15 +49,22 @@ export default function Requests({ selectedCustomer }) {
 
   const [requests, setRequests] = React.useState([]);
 
-  const [openAddJob, setOpenAddJob] = React.useState(false);
-  const [openAddSale, setOpenAddSale] = React.useState(false);
-  const [openAddSupport, setOpenAddSupport] = React.useState(false);
+  const [openAddRequest, setOpenAddRequest] = React.useState(false);
+  const [option, setOption] = React.useState("false");
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
+
+  const handleClickAddMenu = (option) => {
+    setOpenAddRequest(!openAddRequest);
+    setOption(option)
+  };
+
+
   const handleClickAddButton = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleCloseAddButton = () => {
     setAnchorEl(null);
   };
@@ -137,19 +140,19 @@ export default function Requests({ selectedCustomer }) {
             }}
           >
             <MenuList sx={{ width: 130 }}>
-              <MenuItem onClick={() => setOpenAddJob(true)}>
+              <MenuItem onClick={() => handleClickAddMenu("Job")}>
                 <ListItemIcon>
                   <EngineeringIcon />
                 </ListItemIcon>
                 <ListItemText>Job</ListItemText>
               </MenuItem>
-              <MenuItem onClick={() => setOpenAddSale(true)}>
+              <MenuItem onClick={() => handleClickAddMenu('Sale')}>
                 <ListItemIcon>
                   <SellIcon />
                 </ListItemIcon>
                 <ListItemText>Venda</ListItemText>
               </MenuItem>
-              <MenuItem onClick={() => setOpenAddSupport(true)}>
+              <MenuItem onClick={() => handleClickAddMenu("Support")}>
                 <ListItemIcon>
                   <SupportAgentIcon />
                 </ListItemIcon>
@@ -180,49 +183,20 @@ export default function Requests({ selectedCustomer }) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <UserTable selectedCustomer={selectedCustomer} />
+        <JobTable selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
-      {openAddJob && (
+      {openAddRequest && (
         <Dialog
           fullWidth
           maxWidth="md"
-          open={openAddJob}
-          onClose={() => setOpenAddJob(!openAddJob)}
+          open={openAddRequest}
+          onClose={() => setOpenAddRequest(!openAddRequest)}
         >
-          <AddJobForm
-            openAdd={openAddJob}
+          <AddRequestForm
+            openAdd={openAddRequest}
             selectedCustomer={selectedCustomer}
-            setOpenAdd={setOpenAddJob}
-            fetchData={fetchData}
-          />
-        </Dialog>
-      )}
-      {openAddSale && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openAddSale}
-          onClose={() => setOpenAddSale(!openAddSale)}
-        >
-          <AddSaleForm
-            openAdd={openAddSale}
-            selectedCustomer={selectedCustomer}
-            setOpenAdd={setOpenAddSale}
-            fetchData={fetchData}
-          />
-        </Dialog>
-      )}
-      {openAddSupport&& (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openAddSupport}
-          onClose={() => setOpenAddSupport(!openAddSupport)}
-        >
-          <AddSupportForm
-            openAdd={openAddSupport}
-            selectedCustomer={selectedCustomer}
-            setOpenAdd={setOpenAddSupport}
+            setOpenAdd={setOpenAddRequest}
+            option={option}
             fetchData={fetchData}
           />
         </Dialog>

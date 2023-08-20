@@ -2,7 +2,6 @@ import * as React from "react";
 import axios from "axios";
 
 import {
-  Button,
   Dialog,
   Box,
   Collapse,
@@ -19,7 +18,6 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
-import AddRequestForm from "../forms/add/AddRequestForm";
 import EditRequestForm from "../forms/edit/EditRequestForm";
 import DeleteRequestForm from "../forms/delete/DeleteRequestForm";
 
@@ -27,8 +25,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function RequestTable() {
-  const [openAdd, setOpenAdd] = React.useState(false);
+export default function JobTable() {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -59,7 +56,7 @@ export default function RequestTable() {
 
   const handleOpenDetail = (request) => {
     setOpenDetail(!openDetail);
-    setSelectedRequest(request.name);
+    setSelectedRequest(request);
   };
 
   const handleOpenEdit = (request) => {
@@ -74,11 +71,6 @@ export default function RequestTable() {
 
   return (
     <Box>
-      <Button onClick={() => setOpenAdd(true)}>
-        <Typography variant="h6" color="#eee">
-          + Novo
-        </Typography>
-      </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
@@ -90,7 +82,7 @@ export default function RequestTable() {
                     height: "4vw",
                     cursor: "pointer",
                     backgroundColor:
-                      (setSelectedRequest === request.name && openDetail) ? "#95dd95" : "none",
+                      (setSelectedRequest === request.title && openDetail) ? "#95dd95" : "none",
                     "&:hover": { backgroundColor: "#ccc " },
                   }}
                 >
@@ -99,7 +91,7 @@ export default function RequestTable() {
                     cursor="pointer"
                     align="left"
                   >
-                    {request.name}
+                    {request.title}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -108,7 +100,7 @@ export default function RequestTable() {
                     colSpan={6}
                   >
                     <Collapse
-                      in={openDetail && setSelectedRequest === request.name}
+                      in={openDetail && selectedRequest.title === request.title}
                       timeout="auto"
                       unmountOnExit
                     >
@@ -119,31 +111,16 @@ export default function RequestTable() {
                         <Table size="small">
                           <TableHead>
                             <TableRow>
-                              <TableCell>Nome</TableCell>
-                              <TableCell>Endereço</TableCell>
-                              <TableCell>Telefone</TableCell>
-                              <TableCell>Contato Principal</TableCell>
-                              <TableCell>Website</TableCell>
-                              <TableCell>Domínio</TableCell>
-                              <TableCell>Segmento</TableCell>
-                              <TableCell>Colaboradores</TableCell>
+                              <TableCell>Titulo</TableCell>
+                              <TableCell>Tipo</TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
                             <TableRow>
                               <TableCell component="th" scope="row">
-                                {request.name}
+                                {request.title}
                               </TableCell>
-                              <TableCell>{request.address}</TableCell>
-                              <TableCell>{request.phone}</TableCell>
-                              <TableCell>
-                                {request.mainContactName} -{" "}
-                                {request.mainContactEmail}
-                              </TableCell>
-                              <TableCell>{request.website}</TableCell>
-                              <TableCell>{request.domain}</TableCell>
-                              <TableCell>{request.segment}</TableCell>
-                              <TableCell>{request.employees}</TableCell>
+                              <TableCell>{request.type}</TableCell>
                             </TableRow>
                           </TableBody>
                         </Table>
@@ -170,20 +147,6 @@ export default function RequestTable() {
           </TableBody>
         </Table>
       </TableContainer>
-      {openAdd && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openAdd}
-          onClose={() => setOpenAdd(!openAdd)}
-        >
-          <AddRequestForm
-            openAdd={openAdd}
-            setOpenAdd={setOpenAdd}
-            fetchData={fetchData}
-          />
-        </Dialog>
-      )}
       {openEdit && (
         <Dialog
           fullWidth

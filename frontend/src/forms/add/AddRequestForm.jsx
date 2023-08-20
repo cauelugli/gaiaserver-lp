@@ -19,26 +19,27 @@ import {
   Typography,
 } from "@mui/material";
 
-import { IMaskInput } from "react-imask";
-
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddRequestForm = ({ openAdd, setOpenAdd, fetchData }) => {
-  const [name, setName] = React.useState("");
-  const [address, setAddress] = React.useState("");
-  const [phone, setPhone] = React.useState("");
-  const [mainContactName, setMainContactName] = React.useState("");
-  const [mainContactEmail, setMainContactEmail] = React.useState("");
-  const [mainContactPosition, setMainContactPosition] = React.useState("");
-  const [domain, setDomain] = React.useState("");
-  const [website, setWebsite] = React.useState("");
-  const [cnpj, setCnpj] = React.useState("");
-  const [segment, setSegment] = React.useState("");
-  const [employees, setEmployees] = React.useState("");
+const AddRequestForm = ({ openAdd, selectedCustomer, setOpenAdd, option, fetchData }) => {
+  const [title, setTitle] = React.useState("");
+  const [type, setType] = React.useState(option);
+  const [description, setDescription] = React.useState("");
+  const [requester, setRequester] = React.useState("");
+  const [worker, setWorker] = React.useState("");
+  const [manager, setManager] = React.useState("");
+  const [department, setDepartment] = React.useState("");
+  const [procedure, setProcedure] = React.useState("");
+  const [price, setPrice] = React.useState("");
+  const [cost, setCost] = React.useState("");
+  const [local, setLocal] = React.useState("");
+  const [scheduledTo, setScheduledTo] = React.useState("");
+
   const [showAdditionalOptions, setShowAdditionalOptions] =
     React.useState(false);
+
   const handleCheckboxChange = (event) => {
     setShowAdditionalOptions(event.target.checked);
   };
@@ -46,20 +47,23 @@ const AddRequestForm = ({ openAdd, setOpenAdd, fetchData }) => {
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/customers", {
-        name,
-        address,
-        phone,
-        mainContactName,
-        mainContactEmail,
-        mainContactPosition,
-        domain,
-        website,
-        cnpj,
-        segment,
-        employees,
+      const res = await api.post("/requests", {
+        customerId: selectedCustomer._id,
+        title,
+        type,
+        description,
+        requester,
+        worker,
+        manager,
+        department,
+        status: "Aberto",
+        procedure,
+        price,
+        cost,
+        local,
+        scheduledTo,
       });
-      res.data && alert("Cliente Adicionado!");
+      res.data && alert("Pedido Adicionado!");
       setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {
@@ -70,164 +74,180 @@ const AddRequestForm = ({ openAdd, setOpenAdd, fetchData }) => {
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Cliente</DialogTitle>
-      <DialogContent>
-        <Typography sx={{ my: 1 }}>Geral</Typography>
-        <TextField
-          label="Nome da Empresa"
-          margin="dense"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          variant="outlined"
-          sx={{ mr: 1, width: 400 }}
-        />
-        <TextField
-          sx={{ mr: 1, width: 400 }}
-          margin="dense"
-          required
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          variant="outlined"
-          label="Endereço"
-        />
-        <Grid
-          container
-          sx={{ pr: "4%", mt:2 }}
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Grid item>
-            <Typography>Telefone</Typography>
-            <IMaskInput
-              style={{
-                padding: "3%",
-                marginRight: "2%",
-                marginTop: "1%",
-                borderColor: "#eee",
-              }}
-              mask="(00) 00000-0000"
-              definitions={{
-                "#": /[1-9]/,
-              }}
-              onAccept={(value) => setPhone(value)}
-              overwrite
-              value={phone}
-            />
-          </Grid>
-          <Grid item>
-            <Typography>CNPJ</Typography>
-            <IMaskInput
-              style={{
-                padding: "3%",
-                marginRight: "2%",
-                marginTop: "1%",
-                borderColor: "#eee",
-              }}
-              mask="00.000.000/0000-00"
-              definitions={{
-                "#": /[1-9]/,
-              }}
-              onAccept={(value) => setCnpj(value)}
-              overwrite
-              value={cnpj}
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              margin="dense"
-              variant="outlined"
-              label="Segmento"
-              value={segment}
-              required
-              onChange={(e) => setSegment(e.target.value)}
-              sx={{ mr: 1, width: 205 }}
-            />
-          </Grid>
-        </Grid>
-
-        <Divider sx={{ my: 2 }} />
-        <Typography>Contato Principal</Typography>
-        <TextField
-          label="Nome"
-          margin="dense"
-          value={mainContactName}
-          onChange={(e) => setMainContactName(e.target.value)}
-          required
-          variant="outlined"
-          sx={{ mr: 1, width: 340 }}
-        />
-        <TextField
-          label="Email"
-          margin="dense"
-          value={mainContactEmail}
-          onChange={(e) => setMainContactEmail(e.target.value)}
-          required
-          variant="outlined"
-          sx={{ mr: 1, width: 300 }}
-        />
-
-        <FormControl sx={{ my: 1, width: 155 }}>
-          <InputLabel>Posição</InputLabel>
+      <DialogTitle>Novo Pedido</DialogTitle>
+      <Typography sx={{ pl: "3%" }}>Tipo do Pedido</Typography>
+      <Grid container sx={{ pl: "3%", mt: 2 }}>
+        <FormControl sx={{ width: 155 }}>
+          <InputLabel>Tipo</InputLabel>
           <Select
-            value={mainContactPosition}
-            onChange={(e) => setMainContactPosition(e.target.value)}
-            label="Posiçã"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            label="Tip"
+            size="small"
             required
           >
-            <MenuItem value={"Funcionário"}>Funcionário</MenuItem>
-            <MenuItem value={"Gerente"}>Gerente</MenuItem>
-            <MenuItem value={"Proprietário"}>Proprietário</MenuItem>
+            <MenuItem value={"Job"}>Job</MenuItem>
+            <MenuItem value={"Sale"}>Venda</MenuItem>
+            <MenuItem value={"Support"}>Suporte</MenuItem>
           </Select>
         </FormControl>
+      </Grid>
 
-        <Divider sx={{ my: 2 }} />
-        <Checkbox
-          checked={showAdditionalOptions}
-          onChange={handleCheckboxChange}
-        />
-        <label>Dados Completos</label>
+      {type === "Job" && (
+        <DialogContent>
+          <Typography sx={{ mb: 1, mt: 2 }}>Informações do Cliente</Typography>
+          <Grid
+            container
+            sx={{ pr: "4%", mt: 2 }}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Grid item>
+              <TextField
+                label="Solicitante"
+                size="small"
+                value={requester}
+                onChange={(e) => setRequester(e.target.value)}
+                required
+                variant="outlined"
+                sx={{ width: 250 }}
+              />
+              <TextField
+                label="Local de Execução"
+                size="small"
+                value={local}
+                onChange={(e) => setLocal(e.target.value)}
+                required
+                variant="outlined"
+                sx={{ width: 200, mx: 2 }}
+              />
+              <TextField
+                label="Agendado para"
+                size="small"
+                value={scheduledTo}
+                onChange={(e) => setScheduledTo(e.target.value)}
+                required
+                variant="outlined"
+                sx={{ width: 250 }}
+              />
+            </Grid>
+          </Grid>
 
-        {showAdditionalOptions && (
-          <Box>
-            <Divider sx={{ my: 2 }} />
-            <Typography>Etc</Typography>
-            <TextField
-              margin="dense"
-              variant="outlined"
-              label="Website"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-              sx={{ mr: 1, width: 270 }}
-            />
-            <TextField
-              margin="dense"
-              variant="outlined"
-              label="Domínio"
-              value={domain}
-              onChange={(e) => setDomain(e.target.value)}
-              sx={{ mr: 1, width: 250 }}
-            />
+          <Divider sx={{ my: 2 }} />
+          <Typography sx={{ my: 1 }}>Solicitação</Typography>
+          <Grid container sx={{ pr: "4%", mt: 2 }} direction="column">
+            <Grid item>
+              <TextField
+                label="Título"
+                size="small"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+                variant="outlined"
+                sx={{ width: "100%", mb: 1 }}
+              />
+              <TextField
+                label="Descrição"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+                variant="outlined"
+                sx={{ width: "100%" }}
+              />
+            </Grid>
+          </Grid>
 
-            <FormControl sx={{ mt: 1, width: 165 }}>
-              <InputLabel>Colaboradores</InputLabel>
-              <Select
-                value={employees}
-                onChange={(e) => setEmployees(e.target.value)}
-                label="Colaboradores"
-              >
-                <MenuItem value={"1-9"}>1 à 9</MenuItem>
-                <MenuItem value={"10-50"}>10 à 50</MenuItem>
-                <MenuItem value={"51-100"}>51 à 100</MenuItem>
-                <MenuItem value={"101-200"}>100 à 200</MenuItem>
-                <MenuItem value={"+201"}>201 ou mais</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        )}
-      </DialogContent>
+          <Divider sx={{ my: 2 }} />
+          <Typography sx={{ my: 2 }}>Responsáveis</Typography>
+          <Grid container sx={{ pr: "4%" }} direction="row">
+            <Grid item>
+              <TextField
+                label="Funcionário"
+                size="small"
+                value={worker}
+                onChange={(e) => setWorker(e.target.value)}
+                required
+                variant="outlined"
+                sx={{ mr: 1, width: 250 }}
+              />
+              <TextField
+                label="Gerente"
+                size="small"
+                value={manager}
+                onChange={(e) => setManager(e.target.value)}
+                required
+                variant="outlined"
+                sx={{ mr: 1, width: 250 }}
+              />
+              <TextField
+                label="Departamento"
+                size="small"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                required
+                variant="outlined"
+                sx={{ mr: 1, width: 250 }}
+              />
+            </Grid>
+          </Grid>
+
+          <Divider sx={{ my: 2 }} />
+          <Typography sx={{ my: 2 }}>Orçamento</Typography>
+          <Grid container sx={{ pr: "4%", ml: "5%" }} direction="row">
+            <Grid item>
+              <Typography>Valor</Typography>
+              <TextField
+                type="number"
+                size="small"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                required
+                variant="outlined"
+                sx={{ width: 100 }}
+              />
+            </Grid>
+            <Grid item>
+              <Typography>Custo</Typography>
+              <TextField
+                type="number"
+                size="small"
+                value={cost}
+                onChange={(e) => setCost(e.target.value)}
+                required
+                variant="outlined"
+                sx={{ width: 100, mx: 3 }}
+              />
+            </Grid>
+          </Grid>
+
+          <Divider sx={{ my: 2, mt: 4 }} />
+          <Checkbox
+            checked={showAdditionalOptions}
+            onChange={handleCheckboxChange}
+          />
+          <label>Dados Completos</label>
+
+          {showAdditionalOptions && (
+            <Box>
+              <Divider sx={{ my: 2 }} />
+              <FormControl sx={{ width: 265 }}>
+                <InputLabel>Procedimento</InputLabel>
+                <Select
+                  value={procedure}
+                  onChange={(e) => setProcedure(e.target.value)}
+                  label="Procedimento"
+                  size="small"
+                >
+                  <MenuItem value={"A"}>AAAA</MenuItem>
+                  <MenuItem value={"B"}>BBB</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          )}
+        </DialogContent>
+      )}
+
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK
