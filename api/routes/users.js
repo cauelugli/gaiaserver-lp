@@ -77,51 +77,64 @@ router.put("/", async (req, res) => {
       { new: true }
     );
 
-    console.log("updatedUser", updatedUser, "\n");
-    console.log("req.body.previousData", req.body.previousData, "\n");
-
     let updatedDepartment;
 
     updatedUser.department.id
       ? updatedUser.department.id && req.body.previousData.department
         ? updatedUser.department.id === req.body.previousData.department.id
-          ? console.log("Tem, e é o mesmo")
-          : console.log("Tem, mas é diferente")
-        : console.log("Nunca tive um dept")
+          ? // SAME DEPT, UPDATES ONLY NEW DEPARTMENT
+            (updatedDepartment = await Department.findOneAndUpdate(
+              {
+                _id: req.body.department.id,
+                "members.id": req.body.userId,
+              },
+              {
+                $set: {
+                  "members.$.name": req.body.name,
+                  "members.$.phone": req.body.phone,
+                  "members.$.email": req.body.email,
+                  "members.$.avatarColor": req.body.avatarColor,
+                },
+              },
+              { new: true }
+            ))
+          : // CHANGING DEPTs, UPDATES PREVIOUS AND NEW DEPARTMENT
+            (await Department.findOneAndUpdate(
+              { "members.id": req.body.userId },
+              { $pull: { members: { id: req.body.userId } } }
+            ),
+            (updatedDepartment = await Department.findByIdAndUpdate(
+              req.body.department.id,
+              {
+                $push: {
+                  members: {
+                    id: updatedUser.id,
+                    name: updatedUser.name,
+                    email: updatedUser.email,
+                    phone: updatedUser.phone,
+                    avatarColor: updatedUser.avatarColor,
+                  },
+                },
+              },
+              { new: true }
+            )))
+        : // ADDS MEMBER, BECAUSE USER NEVER HAD A DEPT PREVIOUSLY
+          (updatedDepartment = await Department.findByIdAndUpdate(
+            req.body.department.id,
+            {
+              $push: {
+                members: {
+                  id: updatedUser.id,
+                  name: updatedUser.name,
+                  email: updatedUser.email,
+                  phone: updatedUser.phone,
+                  avatarColor: updatedUser.avatarColor,
+                },
+              },
+            },
+            { new: true }
+          ))
       : console.log("Nao tem, e fodase");
-
-    //   ? updatedUser.department.id === req.body.previousData.department.id // Add the new member to the department's members array
-    //     ? (updatedDepartment = await Department.findByIdAndUpdate(
-    //         req.body.department.id,
-    //         {
-    //           $push: {
-    //             members: {
-    //               id: req.body.userId,
-    //               name: req.body.name,
-    //               email: req.body.email,
-    //               phone: req.body.phone,
-    //               avatarColor: req.body.avatarColor,
-    //             },
-    //           },
-    //         },
-    //         { new: true }
-    //       )) // Update the existing member
-    //         : (updatedDepartment = await Department.findOneAndUpdate(
-    //             {
-    //               _id: req.body.department.id,
-    //               "members.id": req.body.userId,
-    //             },
-    //             {
-    //               $set: {
-    //                 "members.$.name": req.body.name,
-    //                 "members.$.phone": req.body.phone,
-    //                 "members.$.email": req.body.email,
-    //                 "members.$.avatarColor": req.body.avatarColor,
-    //               },
-    //             },
-    //             { new: true }
-    //           ))
-    //   : "";
 
     res.status(200).json({ updatedUser, updatedDepartment });
   } catch (err) {
