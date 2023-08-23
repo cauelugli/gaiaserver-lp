@@ -122,75 +122,9 @@ router.put("/", async (req, res) => {
       { new: true }
     );
 
-    const memberIds = req.body.members.map((member) => member.id);
-    const updatedMembers = [];
-    for (const memberId of memberIds) {
-      const updatedMember = await User.updateOne(
-        { _id: memberId },
-        {
-          $set: {
-            "department.id": req.body.departmentId,
-            "department.name": updatedDepartment.name,
-            "department.description": updatedDepartment.description,
-            "department.phone": updatedDepartment.phone,
-            "department.email": updatedDepartment.email,
-            "department.color": updatedDepartment.color,
-          },
-        }
-      );
-      updatedMembers.push(updatedMember);
-    }
-
-    const removedMembers = req.body.previousMembers.filter(
-      (prevMember) => !req.body.members.some((currentMember) => currentMember.id === prevMember.id)
-    );
-    for (const removedMember of removedMembers) {
-      await User.findByIdAndUpdate(removedMember.id, {
-        "department.id": "-",
-        "department.name": "-",
-        "department.description": "-",
-        "department.phone": "-",
-        "department.email": "-",
-        "department.color": "-",
-      });
-    }
-
-    const updatedManager = await User.updateOne(
-      { _id: req.body.manager._id },
-      {
-        $set: {
-          "department.id": req.body._id,
-          "department.name": req.body.name,
-          "department.description": req.body.description,
-          "department.phone": req.body.phone,
-          "department.email": req.body.email,
-          "department.color": req.body.color,
-          "department.isAllocated": true,
-        },
-      }
-    );
-    const updatedPreviousManager = req.body.previousManager._id !== req.body.manager._id ? await User.updateOne(
-      { _id: req.body.previousManager._id },
-      {
-        $set: {
-          "department.id": "-",
-          "department.name": "-",
-          "department.description": "-",
-          "department.phone": "-",
-          "department.email": "-",
-          "department.color": "-",
-          "department.isAllocated": false,
-        },
-      }
-    ) : "";
-    res
-      .status(200)
-      .json({
-        updatedDepartment,
-        updatedPreviousManager,
-        updatedManager,
-        updatedMembers,
-      });
+    res.status(200).json({
+      updatedDepartment,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

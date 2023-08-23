@@ -21,13 +21,13 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import EditRequestForm from "../forms/edit/EditRequestForm";
 import DeleteRequestForm from "../forms/delete/DeleteRequestForm";
 
-export default function JobTable({ filteredJobs, fetchData }) {
+export default function SaleTable({ filteredSales, fetchData }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [selectedRequest, setSelectedRequest] = React.useState([]);
 
-  const requests = filteredJobs;
+  const requests = filteredSales;
 
   const handleOpenDetail = (request) => {
     setOpenDetail(!openDetail);

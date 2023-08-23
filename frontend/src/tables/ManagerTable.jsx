@@ -38,22 +38,10 @@ export default function ManagerTable({ selectedCustomer }) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/managers");
-        const responseDepartments = await api.get("/departments");
-        const filteredManagers = response.data.filter(
-          (manager) => manager.customerId === selectedCustomer._id
-        );
-        const filteredDepartments = responseDepartments.data
-          .filter(
-            (department) => department.customerId === selectedCustomer._id
-          )
-          .map((department) => ({
-            id: department._id,
-            name: department.name,
-            color: department.color,
-          }));
-        setManagers(filteredManagers);
-        setDepartments(filteredDepartments);
+        const managers = await api.get("/managers");
+        const departments = await api.get("/departments");
+        setManagers(managers.data);
+        setDepartments(departments.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -63,20 +51,10 @@ export default function ManagerTable({ selectedCustomer }) {
 
   const fetchData = async () => {
     try {
-      const response = await api.get("/managers");
-      const responseDepartments = await api.get("/departments");
-      const filteredManagers = response.data.filter(
-        (user) => user.customerId === selectedCustomer._id
-      );
-      const filteredDepartments = responseDepartments.data
-        .filter((department) => department.customerId === selectedCustomer._id)
-        .map((department) => ({
-          id: department._id,
-          name: department.name,
-          color: department.color,
-        }));
-      setManagers(filteredManagers);
-      setDepartments(filteredDepartments);
+      const managers = await api.get("/managers");
+      const departments = await api.get("/departments");
+      setManagers(managers.data);
+      setDepartments(departments.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -141,13 +119,32 @@ export default function ManagerTable({ selectedCustomer }) {
                           <TableHead>
                             <TableRow>
                               <TableCell>
-                                <Typography sx={{ fontSize: "14px", color: "#777" }}>Nome</Typography>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  Nome
+                                </Typography>
                               </TableCell>
                               <TableCell>
-                                <Typography sx={{ fontSize: "14px", color: "#777" }}>Telefone</Typography>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  Telefone
+                                </Typography>
                               </TableCell>
                               <TableCell>
-                                <Typography sx={{ fontSize: "14px", color: "#777" }}>Departamento</Typography>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  E-mail
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  Departamento
+                                </Typography>
                               </TableCell>
                             </TableRow>
                           </TableHead>
@@ -160,8 +157,13 @@ export default function ManagerTable({ selectedCustomer }) {
                                 <Typography>{manager.phone}</Typography>
                               </TableCell>
                               <TableCell>
+                                <Typography>{manager.email}</Typography>
+                              </TableCell>
+                              <TableCell>
                                 <Typography>
-                                  {manager.department ? manager.department.name : "-"}
+                                  {manager.department
+                                    ? manager.department.name
+                                    : "-"}
                                 </Typography>
                               </TableCell>
                             </TableRow>
@@ -188,7 +190,7 @@ export default function ManagerTable({ selectedCustomer }) {
           </TableBody>
         </Table>
       </TableContainer>
-      
+
       {openEdit && (
         <Dialog
           fullWidth

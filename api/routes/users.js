@@ -18,20 +18,25 @@ router.post("/", async (req, res) => {
   const newUser = new User(req.body);
   try {
     const savedUser = await newUser.save();
-    {req.body.department.name !== "" && 
-    await Department.findOneAndUpdate(
-      { name: req.body.department.name },
-      {
-        $addToSet: {
-          members: {
-            id: savedUser._id.toString(),
-            name: savedUser.name,
-            avatarColor: savedUser.avatarColor,
+    {
+      savedUser.department.id &&
+        (await Department.findOneAndUpdate(
+          { _id: req.body.department.id },
+          {
+            $addToSet: {
+              members: {
+                id: savedUser._id.toString(),
+                name: savedUser.name,
+                phone: savedUser.phone,
+                email: savedUser.email,
+                avatarColor: savedUser.avatarColor,
+              },
+            },
           },
-        },
-      },
-      { upsert: true }
-    )};
+          { upsert: true }
+        ));
+    }
+
     res.status(200).json(savedUser);
   } catch (err) {
     console.log(err);
@@ -58,6 +63,7 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE USER
 router.put("/", async (req, res) => {
+  console.log("req.body", req.body);
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.body.userId,
@@ -65,75 +71,57 @@ router.put("/", async (req, res) => {
         name: req.body.name,
         email: req.body.email,
         phone: req.body.phone,
-        position: req.body.position,
         department: req.body.department,
         avatarColor: req.body.avatarColor,
-        isActive: req.body.isActive,
       },
       { new: true }
     );
 
-    if (req.body.position === "Gerente") {
-      await Department.findOneAndUpdate(
-        { name: req.body.department.name },
-        {
-          $set: {
-            manager: {
-              id: req.body.userId,
-              name: req.body.name,
-              avatarColor: req.body.avatarColor,
-            },
-          },
-        },
-        { upsert: true }
-      );
-    } else {
-      ("");
-    }
+    console.log("updatedUser", updatedUser, "\n");
+    console.log("req.body.previousData", req.body.previousData, "\n");
 
-    if (req.body.department.name !== req.body.previousData.department.name) {
-      await Department.findOneAndUpdate(
-        { "members.id": req.body.userId },
-        { $pull: { members: { id: req.body.userId } } }
-      );
+    let updatedDepartment;
 
-      await Department.findOneAndUpdate(
-        { name: req.body.department.name },
-        {
-          $addToSet: {
-            members: {
-              id: req.body.userId,
-              name: req.body.name,
-              avatarColor: req.body.avatarColor,
-            },
-          },
-        },
-        { upsert: true }
-      );
-    } else {
-      await Department.findOneAndUpdate(
-        { "members.id": req.body.userId },
-        {
-          $set: {
-            "members.$.id": req.body.userId,
-            "members.$.name": req.body.name,
-            "members.$.color": req.body.avatarColor,
-          },
-        }
-      );
-    }
+    updatedUser.department.id
+      ? updatedUser.department.id && req.body.previousData.department
+        ? updatedUser.department.id === req.body.previousData.department.id
+          ? console.log("Tem, e é o mesmo")
+          : console.log("Tem, mas é diferente")
+        : console.log("Nunca tive um dept")
+      : console.log("Nao tem, e fodase");
 
-    const updatedDepartment = await Department.findOneAndUpdate(
-      { "members.id": req.body.userId },
-      {
-        $set: {
-          "members.$.id": req.body.userId,
-          "members.$.name": req.body.name,
-          "members.$.color": req.body.avatarColor,
-        },
-      },
-      { new: true }
-    );
+    //   ? updatedUser.department.id === req.body.previousData.department.id // Add the new member to the department's members array
+    //     ? (updatedDepartment = await Department.findByIdAndUpdate(
+    //         req.body.department.id,
+    //         {
+    //           $push: {
+    //             members: {
+    //               id: req.body.userId,
+    //               name: req.body.name,
+    //               email: req.body.email,
+    //               phone: req.body.phone,
+    //               avatarColor: req.body.avatarColor,
+    //             },
+    //           },
+    //         },
+    //         { new: true }
+    //       )) // Update the existing member
+    //         : (updatedDepartment = await Department.findOneAndUpdate(
+    //             {
+    //               _id: req.body.department.id,
+    //               "members.id": req.body.userId,
+    //             },
+    //             {
+    //               $set: {
+    //                 "members.$.name": req.body.name,
+    //                 "members.$.phone": req.body.phone,
+    //                 "members.$.email": req.body.email,
+    //                 "members.$.avatarColor": req.body.avatarColor,
+    //               },
+    //             },
+    //             { new: true }
+    //           ))
+    //   : "";
 
     res.status(200).json({ updatedUser, updatedDepartment });
   } catch (err) {

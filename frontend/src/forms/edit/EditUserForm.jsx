@@ -34,13 +34,12 @@ const EditUserForm = ({
   const [name, setName] = React.useState(selectedUser.name);
   const [email, setEmail] = React.useState(selectedUser.email);
   const [phone, setPhone] = React.useState(selectedUser.phone);
-  const [position, setPosition] = React.useState(selectedUser.position);
+  const [department, setDepartment] = React.useState(selectedUser.department || "");
+  const previousData = selectedUser;
+  const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
   const [avatarColor, setAvatarColor] = React.useState(
     selectedUser.avatarColor
   );
-  const [department, setDepartment] = React.useState(selectedUser.department);
-  const [previousData, setPreviousData] = React.useState(selectedUser);
-  const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
 
   const handleClickColor = (event) => {
     setColorAnchorEl(event.currentTarget);
@@ -57,20 +56,23 @@ const EditUserForm = ({
 
   const handleEdit = async (e) => {
     e.preventDefault();
+    console.log('department', department)
+    console.log('selectedUser.department que ja tinha', selectedUser.department)
     try {
       const res = await api.put("/users", {
         userId: selectedUser._id,
         name,
         email,
         phone,
-        position,
         department: {
-          id: department.id,
+          id: department.id || department._id,
           name: department.name,
+          phone: department.phone,
+          email: department.email,
           color: department.color,
         },
         avatarColor,
-        previousData: previousData,
+        previousData,
       });
       res.data && alert("Editado com sucesso!");
       setOpenEdit(!openEdit);

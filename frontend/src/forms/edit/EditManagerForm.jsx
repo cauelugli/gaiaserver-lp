@@ -34,6 +34,7 @@ const EditManagerForm = ({
   const [name, setName] = React.useState(selectedManager.name);
   const [email, setEmail] = React.useState(selectedManager.email);
   const [phone, setPhone] = React.useState(selectedManager.phone);
+  const [department, setDepartment] = React.useState(selectedManager.department);
   const [avatarColor, setAvatarColor] = React.useState(
     selectedManager.avatarColor
   );
@@ -61,8 +62,9 @@ const EditManagerForm = ({
         name,
         email,
         phone,
+        department,
         avatarColor,
-        previousData: previousData,
+        previousData,
       });
       res.data && alert("Gerente editado com sucesso!");
       setOpenEdit(!openEdit);
@@ -132,6 +134,33 @@ const EditManagerForm = ({
           alignItems="center"
         >
           <Grid item>
+            <Typography sx={{ mb: 1 }}>Departamento</Typography>
+            <Select
+              onChange={(e) => setDepartment(e.target.value)}
+              value={department}
+              renderValue={(selected) => selected.name}
+              size="small"
+              sx={{ minWidth: "200px" }}
+            >
+              {departments.map((item) => (
+                <MenuItem
+                  value={item}
+                  key={item.id}
+                  sx={{
+                    backgroundColor: item.color,
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: item.color,
+                      color: "white",
+                    },
+                  }}
+                >
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+          <Grid item sx={{ml:"10%"}}>
             <Typography>Avatar</Typography>
             <ColorPicker
               handleClickColor={handleClickColor}

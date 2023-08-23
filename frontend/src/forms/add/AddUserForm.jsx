@@ -51,11 +51,16 @@ const AddUserForm = ({
     e.preventDefault();
     try {
       const res = await api.post("/users", {
-        customerId: selectedCustomer._id,
         name,
         email,
         phone,
-        department,
+        department: {
+          id: department._id,
+          name: department.name,
+          phone: department.phone,
+          email: department.email,
+          color: department.color,
+        },
         avatarColor,
       });
       res.data && alert("Colaborador Adicionado!");

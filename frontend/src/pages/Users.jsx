@@ -70,25 +70,10 @@ export default function Users({ selectedCustomer }) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/users");
-        const responseDepartments = await api.get("/departments");
-        const filteredUsers = response.data.filter(
-          (user) => user.customerId === selectedCustomer._id
-        );
-        const filteredWorkers = filteredUsers.filter(
-          (user) => user.position === "Comum"
-        );
-        const filteredDepartments = responseDepartments.data
-          .filter(
-            (department) => department.customerId === selectedCustomer._id
-          )
-          .map((department) => ({
-            id: department._id,
-            name: department.name,
-            color: department.color,
-          }));
-        setUsers(filteredWorkers);
-        setDepartments(filteredDepartments);
+        const users = await api.get("/users");
+        const departments = await api.get("/departments");
+        setUsers(users.data);
+        setDepartments(departments.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -98,20 +83,10 @@ export default function Users({ selectedCustomer }) {
 
   const fetchData = async () => {
     try {
-      const response = await api.get("/users");
-      const responseDepartments = await api.get("/departments");
-      const filteredUsers = response.data.filter(
-        (user) => user.customerId === selectedCustomer._id
-      );
-      const filteredDepartments = responseDepartments.data
-        .filter((department) => department.customerId === selectedCustomer._id)
-        .map((department) => ({
-          id: department._id,
-          name: department.name,
-          color: department.color,
-        }));
-      setUsers(filteredUsers);
-      setDepartments(filteredDepartments);
+      const users = await api.get("/users");
+      const departments = await api.get("/departments");
+      setUsers(users.data);
+      setDepartments(departments.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -228,6 +203,7 @@ export default function Users({ selectedCustomer }) {
           <AddManagerForm
             openAdd={openAddManager}
             selectedCustomer={selectedCustomer}
+            departments={departments}
             setOpenAdd={setOpenAddManager}
             fetchData={fetchData}
           />

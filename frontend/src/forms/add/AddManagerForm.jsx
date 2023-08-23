@@ -8,6 +8,8 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -21,12 +23,14 @@ const api = axios.create({
 const AddManagerForm = ({
   openAdd,
   selectedCustomer,
+  departments,
   setOpenAdd,
   fetchData,
 }) => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
+  const [department, setDepartment] = React.useState("");
   const [avatarColor, setAvatarColor] = React.useState("#ffffff");
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
 
@@ -47,11 +51,18 @@ const AddManagerForm = ({
     e.preventDefault();
     try {
       const res = await api.post("/managers", {
-        customerId: selectedCustomer._id,
         name,
         email,
         phone,
+        department: {
+          id: department._id,
+          name: department.name,
+          phone: department.phone,
+          email: department.email,
+          color: department.color,
+        },
         avatarColor,
+        isAllocated: department === "" ? false : true,
       });
       res.data && alert("Gerente Adicionado!");
       setOpenAdd(!openAdd);
@@ -121,6 +132,34 @@ const AddManagerForm = ({
           alignItems="center"
         >
           <Grid item>
+            <Typography sx={{ mb: 1 }}>Departamento</Typography>
+            <Select
+              onChange={(e) => setDepartment(e.target.value)}
+              value={department}
+              renderValue={(selected) => selected.name}
+              size="small"
+              sx={{ minWidth: "200px" }}
+            >
+              {departments.map((item) => (
+                <MenuItem
+                  value={item}
+                  key={item.id}
+                  disabled={item.manager !== ""}
+                  sx={{
+                    backgroundColor: item.color,
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: item.color,
+                      color: "white",
+                    },
+                  }}
+                >
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+          <Grid item sx={{ ml: "10%" }}>
             <Typography>Avatar</Typography>
             <ColorPicker
               handleClickColor={handleClickColor}

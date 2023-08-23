@@ -23,7 +23,13 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddRequestForm = ({ openAdd, selectedCustomer, setOpenAdd, option, fetchData }) => {
+const AddRequestForm = ({
+  openAdd,
+  selectedCustomer,
+  setOpenAdd,
+  option,
+  fetchData,
+}) => {
   const [title, setTitle] = React.useState("");
   const [type, setType] = React.useState(option);
   const [description, setDescription] = React.useState("");
@@ -74,10 +80,9 @@ const AddRequestForm = ({ openAdd, selectedCustomer, setOpenAdd, option, fetchDa
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Pedido</DialogTitle>
-      <Typography sx={{ pl: "3%" }}>Tipo do Pedido</Typography>
-      <Grid container sx={{ pl: "3%", mt: 2 }}>
-        <FormControl sx={{ width: 155 }}>
+      <Grid container sx={{ mt: 3 }}>
+        <DialogTitle>Novo Pedido</DialogTitle>
+        <FormControl sx={{ mt:1, width: 155 }}>
           <InputLabel>Tipo</InputLabel>
           <Select
             value={type}
@@ -95,7 +100,7 @@ const AddRequestForm = ({ openAdd, selectedCustomer, setOpenAdd, option, fetchDa
 
       {type === "Job" && (
         <DialogContent>
-          <Typography sx={{ mb: 1, mt: 2 }}>Informações do Cliente</Typography>
+          <Typography sx={{ mb: 1, mt: 2 }}>Informações</Typography>
           <Grid
             container
             sx={{ pr: "4%", mt: 2 }}
@@ -111,7 +116,7 @@ const AddRequestForm = ({ openAdd, selectedCustomer, setOpenAdd, option, fetchDa
                 onChange={(e) => setRequester(e.target.value)}
                 required
                 variant="outlined"
-                sx={{ width: 250 }}
+                sx={{ width: 220 }}
               />
               <TextField
                 label="Local de Execução"
@@ -120,16 +125,16 @@ const AddRequestForm = ({ openAdd, selectedCustomer, setOpenAdd, option, fetchDa
                 onChange={(e) => setLocal(e.target.value)}
                 required
                 variant="outlined"
-                sx={{ width: 200, mx: 2 }}
+                sx={{ width: 385, mx: 2 }}
               />
               <TextField
-                label="Agendado para"
+                label="Agendar para"
                 size="small"
                 value={scheduledTo}
                 onChange={(e) => setScheduledTo(e.target.value)}
                 required
                 variant="outlined"
-                sx={{ width: 250 }}
+                sx={{ width: 180 }}
               />
             </Grid>
           </Grid>
@@ -145,7 +150,16 @@ const AddRequestForm = ({ openAdd, selectedCustomer, setOpenAdd, option, fetchDa
                 onChange={(e) => setTitle(e.target.value)}
                 required
                 variant="outlined"
-                sx={{ width: "100%", mb: 1 }}
+                sx={{ width: "64%", mb: 1, mr:1 }}
+              />
+              <TextField
+                label="Tipo de Serviço"
+                size="small"
+                value={procedure}
+                onChange={(e) => setProcedure(e.target.value)}
+                required
+                variant="outlined"
+                sx={{ width: "35%", mb: 1 }}
               />
               <TextField
                 label="Descrição"
@@ -158,7 +172,7 @@ const AddRequestForm = ({ openAdd, selectedCustomer, setOpenAdd, option, fetchDa
             </Grid>
           </Grid>
 
-          <Divider sx={{ my: 2 }} />
+          <Divider sx={{ mt: -4 }} />
           <Typography sx={{ my: 2 }}>Responsáveis</Typography>
           <Grid container sx={{ pr: "4%" }} direction="row">
             <Grid item>
@@ -226,23 +240,11 @@ const AddRequestForm = ({ openAdd, selectedCustomer, setOpenAdd, option, fetchDa
             checked={showAdditionalOptions}
             onChange={handleCheckboxChange}
           />
-          <label>Dados Completos</label>
+          <label>Observações</label>
 
           {showAdditionalOptions && (
             <Box>
               <Divider sx={{ my: 2 }} />
-              <FormControl sx={{ width: 265 }}>
-                <InputLabel>Procedimento</InputLabel>
-                <Select
-                  value={procedure}
-                  onChange={(e) => setProcedure(e.target.value)}
-                  label="Procedimento"
-                  size="small"
-                >
-                  <MenuItem value={"A"}>AAAA</MenuItem>
-                  <MenuItem value={"B"}>BBB</MenuItem>
-                </Select>
-              </FormControl>
             </Box>
           )}
         </DialogContent>

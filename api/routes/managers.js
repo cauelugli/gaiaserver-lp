@@ -18,21 +18,28 @@ router.post("/", async (req, res) => {
   const newManager = new Manager(req.body);
   try {
     const savedManager = await newManager.save();
-    // {req.body.department.name !== "" && 
-    // await Department.findOneAndUpdate(
-    //   { name: req.body.department.name },
-    //   {
-    //     $addToSet: {
-    //       members: {
-    //         id: savedUser._id.toString(),
-    //         name: savedUser.name,
-    //         avatarColor: savedUser.avatarColor,
-    //       },
-    //     },
-    //   },
-    //   { upsert: true }
-    // )};
-    res.status(200).json(savedManager);
+
+    let updatedDepartment;
+
+    // Adds the new manager to a department
+    if (req.body.department !== "") {
+      updatedDepartment = await Department.findByIdAndUpdate(
+        req.body.department.id,
+        {
+          manager: {
+            id: savedManager._id.toString(),
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            avatarColor: req.body.avatarColor,
+          },
+        },
+        { new: true }
+      );
+    } else {
+      updatedDepartment = "";
+    }
+    res.status(200).json({ savedManager, updatedDepartment });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -44,20 +51,19 @@ router.delete("/:id", async (req, res) => {
   const managerId = req.params.id;
   try {
     const deletedManager = await Manager.findByIdAndDelete(managerId);
-    // const updatedDepartment = await Department.findOneAndUpdate(
-    //   { "members.id": userId },
-    //   { $pull: { members: { id: userId } } },
-    //   { new: true }
-    // );
-
-    // res.status(200).json({ deletedUser, updatedDepartment });
-    res.status(200).json(deletedManager);
+    const updatedDepartment = await Department.findByIdAndUpdate(
+      deletedManager.department.id,
+      { $set: { manager: "" } },
+      { new: true }
+    );
+    res.status(200).json({ deletedManager, updatedDepartment });
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
 
-// UPDATE Manager
+// UPDATE MANAGER
 router.put("/", async (req, res) => {
   try {
     const updatedManager = await Manager.findByIdAndUpdate(
@@ -68,58 +74,30 @@ router.put("/", async (req, res) => {
         phone: req.body.phone,
         department: req.body.department,
         avatarColor: req.body.avatarColor,
-        isActive: req.body.isActive,
       },
       { new: true }
     );
 
-     const updatedDepartment = await Department.findOneAndUpdate(
-        { name: req.body.department.name },
+    let updatedDepartment;
+
+    if (req.body.department !== "") {
+      // Updates department's manager
+      updatedDepartment = await Department.findByIdAndUpdate(
+        req.body.department.id,
         {
-          $set: {
-            manager: {
-              id: req.body.managerId,
-              name: req.body.name,
-              email: req.body.email,
-              phone: req.body.phone,
-              avatarColor: req.body.avatarColor,
-            },
+          manager: {
+            id: req.body.managerId,
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            avatarColor: req.body.avatarColor,
           },
         },
-        { upsert: true }
+        { new: true }
       );
-
-    // if (req.body.department.name !== req.body.previousData.department.name) {
-    //   await Department.findOneAndUpdate(
-    //     { "members.id": req.body.userId },
-    //     { $pull: { members: { id: req.body.userId } } }
-    //   );
-
-    //   await Department.findOneAndUpdate(
-    //     { name: req.body.department.name },
-    //     {
-    //       $addToSet: {
-    //         members: {
-    //           id: req.body.userId,
-    //           name: req.body.name,
-    //           avatarColor: req.body.avatarColor,
-    //         },
-    //       },
-    //     },
-    //     { upsert: true }
-    //   );
-    // } else {
-    //   await Department.findOneAndUpdate(
-    //     { "members.id": req.body.userId },
-    //     {
-    //       $set: {
-    //         "members.$.id": req.body.userId,
-    //         "members.$.name": req.body.name,
-    //         "members.$.color": req.body.avatarColor,
-    //       },
-    //     }
-    //   );
-    // }
+    } else {
+      updatedDepartment = "";
+    }
 
     res.status(200).json({ updatedManager, updatedDepartment });
   } catch (err) {

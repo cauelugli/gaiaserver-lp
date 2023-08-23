@@ -32,7 +32,6 @@ const api = axios.create({
 export default function DepartmentTable({
   openAdd,
   setOpenAdd,
-  selectedCustomer,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -46,45 +45,27 @@ export default function DepartmentTable({
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/departments");
-        const responseUsers = await api.get("/users");
-        const responseManagers = await api.get("/managers");
-        const filteredDepartments = response.data.filter(
-          (department) => department.customerId === selectedCustomer._id
-        );
-        const filteredUsers = responseUsers.data.filter(
-          (user) => user.customerId === selectedCustomer._id
-        );
-        const filteredManagers = responseManagers.data.filter(
-          (user) => user.customerId === selectedCustomer._id
-        );
-        setDepartments(filteredDepartments);
-        setUsers(filteredUsers);
-        setManagers(filteredManagers);
+        const departments = await api.get("/departments");
+      const users = await api.get("/users");
+      const managers = await api.get("/managers");
+      setDepartments(departments.data);
+      setUsers(users.data);
+      setManagers(managers.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [selectedCustomer._id]);
+  }, [departments]);
 
   const fetchData = async () => {
     try {
-      const response = await api.get("/departments");
-      const responseUsers = await api.get("/users");
-      const responseManagers = await api.get("/managers");
-      const filteredDepartments = response.data.filter(
-        (department) => department.customerId === selectedCustomer._id
-      );
-      const filteredUsers = responseUsers.data.filter(
-        (user) => user.customerId === selectedCustomer._id
-      );
-      const filteredManagers = responseManagers.data.filter(
-        (user) => user.customerId === selectedCustomer._id
-      );
-      setDepartments(filteredDepartments);
-      setUsers(filteredUsers);
-      setManagers(filteredManagers);
+      const departments = await api.get("/departments");
+      const users = await api.get("/users");
+      const managers = await api.get("/managers");
+      setDepartments(departments.data);
+      setUsers(users.data);
+      setManagers(managers.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -293,7 +274,6 @@ export default function DepartmentTable({
         >
           <AddDepartmentForm
             openAdd={openAdd}
-            selectedCustomer={selectedCustomer}
             users={users}
             managers={managers}
             setOpenAdd={setOpenAdd}
@@ -310,8 +290,8 @@ export default function DepartmentTable({
         >
           <EditDepartmentForm
             openEdit={openEdit}
-            selectedCustomer={selectedCustomer}
             users={users}
+            managers={managers}
             selectedDepartment={selectedDepartment}
             setOpenEdit={setOpenEdit}
             fetchData={fetchData}
@@ -321,7 +301,6 @@ export default function DepartmentTable({
       {openDelete && (
         <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
           <DeleteDepartmentForm
-            selectedCustomer={selectedCustomer}
             selectedDepartment={selectedDepartment}
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}

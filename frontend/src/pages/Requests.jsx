@@ -25,6 +25,8 @@ import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import JobTable from "../tables/JobTable";
 
 import AddRequestForm from "../forms/add/AddRequestForm";
+import SaleTable from "../tables/SaleTable";
+import SupportTable from "../tables/SupportTable";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -48,6 +50,9 @@ export default function Requests({ selectedCustomer }) {
   const [value, setValue] = React.useState(0);
 
   const [requests, setRequests] = React.useState([]);
+  const [filteredJobs, setFilteredJobs] = React.useState([]);
+  const [filteredSales, setFilteredSales] = React.useState([]);
+  const [filteredSupports, setFilteredSupports] = React.useState([]);
 
   const [openAddRequest, setOpenAddRequest] = React.useState(false);
   const [option, setOption] = React.useState("false");
@@ -57,9 +62,8 @@ export default function Requests({ selectedCustomer }) {
 
   const handleClickAddMenu = (option) => {
     setOpenAddRequest(!openAddRequest);
-    setOption(option)
+    setOption(option);
   };
-
 
   const handleClickAddButton = (event) => {
     setAnchorEl(event.currentTarget);
@@ -80,7 +84,19 @@ export default function Requests({ selectedCustomer }) {
         const filteredRequests = response.data.filter(
           (request) => request.customerId === selectedCustomer._id
         );
+        const filteredJobs = filteredRequests.filter(
+          (job) => job.type === "Job"
+        );
+        const filteredSales = filteredRequests.filter(
+          (sale) => sale.type === "Venda"
+        );
+        const filteredSupports = filteredRequests.filter(
+          (support) => support.type === "Suporte"
+        );
         setRequests(filteredRequests);
+        setFilteredJobs(filteredJobs);
+        setFilteredSales(filteredSales);
+        setFilteredSupports(filteredSupports);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -94,7 +110,17 @@ export default function Requests({ selectedCustomer }) {
       const filteredRequests = response.data.filter(
         (request) => request.customerId === selectedCustomer._id
       );
+      const filteredJobs = filteredRequests.filter((job) => job.type === "Job");
+      const filteredSales = filteredRequests.filter(
+        (sale) => sale.type === "Venda"
+      );
+      const filteredSupports = filteredRequests.filter(
+        (support) => support.type === "Suporte"
+      );
       setRequests(filteredRequests);
+      setFilteredJobs(filteredJobs);
+      setFilteredSales(filteredSales);
+      setFilteredSupports(filteredSupports);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -146,7 +172,7 @@ export default function Requests({ selectedCustomer }) {
                 </ListItemIcon>
                 <ListItemText>Job</ListItemText>
               </MenuItem>
-              <MenuItem onClick={() => handleClickAddMenu('Sale')}>
+              <MenuItem onClick={() => handleClickAddMenu("Sale")}>
                 <ListItemIcon>
                   <SellIcon />
                 </ListItemIcon>
@@ -183,7 +209,25 @@ export default function Requests({ selectedCustomer }) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <JobTable selectedCustomer={selectedCustomer} />
+        <JobTable
+          selectedCustomer={selectedCustomer}
+          filteredJobs={filteredJobs}
+          fetchData={fetchData}
+        />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <SaleTable
+          selectedCustomer={selectedCustomer}
+          filteredSales={filteredSales}
+          fetchData={fetchData}
+        />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <SupportTable
+          selectedCustomer={selectedCustomer}
+          filteredSupports={filteredSupports}
+          fetchData={fetchData}
+        />
       </CustomTabPanel>
       {openAddRequest && (
         <Dialog

@@ -18,7 +18,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Departments({ selectedCustomer }) {
+export default function Departments() {
   const [value, setValue] = React.useState(0);
   const [openAdd, setOpenAdd] = React.useState(false);
 
@@ -61,7 +61,6 @@ export default function Departments({ selectedCustomer }) {
       </Box>
       <CustomTabPanel value={value} index={0}>
         <DepartmentTable
-          selectedCustomer={selectedCustomer}
           openAdd={openAdd}
           setOpenAdd={setOpenAdd}
         />

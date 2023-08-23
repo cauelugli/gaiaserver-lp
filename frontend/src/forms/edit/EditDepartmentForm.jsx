@@ -28,6 +28,7 @@ const EditDepartmentForm = ({
   openEdit,
   selectedDepartment,
   users,
+  managers,
   setOpenEdit,
   fetchData,
 }) => {
@@ -43,7 +44,6 @@ const EditDepartmentForm = ({
   const [selectedUsers, setSelectedUsers] = React.useState(previousMembers);
   const [color, setColor] = React.useState(selectedDepartment.color);
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
-  const managers = users.filter((user) => user.position === "Gerente");
 
   const handleClickColor = (event) => {
     setColorAnchorEl(event.currentTarget);
@@ -64,6 +64,8 @@ const EditDepartmentForm = ({
       const membersData = selectedUsers.map((user) => ({
         id: user._id || user.id,
         name: user.name,
+        phone: user.phone,
+        email: user.email,
         avatarColor: user.avatarColor,
       }));
 
@@ -155,7 +157,7 @@ const EditDepartmentForm = ({
         <Grid item>
           <Typography sx={{ my: 2 }}>Membros</Typography>
           <Members
-            users={users.filter((user) => user.position === "Comum")}
+            users={users}
             value={selectedUsers}
             onChange={handleUserSelectionChange}
           />
@@ -181,7 +183,7 @@ const EditDepartmentForm = ({
                 >
                   <ListSubheader sx={{color:"green", m:-1}}>Disponíveis</ListSubheader>
                   {managers
-                    .filter((manager) => !manager.department.isAllocated)
+                    .filter((manager) => !manager.isAllocated)
                     .map((manager) => (
                       <MenuItem
                         value={manager}
@@ -193,7 +195,7 @@ const EditDepartmentForm = ({
                     ))}
                   <ListSubheader sx={{color:"red", m:-1, mt:0}}>Alocados</ListSubheader>
                   {managers
-                    .filter((manager) => manager.department.isAllocated)
+                    .filter((manager) => manager.isAllocated)
                     .map((manager) => (
                       <MenuItem
                         disabled

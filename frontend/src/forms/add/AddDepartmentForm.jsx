@@ -27,7 +27,6 @@ const api = axios.create({
 
 const AddDepartmentForm = ({
   openAdd,
-  selectedCustomer,
   users,
   managers,
   setOpenAdd,
@@ -69,25 +68,28 @@ const AddDepartmentForm = ({
       const membersData = selectedUsers.map((user) => ({
         id: user._id,
         name: user.name,
+        phone: user.phone,
+        email: user.email,
         avatarColor: user.avatarColor,
       }));
 
       const newManagerCreated = newManager
-        ? await api.post("/users", {
-            customerId: selectedCustomer._id,
+        ? await api.post("/managers", {
             name: managerName,
             email: managerEmail,
             phone: managerPhone,
-            position: "Gerente",
             avatarColor: color,
+            isAllocated: true,
             department: {
-              isAllocated: true,
+              name,
+              phone,
+              email,
+              color,
             },
           })
         : "";
 
       const res = await api.post("/departments", {
-        customerId: selectedCustomer._id,
         name,
         description,
         phone,
@@ -107,7 +109,7 @@ const AddDepartmentForm = ({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Departamento - {selectedCustomer.name}</DialogTitle>
+      <DialogTitle>Novo Departamento</DialogTitle>
       <DialogContent>
         <Typography sx={{ mt: 2 }}>Geral</Typography>
         <Grid container direction="row">
@@ -166,7 +168,7 @@ const AddDepartmentForm = ({
         <Grid item>
           <Typography sx={{ my: 2 }}>Membros</Typography>
           <Members
-            users={users.filter((user) => user.position === "Comum")}
+            users={users}
             value={selectedUsers}
             onChange={setSelectedUsers}
           />
@@ -245,7 +247,7 @@ const AddDepartmentForm = ({
                     Disponíveis
                   </ListSubheader>
                   {managers
-                    .filter((manager) => !manager.department.isAllocated)
+                    .filter((manager) => !manager.isAllocated)
                     .map((manager) => (
                       <MenuItem
                         value={manager}
@@ -259,7 +261,7 @@ const AddDepartmentForm = ({
                     Alocados
                   </ListSubheader>
                   {managers
-                    .filter((manager) => manager.department.isAllocated)
+                    .filter((manager) => manager.isAllocated)
                     .map((manager) => (
                       <MenuItem
                         disabled
