@@ -8,7 +8,12 @@ const Members = ({ users, value, onChange }) => {
   const filteredUsers = users.filter(
     (user) =>
       !value.some((selectedUser) => selectedUser._id === user._id) &&
-      !value.some((prevUser) => prevUser.id === user._id)
+      !value.some((prevUser) => prevUser.id === user._id) &&
+      // BY DEFAULT, USERS CAN HAVE ONLY ONE GROUP.
+      // SOON WILL BE ADDED IN CONFIG THE OPTION TO WORK 
+      // WITH MULTIPLE DEPARTMENTS.
+      // THIS CONDITION CHECKS IT.
+      !user.department
   );
 
 

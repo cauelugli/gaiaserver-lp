@@ -29,10 +29,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function DepartmentTable({
-  openAdd,
-  setOpenAdd,
-}) {
+export default function DepartmentTable({ openAdd, setOpenAdd }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -46,11 +43,11 @@ export default function DepartmentTable({
     const fetchData = async () => {
       try {
         const departments = await api.get("/departments");
-      const users = await api.get("/users");
-      const managers = await api.get("/managers");
-      setDepartments(departments.data);
-      setUsers(users.data);
-      setManagers(managers.data);
+        const users = await api.get("/users");
+        const managers = await api.get("/managers");
+        setDepartments(departments.data);
+        setUsers(users.data);
+        setManagers(managers.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -221,7 +218,7 @@ export default function DepartmentTable({
                                 <Typography>
                                   {department.members.map((user) => (
                                     <Chip
-                                      sx={{ m: 0.5 }}
+                                      sx={{ mx: 1 }}
                                       size="small"
                                       key={user.id}
                                       avatar={
@@ -231,10 +228,25 @@ export default function DepartmentTable({
                                             backgroundColor: user.avatarColor,
                                           }}
                                         >
-                                          {user.name[0].toUpperCase()}
+                                          <Typography
+                                            sx={{
+                                              color: "black",
+                                              fontSize: "100%",
+                                            }}
+                                          >
+                                            {user.name[0].toUpperCase()}
+                                          </Typography>
                                         </Avatar>
                                       }
-                                      label={user.name}
+                                      label={
+                                        <Typography
+                                          sx={{
+                                            fontSize: "100%",
+                                          }}
+                                        >
+                                          {user.name}
+                                        </Typography>
+                                      }
                                     />
                                   ))}
                                 </Typography>

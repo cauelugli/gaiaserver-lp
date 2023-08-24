@@ -73,29 +73,19 @@ const AddDepartmentForm = ({
         avatarColor: user.avatarColor,
       }));
 
-      const newManagerCreated = newManager
-        ? await api.post("/managers", {
-            name: managerName,
-            email: managerEmail,
-            phone: managerPhone,
-            avatarColor: color,
-            isAllocated: true,
-            department: {
-              name,
-              phone,
-              email,
-              color,
-            },
-          })
-        : "";
-
       const res = await api.post("/departments", {
         name,
         description,
         phone,
         email,
         color,
-        manager: newManager ? newManagerCreated.data : manager,
+        manager,
+        newManagerData: {
+          name: managerName,
+          phone: managerPhone,
+          email: managerEmail,
+          avatarColor: color,
+        },
         members: membersData,
       });
       res.data && alert("Departamento Adicionado!");
@@ -106,6 +96,8 @@ const AddDepartmentForm = ({
       console.log(err);
     }
   };
+
+  console.log("managers", managers)
 
   return (
     <form onSubmit={handleAdd}>
@@ -247,7 +239,7 @@ const AddDepartmentForm = ({
                     Disponíveis
                   </ListSubheader>
                   {managers
-                    .filter((manager) => !manager.isAllocated)
+                    .filter((manager) => !manager.department)
                     .map((manager) => (
                       <MenuItem
                         value={manager}
@@ -261,7 +253,7 @@ const AddDepartmentForm = ({
                     Alocados
                   </ListSubheader>
                   {managers
-                    .filter((manager) => manager.isAllocated)
+                    .filter((manager) => manager.department)
                     .map((manager) => (
                       <MenuItem
                         disabled

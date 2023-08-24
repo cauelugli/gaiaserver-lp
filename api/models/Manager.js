@@ -22,9 +22,6 @@ managerSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  isAllocated: {
-    type: Boolean,
-  },
   createdAt: {
     type: Date,
     default: Date.now,

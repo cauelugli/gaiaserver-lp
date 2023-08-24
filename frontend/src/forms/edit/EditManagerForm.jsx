@@ -12,6 +12,7 @@ import {
   FormControl,
   FormHelperText,
   Grid,
+  ListSubheader,
   MenuItem,
   Select,
   TextField,
@@ -34,11 +35,11 @@ const EditManagerForm = ({
   const [name, setName] = React.useState(selectedManager.name);
   const [email, setEmail] = React.useState(selectedManager.email);
   const [phone, setPhone] = React.useState(selectedManager.phone);
-  const [department, setDepartment] = React.useState(selectedManager.department);
+  const [department, setDepartment] = React.useState(selectedManager.department || "");
   const [avatarColor, setAvatarColor] = React.useState(
     selectedManager.avatarColor
   );
-  const previousData = React.useState(selectedManager);
+  const previousData = selectedManager;
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
 
   const handleClickColor = (event) => {
@@ -62,7 +63,13 @@ const EditManagerForm = ({
         name,
         email,
         phone,
-        department,
+        department: {
+          id: department.id || department._id,
+          name: department.name,
+          phone: department.phone,
+          email: department.email,
+          color: department.color,
+        },
         avatarColor,
         previousData,
       });
@@ -142,22 +149,35 @@ const EditManagerForm = ({
               size="small"
               sx={{ minWidth: "200px" }}
             >
-              {departments.map((item) => (
-                <MenuItem
-                  value={item}
-                  key={item.id}
-                  sx={{
-                    backgroundColor: item.color,
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: item.color,
-                      color: "white",
-                    },
-                  }}
-                >
-                  {item.name}
-                </MenuItem>
-              ))}
+              <ListSubheader sx={{ color: "green", m: -1 }}>
+                Disponíveis
+              </ListSubheader>
+              {departments
+                .filter((department) => department.manager === "")
+                .map((department) => (
+                  <MenuItem
+                    value={department}
+                    key={department._id}
+                    sx={{ fontSize: "100%" }}
+                  >
+                    {department.name}
+                  </MenuItem>
+                ))}
+              <ListSubheader sx={{ color: "red", m: -1, mt: 0 }}>
+                Gerenciados
+              </ListSubheader>
+              {departments
+                .filter((department) => department.manager !== "")
+                .map((department) => (
+                  <MenuItem
+                    disabled
+                    value={department}
+                    key={department._id}
+                    sx={{ fontSize: "100%" }}
+                  >
+                    {department.name}
+                  </MenuItem>
+                ))}
             </Select>
           </Grid>
           <Grid item sx={{ml:"10%"}}>

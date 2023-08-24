@@ -183,7 +183,7 @@ const EditDepartmentForm = ({
                 >
                   <ListSubheader sx={{color:"green", m:-1}}>Disponíveis</ListSubheader>
                   {managers
-                    .filter((manager) => !manager.isAllocated)
+                    .filter((manager) => !manager.department)
                     .map((manager) => (
                       <MenuItem
                         value={manager}
@@ -195,7 +195,7 @@ const EditDepartmentForm = ({
                     ))}
                   <ListSubheader sx={{color:"red", m:-1, mt:0}}>Alocados</ListSubheader>
                   {managers
-                    .filter((manager) => manager.isAllocated)
+                    .filter((manager) => manager.department)
                     .map((manager) => (
                       <MenuItem
                         disabled

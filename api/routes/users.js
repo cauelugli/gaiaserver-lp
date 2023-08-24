@@ -63,7 +63,6 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE USER
 router.put("/", async (req, res) => {
-  console.log("req.body", req.body);
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.body.userId,
@@ -134,7 +133,7 @@ router.put("/", async (req, res) => {
             },
             { new: true }
           ))
-      : console.log("Nao tem, e fodase");
+      : "";
 
     res.status(200).json({ updatedUser, updatedDepartment });
   } catch (err) {

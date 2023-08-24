@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  ListSubheader,
   MenuItem,
   Select,
   TextField,
@@ -140,23 +141,35 @@ const AddManagerForm = ({
               size="small"
               sx={{ minWidth: "200px" }}
             >
-              {departments.map((item) => (
-                <MenuItem
-                  value={item}
-                  key={item.id}
-                  disabled={item.manager !== ""}
-                  sx={{
-                    backgroundColor: item.color,
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: item.color,
-                      color: "white",
-                    },
-                  }}
-                >
-                  {item.name}
-                </MenuItem>
-              ))}
+              <ListSubheader sx={{ color: "green", m: -1 }}>
+                Disponíveis
+              </ListSubheader>
+              {departments
+                .filter((department) => department.manager === "")
+                .map((department) => (
+                  <MenuItem
+                    value={department}
+                    key={department._id}
+                    sx={{ fontSize: "100%" }}
+                  >
+                    {department.name}
+                  </MenuItem>
+                ))}
+              <ListSubheader sx={{ color: "red", m: -1, mt: 0 }}>
+                Gerenciados
+              </ListSubheader>
+              {departments
+                .filter((department) => department.manager !== "")
+                .map((department) => (
+                  <MenuItem
+                    disabled
+                    value={department}
+                    key={department._id}
+                    sx={{ fontSize: "100%" }}
+                  >
+                    {department.name}
+                  </MenuItem>
+                ))}
             </Select>
           </Grid>
           <Grid item sx={{ ml: "10%" }}>
