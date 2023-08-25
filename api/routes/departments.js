@@ -196,7 +196,7 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE DEPARTMENT
 router.put("/", async (req, res) => {
-  console.log("\nreq.body.manager", req.body.manager, "\n");
+  console.log("\nreq.body", req.body, "\n");
   console.log("\nreq.body.previousManager", req.body.previousManager, "\n");
   try {
     const updatedDepartment = await Department.findByIdAndUpdate(
@@ -236,7 +236,7 @@ router.put("/", async (req, res) => {
               }
             ))
           : ((removedManager = await Manager.findByIdAndUpdate(
-              req.body.previousManager.id,
+              req.body.previousManager._id || req.body.previousManager.id,
               {
                 $set: { department: {} },
               }
