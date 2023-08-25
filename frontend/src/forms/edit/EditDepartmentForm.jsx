@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -40,6 +41,8 @@ const EditDepartmentForm = ({
   const [email, setEmail] = React.useState(selectedDepartment.email);
   const previousManager = selectedDepartment.manager;
   const previousMembers = selectedDepartment.members;
+  const [updatedMembers, setUpdatedMembers] = React.useState([]);
+  const [removedMembers, setRemovedMembers] = React.useState([]);
   const [manager, setManager] = React.useState(previousManager);
   const [selectedUsers, setSelectedUsers] = React.useState(previousMembers);
   const [color, setColor] = React.useState(selectedDepartment.color);
@@ -78,8 +81,8 @@ const EditDepartmentForm = ({
         color,
         previousManager,
         manager,
-        previousMembers,
-        members: membersData,
+        updatedMembers: membersData,
+        removedMembers,
       });
       res.data && alert("Departamento Editado!");
       setOpenEdit(!openEdit);
@@ -92,7 +95,22 @@ const EditDepartmentForm = ({
 
   const handleUserSelectionChange = (newSelectedUsers) => {
     setSelectedUsers(newSelectedUsers);
+    
+    const previousMemberIds = previousMembers.map(member => member._id || member.id);
+    const newSelectedUserIds = newSelectedUsers.map(user => user._id || user.id);
+    
+    const removedMemberIds = previousMemberIds.filter(id => !newSelectedUserIds.includes(id));
+    const updatedMembersData = newSelectedUsers.map(user => {
+      const previousMember = previousMembers.find(member => member.id === user._id);
+      return previousMember ? { ...user, ...previousMember } : user;
+    });
+  
+    const removedMembersData = previousMembers.filter(member => removedMemberIds.includes(member.id));
+  
+    setUpdatedMembers(updatedMembersData);
+    setRemovedMembers(removedMembersData);
   };
+  
 
   return (
     <form onSubmit={handleEdit}>
@@ -175,38 +193,42 @@ const EditDepartmentForm = ({
           </Grid>
           <Grid container direction="row">
             <Grid item>
-            <Select
-                  size="small"
-                  onChange={(e) => setManager(e.target.value)}
-                  value={manager}
-                  renderValue={(selected) => selected.name}
-                >
-                  <ListSubheader sx={{color:"green", m:-1}}>Disponíveis</ListSubheader>
-                  {managers
-                    .filter((manager) => !manager.department)
-                    .map((manager) => (
-                      <MenuItem
-                        value={manager}
-                        key={manager._id}
-                        sx={{ fontSize: "100%" }}
-                      >
-                        {manager.name}
-                      </MenuItem>
-                    ))}
-                  <ListSubheader sx={{color:"red", m:-1, mt:0}}>Alocados</ListSubheader>
-                  {managers
-                    .filter((manager) => manager.department)
-                    .map((manager) => (
-                      <MenuItem
-                        disabled
-                        value={manager}
-                        key={manager._id}
-                        sx={{ fontSize: "100%" }}
-                      >
-                        {manager.name}
-                      </MenuItem>
-                    ))}
-                </Select>
+              <Select
+                size="small"
+                onChange={(e) => setManager(e.target.value)}
+                value={manager}
+                renderValue={(selected) => selected.name}
+              >
+                <ListSubheader sx={{ color: "green", m: -1 }}>
+                  Disponíveis
+                </ListSubheader>
+                {managers
+                  .filter((manager) => !manager.department)
+                  .map((manager) => (
+                    <MenuItem
+                      value={manager}
+                      key={manager._id}
+                      sx={{ fontSize: "100%" }}
+                    >
+                      {manager.name}
+                    </MenuItem>
+                  ))}
+                <ListSubheader sx={{ color: "red", m: -1, mt: 0 }}>
+                  Alocados
+                </ListSubheader>
+                {managers
+                  .filter((manager) => manager.department)
+                  .map((manager) => (
+                    <MenuItem
+                      disabled
+                      value={manager}
+                      key={manager._id}
+                      sx={{ fontSize: "100%" }}
+                    >
+                      {manager.name}
+                    </MenuItem>
+                  ))}
+              </Select>
             </Grid>
           </Grid>
         </Grid>

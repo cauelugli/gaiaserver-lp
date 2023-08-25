@@ -196,8 +196,6 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE DEPARTMENT
 router.put("/", async (req, res) => {
-  console.log("\nreq.body", req.body, "\n");
-  console.log("\nreq.body.previousManager", req.body.previousManager, "\n");
   try {
     const updatedDepartment = await Department.findByIdAndUpdate(
       req.body.departmentId,
@@ -207,17 +205,49 @@ router.put("/", async (req, res) => {
         description: req.body.description,
         phone: req.body.phone,
         manager: req.body.manager,
-        members: req.body.members,
+        members: req.body.updatedMembers,
         color: req.body.color,
         // isActive: req.body.isActive,
       },
       { new: true }
     );
 
-    console.log("\nupdatedDepartment", updatedDepartment, "\n");
-
     let updatedManager;
     let removedManager;
+    let updatedMembers = [];
+    let removedMembers = [];
+
+    const memberIds = req.body.updatedMembers.map((member) => member._id || member.id);
+
+    for (const memberId of memberIds) {
+      const newAddedUpdatedMember = await User.updateOne(
+        { _id: memberId },
+        {
+          $set: {
+            "department.id": updatedDepartment._id,
+            "department.name": updatedDepartment.name,
+            "department.phone": updatedDepartment.phone,
+            "department.email": updatedDepartment.email,
+            "department.color": updatedDepartment.color,
+          },
+        }
+      );
+      updatedMembers.push(newAddedUpdatedMember);
+    }
+
+    const removedMemberIds = req.body.removedMembers.map((member) => member._id || member.id);
+
+    for (const memberId of removedMemberIds) {
+      const updatedMember = await User.findOneAndUpdate(
+        { _id: memberId },
+        {
+          $set: {
+            "department": {},
+          },
+        }
+      );
+      removedMembers.push(updatedMember);
+    }
 
     updatedDepartment.manager
       ? updatedDepartment.manager && req.body.previousManager
@@ -231,7 +261,6 @@ router.put("/", async (req, res) => {
                   email: updatedDepartment.email,
                   phone: updatedDepartment.phone,
                   color: updatedDepartment.color,
-                  // isActive: updatedDepartment.isActive,
                 },
               }
             ))
@@ -250,7 +279,6 @@ router.put("/", async (req, res) => {
                   email: updatedDepartment.email,
                   phone: updatedDepartment.phone,
                   color: updatedDepartment.color,
-                  // isActive: updatedDepartment.isActive,
                 },
               }
             )))
@@ -263,13 +291,20 @@ router.put("/", async (req, res) => {
                 email: updatedDepartment.email,
                 phone: updatedDepartment.phone,
                 color: updatedDepartment.color,
-                // isActive: updatedDepartment.isActive,
               },
             }
           ))
       : "";
 
-    res.status(200).json({ updatedDepartment, updatedManager, removedManager });
+    res
+      .status(200)
+      .json({
+        updatedDepartment,
+        updatedManager,
+        removedManager,
+        updatedMembers,
+        removedMembers,
+      });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
