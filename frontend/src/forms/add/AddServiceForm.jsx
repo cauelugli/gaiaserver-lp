@@ -4,7 +4,9 @@ import React from "react";
 import axios from "axios";
 
 import {
+  Box,
   Button,
+  Checkbox,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -30,6 +32,11 @@ export default function AddServiceForm({
   const [department, setDepartment] = React.useState({});
   const [value, setValue] = React.useState(0);
   const [materials, setMaterials] = React.useState({});
+
+  const [showUsesMaterials, setUsesMaterials] = React.useState(false);
+  const handleUsesMaterials = (event) => {
+    setUsesMaterials(event.target.checked);
+  };
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -76,7 +83,7 @@ export default function AddServiceForm({
               sx={{ width: 300 }}
             />
           </Grid>
-          <Grid item sx={{mx:2}}>
+          <Grid item sx={{ mx: 2 }}>
             <Typography>Departamento</Typography>
             <Select
               onChange={(e) => setDepartment(e.target.value)}
@@ -133,32 +140,26 @@ export default function AddServiceForm({
           justifyContent="flex-start"
           alignItems="center"
         >
-          <Grid item>
-            <Typography sx={{ mb: 1 }}>Materiais</Typography>
-            <Select
-              onChange={(e) => setMaterials(e.target.value)}
-              value={materials}
-              renderValue={(selected) => selected.name}
-              size="small"
-              sx={{ minWidth: "200px" }}
-            >
-              {/* {departments.map((item) => (
-                <MenuItem
-                  value={item}
-                  key={item.id}
-                  sx={{
-                    backgroundColor: item.color,
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: item.color,
-                      color: "white",
-                    },
-                  }}
-                >
-                  {item.name}
-                </MenuItem>
-              ))} */}
-            </Select>
+          <Grid item sx={{mt:4}}>
+            <label>Uso de Materiais?</label>
+            <Checkbox
+              checked={showUsesMaterials}
+              onChange={handleUsesMaterials}
+            />
+
+            {showUsesMaterials && (
+              <Box>
+                <Typography sx={{ my: 2 }}>Materiais em Estoque</Typography>
+                <TextField
+                  variant="outlined"
+                  label="Materiais"
+                  size="small"
+                  value={materials}
+                  onChange={(e) => setMaterials(e.target.value)}
+                  sx={{ mr: 1, width: 270 }}
+                />
+              </Box>
+            )}
           </Grid>
         </Grid>
       </DialogContent>

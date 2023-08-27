@@ -254,6 +254,38 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                             </TableRow>
                           </TableBody>
                         </Table>
+                      </Box>
+
+                      <Box sx={{ my: 4, px: 6 }}>
+                        <Typography variant="h6">
+                          Serviços ({department.services.length})
+                        </Typography>
+                        <Table size="small">
+                          <TableBody>
+                            <TableRow>
+                              <TableCell>
+                                <Typography>
+                                  {department.services.map((service) => (
+                                    <Chip
+                                      sx={{ mx: 1 }}
+                                      size="small"
+                                      key={service.id}
+                                      label={
+                                        <Typography
+                                          sx={{
+                                            fontSize: "100%",
+                                          }}
+                                        >
+                                          {service.name}
+                                        </Typography>
+                                      }
+                                    />
+                                  ))}
+                                </Typography>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
                         <Box sx={{ mt: 3, ml: "90%" }}>
                           <ModeEditIcon
                             cursor="pointer"
@@ -269,6 +301,7 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                           />
                         </Box>
                       </Box>
+                      
                     </Collapse>
                   </TableCell>
                 </TableRow>
