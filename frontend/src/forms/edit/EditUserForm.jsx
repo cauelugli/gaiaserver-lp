@@ -56,8 +56,6 @@ const EditUserForm = ({
 
   const handleEdit = async (e) => {
     e.preventDefault();
-    console.log('department', department)
-    console.log('selectedUser.department que ja tinha', selectedUser.department)
     try {
       const res = await api.put("/users", {
         userId: selectedUser._id,

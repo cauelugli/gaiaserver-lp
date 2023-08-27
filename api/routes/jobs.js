@@ -6,7 +6,6 @@ const Job = require("../models/Job");
 router.get("/", async (req, res) => {
   try {
     const jobs = await Job.find();
-    console.log('jobs', jobs)
     jobs.filter((job) => job.type === "Job")
     res.status(200).json(jobs);
   } catch (err) {

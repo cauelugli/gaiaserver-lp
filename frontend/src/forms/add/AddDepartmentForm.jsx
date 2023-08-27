@@ -97,8 +97,6 @@ const AddDepartmentForm = ({
     }
   };
 
-  console.log("managers", managers)
-
   return (
     <form onSubmit={handleAdd}>
       <DialogTitle>Novo Departamento</DialogTitle>

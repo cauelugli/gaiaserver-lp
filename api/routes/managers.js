@@ -62,8 +62,6 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE MANAGER
 router.put("/", async (req, res) => {
-  console.log("req.body", req.body, "\n");
-  console.log("req.body.previousData", req.body.previousData, "\n");
   try {
     const updatedManager = await Manager.findByIdAndUpdate(
       req.body.managerId,
