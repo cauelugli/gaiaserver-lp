@@ -23,7 +23,6 @@ const api = axios.create({
 
 const AddManagerForm = ({
   openAdd,
-  selectedCustomer,
   departments,
   setOpenAdd,
   fetchData,
@@ -76,7 +75,7 @@ const AddManagerForm = ({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Gerente - {selectedCustomer.name}</DialogTitle>
+      <DialogTitle>Novo Gerente</DialogTitle>
       <DialogContent>
         <Grid
           container

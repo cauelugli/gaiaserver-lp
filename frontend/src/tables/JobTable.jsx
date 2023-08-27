@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import axios from "axios";
 
 import {
   Dialog,
@@ -21,13 +22,31 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import EditRequestForm from "../forms/edit/EditRequestForm";
 import DeleteRequestForm from "../forms/delete/DeleteRequestForm";
 
-export default function JobTable({ filteredJobs, fetchData }) {
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
+export default function JobTable({ selectedCustomer, fetchData }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [selectedRequest, setSelectedRequest] = React.useState([]);
 
-  const requests = filteredJobs;
+  const [filteredJobs, setFilteredJobs] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const jobs = await api.get("/jobs");
+        setFilteredJobs(
+          jobs.data.filter((job) => job.customerId === selectedCustomer._id)
+        );
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [selectedCustomer]);
 
   const handleOpenDetail = (request) => {
     setOpenDetail(!openDetail);
@@ -49,25 +68,25 @@ export default function JobTable({ filteredJobs, fetchData }) {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
-            {requests.map((request) => (
+            {filteredJobs.map((job) => (
               <>
                 <TableRow
-                  key={request._id}
+                  key={job._id}
                   sx={{
                     cursor: "pointer",
                     backgroundColor:
-                      setSelectedRequest === request.title && openDetail
+                      setSelectedRequest === job.title && openDetail
                         ? "#95dd95"
                         : "none",
                     "&:hover": { backgroundColor: "#ccc " },
                   }}
                 >
                   <TableCell
-                    onClick={() => handleOpenDetail(request)}
+                    onClick={() => handleOpenDetail(job)}
                     cursor="pointer"
                     align="left"
                   >
-                    {request.title}
+                    {job.title}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -76,7 +95,7 @@ export default function JobTable({ filteredJobs, fetchData }) {
                     colSpan={6}
                   >
                     <Collapse
-                      in={openDetail && selectedRequest.title === request.title}
+                      in={openDetail && selectedRequest.title === job.title}
                       timeout="auto"
                       unmountOnExit
                     >
@@ -88,15 +107,13 @@ export default function JobTable({ filteredJobs, fetchData }) {
                           <TableHead>
                             <TableRow>
                               <TableCell>Titulo</TableCell>
-                              <TableCell>Tipo</TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
                             <TableRow>
                               <TableCell component="th" scope="row">
-                                {request.title}
+                                {job.title}
                               </TableCell>
-                              <TableCell>{request.type}</TableCell>
                             </TableRow>
                           </TableBody>
                         </Table>
@@ -104,13 +121,13 @@ export default function JobTable({ filteredJobs, fetchData }) {
                           <ModeEditIcon
                             cursor="pointer"
                             option="delete"
-                            onClick={() => handleOpenEdit(request)}
+                            onClick={() => handleOpenEdit(job)}
                             sx={{ color: "grey", mr: 2 }}
                           />
                           <DeleteIcon
                             cursor="pointer"
                             option="delete"
-                            onClick={() => handleConfirmDelete(request)}
+                            onClick={() => handleConfirmDelete(job)}
                             sx={{ color: "#ff4444" }}
                           />
                         </Box>

@@ -20,6 +20,9 @@ departmentSchema = new mongoose.Schema({
   members: {
     type: Array,
   },
+  services: {
+    type: Array,
+  },
   color: {
     type: String,
   },

@@ -16,6 +16,7 @@ import Users from "./pages/Users";
 import Requests from "./pages/Requests";
 import Customers from "./pages/Customers";
 import Departments from "./pages/Departments";
+import Services from "./pages/Services";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -26,14 +27,21 @@ export default function App() {
   const [customertabStatus, setCustomertabStatus] = React.useState(true);
 
   const [customers, setCustomers] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [services, setServices] = useState([]);
+
   const [selectedCustomer, setSelectedCustomer] = useState("");
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/customers");
-        setCustomers(response.data);
-        selectedCustomer === "" && setSelectedCustomer(response.data[0])
+        const customers = await api.get("/customers");
+        const departments = await api.get("/departments");
+        const services = await api.get("/services");
+        setCustomers(customers.data);
+        setDepartments(departments.data);
+        setServices(services.data);
+        selectedCustomer === "" && setSelectedCustomer(customers.data[0]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -55,7 +63,7 @@ export default function App() {
 
   return (
     <Router>
-      <Grid container sx={{ backgroundColor: "#ccc", height: "100vw", m:-1 }}>
+      <Grid container sx={{ backgroundColor: "#ccc", height: "100vw", m: -1 }}>
         <Grid
           item
           xs={sidebarStatus ? 1.5 : 0.6}
@@ -70,7 +78,19 @@ export default function App() {
           </Box>
         </Grid>
 
-        <Grid item xs={sidebarStatus ? (customertabStatus ? 9 : 9.5) : (customertabStatus ? 9.9 : 10.4)} xl={sidebarStatus ? 9.3 : 10.1}>
+        <Grid
+          item
+          xs={
+            sidebarStatus
+              ? customertabStatus
+                ? 9
+                : 9.5
+              : customertabStatus
+              ? 9.9
+              : 10.4
+          }
+          xl={sidebarStatus ? 9.3 : 10.1}
+        >
           <Paper
             sx={{
               p: 3,
@@ -80,29 +100,23 @@ export default function App() {
             }}
           >
             <Grid container spacing={1}>
-              <Grid item xs={customertabStatus ? 10 : 11  }>
+              <Grid item xs={customertabStatus ? 10 : 11}>
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
-                  <Route
-                    path="/users"
-                    element={
-                      <Users
-                        selectedCustomer={selectedCustomer}
-                        customers={customers}
-                      />
-                    }
-                  />
+                  <Route path="/users" element={<Users />} />
                   <Route path="/customers" element={<Customers />} />
-                  <Route
-                    path="/departments"
-                    element={
-                      <Departments selectedCustomer={selectedCustomer} />
-                    }
-                  />
+                  <Route path="/departments" element={<Departments />} />
+                  <Route path="/services" element={<Services />} />
                   <Route
                     path="/requests"
                     element={
-                      <Requests selectedCustomer={selectedCustomer} />
+                      // quem tem que fazer o fetch eh a tabela!
+                      <Requests
+                        selectedCustomer={selectedCustomer}
+                        customers={customers}
+                        departments={departments}
+                        services={services}
+                      />
                     }
                   />
                 </Routes>
@@ -117,7 +131,7 @@ export default function App() {
           alignItems="center"
           xs={customertabStatus ? 1.5 : 1}
           xl={1.5}
-          sx={{backgroundColor: customertabStatus ? "none" : "#93c3c7"}}
+          sx={{ backgroundColor: customertabStatus ? "none" : "#93c3c7" }}
         >
           <Button
             onClick={handleCustomerTabStatusChange}

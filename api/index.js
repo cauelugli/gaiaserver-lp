@@ -7,7 +7,10 @@ const cors = require("cors");
 
 const customerRoute = require("./routes/customers");
 const departmentRoute = require("./routes/departments");
-const requestsRoutes = require("./routes/requests");
+const serviceRoutes = require("./routes/services");
+const jobRoutes = require("./routes/jobs");
+const saleRoutes = require("./routes/sales");
+const supportRoutes = require("./routes/supports");
 const userRoute = require("./routes/users");
 const managerRoute = require("./routes/managers");
 const quickNotesRoute = require("./routes/quicknotes");
@@ -27,7 +30,10 @@ mongoose
 
 app.use("/api/customers", customerRoute);
 app.use("/api/departments", departmentRoute);
-app.use("/api/requests", requestsRoutes);
+app.use("/api/services", serviceRoutes);
+app.use("/api/jobs", jobRoutes);
+app.use("/api/sales", saleRoutes);
+app.use("/api/supports", supportRoutes);
 app.use("/api/users", userRoute);
 app.use("/api/managers", managerRoute);
 app.use("/api/quicknotes", quickNotesRoute);

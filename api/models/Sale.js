@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 
-requestJobSchema = new mongoose.Schema({
+saleSchema = new mongoose.Schema({
   customerId: {
     type: String,
     required: true,
   },
   type: {
     type: String,
-    default: "Job",
+    default: "Venda",
   },
   requester: {
     type: String,
@@ -36,9 +36,6 @@ requestJobSchema = new mongoose.Schema({
   status: {
     type: String,
   },
-  procedure: {
-    type: Object,
-  },
   price: {
     type: Number,
     default: 0,
@@ -51,11 +48,11 @@ requestJobSchema = new mongoose.Schema({
     type: String,
   },
   scheduledTo: {
-    type: Date,
+    type: String,
     required: true,
   },
   executedIn: {
-    type: Date,
+    type: String,
   },
   createdAt: {
     type: Date,
@@ -69,6 +66,6 @@ requestJobSchema = new mongoose.Schema({
   },
 });
 
-const RequestJob = mongoose.model("RequestJob", requestJobSchema);
+const Sale = mongoose.model("Sale", saleSchema);
 
-module.exports = RequestJob;
+module.exports = Sale;

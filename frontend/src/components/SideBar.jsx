@@ -18,6 +18,7 @@ const options = [
   { label: "Dashboard", icon: <DashboardIcon />, link: "/" },
   { label: "Colaboradores", icon: <GroupIcon />, link: "/users" },
   { label: "Departamentos", icon: <LanIcon />, link: "/departments" },
+  { label: "Serviços", icon: <SettingsIcon />, link: "/services" },
   { label: "Pedidos", icon: <GradingIcon />, link: "/requests" },
   { label: "Metas", icon: <FlagIcon />, link: "/goals", disabled: true },
   { label: "Financeiro", icon: <AttachMoneyIcon />, link: "/finance", disabled: true },

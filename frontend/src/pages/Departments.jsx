@@ -54,7 +54,7 @@ export default function Departments() {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label="Geral"
+            label="Todos"
             sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
           />
         </Tabs>

@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 import axios from "axios";
 
@@ -9,13 +9,13 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const DeleteRequestForm = ({ openDelete, setOpenDelete, fetchData }) => {
-  let job;
+export default function DeleteServiceForm({ selectedService, openDelete, setOpenDelete, fetchData }) {
+  const service = selectedService;
 
   const handleDelete = async () => {
     try {
-      const res = await api.delete(`/requests/${job._id}`);
-      res.status === 200 && alert("Job deletado com sucesso!");
+      const res = await api.delete(`/services/${service._id}`);
+      res.status === 200 && alert("Serviço deletado com sucesso!");
       setOpenDelete(false);
       fetchData();
     } catch (err) {
@@ -26,7 +26,7 @@ const DeleteRequestForm = ({ openDelete, setOpenDelete, fetchData }) => {
 
   return (
     <>
-      <DialogTitle>{`Deletar Job ${job.name} ?`}</DialogTitle>
+      <DialogTitle>{`Deletar Serviço ${service.name} ?`}</DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -54,6 +54,4 @@ const DeleteRequestForm = ({ openDelete, setOpenDelete, fetchData }) => {
       </DialogContent>
     </>
   );
-};
-
-export default DeleteRequestForm;
+}

@@ -45,7 +45,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Users({ selectedCustomer }) {
+export default function Users() {
   const [value, setValue] = React.useState(0);
 
   const [users, setUsers] = React.useState([]);
@@ -79,7 +79,7 @@ export default function Users({ selectedCustomer }) {
       }
     };
     fetchData();
-  }, [selectedCustomer._id, users]);
+  }, [users]);
 
   const fetchData = async () => {
     try {
@@ -169,13 +169,13 @@ export default function Users({ selectedCustomer }) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <UserTable selectedCustomer={selectedCustomer} />
+        <UserTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <ManagerTable selectedCustomer={selectedCustomer} />
+        <ManagerTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <AdminTable selectedCustomer={selectedCustomer} />
+        <AdminTable />
       </CustomTabPanel>
       {openAddUser && (
         <Dialog
@@ -186,7 +186,6 @@ export default function Users({ selectedCustomer }) {
         >
           <AddUserForm
             openAdd={openAddUser}
-            selectedCustomer={selectedCustomer}
             departments={departments}
             setOpenAdd={setOpenAddUser}
             fetchData={fetchData}
@@ -202,7 +201,6 @@ export default function Users({ selectedCustomer }) {
         >
           <AddManagerForm
             openAdd={openAddManager}
-            selectedCustomer={selectedCustomer}
             departments={departments}
             setOpenAdd={setOpenAddManager}
             fetchData={fetchData}

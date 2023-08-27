@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -8,51 +9,37 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  InputAdornment,
   MenuItem,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
-import { IMaskInput } from "react-imask";
-import ColorPicker from "../../components/small/ColorPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddUserForm = ({
-  openAdd,
+export default function EditServiceForm({
+  selectedService,
+  openEdit,
+  setOpenEdit,
   departments,
-  setOpenAdd,
   fetchData,
-}) => {
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [phone, setPhone] = React.useState("");
-  const [department, setDepartment] = React.useState("");
-  const [avatarColor, setAvatarColor] = React.useState("#ffffff");
-  const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
-
-  const handleClickColor = (event) => {
-    setColorAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseColor = () => {
-    setColorAnchorEl(null);
-  };
-
-  const handleChangeColor = (selectedColor) => {
-    setAvatarColor(selectedColor.hex);
-    handleCloseColor();
-  };
+}) {
+  const [name, setName] = React.useState(selectedService.name);
+  const [department, setDepartment] = React.useState(
+    selectedService.department
+  );
+  const [value, setValue] = React.useState(selectedService.value);
+  const [materials, setMaterials] = React.useState(selectedService.materials);
 
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/users", {
+      const res = await api.put("/services", {
+        serviceId: selectedService._id,
         name,
-        email,
-        phone,
         department: {
           id: department._id,
           name: department.name,
@@ -60,10 +47,11 @@ const AddUserForm = ({
           email: department.email,
           color: department.color,
         },
-        avatarColor,
+        value,
+        materials,
       });
-      res.data && alert("Colaborador Adicionado!");
-      setOpenAdd(!openAdd);
+      res.data && alert("Serviço editado com Sucesso!");
+      setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {
       alert("Vish, deu não...");
@@ -73,7 +61,7 @@ const AddUserForm = ({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Colaborador</DialogTitle>
+      <DialogTitle>Editando Serviço - {selectedService.name}</DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -89,54 +77,17 @@ const AddUserForm = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              sx={{ mr: 1, width: 300 }}
+              sx={{ width: 300 }}
             />
           </Grid>
-          <Grid item>
-            <Typography>Email</Typography>
-            <TextField
-              value={email}
-              size="small"
-              required
-              onChange={(e) => setEmail(e.target.value)}
-              sx={{ mr: 1, width: 285 }}
-            />
-          </Grid>
-          <Grid item>
-            <Typography>Telefone</Typography>
-            <IMaskInput
-              style={{
-                padding: "5%",
-                marginRight: "4%",
-                marginTop: "1%",
-                borderColor: "#eee",
-                borderRadius: 4,
-              }}
-              mask="(00) 00000-0000"
-              definitions={{
-                "#": /[1-9]/,
-              }}
-              onAccept={(value) => setPhone(value)}
-              overwrite
-              value={phone}
-            />
-          </Grid>
-        </Grid>
-        <Grid
-          container
-          sx={{ mt: 2 }}
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="center"
-        >
-          <Grid item>
-            <Typography sx={{ mb: 1 }}>Departamento</Typography>
+          <Grid item sx={{ mx: 2 }}>
+            <Typography>Departamento</Typography>
             <Select
               onChange={(e) => setDepartment(e.target.value)}
               value={department}
               renderValue={(selected) => selected.name}
               size="small"
-              sx={{ minWidth: "200px" }}
+              sx={{ minWidth: 200 }}
             >
               {departments.map((item) => (
                 <MenuItem
@@ -156,19 +107,64 @@ const AddUserForm = ({
               ))}
             </Select>
           </Grid>
-          <Grid item sx={{ml:"10%"}}>
-            <Typography>Avatar</Typography>
-            <ColorPicker
-              handleClickColor={handleClickColor}
-              color={avatarColor}
-              colorAnchorEl={colorAnchorEl}
-              handleCloseColor={handleCloseColor}
-              handleChangeColor={handleChangeColor}
+          <Grid item>
+            <Typography>Valor</Typography>
+            <TextField
+              type="number"
+              size="small"
+              value={value}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">R$</InputAdornment>
+                ),
+              }}
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                if (inputValue >= 0) {
+                  setValue(inputValue);
+                }
+              }}
+              required
+              variant="outlined"
+              sx={{ width: 130 }}
             />
           </Grid>
         </Grid>
-        
-          
+        <Grid
+          container
+          sx={{ mt: 2 }}
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <Grid item>
+            <Typography sx={{ mb: 1 }}>Materiais</Typography>
+            <Select
+              onChange={(e) => setMaterials(e.target.value)}
+              value={materials}
+              renderValue={(selected) => selected.name}
+              size="small"
+              sx={{ minWidth: "200px" }}
+            >
+              {/* {departments.map((item) => (
+                <MenuItem
+                  value={item}
+                  key={item.id}
+                  sx={{
+                    backgroundColor: item.color,
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: item.color,
+                      color: "white",
+                    },
+                  }}
+                >
+                  {item.name}
+                </MenuItem>
+              ))} */}
+            </Select>
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
@@ -177,13 +173,11 @@ const AddUserForm = ({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenEdit(!openEdit)}
         >
           X
         </Button>
       </DialogActions>
     </form>
   );
-};
-
-export default AddUserForm;
+}

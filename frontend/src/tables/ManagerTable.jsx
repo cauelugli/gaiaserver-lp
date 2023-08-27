@@ -26,7 +26,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ManagerTable({ selectedCustomer }) {
+export default function ManagerTable() {
   const [selectedManager, setSelectedManager] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -47,7 +47,7 @@ export default function ManagerTable({ selectedCustomer }) {
       }
     };
     fetchData();
-  }, [selectedCustomer._id, managers]);
+  }, [managers]);
 
   const fetchData = async () => {
     try {
@@ -211,7 +211,6 @@ export default function ManagerTable({ selectedCustomer }) {
       {openDelete && (
         <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
           <DeleteManagerForm
-            selectedCustomer={selectedCustomer}
             selectedManager={selectedManager}
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}

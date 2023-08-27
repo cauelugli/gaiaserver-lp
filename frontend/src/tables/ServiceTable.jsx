@@ -19,60 +19,60 @@ import {
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import EditUserForm from "../forms/edit/EditUserForm";
-import DeleteUserForm from "../forms/delete/DeleteUserForm";
+import EditServiceForm from "../forms/edit/EditServiceForm";
+import DeleteServiceForm from "../forms/delete/DeleteServiceForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function UserTable() {
-  const [selectedUser, setSelectedUser] = React.useState("");
+export default function ServiceTable() {
+  const [selectedService, setSelectedService] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
 
-  const [users, setUsers] = React.useState([]);
+  const [services, setServices] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const users = await api.get("/users");
+        const services = await api.get("/services");
         const departments = await api.get("/departments");
-        setUsers(users.data);
+        setServices(services.data);
         setDepartments(departments.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [users]);
+  }, [services]);
 
   const fetchData = async () => {
     try {
-      const users = await api.get("/users");
+      const services = await api.get("/services");
       const departments = await api.get("/departments");
-      setUsers(users.data);
+      setServices(services.data);
       setDepartments(departments.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  const handleOpenDetail = (user) => {
+  const handleOpenDetail = (service) => {
     setOpenDetail(!openDetail);
-    setSelectedUser(user);
+    setSelectedService(service);
   };
 
-  const handleOpenEdit = (user) => {
+  const handleOpenEdit = (service) => {
     setOpenEdit(!openEdit);
-    setSelectedUser(user);
+    setSelectedService(service);
   };
 
-  const handleConfirmDelete = (user) => {
+  const handleConfirmDelete = (service) => {
     setOpenDelete(!openDelete);
-    setSelectedUser(user);
+    setSelectedService(service);
   };
 
   return (
@@ -81,25 +81,25 @@ export default function UserTable() {
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }}>
             <TableBody>
-              {users.map((user) => (
+              {services.map((service) => (
                 <>
                   <TableRow
-                    key={user._id}
+                    key={service._id}
                     sx={{
                       cursor: "pointer",
                       backgroundColor:
-                        selectedUser.name === user.name && openDetail
+                        selectedService.name === service.name && openDetail
                           ? "#95dd95"
                           : "none",
                       "&:hover": { backgroundColor: "#ccc " },
                     }}
                   >
                     <TableCell
-                      onClick={() => handleOpenDetail(user)}
+                      onClick={() => handleOpenDetail(service)}
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>{user.name}</Typography>
+                      <Typography>{service.name}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -108,13 +108,13 @@ export default function UserTable() {
                       colSpan={6}
                     >
                       <Collapse
-                        in={openDetail && selectedUser.name === user.name}
+                        in={openDetail && selectedService.name === service.name}
                         timeout="auto"
                         unmountOnExit
                       >
                         <Box sx={{ my: 4, px: 6 }}>
                           <Typography variant="h6" component="div">
-                            Geral
+                            Informações do Serviço
                           </Typography>
                           <Table size="small">
                             <TableHead>
@@ -130,21 +130,14 @@ export default function UserTable() {
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
                                   >
-                                    E-mail
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Telefone
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
                                     Departamento
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Valor
                                   </Typography>
                                 </TableCell>
                               </TableRow>
@@ -152,20 +145,17 @@ export default function UserTable() {
                             <TableBody>
                               <TableRow>
                                 <TableCell component="th" scope="row">
-                                  <Typography>{user.name}</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>{user.email}</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>{user.phone}</Typography>
+                                  <Typography>{service.name}</Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography>
-                                    {user.department
-                                      ? user.department.name
+                                    {service.department
+                                      ? service.department.name
                                       : "-"}
                                   </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>R${service.value}</Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>
@@ -173,12 +163,12 @@ export default function UserTable() {
                           <Box sx={{ mt: 3, ml: "90%" }}>
                             <ModeEditIcon
                               cursor="pointer"
-                              onClick={() => handleOpenEdit(user)}
+                              onClick={() => handleOpenEdit(service)}
                               sx={{ color: "grey", mr: 2 }}
                             />
                             <DeleteIcon
                               cursor="pointer"
-                              onClick={() => handleConfirmDelete(user)}
+                              onClick={() => handleConfirmDelete(service)}
                               sx={{ color: "#ff4444" }}
                             />
                           </Box>
@@ -199,9 +189,9 @@ export default function UserTable() {
             open={openEdit}
             onClose={() => setOpenEdit(!openEdit)}
           >
-            <EditUserForm
+            <EditServiceForm
               openEdit={openEdit}
-              selectedUser={selectedUser}
+              selectedService={selectedService}
               departments={departments}
               setOpenEdit={setOpenEdit}
               fetchData={fetchData}
@@ -210,8 +200,8 @@ export default function UserTable() {
         )}
         {openDelete && (
           <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-            <DeleteUserForm
-              selectedUser={selectedUser}
+            <DeleteServiceForm
+              selectedService={selectedService}
               openDelete={openDelete}
               setOpenDelete={setOpenDelete}
               fetchData={fetchData}

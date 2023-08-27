@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import axios from "axios";
 
 import {
   Dialog,
@@ -21,13 +22,32 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import EditRequestForm from "../forms/edit/EditRequestForm";
 import DeleteRequestForm from "../forms/delete/DeleteRequestForm";
 
-export default function SupportTable({ filteredSupports, fetchData }) {
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
+export default function SupportTable({ selectedCustomer, fetchData }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [selectedRequest, setSelectedRequest] = React.useState([]);
 
-  const requests = filteredSupports;
+  const [filteredSupports, setFilteredSupports] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const supports = await api.get("/supports");
+        setFilteredSupports(
+          supports.data.filter((support) => support.customerId === selectedCustomer._id)
+        );
+        
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [selectedCustomer]);
 
   const handleOpenDetail = (request) => {
     setOpenDetail(!openDetail);
@@ -49,7 +69,7 @@ export default function SupportTable({ filteredSupports, fetchData }) {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
-            {requests.map((request) => (
+            {filteredSupports.map((request) => (
               <>
                 <TableRow
                   key={request._id}

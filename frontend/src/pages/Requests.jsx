@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
@@ -23,10 +23,10 @@ import SellIcon from "@mui/icons-material/Sell";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 
 import JobTable from "../tables/JobTable";
-
-import AddRequestForm from "../forms/add/AddRequestForm";
 import SaleTable from "../tables/SaleTable";
 import SupportTable from "../tables/SupportTable";
+
+import AddJobForm from "../forms/add/AddJobForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -46,24 +46,21 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Requests({ selectedCustomer }) {
+export default function Requests({
+  selectedCustomer,
+  customers,
+  departments,
+  services,
+}) {
   const [value, setValue] = React.useState(0);
 
-  const [requests, setRequests] = React.useState([]);
-  const [filteredJobs, setFilteredJobs] = React.useState([]);
-  const [filteredSales, setFilteredSales] = React.useState([]);
-  const [filteredSupports, setFilteredSupports] = React.useState([]);
-
-  const [openAddRequest, setOpenAddRequest] = React.useState(false);
-  const [option, setOption] = React.useState("false");
+  const [openAddJob, setOpenAddJob] = React.useState(false);
+  const [openAddSaleRequest, setOpenAddSaleRequest] = React.useState(false);
+  const [openAddSupportRequest, setOpenAddSupportRequest] =
+    React.useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
-
-  const handleClickAddMenu = (option) => {
-    setOpenAddRequest(!openAddRequest);
-    setOption(option);
-  };
 
   const handleClickAddButton = (event) => {
     setAnchorEl(event.currentTarget);
@@ -77,54 +74,6 @@ export default function Requests({ selectedCustomer }) {
     setValue(newValue);
   };
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get("/requests");
-        const filteredRequests = response.data.filter(
-          (request) => request.customerId === selectedCustomer._id
-        );
-        const filteredJobs = filteredRequests.filter(
-          (job) => job.type === "Job"
-        );
-        const filteredSales = filteredRequests.filter(
-          (sale) => sale.type === "Venda"
-        );
-        const filteredSupports = filteredRequests.filter(
-          (support) => support.type === "Suporte"
-        );
-        setRequests(filteredRequests);
-        setFilteredJobs(filteredJobs);
-        setFilteredSales(filteredSales);
-        setFilteredSupports(filteredSupports);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [selectedCustomer._id, requests]);
-
-  const fetchData = async () => {
-    try {
-      const response = await api.get("/requests");
-      const filteredRequests = response.data.filter(
-        (request) => request.customerId === selectedCustomer._id
-      );
-      const filteredJobs = filteredRequests.filter((job) => job.type === "Job");
-      const filteredSales = filteredRequests.filter(
-        (sale) => sale.type === "Venda"
-      );
-      const filteredSupports = filteredRequests.filter(
-        (support) => support.type === "Suporte"
-      );
-      setRequests(filteredRequests);
-      setFilteredJobs(filteredJobs);
-      setFilteredSales(filteredSales);
-      setFilteredSupports(filteredSupports);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   return (
     <Box sx={{ minWidth: "120%" }}>
@@ -166,19 +115,25 @@ export default function Requests({ selectedCustomer }) {
             }}
           >
             <MenuList sx={{ width: 130 }}>
-              <MenuItem onClick={() => handleClickAddMenu("Job")}>
+              <MenuItem
+                onClick={() => setOpenAddJob(!openAddJob)}
+              >
                 <ListItemIcon>
                   <EngineeringIcon />
                 </ListItemIcon>
                 <ListItemText>Job</ListItemText>
               </MenuItem>
-              <MenuItem onClick={() => handleClickAddMenu("Sale")}>
+              <MenuItem
+                onClick={() => setOpenAddSaleRequest(!openAddSaleRequest)}
+              >
                 <ListItemIcon>
                   <SellIcon />
                 </ListItemIcon>
                 <ListItemText>Venda</ListItemText>
               </MenuItem>
-              <MenuItem onClick={() => handleClickAddMenu("Support")}>
+              <MenuItem
+                onClick={() => setOpenAddSupportRequest(!openAddSupportRequest)}
+              >
                 <ListItemIcon>
                   <SupportAgentIcon />
                 </ListItemIcon>
@@ -209,42 +164,58 @@ export default function Requests({ selectedCustomer }) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <JobTable
-          selectedCustomer={selectedCustomer}
-          filteredJobs={filteredJobs}
-          fetchData={fetchData}
-        />
+        <JobTable selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <SaleTable
-          selectedCustomer={selectedCustomer}
-          filteredSales={filteredSales}
-          fetchData={fetchData}
-        />
+        <SaleTable selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <SupportTable
-          selectedCustomer={selectedCustomer}
-          filteredSupports={filteredSupports}
-          fetchData={fetchData}
-        />
+        <SupportTable selectedCustomer={selectedCustomer} />
       </CustomTabPanel>
-      {openAddRequest && (
+      {openAddJob && (
         <Dialog
           fullWidth
           maxWidth="md"
-          open={openAddRequest}
-          onClose={() => setOpenAddRequest(!openAddRequest)}
+          open={openAddJob}
+          onClose={() => setOpenAddJob(!openAddJob)}
         >
-          <AddRequestForm
-            openAdd={openAddRequest}
-            selectedCustomer={selectedCustomer}
-            setOpenAdd={setOpenAddRequest}
-            option={option}
-            fetchData={fetchData}
+          <AddJobForm
+            openAddJob={openAddJob}
+            setOpenAddJob={setOpenAddJob}
+            customers={customers}
+            departments={departments}
+            services={services}
           />
         </Dialog>
       )}
+      {/* {openAddSaleRequest && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddJobRequest}
+          onClose={() => setOpenAddJobRequest(!openAddSaleRequest)}
+        >
+          <AddRequestSaleForm
+            openAdd={openAddSaleRequest}
+            setOpenAdd={openAddJobRequest}
+            fetchData={fetchData}
+          />
+        </Dialog>
+      )} */}
+      {/* {openAddSupportRequest && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddSupportRequest}
+          onClose={() => setOpenAddJobRequest(!openAddSupportRequest)}
+        >
+          <AddRequestSupportForm
+            openAdd={openAddSupportRequest}
+            setOpenAdd={openAddSupportRequest}
+            fetchData={fetchData}
+          />
+        </Dialog>
+      )} */}
     </Box>
   );
 }
