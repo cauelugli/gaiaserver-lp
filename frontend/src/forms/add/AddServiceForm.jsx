@@ -17,6 +17,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import MaterialList from "../../components/small/MaterialList";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -148,16 +149,8 @@ export default function AddServiceForm({
             />
 
             {showUsesMaterials && (
-              <Box>
-                <Typography sx={{ my: 2 }}>Materiais em Estoque</Typography>
-                <TextField
-                  variant="outlined"
-                  label="Materiais"
-                  size="small"
-                  value={materials}
-                  onChange={(e) => setMaterials(e.target.value)}
-                  sx={{ mr: 1, width: 270 }}
-                />
+              <Box sx={{ml:10}}>
+                <MaterialList materials={materials} setMaterials={setMaterials}/>
               </Box>
             )}
           </Grid>
