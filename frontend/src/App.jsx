@@ -17,6 +17,7 @@ import Requests from "./pages/Requests";
 import Customers from "./pages/Customers";
 import Departments from "./pages/Departments";
 import Services from "./pages/Services";
+import Stock from "./pages/Stock";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -107,6 +108,7 @@ export default function App() {
                   <Route path="/customers" element={<Customers />} />
                   <Route path="/departments" element={<Departments />} />
                   <Route path="/services" element={<Services />} />
+                  <Route path="/stock" element={<Stock />} />
                   <Route
                     path="/requests"
                     element={
