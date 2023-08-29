@@ -26,6 +26,7 @@ const api = axios.create({
 export default function AddServiceForm({
   openAdd,
   departments,
+  stockItems,
   setOpenAdd,
   fetchData,
 }) {
@@ -149,8 +150,8 @@ export default function AddServiceForm({
             />
 
             {showUsesMaterials && (
-              <Box sx={{ml:10}}>
-                <MaterialList materials={materials} setMaterials={setMaterials}/>
+              <Box sx={{ml:5}}>
+                <MaterialList materials={materials} stockItems={stockItems} setMaterials={setMaterials}/>
               </Box>
             )}
           </Grid>

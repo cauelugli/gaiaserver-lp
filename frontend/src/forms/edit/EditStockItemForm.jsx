@@ -27,7 +27,8 @@ export default function EditStockItemForm({
   fetchData,
 }) {
   const [name, setName] = React.useState(selectedStockItem.name);
-  const [value, setValue] = React.useState(selectedStockItem.value);
+  const [buyValue, setBuyValue] = React.useState(selectedStockItem.buyValue);
+  const [sellValue, setSellValue] = React.useState(selectedStockItem.sellValue);
   const [quantity, setQuantity] = React.useState(selectedStockItem.quantity);
 
   const handleEdit = async (e) => {
@@ -36,7 +37,8 @@ export default function EditStockItemForm({
       const res = await api.put("/stockItems", {
         stockItemId: selectedStockItem._id,
         name,
-        value,
+        buyValue,
+        sellValue,
         quantity,
       });
       res.data && alert("Item editado com Sucesso!");
@@ -70,11 +72,11 @@ export default function EditStockItemForm({
             />
           </Grid>
           <Grid item sx={{ mx: 2 }}>
-            <Typography>Valor</Typography>
+            <Typography>Valor de Compra</Typography>
             <TextField
               type="number"
               size="small"
-              value={value}
+              value={buyValue}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">R$</InputAdornment>
@@ -83,7 +85,29 @@ export default function EditStockItemForm({
               onChange={(e) => {
                 const inputValue = e.target.value;
                 if (inputValue >= 0) {
-                  setValue(inputValue);
+                  setBuyValue(inputValue);
+                }
+              }}
+              required
+              variant="outlined"
+              sx={{ width: 130 }}
+            />
+          </Grid>
+          <Grid item sx={{ mx: 2 }}>
+            <Typography>Valor de Venda</Typography>
+            <TextField
+              type="number"
+              size="small"
+              value={sellValue}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">R$</InputAdornment>
+                ),
+              }}
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                if (inputValue >= 0) {
+                  setSellValue(inputValue);
                 }
               }}
               required

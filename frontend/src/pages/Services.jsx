@@ -39,6 +39,7 @@ export default function Services() {
 
   const [services, setServices] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
+  const [stockItems, setStockItems] = React.useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -49,8 +50,10 @@ export default function Services() {
       try {
         const services = await api.get("/services");
         const departments = await api.get("/departments");
+        const stockItems = await api.get("/stockItems");
         setServices(services.data);
         setDepartments(departments.data);
+        setStockItems(stockItems.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -61,9 +64,11 @@ export default function Services() {
   const fetchData = async () => {
     try {
       const services = await api.get("/services");
-        const departments = await api.get("/departments");
-        setServices(services.data);
-        setDepartments(departments.data);
+      const departments = await api.get("/departments");
+      const stockItems = await api.get("/stockItems");
+      setServices(services.data);
+      setDepartments(departments.data);
+      setStockItems(stockItems.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -108,7 +113,7 @@ export default function Services() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <ServiceTable services={services}/>
+        <ServiceTable services={services} />
       </CustomTabPanel>
       {openAddService && (
         <Dialog
@@ -121,6 +126,7 @@ export default function Services() {
             openAdd={openAddService}
             setOpenAdd={setOpenAddService}
             departments={departments}
+            stockItems={stockItems}
             fetchData={fetchData}
           />
         </Dialog>

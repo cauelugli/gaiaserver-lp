@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import * as React from "react";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -6,14 +8,9 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Grid, Paper } from "@mui/material";
 
-export default function MaterialList() {
+export default function MaterialList({ stockItems, materials, setMaterials }) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
-  const [options, setOptions] = React.useState([
-    { id: 1, label: "Option 1", quantity: 2 },
-    { id: 2, label: "Option 2", quantity: 3 },
-    { id: 3, label: "Option 3", quantity: 5 },
-    // ... add more options as needed
-  ]);
+  const [options, setOptions] = React.useState(stockItems);
   const [stockList, setStockList] = React.useState([]);
 
   const handleChecked = (id) => {
@@ -39,8 +36,10 @@ export default function MaterialList() {
             : item
         );
         setStockList(updatedStockList);
+        // setMaterials(updatedStockList);
       } else {
         setStockList([...stockList, { ...selectedOption, quantity: 1 }]);
+        // setMaterials([...stockList, { ...selectedOption, quantity: 1 }]);
       }
     }
   };
@@ -67,11 +66,12 @@ export default function MaterialList() {
       sx={{ mt: 2 }}
     >
       <Grid item>
-        <Typography>Em estoque:</Typography>
-        <Paper sx={{ width: 250, height: 200, overflow: "auto" }}>
+        <Typography >Em estoque:</Typography>
+        <Paper sx={{ mt:1, width: 350, height: 200, overflow: "auto" }}>
           <FormGroup>
             {options.map((option) => (
               <FormControlLabel
+                sx={{ px: 3, py: 2 }}
                 key={option.id}
                 control={
                   <Checkbox
@@ -80,20 +80,30 @@ export default function MaterialList() {
                   />
                 }
                 label={
-                  <div>
-                    {`${option.label} - ${option.quantity}`}
-                    {option.id === selectedItemId && (
-                      <Button
-                        variant="contained"
-                        color="success"
-                        sx={{ ml: 1, px: "-15px", height: "20px" }}
-                        disabled={option.quantity === 0}
-                        onClick={handleAddToStock}
-                      >
-                        +
-                      </Button>
-                    )}
-                  </div>
+                  <Grid>
+                    {
+                      <Grid container direction="row">
+                        <Typography>{option.name} </Typography>
+                        <Typography sx={{ ml: 2 }}>
+                          R${option.sellValue}{" "}
+                        </Typography>
+                        <Typography sx={{ fontSize: "12px", color: "#777", p:0.5 }}>
+                          (x{option.quantity}){" "}
+                        </Typography>
+                        {option.id === selectedItemId && (
+                          <Button
+                            variant="contained"
+                            color="success"
+                            sx={{ ml: 1, px: "-15px", height: "20px" }}
+                            disabled={option.quantity === 0}
+                            onClick={handleAddToStock}
+                          >
+                            +
+                          </Button>
+                        )}
+                      </Grid>
+                    }
+                  </Grid>
                 }
               />
             ))}
@@ -101,9 +111,9 @@ export default function MaterialList() {
         </Paper>
       </Grid>
 
-      <Grid item sx={{ml:"50px"}}>
+      <Grid item sx={{ mt:1, ml: "50px" }}>
         <Typography>Selecionados:</Typography>
-        <Paper sx={{ width: 250, height: 200, overflow: "auto" }}>
+        <Paper sx={{ width: 350, height: 200, overflow: "auto" }}>
           {stockList.map((item) => (
             <li key={item.id}>
               {`${item.label} - ${item.quantity}`}

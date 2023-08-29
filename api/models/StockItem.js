@@ -5,7 +5,11 @@ const stockItemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  value: {
+  sellValue: {
+    type: String,
+    required: true,
+  },
+  buyValue: {
     type: String,
     required: true,
   },

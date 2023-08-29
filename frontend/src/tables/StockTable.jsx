@@ -76,6 +76,23 @@ export default function StockTable() {
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }}>
             <TableBody>
+              <TableRow>
+                <TableCell align="left">
+                  <Typography>Nome do Item</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <Typography>Valor de Compra</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <Typography>Valor de Venda</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <Typography>Lucro por Item</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <Typography>Quantidade</Typography>
+                </TableCell>
+              </TableRow>
               {stockItems.map((stockItem) => (
                 <>
                   <TableRow
@@ -96,6 +113,41 @@ export default function StockTable() {
                     >
                       <Typography>{stockItem.name}</Typography>
                     </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(stockItem)}
+                      cursor="pointer"
+                      align="left"
+                    >
+                      <Typography>R${stockItem.buyValue}</Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(stockItem)}
+                      cursor="pointer"
+                      align="left"
+                    >
+                      <Typography>R${stockItem.sellValue}</Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(stockItem)}
+                      cursor="pointer"
+                      align="left"
+                    >
+                      <Typography sx={{color:"#32CD32"}}>
+                        {(
+                          ((stockItem.sellValue - stockItem.buyValue) /
+                            stockItem.buyValue) *
+                          100
+                        ).toFixed(2)}
+                        %
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(stockItem)}
+                      cursor="pointer"
+                      align="left"
+                    >
+                      <Typography>{stockItem.quantity}</Typography>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell
@@ -103,7 +155,10 @@ export default function StockTable() {
                       colSpan={6}
                     >
                       <Collapse
-                        in={openDetail && selectedStockItem.name === stockItem.name}
+                        in={
+                          openDetail &&
+                          selectedStockItem.name === stockItem.name
+                        }
                         timeout="auto"
                         unmountOnExit
                       >
@@ -121,11 +176,25 @@ export default function StockTable() {
                                     Nome
                                   </Typography>
                                 </TableCell>
+                                <TableCell align="right">
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Valor de Compra
+                                  </Typography>
+                                </TableCell>
                                 <TableCell>
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
                                   >
-                                    Valor
+                                    Valor de Venda
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Lucro por Peça
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
@@ -142,10 +211,30 @@ export default function StockTable() {
                                 <TableCell component="th" scope="row">
                                   <Typography>{stockItem.name}</Typography>
                                 </TableCell>
-                                <TableCell>
-                                  <Typography>R${stockItem.value}</Typography>
+                                <TableCell align="right">
+                                  <Typography>
+                                    R${stockItem.buyValue}
+                                  </Typography>
                                 </TableCell>
-                              <TableCell>
+                                <TableCell>
+                                  <Typography>
+                                    R${stockItem.sellValue}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell
+                                  align="left"
+                                >
+                                  <Typography sx={{color:"#32CD32"}}>
+                                    {(
+                                      ((stockItem.sellValue -
+                                        stockItem.buyValue) /
+                                        stockItem.buyValue) *
+                                      100
+                                    ).toFixed(2)}
+                                    %
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
                                   <Typography>{stockItem.quantity}</Typography>
                                 </TableCell>
                               </TableRow>
