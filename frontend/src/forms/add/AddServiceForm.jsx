@@ -34,6 +34,7 @@ export default function AddServiceForm({
   const [department, setDepartment] = React.useState({});
   const [value, setValue] = React.useState(0);
   const [materials, setMaterials] = React.useState({});
+  const [materialsCost, setMaterialsCost] = React.useState(0);
 
   const [showUsesMaterials, setUsesMaterials] = React.useState(false);
   const handleUsesMaterials = (event) => {
@@ -46,7 +47,7 @@ export default function AddServiceForm({
       const res = await api.post("/services", {
         name,
         department: {
-          id: department._id,
+          id: department._id || department.id,
           name: department.name,
           phone: department.phone,
           email: department.email,
@@ -54,6 +55,7 @@ export default function AddServiceForm({
         },
         value,
         materials,
+        materialsCost,
       });
       res.data && alert("Serviço Adicionado!");
       setOpenAdd(!openAdd);
@@ -142,7 +144,7 @@ export default function AddServiceForm({
           justifyContent="flex-start"
           alignItems="center"
         >
-          <Grid item sx={{mt:4}}>
+          <Grid item sx={{ mt: 4 }}>
             <label>Uso de Materiais?</label>
             <Checkbox
               checked={showUsesMaterials}
@@ -150,8 +152,13 @@ export default function AddServiceForm({
             />
 
             {showUsesMaterials && (
-              <Box sx={{ml:5}}>
-                <MaterialList materials={materials} stockItems={stockItems} setMaterials={setMaterials}/>
+              <Box sx={{ ml: 5 }}>
+                <MaterialList
+                  stockItems={stockItems}
+                  setMaterials={setMaterials}
+                  setMaterialsFinalCost={setMaterialsCost}
+                  
+                />
               </Box>
             )}
           </Grid>

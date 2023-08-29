@@ -10,11 +10,14 @@ const serviceSchema = new mongoose.Schema({
     required: true,
   },
   value: {
-    type: String,
+    type: Number,
     required: true,
   },
   materials: {
     type: Object,
+  },
+  materialsCost: {
+    type: Number,
   },
   createdAt: {
     type: Date,

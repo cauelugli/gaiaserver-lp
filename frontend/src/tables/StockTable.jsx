@@ -76,7 +76,7 @@ export default function StockTable() {
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }}>
             <TableBody>
-              <TableRow>
+              <TableRow sx={{backgroundColor:"#ccc"}}>
                 <TableCell align="left">
                   <Typography>Nome do Item</Typography>
                 </TableCell>
@@ -90,7 +90,7 @@ export default function StockTable() {
                   <Typography>Lucro por Item</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography>Quantidade</Typography>
+                  <Typography>Em Estoque</Typography>
                 </TableCell>
               </TableRow>
               {stockItems.map((stockItem) => (

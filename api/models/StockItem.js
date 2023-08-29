@@ -6,11 +6,11 @@ const stockItemSchema = new mongoose.Schema({
     required: true,
   },
   sellValue: {
-    type: String,
+    type: Number,
     required: true,
   },
   buyValue: {
-    type: String,
+    type: Number,
     required: true,
   },
   quantity: {

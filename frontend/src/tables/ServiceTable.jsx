@@ -160,6 +160,25 @@ export default function ServiceTable() {
                               </TableRow>
                             </TableBody>
                           </Table>
+                        </Box>
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Typography variant="h6" component="div">
+                            Materiais Necessários
+                          </Typography>
+                          <Table size="small">
+                            <TableBody>
+                              <TableRow>
+                                <ol>
+                                  {service.materials.map((material) => (
+                                    <li key={material.id}>
+                                      {material.name} - x{material.quantity}
+                                    </li>
+                                  ))}
+                                <Typography sx={{mt:1}}>Custo dos Materiais: R${service.materialsCost.toFixed(2)}</Typography>
+                                </ol>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
                           <Box sx={{ mt: 3, ml: "90%" }}>
                             <ModeEditIcon
                               cursor="pointer"

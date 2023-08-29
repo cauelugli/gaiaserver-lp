@@ -8,10 +8,15 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Grid, Paper } from "@mui/material";
 
-export default function MaterialList({ stockItems, materials, setMaterials }) {
+export default function MaterialList({
+  stockItems,
+  setMaterials,
+  setMaterialsFinalCost,
+}) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
   const [options, setOptions] = React.useState(stockItems);
   const [stockList, setStockList] = React.useState([]);
+  const [materialsCost, setMaterialsCost] = React.useState(0);
 
   const handleChecked = (id) => {
     setSelectedItemId(id === selectedItemId ? null : id);
@@ -19,64 +24,69 @@ export default function MaterialList({ stockItems, materials, setMaterials }) {
 
   const handleAddToStock = () => {
     const selectedOption = options.find(
-      (option) => option.id === selectedItemId
+      (option) => option._id === selectedItemId
     );
     if (selectedOption) {
+      setMaterialsCost(materialsCost + selectedOption.sellValue);
+      setMaterialsFinalCost(materialsCost + selectedOption.sellValue);
       const newOptions = options.map((option) =>
-        option.id === selectedItemId
+        option._id === selectedItemId
           ? { ...option, quantity: option.quantity - 1 }
           : option
       );
       setOptions(newOptions);
-      const existingItem = stockList.find((item) => item.id === selectedItemId);
+      const existingItem = stockList.find(
+        (item) => item._id === selectedItemId
+      );
       if (existingItem) {
         const updatedStockList = stockList.map((item) =>
-          item.id === selectedItemId
+          item._id === selectedItemId
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
         setStockList(updatedStockList);
-        // setMaterials(updatedStockList);
+        setMaterials(updatedStockList);
       } else {
         setStockList([...stockList, { ...selectedOption, quantity: 1 }]);
-        // setMaterials([...stockList, { ...selectedOption, quantity: 1 }]);
+        setMaterials([...stockList, { ...selectedOption, quantity: 1 }]);
       }
     }
   };
-
+  
   const handleRemoveFromStock = (itemId) => {
+    const item = stockList.find((item) => item._id === itemId);
+    setMaterialsCost(materialsCost - item.sellValue);
+    setMaterialsFinalCost(materialsCost - item.sellValue);
+
     const updatedStockList = stockList.map((item) =>
-      item.id === itemId ? { ...item, quantity: item.quantity - 1 } : item
+      item._id === itemId ? { ...item, quantity: --item.quantity } : item
     );
     setStockList(updatedStockList.filter((item) => item.quantity > 0));
+
     const newOptions = options.map((option) =>
-      option.id === itemId
-        ? { ...option, quantity: option.quantity + 1 }
+      option._id === itemId
+        ? { ...option, quantity: ++option.quantity }
         : option
     );
     setOptions(newOptions);
+    setMaterials(updatedStockList);
   };
 
   return (
-    <Grid
-      container
-      direction="row"
-      justifyContent="center"
-      alignItems="center"
-      sx={{ mt: 2 }}
-    >
+    <Grid container sx={{ mt: 2 }}>
       <Grid item>
-        <Typography >Em estoque:</Typography>
-        <Paper sx={{ mt:1, width: 350, height: 200, overflow: "auto" }}>
-          <FormGroup>
+        <Typography>Em estoque:</Typography>
+        <Paper sx={{ mt: 1, width: 350, height: 200, overflow: "auto" }}>
+          <FormGroup sx={{ mt: 2 }}>
             {options.map((option) => (
               <FormControlLabel
-                sx={{ px: 3, py: 2 }}
+                sx={{ px: 3 }}
                 key={option.id}
                 control={
                   <Checkbox
-                    checked={option.id === selectedItemId}
-                    onChange={() => handleChecked(option.id)}
+                    sx={{ mb: 0.5 }}
+                    checked={option._id === selectedItemId}
+                    onChange={() => handleChecked(option._id)}
                   />
                 }
                 label={
@@ -87,10 +97,12 @@ export default function MaterialList({ stockItems, materials, setMaterials }) {
                         <Typography sx={{ ml: 2 }}>
                           R${option.sellValue}{" "}
                         </Typography>
-                        <Typography sx={{ fontSize: "12px", color: "#777", p:0.5 }}>
+                        <Typography
+                          sx={{ fontSize: "12px", color: "#777", p: 0.5 }}
+                        >
                           (x{option.quantity}){" "}
                         </Typography>
-                        {option.id === selectedItemId && (
+                        {option._id === selectedItemId && (
                           <Button
                             variant="contained"
                             color="success"
@@ -111,22 +123,37 @@ export default function MaterialList({ stockItems, materials, setMaterials }) {
         </Paper>
       </Grid>
 
-      <Grid item sx={{ mt:1, ml: "50px" }}>
+      <Grid item sx={{ ml: "50px" }}>
         <Typography>Selecionados:</Typography>
-        <Paper sx={{ width: 350, height: 200, overflow: "auto" }}>
+        <Paper sx={{ mt: 1, width: 350, height: 200, overflow: "auto" }}>
           {stockList.map((item) => (
-            <li key={item.id}>
-              {`${item.label} - ${item.quantity}`}
-              <Button
-                variant="contained"
-                color="error"
-                size="small"
-                onClick={() => handleRemoveFromStock(item.id)}
-              >
-                -
-              </Button>
+            <li key={item._id}>
+              {
+                <Grid container direction="row" sx={{ mt: 2 }}>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    sx={{ ml: 1, px: "-15px", height: "20px" }}
+                    onClick={() => handleRemoveFromStock(item._id)}
+                  >
+                    -
+                  </Button>
+                  <Typography sx={{ ml: 2 }}>{item.name} </Typography>
+                  <Typography
+                    sx={{ mx: 1, fontSize: "12px", color: "#777", p: 0.5 }}
+                  >
+                    (x{item.quantity}){" "}
+                  </Typography>
+                  <Typography>
+                    = R${(item.sellValue * item.quantity).toFixed(2)}{" "}
+                  </Typography>
+                </Grid>
+              }
             </li>
           ))}
+          <Typography sx={{ mt: 2 }}>
+            Custo total: R${materialsCost.toFixed(2)}
+          </Typography>
         </Paper>
       </Grid>
     </Grid>

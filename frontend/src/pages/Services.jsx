@@ -107,12 +107,19 @@ export default function Services() {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label="Todos"
+            label="Esporádicos"
+            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
+          />
+          <Tab
+            label="Planos de Serviços"
             sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
           />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
+        <ServiceTable services={services} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
         <ServiceTable services={services} />
       </CustomTabPanel>
       {openAddService && (
