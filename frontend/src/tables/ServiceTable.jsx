@@ -174,7 +174,7 @@ export default function ServiceTable() {
                                       {material.name} - x{material.quantity}
                                     </li>
                                   ))}
-                                <Typography sx={{mt:1}}>Custo dos Materiais: R${service.materialsCost.toFixed(2)}</Typography>
+                                <Typography sx={{mt:1}}>Custo  Materiais: R${service.materialsCost.toFixed(2)}</Typography>
                                 </ol>
                               </TableRow>
                             </TableBody>
