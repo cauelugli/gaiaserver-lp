@@ -4,20 +4,15 @@ import React from "react";
 import axios from "axios";
 
 import {
-  Box,
   Button,
-  Checkbox,
   DialogActions,
   DialogContent,
   DialogTitle,
   Grid,
   InputAdornment,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
-import MaterialList from "../../components/small/MaterialList";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -25,7 +20,6 @@ const api = axios.create({
 
 export default function AddStockItemForm({
   openAdd,
-  departments,
   setOpenAdd,
   fetchData,
 }) {

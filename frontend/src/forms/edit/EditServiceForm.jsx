@@ -4,7 +4,9 @@ import React from "react";
 import axios from "axios";
 
 import {
+  Box,
   Button,
+  Checkbox,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -15,6 +17,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import MaterialList from "../../components/small/MaterialList";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -25,6 +28,7 @@ export default function EditServiceForm({
   openEdit,
   setOpenEdit,
   departments,
+  stockItems,
   fetchData,
 }) {
   const [name, setName] = React.useState(selectedService.name);
@@ -32,23 +36,31 @@ export default function EditServiceForm({
     selectedService.department
   );
   const [value, setValue] = React.useState(selectedService.value);
+  const [previousMaterials, setPreviousMaterials] = React.useState(selectedService.materials);
   const [materials, setMaterials] = React.useState(selectedService.materials);
+  const [materialsEditCost, setMaterialsEditCost] = React.useState(selectedService.materialsCost);
+  const [showUsesMaterials, setUsesMaterials] = React.useState(selectedService.materials.length >= 1);
+  const handleUsesMaterials = (event) => {
+    setUsesMaterials(event.target.checked);
+  };
 
-  const handleAdd = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
     try {
       const res = await api.put("/services", {
-        serviceId: selectedService._id,
+        serviceId: selectedService._id || selectedService.id,
         name,
         department: {
-          id: department._id,
+          id: department._id || department.id,
           name: department.name,
           phone: department.phone,
           email: department.email,
           color: department.color,
         },
         value,
+        previousMaterials,
         materials,
+        materialsCost: materialsEditCost,
       });
       res.data && alert("Serviço editado com Sucesso!");
       setOpenEdit(!openEdit);
@@ -60,7 +72,7 @@ export default function EditServiceForm({
   };
 
   return (
-    <form onSubmit={handleAdd}>
+    <form onSubmit={handleEdit}>
       <DialogTitle>Editando Serviço - {selectedService.name}</DialogTitle>
       <DialogContent>
         <Grid
@@ -137,32 +149,24 @@ export default function EditServiceForm({
           justifyContent="flex-start"
           alignItems="center"
         >
-          <Grid item>
-            <Typography sx={{ mb: 1 }}>Materiais</Typography>
-            <Select
-              onChange={(e) => setMaterials(e.target.value)}
-              value={materials}
-              renderValue={(selected) => selected.name}
-              size="small"
-              sx={{ minWidth: "200px" }}
-            >
-              {/* {departments.map((item) => (
-                <MenuItem
-                  value={item}
-                  key={item.id}
-                  sx={{
-                    backgroundColor: item.color,
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: item.color,
-                      color: "white",
-                    },
-                  }}
-                >
-                  {item.name}
-                </MenuItem>
-              ))} */}
-            </Select>
+          <Grid item sx={{ mt: 4 }}>
+            <label>Uso de Materiais?</label>
+            <Checkbox
+              checked={showUsesMaterials}
+              onChange={handleUsesMaterials}
+            />
+
+            {showUsesMaterials && (
+              <Box sx={{ ml: 5 }}>
+                <MaterialList
+                  stockItems={stockItems}
+                  materials={materials}
+                  materialsEditCost={materialsEditCost}
+                  setMaterials={setMaterials}
+                  setMaterialsFinalCost={setMaterialsEditCost}
+                />
+              </Box>
+            )}
           </Grid>
         </Grid>
       </DialogContent>

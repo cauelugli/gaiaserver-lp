@@ -10,13 +10,17 @@ import { Grid, Paper } from "@mui/material";
 
 export default function MaterialList({
   stockItems,
+  materials,
   setMaterials,
+  materialsEditCost,
   setMaterialsFinalCost,
 }) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
   const [options, setOptions] = React.useState(stockItems);
-  const [stockList, setStockList] = React.useState([]);
-  const [materialsCost, setMaterialsCost] = React.useState(0);
+  const [stockList, setStockList] = React.useState(materials || []);
+  const [materialsCost, setMaterialsCost] = React.useState(
+    materialsEditCost || 0
+  );
 
   const handleChecked = (id) => {
     setSelectedItemId(id === selectedItemId ? null : id);
@@ -28,7 +32,11 @@ export default function MaterialList({
     );
     if (selectedOption) {
       setMaterialsCost(materialsCost + selectedOption.sellValue);
-      setMaterialsFinalCost(materialsCost + selectedOption.sellValue);
+      {
+        materialsEditCost
+          ? setMaterialsFinalCost(materialsEditCost + selectedOption.sellValue)
+          : setMaterialsFinalCost(materialsCost + selectedOption.sellValue);
+      }
       const newOptions = options.map((option) =>
         option._id === selectedItemId
           ? { ...option, quantity: option.quantity - 1 }
@@ -52,11 +60,15 @@ export default function MaterialList({
       }
     }
   };
-  
+
   const handleRemoveFromStock = (itemId) => {
     const item = stockList.find((item) => item._id === itemId);
     setMaterialsCost(materialsCost - item.sellValue);
-    setMaterialsFinalCost(materialsCost - item.sellValue);
+    {
+      materialsEditCost
+        ? setMaterialsFinalCost(materialsEditCost - item.sellValue)
+        : setMaterialsFinalCost(materialsCost - item.sellValue);
+    }
 
     const updatedStockList = stockList.map((item) =>
       item._id === itemId ? { ...item, quantity: --item.quantity } : item
@@ -68,8 +80,9 @@ export default function MaterialList({
         ? { ...option, quantity: ++option.quantity }
         : option
     );
+
     setOptions(newOptions);
-    setMaterials(updatedStockList);
+    setMaterials(updatedStockList.filter((item) => item.quantity > 0));
   };
 
   return (
@@ -134,7 +147,7 @@ export default function MaterialList({
                     variant="contained"
                     color="error"
                     sx={{ ml: 1, px: "-15px", height: "20px" }}
-                    onClick={() => handleRemoveFromStock(item._id)}
+                    onClick={() => handleRemoveFromStock(item._id || item.id)}
                   >
                     -
                   </Button>

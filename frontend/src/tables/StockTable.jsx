@@ -194,7 +194,7 @@ export default function StockTable() {
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
                                   >
-                                    Lucro por Peça
+                                    Lucro por Item
                                   </Typography>
                                 </TableCell>
                                 <TableCell>

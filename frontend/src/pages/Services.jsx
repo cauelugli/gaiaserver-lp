@@ -117,10 +117,10 @@ export default function Services() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <ServiceTable services={services} />
+        <ServiceTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <ServiceTable services={services} />
+        <ServiceTable />
       </CustomTabPanel>
       {openAddService && (
         <Dialog
