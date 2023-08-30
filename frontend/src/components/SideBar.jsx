@@ -8,7 +8,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 import BuildIcon from "@mui/icons-material/Build";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import FlagIcon from '@mui/icons-material/Flag';
+import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import LanIcon from "@mui/icons-material/Lan";
@@ -21,9 +21,9 @@ const options = [
   { label: "Colaboradores", icon: <GroupIcon />, link: "/users" },
   { label: "Departamentos", icon: <LanIcon />, link: "/departments" },
   { label: "Pedidos", icon: <GradingIcon />, link: "/requests" },
+  { label: "Orçamentos", icon: <RequestQuoteIcon />, link: "/budgets", disabled: true },
   { label: "Serviços", icon: <BuildIcon />, link: "/services" },
   { label: "Estoque", icon: <WarehouseIcon />, link: "/stock" },
-  { label: "Metas", icon: <FlagIcon />, link: "/goals", disabled: true },
   { label: "Financeiro", icon: <AttachMoneyIcon />, link: "/finance", disabled: true },
   { label: "Clientes", icon: <WorkIcon />, link: "/customers" },
   { label: "Configurações", icon: <SettingsIcon />, link: "/settings", disabled: true },
