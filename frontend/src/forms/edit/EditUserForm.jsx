@@ -35,6 +35,7 @@ const EditUserForm = ({
   const [email, setEmail] = React.useState(selectedUser.email);
   const [phone, setPhone] = React.useState(selectedUser.phone);
   const [department, setDepartment] = React.useState(selectedUser.department || "");
+  const [position, setPosition] = React.useState(selectedUser.position);
   const previousData = selectedUser;
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
   const [avatarColor, setAvatarColor] = React.useState(
@@ -69,6 +70,7 @@ const EditUserForm = ({
           email: department.email,
           color: department.color,
         },
+        position,
         avatarColor,
         previousData,
       });
@@ -166,6 +168,15 @@ const EditUserForm = ({
                 </MenuItem>
               ))}
             </Select>
+          </Grid>
+          <Grid item>
+          <Typography sx={{mb:1, ml:2}}>Ocupação</Typography>
+            <TextField
+              size="small"
+              value={position}
+              onChange={(e) => setPosition(e.target.value)}
+              sx={{ ml: 2, width: 250 }}
+            />
           </Grid>
           <Grid item sx={{ml:"10%"}}>
             <Typography>Avatar</Typography>

@@ -18,6 +18,9 @@ userSchema = new mongoose.Schema({
   avatarColor: {
     type: String,
   },
+  position: {
+    type: String,
+  },
   isActive: {
     type: Boolean,
     default: true,

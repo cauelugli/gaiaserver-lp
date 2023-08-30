@@ -90,6 +90,9 @@ export default function UserTable() {
                   <Typography>Nome do Colaborador</Typography>
                 </TableCell>
                 <TableCell align="left">
+                  <Typography>Ocupação</Typography>
+                </TableCell>
+                <TableCell align="left">
                   <Typography>E-mail</Typography>
                 </TableCell>
                 <TableCell align="left">
@@ -121,6 +124,13 @@ export default function UserTable() {
                       cursor="pointer"
                       align="left"
                     >
+                      <Typography>{user.position ? user.position : "-"}</Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(user)}
+                      cursor="pointer"
+                      align="left"
+                    >
                       <Typography>{user.email}</Typography>
                     </TableCell>
                     <TableCell
@@ -128,7 +138,9 @@ export default function UserTable() {
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>{user.department ? user.department.name : "-"}</Typography>
+                      <Typography>
+                        {user.department ? user.department.name : "-"}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>

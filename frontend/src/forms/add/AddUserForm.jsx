@@ -20,16 +20,12 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddUserForm = ({
-  openAdd,
-  departments,
-  setOpenAdd,
-  fetchData,
-}) => {
+const AddUserForm = ({ openAdd, departments, setOpenAdd, fetchData }) => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [department, setDepartment] = React.useState("");
+  const [position, setPosition] = React.useState("");
   const [avatarColor, setAvatarColor] = React.useState("#ffffff");
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
 
@@ -60,6 +56,7 @@ const AddUserForm = ({
           email: department.email,
           color: department.color,
         },
+        position,
         avatarColor,
       });
       res.data && alert("Colaborador Adicionado!");
@@ -156,7 +153,17 @@ const AddUserForm = ({
               ))}
             </Select>
           </Grid>
-          <Grid item sx={{ml:"10%"}}>
+          <Grid item>
+            <Typography sx={{mb:1, ml:2}}>Ocupação</Typography>
+            <TextField
+              value={position}
+              size="small"
+              required
+              onChange={(e) => setPosition(e.target.value)}
+              sx={{ ml: 2, width: 250 }}
+            />
+          </Grid>
+          <Grid item sx={{ ml: "10%" }}>
             <Typography>Avatar</Typography>
             <ColorPicker
               handleClickColor={handleClickColor}
@@ -167,8 +174,6 @@ const AddUserForm = ({
             />
           </Grid>
         </Grid>
-        
-          
       </DialogContent>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
