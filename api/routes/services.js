@@ -36,6 +36,12 @@ router.delete("/:id", async (req, res) => {
   const serviceId = req.params.id;
   try {
     const deletedService = await Service.findByIdAndDelete(serviceId);
+    for (const missingItem of deletedService.materials) {
+      const stockItem = await StockItem.findById(missingItem._id);
+      stockItem.quantity += missingItem.quantity;
+      await stockItem.save();
+    }
+
     res.status(200).json(deletedService);
   } catch (err) {
     res.status(500).json(err);
