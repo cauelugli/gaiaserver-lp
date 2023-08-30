@@ -14,7 +14,7 @@ const serviceSchema = new mongoose.Schema({
     required: true,
   },
   materials: {
-    type: Object,
+    type: Array,
   },
   materialsCost: {
     type: Number,

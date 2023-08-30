@@ -33,7 +33,7 @@ export default function AddServiceForm({
   const [name, setName] = React.useState("");
   const [department, setDepartment] = React.useState({});
   const [value, setValue] = React.useState(0);
-  const [materials, setMaterials] = React.useState({});
+  const [materials, setMaterials] = React.useState([]);
   const [materialsCost, setMaterialsCost] = React.useState(0);
 
   const [showUsesMaterials, setUsesMaterials] = React.useState(false);

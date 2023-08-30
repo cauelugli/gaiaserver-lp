@@ -173,26 +173,27 @@ export default function ServiceTable() {
                           <Table size="small">
                             <TableBody>
                               <TableRow>
-                                <ol>
-                                  {service.materials.map(
-                                    (material) =>
-                                      material.quantity > 0 && (
-                                        <li key={material.id}>
-                                          {material.name} - x{material.quantity}
-                                        </li>
-                                      )
-                                  )}
-                                  {service.materials.length === 0 ? (
+                                {service.materials.length > 0 ? (
+                                  <ol>
+                                    {service.materials.map(
+                                      (material) =>
+                                        material.quantity > 0 && (
+                                          <li key={material.id}>
+                                            {material.name} - x
+                                            {material.quantity}
+                                          </li>
+                                        )
+                                    )}
                                     <Typography sx={{ mt: 1 }}>
-                                    Não há uso de Materiais
-                                  </Typography>
-                                  ) : (
-                                    <Typography sx={{ mt: 1 }}>
-                                      Total de Materiais: R$
+                                      Total de Materiais: R$ 
                                       {service.materialsCost.toFixed(2)}
                                     </Typography>
-                                  )}
-                                </ol>
+                                  </ol>
+                                ) : (
+                                  <Typography sx={{ mt: 1 }}>
+                                    Não há uso de Materiais
+                                  </Typography>
+                                )}
                               </TableRow>
                             </TableBody>
                           </Table>
