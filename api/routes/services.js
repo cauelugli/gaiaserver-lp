@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Service = require("../models/Service");
 const StockItem = require("../models/StockItem");
+const Department = require("../models/Department");
 
 // GET ALL SERVICES
 router.get("/", async (req, res) => {
@@ -16,6 +17,7 @@ router.get("/", async (req, res) => {
 // CREATE SERVICE
 router.post("/", async (req, res) => {
   const newService = new Service(req.body);
+  console.log("newService.department.id", newService.department.id);
   try {
     if (newService.materials.length > 0) {
       for (const material of newService.materials) {
@@ -23,7 +25,20 @@ router.post("/", async (req, res) => {
         stockItem.quantity -= material.quantity;
         await stockItem.save();
       }
-    } 
+    }
+    await Department.findByIdAndUpdate(
+      newService.department.id,
+      {
+        $push: {
+          services: {
+            id: newService.id,
+            name: newService.name,
+          },
+        },
+      },
+      { new: true }
+    );
+
     const savedService = await newService.save();
     res.status(200).json(savedService);
   } catch (err) {
@@ -42,6 +57,11 @@ router.delete("/:id", async (req, res) => {
       stockItem.quantity += missingItem.quantity;
       await stockItem.save();
     }
+    await Department.findByIdAndUpdate(
+      deletedService.department.id,
+      { $pull: { services: { id: deletedService.id } } },
+      { new: true }
+    );
 
     res.status(200).json(deletedService);
   } catch (err) {

@@ -81,6 +81,21 @@ export default function UserTable() {
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }}>
             <TableBody>
+              <TableRow
+                sx={{
+                  backgroundColor: "#ccc",
+                }}
+              >
+                <TableCell align="left">
+                  <Typography>Nome do Colaborador</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <Typography>E-mail</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <Typography>Departamento</Typography>
+                </TableCell>
+              </TableRow>
               {users.map((user) => (
                 <>
                   <TableRow
@@ -100,6 +115,20 @@ export default function UserTable() {
                       align="left"
                     >
                       <Typography>{user.name}</Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(user)}
+                      cursor="pointer"
+                      align="left"
+                    >
+                      <Typography>{user.email}</Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(user)}
+                      cursor="pointer"
+                      align="left"
+                    >
+                      <Typography>{user.department ? user.department.name : "-"}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>

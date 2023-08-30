@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
-// import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 import {
   Box,
@@ -20,10 +20,10 @@ import {
   Typography,
 } from "@mui/material";
 
-// import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -46,7 +46,7 @@ const AddJobForm = ({
   const [price, setPrice] = React.useState("");
   const [cost, setCost] = React.useState("");
   const [local, setLocal] = React.useState("");
-  // const [scheduledTo, setScheduledTo] = React.useState(dayjs('2022-04-17'));
+  const [scheduledTo, setScheduledTo] = React.useState(dayjs());
 
   const [showAdditionalOptions, setShowAdditionalOptions] =
     React.useState(false);
@@ -82,7 +82,7 @@ const AddJobForm = ({
         price,
         cost,
         local,
-        // scheduledTo,
+        scheduledTo,
       });
       res.data && alert("Pedido Adicionado!");
       setOpenAddJob(!openAddJob);
@@ -112,7 +112,6 @@ const AddJobForm = ({
               <Select
                 onChange={(e) => handleCustomerChange(e.target.value)}
                 value={customer}
-                size="small"
                 displayEmpty
                 renderValue={(selected) => {
                   if (selected.length === 0) {
@@ -141,7 +140,6 @@ const AddJobForm = ({
           <Grid item>
             <TextField
               label="Solicitante"
-              size="small"
               value={requester}
               onChange={(e) => setRequester(e.target.value)}
               required
@@ -152,7 +150,6 @@ const AddJobForm = ({
           <Grid item>
             <TextField
               label="Local de Execução"
-              size="small"
               value={local}
               onChange={(e) => setLocal(e.target.value)}
               required
@@ -160,17 +157,18 @@ const AddJobForm = ({
               sx={{ width: 240, mx: 1 }}
             />
           </Grid>
-          <Grid item>
-            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DateCalendar", "DateCalendar"]}>
-                <DemoItem label="Controlled calendar">
-                  <DateCalendar
-                    value={scheduledTo}
-                    onChange={(newValue) => setScheduledTo(newValue)}
-                  />
-                </DemoItem>
+          <Grid item sx={{mt:-1}}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker
+                  value={scheduledTo}
+                  format="DD/MM/YYYY"
+                  onChange={(newValue) => setScheduledTo(newValue)}
+                  label="Agendar para"
+                  sx={{ width: 200 }}
+                />
               </DemoContainer>
-            </LocalizationProvider> */}
+            </LocalizationProvider>
           </Grid>
         </Grid>
 
@@ -291,7 +289,7 @@ const AddJobForm = ({
         </Grid>
 
         <Divider sx={{ my: 2 }} />
-        <Typography sx={{ my: 2 }}>Orçamento</Typography>
+        <Typography sx={{ my: 2 }}>Orçamento #  {"job.number"}</Typography>
         <Grid container sx={{ pr: "4%", ml: "5%" }} direction="row">
           <Grid item>
             <Typography>Valor</Typography>

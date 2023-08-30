@@ -80,6 +80,21 @@ export default function ManagerTable() {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
+            <TableRow
+              sx={{
+                backgroundColor: "#ccc",
+              }}
+            >
+              <TableCell align="left">
+                <Typography>Nome do Gerente</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography>E-mail</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography>Departamento</Typography>
+              </TableCell>
+            </TableRow>
             {managers.map((manager) => (
               <>
                 <TableRow
@@ -99,6 +114,20 @@ export default function ManagerTable() {
                     align="left"
                   >
                     <Typography>{manager.name}</Typography>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(manager)}
+                    cursor="pointer"
+                    align="left"
+                  >
+                    <Typography>{manager.email}</Typography>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(manager)}
+                    cursor="pointer"
+                    align="left"
+                  >
+                    <Typography>{manager.department ? manager.department.name : "-"}</Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>

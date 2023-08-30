@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const autoIncrement = require("mongoose-auto-increment");
+
+autoIncrement.initialize(mongoose.connection);
 
 jobSchema = new mongoose.Schema({
   customerId: {
@@ -42,7 +45,8 @@ jobSchema = new mongoose.Schema({
     required: true,
   },
   cost: {
-    type: Object,
+    type: Number,
+    required: true,
   },
   local: {
     type: String,
@@ -64,6 +68,13 @@ jobSchema = new mongoose.Schema({
   updatedBy: {
     type: String,
   },
+});
+
+jobSchema.plugin(autoIncrement.plugin, {
+  model: "Job",
+  field: "budget",
+  startAt: 1,
+  incrementBy: 1,
 });
 
 const Job = mongoose.model("Job", jobSchema);

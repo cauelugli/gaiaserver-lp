@@ -86,6 +86,18 @@ export default function ServiceTable() {
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }}>
             <TableBody>
+              <TableRow
+                sx={{
+                  backgroundColor: "#ccc",
+                }}
+              >
+                <TableCell align="left">
+                  <Typography>Nome do Serviço</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <Typography>Departamento</Typography>
+                </TableCell>
+              </TableRow>
               {services.map((service) => (
                 <>
                   <TableRow
@@ -105,6 +117,13 @@ export default function ServiceTable() {
                       align="left"
                     >
                       <Typography>{service.name}</Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(service)}
+                      cursor="pointer"
+                      align="left"
+                    >
+                      <Typography>{service.department.name}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -185,7 +204,7 @@ export default function ServiceTable() {
                                         )
                                     )}
                                     <Typography sx={{ mt: 1 }}>
-                                      Total de Materiais: R$ 
+                                      Total de Materiais: R$
                                       {service.materialsCost.toFixed(2)}
                                     </Typography>
                                   </ol>

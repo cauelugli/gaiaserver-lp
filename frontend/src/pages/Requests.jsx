@@ -54,7 +54,7 @@ export default function Requests({
 }) {
   const [value, setValue] = React.useState(0);
 
-  const [openAddJob, setOpenAddJob] = React.useState(false);
+  const [openAddJob, setOpenAddJob] = React.useState(true);
   const [openAddSaleRequest, setOpenAddSaleRequest] = React.useState(false);
   const [openAddSupportRequest, setOpenAddSupportRequest] =
     React.useState(false);

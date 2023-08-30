@@ -107,7 +107,7 @@ export default function Services() {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label="Esporádicos"
+            label="Setores"
             sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
           />
           <Tab

@@ -88,23 +88,77 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
+            <TableRow
+              sx={{
+                backgroundColor: "#ccc",
+              }}
+            >
+              <TableCell align="left">
+                <Typography>Nome do Departamento</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography>Gerente</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography>Nº Colaboradores</Typography>
+              </TableCell>
+            </TableRow>
             {departments.map((department) => (
               <>
                 <TableRow
                   key={department._id}
                   sx={{
                     cursor: "pointer",
-                    backgroundColor: department.color,
-                    "&:hover": { backgroundColor: "#ccc" },
+                    backgroundColor:
+                      selectedDepartment === department.name && openDetail
+                        ? department.color
+                        : "none",
+                    "&:hover": { backgroundColor: department.color },
                   }}
                 >
                   <TableCell
                     onClick={() => handleOpenDetail(department)}
                     cursor="pointer"
                     align="left"
-                    sx={{ color: "white", "&:hover": { color: "black" } }}
+                    sx={{
+                      color:
+                        selectedDepartment === department.name && openDetail
+                          ? "white"
+                          : "black",
+                      "&:hover": { color: "white" },
+                    }}
                   >
                     <Typography>{department.name}</Typography>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(department)}
+                    cursor="pointer"
+                    align="left"
+                    sx={{
+                      color:
+                        selectedDepartment === department.name && openDetail
+                          ? "white"
+                          : "black",
+                      "&:hover": { color: "white" },
+                    }}
+                  >
+                    <Typography>
+                      {department.manager ? department.manager.name : "-"}
+                    </Typography>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(department)}
+                    cursor="pointer"
+                    align="left"
+                    sx={{
+                      color:
+                        selectedDepartment === department.name && openDetail
+                          ? "white"
+                          : "black",
+                      "&:hover": { color: "white" },
+                    }}
+                  >
+                    <Typography>{department.members.length}</Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -301,7 +355,6 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                           />
                         </Box>
                       </Box>
-                      
                     </Collapse>
                   </TableCell>
                 </TableRow>

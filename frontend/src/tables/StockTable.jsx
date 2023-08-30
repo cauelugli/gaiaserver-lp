@@ -87,9 +87,6 @@ export default function StockTable() {
                   <Typography>Valor de Venda</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography>Lucro por Item</Typography>
-                </TableCell>
-                <TableCell align="left">
                   <Typography>Em Estoque</Typography>
                 </TableCell>
               </TableRow>
@@ -126,20 +123,6 @@ export default function StockTable() {
                       align="left"
                     >
                       <Typography>R${stockItem.sellValue}</Typography>
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleOpenDetail(stockItem)}
-                      cursor="pointer"
-                      align="left"
-                    >
-                      <Typography sx={{color:"#32CD32"}}>
-                        {(
-                          ((stockItem.sellValue - stockItem.buyValue) /
-                            stockItem.buyValue) *
-                          100
-                        ).toFixed(2)}
-                        %
-                      </Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(stockItem)}

@@ -198,7 +198,7 @@ router.delete("/:id", async (req, res) => {
       deletedDepartment,
       updatedMembers,
       updatedManager,
-      updatedServices
+      updatedServices,
     });
   } catch (err) {
     console.log(err);
@@ -250,24 +250,26 @@ router.put("/", async (req, res) => {
       updatedMembers.push(newAddedUpdatedMember);
     }
 
-    const servicesIds = req.body.services.map(
-      (service) => service._id || service.id
-    );
-
-    for (const servicesId of servicesIds) {
-      const newAddedUpdatedService = await Service.updateOne(
-        { _id: servicesId },
-        {
-          $set: {
-            "department.id": updatedDepartment._id,
-            "department.name": updatedDepartment.name,
-            "department.phone": updatedDepartment.phone,
-            "department.email": updatedDepartment.email,
-            "department.color": updatedDepartment.color,
-          },
-        }
+    if (req.body.services) {
+      const servicesIds = req.body.services.map(
+        (service) => service._id || service.id
       );
-      updatedServices.push(newAddedUpdatedService);
+
+      for (const servicesId of servicesIds) {
+        const newAddedUpdatedService = await Service.updateOne(
+          { _id: servicesId },
+          {
+            $set: {
+              "department.id": updatedDepartment._id,
+              "department.name": updatedDepartment.name,
+              "department.phone": updatedDepartment.phone,
+              "department.email": updatedDepartment.email,
+              "department.color": updatedDepartment.color,
+            },
+          }
+        );
+        updatedServices.push(newAddedUpdatedService);
+      }
     }
 
     const removedMemberIds = req.body.removedMembers.map(
