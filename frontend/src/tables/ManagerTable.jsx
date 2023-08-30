@@ -6,6 +6,7 @@ import {
   Box,
   Collapse,
   Dialog,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -127,7 +128,9 @@ export default function ManagerTable() {
                     cursor="pointer"
                     align="left"
                   >
-                    <Typography>{manager.department ? manager.department.name : "-"}</Typography>
+                    <Typography>
+                      {manager.department ? manager.department.name : "-"}
+                    </Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -190,9 +193,29 @@ export default function ManagerTable() {
                               </TableCell>
                               <TableCell>
                                 <Typography>
-                                  {manager.department
-                                    ? manager.department.name
-                                    : "-"}
+                                  {manager.department ? (
+                                    <Grid container direction="row">
+                                      <Paper
+                                        elevation={0}
+                                        sx={{
+                                          mr: 1,
+                                          mt: 0.5,
+                                          width: 15,
+                                          height: 15,
+                                          borderRadius: 50,
+                                          backgroundColor:
+                                            manager.department.color,
+                                        }}
+                                      >
+                                        {" "}
+                                      </Paper>
+                                      <Typography>
+                                        {manager.department.name}
+                                      </Typography>
+                                    </Grid>
+                                  ) : (
+                                    "-"
+                                  )}
                                 </Typography>
                               </TableCell>
                             </TableRow>

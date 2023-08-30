@@ -6,6 +6,7 @@ import {
   Box,
   Collapse,
   Dialog,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -124,7 +125,9 @@ export default function UserTable() {
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>{user.position ? user.position : "-"}</Typography>
+                      <Typography>
+                        {user.position ? user.position : "-"}
+                      </Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(user)}
@@ -203,9 +206,29 @@ export default function UserTable() {
                                 </TableCell>
                                 <TableCell>
                                   <Typography>
-                                    {user.department
-                                      ? user.department.name
-                                      : "-"}
+                                    {user.department ? (
+                                      <Grid container direction="row">
+                                        <Paper
+                                          elevation={0}
+                                          sx={{
+                                            mr: 1,
+                                            mt: 0.5,
+                                            width: 15,
+                                            height: 15,
+                                            borderRadius: 50,
+                                            backgroundColor:
+                                              user.department.color,
+                                          }}
+                                        >
+                                          {" "}
+                                        </Paper>
+                                        <Typography>
+                                          {user.department.name}
+                                        </Typography>
+                                      </Grid>
+                                    ) : (
+                                      "-"
+                                    )}
                                   </Typography>
                                 </TableCell>
                               </TableRow>
