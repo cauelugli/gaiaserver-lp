@@ -30,6 +30,7 @@ export default function App() {
   const [customers, setCustomers] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [services, setServices] = useState([]);
+  const [jobs, setJobs] = useState([]);
 
   const [selectedCustomer, setSelectedCustomer] = useState("");
 
@@ -49,6 +50,15 @@ export default function App() {
     };
     fetchData();
   }, [selectedCustomer, customers]);
+
+  const fetchDataRequests = async () => {
+    try {
+      const jobs = await api.get("/jobs");
+      setJobs(jobs.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   const handleSidebarStatusChange = () => {
     !sidebarStatus
@@ -118,6 +128,8 @@ export default function App() {
                         customers={customers}
                         departments={departments}
                         services={services}
+                        jobs={jobs}
+                        fetchData={fetchDataRequests}
                       />
                     }
                   />

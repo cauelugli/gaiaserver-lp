@@ -51,6 +51,8 @@ export default function Requests({
   customers,
   departments,
   services,
+  latestJobNumber,
+  fetchData
 }) {
   const [value, setValue] = React.useState(0);
 
@@ -175,7 +177,7 @@ export default function Requests({
       {openAddJob && (
         <Dialog
           fullWidth
-          maxWidth="md"
+          maxWidth="lg"
           open={openAddJob}
           onClose={() => setOpenAddJob(!openAddJob)}
         >
@@ -185,6 +187,8 @@ export default function Requests({
             customers={customers}
             departments={departments}
             services={services}
+            latestJobNumber={latestJobNumber}
+            fetchData={fetchData}
           />
         </Dialog>
       )}

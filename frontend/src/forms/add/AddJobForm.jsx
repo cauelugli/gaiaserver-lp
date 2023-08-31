@@ -15,6 +15,7 @@ import {
   Grid,
   InputAdornment,
   MenuItem,
+  // Paper,
   Select,
   TextField,
   Typography,
@@ -35,6 +36,7 @@ const AddJobForm = ({
   customers,
   departments,
   services,
+  fetchData,
 }) => {
   const [title, setTitle] = React.useState("");
   const [customer, setCustomer] = React.useState("");
@@ -44,7 +46,6 @@ const AddJobForm = ({
   const [department, setDepartment] = React.useState("");
   const [service, setService] = React.useState("");
   const [price, setPrice] = React.useState("");
-  const [cost, setCost] = React.useState("");
   const [local, setLocal] = React.useState("");
   const [scheduledTo, setScheduledTo] = React.useState(dayjs());
 
@@ -80,12 +81,13 @@ const AddJobForm = ({
         status: "Aberto",
         service,
         price,
-        cost,
         local,
         scheduledTo,
       });
-      res.data && alert("Pedido Adicionado!");
+      res.data &&
+        alert(`Pedido Adicionado! Orçamento #${res.data.quoteNumber}`);
       setOpenAddJob(!openAddJob);
+      fetchData();
     } catch (err) {
       alert("Vish, deu não...");
       console.log(err);
@@ -120,7 +122,7 @@ const AddJobForm = ({
 
                   return selected.name;
                 }}
-                sx={{ width: 200 }}
+                sx={{ width: 250 }}
               >
                 <MenuItem disabled value="">
                   Clientes
@@ -144,7 +146,7 @@ const AddJobForm = ({
               onChange={(e) => setRequester(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 150, ml: 1 }}
+              sx={{ width: 250, ml: 1 }}
             />
           </Grid>
           <Grid item>
@@ -154,10 +156,10 @@ const AddJobForm = ({
               onChange={(e) => setLocal(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 240, mx: 1 }}
+              sx={{ width: 300, mx: 1 }}
             />
           </Grid>
-          <Grid item sx={{mt:-1}}>
+          <Grid item sx={{ mt: -1 }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker"]}>
                 <DatePicker
@@ -165,63 +167,21 @@ const AddJobForm = ({
                   format="DD/MM/YYYY"
                   onChange={(newValue) => setScheduledTo(newValue)}
                   label="Agendar para"
-                  sx={{ width: 200 }}
+                  sx={{ width: 180 }}
                 />
               </DemoContainer>
             </LocalizationProvider>
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 2 }} />
-        <Typography sx={{ my: 1 }}>Solicitação</Typography>
-        <Grid container sx={{ pr: "4%", mt: 2 }} direction="column">
-          <Grid item>
-            <TextField
-              label="Título"
-              size="small"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ width: "64%", mb: 1, mr: 1 }}
-            />
-            <Select
-              onChange={(e) => setService(e.target.value)}
-              value={service}
-              displayEmpty
-              size="small"
-              renderValue={(selected) => {
-                if (selected.length === 0) {
-                  return <Typography>Serviço</Typography>;
-                } else {
-                  return <Typography>{selected.name}</Typography>;
-                }
-              }}
-              sx={{ width: "35%", mb: 1 }}
-            >
-              {services.map((item) => (
-                <MenuItem value={item} key={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
-            <TextField
-              label="Descrição"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ width: "100%" }}
-            />
-          </Grid>
-        </Grid>
-
-        <Divider sx={{ mt: -4 }} />
-        <Typography sx={{ my: 2 }}>Responsáveis</Typography>
+        <Divider sx={{ mt: 2 }} />
+        <Typography sx={{ my: 2 }}>Departamento</Typography>
         <Grid container sx={{ pr: "4%" }} direction="row">
           <Grid item>
             <Select
-              onChange={(e) => setDepartment(e.target.value)}
+              onChange={(e) => {
+                setDepartment(e.target.value), setService(""), setWorker("");
+              }}
               value={department}
               displayEmpty
               size="small"
@@ -239,8 +199,6 @@ const AddJobForm = ({
                   value={item}
                   key={item.id}
                   sx={{
-                    backgroundColor: item.color,
-                    color: "white",
                     "&:hover": {
                       backgroundColor: item.color,
                       color: "white",
@@ -252,14 +210,42 @@ const AddJobForm = ({
               ))}
             </Select>
           </Grid>
-          {department && (
-            <>
-              <Grid item>
-                <Typography sx={{ ml: 2, mt: 1, width: 200, color: "black" }}>
-                  Gerente - {department.manager.name}
-                </Typography>
-              </Grid>
-              <Grid item>
+          <Grid item sx={{ ml: 2, mt: -7 }}>
+            {department && (
+              <>
+                <Typography sx={{ my: 2 }}>Serviço</Typography>
+                <Select
+                  onChange={(e) => setService(e.target.value)}
+                  value={service}
+                  displayEmpty
+                  size="small"
+                  renderValue={(selected) => {
+                    if (selected.length === 0) {
+                      return <Typography>Escolha um Serviço</Typography>;
+                    } else {
+                      return <Typography>{selected.name}</Typography>;
+                    }
+                  }}
+                  sx={{ width: 250 }}
+                >
+                  {services
+                    .filter(
+                      (service) => service.department.id === department._id
+                    )
+                    .map((item) => (
+                      <MenuItem value={item} key={item.id}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </>
+            )}
+          </Grid>
+
+          <Grid item sx={{ ml: 2, mt: -7 }}>
+            {department && service && (
+              <>
+                <Typography sx={{ my: 2 }}>Colaborador</Typography>
                 <Select
                   onChange={(e) => setWorker(e.target.value)}
                   value={worker}
@@ -283,15 +269,65 @@ const AddJobForm = ({
                     </MenuItem>
                   ))}
                 </Select>
-              </Grid>
-            </>
-          )}
+              </>
+            )}
+          </Grid>
         </Grid>
 
         <Divider sx={{ my: 2 }} />
-        <Typography sx={{ my: 2 }}>Orçamento #  {"job.number"}</Typography>
+        <Typography sx={{ my: 1 }}>Solicitação</Typography>
+        <Grid container sx={{ pr: "4%", mt: 2 }} direction="column">
+          <Grid item>
+            <TextField
+              label="Título"
+              size="small"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+              variant="outlined"
+              fullWidth
+              sx={{ mb: 1 }}
+            />
+
+            <TextField
+              label="Descrição"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+              variant="outlined"
+              fullWidth
+              sx={{ mb: 1 }}
+            />
+          </Grid>
+        </Grid>
+
+        <Divider sx={{ my: 2 }} />
+        <Typography sx={{ my: 2 }}>Orçamento</Typography>
         <Grid container sx={{ pr: "4%", ml: "5%" }} direction="row">
           <Grid item>
+            {/* <Grid item sx={{ ml: 2, mt: -7 }}>
+              {department && service && service.materials.length > 0 && (
+                <>
+                  <Typography sx={{ my: 2 }}>Materiais Utilizados</Typography>
+                  <Paper
+                    sx={{ width: 150, height: 70, pl: 1, overflow: "auto" }}
+                  >
+                    <ol style={{ paddingLeft: "0px" }}>
+                      {service.materials.map((material) => (
+                        <Grid key={material._id} container direction="row">
+                          <Typography sx={{ fontSize: "14px", color: "#444" }}>
+                            {material.name}
+                          </Typography>
+                          <Typography sx={{ fontSize: "14px", color: "#444" }}>
+                            {"\u00A0"}x{material.quantity}
+                          </Typography>
+                        </Grid>
+                      ))}
+                    </ol>
+                  </Paper>
+                </>
+              )}
+            </Grid> */}
             <Typography>Valor</Typography>
             <TextField
               type="number"
@@ -311,28 +347,6 @@ const AddJobForm = ({
               required
               variant="outlined"
               sx={{ width: 130 }}
-            />
-          </Grid>
-          <Grid item>
-            <Typography>Custo</Typography>
-            <TextField
-              type="number"
-              size="small"
-              value={cost}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
-                ),
-              }}
-              onChange={(e) => {
-                const inputValue = e.target.value;
-                if (inputValue >= 0) {
-                  setCost(inputValue);
-                }
-              }}
-              required
-              variant="outlined"
-              sx={{ width: 130, mx: 3 }}
             />
           </Grid>
         </Grid>

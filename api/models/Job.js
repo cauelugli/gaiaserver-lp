@@ -44,10 +44,6 @@ jobSchema = new mongoose.Schema({
     default: 0,
     required: true,
   },
-  cost: {
-    type: Number,
-    required: true,
-  },
   local: {
     type: String,
   },
@@ -72,7 +68,7 @@ jobSchema = new mongoose.Schema({
 
 jobSchema.plugin(autoIncrement.plugin, {
   model: "Job",
-  field: "budget",
+  field: "quoteNumber",
   startAt: 1,
   incrementBy: 1,
 });
