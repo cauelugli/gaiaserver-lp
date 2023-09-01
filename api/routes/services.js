@@ -122,7 +122,20 @@ router.put("/", async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json(updatedService);
+    const updatedDepartment = await Department.findOneAndUpdate(
+      {
+        _id: req.body.department.id,
+        "services.id": req.body.serviceId,
+      },
+      {
+        $set: {
+          "services.$.name": req.body.name,
+        },
+      },
+      { new: true }
+    );
+
+    res.status(200).json({ updatedService, updatedDepartment });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
