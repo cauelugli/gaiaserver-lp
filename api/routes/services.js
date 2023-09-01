@@ -122,18 +122,39 @@ router.put("/", async (req, res) => {
       { new: true }
     );
 
-    const updatedDepartment = await Department.findOneAndUpdate(
-      {
-        _id: req.body.department.id,
-        "services.id": req.body.serviceId,
-      },
-      {
-        $set: {
-          "services.$.name": req.body.name,
-        },
-      },
-      { new: true }
-    );
+    let updatedDepartment;
+
+    req.body.previousData.department.id &&
+    req.body.department.id !== req.body.previousData.department.id
+      ? (await Department.findByIdAndUpdate(
+          req.body.previousData.department.id,
+          { $pull: { services: { id: req.body.previousData._id } } },
+          { new: true }
+        ),
+        (updatedDepartment = await Department.findByIdAndUpdate(
+          req.body.department.id,
+          {
+            $push: {
+              services: {
+                id: req.body._id,
+                name: req.body.name,
+              },
+            },
+          },
+          { new: true }
+        )))
+      : (updatedDepartment = await Department.findOneAndUpdate(
+          {
+            _id: req.body.department.id,
+            "services.id": req.body.serviceId,
+          },
+          {
+            $set: {
+              "services.$.name": req.body.name,
+            },
+          },
+          { new: true }
+        ));
 
     res.status(200).json({ updatedService, updatedDepartment });
   } catch (err) {

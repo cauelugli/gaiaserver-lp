@@ -31,6 +31,7 @@ export default function EditServiceForm({
   stockItems,
   fetchData,
 }) {
+  const previousData = selectedService;
   const [name, setName] = React.useState(selectedService.name);
   const [department, setDepartment] = React.useState(
     selectedService.department
@@ -49,6 +50,7 @@ export default function EditServiceForm({
     try {
       const res = await api.put("/services", {
         serviceId: selectedService._id || selectedService.id,
+        previousData,
         name,
         department: {
           id: department._id || department.id,
