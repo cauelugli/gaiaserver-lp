@@ -17,7 +17,6 @@ router.get("/", async (req, res) => {
 // CREATE SERVICE
 router.post("/", async (req, res) => {
   const newService = new Service(req.body);
-  console.log("newService.department.id", newService.department.id);
   try {
     if (newService.materials.length > 0) {
       for (const material of newService.materials) {
