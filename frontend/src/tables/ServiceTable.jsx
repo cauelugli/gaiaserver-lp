@@ -123,7 +123,7 @@ export default function ServiceTable() {
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>{service.department.name}</Typography>
+                      <Typography>{service.department ? service.department.name : "-"}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>

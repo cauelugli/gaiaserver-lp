@@ -56,6 +56,7 @@ router.delete("/:id", async (req, res) => {
       stockItem.quantity += missingItem.quantity;
       await stockItem.save();
     }
+
     await Department.findByIdAndUpdate(
       deletedService.department.id,
       { $pull: { services: { id: deletedService.id } } },
@@ -135,7 +136,7 @@ router.put("/", async (req, res) => {
           {
             $push: {
               services: {
-                id: req.body._id,
+                id: req.body.serviceId,
                 name: req.body.name,
               },
             },
