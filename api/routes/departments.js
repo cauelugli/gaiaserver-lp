@@ -182,9 +182,7 @@ router.delete("/:id", async (req, res) => {
     for (const service of deletedDepartment.services) {
       const updatedService = await Service.updateOne(
         { _id: service._id || service.id },
-        {
-          department: {},
-        }
+        { $unset: { department: "" } },
       );
       updatedServices.push(updatedService);
     }
@@ -250,8 +248,8 @@ router.put("/", async (req, res) => {
       updatedMembers.push(newAddedUpdatedMember);
     }
 
-    if (req.body.services) {
-      const servicesIds = req.body.services.map(
+    if (updatedDepartment.services) {
+      const servicesIds = updatedDepartment.services.map(
         (service) => service._id || service.id
       );
 

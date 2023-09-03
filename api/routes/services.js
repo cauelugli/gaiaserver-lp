@@ -124,14 +124,38 @@ router.put("/", async (req, res) => {
 
     let updatedDepartment;
 
-    req.body.previousData.department.id &&
-    req.body.department.id !== req.body.previousData.department.id
-      ? (await Department.findByIdAndUpdate(
-          req.body.previousData.department.id,
-          { $pull: { services: { id: req.body.previousData._id } } },
-          { new: true }
-        ),
-        (updatedDepartment = await Department.findByIdAndUpdate(
+    req.body.previousData.department
+      ? req.body.department.id !== req.body.previousData.department.id
+        ? (await Department.findByIdAndUpdate(
+            req.body.previousData.department.id,
+            { $pull: { services: { id: req.body.previousData._id } } },
+            { new: true }
+          ),
+          (updatedDepartment = await Department.findByIdAndUpdate(
+            req.body.department.id,
+            {
+              $push: {
+                services: {
+                  id: req.body.serviceId,
+                  name: req.body.name,
+                },
+              },
+            },
+            { new: true }
+          )))
+        : (updatedDepartment = await Department.findOneAndUpdate(
+            {
+              _id: req.body.department.id,
+              "services.id": req.body.serviceId,
+            },
+            {
+              $set: {
+                "services.$.name": req.body.name,
+              },
+            },
+            { new: true }
+          ))
+      : (updatedDepartment = await Department.findByIdAndUpdate(
           req.body.department.id,
           {
             $push: {
@@ -139,18 +163,6 @@ router.put("/", async (req, res) => {
                 id: req.body.serviceId,
                 name: req.body.name,
               },
-            },
-          },
-          { new: true }
-        )))
-      : (updatedDepartment = await Department.findOneAndUpdate(
-          {
-            _id: req.body.department.id,
-            "services.id": req.body.serviceId,
-          },
-          {
-            $set: {
-              "services.$.name": req.body.name,
             },
           },
           { new: true }
