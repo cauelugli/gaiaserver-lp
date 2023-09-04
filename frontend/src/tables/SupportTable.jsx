@@ -20,7 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 import EditRequestForm from "../forms/edit/EditRequestForm";
-import DeleteRequestForm from "../forms/delete/DeleteRequestForm";
+// import DeleteRequestForm from "../forms/delete/DeleteRequestForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -158,7 +158,7 @@ export default function SupportTable({ selectedCustomer, fetchData }) {
           />
         </Dialog>
       )}
-      {openDelete && (
+      {/* {openDelete && (
         <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
           <DeleteRequestForm
             selectedRequest={selectedRequest}
@@ -167,7 +167,7 @@ export default function SupportTable({ selectedCustomer, fetchData }) {
             fetchData={fetchData}
           />
         </Dialog>
-      )}
+      )} */}
     </Box>
   );
 }

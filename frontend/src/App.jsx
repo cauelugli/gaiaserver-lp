@@ -28,9 +28,6 @@ export default function App() {
   const [customertabStatus, setCustomertabStatus] = React.useState(true);
 
   const [customers, setCustomers] = useState([]);
-  const [departments, setDepartments] = useState([]);
-  const [services, setServices] = useState([]);
-  const [jobs, setJobs] = useState([]);
 
   const [selectedCustomer, setSelectedCustomer] = useState("");
 
@@ -38,11 +35,7 @@ export default function App() {
     const fetchData = async () => {
       try {
         const customers = await api.get("/customers");
-        const departments = await api.get("/departments");
-        const services = await api.get("/services");
         setCustomers(customers.data);
-        setDepartments(departments.data);
-        setServices(services.data);
         selectedCustomer === "" && setSelectedCustomer(customers.data[0]);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -50,15 +43,6 @@ export default function App() {
     };
     fetchData();
   }, [selectedCustomer, customers]);
-
-  const fetchDataRequests = async () => {
-    try {
-      const jobs = await api.get("/jobs");
-      setJobs(jobs.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const handleSidebarStatusChange = () => {
     !sidebarStatus
@@ -119,20 +103,7 @@ export default function App() {
                   <Route path="/departments" element={<Departments />} />
                   <Route path="/services" element={<Services />} />
                   <Route path="/stock" element={<Stock />} />
-                  <Route
-                    path="/requests"
-                    element={
-                      // quem tem que fazer o fetch eh a tabela!
-                      <Requests
-                        selectedCustomer={selectedCustomer}
-                        customers={customers}
-                        departments={departments}
-                        services={services}
-                        jobs={jobs}
-                        fetchData={fetchDataRequests}
-                      />
-                    }
-                  />
+                  <Route path="/requests" element={<Requests />} />
                 </Routes>
               </Grid>
             </Grid>

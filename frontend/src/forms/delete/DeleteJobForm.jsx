@@ -9,12 +9,11 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const DeleteRequestForm = ({ openDelete, setOpenDelete, fetchData }) => {
-  let job;
+const DeleteJobForm = ({ fetchData, selectedJob, openDelete, setOpenDelete }) => {
 
   const handleDelete = async () => {
     try {
-      const res = await api.delete(`/requests/${job._id}`);
+      const res = await api.delete(`/jobs/${selectedJob._id}`);
       res.status === 200 && alert("Job deletado com sucesso!");
       setOpenDelete(false);
       fetchData();
@@ -26,7 +25,7 @@ const DeleteRequestForm = ({ openDelete, setOpenDelete, fetchData }) => {
 
   return (
     <>
-      <DialogTitle>{`Deletar Job ${job.name} ?`}</DialogTitle>
+      <DialogTitle>{`Deletar Job ${selectedJob.title} ?`}</DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -56,4 +55,4 @@ const DeleteRequestForm = ({ openDelete, setOpenDelete, fetchData }) => {
   );
 };
 
-export default DeleteRequestForm;
+export default DeleteJobForm;

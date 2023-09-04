@@ -4,8 +4,8 @@ const autoIncrement = require("mongoose-auto-increment");
 autoIncrement.initialize(mongoose.connection);
 
 jobSchema = new mongoose.Schema({
-  customerId: {
-    type: String,
+  customer: {
+    type: Object,
     required: true,
   },
   requester: {

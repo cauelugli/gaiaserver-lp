@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import axios from "axios";
 
 import {
   Dialog,
@@ -19,47 +18,27 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
-import EditRequestForm from "../forms/edit/EditRequestForm";
-import DeleteRequestForm from "../forms/delete/DeleteRequestForm";
+import EditJobForm from "../forms/edit/EditJobForm";
+import DeleteJobForm from "../forms/delete/DeleteJobForm";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
-export default function JobTable({ selectedCustomer, fetchData }) {
+export default function JobTable({ jobs, fetchData }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
-  const [selectedRequest, setSelectedRequest] = React.useState([]);
+  const [selectedJob, setSelectedJob] = React.useState([]);
 
-  const [filteredJobs, setFilteredJobs] = React.useState([]);
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const jobs = await api.get("/jobs");
-        setFilteredJobs(
-          jobs.data.filter((job) => job.customerId === selectedCustomer._id)
-        );
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [selectedCustomer]);
-
-  const handleOpenDetail = (request) => {
+  const handleOpenDetail = (job) => {
     setOpenDetail(!openDetail);
-    setSelectedRequest(request);
+    setSelectedJob(job);
   };
 
-  const handleOpenEdit = (request) => {
+  const handleOpenEdit = (job) => {
     setOpenEdit(!openEdit);
-    setSelectedRequest(request);
+    setSelectedJob(job);
   };
 
-  const handleConfirmDelete = (request) => {
-    setSelectedRequest(request);
+  const handleConfirmDelete = (job) => {
+    setSelectedJob(job);
     setOpenDelete(!openDelete);
   };
 
@@ -68,14 +47,32 @@ export default function JobTable({ selectedCustomer, fetchData }) {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
-            {filteredJobs.map((job) => (
+            <TableRow
+              sx={{
+                backgroundColor: "#ccc",
+              }}
+            >
+              <TableCell align="left">
+                <Typography>Nome do Job</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography>Solicitante</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography>Serviço</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography>Status</Typography>
+              </TableCell>
+            </TableRow>
+            {jobs.map((job) => (
               <>
                 <TableRow
                   key={job._id}
                   sx={{
                     cursor: "pointer",
                     backgroundColor:
-                      setSelectedRequest === job.title && openDetail
+                      selectedJob.title === job.title && openDetail
                         ? "#95dd95"
                         : "none",
                     "&:hover": { backgroundColor: "#ccc " },
@@ -86,7 +83,30 @@ export default function JobTable({ selectedCustomer, fetchData }) {
                     cursor="pointer"
                     align="left"
                   >
-                    {job.title}
+                    <Typography>{job.title}</Typography>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(job)}
+                    cursor="pointer"
+                    align="left"
+                  >
+                    <Typography>
+                      {job.requester} ({job.customer.name})
+                    </Typography>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(job)}
+                    cursor="pointer"
+                    align="left"
+                  >
+                    <Typography>{job.service.name}</Typography>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(job)}
+                    cursor="pointer"
+                    align="left"
+                  >
+                    <Typography>{job.status}</Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -95,7 +115,7 @@ export default function JobTable({ selectedCustomer, fetchData }) {
                     colSpan={6}
                   >
                     <Collapse
-                      in={openDetail && selectedRequest.title === job.title}
+                      in={openDetail && selectedJob.title === job.title}
                       timeout="auto"
                       unmountOnExit
                     >
@@ -112,7 +132,7 @@ export default function JobTable({ selectedCustomer, fetchData }) {
                           <TableBody>
                             <TableRow>
                               <TableCell component="th" scope="row">
-                                {job.title}
+                                <Typography>{job.title}</Typography>
                               </TableCell>
                             </TableRow>
                           </TableBody>
@@ -143,22 +163,22 @@ export default function JobTable({ selectedCustomer, fetchData }) {
       {openEdit && (
         <Dialog
           fullWidth
-          maxWidth="md"
+          maxWidth="lg"
           open={openEdit}
           onClose={() => setOpenEdit(!openEdit)}
         >
-          <EditRequestForm
-            openEdit={openEdit}
-            selectedRequest={selectedRequest}
-            setOpenEdit={setOpenEdit}
+          <EditJobForm
+            openEditJob={openEdit}
+            selectedJob={selectedJob}
+            setOpenEditJob={setOpenEdit}
             fetchData={fetchData}
           />
         </Dialog>
       )}
       {openDelete && (
         <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-          <DeleteRequestForm
-            selectedRequest={selectedRequest}
+          <DeleteJobForm
+            selectedJob={selectedJob}
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}
             fetchData={fetchData}

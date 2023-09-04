@@ -11,7 +11,6 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  FormControl,
   Grid,
   InputAdornment,
   MenuItem,
@@ -30,37 +29,65 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
-  const [title, setTitle] = React.useState("");
-  const [customer, setCustomer] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [requester, setRequester] = React.useState("");
-  const [worker, setWorker] = React.useState("");
-  const [department, setDepartment] = React.useState("");
+const EditJobForm = ({
+  openEditJob,
+  setOpenEditJob,
+  fetchData1,
+  selectedJob,
+}) => {
+  const [title, setTitle] = React.useState(selectedJob.title);
+  const [description, setDescription] = React.useState(selectedJob.description);
+  const [requester, setRequester] = React.useState(selectedJob.requester);
+  const [worker, setWorker] = React.useState(selectedJob.worker);
+  const [department, setDepartment] = React.useState(selectedJob.department);
   const [service, setService] = React.useState("");
-  const [price, setPrice] = React.useState("");
-  const [local, setLocal] = React.useState("");
-  const [scheduledTo, setScheduledTo] = React.useState(dayjs());
+  const [price, setPrice] = React.useState(selectedJob.price);
+  const [local, setLocal] = React.useState(selectedJob.local);
+  const [scheduledTo, setScheduledTo] = React.useState(
+    dayjs(selectedJob.scheduledTo)
+  );
 
-  const [customers, setCustomers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
   const [services, setServices] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const customers = await api.get("/customers");
         const departments = await api.get("/departments");
         const services = await api.get("/services");
-        setCustomers(customers.data);
         setDepartments(departments.data);
         setServices(services.data);
+
+        const selectedDepartment = departments.data.find(
+          (department) => department._id === selectedJob.department.id
+        );
+        setDepartment(selectedDepartment);
+
+        const selectedService = services.data.find(
+          (service) => service._id === selectedJob.service._id
+        );
+        setService(selectedService);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, []);
+  }, [
+    selectedJob.department.id,
+    selectedJob.service.name,
+    selectedJob.service._id,
+  ]);
+
+  // console.log("departments", departments);
+  // console.log("filteredDepartment members", filteredDepartment.members);
+  // console.log("selectedJob", selectedJob);
+  // console.log("department", department);
+  // console.log("filteredDepartment", filteredDepartment);
+  // console.log("department.members ", department.members);
+  // console.log("selectedJob.service ", selectedJob.service.name);
+  // console.log("selectedJob ", selectedJob);
+  // console.log("selectedJob.service", selectedJob.service);
+  // console.log("worker", worker);
 
   const [showAdditionalOptions, setShowAdditionalOptions] =
     React.useState(false);
@@ -69,19 +96,13 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
     setShowAdditionalOptions(event.target.checked);
   };
 
-  const handleCustomerChange = (customer) => {
-    setCustomer(customer);
-    setRequester(customer.mainContactName);
-    setLocal(customer.address);
-  };
-
-  const handleAdd = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/jobs", {
+      const res = await api.put("/jobs", {
+        jobId: selectedJob._id,
         title,
         description,
-        customer: { id: customer._id, name: customer.name },
         requester,
         department: {
           id: department._id,
@@ -91,15 +112,14 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
         },
         worker,
         manager: department.manager,
-        status: "Aberto",
+        // status,
         service,
         price,
         local,
         scheduledTo,
       });
-      res.data &&
-        alert(`Pedido Adicionado! Orçamento #${res.data.quoteNumber}`);
-      setOpenAddJob(!openAddJob);
+      res.data && alert("Pedido Editado!");
+      setOpenEditJob(!openEditJob);
       fetchData1;
     } catch (err) {
       alert("Vish, deu não...");
@@ -108,7 +128,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
   };
 
   return (
-    <form onSubmit={handleAdd}>
+    <form onSubmit={handleEdit}>
       <Grid container sx={{ mt: 3 }}>
         <DialogTitle>Novo Job</DialogTitle>
       </Grid>
@@ -123,41 +143,19 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
           alignItems="flex-start"
         >
           <Grid item>
-            <FormControl>
-              <Select
-                onChange={(e) => handleCustomerChange(e.target.value)}
-                value={customer}
-                displayEmpty
-                renderValue={(selected) => {
-                  if (selected.length === 0) {
-                    return <Typography>Selecione um Cliente</Typography>;
-                  }
-
-                  return selected.name;
-                }}
-                sx={{ width: 250 }}
-              >
-                <MenuItem disabled value="">
-                  Clientes
-                </MenuItem>
-                {customers.map((item) => (
-                  <MenuItem
-                    value={item}
-                    key={item._id}
-                    sx={{ fontSize: "100%" }}
-                  >
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <TextField
+              label="Cliente"
+              variant="outlined"
+              disabled
+              value={selectedJob.customer.name}
+              sx={{ width: 250, ml: 1 }}
+            />
           </Grid>
           <Grid item>
             <TextField
               label="Solicitante"
               value={requester}
               onChange={(e) => setRequester(e.target.value)}
-              required
               variant="outlined"
               sx={{ width: 250, ml: 1 }}
             />
@@ -167,7 +165,6 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
               label="Local de Execução"
               value={local}
               onChange={(e) => setLocal(e.target.value)}
-              required
               variant="outlined"
               sx={{ width: 300, mx: 1 }}
             />
@@ -179,7 +176,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
                   value={scheduledTo}
                   format="DD/MM/YYYY"
                   onChange={(newValue) => setScheduledTo(newValue)}
-                  label="Agendar para"
+                  label="Agendado para"
                   sx={{ width: 180 }}
                 />
               </DemoContainer>
@@ -193,19 +190,13 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
           <Grid item>
             <Select
               onChange={(e) => {
+                // setFilteredDepartment(e.target.value),
                 setDepartment(e.target.value), setService(""), setWorker("");
               }}
-              value={department}
-              displayEmpty
+              value={department || selectedJob.department}
               size="small"
-              renderValue={(selected) => {
-                if (selected.length === 0) {
-                  return <Typography>Departamento</Typography>;
-                }
-
-                return <Typography>{selected.name}</Typography>;
-              }}
               sx={{ minWidth: "200px" }}
+              renderValue={(selected) => selected.name}
             >
               {departments.map((item) => (
                 <MenuItem
@@ -224,55 +215,54 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
             </Select>
           </Grid>
           <Grid item sx={{ ml: 2, mt: -7 }}>
-            {department && (
-              <>
-                <Typography sx={{ my: 2 }}>Serviço</Typography>
-                <Select
-                  onChange={(e) => setService(e.target.value)}
-                  value={service}
-                  displayEmpty
-                  size="small"
-                  renderValue={(selected) => {
-                    if (selected.length === 0) {
-                      return <Typography>Escolha um Serviço</Typography>;
-                    } else {
-                      return <Typography>{selected.name}</Typography>;
-                    }
-                  }}
-                  sx={{ width: 250 }}
-                >
-                  {services
-                    .filter(
-                      (service) => service.department.id === department._id
-                    )
-                    .map((item) => (
-                      <MenuItem value={item} key={item.id}>
-                        {item.name}
-                      </MenuItem>
-                    ))}
-                </Select>
-              </>
-            )}
+            <>
+              <Typography sx={{ my: 2 }}>Serviço</Typography>
+              <Select
+                onChange={(e) => setService(e.target.value)}
+                value={service}
+                size="small"
+                sx={{ width: 250 }}
+                renderValue={(selected) => {
+                  if (selected.length === 0) {
+                    return <Typography>{selectedJob.service.name}</Typography>;
+                  }
+
+                  return selected.name;
+                }}
+              >
+                {services
+                  .filter(
+                    (service) =>
+                      service.department.id ===
+                      (department ? department._id : selectedJob.department.id)
+                  )
+                  .map((item) => (
+                    <MenuItem value={item} key={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </>
           </Grid>
 
           <Grid item sx={{ ml: 2, mt: -7 }}>
-            {department && service && (
-              <>
-                <Typography sx={{ my: 2 }}>Colaborador</Typography>
-                <Select
-                  onChange={(e) => setWorker(e.target.value)}
-                  value={worker}
-                  size="small"
-                  sx={{ minWidth: "200px" }}
-                  renderValue={(selected) => {
-                    if (selected.length === 0) {
-                      return <Typography>Colaborador</Typography>;
-                    }
+            <>
+              <Typography sx={{ my: 2 }}>Colaborador</Typography>
+              <Select
+                onChange={(e) => setWorker(e.target.value)}
+                value={worker}
+                size="small"
+                sx={{ minWidth: "200px" }}
+                renderValue={(selected) => {
+                  if (selected.length === 0) {
+                    return <Typography>{selectedJob.worker.name}</Typography>;
+                  }
 
-                    return <Typography>{selected.name}</Typography>;
-                  }}
-                >
-                  {department.members.map((item) => (
+                  return selected.name;
+                }}
+              >
+                {department.members ? (
+                  department.members.map((item) => (
                     <MenuItem
                       value={item}
                       key={item._id}
@@ -280,10 +270,12 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
                     >
                       {item.name}
                     </MenuItem>
-                  ))}
-                </Select>
-              </>
-            )}
+                  ))
+                ) : (
+                  <MenuItem disabled>Carregando...</MenuItem>
+                )}
+              </Select>
+            </>
           </Grid>
         </Grid>
 
@@ -385,7 +377,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAddJob(!openAddJob)}
+          onClick={() => setOpenEditJob(!openEditJob)}
         >
           X
         </Button>
@@ -394,4 +386,4 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
   );
 };
 
-export default AddJobForm;
+export default EditJobForm;

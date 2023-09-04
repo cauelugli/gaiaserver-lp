@@ -46,23 +46,39 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Requests({
-  selectedCustomer,
-  customers,
-  departments,
-  services,
-  latestJobNumber,
-  fetchData
-}) {
+export default function Requests({ selectedCustomer }) {
   const [value, setValue] = React.useState(0);
 
-  const [openAddJob, setOpenAddJob] = React.useState(true);
+  const [openAddJob, setOpenAddJob] = React.useState(false);
   const [openAddSaleRequest, setOpenAddSaleRequest] = React.useState(false);
   const [openAddSupportRequest, setOpenAddSupportRequest] =
     React.useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
+
+  const [jobs, setJobs] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const jobs = await api.get("/jobs");
+        setJobs(jobs.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [jobs]);
+
+  const fetchData = async () => {
+    try {
+      const jobs = await api.get("/jobs");
+      setJobs(jobs.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   const handleClickAddButton = (event) => {
     setAnchorEl(event.currentTarget);
@@ -75,7 +91,6 @@ export default function Requests({
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
 
   return (
     <Box sx={{ minWidth: "120%" }}>
@@ -117,9 +132,7 @@ export default function Requests({
             }}
           >
             <MenuList sx={{ width: 130 }}>
-              <MenuItem
-                onClick={() => setOpenAddJob(!openAddJob)}
-              >
+              <MenuItem onClick={() => setOpenAddJob(!openAddJob)}>
                 <ListItemIcon>
                   <EngineeringIcon />
                 </ListItemIcon>
@@ -166,7 +179,7 @@ export default function Requests({
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <JobTable selectedCustomer={selectedCustomer} />
+        <JobTable jobs={jobs} fetchData={fetchData} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <SaleTable selectedCustomer={selectedCustomer} />
@@ -184,11 +197,7 @@ export default function Requests({
           <AddJobForm
             openAddJob={openAddJob}
             setOpenAddJob={setOpenAddJob}
-            customers={customers}
-            departments={departments}
-            services={services}
-            latestJobNumber={latestJobNumber}
-            fetchData={fetchData}
+            fetchData1={fetchData}
           />
         </Dialog>
       )}
