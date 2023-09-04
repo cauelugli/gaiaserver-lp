@@ -20,6 +20,7 @@ import {
 import { IMaskInput } from "react-imask";
 import ColorPicker from "../../components/small/ColorPicker";
 import Members from "../../components/small/Members";
+import IconPicker from "../../components/small/IconPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -42,7 +43,9 @@ const AddDepartmentForm = ({
   const [managerPhone, setManagerPhone] = React.useState("");
   const [selectedUsers, setSelectedUsers] = React.useState([]);
   const [color, setColor] = React.useState("#ffffff");
+  const [icon, setIcon] = React.useState("");
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
+  const [iconAnchorEl, setIconAnchorEl] = React.useState(null);
   const [newManager, setNewManager] = React.useState(false);
 
   const handleNewManager = (event) => {
@@ -52,14 +55,24 @@ const AddDepartmentForm = ({
   const handleClickColor = (event) => {
     setColorAnchorEl(event.currentTarget);
   };
+  const handleClickIcon = (event) => {
+    setIconAnchorEl(event.currentTarget);
+  };
 
   const handleCloseColor = () => {
     setColorAnchorEl(null);
+  };
+  const handleCloseIcon = () => {
+    setIconAnchorEl(null);
   };
 
   const handleChangeColor = (selectedColor) => {
     setColor(selectedColor.hex);
     handleCloseColor();
+  };
+  const handleChangeIcon = (selectedIcon) => {
+    setIcon(selectedIcon);
+    handleCloseIcon();
   };
 
   const handleAdd = async (e) => {
@@ -284,16 +297,13 @@ const AddDepartmentForm = ({
           </Grid>
           <Grid item sx={{ mr: "20%" }}>
             <Typography>Ícone</Typography>
-            <div
-              style={{
-                width: "50px",
-                height: "50px",
-                border: "2px solid lightgrey",
-                borderRadius: "30%",
-                backgroundColor: "white",
-                cursor: "pointer",
-              }}
-            ></div>
+            <IconPicker
+              handleClickIcon={handleClickIcon}
+              icon={icon}
+              iconAnchorEl={iconAnchorEl}
+              handleCloseIcon={handleCloseIcon}
+              handleChangeIcon={handleChangeIcon}
+            />
           </Grid>
         </Grid>
       </DialogContent>
