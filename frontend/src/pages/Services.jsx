@@ -75,7 +75,7 @@ export default function Services() {
   };
 
   return (
-    <Box sx={{ minWidth: "121%" }}>
+    <Box sx={{ minWidth: "120%" }}>
       <Grid
         container
         direction="row"
@@ -88,16 +88,15 @@ export default function Services() {
         <Button
           onClick={() => setOpenAddService(true)}
           variant="outlined"
+          size="small"
           sx={{
-            borderColor: "#eee",
             borderRadius: 3,
-            mb: 1,
+            bottom: 3,
             "&:hover": { borderColor: "#eee" },
           }}
         >
-          <Typography variant="h6" color="#eee">
-            + Novo
-          </Typography>
+          <Typography variant="h6">+</Typography>
+          <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>Novo</Typography>
         </Button>
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -106,14 +105,14 @@ export default function Services() {
           onChange={handleChange}
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
-          <Tab
-            label="Setores"
-            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
-          />
-          <Tab
-            label="Planos de Serviços"
-            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
-          />
+        <Tab
+          label={<Typography sx={{ fontSize: 14 }}>Setores</Typography>}
+          sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+        />
+        <Tab
+          label={<Typography sx={{ fontSize: 14 }}>Consultoria</Typography>}
+          sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+        />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>

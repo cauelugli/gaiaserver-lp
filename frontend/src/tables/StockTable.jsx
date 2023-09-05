@@ -72,9 +72,9 @@ export default function StockTable() {
 
   return (
     <>
-      <Box>
+      <Box sx={{ minWidth: "1050px" }}>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: "100%" }}>
+          <Table>
             <TableBody>
               <TableRow sx={{backgroundColor:"#ccc"}}>
                 <TableCell align="left">
@@ -159,7 +159,7 @@ export default function StockTable() {
                                     Nome
                                   </Typography>
                                 </TableCell>
-                                <TableCell align="right">
+                                <TableCell>
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
                                   >
@@ -191,10 +191,10 @@ export default function StockTable() {
                             </TableHead>
                             <TableBody>
                               <TableRow>
-                                <TableCell component="th" scope="row">
+                                <TableCell>
                                   <Typography>{stockItem.name}</Typography>
                                 </TableCell>
-                                <TableCell align="right">
+                                <TableCell>
                                   <Typography>
                                     R${stockItem.buyValue}
                                   </Typography>

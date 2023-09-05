@@ -82,9 +82,9 @@ export default function ServiceTable() {
 
   return (
     <>
-      <Box>
+      <Box sx={{ minWidth: "1050px" }}>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: "100%" }}>
+          <Table>
             <TableBody>
               <TableRow
                 sx={{

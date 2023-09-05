@@ -27,7 +27,7 @@ export default function Departments() {
   };
 
   return (
-    <Box sx={{ minWidth: "121%" }}>
+    <Box sx={{ minWidth: "120%" }}>
       <Grid
         container
         direction="row"
@@ -40,11 +40,15 @@ export default function Departments() {
         <Button
           onClick={() => setOpenAdd(true)}
           variant="outlined"
-          sx={{ borderColor: "#eee", borderRadius: 3, mb: 1, "&:hover": { borderColor: "#eee" }, }}
+          size="small"
+          sx={{
+            borderRadius: 3,
+            bottom: 3,
+            "&:hover": { borderColor: "#eee" },
+          }}
         >
-          <Typography variant="h6" color="#eee">
-            + Novo
-          </Typography>
+          <Typography variant="h6">+</Typography>
+          <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>Novo</Typography>
         </Button>
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -60,10 +64,7 @@ export default function Departments() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <DepartmentTable
-          openAdd={openAdd}
-          setOpenAdd={setOpenAdd}
-        />
+        <DepartmentTable openAdd={openAdd} setOpenAdd={setOpenAdd} />
       </CustomTabPanel>
     </Box>
   );

@@ -72,9 +72,9 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
   };
 
   return (
-    <Box>
+    <Box sx={{ minWidth: "1050px" }}>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: "100%" }}>
+        <Table>
           <TableBody>
             {customers.map((customer) => (
               <>

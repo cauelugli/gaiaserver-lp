@@ -20,7 +20,7 @@ import {
 import { IMaskInput } from "react-imask";
 import ColorPicker from "../../components/small/ColorPicker";
 import Members from "../../components/small/Members";
-import IconPicker from "../../components/small/IconPicker";
+// import IconPicker from "../../components/small/IconPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -43,9 +43,7 @@ const AddDepartmentForm = ({
   const [managerPhone, setManagerPhone] = React.useState("");
   const [selectedUsers, setSelectedUsers] = React.useState([]);
   const [color, setColor] = React.useState("#ffffff");
-  const [icon, setIcon] = React.useState("");
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
-  const [iconAnchorEl, setIconAnchorEl] = React.useState(null);
   const [newManager, setNewManager] = React.useState(false);
 
   const handleNewManager = (event) => {
@@ -55,25 +53,31 @@ const AddDepartmentForm = ({
   const handleClickColor = (event) => {
     setColorAnchorEl(event.currentTarget);
   };
-  const handleClickIcon = (event) => {
-    setIconAnchorEl(event.currentTarget);
-  };
 
   const handleCloseColor = () => {
     setColorAnchorEl(null);
-  };
-  const handleCloseIcon = () => {
-    setIconAnchorEl(null);
   };
 
   const handleChangeColor = (selectedColor) => {
     setColor(selectedColor.hex);
     handleCloseColor();
   };
-  const handleChangeIcon = (selectedIcon) => {
-    setIcon(selectedIcon);
-    handleCloseIcon();
-  };
+
+  // const [icon, setIcon] = React.useState("");
+  // const [iconAnchorEl, setIconAnchorEl] = React.useState(null);
+
+  // const handleCloseIcon = () => {
+  //   setIconAnchorEl(null);
+  // };
+
+  // const handleClickIcon = (event) => {
+  //   setIconAnchorEl(event.currentTarget);
+  // };
+
+  // const handleChangeIcon = (selectedIcon) => {
+  //   setIcon(selectedIcon);
+  //   handleCloseIcon();
+  // };
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -284,8 +288,8 @@ const AddDepartmentForm = ({
         <Divider sx={{ my: 2 }} />
 
         <Typography>Personalização</Typography>
-        <Grid container direction="row" justifyContent="space-evenly">
-          <Grid item sx={{ ml: "15%" }}>
+        <Grid container direction="row" justifyContent="center">
+          <Grid item>
             <Typography>Cor</Typography>
             <ColorPicker
               handleClickColor={handleClickColor}
@@ -295,7 +299,7 @@ const AddDepartmentForm = ({
               handleChangeColor={handleChangeColor}
             />
           </Grid>
-          <Grid item sx={{ mr: "20%" }}>
+          {/* <Grid item sx={{ mr: "20%" }}>
             <Typography>Ícone</Typography>
             <IconPicker
               handleClickIcon={handleClickIcon}
@@ -304,7 +308,7 @@ const AddDepartmentForm = ({
               handleCloseIcon={handleCloseIcon}
               handleChangeIcon={handleChangeIcon}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </DialogContent>
       <DialogActions>

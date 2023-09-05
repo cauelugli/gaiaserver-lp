@@ -111,15 +111,16 @@ export default function Requests({ selectedCustomer }) {
             aria-expanded={openAddButton ? "true" : undefined}
             onClick={handleClickAddButton}
             variant="outlined"
+            size="small"
             sx={{
-              borderColor: "#eee",
               borderRadius: 3,
-              mb: 1,
+              bottom: 3,
               "&:hover": { borderColor: "#eee" },
             }}
           >
-            <Typography variant="h6" color="#eee">
-              + Novo
+            <Typography variant="h6">+</Typography>
+            <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>
+              Novo
             </Typography>
           </Button>
           <Menu
@@ -164,18 +165,18 @@ export default function Requests({ selectedCustomer }) {
           onChange={handleChange}
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
-          <Tab
-            label="Jobs"
-            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
-          />
-          <Tab
-            label="Vendas"
-            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
-          />
-          <Tab
-            label="Suporte"
-            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
-          />
+        <Tab
+          label={<Typography sx={{ fontSize: 14 }}>Jobs</Typography>}
+          sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+        />
+        <Tab
+          label={<Typography sx={{ fontSize: 14 }}>Vendas</Typography>}
+          sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+        />
+        <Tab
+          label={<Typography sx={{ fontSize: 14 }}>Suporte</Typography>}
+          sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+        />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>

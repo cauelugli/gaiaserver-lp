@@ -111,15 +111,16 @@ export default function Users() {
             aria-expanded={openAddButton ? "true" : undefined}
             onClick={handleClickAddButton}
             variant="outlined"
+            size="small"
             sx={{
-              borderColor: "#eee",
               borderRadius: 3,
-              mb: 1,
+              bottom: 3,
               "&:hover": { borderColor: "#eee" },
             }}
           >
-            <Typography variant="h6" color="#eee">
-              + Novo
+            <Typography variant="h6">+</Typography>
+            <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>
+              Novo
             </Typography>
           </Button>
           <Menu
@@ -155,16 +156,16 @@ export default function Users() {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label="Funcionários"
-            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
+            label={<Typography sx={{ fontSize: 14 }}>Funcionários</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label="Gerência"
-            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
+            label={<Typography sx={{ fontSize: 14 }}>Gerentes</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label="Diretoria"
-            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
+            label={<Typography sx={{ fontSize: 14 }}>Diretoria</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
         </Tabs>
       </Box>
