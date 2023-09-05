@@ -146,7 +146,7 @@ export default function StockTable() {
                         unmountOnExit
                       >
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography variant="h6" component="div">
+                          <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>
                             Detalhes do Item
                           </Typography>
                           <Table size="small">

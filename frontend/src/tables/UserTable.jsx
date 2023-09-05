@@ -157,8 +157,8 @@ export default function UserTable() {
                         unmountOnExit
                       >
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography variant="h6" component="div">
-                            Geral
+                          <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>
+                            Informações
                           </Typography>
                           <Table size="small">
                             <TableHead>
@@ -195,7 +195,7 @@ export default function UserTable() {
                             </TableHead>
                             <TableBody>
                               <TableRow>
-                                <TableCell component="th" scope="row">
+                                <TableCell>
                                   <Typography>{user.name}</Typography>
                                 </TableCell>
                                 <TableCell>

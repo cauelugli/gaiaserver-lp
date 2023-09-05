@@ -114,14 +114,18 @@ export default function ManagerTable() {
                     cursor="pointer"
                     align="left"
                   >
-                    <Typography sx={{ fontSize: 14 }}>{manager.name}</Typography>
+                    <Typography sx={{ fontSize: 14 }}>
+                      {manager.name}
+                    </Typography>
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(manager)}
                     cursor="pointer"
                     align="left"
                   >
-                    <Typography sx={{ fontSize: 14 }}>{manager.email}</Typography>
+                    <Typography sx={{ fontSize: 14 }}>
+                      {manager.email}
+                    </Typography>
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(manager)}
@@ -144,8 +148,11 @@ export default function ManagerTable() {
                       unmountOnExit
                     >
                       <Box sx={{ m: 1, p: 4 }}>
-                        <Typography variant="h6" gutterBottom component="div">
-                          Detalhes
+                        <Typography
+                          variant="h6"
+                          sx={{ fontSize: 18, fontWeight: "bold" }}
+                        >
+                          Informações
                         </Typography>
                         <Table size="small">
                           <TableHead>

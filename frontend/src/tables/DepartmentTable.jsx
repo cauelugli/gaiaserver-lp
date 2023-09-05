@@ -175,7 +175,7 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                       unmountOnExit
                     >
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6">Geral</Typography>
+                        <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>Geral</Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
@@ -209,7 +209,7 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                       </Box>
 
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6">Gerência</Typography>
+                        <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>Gerência</Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
@@ -265,7 +265,7 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                       </Box>
 
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6">
+                        <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>
                           Membros ({department.members.length})
                         </Typography>
                         <Table size="small">
@@ -314,7 +314,7 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                       </Box>
 
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6">
+                        <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>
                           Serviços ({department.services.length})
                         </Typography>
                         <Table size="small">

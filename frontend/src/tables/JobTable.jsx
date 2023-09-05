@@ -113,7 +113,7 @@ export default function JobTable({ jobs, fetchData }) {
                     align="left"
                   >
                     <Typography sx={{ fontSize: 14 }}>
-                      {dayjs(job.scheduledTo).format('DD/MM/YYYY')}
+                      {dayjs(job.scheduledTo).format("DD/MM/YYYY")}
                     </Typography>
                   </TableCell>
                   <TableCell
@@ -121,11 +121,17 @@ export default function JobTable({ jobs, fetchData }) {
                     cursor="pointer"
                     align="left"
                   >
-                    <Typography sx={{ fontSize: 14, color: 
-                      job.status === "Aberto" && "#E1AD01" || 
-                      job.status === "Em Andamento" && "" || 
-                      job.status === "Feito" && "#006400"  
-                      }}>{job.status}</Typography>
+                    <Typography
+                      sx={{
+                        fontSize: 14,
+                        color:
+                          (job.status === "Aberto" && "#E1AD01") ||
+                          (job.status === "Em Andamento" && "") ||
+                          (job.status === "Feito" && "#006400"),
+                      }}
+                    >
+                      {job.status}
+                    </Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -139,7 +145,12 @@ export default function JobTable({ jobs, fetchData }) {
                       unmountOnExit
                     >
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6">Geral</Typography>
+                        <Typography
+                          variant="h6"
+                          sx={{ fontSize: 18, fontWeight: "bold" }}
+                        >
+                          Geral
+                        </Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
@@ -174,7 +185,12 @@ export default function JobTable({ jobs, fetchData }) {
                         </Table>
                       </Box>
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6">Departamento</Typography>
+                        <Typography
+                          variant="h6"
+                          sx={{ fontSize: 18, fontWeight: "bold" }}
+                        >
+                          Departamento
+                        </Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
@@ -217,7 +233,12 @@ export default function JobTable({ jobs, fetchData }) {
                         </Table>
                       </Box>
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6">Orçamento</Typography>
+                        <Typography
+                          variant="h6"
+                          sx={{ fontSize: 18, fontWeight: "bold" }}
+                        >
+                          Orçamento
+                        </Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
@@ -262,7 +283,11 @@ export default function JobTable({ jobs, fetchData }) {
                               <TableCell align="left">
                                 <Typography>
                                   {job.service.materials.length > 0
-                                    ? job.service.material
+                                    ? job.service.materials.map((material) => (
+                                        <Typography key={material.id} sx={{fontSize:"11px", color:"#777"}}>
+                                          x{material.quantity} {material.name} 
+                                        </Typography>
+                                      ))
                                     : "Não há uso de Materiais"}
                                 </Typography>
                               </TableCell>

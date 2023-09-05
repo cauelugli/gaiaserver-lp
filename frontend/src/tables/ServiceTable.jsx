@@ -116,14 +116,18 @@ export default function ServiceTable() {
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography sx={{ fontSize: 14 }}>{service.name}</Typography>
+                      <Typography sx={{ fontSize: 14 }}>
+                        {service.name}
+                      </Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(service)}
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography sx={{ fontSize: 14 }}>{service.department ? service.department.name : "-"}</Typography>
+                      <Typography sx={{ fontSize: 14 }}>
+                        {service.department ? service.department.name : "-"}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -137,20 +141,20 @@ export default function ServiceTable() {
                         unmountOnExit
                       >
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography variant="h6" component="div">
+                          <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>
                             Informações do Serviço
                           </Typography>
                           <Table size="small">
                             <TableHead>
                               <TableRow>
-                                <TableCell>
+                                <TableCell sx={{ width: "350px" }}>
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
                                   >
                                     Nome
                                   </Typography>
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ width: "350px" }}>
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
                                   >
@@ -161,17 +165,17 @@ export default function ServiceTable() {
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
                                   >
-                                    Valor
+                                    Valor do Serviço
                                   </Typography>
                                 </TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
                               <TableRow>
-                                <TableCell component="th" scope="row">
+                                <TableCell sx={{ width: "350px" }}>
                                   <Typography>{service.name}</Typography>
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ width: "350px" }}>
                                   <Typography>
                                     {service.department
                                       ? service.department.name
@@ -186,36 +190,95 @@ export default function ServiceTable() {
                           </Table>
                         </Box>
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography variant="h6" component="div">
+                          <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>
                             Materiais Utilizados
                           </Typography>
-                          <Table size="small">
-                            <TableBody>
-                              <TableRow>
-                                {service.materials.length > 0 ? (
-                                  <ol>
-                                    {service.materials.map(
-                                      (material) =>
-                                        material.quantity > 0 && (
-                                          <li key={material.id}>
-                                            {material.name} - x
-                                            {material.quantity}
-                                          </li>
-                                        )
-                                    )}
-                                    <Typography sx={{ mt: 1 }}>
-                                      Total de Materiais: R$
-                                      {service.materialsCost.toFixed(2)}
+                          {service.materials.length > 0 ? (
+                            <>
+                              <Table size="small">
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell sx={{ width: "350px" }}>
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Nome do Item
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell sx={{ width: "350px" }}>
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Quantidade
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Valor dos Itens
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {service.materials.map(
+                                    (material) =>
+                                      material.quantity > 0 && (
+                                        <TableRow key={material.id}>
+                                          <TableCell sx={{ width: "350px" }}>
+                                            <Typography>
+                                              {material.name}
+                                            </Typography>
+                                          </TableCell>
+
+                                          <TableCell sx={{ width: "350px" }}>
+                                            <Typography>
+                                              {material.quantity}
+                                            </Typography>
+                                          </TableCell>
+                                          <TableCell>
+                                            <Typography>
+                                              R$
+                                              {material.sellValue *
+                                                material.quantity}
+                                            </Typography>
+                                          </TableCell>
+                                        </TableRow>
+                                      )
+                                  )}
+                                </TableBody>
+                              </Table>
+                              <Box sx={{ ml: "760px", mr:-10 }}>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{
+                                        fontSize: "14px",
+                                        color: "#777",
+                                        my: -1,
+                                        mb:-2,
+                                        mt:2
+                                      }}
+                                    >
+                                      Valor Total (serviço + itens)
                                     </Typography>
-                                  </ol>
-                                ) : (
-                                  <Typography sx={{ mt: 1 }}>
-                                    Não há uso de Materiais
-                                  </Typography>
-                                )}
-                              </TableRow>
-                            </TableBody>
-                          </Table>
+                                  </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography sx={{ my: -1, color:"#228B22"}}>
+                                      R$ {service.materialsCost + service.value}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </Box>
+                            </>
+                          ) : (
+                            <Typography sx={{ mt: 1 }}>
+                              Não há uso de Materiais
+                            </Typography>
+                          )}
                           <Box sx={{ mt: 3, ml: "90%" }}>
                             <ModeEditIcon
                               cursor="pointer"

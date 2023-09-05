@@ -108,7 +108,7 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                       unmountOnExit
                     >
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h5">Geral</Typography>
+                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>Geral</Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
@@ -172,7 +172,7 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                       </Box>
 
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h5">Domínio</Typography>
+                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>Domínio</Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
@@ -206,7 +206,7 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                       </Box>
 
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h5">Contato Principal</Typography>
+                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>Contato Principal</Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
