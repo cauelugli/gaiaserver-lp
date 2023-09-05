@@ -20,6 +20,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 import EditJobForm from "../forms/edit/EditJobForm";
 import DeleteJobForm from "../forms/delete/DeleteJobForm";
+import dayjs from "dayjs";
 
 export default function JobTable({ jobs, fetchData }) {
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -112,7 +113,7 @@ export default function JobTable({ jobs, fetchData }) {
                     align="left"
                   >
                     <Typography sx={{ fontSize: 14 }}>
-                      {job.scheduledTo}
+                      {dayjs(job.scheduledTo).format('DD/MM/YYYY')}
                     </Typography>
                   </TableCell>
                   <TableCell
