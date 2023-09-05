@@ -88,16 +88,16 @@ export default function UserTable() {
                 }}
               >
                 <TableCell align="left">
-                  <Typography>Nome do Colaborador</Typography>
+                  <Typography sx={{ fontSize: 14 }}>Nome do Colaborador</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography>Ocupação</Typography>
+                  <Typography sx={{ fontSize: 14 }}>Ocupação</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography>E-mail</Typography>
+                  <Typography sx={{ fontSize: 14 }}>E-mail</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography>Departamento</Typography>
+                  <Typography sx={{ fontSize: 14 }}>Departamento</Typography>
                 </TableCell>
               </TableRow>
               {users.map((user) => (
@@ -110,7 +110,7 @@ export default function UserTable() {
                         selectedUser.name === user.name && openDetail
                           ? "#95dd95"
                           : "none",
-                      "&:hover": { backgroundColor: "#ccc " },
+                      "&:hover": { backgroundColor: "#eee " },
                     }}
                   >
                     <TableCell
@@ -118,14 +118,14 @@ export default function UserTable() {
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>{user.name}</Typography>
+                      <Typography sx={{ fontSize: 14 }}>{user.name}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(user)}
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>
+                      <Typography sx={{ fontSize: 14 }}>
                         {user.position ? user.position : "-"}
                       </Typography>
                     </TableCell>
@@ -134,14 +134,14 @@ export default function UserTable() {
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>{user.email}</Typography>
+                      <Typography sx={{ fontSize: 14 }}>{user.email}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(user)}
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>
+                      <Typography sx={{ fontSize: 14 }}>
                         {user.department ? user.department.name : "-"}
                       </Typography>
                     </TableCell>

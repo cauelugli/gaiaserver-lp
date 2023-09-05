@@ -78,16 +78,16 @@ export default function StockTable() {
             <TableBody>
               <TableRow sx={{backgroundColor:"#ccc"}}>
                 <TableCell align="left">
-                  <Typography>Nome do Item</Typography>
+                  <Typography sx={{ fontSize: 14 }}>Nome do Item</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography>Valor de Compra</Typography>
+                  <Typography sx={{ fontSize: 14 }}>Valor de Compra</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography>Valor de Venda</Typography>
+                  <Typography sx={{ fontSize: 14 }}>Valor de Venda</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography>Em Estoque</Typography>
+                  <Typography sx={{ fontSize: 14 }}>Em Estoque</Typography>
                 </TableCell>
               </TableRow>
               {stockItems.map((stockItem) => (
@@ -100,7 +100,7 @@ export default function StockTable() {
                         selectedStockItem.name === stockItem.name && openDetail
                           ? "#95dd95"
                           : "none",
-                      "&:hover": { backgroundColor: "#ccc " },
+                      "&:hover": { backgroundColor: "#eee " },
                     }}
                   >
                     <TableCell
@@ -108,28 +108,28 @@ export default function StockTable() {
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>{stockItem.name}</Typography>
+                      <Typography sx={{ fontSize: 14 }}>{stockItem.name}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(stockItem)}
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>R${stockItem.buyValue}</Typography>
+                      <Typography sx={{ fontSize: 14 }}>R${stockItem.buyValue}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(stockItem)}
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>R${stockItem.sellValue}</Typography>
+                      <Typography sx={{ fontSize: 14 }}>R${stockItem.sellValue}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(stockItem)}
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>{stockItem.quantity}</Typography>
+                      <Typography sx={{ fontSize: 14 }}>{stockItem.quantity}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>

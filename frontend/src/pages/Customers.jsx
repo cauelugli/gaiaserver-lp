@@ -71,6 +71,9 @@ export default function Customers() {
       <CustomTabPanel value={value} index={0}>
         <CustomerTable openAdd={openAdd} setOpenAdd={setOpenAdd} />
       </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        {/* <CustomerTable openAdd={openAdd} setOpenAdd={setOpenAdd} /> */}<p>Coming Soon</p>
+      </CustomTabPanel>
     </Box>
   );
 }

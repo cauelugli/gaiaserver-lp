@@ -87,13 +87,13 @@ export default function ManagerTable() {
               }}
             >
               <TableCell align="left">
-                <Typography>Nome do Gerente</Typography>
+                <Typography sx={{ fontSize: 14 }}>Nome do Gerente</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography>E-mail</Typography>
+                <Typography sx={{ fontSize: 14 }}>E-mail</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography>Departamento</Typography>
+                <Typography sx={{ fontSize: 14 }}>Departamento</Typography>
               </TableCell>
             </TableRow>
             {managers.map((manager) => (
@@ -106,7 +106,7 @@ export default function ManagerTable() {
                       selectedManager.name === manager.name && openDetail
                         ? "#95dd95"
                         : "none",
-                    "&:hover": { backgroundColor: "#ccc " },
+                    "&:hover": { backgroundColor: "#eee " },
                   }}
                 >
                   <TableCell
@@ -114,21 +114,21 @@ export default function ManagerTable() {
                     cursor="pointer"
                     align="left"
                   >
-                    <Typography>{manager.name}</Typography>
+                    <Typography sx={{ fontSize: 14 }}>{manager.name}</Typography>
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(manager)}
                     cursor="pointer"
                     align="left"
                   >
-                    <Typography>{manager.email}</Typography>
+                    <Typography sx={{ fontSize: 14 }}>{manager.email}</Typography>
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(manager)}
                     cursor="pointer"
                     align="left"
                   >
-                    <Typography>
+                    <Typography sx={{ fontSize: 14 }}>
                       {manager.department ? manager.department.name : "-"}
                     </Typography>
                   </TableCell>

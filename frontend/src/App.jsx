@@ -74,7 +74,7 @@ export default function App() {
         </Grid>
 
         <Grid>  
-          <Grid container sx={{ p: 3 }}>
+          <Grid container sx={{ p: 2 }}>
             <Grid
               item
               xs={sidebarStatus ? 11 : 11.7}

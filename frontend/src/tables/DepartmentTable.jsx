@@ -94,13 +94,15 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
               }}
             >
               <TableCell align="left">
-                <Typography>Nome do Departamento</Typography>
+                <Typography sx={{ fontSize: 14 }}>
+                  Nome do Departamento
+                </Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography>Gerente</Typography>
+                <Typography sx={{ fontSize: 14 }}>Gerente</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography>Nº Colaboradores</Typography>
+                <Typography sx={{ fontSize: 14 }}>Nº Colaboradores</Typography>
               </TableCell>
             </TableRow>
             {departments.map((department) => (
@@ -125,10 +127,11 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                         selectedDepartment === department.name && openDetail
                           ? "white"
                           : "black",
-                      "&:hover": { color: "white" },
                     }}
                   >
-                    <Typography>{department.name}</Typography>
+                    <Typography sx={{ fontSize: 14 }}>
+                      {department.name}
+                    </Typography>
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(department)}
@@ -139,10 +142,9 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                         selectedDepartment === department.name && openDetail
                           ? "white"
                           : "black",
-                      "&:hover": { color: "white" },
                     }}
                   >
-                    <Typography>
+                    <Typography sx={{ fontSize: 14 }}>
                       {department.manager ? department.manager.name : "-"}
                     </Typography>
                   </TableCell>
@@ -155,10 +157,11 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                         selectedDepartment === department.name && openDetail
                           ? "white"
                           : "black",
-                      "&:hover": { color: "white" },
                     }}
                   >
-                    <Typography>{department.members.length}</Typography>
+                    <Typography sx={{ fontSize: 14 }}>
+                      {department.members.length}
+                    </Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>

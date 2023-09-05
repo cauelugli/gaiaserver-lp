@@ -86,7 +86,7 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                       selectedCustomer === customer.name && openDetail
                         ? "#95dd95"
                         : "none",
-                    "&:hover": { backgroundColor: "#ccc " },
+                    "&:hover": { backgroundColor: "#eee " },
                   }}
                 >
                   <TableCell
@@ -94,7 +94,7 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                     cursor="pointer"
                     align="left"
                   >
-                    <Typography>{customer.name}</Typography>
+                    <Typography sx={{ fontSize: 14 }}>{customer.name}</Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>

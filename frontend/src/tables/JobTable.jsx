@@ -53,16 +53,19 @@ export default function JobTable({ jobs, fetchData }) {
               }}
             >
               <TableCell align="left">
-                <Typography>Nome do Job</Typography>
+                <Typography sx={{ fontSize: 14 }}>Nome do Job</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography>Solicitante</Typography>
+                <Typography sx={{ fontSize: 14 }}>Solicitante</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography>Serviço</Typography>
+                <Typography sx={{ fontSize: 14 }}>Serviço</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography>Status</Typography>
+                <Typography sx={{ fontSize: 14 }}>Agendado para</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography sx={{ fontSize: 14 }}>Status</Typography>
               </TableCell>
             </TableRow>
             {jobs.map((job) => (
@@ -75,7 +78,7 @@ export default function JobTable({ jobs, fetchData }) {
                       selectedJob.title === job.title && openDetail
                         ? "#95dd95"
                         : "none",
-                    "&:hover": { backgroundColor: "#ccc " },
+                    "&:hover": { backgroundColor: "#eee " },
                   }}
                 >
                   <TableCell
@@ -83,14 +86,14 @@ export default function JobTable({ jobs, fetchData }) {
                     cursor="pointer"
                     align="left"
                   >
-                    <Typography>{job.title}</Typography>
+                    <Typography sx={{ fontSize: 14 }}>{job.title}</Typography>
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(job)}
                     cursor="pointer"
                     align="left"
                   >
-                    <Typography>
+                    <Typography sx={{ fontSize: 14 }}>
                       {job.requester} ({job.customer.name})
                     </Typography>
                   </TableCell>
@@ -99,14 +102,29 @@ export default function JobTable({ jobs, fetchData }) {
                     cursor="pointer"
                     align="left"
                   >
-                    <Typography>{job.service.name}</Typography>
+                    <Typography sx={{ fontSize: 14 }}>
+                      {job.service.name}
+                    </Typography>
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(job)}
                     cursor="pointer"
                     align="left"
                   >
-                    <Typography>{job.status}</Typography>
+                    <Typography sx={{ fontSize: 14 }}>
+                      {job.scheduledTo}
+                    </Typography>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(job)}
+                    cursor="pointer"
+                    align="left"
+                  >
+                    <Typography sx={{ fontSize: 14, color: 
+                      job.status === "Aberto" && "#E1AD01" || 
+                      job.status === "Em Andamento" && "" || 
+                      job.status === "Feito" && "#006400"  
+                      }}>{job.status}</Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -238,12 +256,14 @@ export default function JobTable({ jobs, fetchData }) {
                                 <Typography>{job.quoteNumber}</Typography>
                               </TableCell>
                               <TableCell align="left">
-                                <Typography>
-                                  {job.service.name}
-                                </Typography>
+                                <Typography>{job.service.name}</Typography>
                               </TableCell>
                               <TableCell align="left">
-                                <Typography>{job.service.materials.length > 0 ? job.service.material : "Não há uso de Materiais"}</Typography>
+                                <Typography>
+                                  {job.service.materials.length > 0
+                                    ? job.service.material
+                                    : "Não há uso de Materiais"}
+                                </Typography>
                               </TableCell>
                               <TableCell align="left">
                                 <Typography>R${job.price}</Typography>

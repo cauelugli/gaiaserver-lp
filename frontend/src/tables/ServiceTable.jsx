@@ -92,10 +92,10 @@ export default function ServiceTable() {
                 }}
               >
                 <TableCell align="left">
-                  <Typography>Nome do Serviço</Typography>
+                  <Typography sx={{ fontSize: 14 }}>Nome do Serviço</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography>Departamento</Typography>
+                  <Typography sx={{ fontSize: 14 }}>Departamento</Typography>
                 </TableCell>
               </TableRow>
               {services.map((service) => (
@@ -108,7 +108,7 @@ export default function ServiceTable() {
                         selectedService.name === service.name && openDetail
                           ? "#95dd95"
                           : "none",
-                      "&:hover": { backgroundColor: "#ccc " },
+                      "&:hover": { backgroundColor: "#eee " },
                     }}
                   >
                     <TableCell
@@ -116,14 +116,14 @@ export default function ServiceTable() {
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>{service.name}</Typography>
+                      <Typography sx={{ fontSize: 14 }}>{service.name}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(service)}
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography>{service.department ? service.department.name : "-"}</Typography>
+                      <Typography sx={{ fontSize: 14 }}>{service.department ? service.department.name : "-"}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>

@@ -119,7 +119,7 @@ export default function Services() {
         <ServiceTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <ServiceTable />
+        {/* <ServiceTable /> */}<p>Coming Soon</p>
       </CustomTabPanel>
       {openAddService && (
         <Dialog
