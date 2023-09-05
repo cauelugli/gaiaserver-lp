@@ -82,7 +82,9 @@ export default function Services() {
         justifyContent="flex-start"
         alignItems="flex-start"
       >
-        <Typography variant="h4" sx={{ mr: 2 }}>
+        <Typography
+          sx={{ fontSize: 23, mt: 0.5, ml: 1, mr: 2, fontWeight: "bold" }}
+        >
           Serviços
         </Typography>
         <Button
@@ -105,21 +107,22 @@ export default function Services() {
           onChange={handleChange}
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
-        <Tab
-          label={<Typography sx={{ fontSize: 14 }}>Setores</Typography>}
-          sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-        />
-        <Tab
-          label={<Typography sx={{ fontSize: 14 }}>Consultoria</Typography>}
-          sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-        />
+          <Tab
+            label={<Typography sx={{ fontSize: 14 }}>Setores</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
+          <Tab
+            label={<Typography sx={{ fontSize: 14 }}>Consultoria</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <ServiceTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        {/* <ServiceTable /> */}<p>Coming Soon</p>
+        {/* <ServiceTable /> */}
+        <p>Coming Soon</p>
       </CustomTabPanel>
       {openAddService && (
         <Dialog

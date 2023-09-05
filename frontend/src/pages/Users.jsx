@@ -100,7 +100,7 @@ export default function Users() {
         justifyContent="flex-start"
         alignItems="flex-start"
       >
-        <Typography variant="h4" sx={{ mr: 2 }}>
+        <Typography sx={{ fontSize:23, mt:0.5, ml: 1, mr:2, fontWeight: 'bold' }}>
           Colaboradores
         </Typography>
         <div>
