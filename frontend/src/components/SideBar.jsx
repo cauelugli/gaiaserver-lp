@@ -52,9 +52,10 @@ const SideBar = ({ sidebarOpen }) => {
             selected={selectedIndex === index}
             disabled={option.disabled}
             sx={{
-              color: selectedIndex === index ? "white" : "",
+              color: selectedIndex === index ? "#063970" : "white",
+              backgroundColor: selectedIndex === index ? "white" : "",
               "&:hover": {
-                backgroundColor: "#aaa",
+                backgroundColor: "",
               },
             }}
           >
