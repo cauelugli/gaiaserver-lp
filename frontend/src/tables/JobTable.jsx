@@ -77,7 +77,7 @@ export default function JobTable({ jobs, fetchData }) {
                     cursor: "pointer",
                     backgroundColor:
                       selectedJob.title === job.title && openDetail
-                        ? "#95dd95"
+                        ? "#eee"
                         : "none",
                     "&:hover": { backgroundColor: "#eee " },
                   }}

@@ -77,7 +77,7 @@ export default function SupportTable({ selectedCustomer, fetchData }) {
                     cursor: "pointer",
                     backgroundColor:
                       setSelectedRequest === request.title && openDetail
-                        ? "#95dd95"
+                        ? "#eee"
                         : "none",
                     "&:hover": { backgroundColor: "#ccc " },
                   }}

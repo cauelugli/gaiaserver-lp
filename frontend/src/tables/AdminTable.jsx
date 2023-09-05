@@ -78,7 +78,7 @@ export default function AdminTable(
     //                 cursor: "pointer",
     //                 backgroundColor:
     //                   selectedUser.name === user.name && openDetail
-    //                     ? "#95dd95"
+    //                     ? "#eee"
     //                     : "none",
     //                 "&:hover": { backgroundColor: "#ccc " },
     //               }}

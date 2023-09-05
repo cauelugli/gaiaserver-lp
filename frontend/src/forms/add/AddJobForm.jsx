@@ -13,7 +13,7 @@ import {
   Divider,
   FormControl,
   Grid,
-  InputAdornment,
+  // InputAdornment,
   MenuItem,
   // Paper,
   Select,
@@ -38,7 +38,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
   const [worker, setWorker] = React.useState("");
   const [department, setDepartment] = React.useState("");
   const [service, setService] = React.useState("");
-  const [price, setPrice] = React.useState("");
+  // const [price, setPrice] = React.useState("");
   const [local, setLocal] = React.useState("");
   const [scheduledTo, setScheduledTo] = React.useState(dayjs());
 
@@ -93,7 +93,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
         manager: department.manager,
         status: "Aberto",
         service,
-        price,
+        price: 100,
         local,
         scheduledTo,
       });
@@ -341,7 +341,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
                 </>
               )}
             </Grid> */}
-            <Typography>Valor</Typography>
+            {/* <Typography>Valor</Typography>
             <TextField
               type="number"
               size="small"
@@ -360,7 +360,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
               required
               variant="outlined"
               sx={{ width: 130 }}
-            />
+            /> */}
           </Grid>
         </Grid>
 

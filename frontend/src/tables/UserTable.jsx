@@ -108,7 +108,7 @@ export default function UserTable() {
                       cursor: "pointer",
                       backgroundColor:
                         selectedUser.name === user.name && openDetail
-                          ? "#95dd95"
+                          ? "#eee"
                           : "none",
                       "&:hover": { backgroundColor: "#eee " },
                     }}

@@ -76,7 +76,7 @@ export default function SaleTable({ selectedCustomer, fetchData }) {
                     cursor: "pointer",
                     backgroundColor:
                       setSelectedRequest === request.title && openDetail
-                        ? "#95dd95"
+                        ? "#eee"
                         : "none",
                     "&:hover": { backgroundColor: "#ccc " },
                   }}

@@ -106,7 +106,7 @@ export default function ServiceTable() {
                       cursor: "pointer",
                       backgroundColor:
                         selectedService.name === service.name && openDetail
-                          ? "#95dd95"
+                          ? "#eee"
                           : "none",
                       "&:hover": { backgroundColor: "#eee " },
                     }}

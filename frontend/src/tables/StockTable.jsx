@@ -98,7 +98,7 @@ export default function StockTable() {
                       cursor: "pointer",
                       backgroundColor:
                         selectedStockItem.name === stockItem.name && openDetail
-                          ? "#95dd95"
+                          ? "#eee"
                           : "none",
                       "&:hover": { backgroundColor: "#eee " },
                     }}
