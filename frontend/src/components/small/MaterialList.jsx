@@ -6,7 +6,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Grid, Paper } from "@mui/material";
+import { FormHelperText, Grid, IconButton, Paper } from "@mui/material";
 
 export default function MaterialList({
   stockItems,
@@ -93,10 +93,11 @@ export default function MaterialList({
           <FormGroup sx={{ mt: 2 }}>
             {options.map((option) => (
               <FormControlLabel
-                sx={{ px: 3 }}
+                sx={{ ml: 1 }}
                 key={option.id}
                 control={
                   <Checkbox
+                    size="small"
                     sx={{ mb: 0.5 }}
                     checked={option._id === selectedItemId}
                     onChange={() => handleChecked(option._id)}
@@ -106,25 +107,36 @@ export default function MaterialList({
                   <Grid>
                     {
                       <Grid container direction="row">
-                        <Typography>{option.name} </Typography>
-                        <Typography sx={{ ml: 2 }}>
-                          R${option.sellValue}{" "}
+                        <Typography sx={{ fontSize: 12 }}>
+                          {option.name}
                         </Typography>
-                        <Typography
-                          sx={{ fontSize: "12px", color: "#777", p: 0.5 }}
-                        >
+                        <Typography sx={{ mx: 1, fontSize: 12 }}>
+                          R${option.sellValue}
+                        </Typography>
+                        <Typography sx={{ fontSize: 12, color: "#777" }}>
                           (x{option.quantity}){" "}
                         </Typography>
                         {option._id === selectedItemId && (
-                          <Button
-                            variant="contained"
-                            color="success"
-                            sx={{ ml: 1, px: "-15px", height: "20px" }}
+                          <IconButton
+                            sx={{
+                              ml: 1,
+                              height: 18,
+                              maxWidth: 18,
+                              color: "white",
+                              backgroundColor: "green",
+                              borderRadius: 3,
+                              "&:hover": {
+                                color: "white",
+                                backgroundColor: "green",
+                              },
+                            }}
                             disabled={option.quantity === 0}
                             onClick={handleAddToStock}
                           >
-                            +
-                          </Button>
+                            <Typography sx={{ fontWeight: "bold" }}>
+                              +
+                            </Typography>
+                          </IconButton>
                         )}
                       </Grid>
                     }
@@ -138,36 +150,55 @@ export default function MaterialList({
 
       <Grid item sx={{ ml: "50px" }}>
         <Typography>Selecionados:</Typography>
-        <Paper sx={{ mt: 1, width: 350, height: 200, overflow: "auto" }}>
+        <Paper
+          sx={{
+            mt: 1,
+            width: 350,
+            height: 200,
+            overflow: "auto",
+            position: "relative",
+          }}
+        >
           {stockList.map((item) => (
             <li key={item._id}>
               {
-                <Grid container direction="row" sx={{ mt: 2 }}>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    sx={{ ml: 1, px: "-15px", height: "20px" }}
+                <Grid container direction="row" sx={{ mt: 2, px:0.5 }}>
+                  <IconButton
+                    sx={{
+                      ml: 1,
+                      height: 18,
+                      maxWidth: 18,
+                      color: "white",
+                      backgroundColor: "red",
+                      borderRadius: 3,
+                      "&:hover": {
+                        color: "white",
+                        backgroundColor: "red",
+                      },
+                    }}
                     onClick={() => handleRemoveFromStock(item._id || item.id)}
                   >
-                    -
-                  </Button>
-                  <Typography sx={{ ml: 2 }}>{item.name} </Typography>
+                    <Typography sx={{ fontWeight: "bold" }}>-</Typography>
+                  </IconButton>
+                  <Typography sx={{ ml: 2, fontSize:12 }}>{item.name} </Typography>
                   <Typography
-                    sx={{ mx: 1, fontSize: "12px", color: "#777", p: 0.5 }}
+                    sx={{ mx: 1, fontSize:12, color: "#777" }}
                   >
                     (x{item.quantity}){" "}
                   </Typography>
-                  <Typography>
+                  <Typography sx={{ fontSize: 12 }}>
                     = R${(item.sellValue * item.quantity).toFixed(2)}{" "}
                   </Typography>
                 </Grid>
               }
             </li>
           ))}
-          <Typography sx={{ mt: 2 }}>
-            Custo total: R${materialsCost.toFixed(2)}
-          </Typography>
         </Paper>
+        <FormHelperText>
+          <Typography textAlign="right" sx={{ color: "black" }}>
+            Total de Materiais: R${materialsCost.toFixed(2)}
+          </Typography>
+        </FormHelperText>
       </Grid>
     </Grid>
   );
