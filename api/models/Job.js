@@ -41,8 +41,13 @@ jobSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    default: 0,
     required: true,
+  },
+  materials: {
+    type: Array,
+  },
+  materialsCost: {
+    type: Number,
   },
   local: {
     type: String,

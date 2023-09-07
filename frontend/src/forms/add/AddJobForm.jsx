@@ -25,6 +25,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers";
+import MaterialList from "../../components/small/MaterialList";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -38,13 +39,17 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
   const [worker, setWorker] = React.useState("");
   const [department, setDepartment] = React.useState("");
   const [service, setService] = React.useState("");
-  // const [price, setPrice] = React.useState("");
+  const [materials, setMaterials] = React.useState(service.materials || []);
+  const [materialsCost, setMaterialsCost] = React.useState(
+    service.materialsCost || 0
+  );
   const [local, setLocal] = React.useState("");
   const [scheduledTo, setScheduledTo] = React.useState(dayjs());
 
   const [customers, setCustomers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
   const [services, setServices] = React.useState([]);
+  const [stockItems, setStockItems] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -52,15 +57,30 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
         const customers = await api.get("/customers");
         const departments = await api.get("/departments");
         const services = await api.get("/services");
+        const stockItems = await api.get("/stockItems");
         setCustomers(customers.data);
         setDepartments(departments.data);
         setServices(services.data);
+        setStockItems(stockItems.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, []);
+
+  React.useEffect(() => {
+    console.log("service", service);
+    setMaterials(materials);
+    setMaterialsCost(materialsCost);
+  }, [materials, materialsCost, service]);
+
+  const handleServiceChange = (service) => {
+    console.log("service", service);
+    setService(service);
+    setMaterials(service.materials);
+    setMaterialsCost(service.materialsCost);
+  };
 
   const [showAdditionalOptions, setShowAdditionalOptions] =
     React.useState(false);
@@ -92,8 +112,15 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
         worker,
         manager: department.manager,
         status: "Aberto",
-        service,
-        price: 100,
+        service: {
+          _id: service._id || service.id,
+          name: service.name,
+          value: service.value,
+          department: service.department,
+        },
+        materials,
+        materialsCost,
+        price: service.value + materialsCost,
         local,
         scheduledTo,
       });
@@ -193,17 +220,20 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
           <Grid item>
             <Select
               onChange={(e) => {
-                setDepartment(e.target.value), setService(""), setWorker("");
+                setDepartment(e.target.value),
+                  setService(""),
+                  setWorker(""),
+                  setMaterials([]),
+                  setMaterialsCost(0);
               }}
               value={department}
-              displayEmpty
               size="small"
               renderValue={(selected) => {
-                if (selected.length === 0) {
+                if (!selected) {
                   return <Typography>Departamento</Typography>;
+                } else {
+                  return <Typography>{selected.name}</Typography>;
                 }
-
-                return <Typography>{selected.name}</Typography>;
               }}
               sx={{ minWidth: "200px" }}
             >
@@ -228,12 +258,13 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
               <>
                 <Typography sx={{ my: 2 }}>Serviço</Typography>
                 <Select
-                  onChange={(e) => setService(e.target.value)}
+                  onChange={(e) => {
+                    handleServiceChange(e.target.value);
+                  }}
                   value={service}
-                  displayEmpty
                   size="small"
                   renderValue={(selected) => {
-                    if (selected.length === 0) {
+                    if (!selected) {
                       return <Typography>Escolha um Serviço</Typography>;
                     } else {
                       return <Typography>{selected.name}</Typography>;
@@ -316,53 +347,109 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
 
         <Divider sx={{ my: 2 }} />
         <Typography sx={{ my: 2 }}>Orçamento</Typography>
-        <Grid container sx={{ pr: "4%", ml: "5%" }} direction="row">
-          <Grid item>
-            {/* <Grid item sx={{ ml: 2, mt: -7 }}>
-              {department && service && service.materials.length > 0 && (
-                <>
-                  <Typography sx={{ my: 2 }}>Materiais Utilizados</Typography>
-                  <Paper
-                    sx={{ width: 150, height: 70, pl: 1, overflow: "auto" }}
-                  >
-                    <ol style={{ paddingLeft: "0px" }}>
-                      {service.materials.map((material) => (
-                        <Grid key={material._id} container direction="row">
-                          <Typography sx={{ fontSize: "14px", color: "#444" }}>
-                            {material.name}
-                          </Typography>
-                          <Typography sx={{ fontSize: "14px", color: "#444" }}>
-                            {"\u00A0"}x{material.quantity}
-                          </Typography>
-                        </Grid>
-                      ))}
-                    </ol>
-                  </Paper>
-                </>
-              )}
+
+        {service && (
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid
+              sx={{
+                width: 1000,
+                border: "1px solid #777",
+                borderRadius: 4,
+                p: 3,
+              }}
+            >
+              <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{
+                  width: "100%",
+                  border: "1px solid #ccc",
+                  borderRadius: 4,
+                  mb: 1,
+                }}
+              >
+                <Typography sx={{ fontSize: 16, p: 2 }}>Serviço</Typography>
+                <Typography sx={{ fontSize: 16, p: 2 }}>
+                  {service && `${service.name} = `}{" "}
+                  {service.value ? `R$ ${service.value}` : "R$0,00"}
+                </Typography>
+              </Grid>
+              <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{
+                  width: "100%",
+                  border: "1px solid #ccc",
+                  borderRadius: 4,
+                  my: 2,
+                }}
+              >
+                <Typography sx={{ fontSize: 16, p: 2 }}>Materiais</Typography>
+                <Grid
+                  container
+                  direction="column"
+                  justifyContent="space-between"
+                  alignItems="flex-end"
+                  sx={{
+                    width: "50%",
+                    borderRadius: 4,
+                  }}
+                >
+                  {materials.map((material) => (
+                    <Typography sx={{ px: 2, my: 0.5 }} key={material.id}>
+                      {material.name} x{material.quantity}= R$
+                      {material.sellValue * material.quantity}
+                    </Typography>
+                  ))}
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                sx={{
+                  width: "100%",
+                  border: "1px solid #ccc",
+                  borderRadius: 4,
+                  mb: 1,
+                }}
+              >
+                <Typography sx={{ fontSize: 16, p: 2 }}>Total</Typography>
+                <Typography sx={{ fontSize: 16, p: 2 }}>
+                  {service && `R$ ${service.materialsCost + service.value}`}
+                </Typography>
+              </Grid>
+              {/* <Grid
+              sx={{
+                width: 700,
+                height: 250,
+                border: "1px solid #ccc",
+                borderRadius: 4,
+              }}
+            >
+              <Typography sx={{ fontSize: 16, p: 2 }}>Materiais</Typography>
+              <Typography sx={{ my: 1, px: 2 }}>{materials.length}</Typography>
             </Grid> */}
-            {/* <Typography>Valor</Typography>
-            <TextField
-              type="number"
-              size="small"
-              value={price}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
-                ),
-              }}
-              onChange={(e) => {
-                const inputValue = e.target.value;
-                if (inputValue >= 0) {
-                  setPrice(inputValue);
-                }
-              }}
-              required
-              variant="outlined"
-              sx={{ width: 130 }}
-            /> */}
+              {/* {materials.length > 0 ? (
+              <>
+                <MaterialList
+                  stockItems={stockItems}
+                  materials={materials}
+                  setMaterials={setMaterials}
+                  materialsAddJobCost={materialsCost}
+                  setMaterialsFinalCost={setMaterialsCost}
+                />
+              </>
+            ) : (
+              <Typography sx={{ fontSize: 16 }}>Não há Materiais</Typography>
+            )} */}
+            </Grid>
           </Grid>
-        </Grid>
+        )}
 
         <Divider sx={{ my: 2, mt: 4 }} />
         <Checkbox

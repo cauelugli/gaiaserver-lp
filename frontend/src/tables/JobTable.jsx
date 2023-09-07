@@ -267,7 +267,7 @@ export default function JobTable({ jobs, fetchData }) {
                                 <Typography
                                   sx={{ fontSize: "14px", color: "#777" }}
                                 >
-                                  Valor Total
+                                  Valor Total (serviço + materiais)
                                 </Typography>
                               </TableCell>
                             </TableRow>
@@ -282,8 +282,8 @@ export default function JobTable({ jobs, fetchData }) {
                               </TableCell>
                               <TableCell align="left">
                                 <Typography>
-                                  {job.service.materials.length > 0
-                                    ? job.service.materials.map((material) => (
+                                  {job.materials.length > 0
+                                    ? job.materials.map((material) => (
                                         <Typography key={material.id} sx={{fontSize:"11px", color:"#777"}}>
                                           x{material.quantity} {material.name} 
                                         </Typography>
