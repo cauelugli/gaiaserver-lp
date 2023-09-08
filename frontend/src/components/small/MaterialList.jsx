@@ -50,10 +50,10 @@ export default function MaterialList({
           quantity: updatedStockList[existingItemIndex].quantity + 1,
         };
         setStockList(updatedStockList);
-        setMaterials(updatedStockList); // Update materials state
+        setMaterials(updatedStockList);
       } else {
         setStockList([...stockList, { ...selectedOption, quantity: 1 }]);
-        setMaterials([...stockList, { ...selectedOption, quantity: 1 }]); // Update materials state
+        setMaterials([...stockList, { ...selectedOption, quantity: 1 }]); 
       }
     }
   };
@@ -63,26 +63,16 @@ export default function MaterialList({
     if (item) {
       setMaterialsCost(materialsCost - item.sellValue);
       setMaterialsFinalCost((prevCost) => prevCost - item.sellValue);
-
-      const updatedStockList = stockList.map((item) =>
-        item._id === itemId ? { ...item, quantity: item.quantity - 1 } : item
-      );
-      setStockList(updatedStockList.filter((item) => item.quantity > 0));
-
-      const existingOptionIndex = options.findIndex(
-        (option) => option._id === itemId
-      );
-      if (existingOptionIndex !== -1) {
-        const newOptions = [...options];
-        newOptions[existingOptionIndex] = {
-          ...newOptions[existingOptionIndex],
-          quantity: newOptions[existingOptionIndex].quantity + 1,
-        };
-        setOptions(newOptions);
-        setMaterials(newOptions);
-      }
+      const updatedStockList = stockList
+        .map((item) =>
+          item._id === itemId ? { ...item, quantity: item.quantity - 1 } : item
+        )
+        .filter((item) => item.quantity > 0);
+      setStockList(updatedStockList);
+      setMaterials(updatedStockList);
     }
   };
+  
 
   return (
     <Grid container sx={{ mt: 2 }}>

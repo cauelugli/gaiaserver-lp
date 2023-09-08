@@ -82,12 +82,7 @@ export default function EditStockItemForm({
                   <InputAdornment position="start">R$</InputAdornment>
                 ),
               }}
-              onChange={(e) => {
-                const inputValue = e.target.value;
-                if (inputValue >= 0) {
-                  setBuyValue(inputValue);
-                }
-              }}
+              onChange={(e) => setBuyValue(e.target.value)}
               required
               variant="outlined"
               sx={{ width: 130 }}
@@ -104,12 +99,7 @@ export default function EditStockItemForm({
                   <InputAdornment position="start">R$</InputAdornment>
                 ),
               }}
-              onChange={(e) => {
-                const inputValue = e.target.value;
-                if (inputValue >= 0) {
-                  setSellValue(inputValue);
-                }
-              }}
+              onChange={(e) => setSellValue(e.target.value)}
               required
               variant="outlined"
               sx={{ width: 130 }}

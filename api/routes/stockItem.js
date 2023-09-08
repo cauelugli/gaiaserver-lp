@@ -44,7 +44,8 @@ router.put("/", async (req, res) => {
       req.body.stockItemId,
       {
         name: req.body.name,
-        value: req.body.value,
+        sellValue: req.body.sellValue,
+        buyValue: req.body.buyValue,
         quantity: req.body.quantity,
       },
       { new: true }
