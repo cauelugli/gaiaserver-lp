@@ -7,13 +7,22 @@ import {
   Button,
   Dialog,
   Grid,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  MenuList,
   Tab,
   Tabs,
   Typography,
 } from "@mui/material";
 
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+
 import StockTable from "../tables/StockTable";
 import AddStockItemForm from "../forms/add/AddStockItemForm";
+import AddStockForm from "../forms/add/AddStockForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -35,9 +44,21 @@ function CustomTabPanel(props) {
 
 export default function Stock() {
   const [value, setValue] = React.useState(0);
-  const [openAddStockItem, setOpenAddStockItem] = React.useState(false);
 
   const [stockItems, setStockItems] = React.useState([]);
+
+  const [openAddNewStockItem, setOpenAddNewStockItem] = React.useState(false);
+  const [openAddStock, setOpenAddStock] = React.useState(false);
+  
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openAddButton = Boolean(anchorEl);
+  const handleClickAddButton = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseAddButton = () => {
+    setAnchorEl(null);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -77,19 +98,51 @@ export default function Stock() {
         >
           Estoque
         </Typography>
-        <Button
-          onClick={() => setOpenAddStockItem(true)}
-          variant="outlined"
-          size="small"
-          sx={{
-            borderRadius: 3,
-            bottom: 3,
-            "&:hover": { borderColor: "#eee" },
-          }}
-        >
-          <Typography variant="h6">+</Typography>
-          <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>Novo</Typography>
-        </Button>
+        <div>
+          <Button
+            id="basic-button"
+            aria-controls={openAddButton ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={openAddButton ? "true" : undefined}
+            onClick={handleClickAddButton}
+            variant="outlined"
+            size="small"
+            sx={{
+              borderRadius: 3,
+              bottom: 3,
+              "&:hover": { borderColor: "#eee" },
+            }}
+          >
+            <Typography variant="h6">+</Typography>
+            <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>
+              Novo
+            </Typography>
+          </Button>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={openAddButton}
+            onClick={handleCloseAddButton}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <MenuList sx={{ width: 240 }}>
+              <MenuItem onClick={() => setOpenAddNewStockItem(true)}>
+                <ListItemIcon>
+                  <AddBoxIcon />
+                </ListItemIcon>
+                <ListItemText>Item de Estoque</ListItemText>
+              </MenuItem>
+              <MenuItem onClick={() => setOpenAddStock(true)}>
+                <ListItemIcon>
+                  <LocalShippingIcon />
+                </ListItemIcon>
+                <ListItemText>Entrada de Mercadorias</ListItemText>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </div>
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -106,16 +159,31 @@ export default function Stock() {
       <CustomTabPanel value={value} index={0}>
         <StockTable stockItems={stockItems} />
       </CustomTabPanel>
-      {openAddStockItem && (
+      {openAddNewStockItem && (
         <Dialog
           fullWidth
           maxWidth="md"
-          open={openAddStockItem}
-          onClose={() => setOpenAddStockItem(!openAddStockItem)}
+          open={openAddNewStockItem}
+          onClose={() => setOpenAddNewStockItem(!openAddNewStockItem)}
         >
           <AddStockItemForm
-            openAdd={openAddStockItem}
-            setOpenAdd={setOpenAddStockItem}
+            openAdd={openAddNewStockItem}
+            setOpenAdd={setOpenAddNewStockItem}
+            fetchData={fetchData}
+          />
+        </Dialog>
+      )}
+      {openAddStock && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddStock}
+          onClose={() => setOpenAddStock(!openAddStock)}
+        >
+          <AddStockForm
+            openAdd={openAddStock}
+            stockItems={stockItems}
+            setOpenAdd={setOpenAddStock}
             fetchData={fetchData}
           />
         </Dialog>
