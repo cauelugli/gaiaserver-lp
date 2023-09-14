@@ -29,7 +29,6 @@ export default function EditStockItemForm({
   const [name, setName] = React.useState(selectedStockItem.name);
   const [buyValue, setBuyValue] = React.useState(selectedStockItem.buyValue);
   const [sellValue, setSellValue] = React.useState(selectedStockItem.sellValue);
-  const [quantity, setQuantity] = React.useState(selectedStockItem.quantity);
 
   const handleEdit = async (e) => {
     e.preventDefault();
@@ -39,7 +38,6 @@ export default function EditStockItemForm({
         name,
         buyValue,
         sellValue,
-        quantity,
       });
       res.data && alert("Item editado com Sucesso!");
       setOpenEdit(!openEdit);
@@ -100,18 +98,6 @@ export default function EditStockItemForm({
                 ),
               }}
               onChange={(e) => setSellValue(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ width: 130 }}
-            />
-          </Grid>
-          <Grid item sx={{ mx: 2 }}>
-            <Typography>Quantidade</Typography>
-            <TextField
-              type="number"
-              size="small"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
               required
               variant="outlined"
               sx={{ width: 130 }}
