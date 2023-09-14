@@ -49,7 +49,6 @@ export default function Stock() {
 
   const [openAddNewStockItem, setOpenAddNewStockItem] = React.useState(false);
   const [openAddStock, setOpenAddStock] = React.useState(false);
-  
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
@@ -154,10 +153,21 @@ export default function Stock() {
             label={<Typography sx={{ fontSize: 14 }}>Itens</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
+          <Tab
+            label={
+              <Typography sx={{ fontSize: 14 }}>
+                Entradas
+              </Typography>
+            }
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <StockTable stockItems={stockItems} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        {/* <StockTable stockItems={stockItems} /> */}<p>Coming Soon</p>
       </CustomTabPanel>
       {openAddNewStockItem && (
         <Dialog
