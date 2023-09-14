@@ -52,10 +52,10 @@ export default function AddStockForm({
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/stock", {
+      const res = await api.put("/stock", {
         itemList,
       });
-      res.data && alert("Nova Entrada de Estoque Adicionada com Sucesso!");
+      res.data && alert("Items Adicionados ao Estoque com Sucesso!");
       setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {
@@ -165,11 +165,14 @@ export default function AddStockForm({
                               sx={{ width: 80 }}
                               value={quantityInput[item._id] || ""}
                               onChange={(e) => {
-                                const newValue = e.target.value;
+                                const newValue = Math.max(0, e.target.value);
                                 setQuantityInput({
                                   ...quantityInput,
                                   [item._id]: newValue,
                                 });
+                              }}
+                              inputProps={{
+                                min: 0,
                               }}
                             />
                           </Grid>
@@ -205,7 +208,7 @@ export default function AddStockForm({
             <Typography sx={{ mt: 2 }}>Lista de Itens:</Typography>
           )}
           <Typography>
-            <ol style={{ width: "100%" }}>
+            <ul style={{ width: "100%" }}>
               {itemList.map((item, index) => (
                 <li key={item._id}>
                   <Grid container direction="row">
@@ -217,11 +220,11 @@ export default function AddStockForm({
                     </Grid>
                     <Grid item sx={{ ml: 2 }}>
                       <Typography sx={{ color: "#777" }}>
-                        Quantidade Adicionada:
+                        Quantidade:
                       </Typography>
                     </Grid>
                     <Grid item sx={{ ml: 1 }}>
-                      <Typography>{item.selectedQuantity}</Typography>
+                      <Typography>+{item.selectedQuantity}</Typography>
                     </Grid>
                     <Grid item sx={{ ml: 2 }}>
                       <DeleteIcon
@@ -235,14 +238,16 @@ export default function AddStockForm({
                   </Grid>
                 </li>
               ))}
-            </ol>
+            </ul>
           </Typography>
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button type="submit" variant="contained" color="success">
-          OK
-        </Button>
+        {itemList.length > 0 && (
+          <Button type="submit" variant="contained" color="success">
+            OK
+          </Button>
+        )}
         <Button
           variant="contained"
           color="error"
