@@ -73,17 +73,12 @@ export default function AddStockForm({
         const newItem = {
           _id: selectedItemData._id,
           name: selectedItemData.name,
-          selectedQuantity: parseInt(quantityInput[selectedItemId] || 1, 10), // Valor do TextField
+          selectedQuantity: parseInt(quantityInput[selectedItemId] || 1, 10),
         };
 
-        // Crie uma cópia da lista existente e adicione o novo item
         const updatedItemList = [...itemList];
         updatedItemList.push(newItem);
-
-        // Atualize o estado com a nova lista
         setItemList(updatedItemList);
-
-        // Deselecionar o item
         setSelectedItemId(null);
       }
     }
