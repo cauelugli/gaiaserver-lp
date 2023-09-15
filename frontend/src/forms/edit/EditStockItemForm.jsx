@@ -83,7 +83,7 @@ export default function EditStockItemForm({
               onChange={(e) => setBuyValue(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 130 }}
+              sx={{ width: 150 }}
             />
           </Grid>
           <Grid item sx={{ mx: 2 }}>
@@ -100,7 +100,7 @@ export default function EditStockItemForm({
               onChange={(e) => setSellValue(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 130 }}
+              sx={{ width: 150 }}
             />
           </Grid>
         </Grid>

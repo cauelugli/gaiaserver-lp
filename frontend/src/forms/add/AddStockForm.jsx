@@ -38,6 +38,7 @@ export default function AddStockForm({
   const [selectedItemId, setSelectedItemId] = React.useState(null);
   const [itemList, setItemList] = React.useState([]);
   const [quantityInput, setQuantityInput] = React.useState({});
+  const [buyValueInput, setBuyValueInput] = React.useState({});
 
   const handleChecked = (id) => {
     setSelectedItemId(id === selectedItemId ? null : id);
@@ -74,6 +75,10 @@ export default function AddStockForm({
           _id: selectedItemData._id,
           name: selectedItemData.name,
           selectedQuantity: parseInt(quantityInput[selectedItemId] || 1, 10),
+          buyValue: parseFloat(
+            buyValueInput[selectedItemId] || selectedItemData.buyValue,
+            10
+          ),
         };
 
         const updatedItemList = [...itemList];
@@ -104,6 +109,9 @@ export default function AddStockForm({
                 </TableCell>
                 <TableCell align="right">
                   <Typography sx={{ fontSize: 14 }}>Em Estoque</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography sx={{ fontSize: 14 }}>Valor de Compra</Typography>
                 </TableCell>
                 <TableCell align="right">
                   <Typography sx={{ fontSize: 14 }}>
@@ -139,6 +147,37 @@ export default function AddStockForm({
                         {item.quantity}
                       </Typography>
                     </TableCell>
+
+                    <TableCell align="right">
+                      <TextField
+                        disabled={
+                          item._id !== selectedItemId ||
+                          itemList.some((item) => item._id === selectedItemId)
+                        }
+                        size="small"
+                        sx={{ width: 120 }}
+                        value={buyValueInput[item._id] || item.buyValue}
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          // Use uma expressão regular para validar o formato do número
+                          if (/^\d+(\.\d{0,2})?$/.test(newValue)) {
+                            setBuyValueInput({
+                              ...buyValueInput,
+                              [item._id]: newValue,
+                            });
+                          }
+                        }}
+                        inputProps={{
+                          min: 0,
+                        }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">R$</InputAdornment>
+                          ),
+                        }}
+                      />
+                    </TableCell>
+
                     <TableCell align="right">
                       <Grid item>
                         <Grid
@@ -222,6 +261,24 @@ export default function AddStockForm({
                       <Typography>+{item.selectedQuantity}</Typography>
                     </Grid>
                     <Grid item sx={{ ml: 2 }}>
+                      <Typography sx={{ color: "#777" }}>
+                        Valor por Unidade:
+                      </Typography>
+                    </Grid>
+                    <Grid item sx={{ ml: 1 }}>
+                      <Typography>R$ {item.buyValue}</Typography>
+                    </Grid>
+                    <Grid item sx={{ ml: 2 }}>
+                      <Typography sx={{ color: "#777" }}>
+                        Valor Total:
+                      </Typography>
+                    </Grid>
+                    <Grid item sx={{ ml: 1 }}>
+                      <Typography>
+                        R$ {(item.buyValue * item.selectedQuantity).toFixed(2)}
+                      </Typography>
+                    </Grid>
+                    <Grid item sx={{ ml: 2 }}>
                       <DeleteIcon
                         onClick={() => handleRemove(index)}
                         size="small"
@@ -233,6 +290,16 @@ export default function AddStockForm({
                   </Grid>
                 </li>
               ))}
+              <Typography sx={{ mt: 2 }}>
+                Total da Lista: R${" "}
+                {itemList
+                  .reduce(
+                    (total, item) =>
+                      total + item.buyValue * item.selectedQuantity,
+                    0
+                  )
+                  .toFixed(2)}
+              </Typography>
             </ul>
           </Typography>
         </Grid>

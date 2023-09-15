@@ -13,27 +13,41 @@ router.get("/", async (req, res) => {
   }
 });
 
-// UPDATE STOCK ITEMS
 router.put("/", async (req, res) => {
   const itemList = req.body.itemList;
   const updatedStockItems = [];
-  const newStockEntry = new StockEntry(itemList);
 
   try {
-    const savedStockEntry = await newStockEntry.save();
+    let totalValue = 0;
+    const items = [];
+
     for (const item of itemList) {
-      const { _id, selectedQuantity } = item;
+      const { _id, selectedQuantity, buyValue } = item;
       const stockItem = await StockItem.findById(_id);
       stockItem.quantity += selectedQuantity;
       await stockItem.save();
       updatedStockItems.push(stockItem);
+
+      items.push({
+        item: stockItem,
+        quantity: selectedQuantity,
+        buyValue: buyValue,
+      });
+
+      totalValue += stockItem.buyValue * selectedQuantity;
     }
-    res.json({updatedStockItems, savedStockEntry});
+
+    const newStockEntry = new StockEntry({
+      items: items,
+      quoteValue: totalValue,
+    });
+    await newStockEntry.save();
+
+    res.json(newStockEntry);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Erro ao atualizar os itens do estoque' });
+    res.status(500).json({ error: "Erro ao atualizar os itens do estoque" });
   }
 });
-
 
 module.exports = router;

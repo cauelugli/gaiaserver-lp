@@ -12,6 +12,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import dayjs from "dayjs";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -63,9 +64,11 @@ export default function StockEntriesTable() {
                       </Typography>
                     </TableCell>
                     <TableCell align="left">
-                      <Typography sx={{ fontSize: 14 }}>
-                        {entry.items}
-                      </Typography>
+                      {entry.items.map((item) => (
+                        <Typography key={item._id} sx={{ fontSize: 14 }}>
+                           x{item.quantity} {item.item.name} = R${item.buyValue * item.quantity}
+                        </Typography>
+                      ))}
                     </TableCell>
                     <TableCell align="right">
                       <Typography sx={{ fontSize: 14 }}>
@@ -74,7 +77,7 @@ export default function StockEntriesTable() {
                     </TableCell>
                     <TableCell align="right">
                       <Typography sx={{ fontSize: 14 }}>
-                        {entry.createdAt}
+                        {dayjs(entry.createdAt).format("DD/MM/YYYY")}
                       </Typography>
                     </TableCell>
                   </TableRow>
