@@ -189,6 +189,36 @@ export default function JobTable({ jobs, fetchData }) {
                           variant="h6"
                           sx={{ fontSize: 18, fontWeight: "bold" }}
                         >
+                          Descrição
+                        </Typography>
+                        <Table size="small">
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  Sobre
+                                </Typography>
+                              </TableCell>
+                              
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell align="left">
+                                <Typography>{job.description}</Typography>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </Box>
+                      
+                      <Box sx={{ my: 4, px: 6 }}>
+                        <Typography
+                          variant="h6"
+                          sx={{ fontSize: 18, fontWeight: "bold" }}
+                        >
                           Departamento
                         </Typography>
                         <Table size="small">
@@ -205,7 +235,7 @@ export default function JobTable({ jobs, fetchData }) {
                                 <Typography
                                   sx={{ fontSize: "14px", color: "#777" }}
                                 >
-                                  Gerente
+                                  Gerente Responsável
                                 </Typography>
                               </TableCell>
                               <TableCell align="left">
@@ -253,7 +283,7 @@ export default function JobTable({ jobs, fetchData }) {
                                 <Typography
                                   sx={{ fontSize: "14px", color: "#777" }}
                                 >
-                                  Tipo de Serviço
+                                  Serviço
                                 </Typography>
                               </TableCell>
                               <TableCell align="left">
@@ -284,7 +314,7 @@ export default function JobTable({ jobs, fetchData }) {
                                 <Typography>
                                   {job.materials.length > 0
                                     ? job.materials.map((material) => (
-                                        <Typography key={material.id} sx={{fontSize:"11px", color:"#777"}}>
+                                        <Typography key={material.id}>
                                           x{material.quantity} {material.name} 
                                         </Typography>
                                       ))

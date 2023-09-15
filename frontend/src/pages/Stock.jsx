@@ -23,6 +23,7 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import StockTable from "../tables/StockTable";
 import AddStockItemForm from "../forms/add/AddStockItemForm";
 import AddStockForm from "../forms/add/AddStockForm";
+import StockEntriesTable from "../tables/StockEntriesTable";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -167,7 +168,7 @@ export default function Stock() {
         <StockTable stockItems={stockItems} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        {/* <StockTable stockItems={stockItems} /> */}<p>Coming Soon</p>
+        <StockEntriesTable  />
       </CustomTabPanel>
       {openAddNewStockItem && (
         <Dialog
