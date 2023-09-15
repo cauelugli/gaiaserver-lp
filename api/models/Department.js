@@ -26,9 +26,9 @@ departmentSchema = new mongoose.Schema({
   color: {
     type: String,
   },
-  isActive: {
+  isInternal: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   createdAt: {
     type: Date,

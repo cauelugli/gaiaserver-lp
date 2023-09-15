@@ -38,6 +38,7 @@ router.post("/", async (req, res) => {
       color: req.body.color,
       members: req.body.members,
       manager: newManager,
+      isInternal: req.body.isInternal,
     });
     try {
       updatedManager = await newManager.save();
@@ -87,6 +88,7 @@ router.post("/", async (req, res) => {
       color: req.body.color,
       members: req.body.members,
       manager: req.body.manager,
+      isInternal: req.body.isInternal,
     });
     try {
       savedDepartment = await newDepartment.save();
@@ -135,6 +137,8 @@ router.post("/", async (req, res) => {
       color: req.body.color,
       members: req.body.members,
       manager: req.body.manager,
+      isInternal: req.body.isInternal,
+
     });
     const memberIds = req.body.members.map((member) => member.id);
 
@@ -217,7 +221,7 @@ router.put("/", async (req, res) => {
         manager: req.body.manager,
         members: req.body.updatedMembers,
         color: req.body.color,
-        // isActive: req.body.isActive,
+        isInternal: req.body.isInternal,
       },
       { new: true }
     );

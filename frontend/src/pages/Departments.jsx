@@ -3,6 +3,7 @@ import React from "react";
 
 import { Box, Button, Grid, Tab, Tabs, Typography } from "@mui/material";
 import DepartmentTable from "../tables/DepartmentTable";
+import DepartmentInternalTable from "../tables/DepartmentInternalTable";
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -34,7 +35,9 @@ export default function Departments() {
         justifyContent="flex-start"
         alignItems="flex-start"
       >
-        <Typography sx={{ fontSize:23, mt:0.5, ml: 1, mr:2, fontWeight: 'bold' }}>
+        <Typography
+          sx={{ fontSize: 23, mt: 0.5, ml: 1, mr: 2, fontWeight: "bold" }}
+        >
           Departamentos
         </Typography>
         <Button
@@ -59,12 +62,19 @@ export default function Departments() {
         >
           <Tab
             label="Todos"
-            sx={{ color: "#eee", "&.Mui-selected": { color: "black" } }}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
+          <Tab
+            label="Internos"
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <DepartmentTable openAdd={openAdd} setOpenAdd={setOpenAdd} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <DepartmentInternalTable openAdd={openAdd} setOpenAdd={setOpenAdd} />
       </CustomTabPanel>
     </Box>
   );

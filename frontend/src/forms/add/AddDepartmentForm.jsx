@@ -160,17 +160,21 @@ const AddDepartmentForm = ({
             />
           </Grid>
         </Grid>
-        <Grid container direction="row">
+        <Grid item>
           <TextField
             value={description}
             size="small"
             label="Descrição"
-            fullWidth
             onChange={(e) => setDescription(e.target.value)}
             sx={{ mt: 2 }}
           />
+          <>Novo Gerente</>
+          <Checkbox
+            checked={newManager}
+            onChange={handleNewManager}
+            inputProps={{ "aria-label": "controlled" }}
+          />
         </Grid>
-
         <Divider sx={{ my: 2 }} />
         <Grid item>
           <Typography sx={{ my: 2 }}>Membros</Typography>
