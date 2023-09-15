@@ -37,10 +37,20 @@ export default function EditServiceForm({
     selectedService.department
   );
   const [value, setValue] = React.useState(selectedService.value);
-  const [previousMaterials, setPreviousMaterials] = React.useState(selectedService.materials);
+  const [previousMaterials, setPreviousMaterials] = React.useState(
+    selectedService.materials
+  );
   const [materials, setMaterials] = React.useState(selectedService.materials);
-  const [materialsEditCost, setMaterialsEditCost] = React.useState(selectedService.materialsCost);
-  const [showUsesMaterials, setUsesMaterials] = React.useState(selectedService.materials.length >= 1);
+  const [materialsEditCost, setMaterialsEditCost] = React.useState(
+    selectedService.materialsCost
+  );
+  const [isSupport, setIsSupport] = React.useState(selectedService.isSupport);
+  const handleIsSupport = (event) => {
+    setIsSupport(event.target.checked);
+  };
+  const [showUsesMaterials, setUsesMaterials] = React.useState(
+    selectedService.materials.length >= 1
+  );
   const handleUsesMaterials = (event) => {
     setUsesMaterials(event.target.checked);
   };
@@ -59,7 +69,7 @@ export default function EditServiceForm({
           email: department.email,
           color: department.color,
         },
-        value,
+        value: isSupport ? 0 : value,
         previousMaterials,
         materials,
         materialsCost: materialsEditCost,
@@ -127,6 +137,7 @@ export default function EditServiceForm({
               type="number"
               size="small"
               value={value}
+              disabled={isSupport}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">R$</InputAdornment>
@@ -140,8 +151,34 @@ export default function EditServiceForm({
               }}
               required
               variant="outlined"
-              sx={{ width: 130 }}
+              sx={{ width: 100 }}
             />
+          </Grid>
+          <Grid item sx={{ pt: 2, ml: 2 }}>
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Grid item>
+                <Typography>Serviço de Consultoria?</Typography>
+              </Grid>
+              <Grid item>
+                <Checkbox
+                  checked={isSupport}
+                  onChange={handleIsSupport}
+                  value={isSupport}
+                />
+              </Grid>
+              <Grid item>
+                <Typography
+                  sx={{ fontSize: 12, color: isSupport ? "green" : "#aaa" }}
+                >
+                  Sim, serviço sem custo
+                </Typography>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
         <Grid

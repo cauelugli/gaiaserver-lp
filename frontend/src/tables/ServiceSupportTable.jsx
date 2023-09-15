@@ -26,7 +26,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ServiceTable() {
+export default function ServiceSupportTable() {
   const [selectedService, setSelectedService] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -42,7 +42,7 @@ export default function ServiceTable() {
         const services = await api.get("/services");
         const departments = await api.get("/departments");
         const stockItems = await api.get("/stockItems");
-        setServices(services.data.filter((service) => !service.isSupport));
+        setServices(services.data.filter((service) => service.isSupport));
         setDepartments(departments.data);
         setStockItems(stockItems.data);
       } catch (error) {
@@ -57,7 +57,7 @@ export default function ServiceTable() {
       const services = await api.get("/services");
       const departments = await api.get("/departments");
       const stockItems = await api.get("/stockItems");
-      setServices(services.data.filter((service) => !service.isSupport));
+      setServices(services.data.filter((service) => service.isSupport));
       setDepartments(departments.data);
       setStockItems(stockItems.data);
     } catch (error) {
@@ -161,13 +161,6 @@ export default function ServiceTable() {
                                     Departamento
                                   </Typography>
                                 </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Valor do Serviço
-                                  </Typography>
-                                </TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
@@ -181,9 +174,6 @@ export default function ServiceTable() {
                                       ? service.department.name
                                       : "-"}
                                   </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>R${service.value}</Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>

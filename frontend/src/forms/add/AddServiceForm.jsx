@@ -35,6 +35,10 @@ export default function AddServiceForm({
   const [value, setValue] = React.useState(0);
   const [materials, setMaterials] = React.useState([]);
   const [materialsCost, setMaterialsCost] = React.useState(0);
+  const [isSupport, setIsSupport] = React.useState(false);
+  const handleIsSupport = (event) => {
+    setIsSupport(event.target.checked);
+  };
 
   const [showUsesMaterials, setUsesMaterials] = React.useState(false);
   const handleUsesMaterials = (event) => {
@@ -53,9 +57,10 @@ export default function AddServiceForm({
           email: department.email,
           color: department.color,
         },
-        value,
+        value: isSupport ? 0 : value,
         materials,
         materialsCost,
+        isSupport,
       });
       res.data && alert("Serviço Adicionado!");
       setOpenAdd(!openAdd);
@@ -84,7 +89,7 @@ export default function AddServiceForm({
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              sx={{ width: 300 }}
+              sx={{ width: 250 }}
             />
           </Grid>
           <Grid item sx={{ mx: 2 }}>
@@ -120,6 +125,7 @@ export default function AddServiceForm({
               type="number"
               size="small"
               value={value}
+              disabled={isSupport}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">R$</InputAdornment>
@@ -133,8 +139,29 @@ export default function AddServiceForm({
               }}
               required
               variant="outlined"
-              sx={{ width: 130 }}
+              sx={{ width: 100 }}
             />
+          </Grid>
+          <Grid item sx={{ pt:2, ml:2}}>
+            <Grid container direction="column" justifyContent="center" alignItems="center" >
+              <Grid item>
+                <Typography>Serviço de Consultoria?</Typography>
+              </Grid>
+              <Grid item>
+                <Checkbox
+                  checked={isSupport}
+                  onChange={handleIsSupport}
+                  value={isSupport}
+                />
+              </Grid>
+              <Grid item>
+                <Typography
+                  sx={{ fontSize: 12, color: isSupport ? "green" : "#aaa" }}
+                >
+                  Sim, serviço sem custo
+                </Typography>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
         <Grid
@@ -157,7 +184,6 @@ export default function AddServiceForm({
                   stockItems={stockItems}
                   setMaterials={setMaterials}
                   setMaterialsFinalCost={setMaterialsCost}
-                  
                 />
               </Box>
             )}

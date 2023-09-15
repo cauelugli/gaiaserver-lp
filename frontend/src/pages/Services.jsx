@@ -14,6 +14,7 @@ import {
 
 import ServiceTable from "../tables/ServiceTable";
 import AddServiceForm from "../forms/add/AddServiceForm";
+import ServiceSupportTable from "../tables/ServiceSupportTable";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -121,8 +122,7 @@ export default function Services() {
         <ServiceTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        {/* <ServiceTable /> */}
-        <p>Coming Soon</p>
+        <ServiceSupportTable />
       </CustomTabPanel>
       {openAddService && (
         <Dialog
