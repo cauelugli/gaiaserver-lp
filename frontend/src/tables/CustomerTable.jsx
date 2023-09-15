@@ -72,7 +72,7 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
   };
 
   return (
-    <Box sx={{ minWidth: "1050px" }}>
+    <Box>
       <TableContainer component={Paper}>
         <Table>
           <TableBody>

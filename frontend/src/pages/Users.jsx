@@ -93,7 +93,7 @@ export default function Users() {
   };
 
   return (
-    <Box sx={{ minWidth: "120%" }}>
+    <Box>
       <Grid
         container
         direction="row"

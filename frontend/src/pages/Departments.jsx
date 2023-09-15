@@ -27,7 +27,7 @@ export default function Departments() {
   };
 
   return (
-    <Box sx={{ minWidth: "120%" }}>
+    <Box>
       <Grid
         container
         direction="row"

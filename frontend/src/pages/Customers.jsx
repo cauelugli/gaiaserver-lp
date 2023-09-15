@@ -28,7 +28,7 @@ export default function Customers() {
   };
 
   return (
-    <Box sx={{ minWidth: "120%" }}>
+    <Box>
       <Grid
         container
         direction="row"

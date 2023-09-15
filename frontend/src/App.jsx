@@ -73,13 +73,9 @@ export default function App() {
           </Box>
         </Grid>
 
-        <Grid>  
+        <Grid sx={{ width: "87%" }}>
           <Grid container sx={{ p: 2 }}>
-            <Grid
-              item
-              xs={sidebarStatus ? 11 : 11.7}
-              xl={sidebarStatus ? 10.8 : 11.6}
-            >
+            <Grid item xs={12} xl={12}>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/users" element={<Users />} />
