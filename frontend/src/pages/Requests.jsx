@@ -132,7 +132,7 @@ export default function Requests({ selectedCustomer }) {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuList sx={{ width: 130 }}>
+            <MenuList sx={{ width: 160 }}>
               <MenuItem onClick={() => setOpenAddJob(!openAddJob)}>
                 <ListItemIcon>
                   <EngineeringIcon />
@@ -153,7 +153,7 @@ export default function Requests({ selectedCustomer }) {
                 <ListItemIcon>
                   <SupportAgentIcon />
                 </ListItemIcon>
-                <ListItemText>Suporte</ListItemText>
+                <ListItemText>Atendimento</ListItemText>
               </MenuItem>
             </MenuList>
           </Menu>
@@ -174,7 +174,7 @@ export default function Requests({ selectedCustomer }) {
           sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
         />
         <Tab
-          label={<Typography sx={{ fontSize: 14 }}>Suporte</Typography>}
+          label={<Typography sx={{ fontSize: 14 }}>Atendimentos</Typography>}
           sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
         />
         </Tabs>

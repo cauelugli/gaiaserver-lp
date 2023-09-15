@@ -151,24 +151,27 @@ export default function Stock() {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Itens</Typography>}
+            label={<Typography sx={{ fontSize: 14 }}>Produtos</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={
-              <Typography sx={{ fontSize: 14 }}>
-                Entradas
-              </Typography>
-            }
+            label={<Typography sx={{ fontSize: 14 }}>Materiais</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
+          <Tab
+            label={<Typography sx={{ fontSize: 14 }}>Entradas</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <StockTable stockItems={stockItems} />
+        <p>Coming Soon Need Sales</p>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <StockEntriesTable  />
+        <StockTable stockItems={stockItems} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <StockEntriesTable />
       </CustomTabPanel>
       {openAddNewStockItem && (
         <Dialog

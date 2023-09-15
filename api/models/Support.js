@@ -7,7 +7,7 @@ supportSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    default: "Suporte",
+    default: "Atendimento",
   },
   requester: {
     type: String,

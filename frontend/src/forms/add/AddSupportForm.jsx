@@ -53,7 +53,7 @@ const AddSupportForm = ({
     e.preventDefault();
     try {
       const res = await api.post("/support", {
-        type: "Suporte",
+        type: "Atendimento",
         title,
         description,
         customerId: customer._id,
