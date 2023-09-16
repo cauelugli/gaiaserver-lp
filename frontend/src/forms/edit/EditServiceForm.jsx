@@ -101,7 +101,7 @@ export default function EditServiceForm({
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              sx={{ width: 300 }}
+              sx={{ width: 200 }}
             />
           </Grid>
           <Grid item sx={{ mx: 2 }}>
@@ -151,7 +151,7 @@ export default function EditServiceForm({
               }}
               required
               variant="outlined"
-              sx={{ width: 100 }}
+              sx={{ width: 120 }}
             />
           </Grid>
           <Grid item sx={{ pt: 2, ml: 2 }}>
@@ -162,9 +162,12 @@ export default function EditServiceForm({
               alignItems="center"
             >
               <Grid item>
-                <Typography>Serviço de Consultoria?</Typography>
-              </Grid>
-              <Grid item>
+                <label
+                  style={{ fontSize: 14, fontFamily: "Verdana, sans-serif" }}
+                >
+                  Serviço de Consultoria?
+                </label>
+
                 <Checkbox
                   checked={isSupport}
                   onChange={handleIsSupport}
@@ -173,7 +176,7 @@ export default function EditServiceForm({
               </Grid>
               <Grid item>
                 <Typography
-                  sx={{ fontSize: 12, color: isSupport ? "green" : "#aaa" }}
+                  sx={{ fontSize: 12, fontFamily: "Verdana, sans-serif" , color: isSupport ? "green" : "#aaa" }}
                 >
                   Sim, serviço sem custo
                 </Typography>

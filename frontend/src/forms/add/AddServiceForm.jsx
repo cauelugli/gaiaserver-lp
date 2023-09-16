@@ -89,7 +89,7 @@ export default function AddServiceForm({
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              sx={{ width: 250 }}
+              sx={{ width: 200 }}
             />
           </Grid>
           <Grid item sx={{ mx: 2 }}>
@@ -139,15 +139,13 @@ export default function AddServiceForm({
               }}
               required
               variant="outlined"
-              sx={{ width: 100 }}
+              sx={{ width: 120 }}
             />
           </Grid>
           <Grid item sx={{ pt:2, ml:2}}>
             <Grid container direction="column" justifyContent="center" alignItems="center" >
               <Grid item>
-                <Typography>Serviço de Consultoria?</Typography>
-              </Grid>
-              <Grid item>
+                <label style={{fontSize:14, fontFamily:"Verdana, sans-serif"}}>Serviço de Consultoria?</label>
                 <Checkbox
                   checked={isSupport}
                   onChange={handleIsSupport}
@@ -156,7 +154,7 @@ export default function AddServiceForm({
               </Grid>
               <Grid item>
                 <Typography
-                  sx={{ fontSize: 12, color: isSupport ? "green" : "#aaa" }}
+                  sx={{ fontSize: 12, fontFamily:"Verdana, sans-serif", color: isSupport ? "green" : "#aaa" }}
                 >
                   Sim, serviço sem custo
                 </Typography>
@@ -172,7 +170,7 @@ export default function AddServiceForm({
           alignItems="center"
         >
           <Grid item sx={{ mt: 4 }}>
-            <label>Uso de Materiais?</label>
+            <label style={{fontFamily:"Verdana, sans-serif"}}>Uso de Materiais?</label>
             <Checkbox
               checked={showUsesMaterials}
               onChange={handleUsesMaterials}

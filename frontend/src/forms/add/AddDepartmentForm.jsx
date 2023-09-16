@@ -9,18 +9,24 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  FormControlLabel,
   Grid,
+  IconButton,
   ListSubheader,
   MenuItem,
   Select,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
+
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+
 
 import { IMaskInput } from "react-imask";
 import ColorPicker from "../../components/small/ColorPicker";
 import Members from "../../components/small/Members";
-// import IconPicker from "../../components/small/IconPicker";
+import IconPicker from "../../components/small/IconPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -45,6 +51,11 @@ const AddDepartmentForm = ({
   const [color, setColor] = React.useState("#ffffff");
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
   const [newManager, setNewManager] = React.useState(false);
+  const [isInternal, setIsInternal] = React.useState(false);
+
+  const handleIsInternal = (event) => {
+    setIsInternal(event.target.checked);
+  };
 
   const handleNewManager = (event) => {
     setNewManager(event.target.checked);
@@ -63,21 +74,21 @@ const AddDepartmentForm = ({
     handleCloseColor();
   };
 
-  // const [icon, setIcon] = React.useState("");
-  // const [iconAnchorEl, setIconAnchorEl] = React.useState(null);
+  const [icon, setIcon] = React.useState("");
+  const [iconAnchorEl, setIconAnchorEl] = React.useState(null);
 
-  // const handleCloseIcon = () => {
-  //   setIconAnchorEl(null);
-  // };
+  const handleCloseIcon = () => {
+    setIconAnchorEl(null);
+  };
 
-  // const handleClickIcon = (event) => {
-  //   setIconAnchorEl(event.currentTarget);
-  // };
+  const handleClickIcon = (event) => {
+    setIconAnchorEl(event.currentTarget);
+  };
 
-  // const handleChangeIcon = (selectedIcon) => {
-  //   setIcon(selectedIcon);
-  //   handleCloseIcon();
-  // };
+  const handleChangeIcon = (selectedIcon) => {
+    setIcon(selectedIcon);
+    handleCloseIcon();
+  };
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -104,6 +115,7 @@ const AddDepartmentForm = ({
           avatarColor: color,
         },
         members: membersData,
+        isInternal,
       });
       res.data && alert("Departamento Adicionado!");
       setOpenAdd(!openAdd);
@@ -166,14 +178,27 @@ const AddDepartmentForm = ({
             size="small"
             label="Descrição"
             onChange={(e) => setDescription(e.target.value)}
+            sx={{ mt: 2, width: 650 }}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isInternal}
+                onChange={handleIsInternal}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            }
+            label="Interno"
+            labelPlacement="start"
             sx={{ mt: 2 }}
           />
-          <>Novo Gerente</>
-          <Checkbox
-            checked={newManager}
-            onChange={handleNewManager}
-            inputProps={{ "aria-label": "controlled" }}
-          />
+          <Tooltip title="Departamentos internos não prestam serviços.">
+            <span> 
+              <IconButton sx={{ mt: 2, ml: 2 }} size="small" disabled>
+                <QuestionMarkIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
         </Grid>
         <Divider sx={{ my: 2 }} />
         <Grid item>
@@ -196,7 +221,7 @@ const AddDepartmentForm = ({
             <Typography sx={{ mt: 1 }}>Gerência</Typography>
           </Grid>
           <Grid item>
-            <>Novo Gerente</>
+          <label style={{fontSize:14, fontFamily:"Verdana, sans-serif"}}>Novo Gerente</label>
             <Checkbox
               checked={newManager}
               onChange={handleNewManager}
@@ -303,7 +328,7 @@ const AddDepartmentForm = ({
               handleChangeColor={handleChangeColor}
             />
           </Grid>
-          {/* <Grid item sx={{ mr: "20%" }}>
+          <Grid item sx={{ mr: "20%" }}>
             <Typography>Ícone</Typography>
             <IconPicker
               handleClickIcon={handleClickIcon}
@@ -312,7 +337,7 @@ const AddDepartmentForm = ({
               handleCloseIcon={handleCloseIcon}
               handleChangeIcon={handleChangeIcon}
             />
-          </Grid> */}
+          </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>

@@ -22,7 +22,6 @@ import Person4Icon from "@mui/icons-material/Person4";
 
 import UserTable from "../tables/UserTable";
 import ManagerTable from "../tables/ManagerTable";
-import AdminTable from "../tables/AdminTable";
 
 import AddUserForm from "../forms/add/AddUserForm";
 import AddManagerForm from "../forms/add/AddManagerForm";
@@ -163,10 +162,6 @@ export default function Users() {
             label={<Typography sx={{ fontSize: 14 }}>Gerentes</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
-          <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Diretoria</Typography>}
-            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -174,9 +169,6 @@ export default function Users() {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <ManagerTable />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <AdminTable />
       </CustomTabPanel>
       {openAddUser && (
         <Dialog
