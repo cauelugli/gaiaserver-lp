@@ -48,7 +48,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Requests({ selectedCustomer }) {
+export default function Requests() {
   const [value, setValue] = React.useState(0);
 
   const [openAddJob, setOpenAddJob] = React.useState(false);
@@ -185,10 +185,10 @@ export default function Requests({ selectedCustomer }) {
         <JobTable jobs={jobs} fetchData={fetchData} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <SaleTable selectedCustomer={selectedCustomer} />
+        <SaleTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <SupportTable selectedCustomer={selectedCustomer} />
+        <SupportTable />
       </CustomTabPanel>
       {openAddJob && (
         <Dialog

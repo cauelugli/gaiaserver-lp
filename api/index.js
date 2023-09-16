@@ -5,6 +5,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+const clientRoute = require("./routes/clients");
 const customerRoute = require("./routes/customers");
 const departmentRoute = require("./routes/departments");
 const serviceRoutes = require("./routes/services");
@@ -30,6 +31,7 @@ mongoose
   .then(console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 
+app.use("/api/clients", clientRoute);
 app.use("/api/customers", customerRoute);
 app.use("/api/departments", departmentRoute);
 app.use("/api/services", serviceRoutes);
