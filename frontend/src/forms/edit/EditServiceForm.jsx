@@ -30,6 +30,7 @@ export default function EditServiceForm({
   departments,
   stockItems,
   fetchData,
+  toast,
 }) {
   const previousData = selectedService;
   const [name, setName] = React.useState(selectedService.name);
@@ -45,9 +46,13 @@ export default function EditServiceForm({
     selectedService.materialsCost
   );
   const [isSupport, setIsSupport] = React.useState(selectedService.isSupport);
+
   const handleIsSupport = (event) => {
-    setIsSupport(event.target.checked);
+    console.log("Before setIsSupport:", isSupport);
+    setIsSupport((prevIsSupport) => !prevIsSupport);
+    console.log("After setIsSupport:", isSupport);
   };
+
   const [showUsesMaterials, setUsesMaterials] = React.useState(
     selectedService.materials.length >= 1
   );
@@ -73,8 +78,11 @@ export default function EditServiceForm({
         previousMaterials,
         materials,
         materialsCost: materialsEditCost,
+        isSupport
       });
-      res.data && alert("Serviço editado com Sucesso!");
+      if (res.data) {
+        toast.success("Serviço Editado!");
+      }
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {
@@ -176,7 +184,11 @@ export default function EditServiceForm({
               </Grid>
               <Grid item>
                 <Typography
-                  sx={{ fontSize: 12, fontFamily: "Verdana, sans-serif" , color: isSupport ? "green" : "#aaa" }}
+                  sx={{
+                    fontSize: 12,
+                    fontFamily: "Verdana, sans-serif",
+                    color: isSupport ? "green" : "#aaa",
+                  }}
                 >
                   Sim, serviço sem custo
                 </Typography>

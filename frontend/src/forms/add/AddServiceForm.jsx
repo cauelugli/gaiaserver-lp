@@ -29,6 +29,7 @@ export default function AddServiceForm({
   stockItems,
   setOpenAdd,
   fetchData,
+  toast,
 }) {
   const [name, setName] = React.useState("");
   const [department, setDepartment] = React.useState({});
@@ -62,7 +63,9 @@ export default function AddServiceForm({
         materialsCost,
         isSupport,
       });
-      res.data && alert("Serviço Adicionado!");
+      if (res.data) {
+        toast.success("Serviço Adicionado!");
+      }
       setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {
@@ -142,10 +145,19 @@ export default function AddServiceForm({
               sx={{ width: 120 }}
             />
           </Grid>
-          <Grid item sx={{ pt:2, ml:2}}>
-            <Grid container direction="column" justifyContent="center" alignItems="center" >
+          <Grid item sx={{ pt: 2, ml: 2 }}>
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+            >
               <Grid item>
-                <label style={{fontSize:14, fontFamily:"Verdana, sans-serif"}}>Serviço de Consultoria?</label>
+                <label
+                  style={{ fontSize: 14, fontFamily: "Verdana, sans-serif" }}
+                >
+                  Serviço de Consultoria?
+                </label>
                 <Checkbox
                   checked={isSupport}
                   onChange={handleIsSupport}
@@ -154,7 +166,11 @@ export default function AddServiceForm({
               </Grid>
               <Grid item>
                 <Typography
-                  sx={{ fontSize: 12, fontFamily:"Verdana, sans-serif", color: isSupport ? "green" : "#aaa" }}
+                  sx={{
+                    fontSize: 12,
+                    fontFamily: "Verdana, sans-serif",
+                    color: isSupport ? "green" : "#aaa",
+                  }}
                 >
                   Sim, serviço sem custo
                 </Typography>
@@ -170,7 +186,9 @@ export default function AddServiceForm({
           alignItems="center"
         >
           <Grid item sx={{ mt: 4 }}>
-            <label style={{fontFamily:"Verdana, sans-serif"}}>Uso de Materiais?</label>
+            <label style={{ fontFamily: "Verdana, sans-serif" }}>
+              Uso de Materiais?
+            </label>
             <Checkbox
               checked={showUsesMaterials}
               onChange={handleUsesMaterials}

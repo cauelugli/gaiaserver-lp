@@ -26,6 +26,7 @@ const AddManagerForm = ({
   departments,
   setOpenAdd,
   fetchData,
+  toast,
 }) => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -64,7 +65,9 @@ const AddManagerForm = ({
         avatarColor,
         isAllocated: department === "" ? false : true,
       });
-      res.data && alert("Gerente Adicionado!");
+      if (res.data) {
+        toast.success("Gerente Adicionado!");
+      }
       setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {

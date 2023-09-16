@@ -14,6 +14,7 @@ const DeleteDepartmentForm = ({
   openDelete,
   setOpenDelete,
   fetchData,
+  toast,
 }) => {
   const department = selectedDepartment;
 
@@ -24,7 +25,9 @@ const DeleteDepartmentForm = ({
           department
         )}`
       );
-      res.status === 200 && alert("Departamento deletado com sucesso!");
+      if (res.data) {
+        toast.warning("Departamento Deletado");
+      }
       setOpenDelete(false);
       fetchData();
     } catch (err) {

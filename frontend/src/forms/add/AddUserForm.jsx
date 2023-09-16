@@ -20,7 +20,13 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddUserForm = ({ openAdd, departments, setOpenAdd, fetchData }) => {
+const AddUserForm = ({
+  openAdd,
+  departments,
+  setOpenAdd,
+  fetchData,
+  toast,
+}) => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
@@ -59,7 +65,9 @@ const AddUserForm = ({ openAdd, departments, setOpenAdd, fetchData }) => {
         position,
         avatarColor,
       });
-      res.data && alert("Colaborador Adicionado!");
+      if (res.data) {
+        toast.success("Colaborador Adicionado!");
+      }
       setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {
@@ -154,7 +162,7 @@ const AddUserForm = ({ openAdd, departments, setOpenAdd, fetchData }) => {
             </Select>
           </Grid>
           <Grid item>
-            <Typography sx={{mb:1, ml:2}}>Ocupação</Typography>
+            <Typography sx={{ mb: 1, ml: 2 }}>Ocupação</Typography>
             <TextField
               value={position}
               size="small"

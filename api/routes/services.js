@@ -118,6 +118,7 @@ router.put("/", async (req, res) => {
         value: req.body.value,
         materials: validMaterials,
         materialsCost: req.body.materialsCost,
+        isSupport: req.body.isSupport,
       },
       { new: true }
     );

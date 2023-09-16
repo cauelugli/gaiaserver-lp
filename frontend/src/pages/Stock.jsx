@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 import {
@@ -184,6 +186,7 @@ export default function Stock() {
             openAdd={openAddNewStockItem}
             setOpenAdd={setOpenAddNewStockItem}
             fetchData={fetchData}
+            toast={toast}
           />
         </Dialog>
       )}
@@ -199,6 +202,8 @@ export default function Stock() {
             stockItems={stockItems}
             setOpenAdd={setOpenAddStock}
             fetchData={fetchData}
+            toast={toast}
+
           />
         </Dialog>
       )}

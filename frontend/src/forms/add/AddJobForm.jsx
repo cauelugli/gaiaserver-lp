@@ -33,7 +33,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
+const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
   const [title, setTitle] = React.useState("");
   const [customer, setCustomer] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -129,8 +129,9 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
         local,
         scheduledTo,
       });
-      res.data &&
-        alert(`Pedido Adicionado! Orçamento #${res.data.quoteNumber}`);
+      if (res.data) {
+        toast.success(`Pedido Adicionado! Orçamento #${res.data.quoteNumber}`);
+      }
       setOpenAddJob(!openAddJob);
       fetchData1;
     } catch (err) {
@@ -466,7 +467,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1 }) => {
                     </Button>
                   </Grid>
                 ) : (
-                  <Typography sx={{ m: 1, color:"green" }}>
+                  <Typography sx={{ m: 1, color: "green" }}>
                     Este Orçamento foi Aprovado!
                   </Typography>
                 )}

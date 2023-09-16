@@ -9,13 +9,21 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const DeleteManagerForm = ({ selectedManager, openDelete, setOpenDelete, fetchData }) => {
+const DeleteManagerForm = ({
+  selectedManager,
+  openDelete,
+  setOpenDelete,
+  fetchData,
+  toast,
+}) => {
   const manager = selectedManager;
 
   const handleDelete = async () => {
     try {
       const res = await api.delete(`/managers/${manager._id}`);
-      res.status === 200 && alert("Gerente deletado com sucesso!");
+      if (res.data) {
+        toast.warning("Gerente Deletado");
+      }
       setOpenDelete(false);
       fetchData();
     } catch (err) {

@@ -9,13 +9,21 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function DeleteServiceForm({ selectedService, openDelete, setOpenDelete, fetchData }) {
+export default function DeleteServiceForm({
+  selectedService,
+  openDelete,
+  setOpenDelete,
+  fetchData,
+  toast
+}) {
   const service = selectedService;
 
   const handleDelete = async () => {
     try {
       const res = await api.delete(`/services/${service._id}`);
-      res.status === 200 && alert("Serviço deletado com sucesso!");
+      if (res.data) {
+        toast.warning("Serviço Deletado");
+      }
       setOpenDelete(false);
       fetchData();
     } catch (err) {

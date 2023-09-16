@@ -25,6 +25,7 @@ export default function EditStockItemForm({
   openEdit,
   setOpenEdit,
   fetchData,
+  toast,
 }) {
   const [name, setName] = React.useState(selectedStockItem.name);
   const [buyValue, setBuyValue] = React.useState(selectedStockItem.buyValue);
@@ -39,7 +40,9 @@ export default function EditStockItemForm({
         buyValue,
         sellValue,
       });
-      res.data && alert("Item editado com Sucesso!");
+      if (res.data) {
+        toast.success("Item Editado com Sucesso!");
+      }
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {

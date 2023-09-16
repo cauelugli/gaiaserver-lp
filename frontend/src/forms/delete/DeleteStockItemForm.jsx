@@ -9,13 +9,21 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function DeleteStockItemForm({ selectedStockItem, openDelete, setOpenDelete, fetchData }) {
+export default function DeleteStockItemForm({
+  selectedStockItem,
+  openDelete,
+  setOpenDelete,
+  fetchData,
+  toast,
+}) {
   const stockItem = selectedStockItem;
 
   const handleDelete = async () => {
-    try { 
+    try {
       const res = await api.delete(`/stockItems/${stockItem._id}`);
-      res.status === 200 && alert("Item deletado com sucesso!");
+      if (res.data) {
+        toast.warning("Item Removido do Estoque");
+      }
       setOpenDelete(false);
       fetchData();
     } catch (err) {

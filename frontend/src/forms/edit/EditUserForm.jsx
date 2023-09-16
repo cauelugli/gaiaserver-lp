@@ -30,11 +30,14 @@ const EditUserForm = ({
   departments,
   setOpenEdit,
   fetchData,
+  toast,
 }) => {
   const [name, setName] = React.useState(selectedUser.name);
   const [email, setEmail] = React.useState(selectedUser.email);
   const [phone, setPhone] = React.useState(selectedUser.phone);
-  const [department, setDepartment] = React.useState(selectedUser.department || "");
+  const [department, setDepartment] = React.useState(
+    selectedUser.department || ""
+  );
   const [position, setPosition] = React.useState(selectedUser.position);
   const previousData = selectedUser;
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
@@ -74,7 +77,9 @@ const EditUserForm = ({
         avatarColor,
         previousData,
       });
-      res.data && alert("Editado com sucesso!");
+      if (res.data) {
+        toast.success("Colaborador Editado!");
+      }
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {
@@ -133,9 +138,9 @@ const EditUserForm = ({
               value={phone}
             />
           </Grid>
-          </Grid>
+        </Grid>
 
-          <Grid
+        <Grid
           container
           sx={{ mt: 2 }}
           direction="row"
@@ -170,7 +175,7 @@ const EditUserForm = ({
             </Select>
           </Grid>
           <Grid item>
-          <Typography sx={{mb:1, ml:2}}>Ocupação</Typography>
+            <Typography sx={{ mb: 1, ml: 2 }}>Ocupação</Typography>
             <TextField
               size="small"
               value={position}
@@ -178,7 +183,7 @@ const EditUserForm = ({
               sx={{ ml: 2, width: 250 }}
             />
           </Grid>
-          <Grid item sx={{ml:"10%"}}>
+          <Grid item sx={{ ml: "10%" }}>
             <Typography>Avatar</Typography>
             <ColorPicker
               handleClickColor={handleClickColor}

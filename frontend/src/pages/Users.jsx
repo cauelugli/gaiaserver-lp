@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 import {
@@ -182,6 +184,7 @@ export default function Users() {
             departments={departments}
             setOpenAdd={setOpenAddUser}
             fetchData={fetchData}
+            toast={toast}
           />
         </Dialog>
       )}
@@ -197,6 +200,8 @@ export default function Users() {
             departments={departments}
             setOpenAdd={setOpenAddManager}
             fetchData={fetchData}
+            toast={toast}
+
           />
         </Dialog>
       )}

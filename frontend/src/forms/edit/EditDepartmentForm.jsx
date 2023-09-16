@@ -38,6 +38,7 @@ const EditDepartmentForm = ({
   managers,
   setOpenEdit,
   fetchData,
+  toast,
 }) => {
   const [name, setName] = React.useState(selectedDepartment.name);
   const [description, setDescription] = React.useState(
@@ -96,9 +97,11 @@ const EditDepartmentForm = ({
         manager,
         updatedMembers: membersData,
         removedMembers,
-        isInternal
+        isInternal,
       });
-      res.data && alert("Departamento Editado!");
+      if (res.data) {
+        toast.success("Departamento Editado!");
+      }
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {

@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 import {
@@ -347,6 +349,8 @@ export default function DepartmentInternalTable({ openAdd, setOpenAdd }) {
             managers={managers}
             setOpenAdd={setOpenAdd}
             fetchData={fetchData}
+            toast={toast}
+
           />
         </Dialog>
       )}
@@ -364,6 +368,8 @@ export default function DepartmentInternalTable({ openAdd, setOpenAdd }) {
             selectedDepartment={selectedDepartment}
             setOpenEdit={setOpenEdit}
             fetchData={fetchData}
+            toast={toast}
+
           />
         </Dialog>
       )}
@@ -374,6 +380,8 @@ export default function DepartmentInternalTable({ openAdd, setOpenAdd }) {
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}
             fetchData={fetchData}
+            toast={toast}
+
           />
         </Dialog>
       )}

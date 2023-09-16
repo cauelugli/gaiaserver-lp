@@ -22,6 +22,7 @@ export default function AddStockItemForm({
   openAdd,
   setOpenAdd,
   fetchData,
+  toast,
 }) {
   const [name, setName] = React.useState("");
   const [buyValue, setBuyValue] = React.useState(0);
@@ -37,7 +38,9 @@ export default function AddStockItemForm({
         sellValue,
         quantity,
       });
-      res.data && alert("Item adicionado ao Estoque!");
+      if (res.data) {
+        toast.success("Item Adicionado ao Estoque!");
+      }
       setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {

@@ -22,7 +22,7 @@ const DeleteCustomerForm = ({
     try {
       const res = await api.delete(`/customers/${customer._id}`);
       if (res.data) {
-        toast.warning("Cliente Deletado!");
+        toast.warning("Cliente Deletado");
       }
       setOpenDelete(false);
       fetchData();

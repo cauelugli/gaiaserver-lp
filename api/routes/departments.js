@@ -33,6 +33,7 @@ router.post("/", async (req, res) => {
     });
     const newDepartment = new Department({
       name: req.body.name,
+      description: req.body.description,
       phone: req.body.phone,
       email: req.body.email,
       color: req.body.color,
@@ -83,6 +84,7 @@ router.post("/", async (req, res) => {
   } else if (req.body.manager.name !== "") {
     const newDepartment = new Department({
       name: req.body.name,
+      description: req.body.description,
       phone: req.body.phone,
       email: req.body.email,
       color: req.body.color,
@@ -132,6 +134,7 @@ router.post("/", async (req, res) => {
   } else {
     const newDepartment = new Department({
       name: req.body.name,
+      description: req.body.description,
       phone: req.body.phone,
       email: req.body.email,
       color: req.body.color,

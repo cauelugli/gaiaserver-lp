@@ -34,6 +34,7 @@ export default function AddStockForm({
   stockItems,
   setOpenAdd,
   fetchData,
+  toast
 }) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
   const [itemList, setItemList] = React.useState([]);
@@ -56,7 +57,9 @@ export default function AddStockForm({
       const res = await api.put("/stock", {
         itemList,
       });
-      res.data && alert("Items Adicionados ao Estoque com Sucesso!");
+      if (res.data) {
+        toast.success("Entrada de Mercadorias Adicionada!");
+      }
       setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {

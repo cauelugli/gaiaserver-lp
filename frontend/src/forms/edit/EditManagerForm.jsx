@@ -31,11 +31,14 @@ const EditManagerForm = ({
   departments,
   setOpenEdit,
   fetchData,
+  toast
 }) => {
   const [name, setName] = React.useState(selectedManager.name);
   const [email, setEmail] = React.useState(selectedManager.email);
   const [phone, setPhone] = React.useState(selectedManager.phone);
-  const [department, setDepartment] = React.useState(selectedManager.department || "");
+  const [department, setDepartment] = React.useState(
+    selectedManager.department || ""
+  );
   const [avatarColor, setAvatarColor] = React.useState(
     selectedManager.avatarColor
   );
@@ -73,7 +76,9 @@ const EditManagerForm = ({
         avatarColor,
         previousData,
       });
-      res.data && alert("Gerente editado com sucesso!");
+      if (res.data) {
+        toast.warning("Gerente Editado!");
+      }
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {
@@ -180,7 +185,7 @@ const EditManagerForm = ({
                 ))}
             </Select>
           </Grid>
-          <Grid item sx={{ml:"10%"}}>
+          <Grid item sx={{ ml: "10%" }}>
             <Typography>Avatar</Typography>
             <ColorPicker
               handleClickColor={handleClickColor}

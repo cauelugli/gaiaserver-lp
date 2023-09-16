@@ -9,13 +9,21 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const DeleteUserForm = ({ selectedUser, openDelete, setOpenDelete, fetchData }) => {
+const DeleteUserForm = ({
+  selectedUser,
+  openDelete,
+  setOpenDelete,
+  fetchData,
+  toast,
+}) => {
   const user = selectedUser;
 
   const handleDelete = async () => {
     try {
       const res = await api.delete(`/users/${user._id}`);
-      res.status === 200 && alert("Colaborador deletado com sucesso!");
+      if (res.data) {
+        toast.warning("Colaborador Deletado");
+      }
       setOpenDelete(false);
       fetchData();
     } catch (err) {

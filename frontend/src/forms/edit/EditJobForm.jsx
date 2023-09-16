@@ -34,6 +34,7 @@ const EditJobForm = ({
   setOpenEditJob,
   fetchData1,
   selectedJob,
+  toast
 }) => {
   const [title, setTitle] = React.useState(selectedJob.title);
   const [description, setDescription] = React.useState(selectedJob.description);
@@ -78,17 +79,6 @@ const EditJobForm = ({
     selectedJob.service._id,
   ]);
 
-  // console.log("departments", departments);
-  // console.log("filteredDepartment members", filteredDepartment.members);
-  // console.log("selectedJob", selectedJob);
-  // console.log("department", department);
-  // console.log("filteredDepartment", filteredDepartment);
-  // console.log("department.members ", department.members);
-  // console.log("selectedJob.service ", selectedJob.service.name);
-  // console.log("selectedJob ", selectedJob);
-  // console.log("selectedJob.service", selectedJob.service);
-  // console.log("worker", worker);
-
   const [showAdditionalOptions, setShowAdditionalOptions] =
     React.useState(false);
 
@@ -118,7 +108,9 @@ const EditJobForm = ({
         local,
         scheduledTo,
       });
-      res.data && alert("Pedido Editado!");
+      if (res.data) {
+        toast.success("Pedido Editado!");
+      }
       setOpenEditJob(!openEditJob);
       fetchData1;
     } catch (err) {

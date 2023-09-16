@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   Dialog,
@@ -201,7 +203,6 @@ export default function JobTable({ jobs, fetchData }) {
                                   Sobre
                                 </Typography>
                               </TableCell>
-                              
                             </TableRow>
                           </TableHead>
                           <TableBody>
@@ -213,7 +214,7 @@ export default function JobTable({ jobs, fetchData }) {
                           </TableBody>
                         </Table>
                       </Box>
-                      
+
                       <Box sx={{ my: 4, px: 6 }}>
                         <Typography
                           variant="h6"
@@ -315,7 +316,7 @@ export default function JobTable({ jobs, fetchData }) {
                                   {job.materials.length > 0
                                     ? job.materials.map((material) => (
                                         <Typography key={material.id}>
-                                          x{material.quantity} {material.name} 
+                                          x{material.quantity} {material.name}
                                         </Typography>
                                       ))
                                     : "Não há uso de Materiais"}
@@ -360,6 +361,7 @@ export default function JobTable({ jobs, fetchData }) {
             selectedJob={selectedJob}
             setOpenEditJob={setOpenEdit}
             fetchData={fetchData}
+            toast={toast}
           />
         </Dialog>
       )}
@@ -370,6 +372,7 @@ export default function JobTable({ jobs, fetchData }) {
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}
             fetchData={fetchData}
+            toast={toast}
           />
         </Dialog>
       )}

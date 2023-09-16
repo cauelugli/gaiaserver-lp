@@ -20,8 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 
 import { IMaskInput } from "react-imask";
 import ColorPicker from "../../components/small/ColorPicker";
@@ -38,6 +37,7 @@ const AddDepartmentForm = ({
   managers,
   setOpenAdd,
   fetchData,
+  toast
 }) => {
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -117,7 +117,9 @@ const AddDepartmentForm = ({
         members: membersData,
         isInternal,
       });
-      res.data && alert("Departamento Adicionado!");
+      if (res.data) {
+        toast.success("Departamento Adicionado!");
+      }
       setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {
@@ -193,7 +195,7 @@ const AddDepartmentForm = ({
             sx={{ mt: 2 }}
           />
           <Tooltip title="Departamentos internos não prestam serviços.">
-            <span> 
+            <span>
               <IconButton sx={{ mt: 2, ml: 2 }} size="small" disabled>
                 <QuestionMarkIcon />
               </IconButton>
@@ -221,7 +223,9 @@ const AddDepartmentForm = ({
             <Typography sx={{ mt: 1 }}>Gerência</Typography>
           </Grid>
           <Grid item>
-          <label style={{fontSize:14, fontFamily:"Verdana, sans-serif"}}>Novo Gerente</label>
+            <label style={{ fontSize: 14, fontFamily: "Verdana, sans-serif" }}>
+              Novo Gerente
+            </label>
             <Checkbox
               checked={newManager}
               onChange={handleNewManager}

@@ -9,12 +9,19 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const DeleteJobForm = ({ fetchData, selectedJob, openDelete, setOpenDelete }) => {
-
+const DeleteJobForm = ({
+  fetchData,
+  selectedJob,
+  openDelete,
+  setOpenDelete,
+  toast
+}) => {
   const handleDelete = async () => {
     try {
       const res = await api.delete(`/jobs/${selectedJob._id}`);
-      res.status === 200 && alert("Job deletado com sucesso!");
+      if (res.data) {
+        toast.success("Pedido Deletado");
+      }
       setOpenDelete(false);
       fetchData();
     } catch (err) {
