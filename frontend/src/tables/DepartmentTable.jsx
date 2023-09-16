@@ -45,7 +45,7 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
         const departments = await api.get("/departments");
         const users = await api.get("/users");
         const managers = await api.get("/managers");
-        setDepartments(departments.data);
+        setDepartments(departments.data.filter((department) => !department.isInternal));
         setUsers(users.data);
         setManagers(managers.data);
       } catch (error) {
@@ -60,7 +60,7 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
       const departments = await api.get("/departments");
       const users = await api.get("/users");
       const managers = await api.get("/managers");
-      setDepartments(departments.data);
+      setDepartments(departments.data.filter((department) => !department.isInternal));
       setUsers(users.data);
       setManagers(managers.data);
     } catch (error) {

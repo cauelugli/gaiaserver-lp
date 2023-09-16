@@ -45,7 +45,7 @@ export default function DepartmentInternalTable({ openAdd, setOpenAdd }) {
         const departments = await api.get("/departments");
         const users = await api.get("/users");
         const managers = await api.get("/managers");
-        setDepartments(departments.data);
+        setDepartments(departments.data.filter((department) => department.isInternal));
         setUsers(users.data);
         setManagers(managers.data);
       } catch (error) {
@@ -60,7 +60,7 @@ export default function DepartmentInternalTable({ openAdd, setOpenAdd }) {
       const departments = await api.get("/departments");
       const users = await api.get("/users");
       const managers = await api.get("/managers");
-      setDepartments(departments.data);
+      setDepartments(departments.data.filter((department) => department.isInternal));
       setUsers(users.data);
       setManagers(managers.data);
     } catch (error) {
@@ -302,38 +302,6 @@ export default function DepartmentInternalTable({ openAdd, setOpenAdd }) {
                                           }}
                                         >
                                           {user.name}
-                                        </Typography>
-                                      }
-                                    />
-                                  ))}
-                                </Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </Box>
-
-                      <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>
-                          Serviços ({department.services.length})
-                        </Typography>
-                        <Table size="small">
-                          <TableBody>
-                            <TableRow>
-                              <TableCell>
-                                <Typography>
-                                  {department.services.map((service) => (
-                                    <Chip
-                                      sx={{ mx: 1 }}
-                                      size="small"
-                                      key={service.id}
-                                      label={
-                                        <Typography
-                                          sx={{
-                                            fontSize: "100%",
-                                          }}
-                                        >
-                                          {service.name}
                                         </Typography>
                                       }
                                     />

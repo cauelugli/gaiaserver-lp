@@ -5,17 +5,23 @@ import axios from "axios";
 
 import {
   Button,
+  Checkbox,
   DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
+  FormControlLabel,
   Grid,
+  IconButton,
   ListSubheader,
   MenuItem,
   Select,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
+
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 
 import { IMaskInput } from "react-imask";
 import ColorPicker from "../../components/small/ColorPicker";
@@ -47,6 +53,13 @@ const EditDepartmentForm = ({
   const [selectedUsers, setSelectedUsers] = React.useState(previousMembers);
   const [color, setColor] = React.useState(selectedDepartment.color);
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
+  const [isInternal, setIsInternal] = React.useState(
+    selectedDepartment.isInternal
+  );
+
+  const handleIsInternal = (event) => {
+    setIsInternal(event.target.checked);
+  };
 
   const handleClickColor = (event) => {
     setColorAnchorEl(event.currentTarget);
@@ -83,6 +96,7 @@ const EditDepartmentForm = ({
         manager,
         updatedMembers: membersData,
         removedMembers,
+        isInternal
       });
       res.data && alert("Departamento Editado!");
       setOpenEdit(!openEdit);
@@ -95,22 +109,31 @@ const EditDepartmentForm = ({
 
   const handleUserSelectionChange = (newSelectedUsers) => {
     setSelectedUsers(newSelectedUsers);
-    
-    const previousMemberIds = previousMembers.map(member => member._id || member.id);
-    const newSelectedUserIds = newSelectedUsers.map(user => user._id || user.id);
-    
-    const removedMemberIds = previousMemberIds.filter(id => !newSelectedUserIds.includes(id));
-    const updatedMembersData = newSelectedUsers.map(user => {
-      const previousMember = previousMembers.find(member => member.id === user._id);
+
+    const previousMemberIds = previousMembers.map(
+      (member) => member._id || member.id
+    );
+    const newSelectedUserIds = newSelectedUsers.map(
+      (user) => user._id || user.id
+    );
+
+    const removedMemberIds = previousMemberIds.filter(
+      (id) => !newSelectedUserIds.includes(id)
+    );
+    const updatedMembersData = newSelectedUsers.map((user) => {
+      const previousMember = previousMembers.find(
+        (member) => member.id === user._id
+      );
       return previousMember ? { ...user, ...previousMember } : user;
     });
-  
-    const removedMembersData = previousMembers.filter(member => removedMemberIds.includes(member.id));
-  
+
+    const removedMembersData = previousMembers.filter((member) =>
+      removedMemberIds.includes(member.id)
+    );
+
     setUpdatedMembers(updatedMembersData);
     setRemovedMembers(removedMembersData);
   };
-  
 
   return (
     <form onSubmit={handleEdit}>
@@ -160,15 +183,33 @@ const EditDepartmentForm = ({
             />
           </Grid>
         </Grid>
-        <Grid container direction="row">
+        <Grid item>
           <TextField
             value={description}
             size="small"
             label="Descrição"
-            fullWidth
             onChange={(e) => setDescription(e.target.value)}
+            sx={{ mt: 2, width: 650 }}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isInternal}
+                onChange={handleIsInternal}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            }
+            label="Interno"
+            labelPlacement="start"
             sx={{ mt: 2 }}
           />
+          <Tooltip title="Departamentos internos não prestam serviços.">
+            <span>
+              <IconButton sx={{ mt: 2, ml: 2 }} size="small" disabled>
+                <QuestionMarkIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
         </Grid>
 
         <Divider sx={{ my: 2 }} />

@@ -26,7 +26,7 @@ import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { IMaskInput } from "react-imask";
 import ColorPicker from "../../components/small/ColorPicker";
 import Members from "../../components/small/Members";
-import IconPicker from "../../components/small/IconPicker";
+// import IconPicker from "../../components/small/IconPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -74,21 +74,21 @@ const AddDepartmentForm = ({
     handleCloseColor();
   };
 
-  const [icon, setIcon] = React.useState("");
-  const [iconAnchorEl, setIconAnchorEl] = React.useState(null);
+  // const [icon, setIcon] = React.useState("");
+  // const [iconAnchorEl, setIconAnchorEl] = React.useState(null);
 
-  const handleCloseIcon = () => {
-    setIconAnchorEl(null);
-  };
+  // const handleCloseIcon = () => {
+  //   setIconAnchorEl(null);
+  // };
 
-  const handleClickIcon = (event) => {
-    setIconAnchorEl(event.currentTarget);
-  };
+  // const handleClickIcon = (event) => {
+  //   setIconAnchorEl(event.currentTarget);
+  // };
 
-  const handleChangeIcon = (selectedIcon) => {
-    setIcon(selectedIcon);
-    handleCloseIcon();
-  };
+  // const handleChangeIcon = (selectedIcon) => {
+  //   setIcon(selectedIcon);
+  //   handleCloseIcon();
+  // };
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -328,7 +328,7 @@ const AddDepartmentForm = ({
               handleChangeColor={handleChangeColor}
             />
           </Grid>
-          <Grid item sx={{ mr: "20%" }}>
+          {/* <Grid item sx={{ mr: "20%" }}>
             <Typography>Ícone</Typography>
             <IconPicker
               handleClickIcon={handleClickIcon}
@@ -337,7 +337,7 @@ const AddDepartmentForm = ({
               handleCloseIcon={handleCloseIcon}
               handleChangeIcon={handleChangeIcon}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </DialogContent>
       <DialogActions>

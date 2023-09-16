@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import { Grid, Popover } from "@mui/material";
+import AnchorIcon from '@mui/icons-material/Anchor';
 
 const IconPicker = ({
   handleClickIcon,
@@ -11,7 +12,7 @@ const IconPicker = ({
   icon,
 }) => {
   const iconList = [
-    { id: 1, icon: "🏛️" },
+    { id: 1, icon: <AnchorIcon /> },
     { id: 2, icon: "🛠️" },
     { id: 3, icon: "👔" },
     { id: 4, icon: "📞" },
