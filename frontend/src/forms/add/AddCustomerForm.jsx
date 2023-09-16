@@ -25,7 +25,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData }) => {
+const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
   const [name, setName] = React.useState("");
   const [address, setAddress] = React.useState("");
   const [phone, setPhone] = React.useState("");
@@ -60,7 +60,9 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData }) => {
         segment,
         employees,
       });
-      res.data && alert("Cliente Adicionado!");
+      if (res.data) {
+        toast.success("Cliente Adicionado!");
+      }
       setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {
@@ -143,7 +145,7 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData }) => {
               value={segment}
               required
               onChange={(e) => setSegment(e.target.value)}
-              sx={{ mr: 1, mt:1, width: 205 }}
+              sx={{ mr: 1, mt: 1, width: 205 }}
             />
           </Grid>
         </Grid>

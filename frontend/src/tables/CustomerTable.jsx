@@ -1,5 +1,8 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import axios from "axios";
 
 import {
@@ -94,7 +97,9 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                     cursor="pointer"
                     align="left"
                   >
-                    <Typography sx={{ fontSize: 14 }}>{customer.name}</Typography>
+                    <Typography sx={{ fontSize: 14 }}>
+                      {customer.name}
+                    </Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -108,7 +113,9 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                       unmountOnExit
                     >
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>Geral</Typography>
+                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                          Geral
+                        </Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
@@ -172,7 +179,9 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                       </Box>
 
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>Domínio</Typography>
+                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                          Domínio
+                        </Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
@@ -206,7 +215,9 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                       </Box>
 
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>Contato Principal</Typography>
+                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                          Contato Principal
+                        </Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
@@ -228,7 +239,7 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                                 <Typography
                                   sx={{ fontSize: "14px", color: "#777" }}
                                 >
-                                Posição
+                                  Posição
                                 </Typography>
                               </TableCell>
                             </TableRow>
@@ -236,13 +247,19 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                           <TableBody>
                             <TableRow>
                               <TableCell>
-                                <Typography>{customer.mainContactName}</Typography>
+                                <Typography>
+                                  {customer.mainContactName}
+                                </Typography>
                               </TableCell>
                               <TableCell>
-                                <Typography>{customer.mainContactEmail}</Typography>
+                                <Typography>
+                                  {customer.mainContactEmail}
+                                </Typography>
                               </TableCell>
                               <TableCell>
-                                <Typography>{customer.mainContactPosition}</Typography>
+                                <Typography>
+                                  {customer.mainContactPosition}
+                                </Typography>
                               </TableCell>
                             </TableRow>
                           </TableBody>
@@ -282,6 +299,7 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
             openAdd={openAdd}
             setOpenAdd={setOpenAdd}
             fetchData={fetchData}
+            toast={toast}
           />
         </Dialog>
       )}
@@ -297,6 +315,7 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
             selectedCustomer={selectedCustomer}
             setOpenEdit={setOpenEdit}
             fetchData={fetchData}
+            toast={toast}
           />
         </Dialog>
       )}
@@ -307,6 +326,7 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}
             fetchData={fetchData}
+            toast={toast}
           />
         </Dialog>
       )}

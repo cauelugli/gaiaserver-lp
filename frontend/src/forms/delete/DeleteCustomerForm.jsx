@@ -9,13 +9,21 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const DeleteCustomerForm = ({ selectedCustomer, openDelete, setOpenDelete, fetchData }) => {
+const DeleteCustomerForm = ({
+  selectedCustomer,
+  openDelete,
+  setOpenDelete,
+  fetchData,
+  toast,
+}) => {
   const customer = selectedCustomer;
 
   const handleDelete = async () => {
     try {
       const res = await api.delete(`/customers/${customer._id}`);
-      res.status === 200 && alert("Cliente deletado com sucesso!");
+      if (res.data) {
+        toast.warning("Cliente Deletado!");
+      }
       setOpenDelete(false);
       fetchData();
     } catch (err) {

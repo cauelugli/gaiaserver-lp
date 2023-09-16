@@ -28,6 +28,7 @@ const EditCustomerForm = ({
   setOpenEdit,
   selectedCustomer,
   fetchData,
+  toast
 }) => {
   const [name, setName] = React.useState(selectedCustomer.name);
   const [address, setAddress] = React.useState(selectedCustomer.address);
@@ -64,7 +65,9 @@ const EditCustomerForm = ({
         website,
         cnpj,
       });
-      res.data && alert("Editado com sucesso!");
+      if (res.data) {
+        toast.success("Cliente Editado!");
+      }
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {

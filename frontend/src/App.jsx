@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 import { Box, Button, Grid } from "@mui/material";
@@ -89,6 +91,7 @@ export default function App() {
           </Grid>
         </Grid>
       </Grid>
+      <ToastContainer />
     </Router>
   );
 }
