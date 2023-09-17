@@ -118,7 +118,11 @@ const AddDepartmentForm = ({
         isInternal,
       });
       if (res.data) {
-        toast.success("Departamento Adicionado!");
+        toast.success("Departamento Adicionado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenAdd(!openAdd);
       fetchData();

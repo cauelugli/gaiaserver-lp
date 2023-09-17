@@ -5,6 +5,8 @@ import axios from "axios";
 
 import { Button, DialogContent, DialogTitle, Grid } from "@mui/material";
 
+import DeleteIcon from "@mui/icons-material/Delete";
+
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -20,7 +22,13 @@ const DeleteJobForm = ({
     try {
       const res = await api.delete(`/jobs/${selectedJob._id}`);
       if (res.data) {
-        toast.success("Pedido Deletado");
+        toast.success("Pedido Deletado", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          icon: <DeleteIcon />,
+
+        });
       }
       setOpenDelete(false);
       fetchData();

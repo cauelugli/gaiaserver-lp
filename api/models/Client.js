@@ -29,6 +29,14 @@ const clientSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  birthdate: {
+    type: Date,
+    required: true,
+  },
+  gender: {
+    type: String,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

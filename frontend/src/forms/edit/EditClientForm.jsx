@@ -3,21 +3,25 @@ import React from "react";
 import axios from "axios";
 
 import {
-  Box,
   Button,
+  Checkbox,
   DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
-  FormControl,
-  FormHelperText,
   Grid,
+  InputLabel,
   MenuItem,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
+
 import { IMaskInput } from "react-imask";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import dayjs from "dayjs";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -26,86 +30,90 @@ const api = axios.create({
 const EditClientForm = ({
   openEdit,
   setOpenEdit,
-  selectedCustomer,
   fetchData,
-  toast
+  selectedClient,
+  toast,
 }) => {
-  const [name, setName] = React.useState(selectedCustomer.name);
-  const [address, setAddress] = React.useState(selectedCustomer.address);
-  const [phone, setPhone] = React.useState(selectedCustomer.phone);
-  const [mainContactName, setMainContactName] = React.useState(
-    selectedCustomer.mainContactName
+  const [name, setName] = React.useState(selectedClient.name);
+  const [email, setEmail] = React.useState(selectedClient.email);
+  const [addressHome, setAddressHome] = React.useState(
+    selectedClient.addressHome
   );
-  const [mainContactEmail, setMainContactEmail] = React.useState(
-    selectedCustomer.mainContactEmail
+  const [addressDelivery, setAddressDelivery] = React.useState(
+    selectedClient.addressDelivery
   );
-  const [mainContactPosition, setMainContactPosition] = React.useState(
-    selectedCustomer.mainContactPosition
+  const [addressBill, setAddressBill] = React.useState(
+    selectedClient.addressBill
   );
-  const [domain, setDomain] = React.useState(selectedCustomer.domain);
-  const [website, setWebsite] = React.useState(selectedCustomer.website);
-  const [cnpj, setCnpj] = React.useState(selectedCustomer.cnpj);
-  const [segment, setSegment] = React.useState(selectedCustomer.segment);
-  const [employees, setEmployees] = React.useState(selectedCustomer.employees);
+  const [phone, setPhone] = React.useState(selectedClient.phone);
+  const [cpf, setCpf] = React.useState(selectedClient.cpf);
+  const [birthdate, setBirthdate] = React.useState(
+    dayjs(selectedClient.birthdate)
+  );
+  const [gender, setGender] = React.useState(selectedClient.gender);
+  const [showAdditionalOptions, setShowAdditionalOptions] =
+    React.useState(false);
+  const handleCheckboxChange = (event) => {
+    setShowAdditionalOptions(event.target.checked);
+  };
 
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.put("/customers", {
-        customer: selectedCustomer._id,
+      const res = await api.put("/clients", {
+        client: selectedClient._id,
         name,
-        address,
+        email,
+        addressHome,
+        addressDelivery,
+        addressBill,
         phone,
-        mainContactName,
-        mainContactEmail,
-        mainContactPosition,
-        segment,
-        domain,
-        employees,
-        website,
-        cnpj,
+        cpf,
+        birthdate,
+        gender,
       });
       if (res.data) {
-        toast.success("Cliente Editado!");
+        toast.success("Cliente Editado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {
-      alert("Vish, editei não...");
+      alert("Vish, deu não...");
       console.log(err);
     }
   };
 
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle>Editando Cliente - {selectedCustomer.name}</DialogTitle>
+      <DialogTitle>Novo Cliente Pessoa Física</DialogTitle>
       <DialogContent>
-        <Typography sx={{ my: 2 }}>Geral</Typography>
-        <TextField
-          label="Nome da Empresa"
-          value={name}
-          size="small"
-          onChange={(e) => setName(e.target.value)}
-          required
-          variant="outlined"
-          sx={{ mr: 1, width: 350 }}
-        />
-        <TextField
-          sx={{ mr: 1, width: 450 }}
-          required
-          value={address}
-          size="small"
-          onChange={(e) => setAddress(e.target.value)}
-          variant="outlined"
-          label="Endereço"
-        />
-        <Grid
-          container
-          sx={{ pr: "4%", mt: 2 }}
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Typography sx={{ my: 1, fontWeight: "bold" }}>Dados</Typography>
+        <Grid container direction="column" alignItems="center">
+          <TextField
+            label="Nome do Cliente"
+            value={name}
+            fullWidth
+            size="small"
+            onChange={(e) => setName(e.target.value)}
+            required
+            variant="outlined"
+          />
+          <TextField
+            sx={{ my: 2 }}
+            label="E-mail"
+            value={email}
+            size="small"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            variant="outlined"
+            fullWidth
+          />
+        </Grid>
+        <Grid container direction="row" alignItems="center">
           <Grid item>
             <Typography>Telefone</Typography>
             <IMaskInput
@@ -115,7 +123,7 @@ const EditClientForm = ({
                 marginTop: "1%",
                 borderColor: "#eee",
               }}
-              mask="(00) 00000-0000"
+              mask="(00) 0000-0000"
               definitions={{
                 "#": /[1-9]/,
               }}
@@ -124,8 +132,8 @@ const EditClientForm = ({
               value={phone}
             />
           </Grid>
-          <Grid item>
-            <Typography>CNPJ</Typography>
+          <Grid item sx={{ ml: 3 }}>
+            <Typography>CPF</Typography>
             <IMaskInput
               style={{
                 padding: "3%",
@@ -133,96 +141,81 @@ const EditClientForm = ({
                 marginTop: "1%",
                 borderColor: "#eee",
               }}
-              mask="00.000.000/0000-00"
+              mask="000.000.000-00"
               definitions={{
                 "#": /[1-9]/,
               }}
-              onAccept={(value) => setCnpj(value)}
+              onAccept={(value) => setCpf(value)}
               overwrite
-              value={cnpj}
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              variant="outlined"
-              label="Segmento"
-              size="small"
-              value={segment}
-              required
-              onChange={(e) => setSegment(e.target.value)}
-              sx={{ mr: 1, mt: 1, width: 205 }}
+              value={cpf}
             />
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 2 }} />
-        <Typography sx={{ my: 2 }}>Contato Principal</Typography>
-        <TextField
-          label="Nome"
-          value={mainContactName}
-          onChange={(e) => setMainContactName(e.target.value)}
-          required
-          size="small"
-          variant="outlined"
-          sx={{ mr: 1, width: 340 }}
-        />
-        <TextField
-          label="Email"
-          value={mainContactEmail}
-          onChange={(e) => setMainContactEmail(e.target.value)}
-          required
-          size="small"
-          variant="outlined"
-          sx={{ mr: 1, width: 300 }}
-        />
-
-        <FormControl sx={{ mb: 1, width: 155 }}>
-          <Select
-            value={mainContactPosition}
-            onChange={(e) => setMainContactPosition(e.target.value)}
-            size="small"
-            required
-          >
-            <MenuItem value={"Sócio"}>Sócio</MenuItem>
-            <MenuItem value={"Proprietário"}>Proprietário</MenuItem>
-          </Select>
-        </FormControl>
-
-        <Box>
-          <Divider sx={{ my: 2 }} />
-          <Typography sx={{ my: 2 }}>Domínio</Typography>
-          <TextField
-            variant="outlined"
-            label="Website"
-            size="small"
-            value={website}
-            onChange={(e) => setWebsite(e.target.value)}
-            sx={{ mr: 1, width: 270 }}
-          />
-          <TextField
-            variant="outlined"
-            label="Domínio"
-            size="small"
-            value={domain}
-            onChange={(e) => setDomain(e.target.value)}
-            sx={{ mr: 1, width: 250 }}
-          />
-
-          <FormControl sx={{ width: 165 }}>
-            <Select
-              value={employees}
-              size="small"
-              onChange={(e) => setEmployees(e.target.value)}
-            >
-              <MenuItem value={"1-9"}>1 à 9</MenuItem>
-              <MenuItem value={"10-50"}>10 à 50</MenuItem>
-              <MenuItem value={"51-100"}>51 à 100</MenuItem>
-              <MenuItem value={"101-200"}>100 à 200</MenuItem>
-              <MenuItem value={"+201"}>201 ou mais</MenuItem>
+        <Grid container direction="row" alignItems="center" sx={{ mt: 2 }}>
+          <Grid item sx={{ width: "60%" }}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker
+                  value={birthdate}
+                  format="DD/MM/YYYY"
+                  onChange={(newValue) => setBirthdate(newValue)}
+                  label="Data de Nascimento"
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+          </Grid>
+          <Grid item sx={{ mb: 2, ml: 2 }}>
+            <InputLabel>Gênero</InputLabel>
+            <Select value={gender} onChange={(e) => setGender(e.target.value)}>
+              <MenuItem value={"Masculino"}>Masculino</MenuItem>
+              <MenuItem value={"Feminino"}>Feminino</MenuItem>
+              <MenuItem value={"Não Informado"}>Não Informar</MenuItem>
             </Select>
-            <FormHelperText># de Colaboradores</FormHelperText>
-          </FormControl>
-        </Box>
+          </Grid>
+        </Grid>
+
+        <Typography sx={{ mt: 2, fontWeight: "bold" }}>Endereços</Typography>
+        <Grid container direction="column" alignItems="center">
+          <TextField
+            fullWidth
+            required
+            sx={{ mt: 1 }}
+            value={addressHome}
+            size="small"
+            onChange={(e) => setAddressHome(e.target.value)}
+            variant="outlined"
+            label="Endereço de Residência"
+          />
+          <TextField
+            sx={{ my: 2 }}
+            fullWidth
+            required
+            value={addressDelivery}
+            size="small"
+            onChange={(e) => setAddressDelivery(e.target.value)}
+            variant="outlined"
+            label="Endereço de Entrega"
+          />
+          <TextField
+            fullWidth
+            required
+            value={addressBill}
+            size="small"
+            onChange={(e) => setAddressBill(e.target.value)}
+            variant="outlined"
+            label="Endereço de Cobrança"
+          />
+        </Grid>
+
+        <Divider sx={{ my: 2 }} />
+        <Checkbox
+          checked={showAdditionalOptions}
+          onChange={handleCheckboxChange}
+        />
+        <label>Dados Completos</label>
+
+        {showAdditionalOptions && <></>}
       </DialogContent>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">

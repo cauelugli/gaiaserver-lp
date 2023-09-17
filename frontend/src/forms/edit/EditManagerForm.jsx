@@ -77,7 +77,11 @@ const EditManagerForm = ({
         previousData,
       });
       if (res.data) {
-        toast.warning("Gerente Editado!");
+        toast.warning("Gerente Editado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenEdit(!openEdit);
       fetchData();

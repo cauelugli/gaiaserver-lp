@@ -5,6 +5,8 @@ import axios from "axios";
 
 import { Button, DialogContent, DialogTitle, Grid } from "@mui/material";
 
+import DeleteIcon from "@mui/icons-material/Delete";
+
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -22,7 +24,12 @@ const DeleteManagerForm = ({
     try {
       const res = await api.delete(`/managers/${manager._id}`);
       if (res.data) {
-        toast.warning("Gerente Deletado");
+        toast.warning("Gerente Deletado", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          icon: <DeleteIcon />,
+        });
       }
       setOpenDelete(false);
       fetchData();

@@ -109,7 +109,11 @@ const EditJobForm = ({
         scheduledTo,
       });
       if (res.data) {
-        toast.success("Pedido Editado!");
+        toast.success("Pedido Editado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenEditJob(!openEditJob);
       fetchData1;

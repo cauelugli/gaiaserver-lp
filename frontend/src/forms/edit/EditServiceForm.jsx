@@ -81,7 +81,11 @@ export default function EditServiceForm({
         isSupport
       });
       if (res.data) {
-        toast.success("Serviço Editado!");
+        toast.success("Serviço Editado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenEdit(!openEdit);
       fetchData();

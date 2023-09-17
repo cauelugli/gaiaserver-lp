@@ -5,6 +5,8 @@ import axios from "axios";
 
 import { Button, DialogContent, DialogTitle, Grid } from "@mui/material";
 
+import DeleteIcon from "@mui/icons-material/Delete";
+
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -26,7 +28,12 @@ const DeleteDepartmentForm = ({
         )}`
       );
       if (res.data) {
-        toast.warning("Departamento Deletado");
+        toast.error("Departamento Deletado", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          icon: <DeleteIcon />
+        });
       }
       setOpenDelete(false);
       fetchData();

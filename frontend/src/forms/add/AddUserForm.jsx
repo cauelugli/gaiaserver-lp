@@ -66,7 +66,11 @@ const AddUserForm = ({
         avatarColor,
       });
       if (res.data) {
-        toast.success("Colaborador Adicionado!");
+        toast.success("Colaborador Adicionado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenAdd(!openAdd);
       fetchData();

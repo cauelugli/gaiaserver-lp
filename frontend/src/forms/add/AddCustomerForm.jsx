@@ -61,7 +61,11 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
         employees,
       });
       if (res.data) {
-        toast.success("Cliente Adicionado!");
+        toast.success("Cliente Adicionado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenAdd(!openAdd);
       fetchData();

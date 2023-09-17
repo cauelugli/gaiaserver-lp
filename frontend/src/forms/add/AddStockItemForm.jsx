@@ -39,7 +39,11 @@ export default function AddStockItemForm({
         quantity,
       });
       if (res.data) {
-        toast.success("Item Adicionado ao Estoque!");
+        toast.success("Item Adicionado ao Estoque!"), {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        };
       }
       setOpenAdd(!openAdd);
       fetchData();

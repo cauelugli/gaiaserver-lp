@@ -48,6 +48,8 @@ router.put("/", async (req, res) => {
         addressBill: req.body.addressBill,
         phone: req.body.phone,
         cpf: req.body.cpf,
+        birthdate: req.body.birthdate,
+        gender: req.body.gender,
       },
       { new: true }
     );

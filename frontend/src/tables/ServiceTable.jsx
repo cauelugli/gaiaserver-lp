@@ -306,7 +306,7 @@ export default function ServiceTable() {
         {openEdit && (
           <Dialog
             fullWidth
-            maxWidth="md"
+            maxWidth="sm"
             open={openEdit}
             onClose={() => setOpenEdit(!openEdit)}
           >

@@ -41,7 +41,11 @@ export default function EditStockItemForm({
         sellValue,
       });
       if (res.data) {
-        toast.success("Item Editado com Sucesso!");
+        toast.success("Item Editado com Sucesso!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenEdit(!openEdit);
       fetchData();

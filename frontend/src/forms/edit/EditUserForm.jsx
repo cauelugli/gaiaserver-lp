@@ -78,7 +78,11 @@ const EditUserForm = ({
         previousData,
       });
       if (res.data) {
-        toast.success("Colaborador Editado!");
+        toast.success("Colaborador Editado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenEdit(!openEdit);
       fetchData();

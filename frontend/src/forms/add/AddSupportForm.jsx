@@ -73,7 +73,11 @@ const AddSupportForm = ({
         local,
         scheduledTo,
       });
-      res.data && alert("Pedido Adicionado!");
+      res.data && alert("Pedido Adicionado!", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+      });
       setOpenAddJobRequest(false);
       fetchData();
     } catch (err) {

@@ -61,7 +61,11 @@ const EditRequestForm = ({
         website,
         cnpj,
       });
-      res.data && alert("Editado com sucesso!");
+      res.data && alert("Editado com sucesso!", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+      });
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {

@@ -28,7 +28,7 @@ const EditCustomerForm = ({
   setOpenEdit,
   selectedCustomer,
   fetchData,
-  toast
+  toast,
 }) => {
   const [name, setName] = React.useState(selectedCustomer.name);
   const [address, setAddress] = React.useState(selectedCustomer.address);
@@ -66,7 +66,11 @@ const EditCustomerForm = ({
         cnpj,
       });
       if (res.data) {
-        toast.success("Cliente Editado!");
+        toast.success("Cliente Editado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenEdit(!openEdit);
       fetchData();

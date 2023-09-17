@@ -5,24 +5,31 @@ import axios from "axios";
 
 import { Button, DialogContent, DialogTitle, Grid } from "@mui/material";
 
+import DeleteIcon from "@mui/icons-material/Delete";
+
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
 const DeleteClientForm = ({
-  selectedCustomer,
+  selectedClient,
   openDelete,
   setOpenDelete,
   fetchData,
   toast,
 }) => {
-  const customer = selectedCustomer;
+  const client = selectedClient;
 
   const handleDelete = async () => {
     try {
-      const res = await api.delete(`/customers/${customer._id}`);
+      const res = await api.delete(`/clients/${client._id}`);
       if (res.data) {
-        toast.warning("Cliente Deletado");
+        toast.error("Cliente Deletado", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          icon: <DeleteIcon />,
+        });
       }
       setOpenDelete(false);
       fetchData();
@@ -34,7 +41,7 @@ const DeleteClientForm = ({
 
   return (
     <>
-      <DialogTitle>{`Deletar Cliente ${customer.name} ?`}</DialogTitle>
+      <DialogTitle>{`Deletar Cliente ${client.name} ?`}</DialogTitle>
       <DialogContent>
         <Grid
           container

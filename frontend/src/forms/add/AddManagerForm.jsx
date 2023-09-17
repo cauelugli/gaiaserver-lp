@@ -66,7 +66,11 @@ const AddManagerForm = ({
         isAllocated: department === "" ? false : true,
       });
       if (res.data) {
-        toast.success("Gerente Adicionado!");
+        toast.success("Gerente Adicionado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenAdd(!openAdd);
       fetchData();

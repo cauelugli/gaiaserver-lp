@@ -58,7 +58,11 @@ export default function AddStockForm({
         itemList,
       });
       if (res.data) {
-        toast.success("Entrada de Mercadorias Adicionada!");
+        toast.success("Entrada de Mercadorias Adicionada!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenAdd(!openAdd);
       fetchData();

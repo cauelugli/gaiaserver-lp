@@ -100,7 +100,11 @@ const EditDepartmentForm = ({
         isInternal,
       });
       if (res.data) {
-        toast.success("Departamento Editado!");
+        toast.success("Departamento Editado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenEdit(!openEdit);
       fetchData();

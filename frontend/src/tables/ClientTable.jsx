@@ -22,7 +22,6 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
-import AddClientForm from "../forms/add/AddClientForm";
 import EditClientForm from "../forms/edit/EditClientForm";
 import DeleteClientForm from "../forms/delete/DeleteClientForm";
 
@@ -30,7 +29,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ClientTable({ openAdd, setOpenAdd }) {
+export default function ClientTable() {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -123,7 +122,7 @@ export default function ClientTable({ openAdd, setOpenAdd }) {
                                 <Typography
                                   sx={{ fontSize: "14px", color: "#777" }}
                                 >
-                                  Endereço
+                                  E-mail
                                 </Typography>
                               </TableCell>
                               <TableCell>
@@ -146,13 +145,60 @@ export default function ClientTable({ openAdd, setOpenAdd }) {
                           <TableBody>
                             <TableRow>
                               <TableCell component="th" scope="row">
-                                <Typography>{client.address}</Typography>
+                                <Typography>{client.email}</Typography>
                               </TableCell>
                               <TableCell>
                                 <Typography>{client.phone}</Typography>
                               </TableCell>
                               <TableCell>
                                 <Typography>{client.cpf}</Typography>
+                              </TableCell>
+                              
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </Box>
+                      <Box sx={{ my: 4, px: 6 }}>
+                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                          Endereços
+                        </Typography>
+                        <Table size="small">
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  Residencial
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  Entrega
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  Cobrança
+                                </Typography>
+                              </TableCell>
+                              
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell component="th" scope="row">
+                                <Typography>{client.addressHome}</Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography>{client.addressDelivery}</Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography>{client.addressBill}</Typography>
                               </TableCell>
                               
                             </TableRow>
@@ -182,25 +228,10 @@ export default function ClientTable({ openAdd, setOpenAdd }) {
           </TableBody>
         </Table>
       </TableContainer>
-      {openAdd && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openAdd}
-          onClose={() => setOpenAdd(!openAdd)}
-        >
-          <AddClientForm
-            openAdd={openAdd}
-            setOpenAdd={setOpenAdd}
-            fetchData={fetchData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
       {openEdit && (
         <Dialog
           fullWidth
-          maxWidth="md"
+          maxWidth="xs"
           open={openEdit}
           onClose={() => setOpenEdit(!openEdit)}
         >

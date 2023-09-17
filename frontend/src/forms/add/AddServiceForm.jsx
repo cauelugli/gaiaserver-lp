@@ -64,7 +64,11 @@ export default function AddServiceForm({
         isSupport,
       });
       if (res.data) {
-        toast.success("Serviço Adicionado!");
+        toast.success("Serviço Adicionado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenAdd(!openAdd);
       fetchData();

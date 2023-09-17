@@ -22,6 +22,8 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import PersonIcon from "@mui/icons-material/Person";
 
 import CustomerTable from "../tables/CustomerTable";
+import ClientTable from "../tables/ClientTable";
+
 import AddClientForm from "../forms/add/AddClientForm";
 import AddCustomerForm from "../forms/add/AddCustomerForm";
 
@@ -137,8 +139,7 @@ export default function Customers() {
         <CustomerTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        {/* <CustomerTable openAdd={openAdd} setOpenAdd={setOpenAdd} /> */}
-        <p>Coming Soon</p>
+        <ClientTable />
       </CustomTabPanel>
       {openAddCustomer && (
         <Dialog
@@ -157,7 +158,7 @@ export default function Customers() {
       {openAddClient && (
         <Dialog
           fullWidth
-          maxWidth="md"
+          maxWidth="xs"
           open={openAddClient}
           onClose={() => setOpenAddClient(!openAddClient)}
         >

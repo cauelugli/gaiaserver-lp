@@ -130,7 +130,11 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
         scheduledTo,
       });
       if (res.data) {
-        toast.success(`Pedido Adicionado! Orçamento #${res.data.quoteNumber}`);
+        toast.success(`Pedido Adicionado! Orçamento #${res.data.quoteNumber}`, {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+        });
       }
       setOpenAddJob(!openAddJob);
       fetchData1;
