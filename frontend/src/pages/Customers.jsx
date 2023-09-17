@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 import {
   Box,
@@ -27,6 +29,10 @@ import ClientTable from "../tables/ClientTable";
 import AddClientForm from "../forms/add/AddClientForm";
 import AddCustomerForm from "../forms/add/AddCustomerForm";
 
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 function CustomTabPanel(props) {
   const { children, value, index } = props;
 
@@ -43,6 +49,7 @@ function CustomTabPanel(props) {
 
 export default function Customers() {
   const [value, setValue] = React.useState(0);
+  const [clients, setClients] = React.useState([]);
 
   const [openAddCustomer, setOpenAddCustomer] = React.useState(false);
   const [openAddClient, setOpenAddClient] = React.useState(false);
@@ -58,6 +65,27 @@ export default function Customers() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/clients");
+        setClients(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [clients]);
+
+  const fetchData = async () => {
+    try {
+      const response = await api.get("/jobs");
+      setClients(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   return (
@@ -166,6 +194,7 @@ export default function Customers() {
             openAdd={openAddClient}
             setOpenAdd={setOpenAddClient}
             toast={toast}
+            fetchData={fetchData}
           />
         </Dialog>
       )}
