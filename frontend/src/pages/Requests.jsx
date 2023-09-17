@@ -26,7 +26,6 @@ import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 
 import JobTable from "../tables/JobTable";
 import SaleTable from "../tables/SaleTable";
-import SupportTable from "../tables/SupportTable";
 
 import AddJobForm from "../forms/add/AddJobForm";
 
@@ -60,12 +59,14 @@ export default function Requests() {
   const openAddButton = Boolean(anchorEl);
 
   const [jobs, setJobs] = React.useState([]);
+  const [supports, setSupports] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const jobs = await api.get("/jobs");
-        setJobs(jobs.data);
+        setJobs(jobs.data.filter((job) => job.price !== 0));
+        setSupports(jobs.data.filter((job) => job.price === 0));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -76,7 +77,8 @@ export default function Requests() {
   const fetchData = async () => {
     try {
       const jobs = await api.get("/jobs");
-      setJobs(jobs.data);
+      setJobs(jobs.data.filter((job) => job.price !== 0));
+      setSupports(jobs.data.filter((job) => job.price === 0));
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -102,7 +104,9 @@ export default function Requests() {
         justifyContent="flex-start"
         alignItems="flex-start"
       >
-        <Typography sx={{ fontSize:23, mt:0.5, ml: 1, mr:2, fontWeight: 'bold' }}>
+        <Typography
+          sx={{ fontSize: 23, mt: 0.5, ml: 1, mr: 2, fontWeight: "bold" }}
+        >
           Pedidos
         </Typography>
         <div>
@@ -167,18 +171,18 @@ export default function Requests() {
           onChange={handleChange}
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
-        <Tab
-          label={<Typography sx={{ fontSize: 14 }}>Jobs</Typography>}
-          sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-        />
-        <Tab
-          label={<Typography sx={{ fontSize: 14 }}>Vendas</Typography>}
-          sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-        />
-        <Tab
-          label={<Typography sx={{ fontSize: 14 }}>Atendimentos</Typography>}
-          sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-        />
+          <Tab
+            label={<Typography sx={{ fontSize: 14 }}>Jobs</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
+          <Tab
+            label={<Typography sx={{ fontSize: 14 }}>Vendas</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
+          <Tab
+            label={<Typography sx={{ fontSize: 14 }}>Atendimentos</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -188,7 +192,7 @@ export default function Requests() {
         <SaleTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <SupportTable />
+        <JobTable jobs={supports} fetchData={fetchData} />
       </CustomTabPanel>
       {openAddJob && (
         <Dialog
