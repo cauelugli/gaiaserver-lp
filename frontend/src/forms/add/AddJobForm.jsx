@@ -36,6 +36,7 @@ const api = axios.create({
 const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
   const [title, setTitle] = React.useState("");
   const [customer, setCustomer] = React.useState("");
+  const [customerType, setCustomerType] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [requester, setRequester] = React.useState("");
   const [worker, setWorker] = React.useState("");
@@ -51,6 +52,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
   const [approvedQuote, setApprovedQuote] = React.useState(false);
 
   const [customers, setCustomers] = React.useState([]);
+  const [clients, setClients] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
   const [services, setServices] = React.useState([]);
   const [stockItems, setStockItems] = React.useState([]);
@@ -59,11 +61,15 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
     const fetchData = async () => {
       try {
         const customers = await api.get("/customers");
+        const clients = await api.get("/clients");
         const departments = await api.get("/departments");
         const services = await api.get("/services");
         const stockItems = await api.get("/stockItems");
         setCustomers(customers.data);
-        setDepartments(departments.data);
+        setClients(clients.data);
+        setDepartments(
+          departments.data.filter((department) => !department.isInternal)
+        );
         setServices(services.data);
         setStockItems(stockItems.data);
       } catch (error) {
@@ -94,10 +100,17 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
     setShowAdditionalOptions(event.target.checked);
   };
 
+  const handleCustomerTypeChange = (type) => {
+    setCustomerType(type);
+    setCustomer("");
+    setRequester("");
+    setLocal("");
+  };
+
   const handleCustomerChange = (customer) => {
     setCustomer(customer);
-    setRequester(customer.mainContactName);
-    setLocal(customer.address);
+    setRequester(customer.mainContactName || customer.name);
+    setLocal(customer.address || customer.addressHome);
   };
 
   const handleAdd = async (e) => {
@@ -164,66 +177,98 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
           <Grid item>
             <FormControl>
               <Select
-                onChange={(e) => handleCustomerChange(e.target.value)}
-                value={customer}
+                onChange={(e) => handleCustomerTypeChange(e.target.value)}
+                value={customerType}
                 displayEmpty
                 renderValue={(selected) => {
                   if (selected.length === 0) {
-                    return <Typography>Selecione um Cliente</Typography>;
+                    return <Typography>Tipo de Cliente</Typography>;
                   }
 
-                  return selected.name;
+                  return selected;
                 }}
-                sx={{ width: 250 }}
+                sx={{ width: 180 }}
               >
                 <MenuItem disabled value="">
-                  Clientes
+                  Tipo de Cliente
                 </MenuItem>
-                {customers.map((item) => (
-                  <MenuItem
-                    value={item}
-                    key={item._id}
-                    sx={{ fontSize: "100%" }}
-                  >
-                    {item.name}
-                  </MenuItem>
-                ))}
+                <MenuItem value={"Empresa"}>Empresa</MenuItem>
+                <MenuItem value={"Pessoa Fisica"}>Pessoa Física</MenuItem>
               </Select>
             </FormControl>
           </Grid>
-          <Grid item>
-            <TextField
-              label="Solicitante"
-              value={requester}
-              onChange={(e) => setRequester(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ width: 250, ml: 1 }}
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              label="Local de Execução"
-              value={local}
-              onChange={(e) => setLocal(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ width: 300, mx: 1 }}
-            />
-          </Grid>
-          <Grid item sx={{ mt: -1 }}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DatePicker"]}>
-                <DatePicker
-                  value={scheduledTo}
-                  format="DD/MM/YYYY"
-                  onChange={(newValue) => setScheduledTo(newValue)}
-                  label="Agendar para"
-                  sx={{ width: 180 }}
+          {customerType && (
+            <>
+              <Grid item>
+                <FormControl>
+                  <Select
+                    onChange={(e) => handleCustomerChange(e.target.value)}
+                    value={customer}
+                    displayEmpty
+                    renderValue={(selected) => {
+                      if (selected.length === 0) {
+                        return <Typography>Selecione um Cliente</Typography>;
+                      }
+
+                      return selected.name;
+                    }}
+                    sx={{ width: 200, mx: 1 }}
+                  >
+                    <MenuItem disabled value="">
+                      {customerType === "Empresa"
+                        ? "Empresas"
+                        : "Clientes Pessoa Física"}
+                    </MenuItem>
+
+                    {customerType === "Empresa"
+                      ? customers.map((item) => (
+                          <MenuItem value={item} key={item._id}>
+                            {item.name}
+                          </MenuItem>
+                        ))
+                      : clients.map((item) => (
+                          <MenuItem value={item} key={item._id}>
+                            {item.name}
+                          </MenuItem>
+                        ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item>
+                <TextField
+                  label="Solicitante"
+                  value={requester}
+                  onChange={(e) => setRequester(e.target.value)}
+                  required
+                  variant="outlined"
+                  sx={{ width: 200, ml: 1 }}
                 />
-              </DemoContainer>
-            </LocalizationProvider>
-          </Grid>
+              </Grid>
+              <Grid item>
+                <TextField
+                  label="Local de Execução"
+                  value={local}
+                  onChange={(e) => setLocal(e.target.value)}
+                  required
+                  variant="outlined"
+                  sx={{ width: 250, mx: 1 }}
+                />
+              </Grid>
+              <Grid item sx={{ mt: -1 }}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer components={["DatePicker"]}>
+                    <DatePicker
+                      value={scheduledTo}
+                      format="DD/MM/YYYY"
+                      onChange={(newValue) => setScheduledTo(newValue)}
+                      label="Agendar para"
+                      sx={{ width: 180 }}
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
+              </Grid>
+            </>
+          )}
         </Grid>
 
         <Divider sx={{ mt: 2 }} />
