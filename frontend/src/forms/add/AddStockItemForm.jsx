@@ -27,7 +27,6 @@ export default function AddStockItemForm({
   const [name, setName] = React.useState("");
   const [buyValue, setBuyValue] = React.useState(0);
   const [sellValue, setSellValue] = React.useState(0);
-  const [quantity, setQuantity] = React.useState(0);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -36,15 +35,14 @@ export default function AddStockItemForm({
         name,
         buyValue,
         sellValue,
-        quantity,
       });
       if (res.data) {
-        toast.success("Item Adicionado ao Estoque!"), {
+        toast.success("Item de Estoque Adicionado!", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
-        };
+        });
       }
       setOpenAdd(!openAdd);
       fetchData();
@@ -114,18 +112,6 @@ export default function AddStockItemForm({
                   setSellValue(inputValue);
                 }
               }}
-              required
-              variant="outlined"
-              sx={{ width: 130 }}
-            />
-          </Grid>
-          <Grid item>
-            <Typography>Quantidade</Typography>
-            <TextField
-              type="number"
-              size="small"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
               required
               variant="outlined"
               sx={{ width: 130 }}

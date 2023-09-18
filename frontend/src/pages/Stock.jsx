@@ -21,11 +21,15 @@ import {
 
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import SellIcon from '@mui/icons-material/Sell';
 
-import StockTable from "../tables/StockTable";
 import AddStockItemForm from "../forms/add/AddStockItemForm";
 import AddStockForm from "../forms/add/AddStockForm";
+import AddProductForm from "../forms/add/AddProductForm";
+
+import StockTable from "../tables/StockTable";
 import StockEntriesTable from "../tables/StockEntriesTable";
+import ProductsTable from "../tables/ProductsTable";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -50,6 +54,7 @@ export default function Stock() {
 
   const [stockItems, setStockItems] = React.useState([]);
 
+  const [openAddProduct, setOpenAddProduct] = React.useState(false);
   const [openAddNewStockItem, setOpenAddNewStockItem] = React.useState(false);
   const [openAddStock, setOpenAddStock] = React.useState(false);
 
@@ -130,6 +135,12 @@ export default function Stock() {
             }}
           >
             <MenuList sx={{ width: 240 }}>
+              <MenuItem onClick={() => setOpenAddProduct(true)}>
+                <ListItemIcon>
+                  <SellIcon />
+                </ListItemIcon>
+                <ListItemText>Produto</ListItemText>
+              </MenuItem>
               <MenuItem onClick={() => setOpenAddNewStockItem(true)}>
                 <ListItemIcon>
                   <AddBoxIcon />
@@ -167,7 +178,7 @@ export default function Stock() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <p>Coming Soon Need Sales</p>
+        <ProductsTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <StockTable stockItems={stockItems} />
@@ -175,6 +186,21 @@ export default function Stock() {
       <CustomTabPanel value={value} index={2}>
         <StockEntriesTable />
       </CustomTabPanel>
+      {openAddProduct && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddProduct}
+          onClose={() => setOpenAddProduct(!openAddProduct)}
+        >
+          <AddProductForm
+            openAdd={openAddProduct}
+            setOpenAdd={setOpenAddProduct}
+            fetchData={fetchData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
       {openAddNewStockItem && (
         <Dialog
           fullWidth
@@ -203,7 +229,6 @@ export default function Stock() {
             setOpenAdd={setOpenAddStock}
             fetchData={fetchData}
             toast={toast}
-
           />
         </Dialog>
       )}
