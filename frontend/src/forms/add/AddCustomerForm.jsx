@@ -65,6 +65,7 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
+          autoClose: 1200,
         });
       }
       setOpenAdd(!openAdd);

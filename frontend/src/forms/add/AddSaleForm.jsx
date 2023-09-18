@@ -75,7 +75,8 @@ const AddSaleForm = ({
         closeOnClick: true,
         pauseOnHover: false,
         theme: "colored",
-      });
+        autoClose: 1200,
+    });
       setOpenAddJobRequest(false);
       fetchData();
     } catch (err) {

@@ -24,10 +24,11 @@ const DeleteManagerForm = ({
     try {
       const res = await api.delete(`/managers/${manager._id}`);
       if (res.data) {
-        toast.warning("Gerente Deletado", {
+        toast.error("Gerente Deletado", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
+          autoClose: 1200,
           icon: <DeleteIcon />,
         });
       }

@@ -25,10 +25,11 @@ export default function DeleteStockItemForm({
     try {
       const res = await api.delete(`/stockItems/${stockItem._id}`);
       if (res.data) {
-        toast.warning("Item Removido do Estoque", {
+        toast.error("Item Removido do Estoque", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
+          autoClose: 1200,
           icon: <DeleteIcon />,
         });
       }

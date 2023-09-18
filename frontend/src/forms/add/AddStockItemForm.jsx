@@ -43,6 +43,7 @@ export default function AddStockItemForm({
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
+          autoClose: 1200,
         };
       }
       setOpenAdd(!openAdd);

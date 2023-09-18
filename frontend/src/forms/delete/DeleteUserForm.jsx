@@ -25,10 +25,11 @@ const DeleteUserForm = ({
     try {
       const res = await api.delete(`/users/${user._id}`);
       if (res.data) {
-        toast.warning("Colaborador Deletado", {
+        toast.error("Colaborador Deletado", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
+          autoClose: 1200,
           icon: <DeleteIcon />,
         });
       }

@@ -62,6 +62,7 @@ const AddClientForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
+          autoClose: 1200,
         });
       }
       setOpenAdd(!openAdd);
@@ -139,9 +140,7 @@ const AddClientForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
 
         <Grid container direction="row" alignItems="center" sx={{ mt: 2 }}>
           <Grid item sx={{ width: "60%" }}>
-            <LocalizationProvider
-              dateAdapter={AdapterDayjs}
-            >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker"]}>
                 <DatePicker
                   value={birthdate}
@@ -152,7 +151,7 @@ const AddClientForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
               </DemoContainer>
             </LocalizationProvider>
           </Grid>
-          <Grid item sx={{ mb: 2, ml:2 }}>
+          <Grid item sx={{ mb: 2, ml: 2 }}>
             <InputLabel>Gênero</InputLabel>
             <Select value={gender} onChange={(e) => setGender(e.target.value)}>
               <MenuItem value={"Masculino"}>Masculino</MenuItem>
@@ -167,7 +166,7 @@ const AddClientForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
           <TextField
             fullWidth
             required
-            sx={{mt:1}}
+            sx={{ mt: 1 }}
             value={addressHome}
             size="small"
             onChange={(e) => setAddressHome(e.target.value)}

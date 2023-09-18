@@ -25,6 +25,7 @@ const EditRequestForm = ({
   setOpenEdit,
   selectedCustomer,
   fetchData,
+  toast
 }) => {
   const [name, setName] = React.useState(selectedCustomer.name);
   const [address, setAddress] = React.useState(selectedCustomer.address);
@@ -61,11 +62,14 @@ const EditRequestForm = ({
         website,
         cnpj,
       });
-      res.data && alert("Editado com sucesso!", {
-        closeOnClick: true,
-        pauseOnHover: false,
-        theme: "colored",
-      });
+      if (res.data) {
+        toast.success("Serviço Editado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {

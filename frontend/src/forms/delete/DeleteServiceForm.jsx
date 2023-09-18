@@ -24,10 +24,11 @@ export default function DeleteServiceForm({
     try {
       const res = await api.delete(`/services/${service._id}`);
       if (res.data) {
-        toast.warning("Serviço Deletado", {
+        toast.error("Serviço Deletado", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
+          autoClose: 1200,
           icon: <DeleteIcon />,
         });
       }

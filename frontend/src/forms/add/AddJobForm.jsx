@@ -147,6 +147,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
+          autoClose: 1200,
         });
       }
       setOpenAddJob(!openAddJob);

@@ -26,6 +26,7 @@ const DeleteJobForm = ({
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
+          autoClose: 1200,
           icon: <DeleteIcon />,
 
         });

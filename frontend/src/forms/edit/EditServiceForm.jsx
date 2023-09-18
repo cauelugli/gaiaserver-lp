@@ -85,6 +85,7 @@ export default function EditServiceForm({
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
+          autoClose: 1200,
         });
       }
       setOpenEdit(!openEdit);

@@ -113,6 +113,7 @@ const EditJobForm = ({
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
+          autoClose: 1200,
         });
       }
       setOpenEditJob(!openEditJob);

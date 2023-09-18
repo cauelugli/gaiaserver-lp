@@ -45,6 +45,7 @@ export default function EditStockItemForm({
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
+          autoClose: 1200,
         });
       }
       setOpenEdit(!openEdit);

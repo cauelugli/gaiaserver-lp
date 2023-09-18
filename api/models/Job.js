@@ -53,7 +53,7 @@ jobSchema = new mongoose.Schema({
     type: String,
   },
   scheduledTo: {
-    type: String,
+    type: Date,
     required: true,
   },
   executedIn: {
