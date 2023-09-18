@@ -28,19 +28,49 @@ export default function EditProductForm({
   toast,
 }) {
   const [name, setName] = React.useState(selectedProduct.name);
+  const [image, setImage] = React.useState(selectedProduct.image);
+  const [newImage, setNewImage] = React.useState("");
   const [type, setType] = React.useState(selectedProduct.type);
   const [model, setModel] = React.useState(selectedProduct.model);
   const [size, setSize] = React.useState(selectedProduct.size);
-  const [groupingType, setGroupingType] = React.useState(selectedProduct.groupingType);
+  const [groupingType, setGroupingType] = React.useState(
+    selectedProduct.groupingType
+  );
   const [buyValue, setBuyValue] = React.useState(selectedProduct.buyValue);
   const [sellValue, setSellValue] = React.useState(selectedProduct.sellValue);
 
+  const convertImageToBase64 = (imageFile) => {
+    return new Promise((resolve, reject) => {
+      if (!imageFile) {
+        reject("Nenhuma imagem selecionada.");
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        resolve(event.target.result);
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      reader.readAsDataURL(imageFile);
+    });
+  };
+
   const handleEdit = async (e) => {
     e.preventDefault();
+    let imageBase64;
+    if (newImage) {
+      imageBase64 = await convertImageToBase64(newImage);
+    }
     try {
       const res = await api.put("/products", {
         productId: selectedProduct._id,
         name,
+        image: newImage ? imageBase64 : selectedProduct.image,
         type,
         model,
         size,
@@ -109,6 +139,7 @@ export default function EditProductForm({
               sx={{ width: 120 }}
             />
           </Grid>
+
           <Grid item sx={{ mx: 2 }}>
             <Typography>Modelo</Typography>
             <TextField
@@ -120,6 +151,7 @@ export default function EditProductForm({
               sx={{ width: 140 }}
             />
           </Grid>
+
           <Grid item>
             <Typography>Agrupamento</Typography>
             <Select
@@ -140,7 +172,15 @@ export default function EditProductForm({
               </MenuItem>
             </Select>
           </Grid>
+        </Grid>
 
+        <Grid
+          container
+          sx={{ pr: "4%", mt: 2 }}
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
           <Grid item sx={{ mt: 2 }}>
             <Typography>Valor de Compra</Typography>
             <TextField
@@ -197,6 +237,68 @@ export default function EditProductForm({
               </Typography>
             </Grid>
           )}
+        </Grid>
+        <Grid sx={{ mt: 2 }}>
+          <Typography>Imagem</Typography>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const selectedImage = e.target.files[0];
+              setNewImage(selectedImage);
+            }}
+          />
+        </Grid>
+        <Grid
+          container
+          sx={{ pr: "4%", mt: 2 }}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item>
+            {selectedProduct.image && (
+              <Grid
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <img
+                  src={selectedProduct.image}
+                  alt="Prévia da Imagem"
+                  style={{
+                    marginTop: 20,
+                    width: "200px",
+                    height: "200px",
+                    opacity: newImage ? "0.5" : "none",
+                  }}
+                />
+                {newImage && <Typography>Imagem Anterior</Typography>}
+              </Grid>
+            )}
+          </Grid>
+          <Grid item sx={{ ml: 5 }}>
+            {newImage && (
+              <Grid
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <img
+                  src={URL.createObjectURL(newImage)}
+                  alt="Prévia da Imagem"
+                  style={{
+                    marginTop: 20,
+                    width: "200px",
+                    height: "200px",
+                  }}
+                />
+                <Typography>Nova Imagem</Typography>
+              </Grid>
+            )}
+          </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>

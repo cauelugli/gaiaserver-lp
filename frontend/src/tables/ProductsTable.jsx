@@ -165,7 +165,6 @@ export default function ProductsTable() {
                             src={product.image}
                             sx={{ width: 200, height: 200 }}
                           />
-
                           <Table size="small">
                             <TableHead>
                               <TableRow>

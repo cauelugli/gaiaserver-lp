@@ -59,7 +59,6 @@ export default function AddProductForm({
   const handleAdd = async (e) => {
     e.preventDefault();
     const imageBase64 = await convertImageToBase64(image)
-    console.log('imageBase64', imageBase64)
     try {
       const res = await api.post("/products", {
         name,

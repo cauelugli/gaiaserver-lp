@@ -14,8 +14,6 @@ router.get("/", async (req, res) => {
 
 // CREATE PRODUCT
 router.post("/", async (req, res) => {
-  console.log('req.files', req.files)
-  console.log('req.body', req.body)
   const newProduct = new Product(req.body);
   try {
     const savedProduct = await newProduct.save();
@@ -26,7 +24,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// DELETE STOCK ITEM
+// DELETE PRODUCT
 router.delete("/:id", async (req, res) => {
   const productId = req.params.id;
   try {
@@ -38,7 +36,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// UPDATE STOCK ITEM
+// UPDATE PRODUCT
 router.put("/", async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
