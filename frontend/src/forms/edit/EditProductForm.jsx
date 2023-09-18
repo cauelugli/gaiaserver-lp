@@ -8,6 +8,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormHelperText,
   Grid,
   InputAdornment,
   MenuItem,
@@ -15,6 +16,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -243,11 +247,26 @@ export default function EditProductForm({
           <input
             type="file"
             accept="image/*"
+            id="fileInput"
+            style={{ display: "none" }}
             onChange={(e) => {
               const selectedImage = e.target.files[0];
               setNewImage(selectedImage);
             }}
           />
+          {!newImage && (
+            <label htmlFor="fileInput">
+              <Button
+                variant="outlined"
+                color="primary"
+                component="span"
+                size="small"
+                startIcon={<FileUploadIcon />}
+              >
+                Alterar Imagem
+              </Button>
+            </label>
+          )}
         </Grid>
         <Grid
           container
@@ -271,7 +290,7 @@ export default function EditProductForm({
                     marginTop: 20,
                     width: "200px",
                     height: "200px",
-                    opacity: newImage ? "0.5" : "none",
+                    opacity: newImage ? "0.5" : "1",
                   }}
                 />
                 {newImage && <Typography>Imagem Anterior</Typography>}
@@ -286,16 +305,33 @@ export default function EditProductForm({
                 justifyContent="center"
                 alignItems="center"
               >
-                <img
-                  src={URL.createObjectURL(newImage)}
-                  alt="Prévia da Imagem"
-                  style={{
-                    marginTop: 20,
-                    width: "200px",
-                    height: "200px",
-                  }}
-                />
-                <Typography>Nova Imagem</Typography>
+                <Grid item>
+                  <img
+                    src={URL.createObjectURL(newImage)}
+                    alt="Prévia da Imagem"
+                    style={{
+                      marginTop: 20,
+                      width: "200px",
+                      height: "200px",
+                    }}
+                  />
+                </Grid>
+                <Grid item>
+                  <Typography>Nova Imagem</Typography>
+                </Grid>
+                <Grid item>
+                  <FormHelperText>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      size="small"
+                      startIcon={<DeleteIcon />}
+                      onClick={() => setNewImage("")}
+                    >
+                      Remover
+                    </Button>
+                  </FormHelperText>
+                </Grid>
               </Grid>
             )}
           </Grid>

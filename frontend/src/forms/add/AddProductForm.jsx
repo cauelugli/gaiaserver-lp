@@ -8,6 +8,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormHelperText,
   Grid,
   InputAdornment,
   MenuItem,
@@ -15,6 +16,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -41,24 +45,24 @@ export default function AddProductForm({
         reject("Nenhuma imagem selecionada.");
         return;
       }
-  
+
       const reader = new FileReader();
-  
+
       reader.onload = (event) => {
         resolve(event.target.result);
       };
-  
+
       reader.onerror = (error) => {
         reject(error);
       };
-  
+
       reader.readAsDataURL(imageFile);
     });
   };
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    const imageBase64 = await convertImageToBase64(image)
+    const imageBase64 = await convertImageToBase64(image);
     try {
       const res = await api.post("/products", {
         name,
@@ -232,22 +236,66 @@ export default function AddProductForm({
         </Grid>
         <Grid sx={{ mt: 2 }}>
           <Typography>Imagem</Typography>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const selectedImage = e.target.files[0];
-              setImage(selectedImage);
-            }}
-            required
-          />
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              id="fileInput"
+              style={{ display: "none" }}
+              onChange={(e) => {
+                const selectedImage = e.target.files[0];
+                setImage(selectedImage);
+              }}
+              required
+            />
+            {!image && (
+              <label htmlFor="fileInput">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  component="span"
+                  size="small"
+                  startIcon={<FileUploadIcon />}
+                >
+                  Carregar Imagem
+                </Button>
+              </label>
+            )}
+          </div>
         </Grid>
+
         {image && (
-          <img
-            src={URL.createObjectURL(image)}
-            alt="Prévia da Imagem"
-            style={{ marginTop:20, maxWidth: "200px", maxHeight: "200px" }}
-          />
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Grid item>
+              <img
+                src={URL.createObjectURL(image)}
+                alt="Prévia da Imagem"
+                style={{
+                  marginTop: 20,
+                  maxWidth: "200px",
+                  maxHeight: "200px",
+                }}
+              />
+              </Grid>
+              <Grid item>
+              <FormHelperText>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  size="small"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => setImage("")}
+                >
+                  Remover
+                </Button>
+              </FormHelperText>
+            </Grid>
+          </Grid>
         )}
       </DialogContent>
       <DialogActions>
