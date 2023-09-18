@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -14,6 +15,7 @@ import {
   Grid,
   InputAdornment,
   MenuItem,
+  Paper,
   // Paper,
   Select,
   TextField,
@@ -34,7 +36,7 @@ const EditJobForm = ({
   setOpenEditJob,
   fetchData1,
   selectedJob,
-  toast
+  toast,
 }) => {
   const [title, setTitle] = React.useState(selectedJob.title);
   const [description, setDescription] = React.useState(selectedJob.description);
@@ -43,6 +45,8 @@ const EditJobForm = ({
   const [department, setDepartment] = React.useState(selectedJob.department);
   const [service, setService] = React.useState("");
   const [price, setPrice] = React.useState(selectedJob.price);
+  const [materials, setMaterials] = React.useState(selectedJob.materials);
+  const [materialsCost, setMaterialsCost] = React.useState(selectedJob.materialsCost);
   const [local, setLocal] = React.useState(selectedJob.local);
   const [scheduledTo, setScheduledTo] = React.useState(
     dayjs(selectedJob.scheduledTo)
@@ -102,7 +106,8 @@ const EditJobForm = ({
         },
         worker,
         manager: department.manager,
-        // status,
+        materials,
+        materialsCost,
         service,
         price,
         local,
@@ -127,25 +132,36 @@ const EditJobForm = ({
   return (
     <form onSubmit={handleEdit}>
       <Grid container sx={{ mt: 3 }}>
-        <DialogTitle>Novo Job</DialogTitle>
+        <DialogTitle>Editando Job</DialogTitle>
       </Grid>
 
       <DialogContent>
-        <Typography sx={{ mb: 1 }}>Informações do Cliente</Typography>
+        <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
+          Informações do Cliente
+        </Typography>
         <Grid
           container
           sx={{ pr: "4%", mt: 2 }}
           direction="row"
-          justifyContent="center"
+          justifyContent="flex-start"
           alignItems="flex-start"
         >
+          <Grid item>
+            <TextField
+              label="Tipo"
+              variant="outlined"
+              disabled
+              value={selectedJob.customer.cnpj ? "Empresa" : "Pessoa Física"}
+              sx={{ width: 180 }}
+            />
+          </Grid>
           <Grid item>
             <TextField
               label="Cliente"
               variant="outlined"
               disabled
               value={selectedJob.customer.name}
-              sx={{ width: 250, ml: 1 }}
+              sx={{ width: 200, mx: 1 }}
             />
           </Grid>
           <Grid item>
@@ -154,7 +170,7 @@ const EditJobForm = ({
               value={requester}
               onChange={(e) => setRequester(e.target.value)}
               variant="outlined"
-              sx={{ width: 250, ml: 1 }}
+              sx={{ width: 200, ml: 1 }}
             />
           </Grid>
           <Grid item>
@@ -163,7 +179,7 @@ const EditJobForm = ({
               value={local}
               onChange={(e) => setLocal(e.target.value)}
               variant="outlined"
-              sx={{ width: 300, mx: 1 }}
+              sx={{ width: 250, mx: 1 }}
             />
           </Grid>
           <Grid item sx={{ mt: -1 }}>
@@ -182,12 +198,13 @@ const EditJobForm = ({
         </Grid>
 
         <Divider sx={{ mt: 2 }} />
-        <Typography sx={{ my: 2 }}>Departamento</Typography>
+        <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
+          Departamento
+        </Typography>
         <Grid container sx={{ pr: "4%" }} direction="row">
           <Grid item>
             <Select
               onChange={(e) => {
-                // setFilteredDepartment(e.target.value),
                 setDepartment(e.target.value), setService(""), setWorker("");
               }}
               value={department || selectedJob.department}
@@ -277,7 +294,9 @@ const EditJobForm = ({
         </Grid>
 
         <Divider sx={{ my: 2 }} />
-        <Typography sx={{ my: 1 }}>Solicitação</Typography>
+        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
+          Solicitação
+        </Typography>
         <Grid container sx={{ pr: "4%", mt: 2 }} direction="column">
           <Grid item>
             <TextField
@@ -304,52 +323,89 @@ const EditJobForm = ({
         </Grid>
 
         <Divider sx={{ my: 2 }} />
-        <Typography sx={{ my: 2 }}>Orçamento</Typography>
+        <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
+          Orçamento
+        </Typography>
         <Grid container sx={{ pr: "4%", ml: "5%" }} direction="row">
-          <Grid item>
-            {/* <Grid item sx={{ ml: 2, mt: -7 }}>
-              {department && service && service.materials.length > 0 && (
-                <>
-                  <Typography sx={{ my: 2 }}>Materiais Utilizados</Typography>
-                  <Paper
-                    sx={{ width: 150, height: 70, pl: 1, overflow: "auto" }}
-                  >
-                    <ol style={{ paddingLeft: "0px" }}>
-                      {service.materials.map((material) => (
-                        <Grid key={material._id} container direction="row">
-                          <Typography sx={{ fontSize: "14px", color: "#444" }}>
-                            {material.name}
-                          </Typography>
-                          <Typography sx={{ fontSize: "14px", color: "#444" }}>
-                            {"\u00A0"}x{material.quantity}
-                          </Typography>
-                        </Grid>
-                      ))}
-                    </ol>
-                  </Paper>
-                </>
-              )}
-            </Grid> */}
-            <Typography>Valor</Typography>
-            <TextField
-              type="number"
-              size="small"
-              value={price}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
-                ),
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid
+              sx={{
+                width: 750,
+                backgroundColor: "#eee",
+                p: 3,
               }}
-              onChange={(e) => {
-                const inputValue = e.target.value;
-                if (inputValue >= 0) {
-                  setPrice(inputValue);
-                }
-              }}
-              required
-              variant="outlined"
-              sx={{ width: 130 }}
-            />
+            >
+              <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                Serviço
+              </Typography>
+              <Grid
+                container
+                direction="row"
+                sx={{
+                  width: "70%",
+                  borderRadius: 4,
+                  py: 2,
+                }}
+              >
+                <Typography sx={{ fontSize: 16, mx: 1 }}>
+                  {service && `${service.name} = `}{" "}
+                  {service.value ? `R$ ${service.value}` : "R$0,00"}
+                </Typography>
+              </Grid>
+              <Typography sx={{ fontSize: 16, mt: 2, fontWeight: "bold" }}>
+                Materiais
+              </Typography>
+
+              <Grid
+                container
+                direction="row"
+                sx={{
+                  width: "70%",
+                  borderRadius: 4,
+                  py: 2,
+                }}
+              >
+                <Grid
+                  item
+                  sx={{
+                    borderRadius: 4,
+                  }}
+                >
+                  {materials.map((material) => (
+                    <Typography
+                      sx={{ my: 0.5, ml: 1, fontSize: 16 }}
+                      key={material.id}
+                    >
+                      {material.name} x{material.quantity} = R$
+                      {material.sellValue * material.quantity}
+                    </Typography>
+                  ))}
+                </Grid>
+              </Grid>
+              <Typography sx={{ fontSize: 16, mt: 2, fontWeight: "bold" }}>
+                Total
+              </Typography>
+
+              <Grid
+                container
+                direction="row"
+                sx={{
+                  width: "70%",
+                  borderRadius: 4,
+                  py: 2,
+                }}
+              >
+                <Typography sx={{ fontSize: 16, mx: 1 }}>
+                  Serviço + Materiais ={" "}
+                  {service && `R$ ${materialsCost + service.value}`}
+                </Typography>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
 

@@ -119,7 +119,11 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
       const res = await api.post("/jobs", {
         title,
         description,
-        customer: { id: customer._id, name: customer.name },
+        customer: {
+          id: customer._id,
+          name: customer.name,
+          cnpj: customer.cnpj || "",
+        },
         requester,
         department: {
           id: department._id,
@@ -172,7 +176,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
           container
           sx={{ pr: "4%", mt: 2 }}
           direction="row"
-          justifyContent="center"
+          justifyContent="flex-start"
           alignItems="flex-start"
         >
           <Grid item>

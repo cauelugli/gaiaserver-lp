@@ -43,7 +43,7 @@ router.put("/", async (req, res) => {
       req.body.jobId,
       {
         title: req.body.title,
-        descriprion: req.body.description,
+        description: req.body.description,
         requester: req.body.requester,
         department: req.body.department,
         worker: req.body.worker,

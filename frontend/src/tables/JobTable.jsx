@@ -97,7 +97,8 @@ export default function JobTable({ jobs, fetchData }) {
                     align="left"
                   >
                     <Typography sx={{ fontSize: 14 }}>
-                      {job.requester} ({job.customer.name})
+                      {job.requester}{" "}
+                      {job.customer.cnpj && `(${job.customer.name})`}
                     </Typography>
                   </TableCell>
                   <TableCell
@@ -179,7 +180,8 @@ export default function JobTable({ jobs, fetchData }) {
                               </TableCell>
                               <TableCell align="left">
                                 <Typography>
-                                  {job.requester} ({job.customer.name})
+                                  {job.requester}{" "}
+                                  {job.customer.cnpj && `(${job.customer.name})`}
                                 </Typography>
                               </TableCell>
                             </TableRow>

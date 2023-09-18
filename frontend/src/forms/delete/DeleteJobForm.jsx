@@ -22,7 +22,7 @@ const DeleteJobForm = ({
     try {
       const res = await api.delete(`/jobs/${selectedJob._id}`);
       if (res.data) {
-        toast.success("Pedido Deletado", {
+        toast.error("Pedido Deletado", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",

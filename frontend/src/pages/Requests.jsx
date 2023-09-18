@@ -22,7 +22,6 @@ import {
 
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import SellIcon from "@mui/icons-material/Sell";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 
 import JobTable from "../tables/JobTable";
 import SaleTable from "../tables/SaleTable";
@@ -52,8 +51,6 @@ export default function Requests() {
 
   const [openAddJob, setOpenAddJob] = React.useState(false);
   const [openAddSaleRequest, setOpenAddSaleRequest] = React.useState(false);
-  const [openAddSupportRequest, setOpenAddSupportRequest] =
-    React.useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
@@ -138,12 +135,12 @@ export default function Requests() {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuList sx={{ width: 160 }}>
+            <MenuList sx={{ width: 200 }}>
               <MenuItem onClick={() => setOpenAddJob(!openAddJob)}>
                 <ListItemIcon>
                   <EngineeringIcon />
                 </ListItemIcon>
-                <ListItemText>Job</ListItemText>
+                <ListItemText>Job / Atendimento</ListItemText>
               </MenuItem>
               <MenuItem
                 onClick={() => setOpenAddSaleRequest(!openAddSaleRequest)}
@@ -152,14 +149,6 @@ export default function Requests() {
                   <SellIcon />
                 </ListItemIcon>
                 <ListItemText>Venda</ListItemText>
-              </MenuItem>
-              <MenuItem
-                onClick={() => setOpenAddSupportRequest(!openAddSupportRequest)}
-              >
-                <ListItemIcon>
-                  <SupportAgentIcon />
-                </ListItemIcon>
-                <ListItemText>Atendimento</ListItemText>
               </MenuItem>
             </MenuList>
           </Menu>
@@ -219,20 +208,6 @@ export default function Requests() {
           <AddRequestSaleForm
             openAdd={openAddSaleRequest}
             setOpenAdd={openAddJobRequest}
-            fetchData={fetchData}
-          />
-        </Dialog>
-      )} */}
-      {/* {openAddSupportRequest && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openAddSupportRequest}
-          onClose={() => setOpenAddJobRequest(!openAddSupportRequest)}
-        >
-          <AddRequestSupportForm
-            openAdd={openAddSupportRequest}
-            setOpenAdd={openAddSupportRequest}
             fetchData={fetchData}
           />
         </Dialog>
