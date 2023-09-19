@@ -61,7 +61,7 @@ const AddSaleForm = ({
           id: department._id,
           name: department.name,
           phone: department.phone,
-          color: department.color
+          color: department.color,
         },
         worker,
         manager: department.manager,
@@ -71,12 +71,13 @@ const AddSaleForm = ({
         local,
         scheduledTo,
       });
-      res.data && alert("Pedido Adicionado!", {
-        closeOnClick: true,
-        pauseOnHover: false,
-        theme: "colored",
-        autoClose: 1200,
-    });
+      res.data &&
+        alert("Pedido Adicionado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
       setOpenAddJobRequest(false);
       fetchData();
     } catch (err) {
@@ -103,7 +104,9 @@ const AddSaleForm = ({
           <Grid item>
             <FormControl>
               <Select
-                onChange={(e) => {setCustomer(e.target.value), setLocal(e.target.value.address)}}
+                onChange={(e) => {
+                  setCustomer(e.target.value), setLocal(e.target.value.address);
+                }}
                 value={customer}
                 size="small"
                 displayEmpty
@@ -277,7 +280,9 @@ const AddSaleForm = ({
               value={price}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
+                  <InputAdornment position="start" sx={{ mr: 0 }}>
+                    R$
+                  </InputAdornment>
                 ),
               }}
               onChange={(e) => {
@@ -299,7 +304,9 @@ const AddSaleForm = ({
               value={cost}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
+                  <InputAdornment position="start" sx={{ mr: 0 }}>
+                    R$
+                  </InputAdornment>
                 ),
               }}
               onChange={(e) => {

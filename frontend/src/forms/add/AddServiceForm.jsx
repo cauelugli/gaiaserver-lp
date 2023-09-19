@@ -136,7 +136,9 @@ export default function AddServiceForm({
               disabled={isSupport}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
+                  <InputAdornment position="start" sx={{ mr: 0 }}>
+                    R$
+                  </InputAdornment>
                 ),
               }}
               onChange={(e) => {

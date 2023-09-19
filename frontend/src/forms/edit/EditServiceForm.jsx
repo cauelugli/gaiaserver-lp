@@ -78,7 +78,7 @@ export default function EditServiceForm({
         previousMaterials,
         materials,
         materialsCost: materialsEditCost,
-        isSupport
+        isSupport,
       });
       if (res.data) {
         toast.success("Serviço Editado!", {
@@ -153,7 +153,9 @@ export default function EditServiceForm({
               disabled={isSupport}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
+                  <InputAdornment position="start" sx={{ mr: 0 }}>
+                    R$
+                  </InputAdornment>
                 ),
               }}
               onChange={(e) => {

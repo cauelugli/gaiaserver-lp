@@ -29,9 +29,9 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddStockForm({
+export default function AddStockProductForm({
   openAdd,
-  stockItems,
+  products,
   setOpenAdd,
   fetchData,
   toast,
@@ -40,6 +40,8 @@ export default function AddStockForm({
   const [itemList, setItemList] = React.useState([]);
   const [quantityInput, setQuantityInput] = React.useState({});
   const [buyValueInput, setBuyValueInput] = React.useState({});
+
+  console.log("products", products);
 
   const handleChecked = (id) => {
     setSelectedItemId(id === selectedItemId ? null : id);
@@ -75,7 +77,7 @@ export default function AddStockForm({
 
   const handleIncrement = () => {
     if (selectedItemId !== null) {
-      const selectedItemData = stockItems.find(
+      const selectedItemData = products.find(
         (item) => item._id === selectedItemId
       );
       if (selectedItemData) {
@@ -127,7 +129,7 @@ export default function AddStockForm({
                   </Typography>
                 </TableCell>
               </TableRow>
-              {stockItems.map((item) => (
+              {products.map((item) => (
                 <>
                   <TableRow
                     key={item._id}

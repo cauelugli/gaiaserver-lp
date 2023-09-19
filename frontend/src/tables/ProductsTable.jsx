@@ -149,7 +149,7 @@ export default function ProductsTable() {
                       colSpan={6}
                     >
                       <Collapse
-                        in={openDetail && selectedProduct.name === product.name}
+                        in={openDetail && selectedProduct._id === product._id}
                         timeout="auto"
                         unmountOnExit
                       >
@@ -257,7 +257,7 @@ export default function ProductsTable() {
         {openEdit && (
           <Dialog
             fullWidth
-            maxWidth="md"
+            maxWidth="lg"
             open={openEdit}
             onClose={() => setOpenEdit(!openEdit)}
           >

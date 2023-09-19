@@ -81,7 +81,9 @@ export default function AddStockItemForm({
               value={buyValue}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
+                  <InputAdornment position="start" sx={{ mr: 0 }}>
+                    R$
+                  </InputAdornment>
                 ),
               }}
               onChange={(e) => {
@@ -103,7 +105,9 @@ export default function AddStockItemForm({
               value={sellValue}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
+                  <InputAdornment position="start" sx={{ mr: 0 }}>
+                    R$
+                  </InputAdornment>
                 ),
               }}
               onChange={(e) => {

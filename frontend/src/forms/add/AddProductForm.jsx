@@ -31,6 +31,7 @@ export default function AddProductForm({
   toast,
 }) {
   const [name, setName] = React.useState("");
+  const [brand, setBrand] = React.useState("");
   const [image, setImage] = React.useState("");
   const [type, setType] = React.useState("");
   const [model, setModel] = React.useState("");
@@ -66,6 +67,7 @@ export default function AddProductForm({
     try {
       const res = await api.post("/products", {
         name,
+        brand,
         image: imageBase64,
         type,
         model,
@@ -96,66 +98,78 @@ export default function AddProductForm({
       <DialogContent>
         <Grid
           container
-          sx={{ pr: "4%", mt: 2 }}
+          sx={{ mt: 2 }}
           direction="row"
           justifyContent="flex-start"
           alignItems="center"
         >
           <Grid item>
-            <Typography>Nome</Typography>
+            <Typography sx={{ fontSize: 14 }}>Nome</Typography>
             <TextField
               size="small"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              sx={{ width: 220 }}
+              sx={{ width: 200 }}
             />
           </Grid>
 
-          <Grid item sx={{ ml: 2 }}>
-            <Typography>Tipo</Typography>
+          <Grid item sx={{ ml: 1 }}>
+            <Typography sx={{ fontSize: 14 }}>Marca</Typography>
+            <TextField
+              size="small"
+              value={brand}
+              onChange={(e) => setBrand(e.target.value)}
+              required
+              variant="outlined"
+              sx={{ width: 100 }}
+            />
+          </Grid>
+
+          <Grid item sx={{ ml: 1 }}>
+            <Typography sx={{ fontSize: 14 }}>Tipo</Typography>
             <TextField
               size="small"
               value={type}
               onChange={(e) => setType(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 140 }}
+              sx={{ width: 100 }}
             />
           </Grid>
 
-          <Grid item sx={{ ml: 2 }}>
-            <Typography>Tamanho</Typography>
+          <Grid item sx={{ ml: 1 }}>
+            <Typography sx={{ fontSize: 14 }}>Tamanho</Typography>
             <TextField
               size="small"
               value={size}
               onChange={(e) => setSize(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 120 }}
+              sx={{ width: 100 }}
             />
           </Grid>
 
-          <Grid item sx={{ mx: 2 }}>
-            <Typography>Modelo</Typography>
+          <Grid item sx={{ mx: 1 }}>
+            <Typography sx={{ fontSize: 14 }}>Modelo</Typography>
             <TextField
               size="small"
               value={model}
               onChange={(e) => setModel(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 140 }}
+              sx={{ width: 100 }}
             />
           </Grid>
 
           <Grid item>
-            <Typography>Agrupamento</Typography>
+            <Typography sx={{ fontSize: 14 }}>Agrupamento</Typography>
             <Select
               size="small"
               value={groupingType}
               onChange={(e) => setGroupingType(e.target.value)}
               required
-              sx={{ width: 120 }}
+              sx={{ width: 110 }}
             >
               <MenuItem value="Unidade">
                 <Typography>Unidade</Typography>
@@ -168,24 +182,17 @@ export default function AddProductForm({
               </MenuItem>
             </Select>
           </Grid>
-        </Grid>
-
-        <Grid
-          container
-          sx={{ pr: "4%", mt: 2 }}
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="center"
-        >
-          <Grid item sx={{ mt: 2 }}>
-            <Typography>Valor de Compra</Typography>
+          <Grid item sx={{ mx: 1 }}>
+            <Typography sx={{ fontSize: 14 }}>Valor de Compra</Typography>
             <TextField
               type="number"
               size="small"
               value={buyValue}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
+                  <InputAdornment position="start" sx={{ mr: 0 }}>
+                    R$
+                  </InputAdornment>
                 ),
               }}
               onChange={(e) => {
@@ -196,19 +203,21 @@ export default function AddProductForm({
               }}
               required
               variant="outlined"
-              sx={{ width: 130 }}
+              sx={{ width: 120 }}
             />
           </Grid>
 
-          <Grid item sx={{ ml: 2, mt: 2 }}>
-            <Typography>Valor de Venda</Typography>
+          <Grid item>
+            <Typography sx={{ fontSize: 14 }}>Valor de Venda</Typography>
             <TextField
               type="number"
               size="small"
               value={sellValue}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
+                  <InputAdornment position="start" sx={{ mr: 0 }}>
+                    R$
+                  </InputAdornment>
                 ),
               }}
               onChange={(e) => {
@@ -219,23 +228,21 @@ export default function AddProductForm({
               }}
               required
               variant="outlined"
-              sx={{ width: 130 }}
+              sx={{ width: 120 }}
             />
           </Grid>
-          {sellValue > 0 && buyValue > 0 && (
-            <Grid item sx={{ ml: 2, mt: 4.5 }}>
-              <Typography>
-                Lucro de{" "}
-                <span style={{ color: "green" }}>
-                  {(((sellValue - buyValue) / buyValue) * 100).toFixed(2)}%
-                </span>{" "}
-                por {groupingType.toLowerCase()}
+          <Grid item sx={{ ml: 1, mt: 2.5 }}>
+            {sellValue > 0 && buyValue > 0 && (
+              <Typography style={{ color: "green", fontSize: 12 }}>
+                +{(((sellValue - buyValue) / buyValue) * 100).toFixed(2)}% por{" "}
+                {groupingType}
               </Typography>
-            </Grid>
-          )}
+            )}
+          </Grid>
         </Grid>
+
         <Grid sx={{ mt: 2 }}>
-          <Typography>Imagem</Typography>
+          <Typography sx={{ fontSize: 14 }}>Imagem</Typography>
           <div>
             <input
               type="file"
@@ -281,8 +288,8 @@ export default function AddProductForm({
                   maxHeight: "200px",
                 }}
               />
-              </Grid>
-              <Grid item>
+            </Grid>
+            <Grid item>
               <FormHelperText>
                 <Button
                   variant="outlined"

@@ -58,6 +58,7 @@ router.put("/", async (req, res) => {
       req.body.productId,
       {
         name: req.body.name,
+        brand: req.body.brand,
         image: req.body.image,
         type: req.body.type,
         model: req.body.model,

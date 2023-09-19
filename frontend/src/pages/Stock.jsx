@@ -25,6 +25,7 @@ import SellIcon from '@mui/icons-material/Sell';
 import SpokeIcon from '@mui/icons-material/Spoke';
 
 import AddStockItemForm from "../forms/add/AddStockItemForm";
+import AddStockProductForm from "../forms/add/AddStockProductForm";
 import AddStockForm from "../forms/add/AddStockForm";
 import AddProductForm from "../forms/add/AddProductForm";
 import AddMultipleProductForm from "../forms/add/AddMultipleProductForm";
@@ -55,11 +56,13 @@ export default function Stock() {
   const [value, setValue] = React.useState(0);
 
   const [stockItems, setStockItems] = React.useState([]);
+  const [products, setProducts] = React.useState([]);
 
   const [openAddProduct, setOpenAddProduct] = React.useState(false);
   const [openAddMultipleProduct, setOpenAddMultipleProduct] = React.useState(false);
   const [openAddNewStockItem, setOpenAddNewStockItem] = React.useState(false);
   const [openAddStock, setOpenAddStock] = React.useState(false);
+  const [openAddStockProduct, setOpenAddStockProduct] = React.useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
@@ -78,18 +81,22 @@ export default function Stock() {
     const fetchData = async () => {
       try {
         const stockItems = await api.get("/stockItems");
+        const products = await api.get("/products");
         setStockItems(stockItems.data);
+        setProducts(products.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, []);
+  }, [products]);
 
   const fetchData = async () => {
     try {
       const stockItems = await api.get("/stockItems");
-      setStockItems(stockItems.data);
+        const products = await api.get("/products");
+        setStockItems(stockItems.data);
+        setProducts(products.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -156,11 +163,17 @@ export default function Stock() {
                 </ListItemIcon>
                 <ListItemText>Item de Estoque</ListItemText>
               </MenuItem>
+              <MenuItem onClick={() => setOpenAddStockProduct(true)}>
+                <ListItemIcon>
+                  <LocalShippingIcon />
+                </ListItemIcon>
+                <ListItemText>Entrada de Produtos</ListItemText>
+              </MenuItem>
               <MenuItem onClick={() => setOpenAddStock(true)}>
                 <ListItemIcon>
                   <LocalShippingIcon />
                 </ListItemIcon>
-                <ListItemText>Entrada de Mercadorias</ListItemText>
+                <ListItemText>Entrada de Estoque</ListItemText>
               </MenuItem>
             </MenuList>
           </Menu>
@@ -198,7 +211,7 @@ export default function Stock() {
       {openAddProduct && (
         <Dialog
           fullWidth
-          maxWidth="md"
+          maxWidth="lg"
           open={openAddProduct}
           onClose={() => setOpenAddProduct(!openAddProduct)}
         >
@@ -251,6 +264,22 @@ export default function Stock() {
             openAdd={openAddStock}
             stockItems={stockItems}
             setOpenAdd={setOpenAddStock}
+            fetchData={fetchData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openAddStockProduct && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddStockProduct}
+          onClose={() => setOpenAddStockProduct(!openAddStockProduct)}
+        >
+          <AddStockProductForm
+            openAdd={openAddStockProduct}
+            products={products}
+            setOpenAdd={setOpenAddStockProduct}
             fetchData={fetchData}
             toast={toast}
           />

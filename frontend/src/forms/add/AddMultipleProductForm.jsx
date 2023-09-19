@@ -20,7 +20,7 @@ import {
 
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ClearIcon from '@mui/icons-material/Clear';
+import ClearIcon from "@mui/icons-material/Clear";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -123,15 +123,18 @@ export default function AddMultipleProductForm({
                   color="error"
                   size="small"
                   onClick={() => {
-                    setProductList((prevList) => prevList.filter((_, idx) => idx !== index));
-                  }}                >
+                    setProductList((prevList) =>
+                      prevList.filter((_, idx) => idx !== index)
+                    );
+                  }}
+                >
                   <ClearIcon />
                 </IconButton>
               </Grid>
             )}
             <Grid item>
               {index === 0 && (
-                <Typography sx={{ fontSize: 14, ml:2 }}>Nome</Typography>
+                <Typography sx={{ fontSize: 14, ml: 2 }}>Nome</Typography>
               )}
               <TextField
                 size="small"
@@ -140,7 +143,7 @@ export default function AddMultipleProductForm({
                   handleFieldChange(index, "name", e.target.value)
                 }
                 required
-                sx={{ width: 200, ml: index === 0 ? 2 : 0}}
+                sx={{ width: 200, ml: index === 0 ? 2 : 0 }}
               />
             </Grid>
             <Grid item sx={{ ml: 1 }}>
@@ -237,7 +240,9 @@ export default function AddMultipleProductForm({
                 value={product.buyValue}
                 InputProps={{
                   startAdornment: (
-                    <InputAdornment position="start">R$</InputAdornment>
+                    <InputAdornment position="start" sx={{ mr: 0 }}>
+                      R$
+                    </InputAdornment>
                   ),
                 }}
                 onChange={(e) =>
@@ -258,7 +263,9 @@ export default function AddMultipleProductForm({
                 value={product.sellValue}
                 InputProps={{
                   startAdornment: (
-                    <InputAdornment position="start">R$</InputAdornment>
+                    <InputAdornment position="start" sx={{ mr: 0 }}>
+                      R$
+                    </InputAdornment>
                   ),
                 }}
                 onChange={(e) =>
