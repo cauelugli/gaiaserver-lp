@@ -22,10 +22,12 @@ import {
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import SellIcon from '@mui/icons-material/Sell';
+import SpokeIcon from '@mui/icons-material/Spoke';
 
 import AddStockItemForm from "../forms/add/AddStockItemForm";
 import AddStockForm from "../forms/add/AddStockForm";
 import AddProductForm from "../forms/add/AddProductForm";
+import AddMultipleProductForm from "../forms/add/AddMultipleProductForm";
 
 import StockTable from "../tables/StockTable";
 import StockEntriesTable from "../tables/StockEntriesTable";
@@ -55,6 +57,7 @@ export default function Stock() {
   const [stockItems, setStockItems] = React.useState([]);
 
   const [openAddProduct, setOpenAddProduct] = React.useState(false);
+  const [openAddMultipleProduct, setOpenAddMultipleProduct] = React.useState(false);
   const [openAddNewStockItem, setOpenAddNewStockItem] = React.useState(false);
   const [openAddStock, setOpenAddStock] = React.useState(false);
 
@@ -141,6 +144,12 @@ export default function Stock() {
                 </ListItemIcon>
                 <ListItemText>Produto</ListItemText>
               </MenuItem>
+              <MenuItem onClick={() => setOpenAddMultipleProduct(true)}>
+                <ListItemIcon>
+                  <SpokeIcon />
+                </ListItemIcon>
+                <ListItemText>Múltiplos Produtos</ListItemText>
+              </MenuItem>
               <MenuItem onClick={() => setOpenAddNewStockItem(true)}>
                 <ListItemIcon>
                   <AddBoxIcon />
@@ -196,6 +205,21 @@ export default function Stock() {
           <AddProductForm
             openAdd={openAddProduct}
             setOpenAdd={setOpenAddProduct}
+            fetchData={fetchData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openAddMultipleProduct && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openAddMultipleProduct}
+          onClose={() => setOpenAddMultipleProduct(!openAddMultipleProduct)}
+        >
+          <AddMultipleProductForm
+            openAdd={openAddMultipleProduct}
+            setOpenAdd={setOpenAddMultipleProduct}
             fetchData={fetchData}
             toast={toast}
           />
