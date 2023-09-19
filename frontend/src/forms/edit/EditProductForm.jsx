@@ -275,7 +275,7 @@ export default function EditProductForm({
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item>
+          <Grid item sx={{ mb: newImage ? 5 : 0 }}>
             {selectedProduct.image && (
               <Grid
                 container
