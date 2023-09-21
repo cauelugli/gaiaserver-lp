@@ -24,12 +24,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddProductForm({
-  openAdd,
-  setOpenAdd,
-  fetchData,
-  toast,
-}) {
+export default function AddProductForm({ onClose, fetchData, toast }) {
   const [name, setName] = React.useState("");
   const [brand, setBrand] = React.useState("");
   const [image, setImage] = React.useState("");
@@ -84,7 +79,7 @@ export default function AddProductForm({
           autoClose: 1200,
         });
       }
-      setOpenAdd(!openAdd);
+      onClose();
       fetchData();
     } catch (err) {
       alert("Vish, deu não...");
@@ -312,7 +307,7 @@ export default function AddProductForm({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => {onClose()}}
         >
           X
         </Button>

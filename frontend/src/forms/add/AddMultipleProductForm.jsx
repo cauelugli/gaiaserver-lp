@@ -26,12 +26,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddMultipleProductForm({
-  openAdd,
-  setOpenAdd,
-  fetchData,
-  toast,
-}) {
+export default function AddMultipleProductForm({ onClose, fetchData, toast }) {
   const [productList, setProductList] = React.useState([
     {
       name: "",
@@ -94,7 +89,7 @@ export default function AddMultipleProductForm({
           autoClose: 1200,
         });
       }
-      setOpenAdd(!openAdd);
+      onClose();
       fetchData();
     } catch (err) {
       alert("Vish, deu não...");
@@ -362,7 +357,9 @@ export default function AddMultipleProductForm({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => {
+            onClose();
+          }}
         >
           X
         </Button>

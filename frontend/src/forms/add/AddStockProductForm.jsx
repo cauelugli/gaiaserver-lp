@@ -10,10 +10,8 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  IconButton,
   InputAdornment,
   Paper,
-  Stack,
   Table,
   TableBody,
   TableCell,
@@ -30,9 +28,8 @@ const api = axios.create({
 });
 
 export default function AddStockProductForm({
-  openAdd,
   products,
-  setOpenAdd,
+  onClose,
   fetchData,
   toast,
 }) {
@@ -40,8 +37,6 @@ export default function AddStockProductForm({
   const [itemList, setItemList] = React.useState([]);
   const [quantityInput, setQuantityInput] = React.useState({});
   const [buyValueInput, setBuyValueInput] = React.useState({});
-
-  console.log("products", products);
 
   const handleChecked = (id) => {
     setSelectedItemId(id === selectedItemId ? null : id);
@@ -58,16 +53,17 @@ export default function AddStockProductForm({
     try {
       const res = await api.put("/stock", {
         itemList,
+        type: "product",
       });
       if (res.data) {
-        toast.success("Entrada de Mercadorias Adicionada!", {
+        toast.success("Entrada de Produtos Adicionada!", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
         });
       }
-      setOpenAdd(!openAdd);
+      onClose();
       fetchData();
     } catch (err) {
       alert("Vish, deu não...");
@@ -84,6 +80,10 @@ export default function AddStockProductForm({
         const newItem = {
           _id: selectedItemData._id,
           name: selectedItemData.name,
+          type: selectedItemData.type,
+          brand: selectedItemData.brand,
+          model: selectedItemData.model,
+          size: selectedItemData.size,
           selectedQuantity: parseInt(quantityInput[selectedItemId] || 1, 10),
           buyValue: parseFloat(
             buyValueInput[selectedItemId] || selectedItemData.buyValue,
@@ -101,7 +101,7 @@ export default function AddStockProductForm({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Adicionar Itens ao Estoque</DialogTitle>
+      <DialogTitle>Adicionar Produtos ao Estoque</DialogTitle>
       <DialogContent>
         <TableContainer component={Paper}>
           <Table>
@@ -112,19 +112,31 @@ export default function AddStockProductForm({
                 }}
               >
                 <TableCell>
-                  <Typography sx={{ fontSize: 14 }}></Typography>
+                  <Typography sx={{ fontSize: 12 }}></Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography sx={{ fontSize: 14 }}>Item</Typography>
+                  <Typography sx={{ fontSize: 12 }}>Item</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: 12 }}>Marca</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: 12 }}>Tipo</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: 12 }}>Modelo</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: 12 }}>Tamanho</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: 12 }}>Em Estoque</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography sx={{ fontSize: 14 }}>Em Estoque</Typography>
+                  <Typography sx={{ fontSize: 12 }}>Valor de Compra</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography sx={{ fontSize: 14 }}>Valor de Compra</Typography>
-                </TableCell>
-                <TableCell align="right">
-                  <Typography sx={{ fontSize: 14 }}>
+                  <Typography sx={{ fontSize: 12 }}>
                     Adicionar ao Estoque
                   </Typography>
                 </TableCell>
@@ -149,11 +161,29 @@ export default function AddStockProductForm({
                         onChange={() => handleChecked(item._id)}
                       />
                     </TableCell>
-                    <TableCell cursor="pointer">
-                      <Typography sx={{ fontSize: 14 }}>{item.name}</Typography>
+                    <TableCell>
+                      <Typography sx={{ fontSize: 12 }}>{item.name}</Typography>
                     </TableCell>
-                    <TableCell align="right">
-                      <Typography sx={{ fontSize: 14 }}>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 12 }}>
+                        {item.brand}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 12 }}>
+                        {item.type}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 12 }}>
+                        {item.model}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 12 }}>{item.size}</Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 12 }}>
                         {item.quantity}
                       </Typography>
                     </TableCell>
@@ -259,34 +289,42 @@ export default function AddStockProductForm({
                 <li key={item._id}>
                   <Grid container direction="row">
                     <Grid item>
-                      <Typography sx={{ color: "#777" }}>Item:</Typography>
+                      <Typography sx={{ color: "#777", fontSize: 13 }}>
+                        Item:
+                      </Typography>
                     </Grid>
                     <Grid item sx={{ ml: 1 }}>
-                      <Typography>{item.name}</Typography>
+                      <Typography sx={{ fontSize: 13 }}>
+                        {item.name} | {item.brand} | {item.type} | {item.model} | {item.size}
+                      </Typography>
                     </Grid>
                     <Grid item sx={{ ml: 2 }}>
-                      <Typography sx={{ color: "#777" }}>
+                      <Typography sx={{ color: "#777", fontSize: 13 }}>
                         Quantidade:
                       </Typography>
                     </Grid>
                     <Grid item sx={{ ml: 1 }}>
-                      <Typography>+{item.selectedQuantity}</Typography>
+                      <Typography sx={{ fontSize: 13 }}>
+                        +{item.selectedQuantity}
+                      </Typography>
                     </Grid>
                     <Grid item sx={{ ml: 2 }}>
-                      <Typography sx={{ color: "#777" }}>
+                      <Typography sx={{ color: "#777", fontSize: 13 }}>
                         Valor por Unidade:
                       </Typography>
                     </Grid>
                     <Grid item sx={{ ml: 1 }}>
-                      <Typography>R$ {item.buyValue}</Typography>
+                      <Typography sx={{ fontSize: 13 }}>
+                        R$ {item.buyValue}
+                      </Typography>
                     </Grid>
                     <Grid item sx={{ ml: 2 }}>
-                      <Typography sx={{ color: "#777" }}>
+                      <Typography sx={{ color: "#777", fontSize: 13 }}>
                         Valor Total:
                       </Typography>
                     </Grid>
                     <Grid item sx={{ ml: 1 }}>
-                      <Typography>
+                      <Typography sx={{ fontSize: 13 }}>
                         R$ {(item.buyValue * item.selectedQuantity).toFixed(2)}
                       </Typography>
                     </Grid>
@@ -325,7 +363,9 @@ export default function AddStockProductForm({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => {
+            onClose();
+          }}
         >
           X
         </Button>

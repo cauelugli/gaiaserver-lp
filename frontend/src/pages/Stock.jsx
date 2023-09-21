@@ -4,25 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import {
-  Box,
-  Button,
-  Dialog,
-  Grid,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  MenuList,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
-
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import SellIcon from '@mui/icons-material/Sell';
-import SpokeIcon from '@mui/icons-material/Spoke';
+import { Box, Dialog, Grid, Tab, Tabs, Typography } from "@mui/material";
 
 import AddStockItemForm from "../forms/add/AddStockItemForm";
 import AddStockProductForm from "../forms/add/AddStockProductForm";
@@ -33,6 +15,8 @@ import AddMultipleProductForm from "../forms/add/AddMultipleProductForm";
 import StockTable from "../tables/StockTable";
 import StockEntriesTable from "../tables/StockEntriesTable";
 import ProductsTable from "../tables/ProductsTable";
+
+import StockButton from "../components/small/buttons/StockButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -54,27 +38,31 @@ function CustomTabPanel(props) {
 
 export default function Stock() {
   const [value, setValue] = React.useState(0);
-
   const [stockItems, setStockItems] = React.useState([]);
   const [products, setProducts] = React.useState([]);
 
-  const [openAddProduct, setOpenAddProduct] = React.useState(false);
-  const [openAddMultipleProduct, setOpenAddMultipleProduct] = React.useState(false);
-  const [openAddNewStockItem, setOpenAddNewStockItem] = React.useState(false);
-  const [openAddStock, setOpenAddStock] = React.useState(false);
-  const [openAddStockProduct, setOpenAddStockProduct] = React.useState(false);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const openAddButton = Boolean(anchorEl);
-  const handleClickAddButton = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleCloseAddButton = () => {
-    setAnchorEl(null);
-  };
+  const [openModals, setOpenModals] = React.useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const openModal = (modalIndex) => {
+    const updatedModals = [...openModals];
+    updatedModals[modalIndex] = true;
+    setOpenModals(updatedModals);
+  };
+
+  const closeModal = (modalIndex) => {
+    const updatedModals = [...openModals];
+    updatedModals[modalIndex] = false;
+    setOpenModals(updatedModals);
   };
 
   React.useEffect(() => {
@@ -94,9 +82,9 @@ export default function Stock() {
   const fetchData = async () => {
     try {
       const stockItems = await api.get("/stockItems");
-        const products = await api.get("/products");
-        setStockItems(stockItems.data);
-        setProducts(products.data);
+      const products = await api.get("/products");
+      setStockItems(stockItems.data);
+      setProducts(products.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -115,69 +103,7 @@ export default function Stock() {
         >
           Estoque
         </Typography>
-        <div>
-          <Button
-            id="basic-button"
-            aria-controls={openAddButton ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={openAddButton ? "true" : undefined}
-            onClick={handleClickAddButton}
-            variant="outlined"
-            size="small"
-            sx={{
-              borderRadius: 3,
-              bottom: 3,
-              "&:hover": { borderColor: "#eee" },
-            }}
-          >
-            <Typography variant="h6">+</Typography>
-            <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>
-              Novo
-            </Typography>
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={openAddButton}
-            onClick={handleCloseAddButton}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <MenuList sx={{ width: 240 }}>
-              <MenuItem onClick={() => setOpenAddProduct(true)}>
-                <ListItemIcon>
-                  <SellIcon />
-                </ListItemIcon>
-                <ListItemText>Produto</ListItemText>
-              </MenuItem>
-              <MenuItem onClick={() => setOpenAddMultipleProduct(true)}>
-                <ListItemIcon>
-                  <SpokeIcon />
-                </ListItemIcon>
-                <ListItemText>Múltiplos Produtos</ListItemText>
-              </MenuItem>
-              <MenuItem onClick={() => setOpenAddNewStockItem(true)}>
-                <ListItemIcon>
-                  <AddBoxIcon />
-                </ListItemIcon>
-                <ListItemText>Item de Estoque</ListItemText>
-              </MenuItem>
-              <MenuItem onClick={() => setOpenAddStockProduct(true)}>
-                <ListItemIcon>
-                  <LocalShippingIcon />
-                </ListItemIcon>
-                <ListItemText>Entrada de Produtos</ListItemText>
-              </MenuItem>
-              <MenuItem onClick={() => setOpenAddStock(true)}>
-                <ListItemIcon>
-                  <LocalShippingIcon />
-                </ListItemIcon>
-                <ListItemText>Entrada de Estoque</ListItemText>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </div>
+        <StockButton openModal={openModal} />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -208,78 +134,78 @@ export default function Stock() {
       <CustomTabPanel value={value} index={2}>
         <StockEntriesTable />
       </CustomTabPanel>
-      {openAddProduct && (
+
+      {openModals[0] && (
         <Dialog
           fullWidth
           maxWidth="lg"
-          open={openAddProduct}
-          onClose={() => setOpenAddProduct(!openAddProduct)}
+          open={openModals[0]}
+          onClose={() => closeModal(0)}
         >
           <AddProductForm
-            openAdd={openAddProduct}
-            setOpenAdd={setOpenAddProduct}
+            onClose={() => closeModal(0)}
             fetchData={fetchData}
             toast={toast}
           />
         </Dialog>
       )}
-      {openAddMultipleProduct && (
+
+      {openModals[1] && (
         <Dialog
           fullWidth
           maxWidth="lg"
-          open={openAddMultipleProduct}
-          onClose={() => setOpenAddMultipleProduct(!openAddMultipleProduct)}
+          open={openModals[1]}
+          onClose={() => closeModal(1)}
         >
           <AddMultipleProductForm
-            openAdd={openAddMultipleProduct}
-            setOpenAdd={setOpenAddMultipleProduct}
+            onClose={() => closeModal(1)}
             fetchData={fetchData}
             toast={toast}
           />
         </Dialog>
       )}
-      {openAddNewStockItem && (
+
+      {openModals[2] && (
         <Dialog
           fullWidth
-          maxWidth="md"
-          open={openAddNewStockItem}
-          onClose={() => setOpenAddNewStockItem(!openAddNewStockItem)}
+          maxWidth="lg"
+          open={openModals[2]}
+          onClose={() => closeModal(2)}
         >
           <AddStockItemForm
-            openAdd={openAddNewStockItem}
-            setOpenAdd={setOpenAddNewStockItem}
+            onClose={() => closeModal(2)}
             fetchData={fetchData}
             toast={toast}
           />
         </Dialog>
       )}
-      {openAddStock && (
+
+      {openModals[3] && (
         <Dialog
           fullWidth
-          maxWidth="md"
-          open={openAddStock}
-          onClose={() => setOpenAddStock(!openAddStock)}
-        >
-          <AddStockForm
-            openAdd={openAddStock}
-            stockItems={stockItems}
-            setOpenAdd={setOpenAddStock}
-            fetchData={fetchData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
-      {openAddStockProduct && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openAddStockProduct}
-          onClose={() => setOpenAddStockProduct(!openAddStockProduct)}
+          maxWidth="lg"
+          open={openModals[3]}
+          onClose={() => closeModal(3)}
         >
           <AddStockProductForm
-            openAdd={openAddStockProduct}
             products={products}
-            setOpenAdd={setOpenAddStockProduct}
+            onClose={() => closeModal(3)}
+            fetchData={fetchData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+
+      {openModals[4] && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openModals[4]}
+          onClose={() => closeModal(4)}
+        >
+          <AddStockForm
+            stockItems={stockItems}
+            onClose={() => closeModal(4)}
             fetchData={fetchData}
             toast={toast}
           />

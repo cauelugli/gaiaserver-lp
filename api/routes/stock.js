@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const StockItem = require("../models/StockItem");
+const Product = require("../models/Product");
 const StockEntry = require("../models/StockEntry");
 
 // GER STOCK ENTRIES
@@ -17,36 +18,72 @@ router.put("/", async (req, res) => {
   const itemList = req.body.itemList;
   const updatedStockItems = [];
 
-  try {
-    let totalValue = 0;
-    const items = [];
+  if (req.body.type === "stock") {
+    try {
+      let totalValue = 0;
+      const items = [];
 
-    for (const item of itemList) {
-      const { _id, selectedQuantity, buyValue } = item;
-      const stockItem = await StockItem.findById(_id);
-      stockItem.quantity += selectedQuantity;
-      await stockItem.save();
-      updatedStockItems.push(stockItem);
+      for (const item of itemList) {
+        const { _id, selectedQuantity, buyValue } = item;
+        const stockItem = await StockItem.findById(_id);
+        stockItem.quantity += selectedQuantity;
+        await stockItem.save();
+        updatedStockItems.push(stockItem);
 
-      items.push({
-        item: stockItem,
-        quantity: selectedQuantity,
-        buyValue: buyValue,
+        items.push({
+          item: stockItem,
+          quantity: selectedQuantity,
+          buyValue: buyValue,
+        });
+
+        totalValue += stockItem.buyValue * selectedQuantity;
+      }
+
+      const newStockEntry = new StockEntry({
+        items: items,
+        quoteValue: totalValue,
       });
+      await newStockEntry.save();
 
-      totalValue += stockItem.buyValue * selectedQuantity;
+      res.json(newStockEntry);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Erro ao atualizar os itens do estoque" });
     }
+  } else if (req.body.type === "product") {
+    try {
+      let totalValue = 0;
+      const items = [];
 
-    const newStockEntry = new StockEntry({
-      items: items,
-      quoteValue: totalValue,
-    });
-    await newStockEntry.save();
+      for (const item of itemList) {
+        const { _id, selectedQuantity, buyValue } = item;
+        const product = await Product.findById(_id);
+        product.quantity += selectedQuantity;
+        await product.save();
+        updatedStockItems.push(product);
 
-    res.json(newStockEntry);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Erro ao atualizar os itens do estoque" });
+        items.push({
+          item: product,
+          quantity: selectedQuantity,
+          buyValue: buyValue,
+        });
+
+        totalValue += product.buyValue * selectedQuantity;
+      }
+
+      const newStockEntry = new StockEntry({
+        items: items,
+        quoteValue: totalValue,
+      });
+      await newStockEntry.save();
+
+      res.json(newStockEntry);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Erro ao atualizar os itens do estoque" });
+    }
+  } else {
+    res.status(404).json({ error: "Tipo de item não localizado" });
   }
 });
 

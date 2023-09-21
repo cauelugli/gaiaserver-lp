@@ -30,9 +30,8 @@ const api = axios.create({
 });
 
 export default function AddStockForm({
-  openAdd,
   stockItems,
-  setOpenAdd,
+  onClose,
   fetchData,
   toast,
 }) {
@@ -56,6 +55,7 @@ export default function AddStockForm({
     try {
       const res = await api.put("/stock", {
         itemList,
+        type:"stock"
       });
       if (res.data) {
         toast.success("Entrada de Mercadorias Adicionada!", {
@@ -65,7 +65,7 @@ export default function AddStockForm({
           autoClose: 1200,
         });
       }
-      setOpenAdd(!openAdd);
+      onClose();
       fetchData();
     } catch (err) {
       alert("Vish, deu não...");
@@ -323,7 +323,9 @@ export default function AddStockForm({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => {
+            onClose();
+          }}
         >
           X
         </Button>
