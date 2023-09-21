@@ -132,7 +132,7 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
 
   return (
     <form onSubmit={handleAdd}>
-      <Grid container sx={{ mt: 3 }}>
+      <Grid container sx={{ mt: 1 }}>
         <DialogTitle>Nova Venda</DialogTitle>
       </Grid>
 
@@ -140,14 +140,8 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
         <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
           Informações do Cliente
         </Typography>
-        <Grid
-          container
-          sx={{ mt: 2 }}
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Grid item>
+        <Grid container sx={{ mt: 2 }}>
+          <Grid item sx={{ my: 1 }}>
             <FormControl>
               <FormLabel sx={{ color: "black" }}>Tipo de Cliente</FormLabel>
               <RadioGroup
@@ -229,7 +223,7 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
         <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
           Departamento
         </Typography>
-        <Grid container direction="row">
+        <Grid container>
           <Grid item>
             <Select
               onChange={(e) => {
@@ -289,16 +283,10 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
         </Grid>
 
         <Divider sx={{ my: 2 }} />
-        <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
+        <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
           Entrega
         </Typography>
-        <Grid
-          container
-          sx={{ pr: "4%", mt: 2 }}
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
+        <Grid container sx={{ mt: 2 }}>
           <Grid item>
             <TextField
               label="Local de Entrega"
