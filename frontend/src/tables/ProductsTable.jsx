@@ -9,6 +9,7 @@ import {
   Box,
   Collapse,
   Dialog,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -84,10 +85,10 @@ export default function ProductsTable() {
                   <Typography sx={{ fontSize: 14 }}>Nome do Produto</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Valor de Compra</Typography>
+                  <Typography sx={{ fontSize: 14 }}>Marca</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Valor de Venda</Typography>
+                  <Typography sx={{ fontSize: 14 }}>Modelo</Typography>
                 </TableCell>
                 <TableCell align="left">
                   <Typography sx={{ fontSize: 14 }}>Em Estoque</Typography>
@@ -121,7 +122,7 @@ export default function ProductsTable() {
                       align="left"
                     >
                       <Typography sx={{ fontSize: 14 }}>
-                        R${product.buyValue}
+                        {product.brand}
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -130,7 +131,7 @@ export default function ProductsTable() {
                       align="left"
                     >
                       <Typography sx={{ fontSize: 14 }}>
-                        R${product.sellValue}
+                        {product.model}
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -156,82 +157,150 @@ export default function ProductsTable() {
                         <Box sx={{ my: 4, px: 6 }}>
                           <Typography
                             variant="h6"
-                            sx={{ fontSize: 18, fontWeight: "bold" }}
+                            sx={{ fontSize: 18, fontWeight: "bold", my: 2 }}
                           >
                             Detalhes do Item
                           </Typography>
-                          <Avatar
-                            alt="Imagem do Produto"
-                            src={product.image}
-                            sx={{ width: 200, height: 200 }}
-                          />
-                          <Table size="small">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Nome
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Valor de Compra
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Valor de Venda
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Lucro por Item
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Quantidade
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell>
-                                  <Typography>{product.name}</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>R${product.buyValue}</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>R${product.sellValue}</Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography sx={{ color: "#32CD32" }}>
-                                    {(
-                                      ((product.sellValue - product.buyValue) /
-                                        product.buyValue) *
-                                      100
-                                    ).toFixed(2)}
-                                    %
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>{product.quantity}</Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="space-around"
+                          >
+                            <Grid item>
+                              <Avatar
+                                alt="Imagem do Produto"
+                                src={product.image}
+                                sx={{ width: 200, height: 200 }}
+                              />
+                            </Grid>
+                            <Grid item>
+                              <Table size="small">
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell>
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Nome
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Marca
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Tipo
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Modelo
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Tamanho
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  <TableRow>
+                                    <TableCell align="center">
+                                      <Typography>{product.name}</Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography>{product.brand}</Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography>{product.type}</Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography>{product.model}</Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography>{product.size}</Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableBody>
+                              </Table>
+                              <Table size="small" sx={{ mt: 4 }}>
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell>
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Valor de Compra
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Valor de Venda
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Lucro por Item
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Quantidade
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  <TableRow>
+                                    <TableCell>
+                                      <Typography>
+                                        R${product.buyValue}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography>
+                                        R${product.sellValue}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography sx={{ color: "#32CD32" }}>
+                                        {(
+                                          ((product.sellValue -
+                                            product.buyValue) /
+                                            product.buyValue) *
+                                          100
+                                        ).toFixed(2)}
+                                        %
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography>
+                                        {product.quantity}
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableBody>
+                              </Table>
+                            </Grid>
+                          </Grid>
+
                           <Box sx={{ mt: 3, ml: "90%" }}>
                             <ModeEditIcon
                               cursor="pointer"
