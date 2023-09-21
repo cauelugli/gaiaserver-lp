@@ -27,6 +27,7 @@ import JobTable from "../tables/JobTable";
 import SaleTable from "../tables/SaleTable";
 
 import AddJobForm from "../forms/add/AddJobForm";
+import AddSaleForm from "../forms/add/AddSaleForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -50,7 +51,7 @@ export default function Requests() {
   const [value, setValue] = React.useState(0);
 
   const [openAddJob, setOpenAddJob] = React.useState(false);
-  const [openAddSaleRequest, setOpenAddSaleRequest] = React.useState(false);
+  const [openAddSale, setOpenAddSale] = React.useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
@@ -143,7 +144,7 @@ export default function Requests() {
                 <ListItemText>Job / Atendimento</ListItemText>
               </MenuItem>
               <MenuItem
-                onClick={() => setOpenAddSaleRequest(!openAddSaleRequest)}
+                onClick={() => setOpenAddSale(!openAddSale)}
               >
                 <ListItemIcon>
                   <SellIcon />
@@ -198,20 +199,20 @@ export default function Requests() {
           />
         </Dialog>
       )}
-      {/* {openAddSaleRequest && (
+      {openAddSale && (
         <Dialog
           fullWidth
-          maxWidth="md"
-          open={openAddJobRequest}
-          onClose={() => setOpenAddJobRequest(!openAddSaleRequest)}
+          maxWidth="xs"
+          open={openAddSale}
+          onClose={() => setOpenAddSale(!openAddSale)}
         >
-          <AddRequestSaleForm
-            openAdd={openAddSaleRequest}
-            setOpenAdd={openAddJobRequest}
+          <AddSaleForm
+            openAdd={openAddSale}
+            setOpenAdd={openAddSale}
             fetchData={fetchData}
           />
         </Dialog>
-      )} */}
+      )}
     </Box>
   );
 }

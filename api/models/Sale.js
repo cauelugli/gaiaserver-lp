@@ -5,15 +5,11 @@ saleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  type: {
-    type: String,
-    default: "Venda",
-  },
   requester: {
     type: String,
     required: true,
   },
-  worker: {
+  seller: {
     type: Object,
     required: true,
   },
@@ -23,14 +19,6 @@ saleSchema = new mongoose.Schema({
   },
   department: {
     type: Object,
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
     required: true,
   },
   status: {
@@ -44,14 +32,15 @@ saleSchema = new mongoose.Schema({
   cost: {
     type: Object,
   },
-  local: {
-    type: String,
-  },
-  scheduledTo: {
+  deliveryScheduledTo: {
     type: String,
     required: true,
   },
-  executedIn: {
+  deliveryAddress: {
+    type: String,
+    required: true,
+  },
+  deliveredIn: {
     type: String,
   },
   createdAt: {
