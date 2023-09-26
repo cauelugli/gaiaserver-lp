@@ -12,16 +12,14 @@ import {
   Divider,
   FormControlLabel,
   Grid,
-  IconButton,
   ListSubheader,
   MenuItem,
+  Radio,
+  RadioGroup,
   Select,
   TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
-
-import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 
 import { IMaskInput } from "react-imask";
 import ColorPicker from "../../components/small/ColorPicker";
@@ -41,6 +39,7 @@ const EditDepartmentForm = ({
   toast,
 }) => {
   const [name, setName] = React.useState(selectedDepartment.name);
+  const [type, setType] = React.useState(selectedDepartment.type);
   const [description, setDescription] = React.useState(
     selectedDepartment.description
   );
@@ -54,14 +53,6 @@ const EditDepartmentForm = ({
   const [selectedUsers, setSelectedUsers] = React.useState(previousMembers);
   const [color, setColor] = React.useState(selectedDepartment.color);
   const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
-  const [isInternal, setIsInternal] = React.useState(
-    selectedDepartment.isInternal
-  );
-
-  const handleIsInternal = (event) => {
-    setIsInternal(event.target.checked);
-  };
-
   const handleClickColor = (event) => {
     setColorAnchorEl(event.currentTarget);
   };
@@ -89,6 +80,7 @@ const EditDepartmentForm = ({
       const res = await api.put("/departments", {
         departmentId: selectedDepartment._id,
         name,
+        type,
         description,
         phone,
         email,
@@ -97,7 +89,6 @@ const EditDepartmentForm = ({
         manager,
         updatedMembers: membersData,
         removedMembers,
-        isInternal,
       });
       if (res.data) {
         toast.success("Departamento Editado!", {
@@ -149,7 +140,9 @@ const EditDepartmentForm = ({
         Editando Departamento - {selectedDepartment.name}
       </DialogTitle>
       <DialogContent>
-        <Typography sx={{ mt: 2 }}>Geral</Typography>
+        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
+          Geral
+        </Typography>
         <Grid container direction="row">
           <Grid item>
             <TextField
@@ -197,32 +190,79 @@ const EditDepartmentForm = ({
             size="small"
             label="Descrição"
             onChange={(e) => setDescription(e.target.value)}
-            sx={{ mt: 2, width: 650 }}
+            sx={{ my:2, width: "100%" }}
           />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={isInternal}
-                onChange={handleIsInternal}
-                inputProps={{ "aria-label": "controlled" }}
-              />
-            }
-            label="Interno"
-            labelPlacement="start"
-            sx={{ mt: 2 }}
-          />
-          <Tooltip title="Departamentos internos não prestam serviços.">
-            <span>
-              <IconButton sx={{ mt: 2, ml: 2 }} size="small" disabled>
-                <QuestionMarkIcon />
-              </IconButton>
-            </span>
-          </Tooltip>
+        </Grid>
+
+        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
+          Tipo de Departamento
+        </Typography>
+        <Grid container direction="row" justifyContent="center" sx={{ py: 1 }}>
+          <RadioGroup
+            row
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            sx={{ alignItems: "center" }}
+          >
+            <Grid item>
+              <Grid container direction="column" alignItems="center">
+                <FormControlLabel
+                  value="Serviços"
+                  control={<Radio />}
+                  label="Serviços"
+                />
+                <Typography sx={{ fontSize: 10, color: "#777" }}>
+                  Prestadores de Serviços e Atendimentos
+                </Typography>
+                <Typography
+                  sx={{ fontSize: 10, fontWeight: "bold", color: "#777" }}
+                >
+                  Não realizam Vendas
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid item sx={{ mx: 6 }}>
+              <Grid container direction="column" alignItems="center">
+                <FormControlLabel
+                  value="Vendas"
+                  control={<Radio />}
+                  label="Vendas"
+                />
+                <Typography sx={{ fontSize: 10, color: "#777" }}>
+                  Setor de Vendas
+                </Typography>
+                <Typography
+                  sx={{ fontSize: 10, fontWeight: "bold", color: "#777" }}
+                >
+                  Não realizam Serviços
+                </Typography>{" "}
+              </Grid>
+            </Grid>
+            <Grid item>
+              <Grid container direction="column" alignItems="center">
+                <FormControlLabel
+                  value="Interno"
+                  control={<Radio />}
+                  label="Interno"
+                />
+                <Typography sx={{ fontSize: 10, color: "#777" }}>
+                  Administração da Empresa
+                </Typography>
+                <Typography
+                  sx={{ fontSize: 10, fontWeight: "bold", color: "#777" }}
+                >
+                  Não realizam Serviços nem Vendas
+                </Typography>{" "}
+              </Grid>
+            </Grid>
+          </RadioGroup>
         </Grid>
 
         <Divider sx={{ my: 2 }} />
         <Grid item>
-          <Typography sx={{ my: 2 }}>Membros</Typography>
+          <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
+            Membros
+          </Typography>
           <Members
             users={users}
             value={selectedUsers}
@@ -238,7 +278,9 @@ const EditDepartmentForm = ({
           width="50%"
         >
           <Grid item>
-            <Typography sx={{ mt: 1 }}>Gerência</Typography>
+            <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
+              Gerência
+            </Typography>
           </Grid>
           <Grid container direction="row">
             <Grid item>
@@ -283,7 +325,9 @@ const EditDepartmentForm = ({
         </Grid>
 
         <Divider sx={{ my: 2 }} />
-        <Typography>Customização</Typography>
+        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
+          Customização
+        </Typography>
         <Grid item sx={{ m: "1%" }}>
           <ColorPicker
             handleClickColor={handleClickColor}

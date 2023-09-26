@@ -1,37 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 
-import {
-  Button,
-  Collapse,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  MenuList,
-  Typography,
-} from "@mui/material";
-
-import StockButton from "../components/small/buttons/StockButton";
+import { Typography } from "@mui/material";
 
 const Dashboard = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const openAddButton = Boolean(anchorEl);
-  const handleClickAddButton = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleCloseAddButton = () => {
-    setAnchorEl(null);
-  };
-
-  const [openSubmenu, setOpenSubmenu] = React.useState(false);
-
-  const handleClickSubmenu = () => {
-    setOpenSubmenu(!openSubmenu);
-  };
-
   return (
     <>
       <Typography
@@ -39,7 +11,6 @@ const Dashboard = () => {
       >
         Dashboard
       </Typography>
-      <StockButton />
     </>
   );
 };

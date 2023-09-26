@@ -57,14 +57,17 @@ export default function Requests() {
   const openAddButton = Boolean(anchorEl);
 
   const [jobs, setJobs] = React.useState([]);
+  const [sales, setSales] = React.useState([]);
   const [supports, setSupports] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const jobs = await api.get("/jobs");
+        const sales = await api.get("/sales");
         setJobs(jobs.data.filter((job) => job.price !== 0));
         setSupports(jobs.data.filter((job) => job.price === 0));
+        setSales(sales.data)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -75,8 +78,10 @@ export default function Requests() {
   const fetchData = async () => {
     try {
       const jobs = await api.get("/jobs");
+      const sales = await api.get("/sales");
       setJobs(jobs.data.filter((job) => job.price !== 0));
       setSupports(jobs.data.filter((job) => job.price === 0));
+      setSales(sales.data)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -179,7 +184,7 @@ export default function Requests() {
         <JobTable jobs={jobs} fetchData={fetchData} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <SaleTable />
+        <SaleTable sales={sales} fetchData={fetchData}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <JobTable jobs={supports} fetchData={fetchData} />
@@ -202,14 +207,16 @@ export default function Requests() {
       {openAddSale && (
         <Dialog
           fullWidth
-          maxWidth="xs"
+          maxWidth="md"
           open={openAddSale}
           onClose={() => setOpenAddSale(!openAddSale)}
         >
           <AddSaleForm
-            openAdd={openAddSale}
-            setOpenAdd={openAddSale}
-            fetchData={fetchData}
+            openAddSale={openAddSale}
+            setOpenAddSale={setOpenAddSale}
+            fetchData1={fetchData}
+            toast={toast}
+
           />
         </Dialog>
       )}
