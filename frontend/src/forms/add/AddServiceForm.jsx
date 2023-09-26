@@ -109,22 +109,24 @@ export default function AddServiceForm({
               size="small"
               sx={{ minWidth: 200 }}
             >
-              {departments.map((item) => (
-                <MenuItem
-                  value={item}
-                  key={item.id}
-                  sx={{
-                    backgroundColor: item.color,
-                    color: "white",
-                    "&:hover": {
+              {departments
+                .filter((department) => department.type === "Serviços")
+                .map((item) => (
+                  <MenuItem
+                    value={item}
+                    key={item.id}
+                    sx={{
                       backgroundColor: item.color,
                       color: "white",
-                    },
-                  }}
-                >
-                  {item.name}
-                </MenuItem>
-              ))}
+                      "&:hover": {
+                        backgroundColor: item.color,
+                        color: "white",
+                      },
+                    }}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))}
             </Select>
           </Grid>
           <Grid item>
@@ -179,7 +181,7 @@ export default function AddServiceForm({
                     color: isSupport ? "green" : "#aaa",
                   }}
                 >
-                  Sim, serviço sem custo
+                  Sim, atendimento sem custo
                 </Typography>
               </Grid>
             </Grid>

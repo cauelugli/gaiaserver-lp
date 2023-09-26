@@ -197,7 +197,7 @@ export default function EditServiceForm({
                     color: isSupport ? "green" : "#aaa",
                   }}
                 >
-                  Sim, serviço sem custo
+                  Sim, atendimento sem custo
                 </Typography>
               </Grid>
             </Grid>

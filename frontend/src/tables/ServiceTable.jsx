@@ -270,7 +270,7 @@ export default function ServiceTable() {
                                 <TableRow>
                                   <TableCell>
                                     <Typography sx={{ my: -1, color:"#228B22"}}>
-                                      R$ {service.materialsCost + service.value}
+                                      R$ {(service.materialsCost + service.value).toFixed(2)}
                                     </Typography>
                                   </TableCell>
                                 </TableRow>
@@ -306,7 +306,7 @@ export default function ServiceTable() {
         {openEdit && (
           <Dialog
             fullWidth
-            maxWidth="sm"
+            maxWidth="md"
             open={openEdit}
             onClose={() => setOpenEdit(!openEdit)}
           >
