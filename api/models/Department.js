@@ -5,6 +5,10 @@ departmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  type: {
+    type: String,
+    required: true,
+  },
   phone: {
     type: String,
     required: true,
@@ -29,10 +33,6 @@ departmentSchema = new mongoose.Schema({
   },
   color: {
     type: String,
-  },
-  isInternal: {
-    type: Boolean,
-    default: false,
   },
   createdAt: {
     type: Date,

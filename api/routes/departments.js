@@ -33,13 +33,13 @@ router.post("/", async (req, res) => {
     });
     const newDepartment = new Department({
       name: req.body.name,
+      type: req.body.type,
       description: req.body.description,
       phone: req.body.phone,
       email: req.body.email,
       color: req.body.color,
       members: req.body.members,
       manager: newManager,
-      isInternal: req.body.isInternal,
     });
     try {
       updatedManager = await newManager.save();
@@ -84,13 +84,13 @@ router.post("/", async (req, res) => {
   } else if (req.body.manager.name !== "") {
     const newDepartment = new Department({
       name: req.body.name,
+      type: req.body.type,
       description: req.body.description,
       phone: req.body.phone,
       email: req.body.email,
       color: req.body.color,
       members: req.body.members,
       manager: req.body.manager,
-      isInternal: req.body.isInternal,
     });
     try {
       savedDepartment = await newDepartment.save();
@@ -134,13 +134,13 @@ router.post("/", async (req, res) => {
   } else {
     const newDepartment = new Department({
       name: req.body.name,
+      type: req.body.type,
       description: req.body.description,
       phone: req.body.phone,
       email: req.body.email,
       color: req.body.color,
       members: req.body.members,
       manager: req.body.manager,
-      isInternal: req.body.isInternal,
 
     });
     const memberIds = req.body.members.map((member) => member.id);
@@ -218,13 +218,13 @@ router.put("/", async (req, res) => {
       req.body.departmentId,
       {
         name: req.body.name,
+        type: req.body.type,
         email: req.body.email,
         description: req.body.description,
         phone: req.body.phone,
         manager: req.body.manager,
         members: req.body.updatedMembers,
         color: req.body.color,
-        isInternal: req.body.isInternal,
       },
       { new: true }
     );

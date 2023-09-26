@@ -1,9 +1,13 @@
 /* eslint-disable react/prop-types */
 import React from "react";
+import axios from "axios";
 
 import { Box, Button, Grid, Tab, Tabs, Typography } from "@mui/material";
 import DepartmentTable from "../tables/DepartmentTable";
-import DepartmentInternalTable from "../tables/DepartmentInternalTable";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -22,6 +26,32 @@ function CustomTabPanel(props) {
 export default function Departments() {
   const [value, setValue] = React.useState(0);
   const [openAdd, setOpenAdd] = React.useState(false);
+
+  const [serviceDepartments, setServiceDepartments] = React.useState([]);
+  const [saleDepartments, setSaleDepartments] = React.useState([]);
+  const [internalDepartments, setInternalDepartments] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const departments = await api.get("/departments");
+        setServiceDepartments(
+          departments.data.filter(
+            (department) => department.type === "Serviços"
+          )
+        );
+        setSaleDepartments(
+          departments.data.filter((department) => department.type === "Vendas")
+        );
+        setInternalDepartments(
+          departments.data.filter((department) => department.type === "Interno")
+        );
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -61,7 +91,11 @@ export default function Departments() {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label="Todos"
+            label="Serviços"
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
+          <Tab
+            label="Vendas"
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
@@ -71,10 +105,25 @@ export default function Departments() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <DepartmentTable openAdd={openAdd} setOpenAdd={setOpenAdd} />
+        <DepartmentTable
+          departments={serviceDepartments}
+          openAdd={openAdd}
+          setOpenAdd={setOpenAdd}
+        />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <DepartmentInternalTable openAdd={openAdd} setOpenAdd={setOpenAdd} />
+        <DepartmentTable
+          departments={saleDepartments}
+          openAdd={openAdd}
+          setOpenAdd={setOpenAdd}
+        />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <DepartmentTable
+          departments={internalDepartments}
+          openAdd={openAdd}
+          setOpenAdd={setOpenAdd}
+        />
       </CustomTabPanel>
     </Box>
   );

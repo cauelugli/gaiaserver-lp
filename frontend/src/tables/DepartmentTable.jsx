@@ -31,23 +31,20 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function DepartmentTable({ openAdd, setOpenAdd }) {
+export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [selectedDepartment, setSelectedDepartment] = React.useState([]);
 
-  const [departments, setDepartments] = React.useState([]);
   const [users, setUsers] = React.useState([]);
   const [managers, setManagers] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const departments = await api.get("/departments");
         const users = await api.get("/users");
         const managers = await api.get("/managers");
-        setDepartments(departments.data.filter((department) => !department.isInternal));
         setUsers(users.data);
         setManagers(managers.data);
       } catch (error) {
@@ -55,14 +52,12 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
       }
     };
     fetchData();
-  }, [departments]);
+  }, []);
 
   const fetchData = async () => {
     try {
-      const departments = await api.get("/departments");
       const users = await api.get("/users");
       const managers = await api.get("/managers");
-      setDepartments(departments.data.filter((department) => !department.isInternal));
       setUsers(users.data);
       setManagers(managers.data);
     } catch (error) {
@@ -177,7 +172,12 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                       unmountOnExit
                     >
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>Geral</Typography>
+                        <Typography
+                          variant="h6"
+                          sx={{ fontSize: 18, fontWeight: "bold" }}
+                        >
+                          Geral
+                        </Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
@@ -192,7 +192,21 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                                 <Typography
                                   sx={{ fontSize: "14px", color: "#777" }}
                                 >
+                                  Tipo
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
                                   Telefone
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  E-mail Principal
                                 </Typography>
                               </TableCell>
                             </TableRow>
@@ -203,7 +217,13 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                                 <Typography>{department.name}</Typography>
                               </TableCell>
                               <TableCell>
+                                <Typography>{department.type}</Typography>
+                              </TableCell>
+                              <TableCell>
                                 <Typography>{department.phone}</Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography>{department.email}</Typography>
                               </TableCell>
                             </TableRow>
                           </TableBody>
@@ -211,7 +231,12 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                       </Box>
 
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>Gerência</Typography>
+                        <Typography
+                          variant="h6"
+                          sx={{ fontSize: 18, fontWeight: "bold" }}
+                        >
+                          Gerência
+                        </Typography>
                         <Table size="small">
                           <TableHead>
                             <TableRow>
@@ -267,7 +292,10 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                       </Box>
 
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>
+                        <Typography
+                          variant="h6"
+                          sx={{ fontSize: 18, fontWeight: "bold" }}
+                        >
                           Membros ({department.members.length})
                         </Typography>
                         <Table size="small">
@@ -316,7 +344,10 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
                       </Box>
 
                       <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>
+                        <Typography
+                          variant="h6"
+                          sx={{ fontSize: 18, fontWeight: "bold" }}
+                        >
                           Serviços ({department.services.length})
                         </Typography>
                         <Table size="small">
@@ -400,7 +431,6 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
             setOpenEdit={setOpenEdit}
             fetchData={fetchData}
             toast={toast}
-
           />
         </Dialog>
       )}
@@ -412,7 +442,6 @@ export default function DepartmentTable({ openAdd, setOpenAdd }) {
             setOpenDelete={setOpenDelete}
             fetchData={fetchData}
             toast={toast}
-
           />
         </Dialog>
       )}
