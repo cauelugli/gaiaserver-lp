@@ -68,7 +68,9 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
         setCustomers(customers.data);
         setClients(clients.data);
         setDepartments(
-          departments.data.filter((department) => !department.isInternal)
+          departments.data.filter(
+            (department) => department.type === "Serviços"
+          )
         );
         setServices(services.data);
         setStockItems(stockItems.data);
@@ -155,7 +157,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
         });
       }
       setOpenAddJob(!openAddJob);
-      fetchData1;
+      fetchData1();
     } catch (err) {
       alert("Vish, deu não...");
       console.log(err);
@@ -495,7 +497,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
                   >
                     <Typography sx={{ fontSize: 16, mx: 1 }}>
                       Serviço + Materiais ={" "}
-                      {service && `R$ ${materialsCost + service.value}`}
+                      {service && `R$ ${(materialsCost + service.value).toFixed(2)}`}
                     </Typography>
                   </Grid>
                 </Grid>
