@@ -1,6 +1,6 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import axios from "axios";
 
 import {
   Dialog,
@@ -14,52 +14,35 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Grid,
+  Avatar,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 import EditRequestForm from "../forms/edit/EditRequestForm";
+import dayjs from "dayjs";
 // import DeleteRequestForm from "../forms/delete/DeleteRequestForm";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
-export default function SaleTable({ selectedCustomer, fetchData }) {
+export default function SaleTable({ sales, fetchData }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
-  const [selectedRequest, setSelectedRequest] = React.useState([]);
+  const [selectedSale, setSelectedSale] = React.useState([]);
 
-  const [filteredSales, setFilteredSales] = React.useState([]);
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const sales = await api.get("/sales");
-        setFilteredSales(
-          sales.data.filter((sale) => sale.customerId === selectedCustomer._id)
-        );
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [selectedCustomer]);
-
-  const handleOpenDetail = (request) => {
+  const handleOpenDetail = (sale) => {
     setOpenDetail(!openDetail);
-    setSelectedRequest(request);
+    setSelectedSale(sale);
   };
 
-  const handleOpenEdit = (request) => {
+  const handleOpenEdit = (sale) => {
     setOpenEdit(!openEdit);
-    setSelectedRequest(request);
+    setSelectedSale(sale);
   };
 
-  const handleConfirmDelete = (request) => {
-    setSelectedRequest(request);
+  const handleConfirmDelete = (sale) => {
+    setSelectedSale(sale);
     setOpenDelete(!openDelete);
   };
 
@@ -68,25 +51,114 @@ export default function SaleTable({ selectedCustomer, fetchData }) {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
-            {filteredSales.map((request) => (
+            <TableRow
+              sx={{
+                backgroundColor: "#ccc",
+              }}
+            >
+              <TableCell align="left">
+                <Typography sx={{ fontSize: 14 }}>Nome do Comprador</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography sx={{ fontSize: 14 }}>Itens</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography sx={{ fontSize: 14 }}>Vendedor</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography sx={{ fontSize: 14 }}>Entrega em</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography sx={{ fontSize: 14 }}>Status</Typography>
+              </TableCell>
+            </TableRow>
+            {sales.map((sale) => (
               <>
                 <TableRow
-                  key={request._id}
+                  key={sale._id}
                   sx={{
                     cursor: "pointer",
                     backgroundColor:
-                      setSelectedRequest === request.title && openDetail
+                      selectedSale._id === sale._id && openDetail
                         ? "#eee"
                         : "none",
                     "&:hover": { backgroundColor: "#ccc " },
                   }}
                 >
                   <TableCell
-                    onClick={() => handleOpenDetail(request)}
+                    onClick={() => handleOpenDetail(sale)}
                     cursor="pointer"
                     align="left"
                   >
-                    {request.title}
+                    {sale.requester}
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(sale)}
+                    cursor="pointer"
+                    align="left"
+                  >
+                    {sale.items.map((item) => (
+                      <Grid
+                        container
+                        direction="row"
+                        key={item.id}
+                        alignItems="center"
+                        sx={{mt:1}}
+                      >
+                        <Avatar
+                          alt="Imagem do Produto"
+                          src={item.image}
+                          sx={{ width: 32, height: 32, mr: 1 }}
+                        />
+                        <Typography sx={{ fontSize: 12, mr: 0.5 }}>
+                          x{item.quantity}
+                        </Typography>
+                        <Typography
+                          sx={{ fontSize: 12, color: "#777", mr: 0.5 }}
+                        >
+                          {item.name}
+                        </Typography>
+                        <Typography
+                          sx={{ fontSize: 12, color: "#777", mr: 0.5 }}
+                        >
+                          {item.brand}
+                        </Typography>
+                        <Typography
+                          sx={{ fontSize: 12, color: "#777", mr: 0.5 }}
+                        >
+                          {item.type}
+                        </Typography>
+                        <Typography
+                          sx={{ fontSize: 12, color: "#777", mr: 0.5 }}
+                        >
+                          {item.model}
+                        </Typography>
+                        <Typography sx={{ fontSize: 12, color: "#777" }}>
+                          {item.size}
+                        </Typography>
+                      </Grid>
+                    ))}
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(sale)}
+                    cursor="pointer"
+                    align="left"
+                  >
+                    {sale.seller.name}
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(sale)}
+                    cursor="pointer"
+                    align="left"
+                  >
+                    {dayjs(sale.deliveryScheduledTo).format("DD/MM/YYYY")}
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(sale)}
+                    cursor="pointer"
+                    align="left"
+                  >
+                    {sale.status}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -95,7 +167,8 @@ export default function SaleTable({ selectedCustomer, fetchData }) {
                     colSpan={6}
                   >
                     <Collapse
-                      in={openDetail && selectedRequest.title === request.title}
+
+                      in={openDetail && selectedSale._id === sale._id}
                       timeout="auto"
                       unmountOnExit
                     >
@@ -112,7 +185,7 @@ export default function SaleTable({ selectedCustomer, fetchData }) {
                           <TableBody>
                             <TableRow>
                               <TableCell component="th" scope="row">
-                                {request.title}
+                                {sale.title}
                               </TableCell>
                             </TableRow>
                           </TableBody>
@@ -121,13 +194,13 @@ export default function SaleTable({ selectedCustomer, fetchData }) {
                           <ModeEditIcon
                             cursor="pointer"
                             option="delete"
-                            onClick={() => handleOpenEdit(request)}
+                            onClick={() => handleOpenEdit(sale)}
                             sx={{ color: "grey", mr: 2 }}
                           />
                           <DeleteIcon
                             cursor="pointer"
                             option="delete"
-                            onClick={() => handleConfirmDelete(request)}
+                            onClick={() => handleConfirmDelete(sale)}
                             sx={{ color: "#ff4444" }}
                           />
                         </Box>
@@ -140,7 +213,7 @@ export default function SaleTable({ selectedCustomer, fetchData }) {
           </TableBody>
         </Table>
       </TableContainer>
-      {openEdit && (
+      {/* {openEdit && (
         <Dialog
           fullWidth
           maxWidth="md"
@@ -149,12 +222,12 @@ export default function SaleTable({ selectedCustomer, fetchData }) {
         >
           <EditRequestForm
             openEdit={openEdit}
-            selectedRequest={selectedRequest}
+            selectedSale={selectedSale}
             setOpenEdit={setOpenEdit}
             fetchData={fetchData}
           />
         </Dialog>
-      )}
+      )} */}
       {/* {openDelete && (
         <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
           <DeleteRequestForm

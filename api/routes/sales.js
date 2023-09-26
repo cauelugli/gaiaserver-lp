@@ -1,36 +1,35 @@
 const express = require("express");
 const router = express.Router();
-const RequestJob = require("../models/Job");
+const Sale = require("../models/Sale");
 
-// GET ALL REQUESTS
+// GET ALL SALES
 router.get("/", async (req, res) => {
   try {
-    const requests = await RequestJob.find();
-    requests.data.filter((sale) => sale.type === "Venda")
-    res.status(200).json(requests);
+    const sales = await Sale.find();
+    res.status(200).json(sales);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// CREATE REQUEST
+// CREATE SALES
 router.post("/", async (req, res) => {
-  const newRequest = new RequestJob(req.body);
+  const newSale = new Sale(req.body);
   try {
-    const savedRequest = await newRequest.save();
-    res.status(200).json(savedRequest);
+    const savedSale = await newSale.save();
+    res.status(200).json(savedSale);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
   }
 });
 
-// DELETE REQUEST
+// DELETE SALES
 router.delete("/:id", async (req, res) => {
-  const requestId = req.params.id;
+  const saleId = req.params.id;
   try {
-    const deletedRequest = await RequestJob.findByIdAndDelete(requestId);
-    res.status(200).json(deletedRequest);
+    const deletedSale = await Sale.findByIdAndDelete(saleId);
+    res.status(200).json(deletedSale);
   } catch (err) {
     res.status(500).json(err);
   }

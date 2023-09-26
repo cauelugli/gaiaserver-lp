@@ -13,42 +13,43 @@ import {
   DialogTitle,
   Divider,
   FormControl,
-  FormControlLabel,
-  FormLabel,
   Grid,
   MenuItem,
-  Radio,
-  RadioGroup,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
 
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers";
-// import MaterialList from "../../components/small/MaterialList";
+
+import MaterialList from "../../components/small/MaterialList";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
+const AddSaleForm = ({ openAddSale, setOpenAddSale, fetchData1, toast }) => {
   const [customer, setCustomer] = React.useState("");
   const [customerType, setCustomerType] = React.useState("Empresa");
   const [requester, setRequester] = React.useState("");
   const [seller, setSeller] = React.useState("");
-  const [price, setPrice] = React.useState("");
-  const [cost, setCost] = React.useState("");
   const [department, setDepartment] = React.useState("");
   const [deliveryAddress, setDeliveryAddress] = React.useState("");
+  const [deliveryReceiver, setDeliveryReceiver] = React.useState("");
+  const [deliveryReceiverPhone, setDeliveryReceiverPhone] = React.useState("");
   const [deliveryScheduledTo, setDeliveryScheduledTo] = React.useState(dayjs());
+  const [materials, setMaterials] = React.useState([]);
+  const [materialsCost, setMaterialsCost] = React.useState(0);
 
   const [customers, setCustomers] = React.useState([]);
   const [clients, setClients] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
-  // const [products, setProducts] = React.useState([]);
+  const [products, setProducts] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -56,19 +57,20 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
         const customers = await api.get("/customers");
         const clients = await api.get("/clients");
         const departments = await api.get("/departments");
-        // const products = await api.get("/products");
+        const products = await api.get("/products");
         setCustomers(customers.data);
         setClients(clients.data);
         setDepartments(
           departments.data.filter((department) => !department.isInternal)
         );
-        // setProducts(products.data);
+        setProducts(products.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
+
     fetchData();
-  }, []);
+  }, [products]);
 
   const [showAdditionalOptions, setShowAdditionalOptions] =
     React.useState(false);
@@ -93,7 +95,7 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/jobs", {
+      const res = await api.post("/sales", {
         customer: {
           id: customer._id,
           name: customer.name,
@@ -109,21 +111,23 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
         seller,
         manager: department.manager,
         status: "Aberto",
-        price,
-        cost,
+        price: materialsCost,
+        items: materials,
         deliveryAddress,
+        deliveryReceiver,
+        deliveryReceiverPhone,
         deliveryScheduledTo,
       });
       if (res.data) {
-        toast.success(`Pedido Adicionado! Orçamento #${res.data.quoteNumber}`, {
+        toast.success(`Venda Adicionada! Orçamento #${res.data.quoteNumber}`, {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
         });
       }
-      setOpenAddJob(!openAddJob);
-      fetchData1;
+      setOpenAddSale(!openAddSale);
+      fetchData1();
     } catch (err) {
       alert("Vish, deu não...");
       console.log(err);
@@ -137,37 +141,51 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
       </Grid>
 
       <DialogContent>
-        <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
-          Informações do Cliente
-        </Typography>
-        <Grid container sx={{ mt: 2 }}>
-          <Grid item sx={{ my: 1 }}>
+        <Grid container>
+          <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
+            Informações do Cliente
+          </Typography>
+          {customerType && customer && requester && (
+            <CheckCircleOutlineOutlinedIcon sx={{ color: "#50C878", ml: 1 }} />
+          )}
+        </Grid>
+        <Grid
+          container
+          justifyContent="space-between"
+          alignItems="flex-start"
+          sx={{ mt: 2 }}
+        >
+          <Grid item>
             <FormControl>
-              <FormLabel sx={{ color: "black" }}>Tipo de Cliente</FormLabel>
-              <RadioGroup
-                row
-                value={customerType}
+              <Select
+                size="small"
                 onChange={(e) => handleCustomerTypeChange(e.target.value)}
+                value={customerType}
+                displayEmpty
+                renderValue={(selected) => {
+                  if (selected.length === 0) {
+                    return <Typography>Tipo de Cliente</Typography>;
+                  }
+
+                  return selected;
+                }}
+                sx={{ width: 180 }}
               >
-                <FormControlLabel
-                  value="Empresa"
-                  control={<Radio />}
-                  label="Empresa"
-                />
-                <FormControlLabel
-                  value="Pessoa Física"
-                  control={<Radio />}
-                  label="Pessoa Física"
-                />
-              </RadioGroup>
+                <MenuItem disabled value="">
+                  Tipo de Cliente
+                </MenuItem>
+                <MenuItem value={"Empresa"}>Empresa</MenuItem>
+                <MenuItem value={"Pessoa Fisica"}>Pessoa Física</MenuItem>
+              </Select>
             </FormControl>
           </Grid>
 
-          <Grid item sx={{ my: 2 }}>
+          <Grid item>
             {customerType && (
               <Grid item>
                 <FormControl>
                   <Select
+                    size="small"
                     onChange={(e) => {
                       handleCustomerChange(e.target.value);
                     }}
@@ -180,7 +198,7 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
 
                       return selected.name;
                     }}
-                    sx={{ width: 390 }}
+                    sx={{ width: 250 }}
                   >
                     <MenuItem disabled value="">
                       {customerType === "Empresa"
@@ -206,24 +224,35 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
           </Grid>
 
           <Grid item>
-            {customer && (
-              <TextField
-                label="Solicitante"
-                value={requester}
-                onChange={(e) => setRequester(e.target.value)}
-                required
-                variant="outlined"
-                sx={{ width: 390 }}
-              />
-            )}
+            <TextField
+              size="small"
+              label="Solicitante"
+              value={requester}
+              onChange={(e) => setRequester(e.target.value)}
+              required
+              variant="outlined"
+              sx={{ width: 250 }}
+            />
           </Grid>
         </Grid>
 
         <Divider sx={{ mt: 2 }} />
-        <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
-          Departamento
-        </Typography>
         <Grid container>
+          <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
+            Departamento
+          </Typography>
+          {department && seller && (
+            <CheckCircleOutlineOutlinedIcon
+              sx={{ color: "#50C878", ml: 1, mt: 2 }}
+            />
+          )}
+        </Grid>
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          sx={{ mb: 4 }}
+        >
           <Grid item>
             <Select
               onChange={(e) => {
@@ -231,47 +260,54 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
               }}
               value={department}
               size="small"
+              displayEmpty
               renderValue={(selected) => {
                 if (!selected) {
-                  return <Typography>Departamento</Typography>;
+                  return <Typography>Selecione o Departamento</Typography>;
                 } else {
                   return <Typography>{selected.name}</Typography>;
                 }
               }}
-              sx={{ width: 390 }}
             >
-              {departments.map((item) => (
-                <MenuItem
-                  value={item}
-                  key={item.id}
-                  sx={{
-                    "&:hover": {
-                      backgroundColor: item.color,
-                      color: "white",
-                    },
-                  }}
-                >
-                  {item.name}
-                </MenuItem>
-              ))}
+              <MenuItem disabled value="">
+                Departamentos
+              </MenuItem>
+              {departments
+                .filter((department) => department.type === "Vendas")
+                .map((item) => (
+                  <MenuItem
+                    value={item}
+                    key={item.id}
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: item.color,
+                        color: "white",
+                      },
+                    }}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))}
             </Select>
           </Grid>
           {department && (
-            <Grid item>
-              <Typography sx={{ mt: 2, mb: 1 }}>Vendedor</Typography>
+            <Grid item sx={{ ml: 10 }}>
               <Select
                 onChange={(e) => setSeller(e.target.value)}
                 value={seller}
                 size="small"
-                sx={{ width: 390 }}
+                displayEmpty
                 renderValue={(selected) => {
                   if (selected.length === 0) {
-                    return <Typography>Vendedor</Typography>;
+                    return <Typography>Selecione o Vendedor</Typography>;
                   }
 
                   return <Typography>{selected.name}</Typography>;
                 }}
               >
+                <MenuItem disabled value="">
+                  Vendedores
+                </MenuItem>
                 {department.members.map((item) => (
                   <MenuItem value={item} key={item._id}>
                     {item.name}
@@ -282,10 +318,36 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
           )}
         </Grid>
 
+        <Divider sx={{ mt: 2 }} />
+        <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
+          Produtos
+        </Typography>
+        <Grid container>
+          <Grid item>
+            {products.length > 0 && (
+              <MaterialList
+                stockItems={products}
+                materials={materials}
+                materialsEditCost={materialsCost}
+                setMaterials={setMaterials}
+                setMaterialsFinalCost={setMaterialsCost}
+              />
+            )}
+          </Grid>
+        </Grid>
+
         <Divider sx={{ my: 2 }} />
+        <Grid container>
+
         <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
           Entrega
         </Typography>
+        {deliveryAddress && deliveryReceiver && deliveryReceiverPhone && deliveryScheduledTo && (
+            <CheckCircleOutlineOutlinedIcon
+              sx={{ color: "#50C878", ml: 1, mt: 2 }}
+            />
+          )}
+        </Grid>
         <Grid container sx={{ mt: 2 }}>
           <Grid item>
             <TextField
@@ -294,10 +356,30 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
               onChange={(e) => setDeliveryAddress(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 390, mb: 1 }}
+              sx={{ width: 270 }}
             />
           </Grid>
           <Grid item>
+            <TextField
+              label="Recebedor"
+              value={deliveryReceiver}
+              onChange={(e) => setDeliveryReceiver(e.target.value)}
+              required
+              variant="outlined"
+              sx={{ width: 130, mx: 1 }}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              label="Contato"
+              value={deliveryReceiverPhone}
+              onChange={(e) => setDeliveryReceiverPhone(e.target.value)}
+              required
+              variant="outlined"
+              sx={{ width: 150, mr: 1 }}
+            />
+          </Grid>
+          <Grid item sx={{ mt: -1, width: "25%" }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker"]}>
                 <DatePicker
@@ -305,7 +387,6 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
                   format="DD/MM/YYYY"
                   onChange={(newValue) => setDeliveryScheduledTo(newValue)}
                   label="Entregar em"
-                  sx={{ width: 390 }}
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -333,7 +414,7 @@ const AddSaleForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAddJob(!openAddJob)}
+          onClick={() => setOpenAddSale(!openAddSale)}
         >
           X
         </Button>

@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
+const autoIncrement = require("mongoose-auto-increment");
+
+autoIncrement.initialize(mongoose.connection);
 
 saleSchema = new mongoose.Schema({
-  customerId: {
-    type: String,
+  customer: {
+    type: Object,
     required: true,
   },
   requester: {
@@ -29,7 +32,7 @@ saleSchema = new mongoose.Schema({
     default: 0,
     required: true,
   },
-  cost: {
+  items: {
     type: Object,
   },
   deliveryScheduledTo: {
@@ -39,6 +42,12 @@ saleSchema = new mongoose.Schema({
   deliveryAddress: {
     type: String,
     required: true,
+  },
+  deliveryReceiver: {
+    type: String,
+  },
+  deliveryReceiverPhone: {
+    type: String,
   },
   deliveredIn: {
     type: String,
@@ -53,6 +62,13 @@ saleSchema = new mongoose.Schema({
   updatedBy: {
     type: String,
   },
+});
+
+saleSchema.plugin(autoIncrement.plugin, {
+  model: "Job",
+  field: "quoteNumber",
+  startAt: 1,
+  incrementBy: 1,
 });
 
 const Sale = mongoose.model("Sale", saleSchema);
