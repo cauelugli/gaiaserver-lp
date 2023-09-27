@@ -67,16 +67,21 @@ export default function EditProductForm({
 
   const handleEdit = async (e) => {
     e.preventDefault();
-    let imageBase64;
-    if (newImage) {
-      imageBase64 = await convertImageToBase64(newImage);
-    }
     try {
+      let updatedImagePath = selectedProduct.image;
+  
+      if (newImage) {
+        const formData = new FormData();
+        formData.append("image", newImage);
+        const uploadResponse = await api.post("/uploads/singleProduct", formData);
+        updatedImagePath = uploadResponse.data.imagePath;
+      }
+  
       const res = await api.put("/products", {
         productId: selectedProduct._id,
         name,
         brand,
-        image: newImage ? imageBase64 : selectedProduct.image,
+        image: updatedImagePath, 
         type,
         model,
         size,
@@ -84,6 +89,7 @@ export default function EditProductForm({
         buyValue,
         sellValue,
       });
+  
       if (res.data) {
         toast.success("Produto Editado!", {
           closeOnClick: true,
@@ -92,6 +98,7 @@ export default function EditProductForm({
           autoClose: 1200,
         });
       }
+  
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {
@@ -99,6 +106,7 @@ export default function EditProductForm({
       console.log(err);
     }
   };
+  
 
   return (
     <form onSubmit={handleEdit}>
@@ -291,7 +299,7 @@ export default function EditProductForm({
                 alignItems="center"
               >
                 <img
-                  src={selectedProduct.image}
+                  src={`http://localhost:3000/static/${selectedProduct.image}`}
                   alt="Prévia da Imagem"
                   style={{
                     marginTop: 20,

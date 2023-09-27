@@ -35,35 +35,18 @@ export default function AddProductForm({ onClose, fetchData, toast }) {
   const [buyValue, setBuyValue] = React.useState(0);
   const [sellValue, setSellValue] = React.useState(0);
 
-  const convertImageToBase64 = (imageFile) => {
-    return new Promise((resolve, reject) => {
-      if (!imageFile) {
-        reject("Nenhuma imagem selecionada.");
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        resolve(event.target.result);
-      };
-
-      reader.onerror = (error) => {
-        reject(error);
-      };
-
-      reader.readAsDataURL(imageFile);
-    });
-  };
-
   const handleAdd = async (e) => {
     e.preventDefault();
-    const imageBase64 = await convertImageToBase64(image);
+    const formData = new FormData();
+    formData.append("image", image);
+
     try {
-      const res = await api.post("/products", {
+      const uploadResponse = await api.post("/uploads/singleProduct", formData);
+      const imagePath = uploadResponse.data.imagePath;
+      const productResponse = await api.post("/products", {
         name,
         brand,
-        image: imageBase64,
+        image: imagePath,
         type,
         model,
         size,
@@ -71,7 +54,8 @@ export default function AddProductForm({ onClose, fetchData, toast }) {
         buyValue,
         sellValue,
       });
-      if (res.data) {
+
+      if (productResponse.data) {
         toast.success("Produto Adicionado!", {
           closeOnClick: true,
           pauseOnHover: false,
@@ -307,7 +291,9 @@ export default function AddProductForm({ onClose, fetchData, toast }) {
         <Button
           variant="contained"
           color="error"
-          onClick={() => {onClose()}}
+          onClick={() => {
+            onClose();
+          }}
         >
           X
         </Button>

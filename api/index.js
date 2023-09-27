@@ -17,11 +17,13 @@ const saleRoutes = require("./routes/sales");
 const userRoute = require("./routes/users");
 const managerRoute = require("./routes/managers");
 const quickNotesRoute = require("./routes/quicknotes");
+const uploadsRoute = require("./routes/uploads");
 
 dotenv.config();
 app.use(cors());
 app.use(express.json());
-app.use("/images", express.static(path.join(__dirname, "/images")));
+app.use("/images", express.static(__dirname + "/uploads/images"));
+app.use('/static', express.static('../uploads'))
 
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -43,6 +45,7 @@ app.use("/api/stockItems", stockItemRoutes);
 app.use("/api/users", userRoute);
 app.use("/api/managers", managerRoute);
 app.use("/api/quicknotes", quickNotesRoute);
+app.use("/api/uploads", uploadsRoute);
 
 app.listen("3000", () => {
   console.log("Backend is running.");

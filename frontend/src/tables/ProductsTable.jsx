@@ -9,6 +9,8 @@ import {
   Box,
   Collapse,
   Dialog,
+  DialogContent,
+  FormHelperText,
   Grid,
   Paper,
   Table,
@@ -37,6 +39,16 @@ export default function ProductsTable() {
   const [openDetail, setOpenDetail] = React.useState(false);
 
   const [products, setProducts] = React.useState([]);
+
+  const [openImage, setOpenImage] = React.useState(false);
+
+  const handleOpenImage = () => {
+    setOpenImage(true);
+  };
+
+  const handleCloseImage = () => {
+    setOpenImage(false);
+  };
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -167,11 +179,36 @@ export default function ProductsTable() {
                             justifyContent="space-around"
                           >
                             <Grid item>
-                              <Avatar
-                                alt="Imagem do Produto"
-                                src={product.image}
-                                sx={{ width: 200, height: 200 }}
-                              />
+                              <Grid
+                                container
+                                direction="column"
+                                alignItems="center"
+                                justifyContent="center"
+                              >
+                                <Avatar
+                                  alt="Imagem do Produto"
+                                  src={`http://localhost:3000/static/${product.image}`}
+                                  sx={{ width: 200, height: 200 }}
+                                  onDoubleClick={handleOpenImage}
+                                />
+
+                                <FormHelperText>
+                                  Click 2x na imagem para ampliar
+                                </FormHelperText>
+
+                                <Dialog
+                                  open={openImage}
+                                  onClose={handleCloseImage}
+                                >
+                                  <DialogContent>
+                                    <img
+                                      src={`http://localhost:3000/static/${product.image}`}
+                                      alt="Imagem do Produto"
+                                      style={{ maxWidth: "100%" }}
+                                    />
+                                  </DialogContent>
+                                </Dialog>
+                              </Grid>
                             </Grid>
                             <Grid item>
                               <Table size="small">
