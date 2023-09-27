@@ -10,6 +10,7 @@ import BuildIcon from "@mui/icons-material/Build";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import LanIcon from "@mui/icons-material/Lan";
 import SettingsIcon from "@mui/icons-material/Settings";
 import WarehouseIcon from '@mui/icons-material/Warehouse';
@@ -17,13 +18,14 @@ import WorkIcon from "@mui/icons-material/Work";
 
 const options = [
   { label: "Dashboard", icon: <DashboardIcon />, link: "/" },
+  { label: "Clientes", icon: <WorkIcon />, link: "/customers" },
   { label: "Colaboradores", icon: <GroupIcon />, link: "/users" },
   { label: "Departamentos", icon: <LanIcon />, link: "/departments" },
   { label: "Pedidos", icon: <GradingIcon />, link: "/requests" },
   { label: "Serviços", icon: <BuildIcon />, link: "/services" },
   { label: "Estoque", icon: <WarehouseIcon />, link: "/stock" },
   { label: "Financeiro", icon: <AttachMoneyIcon />, link: "/finance", disabled: true },
-  { label: "Clientes", icon: <WorkIcon />, link: "/customers" },
+  { label: "Arquivos", icon: <InsertDriveFileIcon />, link: "/files", disabled: true },
   { label: "Configurações", icon: <SettingsIcon />, link: "/settings", disabled: true },
 ];
 
