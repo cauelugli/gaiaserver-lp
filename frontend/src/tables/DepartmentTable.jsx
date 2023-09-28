@@ -343,54 +343,56 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                         </Table>
                       </Box>
 
-                      <Box sx={{ my: 4, px: 6 }}>
-                        <Typography
-                          variant="h6"
-                          sx={{ fontSize: 18, fontWeight: "bold" }}
-                        >
-                          Serviços ({department.services.length})
-                        </Typography>
-                        <Table size="small">
-                          <TableBody>
-                            <TableRow>
-                              <TableCell>
-                                <Typography>
-                                  {department.services.map((service) => (
-                                    <Chip
-                                      sx={{ mx: 1 }}
-                                      size="small"
-                                      key={service.id}
-                                      label={
-                                        <Typography
-                                          sx={{
-                                            fontSize: "100%",
-                                          }}
-                                        >
-                                          {service.name}
-                                        </Typography>
-                                      }
-                                    />
-                                  ))}
-                                </Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                        <Box sx={{ mt: 3, ml: "90%" }}>
-                          <ModeEditIcon
-                            cursor="pointer"
-                            option="delete"
-                            onClick={() => handleOpenEdit(department)}
-                            sx={{ color: "grey", mr: 2 }}
-                          />
-                          <DeleteIcon
-                            cursor="pointer"
-                            option="delete"
-                            onClick={() => handleConfirmDelete(department)}
-                            sx={{ color: "#ff4444" }}
-                          />
+                      {department.services.length > 0 && (
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Typography
+                            variant="h6"
+                            sx={{ fontSize: 18, fontWeight: "bold" }}
+                          >
+                            Serviços ({department.services.length})
+                          </Typography>
+                          <Table size="small">
+                            <TableBody>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography>
+                                    {department.services.map((service) => (
+                                      <Chip
+                                        sx={{ mx: 1 }}
+                                        size="small"
+                                        key={service.id}
+                                        label={
+                                          <Typography
+                                            sx={{
+                                              fontSize: "100%",
+                                            }}
+                                          >
+                                            {service.name}
+                                          </Typography>
+                                        }
+                                      />
+                                    ))}
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                          <Box sx={{ mt: 3, ml: "90%" }}>
+                            <ModeEditIcon
+                              cursor="pointer"
+                              option="delete"
+                              onClick={() => handleOpenEdit(department)}
+                              sx={{ color: "grey", mr: 2 }}
+                            />
+                            <DeleteIcon
+                              cursor="pointer"
+                              option="delete"
+                              onClick={() => handleConfirmDelete(department)}
+                              sx={{ color: "#ff4444" }}
+                            />
+                          </Box>
                         </Box>
-                      </Box>
+                      )}
                     </Collapse>
                   </TableCell>
                 </TableRow>

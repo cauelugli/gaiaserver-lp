@@ -97,17 +97,17 @@ export default function SaleTable({ sales, fetchData }) {
                     cursor="pointer"
                     align="left"
                   >
-                    {sale.items.map((item) => (
+                    {sale.items.slice(0, 2).map((item) => (
                       <Grid
                         container
                         direction="row"
                         key={item.id}
                         alignItems="center"
-                        sx={{mt:1}}
+                        sx={{ mt: 1 }}
                       >
                         <Avatar
                           alt="Imagem do Produto"
-                          src={item.image}
+                          src={`http://localhost:3000/static/${item.image}`}
                           sx={{ width: 32, height: 32, mr: 1 }}
                         />
                         <Typography sx={{ fontSize: 12, mr: 0.5 }}>
@@ -138,6 +138,9 @@ export default function SaleTable({ sales, fetchData }) {
                         </Typography>
                       </Grid>
                     ))}
+                    {sale.items.length > 2 && (
+                      <Typography sx={{ ml:5, fontSize: 18 }}>+{sale.items.length - 2} itens</Typography>
+                    )}
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(sale)}
@@ -167,7 +170,6 @@ export default function SaleTable({ sales, fetchData }) {
                     colSpan={6}
                   >
                     <Collapse
-
                       in={openDetail && selectedSale._id === sale._id}
                       timeout="auto"
                       unmountOnExit
