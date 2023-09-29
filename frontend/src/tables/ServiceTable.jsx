@@ -2,7 +2,6 @@
 import * as React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 
 import {
   Box,
@@ -24,48 +23,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditServiceForm from "../forms/edit/EditServiceForm";
 import DeleteServiceForm from "../forms/delete/DeleteServiceForm";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
-export default function ServiceTable() {
+export default function ServiceTable({services, departments, stockItems, fetchData}) {
   const [selectedService, setSelectedService] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
 
-  const [services, setServices] = React.useState([]);
-  const [departments, setDepartments] = React.useState([]);
-  const [stockItems, setStockItems] = React.useState([]);
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const services = await api.get("/services");
-        const departments = await api.get("/departments");
-        const stockItems = await api.get("/stockItems");
-        setServices(services.data.filter((service) => !service.isSupport));
-        setDepartments(departments.data);
-        setStockItems(stockItems.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [services]);
-
-  const fetchData = async () => {
-    try {
-      const services = await api.get("/services");
-      const departments = await api.get("/departments");
-      const stockItems = await api.get("/stockItems");
-      setServices(services.data.filter((service) => !service.isSupport));
-      setDepartments(departments.data);
-      setStockItems(stockItems.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const handleOpenDetail = (service) => {
     setOpenDetail(!openDetail);
@@ -94,10 +57,14 @@ export default function ServiceTable() {
                 }}
               >
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Nome do Serviço</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Nome do Serviço
+                  </Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Departamento</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Departamento
+                  </Typography>
                 </TableCell>
               </TableRow>
               {services.map((service) => (
@@ -143,7 +110,10 @@ export default function ServiceTable() {
                         unmountOnExit
                       >
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>
+                          <Typography
+                            variant="h6"
+                            sx={{ fontSize: 18, fontWeight: "bold" }}
+                          >
                             Informações do Serviço
                           </Typography>
                           <Table size="small">
@@ -192,7 +162,10 @@ export default function ServiceTable() {
                           </Table>
                         </Box>
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>
+                          <Typography
+                            variant="h6"
+                            sx={{ fontSize: 18, fontWeight: "bold" }}
+                          >
                             Materiais Utilizados
                           </Typography>
                           {service.materials.length > 0 ? (
@@ -251,7 +224,7 @@ export default function ServiceTable() {
                                   )}
                                 </TableBody>
                               </Table>
-                              <Box sx={{ ml: "760px", mr:-10 }}>
+                              <Box sx={{ ml: "760px", mr: -10 }}>
                                 <TableRow>
                                   <TableCell>
                                     <Typography
@@ -259,8 +232,8 @@ export default function ServiceTable() {
                                         fontSize: "14px",
                                         color: "#777",
                                         my: -1,
-                                        mb:-2,
-                                        mt:2
+                                        mb: -2,
+                                        mt: 2,
                                       }}
                                     >
                                       Valor Total (serviço + itens)
@@ -269,8 +242,13 @@ export default function ServiceTable() {
                                 </TableRow>
                                 <TableRow>
                                   <TableCell>
-                                    <Typography sx={{ my: -1, color:"#228B22"}}>
-                                      R$ {(service.materialsCost + service.value).toFixed(2)}
+                                    <Typography
+                                      sx={{ my: -1, color: "#228B22" }}
+                                    >
+                                      R${" "}
+                                      {(
+                                        service.materialsCost + service.value
+                                      ).toFixed(2)}
                                     </Typography>
                                   </TableCell>
                                 </TableRow>
@@ -330,7 +308,6 @@ export default function ServiceTable() {
               setOpenDelete={setOpenDelete}
               fetchData={fetchData}
               toast={toast}
-
             />
           </Dialog>
         )}

@@ -41,18 +41,18 @@ export default function StockEntriesTable() {
             <TableBody>
               <TableRow sx={{ backgroundColor: "#ccc" }}>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Nº da Entrada</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nº da Entrada</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Itens</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Itens</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography sx={{ fontSize: 14 }}>
+                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>
                     Valor Total da Compra
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography sx={{ fontSize: 14 }}>Adicionado em</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Adicionado em</Typography>
                 </TableCell>
               </TableRow>
               {stockEntries.map((entry) => (

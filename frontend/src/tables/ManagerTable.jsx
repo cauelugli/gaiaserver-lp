@@ -89,13 +89,13 @@ export default function ManagerTable() {
               }}
             >
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Nome do Gerente</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Gerente</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>E-mail</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>E-mail</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Departamento</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Departamento</Typography>
               </TableCell>
             </TableRow>
             {managers.map((manager) => (

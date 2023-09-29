@@ -57,19 +57,19 @@ export default function SaleTable({ sales, fetchData }) {
               }}
             >
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Nome do Comprador</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Comprador</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Itens</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Itens</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Vendedor</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Vendedor</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Entrega em</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Entrega em</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Status</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Status</Typography>
               </TableCell>
             </TableRow>
             {sales.map((sale) => (

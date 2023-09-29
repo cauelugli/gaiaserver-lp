@@ -56,19 +56,19 @@ export default function JobTable({ jobs, fetchData }) {
               }}
             >
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Nome do Job</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Job</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Solicitante</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Solicitante</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Serviço</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Serviço</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Agendado para</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Agendado para</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Status</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Status</Typography>
               </TableCell>
             </TableRow>
             {jobs.map((job) => (

@@ -80,16 +80,16 @@ export default function StockTable() {
             <TableBody>
               <TableRow sx={{backgroundColor:"#ccc"}}>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Nome do Item</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Item</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Valor de Compra</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Valor de Compra</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Valor de Venda</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Valor de Venda</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Em Estoque</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Em Estoque</Typography>
                 </TableCell>
               </TableRow>
               {stockItems.map((stockItem) => (

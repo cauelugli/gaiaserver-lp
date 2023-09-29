@@ -91,15 +91,19 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
               }}
             >
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>
+                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                   Nome do Departamento
                 </Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Gerente</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                  Gerente
+                </Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography sx={{ fontSize: 14 }}>Nº Colaboradores</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                  Nº Colaboradores
+                </Typography>
               </TableCell>
             </TableRow>
             {departments.map((department) => (

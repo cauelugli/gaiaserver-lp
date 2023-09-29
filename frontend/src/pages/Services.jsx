@@ -16,7 +16,6 @@ import {
 
 import ServiceTable from "../tables/ServiceTable";
 import AddServiceForm from "../forms/add/AddServiceForm";
-import ServiceSupportTable from "../tables/ServiceSupportTable";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -41,6 +40,7 @@ export default function Services() {
   const [openAddService, setOpenAddService] = React.useState(false);
 
   const [services, setServices] = React.useState([]);
+  const [supports, setSupports] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
   const [stockItems, setStockItems] = React.useState([]);
 
@@ -54,7 +54,8 @@ export default function Services() {
         const services = await api.get("/services");
         const departments = await api.get("/departments");
         const stockItems = await api.get("/stockItems");
-        setServices(services.data);
+        setServices(services.data.filter((service) => service.value > 0));
+        setSupports(services.data.filter((service) => service.value === 0));
         setDepartments(departments.data);
         setStockItems(stockItems.data);
       } catch (error) {
@@ -121,10 +122,10 @@ export default function Services() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <ServiceTable />
+        <ServiceTable services={services} departments={departments} stockItems={stockItems} fetchData={fetchData}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <ServiceSupportTable />
+      <ServiceTable services={supports} departments={departments} stockItems={stockItems} fetchData={fetchData}/>
       </CustomTabPanel>
       {openAddService && (
         <Dialog

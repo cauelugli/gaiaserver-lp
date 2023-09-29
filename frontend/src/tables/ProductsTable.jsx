@@ -94,16 +94,16 @@ export default function ProductsTable() {
             <TableBody>
               <TableRow sx={{ backgroundColor: "#ccc" }}>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Nome do Produto</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Produto</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Marca</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Marca</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Modelo</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Modelo</Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14 }}>Em Estoque</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Em Estoque</Typography>
                 </TableCell>
               </TableRow>
               {products.map((product) => (
