@@ -18,6 +18,7 @@ import Customers from "./pages/Customers";
 import Departments from "./pages/Departments";
 import Services from "./pages/Services";
 import Stock from "./pages/Stock";
+import NavBar from "./components/NavBar";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -54,9 +55,11 @@ export default function App() {
       <Grid
         container
         sx={{
-          m: -1,
+          mt: -1,
+          ml: -1,
         }}
       >
+        <NavBar />
         <Grid
           item
           xs={sidebarStatus ? 1.5 : 0.6}
