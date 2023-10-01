@@ -92,13 +92,13 @@ export default function UserTable() {
                 <TableCell align="left">
                   <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Colaborador</Typography>
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align="center">
                   <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Ocupação</Typography>
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align="center">
                   <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>E-mail</Typography>
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align="center">
                   <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Departamento</Typography>
                 </TableCell>
               </TableRow>
@@ -125,7 +125,7 @@ export default function UserTable() {
                     <TableCell
                       onClick={() => handleOpenDetail(user)}
                       cursor="pointer"
-                      align="left"
+                      align="center"
                     >
                       <Typography sx={{ fontSize: 14 }}>
                         {user.position ? user.position : "-"}
@@ -134,14 +134,14 @@ export default function UserTable() {
                     <TableCell
                       onClick={() => handleOpenDetail(user)}
                       cursor="pointer"
-                      align="left"
+                      align="center"
                     >
                       <Typography sx={{ fontSize: 14 }}>{user.email}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(user)}
                       cursor="pointer"
-                      align="left"
+                      align="center"
                     >
                       <Typography sx={{ fontSize: 14 }}>
                         {user.department ? user.department.name : "-"}

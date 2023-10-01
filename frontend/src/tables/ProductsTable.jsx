@@ -94,16 +94,29 @@ export default function ProductsTable() {
             <TableBody>
               <TableRow sx={{ backgroundColor: "#ccc" }}>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Produto</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Nome do Produto
+                  </Typography>
                 </TableCell>
-                <TableCell align="left">
-                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Marca</Typography>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Marca
+                  </Typography>
                 </TableCell>
-                <TableCell align="left">
-                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Modelo</Typography>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Tipo
+                  </Typography>
                 </TableCell>
-                <TableCell align="left">
-                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Em Estoque</Typography>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Modelo
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Em Estoque
+                  </Typography>
                 </TableCell>
               </TableRow>
               {products.map((product) => (
@@ -131,7 +144,7 @@ export default function ProductsTable() {
                     <TableCell
                       onClick={() => handleOpenDetail(product)}
                       cursor="pointer"
-                      align="left"
+                      align="center"
                     >
                       <Typography sx={{ fontSize: 14 }}>
                         {product.brand}
@@ -140,7 +153,16 @@ export default function ProductsTable() {
                     <TableCell
                       onClick={() => handleOpenDetail(product)}
                       cursor="pointer"
-                      align="left"
+                      align="center"
+                    >
+                      <Typography sx={{ fontSize: 14 }}>
+                        {product.type}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(product)}
+                      cursor="pointer"
+                      align="center"
                     >
                       <Typography sx={{ fontSize: 14 }}>
                         {product.model}
@@ -149,7 +171,7 @@ export default function ProductsTable() {
                     <TableCell
                       onClick={() => handleOpenDetail(product)}
                       cursor="pointer"
-                      align="left"
+                      align="center"
                     >
                       <Typography sx={{ fontSize: 14 }}>
                         {product.quantity}

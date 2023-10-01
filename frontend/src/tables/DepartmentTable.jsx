@@ -95,12 +95,12 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                   Nome do Departamento
                 </Typography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="center">
                 <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                   Gerente
                 </Typography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="center">
                 <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                   Nº Colaboradores
                 </Typography>
@@ -137,7 +137,7 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                   <TableCell
                     onClick={() => handleOpenDetail(department)}
                     cursor="pointer"
-                    align="left"
+                    align="center"
                     sx={{
                       color:
                         selectedDepartment === department.name && openDetail
@@ -152,7 +152,7 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                   <TableCell
                     onClick={() => handleOpenDetail(department)}
                     cursor="pointer"
-                    align="left"
+                    align="center"
                     sx={{
                       color:
                         selectedDepartment === department.name && openDetail

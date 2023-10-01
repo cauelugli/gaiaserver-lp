@@ -82,13 +82,13 @@ export default function StockTable() {
                 <TableCell align="left">
                   <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Item</Typography>
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align="center">
                   <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Valor de Compra</Typography>
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align="center">
                   <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Valor de Venda</Typography>
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align="center">
                   <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Em Estoque</Typography>
                 </TableCell>
               </TableRow>
@@ -115,21 +115,21 @@ export default function StockTable() {
                     <TableCell
                       onClick={() => handleOpenDetail(stockItem)}
                       cursor="pointer"
-                      align="left"
+                      align="center"
                     >
                       <Typography sx={{ fontSize: 14 }}>R${stockItem.buyValue}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(stockItem)}
                       cursor="pointer"
-                      align="left"
+                      align="center"
                     >
                       <Typography sx={{ fontSize: 14 }}>R${stockItem.sellValue}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(stockItem)}
                       cursor="pointer"
-                      align="left"
+                      align="center"
                     >
                       <Typography sx={{ fontSize: 14 }}>{stockItem.quantity}</Typography>
                     </TableCell>

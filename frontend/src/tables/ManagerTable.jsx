@@ -91,10 +91,13 @@ export default function ManagerTable() {
               <TableCell align="left">
                 <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Gerente</Typography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="center">
                 <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>E-mail</Typography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="center">
+                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Telefone</Typography>
+              </TableCell>
+              <TableCell align="center">
                 <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Departamento</Typography>
               </TableCell>
             </TableRow>
@@ -123,7 +126,7 @@ export default function ManagerTable() {
                   <TableCell
                     onClick={() => handleOpenDetail(manager)}
                     cursor="pointer"
-                    align="left"
+                    align="center"
                   >
                     <Typography sx={{ fontSize: 14 }}>
                       {manager.email}
@@ -132,7 +135,16 @@ export default function ManagerTable() {
                   <TableCell
                     onClick={() => handleOpenDetail(manager)}
                     cursor="pointer"
-                    align="left"
+                    align="center"
+                  >
+                    <Typography sx={{ fontSize: 14 }}>
+                      {manager.phone}
+                    </Typography>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(manager)}
+                    cursor="pointer"
+                    align="center"
                   >
                     <Typography sx={{ fontSize: 14 }}>
                       {manager.department ? manager.department.name : "-"}

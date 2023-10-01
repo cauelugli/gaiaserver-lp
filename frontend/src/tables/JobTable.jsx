@@ -58,16 +58,16 @@ export default function JobTable({ jobs, fetchData }) {
               <TableCell align="left">
                 <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Job</Typography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="center">
                 <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Solicitante</Typography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="center">
                 <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Serviço</Typography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="center">
                 <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Agendado para</Typography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="center">
                 <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Status</Typography>
               </TableCell>
             </TableRow>
@@ -94,7 +94,7 @@ export default function JobTable({ jobs, fetchData }) {
                   <TableCell
                     onClick={() => handleOpenDetail(job)}
                     cursor="pointer"
-                    align="left"
+                    align="center"
                   >
                     <Typography sx={{ fontSize: 14 }}>
                       {job.requester}{" "}
@@ -104,7 +104,7 @@ export default function JobTable({ jobs, fetchData }) {
                   <TableCell
                     onClick={() => handleOpenDetail(job)}
                     cursor="pointer"
-                    align="left"
+                    align="center"
                   >
                     <Typography sx={{ fontSize: 14 }}>
                       {job.service.name}
@@ -113,7 +113,7 @@ export default function JobTable({ jobs, fetchData }) {
                   <TableCell
                     onClick={() => handleOpenDetail(job)}
                     cursor="pointer"
-                    align="left"
+                    align="center"
                   >
                     <Typography sx={{ fontSize: 14 }}>
                       {dayjs(job.scheduledTo).format("DD/MM/YYYY")}
@@ -122,7 +122,7 @@ export default function JobTable({ jobs, fetchData }) {
                   <TableCell
                     onClick={() => handleOpenDetail(job)}
                     cursor="pointer"
-                    align="left"
+                    align="center"
                   >
                     <Typography
                       sx={{

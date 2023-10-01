@@ -59,16 +59,16 @@ export default function SaleTable({ sales, fetchData }) {
               <TableCell align="left">
                 <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Comprador</Typography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="center">
                 <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Itens</Typography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="center">
                 <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Vendedor</Typography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="center">
                 <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Entrega em</Typography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="center">
                 <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Status</Typography>
               </TableCell>
             </TableRow>
@@ -95,7 +95,7 @@ export default function SaleTable({ sales, fetchData }) {
                   <TableCell
                     onClick={() => handleOpenDetail(sale)}
                     cursor="pointer"
-                    align="left"
+                    align="center"
                   >
                     {sale.items.slice(0, 2).map((item) => (
                       <Grid
@@ -145,21 +145,21 @@ export default function SaleTable({ sales, fetchData }) {
                   <TableCell
                     onClick={() => handleOpenDetail(sale)}
                     cursor="pointer"
-                    align="left"
+                    align="center"
                   >
                     {sale.seller.name}
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(sale)}
                     cursor="pointer"
-                    align="left"
+                    align="center"
                   >
                     {dayjs(sale.deliveryScheduledTo).format("DD/MM/YYYY")}
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(sale)}
                     cursor="pointer"
-                    align="left"
+                    align="center"
                   >
                     {sale.status}
                   </TableCell>

@@ -46,7 +46,9 @@ const EditJobForm = ({
   const [service, setService] = React.useState("");
   const [price, setPrice] = React.useState(selectedJob.price);
   const [materials, setMaterials] = React.useState(selectedJob.materials);
-  const [materialsCost, setMaterialsCost] = React.useState(selectedJob.materialsCost);
+  const [materialsCost, setMaterialsCost] = React.useState(
+    selectedJob.materialsCost
+  );
   const [local, setLocal] = React.useState(selectedJob.local);
   const [scheduledTo, setScheduledTo] = React.useState(
     dayjs(selectedJob.scheduledTo)
@@ -60,7 +62,11 @@ const EditJobForm = ({
       try {
         const departments = await api.get("/departments");
         const services = await api.get("/services");
-        setDepartments(departments.data);
+        setDepartments(
+          departments.data.filter(
+            (department) => department.type === "Serviços"
+          )
+        );
         setServices(services.data);
 
         const selectedDepartment = departments.data.find(

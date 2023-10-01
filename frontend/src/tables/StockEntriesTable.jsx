@@ -41,17 +41,17 @@ export default function StockEntriesTable() {
             <TableBody>
               <TableRow sx={{ backgroundColor: "#ccc" }}>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nº da Entrada</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>#</Typography>
                 </TableCell>
                 <TableCell align="left">
                   <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Itens</Typography>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>
                     Valor Total da Compra
                   </Typography>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Adicionado em</Typography>
                 </TableCell>
               </TableRow>
@@ -70,12 +70,12 @@ export default function StockEntriesTable() {
                         </Typography>
                       ))}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="center">
                       <Typography sx={{ fontSize: 14 }}>
                         R${entry.quoteValue}
                       </Typography>
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="center">
                       <Typography sx={{ fontSize: 14 }}>
                         {dayjs(entry.createdAt).format("DD/MM/YYYY")}
                       </Typography>

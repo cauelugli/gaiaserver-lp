@@ -84,12 +84,16 @@ const AddSaleForm = ({ openAddSale, setOpenAddSale, fetchData1, toast }) => {
     setCustomer("");
     setRequester("");
     setDeliveryAddress("");
+    setDeliveryReceiver("");
+    setDeliveryReceiverPhone("");
   };
 
   const handleCustomerChange = (customer) => {
     setCustomer(customer);
     setRequester(customer.mainContactName || customer.name);
     setDeliveryAddress(customer.address || customer.addressHome);
+    setDeliveryReceiver(customer.name);
+    setDeliveryReceiverPhone(customer.phone);
   };
 
   const handleAdd = async (e) => {
