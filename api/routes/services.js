@@ -16,6 +16,12 @@ router.get("/", async (req, res) => {
 
 // CREATE SERVICE
 router.post("/", async (req, res) => {
+  const { name } = req.body;
+  const existingName = await Service.findOne({ name });
+  if (existingName) {
+    return res.status(422).json({ error: "Nome de Serviço já cadastrado" });
+  }
+
   const newService = new Service(req.body);
   try {
     if (newService.materials.length > 0) {
@@ -71,6 +77,14 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE SERVICE
 router.put("/", async (req, res) => {
+  const { name } = req.body;
+  const existingName = await Service.findOne({ name });
+  if (existingName) {
+    if (existingName.name !== req.body.previousData.name) {
+      return res.status(422).json({ error: "Nome de Serviço já cadastrado" });
+    }
+  }
+
   try {
     const { serviceId, materials, previousMaterials } = req.body;
 
