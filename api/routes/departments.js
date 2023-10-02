@@ -17,6 +17,15 @@ router.get("/", async (req, res) => {
 
 // CREATE DEPARTMENT
 router.post("/", async (req, res) => {
+  const { name, email } = req.body;
+  const existingName = await Department.findOne({ name });
+  const existingEmail = await Department.findOne({ email });
+  if (existingName) {
+    return res.status(422).json({ error: "Nome do Departamento já cadastrado" });
+  }
+  if (existingEmail) {
+    return res.status(422).json({ error: "E-mail já cadastrado" });
+  }
   let savedDepartment;
   let updatedManager;
   let updatedMembers = [];
@@ -213,6 +222,20 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE DEPARTMENT
 router.put("/", async (req, res) => {
+  const { name, email } = req.body;
+  const existingName = await Department.findOne({ name });
+  const existingEmail = await Department.findOne({ email });
+
+  if (existingName) {
+    if (existingName.name !== req.body.previousData.name) {
+      return res.status(422).json({ error: "Nome do Departamento já cadastrado" });
+    }
+  }
+  if (existingEmail) {
+    if (existingEmail.email !== req.body.previousData.email) {
+      return res.status(422).json({ error: "E-mail já cadastrado" });
+    }
+  }
   try {
     const updatedDepartment = await Department.findByIdAndUpdate(
       req.body.departmentId,

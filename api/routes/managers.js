@@ -15,6 +15,16 @@ router.get("/", async (req, res) => {
 
 // CREATE MANAGER
 router.post("/", async (req, res) => {
+  const { name, email } = req.body;
+  const existingName = await Manager.findOne({ name });
+  const existingEmail = await Manager.findOne({ email });
+  if (existingName) {
+    return res.status(422).json({ error: "Nome de Gerente já cadastrado" });
+  }
+  if (existingEmail) {
+    return res.status(422).json({ error: "E-mail já cadastrado" });
+  }
+
   const newManager = new Manager(req.body);
   try {
     const savedManager = await newManager.save();
@@ -46,13 +56,20 @@ router.post("/", async (req, res) => {
 // DELETE MANAGER
 router.delete("/:id", async (req, res) => {
   const managerId = req.params.id;
+  let updatedDepartment;
   try {
     const deletedManager = await Manager.findByIdAndDelete(managerId);
-    const updatedDepartment = await Department.findByIdAndUpdate(
-      deletedManager.department.id,
-      { $set: { manager: "" } },
-      { new: true }
-    );
+
+    {
+      deletedManager.department &&
+        updatedDepartment ==
+          (await Department.findByIdAndUpdate(
+            deletedManager.department.id,
+            { $set: { manager: "" } },
+            { new: true }
+          ));
+    }
+
     res.status(200).json({ deletedManager, updatedDepartment });
   } catch (err) {
     console.log(err);
@@ -62,6 +79,20 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE MANAGER
 router.put("/", async (req, res) => {
+  const { name, email } = req.body;
+  const existingName = await Manager.findOne({ name });
+  const existingEmail = await Manager.findOne({ email });
+
+  if (existingName) {
+    if (existingName.name !== req.body.previousData.name) {
+      return res.status(422).json({ error: "Nome de Gerente já cadastrado" });
+    }
+  }
+  if (existingEmail) {
+    if (existingEmail.email !== req.body.previousData.email) {
+      return res.status(422).json({ error: "E-mail já cadastrado" });
+    }
+  }
   try {
     const updatedManager = await Manager.findByIdAndUpdate(
       req.body.managerId,
@@ -99,9 +130,12 @@ router.put("/", async (req, res) => {
               { new: true }
             ))
           : // CHANGING DEPTs, UPDATES PREVIOUS AND NEW DEPARTMENT
-            (await Department.findByIdAndUpdate(req.body.previousData.department.id, {
-              manager: "",
-            }),
+            (await Department.findByIdAndUpdate(
+              req.body.previousData.department.id,
+              {
+                manager: "",
+              }
+            ),
             (updatedDepartment = await Department.findByIdAndUpdate(
               req.body.department.id,
               {
@@ -115,7 +149,7 @@ router.put("/", async (req, res) => {
               },
               { new: true }
             )))
-        : // ADDS MANAGER, BECAUSE USER NEVER HAD A DEPT PREVIOUSLY
+        : // ADDS MANAGER, BECAUSE HE/SHE NEVER HAD A DEPT PREVIOUSLY
           (updatedDepartment = await Department.findByIdAndUpdate(
             req.body.department.id,
             {
@@ -130,26 +164,7 @@ router.put("/", async (req, res) => {
             { new: true }
           ))
       : console.log("");
-
-    // if (req.body.department !== "") {
-    //   // Updates department's manager
-    //   updatedDepartment = await Department.findByIdAndUpdate(
-    //     req.body.department.id,
-    //     {
-    //       manager: {
-    //         id: req.body.managerId,
-    //         name: req.body.name,
-    //         email: req.body.email,
-    //         phone: req.body.phone,
-    //         avatarColor: req.body.avatarColor,
-    //       },
-    //     },
-    //     { new: true }
-    //   );
-    // } else {
-    //   updatedDepartment = "";
-    // }
-
+      
     res.status(200).json({ updatedManager, updatedDepartment });
   } catch (err) {
     console.log(err);

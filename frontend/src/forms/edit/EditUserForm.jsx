@@ -88,8 +88,21 @@ const EditUserForm = ({
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {
-      alert("Vish, editei não...");
-      console.log(err);
+      if (err.response && err.response.status === 422) {
+        toast.error(err.response.data.error, {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      } else {
+        toast.error("Houve algum erro...", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
     }
   };
 

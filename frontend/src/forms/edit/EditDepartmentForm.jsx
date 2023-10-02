@@ -38,6 +38,7 @@ const EditDepartmentForm = ({
   fetchData,
   toast,
 }) => {
+  const previousData = selectedDepartment;
   const [name, setName] = React.useState(selectedDepartment.name);
   const [type, setType] = React.useState(selectedDepartment.type);
   const [description, setDescription] = React.useState(
@@ -89,6 +90,7 @@ const EditDepartmentForm = ({
         manager,
         updatedMembers: membersData,
         removedMembers,
+        previousData,
       });
       if (res.data) {
         toast.success("Departamento Editado!", {
@@ -101,8 +103,21 @@ const EditDepartmentForm = ({
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {
-      alert("Vish, deu não...");
-      console.log(err);
+      if (err.response && err.response.status === 422) {
+        toast.error(err.response.data.error, {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      } else {
+        toast.error("Houve algum erro...", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
     }
   };
 

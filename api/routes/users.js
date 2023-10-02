@@ -15,32 +15,42 @@ router.get("/", async (req, res) => {
 
 // CREATE USER
 router.post("/", async (req, res) => {
-  const newUser = new User(req.body);
+  const { name, email } = req.body;
   try {
+    const existingNameUser = await User.findOne({ name });
+    const existingEmailUser = await User.findOne({ email });
+    if (existingNameUser) {
+      return res.status(422).json({ error: "Nome de Usuário já cadastrado" });
+    }
+    if (existingEmailUser) {
+      return res.status(422).json({ error: "E-mail já cadastrado" });
+    }
+
+    const newUser = new User(req.body);
     const savedUser = await newUser.save();
-    {
-      savedUser.department.id &&
-        (await Department.findOneAndUpdate(
-          { _id: req.body.department.id },
-          {
-            $addToSet: {
-              members: {
-                id: savedUser._id.toString(),
-                name: savedUser.name,
-                phone: savedUser.phone,
-                email: savedUser.email,
-                position: savedUser.position,
-                avatarColor: savedUser.avatarColor,
-              },
+
+    if (savedUser.department.id) {
+      await Department.findOneAndUpdate(
+        { _id: req.body.department.id },
+        {
+          $addToSet: {
+            members: {
+              id: savedUser._id.toString(),
+              name: savedUser.name,
+              phone: savedUser.phone,
+              email: savedUser.email,
+              position: savedUser.position,
+              avatarColor: savedUser.avatarColor,
             },
           },
-          { upsert: true }
-        ));
+        },
+        { upsert: true }
+      );
     }
 
     res.status(200).json(savedUser);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json(err);
   }
 });
@@ -64,6 +74,21 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE USER
 router.put("/", async (req, res) => {
+  const { name, email } = req.body;
+  const existingName = await User.findOne({ name });
+  const existingEmail = await User.findOne({ email });
+
+  if (existingName) {
+    if (existingName.name !== req.body.previousData.name) {
+      return res.status(422).json({ error: "Nome de Usuário já cadastrado" });
+    }
+  }
+  if (existingEmail) {
+    if (existingEmail.email !== req.body.previousData.email) {
+      return res.status(422).json({ error: "E-mail já cadastrado" });
+    }
+  }
+
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.body.userId,

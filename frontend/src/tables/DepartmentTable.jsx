@@ -381,22 +381,22 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                               </TableRow>
                             </TableBody>
                           </Table>
-                          <Box sx={{ mt: 3, ml: "90%" }}>
-                            <ModeEditIcon
-                              cursor="pointer"
-                              option="delete"
-                              onClick={() => handleOpenEdit(department)}
-                              sx={{ color: "grey", mr: 2 }}
-                            />
-                            <DeleteIcon
-                              cursor="pointer"
-                              option="delete"
-                              onClick={() => handleConfirmDelete(department)}
-                              sx={{ color: "#ff4444" }}
-                            />
-                          </Box>
                         </Box>
                       )}
+                      <Box sx={{ mt: 3, ml: "90%" }}>
+                        <ModeEditIcon
+                          cursor="pointer"
+                          option="delete"
+                          onClick={() => handleOpenEdit(department)}
+                          sx={{ color: "grey", mr: 2 }}
+                        />
+                        <DeleteIcon
+                          cursor="pointer"
+                          option="delete"
+                          onClick={() => handleConfirmDelete(department)}
+                          sx={{ color: "#ff4444" }}
+                        />
+                      </Box>
                     </Collapse>
                   </TableCell>
                 </TableRow>
