@@ -204,10 +204,15 @@ const EditJobForm = ({
         </Grid>
 
         <Divider sx={{ mt: 2 }} />
-        <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
+        <Typography sx={{ my: 3, fontSize: 18, fontWeight: "bold" }}>
           Departamento
         </Typography>
-        <Grid container sx={{ pr: "4%" }} direction="row">
+        <Grid
+          container
+          direction="row"
+          alignItems="flex-start"
+          justifyContent="space-evenly"
+        >
           <Grid item>
             <Select
               onChange={(e) => {
@@ -234,7 +239,7 @@ const EditJobForm = ({
               ))}
             </Select>
           </Grid>
-          <Grid item sx={{ ml: 2, mt: -7 }}>
+          <Grid item sx={{ mx: -10, mt: -7 }}>
             <>
               <Typography sx={{ my: 2 }}>Serviço</Typography>
               <Select
@@ -264,8 +269,7 @@ const EditJobForm = ({
               </Select>
             </>
           </Grid>
-
-          <Grid item sx={{ ml: 2, mt: -7 }}>
+          <Grid item sx={{ mt: -7 }}>
             <>
               <Typography sx={{ my: 2 }}>Colaborador</Typography>
               <Select
@@ -299,11 +303,11 @@ const EditJobForm = ({
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 2 }} />
+        <Divider sx={{ my: 3 }} />
         <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
           Solicitação
         </Typography>
-        <Grid container sx={{ pr: "4%", mt: 2 }} direction="column">
+        <Grid container sx={{ mt: 2 }} direction="column">
           <Grid item>
             <TextField
               label="Título"
@@ -313,7 +317,7 @@ const EditJobForm = ({
               required
               variant="outlined"
               fullWidth
-              sx={{ mb: 1 }}
+              sx={{ mb: 2 }}
             />
 
             <TextField
@@ -328,7 +332,7 @@ const EditJobForm = ({
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 2 }} />
+        <Divider sx={{ my: 3 }} />
         <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
           Orçamento
         </Typography>
@@ -415,7 +419,7 @@ const EditJobForm = ({
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 2, mt: 4 }} />
+        <Divider sx={{ my: 3, mt: 4 }} />
         <Checkbox
           checked={showAdditionalOptions}
           onChange={handleCheckboxChange}
@@ -424,7 +428,7 @@ const EditJobForm = ({
 
         {showAdditionalOptions && (
           <Box>
-            <Divider sx={{ my: 2 }} />
+            <Divider sx={{ my: 3 }} />
           </Box>
         )}
       </DialogContent>

@@ -15,6 +15,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Button,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -23,11 +24,13 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import EditJobForm from "../forms/edit/EditJobForm";
 import DeleteJobForm from "../forms/delete/DeleteJobForm";
 import dayjs from "dayjs";
+import UpdateJobForm from "../forms/edit/UpdateJobForm";
 
 export default function JobTable({ jobs, fetchData }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
+  const [openUpdate, setOpenUpdate] = React.useState(false);
   const [selectedJob, setSelectedJob] = React.useState([]);
 
   const handleOpenDetail = (job) => {
@@ -45,6 +48,11 @@ export default function JobTable({ jobs, fetchData }) {
     setOpenDelete(!openDelete);
   };
 
+  const handleOpenUpdate = (job) => {
+    setOpenUpdate(!openUpdate);
+    setSelectedJob(job);
+  };
+
   return (
     <Box sx={{ minWidth: "1050px" }}>
       <TableContainer component={Paper}>
@@ -56,19 +64,29 @@ export default function JobTable({ jobs, fetchData }) {
               }}
             >
               <TableCell align="left">
-                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Job</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                  Nome do Job
+                </Typography>
               </TableCell>
               <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Solicitante</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                  Solicitante
+                </Typography>
               </TableCell>
               <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Serviço</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                  Serviço
+                </Typography>
               </TableCell>
               <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Agendado para</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                  Agendado para
+                </Typography>
               </TableCell>
               <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Status</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                  Status
+                </Typography>
               </TableCell>
             </TableRow>
             {jobs.map((job) => (
@@ -97,7 +115,7 @@ export default function JobTable({ jobs, fetchData }) {
                     align="center"
                   >
                     <Typography sx={{ fontSize: 14 }}>
-                      {job.requester}{" "}
+                      {job.requester}
                       {job.customer.cnpj && `(${job.customer.name})`}
                     </Typography>
                   </TableCell>
@@ -120,21 +138,34 @@ export default function JobTable({ jobs, fetchData }) {
                     </Typography>
                   </TableCell>
                   <TableCell
-                    onClick={() => handleOpenDetail(job)}
-                    cursor="pointer"
+                    onMouseEnter={() => setSelectedJob(job._id)}
+                    onMouseLeave={() => setSelectedJob("")}
                     align="center"
+                    sx={{ p: 0 }}
                   >
-                    <Typography
-                      sx={{
-                        fontSize: 14,
-                        color:
-                          (job.status === "Aberto" && "#E1AD01") ||
-                          (job.status === "Em Andamento" && "") ||
-                          (job.status === "Feito" && "#006400"),
-                      }}
-                    >
-                      {job.status}
-                    </Typography>
+                    {selectedJob === job._id ? (
+                      <Button
+                        variant="outlined"
+                        color="inherit"
+                        size="small"
+                        sx={{ p: 0.5 }}
+                        onClick={() => handleOpenUpdate(job)}
+                      >
+                        Alterar
+                      </Button>
+                    ) : (
+                      <Typography
+                        sx={{
+                          fontSize: 14,
+                          color:
+                            (job.status === "Aberto" && "#E1AD01") ||
+                            (job.status === "Em Andamento" && "") ||
+                            (job.status === "Feito" && "#006400"),
+                        }}
+                      >
+                        {job.status}
+                      </Typography>
+                    )}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -181,7 +212,8 @@ export default function JobTable({ jobs, fetchData }) {
                               <TableCell align="left">
                                 <Typography>
                                   {job.requester}{" "}
-                                  {job.customer.cnpj && `(${job.customer.name})`}
+                                  {job.customer.cnpj &&
+                                    `(${job.customer.name})`}
                                 </Typography>
                               </TableCell>
                             </TableRow>
@@ -373,6 +405,22 @@ export default function JobTable({ jobs, fetchData }) {
             selectedJob={selectedJob}
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}
+            fetchData={fetchData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openUpdate && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openUpdate}
+          onClose={() => setOpenUpdate(!openUpdate)}
+        >
+          <UpdateJobForm
+            openUpdateJob={openUpdate}
+            selectedJob={selectedJob}
+            setOpenUpdateJob={setOpenUpdate}
             fetchData={fetchData}
             toast={toast}
           />

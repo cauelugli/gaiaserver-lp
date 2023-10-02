@@ -17,7 +17,7 @@ export default function NavBar() {
       <img
         src={`http://localhost:3000/static/logo.png`}
         alt="Logo do Tenant"
-        style={{ width: "10%", cursor: "pointer" }}
+        style={{ width: "10%", marginLeft: 10, cursor: "pointer" }}
         onClick={() => alert("logo man")}
       />
       <IconButton sx={{ color: "white" }}>

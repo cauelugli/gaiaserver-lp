@@ -22,6 +22,7 @@ import {
 import TaskIcon from "@mui/icons-material/Task";
 import CreateIcon from "@mui/icons-material/Create";
 import CheckIcon from "@mui/icons-material/Check";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -171,12 +172,17 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
       </Grid>
 
       <DialogContent>
-        <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
-          Informações do Cliente
-        </Typography>
+        <Grid container>
+          <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
+            Informações do Cliente
+          </Typography>
+          {customerType && customer && requester && local && scheduledTo && (
+            <CheckCircleOutlineOutlinedIcon sx={{ color: "#50C878", ml: 1 }} />
+          )}
+        </Grid>
         <Grid
           container
-          sx={{ pr: "4%", mt: 2 }}
+          sx={{ mt: 2 }}
           direction="row"
           justifyContent="flex-start"
           alignItems="flex-start"
@@ -278,11 +284,21 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
           )}
         </Grid>
 
-        <Divider sx={{ mt: 2 }} />
-        <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
-          Departamento
-        </Typography>
-        <Grid container sx={{ pr: "4%" }} direction="row">
+        <Divider sx={{ my: 3 }} />
+        <Grid container>
+          <Typography sx={{ mb: 2, fontSize: 18, fontWeight: "bold" }}>
+            Departamento
+          </Typography>
+          {department && service && worker && (
+            <CheckCircleOutlineOutlinedIcon sx={{ color: "#50C878", ml: 1 }} />
+          )}
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          alignItems="flex-start"
+          justifyContent={!department ? "flex-start" : "space-evenly"}
+        >
           <Grid item>
             <Select
               onChange={(e) => {
@@ -295,9 +311,10 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
               value={department}
               disabled={approvedQuote}
               size="small"
+              displayEmpty
               renderValue={(selected) => {
                 if (!selected) {
-                  return <Typography>Departamento</Typography>;
+                  return <Typography>Selecione o Departamento</Typography>;
                 } else {
                   return <Typography>{selected.name}</Typography>;
                 }
@@ -320,7 +337,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
               ))}
             </Select>
           </Grid>
-          <Grid item sx={{ ml: 2, mt: -7 }}>
+          <Grid item sx={{ mt: -7, mx: -10 }}>
             {department && (
               <>
                 <Typography sx={{ my: 2 }}>Serviço</Typography>
@@ -354,8 +371,8 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
             )}
           </Grid>
 
-          <Grid item sx={{ ml: 2, mt: -7 }}>
-            {department && service && (
+          <Grid item sx={{ mt: -7 }}>
+            {department && (
               <>
                 <Typography sx={{ my: 2 }}>Colaborador</Typography>
                 <Select
@@ -386,11 +403,16 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 2 }} />
-        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
-          Solicitação
-        </Typography>
-        <Grid container sx={{ pr: "4%", mt: 2 }} direction="column">
+        <Divider sx={{ my: 3 }} />
+        <Grid container>
+          <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
+            Solicitação
+          </Typography>
+          {title && description && (
+            <CheckCircleOutlineOutlinedIcon sx={{ color: "#50C878", ml: 1 }} />
+          )}
+        </Grid>
+        <Grid container sx={{ mt: 2 }} direction="column">
           <Grid item>
             <TextField
               label="Título"
@@ -400,7 +422,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
               required
               variant="outlined"
               fullWidth
-              sx={{ mb: 1 }}
+              sx={{ mb: 2 }}
             />
 
             <TextField
@@ -415,10 +437,15 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 2 }} />
-        <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
-          Orçamento
-        </Typography>
+        <Divider sx={{ my: 3 }} />
+        <Grid container>
+          <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
+            Orçamento
+          </Typography>
+          {approvedQuote && (
+            <CheckCircleOutlineOutlinedIcon sx={{ color: "#50C878", ml: 1 }} />
+          )}
+        </Grid>
         {!editQuote ? (
           <div style={{ color: approvedQuote ? "#777" : "black" }}>
             {service && (
@@ -497,7 +524,8 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
                   >
                     <Typography sx={{ fontSize: 16, mx: 1 }}>
                       Serviço + Materiais ={" "}
-                      {service && `R$ ${(materialsCost + service.value).toFixed(2)}`}
+                      {service &&
+                        `R$ ${(materialsCost + service.value).toFixed(2)}`}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -567,7 +595,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
           </Grid>
         )}
 
-        <Divider sx={{ my: 2, mt: 4 }} />
+        <Divider sx={{ my: 3, mt: 4 }} />
         <Checkbox
           checked={showAdditionalOptions}
           onChange={handleCheckboxChange}
@@ -576,12 +604,12 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
 
         {showAdditionalOptions && (
           <Box>
-            <Divider sx={{ my: 2 }} />
+            <Divider sx={{ my: 3 }} />
           </Box>
         )}
       </DialogContent>
 
-      <DialogActions>
+      <DialogActions sx={{ pr: "4%" }}>
         <Button type="submit" variant="contained" color="success">
           OK
         </Button>

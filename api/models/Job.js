@@ -56,8 +56,9 @@ jobSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  executedIn: {
-    type: Date,
+  interations: {
+    type: Array,
+    default: {}
   },
   createdAt: {
     type: Date,
