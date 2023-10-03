@@ -27,6 +27,7 @@ import ManagerTable from "../tables/ManagerTable";
 
 import AddUserForm from "../forms/add/AddUserForm";
 import AddManagerForm from "../forms/add/AddManagerForm";
+import OperatorTable from "../tables/OperatorTable";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -101,7 +102,9 @@ export default function Users() {
         justifyContent="flex-start"
         alignItems="flex-start"
       >
-        <Typography sx={{ fontSize:23, mt:0.5, ml: 1, mr:2, fontWeight: 'bold' }}>
+        <Typography
+          sx={{ fontSize: 23, mt: 0.5, ml: 1, mr: 2, fontWeight: "bold" }}
+        >
           Colaboradores
         </Typography>
         <div>
@@ -164,6 +167,10 @@ export default function Users() {
             label={<Typography sx={{ fontSize: 14 }}>Gerentes</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
+          <Tab
+            label={<Typography sx={{ fontSize: 14 }}>Operadores</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -171,6 +178,9 @@ export default function Users() {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <ManagerTable />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <OperatorTable />
       </CustomTabPanel>
       {openAddUser && (
         <Dialog
@@ -201,7 +211,6 @@ export default function Users() {
             setOpenAdd={setOpenAddManager}
             fetchData={fetchData}
             toast={toast}
-
           />
         </Dialog>
       )}
