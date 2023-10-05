@@ -143,7 +143,9 @@ export default function OperatorTable() {
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography sx={{ fontSize: 14 }}>{user.position ? "Colaborador" : "Gerente"}</Typography>
+                      <Typography sx={{ fontSize: 14 }}>
+                        {user.position ? "Colaborador" : "Gerente"}
+                      </Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(user)}
@@ -151,7 +153,7 @@ export default function OperatorTable() {
                       align="center"
                     >
                       <Typography sx={{ fontSize: 14 }}>
-                        {user.position ? user.position : "-"}
+                        {user.username ? user.username : "-"}
                       </Typography>
                     </TableCell>
                     <TableCell

@@ -17,6 +17,7 @@ const userRoute = require("./routes/users");
 const managerRoute = require("./routes/managers");
 const quickNotesRoute = require("./routes/quicknotes");
 const uploadsRoute = require("./routes/uploads");
+const operatorsRoute = require("./routes/operators");
 
 dotenv.config();
 app.use(cors());
@@ -45,6 +46,7 @@ app.use("/api/users", userRoute);
 app.use("/api/managers", managerRoute);
 app.use("/api/quicknotes", quickNotesRoute);
 app.use("/api/uploads", uploadsRoute);
+app.use("/api/operators", operatorsRoute);
 
 app.listen("3000", () => {
   console.log("Backend is running.");

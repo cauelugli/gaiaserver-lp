@@ -24,10 +24,11 @@ import Person4Icon from "@mui/icons-material/Person4";
 
 import UserTable from "../tables/UserTable";
 import ManagerTable from "../tables/ManagerTable";
+import OperatorTable from "../tables/OperatorTable";
 
 import AddUserForm from "../forms/add/AddUserForm";
 import AddManagerForm from "../forms/add/AddManagerForm";
-import OperatorTable from "../tables/OperatorTable";
+import AddOperatorForm from "../forms/add/AddOperatorForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -52,9 +53,11 @@ export default function Users() {
 
   const [users, setUsers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
+  const [operators, setOperators] = React.useState([]);
 
   const [openAddUser, setOpenAddUser] = React.useState(false);
   const [openAddManager, setOpenAddManager] = React.useState(false);
+  const [openAddOperator, setOpenAddOperator] = React.useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
@@ -73,9 +76,14 @@ export default function Users() {
     const fetchData = async () => {
       try {
         const users = await api.get("/users");
+        const managers = await api.get("/managers");
         const departments = await api.get("/departments");
-        setUsers(users.data);
+        const usersData = users.data;
+        const managersData = managers.data;
+        const combinedData = [...usersData, ...managersData];
+        setUsers(usersData);
         setDepartments(departments.data);
+        setOperators(combinedData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -86,9 +94,14 @@ export default function Users() {
   const fetchData = async () => {
     try {
       const users = await api.get("/users");
+      const managers = await api.get("/managers");
       const departments = await api.get("/departments");
-      setUsers(users.data);
+      const usersData = users.data;
+      const managersData = managers.data;
+      const combinedData = [...usersData, ...managersData];
+      setUsers(usersData);
       setDepartments(departments.data);
+      setOperators(combinedData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -148,6 +161,12 @@ export default function Users() {
                   <Person4Icon />
                 </ListItemIcon>
                 <ListItemText>Gerente</ListItemText>
+              </MenuItem>
+              <MenuItem onClick={() => setOpenAddOperator(true)}>
+                <ListItemIcon>
+                  <Person4Icon />
+                </ListItemIcon>
+                <ListItemText>Operador</ListItemText>
               </MenuItem>
             </MenuList>
           </Menu>
@@ -209,6 +228,22 @@ export default function Users() {
             openAdd={openAddManager}
             departments={departments}
             setOpenAdd={setOpenAddManager}
+            fetchData={fetchData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openAddOperator && (
+        <Dialog
+          fullWidth
+          maxWidth="sm"
+          open={openAddOperator}
+          onClose={() => setOpenAddOperator(!openAddOperator)}
+        >
+          <AddOperatorForm
+            openAdd={openAddOperator}
+            operators={operators.filter((op) => !op.username)}
+            setOpenAdd={setOpenAddOperator}
             fetchData={fetchData}
             toast={toast}
           />

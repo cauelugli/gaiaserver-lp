@@ -15,6 +15,12 @@ managerSchema = new mongoose.Schema({
   department: {
     type: Object,
   },
+  username: {
+    type: String,
+  },
+  password: {
+    type: String,
+  },
   avatarColor: {
     type: String,
   },
