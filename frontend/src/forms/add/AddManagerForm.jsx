@@ -3,10 +3,12 @@ import React from "react";
 import axios from "axios";
 
 import {
+  Avatar,
   Button,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormHelperText,
   Grid,
   ListSubheader,
   MenuItem,
@@ -14,8 +16,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
+// import FileUploadIcon from "@mui/icons-material/FileUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 import { IMaskInput } from "react-imask";
-import ColorPicker from "../../components/small/ColorPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -32,29 +37,25 @@ const AddManagerForm = ({
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [department, setDepartment] = React.useState("");
-  const [avatarColor, setAvatarColor] = React.useState("#ffffff");
-  const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
+  const [image, setImage] = React.useState("");
 
-  const handleClickColor = (event) => {
-    setColorAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseColor = () => {
-    setColorAnchorEl(null);
-  };
-
-  const handleChangeColor = (selectedColor) => {
-    setAvatarColor(selectedColor.hex);
-    handleCloseColor();
+  const handleImageClick = () => {
+    document.getElementById("fileInput").click();
   };
 
   const handleAdd = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("image", image);
+
     try {
+      const uploadResponse = await api.post("/uploads/singleProduct", formData);
+      const imagePath = uploadResponse.data.imagePath;
       const res = await api.post("/managers", {
         name,
         email,
         phone,
+        image: imagePath,
         department: {
           id: department._id,
           name: department.name,
@@ -62,9 +63,8 @@ const AddManagerForm = ({
           email: department.email,
           color: department.color,
         },
-        avatarColor,
-        isAllocated: department === "" ? false : true,
       });
+
       if (res.data) {
         toast.success("Gerente Adicionado!", {
           closeOnClick: true,
@@ -73,6 +73,7 @@ const AddManagerForm = ({
           autoClose: 1200,
         });
       }
+
       setOpenAdd(!openAdd);
       fetchData();
     } catch (err) {
@@ -98,109 +99,144 @@ const AddManagerForm = ({
     <form onSubmit={handleAdd}>
       <DialogTitle>Novo Gerente</DialogTitle>
       <DialogContent>
-        <Grid
-          container
-          sx={{ pr: "4%", mt: 2 }}
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="center"
-        >
+        <Grid container direction="row" justifyContent="space-around">
           <Grid item>
-            <Typography>Nome</Typography>
-            <TextField
-              size="small"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              sx={{ mr: 1, width: 300 }}
-            />
-          </Grid>
-          <Grid item>
-            <Typography>Email</Typography>
-            <TextField
-              value={email}
-              size="small"
-              required
-              onChange={(e) => setEmail(e.target.value)}
-              sx={{ mr: 1, width: 285 }}
-            />
-          </Grid>
-          <Grid item>
-            <Typography>Telefone</Typography>
-            <IMaskInput
-              style={{
-                padding: "5%",
-                marginRight: "4%",
-                marginTop: "1%",
-                borderColor: "#eee",
-                borderRadius: 4,
-              }}
-              mask="(00) 00000-0000"
-              definitions={{
-                "#": /[1-9]/,
-              }}
-              onAccept={(value) => setPhone(value)}
-              overwrite
-              value={phone}
-            />
-          </Grid>
-        </Grid>
-        <Grid
-          container
-          sx={{ pr: "4%", mt: 2 }}
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="center"
-        >
-          <Grid item>
-            <Typography sx={{ mb: 1 }}>Departamento</Typography>
-            <Select
-              onChange={(e) => setDepartment(e.target.value)}
-              value={department}
-              renderValue={(selected) => selected.name}
-              size="small"
-              sx={{ minWidth: "200px" }}
+            <Grid
+              container
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
             >
-              <ListSubheader sx={{ color: "green", m: -1 }}>
-                Disponíveis
-              </ListSubheader>
-              {departments
-                .filter((department) => department.manager === "")
-                .map((department) => (
-                  <MenuItem
-                    value={department}
-                    key={department._id}
-                    sx={{ fontSize: "100%" }}
+              <input
+                type="file"
+                accept="image/*"
+                id="fileInput"
+                style={{ display: "none" }}
+                onChange={(e) => {
+                  const selectedImage = e.target.files[0];
+                  setImage(selectedImage);
+                }}
+              />
+              <label htmlFor="fileInput">
+                <Avatar
+                  alt="Imagem do Usuário"
+                  value={image}
+                  sx={{ width: 200, height: 200, cursor: "pointer" }}
+                  onClick={handleImageClick}
+                >
+                  {image ? (
+                    <img
+                      src={URL.createObjectURL(image)}
+                      alt="Prévia da Imagem"
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  ) : null}
+                </Avatar>
+              </label>
+              {image && (
+                <FormHelperText>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    size="small"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => setImage("")}
+                    sx={{ mt: 1 }}
                   >
-                    {department.name}
-                  </MenuItem>
-                ))}
-              <ListSubheader sx={{ color: "red", m: -1, mt: 0 }}>
-                Gerenciados
-              </ListSubheader>
-              {departments
-                .filter((department) => department.manager !== "")
-                .map((department) => (
-                  <MenuItem
-                    disabled
-                    value={department}
-                    key={department._id}
-                    sx={{ fontSize: "100%" }}
-                  >
-                    {department.name}
-                  </MenuItem>
-                ))}
-            </Select>
+                    Remover
+                  </Button>
+                </FormHelperText>
+              )}
+            </Grid>
           </Grid>
-          <Grid item sx={{ ml: "10%" }}>
-            <Typography>Avatar</Typography>
-            <ColorPicker
-              handleClickColor={handleClickColor}
-              color={avatarColor}
-              colorAnchorEl={colorAnchorEl}
-              handleCloseColor={handleCloseColor}
-              handleChangeColor={handleChangeColor}
-            />
+          <Grid item>
+            <Grid
+              container
+              sx={{ mt: 2 }}
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+            >
+              <Grid item>
+                <Typography>Nome</Typography>
+                <TextField
+                  size="small"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  sx={{ mr: 1, width: 200 }}
+                />
+              </Grid>
+              <Grid item>
+                <Typography>Email</Typography>
+                <TextField
+                  value={email}
+                  size="small"
+                  required
+                  onChange={(e) => setEmail(e.target.value)}
+                  sx={{ mr: 1, width: 185 }}
+                />
+              </Grid>
+              <Grid item sx={{ mr: 1 }}>
+                <Typography>Departamento</Typography>
+                <Select
+                  onChange={(e) => setDepartment(e.target.value)}
+                  value={department}
+                  renderValue={(selected) => selected.name}
+                  size="small"
+                  sx={{ minWidth: 200 }}
+                >
+                  <ListSubheader sx={{ color: "green", m: -1 }}>
+                    Disponíveis
+                  </ListSubheader>
+                  {departments
+                    .filter((department) => department.manager === "")
+                    .map((department) => (
+                      <MenuItem
+                        value={department}
+                        key={department._id}
+                        sx={{ fontSize: "100%" }}
+                      >
+                        {department.name}
+                      </MenuItem>
+                    ))}
+                  <ListSubheader sx={{ color: "red", m: -1, mt: 0 }}>
+                    Gerenciados
+                  </ListSubheader>
+                  {departments
+                    .filter((department) => department.manager !== "")
+                    .map((department) => (
+                      <MenuItem
+                        disabled
+                        value={department}
+                        key={department._id}
+                        sx={{ fontSize: "100%" }}
+                      >
+                        {department.name}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </Grid>
+              <Grid item>
+                <Typography>Telefone</Typography>
+                <IMaskInput
+                  style={{
+                    padding: "5%",
+                    marginRight: "4%",
+                    marginTop: "1%",
+                    borderColor: "#eee",
+                    borderRadius: 4,
+                  }}
+                  mask="(00) 00000-0000"
+                  definitions={{
+                    "#": /[1-9]/,
+                  }}
+                  onAccept={(value) => setPhone(value)}
+                  overwrite
+                  value={phone}
+                />
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </DialogContent>

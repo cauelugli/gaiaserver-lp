@@ -8,12 +8,14 @@ router.put("/", async (req, res) => {
   let type;
 
   req.body.operator.position ? (type = User) : (type = Manager);
+  
   try {
     const updatedOperator = await type.findByIdAndUpdate(
       req.body.id,
       {
         username: req.body.username,
         password: req.body.password,
+        role: req.body.role,
       },
       { new: true }
     );

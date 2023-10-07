@@ -21,6 +21,8 @@ import {
 
 import PersonIcon from "@mui/icons-material/Person";
 import Person4Icon from "@mui/icons-material/Person4";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+
 
 import UserTable from "../tables/UserTable";
 import ManagerTable from "../tables/ManagerTable";
@@ -164,7 +166,7 @@ export default function Users() {
               </MenuItem>
               <MenuItem onClick={() => setOpenAddOperator(true)}>
                 <ListItemIcon>
-                  <Person4Icon />
+                  <ManageAccountsIcon />
                 </ListItemIcon>
                 <ListItemText>Operador</ListItemText>
               </MenuItem>

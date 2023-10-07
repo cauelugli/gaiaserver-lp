@@ -5,9 +5,11 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 import {
+  Avatar,
   Box,
   Collapse,
   Dialog,
+  DialogContent,
   Grid,
   Paper,
   Table,
@@ -37,6 +39,16 @@ export default function UserTable() {
 
   const [users, setUsers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
+
+  const [openImage, setOpenImage] = React.useState(false);
+
+  const handleOpenImage = () => {
+    setOpenImage(true);
+  };
+
+  const handleCloseImage = () => {
+    setOpenImage(false);
+  };
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -89,17 +101,26 @@ export default function UserTable() {
                   backgroundColor: "#ccc",
                 }}
               >
+                <TableCell padding="checkbox"></TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Colaborador</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Nome do Colaborador
+                  </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Ocupação</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    E-mail
+                  </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>E-mail</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Telefone
+                  </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Departamento</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Departamento
+                  </Typography>
                 </TableCell>
               </TableRow>
               {users.map((user) => (
@@ -118,6 +139,28 @@ export default function UserTable() {
                     <TableCell
                       onClick={() => handleOpenDetail(user)}
                       cursor="pointer"
+                      align="right"
+                      sx={{ py: 0 }}
+                    >
+                      <Avatar
+                        src={`http://localhost:3000/static/${user.image}`}
+                        alt={user.name[0]}
+                        cursor="pointer"
+                        style={{
+                          marginLeft: 10,
+                          width: 42,
+                          height: 42,
+                          border: "2px solid #32aacd",
+                          opacity:
+                            openDetail && selectedUser.name === user.name
+                              ? 0
+                              : 100,
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(user)}
+                      cursor="pointer"
                       align="left"
                     >
                       <Typography sx={{ fontSize: 14 }}>{user.name}</Typography>
@@ -128,7 +171,7 @@ export default function UserTable() {
                       align="center"
                     >
                       <Typography sx={{ fontSize: 14 }}>
-                        {user.position ? user.position : "-"}
+                        {user.email}
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -136,7 +179,9 @@ export default function UserTable() {
                       cursor="pointer"
                       align="center"
                     >
-                      <Typography sx={{ fontSize: 14 }}>{user.email}</Typography>
+                      <Typography sx={{ fontSize: 14 }}>
+                        {user.phone}
+                      </Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(user)}
@@ -158,96 +203,182 @@ export default function UserTable() {
                         timeout="auto"
                         unmountOnExit
                       >
-                        <Box sx={{ my: 4, px: 6 }}>
-                          <Typography variant="h6" sx={{fontSize:18, fontWeight:"bold"}}>
+                        <Box sx={{ my: 4, px: 2 }}>
+                          <Typography
+                            variant="h6"
+                            sx={{ fontSize: 18, fontWeight: "bold", my: 2 }}
+                          >
                             Informações
                           </Typography>
-                          <Table size="small">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Nome
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    E-mail
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Telefone
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Departamento
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell>
-                                  <Typography>{user.name}</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>{user.email}</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>{user.phone}</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>
-                                    {user.department ? (
-                                      <Grid container direction="row">
-                                        <Paper
-                                          elevation={0}
-                                          sx={{
-                                            mr: 1,
-                                            mt: 0.5,
-                                            width: 15,
-                                            height: 15,
-                                            borderRadius: 50,
-                                            backgroundColor:
-                                              user.department.color,
-                                          }}
-                                        >
-                                          {" "}
-                                        </Paper>
-                                        <Typography>
-                                          {user.department.name}
-                                        </Typography>
-                                      </Grid>
-                                    ) : (
-                                      "-"
-                                    )}
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
-                          <Box sx={{ mt: 3, ml: "90%" }}>
-                            <ModeEditIcon
-                              cursor="pointer"
-                              onClick={() => handleOpenEdit(user)}
-                              sx={{ color: "grey", mr: 2 }}
-                            />
-                            <DeleteIcon
-                              cursor="pointer"
-                              onClick={() => handleConfirmDelete(user)}
-                              sx={{ color: "#ff4444" }}
-                            />
-                          </Box>
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="space-around"
+                          >
+                            <Grid item>
+                              <Grid
+                                container
+                                direction="column"
+                                alignItems="center"
+                                justifyContent="center"
+                              >
+                                <Avatar
+                                  alt="Imagem do Produto"
+                                  cursor="pointer"
+                                  src={`http://localhost:3000/static/${user.image}`}
+                                  sx={{ width: 200, height: 200, mr: 4 }}
+                                  onDoubleClick={handleOpenImage}
+                                />
+                                <Dialog
+                                  open={openImage}
+                                  onClose={handleCloseImage}
+                                >
+                                  <DialogContent>
+                                    <img
+                                      cursor="pointer"
+                                      src={`http://localhost:3000/static/${user.image}`}
+                                      alt="Imagem do Usuário"
+                                      style={{ maxWidth: "100%" }}
+                                    />
+                                  </DialogContent>
+                                </Dialog>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <Table size="small">
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell>
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Nome
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        E-mail
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Telefone
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Departamento
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  <TableRow>
+                                    <TableCell>
+                                      <Typography>{user.name}</Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography>{user.email}</Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography>{user.phone}</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography>
+                                        {user.department ? (
+                                          <Grid container direction="row">
+                                            <Paper
+                                              elevation={0}
+                                              sx={{
+                                                mr: 1,
+                                                mt: 0.5,
+                                                width: 15,
+                                                height: 15,
+                                                borderRadius: 50,
+                                                backgroundColor:
+                                                  user.department.color,
+                                              }}
+                                            >
+                                              {" "}
+                                            </Paper>
+                                            <Typography>
+                                              {user.department.name}
+                                            </Typography>
+                                          </Grid>
+                                        ) : (
+                                          "-"
+                                        )}
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableBody>
+                              </Table>
+                              <Table size="small" sx={{ mt: 4 }}>
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell align="center">
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Ocupação
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Nome de Operador
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography
+                                        sx={{ fontSize: "14px", color: "#777" }}
+                                      >
+                                        Nível de Acesso
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  <TableRow>
+                                    <TableCell align="center">
+                                      <Typography>
+                                        {user.position ? user.position : "-"}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography>
+                                        {user.username ? user.username : "-"}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      <Typography>
+                                        {user.role ? user.role : "-"}
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableBody>
+                              </Table>
+                            </Grid>
+                            <Box sx={{ mt: 3, ml: "90%" }}>
+                              <ModeEditIcon
+                                cursor="pointer"
+                                onClick={() => handleOpenEdit(user)}
+                                sx={{ color: "grey", mr: 2 }}
+                              />
+                              <DeleteIcon
+                                cursor="pointer"
+                                onClick={() => handleConfirmDelete(user)}
+                                sx={{ color: "#ff4444" }}
+                              />
+                            </Box>
+                          </Grid>
                         </Box>
                       </Collapse>
                     </TableCell>
@@ -283,7 +414,6 @@ export default function UserTable() {
               setOpenDelete={setOpenDelete}
               fetchData={fetchData}
               toast={toast}
-
             />
           </Dialog>
         )}

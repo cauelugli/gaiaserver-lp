@@ -15,14 +15,18 @@ userSchema = new mongoose.Schema({
   department: {
     type: Object,
   },
+  image: {
+    type: String,
+  },
   username: {
     type: String,
   },
   password: {
     type: String,
   },
-  avatarColor: {
+  role: {
     type: String,
+    default: "Colaborador"
   },
   position: {
     type: String,

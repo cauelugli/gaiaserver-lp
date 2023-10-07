@@ -93,7 +93,6 @@ const AddDepartmentForm = ({
         name: user.name,
         phone: user.phone,
         email: user.email,
-        avatarColor: user.avatarColor,
       }));
 
       const res = await api.post("/departments", {
@@ -108,7 +107,6 @@ const AddDepartmentForm = ({
           name: managerName,
           phone: managerPhone,
           email: managerEmail,
-          avatarColor: color,
         },
         members: membersData,
       });

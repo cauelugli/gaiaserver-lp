@@ -3,6 +3,7 @@ import React from "react";
 import axios from "axios";
 
 import {
+  Avatar,
   Button,
   DialogActions,
   DialogContent,
@@ -28,10 +29,14 @@ const AddOperatorForm = ({
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [operator, setOperator] = React.useState("");
+  const [role, setRole] = React.useState("Colaborador");
 
   const handleOperatorChange = (e) => {
     const selectedOperator = e.target.value;
     setOperator(selectedOperator);
+    if (selectedOperator.role === "Gerente") {
+      setRole("Gerente");
+    }
 
     const usernameSuggestion = selectedOperator
       ? selectedOperator.name
@@ -49,7 +54,8 @@ const AddOperatorForm = ({
         id: operator._id,
         username,
         password,
-        operator
+        role,
+        operator,
       });
       if (res.data) {
         toast.success("Operador Adicionado!", {
@@ -85,23 +91,72 @@ const AddOperatorForm = ({
     <form onSubmit={handleAdd}>
       <DialogTitle sx={{ mb: 1 }}>Novo Operador</DialogTitle>
       <DialogContent sx={{ pl: 5 }}>
-        <Typography sx={{ mb: 1 }}>Colaborador</Typography>
-        <Select
-          onChange={handleOperatorChange}
-          value={operator}
-          renderValue={(selected) => selected.name}
-          size="small"
-          sx={{ width: "93%" }}
-        >
-          {operators.map((item) => (
-            <MenuItem value={item} key={item.id}>
-              {item.name}
-            </MenuItem>
-          ))}
-        </Select>
         <Grid
           container
           sx={{ mt: 2 }}
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <Grid item>
+            <Typography sx={{ mb: 1 }}>Colaborador</Typography>
+            <Select
+              onChange={handleOperatorChange}
+              value={operator}
+              renderValue={(selected) => (
+                <Grid container direction="row">
+                  <Avatar
+                    alt="Imagem do Colaborador"
+                    src={`http://localhost:3000/static/${selected.image}`}
+                    sx={{ width: 22, height: 22, mr: 2 }}
+                  />
+                  {selected.name}
+                </Grid>
+              )}
+              size="small"
+              sx={{ mr: 1, width: 245 }}
+            >
+              {operators.map((item) => (
+                <MenuItem value={item} key={item.id}>
+                  <Avatar
+                    alt="Imagem do Colaborador"
+                    src={`http://localhost:3000/static/${item.image}`}
+                    sx={{ width: 22, height: 22, mr: 2 }}
+                  />
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+
+          <Grid item>
+            <Typography sx={{ mb: 1 }}>Nível de Acesso</Typography>
+            <Select
+              onChange={(e) => setRole(e.target.value)}
+              value={role}
+              size="small"
+              sx={{ width: 245 }}
+            >
+              {}
+              <MenuItem
+                value={"Colaborador"}
+                disabled={operator.role === "Gerente"}
+              >
+                Colaborador
+              </MenuItem>
+              <MenuItem
+                value={"Supervisor"}
+                disabled={operator.role === "Gerente"}
+              >
+                Supervisor
+              </MenuItem>
+              <MenuItem value={"Gerente"}>Gerente</MenuItem>
+            </Select>
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          sx={{ mt: 3 }}
           direction="row"
           justifyContent="flex-start"
           alignItems="center"

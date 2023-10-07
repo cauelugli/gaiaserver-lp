@@ -38,7 +38,6 @@ router.post("/", async (req, res) => {
       name: req.body.newManagerData.name,
       email: req.body.newManagerData.email,
       phone: req.body.newManagerData.phone,
-      avatarColor: req.body.newManagerData.avatarColor,
     });
     const newDepartment = new Department({
       name: req.body.name,

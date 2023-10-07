@@ -333,12 +333,7 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                                       size="small"
                                       key={user.id}
                                       avatar={
-                                        <Avatar
-                                          sizes="small"
-                                          sx={{
-                                            backgroundColor: user.avatarColor,
-                                          }}
-                                        >
+                                        <Avatar sizes="small">
                                           <Typography
                                             sx={{
                                               color: "black",
@@ -403,7 +398,7 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                           </Table>
                         </Box>
                       )}
-                      <Box sx={{ mt: 3, ml: "90%" }}>
+                      <Box sx={{ my: 2, ml: "90%" }}>
                         <ModeEditIcon
                           cursor="pointer"
                           option="delete"

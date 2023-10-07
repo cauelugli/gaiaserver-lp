@@ -75,7 +75,6 @@ const EditDepartmentForm = ({
         name: user.name,
         phone: user.phone,
         email: user.email,
-        avatarColor: user.avatarColor,
       }));
 
       const res = await api.put("/departments", {

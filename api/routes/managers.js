@@ -40,7 +40,6 @@ router.post("/", async (req, res) => {
           name: req.body.name,
           email: req.body.email,
           phone: req.body.phone,
-          avatarColor: req.body.avatarColor,
         },
       },
       { new: true }
@@ -100,8 +99,8 @@ router.put("/", async (req, res) => {
         name: req.body.name,
         email: req.body.email,
         phone: req.body.phone,
+        image: req.body.image,
         department: req.body.department,
-        avatarColor: req.body.avatarColor,
       },
       { new: true }
     );
@@ -123,7 +122,6 @@ router.put("/", async (req, res) => {
                     name: updatedManager.name,
                     email: updatedManager.email,
                     phone: updatedManager.phone,
-                    avatarColor: updatedManager.avatarColor,
                   },
                 },
               },
@@ -144,7 +142,6 @@ router.put("/", async (req, res) => {
                   name: updatedManager.name,
                   email: updatedManager.email,
                   phone: updatedManager.phone,
-                  avatarColor: updatedManager.avatarColor,
                 },
               },
               { new: true }
@@ -158,7 +155,6 @@ router.put("/", async (req, res) => {
                 name: updatedManager.name,
                 email: updatedManager.email,
                 phone: updatedManager.phone,
-                avatarColor: updatedManager.avatarColor,
               },
             },
             { new: true }
