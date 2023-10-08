@@ -51,7 +51,7 @@ const AddOperatorForm = ({
     e.preventDefault();
     try {
       const res = await api.put("/operators", {
-        id: operator._id,
+        operatorId: operator._id,
         username,
         password,
         role,

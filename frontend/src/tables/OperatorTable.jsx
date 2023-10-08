@@ -8,6 +8,7 @@ import {
   Avatar,
   Box,
   Dialog,
+  Grid,
   IconButton,
   Paper,
   Table,
@@ -19,10 +20,11 @@ import {
 } from "@mui/material";
 
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import LockIcon from "@mui/icons-material/Lock";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import EditUserForm from "../forms/edit/EditUserForm";
-import DeleteUserForm from "../forms/delete/DeleteUserForm";
+import EditOperatorForm from "../forms/edit/EditOperatorForm";
+import DeleteOperatorForm from "../forms/delete/DeleteOperatorForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -32,6 +34,7 @@ export default function OperatorTable() {
   const [selectedOperator, setSelectedOperator] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
+  const [option, setOption] = React.useState("false");
 
   const [operators, setOperators] = React.useState([]);
 
@@ -64,9 +67,10 @@ export default function OperatorTable() {
     }
   };
 
-  const handleOpenEdit = (user) => {
-    setOpenEdit(!openEdit);
+  const handleOpenEdit = (user, option) => {
+    setOption(option);
     setSelectedOperator(user);
+    setOpenEdit(!openEdit);
   };
 
   const handleConfirmDelete = (user) => {
@@ -142,25 +146,35 @@ export default function OperatorTable() {
                         {user.role ? user.role : "-"}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Box>
-                        <IconButton size="small">
+                    <TableCell align="center" sx={{ py: 0 }}>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <IconButton>
                           <ModeEditIcon
-                            fontSize="inherit"
                             cursor="pointer"
-                            onClick={() => handleOpenEdit(user)}
-                            sx={{ color: "grey", mr: 1 }}
+                            onClick={() => handleOpenEdit(user, "operator")}
+                            sx={{ color: "#333" }}
                           />
                         </IconButton>
-                        <IconButton size="small">
+                        <IconButton sx={{ mx: -1 }}>
+                          <LockIcon
+                            cursor="pointer"
+                            onClick={() => handleOpenEdit(user, "password")}
+                            sx={{ color: "#333" }}
+                          />
+                        </IconButton>
+                        <IconButton>
                           <DeleteIcon
-                            fontSize="inherit"
                             cursor="pointer"
                             onClick={() => handleConfirmDelete(user)}
                             sx={{ color: "#ff4444" }}
                           />
                         </IconButton>
-                      </Box>
+                      </Grid>
                     </TableCell>
                   </TableRow>
                   <TableRow></TableRow>
@@ -173,11 +187,12 @@ export default function OperatorTable() {
         {openEdit && (
           <Dialog
             fullWidth
-            maxWidth="md"
+            maxWidth="sm"
             open={openEdit}
             onClose={() => setOpenEdit(!openEdit)}
           >
-            <EditUserForm
+            <EditOperatorForm
+              option={option}
               openEdit={openEdit}
               selectedOperator={selectedOperator}
               setOpenEdit={setOpenEdit}
@@ -188,7 +203,7 @@ export default function OperatorTable() {
         )}
         {openDelete && (
           <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-            <DeleteUserForm
+            <DeleteOperatorForm
               selectedOperator={selectedOperator}
               openDelete={openDelete}
               setOpenDelete={setOpenDelete}
