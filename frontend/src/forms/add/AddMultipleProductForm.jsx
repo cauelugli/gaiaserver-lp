@@ -54,33 +54,43 @@ export default function AddMultipleProductForm({ onClose, fetchData, toast }) {
     setProductList([...productList, { ...productList[0] }]);
   };
 
-  const convertImageToBase64 = (imageFile) => {
-    return new Promise((resolve, reject) => {
-      if (!imageFile) {
-        reject("Nenhuma imagem selecionada.");
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        resolve(event.target.result);
-      };
-
-      reader.onerror = (error) => {
-        reject(error);
-      };
-
-      reader.readAsDataURL(imageFile);
-    });
-  };
-
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
+      // Crie um array para armazenar as respostas das chamadas de upload
+      const uploadResponses = [];
+
+      // Percorra cada item em productList
+      for (const product of productList) {
+        const formData = new FormData();
+        formData.append("image", product.image);
+
+        // Faça o upload da imagem para cada item
+        const uploadResponse = await api.post(
+          "/uploads/singleProduct",
+          formData
+        );
+        uploadResponses.push(uploadResponse.data.imagePath);
+      }
+
+      // Crie um array de objetos com as informações do produto, incluindo os caminhos das imagens
+      const productsData = productList.map((product, index) => ({
+        name: product.name,
+        brand: product.brand,
+        image: uploadResponses[index],
+        type: product.type,
+        model: product.model,
+        size: product.size,
+        groupingType: product.groupingType,
+        buyValue: product.buyValue,
+        sellValue: product.sellValue,
+      }));
+
+      // Faça a chamada POST para adicionar os produtos
       const res = await api.post("/products", {
-        productList,
+        productList: productsData,
       });
+
       if (res.data) {
         toast.success("Produtos Adicionados!", {
           closeOnClick: true,
@@ -139,6 +149,20 @@ export default function AddMultipleProductForm({ onClose, fetchData, toast }) {
                 }
                 required
                 sx={{ width: 200, ml: index === 0 ? 2 : 0 }}
+              />
+            </Grid>
+            <Grid item sx={{ ml: 1}}>
+              {index === 0 && (
+                <Typography sx={{ fontSize: 14 }}>Marca</Typography>
+              )}
+              <TextField
+                size="small"
+                value={product.brand}
+                onChange={(e) =>
+                  handleFieldChange(index, "brand", e.target.value)
+                }
+                required
+                sx={{ width: 100 }}
               />
             </Grid>
             <Grid item sx={{ ml: 1 }}>
@@ -303,22 +327,21 @@ export default function AddMultipleProductForm({ onClose, fetchData, toast }) {
                     accept="image/*"
                     id={`fileInput${index}`}
                     style={{ display: "none" }}
-                    onChange={async (e) => {
+                    onChange={(e) => {
                       const selectedImage = e.target.files[0];
-                      try {
-                        const imageBase64 = await convertImageToBase64(
-                          selectedImage
-                        );
-                        handleFieldChange(index, "image", imageBase64);
-                      } catch (error) {
-                        console.error(
-                          "Erro ao converter imagem para Base64:",
-                          error
-                        );
-                      }
+                      // Crie uma cópia do productList para evitar a mutação direta do estado
+                      const updatedProductList = [...productList];
+                      // Atualize o campo 'image' do item correspondente no productList
+                      updatedProductList[index] = {
+                        ...updatedProductList[index],
+                        image: selectedImage,
+                      };
+                      // Atualize o estado com o novo productList
+                      setProductList(updatedProductList);
                     }}
                     required
                   />
+
                   {!product.image && (
                     <label htmlFor={`fileInput${index}`}>
                       <Button
