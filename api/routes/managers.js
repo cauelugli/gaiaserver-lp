@@ -40,6 +40,7 @@ router.post("/", async (req, res) => {
           name: req.body.name,
           email: req.body.email,
           phone: req.body.phone,
+          image: req.body.image,
         },
       },
       { new: true }
@@ -122,6 +123,7 @@ router.put("/", async (req, res) => {
                     name: updatedManager.name,
                     email: updatedManager.email,
                     phone: updatedManager.phone,
+                    image: updatedManager.image,
                   },
                 },
               },
@@ -142,6 +144,7 @@ router.put("/", async (req, res) => {
                   name: updatedManager.name,
                   email: updatedManager.email,
                   phone: updatedManager.phone,
+                  image: updatedManager.image,
                 },
               },
               { new: true }
@@ -155,12 +158,13 @@ router.put("/", async (req, res) => {
                 name: updatedManager.name,
                 email: updatedManager.email,
                 phone: updatedManager.phone,
+                image: updatedManager.image,
               },
             },
             { new: true }
           ))
       : console.log("");
-      
+
     res.status(200).json({ updatedManager, updatedDepartment });
   } catch (err) {
     console.log(err);
