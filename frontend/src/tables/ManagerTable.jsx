@@ -18,11 +18,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
   Typography,
 } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditManagerForm from "../forms/edit/EditManagerForm";
 import DeleteManagerForm from "../forms/delete/DeleteManagerForm";
@@ -31,8 +32,8 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ManagerTable() {
-  const [selectedManager, setSelectedManager] = React.useState("");
+export default function UserTable() {
+  const [selectedManager, setSelectedUser] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -77,72 +78,127 @@ export default function ManagerTable() {
 
   const handleOpenDetail = (user) => {
     setOpenDetail(!openDetail);
-    setSelectedManager(user);
+    setSelectedUser(user);
   };
 
   const handleOpenEdit = (user) => {
     setOpenEdit(!openEdit);
-    setSelectedManager(user);
+    setSelectedUser(user);
   };
 
   const handleConfirmDelete = (user) => {
     setOpenDelete(!openDelete);
-    setSelectedManager(user);
+    setSelectedUser(user);
   };
 
+  const tableHeaderRow = [
+    {
+      id: "name",
+      label: "Nome",
+    },
+    {
+      id: "email",
+      label: "E-mail",
+    },
+    {
+      id: "phone",
+      label: "Telefone",
+    },
+    {
+      id: "department.name",
+      label: "Departamento",
+    },
+  ];
+
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("name");
+
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const sortedRows = React.useMemo(() => {
+    const compare = (a, b) => {
+      const departmentA = a.department ? a.department.name : "";
+      const departmentB = b.department ? b.department.name : "";
+
+      if (order === "asc") {
+        return departmentA.localeCompare(departmentB);
+      } else {
+        return departmentB.localeCompare(departmentA);
+      }
+    };
+
+    if (orderBy === "department.name") {
+      return [...managers].sort(compare);
+    }
+
+    return [...managers].sort((a, b) => {
+      const isAsc = order === "asc";
+      if (isAsc) {
+        return a[orderBy] < b[orderBy] ? -1 : 1;
+      } else {
+        return b[orderBy] < a[orderBy] ? -1 : 1;
+      }
+    });
+  }, [managers, order, orderBy]);
+
   return (
-    <Box sx={{ minWidth: "1050px" }}>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableBody>
+    <>
+      <Box sx={{ minWidth: "1050px" }}>
+        <TableContainer component={Paper}>
+          <Table>
             <TableRow
               sx={{
                 backgroundColor: "#ccc",
               }}
             >
               <TableCell padding="checkbox"></TableCell>
-              <TableCell align="left">
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  Nome do Gerente
-                </Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  E-mail
-                </Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  Telefone
-                </Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  Departamento
-                </Typography>
-              </TableCell>
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "Nome" ? "" : "center"}
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    pl: headCell.label === "Nome" ? "" : 5,
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
+                  >
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
             </TableRow>
-            {managers.map((manager) => (
-              <>
+            {sortedRows.map((row) => (
+              <React.Fragment key={row._id}>
                 <TableRow
-                  key={manager._id}
                   sx={{
                     cursor: "pointer",
                     backgroundColor:
-                      selectedManager.name === manager.name && openDetail
+                      selectedManager.name === row.name && openDetail
                         ? "#eee"
                         : "none",
                     "&:hover": { backgroundColor: "#eee " },
                   }}
+                  onClick={() => handleOpenDetail(row)}
                 >
                   <TableCell
-                    onClick={() => handleOpenDetail(manager)}
-                    align="right"
+                    onClick={() => handleOpenDetail(row)}
+                    cursor="pointer"
+                    // align="right"
                     sx={{ py: 0 }}
                   >
                     <Avatar
-                      src={`http://localhost:3000/static/${manager.image}`}
-                      alt={manager.name[0]}
+                      src={`http://localhost:3000/static/${row.image}`}
+                      alt={row.name[0]}
                       cursor="pointer"
                       style={{
                         marginLeft: 10,
@@ -150,56 +206,50 @@ export default function ManagerTable() {
                         height: 42,
                         border: "2px solid #32aacd",
                         opacity:
-                          openDetail && selectedManager.name === manager.name
+                          openDetail && selectedManager.name === row.name
                             ? 0
                             : 100,
                       }}
                     />
                   </TableCell>
                   <TableCell
-                    onClick={() => handleOpenDetail(manager)}
+                    onClick={() => handleOpenDetail(row)}
                     cursor="pointer"
-                    align="left"
+                    // align="left"
                   >
-                    <Typography sx={{ fontSize: 14 }}>
-                      {manager.name}
-                    </Typography>
+                    <Typography sx={{ fontSize: 14 }}>{row.name}</Typography>
                   </TableCell>
                   <TableCell
-                    onClick={() => handleOpenDetail(manager)}
+                    onClick={() => handleOpenDetail(row)}
+                    cursor="pointer"
+                    align="center"
+                  >
+                    <Typography sx={{ fontSize: 14 }}>{row.email}</Typography>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(row)}
+                    cursor="pointer"
+                    align="center"
+                  >
+                    <Typography sx={{ fontSize: 14 }}>{row.phone}</Typography>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(row)}
                     cursor="pointer"
                     align="center"
                   >
                     <Typography sx={{ fontSize: 14 }}>
-                      {manager.email}
-                    </Typography>
-                  </TableCell>
-                  <TableCell
-                    onClick={() => handleOpenDetail(manager)}
-                    cursor="pointer"
-                    align="center"
-                  >
-                    <Typography sx={{ fontSize: 14 }}>
-                      {manager.phone}
-                    </Typography>
-                  </TableCell>
-                  <TableCell
-                    onClick={() => handleOpenDetail(manager)}
-                    cursor="pointer"
-                    align="center"
-                  >
-                    <Typography sx={{ fontSize: 14 }}>
-                      {manager.department ? manager.department.name : "-"}
+                      {row.department ? row.department.name : "-"}
                     </Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell
-                    style={{ paddingBottom: 0, paddingTop: 0 }}
                     colSpan={6}
+                    style={{ paddingBottom: 0, paddingTop: 0 }}
                   >
                     <Collapse
-                      in={openDetail && selectedManager.name === manager.name}
+                      in={openDetail && selectedManager.name === row.name}
                       timeout="auto"
                       unmountOnExit
                     >
@@ -223,9 +273,9 @@ export default function ManagerTable() {
                               justifyContent="center"
                             >
                               <Avatar
-                                alt="Imagem do Produto"
+                                alt="Imagem do Gerente"
                                 cursor="pointer"
-                                src={`http://localhost:3000/static/${manager.image}`}
+                                src={`http://localhost:3000/static/${row.image}`}
                                 sx={{ width: 200, height: 200, mr: 4 }}
                                 onDoubleClick={handleOpenImage}
                               />
@@ -236,8 +286,8 @@ export default function ManagerTable() {
                                 <DialogContent>
                                   <img
                                     cursor="pointer"
-                                    src={`http://localhost:3000/static/${manager.image}`}
-                                    alt="Imagem do Usuário"
+                                    src={`http://localhost:3000/static/${row.image}`}
+                                    alt="Imagem do Gerente"
                                     style={{ maxWidth: "100%" }}
                                   />
                                 </DialogContent>
@@ -281,17 +331,17 @@ export default function ManagerTable() {
                               <TableBody>
                                 <TableRow>
                                   <TableCell>
-                                    <Typography>{manager.name}</Typography>
+                                    <Typography>{row.name}</Typography>
                                   </TableCell>
                                   <TableCell align="center">
-                                    <Typography>{manager.email}</Typography>
+                                    <Typography>{row.email}</Typography>
                                   </TableCell>
                                   <TableCell align="center">
-                                    <Typography>{manager.phone}</Typography>
+                                    <Typography>{row.phone}</Typography>
                                   </TableCell>
                                   <TableCell>
                                     <Typography>
-                                      {manager.department ? (
+                                      {row.department ? (
                                         <Grid container direction="row">
                                           <Paper
                                             elevation={0}
@@ -302,13 +352,13 @@ export default function ManagerTable() {
                                               height: 15,
                                               borderRadius: 50,
                                               backgroundColor:
-                                                manager.department.color,
+                                                row.department.color,
                                             }}
                                           >
                                             {" "}
                                           </Paper>
                                           <Typography>
-                                            {manager.department.name}
+                                            {row.department.name}
                                           </Typography>
                                         </Grid>
                                       ) : (
@@ -348,16 +398,18 @@ export default function ManagerTable() {
                               <TableBody>
                                 <TableRow>
                                   <TableCell align="center">
-                                    <Typography>Gerente</Typography>
-                                  </TableCell>
-                                  <TableCell align="center">
                                     <Typography>
-                                      {manager.username ? manager.username : "-"}
+                                      {row.position ? row.position : "-"}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="center">
                                     <Typography>
-                                      {manager.role ? manager.role : "-"}
+                                      {row.username ? row.username : "-"}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="center">
+                                    <Typography>
+                                      {row.role ? row.role : "-"}
                                     </Typography>
                                   </TableCell>
                                 </TableRow>
@@ -367,12 +419,12 @@ export default function ManagerTable() {
                           <Box sx={{ mt: 3, ml: "90%" }}>
                             <ModeEditIcon
                               cursor="pointer"
-                              onClick={() => handleOpenEdit(manager)}
+                              onClick={() => handleOpenEdit(row)}
                               sx={{ color: "grey", mr: 2 }}
                             />
                             <DeleteIcon
                               cursor="pointer"
-                              onClick={() => handleConfirmDelete(manager)}
+                              onClick={() => handleConfirmDelete(row)}
                               sx={{ color: "#ff4444" }}
                             />
                           </Box>
@@ -381,41 +433,40 @@ export default function ManagerTable() {
                     </Collapse>
                   </TableCell>
                 </TableRow>
-              </>
+              </React.Fragment>
             ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          </Table>
+        </TableContainer>
 
-      {openEdit && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openEdit}
-          onClose={() => setOpenEdit(!openEdit)}
-        >
-          <EditManagerForm
-            openEdit={openEdit}
-            selectedManager={selectedManager}
-            managers={managers}
-            departments={departments}
-            setOpenEdit={setOpenEdit}
-            fetchData={fetchData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
-      {openDelete && (
-        <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-          <DeleteManagerForm
-            selectedManager={selectedManager}
-            openDelete={openDelete}
-            setOpenDelete={setOpenDelete}
-            fetchData={fetchData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
-    </Box>
+        {openEdit && (
+          <Dialog
+            fullWidth
+            maxWidth="md"
+            open={openEdit}
+            onClose={() => setOpenEdit(!openEdit)}
+          >
+            <EditManagerForm
+              openEdit={openEdit}
+              selectedManager={selectedManager}
+              departments={departments}
+              setOpenEdit={setOpenEdit}
+              fetchData={fetchData}
+              toast={toast}
+            />
+          </Dialog>
+        )}
+        {openDelete && (
+          <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
+            <DeleteManagerForm
+              selectedUser={selectedManager}
+              openDelete={openDelete}
+              setOpenDelete={setOpenDelete}
+              fetchData={fetchData}
+              toast={toast}
+            />
+          </Dialog>
+        )}
+      </Box>
+    </>
   );
 }
