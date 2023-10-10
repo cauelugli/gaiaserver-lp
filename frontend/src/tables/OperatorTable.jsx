@@ -16,6 +16,7 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  TableSortLabel,
   Typography,
 } from "@mui/material";
 
@@ -78,6 +79,60 @@ export default function OperatorTable() {
     setSelectedOperator(user);
   };
 
+  const tableHeaderRow = [
+    {
+      id: "name",
+      label: "Nome",
+    },
+    {
+      id: "username",
+      label: "Nome de Operador",
+    },
+    {
+      id: "role",
+      label: "Nível de Acesso",
+    },
+    {
+      id: "actions",
+      label: "Ações",
+    },
+  ];
+
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("role");
+
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const sortedRows = React.useMemo(() => {
+    const compare = (a, b) => {
+      const departmentA = a.department ? a.department.name : "";
+      const departmentB = b.department ? b.department.name : "";
+
+      if (order === "asc") {
+        return departmentA.localeCompare(departmentB);
+      } else {
+        return departmentB.localeCompare(departmentA);
+      }
+    };
+
+    if (orderBy === "department.name") {
+      return [...operators].sort(compare);
+    }
+
+    return [...operators].sort((a, b) => {
+      const isAsc = order === "asc";
+      if (isAsc) {
+        return a[orderBy] < b[orderBy] ? -1 : 1;
+      } else {
+        return b[orderBy] < a[orderBy] ? -1 : 1;
+      }
+    });
+  }, [operators, order, orderBy]);
+
   return (
     <>
       <Box sx={{ minWidth: "1050px" }}>
@@ -90,40 +145,40 @@ export default function OperatorTable() {
                 }}
               >
                 <TableCell padding="checkbox"></TableCell>
-                <TableCell>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Nome do Colaborador
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Nome de Operador
-                  </Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Nível de Acesso
-                  </Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Ações
-                  </Typography>
-                </TableCell>
+                {tableHeaderRow.map((headCell) => (
+                  <TableCell
+                    align={headCell.label === "Nome" ? "" : "center"}
+                    sx={{
+                      fontSize: 16,
+                      fontWeight: "bold",
+                      pl: headCell.label === "Nome" ? "" : 5,
+                    }}
+                    key={headCell.id}
+                    sortDirection={orderBy === headCell.id ? order : false}
+                  >
+                    <TableSortLabel
+                      active={orderBy === headCell.id}
+                      direction={orderBy === headCell.id ? order : "asc"}
+                      onClick={() => handleRequestSort(headCell.id)}
+                    >
+                      {headCell.label}
+                    </TableSortLabel>
+                  </TableCell>
+                ))}
               </TableRow>
-              {operators.map((user) => (
+              {sortedRows.map((row) => (
                 <>
                   <TableRow
-                    key={user._id}
+                    key={row._id}
                     sx={{
                       cursor: "pointer",
                       "&:hover": { backgroundColor: "#eee " },
                     }}
                   >
-                    <TableCell sx={{ py: 0 }}>
+                    <TableCell cursor="pointer" sx={{ py: 0 }}>
                       <Avatar
-                        src={`http://localhost:3000/static/${user.image}`}
-                        alt={user.name[0]}
+                        src={`http://localhost:3000/static/${row.image}`}
+                        alt={row.name[0]}
                         cursor="pointer"
                         style={{
                           marginLeft: 10,
@@ -133,18 +188,16 @@ export default function OperatorTable() {
                         }}
                       />
                     </TableCell>
-                    <TableCell>
-                      <Typography sx={{ fontSize: 14 }}>{user.name}</Typography>
+                    <TableCell cursor="pointer">
+                      <Typography sx={{ fontSize: 14 }}>{row.name}</Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell cursor="pointer" align="center">
                       <Typography sx={{ fontSize: 14 }}>
-                        {user.username ? user.username : "-"}
+                        {row.username}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 14 }}>
-                        {user.role ? user.role : "-"}
-                      </Typography>
+                    <TableCell cursor="pointer" align="center">
+                      <Typography sx={{ fontSize: 14 }}>{row.role}</Typography>
                     </TableCell>
                     <TableCell align="center" sx={{ py: 0 }}>
                       <Grid
@@ -156,28 +209,27 @@ export default function OperatorTable() {
                         <IconButton>
                           <ModeEditIcon
                             cursor="pointer"
-                            onClick={() => handleOpenEdit(user, "operator")}
+                            onClick={() => handleOpenEdit(row, "operator")}
                             sx={{ color: "#333" }}
                           />
                         </IconButton>
                         <IconButton sx={{ mx: -1 }}>
                           <LockIcon
                             cursor="pointer"
-                            onClick={() => handleOpenEdit(user, "password")}
+                            onClick={() => handleOpenEdit(row, "password")}
                             sx={{ color: "#333" }}
                           />
                         </IconButton>
                         <IconButton>
                           <DeleteIcon
                             cursor="pointer"
-                            onClick={() => handleConfirmDelete(user)}
+                            onClick={() => handleConfirmDelete(row)}
                             sx={{ color: "#ff4444" }}
                           />
                         </IconButton>
                       </Grid>
                     </TableCell>
                   </TableRow>
-                  <TableRow></TableRow>
                 </>
               ))}
             </TableBody>

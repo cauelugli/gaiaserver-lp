@@ -193,7 +193,6 @@ export default function UserTable() {
                   <TableCell
                     onClick={() => handleOpenDetail(row)}
                     cursor="pointer"
-                    // align="right"
                     sx={{ py: 0 }}
                   >
                     <Avatar
@@ -398,9 +397,7 @@ export default function UserTable() {
                               <TableBody>
                                 <TableRow>
                                   <TableCell align="center">
-                                    <Typography>
-                                      {row.position ? row.position : "-"}
-                                    </Typography>
+                                    <Typography>Gerente</Typography>
                                   </TableCell>
                                   <TableCell align="center">
                                     <Typography>
