@@ -178,41 +178,7 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                         </Table>
                       </Box>
 
-                      <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                          Domínio
-                        </Typography>
-                        <Table size="small">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  Website
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  Domínio
-                                </Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell>
-                                <Typography>{customer.website}</Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography>{customer.domain}</Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </Box>
+                      
 
                       <Box sx={{ my: 4, px: 6 }}>
                         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
@@ -260,6 +226,42 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                                 <Typography>
                                   {customer.mainContactPosition}
                                 </Typography>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </Box>
+
+                      <Box sx={{ my: 4, px: 6 }}>
+                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                          Domínio
+                        </Typography>
+                        <Table size="small">
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  Website
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography
+                                  sx={{ fontSize: "14px", color: "#777" }}
+                                >
+                                  Domínio
+                                </Typography>
+                              </TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell>
+                                <Typography>{customer.website}</Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography>{customer.domain}</Typography>
                               </TableCell>
                             </TableRow>
                           </TableBody>
