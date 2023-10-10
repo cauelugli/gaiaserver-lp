@@ -5,6 +5,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 
 import {
+  Avatar,
   Box,
   Button,
   Checkbox,
@@ -304,16 +305,30 @@ const AddSaleForm = ({ openAddSale, setOpenAddSale, fetchData1, toast }) => {
                 renderValue={(selected) => {
                   if (selected.length === 0) {
                     return <Typography>Selecione o Vendedor</Typography>;
+                  } else {
+                    return (
+                      <Grid container direction="row">
+                        <Avatar
+                          alt="Imagem do Colaborador"
+                          src={`http://localhost:3000/static/${selected.image}`}
+                          sx={{ width: 22, height: 22, mr: 1 }}
+                        />
+                        <Typography>{selected.name}</Typography>
+                      </Grid>
+                    );
                   }
-
-                  return <Typography>{selected.name}</Typography>;
                 }}
               >
                 <MenuItem disabled value="">
                   Vendedores
                 </MenuItem>
                 {department.members.map((item) => (
-                  <MenuItem value={item} key={item._id}>
+                  <MenuItem value={item} key={item.id}>
+                    <Avatar
+                      alt="Imagem do Colaborador"
+                      src={`http://localhost:3000/static/${item.image}`}
+                      sx={{ width: 22, height: 22, mr: 2 }}
+                    />
                     {item.name}
                   </MenuItem>
                 ))}
@@ -342,15 +357,17 @@ const AddSaleForm = ({ openAddSale, setOpenAddSale, fetchData1, toast }) => {
 
         <Divider sx={{ my: 2 }} />
         <Grid container>
-
-        <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
-          Entrega
-        </Typography>
-        {deliveryAddress && deliveryReceiver && deliveryReceiverPhone && deliveryScheduledTo && (
-            <CheckCircleOutlineOutlinedIcon
-              sx={{ color: "#50C878", ml: 1, mt: 2 }}
-            />
-          )}
+          <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
+            Entrega
+          </Typography>
+          {deliveryAddress &&
+            deliveryReceiver &&
+            deliveryReceiverPhone &&
+            deliveryScheduledTo && (
+              <CheckCircleOutlineOutlinedIcon
+                sx={{ color: "#50C878", ml: 1, mt: 2 }}
+              />
+            )}
         </Grid>
         <Grid container sx={{ mt: 2 }}>
           <Grid item>
@@ -360,7 +377,7 @@ const AddSaleForm = ({ openAddSale, setOpenAddSale, fetchData1, toast }) => {
               onChange={(e) => setDeliveryAddress(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 270 }}
+              sx={{ width: 250 }}
             />
           </Grid>
           <Grid item>
@@ -370,7 +387,7 @@ const AddSaleForm = ({ openAddSale, setOpenAddSale, fetchData1, toast }) => {
               onChange={(e) => setDeliveryReceiver(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 130, mx: 1 }}
+              sx={{ width: 160, mx: 1 }}
             />
           </Grid>
           <Grid item>
@@ -380,10 +397,10 @@ const AddSaleForm = ({ openAddSale, setOpenAddSale, fetchData1, toast }) => {
               onChange={(e) => setDeliveryReceiverPhone(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 150, mr: 1 }}
+              sx={{ width: 140, mr: 1 }}
             />
           </Grid>
-          <Grid item sx={{ mt: -1, width: "25%" }}>
+          <Grid item sx={{ mt: -1, width: "24%" }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker"]}>
                 <DatePicker
