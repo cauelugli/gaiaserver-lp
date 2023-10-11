@@ -19,6 +19,7 @@ import {
   Chip,
   Avatar,
   TableSortLabel,
+  Grid,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -37,6 +38,7 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [selectedDepartment, setSelectedDepartment] = React.useState([]);
+  const [hoveredMember, setHoveredMember] = React.useState(null);
 
   const [users, setUsers] = React.useState([]);
   const [managers, setManagers] = React.useState([]);
@@ -148,7 +150,11 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
               {tableHeaderRow.map((headCell) => (
                 <TableCell
                   align={headCell.label === "Nome" ? "" : "center"}
-                  sx={{ fontSize: 16, fontWeight: "bold", pl:headCell.label === "Nome" ? "" : 5 }}
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    pl: headCell.label === "Nome" ? "" : 5,
+                  }}
                   key={headCell.id}
                   sortDirection={orderBy === headCell.id ? order : false}
                 >
@@ -375,40 +381,90 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                         </Typography>
                         <Table size="small">
                           <TableBody>
-                            <TableRow>
-                              <TableCell>
-                                <Typography>
-                                  {department.members.map((user) => (
-                                    <Chip
-                                      sx={{ mx: 1 }}
-                                      size="small"
-                                      key={user.id}
-                                      avatar={
-                                        <Avatar sizes="small">
-                                          <Typography
+                            <Grid container diretion="row">
+                              {department.members.map((user) => (
+                                <TableCell
+                                  key={user.id}
+                                  style={{ position: "relative" }}
+                                >
+                                  <Chip
+                                    sx={{ mx: 0 }}
+                                    onMouseEnter={() => setHoveredMember(user)}
+                                    onMouseLeave={() => setHoveredMember(null)}
+                                    avatar={
+                                      <Avatar
+                                        alt="Imagem do Colaborador"
+                                        src={`http://localhost:3000/static/${user.image}`}
+                                        sx={{
+                                          width: 32,
+                                          height: 32,
+                                          mr: 1,
+                                        }}
+                                      />
+                                    }
+                                    label={
+                                      <Typography
+                                        sx={{
+                                          fontSize: "100%",
+                                        }}
+                                      >
+                                        {user.name}
+                                      </Typography>
+                                    }
+                                  />
+                                  {hoveredMember === user && (
+                                    <Paper
+                                      onMouseEnter={() =>
+                                        setHoveredMember(user)
+                                      }
+                                      onMouseLeave={() =>
+                                        setHoveredMember(null)
+                                      }
+                                      style={{
+                                        position: "absolute",
+                                        width: 200,
+                                        height: 200,
+                                        // backgroundColor: "white ",
+                                        boxShadow:
+                                          "0 2px 4px rgba(0, 0, 0, 0.2)",
+                                        bottom: -50,
+                                        left: "14%",
+                                        zIndex: 999,
+                                        border: "2px solid #444",
+                                        borderRadius: 15,
+                                      }}
+                                    >
+                                      <Grid
+                                        container
+                                        direction="column"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                      >
+                                        <Grid item sx={{mt:1}}>
+                                          <Typography>{user.name}</Typography>
+                                        </Grid>
+
+                                        <Grid item sx={{ my:1}}>
+                                          <Avatar
+                                            alt="Imagem do Colaborador"
+                                            src={`http://localhost:3000/static/${user.image}`}
                                             sx={{
-                                              color: "black",
-                                              fontSize: "100%",
+                                              width: 120,
+                                              height: 120,
                                             }}
-                                          >
-                                            {user.name[0].toUpperCase()}
+                                          />
+                                        </Grid>
+                                        <Grid item sx={{mb:1}}>
+                                          <Typography sx={{fontSize:12}}> 
+                                            {user.position}
                                           </Typography>
-                                        </Avatar>
-                                      }
-                                      label={
-                                        <Typography
-                                          sx={{
-                                            fontSize: "100%",
-                                          }}
-                                        >
-                                          {user.name}
-                                        </Typography>
-                                      }
-                                    />
-                                  ))}
-                                </Typography>
-                              </TableCell>
-                            </TableRow>
+                                        </Grid>
+                                      </Grid>
+                                    </Paper>
+                                  )}
+                                </TableCell>
+                              ))}
+                            </Grid>
                           </TableBody>
                         </Table>
                       </Box>
