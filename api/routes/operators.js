@@ -30,33 +30,53 @@ router.put("/", async (req, res) => {
     }
   }
 
-  if (req.body.password && !req.body.username) {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPass = await bcrypt.hash(req.body.password, salt);
-    try {
-      const updatedOperator = await type.findByIdAndUpdate(
-        req.body.operatorId,
-        {
-          password: hashedPass,
-        },
-        { new: true }
-      );
-
-      res.status(200).json(updatedOperator);
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
-  } else {
-    try {
+  if (req.body.option === "password") {
+    if (req.body.password && !req.body.username) {
       const salt = await bcrypt.genSalt(10);
       const hashedPass = await bcrypt.hash(req.body.password, salt);
+      try {
+        const updatedOperator = await type.findByIdAndUpdate(
+          req.body.operatorId,
+          {
+            password: hashedPass,
+          },
+          { new: true }
+        );
 
+        res.status(200).json(updatedOperator);
+      } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+      }
+    } else {
+      try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPass = await bcrypt.hash(req.body.password, salt);
+
+        const updatedOperator = await type.findByIdAndUpdate(
+          req.body.operatorId,
+          {
+            username: req.body.username,
+            password: hashedPass,
+            role: req.body.role,
+          },
+          { new: true }
+        );
+
+        res.status(200).json(updatedOperator);
+      } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+      }
+    }
+  }
+
+  if (req.body.option === "operator") {
+    try {
       const updatedOperator = await type.findByIdAndUpdate(
         req.body.operatorId,
         {
           username: req.body.username,
-          password: hashedPass,
           role: req.body.role,
         },
         { new: true }

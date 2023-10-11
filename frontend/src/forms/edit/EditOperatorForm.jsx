@@ -46,6 +46,7 @@ const EditOperatorForm = ({
           operator: selectedOperator,
           username,
           role,
+          option
         });
         if (res.data) {
           toast.success("Operador Editado!", {
@@ -63,6 +64,7 @@ const EditOperatorForm = ({
             operatorId: selectedOperator._id,
             operator: selectedOperator,
             password,
+            option
           });
           if (res.data) {
             toast.success("Senha Atualizada!", {
