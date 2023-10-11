@@ -18,6 +18,7 @@ import {
   Typography,
   Chip,
   Avatar,
+  TableSortLabel,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -80,6 +81,60 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
     setOpenDelete(!openDelete);
   };
 
+  const tableHeaderRow = [
+    {
+      id: "name",
+      label: "Nome",
+    },
+    {
+      id: "email",
+      label: "E-mail",
+    },
+    {
+      id: "manager",
+      label: "Gerente",
+    },
+    {
+      id: "members",
+      label: "Nº de Colaboradores",
+    },
+  ];
+
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("name");
+
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const sortedRows = React.useMemo(() => {
+    const compare = (a, b) => {
+      const membersLenA = a.length ? a.length : "";
+      const membersLenB = b.length ? b.length : "";
+
+      if (order === "asc") {
+        return membersLenA.localeCompare(membersLenB);
+      } else {
+        return membersLenB.localeCompare(membersLenA);
+      }
+    };
+
+    if (orderBy === "department.name") {
+      return [...departments].sort(compare);
+    }
+
+    return [...departments].sort((a, b) => {
+      const isAsc = order === "asc";
+      if (isAsc) {
+        return a[orderBy] < b[orderBy] ? -1 : 1;
+      } else {
+        return b[orderBy] < a[orderBy] ? -1 : 1;
+      }
+    });
+  }, [departments, order, orderBy]);
+
   return (
     <Box sx={{ minWidth: "1050px" }}>
       <TableContainer component={Paper}>
@@ -90,28 +145,24 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                 backgroundColor: "#ccc",
               }}
             >
-              <TableCell align="left">
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  Nome do Departamento
-                </Typography>
-              </TableCell>
-              <TableCell align="left">
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  E-mail Principal
-                </Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  Gerente
-                </Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  Nº Colaboradores
-                </Typography>
-              </TableCell>
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "Nome" ? "" : "center"}
+                  sx={{ fontSize: 16, fontWeight: "bold", pl:headCell.label === "Nome" ? "" : 5 }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
+                  >
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
             </TableRow>
-            {departments.map((department) => (
+            {sortedRows.map((department) => (
               <>
                 <TableRow
                   key={department._id}
@@ -142,7 +193,7 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                   <TableCell
                     onClick={() => handleOpenDetail(department)}
                     cursor="pointer"
-                    align="left"
+                    align="center"
                     sx={{
                       color:
                         selectedDepartment === department.name && openDetail

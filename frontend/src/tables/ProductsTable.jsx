@@ -93,6 +93,7 @@ export default function ProductsTable() {
           <Table>
             <TableBody>
               <TableRow sx={{ backgroundColor: "#ccc" }}>
+                <TableCell padding="checkbox"></TableCell>
                 <TableCell align="left">
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Nome do Produto
@@ -132,6 +133,27 @@ export default function ProductsTable() {
                       "&:hover": { backgroundColor: "#eee " },
                     }}
                   >
+                    <TableCell
+                      onClick={() => handleOpenDetail(product)}
+                      cursor="pointer"
+                      sx={{ py: 0 }}
+                    >
+                      <Avatar
+                        src={`http://localhost:3000/static/${product.image}`}
+                        alt={product.name[0]}
+                        cursor="pointer"
+                        style={{
+                          marginLeft: 10,
+                          width: 42,
+                          height: 42,
+                          border: "2px solid #32aacd",
+                          opacity:
+                            openDetail && selectedProduct.name === product.name
+                              ? 0
+                              : 100,
+                        }}
+                      />
+                    </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(product)}
                       cursor="pointer"

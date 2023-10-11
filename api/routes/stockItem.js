@@ -46,6 +46,7 @@ router.put("/", async (req, res) => {
         name: req.body.name,
         sellValue: req.body.sellValue,
         buyValue: req.body.buyValue,
+        image: req.body.image,
       },
       { new: true }
     );

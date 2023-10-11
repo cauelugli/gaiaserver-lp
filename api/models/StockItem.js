@@ -17,6 +17,9 @@ const stockItemSchema = new mongoose.Schema({
     type: Number,
     default: 1,
   },
+  image: {
+    type: String,
+  },
 });
 
 const StockItem = mongoose.model("StockItem", stockItemSchema);

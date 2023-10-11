@@ -218,36 +218,34 @@ export default function AddProductForm({ onClose, fetchData, toast }) {
               </Typography>
             )}
           </Grid>
-        </Grid>
-
-        <Grid sx={{ mt: 2 }}>
-          <Typography sx={{ fontSize: 14 }}>Imagem</Typography>
-          <div>
-            <input
-              type="file"
-              accept="image/*"
-              id="fileInput"
-              style={{ display: "none" }}
-              onChange={(e) => {
-                const selectedImage = e.target.files[0];
-                setImage(selectedImage);
-              }}
-              required
-            />
-            {!image && (
-              <label htmlFor="fileInput">
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  component="span"
-                  size="small"
-                  startIcon={<FileUploadIcon />}
-                >
-                  Carregar Imagem
-                </Button>
-              </label>
-            )}
-          </div>
+          <Grid item sx={{ mt: 2 }}>
+            <div>
+              <input
+                type="file"
+                accept="image/*"
+                id="fileInput"
+                style={{ display: "none" }}
+                onChange={(e) => {
+                  const selectedImage = e.target.files[0];
+                  setImage(selectedImage);
+                }}
+                required
+              />
+              {!image && (
+                <label htmlFor="fileInput">
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    component="span"
+                    size="small"
+                    startIcon={<FileUploadIcon />}
+                  >
+                    Imagem
+                  </Button>
+                </label>
+              )}
+            </div>
+          </Grid>
         </Grid>
 
         {image && (

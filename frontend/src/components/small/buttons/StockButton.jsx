@@ -75,7 +75,7 @@ export default function BasicMenu(props) {
             <ListItemIcon>
               <Inventory2Icon />
             </ListItemIcon>
-            <ListItemText primary="Item de Estoque" sx={{ ml: -2 }} />
+            <ListItemText primary="Material" sx={{ ml: -2 }} />
           </ListItemButton>
           <ListItemButton onClick={handleClickSubmenu}>
             <ListItemIcon>

@@ -168,7 +168,7 @@ export default function Stock() {
       {openModals[2] && (
         <Dialog
           fullWidth
-          maxWidth="lg"
+          maxWidth="sm"
           open={openModals[2]}
           onClose={() => closeModal(2)}
         >

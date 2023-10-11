@@ -14,6 +14,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
   Typography,
 } from "@mui/material";
 
@@ -23,12 +24,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditServiceForm from "../forms/edit/EditServiceForm";
 import DeleteServiceForm from "../forms/delete/DeleteServiceForm";
 
-export default function ServiceTable({services, departments, stockItems, fetchData}) {
+export default function ServiceTable({
+  services,
+  departments,
+  stockItems,
+  fetchData,
+}) {
   const [selectedService, setSelectedService] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
-
 
   const handleOpenDetail = (service) => {
     setOpenDetail(!openDetail);
@@ -45,6 +50,52 @@ export default function ServiceTable({services, departments, stockItems, fetchDa
     setSelectedService(service);
   };
 
+  const tableHeaderRow = [
+    {
+      id: "name",
+      label: "Nome",
+    },
+    {
+      id: "department.name",
+      label: "Departamento",
+    },
+  ];
+
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("name");
+
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const sortedRows = React.useMemo(() => {
+    const compare = (a, b) => {
+      const departmentA = a.department ? a.department.name : "";
+      const departmentB = b.department ? b.department.name : "";
+
+      if (order === "asc") {
+        return departmentA.localeCompare(departmentB);
+      } else {
+        return departmentB.localeCompare(departmentA);
+      }
+    };
+
+    if (orderBy === "department.name") {
+      return [...services].sort(compare);
+    }
+
+    return [...services].sort((a, b) => {
+      const isAsc = order === "asc";
+      if (isAsc) {
+        return a[orderBy] < b[orderBy] ? -1 : 1;
+      } else {
+        return b[orderBy] < a[orderBy] ? -1 : 1;
+      }
+    });
+  }, [services, order, orderBy]);
+
   return (
     <>
       <Box sx={{ minWidth: "1050px" }}>
@@ -56,18 +107,28 @@ export default function ServiceTable({services, departments, stockItems, fetchDa
                   backgroundColor: "#ccc",
                 }}
               >
-                <TableCell align="left">
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Nome do Serviço
-                  </Typography>
-                </TableCell>
-                <TableCell align="left">
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Departamento
-                  </Typography>
-                </TableCell>
+                {tableHeaderRow.map((headCell) => (
+                  <TableCell
+                    align={headCell.label === "Nome" ? "" : "center"}
+                    sx={{
+                      fontSize: 16,
+                      fontWeight: "bold",
+                      pl: headCell.label === "Nome" ? "" : 5,
+                    }}
+                    key={headCell.id}
+                    sortDirection={orderBy === headCell.id ? order : false}
+                  >
+                    <TableSortLabel
+                      active={orderBy === headCell.id}
+                      direction={orderBy === headCell.id ? order : "asc"}
+                      onClick={() => handleRequestSort(headCell.id)}
+                    >
+                      {headCell.label}
+                    </TableSortLabel>
+                  </TableCell>
+                ))}
               </TableRow>
-              {services.map((service) => (
+              {sortedRows.map((service) => (
                 <>
                   <TableRow
                     key={service._id}
@@ -83,7 +144,7 @@ export default function ServiceTable({services, departments, stockItems, fetchDa
                     <TableCell
                       onClick={() => handleOpenDetail(service)}
                       cursor="pointer"
-                      align="left"
+                      // align="left"
                     >
                       <Typography sx={{ fontSize: 14 }}>
                         {service.name}
@@ -92,7 +153,7 @@ export default function ServiceTable({services, departments, stockItems, fetchDa
                     <TableCell
                       onClick={() => handleOpenDetail(service)}
                       cursor="pointer"
-                      align="left"
+                      align="center"
                     >
                       <Typography sx={{ fontSize: 14 }}>
                         {service.department ? service.department.name : "-"}
