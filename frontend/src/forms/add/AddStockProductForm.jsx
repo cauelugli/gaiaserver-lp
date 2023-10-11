@@ -4,8 +4,10 @@ import React from "react";
 import axios from "axios";
 
 import {
+  Avatar,
   Button,
   Checkbox,
+  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -37,6 +39,15 @@ export default function AddStockProductForm({
   const [itemList, setItemList] = React.useState([]);
   const [quantityInput, setQuantityInput] = React.useState({});
   const [buyValueInput, setBuyValueInput] = React.useState({});
+  const [openImage, setOpenImage] = React.useState(false);
+
+  const handleOpenImage = () => {
+    setOpenImage(true);
+  };
+
+  const handleCloseImage = () => {
+    setOpenImage(false);
+  };
 
   const handleChecked = (id) => {
     setSelectedItemId(id === selectedItemId ? null : id);
@@ -162,7 +173,31 @@ export default function AddStockProductForm({
                       />
                     </TableCell>
                     <TableCell>
-                      <Typography sx={{ fontSize: 12 }}>{item.name}</Typography>
+                      <Grid
+                        container
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="flex-start"
+                      >
+                        <Typography sx={{ fontSize: 12 }}>
+                          {item.name}
+                        </Typography>
+                        <Avatar
+                          alt="Imagem do Produto"
+                          src={`http://localhost:3000/static/${item.image}`}
+                          sx={{ width: 32, height: 32, ml: 1 }}
+                          onDoubleClick={handleOpenImage}
+                        />
+                        <Dialog open={openImage} onClose={handleCloseImage}>
+                          <DialogContent>
+                            <img
+                              src={`http://localhost:3000/static/${item.image}`}
+                              alt="Imagem do Produto"
+                              style={{ maxWidth: "100%" }}
+                            />
+                          </DialogContent>
+                        </Dialog>
+                      </Grid>
                     </TableCell>
                     <TableCell align="center">
                       <Typography sx={{ fontSize: 12 }}>
@@ -170,9 +205,7 @@ export default function AddStockProductForm({
                       </Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography sx={{ fontSize: 12 }}>
-                        {item.type}
-                      </Typography>
+                      <Typography sx={{ fontSize: 12 }}>{item.type}</Typography>
                     </TableCell>
                     <TableCell align="center">
                       <Typography sx={{ fontSize: 12 }}>
@@ -295,7 +328,8 @@ export default function AddStockProductForm({
                     </Grid>
                     <Grid item sx={{ ml: 1 }}>
                       <Typography sx={{ fontSize: 13 }}>
-                        {item.name} | {item.brand} | {item.type} | {item.model} | {item.size}
+                        {item.name} | {item.brand} | {item.type} | {item.model}{" "}
+                        | {item.size}
                       </Typography>
                     </Grid>
                     <Grid item sx={{ ml: 2 }}>
