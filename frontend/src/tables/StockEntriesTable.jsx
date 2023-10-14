@@ -3,9 +3,12 @@ import * as React from "react";
 import axios from "axios";
 
 import {
+  Avatar,
   Box,
+  Grid,
   Paper,
   Table,
+  TableSortLabel,
   TableBody,
   TableCell,
   TableContainer,
@@ -33,6 +36,45 @@ export default function StockEntriesTable() {
     fetchData();
   }, [stockEntries]);
 
+  const tableHeaderRow = [
+    {
+      id: "number",
+      label: "#",
+    },
+    {
+      id: "items",
+      label: "Itens",
+    },
+    {
+      id: "quoteValue",
+      label: "Valor dos Itens",
+    },
+    {
+      id: "createdAt",
+      label: "Adicionado em",
+    },
+  ];
+
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("number");
+
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const sortedRows = React.useMemo(() => {
+    return [...stockEntries].sort((a, b) => {
+      const isAsc = order === "asc";
+      if (isAsc) {
+        return a[orderBy] < b[orderBy] ? -1 : 1;
+      } else {
+        return b[orderBy] < a[orderBy] ? -1 : 1;
+      }
+    });
+  }, [stockEntries, order, orderBy]);
+
   return (
     <>
       <Box sx={{ minWidth: "1050px" }}>
@@ -40,43 +82,70 @@ export default function StockEntriesTable() {
           <Table>
             <TableBody>
               <TableRow sx={{ backgroundColor: "#ccc" }}>
-                <TableCell align="left">
-                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>#</Typography>
-                </TableCell>
-                <TableCell align="left">
-                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Itens</Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>
-                    Valor Total da Compra
-                  </Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Adicionado em</Typography>
-                </TableCell>
+                {tableHeaderRow.map((headCell) => (
+                  <TableCell
+                    align={headCell.label === "#" ? "" : "center"}
+                    sx={{
+                      fontSize: 16,
+                      fontWeight: "bold",
+                      pl: headCell.label === "#" ? "" : 5,
+                    }}
+                    key={headCell.id}
+                    sortDirection={orderBy === headCell.id ? order : false}
+                  >
+                    <TableSortLabel
+                      active={orderBy === headCell.id}
+                      direction={orderBy === headCell.id ? order : "asc"}
+                      onClick={() => handleRequestSort(headCell.id)}
+                    >
+                      {headCell.label}
+                    </TableSortLabel>
+                  </TableCell>
+                ))}
               </TableRow>
-              {stockEntries.map((entry) => (
+              {sortedRows.map((entry) => (
                 <>
                   <TableRow key={entry._id}>
                     <TableCell align="left">
-                      <Typography sx={{ fontSize: 14 }}>
-                        {entry.number}
-                      </Typography>
+                      <Typography>{entry.number}</Typography>
                     </TableCell>
                     <TableCell align="left">
-                      {entry.items.map((item) => (
-                        <Typography key={item._id} sx={{ fontSize: 14 }}>
-                           x{item.quantity} {item.item.name} = R${item.buyValue * item.quantity}
-                        </Typography>
-                      ))}
+                      <Grid container direction="column">
+                        {entry.items.map((item) => (
+                          <Grid
+                            key={item._id}
+                            container
+                            direction="row"
+                            alignItems="center"
+                            justifyContent="flex-start"
+                          >
+                            <Grid item sx={{ m: 0.5 }}>
+                              <Avatar
+                                src={`http://localhost:3000/static/${item.item.image}`}
+                                alt={item.item.name[0]}
+                                cursor="pointer"
+                                sx={{
+                                  width: 26,
+                                  height: 26,
+                                  border: "2px solid #32aacd",
+                                }}
+                              />
+                            </Grid>
+                            <Grid item>
+                              <Typography>
+                                {item.item.name} x{item.quantity} = R$
+                                {item.buyValue * item.quantity}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        ))}
+                      </Grid>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography sx={{ fontSize: 14 }}>
-                        R${entry.quoteValue}
-                      </Typography>
+                      <Typography>R${entry.quoteValue}</Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography>
                         {dayjs(entry.createdAt).format("DD/MM/YYYY")}
                       </Typography>
                     </TableCell>

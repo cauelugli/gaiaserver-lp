@@ -19,6 +19,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
   Typography,
 } from "@mui/material";
 
@@ -86,6 +87,50 @@ export default function ProductsTable() {
     setSelectedProduct(product);
   };
 
+
+  const tableHeaderRow = [
+    {
+      id: "name",
+      label: "Nome",
+    },
+    {
+      id: "brand",
+      label: "Marca",
+    },
+    {
+      id: "type",
+      label: "Tipo",
+    },
+    {
+      id: "model",
+      label: "Modelo",
+    },
+    {
+      id: "quantity",
+      label: "Quantidade",
+    },
+  ];
+
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("name");
+
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const sortedRows = React.useMemo(() => {
+    return [...products].sort((a, b) => {
+      const isAsc = order === "asc";
+      if (isAsc) {
+        return a[orderBy] < b[orderBy] ? -1 : 1;
+      } else {
+        return b[orderBy] < a[orderBy] ? -1 : 1;
+      }
+    });
+  }, [products, order, orderBy]);
+
   return (
     <>
       <Box sx={{ minWidth: "1050px" }}>
@@ -94,33 +139,28 @@ export default function ProductsTable() {
             <TableBody>
               <TableRow sx={{ backgroundColor: "#ccc" }}>
                 <TableCell padding="checkbox"></TableCell>
-                <TableCell align="left">
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Nome do Produto
-                  </Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Marca
-                  </Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Tipo
-                  </Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Modelo
-                  </Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Em Estoque
-                  </Typography>
-                </TableCell>
+                {tableHeaderRow.map((headCell) => (
+                  <TableCell
+                    align={headCell.label === "Nome" ? "" : "center"}
+                    sx={{
+                      fontSize: 16,
+                      fontWeight: "bold",
+                      pl: headCell.label === "Nome" ? "" : 5,
+                    }}
+                    key={headCell.id}
+                    sortDirection={orderBy === headCell.id ? order : false}
+                  >
+                    <TableSortLabel
+                      active={orderBy === headCell.id}
+                      direction={orderBy === headCell.id ? order : "asc"}
+                      onClick={() => handleRequestSort(headCell.id)}
+                    >
+                      {headCell.label}
+                    </TableSortLabel>
+                  </TableCell>
+                ))}
               </TableRow>
-              {products.map((product) => (
+              {sortedRows.map((product) => (
                 <>
                   <TableRow
                     key={product._id}
