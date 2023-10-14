@@ -423,8 +423,7 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                                       style={{
                                         position: "absolute",
                                         width: 200,
-                                        height: 200,
-                                        // backgroundColor: "white ",
+                                        height: 220,
                                         boxShadow:
                                           "0 2px 4px rgba(0, 0, 0, 0.2)",
                                         bottom: -50,
@@ -454,9 +453,14 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                                             }}
                                           />
                                         </Grid>
-                                        <Grid item sx={{mb:1}}>
-                                          <Typography sx={{fontSize:12}}> 
-                                            {user.position}
+                                        <Grid item sx={{my:0.5}}>
+                                          <Typography sx={{fontSize:10, fontWeight:"bold"}} > 
+                                            {user.position.toUpperCase()}
+                                          </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                          <Typography sx={{fontSize:10}}> 
+                                            {user.email}
                                           </Typography>
                                         </Grid>
                                       </Grid>
