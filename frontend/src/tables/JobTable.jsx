@@ -29,12 +29,14 @@ import DeleteJobForm from "../forms/delete/DeleteJobForm";
 import dayjs from "dayjs";
 import UpdateJobForm from "../forms/edit/UpdateJobForm";
 
-export default function JobTable({ jobs, fetchData }) {
+export default function JobTable({ jobs, managers, fetchData }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openUpdate, setOpenUpdate] = React.useState(false);
   const [selectedJob, setSelectedJob] = React.useState([]);
+
+  console.log("jobs", jobs);
 
   const handleOpenDetail = (job) => {
     setOpenDetail(!openDetail);
@@ -66,8 +68,8 @@ export default function JobTable({ jobs, fetchData }) {
       label: "Solicitante",
     },
     {
-      id: "service",
-      label: "Serviço",
+      id: "worker",
+      label: "Designado",
     },
     {
       id: "scheduledTo",
@@ -180,9 +182,20 @@ export default function JobTable({ jobs, fetchData }) {
                     cursor="pointer"
                     align="center"
                   >
-                    <Typography sx={{ fontSize: 14 }}>
-                      {job.service.name}
-                    </Typography>
+                    <Grid container direction="row" justifyContent="center">
+                      <Grid item>
+                        <Avatar
+                          alt="Imagem do Colaborador"
+                          src={`http://localhost:3000/static/${job.worker.image}`}
+                          sx={{ width: 32, height: 32, mr: 1 }}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Typography sx={{ mt: 0.75 }}>
+                          {job.worker.name}
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(job)}
@@ -344,7 +357,33 @@ export default function JobTable({ jobs, fetchData }) {
                                 <Typography>{job.department.name}</Typography>
                               </TableCell>
                               <TableCell align="left">
-                                <Typography>{job.manager.name}</Typography>
+                                <Grid container direction="row">
+                                  <Grid item>
+                                    <Avatar
+                                      alt="Imagem do Gerente"
+                                      src={
+                                        managers.find(
+                                          (manager) =>
+                                            manager.name === job.manager.name
+                                        )
+                                          ? `http://localhost:3000/static/${
+                                              managers.find(
+                                                (manager) =>
+                                                  manager.name ===
+                                                  job.manager.name
+                                              ).image
+                                            }`
+                                          : ""
+                                      }
+                                      sx={{ width: 32, height: 32, mr: 1 }}
+                                    />
+                                  </Grid>
+                                  <Grid item>
+                                    <Typography sx={{ mt: 0.75 }}>
+                                      {job.manager ? job.manager.name : ""}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
                               </TableCell>
                               <TableCell align="left">
                                 <Grid container direction="row">
@@ -352,11 +391,13 @@ export default function JobTable({ jobs, fetchData }) {
                                     <Avatar
                                       alt="Imagem do Colaborador"
                                       src={`http://localhost:3000/static/${job.worker.image}`}
-                                      sx={{ width: 22, height: 22, mr: 1 }}
+                                      sx={{ width: 32, height: 32, mr: 1 }}
                                     />
                                   </Grid>
                                   <Grid item>
-                                    <Typography>{job.worker.name}</Typography>
+                                    <Typography sx={{ mt: 0.75 }}>
+                                      {job.worker.name}
+                                    </Typography>
                                   </Grid>
                                 </Grid>
                               </TableCell>

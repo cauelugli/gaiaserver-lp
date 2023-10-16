@@ -404,7 +404,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
                   }}
                 >
                   <MenuItem disabled value="">
-                    Vendedores
+                    Colaboradores
                   </MenuItem>
                   {department.members.map((item) => (
                     <MenuItem value={item} key={item.id}>

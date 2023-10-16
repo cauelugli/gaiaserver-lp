@@ -214,7 +214,6 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                   <TableCell
                     onClick={() => handleOpenDetail(department)}
                     cursor="pointer"
-                    align="center"
                     sx={{
                       color:
                         selectedDepartment === department.name && openDetail
@@ -222,9 +221,32 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                           : "black",
                     }}
                   >
-                    <Typography sx={{ fontSize: 14 }}>
-                      {department.manager ? department.manager.name : "-"}
-                    </Typography>
+                    <Grid container direction="row" justifyContent="center">
+                      <Grid item>
+                        <Avatar
+                          alt="Imagem do Gerente"
+                          src={
+                            managers.find(
+                              (manager) =>
+                                manager.name === department.manager.name
+                            )
+                              ? `http://localhost:3000/static/${
+                                  managers.find(
+                                    (manager) =>
+                                      manager.name === department.manager.name
+                                  ).image
+                                }`
+                              : ""
+                          }
+                          sx={{ width: 32, height: 32, mr: 1 }}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Typography sx={{ fontSize: 14, mt: 1 }}>
+                          {department.manager && department.manager.name}
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(department)}
@@ -347,11 +369,38 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                           <TableBody>
                             <TableRow>
                               <TableCell>
-                                <Typography>
-                                  {department.manager
-                                    ? department.manager.name
-                                    : "-"}
-                                </Typography>
+                                <Grid
+                                  container
+                                  direction="row"
+                                >
+                                  <Grid item>
+                                    <Avatar
+                                      alt="Imagem do Gerente"
+                                      src={
+                                        managers.find(
+                                          (manager) =>
+                                            manager.name ===
+                                            department.manager.name
+                                        )
+                                          ? `http://localhost:3000/static/${
+                                              managers.find(
+                                                (manager) =>
+                                                  manager.name ===
+                                                  department.manager.name
+                                              ).image
+                                            }`
+                                          : ""
+                                      }
+                                      sx={{ width: 32, height: 32, mr: 1 }}
+                                    />
+                                  </Grid>
+                                  <Grid item>
+                                    <Typography sx={{ fontSize: 14, mt: 1 }}>
+                                      {department.manager &&
+                                        department.manager.name}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
                               </TableCell>
                               <TableCell>
                                 <Typography>
@@ -439,11 +488,11 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                                         alignItems="center"
                                         justifyContent="center"
                                       >
-                                        <Grid item sx={{mt:1}}>
+                                        <Grid item sx={{ mt: 1 }}>
                                           <Typography>{user.name}</Typography>
                                         </Grid>
 
-                                        <Grid item sx={{ my:1}}>
+                                        <Grid item sx={{ my: 1 }}>
                                           <Avatar
                                             alt="Imagem do Colaborador"
                                             src={`http://localhost:3000/static/${user.image}`}
@@ -453,13 +502,18 @@ export default function DepartmentTable({ departments, openAdd, setOpenAdd }) {
                                             }}
                                           />
                                         </Grid>
-                                        <Grid item sx={{my:0.5}}>
-                                          <Typography sx={{fontSize:10, fontWeight:"bold"}} > 
+                                        <Grid item sx={{ my: 0.5 }}>
+                                          <Typography
+                                            sx={{
+                                              fontSize: 10,
+                                              fontWeight: "bold",
+                                            }}
+                                          >
                                             {user.position.toUpperCase()}
                                           </Typography>
                                         </Grid>
                                         <Grid item>
-                                          <Typography sx={{fontSize:10}}> 
+                                          <Typography sx={{ fontSize: 10 }}>
                                             {user.email}
                                           </Typography>
                                         </Grid>

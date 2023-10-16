@@ -59,15 +59,18 @@ export default function Requests() {
   const [jobs, setJobs] = React.useState([]);
   const [sales, setSales] = React.useState([]);
   const [supports, setSupports] = React.useState([]);
+  const [managers, setManagers] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const jobs = await api.get("/jobs");
         const sales = await api.get("/sales");
+        const managers = await api.get("/managers");
         setJobs(jobs.data.filter((job) => job.price !== 0));
         setSupports(jobs.data.filter((job) => job.price === 0));
         setSales(sales.data)
+        setManagers(managers.data)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -79,10 +82,12 @@ export default function Requests() {
     try {
       const jobs = await api.get("/jobs");
       const sales = await api.get("/sales");
+      const managers = await api.get("/managers");
       setJobs(jobs.data.filter((job) => job.price !== 0));
       setSupports(jobs.data.filter((job) => job.price === 0));
       setSales(sales.data)
-    } catch (error) {
+      setManagers(managers.data)
+  } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
@@ -181,10 +186,10 @@ export default function Requests() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <JobTable jobs={jobs} fetchData={fetchData} />
+        <JobTable jobs={jobs} managers={managers} fetchData={fetchData} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <SaleTable sales={sales} fetchData={fetchData}/>
+        <SaleTable sales={sales} managers={managers} fetchData={fetchData}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <JobTable jobs={supports} fetchData={fetchData} />
