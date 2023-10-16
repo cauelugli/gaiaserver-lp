@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import dayjs from "dayjs";
 
 import {
   Dialog,
@@ -16,13 +17,13 @@ import {
   Typography,
   Grid,
   Avatar,
+  TableSortLabel,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
-import EditRequestForm from "../forms/edit/EditRequestForm";
-import dayjs from "dayjs";
+// import EditRequestForm from "../forms/edit/EditRequestForm";
 // import DeleteRequestForm from "../forms/delete/DeleteRequestForm";
 
 export default function SaleTable({ sales, fetchData }) {
@@ -46,6 +47,64 @@ export default function SaleTable({ sales, fetchData }) {
     setOpenDelete(!openDelete);
   };
 
+  const tableHeaderRow = [
+    {
+      id: "requester",
+      label: "Comprador",
+    },
+    {
+      id: "items",
+      label: "Itens",
+    },
+    {
+      id: "seller.name",
+      label: "Vendedor",
+    },
+    {
+      id: "scheduledTo",
+      label: "Agendado para",
+    },
+    {
+      id: "status",
+      label: "Status",
+    },
+  ];
+
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("scheduledTo");
+
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const sortedRows = React.useMemo(() => {
+    const compare = (a, b) => {
+      const sellerA = a.seller ? a.seller.name : "";
+      const sellerB = b.seller ? b.seller.name : "";
+
+      if (order === "asc") {
+        return sellerA.localeCompare(sellerB);
+      } else {
+        return sellerB.localeCompare(sellerA);
+      }
+    };
+
+    if (orderBy === "seller.name") {
+      return [...sales].sort(compare);
+    }
+
+    return [...sales].sort((a, b) => {
+      const isAsc = order === "asc";
+      if (isAsc) {
+        return a[orderBy] < b[orderBy] ? -1 : 1;
+      } else {
+        return b[orderBy] < a[orderBy] ? -1 : 1;
+      }
+    });
+  }, [sales, order, orderBy]);
+
   return (
     <Box>
       <TableContainer component={Paper}>
@@ -56,23 +115,28 @@ export default function SaleTable({ sales, fetchData }) {
                 backgroundColor: "#ccc",
               }}
             >
-              <TableCell align="left">
-                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Nome do Comprador</Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Itens</Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Vendedor</Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Entrega em</Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight:"bold" }}>Status</Typography>
-              </TableCell>
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "Comprador" ? "" : "center"}
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    pl: headCell.label === "Comprador" ? "" : 5,
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
+                  >
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
             </TableRow>
-            {sales.map((sale) => (
+            {sortedRows.map((sale) => (
               <>
                 <TableRow
                   key={sale._id}
@@ -97,57 +161,61 @@ export default function SaleTable({ sales, fetchData }) {
                     cursor="pointer"
                     align="center"
                   >
-                    {sale.items.slice(0, 2).map((item) => (
-                      <Grid
-                        container
-                        direction="row"
-                        key={item.id}
-                        alignItems="center"
-                        sx={{ mt: 1 }}
-                      >
-                        <Avatar
-                          alt="Imagem do Produto"
-                          src={`http://localhost:3000/static/${item.image}`}
-                          sx={{ width: 32, height: 32, mr: 1 }}
-                        />
-                        <Typography sx={{ fontSize: 12, mr: 0.5 }}>
-                          x{item.quantity}
-                        </Typography>
-                        <Typography
-                          sx={{ fontSize: 12, color: "#777", mr: 0.5 }}
+                    <Grid container direction="row" justifyContent="center">
+                      {sale.items.slice(0, 3).map((item) => (
+                        <Grid
+                          direction="column"
+                          key={item.id}
+                          alignItems="center"
+                          sx={{ mr: 1 }}
                         >
-                          {item.name}
-                        </Typography>
+                          <Grid item>
+                            <Avatar
+                              alt="Imagem do Produto"
+                              src={`http://localhost:3000/static/${item.image}`}
+                              sx={{ width: 32, height: 32, mx: "auto" }}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <Typography sx={{ fontSize: 12 }}>
+                              x{item.quantity}
+                            </Typography>
+                          </Grid>
+                          <Grid item>
+                            <Typography sx={{ fontSize: 12, color: "#777" }}>
+                              {item.name}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      ))}
+                      {sale.items.length > 3 && (
                         <Typography
-                          sx={{ fontSize: 12, color: "#777", mr: 0.5 }}
+                          sx={{ marginY: "auto", fontSize: 24, color: "#444" }}
                         >
-                          {item.brand}
+                          +{sale.items.length - 3}
                         </Typography>
-                        <Typography
-                          sx={{ fontSize: 12, color: "#777", mr: 0.5 }}
-                        >
-                          {item.type}
-                        </Typography>
-                        <Typography
-                          sx={{ fontSize: 12, color: "#777", mr: 0.5 }}
-                        >
-                          {item.model}
-                        </Typography>
-                        <Typography sx={{ fontSize: 12, color: "#777" }}>
-                          {item.size}
-                        </Typography>
-                      </Grid>
-                    ))}
-                    {sale.items.length > 2 && (
-                      <Typography sx={{ ml:5, fontSize: 18 }}>+{sale.items.length - 2} itens</Typography>
-                    )}
+                      )}
+                    </Grid>
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(sale)}
                     cursor="pointer"
                     align="center"
                   >
-                    {sale.seller.name}
+                    <Grid container direction="row">
+                      <Grid item>
+                        <Avatar
+                          alt="Imagem do Colaborador"
+                          src={`http://localhost:3000/static/${sale.seller.image}`}
+                          sx={{ width: 32, height: 32, mr: 1.5 }}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Typography sx={{ mt: 1 }}>
+                          {sale.seller.name}
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(sale)}

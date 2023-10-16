@@ -18,6 +18,7 @@ import {
   Button,
   Grid,
   Avatar,
+  TableSortLabel,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -34,7 +35,6 @@ export default function JobTable({ jobs, fetchData }) {
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openUpdate, setOpenUpdate] = React.useState(false);
   const [selectedJob, setSelectedJob] = React.useState([]);
-  console.log("jobs", jobs);
 
   const handleOpenDetail = (job) => {
     setOpenDetail(!openDetail);
@@ -56,6 +56,64 @@ export default function JobTable({ jobs, fetchData }) {
     setSelectedJob(job);
   };
 
+  const tableHeaderRow = [
+    {
+      id: "title",
+      label: "Nome",
+    },
+    {
+      id: "requester",
+      label: "Solicitante",
+    },
+    {
+      id: "service",
+      label: "Serviço",
+    },
+    {
+      id: "scheduledTo",
+      label: "Agendado para",
+    },
+    {
+      id: "status",
+      label: "Status",
+    },
+  ];
+
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("scheduledTo");
+
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const sortedRows = React.useMemo(() => {
+    const compare = (a, b) => {
+      const departmentA = a.department ? a.department.name : "";
+      const departmentB = b.department ? b.department.name : "";
+
+      if (order === "asc") {
+        return departmentA.localeCompare(departmentB);
+      } else {
+        return departmentB.localeCompare(departmentA);
+      }
+    };
+
+    if (orderBy === "department.name") {
+      return [...jobs].sort(compare);
+    }
+
+    return [...jobs].sort((a, b) => {
+      const isAsc = order === "asc";
+      if (isAsc) {
+        return a[orderBy] < b[orderBy] ? -1 : 1;
+      } else {
+        return b[orderBy] < a[orderBy] ? -1 : 1;
+      }
+    });
+  }, [jobs, order, orderBy]);
+
   return (
     <Box sx={{ minWidth: "1050px" }}>
       <TableContainer component={Paper}>
@@ -66,33 +124,28 @@ export default function JobTable({ jobs, fetchData }) {
                 backgroundColor: "#ccc",
               }}
             >
-              <TableCell align="left">
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  Nome do Job
-                </Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  Solicitante
-                </Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  Serviço
-                </Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  Agendado para
-                </Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  Status
-                </Typography>
-              </TableCell>
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "Nome" ? "" : "center"}
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    pl: headCell.label === "Nome" ? "" : 5,
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
+                  >
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
             </TableRow>
-            {jobs.map((job) => (
+            {sortedRows.map((job) => (
               <>
                 <TableRow
                   key={job._id}
