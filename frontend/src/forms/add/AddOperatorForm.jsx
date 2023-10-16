@@ -76,7 +76,6 @@ const AddOperatorForm = ({
           autoClose: 1200,
         });
       } else {
-        console.log("err", err);
         toast.error("Houve algum erro...", {
           closeOnClick: true,
           pauseOnHover: false,

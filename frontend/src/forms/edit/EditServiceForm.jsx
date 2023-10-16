@@ -48,9 +48,7 @@ export default function EditServiceForm({
   const [isSupport, setIsSupport] = React.useState(selectedService.isSupport);
 
   const handleIsSupport = (event) => {
-    console.log("Before setIsSupport:", isSupport);
     setIsSupport((prevIsSupport) => !prevIsSupport);
-    console.log("After setIsSupport:", isSupport);
   };
 
   const [showUsesMaterials, setUsesMaterials] = React.useState(
