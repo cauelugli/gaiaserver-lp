@@ -16,6 +16,8 @@ import {
   TableRow,
   Typography,
   Button,
+  Grid,
+  Avatar,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -32,6 +34,7 @@ export default function JobTable({ jobs, fetchData }) {
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openUpdate, setOpenUpdate] = React.useState(false);
   const [selectedJob, setSelectedJob] = React.useState([]);
+  console.log("jobs", jobs);
 
   const handleOpenDetail = (job) => {
     setOpenDetail(!openDetail);
@@ -211,7 +214,7 @@ export default function JobTable({ jobs, fetchData }) {
                               </TableCell>
                               <TableCell align="left">
                                 <Typography>
-                                  {job.requester}{" "}
+                                  {job.requester}
                                   {job.customer.cnpj &&
                                     `(${job.customer.name})`}
                                 </Typography>
@@ -291,7 +294,18 @@ export default function JobTable({ jobs, fetchData }) {
                                 <Typography>{job.manager.name}</Typography>
                               </TableCell>
                               <TableCell align="left">
-                                <Typography>{job.worker.name}</Typography>
+                                <Grid container direction="row">
+                                  <Grid item>
+                                    <Avatar
+                                      alt="Imagem do Colaborador"
+                                      src={`http://localhost:3000/static/${job.worker.image}`}
+                                      sx={{ width: 22, height: 22, mr: 1 }}
+                                    />
+                                  </Grid>
+                                  <Grid item>
+                                    <Typography>{job.worker.name}</Typography>
+                                  </Grid>
+                                </Grid>
                               </TableCell>
                             </TableRow>
                           </TableBody>

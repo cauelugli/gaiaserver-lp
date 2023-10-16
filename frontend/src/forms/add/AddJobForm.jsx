@@ -4,6 +4,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 
 import {
+  Avatar,
   Box,
   Button,
   Checkbox,
@@ -193,6 +194,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
                 onChange={(e) => handleCustomerTypeChange(e.target.value)}
                 value={customerType}
                 displayEmpty
+                required
                 renderValue={(selected) => {
                   if (selected.length === 0) {
                     return <Typography>Tipo de Cliente</Typography>;
@@ -218,6 +220,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
                     onChange={(e) => handleCustomerChange(e.target.value)}
                     value={customer}
                     displayEmpty
+                    required
                     renderValue={(selected) => {
                       if (selected.length === 0) {
                         return <Typography>Selecione um Cliente</Typography>;
@@ -312,6 +315,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
               disabled={approvedQuote}
               size="small"
               displayEmpty
+              required
               renderValue={(selected) => {
                 if (!selected) {
                   return <Typography>Selecione o Departamento</Typography>;
@@ -346,6 +350,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
                   onChange={(e) => {
                     handleServiceChange(e.target.value);
                   }}
+                  required
                   value={service}
                   size="small"
                   renderValue={(selected) => {
@@ -379,21 +384,35 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
                   onChange={(e) => setWorker(e.target.value)}
                   value={worker}
                   size="small"
-                  sx={{ minWidth: "200px" }}
+                  displayEmpty
+                  required
                   renderValue={(selected) => {
                     if (selected.length === 0) {
-                      return <Typography>Colaborador</Typography>;
+                      return <Typography>Selecione o Colaborador</Typography>;
+                    } else {
+                      return (
+                        <Grid container direction="row">
+                          <Avatar
+                            alt="Imagem do Colaborador"
+                            src={`http://localhost:3000/static/${selected.image}`}
+                            sx={{ width: 22, height: 22, mr: 1 }}
+                          />
+                          <Typography>{selected.name}</Typography>
+                        </Grid>
+                      );
                     }
-
-                    return <Typography>{selected.name}</Typography>;
                   }}
                 >
+                  <MenuItem disabled value="">
+                    Vendedores
+                  </MenuItem>
                   {department.members.map((item) => (
-                    <MenuItem
-                      value={item}
-                      key={item._id}
-                      sx={{ fontSize: "100%" }}
-                    >
+                    <MenuItem value={item} key={item.id}>
+                      <Avatar
+                        alt="Imagem do Colaborador"
+                        src={`http://localhost:3000/static/${item.image}`}
+                        sx={{ width: 22, height: 22, mr: 2 }}
+                      />
                       {item.name}
                     </MenuItem>
                   ))}
@@ -498,15 +517,19 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
                         borderRadius: 4,
                       }}
                     >
-                      {materials.map((material) => (
-                        <Typography
-                          sx={{ my: 0.5, ml: 1, fontSize: 16 }}
-                          key={material.id}
-                        >
-                          {material.name} x{material.quantity} = R$
-                          {material.sellValue * material.quantity}
-                        </Typography>
-                      ))}
+                      {materials.length > 0 ? (
+                        materials.map((material) => (
+                          <Typography
+                            sx={{ my: 0.5, ml: 1, fontSize: 16 }}
+                            key={material.id}
+                          >
+                            {material.name} x{material.quantity} = R$
+                            {material.sellValue * material.quantity}
+                          </Typography>
+                        ))
+                      ) : (
+                        <Typography>Não há materiais</Typography>
+                      )}
                     </Grid>
                   </Grid>
                   <Typography sx={{ fontSize: 16, mt: 2, fontWeight: "bold" }}>
