@@ -17,6 +17,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  TableSortLabel,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -73,12 +74,87 @@ export default function ClientTable() {
     setOpenDelete(!openDelete);
   };
 
+  const tableHeaderRow = [
+    {
+      id: "name",
+      label: "Nome",
+    },
+    {
+      id: "email",
+      label: "E-mail",
+    },
+    {
+      id: "phone",
+      label: "Telefone",
+    },
+  ];
+
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("name");
+
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const sortedRows = React.useMemo(() => {
+    const compare = (a, b) => {
+      const departmentA = a.department ? a.department.name : "";
+      const departmentB = b.department ? b.department.name : "";
+
+      if (order === "asc") {
+        return departmentA.localeCompare(departmentB);
+      } else {
+        return departmentB.localeCompare(departmentA);
+      }
+    };
+
+    if (orderBy === "department.name") {
+      return [...clients].sort(compare);
+    }
+
+    return [...clients].sort((a, b) => {
+      const isAsc = order === "asc";
+      if (isAsc) {
+        return a[orderBy] < b[orderBy] ? -1 : 1;
+      } else {
+        return b[orderBy] < a[orderBy] ? -1 : 1;
+      }
+    });
+  }, [clients, order, orderBy]);
+
   return (
     <Box>
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            {clients.map((client) => (
+            <TableRow
+              sx={{
+                backgroundColor: "#ccc",
+              }}
+            >
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "Nome" ? "" : "left"}
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
+                  >
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+            {sortedRows.map((client) => (
               <>
                 <TableRow
                   key={client._id}
@@ -96,8 +172,22 @@ export default function ClientTable() {
                     cursor="pointer"
                     align="left"
                   >
+                    <Typography sx={{ fontSize: 14 }}>{client.name}</Typography>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(client)}
+                    cursor="pointer"
+                  >
                     <Typography sx={{ fontSize: 14 }}>
-                      {client.name}
+                      {client.email}
+                    </Typography>
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleOpenDetail(client)}
+                    cursor="pointer"
+                  >
+                    <Typography sx={{ fontSize: 14 }}>
+                      {client.phone}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -139,7 +229,6 @@ export default function ClientTable() {
                                   CPF
                                 </Typography>
                               </TableCell>
-                              
                             </TableRow>
                           </TableHead>
                           <TableBody>
@@ -153,7 +242,6 @@ export default function ClientTable() {
                               <TableCell>
                                 <Typography>{client.cpf}</Typography>
                               </TableCell>
-                              
                             </TableRow>
                           </TableBody>
                         </Table>
@@ -186,7 +274,6 @@ export default function ClientTable() {
                                   Cobrança
                                 </Typography>
                               </TableCell>
-                              
                             </TableRow>
                           </TableHead>
                           <TableBody>
@@ -195,12 +282,13 @@ export default function ClientTable() {
                                 <Typography>{client.addressHome}</Typography>
                               </TableCell>
                               <TableCell>
-                                <Typography>{client.addressDelivery}</Typography>
+                                <Typography>
+                                  {client.addressDelivery}
+                                </Typography>
                               </TableCell>
                               <TableCell>
                                 <Typography>{client.addressBill}</Typography>
                               </TableCell>
-                              
                             </TableRow>
                           </TableBody>
                         </Table>

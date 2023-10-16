@@ -17,6 +17,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  TableSortLabel,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -74,12 +75,84 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
     setOpenDelete(!openDelete);
   };
 
+  const tableHeaderRow = [
+    {
+      id: "name",
+      label: "Nome",
+    },
+    {
+      id: "mainContactName",
+      label: "Contato Principal",
+    },
+  ];
+
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("name");
+
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const sortedRows = React.useMemo(() => {
+    const compare = (a, b) => {
+      const departmentA = a.department ? a.department.name : "";
+      const departmentB = b.department ? b.department.name : "";
+
+      if (order === "asc") {
+        return departmentA.localeCompare(departmentB);
+      } else {
+        return departmentB.localeCompare(departmentA);
+      }
+    };
+
+    if (orderBy === "department.name") {
+      return [...customers].sort(compare);
+    }
+
+    return [...customers].sort((a, b) => {
+      const isAsc = order === "asc";
+      if (isAsc) {
+        return a[orderBy] < b[orderBy] ? -1 : 1;
+      } else {
+        return b[orderBy] < a[orderBy] ? -1 : 1;
+      }
+    });
+  }, [customers, order, orderBy]);
+
   return (
     <Box>
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            {customers.map((customer) => (
+            <TableRow
+              sx={{
+                backgroundColor: "#ccc",
+              }}
+            >
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "Nome" ? "" : "left"}
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
+                  >
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+
+            {sortedRows.map((customer) => (
               <>
                 <TableRow
                   key={customer._id}
@@ -92,15 +165,26 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                     "&:hover": { backgroundColor: "#eee " },
                   }}
                 >
+                <TableCell
+                  onClick={() => handleOpenDetail(customer)}
+                  cursor="pointer"
+                  align="left"
+                >
+                  <Typography sx={{ fontSize: 14 }}>
+                    {customer.name}
+                  </Typography>
+                </TableCell>
                   <TableCell
                     onClick={() => handleOpenDetail(customer)}
                     cursor="pointer"
                     align="left"
                   >
                     <Typography sx={{ fontSize: 14 }}>
-                      {customer.name}
+                      {customer.mainContactName}
                     </Typography>
                   </TableCell>
+
+
                 </TableRow>
                 <TableRow>
                   <TableCell
@@ -177,8 +261,6 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
                           </TableBody>
                         </Table>
                       </Box>
-
-                      
 
                       <Box sx={{ my: 4, px: 6 }}>
                         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
