@@ -56,6 +56,7 @@ const AddOperatorForm = ({
         password,
         role,
         operator,
+        option:"password"
       });
       if (res.data) {
         toast.success("Operador Adicionado!", {

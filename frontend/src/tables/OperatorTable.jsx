@@ -31,7 +31,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function OperatorTable() {
+export default function OperatorTable({ searchValue, searchOption }) {
   const [selectedOperator, setSelectedOperator] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -166,72 +166,82 @@ export default function OperatorTable() {
                   </TableCell>
                 ))}
               </TableRow>
-              {sortedRows.map((row) => (
-                <>
-                  <TableRow
-                    key={row._id}
-                    sx={{
-                      cursor: "pointer",
-                      "&:hover": { backgroundColor: "#eee " },
-                    }}
-                  >
-                    <TableCell cursor="pointer" sx={{ py: 0 }}>
-                      <Avatar
-                        src={`http://localhost:3000/static/${row.image}`}
-                        alt={row.name[0]}
-                        cursor="pointer"
-                        style={{
-                          marginLeft: 10,
-                          width: 42,
-                          height: 42,
-                          border: "2px solid #32aacd",
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell cursor="pointer">
-                      <Typography sx={{ fontSize: 14 }}>{row.name}</Typography>
-                    </TableCell>
-                    <TableCell cursor="pointer" align="center">
-                      <Typography sx={{ fontSize: 14 }}>
-                        {row.username}
-                      </Typography>
-                    </TableCell>
-                    <TableCell cursor="pointer" align="center">
-                      <Typography sx={{ fontSize: 14 }}>{row.role}</Typography>
-                    </TableCell>
-                    <TableCell align="center" sx={{ py: 0 }}>
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                      >
-                        <IconButton>
-                          <ModeEditIcon
-                            cursor="pointer"
-                            onClick={() => handleOpenEdit(row, "operator")}
-                            sx={{ color: "#333" }}
-                          />
-                        </IconButton>
-                        <IconButton sx={{ mx: -1 }}>
-                          <LockIcon
-                            cursor="pointer"
-                            onClick={() => handleOpenEdit(row, "password")}
-                            sx={{ color: "#333" }}
-                          />
-                        </IconButton>
-                        <IconButton>
-                          <DeleteIcon
-                            cursor="pointer"
-                            onClick={() => handleConfirmDelete(row)}
-                            sx={{ color: "#ff4444" }}
-                          />
-                        </IconButton>
-                      </Grid>
-                    </TableCell>
-                  </TableRow>
-                </>
-              ))}
+              {sortedRows
+                .filter((user) =>
+                  user[searchOption]
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())
+                )
+                .map((row) => (
+                  <>
+                    <TableRow
+                      key={row._id}
+                      sx={{
+                        cursor: "pointer",
+                        "&:hover": { backgroundColor: "#eee " },
+                      }}
+                    >
+                      <TableCell cursor="pointer" sx={{ py: 0 }}>
+                        <Avatar
+                          src={`http://localhost:3000/static/${row.image}`}
+                          alt={row.name[0]}
+                          cursor="pointer"
+                          style={{
+                            marginLeft: 10,
+                            width: 42,
+                            height: 42,
+                            border: "2px solid #32aacd",
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell cursor="pointer">
+                        <Typography sx={{ fontSize: 14 }}>
+                          {row.name}
+                        </Typography>
+                      </TableCell>
+                      <TableCell cursor="pointer" align="center">
+                        <Typography sx={{ fontSize: 14 }}>
+                          {row.username}
+                        </Typography>
+                      </TableCell>
+                      <TableCell cursor="pointer" align="center">
+                        <Typography sx={{ fontSize: 14 }}>
+                          {row.role}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center" sx={{ py: 0 }}>
+                        <Grid
+                          container
+                          direction="row"
+                          justifyContent="center"
+                          alignItems="center"
+                        >
+                          <IconButton>
+                            <ModeEditIcon
+                              cursor="pointer"
+                              onClick={() => handleOpenEdit(row, "operator")}
+                              sx={{ color: "#333" }}
+                            />
+                          </IconButton>
+                          <IconButton sx={{ mx: -1 }}>
+                            <LockIcon
+                              cursor="pointer"
+                              onClick={() => handleOpenEdit(row, "password")}
+                              sx={{ color: "#333" }}
+                            />
+                          </IconButton>
+                          <IconButton>
+                            <DeleteIcon
+                              cursor="pointer"
+                              onClick={() => handleConfirmDelete(row)}
+                              sx={{ color: "#ff4444" }}
+                            />
+                          </IconButton>
+                        </Grid>
+                      </TableCell>
+                    </TableRow>
+                  </>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>

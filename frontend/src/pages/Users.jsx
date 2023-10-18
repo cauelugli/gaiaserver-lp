@@ -89,6 +89,8 @@ export default function Users() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setSearchValue("");
+    setSearchOption("name");
   };
 
   React.useEffect(() => {
@@ -305,10 +307,173 @@ export default function Users() {
         <UserTable searchValue={searchValue} searchOption={searchOption} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <ManagerTable />
+        <Grid container direction="row" justifyContent="flex-start">
+          <Grid item>
+            <TextField
+              placeholder="Pesquise aqui..."
+              size="small"
+              sx={{ mb: 1, ml: "2%", width: 350 }}
+              value={searchValue}
+              onChange={handleSearchChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+                endAdornment:
+                  searchValue.length > 0 ? (
+                    <InputAdornment position="end">
+                      <ClearIcon
+                        cursor="pointer"
+                        sx={{ color: "#d21404" }}
+                        onClick={() => setSearchValue("")}
+                      />
+                    </InputAdornment>
+                  ) : (
+                    ""
+                  ),
+              }}
+            />
+          </Grid>
+          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
+            <RadioGroup
+              row
+              value={searchOption}
+              onChange={handleSearchOptionChange}
+            >
+              <FormControlLabel
+                value="name"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Nome
+                  </Typography>
+                }
+              />
+              <FormControlLabel
+                value="email"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    E-mail
+                  </Typography>
+                }
+              />
+              <FormControlLabel
+                value="phone"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Telefone
+                  </Typography>
+                }
+              />
+            </RadioGroup>
+          </Grid>
+        </Grid>
+
+        <ManagerTable searchValue={searchValue} searchOption={searchOption} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <OperatorTable />
+        <Grid container direction="row" justifyContent="flex-start">
+          <Grid item>
+            <TextField
+              placeholder="Pesquise aqui..."
+              size="small"
+              sx={{ mb: 1, ml: "2%", width: 350 }}
+              value={searchValue}
+              onChange={handleSearchChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+                endAdornment:
+                  searchValue.length > 0 ? (
+                    <InputAdornment position="end">
+                      <ClearIcon
+                        cursor="pointer"
+                        sx={{ color: "#d21404" }}
+                        onClick={() => setSearchValue("")}
+                      />
+                    </InputAdornment>
+                  ) : (
+                    ""
+                  ),
+              }}
+            />
+          </Grid>
+          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
+            <RadioGroup
+              row
+              value={searchOption}
+              onChange={handleSearchOptionChange}
+            >
+              <FormControlLabel
+                value="name"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Nome
+                  </Typography>
+                }
+              />
+              <FormControlLabel
+                value="username"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Nome de Operador
+                  </Typography>
+                }
+              />
+            </RadioGroup>
+          </Grid>
+        </Grid>
+
+        <OperatorTable searchValue={searchValue} searchOption={searchOption} />
       </CustomTabPanel>
       {openAddUser && (
         <Dialog
