@@ -75,6 +75,8 @@ const EditDepartmentForm = ({
         name: user.name,
         phone: user.phone,
         email: user.email,
+        image: user.image,
+        position: user.position,
       }));
 
       const res = await api.put("/departments", {
@@ -204,7 +206,7 @@ const EditDepartmentForm = ({
             size="small"
             label="Descrição"
             onChange={(e) => setDescription(e.target.value)}
-            sx={{ my:2, width: "100%" }}
+            sx={{ my: 2, width: "100%" }}
           />
         </Grid>
 
@@ -278,7 +280,11 @@ const EditDepartmentForm = ({
             Membros
           </Typography>
           <Members
-            users={users}
+            users={users.filter(
+              (user) =>
+                !user.department ||
+                user.department.name === selectedDepartment.name
+            )}
             value={selectedUsers}
             onChange={handleUserSelectionChange}
           />

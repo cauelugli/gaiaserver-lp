@@ -93,6 +93,8 @@ const AddDepartmentForm = ({
         name: user.name,
         phone: user.phone,
         email: user.email,
+        image: user.image,
+        position: user.position,
       }));
 
       const res = await api.post("/departments", {
@@ -268,7 +270,7 @@ const AddDepartmentForm = ({
             Membros
           </Typography>
           <Members
-            users={users}
+            users={users.filter((user) => !user.department)}
             value={selectedUsers}
             onChange={setSelectedUsers}
           />
