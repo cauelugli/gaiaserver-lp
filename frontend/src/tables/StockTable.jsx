@@ -32,7 +32,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function StockTable() {
+export default function StockTable({ searchValue, searchOption }) {
   const [selectedStockItem, setSelectedStockItem] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -154,218 +154,246 @@ export default function StockTable() {
                   </TableCell>
                 ))}
               </TableRow>
-              {sortedRows.map((stockItem) => (
-                <>
-                  <TableRow
-                    key={stockItem._id}
-                    sx={{
-                      cursor: "pointer",
-                      backgroundColor:
-                        selectedStockItem.name === stockItem.name && openDetail
-                          ? "#eee"
-                          : "none",
-                      "&:hover": { backgroundColor: "#eee " },
-                    }}
-                  >
-                    <TableCell
-                    onClick={() => handleOpenDetail(stockItem)}
-                    cursor="pointer"
-                    sx={{ py: 0 }}
-                  >
-                    <Avatar
-                      src={`http://localhost:3000/static/${selectedStockItem.image}`}
-                      alt={stockItem.name[0]}
-                      cursor="pointer"
-                      style={{
-                        marginLeft: 10,
-                        width: 42,
-                        height: 42,
-                        border: "2px solid #32aacd",
-                        opacity:
-                          openDetail && selectedStockItem.name === stockItem.name
-                            ? 0
-                            : 100,
+              {sortedRows
+                .filter((user) => {
+                  const userProperty = searchOption
+                    .split(".")
+                    .reduce((obj, key) => obj[key], user);
+                  return (
+                    userProperty &&
+                    userProperty
+                      .toLowerCase()
+                      .includes(searchValue.toLowerCase())
+                  );
+                })
+                .map((stockItem) => (
+                  <>
+                    <TableRow
+                      key={stockItem._id}
+                      sx={{
+                        cursor: "pointer",
+                        backgroundColor:
+                          selectedStockItem.name === stockItem.name &&
+                          openDetail
+                            ? "#eee"
+                            : "none",
+                        "&:hover": { backgroundColor: "#eee " },
                       }}
-                    />
-                  </TableCell>
-                    <TableCell
-                      onClick={() => handleOpenDetail(stockItem)}
-                      cursor="pointer"
-                      align="left"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
-                        {stockItem.name}
-                      </Typography>
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleOpenDetail(stockItem)}
-                      cursor="pointer"
-                      align="center"
-                    >
-                      <Typography sx={{ fontSize: 14 }}>
-                        R${stockItem.buyValue}
-                      </Typography>
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleOpenDetail(stockItem)}
-                      cursor="pointer"
-                      align="center"
-                    >
-                      <Typography sx={{ fontSize: 14 }}>
-                        R${stockItem.sellValue}
-                      </Typography>
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleOpenDetail(stockItem)}
-                      cursor="pointer"
-                      align="center"
-                    >
-                      <Typography sx={{ fontSize: 14 }}>
-                        {stockItem.quantity}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell
-                      style={{ paddingBottom: 0, paddingTop: 0 }}
-                      colSpan={6}
-                    >
-                      <Collapse
-                        in={
-                          openDetail &&
-                          selectedStockItem.name === stockItem.name
-                        }
-                        timeout="auto"
-                        unmountOnExit
+                      <TableCell
+                        onClick={() => handleOpenDetail(stockItem)}
+                        cursor="pointer"
+                        sx={{ py: 0 }}
                       >
-                        <Box sx={{ my: 4, px: 2 }}>
-                          <Typography
-                            variant="h6"
-                            sx={{ fontSize: 18, fontWeight: "bold", my: 2 }}
-                          >
-                            Detalhes do Item
-                          </Typography>
-                          <Grid
-                            container
-                            direction="row"
-                            justifyContent="space-evenly"
-                          >
-                            <Grid item>
-                              <Grid
-                                container
-                                direction="column"
-                                alignItems="center"
-                                justifyContent="center"
-                              >
-                                <Avatar
-                                  alt="Imagem do Produto"
-                                  cursor="pointer"
-                                  src={`http://localhost:3000/static/${stockItem.image}`}
-                                  sx={{ width: 200, height: 200, mr: 4 }}
-                                  onDoubleClick={handleOpenImage}
-                                />
-                                <Dialog
-                                  open={openImage}
-                                  onClose={handleCloseImage}
+                        <Avatar
+                          src={`http://localhost:3000/static/${selectedStockItem.image}`}
+                          alt={stockItem.name[0]}
+                          cursor="pointer"
+                          style={{
+                            marginLeft: 10,
+                            width: 42,
+                            height: 42,
+                            border: "2px solid #32aacd",
+                            opacity:
+                              openDetail &&
+                              selectedStockItem.name === stockItem.name
+                                ? 0
+                                : 100,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell
+                        onClick={() => handleOpenDetail(stockItem)}
+                        cursor="pointer"
+                        align="left"
+                      >
+                        <Typography sx={{ fontSize: 14 }}>
+                          {stockItem.name}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        onClick={() => handleOpenDetail(stockItem)}
+                        cursor="pointer"
+                        align="center"
+                      >
+                        <Typography sx={{ fontSize: 14 }}>
+                          R${stockItem.buyValue}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        onClick={() => handleOpenDetail(stockItem)}
+                        cursor="pointer"
+                        align="center"
+                      >
+                        <Typography sx={{ fontSize: 14 }}>
+                          R${stockItem.sellValue}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        onClick={() => handleOpenDetail(stockItem)}
+                        cursor="pointer"
+                        align="center"
+                      >
+                        <Typography sx={{ fontSize: 14 }}>
+                          {stockItem.quantity}
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell
+                        style={{ paddingBottom: 0, paddingTop: 0 }}
+                        colSpan={6}
+                      >
+                        <Collapse
+                          in={
+                            openDetail &&
+                            selectedStockItem.name === stockItem.name
+                          }
+                          timeout="auto"
+                          unmountOnExit
+                        >
+                          <Box sx={{ my: 4, px: 2 }}>
+                            <Typography
+                              variant="h6"
+                              sx={{ fontSize: 18, fontWeight: "bold", my: 2 }}
+                            >
+                              Detalhes do Item
+                            </Typography>
+                            <Grid
+                              container
+                              direction="row"
+                              justifyContent="space-evenly"
+                            >
+                              <Grid item>
+                                <Grid
+                                  container
+                                  direction="column"
+                                  alignItems="center"
+                                  justifyContent="center"
                                 >
-                                  <DialogContent>
-                                    <img
-                                      cursor="pointer"
-                                      src={`http://localhost:3000/static/${stockItem.image}`}
-                                      alt="Imagem do Usuário"
-                                      style={{ maxWidth: "100%" }}
-                                    />
-                                  </DialogContent>
-                                </Dialog>
+                                  <Avatar
+                                    alt="Imagem do Produto"
+                                    cursor="pointer"
+                                    src={`http://localhost:3000/static/${stockItem.image}`}
+                                    sx={{ width: 200, height: 200, mr: 4 }}
+                                    onDoubleClick={handleOpenImage}
+                                  />
+                                  <Dialog
+                                    open={openImage}
+                                    onClose={handleCloseImage}
+                                  >
+                                    <DialogContent>
+                                      <img
+                                        cursor="pointer"
+                                        src={`http://localhost:3000/static/${stockItem.image}`}
+                                        alt="Imagem do Usuário"
+                                        style={{ maxWidth: "100%" }}
+                                      />
+                                    </DialogContent>
+                                  </Dialog>
+                                </Grid>
                               </Grid>
+                              <Grid item>
+                                <Table size="small">
+                                  <TableHead>
+                                    <TableRow>
+                                      <TableCell align="center">
+                                        <Typography
+                                          sx={{
+                                            fontSize: "14px",
+                                            color: "#777",
+                                          }}
+                                        >
+                                          Nome
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography
+                                          sx={{
+                                            fontSize: "14px",
+                                            color: "#777",
+                                          }}
+                                        >
+                                          Quantidade
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableHead>
+                                  <TableBody>
+                                    <TableRow>
+                                      <TableCell align="center">
+                                        <Typography>
+                                          {stockItem.name}
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography>
+                                          {stockItem.quantity}
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
+                                <Table size="small" sx={{ mt: 4 }}>
+                                  <TableHead>
+                                    <TableRow>
+                                      <TableCell align="center">
+                                        <Typography
+                                          sx={{
+                                            fontSize: "14px",
+                                            color: "#777",
+                                          }}
+                                        >
+                                          Valor de Compra
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography
+                                          sx={{
+                                            fontSize: "14px",
+                                            color: "#777",
+                                          }}
+                                        >
+                                          Valor de Venda
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableHead>
+                                  <TableBody>
+                                    <TableRow>
+                                      <TableCell align="center">
+                                        <Typography>
+                                          R${stockItem.buyValue}
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography>
+                                          R${stockItem.sellValue}
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
+                              </Grid>
+                              <Box sx={{ mt: 3, ml: "90%" }}>
+                                <ModeEditIcon
+                                  cursor="pointer"
+                                  onClick={() => handleOpenEdit(stockItem)}
+                                  sx={{ color: "grey", mr: 2 }}
+                                />
+                                <DeleteIcon
+                                  cursor="pointer"
+                                  onClick={() => handleConfirmDelete(stockItem)}
+                                  sx={{ color: "#ff4444" }}
+                                />
+                              </Box>
                             </Grid>
-                            <Grid item>
-                              <Table size="small">
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
-                                      >
-                                        Nome
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
-                                      >
-                                        Quantidade
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  <TableRow>
-                                    <TableCell align="center">
-                                      <Typography>{stockItem.name}</Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography>
-                                        {stockItem.quantity}
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableBody>
-                              </Table>
-                              <Table size="small" sx={{ mt: 4 }}>
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
-                                      >
-                                        Valor de Compra
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
-                                      >
-                                        Valor de Venda
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  <TableRow>
-                                    <TableCell align="center">
-                                      <Typography>
-                                        R${stockItem.buyValue}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography>
-                                        R${stockItem.sellValue}
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableBody>
-                              </Table>
-                            </Grid>
-                            <Box sx={{ mt: 3, ml: "90%" }}>
-                              <ModeEditIcon
-                                cursor="pointer"
-                                onClick={() => handleOpenEdit(stockItem)}
-                                sx={{ color: "grey", mr: 2 }}
-                              />
-                              <DeleteIcon
-                                cursor="pointer"
-                                onClick={() => handleConfirmDelete(stockItem)}
-                                sx={{ color: "#ff4444" }}
-                              />
-                            </Box>
-                          </Grid>
-                        </Box>
-                      </Collapse>
-                    </TableCell>
-                  </TableRow>
-                </>
-              ))}
+                          </Box>
+                        </Collapse>
+                      </TableCell>
+                    </TableRow>
+                  </>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>

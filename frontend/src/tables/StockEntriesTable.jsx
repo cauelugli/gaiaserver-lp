@@ -21,7 +21,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function StockEntriesTable() {
+export default function StockEntriesTable({ searchValue, searchOption }) {
   const [stockEntries, setStockEntries] = React.useState([]);
 
   React.useEffect(() => {
@@ -103,55 +103,60 @@ export default function StockEntriesTable() {
                   </TableCell>
                 ))}
               </TableRow>
-              {sortedRows.map((entry) => (
-                <>
-                  <TableRow key={entry._id}>
-                    <TableCell align="left">
-                      <Typography>{entry.number}</Typography>
-                    </TableCell>
-                    <TableCell align="left">
-                      <Grid container direction="column">
-                        {entry.items.map((item) => (
-                          <Grid
-                            key={item._id}
-                            container
-                            direction="row"
-                            alignItems="center"
-                            justifyContent="flex-start"
-                          >
-                            <Grid item sx={{ m: 0.5 }}>
-                              <Avatar
-                                src={`http://localhost:3000/static/${item.item.image}`}
-                                alt={item.item.name[0]}
-                                cursor="pointer"
-                                sx={{
-                                  width: 26,
-                                  height: 26,
-                                  border: "2px solid #32aacd",
-                                }}
-                              />
+              {sortedRows
+                .filter((entry) => {
+                  const userProperty = searchOption.split(".").reduce((obj, key) => obj[key], entry);
+                  return !searchValue || userProperty.toString().includes(searchValue.toString());
+                })
+                .map((entry) => (
+                  <>
+                    <TableRow key={entry._id}>
+                      <TableCell align="left">
+                        <Typography>{entry.number}</Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Grid container direction="column">
+                          {entry.items.map((item) => (
+                            <Grid
+                              key={item._id}
+                              container
+                              direction="row"
+                              alignItems="center"
+                              justifyContent="flex-start"
+                            >
+                              <Grid item sx={{ m: 0.5 }}>
+                                <Avatar
+                                  src={`http://localhost:3000/static/${item.item.image}`}
+                                  alt={item.item.name[0]}
+                                  cursor="pointer"
+                                  sx={{
+                                    width: 26,
+                                    height: 26,
+                                    border: "2px solid #32aacd",
+                                  }}
+                                />
+                              </Grid>
+                              <Grid item>
+                                <Typography>
+                                  {item.item.name} x{item.quantity} = R$
+                                  {item.buyValue * item.quantity}
+                                </Typography>
+                              </Grid>
                             </Grid>
-                            <Grid item>
-                              <Typography>
-                                {item.item.name} x{item.quantity} = R$
-                                {item.buyValue * item.quantity}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-                        ))}
-                      </Grid>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography>R${entry.quoteValue}</Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography>
-                        {dayjs(entry.createdAt).format("DD/MM/YYYY")}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                </>
-              ))}
+                          ))}
+                        </Grid>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography>R${entry.quoteValue}</Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography>
+                          {dayjs(entry.createdAt).format("DD/MM/YYYY")}
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  </>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>

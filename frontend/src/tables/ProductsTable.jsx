@@ -33,7 +33,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ProductsTable() {
+export default function ProductsTable({ searchValue, searchOption }) {
   const [selectedProduct, setSelectedProduct] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -86,7 +86,6 @@ export default function ProductsTable() {
     setOpenDelete(!openDelete);
     setSelectedProduct(product);
   };
-
 
   const tableHeaderRow = [
     {
@@ -160,286 +159,326 @@ export default function ProductsTable() {
                   </TableCell>
                 ))}
               </TableRow>
-              {sortedRows.map((product) => (
-                <>
-                  <TableRow
-                    key={product._id}
-                    sx={{
-                      cursor: "pointer",
-                      backgroundColor:
-                        selectedProduct.name === product.name && openDetail
-                          ? "#eee"
-                          : "none",
-                      "&:hover": { backgroundColor: "#eee " },
-                    }}
-                  >
-                    <TableCell
-                      onClick={() => handleOpenDetail(product)}
-                      cursor="pointer"
-                      sx={{ py: 0 }}
+              {sortedRows
+                .filter((user) => {
+                  const userProperty = searchOption
+                    .split(".")
+                    .reduce((obj, key) => obj[key], user);
+                  return (
+                    userProperty &&
+                    userProperty
+                      .toLowerCase()
+                      .includes(searchValue.toLowerCase())
+                  );
+                })
+                .map((product) => (
+                  <>
+                    <TableRow
+                      key={product._id}
+                      sx={{
+                        cursor: "pointer",
+                        backgroundColor:
+                          selectedProduct.name === product.name && openDetail
+                            ? "#eee"
+                            : "none",
+                        "&:hover": { backgroundColor: "#eee " },
+                      }}
                     >
-                      <Avatar
-                        src={`http://localhost:3000/static/${product.image}`}
-                        alt={product.name[0]}
+                      <TableCell
+                        onClick={() => handleOpenDetail(product)}
                         cursor="pointer"
-                        style={{
-                          marginLeft: 10,
-                          width: 42,
-                          height: 42,
-                          border: "2px solid #32aacd",
-                          opacity:
-                            openDetail && selectedProduct.name === product.name
-                              ? 0
-                              : 100,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleOpenDetail(product)}
-                      cursor="pointer"
-                      align="left"
-                    >
-                      <Typography sx={{ fontSize: 14 }}>
-                        {product.name}
-                      </Typography>
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleOpenDetail(product)}
-                      cursor="pointer"
-                      align="center"
-                    >
-                      <Typography sx={{ fontSize: 14 }}>
-                        {product.brand}
-                      </Typography>
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleOpenDetail(product)}
-                      cursor="pointer"
-                      align="center"
-                    >
-                      <Typography sx={{ fontSize: 14 }}>
-                        {product.type}
-                      </Typography>
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleOpenDetail(product)}
-                      cursor="pointer"
-                      align="center"
-                    >
-                      <Typography sx={{ fontSize: 14 }}>
-                        {product.model}
-                      </Typography>
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleOpenDetail(product)}
-                      cursor="pointer"
-                      align="center"
-                    >
-                      <Typography sx={{ fontSize: 14 }}>
-                        {product.quantity}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell
-                      style={{ paddingBottom: 0, paddingTop: 0 }}
-                      colSpan={6}
-                    >
-                      <Collapse
-                        in={openDetail && selectedProduct._id === product._id}
-                        timeout="auto"
-                        unmountOnExit
+                        sx={{ py: 0 }}
                       >
-                        <Box sx={{ my: 4, px: 6 }}>
-                          <Typography
-                            variant="h6"
-                            sx={{ fontSize: 18, fontWeight: "bold", my: 2 }}
-                          >
-                            Detalhes do Item
-                          </Typography>
-                          <Grid
-                            container
-                            direction="row"
-                            justifyContent="space-around"
-                          >
-                            <Grid item>
-                              <Grid
-                                container
-                                direction="column"
-                                alignItems="center"
-                                justifyContent="center"
-                              >
-                                <Avatar
-                                  alt="Imagem do Produto"
-                                  src={`http://localhost:3000/static/${product.image}`}
-                                  sx={{ width: 200, height: 200 }}
-                                  onDoubleClick={handleOpenImage}
-                                />
-
-                                <FormHelperText>
-                                  Click 2x na imagem para ampliar
-                                </FormHelperText>
-
-                                <Dialog
-                                  open={openImage}
-                                  onClose={handleCloseImage}
+                        <Avatar
+                          src={`http://localhost:3000/static/${product.image}`}
+                          alt={product.name[0]}
+                          cursor="pointer"
+                          style={{
+                            marginLeft: 10,
+                            width: 42,
+                            height: 42,
+                            border: "2px solid #32aacd",
+                            opacity:
+                              openDetail &&
+                              selectedProduct.name === product.name
+                                ? 0
+                                : 100,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell
+                        onClick={() => handleOpenDetail(product)}
+                        cursor="pointer"
+                        align="left"
+                      >
+                        <Typography sx={{ fontSize: 14 }}>
+                          {product.name}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        onClick={() => handleOpenDetail(product)}
+                        cursor="pointer"
+                        align="center"
+                      >
+                        <Typography sx={{ fontSize: 14 }}>
+                          {product.brand}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        onClick={() => handleOpenDetail(product)}
+                        cursor="pointer"
+                        align="center"
+                      >
+                        <Typography sx={{ fontSize: 14 }}>
+                          {product.type}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        onClick={() => handleOpenDetail(product)}
+                        cursor="pointer"
+                        align="center"
+                      >
+                        <Typography sx={{ fontSize: 14 }}>
+                          {product.model}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        onClick={() => handleOpenDetail(product)}
+                        cursor="pointer"
+                        align="center"
+                      >
+                        <Typography sx={{ fontSize: 14 }}>
+                          {product.quantity}
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell
+                        style={{ paddingBottom: 0, paddingTop: 0 }}
+                        colSpan={6}
+                      >
+                        <Collapse
+                          in={openDetail && selectedProduct._id === product._id}
+                          timeout="auto"
+                          unmountOnExit
+                        >
+                          <Box sx={{ my: 4, px: 6 }}>
+                            <Typography
+                              variant="h6"
+                              sx={{ fontSize: 18, fontWeight: "bold", my: 2 }}
+                            >
+                              Detalhes do Item
+                            </Typography>
+                            <Grid
+                              container
+                              direction="row"
+                              justifyContent="space-around"
+                            >
+                              <Grid item>
+                                <Grid
+                                  container
+                                  direction="column"
+                                  alignItems="center"
+                                  justifyContent="center"
                                 >
-                                  <DialogContent>
-                                    <img
-                                      src={`http://localhost:3000/static/${product.image}`}
-                                      alt="Imagem do Produto"
-                                      style={{ maxWidth: "100%" }}
-                                    />
-                                  </DialogContent>
-                                </Dialog>
+                                  <Avatar
+                                    alt="Imagem do Produto"
+                                    src={`http://localhost:3000/static/${product.image}`}
+                                    sx={{ width: 200, height: 200 }}
+                                    onDoubleClick={handleOpenImage}
+                                  />
+
+                                  <FormHelperText>
+                                    Click 2x na imagem para ampliar
+                                  </FormHelperText>
+
+                                  <Dialog
+                                    open={openImage}
+                                    onClose={handleCloseImage}
+                                  >
+                                    <DialogContent>
+                                      <img
+                                        src={`http://localhost:3000/static/${product.image}`}
+                                        alt="Imagem do Produto"
+                                        style={{ maxWidth: "100%" }}
+                                      />
+                                    </DialogContent>
+                                  </Dialog>
+                                </Grid>
+                              </Grid>
+                              <Grid item>
+                                <Table size="small">
+                                  <TableHead>
+                                    <TableRow>
+                                      <TableCell>
+                                        <Typography
+                                          sx={{
+                                            fontSize: "14px",
+                                            color: "#777",
+                                          }}
+                                        >
+                                          Nome
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography
+                                          sx={{
+                                            fontSize: "14px",
+                                            color: "#777",
+                                          }}
+                                        >
+                                          Marca
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography
+                                          sx={{
+                                            fontSize: "14px",
+                                            color: "#777",
+                                          }}
+                                        >
+                                          Tipo
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography
+                                          sx={{
+                                            fontSize: "14px",
+                                            color: "#777",
+                                          }}
+                                        >
+                                          Modelo
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography
+                                          sx={{
+                                            fontSize: "14px",
+                                            color: "#777",
+                                          }}
+                                        >
+                                          Tamanho
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableHead>
+                                  <TableBody>
+                                    <TableRow>
+                                      <TableCell align="center">
+                                        <Typography>{product.name}</Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography>{product.brand}</Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography>{product.type}</Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography>{product.model}</Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography>{product.size}</Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
+                                <Table size="small" sx={{ mt: 4 }}>
+                                  <TableHead>
+                                    <TableRow>
+                                      <TableCell>
+                                        <Typography
+                                          sx={{
+                                            fontSize: "14px",
+                                            color: "#777",
+                                          }}
+                                        >
+                                          Valor de Compra
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell>
+                                        <Typography
+                                          sx={{
+                                            fontSize: "14px",
+                                            color: "#777",
+                                          }}
+                                        >
+                                          Valor de Venda
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell>
+                                        <Typography
+                                          sx={{
+                                            fontSize: "14px",
+                                            color: "#777",
+                                          }}
+                                        >
+                                          Lucro por Item
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell>
+                                        <Typography
+                                          sx={{
+                                            fontSize: "14px",
+                                            color: "#777",
+                                          }}
+                                        >
+                                          Quantidade
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableHead>
+                                  <TableBody>
+                                    <TableRow>
+                                      <TableCell>
+                                        <Typography>
+                                          R${product.buyValue}
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell>
+                                        <Typography>
+                                          R${product.sellValue}
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography sx={{ color: "#32CD32" }}>
+                                          {(
+                                            ((product.sellValue -
+                                              product.buyValue) /
+                                              product.buyValue) *
+                                            100
+                                          ).toFixed(2)}
+                                          %
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Typography>
+                                          {product.quantity}
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
                               </Grid>
                             </Grid>
-                            <Grid item>
-                              <Table size="small">
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
-                                      >
-                                        Nome
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
-                                      >
-                                        Marca
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
-                                      >
-                                        Tipo
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
-                                      >
-                                        Modelo
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
-                                      >
-                                        Tamanho
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  <TableRow>
-                                    <TableCell align="center">
-                                      <Typography>{product.name}</Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography>{product.brand}</Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography>{product.type}</Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography>{product.model}</Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography>{product.size}</Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableBody>
-                              </Table>
-                              <Table size="small" sx={{ mt: 4 }}>
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
-                                      >
-                                        Valor de Compra
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
-                                      >
-                                        Valor de Venda
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
-                                      >
-                                        Lucro por Item
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
-                                      >
-                                        Quantidade
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  <TableRow>
-                                    <TableCell>
-                                      <Typography>
-                                        R${product.buyValue}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography>
-                                        R${product.sellValue}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography sx={{ color: "#32CD32" }}>
-                                        {(
-                                          ((product.sellValue -
-                                            product.buyValue) /
-                                            product.buyValue) *
-                                          100
-                                        ).toFixed(2)}
-                                        %
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography>
-                                        {product.quantity}
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableBody>
-                              </Table>
-                            </Grid>
-                          </Grid>
 
-                          <Box sx={{ mt: 3, ml: "90%" }}>
-                            <ModeEditIcon
-                              cursor="pointer"
-                              onClick={() => handleOpenEdit(product)}
-                              sx={{ color: "grey", mr: 2 }}
-                            />
-                            <DeleteIcon
-                              cursor="pointer"
-                              onClick={() => handleConfirmDelete(product)}
-                              sx={{ color: "#ff4444" }}
-                            />
+                            <Box sx={{ mt: 3, ml: "90%" }}>
+                              <ModeEditIcon
+                                cursor="pointer"
+                                onClick={() => handleOpenEdit(product)}
+                                sx={{ color: "grey", mr: 2 }}
+                              />
+                              <DeleteIcon
+                                cursor="pointer"
+                                onClick={() => handleConfirmDelete(product)}
+                                sx={{ color: "#ff4444" }}
+                              />
+                            </Box>
                           </Box>
-                        </Box>
-                      </Collapse>
-                    </TableCell>
-                  </TableRow>
-                </>
-              ))}
+                        </Collapse>
+                      </TableCell>
+                    </TableRow>
+                  </>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
