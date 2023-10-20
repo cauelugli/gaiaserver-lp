@@ -30,7 +30,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ClientTable() {
+export default function ClientTable({ searchOption, searchValue }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -154,165 +154,173 @@ export default function ClientTable() {
                 </TableCell>
               ))}
             </TableRow>
-            {sortedRows.map((client) => (
-              <>
-                <TableRow
-                  key={client._id}
-                  sx={{
-                    cursor: "pointer",
-                    backgroundColor:
-                      selectedClient === client.name && openDetail
-                        ? "#eee"
-                        : "none",
-                    "&:hover": { backgroundColor: "#eee " },
-                  }}
-                >
-                  <TableCell
-                    onClick={() => handleOpenDetail(client)}
-                    cursor="pointer"
-                    align="left"
+            {sortedRows
+              .filter((user) =>
+                user[searchOption]
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase())
+              )
+              .map((client) => (
+                <>
+                  <TableRow
+                    key={client._id}
+                    sx={{
+                      cursor: "pointer",
+                      backgroundColor:
+                        selectedClient === client.name && openDetail
+                          ? "#eee"
+                          : "none",
+                      "&:hover": { backgroundColor: "#eee " },
+                    }}
                   >
-                    <Typography sx={{ fontSize: 14 }}>{client.name}</Typography>
-                  </TableCell>
-                  <TableCell
-                    onClick={() => handleOpenDetail(client)}
-                    cursor="pointer"
-                  >
-                    <Typography sx={{ fontSize: 14 }}>
-                      {client.email}
-                    </Typography>
-                  </TableCell>
-                  <TableCell
-                    onClick={() => handleOpenDetail(client)}
-                    cursor="pointer"
-                  >
-                    <Typography sx={{ fontSize: 14 }}>
-                      {client.phone}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell
-                    style={{ paddingBottom: 0, paddingTop: 0 }}
-                    colSpan={6}
-                  >
-                    <Collapse
-                      in={openDetail && selectedClient === client.name}
-                      timeout="auto"
-                      unmountOnExit
+                    <TableCell
+                      onClick={() => handleOpenDetail(client)}
+                      cursor="pointer"
+                      align="left"
                     >
-                      <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                          Geral
-                        </Typography>
-                        <Table size="small">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  E-mail
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  Telefone
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  CPF
-                                </Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell component="th" scope="row">
-                                <Typography>{client.email}</Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography>{client.phone}</Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography>{client.cpf}</Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </Box>
-                      <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                          Endereços
-                        </Typography>
-                        <Table size="small">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  Residencial
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  Entrega
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  Cobrança
-                                </Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell component="th" scope="row">
-                                <Typography>{client.addressHome}</Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography>
-                                  {client.addressDelivery}
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography>{client.addressBill}</Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </Box>
+                      <Typography sx={{ fontSize: 14 }}>
+                        {client.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(client)}
+                      cursor="pointer"
+                    >
+                      <Typography sx={{ fontSize: 14 }}>
+                        {client.email}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(client)}
+                      cursor="pointer"
+                    >
+                      <Typography sx={{ fontSize: 14 }}>
+                        {client.phone}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell
+                      style={{ paddingBottom: 0, paddingTop: 0 }}
+                      colSpan={6}
+                    >
+                      <Collapse
+                        in={openDetail && selectedClient === client.name}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                            Geral
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    E-mail
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Telefone
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    CPF
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell component="th" scope="row">
+                                  <Typography>{client.email}</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>{client.phone}</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>{client.cpf}</Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </Box>
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                            Endereços
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Residencial
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Entrega
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Cobrança
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell component="th" scope="row">
+                                  <Typography>{client.addressHome}</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>
+                                    {client.addressDelivery}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>{client.addressBill}</Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </Box>
 
-                      <Box sx={{ my: 4, ml: "90%" }}>
-                        <ModeEditIcon
-                          cursor="pointer"
-                          option="delete"
-                          onClick={() => handleOpenEdit(client)}
-                          sx={{ color: "grey", mr: 2 }}
-                        />
-                        <DeleteIcon
-                          cursor="pointer"
-                          option="delete"
-                          onClick={() => handleConfirmDelete(client)}
-                          sx={{ color: "#ff4444" }}
-                        />
-                      </Box>
-                    </Collapse>
-                  </TableCell>
-                </TableRow>
-              </>
-            ))}
+                        <Box sx={{ my: 4, ml: "90%" }}>
+                          <ModeEditIcon
+                            cursor="pointer"
+                            option="delete"
+                            onClick={() => handleOpenEdit(client)}
+                            sx={{ color: "grey", mr: 2 }}
+                          />
+                          <DeleteIcon
+                            cursor="pointer"
+                            option="delete"
+                            onClick={() => handleConfirmDelete(client)}
+                            sx={{ color: "#ff4444" }}
+                          />
+                        </Box>
+                      </Collapse>
+                    </TableCell>
+                  </TableRow>
+                </>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

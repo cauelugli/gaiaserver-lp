@@ -31,7 +31,12 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function CustomerTable({ openAdd, setOpenAdd }) {
+export default function CustomerTable({
+  searchValue,
+  searchOption,
+  openAdd,
+  setOpenAdd,
+}) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -152,223 +157,227 @@ export default function CustomerTable({ openAdd, setOpenAdd }) {
               ))}
             </TableRow>
 
-            {sortedRows.map((customer) => (
-              <>
-                <TableRow
-                  key={customer._id}
-                  sx={{
-                    cursor: "pointer",
-                    backgroundColor:
-                      selectedCustomer === customer.name && openDetail
-                        ? "#eee"
-                        : "none",
-                    "&:hover": { backgroundColor: "#eee " },
-                  }}
-                >
-                <TableCell
-                  onClick={() => handleOpenDetail(customer)}
-                  cursor="pointer"
-                  align="left"
-                >
-                  <Typography sx={{ fontSize: 14 }}>
-                    {customer.name}
-                  </Typography>
-                </TableCell>
-                  <TableCell
-                    onClick={() => handleOpenDetail(customer)}
-                    cursor="pointer"
-                    align="left"
+            {sortedRows
+              .filter((user) =>
+                user[searchOption]
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase())
+              )
+              .map((customer) => (
+                <>
+                  <TableRow
+                    key={customer._id}
+                    sx={{
+                      cursor: "pointer",
+                      backgroundColor:
+                        selectedCustomer === customer.name && openDetail
+                          ? "#eee"
+                          : "none",
+                      "&:hover": { backgroundColor: "#eee " },
+                    }}
                   >
-                    <Typography sx={{ fontSize: 14 }}>
-                      {customer.mainContactName}
-                    </Typography>
-                  </TableCell>
-
-
-                </TableRow>
-                <TableRow>
-                  <TableCell
-                    style={{ paddingBottom: 0, paddingTop: 0 }}
-                    colSpan={6}
-                  >
-                    <Collapse
-                      in={openDetail && selectedCustomer === customer.name}
-                      timeout="auto"
-                      unmountOnExit
+                    <TableCell
+                      onClick={() => handleOpenDetail(customer)}
+                      cursor="pointer"
+                      align="left"
                     >
-                      <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                          Geral
-                        </Typography>
-                        <Table size="small">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  Endereço
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  Telefone
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  CNPJ
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  Segmento
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  # de Colaboradores
-                                </Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell component="th" scope="row">
-                                <Typography>{customer.address}</Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography>{customer.phone}</Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography>{customer.cnpj}</Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography>{customer.segment}</Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography>{customer.employees}</Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </Box>
+                      <Typography sx={{ fontSize: 14 }}>
+                        {customer.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(customer)}
+                      cursor="pointer"
+                      align="left"
+                    >
+                      <Typography sx={{ fontSize: 14 }}>
+                        {customer.mainContactName}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell
+                      style={{ paddingBottom: 0, paddingTop: 0 }}
+                      colSpan={6}
+                    >
+                      <Collapse
+                        in={openDetail && selectedCustomer === customer.name}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                            Geral
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Endereço
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Telefone
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    CNPJ
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Segmento
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    # de Colaboradores
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell component="th" scope="row">
+                                  <Typography>{customer.address}</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>{customer.phone}</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>{customer.cnpj}</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>{customer.segment}</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>{customer.employees}</Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </Box>
 
-                      <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                          Contato Principal
-                        </Typography>
-                        <Table size="small">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  Nome
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  E-mail
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  Posição
-                                </Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell>
-                                <Typography>
-                                  {customer.mainContactName}
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography>
-                                  {customer.mainContactEmail}
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography>
-                                  {customer.mainContactPosition}
-                                </Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </Box>
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                            Contato Principal
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Nome
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    E-mail
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Posição
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography>
+                                    {customer.mainContactName}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>
+                                    {customer.mainContactEmail}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>
+                                    {customer.mainContactPosition}
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </Box>
 
-                      <Box sx={{ my: 4, px: 6 }}>
-                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                          Domínio
-                        </Typography>
-                        <Table size="small">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  Website
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ fontSize: "14px", color: "#777" }}
-                                >
-                                  Domínio
-                                </Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell>
-                                <Typography>{customer.website}</Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography>{customer.domain}</Typography>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </Box>
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                            Domínio
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Website
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Domínio
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography>{customer.website}</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>{customer.domain}</Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </Box>
 
-                      <Box sx={{ my: 4, ml: "90%" }}>
-                        <ModeEditIcon
-                          cursor="pointer"
-                          option="delete"
-                          onClick={() => handleOpenEdit(customer)}
-                          sx={{ color: "grey", mr: 2 }}
-                        />
-                        <DeleteIcon
-                          cursor="pointer"
-                          option="delete"
-                          onClick={() => handleConfirmDelete(customer)}
-                          sx={{ color: "#ff4444" }}
-                        />
-                      </Box>
-                    </Collapse>
-                  </TableCell>
-                </TableRow>
-              </>
-            ))}
+                        <Box sx={{ my: 4, ml: "90%" }}>
+                          <ModeEditIcon
+                            cursor="pointer"
+                            option="delete"
+                            onClick={() => handleOpenEdit(customer)}
+                            sx={{ color: "grey", mr: 2 }}
+                          />
+                          <DeleteIcon
+                            cursor="pointer"
+                            option="delete"
+                            onClick={() => handleConfirmDelete(customer)}
+                            sx={{ color: "#ff4444" }}
+                          />
+                        </Box>
+                      </Collapse>
+                    </TableCell>
+                  </TableRow>
+                </>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

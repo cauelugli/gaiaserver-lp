@@ -9,19 +9,26 @@ import {
   Box,
   Button,
   Dialog,
+  FormControlLabel,
   Grid,
+  InputAdornment,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
   MenuList,
+  Radio,
+  RadioGroup,
   Tab,
   Tabs,
+  TextField,
   Typography,
 } from "@mui/material";
 
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import PersonIcon from "@mui/icons-material/Person";
+import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 
 import CustomerTable from "../tables/CustomerTable";
 import ClientTable from "../tables/ClientTable";
@@ -53,6 +60,17 @@ export default function Customers() {
 
   const [openAddCustomer, setOpenAddCustomer] = React.useState(false);
   const [openAddClient, setOpenAddClient] = React.useState(false);
+
+  const [searchValue, setSearchValue] = React.useState("");
+  const [searchOption, setSearchOption] = React.useState("name");
+
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleSearchOptionChange = (event) => {
+    setSearchOption(event.target.value);
+  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
@@ -164,10 +182,171 @@ export default function Customers() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <CustomerTable />
+        <Grid container direction="row" justifyContent="flex-start">
+          <Grid item>
+            <TextField
+              placeholder="Pesquise aqui..."
+              size="small"
+              sx={{ mb: 1, ml: "2%", width: 350 }}
+              value={searchValue}
+              onChange={handleSearchChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+                endAdornment:
+                  searchValue.length > 0 ? (
+                    <InputAdornment position="end">
+                      <ClearIcon
+                        cursor="pointer"
+                        sx={{ color: "#d21404" }}
+                        onClick={() => setSearchValue("")}
+                      />
+                    </InputAdornment>
+                  ) : (
+                    ""
+                  ),
+              }}
+            />
+          </Grid>
+          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
+            <RadioGroup
+              row
+              value={searchOption}
+              onChange={handleSearchOptionChange}
+            >
+              <FormControlLabel
+                value="name"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Nome
+                  </Typography>
+                }
+              />
+              <FormControlLabel
+                value="mainContactName"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Contato Principal
+                  </Typography>
+                }
+              />
+            </RadioGroup>
+          </Grid>
+        </Grid>
+        <CustomerTable searchValue={searchValue} searchOption={searchOption} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <ClientTable />
+        <Grid container direction="row" justifyContent="flex-start">
+          <Grid item>
+            <TextField
+              placeholder="Pesquise aqui..."
+              size="small"
+              sx={{ mb: 1, ml: "2%", width: 350 }}
+              value={searchValue}
+              onChange={handleSearchChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+                endAdornment:
+                  searchValue.length > 0 ? (
+                    <InputAdornment position="end">
+                      <ClearIcon
+                        cursor="pointer"
+                        sx={{ color: "#d21404" }}
+                        onClick={() => setSearchValue("")}
+                      />
+                    </InputAdornment>
+                  ) : (
+                    ""
+                  ),
+              }}
+            />
+          </Grid>
+          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
+            <RadioGroup
+              row
+              value={searchOption}
+              onChange={handleSearchOptionChange}
+            >
+              <FormControlLabel
+                value="name"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Nome
+                  </Typography>
+                }
+              />
+              <FormControlLabel
+                value="email"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    E-mail
+                  </Typography>
+                }
+              />
+              <FormControlLabel
+                value="phone"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Telefone
+                  </Typography>
+                }
+              />
+            </RadioGroup>
+          </Grid>
+        </Grid>
+        <ClientTable searchValue={searchValue} searchOption={searchOption} />
       </CustomTabPanel>
       {openAddCustomer && (
         <Dialog
