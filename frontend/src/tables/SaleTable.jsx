@@ -31,6 +31,7 @@ export default function SaleTable({
   searchOption,
   sales,
   fetchData,
+  managers,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -261,20 +262,210 @@ export default function SaleTable({
                         timeout="auto"
                         unmountOnExit
                       >
-                        <Box sx={{ m: 1, p: 4 }}>
-                          <Typography variant="h6" gutterBottom component="div">
-                            Detalhes
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Typography
+                            variant="h6"
+                            sx={{ fontSize: 18, fontWeight: "bold" }}
+                          >
+                            Departamento
                           </Typography>
                           <Table size="small">
                             <TableHead>
                               <TableRow>
-                                <TableCell>Titulo</TableCell>
+                                <TableCell align="left">
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Nome do Departamento
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Vendedor
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Feita em
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell align="left">
+                                  <Typography>
+                                    {sale.department.name}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Grid container direction="row">
+                                    <Grid item>
+                                      <Avatar
+                                        alt="Imagem do Colaborador"
+                                        src={`http://localhost:3000/static/${sale.seller.image}`}
+                                        sx={{ width: 32, height: 32, mr: 1 }}
+                                      />
+                                    </Grid>
+                                    <Grid item>
+                                      <Typography sx={{ mt: 0.75 }}>
+                                        {sale.seller.name}
+                                      </Typography>
+                                    </Grid>
+                                  </Grid>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography>
+                                    {dayjs(sale.createdAt).format("DD/MM/YYYY")}
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </Box>
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Typography
+                            variant="h6"
+                            sx={{ fontSize: 18, fontWeight: "bold" }}
+                          >
+                            Orçamento
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Nº do Orçamento
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Produtos
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Valor Total (serviço + materiais)
+                                  </Typography>
+                                </TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
                               <TableRow>
                                 <TableCell component="th" scope="row">
-                                  {sale.title}
+                                  <Typography>{sale.quoteNumber}</Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography>
+                                    {sale.items.length > 0
+                                      ? sale.items.map((item) => (
+                                          <Grid
+                                            key={item.id}
+                                            container
+                                            direction="row"
+                                            justifyContent="flex-start"
+                                            alignItems="flex-start"
+                                            sx={{ mt: 0.5 }}
+                                          >
+                                            <Typography
+                                              sx={{
+                                                fontSize: 12,
+                                                color: "#777",
+                                                my: "auto",
+                                              }}
+                                            >
+                                              x{item.quantity} {item.name}
+                                            </Typography>
+                                            <Avatar
+                                              alt="Imagem do Produto"
+                                              src={`http://localhost:3000/static/${item.image}`}
+                                              sx={{
+                                                width: 26,
+                                                height: 26,
+                                                ml: 1,
+                                              }}
+                                            />
+                                          </Grid>
+                                        ))
+                                      : "Não há uso de Materiais"}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography>R${sale.price}</Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </Box>
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Typography
+                            variant="h6"
+                            sx={{ fontSize: 18, fontWeight: "bold" }}
+                          >
+                            Comprador
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell align="left">
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Nome do Comprador
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Contato de Entrega
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Endereço de Entrega
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Data da Entrega
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell align="left">
+                                  <Typography>{sale.requester}</Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography sx={{ mt: 0.75 }}>
+                                    {sale.deliveryReceiverPhone}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography sx={{ mt: 0.75 }}>
+                                    {sale.deliveryAddress}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography>
+                                    {dayjs(sale.deliveryScheduledTo).format("DD/MM/YYYY")}
+                                  </Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>
@@ -282,13 +473,11 @@ export default function SaleTable({
                           <Box sx={{ mt: 3, ml: "90%" }}>
                             <ModeEditIcon
                               cursor="pointer"
-                              option="delete"
                               onClick={() => handleOpenEdit(sale)}
                               sx={{ color: "grey", mr: 2 }}
                             />
                             <DeleteIcon
                               cursor="pointer"
-                              option="delete"
                               onClick={() => handleConfirmDelete(sale)}
                               sx={{ color: "#ff4444" }}
                             />
