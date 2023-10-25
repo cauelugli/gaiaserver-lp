@@ -113,7 +113,7 @@ export default function EditServiceForm({
       <DialogContent>
         <Grid
           container
-          sx={{ pr: "4%", mt: 2 }}
+          sx={{ mt: 2 }}
           direction="row"
           justifyContent="flex-start"
           alignItems="center"
@@ -229,7 +229,7 @@ export default function EditServiceForm({
             />
 
             {showUsesMaterials && (
-              <Box sx={{ ml: 5 }}>
+              <Box sx={{ mt: 3 }}>
                 <MaterialList
                   stockItems={stockItems}
                   materials={materials}

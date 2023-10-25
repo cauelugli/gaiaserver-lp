@@ -4,6 +4,7 @@ import React from "react";
 import axios from "axios";
 
 import {
+  Avatar,
   Button,
   Checkbox,
   DialogActions,
@@ -55,7 +56,7 @@ export default function AddStockForm({
     try {
       const res = await api.put("/stock", {
         itemList,
-        type:"stock"
+        type: "stock",
       });
       if (res.data) {
         toast.success("Entrada de Mercadorias Adicionada!", {
@@ -148,7 +149,21 @@ export default function AddStockForm({
                       />
                     </TableCell>
                     <TableCell cursor="pointer">
-                      <Typography sx={{ fontSize: 14 }}>{item.name}</Typography>
+                      <Grid
+                        container
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="flex-start"
+                      >
+                        <Typography sx={{ fontSize: 14 }}>
+                          {item.name}
+                        </Typography>
+                        <Avatar
+                          alt="Imagem do Produto"
+                          src={`http://localhost:3000/static/${item.image}`}
+                          sx={{ width: 32, height: 32, ml: 1 }}
+                        />
+                      </Grid>
                     </TableCell>
                     <TableCell align="right">
                       <Typography sx={{ fontSize: 14 }}>
