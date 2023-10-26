@@ -205,7 +205,7 @@ export default function JobTable({
                           />
                         </Grid>
                         <Grid item>
-                          <Typography sx={{ mt: 0.75 }}>
+                          <Typography sx={{ mt: 0.75, fontSize: 14 }}>
                             {job.worker.name}
                           </Typography>
                         </Grid>
@@ -393,7 +393,9 @@ export default function JobTable({
                                       />
                                     </Grid>
                                     <Grid item>
-                                      <Typography sx={{ mt: 0.75 }}>
+                                      <Typography
+                                        sx={{ mt: 0.75, fontSize: 14 }}
+                                      >
                                         {job.manager ? job.manager.name : ""}
                                       </Typography>
                                     </Grid>
@@ -409,7 +411,7 @@ export default function JobTable({
                                       />
                                     </Grid>
                                     <Grid item>
-                                      <Typography sx={{ mt: 0.75 }}>
+                                      <Typography sx={{ mt: 0.75, fontSize: 14 }}>
                                         {job.worker.name}
                                       </Typography>
                                     </Grid>

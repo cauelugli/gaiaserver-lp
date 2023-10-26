@@ -231,7 +231,7 @@ export default function SaleTable({
                           />
                         </Grid>
                         <Grid item>
-                          <Typography sx={{ mt: 1 }}>
+                          <Typography sx={{ mt: 1, fontSize: 14 }}>
                             {sale.seller.name}
                           </Typography>
                         </Grid>
@@ -312,7 +312,7 @@ export default function SaleTable({
                                       />
                                     </Grid>
                                     <Grid item>
-                                      <Typography sx={{ mt: 0.75 }}>
+                                      <Typography sx={{ mt: 0.75, fontSize: 14 }}>
                                         {sale.seller.name}
                                       </Typography>
                                     </Grid>
