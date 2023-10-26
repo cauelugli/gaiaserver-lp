@@ -95,6 +95,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
 
   const handleEditQuote = () => {
     setEditQuote(!editQuote);
+    setApprovedQuote(true);
   };
 
   const [showAdditionalOptions, setShowAdditionalOptions] =
@@ -588,14 +589,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
             justifyContent="center"
             alignItems="center"
           >
-            <Grid
-              item
-              sx={{
-                width: 850,
-                backgroundColor: "#eee",
-                p: 3,
-              }}
-            >
+            <Grid item>
               <MaterialList
                 stockItems={stockItems}
                 materials={materials}
@@ -612,7 +606,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
                 startIcon={<CheckIcon />}
                 onClick={handleEditQuote}
               >
-                Alterar
+                Alterar e Aprovar
               </Button>
             </Grid>
           </Grid>

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Sale = require("../models/Sale");
+const Product = require("../models/Product");
 
 // GET ALL SALES
 router.get("/", async (req, res) => {
@@ -15,6 +16,13 @@ router.get("/", async (req, res) => {
 // CREATE SALES
 router.post("/", async (req, res) => {
   const newSale = new Sale(req.body);
+  if (newSale.items.length > 0) {
+    for (const item of newSale.items) {
+      const items = await Product.findById(item._id);
+      items.quantity -= item.quantity;
+      await items.save();
+    }
+  }
   try {
     const savedSale = await newSale.save();
     res.status(200).json(savedSale);

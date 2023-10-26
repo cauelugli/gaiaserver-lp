@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Job = require("../models/Job");
+const StockItem = require("../models/StockItem");
 
 // GET ALL JOBS
 router.get("/", async (req, res) => {
@@ -8,7 +9,7 @@ router.get("/", async (req, res) => {
     const jobs = await Job.find();
     res.status(200).json(jobs);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(500).json(err);
   }
 });
@@ -16,6 +17,13 @@ router.get("/", async (req, res) => {
 // CREATE JOB
 router.post("/", async (req, res) => {
   const newRequest = new Job(req.body);
+  if (newRequest.materials.length > 0) {
+    for (const material of newRequest.materials) {
+      const stockItem = await StockItem.findById(material._id);
+      stockItem.quantity -= material.quantity;
+      await stockItem.save();
+    }
+  }
   try {
     const savedRequest = await newRequest.save();
     res.status(200).json(savedRequest);

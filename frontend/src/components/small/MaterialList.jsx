@@ -77,15 +77,30 @@ export default function MaterialList({
   const handleRemoveFromStock = (itemId) => {
     const item = stockList.find((item) => item._id === itemId);
     if (item) {
-      setMaterialsCost(materialsCost - item.sellValue);
+      // Subtrair o valor do item vendido por unidade, em vez do valor total
+      const itemValue = item.sellValue;
+      
+      // Atualizar o custo
+      setMaterialsCost(materialsCost - itemValue);
       setMaterialsFinalCost((prevCost) => prevCost - item.sellValue);
+
+      // Atualizar a lista de estoque
       const updatedStockList = stockList
         .map((item) =>
           item._id === itemId ? { ...item, quantity: item.quantity - 1 } : item
         )
         .filter((item) => item.quantity > 0);
+  
+      // Atualizar as opções no estoque
+      const updatedOptions = options.map((option) =>
+        option._id === itemId
+          ? { ...option, quantity: option.quantity + 1 }
+          : option
+      );
+  
       setStockList(updatedStockList);
       setMaterials(updatedStockList);
+      setOptions(updatedOptions);
     }
   };
 
@@ -100,7 +115,7 @@ export default function MaterialList({
             <TextField
               placeholder="Pesquise aqui..."
               size="small"
-              sx={{ ml: 2, mt:-2, width: 175 }}
+              sx={{ ml: 2, mt: -2, width: 175 }}
               value={searchValue}
               onChange={handleSearchChange}
               InputProps={{
@@ -150,12 +165,28 @@ export default function MaterialList({
                         <Avatar
                           alt="Imagem do Produto"
                           src={`http://localhost:3000/static/${option.image}`}
-                          sx={{ width: 20, height: 20, marginRight: 1 }}
+                          sx={{
+                            width: 20,
+                            height: 20,
+                            marginRight: 1,
+                            opacity: option.quantity === 0 ? 0.5 : 1,
+                          }}
                         />
-                        <Typography sx={{ fontSize: 12 }}>
+                        <Typography
+                          sx={{
+                            fontSize: 12,
+                            color: option.quantity === 0 ? "grey" : "black",
+                          }}
+                        >
                           {option.name}
                         </Typography>
-                        <Typography sx={{ mx: 1, fontSize: 12 }}>
+                        <Typography
+                          sx={{
+                            mx: 1,
+                            fontSize: 12,
+                            color: option.quantity === 0 ? "grey" : "black",
+                          }}
+                        >
                           R${option.sellValue}
                         </Typography>
                         <Typography sx={{ fontSize: 12, color: "#777" }}>

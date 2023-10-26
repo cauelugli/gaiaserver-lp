@@ -107,6 +107,8 @@ export default function EditServiceForm({
     }
   };
 
+  console.log('selectedService', selectedService)
+
   return (
     <form onSubmit={handleEdit}>
       <DialogTitle>Editando Serviço - {selectedService.name}</DialogTitle>

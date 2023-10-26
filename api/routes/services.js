@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const Service = require("../models/Service");
-const StockItem = require("../models/StockItem");
 const Department = require("../models/Department");
 
 // GET ALL SERVICES
@@ -21,16 +20,8 @@ router.post("/", async (req, res) => {
   if (existingName) {
     return res.status(422).json({ error: "Nome de Serviço já cadastrado" });
   }
-
   const newService = new Service(req.body);
   try {
-    if (newService.materials.length > 0) {
-      for (const material of newService.materials) {
-        const stockItem = await StockItem.findById(material._id);
-        stockItem.quantity -= material.quantity;
-        await stockItem.save();
-      }
-    }
     await Department.findByIdAndUpdate(
       newService.department.id,
       {
@@ -57,12 +48,6 @@ router.delete("/:id", async (req, res) => {
   const serviceId = req.params.id;
   try {
     const deletedService = await Service.findByIdAndDelete(serviceId);
-    for (const missingItem of deletedService.materials) {
-      const stockItem = await StockItem.findById(missingItem._id);
-      stockItem.quantity += missingItem.quantity;
-      await stockItem.save();
-    }
-
     await Department.findByIdAndUpdate(
       deletedService.department.id,
       { $pull: { services: { id: deletedService.id } } },
@@ -98,31 +83,6 @@ router.put("/", async (req, res) => {
           (currentItem) => currentItem._id === previousItem._id
         )
     );
-
-    for (const material of validMaterials) {
-      const stockItem = await StockItem.findById(material._id);
-
-      const previousMaterial = previousMaterials.find(
-        (prevMat) => prevMat._id.toString() === material._id.toString()
-      );
-
-      const quantityDifference =
-        material.quantity - (previousMaterial ? previousMaterial.quantity : 0);
-
-      if (quantityDifference > 0) {
-        stockItem.quantity -= quantityDifference;
-        await stockItem.save();
-      } else if (quantityDifference <= 0) {
-        stockItem.quantity += Math.abs(quantityDifference - 1);
-        await stockItem.save();
-      }
-    }
-
-    for (const missingItem of missingItems) {
-      const stockItem = await StockItem.findById(missingItem._id);
-      stockItem.quantity += missingItem.quantity + 1;
-      await stockItem.save();
-    }
 
     const updatedService = await Service.findByIdAndUpdate(
       serviceId,
