@@ -25,7 +25,7 @@ const options = [
   { label: "Serviços", icon: <BuildIcon />, link: "/services" },
   { label: "Estoque", icon: <WarehouseIcon />, link: "/stock" },
   { label: "Financeiro", icon: <AttachMoneyIcon />, link: "/finance", disabled: true },
-  { label: "Arquivos", icon: <InsertDriveFileIcon />, link: "/files", disabled: true },
+  { label: "Arquivos", icon: <InsertDriveFileIcon />, link: "/files"},
   { label: "Configurações", icon: <SettingsIcon />, link: "/settings", disabled: true },
 ];
 
