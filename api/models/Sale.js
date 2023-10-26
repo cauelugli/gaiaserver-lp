@@ -35,6 +35,10 @@ saleSchema = new mongoose.Schema({
   items: {
     type: Object,
   },
+  interactions: {
+    type: Array,
+    default: {}
+  },
   deliveryScheduledTo: {
     type: String,
     required: true,

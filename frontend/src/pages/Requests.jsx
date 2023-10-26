@@ -407,7 +407,7 @@ export default function Requests() {
                 }
                 label={
                   <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Designado
+                    Vendedor
                   </Typography>
                 }
               />
