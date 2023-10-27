@@ -10,20 +10,17 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, "../../uploads/images")); // Define o diretório de destino das imagens
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now();
-    const fileExtension = path.extname(file.originalname);
-    cb(null, file.fieldname + "-" + uniqueSuffix + fileExtension);
+    cb(null, file.originalname);
   },
 });
 
 const upload = multer({ storage });
 
-router.post("/singleProduct", upload.single("file"), (req, res) => {
+router.post("/singleProduct", upload.single("image"), (req, res) => {
   try {
     // Se o arquivo foi carregado com sucesso, retornar o caminho do arquivo
-    const filePath = req.file ? "/images/" + req.file.filename : "";
-
-    return res.status(200).json({ filePath });
+    const imagePath = req.file ? "/images/" + req.file.filename : "";
+    return res.status(200).json({ imagePath });
   } catch (error) {
     console.error(error);
     return res
@@ -61,7 +58,9 @@ router.get("/listFiles", (req, res) => {
       };
     });
 
-    return res.status(200).json({ files: filesWithSizes, totalSpaceMB: totalSpaceInMB });
+    return res
+      .status(200)
+      .json({ files: filesWithSizes, totalSpaceMB: totalSpaceInMB });
   });
 });
 
@@ -102,6 +101,5 @@ router.post("/deleteMultipleFiles", (req, res) => {
     return res.status(500).json({ message: "Erro ao excluir as imagens." });
   }
 });
-
 
 module.exports = router;
