@@ -24,7 +24,7 @@ export default function NavBar() {
           marginBottom: 2,
           cursor: "pointer",
         }}
-        onClick={() => alert("logo man")}
+        onClick={() => alert("Esse é o logo da sua empresa!")}
       />
       <IconButton sx={{ color: "white" }}>
         <AccountCircleIcon />

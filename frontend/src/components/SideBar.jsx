@@ -85,7 +85,7 @@ const SideBar = ({ sidebarOpen }) => {
         style={{
           width: "40%",
           height: "40%",
-          marginTop: sidebarOpen?"150%":"300%",
+          marginTop: sidebarOpen ? "150%" : "300%",
           cursor: "pointer",
         }}
         onClick={() => alert("GS é um sonho feito com muito amor")}
