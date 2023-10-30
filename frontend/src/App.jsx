@@ -20,6 +20,7 @@ import Services from "./pages/Services";
 import Stock from "./pages/Stock";
 import NavBar from "./components/NavBar";
 import Files from "./pages/Files";
+import Account from "./pages/Account";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -78,6 +79,8 @@ export default function App() {
             <Grid item xs={12} xl={12}>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
+                {/* <Route path="/login" element={<Login />} /> */}
+                <Route path="/account" element={<Account />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/customers" element={<Customers />} />
                 <Route path="/departments" element={<Departments />} />

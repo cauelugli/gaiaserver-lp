@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import {
   Avatar,
@@ -15,20 +16,11 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import GradingIcon from "@mui/icons-material/Grading";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 
-export default function UserButton(props) {
+export default function UserButton() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuItemClick = (menuIndex) => {
-    setAnchorEl(null);
-    props.openModal(menuIndex);
-  };
 
   return (
     <div style={{ cursor: "pointer" }}>
@@ -38,7 +30,7 @@ export default function UserButton(props) {
         aria-haspopup="true"
         size="small"
         aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
+        onClick={(e) => setAnchorEl(e.currentTarget)}
         variant="outlined"
         sx={{
           mx: 1,
@@ -47,31 +39,45 @@ export default function UserButton(props) {
       />
       <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
         <List sx={{ width: 180 }}>
-          <ListItemButton onClick={() => handleMenuItemClick(0)}>
-            <ListItemIcon>
-              <PersonIcon />
-            </ListItemIcon>
-            <ListItemText primary="Meu Perfil" sx={{ ml: -2 }} />
-          </ListItemButton>
-          <ListItemButton onClick={() => handleMenuItemClick(1)}>
+          <Link
+            to={"/account"}
+            style={{
+              textDecoration: "none",
+              color: "black",
+            }}
+            onClick={() => setAnchorEl(null)}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <PersonIcon />
+              </ListItemIcon>
+              <ListItemText primary="Meu Perfil" sx={{ ml: -2 }} />
+            </ListItemButton>
+          </Link>
+
+          <ListItemButton>
             <ListItemIcon>
               <GradingIcon />
             </ListItemIcon>
             <ListItemText primary="Meus Pedidos" sx={{ ml: -2 }} />
           </ListItemButton>
-          <ListItemButton onClick={() => handleMenuItemClick(2)}>
+
+          <ListItemButton>
             <ListItemIcon>
               <NotificationsIcon />
             </ListItemIcon>
             <ListItemText primary="Notificações" sx={{ ml: -2 }} />
           </ListItemButton>
-          <Divider sx={{my:1}}/>
-          <ListItemButton sx={{mb:-1}} onClick={() => handleMenuItemClick(3)}>
+
+          <Divider sx={{ my: 1 }} />
+          
+          <ListItemButton sx={{ mb: -1 }}>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
             <ListItemText primary="Logout" sx={{ ml: -2 }} />
           </ListItemButton>
+          
         </List>
       </Menu>
     </div>

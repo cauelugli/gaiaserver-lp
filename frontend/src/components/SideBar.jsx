@@ -12,6 +12,7 @@ import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import LanIcon from "@mui/icons-material/Lan";
+import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
@@ -30,6 +31,7 @@ const options = [
     link: "/finance",
     disabled: true,
   },
+  { label: "Perfil", icon: <PersonIcon />, link: "/account" },
   { label: "Arquivos", icon: <InsertDriveFileIcon />, link: "/files" },
   {
     label: "Configurações",
