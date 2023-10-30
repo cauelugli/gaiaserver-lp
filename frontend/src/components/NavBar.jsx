@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import * as React from "react";
 
-import { Grid, IconButton } from "@mui/material";
+import { Grid } from "@mui/material";
 
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import UserButton from "./small/buttons/UserButton";
 
 export default function NavBar() {
   return (
@@ -12,7 +12,7 @@ export default function NavBar() {
       direction="row"
       alignItems="center"
       justifyContent="space-between"
-      sx={{ backgroundColor: "#32aacd", width: "100%" }}
+      sx={{ backgroundColor: "#32aacd" }}
     >
       <img
         src={`http://localhost:3000/static/logo_text.png`}
@@ -26,9 +26,7 @@ export default function NavBar() {
         }}
         onClick={() => alert("Esse é o logo da sua empresa!")}
       />
-      <IconButton sx={{ color: "white" }}>
-        <AccountCircleIcon />
-      </IconButton>
+      <UserButton />
     </Grid>
   );
 }

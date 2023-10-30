@@ -52,15 +52,9 @@ export default function App() {
   };
 
   return (
-    <Router>
-      <Grid
-        container
-        sx={{
-          mt: -1,
-          ml: -1,
-        }}
-      >
-        <NavBar />
+    <Router >
+      <Grid container sx={{ m: -1 }}>
+        <NavBar/>
         <Grid
           item
           xs={sidebarStatus ? 1.5 : 0.6}
