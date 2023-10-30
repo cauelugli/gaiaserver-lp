@@ -178,6 +178,23 @@ export default function Files() {
                   </Typography>
                 }
               />
+              <FormControlLabel
+                value="createdBy"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Criado por
+                  </Typography>
+                }
+              />
             </RadioGroup>
           </Grid>
         </Grid>
@@ -191,66 +208,7 @@ export default function Files() {
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        {/* <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder="Pesquise aqui..."
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
-            />
-          </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
-              value={searchOption}
-              onChange={handleSearchOptionChange}
-            >
-              <FormControlLabel
-                value="name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Nome
-                  </Typography>
-                }
-              />
-            </RadioGroup>
-          </Grid>
-        </Grid> */}
-        <ImageTable
-          searchOption={searchOption}
-          searchValue={searchValue}
-          fetchData={fetchData}
-        />
+        <ImageTable />
       </CustomTabPanel>
     </Box>
   );

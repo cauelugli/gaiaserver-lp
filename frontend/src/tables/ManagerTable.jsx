@@ -209,7 +209,6 @@ export default function ManagerTable({ searchValue, searchOption }) {
                           marginLeft: 10,
                           width: 42,
                           height: 42,
-                          border: "2px solid #32aacd",
                           opacity:
                             openDetail && selectedManager.name === row.name
                               ? 0

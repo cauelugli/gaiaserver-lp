@@ -132,7 +132,6 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
                                   sx={{
                                     width: 26,
                                     height: 26,
-                                    border: "2px solid #32aacd",
                                   }}
                                 />
                               </Grid>

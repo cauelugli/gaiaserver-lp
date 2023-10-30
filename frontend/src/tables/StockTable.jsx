@@ -193,7 +193,6 @@ export default function StockTable({ searchValue, searchOption }) {
                             marginLeft: 10,
                             width: 42,
                             height: 42,
-                            border: "2px solid #32aacd",
                             opacity:
                               openDetail &&
                               selectedStockItem.name === stockItem.name

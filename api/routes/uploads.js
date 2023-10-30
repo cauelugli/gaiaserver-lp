@@ -3,6 +3,10 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const Product = require("../models/Product");
+const StockItem = require("../models/StockItem");
+const User = require("../models/User");
+const Manager = require("../models/Manager");
 
 // Configuração do armazenamento das imagens usando o multer
 const storage = multer.diskStorage({
@@ -16,6 +20,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+// CREATE SINGLE FILE
 router.post("/singleProduct", upload.single("image"), (req, res) => {
   try {
     // Se o arquivo foi carregado com sucesso, retornar o caminho do arquivo
@@ -29,38 +34,62 @@ router.post("/singleProduct", upload.single("image"), (req, res) => {
   }
 });
 
-router.get("/listFiles", (req, res) => {
+// GET ALL FILES
+router.get("/listFiles", async (req, res) => {
   const directory = path.join(__dirname, "../../uploads/images");
-  fs.readdir(directory, (err, files) => {
+  fs.readdir(directory, async (err, files) => {
     if (err) {
       console.error(err);
       return res.status(500).json({ message: "Erro ao listar os arquivos." });
     }
+    // Coleta os IDs de imagens usadas nos modelos
+    const inUse = [];
 
-    let totalSpace = 0;
+    try {
+      const products = await Product.find();
+      inUse.push(...products.map((product) => product.image));
 
-    files.forEach((file) => {
-      const filePath = path.join(directory, file);
-      const stats = fs.statSync(filePath);
-      totalSpace += stats.size;
-    });
+      const stockItems = await StockItem.find();
+      inUse.push(...stockItems.map((stockItem) => stockItem.image));
 
-    const totalSpaceInMB = (totalSpace / (1024 * 1024)).toFixed(2); // Tamanho total em MB com 2 casas decimais
+      const users = await User.find();
+      inUse.push(...users.map((user) => user.image));
 
-    const filesWithSizes = files.map((file) => {
-      const filePath = path.join(directory, file);
-      const stats = fs.statSync(filePath);
-      const fileSizeInKB = Math.round(stats.size / 1024); // Tamanho em KB
+      const managers = await Manager.find();
+      inUse.push(...managers.map((manager) => manager.image));
 
-      return {
-        name: file,
-        sizeKB: fileSizeInKB,
-      };
-    });
+      let totalSpace = 0;
 
-    return res
-      .status(200)
-      .json({ files: filesWithSizes, totalSpaceMB: totalSpaceInMB });
+      files.forEach((file) => {
+        const filePath = path.join(directory, file);
+        const stats = fs.statSync(filePath);
+        totalSpace += stats.size;
+      });
+
+      const totalSpaceInMB = (totalSpace / (1024 * 1024)).toFixed(2);
+
+      const filesWithSizes = files.map((file) => {
+        const filePath = path.join(directory, file);
+        const stats = fs.statSync(filePath);
+        const fileSizeInKB = Math.round(stats.size / 1024);
+
+        return {
+          name: file,
+          sizeKB: fileSizeInKB,
+        };
+      });
+
+      return res.status(200).json({
+        files: filesWithSizes,
+        totalSpaceMB: totalSpaceInMB,
+        inUse: inUse, // Lista de IDs das imagens em uso
+      });
+    } catch (error) {
+      console.error("Erro ao buscar imagens em uso:", error);
+      return res
+        .status(500)
+        .json({ message: "Erro ao buscar imagens em uso." });
+    }
   });
 });
 

@@ -207,7 +207,6 @@ export default function UserTable({ searchValue, searchOption }) {
                           marginLeft: 10,
                           width: 42,
                           height: 42,
-                          border: "2px solid #32aacd",
                           opacity:
                             openDetail && selectedUser.name === row.name
                               ? 0
