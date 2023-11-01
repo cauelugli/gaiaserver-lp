@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+const authRoute = require("./routes/auth");
 const clientRoute = require("./routes/clients");
 const customerRoute = require("./routes/customers");
 const departmentRoute = require("./routes/departments");
@@ -33,6 +34,7 @@ mongoose
   .then(console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 
+app.use("/api/login", authRoute);
 app.use("/api/clients", clientRoute);
 app.use("/api/customers", customerRoute);
 app.use("/api/departments", departmentRoute);
