@@ -3,7 +3,14 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-import { Button, CircularProgress, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -12,7 +19,7 @@ const api = axios.create({
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   const handleTry = async (e) => {
     e.preventDefault();
@@ -24,8 +31,8 @@ const Login = () => {
       });
 
       if (res.data) {
-        localStorage.setItem("userData", JSON.stringify(res.data));
-        localStorage.setItem("login", true);
+        sessionStorage.setItem("userData", JSON.stringify(res.data));
+        sessionStorage.setItem("login", true);
         toast.success("Login OK!", {
           closeOnClick: true,
           pauseOnHover: false,
@@ -60,33 +67,93 @@ const Login = () => {
   };
 
   return (
-    <>
-      {loading ? (
-        <div>
-          <CircularProgress color="inherit" />
-        </div>
-      ) : (
-        <form onSubmit={handleTry}>
-          <TextField
-            size="small"
-            label="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <TextField
-            size="small"
-            label="Pass"
-            type="password"
-            sx={{mx:1}}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button type="submit" variant="contained" color="success">
-            OK
-          </Button>
-        </form>
-      )}
-    </>
+    <Container
+      maxWidth="xs"
+      sx={{
+        mt: 2,
+        ml: "37%",
+        border: "2px solid #eee",
+        borderRadius: 4,
+        backgroundColor: "white",
+      }}
+    >
+      <Box
+        sx={{
+          mt: 6,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <img
+          src={`http://localhost:3000/static/logo_dog_blue.png`}
+          alt="Logo GaiaServer"
+          style={{
+            margin: 1,
+            cursor: "pointer",
+          }}
+          onClick={() => alert("GS é um sonho feito com muito amor")}
+        />
+        <Typography component="h1" variant="h5">
+          GaiaServer
+        </Typography>
+        {loading ? (
+          <div>
+            <CircularProgress color="inherit" sx={{mb:6}} />
+          </div>
+        ) : (
+          <form onSubmit={handleTry} style={{ marginTop: 1 }}>
+            <TextField
+              size="small"
+              required
+              fullWidth
+              id="email"
+              margin="normal"
+              label="Usuário"
+              autoFocus
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <TextField
+              size="small"
+              margin="dense"
+              required
+              fullWidth
+              name="password"
+              label="Senha"
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {/* <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          /> */}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 6 }}
+            >
+              Login
+            </Button>
+            {/* <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="#" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid> */}
+          </form>
+        )}
+      </Box>
+    </Container>
   );
 };
 

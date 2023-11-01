@@ -29,8 +29,7 @@ import Account from "./pages/Account";
 
 export default function App() {
   const [sidebarStatus, setSidebarStatus] = React.useState(false);
-  const login = JSON.parse(localStorage.getItem("login"));
-  // const userData = JSON.parse(localStorage.getItem("userData"));
+  const login = JSON.parse(sessionStorage.getItem("login"));
 
   const handleSidebarStatusChange = () => {
     !sidebarStatus
@@ -40,10 +39,8 @@ export default function App() {
 
   useEffect(() => {
     const handleUnload = () => {
-      console.log("login", login)
       if (login) {
-        localStorage.removeItem("userData");
-        localStorage.setItem("login", false);
+        localStorage.setItem("keepData", "true");
       }
     };
 
@@ -53,6 +50,13 @@ export default function App() {
       window.removeEventListener("beforeunload", handleUnload);
     };
   }, [login]);
+
+  useEffect(() => {
+    const keepData = localStorage.getItem("keepData");
+    if (keepData === "true") {
+      sessionStorage.setItem("login", JSON.stringify(true));
+    }
+  }, []);
 
   return (
     <Router>
@@ -89,9 +93,10 @@ export default function App() {
                   path="/"
                   element={login ? <Dashboard /> : <Navigate to="/login" />}
                 />
-                <Route path="/login" 
+                <Route
+                  path="/login"
                   element={!login ? <Login /> : <Navigate to="/" />}
-                  />
+                />
                 <Route
                   path="/account"
                   element={login ? <Account /> : <Navigate to="/login" />}
@@ -106,9 +111,7 @@ export default function App() {
                 />
                 <Route
                   path="/departments"
-                  element={
-                    login ? <Departments /> : <Navigate to="/login" />
-                  }
+                  element={login ? <Departments /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/services"
