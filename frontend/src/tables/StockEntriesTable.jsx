@@ -50,6 +50,10 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
       label: "Valor dos Itens",
     },
     {
+      id: "createdBy",
+      label: "Criado por",
+    },
+    {
       id: "createdAt",
       label: "Adicionado em",
     },
@@ -105,9 +109,21 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
               </TableRow>
               {sortedRows
                 .filter((entry) => {
-                  const userProperty = searchOption.split(".").reduce((obj, key) => obj[key], entry);
-                  return !searchValue || userProperty.toString().includes(searchValue.toString());
+                  const userProperty = searchOption
+                    .split(".")
+                    .reduce((obj, key) => obj[key], entry);
+                  const lowerCaseUserProperty = userProperty
+                    .toString()
+                    .toLowerCase();
+                  const lowerCaseSearchValue = searchValue
+                    .toString()
+                    .toLowerCase();
+                  return (
+                    !searchValue ||
+                    lowerCaseUserProperty.includes(lowerCaseSearchValue)
+                  );
                 })
+
                 .map((entry) => (
                   <>
                     <TableRow key={entry._id}>
@@ -147,6 +163,9 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
                       </TableCell>
                       <TableCell align="center">
                         <Typography>R${entry.quoteValue.toFixed(2)}</Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography>{entry.createdBy}</Typography>
                       </TableCell>
                       <TableCell align="center">
                         <Typography>

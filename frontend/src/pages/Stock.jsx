@@ -379,6 +379,23 @@ export default function Stock({ user }) {
                 }
               />
               <FormControlLabel
+                value="createdBy"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Criado por
+                  </Typography>
+                }
+              />
+              <FormControlLabel
                 value="createdAt"
                 control={
                   <Radio
