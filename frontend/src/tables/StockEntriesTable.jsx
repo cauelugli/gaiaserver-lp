@@ -146,7 +146,7 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
                         </Grid>
                       </TableCell>
                       <TableCell align="center">
-                        <Typography>R${entry.quoteValue}</Typography>
+                        <Typography>R${entry.quoteValue.toFixed(2)}</Typography>
                       </TableCell>
                       <TableCell align="center">
                         <Typography>
