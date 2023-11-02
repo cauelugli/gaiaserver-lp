@@ -237,7 +237,7 @@ export default function ServiceTable({
                               variant="h6"
                               sx={{ fontSize: 18, fontWeight: "bold" }}
                             >
-                              Materiais Utilizados
+                              Materiais Necessários
                             </Typography>
                             {service.materials.length > 0 ? (
                               <>
