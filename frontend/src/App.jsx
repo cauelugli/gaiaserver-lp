@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -27,20 +28,29 @@ import Stock from "./pages/Stock";
 import Files from "./pages/Files";
 import Account from "./pages/Account";
 
+function isAuthenticated(login, userData) {
+  return login && userData && userData.isActive;
+}
+
 export default function App() {
-  const [sidebarStatus, setSidebarStatus] = React.useState(false);
+  const [sidebarStatus, setSidebarStatus] = useState(false);
   const login = JSON.parse(sessionStorage.getItem("login"));
+  const userData = JSON.parse(sessionStorage.getItem("userData"));
 
   const handleSidebarStatusChange = () => {
-    !sidebarStatus
-      ? setSidebarStatus(Boolean(true))
-      : setSidebarStatus(Boolean(false));
+    setSidebarStatus(!sidebarStatus);
   };
 
   useEffect(() => {
+    if (window.location.pathname === "/login") {
+      sessionStorage.clear();
+    }
+  }, []);
+
+  useEffect(() => {
     const handleUnload = () => {
-      if (login) {
-        localStorage.setItem("keepData", "true");
+      if (login && userData) {
+        sessionStorage.setItem("keepData", "true");
       }
     };
 
@@ -49,14 +59,17 @@ export default function App() {
     return () => {
       window.removeEventListener("beforeunload", handleUnload);
     };
-  }, [login]);
+  }, [login, userData]);
 
   useEffect(() => {
-    const keepData = localStorage.getItem("keepData");
+    const keepData = sessionStorage.getItem("keepData");
     if (keepData === "true") {
-      sessionStorage.setItem("login", JSON.stringify(true));
+      if (!sessionStorage.getItem("login") && !sessionStorage.getItem("userData")) {
+        sessionStorage.setItem("login", JSON.stringify(true));
+        sessionStorage.setItem("userData", JSON.stringify(userData));
+      }
     }
-  }, []);
+  }, [userData]);
 
   return (
     <Router>
@@ -74,10 +87,7 @@ export default function App() {
             }}
           >
             <Box>
-              <Button
-                onClick={handleSidebarStatusChange}
-                sx={{ color: "black" }}
-              >
+              <Button onClick={handleSidebarStatusChange} sx={{ color: "black" }}>
                 {sidebarStatus ? <ChevronLeftIcon /> : <ChevronRightIcon />}
               </Button>
               <SideBar sidebarOpen={sidebarStatus} />
@@ -91,7 +101,7 @@ export default function App() {
               <Routes>
                 <Route
                   path="/"
-                  element={login ? <Dashboard /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Dashboard /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/login"
@@ -99,35 +109,35 @@ export default function App() {
                 />
                 <Route
                   path="/account"
-                  element={login ? <Account /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Account /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/users"
-                  element={login ? <Users /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Users /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/customers"
-                  element={login ? <Customers /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Customers /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/departments"
-                  element={login ? <Departments /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Departments /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/services"
-                  element={login ? <Services /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Services /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/stock"
-                  element={login ? <Stock /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Stock /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/requests"
-                  element={login ? <Requests /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Requests /> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/files"
-                  element={login ? <Files /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Files /> : <Navigate to="/login" />}
                 />
               </Routes>
             </Grid>

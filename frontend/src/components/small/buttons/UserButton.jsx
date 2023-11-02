@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import {
   Avatar,
@@ -21,6 +21,19 @@ import LogoutIcon from "@mui/icons-material/Logout";
 export default function UserButton() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    toast.info("Realizando Logout", {
+      closeOnClick: true,
+      pauseOnHover: false,
+      theme: "colored",
+      autoClose: 800,
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1500);
+  };
 
   return (
     <div style={{ cursor: "pointer" }}>
@@ -70,14 +83,16 @@ export default function UserButton() {
           </ListItemButton>
 
           <Divider sx={{ my: 1 }} />
-          
-          <ListItemButton sx={{ mb: -1 }}>
+
+          <ListItemButton
+            sx={{ mb: -1 }}
+            onClick={handleLogout}
+          >
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
             <ListItemText primary="Logout" sx={{ ml: -2 }} />
           </ListItemButton>
-          
         </List>
       </Menu>
     </div>

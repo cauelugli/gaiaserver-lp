@@ -29,7 +29,6 @@ const Login = () => {
         username,
         password,
       });
-
       if (res.data) {
         sessionStorage.setItem("userData", JSON.stringify(res.data));
         sessionStorage.setItem("login", true);
@@ -37,7 +36,7 @@ const Login = () => {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
-          autoClose: 1200,
+          autoClose: 200,
         });
 
         setTimeout(() => {
@@ -110,7 +109,6 @@ const Login = () => {
               id="email"
               margin="normal"
               label="Usuário"
-              autoFocus
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
