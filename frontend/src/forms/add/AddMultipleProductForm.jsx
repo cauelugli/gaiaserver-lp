@@ -26,7 +26,12 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddMultipleProductForm({ user,onClose, fetchData, toast }) {
+export default function AddMultipleProductForm({
+  user,
+  onClose,
+  fetchData,
+  toast,
+}) {
   const [productList, setProductList] = React.useState([
     {
       name: "",
@@ -85,6 +90,7 @@ export default function AddMultipleProductForm({ user,onClose, fetchData, toast 
         groupingType: product.groupingType,
         buyValue: product.buyValue,
         sellValue: product.sellValue,
+        createdBy: user.name,
       }));
 
       // Faça a chamada POST para adicionar os produtos
@@ -103,7 +109,12 @@ export default function AddMultipleProductForm({ user,onClose, fetchData, toast 
       onClose();
       fetchData();
     } catch (err) {
-      alert("Vish, deu não...");
+      toast.error("Erro ao Deletar Produto(s)", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
       console.log(err);
     }
   };
@@ -152,7 +163,7 @@ export default function AddMultipleProductForm({ user,onClose, fetchData, toast 
                 sx={{ width: 200, ml: index === 0 ? 2 : 0 }}
               />
             </Grid>
-            <Grid item sx={{ ml: 1}}>
+            <Grid item sx={{ ml: 1 }}>
               {index === 0 && (
                 <Typography sx={{ fontSize: 14 }}>Marca</Typography>
               )}

@@ -16,6 +16,7 @@ router.get("/", async (req, res) => {
 
 router.put("/", async (req, res) => {
   const itemList = req.body.itemList;
+  const user = req.body.createdBy;
   const updatedStockItems = [];
 
   if (req.body.type === "stock") {
@@ -42,6 +43,7 @@ router.put("/", async (req, res) => {
       const newStockEntry = new StockEntry({
         items: items,
         quoteValue: totalValue,
+        createdBy: user,
       });
       await newStockEntry.save();
 
@@ -74,6 +76,7 @@ router.put("/", async (req, res) => {
       const newStockEntry = new StockEntry({
         items: items,
         quoteValue: totalValue,
+        createdBy: user,
       });
       await newStockEntry.save();
 

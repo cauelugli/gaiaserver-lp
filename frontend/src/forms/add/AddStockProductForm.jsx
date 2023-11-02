@@ -65,6 +65,7 @@ export default function AddStockProductForm({
     try {
       const res = await api.put("/stock", {
         itemList,
+        createdBy: user.name,
         type: "product",
       });
       if (res.data) {
