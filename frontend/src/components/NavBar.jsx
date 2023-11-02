@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
 
@@ -5,7 +6,7 @@ import { Grid } from "@mui/material";
 
 import UserButton from "./small/buttons/UserButton";
 
-export default function NavBar() {
+export default function NavBar({ user }) {
   return (
     <Grid
       container
@@ -26,7 +27,7 @@ export default function NavBar() {
         }}
         onClick={() => alert("Esse é o logo da sua empresa!")}
       />
-      <UserButton />
+      <UserButton user={user} />
     </Grid>
   );
 }

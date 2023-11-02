@@ -74,7 +74,7 @@ export default function App() {
   return (
     <Router>
       <Grid container sx={{ m: -1 }}>
-        {login && <NavBar />}
+        {login && <NavBar user={userData}/>}
         {login && (
           <Grid
             item
