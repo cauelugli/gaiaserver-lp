@@ -54,7 +54,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Customers() {
+export default function Customers({user}) {
   const [value, setValue] = React.useState(0);
   const [clients, setClients] = React.useState([]);
 

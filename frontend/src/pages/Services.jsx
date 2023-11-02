@@ -43,7 +43,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Services() {
+export default function Services({user}) {
   const [value, setValue] = React.useState(0);
   const [openAddService, setOpenAddService] = React.useState(false);
 

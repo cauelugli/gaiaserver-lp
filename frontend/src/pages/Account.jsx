@@ -20,7 +20,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function Account() {
+export default function Account({user}) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {

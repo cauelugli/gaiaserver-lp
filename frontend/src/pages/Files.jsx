@@ -44,7 +44,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Files() {
+export default function Files({user}) {
   const [value, setValue] = React.useState(1);
 
   const [searchValue, setSearchValue] = React.useState("");

@@ -56,7 +56,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Users() {
+export default function Users({user}) {
   const [value, setValue] = React.useState(0);
 
   const [users, setUsers] = React.useState([]);

@@ -51,7 +51,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Stock() {
+export default function Stock({user}) {
   const [value, setValue] = React.useState(0);
   const [stockItems, setStockItems] = React.useState([]);
   const [products, setProducts] = React.useState([]);

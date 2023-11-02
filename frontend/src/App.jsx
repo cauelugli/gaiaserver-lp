@@ -101,7 +101,7 @@ export default function App() {
               <Routes>
                 <Route
                   path="/"
-                  element={isAuthenticated(login, userData) ? <Dashboard /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Dashboard user={userData}/> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/login"
@@ -109,35 +109,35 @@ export default function App() {
                 />
                 <Route
                   path="/account"
-                  element={isAuthenticated(login, userData) ? <Account /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Account user={userData}/> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/users"
-                  element={isAuthenticated(login, userData) ? <Users /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Users user={userData}/> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/customers"
-                  element={isAuthenticated(login, userData) ? <Customers /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Customers user={userData}/> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/departments"
-                  element={isAuthenticated(login, userData) ? <Departments /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Departments user={userData}/> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/services"
-                  element={isAuthenticated(login, userData) ? <Services /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Services user={userData}/> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/stock"
-                  element={isAuthenticated(login, userData) ? <Stock /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Stock user={userData}/> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/requests"
-                  element={isAuthenticated(login, userData) ? <Requests /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Requests user={userData}/> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/files"
-                  element={isAuthenticated(login, userData) ? <Files /> : <Navigate to="/login" />}
+                  element={isAuthenticated(login, userData) ? <Files user={userData}/> : <Navigate to="/login" />}
                 />
               </Routes>
             </Grid>

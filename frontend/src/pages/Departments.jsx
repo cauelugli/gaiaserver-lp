@@ -39,7 +39,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Departments() {
+export default function Departments({user}) {
   const [value, setValue] = React.useState(0);
   const [openAdd, setOpenAdd] = React.useState(false);
 

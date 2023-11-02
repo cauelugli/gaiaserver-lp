@@ -59,7 +59,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Requests() {
+export default function Requests({user}) {
   const [value, setValue] = React.useState(0);
   const [openAddJob, setOpenAddJob] = React.useState(false);
   const [openAddSale, setOpenAddSale] = React.useState(false);
