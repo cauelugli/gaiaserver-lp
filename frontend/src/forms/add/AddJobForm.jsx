@@ -35,7 +35,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
+const AddJobForm = ({ user, openAddJob, setOpenAddJob, fetchData1, toast }) => {
   const [title, setTitle] = React.useState("");
   const [customer, setCustomer] = React.useState("");
   const [customerType, setCustomerType] = React.useState("");
@@ -150,6 +150,7 @@ const AddJobForm = ({ openAddJob, setOpenAddJob, fetchData1, toast }) => {
         price: service.value + materialsCost,
         local,
         scheduledTo,
+        createdBy: user.name
       });
       if (res.data) {
         toast.success(`Pedido Adicionado! Orçamento #${res.data.quoteNumber}`, {

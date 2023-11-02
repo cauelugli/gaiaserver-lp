@@ -72,6 +72,10 @@ export default function JobTable({
       label: "Solicitante",
     },
     {
+      id: "createdBy",
+      label: "Criado por",
+    },
+    {
       id: "worker",
       label: "Designado",
     },
@@ -189,6 +193,15 @@ export default function JobTable({
                       <Typography sx={{ fontSize: 14 }}>
                         {job.requester}
                         {job.customer.cnpj && `(${job.customer.name})`}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(job)}
+                      cursor="pointer"
+                      align="center"
+                    >
+                      <Typography sx={{ fontSize: 14 }}>
+                        {job.createdBy}
                       </Typography>
                     </TableCell>
                     <TableCell

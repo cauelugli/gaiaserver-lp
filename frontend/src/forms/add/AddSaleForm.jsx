@@ -34,7 +34,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddSaleForm = ({ openAddSale, setOpenAddSale, fetchData1, toast }) => {
+const AddSaleForm = ({ user, openAddSale, setOpenAddSale, fetchData1, toast }) => {
   const [customer, setCustomer] = React.useState("");
   const [customerType, setCustomerType] = React.useState("Empresa");
   const [requester, setRequester] = React.useState("");
@@ -122,6 +122,7 @@ const AddSaleForm = ({ openAddSale, setOpenAddSale, fetchData1, toast }) => {
         deliveryReceiver,
         deliveryReceiverPhone,
         deliveryScheduledTo,
+        createdBy: user.name
       });
       if (res.data) {
         toast.success(`Venda Adicionada! Orçamento #${res.data.quoteNumber}`, {

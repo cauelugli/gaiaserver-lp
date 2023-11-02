@@ -56,6 +56,9 @@ saleSchema = new mongoose.Schema({
   deliveredIn: {
     type: String,
   },
+  createdBy: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

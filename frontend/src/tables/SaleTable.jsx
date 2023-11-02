@@ -67,6 +67,10 @@ export default function SaleTable({
       label: "Vendedor",
     },
     {
+      id: "createdBy",
+      label: "Criado por",
+    },
+    {
       id: "scheduledTo",
       label: "Agendado para",
     },
@@ -220,9 +224,8 @@ export default function SaleTable({
                     <TableCell
                       onClick={() => handleOpenDetail(sale)}
                       cursor="pointer"
-                      align="center"
                     >
-                      <Grid container direction="row">
+                      <Grid container direction="row" justifyContent="center">
                         <Grid item>
                           <Avatar
                             alt="Imagem do Colaborador"
@@ -236,6 +239,13 @@ export default function SaleTable({
                           </Typography>
                         </Grid>
                       </Grid>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(sale)}
+                      cursor="pointer"
+                      align="center"
+                    >
+                      {sale.createdBy}
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(sale)}

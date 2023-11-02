@@ -59,7 +59,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Requests({user}) {
+export default function Requests({ user }) {
   const [value, setValue] = React.useState(0);
   const [openAddJob, setOpenAddJob] = React.useState(false);
   const [openAddSale, setOpenAddSale] = React.useState(false);
@@ -279,6 +279,23 @@ export default function Requests({user}) {
               />
 
               <FormControlLabel
+                value="createdBy"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Criado por
+                  </Typography>
+                }
+              />
+              <FormControlLabel
                 value="worker.name"
                 control={
                   <Radio
@@ -391,6 +408,23 @@ export default function Requests({user}) {
                 label={
                   <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
                     Comprador
+                  </Typography>
+                }
+              />
+              <FormControlLabel
+                value="createdBy"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Criado por
                   </Typography>
                 }
               />
@@ -598,6 +632,7 @@ export default function Requests({user}) {
           onClose={() => setOpenAddJob(!openAddJob)}
         >
           <AddJobForm
+            user={user}
             openAddJob={openAddJob}
             setOpenAddJob={setOpenAddJob}
             fetchData1={fetchData}
@@ -613,6 +648,7 @@ export default function Requests({user}) {
           onClose={() => setOpenAddSale(!openAddSale)}
         >
           <AddSaleForm
+            user={user}
             openAddSale={openAddSale}
             setOpenAddSale={setOpenAddSale}
             fetchData1={fetchData}
