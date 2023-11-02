@@ -23,7 +23,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddStockItemForm({ onClose, fetchData, toast }) {
+export default function AddStockItemForm({ user,onClose, fetchData, toast }) {
   const [name, setName] = React.useState("");
   const [buyValue, setBuyValue] = React.useState(0);
   const [sellValue, setSellValue] = React.useState(0);
@@ -42,6 +42,7 @@ export default function AddStockItemForm({ onClose, fetchData, toast }) {
         buyValue,
         sellValue,
         image: imagePath,
+        createdBy: user.name,
       });
       if (res.data) {
         toast.success("Material Adicionado!", {

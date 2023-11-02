@@ -31,6 +31,7 @@ const api = axios.create({
 });
 
 export default function AddStockForm({
+  user,
   stockItems,
   onClose,
   fetchData,

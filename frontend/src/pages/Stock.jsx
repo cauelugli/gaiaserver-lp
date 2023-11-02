@@ -51,7 +51,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Stock({user}) {
+export default function Stock({ user }) {
   const [value, setValue] = React.useState(0);
   const [stockItems, setStockItems] = React.useState([]);
   const [products, setProducts] = React.useState([]);
@@ -412,6 +412,7 @@ export default function Stock({user}) {
           onClose={() => closeModal(0)}
         >
           <AddProductForm
+            user={user}
             onClose={() => closeModal(0)}
             fetchData={fetchData}
             toast={toast}
@@ -427,6 +428,7 @@ export default function Stock({user}) {
           onClose={() => closeModal(1)}
         >
           <AddMultipleProductForm
+            user={user}
             onClose={() => closeModal(1)}
             fetchData={fetchData}
             toast={toast}
@@ -442,6 +444,7 @@ export default function Stock({user}) {
           onClose={() => closeModal(2)}
         >
           <AddStockItemForm
+            user={user}
             onClose={() => closeModal(2)}
             fetchData={fetchData}
             toast={toast}
@@ -457,6 +460,7 @@ export default function Stock({user}) {
           onClose={() => closeModal(3)}
         >
           <AddStockProductForm
+            user={user}
             products={products}
             onClose={() => closeModal(3)}
             fetchData={fetchData}
@@ -473,6 +477,7 @@ export default function Stock({user}) {
           onClose={() => closeModal(4)}
         >
           <AddStockForm
+            user={user}
             stockItems={stockItems}
             onClose={() => closeModal(4)}
             fetchData={fetchData}

@@ -20,6 +20,19 @@ const stockItemSchema = new mongoose.Schema({
   image: {
     type: String,
   },
+  createdBy: {
+    type: String,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedBy: {
+    type: String,
+  },
+  updatedAt: {
+    type: Date,
+  },
 });
 
 const StockItem = mongoose.model("StockItem", stockItemSchema);

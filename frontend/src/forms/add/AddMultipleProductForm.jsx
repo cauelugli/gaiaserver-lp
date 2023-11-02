@@ -26,7 +26,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddMultipleProductForm({ onClose, fetchData, toast }) {
+export default function AddMultipleProductForm({ user,onClose, fetchData, toast }) {
   const [productList, setProductList] = React.useState([
     {
       name: "",
@@ -38,6 +38,7 @@ export default function AddMultipleProductForm({ onClose, fetchData, toast }) {
       groupingType: "Unidade",
       buyValue: 0,
       sellValue: 0,
+      createdBy: user.name,
     },
   ]);
 
