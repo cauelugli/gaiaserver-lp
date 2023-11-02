@@ -107,7 +107,7 @@ export default function EditServiceForm({
     }
   };
 
-  console.log('selectedService', selectedService)
+  console.log("selectedService", selectedService);
 
   return (
     <form onSubmit={handleEdit}>
@@ -139,22 +139,24 @@ export default function EditServiceForm({
               size="small"
               sx={{ minWidth: 200 }}
             >
-              {departments.map((item) => (
-                <MenuItem
-                  value={item}
-                  key={item.id}
-                  sx={{
-                    backgroundColor: item.color,
-                    color: "white",
-                    "&:hover": {
+              {departments
+                .filter((department) => department.type === "Serviços")
+                .map((item) => (
+                  <MenuItem
+                    value={item}
+                    key={item.id}
+                    sx={{
                       backgroundColor: item.color,
                       color: "white",
-                    },
-                  }}
-                >
-                  {item.name}
-                </MenuItem>
-              ))}
+                      "&:hover": {
+                        backgroundColor: item.color,
+                        color: "white",
+                      },
+                    }}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))}
             </Select>
           </Grid>
           <Grid item>
