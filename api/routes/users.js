@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+const Manager = require("../models/Manager");
 const Department = require("../models/Department");
 
 // GET ALL USERS
@@ -75,13 +76,15 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE USER
 router.put("/", async (req, res) => {
-  const { name, email } = req.body;
-  const existingName = await User.findOne({ name });
-  const existingEmail = await User.findOne({ email });
+  const { name, email, option, isManager } = req.body;
+  const userModel = isManager ? Manager : User;
+
+  const existingName = await userModel.findOne({ name });
+  const existingEmail = await userModel.findOne({ email });
 
   if (existingName) {
     if (existingName.name !== req.body.previousData.name) {
-      return res.status(422).json({ error: "Nome de Usuário já cadastrado" });
+      return res.status(422).json({ error: "Nome já cadastrado" });
     }
   }
   if (existingEmail) {
@@ -91,9 +94,17 @@ router.put("/", async (req, res) => {
   }
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.body.userId,
-      {
+    let updateFields = {};
+
+    if (option === "account") {
+      updateFields = {
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        image: req.body.image,
+      };
+    } else {
+      updateFields = {
         name: req.body.name,
         email: req.body.email,
         phone: req.body.phone,
@@ -101,38 +112,67 @@ router.put("/", async (req, res) => {
         department: req.body.department,
         position: req.body.position,
         role: req.body.role,
-      },
+      };
+      if (req.body.department) {
+        updateFields.department = req.body.department;
+        updateFields.position = req.body.position;
+        updateFields.role = req.body.role;
+      }
+    }
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+      req.body.userId,
+      updateFields,
       { new: true }
     );
 
     let updatedDepartment;
 
-    updatedUser.department.id
-      ? updatedUser.department.id && req.body.previousData.department
-        ? updatedUser.department.id === req.body.previousData.department.id
-          ? // SAME DEPT, UPDATES ONLY NEW DEPARTMENT
-            (updatedDepartment = await Department.findOneAndUpdate(
-              {
-                _id: req.body.department.id,
-                "members.id": req.body.userId,
-              },
-              {
-                $set: {
-                  "members.$.name": req.body.name,
-                  "members.$.phone": req.body.phone,
-                  "members.$.email": req.body.email,
-                  "members.$.position": req.body.position,
-                  "members.$.image": req.body.image,
-                  "members.$.role": req.body.role,
+    if (option !== "account" && req.body.department) {
+      updatedUser.department.id
+        ? updatedUser.department.id && req.body.previousData.department
+          ? updatedUser.department.id === req.body.previousData.department.id
+            ? // SAME DEPT, UPDATES ONLY NEW DEPARTMENT
+              (updatedDepartment = await Department.findOneAndUpdate(
+                {
+                  _id: req.body.department.id,
+                  "members.id": req.body.userId,
                 },
-              },
-              { new: true }
-            ))
-          : // CHANGING DEPTs, UPDATES PREVIOUS AND NEW DEPARTMENT
-            (await Department.findOneAndUpdate(
-              { "members.id": req.body.userId },
-              { $pull: { members: { id: req.body.userId } } }
-            ),
+                {
+                  $set: {
+                    "members.$.name": req.body.name,
+                    "members.$.phone": req.body.phone,
+                    "members.$.email": req.body.email,
+                    "members.$.position": req.body.position,
+                    "members.$.image": req.body.image,
+                    "members.$.role": req.body.role,
+                  },
+                },
+                { new: true }
+              ))
+            : // CHANGING DEPTs, UPDATES PREVIOUS AND NEW DEPARTMENT
+              (await Department.findOneAndUpdate(
+                { "members.id": req.body.userId },
+                { $pull: { members: { id: req.body.userId } } }
+              ),
+              (updatedDepartment = await Department.findByIdAndUpdate(
+                req.body.department.id,
+                {
+                  $push: {
+                    members: {
+                      id: updatedUser.id,
+                      name: updatedUser.name,
+                      email: updatedUser.email,
+                      phone: updatedUser.phone,
+                      image: updatedUser.image,
+                      position: updatedUser.position,
+                      role: updatedUser.role,
+                    },
+                  },
+                },
+                { new: true }
+              )))
+          : // ADDS MEMBER, BECAUSE USER NEVER HAD A DEPT PREVIOUSLY
             (updatedDepartment = await Department.findByIdAndUpdate(
               req.body.department.id,
               {
@@ -142,33 +182,16 @@ router.put("/", async (req, res) => {
                     name: updatedUser.name,
                     email: updatedUser.email,
                     phone: updatedUser.phone,
-                    image: updatedUser.image,
                     position: updatedUser.position,
+                    image: updatedUser.image,
                     role: updatedUser.role,
                   },
                 },
               },
               { new: true }
-            )))
-        : // ADDS MEMBER, BECAUSE USER NEVER HAD A DEPT PREVIOUSLY
-          (updatedDepartment = await Department.findByIdAndUpdate(
-            req.body.department.id,
-            {
-              $push: {
-                members: {
-                  id: updatedUser.id,
-                  name: updatedUser.name,
-                  email: updatedUser.email,
-                  phone: updatedUser.phone,
-                  position: updatedUser.position,
-                  image: updatedUser.image,
-                  role: updatedUser.role,
-                },
-              },
-            },
-            { new: true }
-          ))
-      : "";
+            ))
+        : "";
+    }
 
     res.status(200).json({ updatedUser, updatedDepartment });
   } catch (err) {

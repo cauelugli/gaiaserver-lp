@@ -3,7 +3,7 @@
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import {
   Box,
@@ -11,28 +11,22 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Dialog,
   Grid,
   Paper,
   Typography,
 } from "@mui/material";
+
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+
+import EditAccountForm from "../forms/edit/EditAccountForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
 export default function Account({ user }) {
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const services = await api.get("/services");
-        const departments = await api.get("/departments");
-        const stockItems = await api.get("/stockItems");
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
+  const [openEdit, setOpenEdit] = React.useState(false);
 
   return (
     <>
@@ -41,6 +35,11 @@ export default function Account({ user }) {
       >
         Perfil
       </Typography>
+      <ModeEditIcon
+        cursor="pointer"
+        onClick={() => setOpenEdit(!openEdit)}
+        sx={{ color: "grey", ml: "90%" }}
+      />
       <Grid
         container
         direction="column"
@@ -51,17 +50,17 @@ export default function Account({ user }) {
           container
           justifyContent="center"
           sx={{
-            width: 950,
-            height: 600,
+            width: 550,
+            height: 300,
             ml: 10,
-            border: "1px solid #777",
+            mt:-2,
             borderRadius: 5,
           }}
         >
-          <Card sx={{ width: 345 }}>
+          <Card sx={{ width: 345, height:450 }}>
             <CardMedia
               component="img"
-              height="50%"
+              height="60%"
               src={`http://localhost:3000/static/${user.image}`}
               alt="User Image"
             />
@@ -72,7 +71,6 @@ export default function Account({ user }) {
               <Typography
                 gutterBottom
                 variant="h6"
-                component="div"
                 sx={{ color: "#444" }}
               >
                 {user.department.name}
@@ -90,6 +88,21 @@ export default function Account({ user }) {
           </Card>
         </Grid>
       </Grid>
+      {openEdit && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditAccountForm
+            openEdit={openEdit}
+            user={user}
+            setOpenEdit={setOpenEdit}
+            toast={toast}
+          />
+        </Dialog>
+      )}
     </>
   );
 }
