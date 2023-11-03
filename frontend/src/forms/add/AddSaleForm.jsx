@@ -122,7 +122,7 @@ const AddSaleForm = ({ user, openAddSale, setOpenAddSale, fetchData1, toast }) =
         deliveryReceiver,
         deliveryReceiverPhone,
         deliveryScheduledTo,
-        createdBy: user.name
+        createdBy: user.username
       });
       if (res.data) {
         toast.success(`Venda Adicionada! Orçamento #${res.data.quoteNumber}`, {

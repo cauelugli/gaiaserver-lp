@@ -63,11 +63,9 @@ saleSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  updatedAt: {
-    type: Date,
-  },
-  updatedBy: {
-    type: String,
+  updates: {
+    type: Array,
+    default: {},
   },
 });
 

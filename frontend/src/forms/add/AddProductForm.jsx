@@ -53,7 +53,7 @@ export default function AddProductForm({ user,onClose, fetchData, toast }) {
         groupingType,
         buyValue,
         sellValue,
-        createdBy: user.name,
+        createdBy: user.username,
       });
 
       if (productResponse.data) {

@@ -2,6 +2,7 @@
 import * as React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import dayjs from "dayjs";
 
 import {
   Dialog,
@@ -21,15 +22,15 @@ import {
   TableSortLabel,
 } from "@mui/material";
 
+import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 import EditJobForm from "../forms/edit/EditJobForm";
 import DeleteJobForm from "../forms/delete/DeleteJobForm";
-import dayjs from "dayjs";
-import UpdateJobForm from "../forms/edit/UpdateJobForm";
 
 export default function JobTable({
+  user,
   searchValue,
   searchOption,
   jobs,
@@ -37,9 +38,9 @@ export default function JobTable({
   fetchData,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
+  const [option, setOption] = React.useState("interaction");
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
-  const [openUpdate, setOpenUpdate] = React.useState(false);
   const [selectedJob, setSelectedJob] = React.useState([]);
 
   const handleOpenDetail = (job) => {
@@ -47,19 +48,15 @@ export default function JobTable({
     setSelectedJob(job);
   };
 
-  const handleOpenEdit = (job) => {
+  const handleOpenEdit = (job, option) => {
     setOpenEdit(!openEdit);
+    setOption(option);
     setSelectedJob(job);
   };
 
   const handleConfirmDelete = (job) => {
     setSelectedJob(job);
     setOpenDelete(!openDelete);
-  };
-
-  const handleOpenUpdate = (job) => {
-    setOpenUpdate(!openUpdate);
-    setSelectedJob(job);
   };
 
   const tableHeaderRow = [
@@ -234,34 +231,21 @@ export default function JobTable({
                       </Typography>
                     </TableCell>
                     <TableCell
-                      onMouseEnter={() => setSelectedJob(job._id)}
-                      onMouseLeave={() => setSelectedJob("")}
+                      onClick={() => handleOpenDetail(job)}
                       align="center"
                       sx={{ p: 0 }}
                     >
-                      {selectedJob === job._id ? (
-                        <Button
-                          variant="outlined"
-                          color="inherit"
-                          size="small"
-                          sx={{ p: 0.5 }}
-                          onClick={() => handleOpenUpdate(job)}
-                        >
-                          Alterar
-                        </Button>
-                      ) : (
-                        <Typography
-                          sx={{
-                            fontSize: 14,
-                            color:
-                              (job.status === "Aberto" && "#E1AD01") ||
-                              (job.status === "Em Andamento" && "") ||
-                              (job.status === "Feito" && "#006400"),
-                          }}
-                        >
-                          {job.status}
-                        </Typography>
-                      )}
+                      <Typography
+                        sx={{
+                          fontSize: 14,
+                          color:
+                            (job.status === "Aberto" && "#E1AD01") ||
+                            (job.status === "Em Andamento" && "") ||
+                            (job.status === "Feito" && "#006400"),
+                        }}
+                      >
+                        {job.status}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -424,7 +408,9 @@ export default function JobTable({
                                       />
                                     </Grid>
                                     <Grid item>
-                                      <Typography sx={{ mt: 0.75, fontSize: 14 }}>
+                                      <Typography
+                                        sx={{ mt: 0.75, fontSize: 14 }}
+                                      >
                                         {job.worker.name}
                                       </Typography>
                                     </Grid>
@@ -499,17 +485,96 @@ export default function JobTable({
                               </TableRow>
                             </TableBody>
                           </Table>
-                          <Box sx={{ mt: 3, ml: "90%" }}>
-                            <ModeEditIcon
+                        </Box>
+
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Typography
+                            variant="h6"
+                            sx={{ fontSize: 18, fontWeight: "bold" }}
+                          >
+                            Atividades
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    #
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Colaborador
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Atividade
+                                  </Typography>
+                                </TableCell>
+
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Data
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell align="left">
+                                  <Typography>1</Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography>{job.title}</Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography>{job.title}</Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography>{job.title}</Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                          <Box sx={{ my: 5, ml: "55%", px: -6 }}>
+                            <Button
                               cursor="pointer"
-                              onClick={() => handleOpenEdit(job)}
-                              sx={{ color: "grey", mr: 2 }}
-                            />
-                            <DeleteIcon
+                              variant="contained"
+                              color="success"
+                              onClick={() => handleOpenEdit(job, "interaction")}
+                              startIcon={<AddIcon />}
+                            >
+                              Interação
+                            </Button>
+                            <Button
                               cursor="pointer"
+                              variant="outlined"
+                              color="inherit"
+                              disabled={job.createdBy !== user.username}
+                              onClick={() => handleOpenEdit(job, "edit")}
+                              sx={{ mx: 2 }}
+                              startIcon={<ModeEditIcon />}
+                            >
+                              Editar
+                            </Button>
+                            <Button
+                              cursor="pointer"
+                              variant="contained"
                               onClick={() => handleConfirmDelete(job)}
-                              sx={{ color: "#ff4444" }}
-                            />
+                              color="error"
+                              startIcon={<DeleteIcon />}
+                            >
+                              Deletar
+                            </Button>
                           </Box>
                         </Box>
                       </Collapse>
@@ -528,6 +593,8 @@ export default function JobTable({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditJobForm
+            user={user}
+            option={option}
             openEditJob={openEdit}
             selectedJob={selectedJob}
             setOpenEditJob={setOpenEdit}
@@ -542,22 +609,6 @@ export default function JobTable({
             selectedJob={selectedJob}
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}
-            fetchData={fetchData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
-      {openUpdate && (
-        <Dialog
-          fullWidth
-          maxWidth="lg"
-          open={openUpdate}
-          onClose={() => setOpenUpdate(!openUpdate)}
-        >
-          <UpdateJobForm
-            openUpdateJob={openUpdate}
-            selectedJob={selectedJob}
-            setOpenUpdateJob={setOpenUpdate}
             fetchData={fetchData}
             toast={toast}
           />

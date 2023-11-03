@@ -58,7 +58,6 @@ jobSchema = new mongoose.Schema({
   },
   interactions: {
     type: Array,
-    default: {},
   },
   createdBy: {
     type: String,
@@ -67,11 +66,9 @@ jobSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  updatedAt: {
-    type: Date,
-  },
-  updatedBy: {
-    type: String,
+  updates: {
+    type: Array,
+    default: {},
   },
 });
 

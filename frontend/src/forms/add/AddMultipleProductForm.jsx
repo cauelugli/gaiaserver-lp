@@ -43,7 +43,7 @@ export default function AddMultipleProductForm({
       groupingType: "Unidade",
       buyValue: 0,
       sellValue: 0,
-      createdBy: user.name,
+      createdBy: user.username,
     },
   ]);
 
@@ -90,7 +90,7 @@ export default function AddMultipleProductForm({
         groupingType: product.groupingType,
         buyValue: product.buyValue,
         sellValue: product.sellValue,
-        createdBy: user.name,
+        createdBy: user.username,
       }));
 
       // Faça a chamada POST para adicionar os produtos

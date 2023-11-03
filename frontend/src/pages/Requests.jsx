@@ -351,6 +351,7 @@ export default function Requests({ user }) {
         </Grid>
 
         <JobTable
+          user={user}
           searchValue={searchValue}
           searchOption={searchOption}
           jobs={jobs}
@@ -618,6 +619,7 @@ export default function Requests({ user }) {
         </Grid>
 
         <JobTable
+          user={user}
           searchValue={searchValue}
           searchOption={searchOption}
           jobs={supports}

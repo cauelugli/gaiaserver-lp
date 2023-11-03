@@ -42,7 +42,7 @@ export default function AddStockItemForm({ user,onClose, fetchData, toast }) {
         buyValue,
         sellValue,
         image: imagePath,
-        createdBy: user.name,
+        createdBy: user.username,
       });
       if (res.data) {
         toast.success("Material Adicionado!", {

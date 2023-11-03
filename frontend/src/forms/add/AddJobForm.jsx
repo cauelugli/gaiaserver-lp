@@ -150,7 +150,7 @@ const AddJobForm = ({ user, openAddJob, setOpenAddJob, fetchData1, toast }) => {
         price: service.value + materialsCost,
         local,
         scheduledTo,
-        createdBy: user.name
+        createdBy: user.username
       });
       if (res.data) {
         toast.success(`Pedido Adicionado! Orçamento #${res.data.quoteNumber}`, {
