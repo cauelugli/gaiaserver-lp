@@ -2,28 +2,21 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 import { toast } from "react-toastify";
 
 import {
-  Box,
+  Button,
   Card,
-  CardActionArea,
   CardContent,
   CardMedia,
   Dialog,
   Grid,
-  Paper,
   Typography,
 } from "@mui/material";
 
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 import EditAccountForm from "../forms/edit/EditAccountForm";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 export default function Account({ user }) {
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -35,11 +28,16 @@ export default function Account({ user }) {
       >
         Perfil
       </Typography>
-      <ModeEditIcon
-        cursor="pointer"
+      <Button
         onClick={() => setOpenEdit(!openEdit)}
-        sx={{ color: "grey", ml: "90%" }}
-      />
+        sx={{ ml: "90%" }}
+        color="inherit"
+        variant="outlined"
+        startIcon={<ModeEditIcon />}
+      >
+        Editar
+      </Button>
+
       <Grid
         container
         direction="column"
@@ -53,11 +51,11 @@ export default function Account({ user }) {
             width: 550,
             height: 300,
             ml: 10,
-            mt:-2,
+            mt: -2,
             borderRadius: 5,
           }}
         >
-          <Card sx={{ width: 345, height:450 }}>
+          <Card sx={{ width: 345, height: 450 }}>
             <CardMedia
               component="img"
               height="60%"
@@ -68,11 +66,7 @@ export default function Account({ user }) {
               <Typography variant="h5" component="div">
                 {user.name}
               </Typography>
-              <Typography
-                gutterBottom
-                variant="h6"
-                sx={{ color: "#444" }}
-              >
+              <Typography gutterBottom variant="h6" sx={{ color: "#444" }}>
                 {user.department.name}
               </Typography>
               <Typography variant="body1" color="#777">
