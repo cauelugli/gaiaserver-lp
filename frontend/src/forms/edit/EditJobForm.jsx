@@ -112,6 +112,7 @@ const EditJobForm = ({
         option: "interaction",
         number: selectedJob.interactions.length + 1,
         activity,
+        status,
         user: user.name,
         date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
       };
@@ -462,7 +463,7 @@ const EditJobForm = ({
                 onChange={(e) => setStatus(e.target.value)}
                 value={status}
                 size="small"
-                sx={{ width: "14%", ml: 1 }}
+                sx={{ width: "20%", ml: 1 }}
               >
                 <MenuItem value={"Aberto"}>Aberto</MenuItem>
                 <MenuItem value={"Aguardando Execução"}>
@@ -483,7 +484,7 @@ const EditJobForm = ({
                 size="small"
                 value={activity}
                 onChange={(e) => setActivity(e.target.value)}
-                sx={{ width: "70%", mx: 1 }}
+                sx={{ width: "62%", mx: 1 }}
               />
               <Button type="submit" variant="contained" color="success">
                 Adicionar

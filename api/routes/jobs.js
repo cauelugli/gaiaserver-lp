@@ -49,17 +49,21 @@ router.put("/", async (req, res) => {
   try {
     const jobId = req.body.jobId;
     const option = req.body.option;
+    const status = req.body.status;
 
     if (option === "interaction") {
       const updatedJob = await Job.findOneAndUpdate(
         { _id: jobId },
         {
+          $set: {
+            status: status,
+          },
           $push: {
             interactions: {
               number: req.body.number || 1,
               activity: req.body.activity,
               user: req.body.user,
-              date: req.body.date
+              date: req.body.date,
             },
           },
         },

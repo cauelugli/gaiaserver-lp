@@ -282,6 +282,13 @@ export default function JobTable({
                                     Solicitante
                                   </Typography>
                                 </TableCell>
+                                <TableCell align="left">
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Status
+                                  </Typography>
+                                </TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
@@ -295,6 +302,9 @@ export default function JobTable({
                                     {job.customer.cnpj &&
                                       `(${job.customer.name})`}
                                   </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography>{job.status}</Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>
@@ -508,14 +518,14 @@ export default function JobTable({
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
                                   >
-                                    Colaborador
+                                    Data
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
                                   >
-                                    Atividade
+                                    Colaborador
                                   </Typography>
                                 </TableCell>
 
@@ -523,26 +533,44 @@ export default function JobTable({
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
                                   >
-                                    Data
+                                    Atividade
                                   </Typography>
                                 </TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
-                              <TableRow>
-                                <TableCell align="left">
-                                  <Typography>1</Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography>{job.title}</Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography>{job.title}</Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography>{job.title}</Typography>
-                                </TableCell>
-                              </TableRow>
+                              {job.interactions.map((interaction) => (
+                                <TableRow
+                                  key={interaction.number}
+                                  sx={{
+                                    backgroundColor:
+                                      interaction.number % 2 === 0
+                                        ? "#eee"
+                                        : "white",
+                                  }}
+                                >
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {interaction.number}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {interaction.date}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {interaction.user}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {interaction.activity}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
                             </TableBody>
                           </Table>
                           <Box sx={{ my: 5, ml: "55%", px: -6 }}>
