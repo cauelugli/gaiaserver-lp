@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const Job = require("../models/Job");
 const StockItem = require("../models/StockItem");
+const Quote = require("../models/Quote");
+const PDFDocument = require("pdfkit");
+const fs = require("fs");
+const path = require("path");
 
 // GET ALL JOBS
 router.get("/", async (req, res) => {
@@ -24,9 +28,86 @@ router.post("/", async (req, res) => {
       await stockItem.save();
     }
   }
+
   try {
     const savedRequest = await newRequest.save();
-    res.status(200).json(savedRequest);
+    const newQuote = new Quote({
+      number: savedRequest.quoteNumber,
+      department: req.body.department.name,
+      type: "job",
+      user: req.body.worker.name,
+      customer: req.body.customer.name,
+      value: req.body.price,
+      materials: req.body.materials,
+      materialsCost: req.body.materialsCost,
+    });
+    const savedQuote = await newQuote.save();
+    const doc = new PDFDocument();
+
+    // Construa o caminho completo para o arquivo PDF na pasta estática
+    const pdfPath = path.join(
+      __dirname,
+      "../../uploads/docs",
+      `orcamento-${newQuote.type[0]}-${newQuote.number}.pdf`
+    );
+
+    doc.pipe(fs.createWriteStream(pdfPath));
+
+    doc.image("../uploads/logo.png", 0, 15, { width: 150 });
+
+    doc
+      .fontSize(13)
+      .text(`Orçamento de ${newQuote.type === "job" ? "Serviço" : "Venda"}`, {
+        align: "center",
+      });
+    doc.moveDown();
+
+    doc.text("Número do Orçamento:", 120, 120, { align: "left" });
+    doc.text(savedQuote.number, 380, 120, { align: "right" });
+
+    doc.text("Departamento:", 120, 140, { align: "left" });
+    doc.text(savedQuote.department, 380, 140, { align: "right" });
+
+    doc.text("Tipo:", 120, 160, { align: "left" });
+    doc.text(savedQuote.type === "job" ? "Serviço" : "Venda", 380, 160, {
+      align: "right",
+    });
+
+    doc.text("Colaborador:", 120, 180, { align: "left" });
+    doc.text(savedQuote.user, 380, 180, { align: "right" });
+
+    doc.text("Cliente:", 120, 200, { align: "left" });
+    doc.text(savedQuote.customer, 380, 200, { align: "right" });
+
+    let yPosition = 205;
+
+    doc.text("Materiais:", 120, yPosition+15, { align: "left" });
+    for (const material of savedQuote.materials) {
+      doc.text(material.name, 130, yPosition + 30, { align: "left" });
+      doc.text(
+        "x" + material.quantity + " " + "R$" + material.sellValue,
+        250,
+        yPosition + 30,
+        { align: "right" }
+      );
+      yPosition += 30;
+    }
+
+    doc.text("Valor dos Materiais:", 120, yPosition + 50, { align: "left" });
+    doc.text(`R$${savedQuote.materialsCost.toFixed(2)}`, 350, yPosition + 50, {
+      align: "right",
+    });
+
+    doc.text("Valor Total:", 120, yPosition + 70, { align: "left" });
+    doc.text(`R$${savedQuote.value.toFixed(2)}`, 420, yPosition + 70, {
+      align: "right",
+    });
+
+    doc.moveDown();
+
+    doc.end();
+
+    res.status(200).json({ savedRequest, savedQuote });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

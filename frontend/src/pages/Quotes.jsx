@@ -25,6 +25,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 
 import ServiceTable from "../tables/ServiceTable";
 import AddServiceForm from "../forms/add/AddServiceForm";
+import QuoteTable from "../tables/QuoteTable";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -44,7 +45,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Services({ user }) {
+export default function Quotes({ user }) {
   const [value, setValue] = React.useState(0);
   const [openAddService, setOpenAddService] = React.useState(false);
 
@@ -59,10 +60,7 @@ export default function Services({ user }) {
     setSearchOption(event.target.value);
   };
 
-  const [services, setServices] = React.useState([]);
-  const [supports, setSupports] = React.useState([]);
-  const [departments, setDepartments] = React.useState([]);
-  const [stockItems, setStockItems] = React.useState([]);
+  const [quotes, setQuotes] = React.useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -71,28 +69,19 @@ export default function Services({ user }) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const services = await api.get("/services");
-        const departments = await api.get("/departments");
-        const stockItems = await api.get("/stockItems");
-        setServices(services.data.filter((service) => service.value > 0));
-        setSupports(services.data.filter((service) => service.value === 0));
-        setDepartments(departments.data);
-        setStockItems(stockItems.data);
+        const quotes = await api.get("/quotes");
+        setQuotes(quotes.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [services]);
+  }, [quotes]);
 
   const fetchData = async () => {
     try {
-      const services = await api.get("/services");
-      const departments = await api.get("/departments");
-      const stockItems = await api.get("/stockItems");
-      setServices(services.data);
-      setDepartments(departments.data);
-      setStockItems(stockItems.data);
+      const quotes = await api.get("/quotes");
+      setQuotes(quotes.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -109,7 +98,7 @@ export default function Services({ user }) {
         <Typography
           sx={{ fontSize: 23, mt: 0.5, ml: 1, mr: 2, fontWeight: "bold" }}
         >
-          Serviços
+          Orçamentos
         </Typography>
         <Button
           onClick={() => setOpenAddService(true)}
@@ -132,11 +121,11 @@ export default function Services({ user }) {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Setores</Typography>}
+            label={<Typography sx={{ fontSize: 14 }}>Jobs</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Consultoria</Typography>}
+            label={<Typography sx={{ fontSize: 14 }}>Vendas</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
         </Tabs>
@@ -197,12 +186,10 @@ export default function Services({ user }) {
             </RadioGroup>
           </Grid>
         </Grid>
-        <ServiceTable
+        <QuoteTable
+          quotes={quotes}
           searchOption={searchOption}
           searchValue={searchValue}
-          services={services}
-          departments={departments}
-          stockItems={stockItems}
           fetchData={fetchData}
         />
       </CustomTabPanel>
@@ -262,12 +249,10 @@ export default function Services({ user }) {
             </RadioGroup>
           </Grid>
         </Grid>
-        <ServiceTable
+        <QuoteTable
+          quotes={quotes}
           searchOption={searchOption}
           searchValue={searchValue}
-          services={supports}
-          departments={departments}
-          stockItems={stockItems}
           fetchData={fetchData}
         />
       </CustomTabPanel>
@@ -281,8 +266,6 @@ export default function Services({ user }) {
           <AddServiceForm
             openAdd={openAddService}
             setOpenAdd={setOpenAddService}
-            departments={departments}
-            stockItems={stockItems}
             fetchData={fetchData}
             toast={toast}
           />

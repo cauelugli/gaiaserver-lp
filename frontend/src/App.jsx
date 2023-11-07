@@ -27,6 +27,7 @@ import Services from "./pages/Services";
 import Stock from "./pages/Stock";
 import Files from "./pages/Files";
 import Account from "./pages/Account";
+import Quotes from "./pages/Quotes";
 
 function isAuthenticated(login, userData) {
   return login && userData && userData.isActive;
@@ -134,6 +135,10 @@ export default function App() {
                 <Route
                   path="/requests"
                   element={isAuthenticated(login, userData) ? <Requests user={userData}/> : <Navigate to="/login" />}
+                />
+                <Route
+                  path="/quotes"
+                  element={isAuthenticated(login, userData) ? <Quotes user={userData}/> : <Navigate to="/login" />}
                 />
                 <Route
                   path="/files"

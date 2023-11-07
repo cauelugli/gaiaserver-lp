@@ -18,6 +18,7 @@ const userRoute = require("./routes/users");
 const managerRoute = require("./routes/managers");
 const operatorsRoute = require("./routes/operators");
 const quickNotesRoute = require("./routes/quicknotes");
+const quoteRoute = require("./routes/quotes");
 const uploadsRoute = require("./routes/uploads");
 
 dotenv.config();
@@ -48,6 +49,7 @@ app.use("/api/users", userRoute);
 app.use("/api/managers", managerRoute);
 app.use("/api/operators", operatorsRoute);
 app.use("/api/quicknotes", quickNotesRoute);
+app.use("/api/quotes", quoteRoute);
 app.use("/api/uploads", uploadsRoute);
 
 app.listen("3000", () => {
