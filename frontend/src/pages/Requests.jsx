@@ -10,6 +10,7 @@ import {
   Button,
   Dialog,
   FormControlLabel,
+  FormHelperText,
   Grid,
   InputAdornment,
   ListItemIcon,
@@ -19,6 +20,7 @@ import {
   MenuList,
   Radio,
   RadioGroup,
+  Select,
   Tab,
   Tabs,
   TextField,
@@ -29,11 +31,6 @@ import EngineeringIcon from "@mui/icons-material/Engineering";
 import SellIcon from "@mui/icons-material/Sell";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
-
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers";
 
 import JobTable from "../tables/JobTable";
 import SaleTable from "../tables/SaleTable";
@@ -80,7 +77,6 @@ export default function Requests({ user }) {
 
   const [jobs, setJobs] = React.useState([]);
   const [sales, setSales] = React.useState([]);
-  const [supports, setSupports] = React.useState([]);
   const [managers, setManagers] = React.useState([]);
 
   React.useEffect(() => {
@@ -89,8 +85,7 @@ export default function Requests({ user }) {
         const jobs = await api.get("/jobs");
         const sales = await api.get("/sales");
         const managers = await api.get("/managers");
-        setJobs(jobs.data.filter((job) => job.price !== 0));
-        setSupports(jobs.data.filter((job) => job.price === 0));
+        setJobs(jobs.data);
         setSales(sales.data);
         setManagers(managers.data);
       } catch (error) {
@@ -105,8 +100,7 @@ export default function Requests({ user }) {
       const jobs = await api.get("/jobs");
       const sales = await api.get("/sales");
       const managers = await api.get("/managers");
-      setJobs(jobs.data.filter((job) => job.price !== 0));
-      setSupports(jobs.data.filter((job) => job.price === 0));
+      setJobs(jobs.data);
       setSales(sales.data);
       setManagers(managers.data);
     } catch (error) {
@@ -199,10 +193,6 @@ export default function Requests({ user }) {
           />
           <Tab
             label={<Typography sx={{ fontSize: 14 }}>Vendas</Typography>}
-            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-          />
-          <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Atendimentos</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
         </Tabs>
@@ -348,6 +338,32 @@ export default function Requests({ user }) {
               />
             </RadioGroup>
           </Grid>
+          <Grid item sx={{ ml: "1%" }}>
+            {searchOption === "status" && (
+              <>
+                <Select
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  size="small"
+                  placeholder="Selecione"
+                  sx={{ minWidth: 110 }}
+                >
+                  <MenuItem value={"Aberto"}>Aberto</MenuItem>
+                  <MenuItem value={"Aguardando Execução"}>
+                    Aguardando Execução
+                  </MenuItem>
+                  <MenuItem value={"Em Execução"}>Em Execução</MenuItem>
+                  <MenuItem value={"Aguardando Cliente"}>
+                    Aguardando Cliente
+                  </MenuItem>
+                  <MenuItem value={"Aguardando Terceiro"}>
+                    Aguardando Terceiro
+                  </MenuItem>
+                  <MenuItem value={"Concluido"}>Concluido</MenuItem>
+                </Select>
+                <FormHelperText>Selecione o Status</FormHelperText>
+              </>
+            )}
+          </Grid>
         </Grid>
 
         <JobTable
@@ -482,6 +498,34 @@ export default function Requests({ user }) {
               />
             </RadioGroup>
           </Grid>
+
+          <Grid item sx={{ ml: "1%" }}>
+            {searchOption === "status" && (
+              <>
+                <Select
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  size="small"
+                  placeholder="Selecione"
+                  sx={{ minWidth: 110 }}
+                >
+                  <MenuItem value={"Aberto"}>Aberto</MenuItem>
+                  <MenuItem value={"Autorizado"}>Autorizado</MenuItem>
+                  <MenuItem value={"Aguardando Despacho"}>
+                    Aguardando Despacho
+                  </MenuItem>
+                  <MenuItem value={"Em Trânsito"}>Em Trânsito</MenuItem>
+                  <MenuItem value={"Aguardando Cliente"}>
+                    Aguardando Cliente
+                  </MenuItem>
+                  <MenuItem value={"Aguardando Terceiro"}>
+                    Aguardando Terceiro
+                  </MenuItem>
+                  <MenuItem value={"Concluido"}>Concluido</MenuItem>
+                </Select>
+                <FormHelperText>Selecione o Status</FormHelperText>
+              </>
+            )}
+          </Grid>
         </Grid>
 
         <SaleTable
@@ -489,140 +533,6 @@ export default function Requests({ user }) {
           searchOption={searchOption}
           sales={sales}
           managers={managers}
-          fetchData={fetchData}
-        />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder="Pesquise aqui..."
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
-            />
-          </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
-              value={searchOption}
-              onChange={handleSearchOptionChange}
-            >
-              <FormControlLabel
-                value="title"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Nome
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="requester"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Solicitante
-                  </Typography>
-                }
-              />
-
-              <FormControlLabel
-                value="worker.name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Designado
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="scheduledTo"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Data
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="status"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Status
-                  </Typography>
-                }
-              />
-            </RadioGroup>
-          </Grid>
-        </Grid>
-
-        <JobTable
-          user={user}
-          searchValue={searchValue}
-          searchOption={searchOption}
-          jobs={supports}
           fetchData={fetchData}
         />
       </CustomTabPanel>

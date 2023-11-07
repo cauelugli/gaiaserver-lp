@@ -241,7 +241,7 @@ export default function JobTable({
                           color:
                             (job.status === "Aberto" && "#E1AD01") ||
                             (job.status === "Em Andamento" && "") ||
-                            (job.status === "Feito" && "#006400"),
+                            (job.status === "Concluido" && "#006400"),
                         }}
                       >
                         {job.status}
@@ -338,7 +338,6 @@ export default function JobTable({
                             </TableBody>
                           </Table>
                         </Box>
-
                         <Box sx={{ my: 4, px: 6 }}>
                           <Typography
                             variant="h6"
@@ -496,7 +495,6 @@ export default function JobTable({
                             </TableBody>
                           </Table>
                         </Box>
-
                         <Box sx={{ my: 4, px: 6 }}>
                           <Typography
                             variant="h6"
