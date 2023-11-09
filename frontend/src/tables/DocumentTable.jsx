@@ -1,6 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Worker, Viewer } from "@react-pdf-viewer/core";
 
 import {
   Box,
@@ -118,6 +119,18 @@ export default function DocumentTable() {
     }
   };
 
+  const [viewDialogOpen, setViewDialogOpen] = React.useState(false);
+  const [pdfUrl, setPdfUrl] = React.useState("");
+
+  const openViewDialog = (file) => {
+    setPdfUrl(`http://localhost:3000/static/docs/${file.name}`);
+    setViewDialogOpen(true);
+  };
+
+  const closeViewDialog = () => {
+    setViewDialogOpen(false);
+  };
+
   return (
     <>
       <Box sx={{ minWidth: "1050px" }}>
@@ -175,7 +188,7 @@ export default function DocumentTable() {
                   />
                   <VisibilityIcon
                     color="inherit"
-                    // onClick={() => viewDoc(file)}
+                    onClick={() => openViewDialog(file)}
                     sx={{ mx: 1, py: 0 }}
                     style={{ cursor: "pointer" }}
                   />
@@ -190,10 +203,7 @@ export default function DocumentTable() {
           })}
         </Grid>
       </Box>
-      <Dialog
-        open={confirmationDialogOpen}
-        onClose={closeConfirmationDialog}
-      >
+      <Dialog open={confirmationDialogOpen} onClose={closeConfirmationDialog}>
         <DialogTitle>Confirmação</DialogTitle>
         <DialogContent>
           <Typography>
@@ -212,9 +222,7 @@ export default function DocumentTable() {
         open={multipleDeletionDialogOpen}
         onClose={closeMultipleDeletionDialog}
       >
-        <DialogTitle>
-          Confirmação de Deleção Múltipla
-        </DialogTitle>
+        <DialogTitle>Confirmação de Deleção Múltipla</DialogTitle>
         <DialogContent>
           <Typography>
             Confirma deletar {selectedImages.length} imagem(s)?
@@ -229,6 +237,28 @@ export default function DocumentTable() {
             color="secondary"
           >
             Confirmar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={viewDialogOpen}
+        onClose={closeViewDialog}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>Visualização do Orçamento</DialogTitle>
+        <DialogContent>
+          <Box style={{ height: "600px" }}>
+            <Worker
+              workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+            >
+              <Viewer fileUrl={pdfUrl} />
+            </Worker>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeViewDialog} color="primary">
+            Fechar
           </Button>
         </DialogActions>
       </Dialog>
