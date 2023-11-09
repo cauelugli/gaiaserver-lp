@@ -23,7 +23,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditServiceForm from "../forms/edit/EditServiceForm";
-import DeleteServiceForm from "../forms/delete/DeleteServiceForm";
+import DeleteServicePlanForm from "../forms/delete/DeleteServicePlanForm";
 
 export default function ServicePlansTable({
   searchValue,
@@ -54,11 +54,7 @@ export default function ServicePlansTable({
   const tableHeaderRow = [
     {
       id: "name",
-      label: "Nome",
-    },
-    {
-      id: "service.name",
-      label: "Serviços",
+      label: "Nome do Plano",
     },
   ];
 
@@ -110,11 +106,10 @@ export default function ServicePlansTable({
               >
                 {tableHeaderRow.map((headCell) => (
                   <TableCell
-                    align={headCell.label === "Nome" ? "" : "center"}
+                    align={headCell.label === "Nome do Plano" ? "" : "center"}
                     sx={{
                       fontSize: 16,
                       fontWeight: "bold",
-                      pl: headCell.label === "Nome" ? "" : 5,
                     }}
                     key={headCell.id}
                     sortDirection={orderBy === headCell.id ? order : false}
@@ -135,35 +130,26 @@ export default function ServicePlansTable({
                     .toLowerCase()
                     .includes(searchValue.toLowerCase())
                 )
-                .map((service) => (
+                .map((servicePlan) => (
                   <>
                     <TableRow
-                      key={service._id}
+                      key={servicePlan._id}
                       sx={{
                         cursor: "pointer",
                         backgroundColor:
-                          selectedService.name === service.name && openDetail
+                          selectedService.name === servicePlan.name &&
+                          openDetail
                             ? "#eee"
                             : "none",
                         "&:hover": { backgroundColor: "#eee " },
                       }}
                     >
                       <TableCell
-                        onClick={() => handleOpenDetail(service)}
+                        onClick={() => handleOpenDetail(servicePlan)}
                         cursor="pointer"
-                        // align="left"
                       >
                         <Typography sx={{ fontSize: 14 }}>
-                          {service.name}
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        onClick={() => handleOpenDetail(service)}
-                        cursor="pointer"
-                        align="center"
-                      >
-                        <Typography sx={{ fontSize: 14 }}>
-                          {service.department ? service.department.name : "-"}
+                          {servicePlan.name}
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -174,7 +160,8 @@ export default function ServicePlansTable({
                       >
                         <Collapse
                           in={
-                            openDetail && selectedService.name === service.name
+                            openDetail &&
+                            selectedService.name === servicePlan.name
                           }
                           timeout="auto"
                           unmountOnExit
@@ -184,7 +171,7 @@ export default function ServicePlansTable({
                               variant="h6"
                               sx={{ fontSize: 18, fontWeight: "bold" }}
                             >
-                              Informações do Serviço
+                              Informações do Plano
                             </Typography>
                             <Table size="small">
                               <TableHead>
@@ -194,13 +181,6 @@ export default function ServicePlansTable({
                                       sx={{ fontSize: "14px", color: "#777" }}
                                     >
                                       Nome
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell sx={{ width: "350px" }}>
-                                    <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
-                                    >
-                                      Serviços
                                     </Typography>
                                   </TableCell>
                                   <TableCell>
@@ -215,17 +195,12 @@ export default function ServicePlansTable({
                               <TableBody>
                                 <TableRow>
                                   <TableCell sx={{ width: "350px" }}>
-                                    <Typography>{service.name}</Typography>
-                                  </TableCell>
-                                  <TableCell sx={{ width: "350px" }}>
-                                    <Typography>
-                                      {service.department
-                                        ? service.department.name
-                                        : "-"}
-                                    </Typography>
+                                    <Typography>{servicePlan.name}</Typography>
                                   </TableCell>
                                   <TableCell>
-                                    <Typography>R${service.value}</Typography>
+                                    <Typography>
+                                      R${servicePlan.value}
+                                    </Typography>
                                   </TableCell>
                                 </TableRow>
                               </TableBody>
@@ -236,117 +211,51 @@ export default function ServicePlansTable({
                               variant="h6"
                               sx={{ fontSize: 18, fontWeight: "bold" }}
                             >
-                              Materiais Necessários
+                              Serviços Contemplados
                             </Typography>
-                            {service.materials.length > 0 ? (
-                              <>
-                                <Table size="small">
-                                  <TableHead>
-                                    <TableRow>
-                                      <TableCell sx={{ width: "350px" }}>
-                                        <Typography
-                                          sx={{
-                                            fontSize: "14px",
-                                            color: "#777",
-                                          }}
-                                        >
-                                          Nome do Item
-                                        </Typography>
-                                      </TableCell>
-                                      <TableCell sx={{ width: "350px" }}>
-                                        <Typography
-                                          sx={{
-                                            fontSize: "14px",
-                                            color: "#777",
-                                          }}
-                                        >
-                                          Quantidade
-                                        </Typography>
-                                      </TableCell>
-                                      <TableCell>
-                                        <Typography
-                                          sx={{
-                                            fontSize: "14px",
-                                            color: "#777",
-                                          }}
-                                        >
-                                          Valor dos Itens
-                                        </Typography>
-                                      </TableCell>
-                                    </TableRow>
-                                  </TableHead>
-                                  <TableBody>
-                                    {service.materials.map(
-                                      (material) =>
-                                        material.quantity > 0 && (
-                                          <TableRow key={material.id}>
-                                            <TableCell sx={{ width: "350px" }}>
-                                              <Typography>
-                                                {material.name}
-                                              </Typography>
-                                            </TableCell>
-
-                                            <TableCell sx={{ width: "350px" }}>
-                                              <Typography>
-                                                {material.quantity}
-                                              </Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                              <Typography>
-                                                R$
-                                                {material.sellValue *
-                                                  material.quantity}
-                                              </Typography>
-                                            </TableCell>
-                                          </TableRow>
-                                        )
-                                    )}
-                                  </TableBody>
-                                </Table>
-                                <Box sx={{ ml: "760px", mr: -10 }}>
-                                  <TableRow>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{
-                                          fontSize: "14px",
-                                          color: "#777",
-                                          my: -1,
-                                          mb: -2,
-                                          mt: 2,
-                                        }}
-                                      >
-                                        Valor Total (serviço + itens)
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell sx={{ width: "350px" }}>
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Serviço
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell sx={{ width: "350px" }}>
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Departamento
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                {servicePlan.services.map((service) => (
+                                  <TableRow key={service.id}>
+                                    <TableCell sx={{ width: "350px" }}>
+                                      <Typography>{service.name}</Typography>
+                                    </TableCell>
+                                    <TableCell sx={{ width: "350px" }}>
+                                      <Typography>
+                                        {service.department.name}
                                       </Typography>
                                     </TableCell>
                                   </TableRow>
-                                  <TableRow>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{ my: -1, color: "#228B22" }}
-                                      >
-                                        R${" "}
-                                        {(
-                                          service.materialsCost + service.value
-                                        ).toFixed(2)}
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </Box>
-                              </>
-                            ) : (
-                              <Typography sx={{ mt: 1 }}>
-                                Não há uso de Materiais
-                              </Typography>
-                            )}
+                                ))}
+                              </TableBody>
+                            </Table>
                             <Box sx={{ mt: 3, ml: "90%" }}>
                               <ModeEditIcon
                                 cursor="pointer"
-                                onClick={() => handleOpenEdit(service)}
+                                onClick={() => handleOpenEdit(servicePlan)}
                                 sx={{ color: "grey", mr: 2 }}
                               />
                               <DeleteIcon
                                 cursor="pointer"
-                                onClick={() => handleConfirmDelete(service)}
+                                onClick={() => handleConfirmDelete(servicePlan)}
                                 sx={{ color: "#ff4444" }}
                               />
                             </Box>
@@ -375,18 +284,18 @@ export default function ServicePlansTable({
               toast={toast}
             />
           </Dialog>
-        )}
+        )} */}
         {openDelete && (
           <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-            <DeleteServiceForm
-              selectedService={selectedService}
+            <DeleteServicePlanForm
+              selectedServicePlan={selectedService}
               openDelete={openDelete}
               setOpenDelete={setOpenDelete}
               fetchData={fetchData}
               toast={toast}
             />
           </Dialog>
-        )} */}
+        )}
       </Box>
     </>
   );

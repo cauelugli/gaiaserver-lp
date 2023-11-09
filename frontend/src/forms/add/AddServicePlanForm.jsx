@@ -26,13 +26,13 @@ export default function AddServicePlanForm({
   toast,
 }) {
   const [name, setName] = React.useState("");
-  const [services, setServices] = React.useState({});
+  const [services, setServices] = React.useState([]);
   const [value, setValue] = React.useState(0);
 
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/services", {
+      const res = await api.post("/servicePlans", {
         name,
         services,
         value,
@@ -66,6 +66,10 @@ export default function AddServicePlanForm({
     }
   };
 
+  const handleSelectedServicesChange = (selectedServices) => {
+    setServices(selectedServices);
+  };
+
   return (
     <form onSubmit={handleAdd}>
       <DialogTitle>Novo Plano de Serviço</DialogTitle>
@@ -78,13 +82,13 @@ export default function AddServicePlanForm({
           alignItems="center"
         >
           <Grid item>
-            <Typography>Nome</Typography>
+            <Typography>Nome do Plano</Typography>
             <TextField
               size="small"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              sx={{ width: 200 }}
+              sx={{ width: 350, mr:1 }}
             />
           </Grid>
           <Grid item>
@@ -112,8 +116,10 @@ export default function AddServicePlanForm({
             />
           </Grid>
 
-          <Grid container alignItems="center" sx={{mt:2}}>
-            <ServicePlanList />
+          <Grid container alignItems="center" sx={{ mt: 2 }}>
+            <ServicePlanList
+              onSelectedServicesChange={handleSelectedServicesChange}
+            />
           </Grid>
         </Grid>
       </DialogContent>

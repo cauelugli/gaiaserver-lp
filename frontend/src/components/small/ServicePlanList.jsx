@@ -1,113 +1,184 @@
-import * as React from 'react';
-import Grid from '@mui/material/Grid';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Checkbox from '@mui/material/Checkbox';
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import * as React from "react";
+import axios from "axios";
 
-function not(a, b) {
-  return a.filter((value) => b.indexOf(value) === -1);
-}
+import {
+  Avatar,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  FormHelperText,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 
-function intersection(a, b) {
-  return a.filter((value) => b.indexOf(value) !== -1);
-}
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
-export default function ServicePlanList() {
-  const [checked, setChecked] = React.useState([]);
-  const [left, setLeft] = React.useState([0, 1, 2, 3]);
-  const [right, setRight] = React.useState([4, 5, 6, 7]);
+export default function ServicePlanList({ onSelectedServicesChange }) {
+  const [selectedItemId, setSelectedItemId] = React.useState(null);
+  const [options, setOptions] = React.useState([]);
+  const [selectedList, setSelectedList] = React.useState([]);
 
-  const leftChecked = intersection(checked, left);
-  const rightChecked = intersection(checked, right);
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const services = await api.get("/services");
+        setOptions(services.data);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    };
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+    fetchData();
+  }, []);
 
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
+  const handleChecked = (id) => {
+    setSelectedItemId(id === selectedItemId ? null : id);
+  };
+
+  const handleAdd = () => {
+    const selectedOption = options.find(
+      (option) => option._id === selectedItemId
+    );
+    if (selectedOption) {
+      const newOptions = options.filter(
+        (option) => option._id !== selectedItemId
+      );
+      setOptions(newOptions);
+
+      const updatedSelectedList = [...selectedList, { ...selectedOption }];
+      setSelectedList(updatedSelectedList);
+
+      // Chamar a propriedade onSelectedServicesChange com a lista atualizada
+      onSelectedServicesChange(updatedSelectedList);
     }
-
-    setChecked(newChecked);
   };
 
-  const handleCheckedRight = () => {
-    setRight(right.concat(leftChecked));
-    setLeft(not(left, leftChecked));
-    setChecked(not(checked, leftChecked));
+  const handleRemove = (itemId) => {
+    const item = selectedList.find((item) => item._id === itemId);
+    if (item) {
+      // Atualizar a lista de selecionados
+      const updatedSelectedList = selectedList.filter(
+        (item) => item._id !== itemId
+      );
+      setSelectedList(updatedSelectedList);
+
+      // Adicionar a opção de volta às opções
+      setOptions([...options, { ...item }]);
+
+      // Chamar a propriedade onSelectedServicesChange com a lista atualizada
+      onSelectedServicesChange(updatedSelectedList);
+    }
   };
-
-  const handleCheckedLeft = () => {
-    setLeft(left.concat(rightChecked));
-    setRight(not(right, rightChecked));
-    setChecked(not(checked, rightChecked));
-  };
-
-  const customList = (items) => (
-    <Paper sx={{ width: 220, height: 230, overflow: 'auto' }}>
-      <List dense component="div" role="list">
-        {items.map((value) => {
-          const labelId = `transfer-list-item-${value}-label`;
-
-          return (
-            <ListItem
-              key={value}
-              role="listitem"
-              button
-              onClick={handleToggle(value)}
-            >
-              <ListItemIcon>
-                <Checkbox
-                  checked={checked.indexOf(value) !== -1}
-                  tabIndex={-1}
-                  sx={{ p: 0 }}
-                  disableRipple
-                  inputProps={{
-                    'aria-labelledby': labelId,
-                  }}
-                />
-              </ListItemIcon>
-              <ListItemText id={labelId} sx={{ml:-3.5}} primary={`List item ${value + 1}`} />
-            </ListItem>
-          );
-        })}
-      </List>
-    </Paper>
-  );
 
   return (
-    <Grid container spacing={2} justifyContent="center" alignItems="center">
-      <Grid item>{customList(left)}</Grid>
+    <Grid container sx={{ mt: 2 }}>
       <Grid item>
-        <Grid container direction="column" alignItems="center">
-          <Button
-            sx={{ mb: 2 }}
-            variant="outlined"
-            size="small"
-            onClick={handleCheckedRight}
-            disabled={leftChecked.length === 0}
-            aria-label="move selected right"
-          >
-            &gt;
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={handleCheckedLeft}
-            disabled={rightChecked.length === 0}
-            aria-label="move selected left"
-          >
-            &lt;
-          </Button>
+        <Grid container direction="row" justifyContent="flex-start">
+          <Typography>Serviços Disponíveis:</Typography>
         </Grid>
+
+        <Paper sx={{ width: 400, height: 200, overflow: "auto" }}>
+          <FormGroup sx={{ mt: 1 }}>
+            {options.map((option) => (
+              <FormControlLabel
+                sx={{ ml: 1 }}
+                key={option._id}
+                control={
+                  <Checkbox
+                    size="small"
+                    sx={{ mb: 0.5 }}
+                    checked={option._id === selectedItemId}
+                    onChange={() => handleChecked(option._id)}
+                  />
+                }
+                label={
+                  <Grid>
+                    <Grid container direction="row">
+                      <Typography>
+                        {option.name}
+                        {"\u00A0"}
+                      </Typography>
+                      <Typography
+                        fontWeight="bold"
+                        sx={{
+                          color: option.department.color,
+                        }}
+                      >
+                        ({option.department.name})
+                      </Typography>
+
+                      {option._id === selectedItemId && (
+                        <IconButton
+                          sx={{
+                            ml: 1,
+                            height: 18,
+                            maxWidth: 18,
+                            color: "white",
+                            backgroundColor: "green",
+                            borderRadius: 3,
+                            "&:hover": {
+                              color: "white",
+                              backgroundColor: "green",
+                            },
+                          }}
+                          onClick={handleAdd}
+                        >
+                          <Typography sx={{ fontWeight: "bold" }}>+</Typography>
+                        </IconButton>
+                      )}
+                    </Grid>
+                  </Grid>
+                }
+              />
+            ))}
+          </FormGroup>
+        </Paper>
       </Grid>
-      <Grid item>{customList(right)}</Grid>
+
+      <Grid item sx={{ ml: "50px" }}>
+        <Typography>Selecionados:</Typography>
+        <Paper
+          sx={{
+            width: 400,
+            height: 200,
+            overflow: "auto",
+            position: "relative",
+          }}
+        >
+          {selectedList.map((item) => (
+            <li key={item._id}>
+              <Grid container direction="row" sx={{ mt: 2, px: 0.5 }}>
+                <IconButton
+                  sx={{
+                    ml: 1,
+                    height: 18,
+                    maxWidth: 18,
+                    color: "white",
+                    backgroundColor: "red",
+                    borderRadius: 3,
+                    "&:hover": {
+                      color: "white",
+                      backgroundColor: "red",
+                    },
+                  }}
+                  onClick={() => handleRemove(item._id || item.id)}
+                >
+                  <Typography sx={{ fontWeight: "bold" }}>-</Typography>
+                </IconButton>
+                <Typography sx={{ ml: 2 }}>{item.name}</Typography>
+              </Grid>
+            </li>
+          ))}
+        </Paper>
+      </Grid>
     </Grid>
   );
 }
