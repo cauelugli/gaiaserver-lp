@@ -88,7 +88,7 @@ export default function App() {
             }}
           >
             <Box>
-              <Button onClick={handleSidebarStatusChange} sx={{ color: "black" }}>
+              <Button onClick={handleSidebarStatusChange} sx={{ color: "black", my:-1}}>
                 {sidebarStatus ? <ChevronLeftIcon /> : <ChevronRightIcon />}
               </Button>
               <SideBar sidebarOpen={sidebarStatus} />

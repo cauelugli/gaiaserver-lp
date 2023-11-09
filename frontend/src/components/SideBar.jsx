@@ -7,13 +7,14 @@ import { Divider, List, ListItemButton, Typography } from "@mui/material";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 import BuildIcon from "@mui/icons-material/Build";
+import ChatIcon from "@mui/icons-material/Chat";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import LanIcon from "@mui/icons-material/Lan";
 import PersonIcon from "@mui/icons-material/Person";
-import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import SettingsIcon from "@mui/icons-material/Settings";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
@@ -34,6 +35,7 @@ const options = [
     disabled: true,
   },
   { label: "Perfil", icon: <PersonIcon />, link: "/account" },
+  { label: "Chat", icon: <ChatIcon />, link: "/", disabled: true },
   { label: "Arquivos", icon: <InsertDriveFileIcon />, link: "/files" },
   {
     label: "Configurações",
@@ -79,7 +81,7 @@ const SideBar = ({ sidebarOpen }) => {
                 <Typography sx={{ ml: 1 }}>{option.label}</Typography>
               )}
             </ListItemButton>
-            {option.label === "Financeiro" && <Divider sx={{ my: 2 }} />}
+            {option.label === "Financeiro" && <Divider sx={{ my: 0.75 }} />}
           </Link>
         ))}
       </List>
