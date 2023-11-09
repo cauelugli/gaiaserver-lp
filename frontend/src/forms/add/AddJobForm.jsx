@@ -153,7 +153,7 @@ const AddJobForm = ({ user, openAddJob, setOpenAddJob, fetchData1, toast }) => {
         createdBy: user.username
       });
       if (res.data) {
-        toast.success(`Pedido Adicionado! Orçamento #${res.data.quoteNumber}`, {
+        toast.success(`Pedido Adicionado! Orçamento #${res.data.savedQuote.number}`, {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",

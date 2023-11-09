@@ -33,7 +33,10 @@ router.post("/", async (req, res) => {
     const savedRequest = await newRequest.save();
     const newQuote = new Quote({
       number: savedRequest.quoteNumber,
+      title: req.body.title,
+      description: req.body.description,
       department: req.body.department.name,
+      service: req.body.service.name,
       type: "job",
       user: req.body.worker.name,
       customer: req.body.customer.name,
@@ -53,35 +56,33 @@ router.post("/", async (req, res) => {
 
     doc.pipe(fs.createWriteStream(pdfPath));
 
-    doc.image("../uploads/logo.png", 0, 15, { width: 150 });
+    doc.image("../uploads/logo.png", 0, 15, { width: 120 });
 
-    doc
-      .fontSize(13)
-      .text(`Orçamento de ${newQuote.type === "job" ? "Serviço" : "Venda"}`, {
-        align: "center",
-      });
+    doc.fontSize(18)
+    .text(`Orçamento de ${newQuote.type === "job" ? "Serviço" : "Venda"}`, {
+      align: "center",
+    });
     doc.moveDown();
-
+    
+    doc.fontSize(13)
     doc.text("Número do Orçamento:", 120, 120, { align: "left" });
     doc.text(savedQuote.number, 380, 120, { align: "right" });
+    doc.text("Título:", 120, 140, { align: "left" });
+    doc.text(savedQuote.title, 380, 140, { align: "right" });
+    doc.text("Descrição:", 120, 160, { align: "left" });
+    doc.text(savedQuote.description, 380, 160, { align: "right" });
+    doc.text("Cliente:", 120, 180, { align: "left" });
+    doc.text(savedQuote.customer, 380, 180, { align: "right" });
+    doc.text("Serviço:", 120, 200, { align: "left" });
+    doc.text(savedQuote.service, 380, 200, { align: "right" });
+    doc.text("Departamento:", 120, 220, { align: "left" });
+    doc.text(savedQuote.department, 380, 220, { align: "right" });
+    doc.text("Colaborador:", 120, 240, { align: "left" });
+    doc.text(savedQuote.user, 380, 240, { align: "right" });
 
-    doc.text("Departamento:", 120, 140, { align: "left" });
-    doc.text(savedQuote.department, 380, 140, { align: "right" });
+    let yPosition = 255;
 
-    doc.text("Tipo:", 120, 160, { align: "left" });
-    doc.text(savedQuote.type === "job" ? "Serviço" : "Venda", 380, 160, {
-      align: "right",
-    });
-
-    doc.text("Colaborador:", 120, 180, { align: "left" });
-    doc.text(savedQuote.user, 380, 180, { align: "right" });
-
-    doc.text("Cliente:", 120, 200, { align: "left" });
-    doc.text(savedQuote.customer, 380, 200, { align: "right" });
-
-    let yPosition = 205;
-
-    doc.text("Materiais:", 120, yPosition+15, { align: "left" });
+    doc.text("Lista de Materiais", 120, yPosition + 15, { align: "left" });
     for (const material of savedQuote.materials) {
       doc.text(material.name, 130, yPosition + 30, { align: "left" });
       doc.text(
