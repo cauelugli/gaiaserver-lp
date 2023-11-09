@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -56,7 +57,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Users({user}) {
+export default function Users({ user }) {
   const [value, setValue] = React.useState(0);
 
   const [users, setUsers] = React.useState([]);
