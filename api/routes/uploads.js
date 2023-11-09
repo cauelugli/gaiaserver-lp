@@ -8,10 +8,9 @@ const StockItem = require("../models/StockItem");
 const User = require("../models/User");
 const Manager = require("../models/Manager");
 
-// Configuração do armazenamento das imagens usando o multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../uploads/images")); // Define o diretório de destino das imagens
+    cb(null, path.join(__dirname, "../../uploads/images"));
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
@@ -93,14 +92,61 @@ router.get("/listFiles", async (req, res) => {
   });
 });
 
+// GET ALL DOCS
+router.get("/listDocs", async (req, res) => {
+  const directory = path.join(__dirname, "../../uploads/docs");
+  fs.readdir(directory, async (err, docs) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Erro ao listar os documentos" });
+    }
+    try {
+      // const quotes = await Quote.find();
+      // inUse.push(...quotes.map((quote) => quote."image"));
+
+      let totalSpace = 0;
+
+      docs.forEach((doc) => {
+        const docPath = path.join(directory, doc);
+        const stats = fs.statSync(docPath);
+        totalSpace += stats.size;
+      });
+
+      const totalSpaceInMB = (totalSpace / (1024 * 1024)).toFixed(2);
+
+      const docsWithSizes = docs.map((doc) => {
+        const docPath = path.join(directory, doc);
+        const stats = fs.statSync(docPath);
+        const docSizeInKB = Math.round(stats.size / 1024);
+
+        return {
+          name: doc,
+          sizeKB: docSizeInKB,
+        };
+      });
+
+      return res.status(200).json({
+        docs: docsWithSizes,
+        totalSpaceMB: totalSpaceInMB,
+      });
+    } catch (error) {
+      console.error("Erro ao buscar documentos em uso:", error);
+      return res
+        .status(500)
+        .json({ message: "Erro ao buscar documentos em uso." });
+    }
+  });
+});
+
 // DELETE SINGLE FILE
 router.delete("/deleteFile/:filename", (req, res) => {
-  const directory = path.join(__dirname, "../../uploads/images");
+  const directory = path.join(
+    __dirname,
+    `../../uploads/${req.params.filename.endsWith(".pdf") ? "docs" : "images"}`
+  );
   const filePath = path.join(directory, req.params.filename);
 
-  // Verifique se o arquivo existe
   if (fs.existsSync(filePath)) {
-    // Exclua o arquivo
     fs.unlink(filePath, (err) => {
       if (err) {
         console.error(err);

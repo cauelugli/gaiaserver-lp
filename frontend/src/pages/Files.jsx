@@ -44,7 +44,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Files({user}) {
+export default function Files({ user }) {
   const [value, setValue] = React.useState(1);
 
   const [searchValue, setSearchValue] = React.useState("");
@@ -126,86 +126,7 @@ export default function Files({user}) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder="Pesquise aqui..."
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
-            />
-          </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
-              value={searchOption}
-              onChange={handleSearchOptionChange}
-            >
-              <FormControlLabel
-                value="name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Nome
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="createdBy"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Criado por
-                  </Typography>
-                }
-              />
-            </RadioGroup>
-          </Grid>
-        </Grid>
-        <DocumentTable
-          searchOption={searchOption}
-          searchValue={searchValue}
-          services={services}
-          departments={departments}
-          stockItems={stockItems}
-          fetchData={fetchData}
-        />
+        <DocumentTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <ImageTable />
