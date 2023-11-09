@@ -35,11 +35,15 @@ router.post("/", async (req, res) => {
       number: savedRequest.quoteNumber,
       title: req.body.title,
       description: req.body.description,
+      customer: req.body.customer.name,
       department: req.body.department.name,
+      user: req.body.worker.name,
+      manager: req.body.manager.name,
       service: req.body.service.name,
       type: "job",
-      user: req.body.worker.name,
-      customer: req.body.customer.name,
+      local: req.body.local,
+      scheduledTo: req.body.scheduledTo,
+      createdBy: req.body.createdBy,
       value: req.body.price,
       materials: req.body.materials,
       materialsCost: req.body.materialsCost,
@@ -58,13 +62,13 @@ router.post("/", async (req, res) => {
 
     doc.image("../uploads/logo.png", 0, 15, { width: 120 });
 
-    doc.fontSize(18)
+    doc.fontSize(16)
     .text(`Orçamento de ${newQuote.type === "job" ? "Serviço" : "Venda"}`, {
       align: "center",
     });
     doc.moveDown();
     
-    doc.fontSize(13)
+    doc.fontSize(12)
     doc.text("Número do Orçamento:", 120, 120, { align: "left" });
     doc.text(savedQuote.number, 380, 120, { align: "right" });
     doc.text("Título:", 120, 140, { align: "left" });
@@ -79,8 +83,16 @@ router.post("/", async (req, res) => {
     doc.text(savedQuote.department, 380, 220, { align: "right" });
     doc.text("Colaborador:", 120, 240, { align: "left" });
     doc.text(savedQuote.user, 380, 240, { align: "right" });
+    doc.text("Gerente Responsável:", 120, 260, { align: "left" });
+    doc.text(savedQuote.manager, 380, 260, { align: "right" });
+    doc.text("Local de Execução:", 120, 280, { align: "left" });
+    doc.text(savedQuote.local, 380, 280, { align: "right" });
+    doc.text("Agendado para:", 120, 300, { align: "left" });
+    doc.text(savedQuote.scheduledTo, 380, 300, { align: "right" });
+    doc.text("Criado por:", 120, 320, { align: "left" });
+    doc.text(savedQuote.createdBy, 380, 320, { align: "right" });
 
-    let yPosition = 255;
+    let yPosition = 245;
 
     doc.text("Lista de Materiais", 120, yPosition + 15, { align: "left" });
     for (const material of savedQuote.materials) {

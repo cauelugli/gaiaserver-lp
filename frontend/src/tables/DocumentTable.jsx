@@ -110,6 +110,13 @@ export default function DocumentTable() {
       });
 
       if (response.status === 200) {
+        toast.error("Arquivos Deletados", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+          icon: <DeleteIcon />,
+        });
         fetchFiles();
         closeMultipleDeletionDialog();
         setSelectedImages([]);
@@ -225,7 +232,7 @@ export default function DocumentTable() {
         <DialogTitle>Confirmação de Deleção Múltipla</DialogTitle>
         <DialogContent>
           <Typography>
-            Confirma deletar {selectedImages.length} imagem(s)?
+            Confirma a deleção de {selectedImages.length} documentos?
           </Typography>
         </DialogContent>
         <DialogActions>

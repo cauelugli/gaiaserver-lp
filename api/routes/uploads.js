@@ -162,12 +162,14 @@ router.delete("/deleteFile/:filename", (req, res) => {
 // DELETE MULTIPLE FILES
 router.post("/deleteMultipleFiles", (req, res) => {
   const { files } = req.body;
-  const directory = path.join(__dirname, "../../uploads/images");
-
+  const directory = path.join(
+    __dirname,
+    `../../uploads/${req.body.files[0].name.endsWith(".pdf") ? "docs" : "images"}`
+  );
   try {
     files.forEach((file) => {
       const filePath = path.join(directory, file.name);
-      fs.unlinkSync(filePath); // Exclua o arquivo
+      fs.unlinkSync(filePath);
     });
 
     return res.status(200).json({ message: "Imagens excluídas com sucesso." });
