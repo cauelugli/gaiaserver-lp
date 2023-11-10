@@ -14,9 +14,9 @@ import {
   Typography,
 } from "@mui/material";
 
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
+// import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
-import EditAccountForm from "../forms/edit/EditAccountForm";
+// import EditAccountForm from "../forms/edit/EditAccountForm";
 
 export default function Account({ user }) {
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -28,7 +28,7 @@ export default function Account({ user }) {
       >
         Perfil
       </Typography>
-      <Button
+      {/* <Button
         onClick={() => setOpenEdit(!openEdit)}
         sx={{ ml: "90%" }}
         color="inherit"
@@ -36,7 +36,7 @@ export default function Account({ user }) {
         startIcon={<ModeEditIcon />}
       >
         Editar
-      </Button>
+      </Button> */}
 
       <Grid
         container
@@ -82,7 +82,7 @@ export default function Account({ user }) {
           </Card>
         </Grid>
       </Grid>
-      {openEdit && (
+      {/* {openEdit && (
         <Dialog
           fullWidth
           maxWidth="md"
@@ -96,7 +96,7 @@ export default function Account({ user }) {
             toast={toast}
           />
         </Dialog>
-      )}
+      )} */}
     </>
   );
 }
