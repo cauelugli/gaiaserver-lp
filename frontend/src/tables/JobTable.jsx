@@ -26,6 +26,8 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
+import InteractionReactions from "../components/small/InteractionReactions";
+
 import EditJobForm from "../forms/edit/EditJobForm";
 import DeleteJobForm from "../forms/delete/DeleteJobForm";
 
@@ -572,6 +574,11 @@ export default function JobTable({
                                   <TableCell align="left">
                                     <Typography sx={{ fontSize: 12 }}>
                                       {interaction.activity}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      <InteractionReactions />
                                     </Typography>
                                   </TableCell>
                                 </TableRow>
