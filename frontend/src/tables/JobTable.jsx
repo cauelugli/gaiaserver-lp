@@ -534,6 +534,13 @@ export default function JobTable({
                                     Atividade
                                   </Typography>
                                 </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Reações
+                                  </Typography>
+                                </TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
