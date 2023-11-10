@@ -348,6 +348,7 @@ export default function Requests({ user }) {
                   sx={{ minWidth: 110 }}
                 >
                   <MenuItem value={"Aberto"}>Aberto</MenuItem>
+                  <MenuItem value={"Liberado"}>Liberado</MenuItem>
                   <MenuItem value={"Aguardando Execução"}>
                     Aguardando Execução
                   </MenuItem>
