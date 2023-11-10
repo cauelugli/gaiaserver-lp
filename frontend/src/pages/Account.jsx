@@ -1,25 +1,33 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
 
 import {
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
+  Avatar,
+  Box,
   Dialog,
+  DialogContent,
   Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Typography,
 } from "@mui/material";
 
-// import ModeEditIcon from "@mui/icons-material/ModeEdit";
-
-// import EditAccountForm from "../forms/edit/EditAccountForm";
-
 export default function Account({ user }) {
-  const [openEdit, setOpenEdit] = React.useState(false);
+  const [openImage, setOpenImage] = React.useState(false);
+
+  const handleOpenImage = () => {
+    setOpenImage(true);
+  };
+
+  const handleCloseImage = () => {
+    setOpenImage(false);
+  };
 
   return (
     <>
@@ -28,75 +36,137 @@ export default function Account({ user }) {
       >
         Perfil
       </Typography>
-      {/* <Button
-        onClick={() => setOpenEdit(!openEdit)}
-        sx={{ ml: "90%" }}
-        color="inherit"
-        variant="outlined"
-        startIcon={<ModeEditIcon />}
-      >
-        Editar
-      </Button> */}
-
       <Grid
         container
         direction="column"
         justifyContent="center"
         alignItems="center"
       >
-        <Grid
-          container
-          justifyContent="center"
-          sx={{
-            width: 550,
-            height: 300,
-            ml: 10,
-            mt: -2,
-            borderRadius: 5,
-          }}
-        >
-          <Card sx={{ width: 345, height: 450 }}>
-            <CardMedia
-              component="img"
-              height="60%"
+        <Box>
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            cursor="pointer"
+            sx={{ mb: 3 }}
+          >
+            <Avatar
+              alt="Imagem do Produto"
               src={`http://localhost:3000/static/${user.image}`}
-              alt="User Image"
+              sx={{ width: 230, height: 230 }}
+              onDoubleClick={handleOpenImage}
             />
-            <CardContent>
-              <Typography variant="h5" component="div">
-                {user.name}
-              </Typography>
-              <Typography gutterBottom variant="h6" sx={{ color: "#444" }}>
-                {user.department.name}
-              </Typography>
-              <Typography variant="body1" color="#777">
-                {user.position ? user.position : "Gerente"}
-              </Typography>
-              <Typography variant="body2" color="#777">
-                {user.email}
-              </Typography>
-              <Typography variant="body2" color="#777">
-                {user.phone}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+            <Dialog open={openImage} onClose={handleCloseImage}>
+              <DialogContent>
+                <img
+                  cursor="pointer"
+                  src={`http://localhost:3000/static/${user.image}`}
+                  alt="Imagem do Usuário"
+                  style={{ maxWidth: "100%" }}
+                />
+              </DialogContent>
+            </Dialog>
+          </Grid>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    Nome
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    E-mail
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    Telefone
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    Departamento
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <Typography>{user.name}</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography>{user.email}</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography>{user.phone}</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>
+                    {user.department ? (
+                      <Grid container direction="user">
+                        <Paper
+                          elevation={0}
+                          sx={{
+                            mr: 1,
+                            mt: 0.5,
+                            width: 15,
+                            height: 15,
+                            borderRadius: 50,
+                            backgroundColor: user.department.color,
+                          }}
+                        >
+                          {" "}
+                        </Paper>
+                        <Typography>{user.department.name}</Typography>
+                      </Grid>
+                    ) : (
+                      "-"
+                    )}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <Table size="small" sx={{ mt: 4 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    Ocupação
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    Nome de Operador
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    Nível de Acesso
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell align="center">
+                  <Typography>{user.position ? user.position : "-"}</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography>{user.username ? user.username : "-"}</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography>{user.role ? user.role : "-"}</Typography>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Box>
       </Grid>
-      {/* {openEdit && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openEdit}
-          onClose={() => setOpenEdit(!openEdit)}
-        >
-          <EditAccountForm
-            openEdit={openEdit}
-            user={user}
-            setOpenEdit={setOpenEdit}
-            toast={toast}
-          />
-        </Dialog>
-      )} */}
     </>
   );
 }
