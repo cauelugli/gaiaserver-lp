@@ -56,9 +56,20 @@ jobSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  interactions: {
-    type: Array,
-  },
+  interactions: [
+    {
+      number: Number,
+      activity: String,
+      user: String,
+      date: String,
+      reactions: {
+        love: { quantity: Number, usersReacted: [] },
+        like: { quantity: Number, usersReacted: [] },
+        dislike: { quantity: Number, usersReacted: [] },
+        haha: { quantity: Number, usersReacted: [] },
+      },
+    },
+  ],
   createdBy: {
     type: String,
   },

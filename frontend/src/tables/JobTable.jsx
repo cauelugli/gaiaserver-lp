@@ -39,6 +39,7 @@ export default function JobTable({
   managers,
   fetchData,
 }) {
+  const [userReactions, setUserReactions] = React.useState({});
   const [openEdit, setOpenEdit] = React.useState(false);
   const [option, setOption] = React.useState("interaction");
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -578,7 +579,22 @@ export default function JobTable({
                                   </TableCell>
                                   <TableCell align="left">
                                     <Typography sx={{ fontSize: 12 }}>
-                                      <InteractionReactions />
+                                      <InteractionReactions
+                                        userId={user._id}
+                                        interaction={interaction}
+                                        job={job}
+                                        number={interaction.number}
+                                        userReactions={
+                                          userReactions[job._id] || []
+                                        }
+                                        setUserReactions={(reactions) =>
+                                          setUserReactions({
+                                            ...userReactions,
+                                            [job._id]: reactions,
+                                          })
+                                        }
+                                        jobId={job._id}
+                                      />
                                     </Typography>
                                   </TableCell>
                                 </TableRow>

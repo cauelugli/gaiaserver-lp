@@ -62,13 +62,14 @@ router.post("/", async (req, res) => {
 
     doc.image("../uploads/logo.png", 0, 15, { width: 120 });
 
-    doc.fontSize(16)
-    .text(`Orçamento de ${newQuote.type === "job" ? "Serviço" : "Venda"}`, {
-      align: "center",
-    });
+    doc
+      .fontSize(16)
+      .text(`Orçamento de ${newQuote.type === "job" ? "Serviço" : "Venda"}`, {
+        align: "center",
+      });
     doc.moveDown();
-    
-    doc.fontSize(12)
+
+    doc.fontSize(12);
     doc.text("Número do Orçamento:", 120, 120, { align: "left" });
     doc.text(savedQuote.number, 380, 120, { align: "right" });
     doc.text("Título:", 120, 140, { align: "left" });
@@ -144,6 +145,7 @@ router.put("/", async (req, res) => {
     const jobId = req.body.jobId;
     const option = req.body.option;
     const status = req.body.status;
+    const userId = req.body.userId;
 
     if (option === "interaction") {
       const updatedJob = await Job.findOneAndUpdate(
@@ -158,12 +160,61 @@ router.put("/", async (req, res) => {
               activity: req.body.activity,
               user: req.body.user,
               date: req.body.date,
+              reactions: {
+                love: { quantity: 0, usersReacted: [] },
+                like: { quantity: 0, usersReacted: [] },
+                dislike: { quantity: 0, usersReacted: [] },
+                haha: { quantity: 0, usersReacted: [] },
+              },
             },
           },
         },
         { new: true }
       );
       res.status(200).json(updatedJob);
+    } else if (option === "reaction") {
+      const job = await Job.findById(jobId);
+
+      if (!job) {
+        return res.status(404).json({ error: "Job não encontrado" });
+      }
+
+      const reactionType = req.body.reactionType;
+      const reactionField = `interactions.$.reactions.${reactionType}.quantity`;
+      const usersReactedField = `interactions.$.reactions.${reactionType}.usersReacted`;
+
+      const userAlreadyReacted = job.interactions.some((interaction) => {
+        return (
+          interaction.number === req.body.number &&
+          interaction.reactions[reactionType].usersReacted.includes(userId)
+        );
+      });
+
+      if (userAlreadyReacted) {
+        // Usuário já reagiu, então decrementa a quantidade e remove o usuário do conjunto
+        const updatedJob = await Job.findOneAndUpdate(
+          { _id: jobId, "interactions.number": req.body.number },
+          {
+            $inc: { [reactionField]: -1 },
+            $pull: { [usersReactedField]: userId },
+          },
+          { new: true }
+        );
+
+        res.status(200).json(updatedJob);
+      } else {
+        // Continua com a atualização apenas se o usuário ainda não reagiu
+        const updatedJob = await Job.findOneAndUpdate(
+          { _id: jobId, "interactions.number": req.body.number },
+          {
+            $inc: { [reactionField]: 1 },
+            $addToSet: { [usersReactedField]: userId },
+          },
+          { new: true }
+        );
+
+        res.status(200).json(updatedJob);
+      }
     } else if (option === "edit") {
       const updatedJob = await Job.findByIdAndUpdate(
         jobId,
