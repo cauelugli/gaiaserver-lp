@@ -3,6 +3,7 @@ import * as React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import dayjs from "dayjs";
+import axios from "axios";
 
 import {
   Dialog,
@@ -23,6 +24,7 @@ import {
 } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
+import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
@@ -30,6 +32,10 @@ import InteractionReactions from "../components/small/InteractionReactions";
 
 import EditJobForm from "../forms/edit/EditJobForm";
 import DeleteJobForm from "../forms/delete/DeleteJobForm";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 export default function JobTable({
   user,
@@ -123,6 +129,29 @@ export default function JobTable({
       }
     });
   }, [jobs, order, orderBy]);
+
+  const handleManagerApproval = async (job) => {
+    try {
+      const requestBody = {
+        jobId: job._id,
+        option: "managerApproval",
+        status: "Aprovado",
+      };
+      const res = await api.put("/jobs", requestBody);
+      if (res.data) {
+        toast.success("Job Aprovado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+        fetchData();
+      }
+    } catch (err) {
+      alert("Vish, deu não...");
+      console.error(err);
+    }
+  };
 
   return (
     <Box sx={{ minWidth: "1050px" }}>
@@ -242,9 +271,7 @@ export default function JobTable({
                         sx={{
                           fontSize: 14,
                           color:
-                            (job.status === "Aberto" && "#E1AD01") ||
-                            (job.status === "Em Andamento" && "") ||
-                            (job.status === "Concluido" && "#006400"),
+                            (job.status === "Aprovado" && "#50C878") || "#777",
                         }}
                       >
                         {job.status}
@@ -601,7 +628,33 @@ export default function JobTable({
                               ))}
                             </TableBody>
                           </Table>
-                          <Box sx={{ my: 5, ml: "55%", px: -6 }}>
+                          <Box
+                            sx={{
+                              my: 5,
+                              ml:
+                                user.role === "Gerente" &&
+                                job.status !== "Aprovado"
+                                  ? "45%"
+                                  : "55%",
+                              px: -6,
+                            }}
+                          >
+                            {user.role === "Gerente" &&
+                              job.status !== "Aprovado" && (
+                                <Button
+                                  cursor="pointer"
+                                  variant="contained"
+                                  color="primary"
+                                  sx={{ mr: 2 }}
+                                  onClick={() =>
+                                    handleManagerApproval(selectedJob)
+                                  }
+                                  startIcon={<CheckIcon />}
+                                >
+                                  Aprovar
+                                </Button>
+                              )}
+
                             <Button
                               cursor="pointer"
                               variant="contained"

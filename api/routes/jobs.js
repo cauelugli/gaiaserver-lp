@@ -172,6 +172,14 @@ router.put("/", async (req, res) => {
         { new: true }
       );
       res.status(200).json(updatedJob);
+    } else if (option === "managerApproval") {
+      const updatedJob = await Job.findByIdAndUpdate(
+        jobId,
+        { status: status },
+        { new: true }
+      );
+
+      res.status(200).json(updatedJob);
     } else if (option === "reaction") {
       const job = await Job.findById(jobId);
 
