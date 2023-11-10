@@ -2,8 +2,15 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
+import { keyframes } from "@mui/system";
 
-import { Badge, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Badge,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MoodIcon from "@mui/icons-material/Mood";
@@ -13,6 +20,25 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
+
+// Define a animação para o ícone
+const growShrinkAnimation = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(10);
+  }
+  50% {
+    transform: scale(20);
+  }
+  75% {
+    transform: scale(10);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
 
 const InteractionReactions = ({
   userId,
@@ -77,6 +103,11 @@ const InteractionReactions = ({
               color: userReacted(reactionType)
                 ? reactionsMap[reactionType].color
                 : "#777",
+              "&:active": {
+                animation: `${growShrinkAnimation} 3s ease-in-out`,
+              },
+              position: "relative",
+              zIndex: 1,
             }}
           >
             <Badge
