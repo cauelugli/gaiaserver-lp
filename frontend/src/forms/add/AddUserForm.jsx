@@ -234,7 +234,7 @@ const AddUserForm = ({
                 </Select>
               </Grid>
               <Grid item>
-                <Typography sx={{ mb: 1, ml: 2 }}>Ocupação</Typography>
+                <Typography sx={{ mb: 1, ml: 2 }}>Cargo</Typography>
                 <TextField
                   value={position}
                   size="small"

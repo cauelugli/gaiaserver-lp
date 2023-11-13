@@ -24,7 +24,6 @@ import {
 import { IMaskInput } from "react-imask";
 import ColorPicker from "../../components/small/ColorPicker";
 import Members from "../../components/small/Members";
-// import IconPicker from "../../components/small/IconPicker";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

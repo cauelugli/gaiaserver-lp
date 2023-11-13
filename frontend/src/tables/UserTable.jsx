@@ -377,7 +377,7 @@ export default function UserTable({ searchValue, searchOption }) {
                                       <Typography
                                         sx={{ fontSize: "14px", color: "#777" }}
                                       >
-                                        Ocupação
+                                        Cargo
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">

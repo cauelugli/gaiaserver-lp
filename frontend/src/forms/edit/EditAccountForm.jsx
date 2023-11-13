@@ -259,7 +259,7 @@ const EditAccountForm = ({ openEdit, user, setOpenEdit, toast }) => {
                   </Tooltip>
                 </Grid>
                 <Grid item>
-                  <Typography sx={{ mb: 1, ml: 2 }}>Ocupação</Typography>
+                  <Typography sx={{ mb: 1, ml: 2 }}>Cargo</Typography>
                   <Tooltip
                     title={
                       <Typography sx={{ fontSize: 12 }}>

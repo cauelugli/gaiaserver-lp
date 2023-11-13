@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 
 import {
   Dialog,
@@ -25,54 +23,23 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
-import AddDepartmentForm from "../forms/add/AddDepartmentForm";
 import EditDepartmentForm from "../forms/edit/EditDepartmentForm";
 import DeleteDepartmentForm from "../forms/delete/DeleteDepartmentForm";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 export default function DepartmentTable({
   searchValue,
   searchOption,
   departments,
-  openAdd,
-  setOpenAdd,
+  users,
+  managers,
+  fetchData,
+  toast,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [selectedDepartment, setSelectedDepartment] = React.useState([]);
   const [hoveredMember, setHoveredMember] = React.useState(null);
-
-  const [users, setUsers] = React.useState([]);
-  const [managers, setManagers] = React.useState([]);
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const users = await api.get("/users");
-        const managers = await api.get("/managers");
-        setUsers(users.data);
-        setManagers(managers.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const users = await api.get("/users");
-      const managers = await api.get("/managers");
-      setUsers(users.data);
-      setManagers(managers.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const handleOpenDetail = (customer) => {
     setOpenDetail(!openDetail);
@@ -176,8 +143,13 @@ export default function DepartmentTable({
             </TableRow>
             {sortedRows
               .filter((user) => {
-                const userProperty = searchOption.split('.').reduce((obj, key) => obj[key], user);
-                return userProperty && userProperty.toLowerCase().includes(searchValue.toLowerCase());
+                const userProperty = searchOption
+                  .split(".")
+                  .reduce((obj, key) => obj[key], user);
+                return (
+                  userProperty &&
+                  userProperty.toLowerCase().includes(searchValue.toLowerCase())
+                );
               })
               .map((department) => (
                 <>
@@ -599,23 +571,6 @@ export default function DepartmentTable({
           </TableBody>
         </Table>
       </TableContainer>
-      {openAdd && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openAdd}
-          onClose={() => setOpenAdd(!openAdd)}
-        >
-          <AddDepartmentForm
-            openAdd={openAdd}
-            users={users}
-            managers={managers}
-            setOpenAdd={setOpenAdd}
-            fetchData={fetchData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
       {openEdit && (
         <Dialog
           fullWidth
