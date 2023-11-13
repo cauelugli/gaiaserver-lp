@@ -21,8 +21,8 @@ import {
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import DeleteServicePlanForm from "../forms/delete/DeleteServicePlanForm";
 import DeletePositionForm from "../forms/delete/DeletePositionForm";
+import EditPositionForm from "../forms/edit/EditPositionForm";
 
 export default function PositionTable({
   positions,
@@ -179,23 +179,22 @@ export default function PositionTable({
             </TableBody>
           </Table>
         </TableContainer>
-        {/* {openEdit && (
+        {openEdit && (
           <Dialog
             fullWidth
-            maxWidth="md"
+            maxWidth="xs"
             open={openEdit}
             onClose={() => setOpenEdit(!openEdit)}
           >
-            <EditServiceForm
+            <EditPositionForm
               openEdit={openEdit}
               selectedPosition={selectedPosition}
               previousMaterials={selectedPosition.materials}
               setOpenEdit={setOpenEdit}
-              fetchData={fetchData}
               toast={toast}
             />
           </Dialog>
-        )} */}
+        )}
         {openDelete && (
           <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
             <DeletePositionForm

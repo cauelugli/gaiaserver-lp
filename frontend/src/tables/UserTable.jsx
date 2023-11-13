@@ -39,6 +39,7 @@ export default function UserTable({ searchValue, searchOption }) {
 
   const [users, setUsers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
+  const [positions, setPositions] = React.useState([]);
 
   const [openImage, setOpenImage] = React.useState(false);
 
@@ -55,8 +56,10 @@ export default function UserTable({ searchValue, searchOption }) {
       try {
         const users = await api.get("/users");
         const departments = await api.get("/departments");
+        const positions = await api.get("/positions");
         setUsers(users.data);
         setDepartments(departments.data);
+        setPositions(positions.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -68,8 +71,10 @@ export default function UserTable({ searchValue, searchOption }) {
     try {
       const users = await api.get("/users");
       const departments = await api.get("/departments");
+      const positions = await api.get("/positions");
       setUsers(users.data);
       setDepartments(departments.data);
+      setPositions(positions.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -178,7 +183,9 @@ export default function UserTable({ searchValue, searchOption }) {
             </TableRow>
             {sortedRows
               .filter((user) =>
-                user[searchOption].toLowerCase().includes(searchValue.toLowerCase())
+                user[searchOption]
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase())
               )
               .map((row) => (
                 <React.Fragment key={row._id}>
@@ -449,6 +456,7 @@ export default function UserTable({ searchValue, searchOption }) {
               openEdit={openEdit}
               selectedUser={selectedUser}
               departments={departments}
+              positions={positions}
               setOpenEdit={setOpenEdit}
               fetchData={fetchData}
               toast={toast}

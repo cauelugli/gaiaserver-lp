@@ -17,32 +17,33 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddPositionForm({
-  user,
-  openAdd,
-  setOpenAdd,
-  fetchData,
+export default function EditPositionForm({
+  selectedPosition,
+  openEdit,
+  setOpenEdit,
   toast,
 }) {
-  const [name, setName] = React.useState("");
+  const [name, setName] = React.useState(selectedPosition.name);
+  const previousData = selectedPosition;
 
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/positions", {
+      const res = await api.put("/positions", {
+        positionId: selectedPosition._id,
         name,
-        createdBy: user.name,
+        members: selectedPosition.members,
+        previousData
       });
       if (res.data) {
-        toast.success("Cargo Adicionado!", {
+        toast.success("Cargo Editado!", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
         });
       }
-      setOpenAdd(!openAdd);
-      fetchData();
+      setOpenEdit(!openEdit);
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {
@@ -92,7 +93,7 @@ export default function AddPositionForm({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenEdit(!openEdit)}
         >
           X
         </Button>

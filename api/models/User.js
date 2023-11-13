@@ -30,7 +30,7 @@ userSchema = new mongoose.Schema({
   },
   position: {
     type: String,
-    default: "Colaborador",
+    default: "-",
   },
   isActive: {
     type: Boolean,

@@ -613,7 +613,7 @@ export default function Departments({ user }) {
       {openAddPosition && (
         <Dialog
           fullWidth
-          maxWidth="md"
+          maxWidth="xs"
           open={openAddPosition}
           onClose={() => setOpenAddPosition(!openAddPosition)}
         >

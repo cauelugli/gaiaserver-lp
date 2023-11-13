@@ -8,9 +8,6 @@ const positionSchema = new mongoose.Schema({
   members: {
     type: Array,
   },
-  createdBy: {
-    type: String,
-  },
   createdAt: {
     type: Date,
     default: Date.now,

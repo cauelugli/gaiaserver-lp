@@ -30,6 +30,7 @@ const EditUserForm = ({
   openEdit,
   selectedUser,
   departments,
+  positions,
   setOpenEdit,
   fetchData,
   toast,
@@ -270,15 +271,22 @@ const EditUserForm = ({
                   ))}
                 </Select>
               </Grid>
+
               <Grid item>
-                <Typography sx={{ mb: 1, ml: 2 }}>Cargo</Typography>
-                <TextField
-                  value={position}
+                <Typography sx={{ mb: 1 }}>Cargo</Typography>
+                <Select
+                  onChange={(e) => setPosition(e.target.value.name)}
+                  renderValue={(selected) => selected.name}
                   size="small"
-                  required
-                  onChange={(e) => setPosition(e.target.value)}
-                  sx={{ ml: 2, width: 250 }}
-                />
+                  sx={{ minWidth: 250 }}
+                  value={{ name: position }}
+                >
+                  {positions.map((item) => (
+                    <MenuItem value={item} key={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Grid>
             </Grid>
           </Grid>

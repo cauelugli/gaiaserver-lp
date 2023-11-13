@@ -34,7 +34,14 @@ router.post("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   const positionId = req.params.id;
   try {
+    const positionToDelete = await Position.findById(positionId);
+    const positionNameToDelete = positionToDelete.name;
     const deletedPosition = await Position.findByIdAndDelete(positionId);
+    const usersToUpdate = await User.find({ position: positionNameToDelete });
+    for (const user of usersToUpdate) {
+      user.position = "-";
+      await user.save();
+    }
     res.status(200).json(deletedPosition);
   } catch (err) {
     res.status(500).json(err);
@@ -43,23 +50,27 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE POSITION
 router.put("/", async (req, res) => {
-  const { name } = req.body;
+  const { name, positionId } = req.body;
   const existingName = await Position.findOne({ name });
-  if (existingName) {
-    if (existingName.name !== req.body.previousData.name) {
-      return res.status(422).json({ error: "Nome de Cargo já cadastrado" });
-    }
+
+  if (existingName && existingName.name !== req.body.previousData.name) {
+    return res.status(422).json({ error: "Nome de Cargo já cadastrado" });
   }
 
   try {
     const updatedPosition = await Position.findByIdAndUpdate(
-      req.body.positionId,
-      {
-        name: req.body.name,
-        members: req.body.members,
-      },
+      positionId,
+      { name: name },
       { new: true }
     );
+
+    const usersToUpdate = await User.find({
+      position: req.body.previousData.name,
+    });
+    for (const user of usersToUpdate) {
+      user.position = name;
+      await user.save();
+    }
 
     res.status(200).json(updatedPosition);
   } catch (err) {
