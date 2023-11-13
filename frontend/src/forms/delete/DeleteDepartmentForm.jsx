@@ -15,7 +15,6 @@ const DeleteDepartmentForm = ({
   selectedDepartment,
   openDelete,
   setOpenDelete,
-  fetchData,
   toast,
 }) => {
   const department = selectedDepartment;
@@ -37,7 +36,6 @@ const DeleteDepartmentForm = ({
         });
       }
       setOpenDelete(false);
-      fetchData();
     } catch (err) {
       alert("Vish, deletou não..");
       console.log(err);

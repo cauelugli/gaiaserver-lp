@@ -15,7 +15,6 @@ export default function DeletePositionForm({
   selectedPosition,
   openDelete,
   setOpenDelete,
-  fetchData,
   toast,
 }) {
   const position = selectedPosition;
@@ -33,7 +32,6 @@ export default function DeletePositionForm({
         });
       }
       setOpenDelete(false);
-      fetchData();  
     } catch (err) {
       alert("Vish, deletou não..");
       console.log(err);

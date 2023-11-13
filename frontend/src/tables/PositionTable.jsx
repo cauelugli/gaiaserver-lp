@@ -1,8 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import {
   Box,
@@ -28,7 +26,7 @@ import DeletePositionForm from "../forms/delete/DeletePositionForm";
 
 export default function PositionTable({
   positions,
-  fetchData,
+  toast,
   searchValue,
   searchOption,
 }) {
@@ -204,7 +202,6 @@ export default function PositionTable({
               selectedPosition={selectedPosition}
               openDelete={openDelete}
               setOpenDelete={setOpenDelete}
-              fetchData={fetchData}
               toast={toast}
             />
           </Dialog>

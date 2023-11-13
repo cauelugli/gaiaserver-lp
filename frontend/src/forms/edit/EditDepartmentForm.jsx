@@ -5,7 +5,6 @@ import axios from "axios";
 
 import {
   Button,
-  Checkbox,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -31,12 +30,12 @@ const api = axios.create({
 
 const EditDepartmentForm = ({
   openEdit,
+  toast,
   selectedDepartment,
   users,
   managers,
   setOpenEdit,
   fetchData,
-  toast,
 }) => {
   const previousData = selectedDepartment;
   const [name, setName] = React.useState(selectedDepartment.name);
@@ -102,7 +101,6 @@ const EditDepartmentForm = ({
         });
       }
       setOpenEdit(!openEdit);
-      fetchData();
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {

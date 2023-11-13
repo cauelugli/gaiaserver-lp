@@ -321,6 +321,7 @@ export default function Departments({ user }) {
           departments={serviceDepartments}
           openAdd={openAddDepartment}
           setOpenAdd={setOpenAddDepartment}
+          toast={toast}
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
@@ -415,6 +416,7 @@ export default function Departments({ user }) {
           </Grid>
         </Grid>
         <DepartmentTable
+          toast={toast}
           users={users}
           managers={managers}
           searchValue={searchValue}
@@ -516,6 +518,7 @@ export default function Departments({ user }) {
           </Grid>
         </Grid>
         <DepartmentTable
+          toast={toast}
           users={users}
           managers={managers}
           searchValue={searchValue}
@@ -582,6 +585,7 @@ export default function Departments({ user }) {
           </Grid>
         </Grid>
         <PositionTable
+          toast={toast}
           searchValue={searchValue}
           searchOption={searchOption}
           positions={positions}

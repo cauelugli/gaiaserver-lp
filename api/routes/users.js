@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/User");
 const Manager = require("../models/Manager");
 const Department = require("../models/Department");
+const Position = require("../models/Position");
 
 // GET ALL USERS
 router.get("/", async (req, res) => {
@@ -16,7 +17,8 @@ router.get("/", async (req, res) => {
 
 // CREATE USER
 router.post("/", async (req, res) => {
-  const { name, email } = req.body;
+  const { name, email, newPosition } = req.body;
+  console.log('newPosition', newPosition)
   try {
     const existingNameUser = await User.findOne({ name });
     const existingEmailUser = await User.findOne({ email });
@@ -26,11 +28,67 @@ router.post("/", async (req, res) => {
     if (existingEmailUser) {
       return res.status(422).json({ error: "E-mail já cadastrado" });
     }
+    if (newPosition && newPosition.trim() !== "") {
+      const existingPosition = await Position.findOne({
+        name: newPosition.name,
+      });
+      if (existingPosition) {
+        return res.status(422).json({ error: "Cargo já cadastrado" });
+      }
 
-    const newUser = new User(req.body);
-    const savedUser = await newUser.save();
+      const newPositionObj = new Position({ name: newPosition, members: [] });
+      await newPositionObj.save();
 
-    if (savedUser.department.id) {
+      const newUser = new User({
+        name: name,
+        phone: req.body.phone,
+        department: req.body.department,
+        email: email,
+        image: req.body.image,
+        position: newPosition,
+        role: req.body.role,
+      });
+      const savedUser = await newUser.save();
+
+      await Department.findOneAndUpdate(
+        { _id: req.body.department.id },
+        {
+          $addToSet: {
+            members: {
+              id: savedUser._id.toString(),
+              name: name,
+              phone: req.body.phone,
+              email: email,
+              image: savedUser.image,
+              position: newPosition,
+              role: req.body.role,
+            },
+          },
+        },
+        { upsert: true }
+      );
+      await Position.findOneAndUpdate(
+        { _id: newPositionObj._id },
+        {
+          $addToSet: {
+            members: savedUser._id.toString(),
+          },
+        },
+        { upsert: true }
+      );
+      res.status(200).json(savedUser);
+    } else {
+      const newUser = new User({
+        name: req.body.name,
+        phone: req.body.phone,
+        department: req.body.department,
+        email: req.body.email,
+        image: req.body.image,
+        position: req.body.position.name,
+        role: req.body.role,
+      });
+      const savedUser = await newUser.save();
+
       await Department.findOneAndUpdate(
         { _id: req.body.department.id },
         {
@@ -41,16 +99,24 @@ router.post("/", async (req, res) => {
               phone: savedUser.phone,
               email: savedUser.email,
               image: savedUser.image,
-              position: savedUser.position,
+              position: savedUser.position.name,
               role: savedUser.role,
             },
           },
         },
         { upsert: true }
       );
+      await Position.findOneAndUpdate(
+        { _id: req.body.position._id },
+        {
+          $addToSet: {
+            members: savedUser._id.toString(),
+          },
+        },
+        { upsert: true }
+      );
+      res.status(200).json(savedUser);
     }
-
-    res.status(200).json(savedUser);
   } catch (err) {
     console.error(err);
     res.status(500).json(err);

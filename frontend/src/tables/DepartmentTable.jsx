@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import "react-toastify/dist/ReactToastify.css";
 
 import {
   Dialog,

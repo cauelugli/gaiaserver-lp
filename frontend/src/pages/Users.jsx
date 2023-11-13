@@ -63,6 +63,7 @@ export default function Users({ user }) {
   const [users, setUsers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
   const [operators, setOperators] = React.useState([]);
+  const [positions, setPositions] = React.useState([]);
 
   const [openAddUser, setOpenAddUser] = React.useState(false);
   const [openAddManager, setOpenAddManager] = React.useState(false);
@@ -100,12 +101,14 @@ export default function Users({ user }) {
         const users = await api.get("/users");
         const managers = await api.get("/managers");
         const departments = await api.get("/departments");
+        const positions = await api.get("/positions");
         const usersData = users.data;
         const managersData = managers.data;
         const combinedData = [...usersData, ...managersData];
         setUsers(usersData);
         setDepartments(departments.data);
         setOperators(combinedData);
+        setPositions(positions.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -118,12 +121,14 @@ export default function Users({ user }) {
       const users = await api.get("/users");
       const managers = await api.get("/managers");
       const departments = await api.get("/departments");
+      const positions = await api.get("/positions");
       const usersData = users.data;
       const managersData = managers.data;
       const combinedData = [...usersData, ...managersData];
       setUsers(usersData);
       setDepartments(departments.data);
       setOperators(combinedData);
+      setPositions(positions.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -486,6 +491,7 @@ export default function Users({ user }) {
           <AddUserForm
             openAdd={openAddUser}
             departments={departments}
+            positions={positions}
             setOpenAdd={setOpenAddUser}
             fetchData={fetchData}
             toast={toast}

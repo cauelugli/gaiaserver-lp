@@ -28,6 +28,7 @@ const api = axios.create({
 const AddUserForm = ({
   openAdd,
   departments,
+  positions,
   setOpenAdd,
   fetchData,
   toast,
@@ -38,9 +39,10 @@ const AddUserForm = ({
   const [department, setDepartment] = React.useState("");
   const [image, setImage] = React.useState("");
   const [position, setPosition] = React.useState("");
+  const [newPosition, setNewPosition] = React.useState("");
+  const [isNewPosition, setIsNewPosition] = React.useState(false);
 
   const handleImageClick = () => {
-    // Quando o usuário clicar no avatar, acione o input de arquivo
     document.getElementById("fileInput").click();
   };
 
@@ -65,6 +67,7 @@ const AddUserForm = ({
           color: department.color,
         },
         position,
+        newPosition,
       });
 
       if (res.data) {
@@ -143,7 +146,7 @@ const AddUserForm = ({
                     size="small"
                     startIcon={<DeleteIcon />}
                     onClick={() => setImage("")}
-                    sx={{mt:1}}
+                    sx={{ mt: 1 }}
                   >
                     Remover
                   </Button>
@@ -234,18 +237,42 @@ const AddUserForm = ({
                 </Select>
               </Grid>
               <Grid item>
-                <Typography sx={{ mb: 1, ml: 2 }}>Cargo</Typography>
-                <TextField
-                  value={position}
+                <Typography sx={{ mb: 1 }}>Cargo</Typography>
+                <Select
+                  onChange={(e) => {
+                    const selectedValue = e.target.value;
+                    if (selectedValue === "other") {
+                      setIsNewPosition(true);
+                    } else {
+                      setIsNewPosition(false);
+                      setPosition(selectedValue);
+                    }
+                  }}
+                  value={isNewPosition ? "other" : position}
+                  renderValue={(selected) => selected.name}
                   size="small"
-                  required
-                  onChange={(e) => setPosition(e.target.value)}
-                  sx={{ ml: 2, width: 250 }}
-                />
+                  sx={{ minWidth: 250 }}
+                >
+                  {positions.map((item) => (
+                    <MenuItem value={item} key={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                  <MenuItem value="other" sx={{ color: "#777" }}>
+                    *Adicionar Novo*
+                  </MenuItem>
+                </Select>
+                {isNewPosition && (
+                  <TextField
+                    label="Novo Cargo"
+                    size="small"
+                    value={newPosition}
+                    onChange={(e) => setNewPosition(e.target.value)}
+                    sx={{ mt: 1, minWidth: 250 }}
+                  />
+                )}
               </Grid>
-
             </Grid>
-
           </Grid>
         </Grid>
       </DialogContent>
