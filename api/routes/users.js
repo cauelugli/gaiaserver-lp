@@ -18,7 +18,6 @@ router.get("/", async (req, res) => {
 // CREATE USER
 router.post("/", async (req, res) => {
   const { name, email, newPosition } = req.body;
-  console.log('newPosition', newPosition)
   try {
     const existingNameUser = await User.findOne({ name });
     const existingEmailUser = await User.findOne({ email });
