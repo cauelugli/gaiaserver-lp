@@ -37,6 +37,7 @@ export default function Account({ user }) {
         Perfil
       </Typography>
       <Grid
+        sx={{ ml: 5 }}
         container
         direction="column"
         justifyContent="center"
@@ -52,7 +53,7 @@ export default function Account({ user }) {
             sx={{ mb: 3 }}
           >
             <Avatar
-              alt="Imagem do Produto"
+              alt="Imagem do Usuário"
               src={`http://localhost:3000/static/${user.image}`}
               sx={{ width: 230, height: 230 }}
               onDoubleClick={handleOpenImage}
@@ -118,9 +119,7 @@ export default function Account({ user }) {
                             borderRadius: 50,
                             backgroundColor: user.department.color,
                           }}
-                        >
-                          {" "}
-                        </Paper>
+                        ></Paper>
                         <Typography>{user.department.name}</Typography>
                       </Grid>
                     ) : (
@@ -154,7 +153,9 @@ export default function Account({ user }) {
             <TableBody>
               <TableRow>
                 <TableCell align="center">
-                  <Typography>{user.position ? user.position : "-"}</Typography>
+                  <Typography>
+                    {user.position ? user.position.name : "-"}
+                  </Typography>
                 </TableCell>
                 <TableCell align="center">
                   <Typography>{user.username ? user.username : "-"}</Typography>
