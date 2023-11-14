@@ -111,6 +111,8 @@ export default function PositionTable({
                     sx={{
                       fontSize: 16,
                       fontWeight: "bold",
+                      pl: headCell.label === "Nome do Cargo" ? "" : 5,
+
                     }}
                     key={headCell.id}
                     sortDirection={orderBy === headCell.id ? order : false}
@@ -145,9 +147,9 @@ export default function PositionTable({
                           {position.name}
                         </Typography>
                       </TableCell>
-                      <TableCell cursor="pointer">
+                      <TableCell align="center">
                         <Typography sx={{ fontSize: 14 }}>
-                          {position.members.lenght}
+                          {position.members.length}
                         </Typography>
                       </TableCell>
                       <TableCell align="center" sx={{ py: 0 }}>
