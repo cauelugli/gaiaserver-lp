@@ -33,7 +33,7 @@ const api = axios.create({
 });
 
 export default function ManagerTable({ searchValue, searchOption }) {
-  const [selectedManager, setSelectedUser] = React.useState("");
+  const [selectedManager, setSelectedManager] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -76,19 +76,19 @@ export default function ManagerTable({ searchValue, searchOption }) {
     }
   };
 
-  const handleOpenDetail = (user) => {
+  const handleOpenDetail = (manager) => {
     setOpenDetail(!openDetail);
-    setSelectedUser(user);
+    setSelectedManager(manager);
   };
 
-  const handleOpenEdit = (user) => {
+  const handleOpenEdit = (manager) => {
     setOpenEdit(!openEdit);
-    setSelectedUser(user);
+    setSelectedManager(manager);
   };
 
-  const handleConfirmDelete = (user) => {
+  const handleConfirmDelete = (manager) => {
     setOpenDelete(!openDelete);
-    setSelectedUser(user);
+    setSelectedManager(manager);
   };
 
   const tableHeaderRow = [
@@ -460,7 +460,7 @@ export default function ManagerTable({ searchValue, searchOption }) {
         {openDelete && (
           <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
             <DeleteManagerForm
-              selectedUser={selectedManager}
+              selectedManager={selectedManager}
               openDelete={openDelete}
               setOpenDelete={setOpenDelete}
               fetchData={fetchData}
