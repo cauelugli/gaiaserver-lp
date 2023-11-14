@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Divider, List, ListItemButton, Typography } from "@mui/material";
+import { Divider, Grid, List, ListItemButton, Typography } from "@mui/material";
 
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
@@ -11,6 +11,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
+import HelpCenterIcon from "@mui/icons-material/HelpCenter";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import LanIcon from "@mui/icons-material/Lan";
 import PersonIcon from "@mui/icons-material/Person";
@@ -41,6 +42,12 @@ const options = [
     label: "Configurações",
     icon: <SettingsIcon />,
     link: "/settings",
+    disabled: true,
+  },
+  {
+    label: "Help Center",
+    icon: <HelpCenterIcon />,
+    link: "/help",
     disabled: true,
   },
 ];
@@ -82,27 +89,41 @@ const SideBar = ({ sidebarOpen }) => {
               )}
             </ListItemButton>
             {option.label === "Financeiro" && <Divider sx={{ my: 0.75 }} />}
+            {option.label === "Configurações" && (
+              <Grid sx={{ mt: 10, mb: 0.75, pb: 0.75 }} />
+            )}
           </Link>
         ))}
+        <ListItemButton>
+          <Grid
+            container
+            direction="column"
+            alignItems={sidebarOpen ? "center" : ""}
+          >
+            <img
+              src={`http://localhost:3000/static/logo_dog.png`}
+              alt="Logo do Tenant"
+              style={{
+                width: "65%",
+                cursor: "pointer",
+              }}
+              onClick={() => alert("GS é um sonho feito com muito amor")}
+            />
+            {sidebarOpen && (
+              <Typography
+                sx={{
+                  my: 0.5,
+                  fontSize: 10,
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                <em>Our Roots Run Deeper</em>
+              </Typography>
+            )}
+          </Grid>
+        </ListItemButton>
       </List>
-      <img
-        src={`http://localhost:3000/static/logo_dog.png`}
-        alt="Logo do Tenant"
-        style={{
-          width: "40%",
-          height: "40%",
-          marginTop: sidebarOpen ? "150%" : "300%",
-          cursor: "pointer",
-        }}
-        onClick={() => alert("GS é um sonho feito com muito amor")}
-      />
-      {sidebarOpen && (
-        <Typography
-          sx={{ my: 0.5, fontSize: 10, fontWeight: "bold", color: "white" }}
-        >
-          <em>Our Roots Run Deeper</em>
-        </Typography>
-      )}
     </>
   );
 };
