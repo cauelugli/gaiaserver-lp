@@ -15,6 +15,7 @@ import {
   Grid,
   ListSubheader,
   MenuItem,
+  Paper,
   Select,
   TextField,
   Typography,
@@ -232,7 +233,20 @@ const EditManagerForm = ({
                     key={department._id}
                     sx={{ fontSize: "100%" }}
                   >
-                    {department.name}
+                    <Grid container direction="row">
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          mr: 1,
+                          mt: 0.5,
+                          width: 15,
+                          height: 15,
+                          borderRadius: 50,
+                          backgroundColor: department.color,
+                        }}
+                      />
+                      <Typography>{department.name}</Typography>
+                    </Grid>
                   </MenuItem>
                 ))}
               <ListSubheader sx={{ color: "red", m: -1, mt: 0 }}>
@@ -247,7 +261,20 @@ const EditManagerForm = ({
                     key={department._id}
                     sx={{ fontSize: "100%" }}
                   >
-                    {department.name}
+                    <Grid container direction="row">
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          mr: 1,
+                          mt: 0.5,
+                          width: 15,
+                          height: 15,
+                          borderRadius: 50,
+                          backgroundColor: department.color,
+                        }}
+                      />
+                      <Typography>{department.name}</Typography>
+                    </Grid>
                   </MenuItem>
                 ))}
             </Select>

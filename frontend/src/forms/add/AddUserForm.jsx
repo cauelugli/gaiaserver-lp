@@ -11,6 +11,7 @@ import {
   FormHelperText,
   Grid,
   MenuItem,
+  Paper,
   Select,
   TextField,
   Typography,
@@ -214,24 +215,41 @@ const AddUserForm = ({
                 <Select
                   onChange={(e) => setDepartment(e.target.value)}
                   value={department}
-                  renderValue={(selected) => selected.name}
+                  renderValue={(selected) => (
+                    <Grid container direction="row">
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          mr: 1,
+                          mt: 0.5,
+                          width: 15,
+                          height: 15,
+                          borderRadius: 50,
+                          backgroundColor: selected.color,
+                        }}
+                      />
+                      <Typography>{selected.name}</Typography>
+                    </Grid>
+                  )}
                   size="small"
                   sx={{ minWidth: 250 }}
                 >
                   {departments.map((item) => (
-                    <MenuItem
-                      value={item}
-                      key={item.id}
-                      sx={{
-                        backgroundColor: item.color,
-                        color: "white",
-                        "&:hover": {
-                          backgroundColor: item.color,
-                          color: "white",
-                        },
-                      }}
-                    >
-                      {item.name}
+                    <MenuItem value={item} key={item.id}>
+                      <Grid container direction="row">
+                        <Paper
+                          elevation={0}
+                          sx={{
+                            mr: 1,
+                            mt: 0.5,
+                            width: 15,
+                            height: 15,
+                            borderRadius: 50,
+                            backgroundColor: item.color,
+                          }}
+                        />
+                        <Typography>{item.name}</Typography>
+                      </Grid>
                     </MenuItem>
                   ))}
                 </Select>
