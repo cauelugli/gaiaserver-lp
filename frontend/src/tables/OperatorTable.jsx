@@ -90,7 +90,7 @@ export default function OperatorTable({ searchValue, searchOption }) {
     },
     {
       id: "role",
-      label: "Nível de Acesso",
+      label: "Perfil de Acesso",
     },
     {
       id: "actions",

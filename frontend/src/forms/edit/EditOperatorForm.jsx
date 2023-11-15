@@ -151,7 +151,7 @@ const EditOperatorForm = ({
                   />
                 </Grid>
                 <Grid item>
-                  <Typography sx={{ mb: 1 }}>Nível de Acesso</Typography>
+                  <Typography sx={{ mb: 1 }}>Perfil de Acesso</Typography>
                   <Select
                     onChange={(e) => setRole(e.target.value)}
                     value={role}
