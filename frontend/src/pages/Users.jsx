@@ -547,7 +547,49 @@ export default function Users({ user }) {
                   </Typography>
                 }
               />
+              <FormControlLabel
+                value="role"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Perfil de Acesso
+                  </Typography>
+                }
+              />
             </RadioGroup>
+          </Grid>
+          <Grid item sx={{ ml: "1%" }}>
+            {searchOption === "role" && (
+              <>
+                <Select
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  value={searchValue}
+                  renderValue={(selected) => (
+                    <Typography>{selected}</Typography>
+                  )}
+                  size="small"
+                  sx={{ minWidth: 200 }}
+                >
+                  {/* {roles.map((item) => (
+                    <MenuItem value={item} key={item.id}>
+                      <Typography>{item.name}</Typography>
+                    </MenuItem>
+                  ))} */}
+                  <MenuItem value="placeholder">
+                    <Typography>placeholder</Typography>
+                  </MenuItem>
+                </Select>
+                <FormHelperText>Selecione o Perfil</FormHelperText>
+              </>
+            )}
           </Grid>
         </Grid>
 
