@@ -109,7 +109,7 @@ export default function UserTable({ searchValue, searchOption }) {
       label: "Telefone",
     },
     {
-      id: "department",
+      id: "department.name",
       label: "Departamento",
     },
   ];
@@ -124,7 +124,6 @@ export default function UserTable({ searchValue, searchOption }) {
   };
 
   const sortedRows = React.useMemo(() => {
-    console.log('searchValue', searchValue)
     const compare = (a, b) => {
       const departmentA = a.department ? a.department.name : "";
       const departmentB = b.department ? b.department.name : "";
@@ -148,7 +147,7 @@ export default function UserTable({ searchValue, searchOption }) {
         return b[orderBy] < a[orderBy] ? -1 : 1;
       }
     });
-  }, [searchValue, users, order, orderBy]);
+  }, [users, order, orderBy]);
 
   return (
     <>

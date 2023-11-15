@@ -73,6 +73,7 @@ export default function Users({ user }) {
   const [openAddOperator, setOpenAddOperator] = React.useState(false);
 
   const [searchValue, setSearchValue] = React.useState("");
+  const [searchValueDeptColor, setSearchValueDeptColor] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("name");
 
   const handleSearchChange = (event) => {
@@ -310,7 +311,7 @@ export default function Users({ user }) {
                 }
               />
               <FormControlLabel
-                value="department"
+                value="department.name"
                 control={
                   <Radio
                     sx={{
@@ -332,8 +333,11 @@ export default function Users({ user }) {
             {searchOption === "department.name" && (
               <>
                 <Select
-                onChange={(e) => setSearchValue(e.target.value)}
-                value={searchValue}
+                  onChange={(e) => {
+                    setSearchValue(e.target.value.name),
+                      setSearchValueDeptColor(e.target.value.color);
+                  }}
+                  value={searchValue}
                   renderValue={(selected) => (
                     <Grid container direction="row">
                       <Paper
@@ -341,17 +345,17 @@ export default function Users({ user }) {
                         sx={{
                           mr: 1,
                           mt: 0.5,
-                          width: 15,
-                          height: 15,
+                          width: 12,
+                          height: 12,
                           borderRadius: 50,
-                          backgroundColor: selected.color,
+                          backgroundColor: searchValueDeptColor,
                         }}
                       />
-                      <Typography>{selected.name}</Typography>
+                      <Typography>{searchValue}</Typography>
                     </Grid>
                   )}
                   size="small"
-                  sx={{ minWidth: 250 }}
+                  sx={{ minWidth: 200 }}
                 >
                   {departments.map((item) => (
                     <MenuItem value={item} key={item.id}>
@@ -361,8 +365,8 @@ export default function Users({ user }) {
                           sx={{
                             mr: 1,
                             mt: 0.5,
-                            width: 15,
-                            height: 15,
+                            width: 12,
+                            height: 12,
                             borderRadius: 50,
                             backgroundColor: item.color,
                           }}
