@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
 
 import {
+  Avatar,
   Box,
   Button,
   DialogActions,
@@ -17,6 +19,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 import { IMaskInput } from "react-imask";
 
 const api = axios.create({
@@ -33,6 +39,8 @@ const EditCustomerForm = ({
   const [name, setName] = React.useState(selectedCustomer.name);
   const [address, setAddress] = React.useState(selectedCustomer.address);
   const [phone, setPhone] = React.useState(selectedCustomer.phone);
+  const [image, setImage] = React.useState(selectedCustomer.image);
+  const [newImage, setNewImage] = React.useState("");
   const [mainContactName, setMainContactName] = React.useState(
     selectedCustomer.mainContactName
   );
@@ -51,11 +59,24 @@ const EditCustomerForm = ({
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
+      let updatedImagePath = selectedCustomer.image;
+
+      if (newImage) {
+        const formData = new FormData();
+        formData.append("image", newImage);
+        const uploadResponse = await api.post(
+          "/uploads/singleProduct",
+          formData
+        );
+        updatedImagePath = uploadResponse.data.imagePath;
+      }
+
       const res = await api.put("/customers", {
         customer: selectedCustomer._id,
         name,
         address,
         phone,
+        image: updatedImagePath,
         mainContactName,
         mainContactEmail,
         mainContactPosition,
@@ -85,6 +106,84 @@ const EditCustomerForm = ({
     <form onSubmit={handleEdit}>
       <DialogTitle>Editando Cliente - {selectedCustomer.name}</DialogTitle>
       <DialogContent>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item>
+            <Avatar
+              alt="Logotipo da Empresa"
+              src={`http://localhost:3000/static/${selectedCustomer.image}`}
+              sx={{
+                width: 250,
+                height: 70,
+                borderRadius: 1,
+                cursor: "pointer",
+                opacity: newImage ? "0.5" : "1",
+                marginRight: newImage ? 3 : 0,
+              }}
+            />
+          </Grid>
+
+          <Grid item>
+            {newImage && (
+              <Avatar
+                src={URL.createObjectURL(newImage)}
+                alt="Prévia da Imagem"
+                style={{
+                  width: 250,
+                  height: 70,
+                  borderRadius: 3,
+                }}
+              />
+            )}
+          </Grid>
+        </Grid>
+
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <input
+            type="file"
+            accept="image/*"
+            id="fileInput"
+            style={{ display: "none" }}
+            onChange={(e) => {
+              const selectedImage = e.target.files[0];
+              setNewImage(selectedImage);
+            }}
+          />
+          {!newImage ? (
+            <label htmlFor="fileInput">
+              <Button
+                variant="outlined"
+                color="primary"
+                component="span"
+                size="small"
+                startIcon={<FileUploadIcon />}
+                sx={{ my: 2 }}
+              >
+                Alterar Imagem
+              </Button>
+            </label>
+          ) : (
+            <Button
+              variant="outlined"
+              color="error"
+              size="small"
+              startIcon={<DeleteIcon />}
+              onClick={() => setNewImage("")}
+              sx={{ my: 2 }}
+            >
+              Remover Imagem
+            </Button>
+          )}
+        </Grid>
         <Typography sx={{ my: 2 }}>Geral</Typography>
         <TextField
           label="Nome da Empresa"

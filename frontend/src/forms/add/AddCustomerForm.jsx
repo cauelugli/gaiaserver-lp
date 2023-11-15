@@ -3,13 +3,13 @@ import React from "react";
 import axios from "axios";
 
 import {
+  Avatar,
   Box,
   Button,
   Checkbox,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Divider,
   FormControl,
   FormHelperText,
   Grid,
@@ -18,6 +18,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { IMaskInput } from "react-imask";
 
@@ -29,6 +31,7 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
   const [name, setName] = React.useState("");
   const [address, setAddress] = React.useState("");
   const [phone, setPhone] = React.useState("");
+  const [image, setImage] = React.useState("");
   const [mainContactName, setMainContactName] = React.useState("");
   const [mainContactEmail, setMainContactEmail] = React.useState("");
   const [mainContactPosition, setMainContactPosition] =
@@ -38,19 +41,30 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
   const [cnpj, setCnpj] = React.useState("");
   const [segment, setSegment] = React.useState("");
   const [employees, setEmployees] = React.useState("");
+
   const [showAdditionalOptions, setShowAdditionalOptions] =
     React.useState(false);
   const handleCheckboxChange = (event) => {
     setShowAdditionalOptions(event.target.checked);
   };
 
+  const handleImageClick = () => {
+    document.getElementById("fileInput").click();
+  };
+
   const handleAdd = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("image", image);
+
     try {
+      const uploadResponse = await api.post("/uploads/singleProduct", formData);
+      const imagePath = uploadResponse.data.imagePath;
       const res = await api.post("/customers", {
         name,
         address,
         phone,
+        image: imagePath,
         mainContactName,
         mainContactEmail,
         mainContactPosition,
@@ -80,7 +94,65 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
     <form onSubmit={handleAdd}>
       <DialogTitle>Novo Cliente</DialogTitle>
       <DialogContent>
-        <Typography sx={{ my: 2 }}>Geral</Typography>
+        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
+          Logotipo
+        </Typography>
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <input
+            type="file"
+            accept="image/*"
+            id="fileInput"
+            style={{ display: "none" }}
+            onChange={(e) => {
+              const selectedImage = e.target.files[0];
+              setImage(selectedImage);
+            }}
+          />
+          <label htmlFor="fileInput">
+            <Avatar
+              alt="Logotipo da Empresa"
+              value={image}
+              sx={{
+                width: 250,
+                height: 70,
+                borderRadius: 1,
+                cursor: "pointer",
+              }}
+              onClick={handleImageClick}
+            >
+              {image ? (
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="Prévia da Imagem"
+                  style={{ width: "100%", height: "100%" }}
+                />
+              ) : null}
+            </Avatar>
+          </label>
+          {image && (
+            <FormHelperText>
+              <Button
+                variant="outlined"
+                color="error"
+                size="small"
+                startIcon={<DeleteIcon />}
+                onClick={() => setImage("")}
+                sx={{ mt: 1 }}
+              >
+                Remover
+              </Button>
+            </FormHelperText>
+          )}
+        </Grid>
+
+        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
+          Geral
+        </Typography>
         <TextField
           label="Nome da Empresa"
           value={name}
@@ -101,7 +173,7 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
         />
         <Grid
           container
-          sx={{ pr: "4%", mt: 2 }}
+          sx={{ pr: "4%", mt: 2, mb: 4 }}
           direction="row"
           justifyContent="space-between"
           alignItems="center"
@@ -155,8 +227,9 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 2 }} />
-        <Typography sx={{ my: 2 }}>Contato Principal</Typography>
+        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
+          Contato Principal
+        </Typography>
         <TextField
           label="Nome"
           value={mainContactName}
@@ -188,7 +261,6 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
           </Select>
         </FormControl>
 
-        <Divider sx={{ my: 2 }} />
         <Checkbox
           checked={showAdditionalOptions}
           onChange={handleCheckboxChange}
@@ -197,7 +269,6 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
 
         {showAdditionalOptions && (
           <Box>
-            <Divider sx={{ my: 2 }} />
             <Typography sx={{ my: 2 }}>Domínio</Typography>
             <TextField
               variant="outlined"

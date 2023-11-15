@@ -18,6 +18,7 @@ import {
   TableRow,
   Typography,
   TableSortLabel,
+  Avatar,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -82,6 +83,10 @@ export default function CustomerTable({
 
   const tableHeaderRow = [
     {
+      id: "logo",
+      label: "",
+    },
+    {
       id: "name",
       label: "Nome",
     },
@@ -138,7 +143,7 @@ export default function CustomerTable({
             >
               {tableHeaderRow.map((headCell) => (
                 <TableCell
-                  align={headCell.label === "Nome" ? "" : "left"}
+                  align={headCell.label === "" ? "" : "left"}
                   sx={{
                     fontSize: 16,
                     fontWeight: "bold",
@@ -176,6 +181,28 @@ export default function CustomerTable({
                       "&:hover": { backgroundColor: "#eee " },
                     }}
                   >
+                    <TableCell
+                      onClick={() => handleOpenDetail(customer)}
+                      cursor="pointer"
+                      sx={{ p: 1, width: 160, height: 40 }}
+                    >
+                      <Avatar
+                        src={`http://localhost:3000/static/${customer.image}`}
+                        alt="L"
+                        cursor="pointer"
+                        style={{
+                          borderRadius: 1,
+                          width: "auto",
+                          height: "auto",
+                          margin: "auto",
+                          opacity:
+                            openDetail &&
+                            selectedCustomer.name === customer.name
+                              ? 0
+                              : 100,
+                        }}
+                      />
+                    </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(customer)}
                       cursor="pointer"

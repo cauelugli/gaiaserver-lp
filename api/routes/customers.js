@@ -14,10 +14,16 @@ router.get("/", async (req, res) => {
 
 // CREATE CUSTOMER
 router.post("/", async (req, res) => {
+  const { name } = req.body;
   const newCustomer = new Customer(req.body);
   try {
-    const savedCustomer = await newCustomer.save();
-    res.status(200).json(savedCustomer);
+    const existingNameUser = await Customer.findOne({ name });
+    if (existingNameUser) {
+      return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
+    } else {
+      const savedCustomer = await newCustomer.save();
+      res.status(200).json(savedCustomer);
+    }
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -44,6 +50,7 @@ router.put("/", async (req, res) => {
         name: req.body.name,
         address: req.body.address,
         phone: req.body.phone,
+        image: req.body.image,
         mainContactName: req.body.mainContactName,
         mainContactEmail: req.body.mainContactEmail,
         mainContactPosition: req.body.mainContactPosition,
