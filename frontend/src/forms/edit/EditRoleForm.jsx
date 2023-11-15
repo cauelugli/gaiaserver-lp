@@ -17,30 +17,33 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddPositionForm({
-  openAdd,
-  setOpenAdd,
-  fetchData,
+export default function EditRoleForm({
+  selectedRole,
+  openEdit,
+  setOpenEdit,
   toast,
 }) {
-  const [name, setName] = React.useState("");
+  const [name, setName] = React.useState(selectedRole.name);
+  const previousData = selectedRole;
 
-  const handleAdd = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/positions", {
+      const res = await api.put("/roles", {
+        roleId: selectedRole._id,
         name,
+        members: selectedRole.members,
+        previousData
       });
       if (res.data) {
-        toast.success("Cargo Adicionado!", {
+        toast.success("Perfil de Acesso Editado!", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
         });
       }
-      setOpenAdd(!openAdd);
-      fetchData();
+      setOpenEdit(!openEdit);
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {
@@ -61,8 +64,8 @@ export default function AddPositionForm({
   };
 
   return (
-    <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Cargo</DialogTitle>
+    <form onSubmit={handleEdit}>
+      <DialogTitle>Editando Perfil de Acesso</DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -71,8 +74,8 @@ export default function AddPositionForm({
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item sx={{ mb: 2 }}>
-            <Typography>Nome do Cargo</Typography>
+          <Grid item sx={{mb:2}}>
+            <Typography>Nome do Perfil</Typography>
             <TextField
               size="small"
               value={name}
@@ -90,7 +93,7 @@ export default function AddPositionForm({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenEdit(!openEdit)}
         >
           X
         </Button>

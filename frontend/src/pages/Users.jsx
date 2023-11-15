@@ -31,16 +31,19 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import Person4Icon from "@mui/icons-material/Person4";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 
 import UserTable from "../tables/UserTable";
 import ManagerTable from "../tables/ManagerTable";
 import OperatorTable from "../tables/OperatorTable";
+import RoleTable from "../tables/RoleTable";
 
 import AddUserForm from "../forms/add/AddUserForm";
 import AddManagerForm from "../forms/add/AddManagerForm";
 import AddOperatorForm from "../forms/add/AddOperatorForm";
+import AddRoleForm from "../forms/add/AddRoleForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -71,6 +74,7 @@ export default function Users({ user }) {
   const [openAddUser, setOpenAddUser] = React.useState(false);
   const [openAddManager, setOpenAddManager] = React.useState(false);
   const [openAddOperator, setOpenAddOperator] = React.useState(false);
+  const [openAddRole, setOpenAddRole] = React.useState(false);
 
   const [searchValue, setSearchValue] = React.useState("");
   const [searchValueDeptColor, setSearchValueDeptColor] = React.useState("");
@@ -180,7 +184,7 @@ export default function Users({ user }) {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuList sx={{ width: 170 }}>
+            <MenuList sx={{ width: 190 }}>
               <MenuItem onClick={() => setOpenAddUser(true)}>
                 <ListItemIcon>
                   <PersonIcon />
@@ -198,6 +202,12 @@ export default function Users({ user }) {
                   <ManageAccountsIcon />
                 </ListItemIcon>
                 <ListItemText>Operador</ListItemText>
+              </MenuItem>
+              <MenuItem onClick={() => setOpenAddRole(true)}>
+                <ListItemIcon>
+                  <AdminPanelSettingsIcon />
+                </ListItemIcon>
+                <ListItemText>Perfil de Acesso</ListItemText>
               </MenuItem>
             </MenuList>
           </Menu>
@@ -219,6 +229,10 @@ export default function Users({ user }) {
           />
           <Tab
             label={<Typography sx={{ fontSize: 14 }}>Operadores</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
+          <Tab
+            label={<Typography sx={{ fontSize: 14 }}>Perfil de Acesso</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
         </Tabs>
@@ -595,6 +609,65 @@ export default function Users({ user }) {
 
         <OperatorTable searchValue={searchValue} searchOption={searchOption} />
       </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
+        <Grid container direction="row" justifyContent="flex-start">
+          <Grid item>
+            <TextField
+              placeholder="Pesquise aqui..."
+              size="small"
+              sx={{ mb: 1, ml: "2%", width: 350 }}
+              value={searchValue}
+              onChange={handleSearchChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+                endAdornment:
+                  searchValue.length > 0 ? (
+                    <InputAdornment position="end">
+                      <ClearIcon
+                        cursor="pointer"
+                        sx={{ color: "#d21404" }}
+                        onClick={() => setSearchValue("")}
+                      />
+                    </InputAdornment>
+                  ) : (
+                    ""
+                  ),
+              }}
+            />
+          </Grid>
+          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
+            <RadioGroup
+              row
+              value={searchOption}
+              onChange={handleSearchOptionChange}
+            >
+              <FormControlLabel
+                value="name"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Nome do Perfil
+                  </Typography>
+                }
+              />
+            </RadioGroup>
+          </Grid>
+        </Grid>
+
+        <RoleTable searchValue={searchValue} searchOption={searchOption} />
+      </CustomTabPanel>
       {openAddUser && (
         <Dialog
           fullWidth
@@ -639,6 +712,21 @@ export default function Users({ user }) {
             openAdd={openAddOperator}
             operators={operators.filter((op) => !op.username)}
             setOpenAdd={setOpenAddOperator}
+            fetchData={fetchData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openAddRole && (
+        <Dialog
+          fullWidth
+          maxWidth="xs"
+          open={openAddRole}
+          onClose={() => setOpenAddRole(!openAddRole)}
+        >
+          <AddRoleForm
+            openAdd={openAddRole}
+            setOpenAdd={setOpenAddRole}
             fetchData={fetchData}
             toast={toast}
           />

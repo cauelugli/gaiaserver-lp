@@ -17,7 +17,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddPositionForm({
+export default function AddRoleForm({
   openAdd,
   setOpenAdd,
   fetchData,
@@ -28,11 +28,11 @@ export default function AddPositionForm({
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/positions", {
+      const res = await api.post("/roles", {
         name,
       });
       if (res.data) {
-        toast.success("Cargo Adicionado!", {
+        toast.success("Perfil de Acesso Adicionado!", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
@@ -62,7 +62,7 @@ export default function AddPositionForm({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Cargo</DialogTitle>
+      <DialogTitle>Novo Perfil de Acesso</DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -71,8 +71,8 @@ export default function AddPositionForm({
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item sx={{ mb: 2 }}>
-            <Typography>Nome do Cargo</Typography>
+          <Grid item sx={{mb:2}}>
+            <Typography>Nome do Perfil</Typography>
             <TextField
               size="small"
               value={name}
