@@ -48,7 +48,7 @@ export default function ClientTable({ searchOption, searchValue }) {
       }
     };
     fetchData();
-  }, [clients]);
+  }, []);
 
   const fetchData = async () => {
     try {

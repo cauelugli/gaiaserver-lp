@@ -80,7 +80,7 @@ export default function Files({ user }) {
       }
     };
     fetchData();
-  }, [services]);
+  }, []);
 
   const fetchData = async () => {
     try {

@@ -105,7 +105,7 @@ export default function Stock({ user }) {
       }
     };
     fetchData();
-  }, [products]);
+  }, []);
 
   const fetchData = async () => {
     try {

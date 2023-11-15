@@ -65,7 +65,7 @@ export default function UserTable({ searchValue, searchOption }) {
       }
     };
     fetchData();
-  }, [users]);
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -109,7 +109,7 @@ export default function UserTable({ searchValue, searchOption }) {
       label: "Telefone",
     },
     {
-      id: "department.name",
+      id: "department",
       label: "Departamento",
     },
   ];
@@ -124,6 +124,7 @@ export default function UserTable({ searchValue, searchOption }) {
   };
 
   const sortedRows = React.useMemo(() => {
+    console.log('searchValue', searchValue)
     const compare = (a, b) => {
       const departmentA = a.department ? a.department.name : "";
       const departmentB = b.department ? b.department.name : "";
@@ -147,7 +148,7 @@ export default function UserTable({ searchValue, searchOption }) {
         return b[orderBy] < a[orderBy] ? -1 : 1;
       }
     });
-  }, [users, order, orderBy]);
+  }, [searchValue, users, order, orderBy]);
 
   return (
     <>
@@ -182,11 +183,15 @@ export default function UserTable({ searchValue, searchOption }) {
               ))}
             </TableRow>
             {sortedRows
-              .filter((user) =>
-                user[searchOption]
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase())
-              )
+              .filter((user) => {
+                const userProperty = searchOption
+                  .split(".")
+                  .reduce((obj, key) => obj[key], user);
+                return (
+                  userProperty &&
+                  userProperty.toLowerCase().includes(searchValue.toLowerCase())
+                );
+              })
               .map((row) => (
                 <React.Fragment key={row._id}>
                   <TableRow
@@ -247,7 +252,11 @@ export default function UserTable({ searchValue, searchOption }) {
                     >
                       <Typography sx={{ fontSize: 14 }}>
                         {row.department ? (
-                          <Grid container direction="row" justifyContent="center">
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                          >
                             <Paper
                               elevation={0}
                               sx={{

@@ -95,7 +95,7 @@ export default function Customers({user}) {
       }
     };
     fetchData();
-  }, [clients]);
+  }, []);
 
   const fetchData = async () => {
     try {

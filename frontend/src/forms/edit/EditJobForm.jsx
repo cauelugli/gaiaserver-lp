@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
@@ -90,11 +91,7 @@ const EditJobForm = ({
       }
     };
     fetchData();
-  }, [
-    selectedJob.department.id,
-    selectedJob.service.name,
-    selectedJob.service._id,
-  ]);
+  }, []);
 
   const [showAdditionalOptions, setShowAdditionalOptions] =
     React.useState(false);

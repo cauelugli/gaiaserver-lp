@@ -61,7 +61,7 @@ export default function ProductsTable({ searchValue, searchOption }) {
       }
     };
     fetchData();
-  }, [products]);
+  }, []);
 
   const fetchData = async () => {
     try {

@@ -60,7 +60,7 @@ export default function StockTable({ searchValue, searchOption }) {
       }
     };
     fetchData();
-  }, [stockItems]);
+  }, []);
 
   const fetchData = async () => {
     try {

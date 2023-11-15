@@ -71,7 +71,7 @@ const AddSaleForm = ({ user, openAddSale, setOpenAddSale, fetchData1, toast }) =
     };
 
     fetchData();
-  }, [products]);
+  }, []);
 
   const [showAdditionalOptions, setShowAdditionalOptions] =
     React.useState(false);

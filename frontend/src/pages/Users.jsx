@@ -10,6 +10,7 @@ import {
   Button,
   Dialog,
   FormControlLabel,
+  FormHelperText,
   Grid,
   InputAdornment,
   ListItemIcon,
@@ -17,8 +18,10 @@ import {
   Menu,
   MenuItem,
   MenuList,
+  Paper,
   Radio,
   RadioGroup,
+  Select,
   Tab,
   Tabs,
   TextField,
@@ -114,7 +117,7 @@ export default function Users({ user }) {
       }
     };
     fetchData();
-  }, [users]);
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -306,7 +309,72 @@ export default function Users({ user }) {
                   </Typography>
                 }
               />
+              <FormControlLabel
+                value="department"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 13,
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                    Departamento
+                  </Typography>
+                }
+              />
             </RadioGroup>
+          </Grid>
+          <Grid item sx={{ ml: "1%" }}>
+            {searchOption === "department.name" && (
+              <>
+                <Select
+                onChange={(e) => setSearchValue(e.target.value)}
+                value={searchValue}
+                  renderValue={(selected) => (
+                    <Grid container direction="row">
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          mr: 1,
+                          mt: 0.5,
+                          width: 15,
+                          height: 15,
+                          borderRadius: 50,
+                          backgroundColor: selected.color,
+                        }}
+                      />
+                      <Typography>{selected.name}</Typography>
+                    </Grid>
+                  )}
+                  size="small"
+                  sx={{ minWidth: 250 }}
+                >
+                  {departments.map((item) => (
+                    <MenuItem value={item} key={item.id}>
+                      <Grid container direction="row">
+                        <Paper
+                          elevation={0}
+                          sx={{
+                            mr: 1,
+                            mt: 0.5,
+                            width: 15,
+                            height: 15,
+                            borderRadius: 50,
+                            backgroundColor: item.color,
+                          }}
+                        />
+                        <Typography>{item.name}</Typography>
+                      </Grid>
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>Selecione o Departamento</FormHelperText>
+              </>
+            )}
           </Grid>
         </Grid>
 

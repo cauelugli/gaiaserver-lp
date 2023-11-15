@@ -34,7 +34,7 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
       }
     };
     fetchData();
-  }, [stockEntries]);
+  }, []);
 
   const tableHeaderRow = [
     {

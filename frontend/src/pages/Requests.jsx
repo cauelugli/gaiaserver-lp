@@ -93,7 +93,7 @@ export default function Requests({ user }) {
       }
     };
     fetchData();
-  }, [jobs]);
+  }, []);
 
   const fetchData = async () => {
     try {

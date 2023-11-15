@@ -63,7 +63,7 @@ export default function ManagerTable({ searchValue, searchOption }) {
       }
     };
     fetchData();
-  }, [managers]);
+  }, []);
 
   const fetchData = async () => {
     try {

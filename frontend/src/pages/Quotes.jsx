@@ -76,7 +76,7 @@ export default function Quotes({ user }) {
       }
     };
     fetchData();
-  }, [quotes]);
+  }, []);
 
   const fetchData = async () => {
     try {
