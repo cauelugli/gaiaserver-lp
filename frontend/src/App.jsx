@@ -37,7 +37,7 @@ export default function App() {
   const [sidebarStatus, setSidebarStatus] = useState(false);
   const login = JSON.parse(sessionStorage.getItem("login"));
   const userData = JSON.parse(sessionStorage.getItem("userData"));
-  console.log("App mounted")
+  console.log("App mounted control")
 
   const handleSidebarStatusChange = () => {
     setSidebarStatus(!sidebarStatus);
