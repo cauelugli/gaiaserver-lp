@@ -23,7 +23,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 import EditDepartmentForm from "../forms/edit/EditDepartmentForm";
-import DeleteDepartmentForm from "../forms/delete/DeleteDepartmentForm";
+import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 export default function DepartmentTable({
   searchValue,
@@ -35,10 +35,16 @@ export default function DepartmentTable({
   toast,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [selectedDepartment, setSelectedDepartment] = React.useState([]);
   const [hoveredMember, setHoveredMember] = React.useState(null);
+  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleConfirmDelete = (position) => {
+    setSelectedItem(position);
+    setOpenDialog(true);
+  };
 
   const handleOpenDetail = (customer) => {
     setOpenDetail(!openDetail);
@@ -48,11 +54,6 @@ export default function DepartmentTable({
   const handleOpenEdit = (customer) => {
     setOpenEdit(!openEdit);
     setSelectedDepartment(customer);
-  };
-
-  const handleConfirmDelete = (customer) => {
-    setSelectedDepartment(customer);
-    setOpenDelete(!openDelete);
   };
 
   const tableHeaderRow = [
@@ -588,14 +589,17 @@ export default function DepartmentTable({
           />
         </Dialog>
       )}
-      {openDelete && (
-        <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-          <DeleteDepartmentForm
-            selectedDepartment={selectedDepartment}
-            openDelete={openDelete}
-            setOpenDelete={setOpenDelete}
-            fetchData={fetchData}
+      {openDialog && (
+        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+          <GenericDeleteForm
+            selectedItem={selectedItem}
+            openDialog={openDialog}
+            setOpenDialog={setOpenDialog}
             toast={toast}
+            endpoint="departments"
+            successMessage={`${
+              selectedItem.name && selectedItem.name
+            } Deletado com Sucesso`}
           />
         </Dialog>
       )}

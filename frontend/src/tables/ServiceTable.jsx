@@ -22,7 +22,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditServiceForm from "../forms/edit/EditServiceForm";
-import DeleteServiceForm from "../forms/delete/DeleteServiceForm";
+import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 export default function ServiceTable({
   searchValue,
@@ -34,8 +34,14 @@ export default function ServiceTable({
 }) {
   const [selectedService, setSelectedService] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleConfirmDelete = (position) => {
+    setSelectedItem(position);
+    setOpenDialog(true);
+  };
 
   const handleOpenDetail = (service) => {
     setOpenDetail(!openDetail);
@@ -44,11 +50,6 @@ export default function ServiceTable({
 
   const handleOpenEdit = (service) => {
     setOpenEdit(!openEdit);
-    setSelectedService(service);
-  };
-
-  const handleConfirmDelete = (service) => {
-    setOpenDelete(!openDelete);
     setSelectedService(service);
   };
 
@@ -379,14 +380,17 @@ export default function ServiceTable({
             />
           </Dialog>
         )}
-        {openDelete && (
-          <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-            <DeleteServiceForm
-              selectedService={selectedService}
-              openDelete={openDelete}
-              setOpenDelete={setOpenDelete}
-              fetchData={fetchData}
+        {openDialog && (
+          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+            <GenericDeleteForm
+              selectedItem={selectedItem}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
               toast={toast}
+              endpoint="services"
+              successMessage={`${
+                selectedItem.name && selectedItem.name
+              } Deletado com Sucesso`}
             />
           </Dialog>
         )}

@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import dayjs from "dayjs";
 
 import {
@@ -24,7 +26,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 // import EditRequestForm from "../forms/edit/EditRequestForm";
-// import DeleteRequestForm from "../forms/delete/DeleteRequestForm";
+import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+
 
 export default function SaleTable({
   searchValue,
@@ -37,6 +40,13 @@ export default function SaleTable({
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [selectedSale, setSelectedSale] = React.useState([]);
+  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleConfirmDelete = (position) => {
+    setSelectedItem(position);
+    setOpenDialog(true);
+  };
 
   const handleOpenDetail = (sale) => {
     setOpenDetail(!openDetail);
@@ -46,11 +56,6 @@ export default function SaleTable({
   const handleOpenEdit = (sale) => {
     setOpenEdit(!openEdit);
     setSelectedSale(sale);
-  };
-
-  const handleConfirmDelete = (sale) => {
-    setSelectedSale(sale);
-    setOpenDelete(!openDelete);
   };
 
   const tableHeaderRow = [
@@ -322,7 +327,9 @@ export default function SaleTable({
                                       />
                                     </Grid>
                                     <Grid item>
-                                      <Typography sx={{ mt: 0.75, fontSize: 14 }}>
+                                      <Typography
+                                        sx={{ mt: 0.75, fontSize: 14 }}
+                                      >
                                         {sale.seller.name}
                                       </Typography>
                                     </Grid>
@@ -474,7 +481,9 @@ export default function SaleTable({
                                 </TableCell>
                                 <TableCell align="left">
                                   <Typography>
-                                    {dayjs(sale.deliveryScheduledTo).format("DD/MM/YYYY")}
+                                    {dayjs(sale.deliveryScheduledTo).format(
+                                      "DD/MM/YYYY"
+                                    )}
                                   </Typography>
                                 </TableCell>
                               </TableRow>
@@ -516,16 +525,20 @@ export default function SaleTable({
           />
         </Dialog>
       )} */}
-      {/* {openDelete && (
-        <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-          <DeleteRequestForm
-            selectedRequest={selectedRequest}
-            openDelete={openDelete}
-            setOpenDelete={setOpenDelete}
-            fetchData={fetchData}
+      {openDialog && (
+        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+          <GenericDeleteForm
+            selectedItem={selectedItem}
+            openDialog={openDialog}
+            setOpenDialog={setOpenDialog}
+            toast={toast}
+            endpoint="sales"
+            successMessage={`Venda #${
+              selectedItem.quoteNumber && selectedItem.quoteNumber
+            } Deletado com Sucesso`}
           />
         </Dialog>
-      )} */}
+      )}
     </Box>
   );
 }

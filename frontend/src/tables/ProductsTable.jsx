@@ -27,7 +27,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditProductForm from "../forms/edit/EditProductForm";
-import DeleteProductForm from "../forms/delete/DeleteProductForm";
+import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -36,8 +36,14 @@ const api = axios.create({
 export default function ProductsTable({ searchValue, searchOption }) {
   const [selectedProduct, setSelectedProduct] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleConfirmDelete = (position) => {
+    setSelectedItem(position);
+    setOpenDialog(true);
+  };
 
   const [products, setProducts] = React.useState([]);
 
@@ -81,12 +87,7 @@ export default function ProductsTable({ searchValue, searchOption }) {
     setOpenEdit(!openEdit);
     setSelectedProduct(product);
   };
-
-  const handleConfirmDelete = (product) => {
-    setOpenDelete(!openDelete);
-    setSelectedProduct(product);
-  };
-
+  
   const tableHeaderRow = [
     {
       id: "name",
@@ -498,17 +499,20 @@ export default function ProductsTable({ searchValue, searchOption }) {
             />
           </Dialog>
         )}
-        {openDelete && (
-          <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-            <DeleteProductForm
-              selectedProduct={selectedProduct}
-              openDelete={openDelete}
-              setOpenDelete={setOpenDelete}
-              fetchData={fetchData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
+        {openDialog && (
+        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+          <GenericDeleteForm
+            selectedItem={selectedItem}
+            openDialog={openDialog}
+            setOpenDialog={setOpenDialog}
+            toast={toast}
+            endpoint="products"
+            successMessage={`${
+              selectedItem.name && selectedItem.name
+            } Deletado com Sucesso`}
+          />
+        </Dialog>
+      )}
       </Box>
     </>
   );

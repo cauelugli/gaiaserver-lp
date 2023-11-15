@@ -25,7 +25,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditUserForm from "../forms/edit/EditUserForm";
-import DeleteUserForm from "../forms/delete/DeleteUserForm";
+import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -34,8 +34,14 @@ const api = axios.create({
 export default function UserTable({ searchValue, searchOption }) {
   const [selectedUser, setSelectedUser] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleConfirmDelete = (position) => {
+    setSelectedItem(position);
+    setOpenDialog(true);
+  };
 
   const [users, setUsers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
@@ -87,11 +93,6 @@ export default function UserTable({ searchValue, searchOption }) {
 
   const handleOpenEdit = (user) => {
     setOpenEdit(!openEdit);
-    setSelectedUser(user);
-  };
-
-  const handleConfirmDelete = (user) => {
-    setOpenDelete(!openDelete);
     setSelectedUser(user);
   };
 
@@ -490,17 +491,20 @@ export default function UserTable({ searchValue, searchOption }) {
             />
           </Dialog>
         )}
-        {openDelete && (
-          <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-            <DeleteUserForm
-              selectedUser={selectedUser}
-              openDelete={openDelete}
-              setOpenDelete={setOpenDelete}
-              fetchData={fetchData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
+        {openDialog && (
+        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+          <GenericDeleteForm
+            selectedItem={selectedItem}
+            openDialog={openDialog}
+            setOpenDialog={setOpenDialog}
+            toast={toast}
+            endpoint="users"
+            successMessage={`${
+              selectedItem.name && selectedItem.name
+            } Deletado com Sucesso`}
+          />
+        </Dialog>
+      )}
       </Box>
     </>
   );

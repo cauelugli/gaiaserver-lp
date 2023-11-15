@@ -26,7 +26,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditStockItemForm from "../forms/edit/EditStockItemForm";
-import DeleteStockItemForm from "../forms/delete/DeleteStockItemForm";
+import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -35,8 +35,14 @@ const api = axios.create({
 export default function StockTable({ searchValue, searchOption }) {
   const [selectedStockItem, setSelectedStockItem] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleConfirmDelete = (position) => {
+    setSelectedItem(position);
+    setOpenDialog(true);
+  };
 
   const [stockItems, setStockItems] = React.useState([]);
 
@@ -78,11 +84,6 @@ export default function StockTable({ searchValue, searchOption }) {
 
   const handleOpenEdit = (stockItem) => {
     setOpenEdit(!openEdit);
-    setSelectedStockItem(stockItem);
-  };
-
-  const handleConfirmDelete = (stockItem) => {
-    setOpenDelete(!openDelete);
     setSelectedStockItem(stockItem);
   };
 
@@ -413,14 +414,17 @@ export default function StockTable({ searchValue, searchOption }) {
             />
           </Dialog>
         )}
-        {openDelete && (
-          <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-            <DeleteStockItemForm
-              selectedStockItem={selectedStockItem}
-              openDelete={openDelete}
-              setOpenDelete={setOpenDelete}
-              fetchData={fetchData}
+        {openDialog && (
+          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+            <GenericDeleteForm
+              selectedItem={selectedItem}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
               toast={toast}
+              endpoint="stockItems"
+              successMessage={`${
+                selectedItem.name && selectedItem.name
+              } Deletado com Sucesso`}
             />
           </Dialog>
         )}

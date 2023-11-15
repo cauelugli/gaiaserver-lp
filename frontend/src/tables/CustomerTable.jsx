@@ -26,7 +26,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 import AddCustomerForm from "../forms/add/AddCustomerForm";
 import EditCustomerForm from "../forms/edit/EditCustomerForm";
-import DeleteCustomerForm from "../forms/delete/DeleteCustomerForm";
+import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -39,9 +39,15 @@ export default function CustomerTable({
   setOpenAdd,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [selectedCustomer, setSelectedCustomer] = React.useState([]);
+  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleConfirmDelete = (position) => {
+    setSelectedItem(position);
+    setOpenDialog(true);
+  };
 
   const [customers, setCustomers] = React.useState([]);
 
@@ -74,11 +80,6 @@ export default function CustomerTable({
   const handleOpenEdit = (customer) => {
     setOpenEdit(!openEdit);
     setSelectedCustomer(customer);
-  };
-
-  const handleConfirmDelete = (customer) => {
-    setSelectedCustomer(customer);
-    setOpenDelete(!openDelete);
   };
 
   const tableHeaderRow = [
@@ -439,14 +440,17 @@ export default function CustomerTable({
           />
         </Dialog>
       )}
-      {openDelete && (
-        <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-          <DeleteCustomerForm
-            selectedCustomer={selectedCustomer}
-            openDelete={openDelete}
-            setOpenDelete={setOpenDelete}
-            fetchData={fetchData}
+      {openDialog && (
+        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+          <GenericDeleteForm
+            selectedItem={selectedItem}
+            openDialog={openDialog}
+            setOpenDialog={setOpenDialog}
             toast={toast}
+            endpoint="customers"
+            successMessage={`${
+              selectedItem.name && selectedItem.name
+            } Deletado com Sucesso`}
           />
         </Dialog>
       )}

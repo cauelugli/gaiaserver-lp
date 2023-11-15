@@ -1,52 +1,47 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-// eslint-disable-next-line no-unused-vars
 import React from "react";
 import axios from "axios";
-
 import { Button, DialogContent, DialogTitle, Grid } from "@mui/material";
-
-import DeleteIcon from "@mui/icons-material/Delete";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function DeleteServicePlanForm({
-  selectedServicePlan,
-  openDelete,
-  setOpenDelete,
-  fetchData,
-  toast
-}) {
-  const servicePlan = selectedServicePlan;
-
+const GenericDeleteForm = ({
+  selectedItem,
+  openDialog,
+  setOpenDialog,
+  toast,
+  endpoint,
+  successMessage,
+}) => {
   const handleDelete = async () => {
     try {
-      const res = await api.delete(`/servicePlans/${servicePlan._id}`);
+      const res = await api.delete(`/${endpoint}/${selectedItem._id}`);
       if (res.data) {
-        toast.error("Plano de Serviço Deletado", {
+        toast.success(successMessage, {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
-          icon: <DeleteIcon />,
         });
       }
-      setOpenDelete(false);
-      fetchData();
+      setOpenDialog(false);
     } catch (err) {
-      alert("Vish, deletou não..");
+      alert("Oops, something went wrong...");
       console.log(err);
     }
   };
 
   return (
     <>
-      <DialogTitle>{`Deletar Plano de Serviço ${servicePlan.name} ?`}</DialogTitle>
+      <DialogTitle>{`Deletar ${
+        selectedItem.name || selectedItem.title || selectedItem.quoteNumber
+      } ?`}</DialogTitle>
       <DialogContent>
         <Grid
           container
-          direction="row"
           justifyContent="center"
           alignItems="center"
           sx={{ my: 4 }}
@@ -54,7 +49,7 @@ export default function DeleteServicePlanForm({
           <Button
             variant="contained"
             color="success"
-            onClick={() => handleDelete()}
+            onClick={handleDelete}
             sx={{ mr: 2 }}
           >
             OK
@@ -62,7 +57,7 @@ export default function DeleteServicePlanForm({
           <Button
             variant="contained"
             color="error"
-            onClick={() => setOpenDelete(!openDelete)}
+            onClick={() => setOpenDialog(!openDialog)}
           >
             X
           </Button>
@@ -70,4 +65,6 @@ export default function DeleteServicePlanForm({
       </DialogContent>
     </>
   );
-}
+};
+
+export default GenericDeleteForm;

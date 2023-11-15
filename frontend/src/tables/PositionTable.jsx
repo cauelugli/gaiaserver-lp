@@ -21,8 +21,8 @@ import {
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import DeletePositionForm from "../forms/delete/DeletePositionForm";
 import EditPositionForm from "../forms/edit/EditPositionForm";
+import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 export default function PositionTable({
   positions,
@@ -32,15 +32,16 @@ export default function PositionTable({
 }) {
   const [selectedPosition, setSelectedPosition] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleConfirmDelete = (position) => {
+    setSelectedItem(position);
+    setOpenDialog(true);
+  };
 
   const handleOpenEdit = (position) => {
     setOpenEdit(!openEdit);
-    setSelectedPosition(position);
-  };
-
-  const handleConfirmDelete = (position) => {
-    setOpenDelete(!openDelete);
     setSelectedPosition(position);
   };
 
@@ -112,7 +113,6 @@ export default function PositionTable({
                       fontSize: 16,
                       fontWeight: "bold",
                       pl: headCell.label === "Nome do Cargo" ? "" : 5,
-
                     }}
                     key={headCell.id}
                     sortDirection={orderBy === headCell.id ? order : false}
@@ -197,13 +197,17 @@ export default function PositionTable({
             />
           </Dialog>
         )}
-        {openDelete && (
-          <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-            <DeletePositionForm
-              selectedPosition={selectedPosition}
-              openDelete={openDelete}
-              setOpenDelete={setOpenDelete}
+        {openDialog && (
+          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+            <GenericDeleteForm
+              selectedItem={selectedItem}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
               toast={toast}
+              endpoint="positions"
+              successMessage={`${
+                selectedItem.name && selectedItem.name
+              } Deletado com Sucesso`}
             />
           </Dialog>
         )}

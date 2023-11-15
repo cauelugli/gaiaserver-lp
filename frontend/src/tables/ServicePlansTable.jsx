@@ -23,7 +23,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditServiceForm from "../forms/edit/EditServiceForm";
-import DeleteServicePlanForm from "../forms/delete/DeleteServicePlanForm";
+import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 export default function ServicePlansTable({
   searchValue,
@@ -33,8 +33,14 @@ export default function ServicePlansTable({
 }) {
   const [selectedService, setSelectedService] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleConfirmDelete = (position) => {
+    setSelectedItem(position);
+    setOpenDialog(true);
+  };
 
   const handleOpenDetail = (service) => {
     setOpenDetail(!openDetail);
@@ -43,11 +49,6 @@ export default function ServicePlansTable({
 
   const handleOpenEdit = (service) => {
     setOpenEdit(!openEdit);
-    setSelectedService(service);
-  };
-
-  const handleConfirmDelete = (service) => {
-    setOpenDelete(!openDelete);
     setSelectedService(service);
   };
 
@@ -285,17 +286,20 @@ export default function ServicePlansTable({
             />
           </Dialog>
         )} */}
-        {openDelete && (
-          <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-            <DeleteServicePlanForm
-              selectedServicePlan={selectedService}
-              openDelete={openDelete}
-              setOpenDelete={setOpenDelete}
-              fetchData={fetchData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
+        {openDialog && (
+        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+          <GenericDeleteForm
+            selectedItem={selectedItem}
+            openDialog={openDialog}
+            setOpenDialog={setOpenDialog}
+            toast={toast}
+            endpoint="servicePlans"
+            successMessage={`${
+              selectedItem.name && selectedItem.name
+            } Deletado com Sucesso`}
+          />
+        </Dialog>
+      )}
       </Box>
     </>
   );

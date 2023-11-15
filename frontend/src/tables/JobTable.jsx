@@ -31,7 +31,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import InteractionReactions from "../components/small/InteractionReactions";
 
 import EditJobForm from "../forms/edit/EditJobForm";
-import DeleteJobForm from "../forms/delete/DeleteJobForm";
+import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -48,9 +48,15 @@ export default function JobTable({
   const [userReactions, setUserReactions] = React.useState({});
   const [openEdit, setOpenEdit] = React.useState(false);
   const [option, setOption] = React.useState("interaction");
-  const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [selectedJob, setSelectedJob] = React.useState([]);
+  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleConfirmDelete = (position) => {
+    setSelectedItem(position);
+    setOpenDialog(true);
+  };
 
   const handleOpenDetail = (job) => {
     setOpenDetail(!openDetail);
@@ -63,10 +69,6 @@ export default function JobTable({
     setSelectedJob(job);
   };
 
-  const handleConfirmDelete = (job) => {
-    setSelectedJob(job);
-    setOpenDelete(!openDelete);
-  };
 
   const tableHeaderRow = [
     {
@@ -712,14 +714,17 @@ export default function JobTable({
           />
         </Dialog>
       )}
-      {openDelete && (
-        <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-          <DeleteJobForm
-            selectedJob={selectedJob}
-            openDelete={openDelete}
-            setOpenDelete={setOpenDelete}
-            fetchData={fetchData}
+      {openDialog && (
+        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+          <GenericDeleteForm
+            selectedItem={selectedItem}
+            openDialog={openDialog}
+            setOpenDialog={setOpenDialog}
             toast={toast}
+            endpoint="jobs"
+            successMessage={`${
+              selectedItem.title && selectedItem.title
+            } Deletado com Sucesso`}
           />
         </Dialog>
       )}

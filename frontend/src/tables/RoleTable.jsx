@@ -25,7 +25,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditRoleForm from "../forms/edit/EditRoleForm";
-import DeleteRoleForm from "../forms/delete/DeleteRoleForm";
+import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -34,8 +34,14 @@ const api = axios.create({
 export default function RoleTable({ searchValue, searchOption }) {
   const [selectedRole, setSelectedRole] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleConfirmDelete = (position) => {
+    setSelectedItem(position);
+    setOpenDialog(true);
+  };
 
   const [roles, setRoles] = React.useState([]);
 
@@ -67,11 +73,6 @@ export default function RoleTable({ searchValue, searchOption }) {
 
   const handleOpenEdit = (role) => {
     setOpenEdit(!openEdit);
-    setSelectedRole(role);
-  };
-
-  const handleConfirmDelete = (role) => {
-    setOpenDelete(!openDelete);
     setSelectedRole(role);
   };
 
@@ -381,17 +382,20 @@ export default function RoleTable({ searchValue, searchOption }) {
             />
           </Dialog>
         )}
-        {openDelete && (
-          <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-            <DeleteRoleForm
-              selectedRole={selectedRole}
-              openDelete={openDelete}
-              setOpenDelete={setOpenDelete}
-              fetchData={fetchData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
+        {openDialog && (
+        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+          <GenericDeleteForm
+            selectedItem={selectedItem}
+            openDialog={openDialog}
+            setOpenDialog={setOpenDialog}
+            toast={toast}
+            endpoint="roles"
+            successMessage={`${
+              selectedItem.name && selectedItem.name
+            } Deletado com Sucesso`}
+          />
+        </Dialog>
+      )}
       </Box>
     </>
   );

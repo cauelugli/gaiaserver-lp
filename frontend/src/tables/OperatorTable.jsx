@@ -25,7 +25,8 @@ import LockIcon from "@mui/icons-material/Lock";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditOperatorForm from "../forms/edit/EditOperatorForm";
-import DeleteOperatorForm from "../forms/delete/DeleteOperatorForm";
+// import DeleteOperatorForm from "../forms/delete/DeleteOperatorForm";
+import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -34,8 +35,14 @@ const api = axios.create({
 export default function OperatorTable({ searchValue, searchOption }) {
   const [selectedOperator, setSelectedOperator] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
   const [option, setOption] = React.useState("false");
+  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleConfirmDelete = (position) => {
+    setSelectedItem(position);
+    setOpenDialog(true);
+  };
 
   const [operators, setOperators] = React.useState([]);
 
@@ -74,10 +81,10 @@ export default function OperatorTable({ searchValue, searchOption }) {
     setOpenEdit(!openEdit);
   };
 
-  const handleConfirmDelete = (user) => {
-    setOpenDelete(!openDelete);
-    setSelectedOperator(user);
-  };
+  // const handleConfirmDelete = (user) => {
+  //   setOpenDelete(!openDelete);
+  //   setSelectedOperator(user);
+  // };
 
   const tableHeaderRow = [
     {
@@ -262,7 +269,8 @@ export default function OperatorTable({ searchValue, searchOption }) {
             />
           </Dialog>
         )}
-        {openDelete && (
+
+        {/* {openDelete && (
           <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
             <DeleteOperatorForm
               selectedOperator={selectedOperator}
@@ -270,6 +278,20 @@ export default function OperatorTable({ searchValue, searchOption }) {
               setOpenDelete={setOpenDelete}
               fetchData={fetchData}
               toast={toast}
+            />
+          </Dialog>
+        )} */}
+        {openDialog && (
+          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+            <GenericDeleteForm
+              selectedItem={selectedItem}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+              toast={toast}
+              endpoint="clients"
+              successMessage={`${
+                selectedItem.name && selectedItem.name
+              } Deletado com Sucesso`}
             />
           </Dialog>
         )}
