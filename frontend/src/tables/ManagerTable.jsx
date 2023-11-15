@@ -243,7 +243,30 @@ export default function ManagerTable({ searchValue, searchOption }) {
                       align="center"
                     >
                       <Typography sx={{ fontSize: 14 }}>
-                        {row.department ? row.department.name : "-"}
+                        {row.department ? (
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                          >
+                            <Paper
+                              elevation={0}
+                              sx={{
+                                mr: 1,
+                                mt: 0.5,
+                                width: 12,
+                                height: 12,
+                                borderRadius: 50,
+                                backgroundColor: row.department.color,
+                              }}
+                            >
+                              {" "}
+                            </Paper>
+                            <Typography>{row.department.name}</Typography>
+                          </Grid>
+                        ) : (
+                          "-"
+                        )}
                       </Typography>
                     </TableCell>
                   </TableRow>
