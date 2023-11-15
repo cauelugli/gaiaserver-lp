@@ -494,7 +494,7 @@ export default function DepartmentTable({
                                                 fontWeight: "bold",
                                               }}
                                             >
-                                              {user.position.toUpperCase()}
+                                              {user.position ? user.position.toUpperCase() : "-"}
                                             </Typography>
                                           </Grid>
                                           <Grid item>
