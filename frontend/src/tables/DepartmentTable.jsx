@@ -31,7 +31,8 @@ export default function DepartmentTable({
   departments,
   users,
   managers,
-  fetchData,
+  refreshData,
+  setRefreshData,
   toast,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -584,7 +585,8 @@ export default function DepartmentTable({
             managers={managers}
             selectedDepartment={selectedDepartment}
             setOpenEdit={setOpenEdit}
-            fetchData={fetchData}
+            setRefreshData={setRefreshData}
+            refreshData={refreshData}
             toast={toast}
           />
         </Dialog>
@@ -596,6 +598,8 @@ export default function DepartmentTable({
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
             toast={toast}
+            setRefreshData={setRefreshData}
+            refreshData={refreshData}
             endpoint="departments"
             successMessage={`${
               selectedItem.name && selectedItem.name

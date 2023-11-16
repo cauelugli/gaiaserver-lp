@@ -29,6 +29,8 @@ export default function PositionTable({
   toast,
   searchValue,
   searchOption,
+  refreshData,
+  setRefreshData,
 }) {
   const [selectedPosition, setSelectedPosition] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -128,11 +130,15 @@ export default function PositionTable({
                 ))}
               </TableRow>
               {sortedRows
-                .filter((user) =>
-                  user[searchOption]
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase())
-                )
+                .filter((user) => {
+                  const userProperty = searchOption
+                    .split(".")
+                    .reduce((obj, key) => obj[key], user);
+                  return (
+                    userProperty &&
+                    userProperty.toLowerCase().includes(searchValue.toLowerCase())
+                  );
+                })
                 .map((position) => (
                   <>
                     <TableRow
@@ -193,6 +199,8 @@ export default function PositionTable({
               selectedPosition={selectedPosition}
               previousMaterials={selectedPosition.materials}
               setOpenEdit={setOpenEdit}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               toast={toast}
             />
           </Dialog>
@@ -204,6 +212,8 @@ export default function PositionTable({
               openDialog={openDialog}
               setOpenDialog={setOpenDialog}
               toast={toast}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               endpoint="positions"
               successMessage={`${
                 selectedItem.name && selectedItem.name

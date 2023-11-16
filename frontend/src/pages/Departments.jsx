@@ -114,29 +114,6 @@ export default function Departments({ user }) {
     fetchData();
   }, [refreshData]);
 
-  // const fetchData = async () => {
-  //   try {
-  //     const users = await api.get("/users");
-  //     const managers = await api.get("/managers");
-  //     const departments = await api.get("/departments");
-  //     const positions = await api.get("/positions");
-  //     setUsers(users.data);
-  //     setManagers(managers.data);
-  //     setServiceDepartments(
-  //       departments.data.filter((department) => department.type === "Serviços")
-  //     );
-  //     setSaleDepartments(
-  //       departments.data.filter((department) => department.type === "Vendas")
-  //     );
-  //     setInternalDepartments(
-  //       departments.data.filter((department) => department.type === "Interno")
-  //     );
-  //     setPositions(positions.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
