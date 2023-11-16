@@ -33,6 +33,7 @@ const api = axios.create({
 });
 
 export default function CustomerTable({
+  refreshData,
   searchValue,
   searchOption,
   openAdd,
@@ -61,7 +62,7 @@ export default function CustomerTable({
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   const fetchData = async () => {
     try {

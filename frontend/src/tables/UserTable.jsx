@@ -31,7 +31,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function UserTable({ searchValue, searchOption }) {
+export default function UserTable({ refreshData, searchValue, searchOption }) {
   const [selectedUser, setSelectedUser] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -71,7 +71,7 @@ export default function UserTable({ searchValue, searchOption }) {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   const fetchData = async () => {
     try {

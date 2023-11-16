@@ -35,6 +35,8 @@ import ClientTable from "../tables/ClientTable";
 
 import AddClientForm from "../forms/add/AddClientForm";
 import AddCustomerForm from "../forms/add/AddCustomerForm";
+import NoDataText from "../components/small/NoDataText";
+import RefreshButton from "../components/small/buttons/RefreshButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -54,9 +56,11 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Customers({user}) {
+export default function Customers({ user }) {
+  const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [clients, setClients] = React.useState([]);
+  const [customers, setCustomers] = React.useState([]);
 
   const [openAddCustomer, setOpenAddCustomer] = React.useState(false);
   const [openAddClient, setOpenAddClient] = React.useState(false);
@@ -88,23 +92,16 @@ export default function Customers({user}) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/clients");
-        setClients(response.data);
+        const customers = await api.get("/customers");
+        const clients = await api.get("/clients");
+        setClients(clients.data);
+        setCustomers(customers.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await api.get("/jobs");
-      setClients(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   return (
     <Box>
@@ -179,175 +176,200 @@ export default function Customers({user}) {
             label={<Typography sx={{ fontSize: 14 }}>Pessoa Física</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
+          <RefreshButton
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder="Pesquise aqui..."
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
+        {customers.length === 0 ? (
+          <NoDataText option="Clientes Empresa" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder="Pesquise aqui..."
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "2%", pt: 0.5 }}>
+                <RadioGroup
+                  row
+                  value={searchOption}
+                  onChange={handleSearchOptionChange}
+                >
+                  <FormControlLabel
+                    value="name"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
                       />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        Nome
+                      </Typography>
+                    }
+                  />
+                  <FormControlLabel
+                    value="mainContactName"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        Contato Principal
+                      </Typography>
+                    }
+                  />
+                </RadioGroup>
+              </Grid>
+            </Grid>
+            <CustomerTable
+              refreshData={refreshData}
+              searchValue={searchValue}
+              searchOption={searchOption}
             />
-          </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
-              value={searchOption}
-              onChange={handleSearchOptionChange}
-            >
-              <FormControlLabel
-                value="name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Nome
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="mainContactName"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Contato Principal
-                  </Typography>
-                }
-              />
-            </RadioGroup>
-          </Grid>
-        </Grid>
-        <CustomerTable searchValue={searchValue} searchOption={searchOption} />
+          </>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder="Pesquise aqui..."
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
+        {clients.length === 0 ? (
+          <NoDataText option="Clientes Pessoa Física" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder="Pesquise aqui..."
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "2%", pt: 0.5 }}>
+                <RadioGroup
+                  row
+                  value={searchOption}
+                  onChange={handleSearchOptionChange}
+                >
+                  <FormControlLabel
+                    value="name"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
                       />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        Nome
+                      </Typography>
+                    }
+                  />
+                  <FormControlLabel
+                    value="email"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        E-mail
+                      </Typography>
+                    }
+                  />
+                  <FormControlLabel
+                    value="phone"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        Telefone
+                      </Typography>
+                    }
+                  />
+                </RadioGroup>
+              </Grid>
+            </Grid>
+            <ClientTable
+              refreshData={refreshData}
+              searchValue={searchValue}
+              searchOption={searchOption}
             />
-          </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
-              value={searchOption}
-              onChange={handleSearchOptionChange}
-            >
-              <FormControlLabel
-                value="name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Nome
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="email"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    E-mail
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="phone"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Telefone
-                  </Typography>
-                }
-              />
-            </RadioGroup>
-          </Grid>
-        </Grid>
-        <ClientTable searchValue={searchValue} searchOption={searchOption} />
+          </>
+        )}
       </CustomTabPanel>
+
       {openAddCustomer && (
         <Dialog
           fullWidth
@@ -359,6 +381,7 @@ export default function Customers({user}) {
             openAdd={openAddCustomer}
             setOpenAdd={setOpenAddCustomer}
             toast={toast}
+            // fetchData={fetchData}
           />
         </Dialog>
       )}
@@ -373,7 +396,7 @@ export default function Customers({user}) {
             openAdd={openAddClient}
             setOpenAdd={setOpenAddClient}
             toast={toast}
-            fetchData={fetchData}
+            // fetchData={fetchData}
           />
         </Dialog>
       )}

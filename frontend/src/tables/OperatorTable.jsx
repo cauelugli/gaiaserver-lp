@@ -31,7 +31,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function OperatorTable({ searchValue, searchOption }) {
+export default function OperatorTable({ refreshData, searchValue, searchOption }) {
   const [selectedOperator, setSelectedOperator] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -53,7 +53,7 @@ export default function OperatorTable({ searchValue, searchOption }) {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   const fetchData = async () => {
     try {

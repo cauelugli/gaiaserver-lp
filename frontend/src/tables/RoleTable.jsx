@@ -31,7 +31,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function RoleTable({ searchValue, searchOption }) {
+export default function RoleTable({ refreshData, searchValue, searchOption }) {
   const [selectedRole, setSelectedRole] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -55,7 +55,7 @@ export default function RoleTable({ searchValue, searchOption }) {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   const fetchData = async () => {
     try {

@@ -44,6 +44,8 @@ import AddUserForm from "../forms/add/AddUserForm";
 import AddManagerForm from "../forms/add/AddManagerForm";
 import AddOperatorForm from "../forms/add/AddOperatorForm";
 import AddRoleForm from "../forms/add/AddRoleForm";
+import NoDataText from "../components/small/NoDataText";
+import RefreshButton from "../components/small/buttons/RefreshButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -64,12 +66,14 @@ function CustomTabPanel(props) {
 }
 
 export default function Users({ user }) {
+  const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
   const [users, setUsers] = React.useState([]);
+  const [managers, setManagers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
-  const [operators, setOperators] = React.useState([]);
   const [positions, setPositions] = React.useState([]);
+  const [roles, setRoles] = React.useState([]);
 
   const [openAddUser, setOpenAddUser] = React.useState(false);
   const [openAddManager, setOpenAddManager] = React.useState(false);
@@ -110,13 +114,12 @@ export default function Users({ user }) {
         const managers = await api.get("/managers");
         const departments = await api.get("/departments");
         const positions = await api.get("/positions");
-        const usersData = users.data;
-        const managersData = managers.data;
-        const combinedData = [...usersData, ...managersData];
-        setUsers(usersData);
+        const roles = await api.get("/roles");
+        setUsers(users.data);
+        setManagers(managers.data);
         setDepartments(departments.data);
-        setOperators(combinedData);
         setPositions(positions.data);
+        setRoles(roles.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -124,23 +127,22 @@ export default function Users({ user }) {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const users = await api.get("/users");
-      const managers = await api.get("/managers");
-      const departments = await api.get("/departments");
-      const positions = await api.get("/positions");
-      const usersData = users.data;
-      const managersData = managers.data;
-      const combinedData = [...usersData, ...managersData];
-      setUsers(usersData);
-      setDepartments(departments.data);
-      setOperators(combinedData);
-      setPositions(positions.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const users = await api.get("/users");
+  //     const managers = await api.get("/managers");
+  //     const departments = await api.get("/departments");
+  //     const positions = await api.get("/positions");
+  //     const roles = await api.get("/roles");
+  //     setUsers(users.data);
+  //     setManagers(managers.data);
+  //     setDepartments(departments.data);
+  //     setPositions(positions.data);
+  //     setRoles(roles.data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
   return (
     <Box>
@@ -237,441 +239,485 @@ export default function Users({ user }) {
             }
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
+          <RefreshButton
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder="Pesquise aqui..."
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
-            />
-          </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
-              value={searchOption}
-              onChange={handleSearchOptionChange}
-            >
-              <FormControlLabel
-                value="name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Nome
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="email"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    E-mail
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="phone"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Telefone
-                  </Typography>
-                }
-              />
-
-              {departments.length > 0 && (
-                <FormControlLabel
-                  value="department.name"
-                  control={
-                    <Radio
-                      sx={{
-                        "& .MuiSvgIcon-root": {
-                          fontSize: 13,
-                        },
-                      }}
-                    />
-                  }
-                  label={
-                    <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                      Departamento
-                    </Typography>
-                  }
-                />
-              )}
-            </RadioGroup>
-          </Grid>
-          <Grid item sx={{ ml: "1%" }}>
-            {searchOption === "department.name" && (
-              <>
-                <Select
-                  onChange={(e) => {
-                    setSearchValue(e.target.value.name),
-                      setSearchValueDeptColor(e.target.value.color);
-                  }}
+        {users.length === 0 ? (
+          <NoDataText option="Funcionários" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder="Pesquise aqui..."
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
                   value={searchValue}
-                  renderValue={(selected) => (
-                    <Grid container direction="row">
-                      <Paper
-                        elevation={0}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "2%", pt: 0.5 }}>
+                <RadioGroup
+                  row
+                  value={searchOption}
+                  onChange={handleSearchOptionChange}
+                >
+                  <FormControlLabel
+                    value="name"
+                    control={
+                      <Radio
                         sx={{
-                          mr: 1,
-                          mt: 0.5,
-                          width: 12,
-                          height: 12,
-                          borderRadius: 50,
-                          backgroundColor: searchValueDeptColor,
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
                         }}
                       />
-                      <Typography>{searchValue}</Typography>
-                    </Grid>
-                  )}
-                  size="small"
-                  sx={{ minWidth: 200 }}
-                >
-                  {departments.map((item) => (
-                    <MenuItem value={item} key={item.id}>
-                      <Grid container direction="row">
-                        <Paper
-                          elevation={0}
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        Nome
+                      </Typography>
+                    }
+                  />
+                  <FormControlLabel
+                    value="email"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        E-mail
+                      </Typography>
+                    }
+                  />
+                  <FormControlLabel
+                    value="phone"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        Telefone
+                      </Typography>
+                    }
+                  />
+
+                  {departments.length > 0 && (
+                    <FormControlLabel
+                      value="department.name"
+                      control={
+                        <Radio
                           sx={{
-                            mr: 1,
-                            mt: 0.5,
-                            width: 12,
-                            height: 12,
-                            borderRadius: 50,
-                            backgroundColor: item.color,
+                            "& .MuiSvgIcon-root": {
+                              fontSize: 13,
+                            },
                           }}
                         />
-                        <Typography>{item.name}</Typography>
-                      </Grid>
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText>Selecione o Departamento</FormHelperText>
-              </>
-            )}
-          </Grid>
-        </Grid>
+                      }
+                      label={
+                        <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                          Departamento
+                        </Typography>
+                      }
+                    />
+                  )}
+                </RadioGroup>
+              </Grid>
+              <Grid item sx={{ ml: "1%" }}>
+                {searchOption === "department.name" && (
+                  <>
+                    <Select
+                      onChange={(e) => {
+                        setSearchValue(e.target.value.name),
+                          setSearchValueDeptColor(e.target.value.color);
+                      }}
+                      value={searchValue}
+                      renderValue={(selected) => (
+                        <Grid container direction="row">
+                          <Paper
+                            elevation={0}
+                            sx={{
+                              mr: 1,
+                              mt: 0.5,
+                              width: 12,
+                              height: 12,
+                              borderRadius: 50,
+                              backgroundColor: searchValueDeptColor,
+                            }}
+                          />
+                          <Typography>{searchValue}</Typography>
+                        </Grid>
+                      )}
+                      size="small"
+                      sx={{ minWidth: 200 }}
+                    >
+                      {departments.map((item) => (
+                        <MenuItem value={item} key={item.id}>
+                          <Grid container direction="row">
+                            <Paper
+                              elevation={0}
+                              sx={{
+                                mr: 1,
+                                mt: 0.5,
+                                width: 12,
+                                height: 12,
+                                borderRadius: 50,
+                                backgroundColor: item.color,
+                              }}
+                            />
+                            <Typography>{item.name}</Typography>
+                          </Grid>
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText>Selecione o Departamento</FormHelperText>
+                  </>
+                )}
+              </Grid>
+            </Grid>
 
-        <UserTable searchValue={searchValue} searchOption={searchOption} />
+            <UserTable
+              refreshData={refreshData}
+              searchValue={searchValue}
+              searchOption={searchOption}
+            />
+          </>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder="Pesquise aqui..."
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
+        {managers.length === 0 ? (
+          <NoDataText option="Gerentes" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder="Pesquise aqui..."
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "2%", pt: 0.5 }}>
+                <RadioGroup
+                  row
+                  value={searchOption}
+                  onChange={handleSearchOptionChange}
+                >
+                  <FormControlLabel
+                    value="name"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
                       />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
-            />
-          </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
-              value={searchOption}
-              onChange={handleSearchOptionChange}
-            >
-              <FormControlLabel
-                value="name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        Nome
+                      </Typography>
+                    }
                   />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Nome
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="email"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
+                  <FormControlLabel
+                    value="email"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        E-mail
+                      </Typography>
+                    }
                   />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    E-mail
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="phone"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
+                  <FormControlLabel
+                    value="phone"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        Telefone
+                      </Typography>
+                    }
                   />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Telefone
-                  </Typography>
-                }
-              />
-            </RadioGroup>
-          </Grid>
-        </Grid>
+                </RadioGroup>
+              </Grid>
+            </Grid>
 
-        <ManagerTable searchValue={searchValue} searchOption={searchOption} />
+            <ManagerTable
+              refreshData={refreshData}
+              searchValue={searchValue}
+              searchOption={searchOption}
+            />
+          </>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder="Pesquise aqui..."
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
-            />
-          </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
-              value={searchOption}
-              onChange={handleSearchOptionChange}
-            >
-              <FormControlLabel
-                value="name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Nome
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="username"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Nome de Operador
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="role"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Perfil de Acesso
-                  </Typography>
-                }
-              />
-            </RadioGroup>
-          </Grid>
-          <Grid item sx={{ ml: "1%" }}>
-            {searchOption === "role" && (
-              <>
-                <Select
-                  onChange={(e) => setSearchValue(e.target.value)}
-                  value={searchValue}
-                  renderValue={(selected) => (
-                    <Typography>{selected}</Typography>
-                  )}
+        {users.length === 0 ? (
+          <NoDataText option="Operadores" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder="Pesquise aqui..."
                   size="small"
-                  sx={{ minWidth: 200 }}
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "2%", pt: 0.5 }}>
+                <RadioGroup
+                  row
+                  value={searchOption}
+                  onChange={handleSearchOptionChange}
                 >
-                  {/* {roles.map((item) => (
+                  <FormControlLabel
+                    value="name"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        Nome
+                      </Typography>
+                    }
+                  />
+                  <FormControlLabel
+                    value="username"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        Nome de Operador
+                      </Typography>
+                    }
+                  />
+                  <FormControlLabel
+                    value="role"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        Perfil de Acesso
+                      </Typography>
+                    }
+                  />
+                </RadioGroup>
+              </Grid>
+              <Grid item sx={{ ml: "1%" }}>
+                {searchOption === "role" && (
+                  <>
+                    <Select
+                      onChange={(e) => setSearchValue(e.target.value)}
+                      value={searchValue}
+                      renderValue={(selected) => (
+                        <Typography>{selected}</Typography>
+                      )}
+                      size="small"
+                      sx={{ minWidth: 200 }}
+                    >
+                      {/* {roles.map((item) => (
                     <MenuItem value={item} key={item.id}>
                       <Typography>{item.name}</Typography>
                     </MenuItem>
                   ))} */}
-                  <MenuItem value="placeholder">
-                    <Typography>placeholder</Typography>
-                  </MenuItem>
-                </Select>
-                <FormHelperText>Selecione o Perfil</FormHelperText>
-              </>
-            )}
-          </Grid>
-        </Grid>
+                      <MenuItem value="placeholder">
+                        <Typography>placeholder</Typography>
+                      </MenuItem>
+                    </Select>
+                    <FormHelperText>Selecione o Perfil</FormHelperText>
+                  </>
+                )}
+              </Grid>
+            </Grid>
 
-        <OperatorTable searchValue={searchValue} searchOption={searchOption} />
+            <OperatorTable
+              refreshData={refreshData}
+              searchValue={searchValue}
+              searchOption={searchOption}
+            />
+          </>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder="Pesquise aqui..."
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
+        {roles.length === 0 ? (
+          <NoDataText option="Perfil de Acesso" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder="Pesquise aqui..."
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "2%", pt: 0.5 }}>
+                <RadioGroup
+                  row
+                  value={searchOption}
+                  onChange={handleSearchOptionChange}
+                >
+                  <FormControlLabel
+                    value="name"
+                    control={
+                      <Radio
+                        sx={{
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 13,
+                          },
+                        }}
                       />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
-            />
-          </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
-              value={searchOption}
-              onChange={handleSearchOptionChange}
-            >
-              <FormControlLabel
-                value="name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
+                    }
+                    label={
+                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                        Nome do Perfil
+                      </Typography>
+                    }
                   />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Nome do Perfil
-                  </Typography>
-                }
-              />
-            </RadioGroup>
-          </Grid>
-        </Grid>
+                </RadioGroup>
+              </Grid>
+            </Grid>
 
-        <RoleTable searchValue={searchValue} searchOption={searchOption} />
+            <RoleTable
+              refreshData={refreshData}
+              searchValue={searchValue}
+              searchOption={searchOption}
+            />
+          </>
+        )}
       </CustomTabPanel>
       {openAddUser && (
         <Dialog
@@ -685,7 +731,7 @@ export default function Users({ user }) {
             departments={departments}
             positions={positions}
             setOpenAdd={setOpenAddUser}
-            fetchData={fetchData}
+            // fetchData={fetchData}
             toast={toast}
           />
         </Dialog>
@@ -701,7 +747,7 @@ export default function Users({ user }) {
             openAdd={openAddManager}
             departments={departments}
             setOpenAdd={setOpenAddManager}
-            fetchData={fetchData}
+            // fetchData={fetchData}
             toast={toast}
           />
         </Dialog>
@@ -715,9 +761,8 @@ export default function Users({ user }) {
         >
           <AddOperatorForm
             openAdd={openAddOperator}
-            operators={operators.filter((op) => !op.username)}
             setOpenAdd={setOpenAddOperator}
-            fetchData={fetchData}
+            // fetchData={fetchData}
             toast={toast}
           />
         </Dialog>
@@ -732,7 +777,7 @@ export default function Users({ user }) {
           <AddRoleForm
             openAdd={openAddRole}
             setOpenAdd={setOpenAddRole}
-            fetchData={fetchData}
+            // fetchData={fetchData}
             toast={toast}
           />
         </Dialog>

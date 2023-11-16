@@ -32,7 +32,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ManagerTable({ searchValue, searchOption }) {
+export default function ManagerTable({ refreshData, searchValue, searchOption }) {
   const [selectedManager, setSelectedManager] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -69,7 +69,7 @@ export default function ManagerTable({ searchValue, searchOption }) {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   const fetchData = async () => {
     try {
