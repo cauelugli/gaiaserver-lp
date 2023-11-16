@@ -10,9 +10,15 @@ const Dashboard = ({ user }) => {
       <Typography sx={{ my: 3 }}>
         Hellow, <strong>{user.name}</strong> !
       </Typography>
-      <Typography sx={{ my: 1 }}>Departamento: {user.department.name}</Typography>
-      <Typography sx={{ my: 1 }}>Acesso: {user.role}</Typography>
-      <Typography sx={{ my: 1 }}>Cargo: {user.position}</Typography>
+      <Typography sx={{ my: 1 }}>
+        Departamento: {user.department ? user.department.name : "-"}
+      </Typography>
+      <Typography sx={{ my: 1 }}>
+        Acesso: {user.role ? user.role : "-"}
+      </Typography>
+      <Typography sx={{ my: 1 }}>
+        Cargo: {user.position ? user.position : "-"}
+      </Typography>
       <Typography sx={{ my: 1 }}>Usuário: {user.username}</Typography>
 
       <img

@@ -31,7 +31,7 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import Person4Icon from "@mui/icons-material/Person4";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 
@@ -232,7 +232,9 @@ export default function Users({ user }) {
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Perfil de Acesso</Typography>}
+            label={
+              <Typography sx={{ fontSize: 14 }}>Perfil de Acesso</Typography>
+            }
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
         </Tabs>
@@ -324,23 +326,26 @@ export default function Users({ user }) {
                   </Typography>
                 }
               />
-              <FormControlLabel
-                value="department.name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Departamento
-                  </Typography>
-                }
-              />
+
+              {departments.length > 0 && (
+                <FormControlLabel
+                  value="department.name"
+                  control={
+                    <Radio
+                      sx={{
+                        "& .MuiSvgIcon-root": {
+                          fontSize: 13,
+                        },
+                      }}
+                    />
+                  }
+                  label={
+                    <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
+                      Departamento
+                    </Typography>
+                  }
+                />
+              )}
             </RadioGroup>
           </Grid>
           <Grid item sx={{ ml: "1%" }}>

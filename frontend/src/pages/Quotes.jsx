@@ -1,14 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 import {
   Box,
-  Button,
-  Dialog,
   FormControlLabel,
   Grid,
   InputAdornment,
@@ -23,8 +20,6 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 
-import ServiceTable from "../tables/ServiceTable";
-import AddServiceForm from "../forms/add/AddServiceForm";
 import QuoteTable from "../tables/QuoteTable";
 
 const api = axios.create({
@@ -47,8 +42,6 @@ function CustomTabPanel(props) {
 
 export default function Quotes({ user }) {
   const [value, setValue] = React.useState(0);
-  const [openAddService, setOpenAddService] = React.useState(false);
-
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("name");
 
@@ -100,19 +93,6 @@ export default function Quotes({ user }) {
         >
           Orçamentos
         </Typography>
-        <Button
-          onClick={() => setOpenAddService(true)}
-          variant="outlined"
-          size="small"
-          sx={{
-            borderRadius: 3,
-            bottom: 3,
-            "&:hover": { borderColor: "#eee" },
-          }}
-        >
-          <Typography variant="h6">+</Typography>
-          <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>Novo</Typography>
-        </Button>
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -256,21 +236,6 @@ export default function Quotes({ user }) {
           fetchData={fetchData}
         />
       </CustomTabPanel>
-      {openAddService && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openAddService}
-          onClose={() => setOpenAddService(!openAddService)}
-        >
-          <AddServiceForm
-            openAdd={openAddService}
-            setOpenAdd={setOpenAddService}
-            fetchData={fetchData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
     </Box>
   );
 }
