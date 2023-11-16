@@ -31,7 +31,8 @@ const AddManagerForm = ({
   openAdd,
   departments,
   setOpenAdd,
-  fetchData,
+  refreshData,
+  setRefreshData,
   toast,
 }) => {
   const [name, setName] = React.useState("");
@@ -76,7 +77,7 @@ const AddManagerForm = ({
       }
 
       setOpenAdd(!openAdd);
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {

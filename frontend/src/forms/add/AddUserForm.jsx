@@ -31,7 +31,8 @@ const AddUserForm = ({
   departments,
   positions,
   setOpenAdd,
-  fetchData,
+  refreshData,
+  setRefreshData,
   toast,
 }) => {
   const [name, setName] = React.useState("");
@@ -81,7 +82,7 @@ const AddUserForm = ({
       }
 
       setOpenAdd(!openAdd);
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {
@@ -91,6 +92,7 @@ const AddUserForm = ({
           autoClose: 1200,
         });
       } else {
+        console.log
         toast.error("Houve algum erro...", {
           closeOnClick: true,
           pauseOnHover: false,

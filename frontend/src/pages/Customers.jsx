@@ -101,7 +101,7 @@ export default function Customers({ user }) {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   return (
     <Box>
@@ -261,6 +261,7 @@ export default function Customers({ user }) {
             </Grid>
             <CustomerTable
               refreshData={refreshData}
+              setRefreshData={setRefreshData}
               searchValue={searchValue}
               searchOption={searchOption}
             />
@@ -363,6 +364,7 @@ export default function Customers({ user }) {
             </Grid>
             <ClientTable
               refreshData={refreshData}
+              setRefreshData={setRefreshData}
               searchValue={searchValue}
               searchOption={searchOption}
             />
@@ -381,7 +383,8 @@ export default function Customers({ user }) {
             openAdd={openAddCustomer}
             setOpenAdd={setOpenAddCustomer}
             toast={toast}
-            // fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
           />
         </Dialog>
       )}
@@ -396,7 +399,8 @@ export default function Customers({ user }) {
             openAdd={openAddClient}
             setOpenAdd={setOpenAddClient}
             toast={toast}
-            // fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
           />
         </Dialog>
       )}

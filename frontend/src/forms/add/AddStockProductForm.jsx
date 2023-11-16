@@ -33,7 +33,8 @@ export default function AddStockProductForm({
   user,
   products,
   onClose,
-  fetchData,
+  refreshData,
+  setRefreshData,
   toast,
 }) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
@@ -77,7 +78,7 @@ export default function AddStockProductForm({
         });
       }
       onClose();
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       alert("Vish, deu não...");
       console.log(err);

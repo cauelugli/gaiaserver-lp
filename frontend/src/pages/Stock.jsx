@@ -52,6 +52,7 @@ function CustomTabPanel(props) {
 }
 
 export default function Stock({ user }) {
+  const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [stockItems, setStockItems] = React.useState([]);
   const [products, setProducts] = React.useState([]);
@@ -106,17 +107,6 @@ export default function Stock({ user }) {
     };
     fetchData();
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const stockItems = await api.get("/stockItems");
-      const products = await api.get("/products");
-      setStockItems(stockItems.data);
-      setProducts(products.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   return (
     <Box>
@@ -261,7 +251,12 @@ export default function Stock({ user }) {
           </Grid>
         </Grid>
 
-        <ProductsTable searchValue={searchValue} searchOption={searchOption} />
+        <ProductsTable
+          searchValue={searchValue}
+          searchOption={searchOption}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
+        />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <Grid container direction="row" justifyContent="flex-start">
@@ -323,6 +318,8 @@ export default function Stock({ user }) {
           stockItems={stockItems}
           searchValue={searchValue}
           searchOption={searchOption}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
@@ -418,6 +415,8 @@ export default function Stock({ user }) {
         <StockEntriesTable
           searchValue={searchValue}
           searchOption={searchOption}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
         />
       </CustomTabPanel>
 
@@ -431,7 +430,8 @@ export default function Stock({ user }) {
           <AddProductForm
             user={user}
             onClose={() => closeModal(0)}
-            fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
@@ -447,7 +447,8 @@ export default function Stock({ user }) {
           <AddMultipleProductForm
             user={user}
             onClose={() => closeModal(1)}
-            fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
@@ -463,7 +464,8 @@ export default function Stock({ user }) {
           <AddStockItemForm
             user={user}
             onClose={() => closeModal(2)}
-            fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
@@ -480,7 +482,8 @@ export default function Stock({ user }) {
             user={user}
             products={products}
             onClose={() => closeModal(3)}
-            fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
@@ -497,7 +500,8 @@ export default function Stock({ user }) {
             user={user}
             stockItems={stockItems}
             onClose={() => closeModal(4)}
-            fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>

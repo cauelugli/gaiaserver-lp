@@ -35,7 +35,9 @@ const EditDepartmentForm = ({
   users,
   managers,
   setOpenEdit,
-  fetchData,
+  
+  refreshData,
+  setRefreshData,
 }) => {
   const previousData = selectedDepartment;
   const [name, setName] = React.useState(selectedDepartment.name);
@@ -101,6 +103,7 @@ const EditDepartmentForm = ({
         });
       }
       setOpenEdit(!openEdit);
+      setRefreshData(!refreshData);
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {

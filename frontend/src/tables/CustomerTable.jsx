@@ -24,7 +24,6 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
-import AddCustomerForm from "../forms/add/AddCustomerForm";
 import EditCustomerForm from "../forms/edit/EditCustomerForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
@@ -34,10 +33,9 @@ const api = axios.create({
 
 export default function CustomerTable({
   refreshData,
+  setRefreshData,
   searchValue,
   searchOption,
-  openAdd,
-  setOpenAdd,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -63,15 +61,6 @@ export default function CustomerTable({
     };
     fetchData();
   }, [refreshData]);
-
-  const fetchData = async () => {
-    try {
-      const response = await api.get("/customers");
-      setCustomers(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const handleOpenDetail = (customer) => {
     setOpenDetail(!openDetail);
@@ -410,21 +399,6 @@ export default function CustomerTable({
           </TableBody>
         </Table>
       </TableContainer>
-      {openAdd && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openAdd}
-          onClose={() => setOpenAdd(!openAdd)}
-        >
-          <AddCustomerForm
-            openAdd={openAdd}
-            setOpenAdd={setOpenAdd}
-            fetchData={fetchData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
       {openEdit && (
         <Dialog
           fullWidth
@@ -436,7 +410,8 @@ export default function CustomerTable({
             openEdit={openEdit}
             selectedCustomer={selectedCustomer}
             setOpenEdit={setOpenEdit}
-            fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
@@ -447,6 +422,8 @@ export default function CustomerTable({
             selectedItem={selectedItem}
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
             endpoint="customers"
             successMessage={`${

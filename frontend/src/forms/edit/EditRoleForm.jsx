@@ -21,6 +21,8 @@ export default function EditRoleForm({
   selectedRole,
   openEdit,
   setOpenEdit,
+  refreshData,
+  setRefreshData,
   toast,
 }) {
   const [name, setName] = React.useState(selectedRole.name);
@@ -44,6 +46,7 @@ export default function EditRoleForm({
         });
       }
       setOpenEdit(!openEdit);
+      setRefreshData(!refreshData)
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {

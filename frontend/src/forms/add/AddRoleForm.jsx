@@ -20,7 +20,8 @@ const api = axios.create({
 export default function AddRoleForm({
   openAdd,
   setOpenAdd,
-  fetchData,
+  refreshData,
+  setRefreshData,
   toast,
 }) {
   const [name, setName] = React.useState("");
@@ -40,7 +41,7 @@ export default function AddRoleForm({
         });
       }
       setOpenAdd(!openAdd);
-      fetchData();
+      setRefreshData(!refreshData)
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {

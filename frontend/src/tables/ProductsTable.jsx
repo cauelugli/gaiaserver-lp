@@ -33,7 +33,8 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ProductsTable({ searchValue, searchOption }) {
+export default function ProductsTable({ searchValue, searchOption,refreshData,
+  setRefreshData }) {
   const [selectedProduct, setSelectedProduct] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -68,15 +69,6 @@ export default function ProductsTable({ searchValue, searchOption }) {
     };
     fetchData();
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const products = await api.get("/products");
-      setProducts(products.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const handleOpenDetail = (product) => {
     setOpenDetail(!openDetail);
@@ -494,7 +486,8 @@ export default function ProductsTable({ searchValue, searchOption }) {
               openEdit={openEdit}
               selectedProduct={selectedProduct}
               setOpenEdit={setOpenEdit}
-              fetchData={fetchData}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               toast={toast}
             />
           </Dialog>
@@ -507,6 +500,8 @@ export default function ProductsTable({ searchValue, searchOption }) {
             setOpenDialog={setOpenDialog}
             toast={toast}
             endpoint="products"
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             successMessage={`${
               selectedItem.name && selectedItem.name
             } Deletado com Sucesso`}

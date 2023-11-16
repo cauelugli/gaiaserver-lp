@@ -31,7 +31,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function RoleTable({ refreshData, searchValue, searchOption }) {
+export default function RoleTable({ refreshData,setRefreshData, searchValue, searchOption }) {
   const [selectedRole, setSelectedRole] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -56,15 +56,6 @@ export default function RoleTable({ refreshData, searchValue, searchOption }) {
     };
     fetchData();
   }, [refreshData]);
-
-  const fetchData = async () => {
-    try {
-      const roles = await api.get("/roles");
-      setRoles(roles.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const handleOpenDetail = (role) => {
     setOpenDetail(!openDetail);
@@ -377,7 +368,8 @@ export default function RoleTable({ refreshData, searchValue, searchOption }) {
               openEdit={openEdit}
               selectedRole={selectedRole}
               setOpenEdit={setOpenEdit}
-              fetchData={fetchData}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               toast={toast}
             />
           </Dialog>

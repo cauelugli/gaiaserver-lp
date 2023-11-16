@@ -125,24 +125,7 @@ export default function Users({ user }) {
       }
     };
     fetchData();
-  }, []);
-
-  // const fetchData = async () => {
-  //   try {
-  //     const users = await api.get("/users");
-  //     const managers = await api.get("/managers");
-  //     const departments = await api.get("/departments");
-  //     const positions = await api.get("/positions");
-  //     const roles = await api.get("/roles");
-  //     setUsers(users.data);
-  //     setManagers(managers.data);
-  //     setDepartments(departments.data);
-  //     setPositions(positions.data);
-  //     setRoles(roles.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
+  }, [refreshData]);
 
   return (
     <Box>
@@ -413,6 +396,7 @@ export default function Users({ user }) {
 
             <UserTable
               refreshData={refreshData}
+              setRefreshData={setRefreshData}
               searchValue={searchValue}
               searchOption={searchOption}
             />
@@ -516,6 +500,7 @@ export default function Users({ user }) {
 
             <ManagerTable
               refreshData={refreshData}
+              setRefreshData={setRefreshData}
               searchValue={searchValue}
               searchOption={searchOption}
             />
@@ -644,6 +629,7 @@ export default function Users({ user }) {
 
             <OperatorTable
               refreshData={refreshData}
+              setRefreshData={setRefreshData}
               searchValue={searchValue}
               searchOption={searchOption}
             />
@@ -713,6 +699,7 @@ export default function Users({ user }) {
 
             <RoleTable
               refreshData={refreshData}
+              setRefreshData={setRefreshData}
               searchValue={searchValue}
               searchOption={searchOption}
             />
@@ -731,7 +718,8 @@ export default function Users({ user }) {
             departments={departments}
             positions={positions}
             setOpenAdd={setOpenAddUser}
-            // fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
@@ -747,7 +735,8 @@ export default function Users({ user }) {
             openAdd={openAddManager}
             departments={departments}
             setOpenAdd={setOpenAddManager}
-            // fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
@@ -762,7 +751,8 @@ export default function Users({ user }) {
           <AddOperatorForm
             openAdd={openAddOperator}
             setOpenAdd={setOpenAddOperator}
-            // fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
@@ -777,7 +767,8 @@ export default function Users({ user }) {
           <AddRoleForm
             openAdd={openAddRole}
             setOpenAdd={setOpenAddRole}
-            // fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>

@@ -29,8 +29,9 @@ const api = axios.create({
 
 const EditClientForm = ({
   openEdit,
+  refreshData,
+  setRefreshData,
   setOpenEdit,
-  fetchData,
   selectedClient,
   toast,
 }) => {
@@ -81,7 +82,7 @@ const EditClientForm = ({
         });
       }
       setOpenEdit(!openEdit);
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       alert("Vish, deu não...");
       console.log(err);

@@ -27,7 +27,13 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
+const AddCustomerForm = ({
+  openAdd,
+  setOpenAdd,
+  refreshData,
+  setRefreshData,
+  toast,
+}) => {
   const [name, setName] = React.useState("");
   const [address, setAddress] = React.useState("");
   const [phone, setPhone] = React.useState("");
@@ -83,7 +89,7 @@ const AddCustomerForm = ({ openAdd, setOpenAdd, fetchData, toast }) => {
         });
       }
       setOpenAdd(!openAdd);
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       alert("Vish, deu não...");
       console.log(err);

@@ -31,7 +31,12 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function UserTable({ refreshData, searchValue, searchOption }) {
+export default function UserTable({
+  refreshData,
+  setRefreshData,
+  searchValue,
+  searchOption,
+}) {
   const [selectedUser, setSelectedUser] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -73,18 +78,18 @@ export default function UserTable({ refreshData, searchValue, searchOption }) {
     fetchData();
   }, [refreshData]);
 
-  const fetchData = async () => {
-    try {
-      const users = await api.get("/users");
-      const departments = await api.get("/departments");
-      const positions = await api.get("/positions");
-      setUsers(users.data);
-      setDepartments(departments.data);
-      setPositions(positions.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const users = await api.get("/users");
+  //     const departments = await api.get("/departments");
+  //     const positions = await api.get("/positions");
+  //     setUsers(users.data);
+  //     setDepartments(departments.data);
+  //     setPositions(positions.data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
   const handleOpenDetail = (user) => {
     setOpenDetail(!openDetail);
@@ -486,25 +491,28 @@ export default function UserTable({ refreshData, searchValue, searchOption }) {
               departments={departments}
               positions={positions}
               setOpenEdit={setOpenEdit}
-              fetchData={fetchData}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               toast={toast}
             />
           </Dialog>
         )}
         {openDialog && (
-        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-          <GenericDeleteForm
-            selectedItem={selectedItem}
-            openDialog={openDialog}
-            setOpenDialog={setOpenDialog}
-            toast={toast}
-            endpoint="users"
-            successMessage={`${
-              selectedItem.name && selectedItem.name
-            } Deletado com Sucesso`}
-          />
-        </Dialog>
-      )}
+          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+            <GenericDeleteForm
+              selectedItem={selectedItem}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              toast={toast}
+              endpoint="users"
+              successMessage={`${
+                selectedItem.name && selectedItem.name
+              } Deletado com Sucesso`}
+            />
+          </Dialog>
+        )}
       </Box>
     </>
   );

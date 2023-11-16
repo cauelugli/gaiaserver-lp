@@ -25,7 +25,8 @@ const EditOperatorForm = ({
   openEdit,
   selectedOperator,
   setOpenEdit,
-  fetchData,
+  refreshData,
+  setRefreshData,
   toast,
 }) => {
   const [username, setUsername] = React.useState(selectedOperator.username);
@@ -46,7 +47,7 @@ const EditOperatorForm = ({
           operator: selectedOperator,
           username,
           role,
-          option
+          option,
         });
         if (res.data) {
           toast.success("Operador Editado!", {
@@ -57,14 +58,14 @@ const EditOperatorForm = ({
           });
         }
         setOpenEdit(!openEdit);
-        fetchData();
+        setRefreshData(!refreshData);
       } else if (option === "password") {
         if (arePasswordsEqual(password, password2)) {
           const res = await api.put("/operators", {
             operatorId: selectedOperator._id,
             operator: selectedOperator,
             password,
-            option
+            option,
           });
           if (res.data) {
             toast.success("Senha Atualizada!", {
@@ -75,7 +76,7 @@ const EditOperatorForm = ({
             });
           }
           setOpenEdit(!openEdit);
-          fetchData();
+          setRefreshData(!refreshData);
         } else {
           toast.error("As senhas não são iguais", {
             closeOnClick: true,
@@ -108,10 +109,16 @@ const EditOperatorForm = ({
     <form onSubmit={handleEdit}>
       <DialogTitle>
         {option === "operator" && (
-          <Typography variant="h6"> Editando Operador - {selectedOperator.name}</Typography>
+          <Typography variant="h6">
+            {" "}
+            Editando Operador - {selectedOperator.name}
+          </Typography>
         )}
         {option === "password" && (
-          <Typography variant="h6"> Alterar Senha - {selectedOperator.name}</Typography>
+          <Typography variant="h6">
+            {" "}
+            Alterar Senha - {selectedOperator.name}
+          </Typography>
         )}
       </DialogTitle>
       <DialogContent>

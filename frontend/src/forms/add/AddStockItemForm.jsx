@@ -23,7 +23,13 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddStockItemForm({ user,onClose, fetchData, toast }) {
+export default function AddStockItemForm({
+  user,
+  onClose,
+  refreshData,
+  setRefreshData,
+  toast,
+}) {
   const [name, setName] = React.useState("");
   const [buyValue, setBuyValue] = React.useState(0);
   const [sellValue, setSellValue] = React.useState(0);
@@ -53,7 +59,7 @@ export default function AddStockItemForm({ user,onClose, fetchData, toast }) {
         });
       }
       onClose();
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       alert("Vish, deu não...");
       console.log(err);
@@ -176,7 +182,7 @@ export default function AddStockItemForm({ user,onClose, fetchData, toast }) {
                   <Avatar
                     src={URL.createObjectURL(image)}
                     alt="Prévia da Imagem"
-                    sx={{ width: 250, height: 250, my:2 }}
+                    sx={{ width: 250, height: 250, my: 2 }}
                   />
                 </Grid>
                 <Grid item>

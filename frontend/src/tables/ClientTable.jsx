@@ -30,7 +30,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ClientTable({ refreshData, searchOption, searchValue }) {
+export default function ClientTable({ refreshData,setRefreshData, searchOption, searchValue }) {
   const [selectedClient, setSelectedClient] = React.useState([]);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -56,14 +56,14 @@ export default function ClientTable({ refreshData, searchOption, searchValue }) 
     fetchData();
   }, [refreshData]);
 
-  const fetchData = async () => {
-    try {
-      const response = await api.get("/clients");
-      setClients(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await api.get("/clients");
+  //     setClients(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
   const handleOpenDetail = (client) => {
     setOpenDetail(!openDetail);
@@ -336,7 +336,8 @@ export default function ClientTable({ refreshData, searchOption, searchValue }) 
             openEdit={openEdit}
             selectedClient={selectedClient}
             setOpenEdit={setOpenEdit}
-            fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
@@ -347,6 +348,8 @@ export default function ClientTable({ refreshData, searchOption, searchValue }) 
             selectedItem={selectedItem}
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
             endpoint="clients"
             successMessage={`${

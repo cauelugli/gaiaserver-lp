@@ -53,7 +53,9 @@ function CustomTabPanel(props) {
 }
 
 export default function Departments({ user }) {
+  const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
+
   const [openAddDepartment, setOpenAddDepartment] = React.useState(false);
   const [openAddPosition, setOpenAddPosition] = React.useState(false);
 
@@ -110,30 +112,30 @@ export default function Departments({ user }) {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
-  const fetchData = async () => {
-    try {
-      const users = await api.get("/users");
-      const managers = await api.get("/managers");
-      const departments = await api.get("/departments");
-      const positions = await api.get("/positions");
-      setUsers(users.data);
-      setManagers(managers.data);
-      setServiceDepartments(
-        departments.data.filter((department) => department.type === "Serviços")
-      );
-      setSaleDepartments(
-        departments.data.filter((department) => department.type === "Vendas")
-      );
-      setInternalDepartments(
-        departments.data.filter((department) => department.type === "Interno")
-      );
-      setPositions(positions.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const users = await api.get("/users");
+  //     const managers = await api.get("/managers");
+  //     const departments = await api.get("/departments");
+  //     const positions = await api.get("/positions");
+  //     setUsers(users.data);
+  //     setManagers(managers.data);
+  //     setServiceDepartments(
+  //       departments.data.filter((department) => department.type === "Serviços")
+  //     );
+  //     setSaleDepartments(
+  //       departments.data.filter((department) => department.type === "Vendas")
+  //     );
+  //     setInternalDepartments(
+  //       departments.data.filter((department) => department.type === "Interno")
+  //     );
+  //     setPositions(positions.data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -321,6 +323,8 @@ export default function Departments({ user }) {
           departments={serviceDepartments}
           openAdd={openAddDepartment}
           setOpenAdd={setOpenAddDepartment}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
           toast={toast}
         />
       </CustomTabPanel>
@@ -424,6 +428,8 @@ export default function Departments({ user }) {
           departments={saleDepartments}
           openAdd={openAddDepartment}
           setOpenAdd={setOpenAddDepartment}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
@@ -526,6 +532,8 @@ export default function Departments({ user }) {
           departments={internalDepartments}
           openAdd={openAddDepartment}
           setOpenAdd={setOpenAddDepartment}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
@@ -591,6 +599,8 @@ export default function Departments({ user }) {
           positions={positions}
           openAdd={openAddPosition}
           setOpenAdd={setOpenAddPosition}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
         />
       </CustomTabPanel>
       {openAddDepartment && (
@@ -605,7 +615,8 @@ export default function Departments({ user }) {
             users={users}
             managers={managers}
             setOpenAdd={setOpenAddDepartment}
-            fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
@@ -621,7 +632,8 @@ export default function Departments({ user }) {
             user={user}
             openAdd={openAddPosition}
             setOpenAdd={setOpenAddPosition}
-            fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>

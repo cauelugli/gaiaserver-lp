@@ -28,7 +28,8 @@ export default function EditProductForm({
   selectedProduct,
   openEdit,
   setOpenEdit,
-  fetchData,
+  refreshData,
+  setRefreshData,
   toast,
 }) {
   const [name, setName] = React.useState(selectedProduct.name);
@@ -100,7 +101,7 @@ export default function EditProductForm({
       }
   
       setOpenEdit(!openEdit);
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       alert("Vish, deu não...");
       console.log(err);

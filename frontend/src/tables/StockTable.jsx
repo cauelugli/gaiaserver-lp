@@ -32,7 +32,12 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function StockTable({ searchValue, searchOption }) {
+export default function StockTable({
+  searchValue,
+  searchOption,
+  refreshData,
+  setRefreshData,
+}) {
   const [selectedStockItem, setSelectedStockItem] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -67,15 +72,6 @@ export default function StockTable({ searchValue, searchOption }) {
     };
     fetchData();
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const stockItems = await api.get("/stockItems");
-      setStockItems(stockItems.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const handleOpenDetail = (stockItem) => {
     setOpenDetail(!openDetail);
@@ -409,7 +405,8 @@ export default function StockTable({ searchValue, searchOption }) {
               openEdit={openEdit}
               selectedStockItem={selectedStockItem}
               setOpenEdit={setOpenEdit}
-              fetchData={fetchData}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               toast={toast}
             />
           </Dialog>
@@ -421,6 +418,8 @@ export default function StockTable({ searchValue, searchOption }) {
               openDialog={openDialog}
               setOpenDialog={setOpenDialog}
               toast={toast}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               endpoint="stockItems"
               successMessage={`${
                 selectedItem.name && selectedItem.name

@@ -29,7 +29,8 @@ export default function ServicePlansTable({
   searchValue,
   searchOption,
   servicePlans,
-  fetchData,
+  refreshData,
+  setRefreshData,
 }) {
   const [selectedService, setSelectedService] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -281,25 +282,28 @@ export default function ServicePlansTable({
               selectedService={selectedService}
               previousMaterials={selectedService.materials}
               setOpenEdit={setOpenEdit}
-              fetchData={fetchData}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               toast={toast}
             />
           </Dialog>
         )} */}
         {openDialog && (
-        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-          <GenericDeleteForm
-            selectedItem={selectedItem}
-            openDialog={openDialog}
-            setOpenDialog={setOpenDialog}
-            toast={toast}
-            endpoint="servicePlans"
-            successMessage={`${
-              selectedItem.name && selectedItem.name
-            } Deletado com Sucesso`}
-          />
-        </Dialog>
-      )}
+          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+            <GenericDeleteForm
+              selectedItem={selectedItem}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+              toast={toast}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              endpoint="servicePlans"
+              successMessage={`${
+                selectedItem.name && selectedItem.name
+              } Deletado com Sucesso`}
+            />
+          </Dialog>
+        )}
       </Box>
     </>
   );

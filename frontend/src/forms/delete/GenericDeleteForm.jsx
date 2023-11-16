@@ -10,6 +10,8 @@ const api = axios.create({
 
 const GenericDeleteForm = ({
   selectedItem,
+  refreshData,
+  setRefreshData,
   openDialog,
   setOpenDialog,
   toast,
@@ -28,6 +30,7 @@ const GenericDeleteForm = ({
         });
       }
       setOpenDialog(false);
+      setRefreshData(!refreshData)
     } catch (err) {
       alert("Oops, something went wrong...");
       console.log(err);

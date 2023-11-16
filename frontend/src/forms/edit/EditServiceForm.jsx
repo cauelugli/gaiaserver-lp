@@ -29,7 +29,8 @@ export default function EditServiceForm({
   setOpenEdit,
   departments,
   stockItems,
-  fetchData,
+  refreshData,
+  setRefreshData,
   toast,
 }) {
   const previousData = selectedService;
@@ -87,7 +88,7 @@ export default function EditServiceForm({
         });
       }
       setOpenEdit(!openEdit);
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {

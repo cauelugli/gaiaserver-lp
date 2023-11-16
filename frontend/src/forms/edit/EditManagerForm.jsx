@@ -34,8 +34,8 @@ const EditManagerForm = ({
   selectedManager,
   departments,
   setOpenEdit,
-  fetchData,
-  toast,
+  refreshData,
+  setRefreshData,  toast,
 }) => {
   const [name, setName] = React.useState(selectedManager.name);
   const [email, setEmail] = React.useState(selectedManager.email);
@@ -86,7 +86,7 @@ const EditManagerForm = ({
         });
       }
       setOpenEdit(!openEdit);
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {

@@ -43,7 +43,8 @@ export default function JobTable({
   searchOption,
   jobs,
   managers,
-  fetchData,
+  refreshData,
+  setRefreshData
 }) {
   const [userReactions, setUserReactions] = React.useState({});
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -147,7 +148,7 @@ export default function JobTable({
           theme: "colored",
           autoClose: 1200,
         });
-        fetchData();
+        setRefreshData(!refreshData);
       }
     } catch (err) {
       alert("Vish, deu não...");
@@ -709,7 +710,8 @@ export default function JobTable({
             openEditJob={openEdit}
             selectedJob={selectedJob}
             setOpenEditJob={setOpenEdit}
-            fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
@@ -721,6 +723,8 @@ export default function JobTable({
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
             toast={toast}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             endpoint="jobs"
             successMessage={`${
               selectedItem.title && selectedItem.title

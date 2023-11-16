@@ -31,7 +31,12 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function OperatorTable({ refreshData, searchValue, searchOption }) {
+export default function OperatorTable({
+  refreshData,
+  setRefreshData,
+  searchValue,
+  searchOption,
+}) {
   const [selectedOperator, setSelectedOperator] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -54,19 +59,6 @@ export default function OperatorTable({ refreshData, searchValue, searchOption }
     };
     fetchData();
   }, [refreshData]);
-
-  const fetchData = async () => {
-    try {
-      const usersResponse = await api.get("/users");
-      const managersResponse = await api.get("/managers");
-      const usersData = usersResponse.data;
-      const managersData = managersResponse.data;
-      const combinedData = [...usersData, ...managersData];
-      setOperators(combinedData.filter((user) => user.username));
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const handleOpenEdit = (user, option) => {
     setOption(option);
@@ -257,7 +249,8 @@ export default function OperatorTable({ refreshData, searchValue, searchOption }
               openEdit={openEdit}
               selectedOperator={selectedOperator}
               setOpenEdit={setOpenEdit}
-              fetchData={fetchData}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               toast={toast}
             />
           </Dialog>
@@ -268,7 +261,8 @@ export default function OperatorTable({ refreshData, searchValue, searchOption }
               selectedOperator={selectedOperator}
               openDelete={openDelete}
               setOpenDelete={setOpenDelete}
-              fetchData={fetchData}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               toast={toast}
             />
           </Dialog>

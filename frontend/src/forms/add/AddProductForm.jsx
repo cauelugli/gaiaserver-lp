@@ -24,7 +24,8 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddProductForm({ user,onClose, fetchData, toast }) {
+export default function AddProductForm({ user,onClose, refreshData,
+  setRefreshData, toast }) {
   const [name, setName] = React.useState("");
   const [brand, setBrand] = React.useState("");
   const [image, setImage] = React.useState("");
@@ -65,7 +66,7 @@ export default function AddProductForm({ user,onClose, fetchData, toast }) {
         });
       }
       onClose();
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       alert("Vish, deu não...");
       console.log(err);

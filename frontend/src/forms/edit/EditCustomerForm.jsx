@@ -33,7 +33,8 @@ const EditCustomerForm = ({
   openEdit,
   setOpenEdit,
   selectedCustomer,
-  fetchData,
+  refreshData,
+  setRefreshData,
   toast,
 }) => {
   const [name, setName] = React.useState(selectedCustomer.name);
@@ -95,7 +96,7 @@ const EditCustomerForm = ({
         });
       }
       setOpenEdit(!openEdit);
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       alert("Vish, editei não...");
       console.log(err);

@@ -27,7 +27,8 @@ export default function EditStockItemForm({
   selectedStockItem,
   openEdit,
   setOpenEdit,
-  fetchData,
+  refreshData,
+  setRefreshData,
   toast,
 }) {
   const [name, setName] = React.useState(selectedStockItem.name);
@@ -66,7 +67,7 @@ export default function EditStockItemForm({
         });
       }
       setOpenEdit(!openEdit);
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       alert("Vish, deu não...");
       console.log(err);

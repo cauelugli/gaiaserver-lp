@@ -29,7 +29,8 @@ const api = axios.create({
 export default function AddMultipleProductForm({
   user,
   onClose,
-  fetchData,
+  refreshData,
+  setRefreshData,
   toast,
 }) {
   const [productList, setProductList] = React.useState([
@@ -107,7 +108,7 @@ export default function AddMultipleProductForm({
         });
       }
       onClose();
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       toast.error("Erro ao Deletar Produto(s)", {
         closeOnClick: true,

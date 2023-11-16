@@ -32,7 +32,12 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ManagerTable({ refreshData, searchValue, searchOption }) {
+export default function ManagerTable({
+  refreshData,
+  setRefreshData,
+  searchValue,
+  searchOption,
+}) {
   const [selectedManager, setSelectedManager] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -70,17 +75,6 @@ export default function ManagerTable({ refreshData, searchValue, searchOption })
     };
     fetchData();
   }, [refreshData]);
-
-  const fetchData = async () => {
-    try {
-      const managers = await api.get("/managers");
-      const departments = await api.get("/departments");
-      setManagers(managers.data);
-      setDepartments(departments.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const handleOpenDetail = (manager) => {
     setOpenDetail(!openDetail);
@@ -476,25 +470,28 @@ export default function ManagerTable({ refreshData, searchValue, searchOption })
               selectedManager={selectedManager}
               departments={departments}
               setOpenEdit={setOpenEdit}
-              fetchData={fetchData}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               toast={toast}
             />
           </Dialog>
         )}
         {openDialog && (
-        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-          <GenericDeleteForm
-            selectedItem={selectedItem}
-            openDialog={openDialog}
-            setOpenDialog={setOpenDialog}
-            toast={toast}
-            endpoint="managers"
-            successMessage={`${
-              selectedItem.name && selectedItem.name
-            } Deletado com Sucesso`}
-          />
-        </Dialog>
-      )}
+          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+            <GenericDeleteForm
+              selectedItem={selectedItem}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              toast={toast}
+              endpoint="managers"
+              successMessage={`${
+                selectedItem.name && selectedItem.name
+              } Deletado com Sucesso`}
+            />
+          </Dialog>
+        )}
       </Box>
     </>
   );

@@ -21,6 +21,8 @@ export default function EditPositionForm({
   selectedPosition,
   openEdit,
   setOpenEdit,
+  refreshData,
+  setRefreshData,
   toast,
 }) {
   const [name, setName] = React.useState(selectedPosition.name);
@@ -33,7 +35,7 @@ export default function EditPositionForm({
         positionId: selectedPosition._id,
         name,
         members: selectedPosition.members,
-        previousData
+        previousData,
       });
       if (res.data) {
         toast.success("Cargo Editado!", {
@@ -44,6 +46,7 @@ export default function EditPositionForm({
         });
       }
       setOpenEdit(!openEdit);
+      setRefreshData(!refreshData);
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {
@@ -74,7 +77,7 @@ export default function EditPositionForm({
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item sx={{mb:2}}>
+          <Grid item sx={{ mb: 2 }}>
             <Typography>Nome do Cargo</Typography>
             <TextField
               size="small"

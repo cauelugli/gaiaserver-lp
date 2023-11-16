@@ -31,7 +31,8 @@ const EditUserForm = ({
   departments,
   positions,
   setOpenEdit,
-  fetchData,
+  refreshData,
+  setRefreshData,
   toast,
 }) => {
   const [name, setName] = React.useState(selectedUser.name);
@@ -87,7 +88,7 @@ const EditUserForm = ({
         });
       }
       setOpenEdit(!openEdit);
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {

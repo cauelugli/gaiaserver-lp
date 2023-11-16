@@ -35,7 +35,14 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddJobForm = ({ user, openAddJob, setOpenAddJob, fetchData1, toast }) => {
+const AddJobForm = ({
+  user,
+  openAddJob,
+  setOpenAddJob,
+  refreshData,
+  setRefreshData,
+  toast,
+}) => {
   const [title, setTitle] = React.useState("");
   const [customer, setCustomer] = React.useState("");
   const [customerType, setCustomerType] = React.useState("");
@@ -150,18 +157,21 @@ const AddJobForm = ({ user, openAddJob, setOpenAddJob, fetchData1, toast }) => {
         price: service.value + materialsCost,
         local,
         scheduledTo,
-        createdBy: user.username
+        createdBy: user.username,
       });
       if (res.data) {
-        toast.success(`Pedido Adicionado! Orçamento #${res.data.savedQuote.number}`, {
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-          autoClose: 1200,
-        });
+        toast.success(
+          `Pedido Adicionado! Orçamento #${res.data.savedQuote.number}`,
+          {
+            closeOnClick: true,
+            pauseOnHover: false,
+            theme: "colored",
+            autoClose: 1200,
+          }
+        );
       }
       setOpenAddJob(!openAddJob);
-      fetchData1();
+      setRefreshData(!refreshData);
     } catch (err) {
       alert("Vish, deu não...");
       console.log(err);

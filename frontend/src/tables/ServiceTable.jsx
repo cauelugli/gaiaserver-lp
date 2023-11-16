@@ -30,7 +30,8 @@ export default function ServiceTable({
   services,
   departments,
   stockItems,
-  fetchData,
+  refreshData,
+  setRefreshData,
 }) {
   const [selectedService, setSelectedService] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -375,7 +376,8 @@ export default function ServiceTable({
               departments={departments}
               stockItems={stockItems}
               setOpenEdit={setOpenEdit}
-              fetchData={fetchData}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               toast={toast}
             />
           </Dialog>
@@ -388,6 +390,8 @@ export default function ServiceTable({
               setOpenDialog={setOpenDialog}
               toast={toast}
               endpoint="services"
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               successMessage={`${
                 selectedItem.name && selectedItem.name
               } Deletado com Sucesso`}

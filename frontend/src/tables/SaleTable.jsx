@@ -33,7 +33,8 @@ export default function SaleTable({
   searchValue,
   searchOption,
   sales,
-  fetchData,
+  refreshData,
+  setRefreshData,
   managers,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -532,6 +533,8 @@ export default function SaleTable({
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
             toast={toast}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             endpoint="sales"
             successMessage={`Venda #${
               selectedItem.quoteNumber && selectedItem.quoteNumber

@@ -40,6 +40,8 @@ const EditJobForm = ({
   openEditJob,
   setOpenEditJob,
   selectedJob,
+  refreshData,
+  setRefreshData,
   toast,
 }) => {
   const [title, setTitle] = React.useState(selectedJob.title);
@@ -130,6 +132,7 @@ const EditJobForm = ({
           );
         }
         setOpenEditJob(!openEditJob);
+        setRefreshData(!refreshData);
       } catch (err) {
         alert("Vish, deu não...");
         console.log(err);

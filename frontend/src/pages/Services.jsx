@@ -54,6 +54,7 @@ function CustomTabPanel(props) {
 }
 
 export default function Services({ user }) {
+  const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [openAddService, setOpenAddService] = React.useState(false);
   const [openAddServicePlan, setOpenAddServicePlan] = React.useState(false);
@@ -263,7 +264,8 @@ export default function Services({ user }) {
           services={services}
           departments={departments}
           stockItems={stockItems}
-          fetchData={fetchData}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
@@ -328,11 +330,12 @@ export default function Services({ user }) {
           services={supports}
           departments={departments}
           stockItems={stockItems}
-          fetchData={fetchData}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-      <Grid container direction="row" justifyContent="flex-start">
+        <Grid container direction="row" justifyContent="flex-start">
           <Grid item>
             <TextField
               placeholder="Pesquise aqui..."
@@ -391,7 +394,8 @@ export default function Services({ user }) {
           searchOption={searchOption}
           searchValue={searchValue}
           servicePlans={servicePlans}
-          fetchData={fetchData}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
         />
       </CustomTabPanel>
       {openAddService && (
@@ -406,12 +410,13 @@ export default function Services({ user }) {
             setOpenAdd={setOpenAddService}
             departments={departments}
             stockItems={stockItems}
-            fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
       )}
-       {openAddServicePlan && (
+      {openAddServicePlan && (
         <Dialog
           fullWidth
           maxWidth="md"
@@ -423,7 +428,8 @@ export default function Services({ user }) {
             setOpenAdd={setOpenAddServicePlan}
             departments={departments}
             stockItems={stockItems}
-            fetchData={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>

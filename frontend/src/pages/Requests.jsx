@@ -57,7 +57,9 @@ function CustomTabPanel(props) {
 }
 
 export default function Requests({ user }) {
+  const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
+
   const [openAddJob, setOpenAddJob] = React.useState(false);
   const [openAddSale, setOpenAddSale] = React.useState(false);
 
@@ -93,7 +95,7 @@ export default function Requests({ user }) {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   const fetchData = async () => {
     try {
@@ -373,7 +375,8 @@ export default function Requests({ user }) {
           searchOption={searchOption}
           jobs={jobs}
           managers={managers}
-          fetchData={fetchData}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
@@ -534,7 +537,8 @@ export default function Requests({ user }) {
           searchOption={searchOption}
           sales={sales}
           managers={managers}
-          fetchData={fetchData}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
         />
       </CustomTabPanel>
       {openAddJob && (
@@ -548,7 +552,8 @@ export default function Requests({ user }) {
             user={user}
             openAddJob={openAddJob}
             setOpenAddJob={setOpenAddJob}
-            fetchData1={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
@@ -564,7 +569,8 @@ export default function Requests({ user }) {
             user={user}
             openAddSale={openAddSale}
             setOpenAddSale={setOpenAddSale}
-            fetchData1={fetchData}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>

@@ -23,7 +23,8 @@ const AddOperatorForm = ({
   openAdd,
   operators,
   setOpenAdd,
-  fetchData,
+  refreshData,
+  setRefreshData,
   toast,
 }) => {
   const [username, setUsername] = React.useState("");
@@ -67,7 +68,7 @@ const AddOperatorForm = ({
         });
       }
       setOpenAdd(!openAdd);
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {
