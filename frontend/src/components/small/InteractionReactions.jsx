@@ -4,13 +4,7 @@ import * as React from "react";
 import axios from "axios";
 import { keyframes } from "@mui/system";
 
-import {
-  Badge,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Badge, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MoodIcon from "@mui/icons-material/Mood";
@@ -47,6 +41,8 @@ const InteractionReactions = ({
   job,
   number,
   interaction,
+  refreshData,
+  setRefreshData,
 }) => {
   const reactionsMap = {
     love: {
@@ -84,6 +80,7 @@ const InteractionReactions = ({
         ...userReactions,
         [job._id]: res.data.reactions,
       });
+      setRefreshData(!refreshData);
     } catch (err) {
       console.error("Erro ao atualizar reação:", err);
     }
