@@ -159,11 +159,19 @@ export default function OperatorTable({
                 ))}
               </TableRow>
               {sortedRows
-                .filter((user) =>
-                  user[searchOption]
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase())
-                )
+                .filter((user) => {
+                  const searchOptionValue =
+                    searchOption === "role.name"
+                      ? user.role?.name
+                      : user[searchOption];
+  
+                  return (
+                    searchOptionValue &&
+                    searchOptionValue
+                      .toLowerCase()
+                      .includes(searchValue.toLowerCase())
+                  );
+                })
                 .map((row) => (
                   <>
                     <TableRow

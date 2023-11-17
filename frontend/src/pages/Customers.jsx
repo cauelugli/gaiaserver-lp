@@ -10,6 +10,7 @@ import {
   Button,
   Dialog,
   FormControlLabel,
+  FormHelperText,
   Grid,
   InputAdornment,
   ListItemIcon,
@@ -19,6 +20,7 @@ import {
   MenuList,
   Radio,
   RadioGroup,
+  Select,
   Tab,
   Tabs,
   TextField,
@@ -65,8 +67,9 @@ export default function Customers({ user }) {
   const [openAddCustomer, setOpenAddCustomer] = React.useState(false);
   const [openAddClient, setOpenAddClient] = React.useState(false);
 
-  const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("name");
+  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
+  const [searchValue, setSearchValue] = React.useState("");
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -190,7 +193,7 @@ export default function Customers({ user }) {
             <Grid container direction="row" justifyContent="flex-start">
               <Grid item>
                 <TextField
-                  placeholder="Pesquise aqui..."
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
                   size="small"
                   sx={{ mb: 1, ml: "2%", width: 350 }}
                   value={searchValue}
@@ -216,47 +219,20 @@ export default function Customers({ user }) {
                   }}
                 />
               </Grid>
-              <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-                <RadioGroup
-                  row
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
                   value={searchOption}
-                  onChange={handleSearchOptionChange}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
                 >
-                  <FormControlLabel
-                    value="name"
-                    control={
-                      <Radio
-                        sx={{
-                          "& .MuiSvgIcon-root": {
-                            fontSize: 13,
-                          },
-                        }}
-                      />
-                    }
-                    label={
-                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                        Nome
-                      </Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="mainContactName"
-                    control={
-                      <Radio
-                        sx={{
-                          "& .MuiSvgIcon-root": {
-                            fontSize: 13,
-                          },
-                        }}
-                      />
-                    }
-                    label={
-                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                        Contato Principal
-                      </Typography>
-                    }
-                  />
-                </RadioGroup>
+                  <MenuItem value="name">Nome</MenuItem>
+                  <MenuItem value="mainContactName">Contato Principal</MenuItem>
+                </Select>
+                <FormHelperText>Filtrar por</FormHelperText>
               </Grid>
             </Grid>
             <CustomerTable
@@ -276,7 +252,7 @@ export default function Customers({ user }) {
             <Grid container direction="row" justifyContent="flex-start">
               <Grid item>
                 <TextField
-                  placeholder="Pesquise aqui..."
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
                   size="small"
                   sx={{ mb: 1, ml: "2%", width: 350 }}
                   value={searchValue}
@@ -302,64 +278,21 @@ export default function Customers({ user }) {
                   }}
                 />
               </Grid>
-              <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-                <RadioGroup
-                  row
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
                   value={searchOption}
-                  onChange={handleSearchOptionChange}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
                 >
-                  <FormControlLabel
-                    value="name"
-                    control={
-                      <Radio
-                        sx={{
-                          "& .MuiSvgIcon-root": {
-                            fontSize: 13,
-                          },
-                        }}
-                      />
-                    }
-                    label={
-                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                        Nome
-                      </Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="email"
-                    control={
-                      <Radio
-                        sx={{
-                          "& .MuiSvgIcon-root": {
-                            fontSize: 13,
-                          },
-                        }}
-                      />
-                    }
-                    label={
-                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                        E-mail
-                      </Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="phone"
-                    control={
-                      <Radio
-                        sx={{
-                          "& .MuiSvgIcon-root": {
-                            fontSize: 13,
-                          },
-                        }}
-                      />
-                    }
-                    label={
-                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                        Telefone
-                      </Typography>
-                    }
-                  />
-                </RadioGroup>
+                  <MenuItem value="name">Nome</MenuItem>
+                  <MenuItem value="email">E-mail</MenuItem>
+                  <MenuItem value="phone">Telefone</MenuItem>
+                </Select>
+                <FormHelperText>Filtrar por</FormHelperText>
               </Grid>
             </Grid>
             <ClientTable
