@@ -71,6 +71,7 @@ export default function Users({ user }) {
 
   const [users, setUsers] = React.useState([]);
   const [managers, setManagers] = React.useState([]);
+  const [operators, setOperators] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
   const [positions, setPositions] = React.useState([]);
   const [roles, setRoles] = React.useState([]);
@@ -115,8 +116,12 @@ export default function Users({ user }) {
         const departments = await api.get("/departments");
         const positions = await api.get("/positions");
         const roles = await api.get("/roles");
-        setUsers(users.data);
-        setManagers(managers.data);
+        const usersData = users.data;
+        const managersData = managers.data;
+        const combinedData = [...usersData, ...managersData];
+        setUsers(usersData);
+        setDepartments(departments.data);
+        setOperators(combinedData);
         setDepartments(departments.data);
         setPositions(positions.data);
         setRoles(roles.data);
@@ -749,6 +754,8 @@ export default function Users({ user }) {
           onClose={() => setOpenAddOperator(!openAddOperator)}
         >
           <AddOperatorForm
+            operators={operators.filter((op) => !op.username)}
+            roles={roles}
             openAdd={openAddOperator}
             setOpenAdd={setOpenAddOperator}
             refreshData={refreshData}

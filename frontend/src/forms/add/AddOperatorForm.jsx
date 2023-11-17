@@ -22,6 +22,7 @@ const api = axios.create({
 const AddOperatorForm = ({
   openAdd,
   operators,
+  roles,
   setOpenAdd,
   refreshData,
   setRefreshData,
@@ -55,9 +56,9 @@ const AddOperatorForm = ({
         operatorId: operator._id,
         username,
         password,
-        role,
+        role: role.name,
         operator,
-        option:"password"
+        option: "password",
       });
       if (res.data) {
         toast.success("Operador Adicionado!", {
@@ -138,20 +139,11 @@ const AddOperatorForm = ({
               size="small"
               sx={{ width: 245 }}
             >
-              {}
-              <MenuItem
-                value={"Colaborador"}
-                disabled={operator.role === "Gerente"}
-              >
-                Colaborador
-              </MenuItem>
-              <MenuItem
-                value={"Supervisor"}
-                disabled={operator.role === "Gerente"}
-              >
-                Supervisor
-              </MenuItem>
-              <MenuItem value={"Gerente"}>Gerente</MenuItem>
+              {roles.map((item) => (
+                <MenuItem value={item} key={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))}
             </Select>
           </Grid>
         </Grid>
