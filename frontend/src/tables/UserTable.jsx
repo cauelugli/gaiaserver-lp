@@ -36,6 +36,7 @@ export default function UserTable({
   setRefreshData,
   searchValue,
   searchOption,
+  searchDepartment,
 }) {
   const [selectedUser, setSelectedUser] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -77,19 +78,6 @@ export default function UserTable({
     };
     fetchData();
   }, [refreshData]);
-
-  // const fetchData = async () => {
-  //   try {
-  //     const users = await api.get("/users");
-  //     const departments = await api.get("/departments");
-  //     const positions = await api.get("/positions");
-  //     setUsers(users.data);
-  //     setDepartments(departments.data);
-  //     setPositions(positions.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
 
   const handleOpenDetail = (user) => {
     setOpenDetail(!openDetail);
@@ -193,12 +181,14 @@ export default function UserTable({
                   searchOption === "department.name"
                     ? user.department?.name
                     : user[searchOption];
-
+            
+                const departmentFilter =
+                  !searchDepartment || user.department?.name === searchDepartment;
+            
                 return (
                   searchOptionValue &&
-                  searchOptionValue
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase())
+                  searchOptionValue.toLowerCase().includes(searchValue.toLowerCase()) &&
+                  departmentFilter
                 );
               })
 

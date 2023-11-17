@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -9,8 +8,6 @@ import {
   Box,
   Button,
   Dialog,
-  FormControlLabel,
-  FormHelperText,
   Grid,
   InputAdornment,
   ListItemIcon,
@@ -19,8 +16,6 @@ import {
   MenuItem,
   MenuList,
   Paper,
-  Radio,
-  RadioGroup,
   Select,
   Tab,
   Tabs,
@@ -65,6 +60,7 @@ function CustomTabPanel(props) {
   );
 }
 
+// eslint-disable-next-line no-unused-vars
 export default function Users({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
@@ -82,9 +78,9 @@ export default function Users({ user }) {
   const [openAddRole, setOpenAddRole] = React.useState(false);
 
   const [searchOption, setSearchOption] = React.useState("name");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
+  const [searchOptionLabel, setSearchOptionLabel] = React.useState("");
   const [searchValue, setSearchValue] = React.useState("");
-  const [searchValueDeptColor, setSearchValueDeptColor] = React.useState("");
+  const [searchDepartment, setSearchDepartment] = React.useState("");
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -274,69 +270,48 @@ export default function Users({ user }) {
                   }}
                   size="small"
                   sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => (
+                    <Typography>Filtrar por {searchOptionLabel}</Typography>
+                  )}
                 >
                   <MenuItem value="name">Nome</MenuItem>
                   <MenuItem value="email">E-mail</MenuItem>
                   <MenuItem value="phone">Telefone</MenuItem>
-                  <MenuItem value="department.name">Departamentos</MenuItem>
                 </Select>
-                <FormHelperText>Filtrar por</FormHelperText>
               </Grid>
               <Grid item sx={{ ml: "3%" }}>
-                {searchOption === "department.name" && (
-                  <>
-                    <Select
-                      onChange={(e) => {
-                        setSearchValue(e.target.value);
-                        const selectedDepartment = departments.find(
-                          (item) => item.name === e.target.value
-                        );
-                        if (selectedDepartment) {
-                          setSearchValueDeptColor(selectedDepartment.color);
-                        }
-                      }}
-                      value={searchValue}
-                      renderValue={(selected) => (
-                        <Grid container direction="row">
-                          <Paper
-                            elevation={0}
-                            sx={{
-                              mr: 1,
-                              mt: 0.5,
-                              width: 12,
-                              height: 12,
-                              borderRadius: 50,
-                              backgroundColor: searchValueDeptColor,
-                            }}
-                          />
-                          <Typography>{searchValue}</Typography>
-                        </Grid>
-                      )}
-                      size="small"
-                      sx={{ minWidth: 200 }}
-                    >
-                      {departments.map((item) => (
-                        <MenuItem value={item.name} key={item.id}>
-                          <Grid container direction="row">
-                            <Paper
-                              elevation={0}
-                              sx={{
-                                mr: 1,
-                                mt: 0.5,
-                                width: 12,
-                                height: 12,
-                                borderRadius: 50,
-                                backgroundColor: item.color,
-                              }}
-                            />
-                            <Typography>{item.name}</Typography>
-                          </Grid>
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    <FormHelperText>Selecione o Departamento</FormHelperText>
-                  </>
-                )}
+                <Select
+                  onChange={(e) => setSearchDepartment(e.target.value)}
+                  value={searchDepartment}
+                  size="small"
+                  sx={{ minWidth: 200, color: "#777" }}
+                  renderValue={(selected) =>
+                    searchDepartment === "" ? (
+                      <Typography>Selecione um Departamento</Typography>
+                    ) : (
+                      <Typography>Filtrando por: {selected}</Typography>
+                    )
+                  }
+                >
+                  {departments.map((item) => (
+                    <MenuItem value={item.name} key={item.id}>
+                      <Grid container direction="row">
+                        <Paper
+                          elevation={0}
+                          sx={{
+                            mr: 1,
+                            mt: 0.5,
+                            width: 12,
+                            height: 12,
+                            borderRadius: 50,
+                            backgroundColor: item.color,
+                          }}
+                        />
+                        <Typography>{item.name}</Typography>
+                      </Grid>
+                    </MenuItem>
+                  ))}
+                </Select>
               </Grid>
             </Grid>
 
@@ -344,6 +319,7 @@ export default function Users({ user }) {
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               searchValue={searchValue}
+              searchDepartment={searchDepartment}
               searchOption={searchOption}
             />
           </>
@@ -397,7 +373,6 @@ export default function Users({ user }) {
                   <MenuItem value="email">E-mail</MenuItem>
                   <MenuItem value="phone">Telefone</MenuItem>
                 </Select>
-                <FormHelperText>Filtrar por</FormHelperText>
               </Grid>
             </Grid>
 
@@ -458,7 +433,6 @@ export default function Users({ user }) {
                   <MenuItem value="username">Nome de Usuário</MenuItem>
                   <MenuItem value="role">Perfil de Acesso</MenuItem>
                 </Select>
-                <FormHelperText>Filtrar por</FormHelperText>
               </Grid>
               <Grid item sx={{ ml: "3%" }}>
                 {searchOption === "role" && (
@@ -478,7 +452,6 @@ export default function Users({ user }) {
                         </MenuItem>
                       ))}
                     </Select>
-                    <FormHelperText>Selecione o Perfil</FormHelperText>
                   </>
                 )}
               </Grid>
@@ -539,7 +512,6 @@ export default function Users({ user }) {
                 >
                   <MenuItem value="name">Nome</MenuItem>
                 </Select>
-                <FormHelperText>Filtrar por</FormHelperText>
               </Grid>
             </Grid>
 
