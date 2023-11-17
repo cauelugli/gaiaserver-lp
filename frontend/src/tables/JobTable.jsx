@@ -611,6 +611,8 @@ export default function JobTable({
                                     <Typography sx={{ fontSize: 12 }}>
                                       <InteractionReactions
                                         userId={user._id}
+                                        refreshData={refreshData}
+                                        setRefreshData={setRefreshData}
                                         interaction={interaction}
                                         job={job}
                                         number={interaction.number}

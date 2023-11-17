@@ -6,6 +6,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 
 import {
+  Avatar,
   Box,
   Button,
   Checkbox,
@@ -71,21 +72,47 @@ const EditJobForm = ({
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const departments = await api.get("/departments");
-        const services = await api.get("/services");
+        const departmentsResponse = await api.get("/departments");
+        const servicesResponse = await api.get("/services");
+
+        // Organizar os membros nos serviços correspondentes
+        const modifiedDepartments = departmentsResponse.data.map(
+          (department) => {
+            const departmentServices = servicesResponse.data.filter(
+              (service) => service.department._id === department._id
+            );
+
+            const updatedDepartment = {
+              ...department,
+              services: departmentServices.map((service) => {
+                const serviceMembers = department.members.filter((member) =>
+                  service.members.includes(member._id)
+                );
+
+                return {
+                  ...service,
+                  members: serviceMembers,
+                };
+              }),
+            };
+
+            return updatedDepartment;
+          }
+        );
+
         setDepartments(
-          departments.data.filter(
+          modifiedDepartments.filter(
             (department) => department.type === "Serviços"
           )
         );
-        setServices(services.data);
+        setServices(servicesResponse.data);
 
-        const selectedDepartment = departments.data.find(
+        const selectedDepartment = modifiedDepartments.find(
           (department) => department._id === selectedJob.department.id
         );
         setDepartment(selectedDepartment);
 
-        const selectedService = services.data.find(
+        const selectedService = servicesResponse.data.find(
           (service) => service._id === selectedJob.service._id
         );
         setService(selectedService);
@@ -173,6 +200,7 @@ const EditJobForm = ({
           });
         }
         setOpenEditJob(!openEditJob);
+        setRefreshData(!refreshData);
       } catch (err) {
         alert("Vish, deu não...");
         console.log(err);
@@ -731,30 +759,39 @@ const EditJobForm = ({
                     onChange={(e) => setWorker(e.target.value)}
                     value={worker}
                     size="small"
-                    sx={{ minWidth: "200px" }}
+                    displayEmpty
+                    required
                     renderValue={(selected) => {
                       if (selected.length === 0) {
+                        return <Typography>Selecione o Colaborador</Typography>;
+                      } else {
                         return (
-                          <Typography>{selectedJob.worker.name}</Typography>
+                          <Grid container direction="row">
+                            <Avatar
+                              alt="Imagem do Colaborador"
+                              src={`http://localhost:3000/static/${selected.image}`}
+                              sx={{ width: 22, height: 22, mr: 1 }}
+                            />
+                            <Typography>{selected.name}</Typography>
+                          </Grid>
                         );
                       }
-
-                      return selected.name;
                     }}
                   >
-                    {department.members ? (
+                    <MenuItem disabled value="">
+                      Colaboradores
+                    </MenuItem>
+                    {department.members &&
                       department.members.map((item) => (
-                        <MenuItem
-                          value={item}
-                          key={item._id}
-                          sx={{ fontSize: "100%" }}
-                        >
+                        <MenuItem value={item} key={item.id}>
+                          <Avatar
+                            alt="Imagem do Colaborador"
+                            src={`http://localhost:3000/static/${item.image}`}
+                            sx={{ width: 22, height: 22, mr: 2 }}
+                          />
                           {item.name}
                         </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem disabled>Carregando...</MenuItem>
-                    )}
+                      ))}
                   </Select>
                 </>
               </Grid>
@@ -819,10 +856,12 @@ const EditJobForm = ({
                       py: 2,
                     }}
                   >
-                    <Typography sx={{ fontSize: 16, mx: 1 }}>
-                      {service && `${service.name} = `}{" "}
-                      {service.value ? `R$ ${service.value}` : "R$0,00"}
-                    </Typography>
+                    {service && (
+                      <Typography sx={{ fontSize: 16, mx: 1 }}>
+                        {service && `${service.name} = `}{" "}
+                        {service.value ? `R$ ${service.value}` : "R$0,00"}
+                      </Typography>
+                    )}
                   </Grid>
                   <Typography sx={{ fontSize: 16, mt: 2, fontWeight: "bold" }}>
                     Materiais
