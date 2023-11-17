@@ -65,6 +65,8 @@ export default function Requests({ user }) {
 
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("requester");
+  const [searchOptionLabel, setSearchOptionLabel] =
+    React.useState("Solicitante");
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -203,7 +205,7 @@ export default function Requests({ user }) {
         <Grid container direction="row" justifyContent="flex-start">
           <Grid item>
             <TextField
-              placeholder="Pesquise aqui..."
+              placeholder={`Pesquise por ${searchOptionLabel}...`}
               size="small"
               sx={{ mb: 1, ml: "2%", width: 350 }}
               value={searchValue}
@@ -229,118 +231,25 @@ export default function Requests({ user }) {
               }}
             />
           </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
+          <Grid item sx={{ ml: "3%" }}>
+            <Select
               value={searchOption}
-              onChange={handleSearchOptionChange}
+              onChange={(e) => {
+                setSearchOption(e.target.value),
+                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+              }}
+              size="small"
+              sx={{ minWidth: 180, color: "#777" }}
             >
-              <FormControlLabel
-                value="title"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Nome
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="requester"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Solicitante
-                  </Typography>
-                }
-              />
-
-              <FormControlLabel
-                value="createdBy"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Criado por
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="worker.name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Designado
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="scheduledTo"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Data
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="status"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Status
-                  </Typography>
-                }
-              />
-            </RadioGroup>
+              <MenuItem value="status">Status</MenuItem>
+              <MenuItem value="requester">Solicitante</MenuItem>
+              <MenuItem value="createdBy">Criado por</MenuItem>
+              <MenuItem value="worker.name">Designado</MenuItem>
+              <MenuItem value="scheduledTo">Data de Agendamento</MenuItem>
+            </Select>
+            <FormHelperText>Filtrar por</FormHelperText>
           </Grid>
-          <Grid item sx={{ ml: "1%" }}>
+          <Grid item sx={{ ml: "3%" }}>
             {searchOption === "status" && (
               <>
                 <Select
@@ -383,7 +292,7 @@ export default function Requests({ user }) {
         <Grid container direction="row" justifyContent="flex-start">
           <Grid item>
             <TextField
-              placeholder="Pesquise aqui..."
+              placeholder={`Pesquise por ${searchOptionLabel}...`}
               size="small"
               sx={{ mb: 1, ml: "2%", width: 350 }}
               value={searchValue}
@@ -409,101 +318,25 @@ export default function Requests({ user }) {
               }}
             />
           </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
+          <Grid item sx={{ ml: "3%" }}>
+            <Select
               value={searchOption}
-              onChange={handleSearchOptionChange}
+              onChange={(e) => {
+                setSearchOption(e.target.value),
+                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+              }}
+              size="small"
+              sx={{ minWidth: 180, color: "#777" }}
             >
-              <FormControlLabel
-                value="requester"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Comprador
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="createdBy"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Criado por
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="seller.name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Vendedor
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="deliveryScheduledTo"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Data
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="status"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Status
-                  </Typography>
-                }
-              />
-            </RadioGroup>
+              <MenuItem value="status">Status</MenuItem>
+              <MenuItem value="requester">Comprador</MenuItem>
+              <MenuItem value="createdBy">Criado por</MenuItem>
+              <MenuItem value="seller.name">Vendedor</MenuItem>
+              <MenuItem value="deliveryScheduledTo">Data de Entrega</MenuItem>
+            </Select>
+            <FormHelperText>Filtrar por</FormHelperText>
           </Grid>
-
-          <Grid item sx={{ ml: "1%" }}>
+          <Grid item sx={{ ml: "3%" }}>
             {searchOption === "status" && (
               <>
                 <Select
