@@ -105,7 +105,7 @@ export default function Services({ user }) {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   const fetchData = async () => {
     try {

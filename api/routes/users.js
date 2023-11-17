@@ -27,10 +27,11 @@ router.post("/", async (req, res) => {
     if (existingEmailUser) {
       return res.status(422).json({ error: "E-mail já cadastrado" });
     }
-    if (newPosition && newPosition.trim() !== "") {
+    if (newPosition) {
       const existingPosition = await Position.findOne({
-        name: newPosition.name,
+        name: newPosition,
       });
+      
       if (existingPosition) {
         return res.status(422).json({ error: "Cargo já cadastrado" });
       }
@@ -98,7 +99,7 @@ router.post("/", async (req, res) => {
               phone: savedUser.phone,
               email: savedUser.email,
               image: savedUser.image,
-              position: savedUser.position.name,
+              position: savedUser.position,
               role: savedUser.role,
             },
           },

@@ -16,6 +16,7 @@ import {
   FormLabel,
   Grid,
   MenuItem,
+  Paper,
   Select,
   Table,
   TableBody,
@@ -652,20 +653,39 @@ const EditJobForm = ({
                   value={department || selectedJob.department}
                   size="small"
                   sx={{ minWidth: "200px" }}
-                  renderValue={(selected) => selected.name}
+                  renderValue={(selected) => (
+                    <Grid container direction="row">
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          mr: 1,
+                          mt: 0.5,
+                          width: 15,
+                          height: 15,
+                          borderRadius: 50,
+                          backgroundColor: selected.color,
+                        }}
+                      />
+                      <Typography>{selected.name}</Typography>
+                    </Grid>
+                  )}
                 >
                   {departments.map((item) => (
-                    <MenuItem
-                      value={item}
-                      key={item.id}
-                      sx={{
-                        "&:hover": {
-                          backgroundColor: item.color,
-                          color: "white",
-                        },
-                      }}
-                    >
-                      {item.name}
+                    <MenuItem value={item} key={item.id}>
+                      <Grid container direction="row">
+                        <Paper
+                          elevation={0}
+                          sx={{
+                            mr: 1,
+                            mt: 0.5,
+                            width: 15,
+                            height: 15,
+                            borderRadius: 50,
+                            backgroundColor: item.color,
+                          }}
+                        />
+                        <Typography>{item.name}</Typography>
+                      </Grid>
                     </MenuItem>
                   ))}
                 </Select>

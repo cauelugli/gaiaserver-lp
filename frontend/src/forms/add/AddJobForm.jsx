@@ -15,6 +15,7 @@ import {
   FormControl,
   Grid,
   MenuItem,
+  Paper,
   Select,
   TextField,
   Typography,
@@ -332,7 +333,22 @@ const AddJobForm = ({
                 if (!selected) {
                   return <Typography>Selecione o Departamento</Typography>;
                 } else {
-                  return <Typography>{selected.name}</Typography>;
+                  return (
+                    <Grid container direction="row">
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          mr: 1,
+                          mt: 0.5,
+                          width: 15,
+                          height: 15,
+                          borderRadius: 50,
+                          backgroundColor: selected.color,
+                        }}
+                      />
+                      <Typography>{selected.name}</Typography>
+                    </Grid>
+                  );
                 }
               }}
               sx={{ minWidth: "200px" }}
@@ -341,14 +357,22 @@ const AddJobForm = ({
                 <MenuItem
                   value={item}
                   key={item.id}
-                  sx={{
-                    "&:hover": {
-                      backgroundColor: item.color,
-                      color: "white",
-                    },
-                  }}
+                  
                 >
-                  {item.name}
+                  <Grid container direction="row">
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        mr: 1,
+                        mt: 0.5,
+                        width: 15,
+                        height: 15,
+                        borderRadius: 50,
+                        backgroundColor: item.color,
+                      }}
+                    />
+                    <Typography>{item.name}</Typography>
+                  </Grid>
                 </MenuItem>
               ))}
             </Select>
