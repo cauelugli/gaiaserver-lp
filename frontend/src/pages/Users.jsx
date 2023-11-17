@@ -120,6 +120,7 @@ export default function Users({ user }) {
         const managersData = managers.data;
         const combinedData = [...usersData, ...managersData];
         setUsers(usersData);
+        setManagers(managersData);
         setDepartments(departments.data);
         setOperators(combinedData);
         setDepartments(departments.data);
