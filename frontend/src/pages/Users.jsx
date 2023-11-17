@@ -325,7 +325,6 @@ export default function Users({ user }) {
                       </Typography>
                     }
                   />
-
                   {departments.length > 0 && (
                     <FormControlLabel
                       value="department.name"
@@ -352,8 +351,13 @@ export default function Users({ user }) {
                   <>
                     <Select
                       onChange={(e) => {
-                        setSearchValue(e.target.value.name),
-                          setSearchValueDeptColor(e.target.value.color);
+                        setSearchValue(e.target.value);
+                        const selectedDepartment = departments.find(
+                          (item) => item.name === e.target.value
+                        );
+                        if (selectedDepartment) {
+                          setSearchValueDeptColor(selectedDepartment.color);
+                        }
                       }}
                       value={searchValue}
                       renderValue={(selected) => (
@@ -376,7 +380,7 @@ export default function Users({ user }) {
                       sx={{ minWidth: 200 }}
                     >
                       {departments.map((item) => (
-                        <MenuItem value={item} key={item.id}>
+                        <MenuItem value={item.name} key={item.id}>
                           <Grid container direction="row">
                             <Paper
                               elevation={0}

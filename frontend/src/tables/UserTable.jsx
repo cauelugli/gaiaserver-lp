@@ -115,7 +115,7 @@ export default function UserTable({
       label: "Telefone",
     },
     {
-      id: "department.name",
+      id: "department",
       label: "Departamento",
     },
   ];
@@ -189,14 +189,19 @@ export default function UserTable({
             </TableRow>
             {sortedRows
               .filter((user) => {
-                const userProperty = searchOption
-                  .split(".")
-                  .reduce((obj, key) => obj[key], user);
+                const searchOptionValue =
+                  searchOption === "department.name"
+                    ? user.department?.name
+                    : user[searchOption];
+
                 return (
-                  userProperty &&
-                  userProperty.toLowerCase().includes(searchValue.toLowerCase())
+                  searchOptionValue &&
+                  searchOptionValue
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())
                 );
               })
+
               .map((row) => (
                 <React.Fragment key={row._id}>
                   <TableRow
