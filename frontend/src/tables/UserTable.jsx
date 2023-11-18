@@ -181,14 +181,21 @@ export default function UserTable({
                   searchOption === "department.name"
                     ? user.department?.name
                     : user[searchOption];
-            
+
                 const departmentFilter =
-                  !searchDepartment || user.department?.name === searchDepartment;
-            
+                  !searchDepartment ||
+                  user.department?.name === searchDepartment;
+
+                // Verifica se a condição para aplicar o filtro é atendida
+                const shouldApplyDepartmentFilter =
+                  departmentFilter || searchDepartment === "&nbsp";
+
                 return (
                   searchOptionValue &&
-                  searchOptionValue.toLowerCase().includes(searchValue.toLowerCase()) &&
-                  departmentFilter
+                  searchOptionValue
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase()) &&
+                  shouldApplyDepartmentFilter
                 );
               })
 

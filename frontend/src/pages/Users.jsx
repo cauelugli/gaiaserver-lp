@@ -80,7 +80,7 @@ export default function Users({ user }) {
   const [searchOption, setSearchOption] = React.useState("name");
   const [searchOptionLabel, setSearchOptionLabel] = React.useState("");
   const [searchValue, setSearchValue] = React.useState("");
-  const [searchDepartment, setSearchDepartment] = React.useState("");
+  const [searchDepartment, setSearchDepartment] = React.useState("&nbsp");
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -286,10 +286,12 @@ export default function Users({ user }) {
                   size="small"
                   sx={{ minWidth: 200, color: "#777" }}
                   renderValue={(selected) =>
-                    searchDepartment === "" ? (
+                    searchDepartment === "&nbsp" ? (
                       <Typography>Selecione um Departamento</Typography>
                     ) : (
-                      <Typography>Filtrando por: {selected}</Typography>
+                      <Grid container direction="row">
+                        <Typography>Departamento: {selected}</Typography>
+                      </Grid>
                     )
                   }
                 >
@@ -313,6 +315,13 @@ export default function Users({ user }) {
                   ))}
                 </Select>
               </Grid>
+              {searchDepartment !== "&nbsp" && (
+                <ClearIcon
+                  cursor="pointer"
+                  onClick={() => setSearchDepartment("&nbsp")}
+                  sx={{ my: 1, color:"red" }}
+                />
+              )}
             </Grid>
 
             <UserTable
