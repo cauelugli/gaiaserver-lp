@@ -34,6 +34,7 @@ import ServiceTable from "../tables/ServiceTable";
 import AddServiceForm from "../forms/add/AddServiceForm";
 import ServicePlansTable from "../tables/ServicePlansTable";
 import AddServicePlanForm from "../forms/add/AddServicePlanForm";
+import RefreshButton from "../components/small/buttons/RefreshButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -199,6 +200,10 @@ export default function Services({ user }) {
           <Tab
             label={<Typography sx={{ fontSize: 14 }}>Planos</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
+          <RefreshButton
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
           />
         </Tabs>
       </Box>

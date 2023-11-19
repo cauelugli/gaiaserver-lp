@@ -37,6 +37,7 @@ import SaleTable from "../tables/SaleTable";
 
 import AddJobForm from "../forms/add/AddJobForm";
 import AddSaleForm from "../forms/add/AddSaleForm";
+import RefreshButton from "../components/small/buttons/RefreshButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -199,6 +200,14 @@ export default function Requests({ user }) {
             label={<Typography sx={{ fontSize: 14 }}>Vendas</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
+          <Tab
+            label={<Typography sx={{ fontSize: 14 }}>Pedidos Concluídos</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
+           <RefreshButton
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -289,6 +298,92 @@ export default function Requests({ user }) {
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
+        <Grid container direction="row" justifyContent="flex-start">
+          <Grid item>
+            <TextField
+              placeholder={`Pesquise por ${searchOptionLabel}...`}
+              size="small"
+              sx={{ mb: 1, ml: "2%", width: 350 }}
+              value={searchValue}
+              onChange={handleSearchChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+                endAdornment:
+                  searchValue.length > 0 ? (
+                    <InputAdornment position="end">
+                      <ClearIcon
+                        cursor="pointer"
+                        sx={{ color: "#d21404" }}
+                        onClick={() => setSearchValue("")}
+                      />
+                    </InputAdornment>
+                  ) : (
+                    ""
+                  ),
+              }}
+            />
+          </Grid>
+          <Grid item sx={{ ml: "3%" }}>
+            <Select
+              value={searchOption}
+              onChange={(e) => {
+                setSearchOption(e.target.value),
+                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+              }}
+              size="small"
+              sx={{ minWidth: 180, color: "#777" }}
+            >
+              <MenuItem value="status">Status</MenuItem>
+              <MenuItem value="requester">Comprador</MenuItem>
+              <MenuItem value="createdBy">Criado por</MenuItem>
+              <MenuItem value="seller.name">Vendedor</MenuItem>
+              <MenuItem value="deliveryScheduledTo">Data de Entrega</MenuItem>
+            </Select>
+            <FormHelperText>Filtrar por</FormHelperText>
+          </Grid>
+          <Grid item sx={{ ml: "3%" }}>
+            {searchOption === "status" && (
+              <>
+                <Select
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  size="small"
+                  placeholder="Selecione"
+                  sx={{ minWidth: 110 }}
+                >
+                  <MenuItem value={"Aberto"}>Aberto</MenuItem>
+                  <MenuItem value={"Autorizado"}>Autorizado</MenuItem>
+                  <MenuItem value={"Aguardando Despacho"}>
+                    Aguardando Despacho
+                  </MenuItem>
+                  <MenuItem value={"Em Trânsito"}>Em Trânsito</MenuItem>
+                  <MenuItem value={"Aguardando Cliente"}>
+                    Aguardando Cliente
+                  </MenuItem>
+                  <MenuItem value={"Aguardando Terceiro"}>
+                    Aguardando Terceiro
+                  </MenuItem>
+                  <MenuItem value={"Concluido"}>Concluido</MenuItem>
+                </Select>
+                <FormHelperText>Selecione o Status</FormHelperText>
+              </>
+            )}
+          </Grid>
+        </Grid>
+
+        <SaleTable
+          searchValue={searchValue}
+          searchOption={searchOption}
+          sales={sales}
+          managers={managers}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
+        />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
         <Grid container direction="row" justifyContent="flex-start">
           <Grid item>
             <TextField

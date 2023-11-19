@@ -7,11 +7,10 @@ import axios from "axios";
 import {
   Box,
   Dialog,
-  FormControlLabel,
   Grid,
   InputAdornment,
-  Radio,
-  RadioGroup,
+  MenuItem,
+  Select,
   Tab,
   Tabs,
   TextField,
@@ -32,6 +31,7 @@ import StockEntriesTable from "../tables/StockEntriesTable";
 import ProductsTable from "../tables/ProductsTable";
 
 import StockButton from "../components/small/buttons/StockButton";
+import RefreshButton from "../components/small/buttons/RefreshButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -67,19 +67,17 @@ export default function Stock({ user }) {
 
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("name");
+  const [searchOptionLabel, setSearchOptionLabel] = React.useState("");
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
   };
 
-  const handleSearchOptionChange = (event) => {
-    setSearchOption(event.target.value);
-  };
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
     setSearchValue("");
-    setSearchOption(newValue === 2 ? "quoteValue" : "name");
+    setSearchOption("");
+    setSearchOptionLabel("");
   };
 
   const openModal = (modalIndex) => {
@@ -141,13 +139,17 @@ export default function Stock({ user }) {
             label={<Typography sx={{ fontSize: 14 }}>Entradas</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
+          <RefreshButton
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <Grid container direction="row" justifyContent="flex-start">
           <Grid item>
             <TextField
-              placeholder="Pesquise aqui..."
+              placeholder={`Pesquise por ${searchOptionLabel}...`}
               size="small"
               sx={{ mb: 1, ml: "2%", width: 350 }}
               value={searchValue}
@@ -173,81 +175,24 @@ export default function Stock({ user }) {
               }}
             />
           </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
+          <Grid item sx={{ ml: "3%" }}>
+            <Select
               value={searchOption}
-              onChange={handleSearchOptionChange}
+              onChange={(e) => {
+                setSearchOption(e.target.value),
+                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+              }}
+              size="small"
+              sx={{ minWidth: 180, color: "#777" }}
+              renderValue={() => (
+                <Typography>Filtrar por {searchOptionLabel}</Typography>
+              )}
             >
-              <FormControlLabel
-                value="name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Nome
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="brand"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Marca
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="type"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Tipo
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="model"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Modelo
-                  </Typography>
-                }
-              />
-            </RadioGroup>
+              <MenuItem value="name">Nome</MenuItem>
+              <MenuItem value="brand">Marca</MenuItem>
+              <MenuItem value="type">Tipo</MenuItem>
+              <MenuItem value="model">Modelo</MenuItem>
+            </Select>
           </Grid>
         </Grid>
 
@@ -262,7 +207,7 @@ export default function Stock({ user }) {
         <Grid container direction="row" justifyContent="flex-start">
           <Grid item>
             <TextField
-              placeholder="Pesquise aqui..."
+              placeholder={`Pesquise por ${searchOptionLabel}...`}
               size="small"
               sx={{ mb: 1, ml: "2%", width: 350 }}
               value={searchValue}
@@ -288,30 +233,21 @@ export default function Stock({ user }) {
               }}
             />
           </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
+          <Grid item sx={{ ml: "3%" }}>
+            <Select
               value={searchOption}
-              onChange={handleSearchOptionChange}
+              onChange={(e) => {
+                setSearchOption(e.target.value),
+                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+              }}
+              size="small"
+              sx={{ minWidth: 180, color: "#777" }}
+              renderValue={() => (
+                <Typography>Filtrar por {searchOptionLabel}</Typography>
+              )}
             >
-              <FormControlLabel
-                value="name"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Nome
-                  </Typography>
-                }
-              />
-            </RadioGroup>
+              <MenuItem value="name">Nome</MenuItem>
+            </Select>
           </Grid>
         </Grid>
         <StockTable
@@ -326,7 +262,7 @@ export default function Stock({ user }) {
         <Grid container direction="row" justifyContent="flex-start">
           <Grid item>
             <TextField
-              placeholder="Pesquise aqui..."
+              placeholder={`Pesquise por ${searchOptionLabel}...`}
               size="small"
               sx={{ mb: 1, ml: "2%", width: 350 }}
               value={searchValue}
@@ -352,64 +288,20 @@ export default function Stock({ user }) {
               }}
             />
           </Grid>
-          <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-            <RadioGroup
-              row
+          <Grid item sx={{ ml: "3%" }}>
+            <Select
               value={searchOption}
-              onChange={handleSearchOptionChange}
+              onChange={(e) => {
+                setSearchOption(e.target.value),
+                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+              }}
+              size="small"
+              sx={{ minWidth: 180, color: "#777" }}
             >
-              <FormControlLabel
-                value="quoteValue"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Valor dos Itens
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="createdBy"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Criado por
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="createdAt"
-                control={
-                  <Radio
-                    sx={{
-                      "& .MuiSvgIcon-root": {
-                        fontSize: 13,
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                    Adicionado em
-                  </Typography>
-                }
-              />
-            </RadioGroup>
+              <MenuItem value="quoteValue">Valor dos Itens</MenuItem>
+              <MenuItem value="createdBy">Criado por</MenuItem>
+              <MenuItem value="createdAt">Adicionado em</MenuItem>
+            </Select>
           </Grid>
         </Grid>
         <StockEntriesTable

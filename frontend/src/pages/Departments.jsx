@@ -35,6 +35,7 @@ import DepartmentTable from "../tables/DepartmentTable";
 import PositionTable from "../tables/PositionTable";
 import AddPositionForm from "../forms/add/AddPositionForm";
 import AddDepartmentForm from "../forms/add/AddDepartmentForm";
+import RefreshButton from "../components/small/buttons/RefreshButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -201,6 +202,10 @@ export default function Departments({ user }) {
           <Tab
             label="Cargos"
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
+           <RefreshButton
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
           />
         </Tabs>
       </Box>

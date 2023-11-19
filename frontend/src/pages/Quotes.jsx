@@ -20,6 +20,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 
 import QuoteTable from "../tables/QuoteTable";
+import RefreshButton from "../components/small/buttons/RefreshButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -40,6 +41,7 @@ function CustomTabPanel(props) {
 }
 
 export default function Quotes({ user }) {
+  const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("name");
@@ -69,7 +71,7 @@ export default function Quotes({ user }) {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   const fetchData = async () => {
     try {
@@ -107,6 +109,10 @@ export default function Quotes({ user }) {
           <Tab
             label={<Typography sx={{ fontSize: 14 }}>Vendas</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
+           <RefreshButton
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
           />
         </Tabs>
       </Box>
