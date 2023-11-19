@@ -78,7 +78,7 @@ export default function Users({ user }) {
   const [openAddRole, setOpenAddRole] = React.useState(false);
 
   const [searchOption, setSearchOption] = React.useState("name");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("");
+  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
   const [searchValue, setSearchValue] = React.useState("");
   const [searchDepartment, setSearchDepartment] = React.useState("&nbsp");
 
@@ -99,6 +99,7 @@ export default function Users({ user }) {
     setValue(newValue);
     setSearchValue("");
     setSearchOption("name");
+    setSearchOptionLabel("Nome");
   };
 
   React.useEffect(() => {
@@ -377,6 +378,9 @@ export default function Users({ user }) {
                   }}
                   size="small"
                   sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => (
+                    <Typography>Filtrar por {searchOptionLabel}</Typography>
+                  )}
                 >
                   <MenuItem value="name">Nome</MenuItem>
                   <MenuItem value="email">E-mail</MenuItem>
@@ -437,6 +441,9 @@ export default function Users({ user }) {
                   }}
                   size="small"
                   sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => (
+                    <Typography>Filtrar por {searchOptionLabel}</Typography>
+                  )}
                 >
                   <MenuItem value="name">Nome</MenuItem>
                   <MenuItem value="username">Nome de Usuário</MenuItem>
@@ -518,6 +525,9 @@ export default function Users({ user }) {
                   }}
                   size="small"
                   sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => (
+                    <Typography>Filtrar por {searchOptionLabel}</Typography>
+                  )}
                 >
                   <MenuItem value="name">Nome</MenuItem>
                 </Select>
