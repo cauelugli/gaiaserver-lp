@@ -248,7 +248,7 @@ export default function Departments({ user }) {
               size="small"
               sx={{ minWidth: 180, color: "#777" }}
               renderValue={() => (
-                <Typography>Filtrar por {searchOptionLabel}</Typography>
+                <Typography>Filtrar por</Typography>
               )}
             >
               <MenuItem value="name">Nome</MenuItem>
@@ -310,7 +310,7 @@ export default function Departments({ user }) {
               size="small"
               sx={{ minWidth: 180, color: "#777" }}
               renderValue={() => (
-                <Typography>Filtrar por {searchOptionLabel}</Typography>
+                <Typography>Filtrar por</Typography>
               )}
             >
               <MenuItem value="name">Nome</MenuItem>
@@ -372,7 +372,7 @@ export default function Departments({ user }) {
               size="small"
               sx={{ minWidth: 180, color: "#777" }}
               renderValue={() => (
-                <Typography>Filtrar por {searchOptionLabel}</Typography>
+                <Typography>Filtrar por</Typography>
               )}
             >
               <MenuItem value="name">Nome</MenuItem>
@@ -434,7 +434,7 @@ export default function Departments({ user }) {
               size="small"
               sx={{ minWidth: 180, color: "#777" }}
               renderValue={() => (
-                <Typography>Filtrar por {searchOptionLabel}</Typography>
+                <Typography>Filtrar por</Typography>
               )}
             >
               <MenuItem value="name">Nome</MenuItem>

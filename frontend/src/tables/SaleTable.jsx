@@ -63,7 +63,7 @@ export default function SaleTable({
   const tableHeaderRow = [
     {
       id: "requester",
-      label: "Comprador",
+      label: "Solicitante",
     },
     {
       id: "items",
@@ -134,11 +134,11 @@ export default function SaleTable({
             >
               {tableHeaderRow.map((headCell) => (
                 <TableCell
-                  align={headCell.label === "Comprador" ? "" : "center"}
+                  align={headCell.label === "Solicitante" ? "" : "center"}
                   sx={{
                     fontSize: 16,
                     fontWeight: "bold",
-                    pl: headCell.label === "Comprador" ? "" : 5,
+                    pl: headCell.label === "Solicitante" ? "" : 5,
                   }}
                   key={headCell.id}
                   sortDirection={orderBy === headCell.id ? order : false}
@@ -441,7 +441,7 @@ export default function SaleTable({
                             variant="h6"
                             sx={{ fontSize: 18, fontWeight: "bold" }}
                           >
-                            Comprador
+                            Solicitante
                           </Typography>
                           <Table size="small">
                             <TableHead>
@@ -450,7 +450,7 @@ export default function SaleTable({
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
                                   >
-                                    Nome do Comprador
+                                    Nome do Solicitante
                                   </Typography>
                                 </TableCell>
                                 <TableCell align="left">

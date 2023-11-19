@@ -74,7 +74,7 @@ export default function JobTable({
   const tableHeaderRow = [
     {
       id: "title",
-      label: "Nome",
+      label: "Título",
     },
     {
       id: "requester",
