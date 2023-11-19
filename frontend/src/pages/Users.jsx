@@ -272,7 +272,9 @@ export default function Users({ user }) {
                   size="small"
                   sx={{ minWidth: 180, color: "#777" }}
                   renderValue={() => (
-                    <Typography>Filtrar por {searchOptionLabel}</Typography>
+                    <Typography>
+                      Filtrar por
+                    </Typography>
                   )}
                 >
                   <MenuItem value="name">Nome</MenuItem>
@@ -320,7 +322,7 @@ export default function Users({ user }) {
                 <ClearIcon
                   cursor="pointer"
                   onClick={() => setSearchDepartment("&nbsp")}
-                  sx={{ my: 1, color:"red" }}
+                  sx={{ my: 1, color: "red" }}
                 />
               )}
             </Grid>
@@ -378,9 +380,7 @@ export default function Users({ user }) {
                   }}
                   size="small"
                   sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={() => (
-                    <Typography>Filtrar por {searchOptionLabel}</Typography>
-                  )}
+                  renderValue={() => <Typography>Filtrar por</Typography>}
                 >
                   <MenuItem value="name">Nome</MenuItem>
                   <MenuItem value="email">E-mail</MenuItem>
@@ -441,9 +441,7 @@ export default function Users({ user }) {
                   }}
                   size="small"
                   sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={() => (
-                    <Typography>Filtrar por {searchOptionLabel}</Typography>
-                  )}
+                  renderValue={() => <Typography>Filtrar por</Typography>}
                 >
                   <MenuItem value="name">Nome</MenuItem>
                   <MenuItem value="username">Nome de Usuário</MenuItem>
@@ -525,9 +523,7 @@ export default function Users({ user }) {
                   }}
                   size="small"
                   sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={() => (
-                    <Typography>Filtrar por {searchOptionLabel}</Typography>
-                  )}
+                  renderValue={() => <Typography>Filtrar por</Typography>}
                 >
                   <MenuItem value="name">Nome</MenuItem>
                 </Select>

@@ -70,10 +70,6 @@ export default function Departments({ user }) {
     setSearchValue(event.target.value);
   };
 
-  const handleSearchOptionChange = (event) => {
-    setSearchOption(event.target.value);
-  };
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
   const handleClickAddButton = (event) => {
@@ -120,6 +116,9 @@ export default function Departments({ user }) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setSearchValue("");
+    setSearchOption("name");
+    setSearchOptionLabel("Nome");
   };
 
   return (
@@ -203,7 +202,7 @@ export default function Departments({ user }) {
             label="Cargos"
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
-           <RefreshButton
+          <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
           />
@@ -248,12 +247,14 @@ export default function Departments({ user }) {
               }}
               size="small"
               sx={{ minWidth: 180, color: "#777" }}
+              renderValue={() => (
+                <Typography>Filtrar por {searchOptionLabel}</Typography>
+              )}
             >
               <MenuItem value="name">Nome</MenuItem>
               <MenuItem value="email">E-mail</MenuItem>
               <MenuItem value="manager.name">Gerente</MenuItem>
             </Select>
-            <FormHelperText>Filtrar por</FormHelperText>
           </Grid>
         </Grid>
         <DepartmentTable
@@ -308,12 +309,14 @@ export default function Departments({ user }) {
               }}
               size="small"
               sx={{ minWidth: 180, color: "#777" }}
+              renderValue={() => (
+                <Typography>Filtrar por {searchOptionLabel}</Typography>
+              )}
             >
               <MenuItem value="name">Nome</MenuItem>
               <MenuItem value="email">E-mail</MenuItem>
               <MenuItem value="manager.name">Gerente</MenuItem>
             </Select>
-            <FormHelperText>Filtrar por</FormHelperText>
           </Grid>
         </Grid>
         <DepartmentTable
@@ -368,12 +371,14 @@ export default function Departments({ user }) {
               }}
               size="small"
               sx={{ minWidth: 180, color: "#777" }}
+              renderValue={() => (
+                <Typography>Filtrar por {searchOptionLabel}</Typography>
+              )}
             >
               <MenuItem value="name">Nome</MenuItem>
               <MenuItem value="email">E-mail</MenuItem>
               <MenuItem value="manager.name">Gerente</MenuItem>
             </Select>
-            <FormHelperText>Filtrar por</FormHelperText>
           </Grid>
         </Grid>
         <DepartmentTable
@@ -428,10 +433,12 @@ export default function Departments({ user }) {
               }}
               size="small"
               sx={{ minWidth: 180, color: "#777" }}
+              renderValue={() => (
+                <Typography>Filtrar por {searchOptionLabel}</Typography>
+              )}
             >
               <MenuItem value="name">Nome</MenuItem>
             </Select>
-            <FormHelperText>Filtrar por</FormHelperText>
           </Grid>
         </Grid>
         <PositionTable

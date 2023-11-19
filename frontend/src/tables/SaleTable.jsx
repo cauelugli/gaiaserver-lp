@@ -31,6 +31,7 @@ import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 export default function SaleTable({
   searchValue,
+  searchStatus,
   searchOption,
   sales,
   refreshData,
@@ -157,9 +158,19 @@ export default function SaleTable({
                 const userProperty = searchOption
                   .split(".")
                   .reduce((obj, key) => obj[key], user);
+                const statusFilter =
+                  !searchStatus || user.status === searchStatus;
+
+                // Verifica se a condição para aplicar o filtro é atendida
+                const shouldApplyStatusFilter =
+                  statusFilter || searchStatus === "&nbsp";
+
                 return (
                   userProperty &&
-                  userProperty.toLowerCase().includes(searchValue.toLowerCase())
+                  userProperty
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase()) &&
+                  shouldApplyStatusFilter
                 );
               })
               .map((sale) => (

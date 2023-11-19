@@ -40,11 +40,12 @@ const api = axios.create({
 export default function JobTable({
   user,
   searchValue,
+  searchStatus,
   searchOption,
   jobs,
   managers,
   refreshData,
-  setRefreshData
+  setRefreshData,
 }) {
   const [userReactions, setUserReactions] = React.useState({});
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -69,7 +70,6 @@ export default function JobTable({
     setOption(option);
     setSelectedJob(job);
   };
-
 
   const tableHeaderRow = [
     {
@@ -192,9 +192,19 @@ export default function JobTable({
                 const userProperty = searchOption
                   .split(".")
                   .reduce((obj, key) => obj[key], user);
+                const statusFilter =
+                  !searchStatus || user.status === searchStatus;
+
+                // Verifica se a condição para aplicar o filtro é atendida
+                const shouldApplyStatusFilter =
+                  statusFilter || searchStatus === "&nbsp";
+
                 return (
                   userProperty &&
-                  userProperty.toLowerCase().includes(searchValue.toLowerCase())
+                  userProperty
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase()) &&
+                  shouldApplyStatusFilter
                 );
               })
               .map((job) => (

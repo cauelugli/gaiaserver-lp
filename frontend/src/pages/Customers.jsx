@@ -75,10 +75,6 @@ export default function Customers({ user }) {
     setSearchValue(event.target.value);
   };
 
-  const handleSearchOptionChange = (event) => {
-    setSearchOption(event.target.value);
-  };
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
   const handleClickAddButton = (event) => {
@@ -90,6 +86,9 @@ export default function Customers({ user }) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setSearchValue("");
+    setSearchOption("name");
+    setSearchOptionLabel("Nome");
   };
 
   React.useEffect(() => {
@@ -228,11 +227,13 @@ export default function Customers({ user }) {
                   }}
                   size="small"
                   sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => (
+                    <Typography>Filtrar por</Typography>
+                  )}
                 >
                   <MenuItem value="name">Nome</MenuItem>
                   <MenuItem value="mainContactName">Contato Principal</MenuItem>
                 </Select>
-                <FormHelperText>Filtrar por</FormHelperText>
               </Grid>
             </Grid>
             <CustomerTable
@@ -287,12 +288,14 @@ export default function Customers({ user }) {
                   }}
                   size="small"
                   sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => (
+                    <Typography>Filtrar por</Typography>
+                  )}
                 >
                   <MenuItem value="name">Nome</MenuItem>
                   <MenuItem value="email">E-mail</MenuItem>
                   <MenuItem value="phone">Telefone</MenuItem>
                 </Select>
-                <FormHelperText>Filtrar por</FormHelperText>
               </Grid>
             </Grid>
             <ClientTable
