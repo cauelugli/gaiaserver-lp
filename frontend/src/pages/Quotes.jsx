@@ -44,21 +44,19 @@ export default function Quotes({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [searchValue, setSearchValue] = React.useState("");
-  const [searchOption, setSearchOption] = React.useState("name");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
+  const [searchOption, setSearchOption] = React.useState("number");
+  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Número");
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
-  };
-
-  const handleSearchOptionChange = (event) => {
-    setSearchOption(event.target.value);
   };
 
   const [quotes, setQuotes] = React.useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setSearchOption("number")
+    setSearchValue("");
   };
 
   React.useEffect(() => {
@@ -155,15 +153,15 @@ export default function Quotes({ user }) {
               }}
               size="small"
               sx={{ minWidth: 180, color: "#777" }}
-              renderValue={(selected) => <Typography>Filtrar por {searchOptionLabel}</Typography>}
+              renderValue={(selected) => <Typography>Filtrar por</Typography>}
 
             >
-              <MenuItem value="name">Nome</MenuItem>
+              <MenuItem value="number">Número</MenuItem>
             </Select>
           </Grid>
         </Grid>
         <QuoteTable
-          quotes={quotes}
+          quotes={quotes.filter((quote) => quote.type === "job")}
           searchOption={searchOption}
           searchValue={searchValue}
           fetchData={fetchData}
@@ -208,14 +206,14 @@ export default function Quotes({ user }) {
               }}
               size="small"
               sx={{ minWidth: 180, color: "#777" }}
-              renderValue={(selected) => <Typography>Filtrar por {searchOptionLabel}</Typography>}
+              renderValue={(selected) => <Typography>Filtrar por</Typography>}
             >
-              <MenuItem value="name">Nome</MenuItem>
+              <MenuItem value="number">Número</MenuItem>
             </Select>
           </Grid>
         </Grid>
         <QuoteTable
-          quotes={quotes}
+          quotes={quotes.filter((quote) => quote.type === "sale")}
           searchOption={searchOption}
           searchValue={searchValue}
           fetchData={fetchData}

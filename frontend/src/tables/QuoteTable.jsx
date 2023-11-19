@@ -6,13 +6,11 @@ import dayjs from "dayjs";
 import {
   Dialog,
   Box,
-  Collapse,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   Typography,
   Grid,
@@ -25,26 +23,6 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 
 export default function QuoteTable({ searchValue, searchOption, quotes }) {
-  const [openEdit, setOpenEdit] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
-  const [openDetail, setOpenDetail] = React.useState(false);
-  const [selectedQuote, setSelectedQuote] = React.useState([]);
-
-  const handleOpenDetail = (sale) => {
-    setOpenDetail(!openDetail);
-    setSelectedQuote(sale);
-  };
-
-  const handleOpenEdit = (sale) => {
-    setOpenEdit(!openEdit);
-    setSelectedQuote(sale);
-  };
-
-  const handleConfirmDelete = (sale) => {
-    setSelectedQuote(sale);
-    setOpenDelete(!openDelete);
-  };
-
   const tableHeaderRow = [
     {
       id: "number",
@@ -143,27 +121,18 @@ export default function QuoteTable({ searchValue, searchOption, quotes }) {
               ))}
             </TableRow>
             {sortedRows
-              // .filter((user) => {
-              //   const userProperty = searchOption
-              //     .split(".")
-              //     .reduce((obj, key) => obj[key], user);
-              //   return (
-              //     userProperty &&
-              //     userProperty.toLowerCase().includes(searchValue.toLowerCase())
-              //   );
-              // })
+              .filter((user) => {
+                const userProperty = searchOption
+                  .split(".")
+                  .reduce((obj, key) => obj[key], user);
+                return (
+                  userProperty &&
+                  userProperty.toLowerCase().includes(searchValue.toLowerCase())
+                );
+              })
               .map((quote) => (
                 <>
-                  <TableRow
-                    key={quote._id}
-                    sx={{
-                      backgroundColor:
-                        selectedQuote._id === quote._id && openDetail
-                          ? "#eee"
-                          : "none",
-                      "&:hover": { backgroundColor: "#eee " },
-                    }}
-                  >
+                  <TableRow key={quote._id}>
                     <TableCell align="left">{quote.number}</TableCell>
                     <TableCell align="center">
                       <Grid container direction="row" justifyContent="center">

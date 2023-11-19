@@ -35,10 +35,20 @@ saleSchema = new mongoose.Schema({
   items: {
     type: Object,
   },
-  interactions: {
-    type: Array,
-    default: {}
-  },
+  interactions: [
+    {
+      number: Number,
+      activity: String,
+      user: String,
+      date: String,
+      reactions: {
+        love: { quantity: Number, usersReacted: [] },
+        like: { quantity: Number, usersReacted: [] },
+        dislike: { quantity: Number, usersReacted: [] },
+        haha: { quantity: Number, usersReacted: [] },
+      },
+    },
+  ],
   deliveryScheduledTo: {
     type: String,
     required: true,
@@ -62,11 +72,7 @@ saleSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-  },
-  updates: {
-    type: Array,
-    default: {},
-  },
+  }
 });
 
 saleSchema.plugin(autoIncrement.plugin, {
