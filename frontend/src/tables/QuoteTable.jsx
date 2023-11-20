@@ -18,40 +18,79 @@ import {
   TablePagination,
 } from "@mui/material";
 
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 
-export default function QuoteTable({ searchValue, searchOption, quotes }) {
-  const tableHeaderRow = [
-    {
-      id: "number",
-      label: "#",
-    },
-    {
-      id: "materials",
-      label: "Itens",
-    },
-    {
-      id: "customer.name",
-      label: "Cliente",
-    },
-    {
-      id: "user.name",
-      label: "Colaborador",
-    },
-    {
-      id: "value",
-      label: "Valor",
-    },
-    {
-      id: "department",
-      label: "Departamento",
-    },
-    {
-      id: "actions",
-      label: "Ações",
-    },
-  ];
+export default function QuoteTable({
+  type,
+  searchValue,
+  searchOption,
+  quotes,
+}) {
+  let tableHeaderRow;
+
+  if (type === "job") {
+    tableHeaderRow = [
+      {
+        id: "number",
+        label: "#",
+      },
+      {
+        id: "service",
+        label: "Serviço",
+      },
+      {
+        id: "customer.name",
+        label: "Cliente",
+      },
+      {
+        id: "user.name",
+        label: "Colaborador",
+      },
+      {
+        id: "department",
+        label: "Departamento",
+      },
+      {
+        id: "value",
+        label: "Valor Total",
+      },
+      {
+        id: "actions",
+        label: "Ações",
+      },
+    ];
+  } else {
+    tableHeaderRow = [
+      {
+        id: "number",
+        label: "#",
+      },
+      {
+        id: "materials",
+        label: "Itens",
+      },
+      {
+        id: "customer.name",
+        label: "Cliente",
+      },
+      {
+        id: "user.name",
+        label: "Colaborador",
+      },
+      {
+        id: "department",
+        label: "Departamento",
+      },
+      {
+        id: "price",
+        label: "Valor Total",
+      },
+      {
+        id: "actions",
+        label: "Ações",
+      },
+    ];
+  }
 
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("number");
@@ -150,45 +189,53 @@ export default function QuoteTable({ searchValue, searchOption, quotes }) {
                   <TableRow key={quote._id}>
                     <TableCell align="left">{quote.number}</TableCell>
                     <TableCell align="center">
-                      <Grid container direction="row" justifyContent="center">
-                        {quote.materials.slice(0, 3).map((item) => (
-                          <Grid
-                            direction="column"
-                            key={item.id}
-                            alignItems="center"
-                            sx={{ mr: 1 }}
-                          >
-                            <Grid item>
-                              <Avatar
-                                alt="Imagem do Produto"
-                                src={`http://localhost:3000/static/${item.image}`}
-                                sx={{ width: 32, height: 32, mx: "auto" }}
-                              />
+                      {type === "job" ? (
+                        <Typography sx={{ mt: 1, fontSize: 14 }}>
+                          {quote.service}
+                        </Typography>
+                      ) : (
+                        <Grid container direction="row" justifyContent="center">
+                          {quote.materials.slice(0, 3).map((item) => (
+                            <Grid
+                              direction="column"
+                              key={item.id}
+                              alignItems="center"
+                              sx={{ mr: 1 }}
+                            >
+                              <Grid item>
+                                <Avatar
+                                  alt="Imagem do Produto"
+                                  src={`http://localhost:3000/static/${item.image}`}
+                                  sx={{ width: 32, height: 32, mx: "auto" }}
+                                />
+                              </Grid>
+                              <Grid item>
+                                <Typography sx={{ fontSize: 12 }}>
+                                  x{item.quantity}
+                                </Typography>
+                              </Grid>
+                              <Grid item>
+                                <Typography
+                                  sx={{ fontSize: 12, color: "#777" }}
+                                >
+                                  {item.name}
+                                </Typography>
+                              </Grid>
                             </Grid>
-                            <Grid item>
-                              <Typography sx={{ fontSize: 12 }}>
-                                x{item.quantity}
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <Typography sx={{ fontSize: 12, color: "#777" }}>
-                                {item.name}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-                        ))}
-                        {quote.materials.length > 3 && (
-                          <Typography
-                            sx={{
-                              marginY: "auto",
-                              fontSize: 24,
-                              color: "#444",
-                            }}
-                          >
-                            +{quote.materials.length - 3}
-                          </Typography>
-                        )}
-                      </Grid>
+                          ))}
+                          {quote.materials.length > 3 && (
+                            <Typography
+                              sx={{
+                                marginY: "auto",
+                                fontSize: 24,
+                                color: "#444",
+                              }}
+                            >
+                              +{quote.materials.length - 3}
+                            </Typography>
+                          )}
+                        </Grid>
+                      )}
                     </TableCell>
                     <TableCell align="center">
                       <Typography sx={{ mt: 1, fontSize: 14 }}>
@@ -196,10 +243,10 @@ export default function QuoteTable({ searchValue, searchOption, quotes }) {
                       </Typography>
                     </TableCell>
                     <TableCell align="center">{quote.user}</TableCell>
+                    <TableCell align="center">{quote.department}</TableCell>
                     <TableCell align="center">
                       R${quote.value.toFixed(2)}
                     </TableCell>
-                    <TableCell align="center">{quote.department}</TableCell>
                     <TableCell align="center" sx={{ py: 0 }}>
                       <Grid
                         container
@@ -207,14 +254,6 @@ export default function QuoteTable({ searchValue, searchOption, quotes }) {
                         justifyContent="center"
                         alignItems="center"
                       >
-                        <IconButton>
-                          <VisibilityIcon
-                            cursor="pointer"
-                            // onClick={() => handleOpenView(quote)}
-                            sx={{ color: "#333" }}
-                          />
-                        </IconButton>
-                        <IconButton sx={{ mx: -1 }}></IconButton>
                         <IconButton>
                           <PictureAsPdfIcon
                             cursor="pointer"

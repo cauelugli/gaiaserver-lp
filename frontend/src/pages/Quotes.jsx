@@ -163,11 +163,13 @@ export default function Quotes({ user }) {
                   )}
                 >
                   <MenuItem value="number">Número</MenuItem>
+                  <MenuItem value="service">Serviço</MenuItem>
                 </Select>
               </Grid>
             </Grid>
             <QuoteTable
               quotes={quotes.filter((quote) => quote.type === "job")}
+              type={"job"}
               searchOption={searchOption}
               searchValue={searchValue}
               fetchData={fetchData}
@@ -228,6 +230,7 @@ export default function Quotes({ user }) {
             </Grid>
             <QuoteTable
               quotes={quotes.filter((quote) => quote.type === "sale")}
+              type={"sale"}
               searchOption={searchOption}
               searchValue={searchValue}
               fetchData={fetchData}
