@@ -57,7 +57,7 @@ export default function Stock({ user }) {
   const [value, setValue] = React.useState(0);
   const [stockItems, setStockItems] = React.useState([]);
   const [products, setProducts] = React.useState([]);
-  const [stockEntries, setStockEntries] = React.useState([]);
+  const [stock, setStock] = React.useState([]);
 
   const [openModals, setOpenModals] = React.useState([
     false,
@@ -69,7 +69,7 @@ export default function Stock({ user }) {
 
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("name");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("");
+  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -78,8 +78,8 @@ export default function Stock({ user }) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
     setSearchValue("");
-    setSearchOption("");
-    setSearchOptionLabel("");
+    setSearchOption("name");
+    setSearchOptionLabel("Nome");
   };
 
   const openModal = (modalIndex) => {
@@ -99,10 +99,10 @@ export default function Stock({ user }) {
       try {
         const stockItems = await api.get("/stockItems");
         const products = await api.get("/products");
-        const stockEntries = await api.get("/stockEntries");
+        const stockEntries = await api.get("/stock");
         setStockItems(stockItems.data);
         setProducts(products.data);
-        setStockEntries(stockEntries.data);
+        setStock(stockEntries.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -275,7 +275,7 @@ export default function Stock({ user }) {
         )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        {stockEntries.length === 0 ? (
+        {stock.length === 0 ? (
           <NoDataText option="Entradas de Estoque" />
         ) : (
           <>

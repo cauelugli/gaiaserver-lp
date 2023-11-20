@@ -73,7 +73,7 @@ export default function ProductsTable({
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   const handleOpenDetail = (product) => {
     setOpenDetail(!openDetail);
