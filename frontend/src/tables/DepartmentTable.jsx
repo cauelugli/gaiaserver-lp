@@ -17,6 +17,7 @@ import {
   Avatar,
   TableSortLabel,
   Grid,
+  TablePagination,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -111,6 +112,21 @@ export default function DepartmentTable({
     });
   }, [departments, order, orderBy]);
 
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
   return (
     <Box sx={{ minWidth: "1050px" }}>
       <TableContainer component={Paper}>
@@ -144,6 +160,7 @@ export default function DepartmentTable({
               ))}
             </TableRow>
             {sortedRows
+              .slice(startIndex, endIndex)
               .filter((user) => {
                 const userProperty = searchOption
                   .split(".")
@@ -558,6 +575,18 @@ export default function DepartmentTable({
               ))}
           </TableBody>
         </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
       </TableContainer>
       {openEdit && (
         <Dialog

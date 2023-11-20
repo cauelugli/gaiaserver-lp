@@ -18,6 +18,7 @@ import {
   TableRow,
   Typography,
   TableSortLabel,
+  TablePagination,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -30,7 +31,12 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ClientTable({ refreshData,setRefreshData, searchOption, searchValue }) {
+export default function ClientTable({
+  refreshData,
+  setRefreshData,
+  searchOption,
+  searchValue,
+}) {
   const [selectedClient, setSelectedClient] = React.useState([]);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -125,6 +131,21 @@ export default function ClientTable({ refreshData,setRefreshData, searchOption, 
     });
   }, [clients, order, orderBy]);
 
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
   return (
     <Box>
       <TableContainer component={Paper}>
@@ -156,6 +177,7 @@ export default function ClientTable({ refreshData,setRefreshData, searchOption, 
               ))}
             </TableRow>
             {sortedRows
+              .slice(startIndex, endIndex)
               .filter((user) =>
                 user[searchOption]
                   .toLowerCase()
@@ -324,6 +346,18 @@ export default function ClientTable({ refreshData,setRefreshData, searchOption, 
               ))}
           </TableBody>
         </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
       </TableContainer>
       {openEdit && (
         <Dialog

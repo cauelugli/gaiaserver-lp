@@ -20,6 +20,7 @@ import {
   Grid,
   Avatar,
   TableSortLabel,
+  TablePagination,
 } from "@mui/material";
 
 import InteractionReactions from "../components/small/InteractionReactions";
@@ -153,6 +154,21 @@ export default function JobTable({
     }
   };
 
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
   return (
     <Box sx={{ minWidth: "1050px" }}>
       <TableContainer component={Paper}>
@@ -185,6 +201,7 @@ export default function JobTable({
               ))}
             </TableRow>
             {sortedRows
+              .slice(startIndex, endIndex)
               .filter((user) => {
                 const userProperty = searchOption
                   .split(".")
@@ -662,6 +679,18 @@ export default function JobTable({
               ))}
           </TableBody>
         </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
       </TableContainer>
       {openEdit && (
         <Dialog

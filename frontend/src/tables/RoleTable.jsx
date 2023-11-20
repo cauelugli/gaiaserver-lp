@@ -16,6 +16,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   TableSortLabel,
   Typography,
@@ -31,7 +32,12 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function RoleTable({ refreshData,setRefreshData, searchValue, searchOption }) {
+export default function RoleTable({
+  refreshData,
+  setRefreshData,
+  searchValue,
+  searchOption,
+}) {
   const [selectedRole, setSelectedRole] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -113,6 +119,21 @@ export default function RoleTable({ refreshData,setRefreshData, searchValue, sea
     });
   }, [roles, order, orderBy]);
 
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
   return (
     <>
       <Box sx={{ minWidth: "1050px" }}>
@@ -144,7 +165,7 @@ export default function RoleTable({ refreshData,setRefreshData, searchValue, sea
                 </TableCell>
               ))}
             </TableRow>
-            {sortedRows
+            {sortedRows.slice(startIndex, endIndex)
               .filter((user) =>
                 user[searchOption]
                   .toLowerCase()
@@ -170,28 +191,28 @@ export default function RoleTable({ refreshData,setRefreshData, searchValue, sea
                       <Typography sx={{ fontSize: 14 }}>{row.name}</Typography>
                     </TableCell>
                     <TableCell align="center" sx={{ py: 0 }}>
-                        <Grid
-                          container
-                          direction="row"
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <IconButton>
-                            <ModeEditIcon
-                              cursor="pointer"
-                              onClick={() => handleOpenEdit(row)}
-                              sx={{ color: "#333" }}
-                            />
-                          </IconButton>
-                          <IconButton>
-                            <DeleteIcon
-                              cursor="pointer"
-                              onClick={() => handleConfirmDelete(row)}
-                              sx={{ color: "#ff4444" }}
-                            />
-                          </IconButton>
-                        </Grid>
-                      </TableCell>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <IconButton>
+                          <ModeEditIcon
+                            cursor="pointer"
+                            onClick={() => handleOpenEdit(row)}
+                            sx={{ color: "#333" }}
+                          />
+                        </IconButton>
+                        <IconButton>
+                          <DeleteIcon
+                            cursor="pointer"
+                            onClick={() => handleConfirmDelete(row)}
+                            sx={{ color: "#ff4444" }}
+                          />
+                        </IconButton>
+                      </Grid>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell
@@ -355,6 +376,18 @@ export default function RoleTable({ refreshData,setRefreshData, searchValue, sea
                 </React.Fragment>
               ))}
           </Table>
+          <TablePagination
+            component="div"
+            count={sortedRows.length}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            labelRowsPerPage={"por Página"}
+            labelDisplayedRows={({ from, to, count }) => {
+              return " " + from + " à " + to + " total " + count;
+            }}
+          />
         </TableContainer>
 
         {openEdit && (
@@ -375,19 +408,19 @@ export default function RoleTable({ refreshData,setRefreshData, searchValue, sea
           </Dialog>
         )}
         {openDialog && (
-        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-          <GenericDeleteForm
-            selectedItem={selectedItem}
-            openDialog={openDialog}
-            setOpenDialog={setOpenDialog}
-            toast={toast}
-            endpoint="roles"
-            successMessage={`${
-              selectedItem.name && selectedItem.name
-            } Deletado com Sucesso`}
-          />
-        </Dialog>
-      )}
+          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+            <GenericDeleteForm
+              selectedItem={selectedItem}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+              toast={toast}
+              endpoint="roles"
+              successMessage={`${
+                selectedItem.name && selectedItem.name
+              } Deletado com Sucesso`}
+            />
+          </Dialog>
+        )}
       </Box>
     </>
   );

@@ -18,6 +18,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   TableSortLabel,
   Typography,
@@ -33,8 +34,12 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ProductsTable({ searchValue, searchOption,refreshData,
-  setRefreshData }) {
+export default function ProductsTable({
+  searchValue,
+  searchOption,
+  refreshData,
+  setRefreshData,
+}) {
   const [selectedProduct, setSelectedProduct] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -79,7 +84,7 @@ export default function ProductsTable({ searchValue, searchOption,refreshData,
     setOpenEdit(!openEdit);
     setSelectedProduct(product);
   };
-  
+
   const tableHeaderRow = [
     {
       id: "name",
@@ -123,6 +128,21 @@ export default function ProductsTable({ searchValue, searchOption,refreshData,
     });
   }, [products, order, orderBy]);
 
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
   return (
     <>
       <Box sx={{ minWidth: "1050px" }}>
@@ -153,6 +173,7 @@ export default function ProductsTable({ searchValue, searchOption,refreshData,
                 ))}
               </TableRow>
               {sortedRows
+                .slice(startIndex, endIndex)
                 .filter((user) => {
                   const userProperty = searchOption
                     .split(".")
@@ -473,6 +494,18 @@ export default function ProductsTable({ searchValue, searchOption,refreshData,
                 ))}
             </TableBody>
           </Table>
+          <TablePagination
+            component="div"
+            count={sortedRows.length}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            labelRowsPerPage={"por Página"}
+            labelDisplayedRows={({ from, to, count }) => {
+              return " " + from + " à " + to + " total " + count;
+            }}
+          />
         </TableContainer>
 
         {openEdit && (
@@ -493,21 +526,21 @@ export default function ProductsTable({ searchValue, searchOption,refreshData,
           </Dialog>
         )}
         {openDialog && (
-        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-          <GenericDeleteForm
-            selectedItem={selectedItem}
-            openDialog={openDialog}
-            setOpenDialog={setOpenDialog}
-            toast={toast}
-            endpoint="products"
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-            successMessage={`${
-              selectedItem.name && selectedItem.name
-            } Deletado com Sucesso`}
-          />
-        </Dialog>
-      )}
+          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
+            <GenericDeleteForm
+              selectedItem={selectedItem}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+              toast={toast}
+              endpoint="products"
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              successMessage={`${
+                selectedItem.name && selectedItem.name
+              } Deletado com Sucesso`}
+            />
+          </Dialog>
+        )}
       </Box>
     </>
   );

@@ -1,10 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import dayjs from "dayjs";
 
 import {
-  Dialog,
   Box,
   Paper,
   Table,
@@ -17,6 +15,7 @@ import {
   Avatar,
   TableSortLabel,
   IconButton,
+  TablePagination,
 } from "@mui/material";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -62,6 +61,21 @@ export default function QuoteTable({ searchValue, searchOption, quotes }) {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
 
   const sortedRows = React.useMemo(() => {
     const compare = (a, b) => {
@@ -121,6 +135,7 @@ export default function QuoteTable({ searchValue, searchOption, quotes }) {
               ))}
             </TableRow>
             {sortedRows
+              .slice(startIndex, endIndex)
               .filter((user) => {
                 const userProperty = searchOption
                   .split(".")
@@ -214,6 +229,18 @@ export default function QuoteTable({ searchValue, searchOption, quotes }) {
               ))}
           </TableBody>
         </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
       </TableContainer>
     </Box>
   );

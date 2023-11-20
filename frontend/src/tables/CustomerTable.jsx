@@ -19,6 +19,7 @@ import {
   Typography,
   TableSortLabel,
   Avatar,
+  TablePagination,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -122,6 +123,21 @@ export default function CustomerTable({
     });
   }, [customers, order, orderBy]);
 
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
   return (
     <Box>
       <TableContainer component={Paper}>
@@ -154,6 +170,7 @@ export default function CustomerTable({
             </TableRow>
 
             {sortedRows
+              .slice(startIndex, endIndex)
               .filter((user) =>
                 user[searchOption]
                   .toLowerCase()
@@ -398,6 +415,18 @@ export default function CustomerTable({
               ))}
           </TableBody>
         </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
       </TableContainer>
       {openEdit && (
         <Dialog
