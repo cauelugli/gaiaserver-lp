@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 
 import PersonIcon from "@mui/icons-material/Person";
-import GradingIcon from "@mui/icons-material/Grading";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import LogoutIcon from "@mui/icons-material/Logout";
 
@@ -57,16 +56,9 @@ export default function UserButton({ user }) {
               <ListItemIcon>
                 <PersonIcon />
               </ListItemIcon>
-              <ListItemText primary="Meu Perfil" sx={{ ml: -2 }} />
+              <ListItemText primary="Perfil" sx={{ ml: -2 }} />
             </ListItemButton>
           </Link>
-
-          <ListItemButton>
-            <ListItemIcon>
-              <GradingIcon />
-            </ListItemIcon>
-            <ListItemText primary="Meus Pedidos" sx={{ ml: -2 }} />
-          </ListItemButton>
 
           <ListItemButton>
             <ListItemIcon>
