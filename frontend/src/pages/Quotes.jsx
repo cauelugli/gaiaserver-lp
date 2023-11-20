@@ -21,6 +21,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 
 import QuoteTable from "../tables/QuoteTable";
 import RefreshButton from "../components/small/buttons/RefreshButton";
+import NoDataText from "../components/small/NoDataText";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -55,7 +56,7 @@ export default function Quotes({ user }) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setSearchOption("number")
+    setSearchOption("number");
     setSearchValue("");
   };
 
@@ -108,116 +109,131 @@ export default function Quotes({ user }) {
             label={<Typography sx={{ fontSize: 14 }}>Vendas</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
-           <RefreshButton
+          <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
           />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder={`Pesquise por ${searchOptionLabel}...`}
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
+        {quotes.filter((quote) => quote.type === "job").length === 0 ? (
+          <NoDataText option="Orçamentos de Jobs" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
+                  value={searchOption}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={(selected) => (
+                    <Typography>Filtrar por</Typography>
+                  )}
+                >
+                  <MenuItem value="number">Número</MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
+            <QuoteTable
+              quotes={quotes.filter((quote) => quote.type === "job")}
+              searchOption={searchOption}
+              searchValue={searchValue}
+              fetchData={fetchData}
             />
-          </Grid>
-          <Grid item sx={{ ml: "3%" }}>
-            <Select
-              value={searchOption}
-              onChange={(e) => {
-                setSearchOption(e.target.value),
-                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-              }}
-              size="small"
-              sx={{ minWidth: 180, color: "#777" }}
-              renderValue={(selected) => <Typography>Filtrar por</Typography>}
-
-            >
-              <MenuItem value="number">Número</MenuItem>
-            </Select>
-          </Grid>
-        </Grid>
-        <QuoteTable
-          quotes={quotes.filter((quote) => quote.type === "job")}
-          searchOption={searchOption}
-          searchValue={searchValue}
-          fetchData={fetchData}
-        />
+          </>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder={`Pesquise por ${searchOptionLabel}...`}
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
+        {quotes.filter((quote) => quote.type === "sale").length === 0 ? (
+          <NoDataText option="Orçamentos de Vendas" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
+                  value={searchOption}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={(selected) => (
+                    <Typography>Filtrar por</Typography>
+                  )}
+                >
+                  <MenuItem value="number">Número</MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
+            <QuoteTable
+              quotes={quotes.filter((quote) => quote.type === "sale")}
+              searchOption={searchOption}
+              searchValue={searchValue}
+              fetchData={fetchData}
             />
-          </Grid>
-          <Grid item sx={{ ml: "3%" }}>
-            <Select
-              value={searchOption}
-              onChange={(e) => {
-                setSearchOption(e.target.value),
-                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-              }}
-              size="small"
-              sx={{ minWidth: 180, color: "#777" }}
-              renderValue={(selected) => <Typography>Filtrar por</Typography>}
-            >
-              <MenuItem value="number">Número</MenuItem>
-            </Select>
-          </Grid>
-        </Grid>
-        <QuoteTable
-          quotes={quotes.filter((quote) => quote.type === "sale")}
-          searchOption={searchOption}
-          searchValue={searchValue}
-          fetchData={fetchData}
-        />
+          </>
+        )}
       </CustomTabPanel>
     </Box>
   );

@@ -32,6 +32,7 @@ import ProductsTable from "../tables/ProductsTable";
 
 import StockButton from "../components/small/buttons/StockButton";
 import RefreshButton from "../components/small/buttons/RefreshButton";
+import NoDataText from "../components/small/NoDataText";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -56,6 +57,7 @@ export default function Stock({ user }) {
   const [value, setValue] = React.useState(0);
   const [stockItems, setStockItems] = React.useState([]);
   const [products, setProducts] = React.useState([]);
+  const [stockEntries, setStockEntries] = React.useState([]);
 
   const [openModals, setOpenModals] = React.useState([
     false,
@@ -97,14 +99,16 @@ export default function Stock({ user }) {
       try {
         const stockItems = await api.get("/stockItems");
         const products = await api.get("/products");
+        const stockEntries = await api.get("/stockEntries");
         setStockItems(stockItems.data);
         setProducts(products.data);
+        setStockEntries(stockEntries.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   return (
     <Box>
@@ -146,170 +150,192 @@ export default function Stock({ user }) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder={`Pesquise por ${searchOptionLabel}...`}
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
-            />
-          </Grid>
-          <Grid item sx={{ ml: "3%" }}>
-            <Select
-              value={searchOption}
-              onChange={(e) => {
-                setSearchOption(e.target.value),
-                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-              }}
-              size="small"
-              sx={{ minWidth: 180, color: "#777" }}
-              renderValue={() => (
-                <Typography>Filtrar por {searchOptionLabel}</Typography>
-              )}
-            >
-              <MenuItem value="name">Nome</MenuItem>
-              <MenuItem value="brand">Marca</MenuItem>
-              <MenuItem value="type">Tipo</MenuItem>
-              <MenuItem value="model">Modelo</MenuItem>
-            </Select>
-          </Grid>
-        </Grid>
+        {products.length === 0 ? (
+          <NoDataText option="Produtos" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
+                  value={searchOption}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => (
+                    <Typography>Filtrar por</Typography>
+                  )}
+                >
+                  <MenuItem value="name">Nome</MenuItem>
+                  <MenuItem value="brand">Marca</MenuItem>
+                  <MenuItem value="type">Tipo</MenuItem>
+                  <MenuItem value="model">Modelo</MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
 
-        <ProductsTable
-          searchValue={searchValue}
-          searchOption={searchOption}
-          refreshData={refreshData}
-          setRefreshData={setRefreshData}
-        />
+            <ProductsTable
+              searchValue={searchValue}
+              searchOption={searchOption}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+            />
+          </>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder={`Pesquise por ${searchOptionLabel}...`}
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
+        {stockItems.length === 0 ? (
+          <NoDataText option="Items de Estoque" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
+                  value={searchOption}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => (
+                    <Typography>Filtrar por</Typography>
+                  )}
+                >
+                  <MenuItem value="name">Nome</MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
+            <StockTable
+              stockItems={stockItems}
+              searchValue={searchValue}
+              searchOption={searchOption}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
             />
-          </Grid>
-          <Grid item sx={{ ml: "3%" }}>
-            <Select
-              value={searchOption}
-              onChange={(e) => {
-                setSearchOption(e.target.value),
-                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-              }}
-              size="small"
-              sx={{ minWidth: 180, color: "#777" }}
-              renderValue={() => (
-                <Typography>Filtrar por {searchOptionLabel}</Typography>
-              )}
-            >
-              <MenuItem value="name">Nome</MenuItem>
-            </Select>
-          </Grid>
-        </Grid>
-        <StockTable
-          stockItems={stockItems}
-          searchValue={searchValue}
-          searchOption={searchOption}
-          refreshData={refreshData}
-          setRefreshData={setRefreshData}
-        />
+          </>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder={`Pesquise por ${searchOptionLabel}...`}
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
+        {stockEntries.length === 0 ? (
+          <NoDataText option="Entradas de Estoque" />
+        ) : (
+          <>
+            ZZ
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
+                  value={searchOption}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => (
+                    <Typography>Filtrar por</Typography>
+                  )}
+                >
+                  <MenuItem value="quoteValue">Valor dos Itens</MenuItem>
+                  <MenuItem value="createdBy">Criado por</MenuItem>
+                  <MenuItem value="createdAt">Adicionado em</MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
+            <StockEntriesTable
+              searchValue={searchValue}
+              searchOption={searchOption}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
             />
-          </Grid>
-          <Grid item sx={{ ml: "3%" }}>
-            <Select
-              value={searchOption}
-              onChange={(e) => {
-                setSearchOption(e.target.value),
-                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-              }}
-              size="small"
-              sx={{ minWidth: 180, color: "#777" }}
-            >
-              <MenuItem value="quoteValue">Valor dos Itens</MenuItem>
-              <MenuItem value="createdBy">Criado por</MenuItem>
-              <MenuItem value="createdAt">Adicionado em</MenuItem>
-            </Select>
-          </Grid>
-        </Grid>
-        <StockEntriesTable
-          searchValue={searchValue}
-          searchOption={searchOption}
-          refreshData={refreshData}
-          setRefreshData={setRefreshData}
-        />
+          </>
+        )}
       </CustomTabPanel>
 
       {openModals[0] && (
