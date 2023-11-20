@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
+import dayjs from "dayjs";
 
 import {
   Avatar,
@@ -16,7 +18,6 @@ import {
   Typography,
   TablePagination,
 } from "@mui/material";
-import dayjs from "dayjs";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -125,21 +126,21 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
               </TableRow>
               {sortedRows
                 .slice(startIndex, endIndex)
-                .filter((entry) => {
-                  const userProperty = searchOption
-                    .split(".")
-                    .reduce((obj, key) => obj[key], entry);
-                  const lowerCaseUserProperty = userProperty
-                    .toString()
-                    .toLowerCase();
-                  const lowerCaseSearchValue = searchValue
-                    .toString()
-                    .toLowerCase();
-                  return (
-                    !searchValue ||
-                    lowerCaseUserProperty.includes(lowerCaseSearchValue)
-                  );
-                })
+                // .filter((entry) => {
+                //   const userProperty = searchOption
+                //     .split(".")
+                //     .reduce((obj, key) => obj[key], entry);
+                //   const lowerCaseUserProperty = userProperty
+                //     .toString()
+                //     .toLowerCase();
+                //   const lowerCaseSearchValue = searchValue
+                //     .toString()
+                //     .toLowerCase();
+                //   return (
+                //     !searchValue ||
+                //     lowerCaseUserProperty.includes(lowerCaseSearchValue)
+                //   );
+                // })
 
                 .map((entry) => (
                   <>

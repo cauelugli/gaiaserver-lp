@@ -29,9 +29,12 @@ import HubIcon from "@mui/icons-material/Hub";
 import SearchIcon from "@mui/icons-material/Search";
 
 import ServiceTable from "../tables/ServiceTable";
-import AddServiceForm from "../forms/add/AddServiceForm";
 import ServicePlansTable from "../tables/ServicePlansTable";
+
+import AddServiceForm from "../forms/add/AddServiceForm";
 import AddServicePlanForm from "../forms/add/AddServicePlanForm";
+
+import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 
@@ -63,6 +66,26 @@ export default function Services({ user }) {
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("name");
   const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
+  const searchOptionList = [
+    {
+      // SERVICES TABLE
+      options: [
+        { value: "number", label: "Número" },
+        { value: "department.name", label: "Departamento" },
+      ],
+    },
+    {
+      // SUPPORTS TABLE
+      options: [
+        { value: "number", label: "Número" },
+        { value: "department.name", label: "Departamento" },
+      ],
+    },
+    {
+      // SERVICE PLANS TABLE
+      options: [{ value: "number", label: "Número" }],
+    },
+  ];
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -197,50 +220,16 @@ export default function Services({ user }) {
           <NoDataText option="Serviços" />
         ) : (
           <>
-            <Grid container direction="row" justifyContent="flex-start">
-              <Grid item>
-                <TextField
-                  placeholder={`Pesquise por ${searchOptionLabel}...`}
-                  size="small"
-                  sx={{ mb: 1, ml: "2%", width: 350 }}
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment:
-                      searchValue.length > 0 ? (
-                        <InputAdornment position="end">
-                          <ClearIcon
-                            cursor="pointer"
-                            sx={{ color: "#d21404" }}
-                            onClick={() => setSearchValue("")}
-                          />
-                        </InputAdornment>
-                      ) : (
-                        ""
-                      ),
-                  }}
-                />
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  value={searchOption}
-                  onChange={(e) => {
-                    setSearchOption(e.target.value),
-                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-                  }}
-                  size="small"
-                  sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={() => <Typography>Filtrar por</Typography>}
-                >
-                  <MenuItem value="name">Nome</MenuItem>
-                </Select>
-              </Grid>
-            </Grid>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[0]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
             <ServiceTable
               searchOption={searchOption}
               searchValue={searchValue}
@@ -258,50 +247,16 @@ export default function Services({ user }) {
           <NoDataText option="Serviços de Consultoria" />
         ) : (
           <>
-            <Grid container direction="row" justifyContent="flex-start">
-              <Grid item>
-                <TextField
-                  placeholder={`Pesquise por ${searchOptionLabel}...`}
-                  size="small"
-                  sx={{ mb: 1, ml: "2%", width: 350 }}
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment:
-                      searchValue.length > 0 ? (
-                        <InputAdornment position="end">
-                          <ClearIcon
-                            cursor="pointer"
-                            sx={{ color: "#d21404" }}
-                            onClick={() => setSearchValue("")}
-                          />
-                        </InputAdornment>
-                      ) : (
-                        ""
-                      ),
-                  }}
-                />
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  value={searchOption}
-                  onChange={(e) => {
-                    setSearchOption(e.target.value),
-                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-                  }}
-                  size="small"
-                  sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={() => <Typography>Filtrar por</Typography>}
-                >
-                  <MenuItem value="name">Nome</MenuItem>
-                </Select>
-              </Grid>
-            </Grid>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[1]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
             <ServiceTable
               searchOption={searchOption}
               searchValue={searchValue}
@@ -319,50 +274,16 @@ export default function Services({ user }) {
           <NoDataText option="Planos de Serviços" />
         ) : (
           <>
-            <Grid container direction="row" justifyContent="flex-start">
-              <Grid item>
-                <TextField
-                  placeholder={`Pesquise por ${searchOptionLabel}...`}
-                  size="small"
-                  sx={{ mb: 1, ml: "2%", width: 350 }}
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment:
-                      searchValue.length > 0 ? (
-                        <InputAdornment position="end">
-                          <ClearIcon
-                            cursor="pointer"
-                            sx={{ color: "#d21404" }}
-                            onClick={() => setSearchValue("")}
-                          />
-                        </InputAdornment>
-                      ) : (
-                        ""
-                      ),
-                  }}
-                />
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  value={searchOption}
-                  onChange={(e) => {
-                    setSearchOption(e.target.value),
-                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-                  }}
-                  size="small"
-                  sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={() => <Typography>Filtrar por</Typography>}
-                >
-                  <MenuItem value="name">Nome</MenuItem>
-                </Select>
-              </Grid>
-            </Grid>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[2]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
             <ServicePlansTable
               searchOption={searchOption}
               searchValue={searchValue}

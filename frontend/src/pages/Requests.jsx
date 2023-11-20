@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -9,32 +8,27 @@ import {
   Box,
   Button,
   Dialog,
-  FormHelperText,
   Grid,
-  InputAdornment,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
   MenuList,
-  Paper,
-  Select,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
 
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import SellIcon from "@mui/icons-material/Sell";
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
 
 import JobTable from "../tables/JobTable";
 import SaleTable from "../tables/SaleTable";
 
 import AddJobForm from "../forms/add/AddJobForm";
 import AddSaleForm from "../forms/add/AddSaleForm";
+
+import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 
@@ -64,10 +58,31 @@ export default function Requests({ user }) {
   const [openAddSale, setOpenAddSale] = React.useState(false);
 
   const [searchValue, setSearchValue] = React.useState("");
-  const [searchStatus, setSearchStatus] = React.useState("&nbsp");
   const [searchOption, setSearchOption] = React.useState("requester");
   const [searchOptionLabel, setSearchOptionLabel] =
     React.useState("Solicitante");
+  const searchOptionList = [
+    {
+      // JOBS TABLE
+      options: [
+        { value: "requester", label: "Solicitante" },
+        { value: "createdBy", label: "Criado por" },
+        { value: "worker.name", label: "Designado" },
+        { value: "scheduledTo", label: "Data do Agendamento" },
+        { value: "status", label: "Status" },
+      ],
+    },
+    {
+      // SALES TABLE
+      options: [
+        { value: "requester", label: "Solicitante" },
+        { value: "createdBy", label: "Criado por" },
+        { value: "seller.name", label: "Vendedor" },
+        { value: "deliveryScheduledTo", label: "Data de Entrega" },
+        { value: "status", label: "Status" },
+      ],
+    },
+  ];
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -195,81 +210,16 @@ export default function Requests({ user }) {
           <NoDataText option="Jobs" />
         ) : (
           <>
-            <Grid container direction="row" justifyContent="flex-start">
-              <Grid item>
-                <TextField
-                  placeholder={`Pesquise por ${searchOptionLabel}...`}
-                  size="small"
-                  sx={{ mb: 1, ml: "2%", width: 350 }}
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment:
-                      searchValue.length > 0 ? (
-                        <InputAdornment position="end">
-                          <ClearIcon
-                            cursor="pointer"
-                            sx={{ color: "#d21404" }}
-                            onClick={() => setSearchValue("")}
-                          />
-                        </InputAdornment>
-                      ) : (
-                        ""
-                      ),
-                  }}
-                />
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  value={searchOption}
-                  onChange={(e) => {
-                    setSearchOption(e.target.value),
-                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-                  }}
-                  size="small"
-                  sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={() => <Typography>Filtrar por</Typography>}
-                >
-                  <MenuItem value="requester">Solicitante</MenuItem>
-                  <MenuItem value="createdBy">Criado por</MenuItem>
-                  <MenuItem value="worker.name">Designado</MenuItem>
-                  <MenuItem value="scheduledTo">Data de Agendamento</MenuItem>
-                </Select>
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  onChange={(e) => setSearchStatus(e.target.value)}
-                  value={searchStatus}
-                  size="small"
-                  sx={{ minWidth: 200, color: "#777" }}
-                  renderValue={(selected) =>
-                    searchStatus === "&nbsp" ? (
-                      <Typography>Selecione um Status</Typography>
-                    ) : (
-                      <Grid container direction="row">
-                        <Typography>Status: {selected}</Typography>
-                      </Grid>
-                    )
-                  }
-                >
-                  <MenuItem value={"Aberto"}>Aberto</MenuItem>
-                  <MenuItem value={"Aprovado"}>Aprovado</MenuItem>
-                  <MenuItem value={"Concluido"}>Concluido</MenuItem>
-                </Select>
-              </Grid>
-              {searchStatus !== "&nbsp" && (
-                <ClearIcon
-                  cursor="pointer"
-                  onClick={() => setSearchStatus("&nbsp")}
-                  sx={{ my: 1, color: "red" }}
-                />
-              )}
-            </Grid>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[0]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
 
             <JobTable
               user={user}
@@ -277,7 +227,6 @@ export default function Requests({ user }) {
               searchOption={searchOption}
               jobs={jobs}
               managers={managers}
-              searchStatus={searchStatus}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
             />
@@ -289,88 +238,20 @@ export default function Requests({ user }) {
           <NoDataText option="Vendas" />
         ) : (
           <>
-            <Grid container direction="row" justifyContent="flex-start">
-              <Grid item>
-                <TextField
-                  placeholder={`Pesquise por ${searchOptionLabel}...`}
-                  size="small"
-                  sx={{ mb: 1, ml: "2%", width: 350 }}
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment:
-                      searchValue.length > 0 ? (
-                        <InputAdornment position="end">
-                          <ClearIcon
-                            cursor="pointer"
-                            sx={{ color: "#d21404" }}
-                            onClick={() => setSearchValue("")}
-                          />
-                        </InputAdornment>
-                      ) : (
-                        ""
-                      ),
-                  }}
-                />
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  value={searchOption}
-                  onChange={(e) => {
-                    setSearchOption(e.target.value),
-                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-                  }}
-                  size="small"
-                  sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={() => <Typography>Filtrar por</Typography>}
-                >
-                  <MenuItem value="requester">Solicitante</MenuItem>
-                  <MenuItem value="createdBy">Criado por</MenuItem>
-                  <MenuItem value="seller.name">Vendedor</MenuItem>
-                  <MenuItem value="deliveryScheduledTo">
-                    Data de Entrega
-                  </MenuItem>
-                </Select>
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  onChange={(e) => setSearchStatus(e.target.value)}
-                  value={searchStatus}
-                  size="small"
-                  sx={{ minWidth: 200, color: "#777" }}
-                  renderValue={(selected) =>
-                    searchStatus === "&nbsp" ? (
-                      <Typography>Selecione um Status</Typography>
-                    ) : (
-                      <Grid container direction="row">
-                        <Typography>Status: {selected}</Typography>
-                      </Grid>
-                    )
-                  }
-                >
-                  <MenuItem value={"Aberto"}>Aberto</MenuItem>
-                  <MenuItem value={"Aprovado"}>Aprovado</MenuItem>
-                  <MenuItem value={"Concluido"}>Concluido</MenuItem>
-                </Select>
-              </Grid>
-              {searchStatus !== "&nbsp" && (
-                <ClearIcon
-                  cursor="pointer"
-                  onClick={() => setSearchStatus("&nbsp")}
-                  sx={{ my: 1, color: "red" }}
-                />
-              )}
-            </Grid>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[1]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
 
             <SaleTable
               searchValue={searchValue}
               searchOption={searchOption}
-              searchStatus={searchStatus}
               sales={sales}
               managers={managers}
               refreshData={refreshData}

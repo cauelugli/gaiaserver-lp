@@ -7,19 +7,14 @@ import axios from "axios";
 import {
   Box,
   Grid,
-  InputAdornment,
-  MenuItem,
-  Select,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
 
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
-
 import QuoteTable from "../tables/QuoteTable";
+
+import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 
@@ -44,9 +39,34 @@ function CustomTabPanel(props) {
 export default function Quotes({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
+
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("number");
   const [searchOptionLabel, setSearchOptionLabel] = React.useState("Número");
+  const searchOptionList = [
+    {
+      // JOB QUOTES TABLE
+      options: [
+        { value: "number", label: "Número" },
+        { value: "service", label: "Serviço" },
+        { value: "customer", label: "Cliente" },
+        { value: "user", label: "Colaborador" },
+        { value: "department", label: "Departamento" },
+        // { value: "value", label: "Valor" },
+      ],
+    },
+    {
+      // SALE QUOTES TABLE
+      options: [
+        { value: "number", label: "Número" },
+        { value: "items", label: "Itens" },
+        { value: "customer", label: "Cliente" },
+        { value: "user", label: "Colaborador" },
+        { value: "department", label: "Departamento" },
+        // { value: "value", label: "Valor" },
+      ],
+    },
+  ];
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -71,15 +91,6 @@ export default function Quotes({ user }) {
     };
     fetchData();
   }, [refreshData]);
-
-  const fetchData = async () => {
-    try {
-      const quotes = await api.get("/quotes");
-      setQuotes(quotes.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   return (
     <Box>
@@ -120,59 +131,22 @@ export default function Quotes({ user }) {
           <NoDataText option="Orçamentos de Jobs" />
         ) : (
           <>
-            <Grid container direction="row" justifyContent="flex-start">
-              <Grid item>
-                <TextField
-                  placeholder={`Pesquise por ${searchOptionLabel}...`}
-                  size="small"
-                  sx={{ mb: 1, ml: "2%", width: 350 }}
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment:
-                      searchValue.length > 0 ? (
-                        <InputAdornment position="end">
-                          <ClearIcon
-                            cursor="pointer"
-                            sx={{ color: "#d21404" }}
-                            onClick={() => setSearchValue("")}
-                          />
-                        </InputAdornment>
-                      ) : (
-                        ""
-                      ),
-                  }}
-                />
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  value={searchOption}
-                  onChange={(e) => {
-                    setSearchOption(e.target.value),
-                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-                  }}
-                  size="small"
-                  sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={(selected) => (
-                    <Typography>Filtrar por</Typography>
-                  )}
-                >
-                  <MenuItem value="number">Número</MenuItem>
-                  <MenuItem value="service">Serviço</MenuItem>
-                </Select>
-              </Grid>
-            </Grid>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[0]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
             <QuoteTable
               quotes={quotes.filter((quote) => quote.type === "job")}
               type={"job"}
               searchOption={searchOption}
               searchValue={searchValue}
-              fetchData={fetchData}
+              // fetchData={fetchData}
             />
           </>
         )}
@@ -182,58 +156,22 @@ export default function Quotes({ user }) {
           <NoDataText option="Orçamentos de Vendas" />
         ) : (
           <>
-            <Grid container direction="row" justifyContent="flex-start">
-              <Grid item>
-                <TextField
-                  placeholder={`Pesquise por ${searchOptionLabel}...`}
-                  size="small"
-                  sx={{ mb: 1, ml: "2%", width: 350 }}
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment:
-                      searchValue.length > 0 ? (
-                        <InputAdornment position="end">
-                          <ClearIcon
-                            cursor="pointer"
-                            sx={{ color: "#d21404" }}
-                            onClick={() => setSearchValue("")}
-                          />
-                        </InputAdornment>
-                      ) : (
-                        ""
-                      ),
-                  }}
-                />
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  value={searchOption}
-                  onChange={(e) => {
-                    setSearchOption(e.target.value),
-                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-                  }}
-                  size="small"
-                  sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={(selected) => (
-                    <Typography>Filtrar por</Typography>
-                  )}
-                >
-                  <MenuItem value="number">Número</MenuItem>
-                </Select>
-              </Grid>
-            </Grid>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[1]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
             <QuoteTable
               quotes={quotes.filter((quote) => quote.type === "sale")}
               type={"sale"}
               searchOption={searchOption}
               searchValue={searchValue}
-              fetchData={fetchData}
+              // fetchData={fetchData}
             />
           </>
         )}

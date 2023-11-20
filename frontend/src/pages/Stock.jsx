@@ -8,17 +8,10 @@ import {
   Box,
   Dialog,
   Grid,
-  InputAdornment,
-  MenuItem,
-  Select,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
-
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
 
 import AddStockItemForm from "../forms/add/AddStockItemForm";
 import AddStockProductForm from "../forms/add/AddStockProductForm";
@@ -30,6 +23,7 @@ import StockTable from "../tables/StockTable";
 import StockEntriesTable from "../tables/StockEntriesTable";
 import ProductsTable from "../tables/ProductsTable";
 
+import TableFilters from "../components/TableFilters";
 import StockButton from "../components/small/buttons/StockButton";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
@@ -70,6 +64,38 @@ export default function Stock({ user }) {
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("name");
   const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
+  const searchOptionList = [
+    {
+      // PRODUCTS TABLE
+      options: [
+        { value: "nome", label: "Name" },
+        { value: "brand", label: "Marca" },
+        { value: "type", label: "Tipo" },
+        { value: "model", label: "Modelo" },
+        { value: "size", label: "Tamanho" },
+        { value: "buyValue", label: "Valor de Compra" },
+        { value: "sellValue", label: "Valor de Venda" },
+      ],
+    },
+    {
+      // STOCK ITEMS TABLE
+      options: [
+        { value: "nome", label: "Name" },
+        { value: "buyValue", label: "Valor de Compra" },
+        { value: "sellValue", label: "Valor de Venda" },
+      ],
+    },
+    {
+      // STOCK ENTRIES TABLE
+      options: [
+        { value: "number", label: "Número" },
+        { value: "items", label: "Itens" },
+        { value: "createdBy", label: "Criado por" },
+        { value: "quoteValue", label: "Valor" },
+        { value: "createdAt", label: "Criado em" },
+      ],
+    },
+  ];
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -154,55 +180,16 @@ export default function Stock({ user }) {
           <NoDataText option="Produtos" />
         ) : (
           <>
-            <Grid container direction="row" justifyContent="flex-start">
-              <Grid item>
-                <TextField
-                  placeholder={`Pesquise por ${searchOptionLabel}...`}
-                  size="small"
-                  sx={{ mb: 1, ml: "2%", width: 350 }}
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment:
-                      searchValue.length > 0 ? (
-                        <InputAdornment position="end">
-                          <ClearIcon
-                            cursor="pointer"
-                            sx={{ color: "#d21404" }}
-                            onClick={() => setSearchValue("")}
-                          />
-                        </InputAdornment>
-                      ) : (
-                        ""
-                      ),
-                  }}
-                />
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  value={searchOption}
-                  onChange={(e) => {
-                    setSearchOption(e.target.value),
-                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-                  }}
-                  size="small"
-                  sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={() => (
-                    <Typography>Filtrar por</Typography>
-                  )}
-                >
-                  <MenuItem value="name">Nome</MenuItem>
-                  <MenuItem value="brand">Marca</MenuItem>
-                  <MenuItem value="type">Tipo</MenuItem>
-                  <MenuItem value="model">Modelo</MenuItem>
-                </Select>
-              </Grid>
-            </Grid>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[0]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
 
             <ProductsTable
               searchValue={searchValue}
@@ -218,52 +205,16 @@ export default function Stock({ user }) {
           <NoDataText option="Items de Estoque" />
         ) : (
           <>
-            <Grid container direction="row" justifyContent="flex-start">
-              <Grid item>
-                <TextField
-                  placeholder={`Pesquise por ${searchOptionLabel}...`}
-                  size="small"
-                  sx={{ mb: 1, ml: "2%", width: 350 }}
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment:
-                      searchValue.length > 0 ? (
-                        <InputAdornment position="end">
-                          <ClearIcon
-                            cursor="pointer"
-                            sx={{ color: "#d21404" }}
-                            onClick={() => setSearchValue("")}
-                          />
-                        </InputAdornment>
-                      ) : (
-                        ""
-                      ),
-                  }}
-                />
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  value={searchOption}
-                  onChange={(e) => {
-                    setSearchOption(e.target.value),
-                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-                  }}
-                  size="small"
-                  sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={() => (
-                    <Typography>Filtrar por</Typography>
-                  )}
-                >
-                  <MenuItem value="name">Nome</MenuItem>
-                </Select>
-              </Grid>
-            </Grid>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[1]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
             <StockTable
               stockItems={stockItems}
               searchValue={searchValue}
@@ -279,55 +230,16 @@ export default function Stock({ user }) {
           <NoDataText option="Entradas de Estoque" />
         ) : (
           <>
-            ZZ
-            <Grid container direction="row" justifyContent="flex-start">
-              <Grid item>
-                <TextField
-                  placeholder={`Pesquise por ${searchOptionLabel}...`}
-                  size="small"
-                  sx={{ mb: 1, ml: "2%", width: 350 }}
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment:
-                      searchValue.length > 0 ? (
-                        <InputAdornment position="end">
-                          <ClearIcon
-                            cursor="pointer"
-                            sx={{ color: "#d21404" }}
-                            onClick={() => setSearchValue("")}
-                          />
-                        </InputAdornment>
-                      ) : (
-                        ""
-                      ),
-                  }}
-                />
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  value={searchOption}
-                  onChange={(e) => {
-                    setSearchOption(e.target.value),
-                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-                  }}
-                  size="small"
-                  sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={() => (
-                    <Typography>Filtrar por</Typography>
-                  )}
-                >
-                  <MenuItem value="quoteValue">Valor dos Itens</MenuItem>
-                  <MenuItem value="createdBy">Criado por</MenuItem>
-                  <MenuItem value="createdAt">Adicionado em</MenuItem>
-                </Select>
-              </Grid>
-            </Grid>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[2]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
             <StockEntriesTable
               searchValue={searchValue}
               searchOption={searchOption}

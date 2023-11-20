@@ -25,16 +25,15 @@ import {
 
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import PersonIcon from "@mui/icons-material/Person";
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
 
 import CustomerTable from "../tables/CustomerTable";
 import ClientTable from "../tables/ClientTable";
-
 import AddClientForm from "../forms/add/AddClientForm";
 import AddCustomerForm from "../forms/add/AddCustomerForm";
+
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
+import TableFilters from "../components/TableFilters";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -66,6 +65,24 @@ export default function Customers({ user }) {
   const [searchOption, setSearchOption] = React.useState("name");
   const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
   const [searchValue, setSearchValue] = React.useState("");
+
+  const searchOptionList = [
+    {
+      // CUSTOMER TABLE
+      options: [
+        { value: "name", label: "Nome" },
+        { value: "mainContactName", label: "Contato Principal" },
+      ],
+    },
+    {
+      // CLIENT TABLE
+      options: [
+        { value: "name", label: "Nome" },
+        { value: "email", label: "E-mail" },
+        { value: "phone", label: "Telefone" },
+      ],
+    },
+  ];
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -185,53 +202,17 @@ export default function Customers({ user }) {
           <NoDataText option="Clientes Empresa" />
         ) : (
           <>
-            <Grid container direction="row" justifyContent="flex-start">
-              <Grid item>
-                <TextField
-                  placeholder={`Pesquise por ${searchOptionLabel}...`}
-                  size="small"
-                  sx={{ mb: 1, ml: "2%", width: 350 }}
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment:
-                      searchValue.length > 0 ? (
-                        <InputAdornment position="end">
-                          <ClearIcon
-                            cursor="pointer"
-                            sx={{ color: "#d21404" }}
-                            onClick={() => setSearchValue("")}
-                          />
-                        </InputAdornment>
-                      ) : (
-                        ""
-                      ),
-                  }}
-                />
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  value={searchOption}
-                  onChange={(e) => {
-                    setSearchOption(e.target.value),
-                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-                  }}
-                  size="small"
-                  sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={() => (
-                    <Typography>Filtrar por</Typography>
-                  )}
-                >
-                  <MenuItem value="name">Nome</MenuItem>
-                  <MenuItem value="mainContactName">Contato Principal</MenuItem>
-                </Select>
-              </Grid>
-            </Grid>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[0]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
+
             <CustomerTable
               refreshData={refreshData}
               setRefreshData={setRefreshData}
@@ -246,54 +227,17 @@ export default function Customers({ user }) {
           <NoDataText option="Clientes Pessoa Física" />
         ) : (
           <>
-            <Grid container direction="row" justifyContent="flex-start">
-              <Grid item>
-                <TextField
-                  placeholder={`Pesquise por ${searchOptionLabel}...`}
-                  size="small"
-                  sx={{ mb: 1, ml: "2%", width: 350 }}
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment:
-                      searchValue.length > 0 ? (
-                        <InputAdornment position="end">
-                          <ClearIcon
-                            cursor="pointer"
-                            sx={{ color: "#d21404" }}
-                            onClick={() => setSearchValue("")}
-                          />
-                        </InputAdornment>
-                      ) : (
-                        ""
-                      ),
-                  }}
-                />
-              </Grid>
-              <Grid item sx={{ ml: "3%" }}>
-                <Select
-                  value={searchOption}
-                  onChange={(e) => {
-                    setSearchOption(e.target.value),
-                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-                  }}
-                  size="small"
-                  sx={{ minWidth: 180, color: "#777" }}
-                  renderValue={() => (
-                    <Typography>Filtrar por</Typography>
-                  )}
-                >
-                  <MenuItem value="name">Nome</MenuItem>
-                  <MenuItem value="email">E-mail</MenuItem>
-                  <MenuItem value="phone">Telefone</MenuItem>
-                </Select>
-              </Grid>
-            </Grid>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[1]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
+
             <ClientTable
               refreshData={refreshData}
               setRefreshData={setRefreshData}
