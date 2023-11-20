@@ -36,6 +36,7 @@ import PositionTable from "../tables/PositionTable";
 import AddPositionForm from "../forms/add/AddPositionForm";
 import AddDepartmentForm from "../forms/add/AddDepartmentForm";
 import RefreshButton from "../components/small/buttons/RefreshButton";
+import NoDataText from "../components/small/NoDataText";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -209,248 +210,264 @@ export default function Departments({ user }) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder={`Pesquise por ${searchOptionLabel}...`}
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
+        {serviceDepartments.length === 0 ? (
+          <NoDataText option="Departamentos de Serviços" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
+                  value={searchOption}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => <Typography>Filtrar por</Typography>}
+                >
+                  <MenuItem value="name">Nome</MenuItem>
+                  <MenuItem value="email">E-mail</MenuItem>
+                  <MenuItem value="manager.name">Gerente</MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
+            <DepartmentTable
+              users={users}
+              managers={managers}
+              searchValue={searchValue}
+              searchOption={searchOption}
+              departments={serviceDepartments}
+              openAdd={openAddDepartment}
+              setOpenAdd={setOpenAddDepartment}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              toast={toast}
             />
-          </Grid>
-          <Grid item sx={{ ml: "3%" }}>
-            <Select
-              value={searchOption}
-              onChange={(e) => {
-                setSearchOption(e.target.value),
-                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-              }}
-              size="small"
-              sx={{ minWidth: 180, color: "#777" }}
-              renderValue={() => (
-                <Typography>Filtrar por</Typography>
-              )}
-            >
-              <MenuItem value="name">Nome</MenuItem>
-              <MenuItem value="email">E-mail</MenuItem>
-              <MenuItem value="manager.name">Gerente</MenuItem>
-            </Select>
-          </Grid>
-        </Grid>
-        <DepartmentTable
-          users={users}
-          managers={managers}
-          searchValue={searchValue}
-          searchOption={searchOption}
-          departments={serviceDepartments}
-          openAdd={openAddDepartment}
-          setOpenAdd={setOpenAddDepartment}
-          refreshData={refreshData}
-          setRefreshData={setRefreshData}
-          toast={toast}
-        />
+          </>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder={`Pesquise por ${searchOptionLabel}...`}
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
+        {saleDepartments.length === 0 ? (
+          <NoDataText option="Departamentos de Vendas" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
+                  value={searchOption}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => <Typography>Filtrar por</Typography>}
+                >
+                  <MenuItem value="name">Nome</MenuItem>
+                  <MenuItem value="email">E-mail</MenuItem>
+                  <MenuItem value="manager.name">Gerente</MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
+            <DepartmentTable
+              toast={toast}
+              users={users}
+              managers={managers}
+              searchValue={searchValue}
+              searchOption={searchOption}
+              departments={saleDepartments}
+              openAdd={openAddDepartment}
+              setOpenAdd={setOpenAddDepartment}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
             />
-          </Grid>
-          <Grid item sx={{ ml: "3%" }}>
-            <Select
-              value={searchOption}
-              onChange={(e) => {
-                setSearchOption(e.target.value),
-                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-              }}
-              size="small"
-              sx={{ minWidth: 180, color: "#777" }}
-              renderValue={() => (
-                <Typography>Filtrar por</Typography>
-              )}
-            >
-              <MenuItem value="name">Nome</MenuItem>
-              <MenuItem value="email">E-mail</MenuItem>
-              <MenuItem value="manager.name">Gerente</MenuItem>
-            </Select>
-          </Grid>
-        </Grid>
-        <DepartmentTable
-          toast={toast}
-          users={users}
-          managers={managers}
-          searchValue={searchValue}
-          searchOption={searchOption}
-          departments={saleDepartments}
-          openAdd={openAddDepartment}
-          setOpenAdd={setOpenAddDepartment}
-          refreshData={refreshData}
-          setRefreshData={setRefreshData}
-        />
+          </>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder={`Pesquise por ${searchOptionLabel}...`}
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
+        {internalDepartments.length === 0 ? (
+          <NoDataText option="Departamentos Internos" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
+                  value={searchOption}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => <Typography>Filtrar por</Typography>}
+                >
+                  <MenuItem value="name">Nome</MenuItem>
+                  <MenuItem value="email">E-mail</MenuItem>
+                  <MenuItem value="manager.name">Gerente</MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
+            <DepartmentTable
+              toast={toast}
+              users={users}
+              managers={managers}
+              searchValue={searchValue}
+              searchOption={searchOption}
+              departments={internalDepartments}
+              openAdd={openAddDepartment}
+              setOpenAdd={setOpenAddDepartment}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
             />
-          </Grid>
-          <Grid item sx={{ ml: "3%" }}>
-            <Select
-              value={searchOption}
-              onChange={(e) => {
-                setSearchOption(e.target.value),
-                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-              }}
-              size="small"
-              sx={{ minWidth: 180, color: "#777" }}
-              renderValue={() => (
-                <Typography>Filtrar por</Typography>
-              )}
-            >
-              <MenuItem value="name">Nome</MenuItem>
-              <MenuItem value="email">E-mail</MenuItem>
-              <MenuItem value="manager.name">Gerente</MenuItem>
-            </Select>
-          </Grid>
-        </Grid>
-        <DepartmentTable
-          toast={toast}
-          users={users}
-          managers={managers}
-          searchValue={searchValue}
-          searchOption={searchOption}
-          departments={internalDepartments}
-          openAdd={openAddDepartment}
-          setOpenAdd={setOpenAddDepartment}
-          refreshData={refreshData}
-          setRefreshData={setRefreshData}
-        />
+          </>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <TextField
-              placeholder={`Pesquise por ${searchOptionLabel}...`}
-              size="small"
-              sx={{ mb: 1, ml: "2%", width: 350 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
-                    </InputAdornment>
-                  ) : (
-                    ""
-                  ),
-              }}
+        {positions.length === 0 ? (
+          <NoDataText option="Cargos" />
+        ) : (
+          <>
+            <Grid container direction="row" justifyContent="flex-start">
+              <Grid item>
+                <TextField
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
+                  size="small"
+                  sx={{ mb: 1, ml: "2%", width: 350 }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment:
+                      searchValue.length > 0 ? (
+                        <InputAdornment position="end">
+                          <ClearIcon
+                            cursor="pointer"
+                            sx={{ color: "#d21404" }}
+                            onClick={() => setSearchValue("")}
+                          />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      ),
+                  }}
+                />
+              </Grid>
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
+                  value={searchOption}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => <Typography>Filtrar por</Typography>}
+                >
+                  <MenuItem value="name">Nome</MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
+            <PositionTable
+              toast={toast}
+              searchValue={searchValue}
+              searchOption={searchOption}
+              positions={positions}
+              openAdd={openAddPosition}
+              setOpenAdd={setOpenAddPosition}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
             />
-          </Grid>
-          <Grid item sx={{ ml: "3%" }}>
-            <Select
-              value={searchOption}
-              onChange={(e) => {
-                setSearchOption(e.target.value),
-                  setSearchOptionLabel(e.explicitOriginalTarget.innerText);
-              }}
-              size="small"
-              sx={{ minWidth: 180, color: "#777" }}
-              renderValue={() => (
-                <Typography>Filtrar por</Typography>
-              )}
-            >
-              <MenuItem value="name">Nome</MenuItem>
-            </Select>
-          </Grid>
-        </Grid>
-        <PositionTable
-          toast={toast}
-          searchValue={searchValue}
-          searchOption={searchOption}
-          positions={positions}
-          openAdd={openAddPosition}
-          setOpenAdd={setOpenAddPosition}
-          refreshData={refreshData}
-          setRefreshData={setRefreshData}
-        />
+          </>
+        )}
       </CustomTabPanel>
       {openAddDepartment && (
         <Dialog
