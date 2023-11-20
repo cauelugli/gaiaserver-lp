@@ -9,7 +9,6 @@ import {
   Box,
   Button,
   Dialog,
-  FormControlLabel,
   Grid,
   InputAdornment,
   ListItemIcon,
@@ -17,8 +16,7 @@ import {
   Menu,
   MenuItem,
   MenuList,
-  Radio,
-  RadioGroup,
+  Select,
   Tab,
   Tabs,
   TextField,
@@ -58,17 +56,16 @@ function CustomTabPanel(props) {
 export default function Services({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
+
   const [openAddService, setOpenAddService] = React.useState(false);
   const [openAddServicePlan, setOpenAddServicePlan] = React.useState(false);
+
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("name");
+  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
-  };
-
-  const handleSearchOptionChange = (event) => {
-    setSearchOption(event.target.value);
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -88,6 +85,9 @@ export default function Services({ user }) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setSearchValue("");
+    setSearchOption("name");
+    setSearchOptionLabel("Nome");
   };
 
   React.useEffect(() => {
@@ -108,22 +108,6 @@ export default function Services({ user }) {
     };
     fetchData();
   }, [refreshData]);
-
-  const fetchData = async () => {
-    try {
-      const services = await api.get("/services");
-      const servicePlans = await api.get("/servicePlans");
-      const departments = await api.get("/departments");
-      const stockItems = await api.get("/stockItems");
-      setServices(services.data.filter((service) => service.value > 0));
-      setSupports(services.data.filter((service) => service.value === 0));
-      setServicePlans(servicePlans.data);
-      setDepartments(departments.data);
-      setStockItems(stockItems.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   return (
     <Box>
@@ -216,7 +200,7 @@ export default function Services({ user }) {
             <Grid container direction="row" justifyContent="flex-start">
               <Grid item>
                 <TextField
-                  placeholder="Pesquise aqui..."
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
                   size="small"
                   sx={{ mb: 1, ml: "2%", width: 350 }}
                   value={searchValue}
@@ -242,30 +226,19 @@ export default function Services({ user }) {
                   }}
                 />
               </Grid>
-              <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-                <RadioGroup
-                  row
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
                   value={searchOption}
-                  onChange={handleSearchOptionChange}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => <Typography>Filtrar por</Typography>}
                 >
-                  <FormControlLabel
-                    value="name"
-                    control={
-                      <Radio
-                        sx={{
-                          "& .MuiSvgIcon-root": {
-                            fontSize: 13,
-                          },
-                        }}
-                      />
-                    }
-                    label={
-                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                        Nome
-                      </Typography>
-                    }
-                  />
-                </RadioGroup>
+                  <MenuItem value="name">Nome</MenuItem>
+                </Select>
               </Grid>
             </Grid>
             <ServiceTable
@@ -288,7 +261,7 @@ export default function Services({ user }) {
             <Grid container direction="row" justifyContent="flex-start">
               <Grid item>
                 <TextField
-                  placeholder="Pesquise aqui..."
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
                   size="small"
                   sx={{ mb: 1, ml: "2%", width: 350 }}
                   value={searchValue}
@@ -314,30 +287,19 @@ export default function Services({ user }) {
                   }}
                 />
               </Grid>
-              <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-                <RadioGroup
-                  row
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
                   value={searchOption}
-                  onChange={handleSearchOptionChange}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => <Typography>Filtrar por</Typography>}
                 >
-                  <FormControlLabel
-                    value="name"
-                    control={
-                      <Radio
-                        sx={{
-                          "& .MuiSvgIcon-root": {
-                            fontSize: 13,
-                          },
-                        }}
-                      />
-                    }
-                    label={
-                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                        Nome
-                      </Typography>
-                    }
-                  />
-                </RadioGroup>
+                  <MenuItem value="name">Nome</MenuItem>
+                </Select>
               </Grid>
             </Grid>
             <ServiceTable
@@ -360,7 +322,7 @@ export default function Services({ user }) {
             <Grid container direction="row" justifyContent="flex-start">
               <Grid item>
                 <TextField
-                  placeholder="Pesquise aqui..."
+                  placeholder={`Pesquise por ${searchOptionLabel}...`}
                   size="small"
                   sx={{ mb: 1, ml: "2%", width: 350 }}
                   value={searchValue}
@@ -386,30 +348,19 @@ export default function Services({ user }) {
                   }}
                 />
               </Grid>
-              <Grid item sx={{ ml: "2%", pt: 0.5 }}>
-                <RadioGroup
-                  row
+              <Grid item sx={{ ml: "3%" }}>
+                <Select
                   value={searchOption}
-                  onChange={handleSearchOptionChange}
+                  onChange={(e) => {
+                    setSearchOption(e.target.value),
+                      setSearchOptionLabel(e.explicitOriginalTarget.innerText);
+                  }}
+                  size="small"
+                  sx={{ minWidth: 180, color: "#777" }}
+                  renderValue={() => <Typography>Filtrar por</Typography>}
                 >
-                  <FormControlLabel
-                    value="name"
-                    control={
-                      <Radio
-                        sx={{
-                          "& .MuiSvgIcon-root": {
-                            fontSize: 13,
-                          },
-                        }}
-                      />
-                    }
-                    label={
-                      <Typography sx={{ fontSize: 13, mx: -1, mt: 0.5 }}>
-                        Nome
-                      </Typography>
-                    }
-                  />
-                </RadioGroup>
+                  <MenuItem value="name">Nome</MenuItem>
+                </Select>
               </Grid>
             </Grid>
             <ServicePlansTable

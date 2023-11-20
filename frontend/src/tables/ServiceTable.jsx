@@ -7,6 +7,7 @@ import {
   Box,
   Collapse,
   Dialog,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -183,7 +184,24 @@ export default function ServiceTable({
                         align="center"
                       >
                         <Typography sx={{ fontSize: 14 }}>
-                          {service.department ? service.department.name : "-"}
+                          {service.department ? (
+                            <Grid container direction="row" alignItems="center" justifyContent="center">
+                              <Paper
+                                elevation={0}
+                                sx={{
+                                  mb: 0.5,
+                                  mr: 0.5,
+                                  width: 12,
+                                  height: 12,
+                                  borderRadius: 50,
+                                  backgroundColor: service.department.color,
+                                }}
+                              />
+                              <Typography>{service.department.name}</Typography>
+                            </Grid>
+                          ) : (
+                            "-"
+                          )}
                         </Typography>
                       </TableCell>
                     </TableRow>
