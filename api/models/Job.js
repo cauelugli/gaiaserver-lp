@@ -77,9 +77,14 @@ jobSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  updates: {
-    type: Array,
-    default: {},
+  resolution: {
+    type: String,
+  },
+  resolvedBy: {
+    type: String,
+  },
+  resolvedAt: {
+    type: String,
   },
 });
 

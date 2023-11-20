@@ -175,7 +175,19 @@ router.put("/", async (req, res) => {
     } else if (option === "managerApproval") {
       const updatedJob = await Job.findByIdAndUpdate(
         jobId,
-        { status: status },
+        {
+          $set: {
+            status: "Aprovado",
+          },
+          $push: {
+            interactions: {
+              number: req.body.number || 1,
+              activity: "Job aprovado",
+              user: req.body.user,
+              date: req.body.date,
+            },
+          },
+        },
         { new: true }
       );
 
@@ -240,6 +252,19 @@ router.put("/", async (req, res) => {
         },
         { new: true }
       );
+      res.status(200).json(updatedJob);
+    } else if (option === "resolve") {
+      const updatedJob = await Job.findByIdAndUpdate(
+        jobId,
+        {
+          status: "Concluido",
+          resolution: req.body.activity,
+          resolvedBy: req.body.user,
+          resolvedAt: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
+        },
+        { new: true }
+      );
+
       res.status(200).json(updatedJob);
     } else {
       res.status(400).json({ error: "Opção inválida" });

@@ -139,6 +139,8 @@ export default function JobTable({
         jobId: job._id,
         option: "managerApproval",
         status: "Aprovado",
+        user: user.name,
+        date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
       };
       const res = await api.put("/jobs", requestBody);
       if (res.data) {
@@ -618,40 +620,41 @@ export default function JobTable({
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="left">
-                                    <Typography sx={{ fontSize: 12 }}>
-                                      <InteractionReactions
-                                        userId={user._id}
-                                        refreshData={refreshData}
-                                        setRefreshData={setRefreshData}
-                                        interaction={interaction}
-                                        job={job}
-                                        number={interaction.number}
-                                        userReactions={
-                                          userReactions[job._id] || []
-                                        }
-                                        setUserReactions={(reactions) =>
-                                          setUserReactions({
-                                            ...userReactions,
-                                            [job._id]: reactions,
-                                          })
-                                        }
-                                        jobId={job._id}
-                                      />
-                                    </Typography>
+                                    {interaction.activity !==
+                                      "Job aprovado" && (
+                                      <Typography sx={{ fontSize: 12 }}>
+                                        <InteractionReactions
+                                          userId={user._id}
+                                          refreshData={refreshData}
+                                          setRefreshData={setRefreshData}
+                                          interaction={interaction}
+                                          job={job}
+                                          number={interaction.number}
+                                          userReactions={
+                                            userReactions[job._id] || []
+                                          }
+                                          setUserReactions={(reactions) =>
+                                            setUserReactions({
+                                              ...userReactions,
+                                              [job._id]: reactions,
+                                            })
+                                          }
+                                          jobId={job._id}
+                                        />
+                                      </Typography>
+                                    )}
                                   </TableCell>
                                 </TableRow>
                               ))}
                             </TableBody>
                           </Table>
-                          <Box
+                          <Grid
+                            container
+                            direction="row"
+                            alignItems="center"
+                            justifyContent="flex-end"
                             sx={{
-                              my: 5,
-                              ml:
-                                user.role === "Gerente" &&
-                                job.status !== "Aprovado"
-                                  ? "45%"
-                                  : "55%",
-                              px: -6,
+                              my: 7,
                             }}
                           >
                             {user.role === "Gerente" &&
@@ -660,7 +663,6 @@ export default function JobTable({
                                   cursor="pointer"
                                   variant="contained"
                                   color="primary"
-                                  sx={{ mr: 2 }}
                                   onClick={() =>
                                     handleManagerApproval(selectedJob)
                                   }
@@ -670,12 +672,26 @@ export default function JobTable({
                                 </Button>
                               )}
 
+                            {job.status === "Aprovado" &&
+                              job.status !== "Concluido" && (
+                                <Button
+                                  cursor="pointer"
+                                  variant="contained"
+                                  color="success"
+                                  onClick={() => handleOpenEdit(job, "resolve")}
+                                  startIcon={<CheckIcon />}
+                                >
+                                  Resolver
+                                </Button>
+                              )}
+
                             <Button
                               cursor="pointer"
                               variant="contained"
-                              color="success"
+                              color="warning"
                               onClick={() => handleOpenEdit(job, "interaction")}
                               startIcon={<AddIcon />}
+                              sx={{ ml: 1 }}
                             >
                               Interação
                             </Button>
@@ -685,7 +701,7 @@ export default function JobTable({
                               color="inherit"
                               disabled={job.createdBy !== user.username}
                               onClick={() => handleOpenEdit(job, "edit")}
-                              sx={{ mx: 2 }}
+                              sx={{ mx: 1 }}
                               startIcon={<ModeEditIcon />}
                             >
                               Editar
@@ -699,7 +715,7 @@ export default function JobTable({
                             >
                               Deletar
                             </Button>
-                          </Box>
+                          </Grid>
                         </Box>
                       </Collapse>
                     </TableCell>

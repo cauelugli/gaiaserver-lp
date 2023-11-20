@@ -57,6 +57,7 @@ const AddManagerForm = ({
         name,
         email,
         phone,
+        position: "Gerente",
         image: imagePath,
         department: {
           id: department._id,
