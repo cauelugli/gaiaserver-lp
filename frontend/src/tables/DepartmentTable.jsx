@@ -165,7 +165,7 @@ export default function DepartmentTable({
                         <Paper
                           elevation={0}
                           sx={{
-                            ml:1,
+                            ml: 1,
                             width: 16,
                             height: 16,
                             borderRadius: 50,
@@ -178,12 +178,6 @@ export default function DepartmentTable({
                       onClick={() => handleOpenDetail(department)}
                       cursor="pointer"
                       align="left"
-                      sx={{
-                        color:
-                          selectedDepartment === department.name && openDetail
-                            ? "white"
-                            : "black",
-                      }}
                     >
                       <Typography sx={{ fontSize: 14 }}>
                         {department.name}
@@ -193,12 +187,6 @@ export default function DepartmentTable({
                       onClick={() => handleOpenDetail(department)}
                       cursor="pointer"
                       align="center"
-                      sx={{
-                        color:
-                          selectedDepartment === department.name && openDetail
-                            ? "white"
-                            : "black",
-                      }}
                     >
                       <Typography sx={{ fontSize: 14 }}>
                         {department.email}
@@ -207,12 +195,6 @@ export default function DepartmentTable({
                     <TableCell
                       onClick={() => handleOpenDetail(department)}
                       cursor="pointer"
-                      sx={{
-                        color:
-                          selectedDepartment === department.name && openDetail
-                            ? "white"
-                            : "black",
-                      }}
                     >
                       <Grid container direction="row" justifyContent="center">
                         <Grid item>
@@ -245,12 +227,6 @@ export default function DepartmentTable({
                       onClick={() => handleOpenDetail(department)}
                       cursor="pointer"
                       align="center"
-                      sx={{
-                        color:
-                          selectedDepartment === department.name && openDetail
-                            ? "white"
-                            : "black",
-                      }}
                     >
                       <Typography sx={{ fontSize: 14 }}>
                         {department.members.length}
