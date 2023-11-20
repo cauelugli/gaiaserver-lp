@@ -121,6 +121,7 @@ export default function DepartmentTable({
                 backgroundColor: "#ccc",
               }}
             >
+              <TableCell padding="checkbox"></TableCell>
               {tableHeaderRow.map((headCell) => (
                 <TableCell
                   align={headCell.label === "Nome" ? "" : "center"}
@@ -154,17 +155,25 @@ export default function DepartmentTable({
               })
               .map((department) => (
                 <>
-                  <TableRow
-                    key={department._id}
-                    sx={{
-                      cursor: "pointer",
-                      backgroundColor:
-                        selectedDepartment === department.name && openDetail
-                          ? department.color
-                          : "none",
-                      "&:hover": { backgroundColor: department.color },
-                    }}
-                  >
+                  <TableRow key={department._id} sx={{ cursor: "pointer" }}>
+                    <TableCell
+                      onClick={() => handleOpenDetail(department)}
+                      cursor="pointer"
+                      align="center"
+                    >
+                      <Typography sx={{ fontSize: 14 }}>
+                        <Paper
+                          elevation={0}
+                          sx={{
+                            ml:1,
+                            width: 16,
+                            height: 16,
+                            borderRadius: 50,
+                            backgroundColor: department.color,
+                          }}
+                        ></Paper>
+                      </Typography>
+                    </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(department)}
                       cursor="pointer"
@@ -496,7 +505,9 @@ export default function DepartmentTable({
                                                 fontWeight: "bold",
                                               }}
                                             >
-                                              {user.position ? user.position.toUpperCase() : "-"}
+                                              {user.position
+                                                ? user.position.toUpperCase()
+                                                : "-"}
                                             </Typography>
                                           </Grid>
                                           <Grid item>
