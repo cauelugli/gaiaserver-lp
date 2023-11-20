@@ -17,6 +17,8 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
 
+import NoDataText from "../components/small/NoDataText";
+
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -126,76 +128,83 @@ export default function ImageTable() {
 
   return (
     <>
-      <Box sx={{ minWidth: "1050px" }}>
-        <Grid container direction="row" sx={{ py: 2 }}>
-          <Typography sx={{ my: "auto" }}>
-            Tamanho em Disco: {totalSpaceOccupiedMB}MB
-          </Typography>
-          <Grid item sx={{ mt: -1 }}>
-            {selectedImages.length > 0 && (
-              <Button
-                size="small"
-                variant="outlined"
-                startIcon={<ClearIcon sx={{ mt: -0.5, p: 0 }} />}
-                onClick={() => setSelectedImages([])}
-                sx={{ mx: 1 }}
-              >
-                Limpar Seleção
-              </Button>
-            )}
-          </Grid>
-          <Grid item sx={{ mt: -1 }}>
-            {selectedImages.length > 0 && (
-              <Button
-                size="small"
-                variant="contained"
-                color="error"
-                startIcon={<DeleteIcon sx={{ mt: -0.5 }} />}
-                onClick={handleDeleteMultiple}
-              >
-                Excluir Selecionados
-              </Button>
-            )}
-          </Grid>
-        </Grid>
-        <Grid container spacing={2}>
-          {files.map((file) => {
-            const fileName = file.name; // Nome do arquivo
-            const isInUse = inUse.some((usedFileName) =>
-              usedFileName.endsWith(fileName)
-            );
-
-            return (
-              <Grid key={file._id} item xs={2}>
-                <img
-                  alt="Imagem do Produto"
-                  src={`http://localhost:3000/static/images/${file.name}`}
-                  style={{
-                    width: 100,
-                    height: 100,
-                    opacity: isInUse ? "1" : "0.5",
-                  }}
-                />
-                <Typography sx={{ fontSize: 10 }}>
-                  {file.name} - {file.sizeKB}KB
-                </Typography>
-                <Grid container direction="row" sx={{ ml: 1 }}>
-                  <Checkbox
-                    checked={selectedImages.includes(file)}
-                    onChange={() => handleCheckboxChange(file)}
-                    sx={{ mr: 1, py: 0 }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={() => deleteFile(file)}
-                    style={{ cursor: "pointer" }}
-                  />
-                </Grid>
+      {files.length === 0 ? (
+        <NoDataText option="Arquivos de Imagem" />
+      ) : (
+        <>
+          <Box sx={{ minWidth: "1050px" }}>
+            <Grid container direction="row" sx={{ py: 2 }}>
+              <Typography sx={{ my: "auto" }}>
+                Tamanho em Disco: {totalSpaceOccupiedMB}MB
+              </Typography>
+              <Grid item sx={{ mt: -1 }}>
+                {selectedImages.length > 0 && (
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    startIcon={<ClearIcon sx={{ mt: -0.5, p: 0 }} />}
+                    onClick={() => setSelectedImages([])}
+                    sx={{ mx: 1 }}
+                  >
+                    Limpar Seleção
+                  </Button>
+                )}
               </Grid>
-            );
-          })}
-        </Grid>
-      </Box>
+              <Grid item sx={{ mt: -1 }}>
+                {selectedImages.length > 0 && (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="error"
+                    startIcon={<DeleteIcon sx={{ mt: -0.5 }} />}
+                    onClick={handleDeleteMultiple}
+                  >
+                    Excluir Selecionados
+                  </Button>
+                )}
+              </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+              {files.map((file) => {
+                const fileName = file.name; // Nome do arquivo
+                const isInUse = inUse.some((usedFileName) =>
+                  usedFileName.endsWith(fileName)
+                );
+
+                return (
+                  <Grid key={file._id} item xs={2}>
+                    <img
+                      alt="Imagem do Produto"
+                      src={`http://localhost:3000/static/images/${file.name}`}
+                      style={{
+                        width: 100,
+                        height: 100,
+                        opacity: isInUse ? "1" : "0.5",
+                      }}
+                    />
+                    <Typography sx={{ fontSize: 10 }}>
+                      {file.name} - {file.sizeKB}KB
+                    </Typography>
+                    <Grid container direction="row" sx={{ ml: 1 }}>
+                      <Checkbox
+                        checked={selectedImages.includes(file)}
+                        onChange={() => handleCheckboxChange(file)}
+                        sx={{ mr: 1, py: 0 }}
+                      />
+                      <DeleteIcon
+                        color="error"
+                        onClick={() => deleteFile(file)}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </Grid>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Box>
+        </>
+      )}
+
       <Dialog
         open={confirmationDialogOpen}
         onClose={closeConfirmationDialog}
@@ -225,9 +234,7 @@ export default function ImageTable() {
           <Button onClick={closeConfirmationDialog} color="primary">
             Cancelar
           </Button>
-          <Button
-            onClick={() => confirmDelete(selectedFile)}
-          >
+          <Button onClick={() => confirmDelete(selectedFile)}>
             {isInUse ? "OK" : "Confirmar"}
           </Button>
         </DialogActions>

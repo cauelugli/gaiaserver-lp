@@ -19,6 +19,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
+import NoDataText from "../components/small/NoDataText";
+
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -140,76 +142,83 @@ export default function DocumentTable() {
 
   return (
     <>
-      <Box sx={{ minWidth: "1050px" }}>
-        <Grid container direction="row" sx={{ py: 2 }}>
-          <Typography sx={{ my: "auto" }}>
-            Tamanho em Disco: {totalSpaceOccupiedMB}MB
-          </Typography>
-          <Grid item sx={{ mt: -1 }}>
-            {selectedImages.length > 0 && (
-              <Button
-                size="small"
-                variant="outlined"
-                startIcon={<ClearIcon sx={{ mt: -0.5, p: 0 }} />}
-                onClick={() => setSelectedImages([])}
-                sx={{ mx: 1 }}
-              >
-                Limpar Seleção
-              </Button>
-            )}
-          </Grid>
-          <Grid item sx={{ mt: -1 }}>
-            {selectedImages.length > 0 && (
-              <Button
-                size="small"
-                variant="contained"
-                color="error"
-                startIcon={<DeleteIcon sx={{ mt: -0.5 }} />}
-                onClick={handleDeleteMultiple}
-              >
-                Excluir Selecionados
-              </Button>
-            )}
-          </Grid>
-        </Grid>
-        <Grid container spacing={2}>
-          {files.map((file) => {
-            return (
-              <Grid key={file._id} item xs={2}>
-                <img
-                  alt="Imagem do Documento"
-                  src={`http://localhost:3000/static/pdf.png`}
-                  style={{
-                    width: 100,
-                    height: 100,
-                  }}
-                />
-                <Typography sx={{ fontSize: 10 }}>
-                  {file.name} - {file.sizeKB}KB
-                </Typography>
-                <Grid container direction="row" sx={{ ml: 2 }}>
-                  <Checkbox
-                    checked={selectedImages.includes(file)}
-                    onChange={() => handleCheckboxChange(file)}
-                    sx={{ p: 0, m: 0 }}
-                  />
-                  <VisibilityIcon
-                    color="inherit"
-                    onClick={() => openViewDialog(file)}
-                    sx={{ mx: 1, py: 0 }}
-                    style={{ cursor: "pointer" }}
-                  />
-                  <DeleteIcon
-                    color="error"
-                    onClick={() => deleteFile(file)}
-                    style={{ cursor: "pointer" }}
-                  />
-                </Grid>
+      {files.length === 0 ? (
+        <NoDataText option="Documentos" />
+      ) : (
+        <>
+          <Box sx={{ minWidth: "1050px" }}>
+            <Grid container direction="row" sx={{ py: 2 }}>
+              <Typography sx={{ my: "auto" }}>
+                Tamanho em Disco: {totalSpaceOccupiedMB}MB
+              </Typography>
+              <Grid item sx={{ mt: -1 }}>
+                {selectedImages.length > 0 && (
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    startIcon={<ClearIcon sx={{ mt: -0.5, p: 0 }} />}
+                    onClick={() => setSelectedImages([])}
+                    sx={{ mx: 1 }}
+                  >
+                    Limpar Seleção
+                  </Button>
+                )}
               </Grid>
-            );
-          })}
-        </Grid>
-      </Box>
+              <Grid item sx={{ mt: -1 }}>
+                {selectedImages.length > 0 && (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="error"
+                    startIcon={<DeleteIcon sx={{ mt: -0.5 }} />}
+                    onClick={handleDeleteMultiple}
+                  >
+                    Excluir Selecionados
+                  </Button>
+                )}
+              </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+              {files.map((file) => {
+                return (
+                  <Grid key={file._id} item xs={2}>
+                    <img
+                      alt="Imagem do Documento"
+                      src={`http://localhost:3000/static/pdf.png`}
+                      style={{
+                        width: 100,
+                        height: 100,
+                      }}
+                    />
+                    <Typography sx={{ fontSize: 10 }}>
+                      {file.name} - {file.sizeKB}KB
+                    </Typography>
+                    <Grid container direction="row" sx={{ ml: 2 }}>
+                      <Checkbox
+                        checked={selectedImages.includes(file)}
+                        onChange={() => handleCheckboxChange(file)}
+                        sx={{ p: 0, m: 0 }}
+                      />
+                      <VisibilityIcon
+                        color="inherit"
+                        onClick={() => openViewDialog(file)}
+                        sx={{ mx: 1, py: 0 }}
+                        style={{ cursor: "pointer" }}
+                      />
+                      <DeleteIcon
+                        color="error"
+                        onClick={() => deleteFile(file)}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </Grid>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Box>
+        </>
+      )}
+
       <Dialog open={confirmationDialogOpen} onClose={closeConfirmationDialog}>
         <DialogTitle>Confirmação</DialogTitle>
         <DialogContent>
