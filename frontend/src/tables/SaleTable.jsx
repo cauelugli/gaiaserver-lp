@@ -151,7 +151,7 @@ export default function SaleTable({
                 <TableCell
                   align={headCell.label === "Solicitante" ? "" : "center"}
                   sx={{
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: "bold",
                     pl: headCell.label === "Solicitante" ? "" : 5,
                   }}

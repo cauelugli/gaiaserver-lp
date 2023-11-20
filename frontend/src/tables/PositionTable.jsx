@@ -128,7 +128,7 @@ export default function PositionTable({
                   <TableCell
                     align={headCell.label === "Nome do Cargo" ? "" : "center"}
                     sx={{
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: "bold",
                       pl: headCell.label === "Nome do Cargo" ? "" : 5,
                     }}

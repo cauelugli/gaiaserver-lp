@@ -150,7 +150,7 @@ export default function StockTable({
                   <TableCell
                     align={headCell.label === "Nome" ? "" : "center"}
                     sx={{
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: "bold",
                       pl: headCell.label === "Nome" ? "" : 5,
                     }}

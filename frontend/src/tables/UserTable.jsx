@@ -174,7 +174,7 @@ export default function UserTable({
                 <TableCell
                   align={headCell.label === "Nome" ? "" : "center"}
                   sx={{
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: "bold",
                     pl: headCell.label === "Nome" ? "" : 5,
                   }}
@@ -253,7 +253,7 @@ export default function UserTable({
                       onClick={() => handleOpenDetail(row)}
                       cursor="pointer"
                     >
-                      <Typography sx={{ fontSize: 14 }}>{row.name}</Typography>
+                      <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(row)}

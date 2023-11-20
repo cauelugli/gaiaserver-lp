@@ -117,7 +117,7 @@ export default function QuoteTable({ searchValue, searchOption, quotes }) {
                 <TableCell
                   align={headCell.label === "#" ? "" : "center"}
                   sx={{
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: "bold",
                     pl: headCell.label === "#" ? "" : 5,
                   }}

@@ -152,7 +152,7 @@ export default function CustomerTable({
                 <TableCell
                   align={headCell.label === "" ? "" : "left"}
                   sx={{
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: "bold",
                   }}
                   key={headCell.id}

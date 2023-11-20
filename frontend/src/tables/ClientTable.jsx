@@ -160,7 +160,7 @@ export default function ClientTable({
                 <TableCell
                   align={headCell.label === "Nome" ? "" : "left"}
                   sx={{
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: "bold",
                   }}
                   key={headCell.id}

@@ -126,7 +126,7 @@ export default function ServicePlansTable({
                   <TableCell
                     align={headCell.label === "Nome do Plano" ? "" : "center"}
                     sx={{
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: "bold",
                     }}
                     key={headCell.id}
