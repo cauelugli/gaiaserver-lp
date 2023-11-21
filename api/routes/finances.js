@@ -12,31 +12,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// CREATE INCOME
-router.post("/income/", async (req, res) => {
-  const newIncome = new FinanceIncome(req.body);
-  try {
-    const savedIncome = await newIncome.save();
-    res.status(200).json(savedIncome);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
-// // CREATE OUTCOME
-// router.post("/outcome/", async (req, res) => {
-//   const newClient = new Client(req.body);
-//   try {
-//     const savedClient = await newClient.save();
-//     res.status(200).json(savedClient);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json(err);
-//   }
-// });
-
-
 // UPDATE INCOME/OUTCOME
 router.put("/", async (req, res) => {
   try {

@@ -58,20 +58,27 @@ export default function Finance({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [incoming, setIncoming] = React.useState([]);
-  const [outcoming, setOutcoming] = React.useState([]);
+  // const [outcoming, setOutcoming] = React.useState([]);
 
-  const [searchOption, setSearchOption] = React.useState("name");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
+  const [searchOption, setSearchOption] = React.useState("quote");
+  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Orçamento");
   const [searchValue, setSearchValue] = React.useState("");
 
   const searchOptionList = [
     {
       // FINANCE INCOME TABLE
-      options: [{ value: "name", label: "Nome" }],
+      options: [
+        { value: "quote", label: "Orçamento" },
+        { value: "type", label: "Tipo" },
+        { value: "user", label: "Colaborador" },
+        { value: "department", label: "Departamento" },
+        { value: "price", label: "Valor" },
+        { value: "status", label: "Status" },
+      ],
     },
     {
       // FINANCE OUTCOME TABLE
-      options: [{ value: "name", label: "Nome" }],
+      options: [{ value: "quote", label: "Orçamento" }],
     },
   ];
 
@@ -89,9 +96,9 @@ export default function Finance({ user }) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const finance = await api.get("/finance");
-        setIncoming(finance.data.filter((item) => item.type==="income"));
-        setOutcoming(finance.data.filter((item) => item.type==="outcome"));
+        const finance = await api.get("/finances");
+        setIncoming(finance.data);
+        // setOutcoming(finance.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -149,7 +156,14 @@ export default function Finance({ user }) {
               handleSearchChange={handleSearchChange}
             />
 
-            <FinanceIncomeTable />
+            <FinanceIncomeTable
+              incoming={incoming}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              toast={toast}
+              searchValue={searchValue}
+              searchOption={searchOption}
+            />
 
             {/* <CustomerTable
               refreshData={refreshData}
@@ -160,8 +174,9 @@ export default function Finance({ user }) {
           </>
         )}
       </CustomTabPanel>
+
       <CustomTabPanel value={value} index={1}>
-        {outcoming.length === 0 ? (
+        {incoming.length === 0 ? (
           <NoDataText option="Contas a Pagar" />
         ) : (
           <>

@@ -3,6 +3,7 @@ const router = express.Router();
 const Job = require("../models/Job");
 const StockItem = require("../models/StockItem");
 const Quote = require("../models/Quote");
+const FinanceIncome = require("../models/FinanceIncome");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
@@ -49,6 +50,22 @@ router.post("/", async (req, res) => {
       materialsCost: req.body.materialsCost,
     });
     const savedQuote = await newQuote.save();
+    const newIncome = new FinanceIncome({
+      quote: savedQuote.number,
+      title: req.body.title,
+      customer: req.body.customer.name,
+      department: req.body.department.name,
+      user: req.body.worker.name,
+      service: req.body.service.name,
+      type: "job",
+      commissioned: req.body.commissioned,
+      commission: req.body.commission,
+      items: req.body.materials,
+      paidAt: "",
+    });
+    const savedIncome = await newIncome.save();
+
+
     const doc = new PDFDocument();
 
     // Construa o caminho completo para o arquivo PDF na pasta estática
@@ -121,7 +138,7 @@ router.post("/", async (req, res) => {
 
     doc.end();
 
-    res.status(200).json({ savedRequest, savedQuote });
+    res.status(200).json({ savedRequest, savedQuote, savedIncome });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

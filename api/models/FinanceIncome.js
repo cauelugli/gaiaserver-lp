@@ -1,13 +1,9 @@
 const mongoose = require("mongoose");
 
 const financeIncomeSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    default: 'income',
-  },
   status: {
     type: String,
-    default: 'Aberto',
+    default: "Aberto",
   },
   quote: {
     type: String,
@@ -15,15 +11,20 @@ const financeIncomeSchema = new mongoose.Schema({
   user: {
     type: String,
   },
+  type: {
+    type: String,
+  },
   department: {
     type: String,
   },
   items: {
-    type: Number,
-    required: true,
+    type: Array,
+  },
+  service: {
+    type: String,
   },
   price: {
-    type: Array,
+    type: Number,
   },
   commissioned: {
     type: Boolean,
@@ -34,6 +35,9 @@ const financeIncomeSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  paidAt: {
+    type: Date,
   },
 });
 

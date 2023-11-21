@@ -12,7 +12,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TablePagination,
   TableRow,
   TableSortLabel,
@@ -20,13 +19,12 @@ import {
 } from "@mui/material";
 
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import EditPositionForm from "../forms/edit/EditPositionForm";
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 export default function FinanceIncomeTable({
-  positions,
+  incoming,
   toast,
   searchValue,
   searchOption,
@@ -36,12 +34,6 @@ export default function FinanceIncomeTable({
   const [selectedPosition, setSelectedPosition] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState("");
-  const [openDialog, setOpenDialog] = React.useState(false);
-
-  const handleConfirmDelete = (position) => {
-    setSelectedItem(position);
-    setOpenDialog(true);
-  };
 
   const handleOpenEdit = (position) => {
     setOpenEdit(!openEdit);
@@ -52,6 +44,10 @@ export default function FinanceIncomeTable({
     {
       id: "quote",
       label: "Orçamento",
+    },
+    {
+      id: "type",
+      label: "Tipo",
     },
     {
       id: "user",
@@ -65,10 +61,18 @@ export default function FinanceIncomeTable({
       id: "price",
       label: "Valor",
     },
+    {
+      id: "status",
+      label: "Status",
+    },
+    {
+      id: "actions",
+      label: "Ações",
+    },
   ];
 
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("name");
+  const [orderBy, setOrderBy] = React.useState("quote");
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -89,10 +93,10 @@ export default function FinanceIncomeTable({
     };
 
     if (orderBy === "position.name") {
-      return [...positions].sort(compare);
+      return [...incoming].sort(compare);
     }
 
-    return [...positions].sort((a, b) => {
+    return [...incoming].sort((a, b) => {
       const isAsc = order === "asc";
       if (isAsc) {
         return a[orderBy] < b[orderBy] ? -1 : 1;
@@ -100,7 +104,7 @@ export default function FinanceIncomeTable({
         return b[orderBy] < a[orderBy] ? -1 : 1;
       }
     });
-  }, [positions, order, orderBy]);
+  }, [incoming, order, orderBy]);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -130,11 +134,11 @@ export default function FinanceIncomeTable({
               >
                 {tableHeaderRow.map((headCell) => (
                   <TableCell
-                    align={headCell.label === "Nome do Cargo" ? "" : "center"}
+                    align={headCell.label === "Orçamento" ? "" : "center"}
                     sx={{
                       fontSize: 14,
                       fontWeight: "bold",
-                      pl: headCell.label === "Nome do Cargo" ? "" : 5,
+                      pl: headCell.label === "Orçamento" ? "" : 5,
                     }}
                     key={headCell.id}
                     sortDirection={orderBy === headCell.id ? order : false}
@@ -162,10 +166,10 @@ export default function FinanceIncomeTable({
                       .includes(searchValue.toLowerCase())
                   );
                 })
-                .map((position) => (
+                .map((income) => (
                   <>
                     <TableRow
-                      key={position._id}
+                      key={income._id}
                       sx={{
                         cursor: "pointer",
                         "&:hover": { backgroundColor: "#eee " },
@@ -173,12 +177,33 @@ export default function FinanceIncomeTable({
                     >
                       <TableCell cursor="pointer">
                         <Typography sx={{ fontSize: 14 }}>
-                          {position.name}
+                          {income.quote}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
                         <Typography sx={{ fontSize: 14 }}>
-                          {position.members.length}
+                          {income.type.charAt(0).toUpperCase() +
+                            income.type.slice(1)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography sx={{ fontSize: 14 }}>
+                          {income.user}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography sx={{ fontSize: 14 }}>
+                          {income.department}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography sx={{ fontSize: 14 }}>
+                          R${income.price.toFixed(2)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography sx={{ fontSize: 14 }}>
+                          {income.status}
                         </Typography>
                       </TableCell>
                       <TableCell align="center" sx={{ py: 0 }}>
@@ -189,16 +214,16 @@ export default function FinanceIncomeTable({
                           alignItems="center"
                         >
                           <IconButton>
-                            <ModeEditIcon
+                            <VisibilityIcon
                               cursor="pointer"
-                              onClick={() => handleOpenEdit(position)}
+                              // onClick={() => handleOpenEdit(income)}
                               sx={{ color: "#333" }}
                             />
                           </IconButton>
                           <IconButton>
-                            <DeleteIcon
+                            <ModeEditIcon
                               cursor="pointer"
-                              onClick={() => handleConfirmDelete(position)}
+                              onClick={() => handleOpenEdit(income)}
                               sx={{ color: "#ff4444" }}
                             />
                           </IconButton>
@@ -237,22 +262,6 @@ export default function FinanceIncomeTable({
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
-            />
-          </Dialog>
-        )}
-        {openDialog && (
-          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-            <GenericDeleteForm
-              selectedItem={selectedItem}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-              toast={toast}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              endpoint="positions"
-              successMessage={`${
-                selectedItem.name && selectedItem.name
-              } Deletado com Sucesso`}
             />
           </Dialog>
         )}
