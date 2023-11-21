@@ -30,13 +30,14 @@ const TableFilters = ({
         <TextField
           placeholder={`Pesquise por ${searchOptionLabel}...`}
           size="small"
-          sx={{ mb: 1, ml: "2%", width: 350 }}
+          variant="standard"
+          sx={{ my: 1, ml: "2%", width: 230 }}
           value={searchValue}
           onChange={handleSearchChange}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon />
+                <SearchIcon sx={{ mb: 1, ml: 1, mr:-0.5 }} />
               </InputAdornment>
             ),
             endAdornment:
@@ -54,7 +55,8 @@ const TableFilters = ({
           }}
         />
       </Grid>
-      <Grid item sx={{ ml: "3%" }}>
+
+      <Grid item sx={{ ml: "3%", mb: 1 }}>
         <Select
           value={searchOption}
           onChange={(e) => {
@@ -72,6 +74,7 @@ const TableFilters = ({
           ))}
         </Select>
       </Grid>
+
     </Grid>
   );
 };
