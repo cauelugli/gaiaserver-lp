@@ -7,6 +7,7 @@ const cors = require("cors");
 const authRoute = require("./routes/auth");
 const clientRoute = require("./routes/clients");
 const customerRoute = require("./routes/customers");
+const financeRoute = require("./routes/finances");
 const departmentRoute = require("./routes/departments");
 const serviceRoutes = require("./routes/services");
 const servicePlanRoutes = require("./routes/servicePlans");
@@ -41,6 +42,7 @@ mongoose
 app.use("/api/login", authRoute);
 app.use("/api/clients", clientRoute);
 app.use("/api/customers", customerRoute);
+app.use("/api/finances", financeRoute);
 app.use("/api/departments", departmentRoute);
 app.use("/api/services", serviceRoutes);
 app.use("/api/servicePlans", servicePlanRoutes);

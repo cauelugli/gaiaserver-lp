@@ -28,6 +28,7 @@ import Stock from "./pages/Stock";
 import Files from "./pages/Files";
 import Account from "./pages/Account";
 import Quotes from "./pages/Quotes";
+import Finance from "./pages/Finance";
 
 function isAuthenticated(login, userData) {
   return login && userData && userData.isActive;
@@ -144,6 +145,10 @@ export default function App() {
                 <Route
                   path="/files"
                   element={isAuthenticated(login, userData) ? <Files user={userData}/> : <Navigate to="/login" />}
+                />
+                <Route
+                  path="/finance"
+                  element={isAuthenticated(login, userData) ? <Finance user={userData}/> : <Navigate to="/login" />}
                 />
               </Routes>
             </Grid>
