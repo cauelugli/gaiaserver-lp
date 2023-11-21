@@ -28,7 +28,7 @@ export default function EditPositionForm({
   const [name, setName] = React.useState(selectedPosition.name);
   const previousData = selectedPosition;
 
-  const handleAdd = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
     try {
       const res = await api.put("/positions", {
@@ -67,8 +67,8 @@ export default function EditPositionForm({
   };
 
   return (
-    <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Cargo</DialogTitle>
+    <form onSubmit={handleEdit}>
+      <DialogTitle>Editando Cargo - {selectedPosition.name}</DialogTitle>
       <DialogContent>
         <Grid
           container
