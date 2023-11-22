@@ -19,9 +19,10 @@ import {
 } from "@mui/material";
 
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 
-import EditPositionForm from "../forms/edit/EditPositionForm";
+import EditFinanceIncomeForm from "../forms/edit/EditFinanceIncomeForm";
+import StatusButton from "../components/small/buttons/StatusButton";
+import EditStatusForm from "../forms/edit/EditStatusForm";
 
 export default function FinanceIncomeTable({
   incoming,
@@ -31,13 +32,22 @@ export default function FinanceIncomeTable({
   refreshData,
   setRefreshData,
 }) {
-  const [selectedPosition, setSelectedPosition] = React.useState("");
+  const [selectedFinanceIncome, setSelectedFinanceIncome] = React.useState("");
+  const [previousStatus, setPreviousStatus] = React.useState("");
+  const [newStatus, setNewStatus] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openConfirmChangeStatus, setOpenConfirmChangeStatus] =
+    React.useState(false);
 
-  const handleOpenEdit = (position) => {
+  const handleOpenEdit = (income) => {
+    setSelectedFinanceIncome(income);
     setOpenEdit(!openEdit);
-    setSelectedPosition(position);
+  };
+
+  const handleStatusChange = (newStatus) => {
+    setPreviousStatus(selectedFinanceIncome.status);
+    setNewStatus(newStatus);
+    setOpenConfirmChangeStatus(!openConfirmChangeStatus);
   };
 
   const tableHeaderRow = [
@@ -171,11 +181,10 @@ export default function FinanceIncomeTable({
                     <TableRow
                       key={income._id}
                       sx={{
-                        cursor: "pointer",
                         "&:hover": { backgroundColor: "#eee " },
                       }}
                     >
-                      <TableCell cursor="pointer">
+                      <TableCell>
                         <Typography sx={{ fontSize: 14 }}>
                           {income.quote}
                         </Typography>
@@ -201,11 +210,17 @@ export default function FinanceIncomeTable({
                           R${income.price.toFixed(2)}
                         </Typography>
                       </TableCell>
+
                       <TableCell align="center">
-                        <Typography sx={{ fontSize: 14 }}>
-                          {income.status}
-                        </Typography>
+                        <StatusButton
+                          status={income.status}
+                          changedStatus={(newStatus) =>
+                            handleStatusChange(newStatus)
+                          }
+                          onMouseEnter={() => setSelectedFinanceIncome(income)}
+                        />
                       </TableCell>
+
                       <TableCell align="center" sx={{ py: 0 }}>
                         <Grid
                           container
@@ -214,17 +229,10 @@ export default function FinanceIncomeTable({
                           alignItems="center"
                         >
                           <IconButton>
-                            <VisibilityIcon
-                              cursor="pointer"
-                              // onClick={() => handleOpenEdit(income)}
-                              sx={{ color: "#333" }}
-                            />
-                          </IconButton>
-                          <IconButton>
                             <ModeEditIcon
                               cursor="pointer"
                               onClick={() => handleOpenEdit(income)}
-                              sx={{ color: "#ff4444" }}
+                              sx={{ color: "#777" }}
                             />
                           </IconButton>
                         </Grid>
@@ -250,15 +258,35 @@ export default function FinanceIncomeTable({
         {openEdit && (
           <Dialog
             fullWidth
-            maxWidth="xs"
+            maxWidth="lg"
             open={openEdit}
             onClose={() => setOpenEdit(!openEdit)}
           >
-            <EditPositionForm
+            <EditFinanceIncomeForm
               openEdit={openEdit}
-              selectedPosition={selectedPosition}
-              previousMaterials={selectedPosition.materials}
+              selectedFinanceIncome={selectedFinanceIncome}
+              previousMaterials={selectedFinanceIncome.materials}
               setOpenEdit={setOpenEdit}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              toast={toast}
+            />
+          </Dialog>
+        )}
+        {openConfirmChangeStatus && (
+          <Dialog
+            fullWidth
+            maxWidth="sm"
+            open={openConfirmChangeStatus}
+            onClose={() => setOpenConfirmChangeStatus(!openConfirmChangeStatus)}
+          >
+            <EditStatusForm
+              endpoint={"/finances/status"}
+              selectedItem={selectedFinanceIncome}
+              openEdit={openConfirmChangeStatus}
+              prevStatus={previousStatus}
+              newData={newStatus}
+              setOpenEdit={setOpenConfirmChangeStatus}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
