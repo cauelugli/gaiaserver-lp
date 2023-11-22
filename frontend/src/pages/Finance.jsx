@@ -89,8 +89,8 @@ export default function Finance({ user }) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
     setSearchValue("");
-    setSearchOption("name");
-    setSearchOptionLabel("Nome");
+    setSearchOption("quote");
+    setSearchOptionLabel("Orçamento");
   };
 
   React.useEffect(() => {
@@ -164,13 +164,6 @@ export default function Finance({ user }) {
               searchValue={searchValue}
               searchOption={searchOption}
             />
-
-            {/* <CustomerTable
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              searchValue={searchValue}
-              searchOption={searchOption}
-            /> */}
           </>
         )}
       </CustomTabPanel>
