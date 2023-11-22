@@ -61,7 +61,11 @@ router.post("/", async (req, res) => {
       commissioned: req.body.commissioned,
       commission: req.body.commission,
       items: req.body.materials,
+      scheduledTo: req.body.scheduledTo,
+      executedAt: "",
       paidAt: "",
+      commentary: "",
+      price: req.body.price,
     });
     const savedIncome = await newIncome.save();
 

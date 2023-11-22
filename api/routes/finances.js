@@ -37,4 +37,21 @@ router.put("/", async (req, res) => {
   }
 });
 
+// UPDATE STATUS
+router.put("/status", async (req, res) => {
+  try {
+    // make this dynamic later
+    const updatedFinance = await FinanceIncome.findByIdAndUpdate(
+      req.body.id,
+      {
+        status: req.body.status,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedFinance);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;
