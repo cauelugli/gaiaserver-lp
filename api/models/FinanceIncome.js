@@ -17,6 +17,12 @@ const financeIncomeSchema = new mongoose.Schema({
   department: {
     type: String,
   },
+  customer: {
+    type: String,
+  },
+  customerType: {
+    type: String,
+  },
   items: {
     type: Array,
   },
@@ -36,8 +42,17 @@ const financeIncomeSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  scheduledTo: {
+    type: Date,
+  },
+  executedAt: {
+    type: Date,
+  },
   paidAt: {
     type: Date,
+  },
+  commentary: {
+    type: String,
   },
 });
 
