@@ -28,10 +28,10 @@ const TableFilters = ({
     <Grid container direction="row" justifyContent="flex-start">
       <Grid item>
         <TextField
-          placeholder={`Pesquise por ${searchOptionLabel}...`}
+          placeholder={`Pesquise por ${searchOptionLabel}`}
           size="small"
           variant="standard"
-          sx={{ my: 1, ml: "2%", width: 230 }}
+          sx={{ my: 1, ml: "2%", width: 240 }}
           value={searchValue}
           onChange={handleSearchChange}
           InputProps={{
