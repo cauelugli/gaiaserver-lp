@@ -48,6 +48,12 @@ const financeIncomeSchema = new mongoose.Schema({
   executedAt: {
     type: Date,
   },
+  resolvedAt: {
+    type: Date,
+  },
+  payment: {
+    type: Object,
+  },
   paidAt: {
     type: Date,
   },

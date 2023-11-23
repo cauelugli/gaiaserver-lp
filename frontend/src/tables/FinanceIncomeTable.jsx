@@ -15,14 +15,15 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  Tooltip,
   Typography,
 } from "@mui/material";
 
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
-import EditFinanceIncomeForm from "../forms/edit/EditFinanceIncomeForm";
-import StatusButton from "../components/small/buttons/StatusButton";
+import AddSchedulePaymentForm from "../forms/add/AddSchedulePaymentForm";
 import EditStatusForm from "../forms/edit/EditStatusForm";
+import StatusButton from "../components/small/buttons/StatusButton";
 
 export default function FinanceIncomeTable({
   incoming,
@@ -35,13 +36,15 @@ export default function FinanceIncomeTable({
   const [selectedFinanceIncome, setSelectedFinanceIncome] = React.useState("");
   const [previousStatus, setPreviousStatus] = React.useState("");
   const [newStatus, setNewStatus] = React.useState("");
-  const [openEdit, setOpenEdit] = React.useState(false);
+  const [openSchedulePayment, setOpenSchedulePayment] = React.useState(false);
+  const [hoveredIncome, setHoveredIncome] = React.useState(null);
+
   const [openConfirmChangeStatus, setOpenConfirmChangeStatus] =
     React.useState(false);
 
-  const handleOpenEdit = (income) => {
+  const handleOpenAddSchedulePayment = (income) => {
     setSelectedFinanceIncome(income);
-    setOpenEdit(!openEdit);
+    setOpenSchedulePayment(!openSchedulePayment);
   };
 
   const handleStatusChange = (newStatus) => {
@@ -60,8 +63,8 @@ export default function FinanceIncomeTable({
       label: "Tipo",
     },
     {
-      id: "user",
-      label: "Colaborador",
+      id: "payment",
+      label: "Pagamento",
     },
     {
       id: "department",
@@ -195,10 +198,64 @@ export default function FinanceIncomeTable({
                             income.type.slice(1)}
                         </Typography>
                       </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 14 }}>
-                          {income.user}
+                      <TableCell align="center" >
+                        <Typography
+                          sx={{ fontSize: 14 }}
+                          onMouseEnter={() => setHoveredIncome(income)}
+                          onMouseLeave={() => setHoveredIncome(null)}
+                        >
+                          {income.payment
+                            ? income.payment.paymentOption +
+                              ` | ` +
+                              income.payment.paymentMethod
+                            : "Não há Agendamento"}
                         </Typography>
+                        {hoveredIncome === income && (
+                          <Paper
+                            onMouseEnter={() => setHoveredIncome(income)}
+                            onMouseLeave={() => setHoveredIncome(null)}
+                            style={{
+                              position: "absolute",
+                              width: 250,
+                              height: 200,
+                              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+                              bottom: "20%",
+                              left: "14%",
+                              zIndex: 999,
+                              border: "2px solid #444",
+                              borderRadius: 15,
+                            }}
+                          >
+                            <Grid
+                              container
+                              direction="column"
+                              alignItems="flex-start"
+                              justifyContent="center"
+                              sx={{ ml: 2 }}
+                            >
+                              <Grid item sx={{ mt: 1 }}>
+                                <Typography>
+                                  Orçamento: {income.quote}
+                                </Typography>
+                              </Grid>
+                              <Grid item sx={{ mt: 1 }}>
+                                <Typography>
+                                  Valor: R${income.payment.finalPrice}
+                                </Typography>
+                              </Grid>
+                              <Grid item>
+                                <Typography sx={{ mt: 1 }}>
+                                  Método: {income.payment.paymentMethod}
+                                </Typography>
+                              </Grid>
+                              <Grid item>
+                                <Typography sx={{ mt: 1 }}>
+                                  Opção: {income.payment.paymentOption}
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          </Paper>
+                        )}
                       </TableCell>
                       <TableCell align="center">
                         <Typography sx={{ fontSize: 14 }}>
@@ -228,13 +285,30 @@ export default function FinanceIncomeTable({
                           justifyContent="center"
                           alignItems="center"
                         >
-                          <IconButton>
-                            <ModeEditIcon
-                              cursor="pointer"
-                              onClick={() => handleOpenEdit(income)}
-                              sx={{ color: "#777" }}
-                            />
-                          </IconButton>
+                          <Tooltip
+                            title={
+                              income.payment ? (
+                                <Typography sx={{ fontSize: 12 }}>
+                                  Agendamento Realizado
+                                </Typography>
+                              ) : (
+                                <Typography sx={{ fontSize: 12 }}>
+                                  Agendar Pagamento
+                                </Typography>
+                              )
+                            }
+                          >
+                            <span>
+                              <IconButton disabled={income.payment}>
+                                <CalendarMonthIcon
+                                  cursor="pointer"
+                                  onClick={() =>
+                                    handleOpenAddSchedulePayment(income)
+                                  }
+                                />
+                              </IconButton>
+                            </span>
+                          </Tooltip>
                         </Grid>
                       </TableCell>
                     </TableRow>
@@ -255,18 +329,18 @@ export default function FinanceIncomeTable({
             }}
           />
         </TableContainer>
-        {openEdit && (
+        {openSchedulePayment && (
           <Dialog
             fullWidth
             maxWidth="lg"
-            open={openEdit}
-            onClose={() => setOpenEdit(!openEdit)}
+            open={openSchedulePayment}
+            onClose={() => setOpenSchedulePayment(!openSchedulePayment)}
           >
-            <EditFinanceIncomeForm
-              openEdit={openEdit}
+            <AddSchedulePaymentForm
+              openEdit={openSchedulePayment}
               selectedFinanceIncome={selectedFinanceIncome}
               previousMaterials={selectedFinanceIncome.materials}
-              setOpenEdit={setOpenEdit}
+              setOpenEdit={setOpenSchedulePayment}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
@@ -284,9 +358,9 @@ export default function FinanceIncomeTable({
               endpoint={"/finances/status"}
               selectedItem={selectedFinanceIncome}
               openEdit={openConfirmChangeStatus}
+              setOpenEdit={setOpenConfirmChangeStatus}
               prevStatus={previousStatus}
               newData={newStatus}
-              setOpenEdit={setOpenConfirmChangeStatus}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
