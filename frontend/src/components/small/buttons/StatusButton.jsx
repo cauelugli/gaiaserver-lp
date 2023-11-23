@@ -3,12 +3,7 @@ import * as React from "react";
 
 import { Button, Menu, Grid, Typography, MenuItem } from "@mui/material";
 
-export default function StatusButton({
-  status,
-  changedStatus,
-  onMouseEnter,
-  // onMouseLeave,
-}) {
+export default function StatusButton({ status, changedStatus, onMouseEnter }) {
   const previousStatus = status;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -38,19 +33,25 @@ export default function StatusButton({
   return (
     <>
       <Button
-        id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         onMouseEnter={onMouseEnter}
-        // onMouseLeave={onMouseLeave}
       >
-        <Typography sx={{ fontSize: 13 }}>{previousStatus}</Typography>
+        <Typography
+          sx={{
+            fontSize: 13,
+            color:
+              (previousStatus === "Aberto" && "#777") ||
+              (previousStatus === "Aprovado" && "darkgreen") ||
+              "black",
+          }}
+        >
+          {previousStatus}
+        </Typography>
       </Button>
 
       <Menu
-        id="basic-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
