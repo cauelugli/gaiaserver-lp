@@ -522,10 +522,7 @@ const EditJobForm = ({
                 size="small"
                 sx={{ width: "20%", ml: 1 }}
               >
-                <MenuItem value={"Aberto"}>Aberto</MenuItem>
-                <MenuItem value={"Aguardando Execução"}>
-                  Aguardando Execução
-                </MenuItem>
+                <MenuItem disabled>Aberto</MenuItem>
                 <MenuItem value={"Em Execução"}>Em Execução</MenuItem>
                 <MenuItem value={"Aguardando Cliente"}>
                   Aguardando Cliente
@@ -533,7 +530,6 @@ const EditJobForm = ({
                 <MenuItem value={"Aguardando Terceiro"}>
                   Aguardando Terceiro
                 </MenuItem>
-                <MenuItem value={"Concluido"}>Concluido</MenuItem>
               </Select>
               <TextField
                 label="Atividade"
