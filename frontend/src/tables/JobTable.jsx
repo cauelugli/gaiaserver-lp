@@ -181,11 +181,11 @@ export default function JobTable({
             >
               {tableHeaderRow.map((headCell) => (
                 <TableCell
-                  align={headCell.label === "Nome" ? "" : "center"}
+                  align={headCell.label === "Título" ? "" : "center"}
                   sx={{
                     fontSize: 14,
                     fontWeight: "bold",
-                    pl: headCell.label === "Nome" ? "" : 5,
+                    pl: headCell.label === "Título" ? "" : 5,
                   }}
                   key={headCell.id}
                   sortDirection={orderBy === headCell.id ? order : false}
