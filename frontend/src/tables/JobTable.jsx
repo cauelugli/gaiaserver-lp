@@ -21,6 +21,7 @@ import {
   Avatar,
   TableSortLabel,
   TablePagination,
+  Checkbox,
 } from "@mui/material";
 
 import InteractionReactions from "../components/small/InteractionReactions";
@@ -169,8 +170,22 @@ export default function JobTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
+  const [showCompletedJobs, setShowCompletedJobs] = React.useState(false);
+  const handleChangeShowCompletedJobs = () => {
+    setShowCompletedJobs(!showCompletedJobs);
+  };
+
   return (
     <Box sx={{ minWidth: "1050px" }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
+        <Checkbox
+          checked={showCompletedJobs}
+          onChange={handleChangeShowCompletedJobs}
+        />
+        <Typography sx={{ fontSize: 14, mt: 1.5, ml: -1 }}>
+          Mostrar Jobs Concluídos
+        </Typography>
+      </Box>{" "}
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
@@ -202,23 +217,29 @@ export default function JobTable({
             </TableRow>
             {sortedRows
               .slice(startIndex, endIndex)
-              .filter((user) => {
+              .filter((job) => {
+                if (!job) return false;
                 const userProperty = searchOption
                   .split(".")
-                  .reduce((obj, key) => obj[key], user);
+                  .reduce((obj, key) => obj[key], job);
                 const statusFilter =
-                  !searchStatus || user.status === searchStatus;
+                  !searchStatus || job.status === searchStatus;
 
-                // Verifica se a condição para aplicar o filtro é atendida
                 const shouldApplyStatusFilter =
                   statusFilter || searchStatus === "&nbsp";
 
-                return (
+                // Verifica se a condição para aplicar o filtro é atendida
+                const shouldShowJob =
                   userProperty &&
                   userProperty
                     .toLowerCase()
                     .includes(searchValue.toLowerCase()) &&
-                  shouldApplyStatusFilter
+                  shouldApplyStatusFilter;
+
+                // Se a opção para mostrar jobs concluídos estiver desmarcada, oculta os jobs concluídos
+                return (
+                  shouldShowJob &&
+                  (showCompletedJobs || job.status !== "Concluido")
                 );
               })
               .map((job) => (
@@ -672,6 +693,62 @@ export default function JobTable({
                             />
                           )}
                         </Box>
+                        {job.status === "Concluido" && (
+                          <Box sx={{ my: 4, px: 6, mb:6 }}>
+                            <Typography
+                              variant="h6"
+                              sx={{ fontSize: 18, fontWeight: "bold" }}
+                            >
+                              Resolução
+                            </Typography>
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Data da Resolução
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Resolvido por
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Resolução
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {job.resolvedAt}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {job.resolvedBy}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {job.resolution}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Box>
+                        )}
                       </Collapse>
                     </TableCell>
                   </TableRow>

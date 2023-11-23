@@ -21,6 +21,7 @@ import {
   Avatar,
   TableSortLabel,
   TablePagination,
+  Checkbox,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -137,8 +138,22 @@ export default function SaleTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
+  const [showCompletedSales, setShowCompletedSales] = React.useState(false);
+  const handleChangeShowCompletedSales = () => {
+    setShowCompletedSales(!showCompletedSales);
+  };
+
   return (
     <Box>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt:-5.5}}>
+        <Checkbox
+          checked={showCompletedSales}
+          onChange={handleChangeShowCompletedSales}
+        />
+        <Typography sx={{ fontSize: 14, mt: 1.5, ml:-1 }}>
+          Mostrar Vendas Concluídas
+        </Typography>
+      </Box>{" "}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
@@ -170,23 +185,28 @@ export default function SaleTable({
             </TableRow>
             {sortedRows
               .slice(startIndex, endIndex)
-              .filter((user) => {
+              .filter((sale) => {
+                if (!sale) return false;
                 const userProperty = searchOption
                   .split(".")
-                  .reduce((obj, key) => obj[key], user);
+                  .reduce((obj, key) => obj[key], sale);
                 const statusFilter =
-                  !searchStatus || user.status === searchStatus;
+                  !searchStatus || sale.status === searchStatus;
 
-                // Verifica se a condição para aplicar o filtro é atendida
                 const shouldApplyStatusFilter =
                   statusFilter || searchStatus === "&nbsp";
 
-                return (
+                // Verifica se a condição para aplicar o filtro é atendida
+                const shouldShowSale =
                   userProperty &&
                   userProperty
                     .toLowerCase()
                     .includes(searchValue.toLowerCase()) &&
-                  shouldApplyStatusFilter
+                  shouldApplyStatusFilter;
+
+                return (
+                  shouldShowSale &&
+                  (showCompletedSales || sale.status !== "Concluido")
                 );
               })
               .map((sale) => (
