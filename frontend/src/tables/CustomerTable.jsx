@@ -20,6 +20,7 @@ import {
   TableSortLabel,
   Avatar,
   TablePagination,
+  FormHelperText,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -81,6 +82,10 @@ export default function CustomerTable({
     {
       id: "name",
       label: "Nome",
+    },
+    {
+      id: "phone",
+      label: "Telefone",
     },
     {
       id: "mainContactName",
@@ -220,14 +225,27 @@ export default function CustomerTable({
                         {customer.name}
                       </Typography>
                     </TableCell>
+
                     <TableCell
                       onClick={() => handleOpenDetail(customer)}
                       cursor="pointer"
                       align="left"
                     >
                       <Typography sx={{ fontSize: 14 }}>
+                        {customer.phone}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(customer)}
+                      cursor="pointer"
+                      align="left"
+                    >
+                      <Typography sx={{ fontSize: 14, mt: 0.5 }}>
                         {customer.mainContactName}
                       </Typography>
+                      <FormHelperText sx={{ mt: -0.5 }}>
+                        ({customer.mainContactEmail})
+                      </FormHelperText>
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -388,6 +406,93 @@ export default function CustomerTable({
                                 </TableCell>
                                 <TableCell>
                                   <Typography>{customer.domain}</Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </Box>
+
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                            Pedidos Recentes
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Orçamento
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Tipo de Pedido
+                                  </Typography>
+                                </TableCell>
+
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Solicitado em
+                                  </Typography>
+                                </TableCell>
+
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Solicitado por
+                                  </Typography>
+                                </TableCell>
+
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Concluido em
+                                  </Typography>
+                                </TableCell>
+
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Concluido por
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
+                              {/* <TableRow
+                                key
+                                sx={{
+                                  backgroundColor:
+                                    interaction.number % 2 === 0 ? "#eee" : "white",
+                                }}
+                              > */}
+                                <TableCell>
+                                  <Typography>1234</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>Job ou Venda</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>10/04/1991</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>Maximiliano Guimarães</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>10/04/1991</Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography>Maximiliano Guimarães</Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>
