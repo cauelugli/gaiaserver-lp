@@ -188,7 +188,8 @@ export default function ManagerTable({
                 </TableCell>
               ))}
             </TableRow>
-            {sortedRows.slice(startIndex, endIndex)
+            {sortedRows
+              .slice(startIndex, endIndex)
               .filter((user) =>
                 user[searchOption]
                   .toLowerCase()
@@ -273,7 +274,9 @@ export default function ManagerTable({
                             >
                               {" "}
                             </Paper>
-                            <Typography>{row.department.name}</Typography>
+                            <Typography sx={{ fontSize: 14 }}>
+                              {row.department.name}
+                            </Typography>
                           </Grid>
                         ) : (
                           "-"
@@ -338,28 +341,28 @@ export default function ManagerTable({
                                   <TableRow>
                                     <TableCell>
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         Nome
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         E-mail
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         Telefone
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         Departamento
                                       </Typography>
@@ -395,7 +398,7 @@ export default function ManagerTable({
                                             >
                                               {" "}
                                             </Paper>
-                                            <Typography>
+                                            <Typography sx={{ fontSize: 14 }}>
                                               {row.department.name}
                                             </Typography>
                                           </Grid>
@@ -412,21 +415,21 @@ export default function ManagerTable({
                                   <TableRow>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         Cargo
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         Nome de Operador
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         Perfil de Acesso
                                       </Typography>

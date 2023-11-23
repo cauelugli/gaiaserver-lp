@@ -253,7 +253,7 @@ export default function UserTable({
                       onClick={() => handleOpenDetail(row)}
                       cursor="pointer"
                     >
-                      <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
+                      <Typography sx={{ fontSize: 14 }}>{row.name}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(row)}
@@ -294,7 +294,8 @@ export default function UserTable({
                             >
                               {" "}
                             </Paper>
-                            <Typography>{row.department.name}</Typography>
+                            <Typography sx={{fontSize: 14}}>
+                              {row.department.name}</Typography>
                           </Grid>
                         ) : (
                           "-"
@@ -359,28 +360,28 @@ export default function UserTable({
                                   <TableRow>
                                     <TableCell>
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         Nome
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         E-mail
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         Telefone
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         Departamento
                                       </Typography>
@@ -416,7 +417,7 @@ export default function UserTable({
                                             >
                                               {" "}
                                             </Paper>
-                                            <Typography>
+                                            <Typography sx={{fontSize: 14}}>
                                               {row.department.name}
                                             </Typography>
                                           </Grid>
@@ -433,21 +434,21 @@ export default function UserTable({
                                   <TableRow>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         Cargo
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         Nome de Operador
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 14, color: "#777" }}
                                       >
                                         Perfil de Acesso
                                       </Typography>
