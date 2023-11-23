@@ -203,7 +203,7 @@ router.put("/", async (req, res) => {
           $push: {
             interactions: {
               number: req.body.number || 1,
-              activity: "Job aprovado",
+              activity: "Job aprovado para execução",
               user: req.body.user,
               date: req.body.date,
             },
