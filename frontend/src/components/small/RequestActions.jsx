@@ -39,7 +39,7 @@ const RequestActions = ({
         </Button>
       )}
 
-      {job.status === "Aprovado" && job.status !== "Concluido" && (
+      {job.status !== "Aberto" && job.status !== "Concluido" && (
         <Button
           cursor="pointer"
           variant="contained"
