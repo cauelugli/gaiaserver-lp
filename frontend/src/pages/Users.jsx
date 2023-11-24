@@ -174,7 +174,6 @@ export default function Users({ user }) {
             aria-haspopup="true"
             aria-expanded={openAddButton ? "true" : undefined}
             onClick={handleClickAddButton}
-            variant="outlined"
             size="small"
             sx={{
               borderRadius: 3,

@@ -48,7 +48,6 @@ export default function BasicMenu(props) {
         size="small"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        variant="outlined"
         sx={{
           borderRadius: 3,
           "&:hover": { borderColor: "#eee" },
