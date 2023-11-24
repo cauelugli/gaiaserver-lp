@@ -4,7 +4,7 @@ import React from "react";
 
 import { Grid, Typography } from "@mui/material";
 
-const NoDataText = ({ option }) => {
+const NoDataText = ({ option, femaleGender }) => {
   return (
     <Grid
       container
@@ -14,7 +14,7 @@ const NoDataText = ({ option }) => {
       sx={{ mt: 3 }}
     >
       <Typography sx={{ fontSize: 30, color: "#777" }}>
-        Não há {option} Cadastrados
+        Não há {option} Cadastrad{femaleGender?"a":"o"}s
       </Typography>
     </Grid>
   );

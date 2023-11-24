@@ -235,7 +235,7 @@ export default function Requests({ user }) {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         {sales.length === 0 ? (
-          <NoDataText option="Vendas" />
+          <NoDataText option="Vendas"  femaleGender={true}/>
         ) : (
           <>
             <TableFilters

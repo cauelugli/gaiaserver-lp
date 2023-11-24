@@ -142,7 +142,7 @@ export default function Finance({ user }) {
       </Box>
       <CustomTabPanel value={value} index={0}>
         {incoming.length === 0 ? (
-          <NoDataText option="Contas a Receber" />
+          <NoDataText option="Contas a Receber" femaleGender={true}/>
         ) : (
           <>
             <TableFilters
@@ -170,7 +170,7 @@ export default function Finance({ user }) {
 
       <CustomTabPanel value={value} index={1}>
         {incoming.length === 0 ? (
-          <NoDataText option="Contas a Pagar" />
+          <NoDataText option="Contas a Pagar" femaleGender={true}/>
         ) : (
           <>
             <TableFilters

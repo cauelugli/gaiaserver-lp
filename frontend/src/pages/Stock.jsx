@@ -227,7 +227,7 @@ export default function Stock({ user }) {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         {stock.length === 0 ? (
-          <NoDataText option="Entradas de Estoque" />
+          <NoDataText option="Entradas de Estoque"  femaleGender={true}/>
         ) : (
           <>
             <TableFilters
