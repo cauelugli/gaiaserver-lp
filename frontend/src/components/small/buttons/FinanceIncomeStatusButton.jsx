@@ -13,7 +13,7 @@ export default function FinanceIncomeStatusButton({
   const open = Boolean(anchorEl);
   const optionList = [
     "Em Agendamento",
-    "Aguardando Quitação",
+    "Aguardando Pagamento",
     "Encerrado",
   ];
 
