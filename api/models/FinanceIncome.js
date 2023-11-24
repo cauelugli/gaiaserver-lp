@@ -36,17 +36,11 @@ const financeIncomeSchema = new mongoose.Schema({
     type: Boolean,
   },
   commission: {
-    type: Number,
+    type: Object,
   },
   createdAt: {
     type: Date,
     default: Date.now,
-  },
-  scheduledTo: {
-    type: Date,
-  },
-  executedAt: {
-    type: Date,
   },
   resolvedAt: {
     type: Date,

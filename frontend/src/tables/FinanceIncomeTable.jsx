@@ -4,6 +4,7 @@ import * as React from "react";
 
 import {
   Box,
+  CircularProgress,
   Dialog,
   Grid,
   IconButton,
@@ -23,7 +24,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 import AddSchedulePaymentForm from "../forms/add/AddSchedulePaymentForm";
 import EditStatusForm from "../forms/edit/EditStatusForm";
-import StatusButton from "../components/small/buttons/StatusButton";
+import FinanceIncomeStatusButton from "../components/small/buttons/FinanceIncomeStatusButton";
 
 export default function FinanceIncomeTable({
   incoming,
@@ -198,7 +199,7 @@ export default function FinanceIncomeTable({
                             income.type.slice(1)}
                         </Typography>
                       </TableCell>
-                      <TableCell align="center" >
+                      <TableCell align="center">
                         <Typography
                           sx={{ fontSize: 14 }}
                           onMouseEnter={() => setHoveredIncome(income)}
@@ -216,10 +217,10 @@ export default function FinanceIncomeTable({
                             onMouseLeave={() => setHoveredIncome(null)}
                             style={{
                               position: "absolute",
-                              width: 250,
-                              height: 200,
+                              width: 300,
+                              height: 130,
                               boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-                              bottom: "20%",
+                              bottom: "25%",
                               left: "14%",
                               zIndex: 999,
                               border: "2px solid #444",
@@ -228,30 +229,59 @@ export default function FinanceIncomeTable({
                           >
                             <Grid
                               container
-                              direction="column"
-                              alignItems="flex-start"
-                              justifyContent="center"
-                              sx={{ ml: 2 }}
+                              direction="row"
+                              justifyContent="space-between"
+                              sx={{ px: 3 }}
                             >
-                              <Grid item sx={{ mt: 1 }}>
-                                <Typography>
-                                  Orçamento: {income.quote}
-                                </Typography>
-                              </Grid>
-                              <Grid item sx={{ mt: 1 }}>
-                                <Typography>
-                                  Valor: R${income.payment.finalPrice}
-                                </Typography>
-                              </Grid>
                               <Grid item>
-                                <Typography sx={{ mt: 1 }}>
-                                  Método: {income.payment.paymentMethod}
+                                <Typography sx={{ fontSize: 14, mt: 1 }}>
+                                  <strong>Orçamento:</strong> {income.quote}
+                                </Typography>
+                                <Typography sx={{ fontSize: 14, mt: 1 }}>
+                                  <strong>Valor:</strong> R$
+                                  {income.payment.finalPrice}
+                                </Typography>
+                                <Typography sx={{ fontSize: 14, mt: 1 }}>
+                                  <strong>Método:</strong>{" "}
+                                  {income.payment.paymentMethod}
+                                </Typography>
+                                <Typography sx={{ fontSize: 14, mt: 1 }}>
+                                  <strong>Opção:</strong>{" "}
+                                  {income.payment.paymentOption}
                                 </Typography>
                               </Grid>
-                              <Grid item>
-                                <Typography sx={{ mt: 1 }}>
-                                  Opção: {income.payment.paymentOption}
-                                </Typography>
+                              <Grid item sx={{m:"auto"}}>
+                                <Box
+                                  sx={{
+                                    position: "relative",
+                                    display: "inline-flex",
+                                  }}
+                                >
+                                  <CircularProgress
+                                    variant="determinate"
+                                    size={80}
+                                    value={33}
+                                  />
+                                  <Box
+                                    sx={{
+                                      top: 0,
+                                      left: 0,
+                                      bottom: 0,
+                                      right: 0,
+                                      position: "absolute",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                    }}
+                                  >
+                                    <Typography
+                                      variant="caption"
+                                      component="div"
+                                    >
+                                      1 / 3
+                                    </Typography>
+                                  </Box>
+                                </Box>
                               </Grid>
                             </Grid>
                           </Paper>
@@ -269,7 +299,7 @@ export default function FinanceIncomeTable({
                       </TableCell>
 
                       <TableCell align="center">
-                        <StatusButton
+                        <FinanceIncomeStatusButton
                           status={income.status}
                           changedStatus={(newStatus) =>
                             handleStatusChange(newStatus)
