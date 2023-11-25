@@ -22,7 +22,7 @@ import {
 
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
-import AddSchedulePaymentForm from "../forms/add/AddSchedulePaymentForm";
+import AddPaymentScheduleForm from "../forms/add/AddPaymentScheduleForm";
 import EditStatusForm from "../forms/edit/EditStatusForm";
 import FinanceIncomeStatusButton from "../components/small/buttons/FinanceIncomeStatusButton";
 
@@ -366,7 +366,7 @@ export default function FinanceIncomeTable({
             open={openSchedulePayment}
             onClose={() => setOpenSchedulePayment(!openSchedulePayment)}
           >
-            <AddSchedulePaymentForm
+            <AddPaymentScheduleForm
               openEdit={openSchedulePayment}
               selectedFinanceIncome={selectedFinanceIncome}
               previousMaterials={selectedFinanceIncome.materials}

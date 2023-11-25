@@ -32,7 +32,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddSchedulePaymentForm({
+export default function AddPaymentScheduleForm({
   selectedFinanceIncome,
   openEdit,
   setOpenEdit,
