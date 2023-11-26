@@ -10,7 +10,6 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
-  FormHelperText,
   Grid,
   InputAdornment,
   MenuItem,
@@ -24,9 +23,10 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TextField,
   Typography,
 } from "@mui/material";
+
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -43,6 +43,8 @@ export default function AddPaymentScheduleForm({
   const previousData = selectedFinanceIncome;
   const [paymentMethod, setPaymentMethod] = React.useState("");
   const [paymentOption, setPaymentOption] = React.useState("Parcelado");
+  const [paymentDates, setPaymentDates] = React.useState({});
+  const [commonDay, setCommonDay] = React.useState(0);
   const parcels = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const [parcelQuantity, setParcelQuantity] = React.useState(2);
   const [hasParcelMonthlyFee, setHasParcelMonthlyFee] = React.useState(false);
@@ -58,6 +60,7 @@ export default function AddPaymentScheduleForm({
         parcelQuantity,
         hasParcelMonthlyFee,
         parcelMonthlyFee,
+        paymentDates,
         finalPrice: hasParcelMonthlyFee
           ? (
               (previousData.price / parcelQuantity) *
@@ -86,7 +89,7 @@ export default function AddPaymentScheduleForm({
           autoClose: 1200,
         });
       } else {
-        console.log(err)
+        console.log(err);
         toast.error("Houve algum erro...", {
           closeOnClick: true,
           pauseOnHover: false,
@@ -97,9 +100,52 @@ export default function AddPaymentScheduleForm({
     }
   };
 
+  const [tableBodyResetKey, setTableBodyResetKey] = React.useState(0);
+
+  const handleParcelQuantityChange = (event) => {
+    setParcelQuantity(event.target.value);
+    setCommonDay(0);
+    setPaymentDates({});
+    setTableBodyResetKey((prevKey) => prevKey + 1);
+  };
+
+  const handleChangeCommonDay = (e) => {
+    const selectedCommonDay = Number(e.target.value);
+
+    // Atualizar o estado commonDay
+    setCommonDay(selectedCommonDay);
+
+    // Atualizar as datas de vencimento apenas para os itens não desabilitados
+    const updatedPaymentDates = { ...paymentDates };
+
+    for (let i = 0; i < 12; i++) {
+      const currentDate = new Date();
+      currentDate.setDate(selectedCommonDay);
+      currentDate.setMonth(currentDate.getMonth() + i);
+
+      const lastDayOfMonth = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        0
+      ).getDate();
+
+      const optionValue = `${selectedCommonDay}/${
+        currentDate.getMonth() + 1
+      }/${currentDate.getFullYear()}`;
+
+      // Atualizar apenas se não estiver desabilitado
+      if (i < parcelQuantity) {
+        updatedPaymentDates[i] = optionValue;
+      }
+    }
+
+    // Atualizar o estado paymentDates
+    setPaymentDates(updatedPaymentDates);
+  };
+
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle>Adicionar Data de Pagamento</DialogTitle>
+      <DialogTitle>Agendamento de Pagamento</DialogTitle>
       <DialogContent>
         <Typography sx={{ my: 1, ml: 4, fontSize: 18, fontWeight: "bold" }}>
           Informações
@@ -273,9 +319,7 @@ export default function AddPaymentScheduleForm({
                       size="small"
                       value={parcelQuantity}
                       required
-                      onChange={(event) =>
-                        setParcelQuantity(event.target.value)
-                      }
+                      onChange={(event) => handleParcelQuantityChange(event)}
                     >
                       {parcels.map((numParcels) => {
                         const value = hasParcelMonthlyFee
@@ -331,6 +375,182 @@ export default function AddPaymentScheduleForm({
             </Table>
           </Box>
         )}
+        <Typography
+          sx={{ my: 1, mt: 3, ml: 4, fontSize: 18, fontWeight: "bold" }}
+        >
+          Data de Vencimento
+        </Typography>
+        <Box sx={{ px: 3 }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                    Todo dia
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                    Datas de Vencimento
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                    Confirma
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody key={tableBodyResetKey}>
+              <TableRow>
+                <TableCell>
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="flex-start"
+                    justifyContent="flex-start"
+                    sx={{ ml: -1, mr: 2 }}
+                  >
+                    <Select
+                      size="small"
+                      value={commonDay}
+                      onChange={handleChangeCommonDay}
+                      sx={{ width: 80 }}
+                      displayEmpty
+                      renderValue={(selected) => selected || 0}
+                    >
+                      <MenuItem value="" disabled>
+                        0
+                      </MenuItem>
+                      {[...Array(29)].map((_, index) => (
+                        <MenuItem key={index + 1} value={index + 1}>
+                          {index + 1}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <Button
+                      sx={{ mt: 1 }}
+                      color="error"
+                      disabled={commonDay === 0}
+                      startIcon={<DeleteIcon sx={{ ml: -1 }} />}
+                      onClick={() => setCommonDay(0)}
+                      variant="contained"
+                    >
+                      <Typography sx={{ fontSize: 12, mr: -1 }}>
+                        Limpar
+                      </Typography>
+                    </Button>
+                  </Grid>
+                </TableCell>
+                <TableCell align="left">
+                  {commonDay !== 0 ? (
+                    <Grid
+                      container
+                      direction="row"
+                      alignItems="flex-start"
+                      justifyContent="flex-start"
+                    >
+                      {Object.keys(paymentDates).map((key) => (
+                        <Grid
+                          item
+                          key={key}
+                          sx={{ mr: 2, my: 0.5, width: 180 }}
+                        >
+                          <Typography
+                            sx={{
+                              p: 1.5,
+                              border: "1px solid #ccc",
+                              borderRadius: 2,
+                              fontSize: 14,
+                            }}
+                          >
+                            {`${parseInt(key, 10) + 1}ª Parcela`} :{" "}
+                            {paymentDates[key]}
+                          </Typography>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  ) : (
+                    <Grid container direction="row">
+                      {[...Array(12)].map((_, index) => {
+                        const currentDate = new Date();
+                        currentDate.setDate(commonDay);
+                        currentDate.setMonth(currentDate.getMonth() + index);
+
+                        const lastDayOfMonth = new Date(
+                          currentDate.getFullYear(),
+                          currentDate.getMonth(),
+                          0
+                        ).getDate();
+
+                        const isDisabled = index >= parcelQuantity;
+
+                        return (
+                          <Grid item key={index + 1} sx={{ marginRight: 2 }}>
+                            <Select
+                              size="small"
+                              sx={{
+                                width: 180,
+                                my: 0.5,
+                              }}
+                              displayEmpty
+                              onChange={(e) => {
+                                const selectedValue = e.target.value;
+                                const newDates = {
+                                  ...paymentDates,
+                                  [index]: selectedValue,
+                                };
+                                setPaymentDates(newDates);
+                                console.log("newDates", newDates);
+                              }}
+                              disabled={isDisabled}
+                              renderValue={(selected) => (
+                                <Typography sx={{ fontSize: 14 }}>
+                                  {selected || "Selecione uma Data"}
+                                </Typography>
+                              )}
+                            >
+                              {[...Array(lastDayOfMonth)].map((_, dayIndex) => {
+                                const currentDate = new Date();
+                                currentDate.setDate(commonDay);
+
+                                // Adiciona o índice do mês ao currentDate
+                                currentDate.setMonth(
+                                  currentDate.getMonth() + index
+                                );
+
+                                // Adiciona o índice do dia ao currentDate
+                                currentDate.setDate(
+                                  currentDate.getDate() + dayIndex
+                                );
+
+                                const displayDay = currentDate.getDate();
+                                const displayMonth = currentDate.getMonth() + 1;
+                                const displayYear = currentDate.getFullYear();
+
+                                const optionValue = `${displayDay}/${displayMonth}/${displayYear}`;
+
+                                return (
+                                  <MenuItem key={dayIndex} value={optionValue}>
+                                    <Typography sx={{ fontSize: 14 }}>
+                                      {optionValue}
+                                    </Typography>
+                                  </MenuItem>
+                                );
+                              })}
+                            </Select>
+                          </Grid>
+                        );
+                      })}
+                    </Grid>
+                  )}
+                </TableCell>
+
+                <TableCell>Confirmazione</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
