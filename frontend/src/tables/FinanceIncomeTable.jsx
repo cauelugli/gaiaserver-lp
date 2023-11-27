@@ -4,11 +4,17 @@ import * as React from "react";
 
 import {
   Box,
+  Button,
   CircularProgress,
   Dialog,
   FormHelperText,
   Grid,
   IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  MenuList,
   Paper,
   Table,
   TableBody,
@@ -25,10 +31,13 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import CheckIcon from "@mui/icons-material/Check";
+import PaymentsIcon from "@mui/icons-material/Payments";
+import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 
 import AddPaymentScheduleForm from "../forms/add/AddPaymentScheduleForm";
 import EditStatusForm from "../forms/edit/EditStatusForm";
 import FinanceIncomeStatusButton from "../components/small/buttons/FinanceIncomeStatusButton";
+import AddParcelPaymentForm from "../forms/add/AddParcelPaymentForm";
 
 export default function FinanceIncomeTable({
   incoming,
@@ -41,8 +50,10 @@ export default function FinanceIncomeTable({
   const [selectedFinanceIncome, setSelectedFinanceIncome] = React.useState("");
   const [previousStatus, setPreviousStatus] = React.useState("");
   const [newStatus, setNewStatus] = React.useState("");
-  const [openSchedulePayment, setOpenSchedulePayment] = React.useState(false);
   const [hoveredIncome, setHoveredIncome] = React.useState(null);
+  const [openSchedulePayment, setOpenSchedulePayment] = React.useState(false);
+  const [openAddParcelPayment, setOpenAddParcelPayment] = React.useState(false);
+  const [openAddFullPayment, setOpenAddFullPayment] = React.useState(false);
 
   const [openConfirmChangeStatus, setOpenConfirmChangeStatus] =
     React.useState(false);
@@ -50,6 +61,11 @@ export default function FinanceIncomeTable({
   const handleOpenAddSchedulePayment = (income) => {
     setSelectedFinanceIncome(income);
     setOpenSchedulePayment(!openSchedulePayment);
+  };
+
+  const handleOpenAddParcelPayment = (income) => {
+    setSelectedFinanceIncome(income);
+    setOpenAddParcelPayment(!openAddParcelPayment);
   };
 
   const handleStatusChange = (newStatus) => {
@@ -139,6 +155,15 @@ export default function FinanceIncomeTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openAddPayment = Boolean(anchorEl);
+  const handleClickAddButton = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseAddPayment = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
       <Box sx={{ minWidth: "1050px" }}>
@@ -215,7 +240,7 @@ export default function FinanceIncomeTable({
                               income.payment.paymentMethod
                             : "Não há Agendamento"}
                         </Typography>
-                        {hoveredIncome === income && (
+                        {income.payment && hoveredIncome === income && (
                           <Paper
                             onMouseEnter={() => setHoveredIncome(income)}
                             onMouseLeave={() => setHoveredIncome(null)}
@@ -341,7 +366,7 @@ export default function FinanceIncomeTable({
                                               : "#777",
                                         }}
                                       >
-                                        R${item.parcelValue.toFixed(2)}
+                                        R${item.parcelValue}
                                         {" - "}
                                         {item.date}{" "}
                                         {item.status === "Pago" ? (
@@ -371,7 +396,7 @@ export default function FinanceIncomeTable({
                       </TableCell>
                       <TableCell align="center">
                         <Typography sx={{ fontSize: 14 }}>
-                          R${income.price.toFixed(2)}
+                          R${income.price}
                         </Typography>
                       </TableCell>
 
@@ -417,41 +442,66 @@ export default function FinanceIncomeTable({
                             </span>
                           </Tooltip>
 
-                          <Tooltip
-                            title={
-                              income.payment &&
-                              Object.values(income.payment.paymentDates).filter(
-                                (item) => item.status === "Pago"
-                              ).length === income.payment.parcelQuantity ? (
-                                <Typography sx={{ fontSize: 12 }}>
-                                  Pagamento Concluido
-                                </Typography>
-                              ) : (
-                                <Typography sx={{ fontSize: 12 }}>
-                                  Receber Pagamento
-                                </Typography>
-                              )
-                            }
-                          >
-                            <span>
-                              <IconButton
-                                disabled={
-                                  income.payment &&
-                                  Object.values(
-                                    income.payment.paymentDates
-                                  ).filter((item) => item.status === "Pago")
-                                    .length === income.payment.parcelQuantity
+                          {income.payment && (
+                            <>
+                              <Button
+                                // disabled={
+                                //   income.payment &&
+                                //   Object.values(
+                                //     income.payment.paymentDates
+                                //   ).filter((item) => item.status === "Pago")
+                                //     .length === income.payment.parcelQuantity
+                                // }
+                                id="basic-button"
+                                aria-controls={
+                                  openAddPayment ? "basic-menu" : undefined
                                 }
+                                aria-haspopup="true"
+                                aria-expanded={
+                                  openAddPayment ? "true" : undefined
+                                }
+                                onClick={handleClickAddButton}
+                                size="small"
+                                sx={{ color: "#444", ml: -1 }}
                               >
-                                <AttachMoneyIcon
-                                  cursor="pointer"
-                                  // onClick={() =>
-                                  //   handleOpenAddReceivePayment(income)
-                                  // }
-                                />
-                              </IconButton>
-                            </span>
-                          </Tooltip>
+                                {" "}
+                                <AttachMoneyIcon />
+                              </Button>
+
+                              <Menu
+                                id="basic-menu"
+                                anchorEl={anchorEl}
+                                open={openAddPayment}
+                                // onClick={handleCloseAddPayment}
+                                MenuListProps={{
+                                  "aria-labelledby": "basic-button",
+                                }}
+                              >
+                                <MenuList sx={{ width: 220 }}>
+                                  <MenuItem
+                                    onClick={() =>
+                                      handleOpenAddParcelPayment(income)
+                                    }
+                                  >
+                                    <ListItemIcon>
+                                      <PaymentsIcon />
+                                    </ListItemIcon>
+                                    <ListItemText>Receber Parcela</ListItemText>
+                                  </MenuItem>
+                                  <MenuItem
+                                    onClick={() => setOpenAddFullPayment(true)}
+                                  >
+                                    <ListItemIcon>
+                                      <PriceCheckIcon />
+                                    </ListItemIcon>
+                                    <ListItemText>
+                                      Pagamento Completo
+                                    </ListItemText>
+                                  </MenuItem>
+                                </MenuList>
+                              </Menu>
+                            </>
+                          )}
                         </Grid>
                       </TableCell>
                     </TableRow>
@@ -472,6 +522,23 @@ export default function FinanceIncomeTable({
             }}
           />
         </TableContainer>
+        {openAddPayment && (
+          <Dialog
+            fullWidth
+            maxWidth="lg"
+            open={openAddParcelPayment}
+            onClose={() => setOpenAddParcelPayment(!openAddParcelPayment)}
+          >
+            <AddParcelPaymentForm
+              selectedFinanceIncome={selectedFinanceIncome}
+              openEdit={openAddParcelPayment}
+              setOpenEdit={setOpenAddParcelPayment}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              toast={toast}
+            />
+          </Dialog>
+        )}
         {openSchedulePayment && (
           <Dialog
             fullWidth

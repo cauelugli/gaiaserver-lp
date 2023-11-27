@@ -76,6 +76,8 @@ router.put("/schedulePayment", async (req, res) => {
         date: date,
         parcelValue: parcelValue.toFixed(2),
         status: "Em Aberto",
+        paymentMethod: "",
+        paidAt: "",
       };
     }
 
@@ -88,6 +90,52 @@ router.put("/schedulePayment", async (req, res) => {
     res.status(200).json(scheduledPayment);
   } catch (err) {
     res.status(500).json(err);
+  }
+});
+
+// UPDATE PAYMENT
+router.put("/receivePayment/parcel", async (req, res) => {
+  try {
+    const { id, paymentData } = req.body;
+
+    // Busque o financeIncome pelo ID
+    const financeIncome = await FinanceIncome.findById(id);
+
+    if (!financeIncome) {
+      return res.status(404).json({ error: "FinanceIncome não encontrado." });
+    }
+
+    // Atualize as parcelas com as informações recebidas
+    paymentData.forEach((data) => {
+      const matchingDateIndex = Object.keys(
+        financeIncome.payment.paymentDates
+      ).find(
+        (key) => financeIncome.payment.paymentDates[key].date === data.date
+      );
+
+      if (
+        matchingDateIndex !== undefined &&
+        financeIncome.payment.paymentDates[matchingDateIndex].status !== "Pago" &&
+        data.paidAt !== ''
+      ) {
+        financeIncome.payment.paymentDates[matchingDateIndex].status = "Pago";
+        financeIncome.payment.paymentDates[matchingDateIndex].paymentMethod =
+          data.paymentMethod;
+        financeIncome.payment.paymentDates[matchingDateIndex].paidAt =
+          data.paidAt;
+      }
+    });
+
+    // Salve as alterações
+    await financeIncome.markModified("payment.paymentDates");
+    await financeIncome.save();
+
+    return res
+      .status(200)
+      .json({ message: "Parcelas atualizadas com sucesso." });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Erro ao processar a atualização." });
   }
 });
 
