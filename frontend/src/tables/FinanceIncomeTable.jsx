@@ -6,6 +6,7 @@ import {
   Box,
   CircularProgress,
   Dialog,
+  FormHelperText,
   Grid,
   IconButton,
   Paper,
@@ -20,7 +21,10 @@ import {
   Typography,
 } from "@mui/material";
 
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import CheckIcon from "@mui/icons-material/Check";
 
 import AddPaymentScheduleForm from "../forms/add/AddPaymentScheduleForm";
 import EditStatusForm from "../forms/edit/EditStatusForm";
@@ -217,8 +221,8 @@ export default function FinanceIncomeTable({
                             onMouseLeave={() => setHoveredIncome(null)}
                             style={{
                               position: "absolute",
-                              width: 300,
-                              height: 130,
+                              width: 350,
+                              height: "auto",
                               boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
                               bottom: "25%",
                               left: "14%",
@@ -230,29 +234,47 @@ export default function FinanceIncomeTable({
                             <Grid
                               container
                               direction="row"
-                              justifyContent="space-between"
-                              sx={{ px: 3 }}
+                              alignItems="center"
+                              justifyContent="space-evenly"
+                              sx={{ my: "3%" }}
                             >
                               <Grid item>
-                                <Typography sx={{ fontSize: 14, mt: 1 }}>
+                                <Typography sx={{ fontSize: 14 }}>
                                   <strong>Orçamento:</strong> {income.quote}
                                 </Typography>
-                                <Typography sx={{ fontSize: 14, mt: 1 }}>
-                                  <strong>Valor:</strong> R$
-                                  {income.payment.finalPrice}
-                                </Typography>
-                                <Typography sx={{ fontSize: 14, mt: 1 }}>
+                                <Typography sx={{ fontSize: 14, mt: 2 }}>
                                   <strong>Método:</strong>{" "}
                                   {income.payment.paymentMethod}
                                 </Typography>
-                                <Typography sx={{ fontSize: 14, mt: 1 }}>
+                                <Typography sx={{ fontSize: 14, mt: 2 }}>
                                   <strong>Opção:</strong>{" "}
                                   {income.payment.paymentOption}
                                 </Typography>
+                                <Typography sx={{ fontSize: 14, mt: 2 }}>
+                                  <strong>Valor:</strong> R$
+                                  {income.payment.finalPrice}
+                                </Typography>
+                                {income.payment.hasParcelMonthlyFee && (
+                                  <FormHelperText
+                                    sx={{ fontSize: 11, my: -0.5 }}
+                                  >
+                                    (Juros Mensais de{" "}
+                                    <strong>
+                                      {income.payment.parcelMonthlyFee}%
+                                    </strong>
+                                    )
+                                  </FormHelperText>
+                                )}
                               </Grid>
-                              <Grid item sx={{m:"auto"}}>
+                              <Grid
+                                item
+                                direction="column"
+                                alignItems="center"
+                                justifyContent="center"
+                              >
                                 <Box
                                   sx={{
+                                    mt: 1,
                                     position: "relative",
                                     display: "inline-flex",
                                   }}
@@ -260,7 +282,17 @@ export default function FinanceIncomeTable({
                                   <CircularProgress
                                     variant="determinate"
                                     size={80}
-                                    value={33}
+                                    value={(
+                                      (Object.values(
+                                        income.payment.paymentDates
+                                      )
+                                        .map((item) =>
+                                          item.status === "Pago" ? 1 : 0
+                                        )
+                                        .reduce((acc, curr) => acc + curr, 0) /
+                                        income.payment.parcelQuantity) *
+                                      100
+                                    ).toFixed(2)}
                                   />
                                   <Box
                                     sx={{
@@ -274,14 +306,59 @@ export default function FinanceIncomeTable({
                                       justifyContent: "center",
                                     }}
                                   >
-                                    <Typography
-                                      variant="caption"
-                                      component="div"
-                                    >
-                                      1 / 3
+                                    <Typography>
+                                      {Object.values(
+                                        income.payment.paymentDates
+                                      )
+                                        .map((item) =>
+                                          item.status === "Pago" ? 1 : 0
+                                        )
+                                        .reduce(
+                                          (acc, curr) => acc + curr,
+                                          0
+                                        )}{" "}
+                                      / {income.payment.parcelQuantity}
                                     </Typography>
                                   </Box>
                                 </Box>
+                                <Grid
+                                  container
+                                  direction="column"
+                                  spacing={0.5}
+                                  columns={2}
+                                >
+                                  <Grid item xl={4}>
+                                    {Object.values(
+                                      income.payment.paymentDates
+                                    ).map((item, index) => (
+                                      <Typography
+                                        key={index}
+                                        sx={{
+                                          fontSize: 11,
+                                          color:
+                                            item.status === "Pago"
+                                              ? "darkgreen"
+                                              : "#777",
+                                        }}
+                                      >
+                                        R${item.parcelValue.toFixed(2)}
+                                        {" - "}
+                                        {item.date}{" "}
+                                        {item.status === "Pago" ? (
+                                          <CheckIcon sx={{ fontSize: 12 }} />
+                                        ) : (
+                                          <AccessTimeIcon
+                                            sx={{
+                                              fontSize: 12,
+                                              mb: -0.25,
+                                              ml: 0.5,
+                                            }}
+                                          />
+                                        )}
+                                      </Typography>
+                                    ))}
+                                  </Grid>
+                                </Grid>
                               </Grid>
                             </Grid>
                           </Paper>
@@ -335,6 +412,42 @@ export default function FinanceIncomeTable({
                                   onClick={() =>
                                     handleOpenAddSchedulePayment(income)
                                   }
+                                />
+                              </IconButton>
+                            </span>
+                          </Tooltip>
+
+                          <Tooltip
+                            title={
+                              income.payment &&
+                              Object.values(income.payment.paymentDates).filter(
+                                (item) => item.status === "Pago"
+                              ).length === income.payment.parcelQuantity ? (
+                                <Typography sx={{ fontSize: 12 }}>
+                                  Pagamento Concluido
+                                </Typography>
+                              ) : (
+                                <Typography sx={{ fontSize: 12 }}>
+                                  Receber Pagamento
+                                </Typography>
+                              )
+                            }
+                          >
+                            <span>
+                              <IconButton
+                                disabled={
+                                  income.payment &&
+                                  Object.values(
+                                    income.payment.paymentDates
+                                  ).filter((item) => item.status === "Pago")
+                                    .length === income.payment.parcelQuantity
+                                }
+                              >
+                                <AttachMoneyIcon
+                                  cursor="pointer"
+                                  // onClick={() =>
+                                  //   handleOpenAddReceivePayment(income)
+                                  // }
                                 />
                               </IconButton>
                             </span>
