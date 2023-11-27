@@ -13,8 +13,6 @@ export default function StatusButton({ status, changedStatus, onMouseEnter }) {
     "Aguardando Cliente",
     "Aguardando Terceiro",
     "Concluido",
-    "Aguardando Pagamento",
-    "Encerrado",
   ];
 
   const handleClick = (event) => {
