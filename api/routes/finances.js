@@ -56,6 +56,9 @@ router.put("/status", async (req, res) => {
 
 // UPDATE SCHEDULE PAYMENT DATE
 router.put("/schedulePayment", async (req, res) => {
+  const paymentDates = req.body.paymentDates;
+  const parcelValue = req.body.parcelValue;
+
   try {
     const payment = {
       paymentMethod: req.body.paymentMethod,
@@ -64,8 +67,17 @@ router.put("/schedulePayment", async (req, res) => {
       hasParcelMonthlyFee: req.body.hasParcelMonthlyFee,
       parcelMonthlyFee: req.body.parcelMonthlyFee,
       finalPrice: req.body.finalPrice,
-      previousData: req.body.previousData,
+      paymentDates: {},
     };
+
+    for (const key in paymentDates) {
+      const date = paymentDates[key];
+      payment.paymentDates[key] = {
+        date: date,
+        parcelValue: parcelValue.toFixed(2),
+        status: "Em Aberto",
+      };
+    }
 
     const scheduledPayment = await FinanceIncome.findByIdAndUpdate(
       req.body.id,
@@ -78,7 +90,5 @@ router.put("/schedulePayment", async (req, res) => {
     res.status(500).json(err);
   }
 });
-
-
 
 module.exports = router;
