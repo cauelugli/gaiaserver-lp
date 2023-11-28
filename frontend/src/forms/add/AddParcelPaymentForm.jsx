@@ -45,9 +45,9 @@ export default function AddParcelPaymentForm({
     const initialData = Object.keys(
       selectedFinanceIncome.payment.paymentDates
     ).map((key) => ({
-      paidAt: "", 
+      paidAt: "",
       paymentMethod: "",
-      date: selectedFinanceIncome.payment.paymentDates[key].date, 
+      date: selectedFinanceIncome.payment.paymentDates[key].date,
     }));
     setPaymentData(initialData);
   };
@@ -145,6 +145,11 @@ export default function AddParcelPaymentForm({
                 </TableCell>
                 <TableCell align="center">
                   <Typography sx={{ fontSize: 14, color: "#777" }}>
+                    Data de Pagamento
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: 14, color: "#777" }}>
                     Status da Parcela
                   </Typography>
                 </TableCell>
@@ -201,6 +206,17 @@ export default function AddParcelPaymentForm({
                           }}
                         >
                           {item.date}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography
+                          sx={{
+                            fontSize: 14,
+                            color:
+                              item.status === "Pago" ? "darkgreen" : "black",
+                          }}
+                        >
+                          {item.paidAt ? item.paidAt : "-"}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
@@ -292,6 +308,7 @@ export default function AddParcelPaymentForm({
                           <TableCell align="center">
                             <Grid item>
                               <IMaskInput
+                                required
                                 style={{
                                   width: "40%",
                                   padding: "3%",
@@ -317,6 +334,7 @@ export default function AddParcelPaymentForm({
                           <TableCell align="center">
                             <Select
                               displayEmpty
+                              required
                               size="small"
                               value={paymentData[index].paymentMethod}
                               onChange={(event) =>

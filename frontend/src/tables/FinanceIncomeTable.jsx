@@ -4,17 +4,11 @@ import * as React from "react";
 
 import {
   Box,
-  Button,
   CircularProgress,
   Dialog,
   FormHelperText,
   Grid,
   IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  MenuList,
   Paper,
   Table,
   TableBody,
@@ -36,7 +30,6 @@ import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 
 import AddPaymentScheduleForm from "../forms/add/AddPaymentScheduleForm";
 import EditStatusForm from "../forms/edit/EditStatusForm";
-import FinanceIncomeStatusButton from "../components/small/buttons/FinanceIncomeStatusButton";
 import AddParcelPaymentForm from "../forms/add/AddParcelPaymentForm";
 
 export default function FinanceIncomeTable({
@@ -237,7 +230,7 @@ export default function FinanceIncomeTable({
                             onMouseLeave={() => setHoveredIncome(null)}
                             style={{
                               position: "absolute",
-                              width: 350,
+                              width: 420,
                               height: "auto",
                               boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
                               bottom: "25%",
@@ -251,8 +244,8 @@ export default function FinanceIncomeTable({
                               container
                               direction="row"
                               alignItems="center"
-                              justifyContent="space-evenly"
-                              sx={{ my: "3%" }}
+                              justifyContent="flex-start"
+                              sx={{ my: "2%", ml:"2%" }}
                             >
                               <Grid item>
                                 <Typography sx={{ fontSize: 14 }}>
@@ -287,6 +280,7 @@ export default function FinanceIncomeTable({
                                 direction="column"
                                 alignItems="center"
                                 justifyContent="center"
+                                sx={{ width:"50%"}}
                               >
                                 <Box
                                   sx={{
@@ -392,13 +386,9 @@ export default function FinanceIncomeTable({
                       </TableCell>
 
                       <TableCell align="center">
-                        <FinanceIncomeStatusButton
-                          status={income.status}
-                          changedStatus={(newStatus) =>
-                            handleStatusChange(newStatus)
-                          }
-                          onMouseEnter={() => setSelectedFinanceIncome(income)}
-                        />
+                        <Typography sx={{ fontSize: 14 }}>
+                          {!income.payment ? "Aguardando Agendamento" : income.status}
+                        </Typography>
                       </TableCell>
 
                       <TableCell align="center" sx={{ py: 0 }}>

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const financeIncomeSchema = new mongoose.Schema({
   status: {
     type: String,
-    default: "Aberto",
+    default: "Aguardando Agendamento",
   },
   quote: {
     type: String,
