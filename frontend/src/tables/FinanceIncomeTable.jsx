@@ -155,15 +155,6 @@ export default function FinanceIncomeTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const openAddPayment = Boolean(anchorEl);
-  const handleClickAddButton = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleCloseAddPayment = () => {
-    setAnchorEl(null);
-  };
-
   return (
     <>
       <Box sx={{ minWidth: "1050px" }}>
@@ -411,27 +402,61 @@ export default function FinanceIncomeTable({
                       </TableCell>
 
                       <TableCell align="center" sx={{ py: 0 }}>
-                        <Grid
-                          container
-                          direction="row"
-                          justifyContent="center"
-                          alignItems="center"
-                        >
+                        {income.payment ? (
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                          >
+                            <Tooltip
+                              title={
+                                <Typography sx={{ fontSize: 12 }}>
+                                  Receber Parcela
+                                </Typography>
+                              }
+                            >
+                              <span>
+                                <IconButton>
+                                  <PaymentsIcon
+                                    cursor="pointer"
+                                    onClick={() =>
+                                      handleOpenAddParcelPayment(income)
+                                    }
+                                  />
+                                </IconButton>
+                              </span>
+                            </Tooltip>
+
+                            <Tooltip
+                              title={
+                                <Typography sx={{ fontSize: 12 }}>
+                                  Receber Pagamento
+                                </Typography>
+                              }
+                            >
+                              <span>
+                                <IconButton>
+                                  <AttachMoneyIcon
+                                    cursor="pointer"
+                                    // onClick={() =>
+                                    //   handleOpenAddSchedulePayment(income)
+                                    // }
+                                  />
+                                </IconButton>
+                              </span>
+                            </Tooltip>
+                          </Grid>
+                        ) : (
                           <Tooltip
                             title={
-                              income.payment ? (
-                                <Typography sx={{ fontSize: 12 }}>
-                                  Agendamento Realizado
-                                </Typography>
-                              ) : (
-                                <Typography sx={{ fontSize: 12 }}>
-                                  Agendar Pagamento
-                                </Typography>
-                              )
+                              <Typography sx={{ fontSize: 12 }}>
+                                Agendar Pagamento
+                              </Typography>
                             }
                           >
                             <span>
-                              <IconButton disabled={income.payment}>
+                              <IconButton>
                                 <CalendarMonthIcon
                                   cursor="pointer"
                                   onClick={() =>
@@ -441,68 +466,7 @@ export default function FinanceIncomeTable({
                               </IconButton>
                             </span>
                           </Tooltip>
-
-                          {income.payment && (
-                            <>
-                              <Button
-                                // disabled={
-                                //   income.payment &&
-                                //   Object.values(
-                                //     income.payment.paymentDates
-                                //   ).filter((item) => item.status === "Pago")
-                                //     .length === income.payment.parcelQuantity
-                                // }
-                                id="basic-button"
-                                aria-controls={
-                                  openAddPayment ? "basic-menu" : undefined
-                                }
-                                aria-haspopup="true"
-                                aria-expanded={
-                                  openAddPayment ? "true" : undefined
-                                }
-                                onClick={handleClickAddButton}
-                                size="small"
-                                sx={{ color: "#444", ml: -1 }}
-                              >
-                                {" "}
-                                <AttachMoneyIcon />
-                              </Button>
-
-                              <Menu
-                                id="basic-menu"
-                                anchorEl={anchorEl}
-                                open={openAddPayment}
-                                // onClick={handleCloseAddPayment}
-                                MenuListProps={{
-                                  "aria-labelledby": "basic-button",
-                                }}
-                              >
-                                <MenuList sx={{ width: 220 }}>
-                                  <MenuItem
-                                    onClick={() =>
-                                      handleOpenAddParcelPayment(income)
-                                    }
-                                  >
-                                    <ListItemIcon>
-                                      <PaymentsIcon />
-                                    </ListItemIcon>
-                                    <ListItemText>Receber Parcela</ListItemText>
-                                  </MenuItem>
-                                  <MenuItem
-                                    onClick={() => setOpenAddFullPayment(true)}
-                                  >
-                                    <ListItemIcon>
-                                      <PriceCheckIcon />
-                                    </ListItemIcon>
-                                    <ListItemText>
-                                      Pagamento Completo
-                                    </ListItemText>
-                                  </MenuItem>
-                                </MenuList>
-                              </Menu>
-                            </>
-                          )}
-                        </Grid>
+                        )}
                       </TableCell>
                     </TableRow>
                   </>
@@ -522,7 +486,7 @@ export default function FinanceIncomeTable({
             }}
           />
         </TableContainer>
-        {openAddPayment && (
+        {openAddParcelPayment && (
           <Dialog
             fullWidth
             maxWidth="lg"
