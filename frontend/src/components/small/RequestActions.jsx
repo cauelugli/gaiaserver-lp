@@ -14,6 +14,7 @@ const RequestActions = ({
   user,
   job,
   handleManagerApproval,
+  handleRequestApproval,
   handleOpenEdit,
   handleConfirmDelete,
 }) => {
@@ -36,6 +37,18 @@ const RequestActions = ({
           startIcon={<CheckIcon />}
         >
           Aprovar
+        </Button>
+      )}
+
+      {job.status === "Aberto" && user.role !== "Gerente" && (
+        <Button
+          cursor="pointer"
+          variant="contained"
+          color="primary"
+          onClick={() => handleRequestApproval(selectedJob)}
+          startIcon={<CheckIcon />}
+        >
+          Solicitar Aprovação
         </Button>
       )}
 

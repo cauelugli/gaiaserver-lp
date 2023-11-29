@@ -155,6 +155,33 @@ export default function JobTable({
     }
   };
 
+  const handleRequestApproval = async (job) => {
+    try {
+      const requestBody = {
+        jobId: job._id,
+        job,
+        option: "requestApproval",
+        user,
+        worker: job.worker,
+        manager: job.manager,
+        date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
+      };
+      const res = await api.put("/jobs", requestBody);
+      if (res.data) {
+        toast.success("Aprovação Solicitada!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+        setRefreshData(!refreshData);
+      }
+    } catch (err) {
+      alert("Vish, deu não...");
+      console.error(err);
+    }
+  };
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -657,7 +684,8 @@ export default function JobTable({
                                       "Job aprovado" && (
                                       <Typography sx={{ fontSize: 12 }}>
                                         <InteractionReactions
-                                          userId={user._id}
+                                          user={user}
+                                          manager={job.manager}
                                           refreshData={refreshData}
                                           setRefreshData={setRefreshData}
                                           interaction={interaction}
@@ -688,13 +716,14 @@ export default function JobTable({
                               user={user}
                               job={job}
                               handleManagerApproval={handleManagerApproval}
+                              handleRequestApproval={handleRequestApproval}
                               handleOpenEdit={handleOpenEdit}
                               handleConfirmDelete={handleConfirmDelete}
                             />
                           )}
                         </Box>
                         {job.status === "Concluido" && (
-                          <Box sx={{ my: 4, px: 6, mb:6 }}>
+                          <Box sx={{ my: 4, px: 6, mb: 6 }}>
                             <Typography
                               variant="h6"
                               sx={{ fontSize: 18, fontWeight: "bold" }}

@@ -140,7 +140,8 @@ const EditJobForm = ({
         number: selectedJob.interactions.length + 1,
         activity,
         status,
-        user: user.name,
+        worker: selectedJob.worker,
+        manager: selectedJob.manager,
         date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
       };
       try {
@@ -170,9 +171,9 @@ const EditJobForm = ({
         jobId: selectedJob._id,
         option: "resolve",
         activity,
-        user: user.name,
+        worker: selectedJob.worker,
+        manager: selectedJob.manager,
         date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
-
       };
       try {
         const res = await api.put("/jobs", requestBody);
@@ -203,8 +204,8 @@ const EditJobForm = ({
           phone: department.phone,
           color: department.color,
         },
-        worker,
-        manager: department.manager,
+        worker: selectedJob.worker,
+        manager: selectedJob.manager,
         materials,
         materialsCost,
         service,

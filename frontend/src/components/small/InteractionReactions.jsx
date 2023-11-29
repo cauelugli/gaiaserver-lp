@@ -35,7 +35,7 @@ const growShrinkAnimation = keyframes`
 `;
 
 const InteractionReactions = ({
-  userId,
+  user,
   userReactions,
   setUserReactions,
   job,
@@ -71,8 +71,9 @@ const InteractionReactions = ({
     try {
       const res = await api.put("/jobs", {
         jobId: job._id,
+        job,
         number,
-        userId,
+        user,
         option: "reaction",
         reactionType,
       });
@@ -87,7 +88,7 @@ const InteractionReactions = ({
   };
 
   const userReacted = (reactionType) =>
-    interaction.reactions[reactionType].usersReacted.includes(userId);
+    interaction.reactions[reactionType].usersReacted.includes(user._id || user.id);
 
   return (
     <Stack direction="row" alignItems="center" spacing={0.5}>

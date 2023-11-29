@@ -3,6 +3,7 @@ const router = express.Router();
 const Job = require("../models/Job");
 const StockItem = require("../models/StockItem");
 const Quote = require("../models/Quote");
+const Notification = require("../models/Notification");
 const FinanceIncome = require("../models/FinanceIncome");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
@@ -68,7 +69,6 @@ router.post("/", async (req, res) => {
       price: req.body.price,
     });
     const savedIncome = await newIncome.save();
-
 
     const doc = new PDFDocument();
 
@@ -166,7 +166,9 @@ router.put("/", async (req, res) => {
     const jobId = req.body.jobId;
     const option = req.body.option;
     const status = req.body.status;
-    const userId = req.body.userId;
+    const user = req.body.user;
+    const manager = req.body.manager;
+    const worker = req.body.worker;
 
     if (option === "interaction") {
       const updatedJob = await Job.findOneAndUpdate(
@@ -179,7 +181,7 @@ router.put("/", async (req, res) => {
             interactions: {
               number: req.body.number || 1,
               activity: req.body.activity,
-              user: req.body.user,
+              user: user,
               date: req.body.date,
               reactions: {
                 love: { quantity: 0, usersReacted: [] },
@@ -193,6 +195,37 @@ router.put("/", async (req, res) => {
         { new: true }
       );
       res.status(200).json(updatedJob);
+    } else if (option === "requestApproval") {
+      const newNotification = new Notification({
+        itemId: jobId,
+        sender: worker,
+        receiver: manager,
+        body: `Olá ${manager.name}! O(a) colaborador(a) 
+        ${worker.name} solicitou aprovação para o job "${req.body.job.title}" em ${req.body.date}.`,
+        sentDate: req.body.date,
+      });
+
+      const savedNotification = await newNotification.save();
+
+      const updatedJob = await Job.findByIdAndUpdate(
+        jobId,
+        {
+          $set: {
+            status: "Aprovação Solicitada",
+          },
+          $push: {
+            interactions: {
+              number: req.body.number || 1,
+              activity: `Aprovação solicitada a ${manager.name} para execução`,
+              user: user.name,
+              date: req.body.date,
+            },
+          },
+        },
+        { new: true }
+      );
+
+      res.status(200).json({ updatedJob, savedNotification });
     } else if (option === "managerApproval") {
       const updatedJob = await Job.findByIdAndUpdate(
         jobId,
@@ -227,7 +260,7 @@ router.put("/", async (req, res) => {
       const userAlreadyReacted = job.interactions.some((interaction) => {
         return (
           interaction.number === req.body.number &&
-          interaction.reactions[reactionType].usersReacted.includes(userId)
+          interaction.reactions[reactionType].usersReacted.includes(user._id)
         );
       });
 
@@ -237,7 +270,7 @@ router.put("/", async (req, res) => {
           { _id: jobId, "interactions.number": req.body.number },
           {
             $inc: { [reactionField]: -1 },
-            $pull: { [usersReactedField]: userId },
+            $pull: { [usersReactedField]: worker.id },
           },
           { new: true }
         );
@@ -249,7 +282,7 @@ router.put("/", async (req, res) => {
           { _id: jobId, "interactions.number": req.body.number },
           {
             $inc: { [reactionField]: 1 },
-            $addToSet: { [usersReactedField]: userId },
+            $addToSet: { [usersReactedField]: user._id },
           },
           { new: true }
         );
@@ -280,8 +313,10 @@ router.put("/", async (req, res) => {
         {
           status: "Concluido",
           resolution: req.body.activity,
-          resolvedBy: req.body.user,
-          resolvedAt: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
+          resolvedBy: user.name,
+          resolvedAt: new Date()
+            .toLocaleDateString("pt-BR")
+            .replace(/\//g, "-"),
         },
         { new: true }
       );
@@ -291,6 +326,7 @@ router.put("/", async (req, res) => {
       res.status(400).json({ error: "Opção inválida" });
     }
   } catch (err) {
+    console.log('err', err)
     res.status(500).json(err);
   }
 });

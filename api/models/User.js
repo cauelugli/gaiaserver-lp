@@ -43,6 +43,9 @@ userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  notifications: {
+    type: Object,
+  },
 });
 
 const User = mongoose.model("User", userSchema);
