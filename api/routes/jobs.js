@@ -181,7 +181,7 @@ router.put("/", async (req, res) => {
             interactions: {
               number: req.body.number || 1,
               activity: req.body.activity,
-              user: user,
+              user: user.name,
               date: req.body.date,
               reactions: {
                 love: { quantity: 0, usersReacted: [] },
@@ -215,7 +215,7 @@ router.put("/", async (req, res) => {
           },
           $push: {
             interactions: {
-              number: req.body.number || 1,
+              number: req.body.number || 0,
               activity: `Aprovação solicitada a ${manager.name} para execução`,
               user: user.name,
               date: req.body.date,
