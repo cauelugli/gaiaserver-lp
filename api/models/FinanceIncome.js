@@ -32,6 +32,9 @@ const financeIncomeSchema = new mongoose.Schema({
   price: {
     type: Number,
   },
+  finalPrice: {
+    type: Number,
+  },
   commissioned: {
     type: Boolean,
   },
@@ -43,13 +46,13 @@ const financeIncomeSchema = new mongoose.Schema({
     default: Date.now,
   },
   resolvedAt: {
-    type: Date,
+    type: String,
   },
   payment: {
     type: Object,
   },
   paidAt: {
-    type: Date,
+    type: String,
   },
   commentary: {
     type: String,
