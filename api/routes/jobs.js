@@ -3,7 +3,7 @@ const router = express.Router();
 const Job = require("../models/Job");
 const StockItem = require("../models/StockItem");
 const Quote = require("../models/Quote");
-const Notification = require("../models/Notification");
+const Manager = require("../models/Manager");
 const FinanceIncome = require("../models/FinanceIncome");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
@@ -196,16 +196,23 @@ router.put("/", async (req, res) => {
       );
       res.status(200).json(updatedJob);
     } else if (option === "requestApproval") {
-      const newNotification = new Notification({
-        itemId: jobId,
-        sender: worker,
-        receiver: manager,
-        body: `Olá ${manager.name}! O(a) colaborador(a) 
+      const notifiedManager = await Manager.findOneAndUpdate(
+        { _id: manager.id },
+        {
+          $push: {
+            notifications: {
+              status: "Não Lida",
+              itemId: jobId,
+              sender: worker,
+              receiver: manager,
+              body: `Olá ${manager.name}! O(a) colaborador(a) 
         ${worker.name} solicitou aprovação para o job "${req.body.job.title}" em ${req.body.date}.`,
-        sentDate: req.body.date,
-      });
-
-      const savedNotification = await newNotification.save();
+              sentDate: req.body.date,
+            },
+          },
+        },
+        { new: true }
+      );
 
       const updatedJob = await Job.findByIdAndUpdate(
         jobId,
@@ -225,7 +232,7 @@ router.put("/", async (req, res) => {
         { new: true }
       );
 
-      res.status(200).json({ updatedJob, savedNotification });
+      res.status(200).json({ updatedJob, notifiedManager });
     } else if (option === "managerApproval") {
       const updatedJob = await Job.findByIdAndUpdate(
         jobId,
@@ -326,7 +333,7 @@ router.put("/", async (req, res) => {
       res.status(400).json({ error: "Opção inválida" });
     }
   } catch (err) {
-    console.log('err', err)
+    console.log("err", err);
     res.status(500).json(err);
   }
 });
