@@ -93,7 +93,7 @@ router.put("/schedulePayment", async (req, res) => {
   }
 });
 
-// UPDATE PAYMENT
+// UPDATE PARCEL PAYMENT
 router.put("/receivePayment/parcel", async (req, res) => {
   try {
     const { id, paymentData } = req.body;
@@ -115,8 +115,9 @@ router.put("/receivePayment/parcel", async (req, res) => {
 
       if (
         matchingDateIndex !== undefined &&
-        financeIncome.payment.paymentDates[matchingDateIndex].status !== "Pago" &&
-        data.paidAt !== ''
+        financeIncome.payment.paymentDates[matchingDateIndex].status !==
+          "Pago" &&
+        data.paidAt !== ""
       ) {
         financeIncome.payment.paymentDates[matchingDateIndex].status = "Pago";
         financeIncome.payment.paymentDates[matchingDateIndex].paymentMethod =
@@ -129,6 +130,24 @@ router.put("/receivePayment/parcel", async (req, res) => {
     // Salve as alterações
     await financeIncome.markModified("payment.paymentDates");
     await financeIncome.save();
+
+    async function checkAndUpdatePaymentStatus() {
+      const paymentDates = financeIncome.payment.paymentDates;
+
+      // Verifica se todas as parcelas foram pagas
+      const allPaymentsPaid = Object.values(paymentDates).every(
+        (date) => date.status === "Pago"
+      );
+
+      // Atualiza o status do income, se necessário
+      if (allPaymentsPaid && financeIncome.status !== "Pago") {
+        financeIncome.status = "Pago";
+        await financeIncome.save();
+      }
+    }
+
+    // Verifique e atualize o status do income, se necessário
+    await checkAndUpdatePaymentStatus();
 
     return res
       .status(200)
