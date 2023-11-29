@@ -4,6 +4,7 @@ import * as React from "react";
 
 import {
   Box,
+  Checkbox,
   CircularProgress,
   Dialog,
   FormHelperText,
@@ -148,9 +149,23 @@ export default function FinanceIncomeTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
+  const [showCompletedIncomes, setshowCompletedIncomes] = React.useState(false);
+  const handleChangeshowCompletedIncomes = () => {
+    setshowCompletedIncomes(!showCompletedIncomes);
+  };
+
   return (
     <>
       <Box sx={{ minWidth: "1050px" }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
+        <Checkbox
+          checked={showCompletedIncomes}
+          onChange={handleChangeshowCompletedIncomes}
+        />
+        <Typography sx={{ fontSize: 14, mt: 1.5, ml: -1 }}>
+          Mostrar Pagos
+        </Typography>
+      </Box>{" "}
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
@@ -182,15 +197,22 @@ export default function FinanceIncomeTable({
               </TableRow>
               {sortedRows
                 .slice(startIndex, endIndex)
-                .filter((user) => {
+                .filter((income) => {
+                  if (!income) return false;
                   const userProperty = searchOption
                     .split(".")
-                    .reduce((obj, key) => obj[key], user);
-                  return (
+                    .reduce((obj, key) => obj[key], income);
+                  // Verifica se a condição para aplicar o filtro é atendida
+                  const shouldShowincome =
                     userProperty &&
                     userProperty
                       .toLowerCase()
-                      .includes(searchValue.toLowerCase())
+                      .includes(searchValue.toLowerCase());
+  
+                  // Se a opção para mostrar incomes concluídos estiver desmarcada, oculta os incomes concluídos
+                  return (
+                    shouldShowincome &&
+                    (showCompletedIncomes || income.status !== "Pago")
                   );
                 })
                 .map((income) => (
