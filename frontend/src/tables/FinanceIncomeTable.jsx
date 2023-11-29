@@ -28,6 +28,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import PaymentsIcon from "@mui/icons-material/Payments";
 
 import AddPaymentScheduleForm from "../forms/add/AddPaymentScheduleForm";
+import CashPaymentForm from "../forms/add/CashPaymentForm";
 import EditStatusForm from "../forms/edit/EditStatusForm";
 import AddParcelPaymentForm from "../forms/add/AddParcelPaymentForm";
 
@@ -44,6 +45,7 @@ export default function FinanceIncomeTable({
   const [newStatus, setNewStatus] = React.useState("");
   const [hoveredIncome, setHoveredIncome] = React.useState(null);
   const [openSchedulePayment, setOpenSchedulePayment] = React.useState(false);
+  const [openCashPayment, setOpenCashPayment] = React.useState(false);
   const [openAddParcelPayment, setOpenAddParcelPayment] = React.useState(false);
   const [openAddFullPayment, setOpenAddFullPayment] = React.useState(false);
 
@@ -53,6 +55,11 @@ export default function FinanceIncomeTable({
   const handleOpenAddSchedulePayment = (income) => {
     setSelectedFinanceIncome(income);
     setOpenSchedulePayment(!openSchedulePayment);
+  };
+
+  const handleOpenAddCashPayment = (income) => {
+    setSelectedFinanceIncome(income);
+    setOpenCashPayment(!openCashPayment);
   };
 
   const handleOpenAddParcelPayment = (income) => {
@@ -211,166 +218,184 @@ export default function FinanceIncomeTable({
                           onMouseEnter={() => setHoveredIncome(income)}
                           onMouseLeave={() => setHoveredIncome(null)}
                         >
-                          {income.payment
-                            ? income.payment.paymentOption +
-                              ` | ` +
-                              income.payment.paymentMethod
-                            : "Não há Agendamento"}
-                        </Typography>
-                        {income.payment && hoveredIncome === income && (
-                          <Paper
-                            onMouseEnter={() => setHoveredIncome(income)}
-                            onMouseLeave={() => setHoveredIncome(null)}
-                            style={{
-                              position: "absolute",
-                              width: 420,
-                              height: "auto",
-                              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-                              bottom: "25%",
-                              left: "14%",
-                              zIndex: 999,
-                              border: "2px solid #444",
-                              borderRadius: 15,
-                            }}
-                          >
-                            <Grid
-                              container
-                              direction="row"
-                              alignItems="center"
-                              justifyContent="flex-start"
-                              sx={{ my: "2%", ml: "2%" }}
+                          {income.payment.cash ? (
+                            <Tooltip
+                              title={
+                                <Typography sx={{ fontSize: 12 }}>
+                                  Pago em {income.paidAt}
+                                </Typography>
+                              }
                             >
-                              <Grid item>
-                                <Typography sx={{ fontSize: 14 }}>
-                                  <strong>Orçamento:</strong> {income.quote}
-                                </Typography>
-                                <Typography sx={{ fontSize: 14, mt: 2 }}>
-                                  <strong>Método:</strong>{" "}
-                                  {income.payment.paymentMethod}
-                                </Typography>
-                                <Typography sx={{ fontSize: 14, mt: 2 }}>
-                                  <strong>Opção:</strong>{" "}
-                                  {income.payment.paymentOption}
-                                </Typography>
-                                <Typography sx={{ fontSize: 14, mt: 2 }}>
-                                  <strong>Valor:</strong> R$
-                                  {income.payment.finalPrice}
-                                </Typography>
-                                {income.payment.hasParcelMonthlyFee && (
-                                  <FormHelperText
-                                    sx={{ fontSize: 11, my: -0.5 }}
-                                  >
-                                    (Juros Mensais de{" "}
-                                    <strong>
-                                      {income.payment.parcelMonthlyFee}%
-                                    </strong>
-                                    )
-                                  </FormHelperText>
-                                )}
-                              </Grid>
+                              A vista | {income.payment.method}
+                            </Tooltip>
+                          ) : income.payment ? (
+                            income.payment.paymentOption +
+                            ` | ` +
+                            income.payment.paymentMethod
+                          ) : (
+                            "Não há Agendamento"
+                          )}
+                          {}
+                        </Typography>
+                        {income.payment &&
+                          !income.payment.cash &&
+                          hoveredIncome === income && (
+                            <Paper
+                              onMouseEnter={() => setHoveredIncome(income)}
+                              onMouseLeave={() => setHoveredIncome(null)}
+                              style={{
+                                position: "absolute",
+                                width: 420,
+                                height: "auto",
+                                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+                                bottom: "25%",
+                                left: "14%",
+                                zIndex: 999,
+                                border: "2px solid #444",
+                                borderRadius: 15,
+                              }}
+                            >
                               <Grid
-                                item
-                                direction="column"
+                                container
+                                direction="row"
                                 alignItems="center"
-                                justifyContent="center"
-                                sx={{ width: "55%"}}
+                                justifyContent="flex-start"
+                                sx={{ my: "2%", ml: "2%" }}
                               >
-                                <Box
-                                  sx={{
-                                    mt: 1,
-                                    position: "relative",
-                                    display: "inline-flex",
-                                  }}
-                                >
-                                  <CircularProgress
-                                    variant="determinate"
-                                    size={80}
-                                    color={
-                                      income.status === "Pago"
-                                        ? "success"
-                                        : "primary"
-                                    }
-                                    value={(
-                                      (Object.values(
-                                        income.payment.paymentDates
+                                <Grid item>
+                                  <Typography sx={{ fontSize: 14 }}>
+                                    <strong>Orçamento:</strong> {income.quote}
+                                  </Typography>
+                                  <Typography sx={{ fontSize: 14, mt: 2 }}>
+                                    <strong>Método:</strong>{" "}
+                                    {income.payment.paymentMethod}
+                                  </Typography>
+                                  <Typography sx={{ fontSize: 14, mt: 2 }}>
+                                    <strong>Opção:</strong>{" "}
+                                    {income.payment.paymentOption}
+                                  </Typography>
+                                  <Typography sx={{ fontSize: 14, mt: 2 }}>
+                                    <strong>Valor:</strong> R$
+                                    {income.payment.finalPrice}
+                                  </Typography>
+                                  {income.payment.hasParcelMonthlyFee && (
+                                    <FormHelperText
+                                      sx={{ fontSize: 11, my: -0.5 }}
+                                    >
+                                      (Juros Mensais de{" "}
+                                      <strong>
+                                        {income.payment.parcelMonthlyFee}%
+                                      </strong>
                                       )
-                                        .map((item) =>
-                                          item.status === "Pago" ? 1 : 0
-                                        )
-                                        .reduce((acc, curr) => acc + curr, 0) /
-                                        income.payment.parcelQuantity) *
-                                      100
-                                    ).toFixed(2)}
-                                  />
+                                    </FormHelperText>
+                                  )}
+                                </Grid>
+                                <Grid
+                                  item
+                                  direction="column"
+                                  alignItems="center"
+                                  justifyContent="center"
+                                  sx={{ width: "55%" }}
+                                >
                                   <Box
                                     sx={{
-                                      top: 0,
-                                      left: 0,
-                                      bottom: 0,
-                                      right: 0,
-                                      position: "absolute",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "center",
+                                      mt: 1,
+                                      position: "relative",
+                                      display: "inline-flex",
                                     }}
                                   >
-                                    <Typography>
+                                    <CircularProgress
+                                      variant="determinate"
+                                      size={80}
+                                      color={
+                                        income.status === "Pago"
+                                          ? "success"
+                                          : "primary"
+                                      }
+                                      value={(
+                                        (Object.values(
+                                          income.payment.paymentDates
+                                        )
+                                          .map((item) =>
+                                            item.status === "Pago" ? 1 : 0
+                                          )
+                                          .reduce(
+                                            (acc, curr) => acc + curr,
+                                            0
+                                          ) /
+                                          income.payment.parcelQuantity) *
+                                        100
+                                      ).toFixed(2)}
+                                    />
+                                    <Box
+                                      sx={{
+                                        top: 0,
+                                        left: 0,
+                                        bottom: 0,
+                                        right: 0,
+                                        position: "absolute",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                      }}
+                                    >
+                                      <Typography>
+                                        {Object.values(
+                                          income.payment.paymentDates
+                                        )
+                                          .map((item) =>
+                                            item.status === "Pago" ? 1 : 0
+                                          )
+                                          .reduce(
+                                            (acc, curr) => acc + curr,
+                                            0
+                                          )}{" "}
+                                        / {income.payment.parcelQuantity}
+                                      </Typography>
+                                    </Box>
+                                  </Box>
+                                  <Grid
+                                    container
+                                    direction="column"
+                                    spacing={0.5}
+                                    columns={2}
+                                  >
+                                    <Grid item xl={4}>
                                       {Object.values(
                                         income.payment.paymentDates
-                                      )
-                                        .map((item) =>
-                                          item.status === "Pago" ? 1 : 0
-                                        )
-                                        .reduce(
-                                          (acc, curr) => acc + curr,
-                                          0
-                                        )}{" "}
-                                      / {income.payment.parcelQuantity}
-                                    </Typography>
-                                  </Box>
-                                </Box>
-                                <Grid
-                                  container
-                                  direction="column"
-                                  spacing={0.5}
-                                  columns={2}
-                                >
-                                  <Grid item xl={4}>
-                                    {Object.values(
-                                      income.payment.paymentDates
-                                    ).map((item, index) => (
-                                      <Typography
-                                        key={index}
-                                        sx={{
-                                          fontSize: 11,
-                                          color:
-                                            item.status === "Pago"
-                                              ? "darkgreen"
-                                              : "#777",
-                                        }}
-                                      >
-                                        R${item.parcelValue}
-                                        {" - "}
-                                        {item.date}{" "}
-                                        {item.status === "Pago" ? (
-                                          <CheckIcon sx={{ fontSize: 12 }} />
-                                        ) : (
-                                          <AccessTimeIcon
-                                            sx={{
-                                              fontSize: 12,
-                                              mb: -0.25,
-                                              ml: 0.5,
-                                            }}
-                                          />
-                                        )}
-                                      </Typography>
-                                    ))}
+                                      ).map((item, index) => (
+                                        <Typography
+                                          key={index}
+                                          sx={{
+                                            fontSize: 11,
+                                            color:
+                                              item.status === "Pago"
+                                                ? "darkgreen"
+                                                : "#777",
+                                          }}
+                                        >
+                                          R${item.parcelValue}
+                                          {" - "}
+                                          {item.date}{" "}
+                                          {item.status === "Pago" ? (
+                                            <CheckIcon sx={{ fontSize: 12 }} />
+                                          ) : (
+                                            <AccessTimeIcon
+                                              sx={{
+                                                fontSize: 12,
+                                                mb: -0.25,
+                                                ml: 0.5,
+                                              }}
+                                            />
+                                          )}
+                                        </Typography>
+                                      ))}
+                                    </Grid>
                                   </Grid>
                                 </Grid>
                               </Grid>
-                            </Grid>
-                          </Paper>
-                        )}
+                            </Paper>
+                          )}
                       </TableCell>
                       <TableCell align="center">
                         <Typography sx={{ fontSize: 14 }}>
@@ -379,7 +404,8 @@ export default function FinanceIncomeTable({
                       </TableCell>
                       <TableCell align="center">
                         <Typography sx={{ fontSize: 14 }}>
-                          R${income.price}
+                          R$
+                          {income.finalPrice ? income.finalPrice : income.price}
                         </Typography>
                       </TableCell>
 
@@ -393,24 +419,49 @@ export default function FinanceIncomeTable({
 
                       <TableCell align="center" sx={{ py: 0 }}>
                         {income.status === "Aguardando Agendamento" && (
-                          <Tooltip
-                            title={
-                              <Typography sx={{ fontSize: 12 }}>
-                                Agendar Pagamento
-                              </Typography>
-                            }
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
                           >
-                            <span>
-                              <IconButton>
-                                <CalendarMonthIcon
-                                  cursor="pointer"
-                                  onClick={() =>
-                                    handleOpenAddSchedulePayment(income)
-                                  }
-                                />
-                              </IconButton>
-                            </span>
-                          </Tooltip>
+                            <Tooltip
+                              title={
+                                <Typography sx={{ fontSize: 12 }}>
+                                  Agendar Pagamento
+                                </Typography>
+                              }
+                            >
+                              <span>
+                                <IconButton>
+                                  <CalendarMonthIcon
+                                    cursor="pointer"
+                                    onClick={() =>
+                                      handleOpenAddSchedulePayment(income)
+                                    }
+                                  />
+                                </IconButton>
+                              </span>
+                            </Tooltip>
+                            <Tooltip
+                              title={
+                                <Typography sx={{ fontSize: 12 }}>
+                                  Receber a Vista
+                                </Typography>
+                              }
+                            >
+                              <span>
+                                <IconButton>
+                                  <AttachMoneyIcon
+                                    cursor="pointer"
+                                    onClick={() =>
+                                      handleOpenAddCashPayment(income)
+                                    }
+                                  />
+                                </IconButton>
+                              </span>
+                            </Tooltip>
+                          </Grid>
                         )}
                         {income.payment && income.status !== "Pago" && (
                           <Grid
@@ -506,6 +557,23 @@ export default function FinanceIncomeTable({
               selectedFinanceIncome={selectedFinanceIncome}
               openEdit={openAddParcelPayment}
               setOpenEdit={setOpenAddParcelPayment}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              toast={toast}
+            />
+          </Dialog>
+        )}
+        {openCashPayment && (
+          <Dialog
+            fullWidth
+            maxWidth="md"
+            open={openCashPayment}
+            onClose={() => setOpenCashPayment(!openCashPayment)}
+          >
+            <CashPaymentForm
+              selectedFinanceIncome={selectedFinanceIncome}
+              openEdit={openCashPayment}
+              setOpenEdit={setOpenCashPayment}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}

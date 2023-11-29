@@ -158,4 +158,50 @@ router.put("/receivePayment/parcel", async (req, res) => {
   }
 });
 
+// RECEIVE CASH PAYMENT
+router.put("/receivePayment/cash", async (req, res) => {
+  try {
+    const {
+      id,
+      date,
+      method,
+      hasDiscount,
+      discount,
+      finalPrice,
+      previousData,
+    } = req.body;
+
+    const financeIncome = await FinanceIncome.findById(id);
+    if (!financeIncome) {
+      return res.status(404).json({ error: "FinanceIncome não encontrado." });
+    }
+
+    // Lógica para processar o pagamento à vista
+
+    financeIncome.status = "Pago";
+    financeIncome.paidAt = date;
+    financeIncome.payment = {
+      cash: true,
+      method: method,
+      hasDiscount: hasDiscount,
+      discount: discount,
+    };
+    if (finalPrice !== previousData.price) {
+      financeIncome.finalPrice = finalPrice;
+    } else {
+      financeIncome.finalPrice = previousData.price;
+    }
+
+    // Salve as alterações
+    await financeIncome.save();
+
+    res
+      .status(200)
+      .json({ message: "Pagamento à vista recebido com sucesso." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao processar o pagamento à vista." });
+  }
+});
+
 module.exports = router;
