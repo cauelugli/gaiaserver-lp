@@ -222,7 +222,7 @@ router.put("/", async (req, res) => {
           },
           $push: {
             interactions: {
-              number: req.body.number || 0,
+              number: req.body.number || 1,
               activity: `Aprovação solicitada a ${manager.name} para execução`,
               user: user.name,
               date: req.body.date,
@@ -242,7 +242,7 @@ router.put("/", async (req, res) => {
           },
           $push: {
             interactions: {
-              number: req.body.number || 1,
+              number: req.body.number || 2,
               activity: "Job aprovado para execução",
               user: req.body.user,
               date: req.body.date,

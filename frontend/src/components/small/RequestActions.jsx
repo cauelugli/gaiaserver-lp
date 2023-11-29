@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import { Button, Grid } from "@mui/material";
+import { Button, FormHelperText, Grid, Tooltip } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
@@ -52,17 +52,20 @@ const RequestActions = ({
         </Button>
       )}
 
-      {job.status !== "Aberto" && job.status !== "Concluido" && (
-        <Button
-          cursor="pointer"
-          variant="contained"
-          color="success"
-          onClick={() => handleOpenEdit(job, "resolve")}
-          startIcon={<CheckIcon />}
-        >
-          Resolver
-        </Button>
-      )}
+      {job.status !== "Aberto" &&
+        job.status !== "Concluido" &&
+        user.role !== "Gerente" && (
+          <Button
+            cursor="pointer"
+            variant="contained"
+            color="success"
+            disabled={job.status === "Aprovação Solicitada"}
+            onClick={() => handleOpenEdit(job, "resolve")}
+            startIcon={<CheckIcon />}
+          >
+            Resolver
+          </Button>
+        )}
 
       <Button
         cursor="pointer"
