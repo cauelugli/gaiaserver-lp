@@ -36,6 +36,9 @@ managerSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  notifications: {
+    type: Object,
+  },
 });
 
 const Manager = mongoose.model("Manager", managerSchema);
