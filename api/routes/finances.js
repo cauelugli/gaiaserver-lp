@@ -83,7 +83,7 @@ router.put("/schedulePayment", async (req, res) => {
 
     const scheduledPayment = await FinanceIncome.findByIdAndUpdate(
       req.body.id,
-      { payment: payment },
+      { payment: payment, status: "Agendado" },
       { new: true }
     );
 
@@ -128,6 +128,7 @@ router.put("/receivePayment/parcel", async (req, res) => {
     });
 
     // Salve as alterações
+    financeIncome.status = "Aguardando Pagamento";
     await financeIncome.markModified("payment.paymentDates");
     await financeIncome.save();
 
@@ -142,9 +143,9 @@ router.put("/receivePayment/parcel", async (req, res) => {
       // Atualiza o status do income, se necessário
       if (allPaymentsPaid && financeIncome.status !== "Pago") {
         financeIncome.status = "Pago";
-        financeIncome.paidAt = new Date().toLocaleDateString('pt-BR');
+        financeIncome.paidAt = new Date().toLocaleDateString("pt-BR");
         await financeIncome.save();
-      }
+      } 
     }
 
     // Verifique e atualize o status do income, se necessário
