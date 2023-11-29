@@ -26,7 +26,6 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import CheckIcon from "@mui/icons-material/Check";
 import PaymentsIcon from "@mui/icons-material/Payments";
-import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 
 import AddPaymentScheduleForm from "../forms/add/AddPaymentScheduleForm";
 import EditStatusForm from "../forms/edit/EditStatusForm";
@@ -59,12 +58,6 @@ export default function FinanceIncomeTable({
   const handleOpenAddParcelPayment = (income) => {
     setSelectedFinanceIncome(income);
     setOpenAddParcelPayment(!openAddParcelPayment);
-  };
-
-  const handleStatusChange = (newStatus) => {
-    setPreviousStatus(selectedFinanceIncome.status);
-    setNewStatus(newStatus);
-    setOpenConfirmChangeStatus(!openConfirmChangeStatus);
   };
 
   const tableHeaderRow = [
@@ -245,7 +238,7 @@ export default function FinanceIncomeTable({
                               direction="row"
                               alignItems="center"
                               justifyContent="flex-start"
-                              sx={{ my: "2%", ml:"2%" }}
+                              sx={{ my: "2%", ml: "2%" }}
                             >
                               <Grid item>
                                 <Typography sx={{ fontSize: 14 }}>
@@ -280,7 +273,7 @@ export default function FinanceIncomeTable({
                                 direction="column"
                                 alignItems="center"
                                 justifyContent="center"
-                                sx={{ width:"50%"}}
+                                sx={{ width: "55%"}}
                               >
                                 <Box
                                   sx={{
@@ -292,6 +285,11 @@ export default function FinanceIncomeTable({
                                   <CircularProgress
                                     variant="determinate"
                                     size={80}
+                                    color={
+                                      income.status === "Pago"
+                                        ? "success"
+                                        : "primary"
+                                    }
                                     value={(
                                       (Object.values(
                                         income.payment.paymentDates
@@ -387,12 +385,34 @@ export default function FinanceIncomeTable({
 
                       <TableCell align="center">
                         <Typography sx={{ fontSize: 14 }}>
-                          {!income.payment ? "Aguardando Agendamento" : income.status}
+                          {!income.payment
+                            ? "Aguardando Agendamento"
+                            : income.status}
                         </Typography>
                       </TableCell>
 
                       <TableCell align="center" sx={{ py: 0 }}>
-                        {income.payment ? (
+                        {income.status === "Aguardando Agendamento" && (
+                          <Tooltip
+                            title={
+                              <Typography sx={{ fontSize: 12 }}>
+                                Agendar Pagamento
+                              </Typography>
+                            }
+                          >
+                            <span>
+                              <IconButton>
+                                <CalendarMonthIcon
+                                  cursor="pointer"
+                                  onClick={() =>
+                                    handleOpenAddSchedulePayment(income)
+                                  }
+                                />
+                              </IconButton>
+                            </span>
+                          </Tooltip>
+                        )}
+                        {income.payment && income.status !== "Pago" && (
                           <Grid
                             container
                             direction="row"
@@ -437,21 +457,20 @@ export default function FinanceIncomeTable({
                               </span>
                             </Tooltip>
                           </Grid>
-                        ) : (
+                        )}
+                        {income.status === "Pago" && (
                           <Tooltip
                             title={
                               <Typography sx={{ fontSize: 12 }}>
-                                Agendar Pagamento
+                                Pagamento Recebido
                               </Typography>
                             }
                           >
                             <span>
                               <IconButton>
-                                <CalendarMonthIcon
-                                  cursor="pointer"
-                                  onClick={() =>
-                                    handleOpenAddSchedulePayment(income)
-                                  }
+                                <AttachMoneyIcon
+                                  disabled
+                                  sx={{ color: "darkgreen" }}
                                 />
                               </IconButton>
                             </span>
