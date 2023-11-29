@@ -142,6 +142,7 @@ router.put("/receivePayment/parcel", async (req, res) => {
       // Atualiza o status do income, se necessário
       if (allPaymentsPaid && financeIncome.status !== "Pago") {
         financeIncome.status = "Pago";
+        financeIncome.paidAt = new Date().toLocaleDateString('pt-BR');
         await financeIncome.save();
       }
     }

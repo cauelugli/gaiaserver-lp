@@ -413,6 +413,8 @@ export default function FinanceIncomeTable({
                                         </Typography>
                                       ))}
                                     </Grid>
+                                    {income.status === "Pago" &&
+                                    <Typography sx={{my:1, fontSize:12, color:'#777'}}>Pago em: {income.paidAt}</Typography>}
                                   </Grid>
                                 </Grid>
                               </Grid>
