@@ -157,15 +157,15 @@ export default function FinanceIncomeTable({
   return (
     <>
       <Box sx={{ minWidth: "1050px" }}>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
-        <Checkbox
-          checked={showCompletedIncomes}
-          onChange={handleChangeshowCompletedIncomes}
-        />
-        <Typography sx={{ fontSize: 14, mt: 1.5, ml: -1 }}>
-          Mostrar Pagos
-        </Typography>
-      </Box>{" "}
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
+          <Checkbox
+            checked={showCompletedIncomes}
+            onChange={handleChangeshowCompletedIncomes}
+          />
+          <Typography sx={{ fontSize: 14, mt: 1.5, ml: -1 }}>
+            Mostrar Pagos
+          </Typography>
+        </Box>{" "}
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
@@ -208,7 +208,7 @@ export default function FinanceIncomeTable({
                     userProperty
                       .toLowerCase()
                       .includes(searchValue.toLowerCase());
-  
+
                   // Se a opção para mostrar incomes concluídos estiver desmarcada, oculta os incomes concluídos
                   return (
                     shouldShowincome &&
@@ -240,7 +240,7 @@ export default function FinanceIncomeTable({
                           onMouseEnter={() => setHoveredIncome(income)}
                           onMouseLeave={() => setHoveredIncome(null)}
                         >
-                          {income.payment.cash ? (
+                          {income.payment && income.payment.cash ? (
                             <Tooltip
                               title={
                                 <Typography sx={{ fontSize: 12 }}>
@@ -302,7 +302,7 @@ export default function FinanceIncomeTable({
                                   </Typography>
                                   {income.payment.hasParcelMonthlyFee && (
                                     <FormHelperText
-                                      sx={{ fontSize: 11, my: -0.5 }}
+                                      sx={{ fontSize: 11, my: -0.5, ml:2 }}
                                     >
                                       (Juros Mensais de{" "}
                                       <strong>
@@ -413,8 +413,17 @@ export default function FinanceIncomeTable({
                                         </Typography>
                                       ))}
                                     </Grid>
-                                    {income.status === "Pago" &&
-                                    <Typography sx={{my:1, fontSize:12, color:'#777'}}>Pago em: {income.paidAt}</Typography>}
+                                    {income.status === "Pago" && (
+                                      <Typography
+                                        sx={{
+                                          my: 1,
+                                          fontSize: 12,
+                                          color: "#777",
+                                        }}
+                                      >
+                                        Pago em: {income.paidAt}
+                                      </Typography>
+                                    )}
                                   </Grid>
                                 </Grid>
                               </Grid>
@@ -442,7 +451,7 @@ export default function FinanceIncomeTable({
                       </TableCell>
 
                       <TableCell align="center" sx={{ py: 0 }}>
-                        {income.status === "Aguardando Agendamento" && (
+                        {!income.payment && income.status === "Aguardando Agendamento" && (
                           <Grid
                             container
                             direction="row"
