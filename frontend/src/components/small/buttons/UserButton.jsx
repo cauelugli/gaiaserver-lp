@@ -86,9 +86,9 @@ export default function UserButton({ user }) {
               onClose={handleCloseNotifications}
             >
               <List>
-                {user.notifications.map((item) => (
-                  <ListItemButton key>
-                    <ListItemText primary={item.body} />
+                {Object.keys(user.notifications).map((key) => (
+                  <ListItemButton key={key}>
+                    <ListItemText primary={user.notifications[key].body} />
                   </ListItemButton>
                 ))}
               </List>

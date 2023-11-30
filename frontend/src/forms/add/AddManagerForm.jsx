@@ -59,6 +59,7 @@ const AddManagerForm = ({
         phone,
         position: "Gerente",
         image: imagePath,
+        notifications: { 0: "" },
         department: {
           id: department._id,
           name: department.name,

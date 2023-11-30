@@ -136,6 +136,7 @@ export default function JobTable({
         jobId: job._id,
         option: "managerApproval",
         status: "Aprovado",
+        manager: job.manager,
         user: user.name,
         date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
       };

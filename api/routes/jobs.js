@@ -197,16 +197,15 @@ router.put("/", async (req, res) => {
       res.status(200).json(updatedJob);
     } else if (option === "requestApproval") {
       const notifiedManager = await Manager.findOneAndUpdate(
-        { _id: manager.id },
+        { _id: manager._id },
         {
-          $push: {
-            notifications: {
+          $set: {
+            [`notifications.${Date.now()}`]: {
               status: "Não Lida",
               itemId: jobId,
               sender: worker,
               receiver: manager,
-              body: `Olá ${manager.name}! O(a) colaborador(a) 
-        ${worker.name} solicitou aprovação para o job "${req.body.job.title}" em ${req.body.date}.`,
+              body: `Olá ${manager.name}! O(a) colaborador(a) ${worker.name} solicitou aprovação para o job "${req.body.job.title}" em ${req.body.date}.`,
               sentDate: req.body.date,
             },
           },

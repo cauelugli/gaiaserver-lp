@@ -37,7 +37,8 @@ managerSchema = new mongoose.Schema({
     default: Date.now,
   },
   notifications: {
-    type: Array,
+    type: Object,
+    default: {}
   },
 });
 
