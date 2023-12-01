@@ -195,7 +195,7 @@ export default function AddServiceForm({
             >
               <Grid item>
                 <label
-                  style={{ fontSize: 14, fontFamily: "Verdana, sans-serif" }}
+                  style={{ fontSize: 13, fontFamily: "Verdana, sans-serif" }}
                 >
                   Serviço de Consultoria?
                 </label>

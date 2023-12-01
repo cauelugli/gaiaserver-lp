@@ -152,7 +152,7 @@ export default function AddMultipleProductForm({
             )}
             <Grid item>
               {index === 0 && (
-                <Typography sx={{ fontSize: 14, ml: 2 }}>Nome</Typography>
+                <Typography sx={{ fontSize: 13, ml: 2 }}>Nome</Typography>
               )}
               <TextField
                 size="small"
@@ -166,7 +166,7 @@ export default function AddMultipleProductForm({
             </Grid>
             <Grid item sx={{ ml: 1 }}>
               {index === 0 && (
-                <Typography sx={{ fontSize: 14 }}>Marca</Typography>
+                <Typography sx={{ fontSize: 13 }}>Marca</Typography>
               )}
               <TextField
                 size="small"
@@ -180,7 +180,7 @@ export default function AddMultipleProductForm({
             </Grid>
             <Grid item sx={{ ml: 1 }}>
               {index === 0 && (
-                <Typography sx={{ fontSize: 14 }}>Tipo</Typography>
+                <Typography sx={{ fontSize: 13 }}>Tipo</Typography>
               )}
               <TextField
                 size="small"
@@ -195,7 +195,7 @@ export default function AddMultipleProductForm({
             </Grid>
             <Grid item sx={{ ml: 1 }}>
               {index === 0 && (
-                <Typography sx={{ fontSize: 14 }}>Tamanho</Typography>
+                <Typography sx={{ fontSize: 13 }}>Tamanho</Typography>
               )}
               <TextField
                 size="small"
@@ -210,7 +210,7 @@ export default function AddMultipleProductForm({
             </Grid>
             <Grid item sx={{ ml: 1 }}>
               {index === 0 && (
-                <Typography sx={{ fontSize: 14 }}>Cor</Typography>
+                <Typography sx={{ fontSize: 13 }}>Cor</Typography>
               )}
               <TextField
                 size="small"
@@ -225,7 +225,7 @@ export default function AddMultipleProductForm({
             </Grid>
             <Grid item sx={{ mx: 1 }}>
               {index === 0 && (
-                <Typography sx={{ fontSize: 14 }}>Modelo</Typography>
+                <Typography sx={{ fontSize: 13 }}>Modelo</Typography>
               )}
               <TextField
                 size="small"
@@ -240,7 +240,7 @@ export default function AddMultipleProductForm({
             </Grid>
             <Grid item>
               {index === 0 && (
-                <Typography sx={{ fontSize: 14 }}>Agrupamento</Typography>
+                <Typography sx={{ fontSize: 13 }}>Agrupamento</Typography>
               )}
               <Select
                 size="small"
@@ -264,7 +264,7 @@ export default function AddMultipleProductForm({
             </Grid>
             <Grid item sx={{ ml: 1 }}>
               {index === 0 && (
-                <Typography sx={{ fontSize: 14 }}>Valor de Compra</Typography>
+                <Typography sx={{ fontSize: 13 }}>Valor de Compra</Typography>
               )}
               <TextField
                 type="number"
@@ -287,7 +287,7 @@ export default function AddMultipleProductForm({
             </Grid>
             <Grid item sx={{ ml: 1 }}>
               {index === 0 && (
-                <Typography sx={{ fontSize: 14 }}>Valor de Venda</Typography>
+                <Typography sx={{ fontSize: 13 }}>Valor de Venda</Typography>
               )}
               <TextField
                 type="number"

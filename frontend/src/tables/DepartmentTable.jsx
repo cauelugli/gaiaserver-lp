@@ -142,7 +142,7 @@ export default function DepartmentTable({
                 <TableCell
                   align={headCell.label === "Nome" ? "" : "center"}
                   sx={{
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: "bold",
                     pl: headCell.label === "Nome" ? "" : 5,
                   }}
@@ -178,7 +178,7 @@ export default function DepartmentTable({
                       cursor="pointer"
                       align="center"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         <Paper
                           elevation={0}
                           sx={{
@@ -196,7 +196,7 @@ export default function DepartmentTable({
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         {department.name}
                       </Typography>
                     </TableCell>
@@ -205,7 +205,7 @@ export default function DepartmentTable({
                       cursor="pointer"
                       align="center"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         {department.email}
                       </Typography>
                     </TableCell>
@@ -234,7 +234,7 @@ export default function DepartmentTable({
                           />
                         </Grid>
                         <Grid item>
-                          <Typography sx={{ fontSize: 14, mt: 1 }}>
+                          <Typography sx={{ fontSize: 13, mt: 1 }}>
                             {department.manager && department.manager.name}
                           </Typography>
                         </Grid>
@@ -245,7 +245,7 @@ export default function DepartmentTable({
                       cursor="pointer"
                       align="center"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         {department.members.length}
                       </Typography>
                     </TableCell>
@@ -380,7 +380,7 @@ export default function DepartmentTable({
                                       />
                                     </Grid>
                                     <Grid item>
-                                      <Typography sx={{ fontSize: 14, mt: 1 }}>
+                                      <Typography sx={{ fontSize: 13, mt: 1 }}>
                                         {department.manager &&
                                           department.manager.name}
                                       </Typography>

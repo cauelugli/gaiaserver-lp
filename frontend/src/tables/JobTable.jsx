@@ -210,7 +210,7 @@ export default function JobTable({
           checked={showCompletedJobs}
           onChange={handleChangeShowCompletedJobs}
         />
-        <Typography sx={{ fontSize: 14, mt: 1.5, ml: -1 }}>
+        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
           Mostrar Jobs Concluídos
         </Typography>
       </Box>{" "}
@@ -226,7 +226,7 @@ export default function JobTable({
                 <TableCell
                   align={headCell.label === "Título" ? "" : "center"}
                   sx={{
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: "bold",
                     pl: headCell.label === "Título" ? "" : 5,
                   }}
@@ -288,14 +288,14 @@ export default function JobTable({
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography sx={{ fontSize: 14 }}>{job.title}</Typography>
+                      <Typography sx={{ fontSize: 13 }}>{job.title}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(job)}
                       cursor="pointer"
                       align="center"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         {job.requester}
                         {job.customer.cnpj && `(${job.customer.name})`}
                       </Typography>
@@ -305,7 +305,7 @@ export default function JobTable({
                       cursor="pointer"
                       align="center"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         {job.createdBy}
                       </Typography>
                     </TableCell>
@@ -323,7 +323,7 @@ export default function JobTable({
                           />
                         </Grid>
                         <Grid item>
-                          <Typography sx={{ mt: 0.75, fontSize: 14 }}>
+                          <Typography sx={{ mt: 0.75, fontSize: 13 }}>
                             {job.worker.name}
                           </Typography>
                         </Grid>
@@ -334,7 +334,7 @@ export default function JobTable({
                       cursor="pointer"
                       align="center"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         {dayjs(job.scheduledTo).format("DD/MM/YYYY")}
                       </Typography>
                     </TableCell>
@@ -345,7 +345,7 @@ export default function JobTable({
                     >
                       <Typography
                         sx={{
-                          fontSize: 14,
+                          fontSize: 13,
                           color:
                             (job.status === "Aprovado" && "#50C878") || "#777",
                         }}
@@ -506,7 +506,7 @@ export default function JobTable({
                                     </Grid>
                                     <Grid item>
                                       <Typography
-                                        sx={{ mt: 0.75, fontSize: 14 }}
+                                        sx={{ mt: 0.75, fontSize: 13 }}
                                       >
                                         {job.manager ? job.manager.name : ""}
                                       </Typography>
@@ -524,7 +524,7 @@ export default function JobTable({
                                     </Grid>
                                     <Grid item>
                                       <Typography
-                                        sx={{ mt: 0.75, fontSize: 14 }}
+                                        sx={{ mt: 0.75, fontSize: 13 }}
                                       >
                                         {job.worker.name}
                                       </Typography>

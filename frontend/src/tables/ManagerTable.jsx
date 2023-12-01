@@ -171,7 +171,7 @@ export default function ManagerTable({
                 <TableCell
                   align={headCell.label === "Nome" ? "" : "center"}
                   sx={{
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: "bold",
                     pl: headCell.label === "Nome" ? "" : 5,
                   }}
@@ -233,28 +233,28 @@ export default function ManagerTable({
                       cursor="pointer"
                       // align="left"
                     >
-                      <Typography sx={{ fontSize: 14 }}>{row.name}</Typography>
+                      <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(row)}
                       cursor="pointer"
                       align="center"
                     >
-                      <Typography sx={{ fontSize: 14 }}>{row.email}</Typography>
+                      <Typography sx={{ fontSize: 13 }}>{row.email}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(row)}
                       cursor="pointer"
                       align="center"
                     >
-                      <Typography sx={{ fontSize: 14 }}>{row.phone}</Typography>
+                      <Typography sx={{ fontSize: 13 }}>{row.phone}</Typography>
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(row)}
                       cursor="pointer"
                       align="center"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         {row.department ? (
                           <Grid
                             container
@@ -274,7 +274,7 @@ export default function ManagerTable({
                             >
                               {" "}
                             </Paper>
-                            <Typography sx={{ fontSize: 14 }}>
+                            <Typography sx={{ fontSize: 13 }}>
                               {row.department.name}
                             </Typography>
                           </Grid>
@@ -341,28 +341,28 @@ export default function ManagerTable({
                                   <TableRow>
                                     <TableCell>
                                       <Typography
-                                        sx={{ fontSize: 14, color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         Nome
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: 14, color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         E-mail
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: 14, color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         Telefone
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: 14, color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         Departamento
                                       </Typography>
@@ -398,7 +398,7 @@ export default function ManagerTable({
                                             >
                                               {" "}
                                             </Paper>
-                                            <Typography sx={{ fontSize: 14 }}>
+                                            <Typography sx={{ fontSize: 13 }}>
                                               {row.department.name}
                                             </Typography>
                                           </Grid>
@@ -415,21 +415,21 @@ export default function ManagerTable({
                                   <TableRow>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: 14, color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         Cargo
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: 14, color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         Nome de Operador
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: 14, color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         Perfil de Acesso
                                       </Typography>

@@ -126,7 +126,7 @@ export default function ServicePlansTable({
                   <TableCell
                     align={headCell.label === "Nome do Plano" ? "" : "center"}
                     sx={{
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: "bold",
                     }}
                     key={headCell.id}
@@ -167,7 +167,7 @@ export default function ServicePlansTable({
                         onClick={() => handleOpenDetail(servicePlan)}
                         cursor="pointer"
                       >
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {servicePlan.name}
                         </Typography>
                       </TableCell>

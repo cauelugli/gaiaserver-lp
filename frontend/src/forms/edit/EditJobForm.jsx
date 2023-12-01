@@ -558,22 +558,22 @@ const EditJobForm = ({
                   }}
                 >
                   <TableCell>
-                    <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
+                    <Typography sx={{ fontSize: 13, fontWeight: "bold" }}>
                       #
                     </Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
+                    <Typography sx={{ fontSize: 13, fontWeight: "bold" }}>
                       Data
                     </Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
+                    <Typography sx={{ fontSize: 13, fontWeight: "bold" }}>
                       Colaborador
                     </Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
+                    <Typography sx={{ fontSize: 13, fontWeight: "bold" }}>
                       Atividade
                     </Typography>
                   </TableCell>

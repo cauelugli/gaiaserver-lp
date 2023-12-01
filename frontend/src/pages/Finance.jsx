@@ -122,11 +122,11 @@ export default function Finance({ user }) {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>A Receber</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>A Receber</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>A Pagar</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>A Pagar</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <RefreshButton

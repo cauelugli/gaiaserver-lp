@@ -64,7 +64,7 @@ export default function StatusButton({ status, changedStatus, onMouseEnter }) {
           alignItems="center"
         >
           <MenuItem sx={{ my: -0.25 }} disabled>
-            <Typography sx={{ fontSize: 14 }}>Aberto</Typography>
+            <Typography sx={{ fontSize: 13 }}>Aberto</Typography>
           </MenuItem>
           {optionList.map((opt, index) => (
             <MenuItem
@@ -72,7 +72,7 @@ export default function StatusButton({ status, changedStatus, onMouseEnter }) {
               sx={{ my: -0.25 }}
               onClick={() => handleOptionClick(opt)}
             >
-              <Typography sx={{ fontSize: 14 }}>{opt}</Typography>
+              <Typography sx={{ fontSize: 13 }}>{opt}</Typography>
             </MenuItem>
           ))}
         </Grid>

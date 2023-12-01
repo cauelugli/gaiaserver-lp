@@ -124,32 +124,32 @@ export default function AddParcelPaymentForm({
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Selecionar
                   </Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Número
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Valor
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Data de Vencimento
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Data de Pagamento
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Status da Parcela
                   </Typography>
                 </TableCell>
@@ -177,7 +177,7 @@ export default function AddParcelPaymentForm({
                       <TableCell align="left">
                         <Typography
                           sx={{
-                            fontSize: 14,
+                            fontSize: 13,
                             color:
                               item.status === "Pago" ? "darkgreen" : "black",
                           }}
@@ -189,7 +189,7 @@ export default function AddParcelPaymentForm({
                       <TableCell align="center">
                         <Typography
                           sx={{
-                            fontSize: 14,
+                            fontSize: 13,
                             color:
                               item.status === "Pago" ? "darkgreen" : "black",
                           }}
@@ -200,7 +200,7 @@ export default function AddParcelPaymentForm({
                       <TableCell align="center">
                         <Typography
                           sx={{
-                            fontSize: 14,
+                            fontSize: 13,
                             color:
                               item.status === "Pago" ? "darkgreen" : "black",
                           }}
@@ -211,7 +211,7 @@ export default function AddParcelPaymentForm({
                       <TableCell align="center">
                         <Typography
                           sx={{
-                            fontSize: 14,
+                            fontSize: 13,
                             color:
                               item.status === "Pago" ? "darkgreen" : "black",
                           }}
@@ -222,7 +222,7 @@ export default function AddParcelPaymentForm({
                       <TableCell align="center">
                         <Typography
                           sx={{
-                            fontSize: 14,
+                            fontSize: 13,
                             color:
                               item.status === "Pago" ? "darkgreen" : "black",
                           }}
@@ -249,32 +249,32 @@ export default function AddParcelPaymentForm({
                 <TableHead>
                   <TableRow>
                     <TableCell>
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Remover
                       </Typography>
                     </TableCell>
                     <TableCell align="left" sx={{ ml: 2 }}>
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Número
                       </Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Valor
                       </Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Data de Vencimento
                       </Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Data de Pagamento
                       </Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Forma de Pagamento
                       </Typography>
                     </TableCell>

@@ -183,11 +183,11 @@ export default function Customers({ user }) {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Empresas</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Empresas</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Pessoa Física</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Pessoa Física</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <RefreshButton

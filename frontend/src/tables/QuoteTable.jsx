@@ -156,7 +156,7 @@ export default function QuoteTable({
                 <TableCell
                   align={headCell.label === "#" ? "" : "center"}
                   sx={{
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: "bold",
                     pl: headCell.label === "#" ? "" : 5,
                   }}
@@ -190,7 +190,7 @@ export default function QuoteTable({
                     <TableCell align="left">{quote.number}</TableCell>
                     <TableCell align="center">
                       {type === "job" ? (
-                        <Typography sx={{ mt: 1, fontSize: 14 }}>
+                        <Typography sx={{ mt: 1, fontSize: 13 }}>
                           {quote.service}
                         </Typography>
                       ) : (
@@ -238,7 +238,7 @@ export default function QuoteTable({
                       )}
                     </TableCell>
                     <TableCell align="center">
-                      <Typography sx={{ mt: 1, fontSize: 14 }}>
+                      <Typography sx={{ mt: 1, fontSize: 13 }}>
                         {quote.customer}
                       </Typography>
                     </TableCell>

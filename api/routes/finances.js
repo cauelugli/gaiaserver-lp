@@ -58,6 +58,8 @@ router.put("/status", async (req, res) => {
 router.put("/schedulePayment", async (req, res) => {
   const paymentDates = req.body.paymentDates;
   const parcelValue = req.body.parcelValue;
+  const finalPrice = req.body.finalPrice;
+  const previousData = req.body.previousData;
 
   try {
     const payment = {
@@ -66,7 +68,9 @@ router.put("/schedulePayment", async (req, res) => {
       parcelQuantity: req.body.parcelQuantity,
       hasParcelMonthlyFee: req.body.hasParcelMonthlyFee,
       parcelMonthlyFee: req.body.parcelMonthlyFee,
-      finalPrice: req.body.finalPrice,
+      hasDiscount: req.body.hasDiscount,
+      discount: req.body.discount,
+      finalPrice: parseInt(req.body.finalPrice),
       paymentDates: {},
     };
 
@@ -74,7 +78,9 @@ router.put("/schedulePayment", async (req, res) => {
       const date = paymentDates[key];
       payment.paymentDates[key] = {
         date: date,
-        parcelValue: parcelValue.toFixed(2),
+        parcelValue: paymentOption
+          ? finalPrice.toFixed(2)
+          : parcelValue.toFixed(2),
         status: "Em Aberto",
         paymentMethod: "",
         paidAt: "",
@@ -83,12 +89,18 @@ router.put("/schedulePayment", async (req, res) => {
 
     const scheduledPayment = await FinanceIncome.findByIdAndUpdate(
       req.body.id,
-      { payment: payment, status: "Agendado" },
+      {
+        payment: payment,
+        status: "Agendado",
+        finalPrice:
+          finalPrice !== previousData.price ? finalPrice : previousData.price,
+      },
       { new: true }
     );
 
     res.status(200).json(scheduledPayment);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
@@ -145,7 +157,7 @@ router.put("/receivePayment/parcel", async (req, res) => {
         financeIncome.status = "Pago";
         financeIncome.paidAt = new Date().toLocaleDateString("pt-BR");
         await financeIncome.save();
-      } 
+      }
     }
 
     // Verifique e atualize o status do income, se necessário

@@ -189,11 +189,11 @@ export default function Requests({ user }) {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Jobs</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Jobs</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Vendas</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Vendas</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <RefreshButton

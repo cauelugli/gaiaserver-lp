@@ -87,7 +87,11 @@ export default function FinanceIncomeTable({
     },
     {
       id: "price",
-      label: "Valor",
+      label: "Valor Inicial",
+    },
+    {
+      id: "finalPrice",
+      label: "Valor Final",
     },
     {
       id: "status",
@@ -162,7 +166,7 @@ export default function FinanceIncomeTable({
             checked={showCompletedIncomes}
             onChange={handleChangeshowCompletedIncomes}
           />
-          <Typography sx={{ fontSize: 14, mt: 1.5, ml: -1 }}>
+          <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
             Mostrar Pagos
           </Typography>
         </Box>{" "}
@@ -178,7 +182,7 @@ export default function FinanceIncomeTable({
                   <TableCell
                     align={headCell.label === "Orçamento" ? "" : "center"}
                     sx={{
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: "bold",
                       pl: headCell.label === "Orçamento" ? "" : 5,
                     }}
@@ -197,11 +201,6 @@ export default function FinanceIncomeTable({
               </TableRow>
               {sortedRows
                 .slice(startIndex, endIndex)
-                // .filter((user) =>
-                //   user[searchOption]
-                //     .toLowerCase()
-                //     .includes(searchValue.toLowerCase())
-                // )
                 .filter((income) => {
                   if (!income) return false;
                   const userProperty = searchOption
@@ -229,19 +228,19 @@ export default function FinanceIncomeTable({
                       }}
                     >
                       <TableCell>
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {income.quote}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {income.type.charAt(0).toUpperCase() +
                             income.type.slice(1)}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
                         <Typography
-                          sx={{ fontSize: 14 }}
+                          sx={{ fontSize: 13 }}
                           onMouseEnter={() => setHoveredIncome(income)}
                           onMouseLeave={() => setHoveredIncome(null)}
                         >
@@ -265,7 +264,7 @@ export default function FinanceIncomeTable({
                           {}
                         </Typography>
                         {income.payment &&
-                          !income.payment.cash &&
+                          income.payment.paymentOption === "Parcelado" &&
                           hoveredIncome === income && (
                             <Paper
                               onMouseEnter={() => setHoveredIncome(income)}
@@ -290,18 +289,18 @@ export default function FinanceIncomeTable({
                                 sx={{ my: "2%", ml: "2%" }}
                               >
                                 <Grid item>
-                                  <Typography sx={{ fontSize: 14 }}>
+                                  <Typography sx={{ fontSize: 13 }}>
                                     <strong>Orçamento:</strong> {income.quote}
                                   </Typography>
-                                  <Typography sx={{ fontSize: 14, mt: 2 }}>
+                                  <Typography sx={{ fontSize: 13, mt: 2 }}>
                                     <strong>Método:</strong>{" "}
                                     {income.payment.paymentMethod}
                                   </Typography>
-                                  <Typography sx={{ fontSize: 14, mt: 2 }}>
+                                  <Typography sx={{ fontSize: 13, mt: 2 }}>
                                     <strong>Opção:</strong>{" "}
                                     {income.payment.paymentOption}
                                   </Typography>
-                                  <Typography sx={{ fontSize: 14, mt: 2 }}>
+                                  <Typography sx={{ fontSize: 13, mt: 2 }}>
                                     <strong>Valor:</strong> R$
                                     {income.payment.finalPrice}
                                   </Typography>
@@ -436,19 +435,24 @@ export default function FinanceIncomeTable({
                           )}
                       </TableCell>
                       <TableCell align="center">
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {income.department}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        <Typography sx={{ fontSize: 14 }}>
-                          R$
-                          {income.finalPrice ? income.finalPrice : income.price}
+                        <Typography sx={{ fontSize: 13 }}>
+                          R${income.price}
                         </Typography>
                       </TableCell>
 
                       <TableCell align="center">
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
+                          R${income.finalPrice}
+                        </Typography>
+                      </TableCell>
+
+                      <TableCell align="center">
+                        <Typography sx={{ fontSize: 13 }}>
                           {!income.payment
                             ? "Aguardando Agendamento"
                             : income.status}

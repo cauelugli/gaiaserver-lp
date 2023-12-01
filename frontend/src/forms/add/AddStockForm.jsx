@@ -114,19 +114,19 @@ export default function AddStockForm({
                 }}
               >
                 <TableCell>
-                  <Typography sx={{ fontSize: 14 }}></Typography>
+                  <Typography sx={{ fontSize: 13 }}></Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography sx={{ fontSize: 14 }}>Item</Typography>
+                  <Typography sx={{ fontSize: 13 }}>Item</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography sx={{ fontSize: 14 }}>Em Estoque</Typography>
+                  <Typography sx={{ fontSize: 13 }}>Em Estoque</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography sx={{ fontSize: 14 }}>Valor de Compra</Typography>
+                  <Typography sx={{ fontSize: 13 }}>Valor de Compra</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography sx={{ fontSize: 14 }}>
+                  <Typography sx={{ fontSize: 13 }}>
                     Adicionar ao Estoque
                   </Typography>
                 </TableCell>
@@ -158,7 +158,7 @@ export default function AddStockForm({
                         alignItems="center"
                         justifyContent="flex-start"
                       >
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {item.name}
                         </Typography>
                         <Avatar
@@ -169,7 +169,7 @@ export default function AddStockForm({
                       </Grid>
                     </TableCell>
                     <TableCell align="right">
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         {item.quantity}
                       </Typography>
                     </TableCell>

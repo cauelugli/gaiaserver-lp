@@ -107,7 +107,7 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
                   <TableCell
                     align={headCell.label === "#" ? "" : "center"}
                     sx={{
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: "bold",
                       pl: headCell.label === "#" ? "" : 5,
                     }}

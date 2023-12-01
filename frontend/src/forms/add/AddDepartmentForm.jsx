@@ -289,7 +289,7 @@ const AddDepartmentForm = ({
             </Typography>
           </Grid>
           <Grid item>
-            <label style={{ fontSize: 14, fontFamily: "Verdana, sans-serif" }}>
+            <label style={{ fontSize: 13, fontFamily: "Verdana, sans-serif" }}>
               Novo Gerente
             </label>
             <Checkbox

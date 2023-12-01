@@ -116,11 +116,11 @@ export default function Files({ user }) {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Documentos</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Documentos</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Imagens</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Imagens</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
         </Tabs>

@@ -121,7 +121,7 @@ export default function EditProductForm({
           alignItems="center"
         >
           <Grid item>
-            <Typography sx={{ fontSize: 14 }}>Nome</Typography>
+            <Typography sx={{ fontSize: 13 }}>Nome</Typography>
             <TextField
               size="small"
               value={name}
@@ -132,7 +132,7 @@ export default function EditProductForm({
           </Grid>
 
           <Grid item sx={{ ml: 1 }}>
-            <Typography sx={{ fontSize: 14 }}>Marca</Typography>
+            <Typography sx={{ fontSize: 13 }}>Marca</Typography>
             <TextField
               size="small"
               value={brand}
@@ -144,7 +144,7 @@ export default function EditProductForm({
           </Grid>
 
           <Grid item sx={{ ml: 1 }}>
-            <Typography sx={{ fontSize: 14 }}>Tipo</Typography>
+            <Typography sx={{ fontSize: 13 }}>Tipo</Typography>
             <TextField
               size="small"
               value={type}
@@ -156,7 +156,7 @@ export default function EditProductForm({
           </Grid>
 
           <Grid item sx={{ ml: 1 }}>
-            <Typography sx={{ fontSize: 14 }}>Tamanho</Typography>
+            <Typography sx={{ fontSize: 13 }}>Tamanho</Typography>
             <TextField
               size="small"
               value={size}
@@ -168,7 +168,7 @@ export default function EditProductForm({
           </Grid>
 
           <Grid item sx={{ mx: 1 }}>
-            <Typography sx={{ fontSize: 14 }}>Modelo</Typography>
+            <Typography sx={{ fontSize: 13 }}>Modelo</Typography>
             <TextField
               size="small"
               value={model}
@@ -180,7 +180,7 @@ export default function EditProductForm({
           </Grid>
 
           <Grid item>
-            <Typography sx={{ fontSize: 14 }}>Agrupamento</Typography>
+            <Typography sx={{ fontSize: 13 }}>Agrupamento</Typography>
             <Select
               size="small"
               value={groupingType}
@@ -200,7 +200,7 @@ export default function EditProductForm({
             </Select>
           </Grid>
           <Grid item sx={{ ml: 1 }}>
-            <Typography sx={{ fontSize: 14 }}>Valor de Compra</Typography>
+            <Typography sx={{ fontSize: 13 }}>Valor de Compra</Typography>
             <TextField
               type="number"
               size="small"
@@ -225,7 +225,7 @@ export default function EditProductForm({
           </Grid>
 
           <Grid item sx={{ ml: 1 }}>
-            <Typography sx={{ fontSize: 14 }}>Valor de Venda</Typography>
+            <Typography sx={{ fontSize: 13 }}>Valor de Venda</Typography>
             <TextField
               type="number"
               size="small"

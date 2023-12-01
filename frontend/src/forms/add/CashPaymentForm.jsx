@@ -96,32 +96,32 @@ export default function CashPaymentForm({
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Valor
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Desconto?
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Valor do Desconto
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Valor Final
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Data de Pagamento
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Método de Pagamento
                   </Typography>
                 </TableCell>
@@ -155,7 +155,7 @@ export default function CashPaymentForm({
                 </TableCell>
                 <TableCell align="center">
                   <Typography
-                    sx={{ fontSize: 14 }}
+                    sx={{ fontSize: 13 }}
                     color={hasDiscount ? "darkgreen" : "#777"}
                   >
                     R$
@@ -195,14 +195,14 @@ export default function CashPaymentForm({
                     renderValue={(selected) => {
                       if (!selected) {
                         return (
-                          <Typography sx={{ fontSize: 14 }}>
+                          <Typography sx={{ fontSize: 13 }}>
                             Selecione um Método
                           </Typography>
                         );
                       }
 
                       return (
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {selected}
                         </Typography>
                       );

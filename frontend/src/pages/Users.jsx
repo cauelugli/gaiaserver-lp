@@ -231,20 +231,20 @@ export default function Users({ user }) {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Funcionários</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Funcionários</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Gerentes</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Gerentes</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Operadores</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Operadores</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
             label={
-              <Typography sx={{ fontSize: 14 }}>Perfil de Acesso</Typography>
+              <Typography sx={{ fontSize: 13 }}>Perfil de Acesso</Typography>
             }
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />

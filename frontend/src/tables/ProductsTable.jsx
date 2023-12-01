@@ -155,7 +155,7 @@ export default function ProductsTable({
                   <TableCell
                     align={headCell.label === "Nome" ? "" : "center"}
                     sx={{
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: "bold",
                       pl: headCell.label === "Nome" ? "" : 5,
                     }}
@@ -224,7 +224,7 @@ export default function ProductsTable({
                         cursor="pointer"
                         align="left"
                       >
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {product.name}
                         </Typography>
                       </TableCell>
@@ -233,7 +233,7 @@ export default function ProductsTable({
                         cursor="pointer"
                         align="center"
                       >
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {product.brand}
                         </Typography>
                       </TableCell>
@@ -242,7 +242,7 @@ export default function ProductsTable({
                         cursor="pointer"
                         align="center"
                       >
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {product.type}
                         </Typography>
                       </TableCell>
@@ -251,7 +251,7 @@ export default function ProductsTable({
                         cursor="pointer"
                         align="center"
                       >
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {product.model}
                         </Typography>
                       </TableCell>
@@ -260,7 +260,7 @@ export default function ProductsTable({
                         cursor="pointer"
                         align="center"
                       >
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {product.quantity}
                         </Typography>
                       </TableCell>

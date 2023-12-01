@@ -157,7 +157,7 @@ export default function CustomerTable({
                 <TableCell
                   align={headCell.label === "" ? "" : "left"}
                   sx={{
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: "bold",
                   }}
                   key={headCell.id}
@@ -221,7 +221,7 @@ export default function CustomerTable({
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         {customer.name}
                       </Typography>
                     </TableCell>
@@ -231,7 +231,7 @@ export default function CustomerTable({
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         {customer.phone}
                       </Typography>
                     </TableCell>
@@ -240,7 +240,7 @@ export default function CustomerTable({
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography sx={{ fontSize: 14, mt: 0.5 }}>
+                      <Typography sx={{ fontSize: 13, mt: 0.5 }}>
                         {customer.mainContactName}
                       </Typography>
                       <FormHelperText sx={{ mt: -0.5 }}>

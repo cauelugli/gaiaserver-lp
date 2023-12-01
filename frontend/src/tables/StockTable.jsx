@@ -150,7 +150,7 @@ export default function StockTable({
                   <TableCell
                     align={headCell.label === "Nome" ? "" : "center"}
                     sx={{
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: "bold",
                       pl: headCell.label === "Nome" ? "" : 5,
                     }}
@@ -220,7 +220,7 @@ export default function StockTable({
                         cursor="pointer"
                         align="left"
                       >
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {stockItem.name}
                         </Typography>
                       </TableCell>
@@ -229,7 +229,7 @@ export default function StockTable({
                         cursor="pointer"
                         align="center"
                       >
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           R${stockItem.buyValue}
                         </Typography>
                       </TableCell>
@@ -238,7 +238,7 @@ export default function StockTable({
                         cursor="pointer"
                         align="center"
                       >
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           R${stockItem.sellValue}
                         </Typography>
                       </TableCell>
@@ -247,7 +247,7 @@ export default function StockTable({
                         cursor="pointer"
                         align="center"
                       >
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {stockItem.quantity}
                         </Typography>
                       </TableCell>

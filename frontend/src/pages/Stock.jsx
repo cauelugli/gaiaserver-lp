@@ -158,15 +158,15 @@ export default function Stock({ user }) {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Produtos</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Produtos</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Materiais</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Materiais</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Entradas</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Entradas</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <RefreshButton

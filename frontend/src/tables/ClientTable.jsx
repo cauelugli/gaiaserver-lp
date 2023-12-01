@@ -160,7 +160,7 @@ export default function ClientTable({
                 <TableCell
                   align={headCell.label === "Nome" ? "" : "left"}
                   sx={{
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: "bold",
                   }}
                   key={headCell.id}
@@ -201,7 +201,7 @@ export default function ClientTable({
                       cursor="pointer"
                       align="left"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         {client.name}
                       </Typography>
                     </TableCell>
@@ -209,7 +209,7 @@ export default function ClientTable({
                       onClick={() => handleOpenDetail(client)}
                       cursor="pointer"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         {client.email}
                       </Typography>
                     </TableCell>
@@ -217,7 +217,7 @@ export default function ClientTable({
                       onClick={() => handleOpenDetail(client)}
                       cursor="pointer"
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         {client.phone}
                       </Typography>
                     </TableCell>

@@ -132,7 +132,7 @@ export default function ServiceTable({
                   <TableCell
                     align={headCell.label === "Nome" ? "" : "center"}
                     sx={{
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: "bold",
                       pl: headCell.label === "Nome" ? "" : 5,
                     }}
@@ -174,7 +174,7 @@ export default function ServiceTable({
                         cursor="pointer"
                         // align="left"
                       >
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {service.name}
                         </Typography>
                       </TableCell>
@@ -183,7 +183,7 @@ export default function ServiceTable({
                         cursor="pointer"
                         align="center"
                       >
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {service.department ? (
                             <Grid container direction="row" alignItems="center" justifyContent="center">
                               <Paper

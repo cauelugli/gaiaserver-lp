@@ -128,7 +128,7 @@ export default function FinanceOutcomeTable({
                   <TableCell
                     align={headCell.label === "Nome do Cargo" ? "" : "center"}
                     sx={{
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: "bold",
                       pl: headCell.label === "Nome do Cargo" ? "" : 5,
                     }}
@@ -168,12 +168,12 @@ export default function FinanceOutcomeTable({
                       }}
                     >
                       <TableCell cursor="pointer">
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {position.name}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {position.members.length}
                         </Typography>
                       </TableCell>

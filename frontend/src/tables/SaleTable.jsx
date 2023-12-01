@@ -150,7 +150,7 @@ export default function SaleTable({
           checked={showCompletedSales}
           onChange={handleChangeShowCompletedSales}
         />
-        <Typography sx={{ fontSize: 14, mt: 1.5, ml:-1 }}>
+        <Typography sx={{ fontSize: 13, mt: 1.5, ml:-1 }}>
           Mostrar Vendas Concluídas
         </Typography>
       </Box>{" "}
@@ -166,7 +166,7 @@ export default function SaleTable({
                 <TableCell
                   align={headCell.label === "Solicitante" ? "" : "center"}
                   sx={{
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: "bold",
                     pl: headCell.label === "Solicitante" ? "" : 5,
                   }}
@@ -287,7 +287,7 @@ export default function SaleTable({
                           />
                         </Grid>
                         <Grid item>
-                          <Typography sx={{ mt: 1, fontSize: 14 }}>
+                          <Typography sx={{ mt: 1, fontSize: 13 }}>
                             {sale.seller.name}
                           </Typography>
                         </Grid>
@@ -376,7 +376,7 @@ export default function SaleTable({
                                     </Grid>
                                     <Grid item>
                                       <Typography
-                                        sx={{ mt: 0.75, fontSize: 14 }}
+                                        sx={{ mt: 0.75, fontSize: 13 }}
                                       >
                                         {sale.seller.name}
                                       </Typography>

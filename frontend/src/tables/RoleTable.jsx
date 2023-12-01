@@ -148,7 +148,7 @@ export default function RoleTable({
                 <TableCell
                   align={headCell.label === "Nome" ? "" : "center"}
                   sx={{
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: "bold",
                     pl: headCell.label === "Nome" ? "" : 5,
                   }}
@@ -188,7 +188,7 @@ export default function RoleTable({
                       onClick={() => handleOpenDetail(row)}
                       cursor="pointer"
                     >
-                      <Typography sx={{ fontSize: 14 }}>{row.name}</Typography>
+                      <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
                     </TableCell>
                     <TableCell align="center" sx={{ py: 0 }}>
                       <Grid

@@ -157,7 +157,7 @@ export default function OperatorTable({
                   <TableCell
                     align={headCell.label === "Nome" ? "" : "center"}
                     sx={{
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: "bold",
                       pl: headCell.label === "Nome" ? "" : 5,
                     }}
@@ -210,17 +210,17 @@ export default function OperatorTable({
                         />
                       </TableCell>
                       <TableCell cursor="pointer">
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {row.name}
                         </Typography>
                       </TableCell>
                       <TableCell cursor="pointer" align="center">
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {row.username}
                         </Typography>
                       </TableCell>
                       <TableCell cursor="pointer" align="center">
-                        <Typography sx={{ fontSize: 14 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {row.role}
                         </Typography>
                       </TableCell>

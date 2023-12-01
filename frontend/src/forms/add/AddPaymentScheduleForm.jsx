@@ -26,6 +26,9 @@ import {
   Typography,
 } from "@mui/material";
 
+import { IMaskInput } from "react-imask";
+import dayjs from "dayjs";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const api = axios.create({
@@ -46,9 +49,14 @@ export default function AddPaymentScheduleForm({
   const [paymentDates, setPaymentDates] = React.useState({});
   const [commonDay, setCommonDay] = React.useState(0);
   const parcels = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  const [parcelQuantity, setParcelQuantity] = React.useState(2);
+  const [parcelQuantity, setParcelQuantity] = React.useState(1);
   const [hasParcelMonthlyFee, setHasParcelMonthlyFee] = React.useState(false);
   const [parcelMonthlyFee, setParcelMonthlyFee] = React.useState(2.99);
+  const [hasDiscount, setHasDiscount] = React.useState(false);
+  const [discount, setDiscount] = React.useState(10);
+  const [cashPaymentDate, setCashPaymentDate] = React.useState(
+    dayjs().format("DD/MM/YYYY")
+  );
 
   const handleEdit = async (e) => {
     e.preventDefault();
@@ -64,13 +72,23 @@ export default function AddPaymentScheduleForm({
         parcelValue: hasParcelMonthlyFee
           ? (previousData.price / parcelQuantity) * (1 + parcelMonthlyFee / 100)
           : previousData.price / parcelQuantity,
-        finalPrice: hasParcelMonthlyFee
+        finalPrice: hasDiscount
+          ? (
+              (previousData.price / parcelQuantity) *
+              (1 + parcelMonthlyFee / 100) *
+              parcelQuantity *
+              (1 - discount / 100)
+            ).toFixed(2)
+          : hasParcelMonthlyFee
           ? (
               (previousData.price / parcelQuantity) *
               (1 + parcelMonthlyFee / 100) *
               parcelQuantity
             ).toFixed(2)
-          : previousData.price,
+          : previousData.price.toFixed(2),
+        hasDiscount,
+        discount,
+        cashPaymentDate,
         previousData,
       });
       if (res.data) {
@@ -155,17 +173,17 @@ export default function AddPaymentScheduleForm({
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Orçamento
                   </Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Serviço
                   </Typography>
                 </TableCell>
                 <TableCell align="left">
-                  <Typography sx={{ fontSize: 14, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Departamento
                   </Typography>
                 </TableCell>
@@ -200,54 +218,147 @@ export default function AddPaymentScheduleForm({
             <FormControlLabel
               value="A vista"
               control={<Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />}
-              label={<Typography sx={{ fontSize: 14 }}>A vista</Typography>}
+              label={<Typography sx={{ fontSize: 13 }}>A vista</Typography>}
             />
             <FormControlLabel
               value="Parcelado"
               control={<Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />}
-              label={<Typography sx={{ fontSize: 14 }}>Parcelado</Typography>}
+              label={<Typography sx={{ fontSize: 13 }}>Parcelado</Typography>}
             />
           </RadioGroup>
         </Grid>
 
         {paymentOption === "A vista" && (
-          <>
-            <Grid item sx={{ mb: 2, mr: 4 }}>
-              <Typography sx={{ mb: 1 }}>Método de Pagamento</Typography>
-              <Select
-                size="small"
-                value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value)}
-                displayEmpty
-              >
-                <MenuItem disabled value={""}>
-                  <Typography sx={{ fontSize: 14 }}>
-                    Selecione um Método
-                  </Typography>
-                </MenuItem>
-                <MenuItem value={"Dinheiro"}>
-                  <Typography sx={{ fontSize: 14 }}>Dinheiro</Typography>
-                </MenuItem>
-                <MenuItem value={"Cartão de Débito"}>
-                  <Typography sx={{ fontSize: 14 }}>
-                    Cartão de Débito
-                  </Typography>
-                </MenuItem>
-                <MenuItem value={"Cartão de Crédito"}>
-                  <Typography sx={{ fontSize: 14 }}>
-                    Cartão de Crédito
-                  </Typography>
-                </MenuItem>
-                <MenuItem value={"Boleto"}>
-                  <Typography sx={{ fontSize: 14 }}>Boleto</Typography>
-                </MenuItem>
-                <MenuItem value={"Pix"}>
-                  <Typography sx={{ fontSize: 14 }}>Pix</Typography>
-                </MenuItem>
-              </Select>
-            </Grid>
-            {paymentMethod && <p>date</p>}
-          </>
+          <Box sx={{ px: 3 }}>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <Typography sx={{ fontSize: 13, color: "#777" }}>
+                      Valor
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="left">
+                    <Typography sx={{ fontSize: 13, color: "#777" }}>
+                      Método de Pagamento
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="left">
+                    <Typography sx={{ fontSize: 13, color: "#777" }}>
+                      Data de Pagamento
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="left">
+                    <Typography sx={{ fontSize: 13, color: "#777" }}>
+                      Desconto?
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="left">
+                    <Typography sx={{ fontSize: 13, color: "#777" }}>
+                      Taxa de Desconto
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="left">
+                    <Typography sx={{ fontSize: 13, color: "#777" }}>
+                      Valor Final
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    <Typography>R${previousData.price.toFixed(2)}</Typography>
+                  </TableCell>
+                  <TableCell align="left">
+                    <Select
+                      size="small"
+                      value={paymentMethod}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      displayEmpty
+                      required
+                    >
+                      <MenuItem disabled value={""}>
+                        <Typography sx={{ fontSize: 13 }}>
+                          Selecione um Método
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem value={"Dinheiro"}>
+                        <Typography sx={{ fontSize: 13 }}>Dinheiro</Typography>
+                      </MenuItem>
+                      <MenuItem value={"Cartão de Débito"}>
+                        <Typography sx={{ fontSize: 13 }}>
+                          Cartão de Débito
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem value={"Cartão de Crédito"}>
+                        <Typography sx={{ fontSize: 13 }}>
+                          Cartão de Crédito
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem value={"Boleto"}>
+                        <Typography sx={{ fontSize: 13 }}>Boleto</Typography>
+                      </MenuItem>
+                      <MenuItem value={"Pix"}>
+                        <Typography sx={{ fontSize: 13 }}>Pix</Typography>
+                      </MenuItem>
+                    </Select>
+                  </TableCell>
+                  <TableCell align="center">
+                    <IMaskInput
+                      style={{
+                        width: 100,
+                        padding: "1%",
+                        marginRight: "4%",
+                        marginTop: "1%",
+                        borderColor: "#eee",
+                        borderRadius: 4,
+                      }}
+                      mask="00/00/0000"
+                      definitions={{
+                        "#": /[1-9]/,
+                      }}
+                      onAccept={(value) => setCashPaymentDate(value)}
+                      overwrite
+                      value={cashPaymentDate}
+                    />
+                  </TableCell>
+                  <TableCell align="left">
+                    <Switch
+                      size="small"
+                      checked={hasDiscount}
+                      onChange={(e) => setHasDiscount(e.target.checked)}
+                    />
+                  </TableCell>
+                  <TableCell align="left">
+                    <OutlinedInput
+                      size="small"
+                      disabled={!hasDiscount}
+                      sx={{ width: 80 }}
+                      value={discount}
+                      onChange={(e) => setDiscount(e.target.value)}
+                      endAdornment={
+                        <InputAdornment position="end" sx={{ mx: -0.8 }}>
+                          %
+                        </InputAdornment>
+                      }
+                    />{" "}
+                  </TableCell>
+                  <TableCell align="left">
+                    <Typography>
+                      R$
+                      {hasDiscount
+                        ? (
+                            previousData.price -
+                            previousData.price * (discount / 100)
+                          ).toFixed(2)
+                        : previousData.price.toFixed(2)}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Box>
         )}
         {paymentOption === "Parcelado" && (
           <>
@@ -256,32 +367,32 @@ export default function AddPaymentScheduleForm({
                 <TableHead>
                   <TableRow>
                     <TableCell>
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Valor
                       </Typography>
                     </TableCell>
                     <TableCell align="left">
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Método de Pagamento
                       </Typography>
                     </TableCell>
                     <TableCell align="left">
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Quantidade de Parcelas
                       </Typography>
                     </TableCell>
                     <TableCell align="left">
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Juros Mensais?
                       </Typography>
                     </TableCell>
                     <TableCell align="left">
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Alíquota
                       </Typography>
                     </TableCell>
                     <TableCell align="left">
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Valor Final
                       </Typography>
                     </TableCell>
@@ -301,17 +412,17 @@ export default function AddPaymentScheduleForm({
                         required
                       >
                         <MenuItem disabled value={""}>
-                          <Typography sx={{ fontSize: 14 }}>
+                          <Typography sx={{ fontSize: 13 }}>
                             Selecione um Método
                           </Typography>
                         </MenuItem>
                         <MenuItem value={"Cartão de Crédito"}>
-                          <Typography sx={{ fontSize: 14 }}>
+                          <Typography sx={{ fontSize: 13 }}>
                             Cartão de Crédito
                           </Typography>
                         </MenuItem>
                         <MenuItem value={"Boleto"}>
-                          <Typography sx={{ fontSize: 14 }}>Boleto</Typography>
+                          <Typography sx={{ fontSize: 13 }}>Boleto</Typography>
                         </MenuItem>
                       </Select>
                     </TableCell>
@@ -330,7 +441,7 @@ export default function AddPaymentScheduleForm({
 
                           return (
                             <MenuItem key={numParcels} value={numParcels}>
-                              <Typography sx={{ fontSize: 14 }}>
+                              <Typography sx={{ fontSize: 13 }}>
                                 {`${numParcels}x`} de R${value.toFixed(2)}
                               </Typography>
                             </MenuItem>
@@ -387,12 +498,12 @@ export default function AddPaymentScheduleForm({
                 <TableHead>
                   <TableRow>
                     <TableCell>
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Dia do Mês
                       </Typography>
                     </TableCell>
                     <TableCell align="left">
-                      <Typography sx={{ fontSize: 14, color: "#777" }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
                         Datas
                       </Typography>
                     </TableCell>
@@ -459,7 +570,7 @@ export default function AddPaymentScheduleForm({
                                   py: 1,
                                   border: "1px solid #ccc",
                                   borderRadius: 1,
-                                  fontSize: 14,
+                                  fontSize: 13,
                                 }}
                               >
                                 {`${parseInt(key, 10) + 1}ª Parcela`} :{" "}
@@ -509,7 +620,7 @@ export default function AddPaymentScheduleForm({
                                   }}
                                   disabled={isDisabled}
                                   renderValue={(selected) => (
-                                    <Typography sx={{ fontSize: 14 }}>
+                                    <Typography sx={{ fontSize: 13 }}>
                                       {selected || "Selecione uma Data"}
                                     </Typography>
                                   )}
@@ -542,7 +653,7 @@ export default function AddPaymentScheduleForm({
                                           key={dayIndex}
                                           value={optionValue}
                                         >
-                                          <Typography sx={{ fontSize: 14 }}>
+                                          <Typography sx={{ fontSize: 13 }}>
                                             {optionValue}
                                           </Typography>
                                         </MenuItem>

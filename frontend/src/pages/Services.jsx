@@ -197,15 +197,15 @@ export default function Services({ user }) {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Setores</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Setores</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Consultoria</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Consultoria</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={<Typography sx={{ fontSize: 14 }}>Planos</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Planos</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <RefreshButton
