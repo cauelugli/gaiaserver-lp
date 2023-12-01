@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const Customer = require("../models/Customer");
+const Client = require("../models/Client");
 const Job = require("../models/Job");
 const StockItem = require("../models/StockItem");
 const Quote = require("../models/Quote");
@@ -51,6 +53,34 @@ router.post("/", async (req, res) => {
       materialsCost: req.body.materialsCost,
     });
     const savedQuote = await newQuote.save();
+
+    const recentRequestData = {
+      number: savedQuote.number,
+      type: savedQuote.type,
+      date: savedQuote.createdAt,
+      requester: req.body.requester,
+    };
+
+    let updatedClient;
+    let updatedCustomer;
+
+    if (req.body.customer.type === "Client") {
+      updatedClient = await Client.findByIdAndUpdate(
+        req.body.customer.id,
+        {
+          $push: { recentRequests: recentRequestData },
+        },
+        { new: true }
+      );
+    } else if (req.body.customer.type === "Customer") {
+      updatedCustomer = await Customer.findByIdAndUpdate(
+        req.body.customer.id,
+        {
+          $push: { recentRequests: recentRequestData },
+        },
+        { new: true }
+      );
+    }
 
     const doc = new PDFDocument();
 
@@ -124,7 +154,9 @@ router.post("/", async (req, res) => {
 
     doc.end();
 
-    res.status(200).json({ savedRequest, savedQuote });
+    res
+      .status(200)
+      .json({ savedRequest, savedQuote, updatedClient, updatedCustomer });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

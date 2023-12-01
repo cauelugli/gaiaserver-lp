@@ -50,6 +50,9 @@ const customerSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  recentRequests: {
+    type: Array,
+  },
 });
 
 const Customer = mongoose.model("Customer", customerSchema);

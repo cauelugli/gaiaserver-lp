@@ -425,6 +425,13 @@ export default function CustomerTable({
                                     Orçamento
                                   </Typography>
                                 </TableCell>
+                                <TableCell align="left">
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Título
+                                  </Typography>
+                                </TableCell>
                                 <TableCell>
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
@@ -432,7 +439,6 @@ export default function CustomerTable({
                                     Tipo de Pedido
                                   </Typography>
                                 </TableCell>
-
                                 <TableCell>
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
@@ -440,7 +446,6 @@ export default function CustomerTable({
                                     Solicitado em
                                   </Typography>
                                 </TableCell>
-
                                 <TableCell>
                                   <Typography
                                     sx={{ fontSize: "14px", color: "#777" }}
@@ -448,52 +453,48 @@ export default function CustomerTable({
                                     Solicitado por
                                   </Typography>
                                 </TableCell>
-
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Concluido em
-                                  </Typography>
-                                </TableCell>
-
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Concluido por
-                                  </Typography>
-                                </TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
-                              <TableRow>
-                                {/* <TableRow
-                                key
-                                sx={{
-                                  backgroundColor:
-                                    interaction.number % 2 === 0 ? "#eee" : "white",
-                                }}
-                              > */}
-                                <TableCell>
-                                  <Typography>1234</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>Job ou Venda</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>10/04/1991</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>Maximiliano Guimarães</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>10/04/1991</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography>Maximiliano Guimarães</Typography>
-                                </TableCell>
-                              </TableRow>
+                              {customer.recentRequests.map((item, index) => (
+                                <TableRow
+                                  key={index}
+                                  sx={{
+                                    backgroundColor:
+                                      index % 2 === 0 ? "#eee" : "white",
+                                  }}
+                                >
+                                  <TableCell>
+                                    <Typography>{item.number}</Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography>
+                                      {item.title || "Venda"}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography>
+                                      {item.type.charAt(0).toUpperCase() +
+                                        item.type.slice(1)}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography>
+                                      {new Date(item.date).toLocaleDateString(
+                                        "pt-BR",
+                                        {
+                                          day: "2-digit",
+                                          month: "2-digit",
+                                          year: "numeric",
+                                        }
+                                      )}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography>{item.requester}</Typography>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
                             </TableBody>
                           </Table>
                         </Box>

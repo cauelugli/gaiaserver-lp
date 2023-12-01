@@ -41,6 +41,9 @@ const clientSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  recentRequests: {
+    type: Array,
+  },
 });
 
 const Client = mongoose.model("Client", clientSchema);

@@ -136,6 +136,7 @@ const AddJobForm = ({
           id: customer._id,
           name: customer.name,
           cnpj: customer.cnpj || "",
+          type: customer.cnpj ? "Customer" : "Client",
         },
         requester,
         department: {
@@ -354,11 +355,7 @@ const AddJobForm = ({
               sx={{ minWidth: "200px" }}
             >
               {departments.map((item) => (
-                <MenuItem
-                  value={item}
-                  key={item.id}
-                  
-                >
+                <MenuItem value={item} key={item.id}>
                   <Grid container direction="row">
                     <Paper
                       elevation={0}
