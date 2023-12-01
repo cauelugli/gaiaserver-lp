@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import { Grid } from "@mui/material";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 import UserButton from "./small/buttons/UserButton";
 
@@ -12,7 +13,7 @@ export default function NavBar({ user }) {
       container
       direction="row"
       alignItems="center"
-      justifyContent="space-between"
+      justifyContent="flex-start"
       sx={{ backgroundColor: "#32aacd" }}
     >
       <img
@@ -21,12 +22,14 @@ export default function NavBar({ user }) {
         style={{
           width: "8%",
           marginLeft: 30,
+          marginRight: "83%",
           marginTop: 2,
           marginBottom: 2,
           cursor: "pointer",
         }}
         onClick={() => alert("Esse é o logo da sua empresa!")}
       />
+      <NotificationsIcon sx={{ mr: 2, color:"#333" }} />
       <UserButton user={user} />
     </Grid>
   );
