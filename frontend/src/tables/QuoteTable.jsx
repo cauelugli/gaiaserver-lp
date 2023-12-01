@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import { Worker, Viewer } from "@react-pdf-viewer/core";
 
 import {
   Box,
@@ -16,6 +17,11 @@ import {
   TableSortLabel,
   IconButton,
   TablePagination,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
 } from "@mui/material";
 
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
@@ -142,6 +148,18 @@ export default function QuoteTable({
     });
   }, [quotes, order, orderBy]);
 
+  const [viewDialogOpen, setViewDialogOpen] = React.useState(false);
+  const [pdfUrl, setPdfUrl] = React.useState("");
+
+  const openViewDialog = (file) => {
+    setPdfUrl(`http://localhost:3000/static/docs/orcamento-j-${file.number}.pdf`);
+    setViewDialogOpen(true);
+  };
+
+  const closeViewDialog = () => {
+    setViewDialogOpen(false);
+  };
+
   return (
     <Box>
       <TableContainer component={Paper}>
@@ -257,7 +275,7 @@ export default function QuoteTable({
                         <IconButton>
                           <PictureAsPdfIcon
                             cursor="pointer"
-                            // onClick={() => handleOpenPDF(quote)}
+                            onClick={() => openViewDialog(quote)}
                             sx={{ color: "#444" }}
                           />
                         </IconButton>
@@ -281,6 +299,29 @@ export default function QuoteTable({
           }}
         />
       </TableContainer>
+      <Dialog
+        open={viewDialogOpen}
+        onClose={closeViewDialog}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>Visualização do Orçamento</DialogTitle>
+        <DialogContent>
+          <Box style={{ height: "600px" }}>
+            <Worker
+              workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+            >
+              <Viewer fileUrl={pdfUrl} />
+            </Worker>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeViewDialog} color="primary">
+            Fechar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
+    
   );
 }
