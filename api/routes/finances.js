@@ -58,6 +58,7 @@ router.put("/status", async (req, res) => {
 router.put("/schedulePayment", async (req, res) => {
   const paymentDates = req.body.paymentDates;
   const parcelValue = req.body.parcelValue;
+  const paymentOption = req.body.paymentOption;
   const finalPrice = req.body.finalPrice;
   const previousData = req.body.previousData;
 
@@ -79,8 +80,8 @@ router.put("/schedulePayment", async (req, res) => {
       payment.paymentDates[key] = {
         date: date,
         parcelValue: paymentOption
-          ? finalPrice.toFixed(2)
-          : parcelValue.toFixed(2),
+          ? parseInt(finalPrice).toFixed(2)
+          : parseInt(parcelValue).toFixed(2),
         status: "Em Aberto",
         paymentMethod: "",
         paidAt: "",

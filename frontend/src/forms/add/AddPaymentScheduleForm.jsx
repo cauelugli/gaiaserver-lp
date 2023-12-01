@@ -304,7 +304,7 @@ export default function AddPaymentScheduleForm({
                       </MenuItem>
                     </Select>
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="left">
                     <IMaskInput
                       style={{
                         width: 100,

@@ -507,13 +507,9 @@ export default function FinanceIncomeTable({
                               </Tooltip>
                             </Grid>
                           )}
-                        {income.payment && income.status !== "Pago" && (
-                          <Grid
-                            container
-                            direction="row"
-                            justifyContent="center"
-                            alignItems="center"
-                          >
+                        {income.payment &&
+                          income.payment.paymentDates &&
+                          income.status !== "Pago" && (
                             <Tooltip
                               title={
                                 <Typography sx={{ fontSize: 12 }}>
@@ -532,11 +528,14 @@ export default function FinanceIncomeTable({
                                 </IconButton>
                               </span>
                             </Tooltip>
-
+                          )}
+                        {income.status !== "Pago" &&
+                          income.payment &&
+                          !income.payment.paymentDates && (
                             <Tooltip
                               title={
                                 <Typography sx={{ fontSize: 12 }}>
-                                  Receber Pagamento
+                                  Receber a Vista
                                 </Typography>
                               }
                             >
@@ -544,15 +543,14 @@ export default function FinanceIncomeTable({
                                 <IconButton>
                                   <AttachMoneyIcon
                                     cursor="pointer"
-                                    // onClick={() =>
-                                    //   handleOpenAddSchedulePayment(income)
-                                    // }
+                                    onClick={() =>
+                                      handleOpenAddCashPayment(income)
+                                    }
                                   />
                                 </IconButton>
                               </span>
                             </Tooltip>
-                          </Grid>
-                        )}
+                          )}
                         {income.status === "Pago" && (
                           <Tooltip
                             title={
