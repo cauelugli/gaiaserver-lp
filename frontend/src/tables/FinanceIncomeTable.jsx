@@ -259,7 +259,7 @@ export default function FinanceIncomeTable({
                             ` | ` +
                             income.payment.paymentMethod
                           ) : (
-                            "Não há Agendamento"
+                            "Não Realizado"
                           )}
                           {}
                         </Typography>
@@ -447,7 +447,8 @@ export default function FinanceIncomeTable({
 
                       <TableCell align="center">
                         <Typography sx={{ fontSize: 13 }}>
-                          R${income.finalPrice}
+                          R$
+                          {income.finalPrice ? income.finalPrice : income.price}
                         </Typography>
                       </TableCell>
 

@@ -51,24 +51,6 @@ router.post("/", async (req, res) => {
       materialsCost: req.body.materialsCost,
     });
     const savedQuote = await newQuote.save();
-    const newIncome = new FinanceIncome({
-      quote: savedQuote.number,
-      title: req.body.title,
-      customer: req.body.customer.name,
-      department: req.body.department.name,
-      user: req.body.worker.name,
-      service: req.body.service.name,
-      type: "job",
-      commissioned: req.body.commissioned,
-      commission: req.body.commission,
-      items: req.body.materials,
-      scheduledTo: req.body.scheduledTo,
-      executedAt: "",
-      paidAt: "",
-      commentary: "",
-      price: req.body.price,
-    });
-    const savedIncome = await newIncome.save();
 
     const doc = new PDFDocument();
 
@@ -205,7 +187,7 @@ router.put("/", async (req, res) => {
               itemId: jobId,
               sender: worker,
               receiver: manager,
-              body: `Olá ${manager.name}! O(a) colaborador(a) ${worker.name} solicitou aprovação para o job "${req.body.job.title}" em ${req.body.date}.`,
+              body: `Olá ${manager.name}! ${worker.name} está solicitando aprovação para o job "${req.body.job.title}" em ${req.body.date}.`,
               sentDate: req.body.date,
             },
           },
@@ -326,6 +308,24 @@ router.put("/", async (req, res) => {
         },
         { new: true }
       );
+      const newIncome = new FinanceIncome({
+        quote: updatedJob.quoteNumber,
+        title: updatedJob.title,
+        customer: updatedJob.customer.name,
+        department: updatedJob.department.name,
+        user: updatedJob.worker.name,
+        service: updatedJob.service.name,
+        type: "job",
+        commissioned: updatedJob.commissioned,
+        commission: updatedJob.commission,
+        items: updatedJob.materials,
+        scheduledTo: updatedJob.scheduledTo,
+        resolvedAt: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
+        paidAt: "",
+        commentary: "",
+        price: updatedJob.price,
+      });
+      const savedIncome = await newIncome.save();
 
       res.status(200).json(updatedJob);
     } else {
