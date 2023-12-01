@@ -197,7 +197,7 @@ export default function ServiceTable({
                                   backgroundColor: service.department.color,
                                 }}
                               />
-                              <Typography>{service.department.name}</Typography>
+                              <Typography sx={{fontSize:13}}>{service.department.name}</Typography>
                             </Grid>
                           ) : (
                             "-"
