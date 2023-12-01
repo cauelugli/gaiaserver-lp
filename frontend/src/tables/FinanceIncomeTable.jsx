@@ -87,11 +87,7 @@ export default function FinanceIncomeTable({
     },
     {
       id: "price",
-      label: "Valor Inicial",
-    },
-    {
-      id: "finalPrice",
-      label: "Valor Final",
+      label: "Valor",
     },
     {
       id: "status",
@@ -261,7 +257,6 @@ export default function FinanceIncomeTable({
                           ) : (
                             "Não Realizado"
                           )}
-                          {}
                         </Typography>
                         {income.payment &&
                           income.payment.paymentOption === "Parcelado" &&
@@ -444,14 +439,6 @@ export default function FinanceIncomeTable({
                           R${income.price}
                         </Typography>
                       </TableCell>
-
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          R$
-                          {income.finalPrice ? income.finalPrice : income.price}
-                        </Typography>
-                      </TableCell>
-
                       <TableCell align="center">
                         <Typography sx={{ fontSize: 13 }}>
                           {!income.payment

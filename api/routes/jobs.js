@@ -124,7 +124,7 @@ router.post("/", async (req, res) => {
 
     doc.end();
 
-    res.status(200).json({ savedRequest, savedQuote, savedIncome });
+    res.status(200).json({ savedRequest, savedQuote });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

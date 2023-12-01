@@ -86,8 +86,8 @@ export default function AddPaymentScheduleForm({
               parcelQuantity
             ).toFixed(2)
           : previousData.price.toFixed(2),
-        hasDiscount,
-        discount,
+        // hasDiscount,
+        // discount,
         cashPaymentDate,
         previousData,
       });
@@ -216,9 +216,9 @@ export default function AddPaymentScheduleForm({
             onChange={(e) => setPaymentOption(e.target.value)}
           >
             <FormControlLabel
-              value="A vista"
+              value="Parcela Única"
               control={<Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />}
-              label={<Typography sx={{ fontSize: 13 }}>A vista</Typography>}
+              label={<Typography sx={{ fontSize: 13 }}>Parcela Única</Typography>}
             />
             <FormControlLabel
               value="Parcelado"
@@ -228,7 +228,7 @@ export default function AddPaymentScheduleForm({
           </RadioGroup>
         </Grid>
 
-        {paymentOption === "A vista" && (
+        {paymentOption === "Parcela Única" && (
           <Box sx={{ px: 3 }}>
             <Table size="small">
               <TableHead>

@@ -57,48 +57,54 @@ router.put("/status", async (req, res) => {
 // UPDATE SCHEDULE PAYMENT DATE
 router.put("/schedulePayment", async (req, res) => {
   const paymentDates = req.body.paymentDates;
-  const parcelValue = req.body.parcelValue;
-  const paymentOption = req.body.paymentOption;
-  const finalPrice = req.body.finalPrice;
-  const previousData = req.body.previousData;
 
   try {
-    const payment = {
-      paymentMethod: req.body.paymentMethod,
-      paymentOption: req.body.paymentOption,
-      parcelQuantity: req.body.parcelQuantity,
-      hasParcelMonthlyFee: req.body.hasParcelMonthlyFee,
-      parcelMonthlyFee: req.body.parcelMonthlyFee,
-      hasDiscount: req.body.hasDiscount,
-      discount: req.body.discount,
-      finalPrice: parseInt(req.body.finalPrice),
-      paymentDates: {},
-    };
-
-    for (const key in paymentDates) {
-      const date = paymentDates[key];
-      payment.paymentDates[key] = {
-        date: date,
-        parcelValue: paymentOption
-          ? parseInt(finalPrice).toFixed(2)
-          : parseInt(parcelValue).toFixed(2),
+    let payment = {};
+  
+    if (req.body.paymentOption === "A vista") {
+      payment = {
+        date: req.body.cashPaymentDate,
+        price: req.body.finalPrice,
+        parcelValue: req.body.parcelValue.toFixed(2),
         status: "Em Aberto",
-        paymentMethod: "",
+        paymentMethod: req.body.paymentMethod,
+        paymentOption: req.body.paymentOption,
         paidAt: "",
       };
+    } else {
+      payment = {
+        paymentMethod: req.body.paymentMethod,
+        paymentOption: req.body.paymentOption,
+        parcelQuantity: req.body.parcelQuantity,
+        hasParcelMonthlyFee: req.body.hasParcelMonthlyFee,
+        parcelMonthlyFee: req.body.parcelMonthlyFee,
+        hasDiscount: req.body.hasDiscount,
+        discount: req.body.discount,
+        finalPrice: req.body.finalPrice,
+        paymentDates: {},
+      };
+  
+      for (const key in paymentDates) {
+        const date = paymentDates[key];
+        payment.paymentDates[key] = {
+          date: date,
+          parcelValue: req.body.parcelValue.toFixed(2),
+          status: "Em Aberto",
+          paymentMethod: "",
+          paidAt: "",
+        };
+      }
     }
-
+  
     const scheduledPayment = await FinanceIncome.findByIdAndUpdate(
       req.body.id,
       {
         payment: payment,
         status: "Agendado",
-        finalPrice:
-          finalPrice !== previousData.price ? finalPrice : previousData.price,
       },
       { new: true }
     );
-
+  
     res.status(200).json(scheduledPayment);
   } catch (err) {
     console.log(err);
@@ -110,7 +116,6 @@ router.put("/schedulePayment", async (req, res) => {
 router.put("/receivePayment/parcel", async (req, res) => {
   try {
     const { id, paymentData } = req.body;
-
     // Busque o financeIncome pelo ID
     const financeIncome = await FinanceIncome.findById(id);
 
