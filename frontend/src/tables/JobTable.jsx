@@ -96,7 +96,7 @@ export default function JobTable({
   ];
 
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("scheduledTo");
+  const [orderBy, setOrderBy] = React.useState("status");
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";

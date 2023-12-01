@@ -69,7 +69,6 @@ export default function Requests({ user }) {
         { value: "createdBy", label: "Criado por" },
         { value: "worker.name", label: "Designado" },
         { value: "scheduledTo", label: "Data do Agendamento" },
-        { value: "status", label: "Status" },
       ],
     },
     {
@@ -79,7 +78,6 @@ export default function Requests({ user }) {
         { value: "createdBy", label: "Criado por" },
         { value: "seller.name", label: "Vendedor" },
         { value: "deliveryScheduledTo", label: "Data de Entrega" },
-        { value: "status", label: "Status" },
       ],
     },
   ];
