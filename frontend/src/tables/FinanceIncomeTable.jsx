@@ -100,7 +100,7 @@ export default function FinanceIncomeTable({
   ];
 
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("quote");
+  const [orderBy, setOrderBy] = React.useState("status");
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -197,6 +197,11 @@ export default function FinanceIncomeTable({
               </TableRow>
               {sortedRows
                 .slice(startIndex, endIndex)
+                // .filter((user) =>
+                //   user[searchOption]
+                //     .toLowerCase()
+                //     .includes(searchValue.toLowerCase())
+                // )
                 .filter((income) => {
                   if (!income) return false;
                   const userProperty = searchOption
@@ -302,7 +307,7 @@ export default function FinanceIncomeTable({
                                   </Typography>
                                   {income.payment.hasParcelMonthlyFee && (
                                     <FormHelperText
-                                      sx={{ fontSize: 11, my: -0.5, ml:2 }}
+                                      sx={{ fontSize: 11, my: -0.5, ml: 2 }}
                                     >
                                       (Juros Mensais de{" "}
                                       <strong>
@@ -451,51 +456,52 @@ export default function FinanceIncomeTable({
                       </TableCell>
 
                       <TableCell align="center" sx={{ py: 0 }}>
-                        {!income.payment && income.status === "Aguardando Agendamento" && (
-                          <Grid
-                            container
-                            direction="row"
-                            justifyContent="center"
-                            alignItems="center"
-                          >
-                            <Tooltip
-                              title={
-                                <Typography sx={{ fontSize: 12 }}>
-                                  Agendar Pagamento
-                                </Typography>
-                              }
+                        {!income.payment &&
+                          income.status === "Aguardando Agendamento" && (
+                            <Grid
+                              container
+                              direction="row"
+                              justifyContent="center"
+                              alignItems="center"
                             >
-                              <span>
-                                <IconButton>
-                                  <CalendarMonthIcon
-                                    cursor="pointer"
-                                    onClick={() =>
-                                      handleOpenAddSchedulePayment(income)
-                                    }
-                                  />
-                                </IconButton>
-                              </span>
-                            </Tooltip>
-                            <Tooltip
-                              title={
-                                <Typography sx={{ fontSize: 12 }}>
-                                  Receber a Vista
-                                </Typography>
-                              }
-                            >
-                              <span>
-                                <IconButton>
-                                  <AttachMoneyIcon
-                                    cursor="pointer"
-                                    onClick={() =>
-                                      handleOpenAddCashPayment(income)
-                                    }
-                                  />
-                                </IconButton>
-                              </span>
-                            </Tooltip>
-                          </Grid>
-                        )}
+                              <Tooltip
+                                title={
+                                  <Typography sx={{ fontSize: 12 }}>
+                                    Agendar Pagamento
+                                  </Typography>
+                                }
+                              >
+                                <span>
+                                  <IconButton>
+                                    <CalendarMonthIcon
+                                      cursor="pointer"
+                                      onClick={() =>
+                                        handleOpenAddSchedulePayment(income)
+                                      }
+                                    />
+                                  </IconButton>
+                                </span>
+                              </Tooltip>
+                              <Tooltip
+                                title={
+                                  <Typography sx={{ fontSize: 12 }}>
+                                    Receber a Vista
+                                  </Typography>
+                                }
+                              >
+                                <span>
+                                  <IconButton>
+                                    <AttachMoneyIcon
+                                      cursor="pointer"
+                                      onClick={() =>
+                                        handleOpenAddCashPayment(income)
+                                      }
+                                    />
+                                  </IconButton>
+                                </span>
+                              </Tooltip>
+                            </Grid>
+                          )}
                         {income.payment && income.status !== "Pago" && (
                           <Grid
                             container

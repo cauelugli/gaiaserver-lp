@@ -69,11 +69,6 @@ export default function Finance({ user }) {
       // FINANCE INCOME TABLE
       options: [
         { value: "quote", label: "Orçamento" },
-        { value: "type", label: "Tipo" },
-        { value: "user", label: "Colaborador" },
-        { value: "department", label: "Departamento" },
-        { value: "price", label: "Valor" },
-        { value: "status", label: "Status" },
       ],
     },
     {
@@ -148,7 +143,7 @@ export default function Finance({ user }) {
             <TableFilters
               searchValue={searchValue}
               setSearchValue={setSearchValue}
-              searchOption={searchOption}
+              searchOption={"quote"}
               searchOptionList={searchOptionList[0]}
               setSearchOption={setSearchOption}
               searchOptionLabel={searchOptionLabel}
