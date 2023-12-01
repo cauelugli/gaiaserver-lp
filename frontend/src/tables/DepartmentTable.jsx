@@ -160,7 +160,6 @@ export default function DepartmentTable({
               ))}
             </TableRow>
             {sortedRows
-              .slice(startIndex, endIndex)
               .filter((user) => {
                 const userProperty = searchOption
                   .split(".")
@@ -572,7 +571,8 @@ export default function DepartmentTable({
                     </TableCell>
                   </TableRow>
                 </>
-              ))}
+              ))
+              .slice(startIndex, endIndex)}
           </TableBody>
         </Table>
         <TablePagination

@@ -146,7 +146,6 @@ export default function PositionTable({
                 ))}
               </TableRow>
               {sortedRows
-                .slice(startIndex, endIndex)
                 .filter((user) => {
                   const userProperty = searchOption
                     .split(".")
@@ -202,7 +201,8 @@ export default function PositionTable({
                       </TableCell>
                     </TableRow>
                   </>
-                ))}
+                ))
+                .slice(startIndex, endIndex)}
             </TableBody>
           </Table>
           <TablePagination

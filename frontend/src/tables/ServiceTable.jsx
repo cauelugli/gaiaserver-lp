@@ -150,7 +150,6 @@ export default function ServiceTable({
                 ))}
               </TableRow>
               {sortedRows
-                .slice(startIndex, endIndex)
                 .filter((user) =>
                   user[searchOption]
                     .toLowerCase()
@@ -185,7 +184,12 @@ export default function ServiceTable({
                       >
                         <Typography sx={{ fontSize: 13 }}>
                           {service.department ? (
-                            <Grid container direction="row" alignItems="center" justifyContent="center">
+                            <Grid
+                              container
+                              direction="row"
+                              alignItems="center"
+                              justifyContent="center"
+                            >
                               <Paper
                                 elevation={0}
                                 sx={{
@@ -197,7 +201,9 @@ export default function ServiceTable({
                                   backgroundColor: service.department.color,
                                 }}
                               />
-                              <Typography sx={{fontSize:13}}>{service.department.name}</Typography>
+                              <Typography sx={{ fontSize: 13 }}>
+                                {service.department.name}
+                              </Typography>
                             </Grid>
                           ) : (
                             "-"
@@ -393,7 +399,8 @@ export default function ServiceTable({
                       </TableCell>
                     </TableRow>
                   </>
-                ))}
+                ))
+                .slice(startIndex, endIndex)}
             </TableBody>
           </Table>
           <TablePagination

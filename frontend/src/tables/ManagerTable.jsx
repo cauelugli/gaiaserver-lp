@@ -189,7 +189,6 @@ export default function ManagerTable({
               ))}
             </TableRow>
             {sortedRows
-              .slice(startIndex, endIndex)
               .filter((user) =>
                 user[searchOption]
                   .toLowerCase()
@@ -473,7 +472,8 @@ export default function ManagerTable({
                     </TableCell>
                   </TableRow>
                 </React.Fragment>
-              ))}
+              ))
+              .slice(startIndex, endIndex)}
           </Table>
           <TablePagination
             component="div"

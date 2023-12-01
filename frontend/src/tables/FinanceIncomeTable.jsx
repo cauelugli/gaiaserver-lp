@@ -196,7 +196,6 @@ export default function FinanceIncomeTable({
                 ))}
               </TableRow>
               {sortedRows
-                .slice(startIndex, endIndex)
                 .filter((income) => {
                   if (!income) return false;
                   const userProperty = searchOption
@@ -559,7 +558,8 @@ export default function FinanceIncomeTable({
                       </TableCell>
                     </TableRow>
                   </>
-                ))}
+                ))
+                .slice(startIndex, endIndex)}
             </TableBody>
           </Table>
           <TablePagination

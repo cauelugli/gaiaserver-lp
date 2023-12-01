@@ -143,7 +143,6 @@ export default function ServicePlansTable({
                 ))}
               </TableRow>
               {sortedRows
-                .slice(startIndex, endIndex)
                 .filter((user) =>
                   user[searchOption]
                     .toLowerCase()
@@ -283,7 +282,8 @@ export default function ServicePlansTable({
                       </TableCell>
                     </TableRow>
                   </>
-                ))}
+                ))
+                .slice(startIndex, endIndex)}
             </TableBody>
           </Table>
           <TablePagination

@@ -165,7 +165,7 @@ export default function RoleTable({
                 </TableCell>
               ))}
             </TableRow>
-            {sortedRows.slice(startIndex, endIndex)
+            {sortedRows
               .filter((user) =>
                 user[searchOption]
                   .toLowerCase()
@@ -374,7 +374,8 @@ export default function RoleTable({
                     </TableCell>
                   </TableRow>
                 </React.Fragment>
-              ))}
+              ))
+              .slice(startIndex, endIndex)}
           </Table>
           <TablePagination
             component="div"

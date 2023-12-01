@@ -145,12 +145,12 @@ export default function SaleTable({
 
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt:-5.5}}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
         <Checkbox
           checked={showCompletedSales}
           onChange={handleChangeShowCompletedSales}
         />
-        <Typography sx={{ fontSize: 13, mt: 1.5, ml:-1 }}>
+        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
           Mostrar Vendas Concluídas
         </Typography>
       </Box>{" "}
@@ -184,7 +184,6 @@ export default function SaleTable({
               ))}
             </TableRow>
             {sortedRows
-              .slice(startIndex, endIndex)
               .filter((sale) => {
                 if (!sale) return false;
                 const userProperty = searchOption
@@ -554,7 +553,8 @@ export default function SaleTable({
                     </TableCell>
                   </TableRow>
                 </>
-              ))}
+              ))
+              .slice(startIndex, endIndex)}
           </TableBody>
         </Table>
         <TablePagination

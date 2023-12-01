@@ -192,7 +192,6 @@ export default function UserTable({
               ))}
             </TableRow>
             {sortedRows
-              .slice(startIndex, endIndex)
               .filter((user) => {
                 const searchOptionValue =
                   searchOption === "department.name"
@@ -294,8 +293,9 @@ export default function UserTable({
                             >
                               {" "}
                             </Paper>
-                            <Typography sx={{fontSize: 13}}>
-                              {row.department.name}</Typography>
+                            <Typography sx={{ fontSize: 13 }}>
+                              {row.department.name}
+                            </Typography>
                           </Grid>
                         ) : (
                           "-"
@@ -417,7 +417,7 @@ export default function UserTable({
                                             >
                                               {" "}
                                             </Paper>
-                                            <Typography sx={{fontSize: 13}}>
+                                            <Typography sx={{ fontSize: 13 }}>
                                               {row.department.name}
                                             </Typography>
                                           </Grid>
@@ -494,7 +494,8 @@ export default function UserTable({
                     </TableCell>
                   </TableRow>
                 </React.Fragment>
-              ))}
+              ))
+              .slice(startIndex, endIndex)}
           </Table>
           <TablePagination
             component="div"

@@ -244,7 +244,6 @@ export default function JobTable({
               ))}
             </TableRow>
             {sortedRows
-              .slice(startIndex, endIndex)
               .filter((job) => {
                 if (!job) return false;
                 const userProperty = searchOption
@@ -783,7 +782,8 @@ export default function JobTable({
                     </TableCell>
                   </TableRow>
                 </>
-              ))}
+              ))
+              .slice(startIndex, endIndex)}
           </TableBody>
         </Table>
         <TablePagination

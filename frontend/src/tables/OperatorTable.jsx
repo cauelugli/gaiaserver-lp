@@ -174,7 +174,7 @@ export default function OperatorTable({
                   </TableCell>
                 ))}
               </TableRow>
-              {sortedRows.slice(startIndex, endIndex)
+              {sortedRows
                 .filter((user) => {
                   const searchOptionValue =
                     searchOption === "role.name"
@@ -256,7 +256,8 @@ export default function OperatorTable({
                       </TableCell>
                     </TableRow>
                   </>
-                ))}
+                ))
+                .slice(startIndex, endIndex)}
             </TableBody>
           </Table>
           <TablePagination

@@ -152,7 +152,9 @@ export default function QuoteTable({
   const [pdfUrl, setPdfUrl] = React.useState("");
 
   const openViewDialog = (file) => {
-    setPdfUrl(`http://localhost:3000/static/docs/orcamento-j-${file.number}.pdf`);
+    setPdfUrl(
+      `http://localhost:3000/static/docs/orcamento-j-${file.number}.pdf`
+    );
     setViewDialogOpen(true);
   };
 
@@ -192,7 +194,6 @@ export default function QuoteTable({
               ))}
             </TableRow>
             {sortedRows
-              .slice(startIndex, endIndex)
               .filter((user) => {
                 const userProperty = searchOption
                   .split(".")
@@ -283,7 +284,8 @@ export default function QuoteTable({
                     </TableCell>
                   </TableRow>
                 </>
-              ))}
+              ))
+              .slice(startIndex, endIndex)}
           </TableBody>
         </Table>
         <TablePagination
@@ -322,6 +324,5 @@ export default function QuoteTable({
         </DialogActions>
       </Dialog>
     </Box>
-    
   );
 }

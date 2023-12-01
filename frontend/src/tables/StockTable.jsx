@@ -168,7 +168,6 @@ export default function StockTable({
                 ))}
               </TableRow>
               {sortedRows
-                .slice(startIndex, endIndex)
                 .filter((user) => {
                   const userProperty = searchOption
                     .split(".")
@@ -406,7 +405,8 @@ export default function StockTable({
                       </TableCell>
                     </TableRow>
                   </>
-                ))}
+                ))
+                .slice(startIndex, endIndex)}
             </TableBody>
           </Table>
           <TablePagination

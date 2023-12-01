@@ -175,7 +175,6 @@ export default function CustomerTable({
             </TableRow>
 
             {sortedRows
-              .slice(startIndex, endIndex)
               .filter((user) =>
                 user[searchOption]
                   .toLowerCase()
@@ -469,7 +468,7 @@ export default function CustomerTable({
                             </TableHead>
                             <TableBody>
                               <TableRow>
-                              {/* <TableRow
+                                {/* <TableRow
                                 key
                                 sx={{
                                   backgroundColor:
@@ -517,7 +516,8 @@ export default function CustomerTable({
                     </TableCell>
                   </TableRow>
                 </>
-              ))}
+              ))
+              .slice(startIndex, endIndex)}
           </TableBody>
         </Table>
         <TablePagination

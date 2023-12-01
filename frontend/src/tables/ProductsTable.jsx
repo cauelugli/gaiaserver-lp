@@ -173,7 +173,6 @@ export default function ProductsTable({
                 ))}
               </TableRow>
               {sortedRows
-                .slice(startIndex, endIndex)
                 .filter((user) => {
                   const userProperty = searchOption
                     .split(".")
@@ -491,7 +490,8 @@ export default function ProductsTable({
                       </TableCell>
                     </TableRow>
                   </>
-                ))}
+                ))
+                .slice(startIndex, endIndex)}
             </TableBody>
           </Table>
           <TablePagination

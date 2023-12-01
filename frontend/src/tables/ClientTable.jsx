@@ -177,7 +177,6 @@ export default function ClientTable({
               ))}
             </TableRow>
             {sortedRows
-              .slice(startIndex, endIndex)
               .filter((user) =>
                 user[searchOption]
                   .toLowerCase()
@@ -343,7 +342,8 @@ export default function ClientTable({
                     </TableCell>
                   </TableRow>
                 </>
-              ))}
+              ))
+              .slice(startIndex, endIndex)}
           </TableBody>
         </Table>
         <TablePagination
