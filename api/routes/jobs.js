@@ -56,6 +56,7 @@ router.post("/", async (req, res) => {
 
     const recentRequestData = {
       number: savedQuote.number,
+      title: savedQuote.title,
       type: savedQuote.type,
       date: savedQuote.createdAt,
       requester: req.body.requester,
