@@ -72,22 +72,13 @@ export default function AddPaymentScheduleForm({
         parcelValue: hasParcelMonthlyFee
           ? (previousData.price / parcelQuantity) * (1 + parcelMonthlyFee / 100)
           : previousData.price / parcelQuantity,
-        finalPrice: hasDiscount
-          ? (
-              (previousData.price / parcelQuantity) *
-              (1 + parcelMonthlyFee / 100) *
-              parcelQuantity *
-              (1 - discount / 100)
-            ).toFixed(2)
-          : hasParcelMonthlyFee
+        finalPrice: hasParcelMonthlyFee
           ? (
               (previousData.price / parcelQuantity) *
               (1 + parcelMonthlyFee / 100) *
               parcelQuantity
             ).toFixed(2)
           : previousData.price.toFixed(2),
-        // hasDiscount,
-        // discount,
         cashPaymentDate,
         previousData,
       });
@@ -218,7 +209,9 @@ export default function AddPaymentScheduleForm({
             <FormControlLabel
               value="Parcela Única"
               control={<Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />}
-              label={<Typography sx={{ fontSize: 13 }}>Parcela Única</Typography>}
+              label={
+                <Typography sx={{ fontSize: 13 }}>Parcela Única</Typography>
+              }
             />
             <FormControlLabel
               value="Parcelado"
