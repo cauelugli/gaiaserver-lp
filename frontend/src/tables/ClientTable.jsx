@@ -323,6 +323,93 @@ export default function ClientTable({
                             </TableBody>
                           </Table>
                         </Box>
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                            Pedidos Recentes
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Orçamento
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Título
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Tipo de Pedido
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Solicitado em
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: "14px", color: "#777" }}
+                                  >
+                                    Solicitado por
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {client.recentRequests.map((item, index) => (
+                                <TableRow
+                                  key={index}
+                                  sx={{
+                                    backgroundColor:
+                                      index % 2 === 0 ? "#eee" : "white",
+                                  }}
+                                >
+                                  <TableCell>
+                                    <Typography>{item.number}</Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography>
+                                      {item.title || "Venda"}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography>
+                                      {item.type.charAt(0).toUpperCase() +
+                                        item.type.slice(1)}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography>
+                                      {new Date(item.date).toLocaleDateString(
+                                        "pt-BR",
+                                        {
+                                          day: "2-digit",
+                                          month: "2-digit",
+                                          year: "numeric",
+                                        }
+                                      )}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography>{item.requester}</Typography>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </Box>
 
                         <Box sx={{ my: 4, ml: "90%" }}>
                           <ModeEditIcon
