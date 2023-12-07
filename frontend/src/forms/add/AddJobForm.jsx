@@ -5,9 +5,7 @@ import dayjs from "dayjs";
 
 import {
   Avatar,
-  Box,
   Button,
-  Checkbox,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -17,6 +15,11 @@ import {
   MenuItem,
   Paper,
   Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   TextField,
   Typography,
 } from "@mui/material";
@@ -104,13 +107,6 @@ const AddJobForm = ({
   const handleEditQuote = () => {
     setEditQuote(!editQuote);
     setApprovedQuote(true);
-  };
-
-  const [showAdditionalOptions, setShowAdditionalOptions] =
-    React.useState(false);
-
-  const handleCheckboxChange = (event) => {
-    setShowAdditionalOptions(event.target.checked);
   };
 
   const handleCustomerTypeChange = (type) => {
@@ -501,117 +497,128 @@ const AddJobForm = ({
         {!editQuote ? (
           <div style={{ color: approvedQuote ? "#777" : "black" }}>
             {service && (
-              <Grid
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Grid
-                  sx={{
-                    width: 750,
-                    backgroundColor: "#eee",
-                    p: 3,
-                  }}
-                >
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Serviço
-                  </Typography>
-                  <Grid
-                    container
-                    direction="row"
-                    sx={{
-                      width: "70%",
-                      borderRadius: 4,
-                      py: 2,
-                    }}
-                  >
-                    <Typography sx={{ fontSize: 16, mx: 1 }}>
-                      {service && `${service.name} = `}{" "}
-                      {service.value ? `R$ ${service.value}` : "R$0,00"}
-                    </Typography>
-                  </Grid>
-                  <Typography sx={{ fontSize: 16, mt: 2, fontWeight: "bold" }}>
-                    Materiais
-                  </Typography>
-
-                  <Grid
-                    container
-                    direction="row"
-                    sx={{
-                      width: "70%",
-                      borderRadius: 4,
-                      py: 2,
-                    }}
-                  >
-                    <Grid
-                      item
-                      sx={{
-                        borderRadius: 4,
-                      }}
-                    >
-                      {materials.length > 0 ? (
-                        materials.map((material) => (
-                          <Typography
-                            sx={{ my: 0.5, ml: 1, fontSize: 16 }}
-                            key={material.id}
-                          >
-                            {material.name} x{material.quantity} = R$
-                            {material.sellValue * material.quantity}
+              <>
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>
+                        <Typography sx={{ fontSize: 13, color: "#777" }}>
+                          Serviço
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography sx={{ fontSize: 13, color: "#777" }}>
+                          Itens
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Typography sx={{ fontSize: 13, color: "#777" }}>
+                          Valores
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {service && (
+                      <TableRow>
+                        <TableCell>
+                          <Typography>
+                            {service && `${service.name}`}
                           </Typography>
-                        ))
-                      ) : (
-                        <Typography>Não há materiais</Typography>
-                      )}
+                        </TableCell>
+                        <TableCell align="left">
+                          <Typography>
+                            {materials.length > 0 ? (
+                              materials.map((material) => (
+                                <Typography
+                                  sx={{ fontSize: 13 }}
+                                  key={material.id}
+                                >
+                                  {material.name} x{material.quantity} = R$
+                                  {(
+                                    material.sellValue * material.quantity
+                                  ).toFixed(2)}
+                                </Typography>
+                              ))
+                            ) : (
+                              <Typography>Não há materiais</Typography>
+                            )}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="right">
+                          <Grid container direction="column">
+                            <Grid>
+                              <Typography>
+                                Serviço{" "}
+                                {service.value
+                                  ? `R$ ${service.value.toFixed(2)}`
+                                  : "R$0.00"}
+                              </Typography>
+                            </Grid>
+                            <Grid>
+                              <Typography>
+                                Materiais{" "}
+                                {service
+                                  ? `R$ ${materialsCost.toFixed(2)}`
+                                  : "R$0.00"}
+                              </Typography>
+                            </Grid>
+                            <Grid></Grid>
+                          </Grid>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+                {!approvedQuote ? (
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    sx={{ mt: 2, px: 2 }}
+                  >
+                    <Grid item />
+                    <Grid item>
+                      <Button
+                        sx={{ mr: 2 }}
+                        variant="contained"
+                        color="success"
+                        startIcon={<TaskIcon />}
+                        onClick={handleApproveQuote}
+                      >
+                        Aprovar
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="warning"
+                        startIcon={<CreateIcon />}
+                        onClick={handleEditQuote}
+                      >
+                        Editar
+                      </Button>
+                    </Grid>
+                    <Grid item>
+                      <Typography>
+                        Total{" "}
+                        {service &&
+                          `R$ ${(materialsCost + service.value).toFixed(2)}`}
+                      </Typography>
                     </Grid>
                   </Grid>
-                  <Typography sx={{ fontSize: 16, mt: 2, fontWeight: "bold" }}>
-                    Total
-                  </Typography>
-
+                ) : (
                   <Grid
                     container
                     direction="row"
-                    sx={{
-                      width: "70%",
-                      borderRadius: 4,
-                      py: 2,
-                    }}
+                    justifyContent="center"
+                    alignItems="center"
                   >
-                    <Typography sx={{ fontSize: 16, mx: 1 }}>
-                      Serviço + Materiais ={" "}
-                      {service &&
-                        `R$ ${(materialsCost + service.value).toFixed(2)}`}
+                    <Typography sx={{ mt: 2, color: "green" }}>
+                      Este Orçamento foi Aprovado!
                     </Typography>
                   </Grid>
-                </Grid>
-
-                {!approvedQuote ? (
-                  <Grid item sx={{ m: 2 }}>
-                    <Button
-                      sx={{ mx: 2 }}
-                      variant="contained"
-                      color="success"
-                      startIcon={<TaskIcon />}
-                      onClick={handleApproveQuote}
-                    >
-                      Aprovar
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="warning"
-                      startIcon={<CreateIcon />}
-                      onClick={handleEditQuote}
-                    >
-                      Editar
-                    </Button>
-                  </Grid>
-                ) : (
-                  <Typography sx={{ m: 1, color: "green" }}>
-                    Este Orçamento foi Aprovado!
-                  </Typography>
                 )}
-              </Grid>
+              </>
             )}
           </div>
         ) : (
@@ -642,19 +649,6 @@ const AddJobForm = ({
               </Button>
             </Grid>
           </Grid>
-        )}
-
-        <Divider sx={{ my: 3, mt: 4 }} />
-        <Checkbox
-          checked={showAdditionalOptions}
-          onChange={handleCheckboxChange}
-        />
-        <label>Observações</label>
-
-        {showAdditionalOptions && (
-          <Box>
-            <Divider sx={{ my: 3 }} />
-          </Box>
         )}
       </DialogContent>
 
