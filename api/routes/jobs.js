@@ -10,6 +10,7 @@ const FinanceIncome = require("../models/FinanceIncome");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
+const dayjs = require("dayjs");
 
 // GET ALL JOBS
 router.get("/", async (req, res) => {
@@ -123,11 +124,13 @@ router.post("/", async (req, res) => {
     doc.text("Local de Execução:", 120, 280, { align: "left" });
     doc.text(savedQuote.local, 380, 280, { align: "right" });
     doc.text("Agendado para:", 120, 300, { align: "left" });
-    doc.text(savedQuote.scheduledTo, 380, 300, { align: "right" });
+    doc.text(dayjs(savedQuote.scheduledTo).format("DD/MM/YYYY"), 380, 300, {
+      align: "right",
+    });
     doc.text("Criado por:", 120, 320, { align: "left" });
     doc.text(savedQuote.createdBy, 380, 320, { align: "right" });
 
-    let yPosition = 245;
+    let yPosition = 360;
 
     doc.text("Lista de Materiais", 120, yPosition + 15, { align: "left" });
     for (const material of savedQuote.materials) {
