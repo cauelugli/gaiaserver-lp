@@ -223,7 +223,7 @@ export default function MaterialList({
         </Paper>
       </Grid>
 
-      <Grid item sx={{ ml: "50px" }}>
+      <Grid item sx={{ ml: "40px" }}>
         <Typography>Selecionados:</Typography>
         <Paper
           sx={{

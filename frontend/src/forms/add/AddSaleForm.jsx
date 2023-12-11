@@ -291,12 +291,6 @@ const AddSaleForm = ({
                   <MenuItem
                     value={item}
                     key={item.id}
-                    sx={{
-                      "&:hover": {
-                        backgroundColor: item.color,
-                        color: "white",
-                      },
-                    }}
                   >
                     {item.name}
                   </MenuItem>
@@ -395,7 +389,7 @@ const AddSaleForm = ({
               onChange={(e) => setDeliveryReceiver(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 160, mx: 1 }}
+              sx={{ width: 170, mx: 1 }}
             />
           </Grid>
           <Grid item>
@@ -405,7 +399,7 @@ const AddSaleForm = ({
               onChange={(e) => setDeliveryReceiverPhone(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 140, mr: 1 }}
+              sx={{ width: 170, mr: 1 }}
             />
           </Grid>
           <Grid item sx={{ mt: -1, width: "24%" }}>

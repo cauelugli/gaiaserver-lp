@@ -125,27 +125,13 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
                 ))}
               </TableRow>
               {sortedRows
-                // .filter((entry) => {
-                //   const userProperty = searchOption
-                //     .split(".")
-                //     .reduce((obj, key) => obj[key], entry);
-                //   const lowerCaseUserProperty = userProperty
-                //     .toString()
-                //     .toLowerCase();
-                //   const lowerCaseSearchValue = searchValue
-                //     .toString()
-                //     .toLowerCase();
-                //   return (
-                //     !searchValue ||
-                //     lowerCaseUserProperty.includes(lowerCaseSearchValue)
-                //   );
-                // })
-
                 .map((entry) => (
                   <>
                     <TableRow key={entry._id}>
                       <TableCell align="left">
-                        <Typography>{entry.number}</Typography>
+                        <Typography sx={{ fontSize: 13 }}>
+                          {entry.number}
+                        </Typography>
                       </TableCell>
                       <TableCell align="left">
                         <Grid container direction="column">
@@ -169,7 +155,7 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
                                 />
                               </Grid>
                               <Grid item>
-                                <Typography>
+                                <Typography sx={{ fontSize: 13 }}>
                                   {item.item.name} x{item.quantity} = R$
                                   {item.buyValue * item.quantity}
                                 </Typography>
@@ -179,13 +165,17 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
                         </Grid>
                       </TableCell>
                       <TableCell align="center">
-                        <Typography>R${entry.quoteValue.toFixed(2)}</Typography>
+                        <Typography sx={{ fontSize: 13 }}>
+                          R${entry.quoteValue.toFixed(2)}
+                        </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        <Typography>{entry.createdBy}</Typography>
+                        <Typography sx={{ fontSize: 13 }}>
+                          {entry.createdBy}
+                        </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        <Typography>
+                        <Typography sx={{ fontSize: 13 }}>
                           {dayjs(entry.createdAt).format("DD/MM/YYYY")}
                         </Typography>
                       </TableCell>
