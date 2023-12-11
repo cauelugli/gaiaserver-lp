@@ -258,7 +258,7 @@ export default function QuoteTable({
                     </TableCell>
                     <TableCell align="center">
                       <Typography sx={{ mt: 1, fontSize: 13 }}>
-                        {quote.customer}
+                        {quote.customer.name}
                       </Typography>
                     </TableCell>
                     <TableCell align="center">{quote.user}</TableCell>
@@ -308,7 +308,7 @@ export default function QuoteTable({
         maxWidth="md"
       >
         <DialogTitle>Visualização do Orçamento</DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ backgroundColor: "red", width:"100%", pl:6 }}>
           <Box style={{ height: "600px" }}>
             <Worker
               workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}

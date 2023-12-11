@@ -131,6 +131,7 @@ const AddJobForm = ({
         customer: {
           id: customer._id,
           name: customer.name,
+          image: customer.image,
           cnpj: customer.cnpj || "",
           type: customer.cnpj ? "Customer" : "Client",
         },

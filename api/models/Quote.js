@@ -16,6 +16,9 @@ const quoteSchema = new mongoose.Schema({
   service: {
     type: String,
   },
+  serviceValue: {
+    type: Number,
+  },
   type: {
     type: String,
   },
@@ -26,9 +29,8 @@ const quoteSchema = new mongoose.Schema({
     type: String,
   },
   customer: {
-    type: String,
+    type: Object,
   },
-
   local: {
     type: String,
   },
