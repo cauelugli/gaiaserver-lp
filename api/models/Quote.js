@@ -22,7 +22,14 @@ const quoteSchema = new mongoose.Schema({
   user: {
     type: String,
   },
+  manager: {
+    type: String,
+  },
   customer: {
+    type: String,
+  },
+
+  local: {
     type: String,
   },
   value: {
@@ -33,6 +40,12 @@ const quoteSchema = new mongoose.Schema({
   },
   materialsCost: {
     type: Number,
+  },
+  createdBy: {
+    type: String,
+  },
+  scheduledTo: {
+    type: String,
   },
   createdAt: {
     type: Date,
