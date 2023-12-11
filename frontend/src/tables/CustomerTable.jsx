@@ -2,7 +2,7 @@
 import * as React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { Worker, Viewer } from "@react-pdf-viewer/core";
 import axios from "axios";
 
 import {
@@ -21,6 +21,10 @@ import {
   Avatar,
   TablePagination,
   FormHelperText,
+  Button,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -142,6 +146,20 @@ export default function CustomerTable({
 
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
+
+  const [viewDialogOpen, setViewDialogOpen] = React.useState(false);
+  const [pdfUrl, setPdfUrl] = React.useState("");
+
+  const openViewDialog = (file) => {
+    setPdfUrl(
+      `http://localhost:3000/static/docs/orcamento-${file.type[0]}-${file.number}.pdf`
+    );
+    setViewDialogOpen(true);
+  };
+
+  const closeViewDialog = () => {
+    setViewDialogOpen(false);
+  };
 
   return (
     <Box>
@@ -465,7 +483,12 @@ export default function CustomerTable({
                                   }}
                                 >
                                   <TableCell>
-                                    <Typography>{item.number}</Typography>
+                                    <Button
+                                      sx={{ color: "black" }}
+                                      onClick={() => openViewDialog(item)}
+                                    >
+                                      {item.number}
+                                    </Button>
                                   </TableCell>
                                   <TableCell align="left">
                                     <Typography>
@@ -567,6 +590,28 @@ export default function CustomerTable({
           />
         </Dialog>
       )}
+      <Dialog
+        open={viewDialogOpen}
+        onClose={closeViewDialog}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>Visualização do Orçamento</DialogTitle>
+        <DialogContent>
+          <Box style={{ height: "600px" }}>
+            <Worker
+              workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+            >
+              <Viewer fileUrl={pdfUrl} />
+            </Worker>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeViewDialog} color="primary">
+            Fechar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
