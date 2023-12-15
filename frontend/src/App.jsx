@@ -29,6 +29,7 @@ import Files from "./pages/Files";
 import Account from "./pages/Account";
 import Quotes from "./pages/Quotes";
 import Finance from "./pages/Finance";
+import Config from "./pages/Config";
 
 function isAuthenticated(login, userData) {
   return login && userData && userData.isActive;
@@ -150,6 +151,10 @@ export default function App() {
                   path="/finance"
                   element={isAuthenticated(login, userData) ? <Finance user={userData}/> : <Navigate to="/login" />}
                 />
+                <Route
+                  path="/config"
+                  element={isAuthenticated(login, userData) ? <Config user={userData}/> : <Navigate to="/login" />}
+              />
               </Routes>
             </Grid>
           </Grid>

@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { Divider, Grid, List, ListItemButton, Typography } from "@mui/material";
 
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-
 import BuildIcon from "@mui/icons-material/Build";
 import ChatIcon from "@mui/icons-material/Chat";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -33,12 +32,7 @@ const options = [
   { label: "Perfil", icon: <PersonIcon />, link: "/account" },
   { label: "Chat", icon: <ChatIcon />, link: "/", disabled: true },
   { label: "Arquivos", icon: <InsertDriveFileIcon />, link: "/files" },
-  {
-    label: "Configurações",
-    icon: <SettingsIcon />,
-    link: "/settings",
-    disabled: true,
-  },
+  { label: "Configurações", icon: <SettingsIcon />, link: "/config" },
   {
     label: "Help Center",
     icon: <HelpCenterIcon />,
