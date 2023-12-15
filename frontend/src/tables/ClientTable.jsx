@@ -386,50 +386,52 @@ export default function ClientTable({
                               </TableRow>
                             </TableHead>
                             <TableBody>
-                              {client.recentRequests.map((item, index) => (
-                                <TableRow
-                                  key={index}
-                                  sx={{
-                                    backgroundColor:
-                                      index % 2 === 0 ? "#eee" : "white",
-                                  }}
-                                >
-                                  <TableCell>
-                                    <Button
-                                      sx={{ color: "black" }}
-                                      onClick={() => openViewDialog(item)}
-                                    >
-                                      {item.number}
-                                    </Button>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography>
-                                      {item.title || "Venda"}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell>
-                                    <Typography>
-                                      {item.type.charAt(0).toUpperCase() +
-                                        item.type.slice(1)}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell>
-                                    <Typography>
-                                      {new Date(item.date).toLocaleDateString(
-                                        "pt-BR",
-                                        {
-                                          day: "2-digit",
-                                          month: "2-digit",
-                                          year: "numeric",
-                                        }
-                                      )}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell>
-                                    <Typography>{item.requester}</Typography>
-                                  </TableCell>
-                                </TableRow>
-                              ))}
+                              {client.recentRequests
+                                .slice(0, 5)
+                                .map((item, index) => (
+                                  <TableRow
+                                    key={index}
+                                    sx={{
+                                      backgroundColor:
+                                        index % 2 === 0 ? "#eee" : "white",
+                                    }}
+                                  >
+                                    <TableCell>
+                                      <Button
+                                        sx={{ color: "black" }}
+                                        onClick={() => openViewDialog(item)}
+                                      >
+                                        {item.number}
+                                      </Button>
+                                    </TableCell>
+                                    <TableCell align="left">
+                                      <Typography>
+                                        {item.title || "Venda"}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography>
+                                        {item.type.charAt(0).toUpperCase() +
+                                          item.type.slice(1)}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography>
+                                        {new Date(item.date).toLocaleDateString(
+                                          "pt-BR",
+                                          {
+                                            day: "2-digit",
+                                            month: "2-digit",
+                                            year: "numeric",
+                                          }
+                                        )}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography>{item.requester}</Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
                             </TableBody>
                           </Table>
                         </Box>
