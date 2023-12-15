@@ -40,11 +40,12 @@ router.post("/", async (req, res) => {
       number: savedRequest.quoteNumber,
       title: req.body.title,
       description: req.body.description,
-      customer: req.body.customer.name,
+      customer: req.body.customer,
       department: req.body.department.name,
       user: req.body.worker.name,
       manager: req.body.manager.name,
       service: req.body.service.name,
+      serviceValue: req.body.service.value,
       type: "job",
       local: req.body.local,
       scheduledTo: req.body.scheduledTo,
@@ -84,79 +85,117 @@ router.post("/", async (req, res) => {
       );
     }
 
+    // START PDF
     const doc = new PDFDocument();
 
-    // Construa o caminho completo para o arquivo PDF na pasta estática
     const pdfPath = path.join(
       __dirname,
       "../../uploads/docs",
-      `orcamento-${newQuote.type[0]}-${newQuote.number}.pdf`
+      `orcamento-${savedQuote.type[0]}-${savedQuote.number}.pdf`
     );
 
     doc.pipe(fs.createWriteStream(pdfPath));
 
-    doc.image("../uploads/logo.png", 0, 15, { width: 120 });
+    doc.image("../uploads/logo.png", 5, 5, { width: 120 });
+    doc.image(`../uploads/${req.body.customer.image}`, 450, 5, { width: 120 });
+    doc.moveUp(3);
 
     doc
       .fontSize(16)
-      .text(`Orçamento de ${newQuote.type === "job" ? "Serviço" : "Venda"}`, {
-        align: "center",
-      });
+      .text(
+        `Orçamento de ${
+          savedQuote.type === "job"
+            ? `Serviço #${savedQuote.number}`
+            : `Venda #${savedQuote.number}`
+        }`,
+        200,
+        10
+      );
+    doc.fontSize(11);
+
+    doc
+      .moveTo(10, 50)
+      .lineTo(doc.page.width - 10, 50)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(`Cliente: ${savedQuote.customer.name}`, 10, 55);
+    doc.text(`Serviço: ${savedQuote.service}`, 210, 55);
+    doc.text(`Título: ${savedQuote.title}`, 410, 55);
     doc.moveDown();
 
-    doc.fontSize(12);
-    doc.text("Número do Orçamento:", 120, 120, { align: "left" });
-    doc.text(savedQuote.number, 380, 120, { align: "right" });
-    doc.text("Título:", 120, 140, { align: "left" });
-    doc.text(savedQuote.title, 380, 140, { align: "right" });
-    doc.text("Descrição:", 120, 160, { align: "left" });
-    doc.text(savedQuote.description, 380, 160, { align: "right" });
-    doc.text("Cliente:", 120, 180, { align: "left" });
-    doc.text(savedQuote.customer, 380, 180, { align: "right" });
-    doc.text("Serviço:", 120, 200, { align: "left" });
-    doc.text(savedQuote.service, 380, 200, { align: "right" });
-    doc.text("Departamento:", 120, 220, { align: "left" });
-    doc.text(savedQuote.department, 380, 220, { align: "right" });
-    doc.text("Colaborador:", 120, 240, { align: "left" });
-    doc.text(savedQuote.user, 380, 240, { align: "right" });
-    doc.text("Gerente Responsável:", 120, 260, { align: "left" });
-    doc.text(savedQuote.manager, 380, 260, { align: "right" });
-    doc.text("Local de Execução:", 120, 280, { align: "left" });
-    doc.text(savedQuote.local, 380, 280, { align: "right" });
-    doc.text("Agendado para:", 120, 300, { align: "left" });
-    doc.text(dayjs(savedQuote.scheduledTo).format("DD/MM/YYYY"), 380, 300, {
-      align: "right",
-    });
-    doc.text("Criado por:", 120, 320, { align: "left" });
-    doc.text(savedQuote.createdBy, 380, 320, { align: "right" });
+    doc
+      .moveTo(10, 90)
+      .lineTo(doc.page.width - 10, 90)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(`Descrição: ${savedQuote.description}`, 10, 95);
 
-    let yPosition = 360;
+    doc
+      .moveTo(10, 170)
+      .lineTo(doc.page.width - 10, 170)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(`Departamento: ${savedQuote.department}`, 10, 175);
+    doc.text(`Colaborador: ${savedQuote.user}`, 210, 175);
+    doc.text(`Gerente: ${savedQuote.manager}`, 410, 175);
+    doc.moveDown();
 
-    doc.text("Lista de Materiais", 120, yPosition + 15, { align: "left" });
+    doc
+      .moveTo(10, 210)
+      .lineTo(doc.page.width - 10, 210)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(
+      `Agendado para: ${dayjs(savedQuote.scheduledTo).format("DD/MM/YYYY")}`,
+      10,
+      215
+    );
+    doc.text(`Local: ${savedQuote.local}`, 210, 215);
+    doc.text(`Criador: ${savedQuote.createdBy}`, 410, 215);
+    doc.moveDown(4);
+
+    doc
+      .moveTo(10, 250)
+      .lineTo(doc.page.width - 10, 250)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text("Lista de Materiais", 15, 255);
+    doc.moveDown();
+
     for (const material of savedQuote.materials) {
-      doc.text(material.name, 130, yPosition + 30, { align: "left" });
+      doc.image(`../uploads/${material.image}`, 15, doc.y, {
+        width: 32,
+        align: "left",
+      });
+
       doc.text(
-        "x" + material.quantity + " " + "R$" + material.sellValue,
-        250,
-        yPosition + 30,
-        { align: "right" }
+        `${material.name} x${material.quantity} R$${material.sellValue}`,
+        55,
+        doc.y - 20 - 0
       );
-      yPosition += 30;
+
+      doc.moveDown();
     }
 
-    doc.text("Valor dos Materiais:", 120, yPosition + 50, { align: "left" });
-    doc.text(`R$${savedQuote.materialsCost.toFixed(2)}`, 350, yPosition + 50, {
+    doc.moveDown();
+
+    doc.text(`Total de Materiais = R$${savedQuote.materialsCost.toFixed(2)}`, {
       align: "right",
     });
+    doc.moveDown(0.5);
 
-    doc.text("Valor Total:", 120, yPosition + 70, { align: "left" });
-    doc.text(`R$${savedQuote.value.toFixed(2)}`, 420, yPosition + 70, {
+    doc.text(`Valor do Serviço = R$${savedQuote.serviceValue.toFixed(2)}`, {
       align: "right",
     });
+    doc.moveDown(0.5);
 
+    doc.text(`Valor Total da Nota = R$${savedQuote.value.toFixed(2)}`, {
+      align: "right",
+    });
     doc.moveDown();
 
     doc.end();
+    // END PDF
 
     res
       .status(200)

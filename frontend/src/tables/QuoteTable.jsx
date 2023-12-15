@@ -162,6 +162,21 @@ export default function QuoteTable({
     setViewDialogOpen(false);
   };
 
+  const handlePrint = () => {
+    const printWindow = window.open(pdfUrl, "_blank");
+
+    if (printWindow) {
+      printWindow.onload = function () {
+        printWindow.print();
+        printWindow.onafterprint = function () {
+          printWindow.close();
+        };
+      };
+    } else {
+      console.error("Não foi possível abrir a janela de impressão.");
+    }
+  };
+
   return (
     <Box>
       <TableContainer component={Paper}>
@@ -308,8 +323,8 @@ export default function QuoteTable({
         maxWidth="md"
       >
         <DialogTitle>Visualização do Orçamento</DialogTitle>
-        <DialogContent sx={{ backgroundColor: "red", width:"100%", pl:6 }}>
-          <Box style={{ height: "600px" }}>
+        <DialogContent sx={{ backgroundColor: "#ccc", width: "100%", pl: 6 }}>
+          <Box style={{ height: "auto" }}>
             <Worker
               workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
             >
@@ -317,8 +332,16 @@ export default function QuoteTable({
             </Worker>
           </Box>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={closeViewDialog} color="primary">
+        <DialogActions sx={{ my: 1, mr:2 }}>
+          <Button
+            onClick={handlePrint}
+            color="primary"
+            variant="contained"
+            size="small"
+          >
+            Imprimir | Download
+          </Button>
+          <Button onClick={closeViewDialog} color="primary" size="small">
             Fechar
           </Button>
         </DialogActions>
