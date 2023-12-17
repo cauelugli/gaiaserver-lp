@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
@@ -13,6 +14,7 @@ import {
   Grid,
   Radio,
   RadioGroup,
+  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -83,59 +85,107 @@ export default function Requests({ test, onClose }) {
               sx={{ mt: 2 }}
               direction="column"
               justifyContent="center"
-              alignItems="center"
+              alignItems="flex-start"
             >
-              <Grid item sx={{ mb: 2 }}>
-                <Typography>
-                  Pedidos Precisam de Aprovação do Gerente
-                </Typography>
-                <RadioGroup
-                  row
-                  value={requestsNeedApproval}
-                  onChange={(e) => setRequestsNeedApproval(e.target.value)}
-                >
-                  <FormControlLabel
-                    value={Boolean(true)}
-                    control={
-                      <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+              <Grid item sx={{ my: 1.5 }}>
+                <Grid container direction="row">
+                  <Typography sx={{ my: "auto" }}>
+                    Pedidos Precisam de Aprovação do Gerente
+                  </Typography>
+                  <Tooltip
+                    title={
+                      <Typography sx={{ fontSize: 12 }}>
+                        Se a opção marcada for "Sim", o 'status' de um novo
+                        pedido de Job será "Aberto". Se estiver marcado "Não", o
+                        status será 'Aprovado'. A opção padrão é "Sim".
+                      </Typography>
                     }
-                    label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
-                  />
-                  <FormControlLabel
-                    value={Boolean(false)}
-                    control={
-                      <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                    }
-                    label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
-                  />
-                </RadioGroup>
+                  >
+                    <Button
+                      size="small"
+                      sx={{
+                        backgroundColor: "white",
+                        color: "#32aacd",
+                        "&:hover": {
+                          backgroundColor: "white",
+                        },
+                      }}
+                    >
+                      ?
+                    </Button>
+                  </Tooltip>
+                  <RadioGroup
+                    row
+                    value={requestsNeedApproval}
+                    onChange={(e) => setRequestsNeedApproval(e.target.value)}
+                  >
+                    <FormControlLabel
+                      value={Boolean(true)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
+                    />
+                    <FormControlLabel
+                      value={Boolean(false)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
+                    />
+                  </RadioGroup>
+                </Grid>
               </Grid>
-              <Grid item sx={{ mb: 2 }}>
-                <Typography>
-                  Pedidos Podem ser Deletados por Não Criadores
-                </Typography>
-                <RadioGroup
-                  row
-                  value={requestsCanBeDeletedBySomeoneElse}
-                  onChange={(e) =>
-                    setRequestsCanBeDeletedBySomeoneElse(e.target.value)
-                  }
-                >
-                  <FormControlLabel
-                    value={Boolean(true)}
-                    control={
-                      <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+              <Grid item sx={{ my: 1.5 }}>
+                <Grid container direction="row">
+                  <Typography sx={{ my: "auto", mr: 1 }}>
+                    Pedidos Podem ser Deletados por Não Criadores
+                  </Typography>
+                  <Tooltip
+                    title={
+                      <Typography sx={{ fontSize: 12 }}>
+                        Se a opção marcada for "Sim", os pedidos de Jobs e
+                        Vendas poderão ser deletados por usuários que não são os
+                        criadores originais dos pedidos. A opção padrão é "Não".
+                      </Typography>
                     }
-                    label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
-                  />
-                  <FormControlLabel
-                    value={Boolean(false)}
-                    control={
-                      <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                  >
+                    <Button
+                      size="small"
+                      sx={{
+                        backgroundColor: "white",
+                        color: "#32aacd",
+                        "&:hover": {
+                          backgroundColor: "white",
+                        },
+                      }}
+                    >
+                      ?
+                    </Button>
+                  </Tooltip>
+                  <RadioGroup
+                    row
+                    value={requestsCanBeDeletedBySomeoneElse}
+                    onChange={(e) =>
+                      setRequestsCanBeDeletedBySomeoneElse(e.target.value)
                     }
-                    label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
-                  />
-                </RadioGroup>
+                  >
+                    <FormControlLabel
+                      value={Boolean(true)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
+                    />
+                    <FormControlLabel
+                      value={Boolean(false)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
+                    />
+                  </RadioGroup>
+                </Grid>
               </Grid>
             </Grid>
           </DialogContent>
