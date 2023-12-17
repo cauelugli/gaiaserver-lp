@@ -43,8 +43,9 @@ const configSchema = new Schema({
       type: Boolean,
       default: true,
     },
-    canSee: {
-      type: Array,
+    canBeDeleted: {
+      type: Boolean,
+      default: true,
     },
     canCreate: {
       type: Array,

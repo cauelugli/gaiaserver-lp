@@ -42,6 +42,7 @@ const AddSaleForm = ({
   setRefreshData,
   toast,
 }) => {
+  const [config, setConfig] = React.useState([]);
   const [customer, setCustomer] = React.useState("");
   const [customerType, setCustomerType] = React.useState("Empresa");
   const [requester, setRequester] = React.useState("");
@@ -66,6 +67,8 @@ const AddSaleForm = ({
         const clients = await api.get("/clients");
         const departments = await api.get("/departments");
         const products = await api.get("/products");
+        const config = await api.get("/config/requests");
+        setConfig(config.data);
         setCustomers(customers.data);
         setClients(clients.data);
         setDepartments(
@@ -122,7 +125,7 @@ const AddSaleForm = ({
         },
         seller,
         manager: department.manager,
-        status: "Aberto",
+        status: config.requestsNeedApproval ? "Aberto" : "Aprovado",
         price: materialsCost,
         items: materials,
         deliveryAddress,

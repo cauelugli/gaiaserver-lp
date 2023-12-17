@@ -11,6 +11,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 const RequestActions = ({
   selectedJob,
+  config,
   user,
   job,
   handleManagerApproval,
@@ -85,7 +86,7 @@ const RequestActions = ({
         onClick={() => handleOpenEdit(job, "edit")}
         sx={{ mx: 1 }}
         startIcon={<ModeEditIcon />}
-      >
+        >
         Editar
       </Button>
       <Button
@@ -93,6 +94,7 @@ const RequestActions = ({
         variant="contained"
         onClick={() => handleConfirmDelete(job)}
         color="error"
+        disabled={!config.canBeDeleted}
         startIcon={<DeleteIcon />}
       >
         Deletar

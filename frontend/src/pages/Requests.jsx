@@ -52,6 +52,7 @@ function CustomTabPanel(props) {
 
 export default function Requests({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
+  const [config, setConfig] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
   const [openAddJob, setOpenAddJob] = React.useState(false);
@@ -99,6 +100,8 @@ export default function Requests({ user }) {
         const jobs = await api.get("/jobs");
         const sales = await api.get("/sales");
         const managers = await api.get("/managers");
+        const config = await api.get("/config/requests");
+        setConfig(config.data);
         setJobs(jobs.data);
         setSales(sales.data);
         setManagers(managers.data);
@@ -219,6 +222,7 @@ export default function Requests({ user }) {
             />
 
             <JobTable
+              config={config}
               user={user}
               searchValue={searchValue}
               searchOption={searchOption}
@@ -232,7 +236,7 @@ export default function Requests({ user }) {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         {sales.length === 0 ? (
-          <NoDataText option="Vendas"  femaleGender={true}/>
+          <NoDataText option="Vendas" femaleGender={true} />
         ) : (
           <>
             <TableFilters
@@ -247,6 +251,7 @@ export default function Requests({ user }) {
             />
 
             <SaleTable
+              config={config}
               searchValue={searchValue}
               searchOption={searchOption}
               sales={sales}

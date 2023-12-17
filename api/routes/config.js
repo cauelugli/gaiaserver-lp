@@ -24,15 +24,28 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET REQUESTS CONFIGS
+router.get("/requests", async (req, res) => {
+  try {
+    const config = await Config.findOne();
+    const requestsConfig = config ? config.requests : null;
+    res.status(200).json(requestsConfig);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // REQUESTS
 router.put("/requests", async (req, res) => {
   try {
-    const { requestsNeedApproval, requestsCanBeDeletedBySomeoneElse } =
+    const { requestsNeedApproval, requestsCanBeDeletedBySomeoneElse, requestsCanBeDeleted } =
       req.body;
 
     const config = await Config.findOne();
 
     config.requests.requestsNeedApproval = requestsNeedApproval;
+    config.requests.canBeDeleted =
+      requestsCanBeDeleted;
     config.requests.canDeleteSomeoneElsesRequest =
       requestsCanBeDeletedBySomeoneElse;
 

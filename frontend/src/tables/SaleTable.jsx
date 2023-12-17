@@ -31,23 +31,22 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 export default function SaleTable({
+  config,
   searchValue,
   searchStatus,
   searchOption,
   sales,
   refreshData,
   setRefreshData,
-  managers,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [selectedSale, setSelectedSale] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
 
-  const handleConfirmDelete = (position) => {
-    setSelectedItem(position);
+  const handleConfirmDelete = (sale) => {
+    setSelectedItem(sale);
     setOpenDialog(true);
   };
 
@@ -542,11 +541,13 @@ export default function SaleTable({
                               onClick={() => handleOpenEdit(sale)}
                               sx={{ color: "grey", mr: 2 }}
                             />
-                            <DeleteIcon
-                              cursor="pointer"
-                              onClick={() => handleConfirmDelete(sale)}
-                              sx={{ color: "#ff4444" }}
-                            />
+                            {config.canBeDeleted && (
+                              <DeleteIcon
+                                cursor="pointer"
+                                onClick={() => handleConfirmDelete(sale)}
+                                sx={{ color: "#ff4444" }}
+                              />
+                            )}
                           </Box>
                         </Box>
                       </Collapse>

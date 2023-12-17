@@ -35,6 +35,7 @@ const api = axios.create({
 });
 
 export default function JobTable({
+  config,
   user,
   searchValue,
   searchStatus,
@@ -712,6 +713,7 @@ export default function JobTable({
 
                           {job.status !== "Concluido" && (
                             <RequestActions
+                              config={config}
                               selectedJob={selectedJob}
                               user={user}
                               job={job}

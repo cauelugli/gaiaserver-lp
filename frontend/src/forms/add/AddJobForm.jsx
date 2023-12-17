@@ -47,6 +47,7 @@ const AddJobForm = ({
   setRefreshData,
   toast,
 }) => {
+  const [config, setConfig] = React.useState([]);
   const [title, setTitle] = React.useState("");
   const [customer, setCustomer] = React.useState("");
   const [customerType, setCustomerType] = React.useState("");
@@ -78,6 +79,8 @@ const AddJobForm = ({
         const departments = await api.get("/departments");
         const services = await api.get("/services");
         const stockItems = await api.get("/stockItems");
+        const config = await api.get("/config/requests");
+        setConfig(config.data);
         setCustomers(customers.data);
         setClients(clients.data);
         setDepartments(
@@ -144,7 +147,7 @@ const AddJobForm = ({
         },
         worker,
         manager: department.manager,
-        status: "Aberto",
+        status: config.requestsNeedApproval ? "Aberto" : "Aprovado",
         service: {
           _id: service._id || service.id,
           name: service.name,
