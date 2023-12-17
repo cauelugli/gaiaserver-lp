@@ -2,6 +2,18 @@ const express = require("express");
 const router = express.Router();
 const Config = require("../models/Config");
 
+// CREATE INITIAL CONFIG
+router.post("/", async (req, res) => {
+  const newConfig = new Config();
+  try {
+    const createdConfig = await newConfig.save();
+    res.status(200).json(createdConfig);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 //GET ALL CONFIGS
 router.get("/", async (req, res) => {
   try {
@@ -12,12 +24,18 @@ router.get("/", async (req, res) => {
   }
 });
 
-// REQUEST - REQUEST NEEDS APPROVAL
-router.put("/requests/requestsNeedApproval", async (req, res) => {
+// REQUESTS
+router.put("/requests", async (req, res) => {
   try {
-    const { requestNeedsApproval } = req.body;
+    const { requestsNeedApproval, requestsCanBeDeletedBySomeoneElse } =
+      req.body;
+
     const config = await Config.findOne();
-    config.requests.requestNeedsApproval = requestNeedsApproval;
+
+    config.requests.requestsNeedApproval = requestsNeedApproval;
+    config.requests.canDeleteSomeoneElsesRequest =
+      requestsCanBeDeletedBySomeoneElse;
+
     await config.save();
     res.status(200).json(config);
   } catch (err) {

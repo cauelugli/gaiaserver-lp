@@ -1,16 +1,22 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+
 import {
   Grid,
   Typography,
   Dialog,
-  DialogTitle,
   DialogContent,
   DialogActions,
   Button,
 } from "@mui/material";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import BuildIcon from "@mui/icons-material/Build";
@@ -32,8 +38,7 @@ import StockModal from "../forms/config/Stock";
 import FinanceModal from "../forms/config/Finance";
 import FilesModal from "../forms/config/Files";
 
-// Array de configurações
-const configData = [
+const options = [
   {
     icon: <WorkIcon sx={{ fontSize: 48 }} />,
     text: "Clientes",
@@ -82,8 +87,10 @@ const configData = [
 ];
 
 export default function Config({ user }) {
+  // const [refreshData, setRefreshData] = React.useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [openModal, setOpenModal] = useState(null);
+  const [configData, setConfigData] = useState([]);
 
   const handleItemClick = (modal) => {
     setOpenModal(modal);
@@ -93,6 +100,51 @@ export default function Config({ user }) {
     setOpenModal(null);
   };
 
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const config = await api.get("/config");
+        setConfigData(config.data[0]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const config = await api.get("/config");
+      setConfigData(config.data);
+      console.log("config.data", config.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleCreateInitialConfig = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await api.post("/config");
+      if (res.data) {
+        toast.success("Configuração Inicial Criada!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+        fetchData();
+      }
+    } catch (err) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+    }
+  };
+
   return (
     <>
       <Typography
@@ -100,42 +152,62 @@ export default function Config({ user }) {
       >
         Configurações
       </Typography>
-      <Grid container rowSpacing={2} columnSpacing={{ md: 4, lg: 4 }}>
-        {configData.map((config, index) => (
-          <Grid
-            item
-            key={index}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-            onClick={() => handleItemClick(config.modal)}
-          >
+      {configData.length !== 0 ? (
+        <Grid container rowSpacing={2} columnSpacing={{ md: 4, lg: 4 }}>
+          {options.map((config, index) => (
             <Grid
-              container
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              sx={{
-                width: 150,
-                p: "20px",
-                border: "1px solid #ccc",
-                borderRadius: 2,
-                transition: "background-color 0.3s, color 0.3s",
-                backgroundColor: hoveredIndex === index ? "#777" : "initial",
-                color: hoveredIndex === index ? "white" : "#777",
-                cursor: "pointer",
-              }}
+              item
+              key={index}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              onClick={() => handleItemClick(config.modal)}
             >
-              {config.icon}
-              <Typography sx={{ mt: 1 }}>{config.text}</Typography>
+              <Grid
+                container
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                sx={{
+                  width: 150,
+                  p: "20px",
+                  border: "1px solid #ccc",
+                  borderRadius: 2,
+                  transition: "background-color 0.3s, color 0.3s",
+                  backgroundColor: hoveredIndex === index ? "#777" : "initial",
+                  color: hoveredIndex === index ? "white" : "#777",
+                  cursor: "pointer",
+                }}
+              >
+                {config.icon}
+                <Typography sx={{ mt: 1 }}>{config.text}</Typography>
+              </Grid>
             </Grid>
-          </Grid>
-        ))}
-      </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <>
+          <Typography>Crie a Configuração Inicial</Typography>
+          <Button
+            type="submit"
+            variant="contained"
+            color="success"
+            onClick={handleCreateInitialConfig}
+          >
+            Criar
+          </Button>
+        </>
+      )}
 
-      {/* Dialog dinâmico com base no item selecionado */}
-      <Dialog open={!!openModal} onClose={handleCloseModal}>
-        <DialogTitle>Configurações</DialogTitle>
-        <DialogContent>{openModal}</DialogContent>
+      <Dialog
+        open={!!openModal}
+        onClose={handleCloseModal}
+        fullWidth
+        maxWidth="md"
+        test="hey"
+      >
+        <DialogContent>
+          {openModal && React.cloneElement(openModal, { onClose: () => setOpenModal(null) })}
+        </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal}>Fechar</Button>
         </DialogActions>
