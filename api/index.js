@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const authRoute = require("./routes/auth");
+const configRoute = require("./routes/config");
 const clientRoute = require("./routes/clients");
 const customerRoute = require("./routes/customers");
 const financeRoute = require("./routes/finances");
@@ -40,6 +41,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/api/login", authRoute);
+app.use("/api/config", configRoute);
 app.use("/api/clients", clientRoute);
 app.use("/api/customers", customerRoute);
 app.use("/api/finances", financeRoute);

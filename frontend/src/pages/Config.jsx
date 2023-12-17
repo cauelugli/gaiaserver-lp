@@ -1,11 +1,17 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  Grid,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
 
-import { Grid, Typography } from "@mui/material";
-
-// Importando os ícones necessários
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import BuildIcon from "@mui/icons-material/Build";
 import GradingIcon from "@mui/icons-material/Grading";
@@ -16,24 +22,75 @@ import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
 
+import CustomersModal from "../forms/config/Customers";
+import UsersModal from "../forms/config/Users";
+import DepartmentsModal from "../forms/config/Departments";
+import RequestsModal from "../forms/config/Requests";
+import QuotesModal from "../forms/config/Quotes";
+import ServicesModal from "../forms/config/Services";
+import StockModal from "../forms/config/Stock";
+import FinanceModal from "../forms/config/Finance";
+import FilesModal from "../forms/config/Files";
+
 // Array de configurações
 const configData = [
-  { icon: <WorkIcon sx={{ fontSize: 48 }} />, text: "Clientes" },
-  { icon: <GroupIcon sx={{ fontSize: 48 }} />, text: "Colaboradores" },
-  { icon: <LanIcon sx={{ fontSize: 48 }} />, text: "Departamentos" },
-  { icon: <GradingIcon sx={{ fontSize: 48 }} />, text: "Pedidos" },
-  { icon: <RequestQuoteIcon sx={{ fontSize: 48 }} />, text: "Orçamentos" },
-  { icon: <BuildIcon sx={{ fontSize: 48 }} />, text: "Serviços" },
-  { icon: <WarehouseIcon sx={{ fontSize: 48 }} />, text: "Estoque" },
-  { icon: <AttachMoneyIcon sx={{ fontSize: 48 }} />, text: "Financeiro" },
-  { icon: <InsertDriveFileIcon sx={{ fontSize: 48 }} />, text: "Arquivos" },
+  {
+    icon: <WorkIcon sx={{ fontSize: 48 }} />,
+    text: "Clientes",
+    modal: <CustomersModal />,
+  },
+  {
+    icon: <GroupIcon sx={{ fontSize: 48 }} />,
+    text: "Colaboradores",
+    modal: <UsersModal />,
+  },
+  {
+    icon: <LanIcon sx={{ fontSize: 48 }} />,
+    text: "Departamentos",
+    modal: <DepartmentsModal />,
+  },
+  {
+    icon: <GradingIcon sx={{ fontSize: 48 }} />,
+    text: "Pedidos",
+    modal: <RequestsModal />,
+  },
+  {
+    icon: <RequestQuoteIcon sx={{ fontSize: 48 }} />,
+    text: "Orçamentos",
+    modal: <QuotesModal />,
+  },
+  {
+    icon: <BuildIcon sx={{ fontSize: 48 }} />,
+    text: "Serviços",
+    modal: <ServicesModal />,
+  },
+  {
+    icon: <WarehouseIcon sx={{ fontSize: 48 }} />,
+    text: "Estoque",
+    modal: <StockModal />,
+  },
+  {
+    icon: <AttachMoneyIcon sx={{ fontSize: 48 }} />,
+    text: "Financeiro",
+    modal: <FinanceModal />,
+  },
+  {
+    icon: <InsertDriveFileIcon sx={{ fontSize: 48 }} />,
+    text: "Arquivos",
+    modal: <FilesModal />,
+  },
 ];
 
 export default function Config({ user }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [openModal, setOpenModal] = useState(null);
 
-  const handleItemClick = (text) => {
-    alert(text);
+  const handleItemClick = (modal) => {
+    setOpenModal(modal);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(null);
   };
 
   return (
@@ -50,7 +107,7 @@ export default function Config({ user }) {
             key={index}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
-            onClick={() => handleItemClick(config.text)}
+            onClick={() => handleItemClick(config.modal)}
           >
             <Grid
               container
@@ -59,7 +116,7 @@ export default function Config({ user }) {
               justifyContent="center"
               sx={{
                 width: 150,
-                p: "20px", 
+                p: "20px",
                 border: "1px solid #ccc",
                 borderRadius: 2,
                 transition: "background-color 0.3s, color 0.3s",
@@ -74,6 +131,15 @@ export default function Config({ user }) {
           </Grid>
         ))}
       </Grid>
+
+      {/* Dialog dinâmico com base no item selecionado */}
+      <Dialog open={!!openModal} onClose={handleCloseModal}>
+        <DialogTitle>Configurações</DialogTitle>
+        <DialogContent>{openModal}</DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>Fechar</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
