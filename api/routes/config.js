@@ -38,16 +38,12 @@ router.get("/requests", async (req, res) => {
 // REQUESTS
 router.put("/requests", async (req, res) => {
   try {
-    const { requestsNeedApproval, requestsCanBeDeletedBySomeoneElse, requestsCanBeDeleted } =
-      req.body;
+    const { requestsNeedApproval, requestsCanBeDeleted } = req.body;
 
     const config = await Config.findOne();
 
     config.requests.requestsNeedApproval = requestsNeedApproval;
-    config.requests.canBeDeleted =
-      requestsCanBeDeleted;
-    config.requests.canDeleteSomeoneElsesRequest =
-      requestsCanBeDeletedBySomeoneElse;
+    config.requests.canBeDeleted = requestsCanBeDeleted;
 
     await config.save();
     res.status(200).json(config);

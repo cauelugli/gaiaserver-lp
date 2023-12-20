@@ -19,6 +19,7 @@ const api = axios.create({
 });
 
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import AutoFixNormalIcon from '@mui/icons-material/AutoFixNormal';
 import BuildIcon from "@mui/icons-material/Build";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
@@ -37,6 +38,7 @@ import ServicesModal from "../forms/config/Services";
 import StockModal from "../forms/config/Stock";
 import FinanceModal from "../forms/config/Finance";
 import FilesModal from "../forms/config/Files";
+import CustomizationModal from "../forms/config/Customization";
 
 const options = [
   {
@@ -83,6 +85,11 @@ const options = [
     icon: <InsertDriveFileIcon sx={{ fontSize: 48 }} />,
     text: "Arquivos",
     modal: <FilesModal />,
+  },
+  {
+    icon: <AutoFixNormalIcon sx={{ fontSize: 48 }} />,
+    text: "Personalização",
+    modal: <CustomizationModal />,
   },
 ];
 

@@ -50,10 +50,6 @@ const configSchema = new Schema({
     canCreate: {
       type: Array,
     },
-    canDeleteSomeoneElsesRequest: {
-      type: Boolean,
-      default: false,
-    },
   },
 
   quotes: {

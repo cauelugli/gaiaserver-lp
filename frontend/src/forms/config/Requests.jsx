@@ -26,10 +26,6 @@ export default function Requests({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
   const [requestsNeedApproval, setRequestsNeedApproval] = React.useState(null);
   const [requestsCanBeDeleted, setRequestsCanBeDeleted] = React.useState(null);
-  const [
-    requestsCanBeDeletedBySomeoneElse,
-    setRequestsCanBeDeletedBySomeoneElse,
-  ] = React.useState(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -39,9 +35,6 @@ export default function Requests({ onClose }) {
         setRequestsNeedApproval(config.data[0].requests.requestsNeedApproval);
         setRequestsCanBeDeleted(
           config.data[0].requests.canBeDeleted
-        );
-        setRequestsCanBeDeletedBySomeoneElse(
-          config.data[0].requests.canDeleteSomeoneElsesRequest
         );
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -56,7 +49,6 @@ export default function Requests({ onClose }) {
       const res = await api.put("/config/requests", {
         requestsNeedApproval,
         requestsCanBeDeleted,
-        requestsCanBeDeletedBySomeoneElse,
       });
 
       if (res.data) {
@@ -171,57 +163,6 @@ export default function Requests({ onClose }) {
                     row
                     value={requestsCanBeDeleted}
                     onChange={(e) => setRequestsCanBeDeleted(e.target.value)}
-                  >
-                    <FormControlLabel
-                      value={Boolean(true)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
-                    />
-                    <FormControlLabel
-                      value={Boolean(false)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
-                    />
-                  </RadioGroup>
-                </Grid>
-              </Grid>
-              <Grid item sx={{ my: 1.5 }}>
-                <Grid container direction="row">
-                  <Typography sx={{ my: "auto", mr: 1 }}>
-                    Pedidos Podem ser Deletados por Não Criadores
-                  </Typography>
-                  <Tooltip
-                    title={
-                      <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", os pedidos de Jobs e
-                        Vendas poderão ser deletados por usuários que não são os
-                        criadores originais dos pedidos. A opção padrão é "Não".
-                      </Typography>
-                    }
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "#32aacd",
-                        "&:hover": {
-                          backgroundColor: "white",
-                        },
-                      }}
-                    >
-                      ?
-                    </Button>
-                  </Tooltip>
-                  <RadioGroup
-                    row
-                    value={requestsCanBeDeletedBySomeoneElse}
-                    onChange={(e) =>
-                      setRequestsCanBeDeletedBySomeoneElse(e.target.value)
-                    }
                   >
                     <FormControlLabel
                       value={Boolean(true)}
