@@ -289,7 +289,7 @@ export default function Customization({ onClose }) {
                   {logo && !newLogo && (
                     <img
                       src={`http://localhost:3000/static/${logo}`}
-                      style={{ width: "auto", height: 90, marginLeft: 10 }}
+                      style={{ width: "auto", height: 90, marginLeft: 10, backgroundColor:"#ccc" }}
                     />
                   )}
                   <Grid item>
@@ -304,8 +304,9 @@ export default function Customization({ onClose }) {
                           src={URL.createObjectURL(newLogo)}
                           alt="Prévia da Imagem"
                           style={{
-                            width: 200,
-                            height: 100,
+                            width: "auto",
+                            height: 90,
+                            backgroundColor:"#ccc"
                           }}
                         />
                         <FormHelperText>Novo Logotipo</FormHelperText>
