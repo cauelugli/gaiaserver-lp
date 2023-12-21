@@ -65,6 +65,10 @@ const SideBar = ({ configData }) => {
               color: "black",
               position: "relative",
               overflow: "hidden",
+
+              backgroundColor: configData && configData.customization
+              ? configData.customization.mainColor
+              : "#32aacd",
             }}
           >
             <ListItemButton
@@ -73,9 +77,13 @@ const SideBar = ({ configData }) => {
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={handleMouseLeave}
               sx={{
-                color: configData.customization
+                color: configData && configData.customization
                   ? configData.customization.fontColor
                   : "white",
+
+                  backgroundColor: configData && configData.customization
+                    ? configData.customization.mainColor
+                    : "#32aacd",
                 position: "relative",
                 display: "flex",
                 alignItems: "center",
@@ -85,10 +93,10 @@ const SideBar = ({ configData }) => {
               <Typography
                 sx={{
                   ml: 1,
-                  color: configData.customization
+                  color: configData && configData.customization
                     ? configData.customization.fontColor
                     : "white",
-                  backgroundColor: configData.customization
+                  backgroundColor: configData && configData.customization
                     ? configData.customization.mainColor
                     : "#32aacd",
                   zIndex: 1,
@@ -114,7 +122,7 @@ const SideBar = ({ configData }) => {
                   left: 0,
                   width: "100%",
                   height: "100%",
-                  backgroundColor: configData.customization
+                  backgroundColor: configData && configData.customization
                     ? configData.customization.mainColor
                     : "#32aacd",
                   zIndex: 0,

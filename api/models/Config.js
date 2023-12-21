@@ -132,6 +132,40 @@ const configSchema = new Schema({
       default: "low",
     },
   },
+
+
+  sidebar: {
+    dashboard: {
+      type: Array,
+    },
+    customers: {
+      type: Array,
+    },
+    users: {
+      type: Array,
+    },
+    departments: {
+      type: Array,
+    },
+    quotes: {
+      type: Array,
+    },
+    services: {
+      type: Array,
+    },
+    stock: {
+      type: Array,
+    },
+    finance: {
+      type: Array,
+    },
+    files: {
+      type: Array,
+    },
+    config: {
+      type: Array,
+    },
+  },
 });
 
 const Config = mongoose.model("Config", configSchema);

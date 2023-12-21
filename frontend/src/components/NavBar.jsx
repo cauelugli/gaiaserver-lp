@@ -16,13 +16,13 @@ export default function NavBar({ user, configData }) {
       alignItems="center"
       justifyContent="flex-start"
       sx={{
-        backgroundColor: configData.customization
+        backgroundColor: configData && configData.customization
           ? configData.customization.mainColor
           : "#32aacd",
       }}
     >
       <img
-        src={`http://localhost:3000/static/${configData.customization ? configData.customization.logo : ""}`}
+        src={`http://localhost:3000/static/${configData && configData.customization ? configData.customization.logo : ""}`}
         alt="Logotipo da Empresa"
         style={{
           width: "8%",

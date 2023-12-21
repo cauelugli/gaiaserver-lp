@@ -19,16 +19,17 @@ const api = axios.create({
 });
 
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import AutoFixNormalIcon from '@mui/icons-material/AutoFixNormal';
+import AutoFixNormalIcon from "@mui/icons-material/AutoFixNormal";
 import BuildIcon from "@mui/icons-material/Build";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import LanIcon from "@mui/icons-material/Lan";
-import LockIcon from '@mui/icons-material/Lock';
+import LockIcon from "@mui/icons-material/Lock";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
+import ViewSidebarIcon from "@mui/icons-material/ViewSidebar";
 
 import CustomersModal from "../forms/config/Customers";
 import UsersModal from "../forms/config/Users";
@@ -41,6 +42,7 @@ import FinanceModal from "../forms/config/Finance";
 import FilesModal from "../forms/config/Files";
 import CustomizationModal from "../forms/config/Customization";
 import SecurityModal from "../forms/config/Security";
+import SideBarModal from "../forms/config/SideBar";
 
 const options = [
   {
@@ -97,6 +99,18 @@ const options = [
     icon: <LockIcon sx={{ fontSize: 48 }} />,
     text: "Segurança",
     modal: <SecurityModal />,
+  },
+  {
+    icon: (
+      <ViewSidebarIcon
+        sx={{
+          fontSize: 48,
+          transform: "rotate(180deg)",
+        }}
+      />
+    ),
+    text: "Barra Lateral",
+    modal: <SideBarModal />,
   },
 ];
 
@@ -165,7 +179,7 @@ export default function Config({ user }) {
       >
         Configurações
       </Typography>
-      {configData.length !== 0 ? (
+      {configData ? (
         <Grid container rowSpacing={2} columnSpacing={{ md: 4, lg: 4 }}>
           {options.map((config, index) => (
             <Grid
@@ -219,7 +233,10 @@ export default function Config({ user }) {
         test="hey"
       >
         <DialogContent>
-          {openModal && React.cloneElement(openModal, { onClose: () => setOpenModal(null) })}
+          {openModal &&
+            React.cloneElement(openModal, {
+              onClose: () => setOpenModal(null),
+            })}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal}>Fechar</Button>

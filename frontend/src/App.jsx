@@ -97,7 +97,7 @@ export default function App() {
             item
             sx={{
               textAlign: "center",
-              backgroundColor: configData.customization
+              backgroundColor: configData && configData.customization
                 ? configData.customization.mainColor
                 : "32aacd",
               height: "auto",
