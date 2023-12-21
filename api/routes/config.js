@@ -53,4 +53,23 @@ router.put("/requests", async (req, res) => {
   }
 });
 
+// REQUESTS
+router.put("/customization", async (req, res) => {
+  try {
+    const { mainColor, fontColor, logo } = req.body;
+
+    const config = await Config.findOne();
+
+    config.customization.mainColor = mainColor;
+    config.customization.fontColor = fontColor;
+    config.customization.logo = logo;
+
+    await config.save();
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

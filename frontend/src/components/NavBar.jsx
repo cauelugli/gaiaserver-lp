@@ -7,14 +7,18 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 
 import UserButton from "./small/buttons/UserButton";
 
-export default function NavBar({ user }) {
+export default function NavBar({ user, configData }) {
   return (
     <Grid
       container
       direction="row"
       alignItems="center"
       justifyContent="flex-start"
-      sx={{ backgroundColor: "#32aacd" }}
+      sx={{
+        backgroundColor: configData.customization
+          ? configData.customization.mainColor
+          : "#32aacd",
+      }}
     >
       <img
         src={`http://localhost:3000/static/logo_text.png`}
@@ -29,7 +33,7 @@ export default function NavBar({ user }) {
         }}
         onClick={() => alert("Esse é o logo da sua empresa!")}
       />
-      <NotificationsIcon sx={{ mr: 2, color:"#333" }} />
+      <NotificationsIcon sx={{ mr: 2, color: "#333" }} />
       <UserButton user={user} />
     </Grid>
   );

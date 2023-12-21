@@ -111,6 +111,21 @@ const configSchema = new Schema({
       type: Array,
     },
   },
+
+  customization: {
+    mainColor: {
+      type: String,
+      default: '#32aacd',
+    },
+    fontColor: {
+      type: String,
+      default: 'white',
+    },
+    logo: {
+      type: String,
+      default: "default.png",
+    },
+  },
 });
 
 const Config = mongoose.model("Config", configSchema);

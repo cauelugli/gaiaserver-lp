@@ -41,7 +41,7 @@ const options = [
   },
 ];
 
-const SideBar = ({ sidebarOpen }) => {
+const SideBar = ({ sidebarOpen, configData }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const handleClickOption = (index) => {
@@ -65,7 +65,12 @@ const SideBar = ({ sidebarOpen }) => {
               selected={selectedIndex === index}
               disabled={option.disabled}
               sx={{
-                color: selectedIndex === index ? "#063970" : "white",
+                color:
+                  selectedIndex === index
+                    ? "#063970"
+                    : configData.customization
+                    ? configData.customization.fontColor
+                    : "white",
                 backgroundColor: selectedIndex === index ? "white" : "",
                 "&:hover": {
                   backgroundColor: "",
