@@ -312,7 +312,7 @@ export default function StockTable({
                                       <TableCell align="center">
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -322,7 +322,7 @@ export default function StockTable({
                                       <TableCell align="center">
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -334,12 +334,12 @@ export default function StockTable({
                                   <TableBody>
                                     <TableRow>
                                       <TableCell align="center">
-                                        <Typography>
+                                        <Typography sx={{ fontSize: 13 }}>
                                           {stockItem.name}
                                         </Typography>
                                       </TableCell>
                                       <TableCell align="center">
-                                        <Typography>
+                                        <Typography sx={{ fontSize: 13 }}>
                                           {stockItem.quantity}
                                         </Typography>
                                       </TableCell>
@@ -352,7 +352,7 @@ export default function StockTable({
                                       <TableCell align="center">
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -362,7 +362,7 @@ export default function StockTable({
                                       <TableCell align="center">
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -374,12 +374,12 @@ export default function StockTable({
                                   <TableBody>
                                     <TableRow>
                                       <TableCell align="center">
-                                        <Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
                                           R${stockItem.buyValue}
                                         </Typography>
                                       </TableCell>
                                       <TableCell align="center">
-                                        <Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
                                           R${stockItem.sellValue}
                                         </Typography>
                                       </TableCell>

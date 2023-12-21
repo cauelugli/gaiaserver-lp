@@ -258,21 +258,21 @@ export default function ClientTable({
                               <TableRow>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     E-mail
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Telefone
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     CPF
                                   </Typography>
@@ -282,13 +282,19 @@ export default function ClientTable({
                             <TableBody>
                               <TableRow>
                                 <TableCell component="th" scope="row">
-                                  <Typography>{client.email}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {client.email}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>{client.phone}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {client.phone}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>{client.cpf}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {client.cpf}
+                                  </Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>
@@ -303,21 +309,21 @@ export default function ClientTable({
                               <TableRow>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Residencial
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Entrega
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Cobrança
                                   </Typography>
@@ -327,15 +333,19 @@ export default function ClientTable({
                             <TableBody>
                               <TableRow>
                                 <TableCell component="th" scope="row">
-                                  <Typography>{client.addressHome}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {client.addressHome}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
                                     {client.addressDelivery}
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>{client.addressBill}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {client.addressBill}
+                                  </Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>
@@ -350,35 +360,35 @@ export default function ClientTable({
                               <TableRow>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Orçamento
                                   </Typography>
                                 </TableCell>
                                 <TableCell align="left">
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Título
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Tipo de Pedido
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Solicitado em
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Solicitado por
                                   </Typography>
@@ -401,22 +411,24 @@ export default function ClientTable({
                                         sx={{ color: "black" }}
                                         onClick={() => openViewDialog(item)}
                                       >
-                                        {item.number}
+                                        <Typography sx={{ fontSize: 13 }}>
+                                          {item.number}
+                                        </Typography>
                                       </Button>
                                     </TableCell>
                                     <TableCell align="left">
-                                      <Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
                                         {item.title || "Venda"}
                                       </Typography>
                                     </TableCell>
                                     <TableCell>
-                                      <Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
                                         {item.type.charAt(0).toUpperCase() +
                                           item.type.slice(1)}
                                       </Typography>
                                     </TableCell>
                                     <TableCell>
-                                      <Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
                                         {new Date(item.date).toLocaleDateString(
                                           "pt-BR",
                                           {
@@ -428,7 +440,9 @@ export default function ClientTable({
                                       </Typography>
                                     </TableCell>
                                     <TableCell>
-                                      <Typography>{item.requester}</Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {item.requester}
+                                      </Typography>
                                     </TableCell>
                                   </TableRow>
                                 ))}

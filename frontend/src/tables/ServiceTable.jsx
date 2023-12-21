@@ -171,7 +171,6 @@ export default function ServiceTable({
                       <TableCell
                         onClick={() => handleOpenDetail(service)}
                         cursor="pointer"
-                        // align="left"
                       >
                         <Typography sx={{ fontSize: 13 }}>
                           {service.name}
@@ -235,21 +234,21 @@ export default function ServiceTable({
                                 <TableRow>
                                   <TableCell sx={{ width: "350px" }}>
                                     <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
+                                      sx={{ fontSize: 13, color: "#777" }}
                                     >
                                       Nome
                                     </Typography>
                                   </TableCell>
                                   <TableCell sx={{ width: "350px" }}>
                                     <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
+                                      sx={{ fontSize: 13, color: "#777" }}
                                     >
                                       Departamento
                                     </Typography>
                                   </TableCell>
                                   <TableCell>
                                     <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
+                                      sx={{ fontSize: 13, color: "#777" }}
                                     >
                                       Valor do Serviço
                                     </Typography>
@@ -259,17 +258,21 @@ export default function ServiceTable({
                               <TableBody>
                                 <TableRow>
                                   <TableCell sx={{ width: "350px" }}>
-                                    <Typography>{service.name}</Typography>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {service.name}
+                                    </Typography>
                                   </TableCell>
                                   <TableCell sx={{ width: "350px" }}>
-                                    <Typography>
+                                    <Typography sx={{ fontSize: 13 }}>
                                       {service.department
                                         ? service.department.name
                                         : "-"}
                                     </Typography>
                                   </TableCell>
                                   <TableCell>
-                                    <Typography>R${service.value}</Typography>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      R${service.value}
+                                    </Typography>
                                   </TableCell>
                                 </TableRow>
                               </TableBody>
@@ -290,7 +293,7 @@ export default function ServiceTable({
                                       <TableCell sx={{ width: "350px" }}>
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -300,7 +303,7 @@ export default function ServiceTable({
                                       <TableCell sx={{ width: "350px" }}>
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -310,7 +313,7 @@ export default function ServiceTable({
                                       <TableCell>
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -325,18 +328,18 @@ export default function ServiceTable({
                                         material.quantity > 0 && (
                                           <TableRow key={material.id}>
                                             <TableCell sx={{ width: "350px" }}>
-                                              <Typography>
+                                              <Typography sx={{ fontSize: 13 }}>
                                                 {material.name}
                                               </Typography>
                                             </TableCell>
 
                                             <TableCell sx={{ width: "350px" }}>
-                                              <Typography>
+                                              <Typography sx={{ fontSize: 13 }}>
                                                 {material.quantity}
                                               </Typography>
                                             </TableCell>
                                             <TableCell>
-                                              <Typography>
+                                              <Typography sx={{ fontSize: 13 }}>
                                                 R$
                                                 {material.sellValue *
                                                   material.quantity}
@@ -352,7 +355,7 @@ export default function ServiceTable({
                                     <TableCell>
                                       <Typography
                                         sx={{
-                                          fontSize: "14px",
+                                          fontSize: 13,
                                           color: "#777",
                                           my: -1,
                                           mb: -2,
@@ -366,7 +369,11 @@ export default function ServiceTable({
                                   <TableRow>
                                     <TableCell>
                                       <Typography
-                                        sx={{ my: -1, color: "#228B22" }}
+                                        sx={{
+                                          my: -1,
+                                          color: "#228B22",
+                                          fontSize: 13,
+                                        }}
                                       >
                                         R${" "}
                                         {(
@@ -378,7 +385,7 @@ export default function ServiceTable({
                                 </Box>
                               </>
                             ) : (
-                              <Typography sx={{ mt: 1 }}>
+                              <Typography sx={{ mt: 1, fontSize:13 }}>
                                 Não há uso de Materiais
                               </Typography>
                             )}

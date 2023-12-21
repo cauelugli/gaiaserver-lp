@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -243,28 +244,28 @@ export default function RoleTable({
                                   <TableRow>
                                     <TableCell>
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         Nome
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         E-mail
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         Telefone
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         Departamento
                                       </Typography>
@@ -274,16 +275,22 @@ export default function RoleTable({
                                 <TableBody>
                                   <TableRow>
                                     <TableCell>
-                                      <Typography>{row.name}</Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {row.name}
+                                      </Typography>
                                     </TableCell>
                                     <TableCell align="center">
-                                      <Typography>{row.email}</Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {row.email}
+                                      </Typography>
                                     </TableCell>
                                     <TableCell align="center">
-                                      <Typography>{row.phone}</Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {row.phone}
+                                      </Typography>
                                     </TableCell>
                                     <TableCell>
-                                      <Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
                                         {row.department ? (
                                           <Grid container direction="row">
                                             <Paper
@@ -317,21 +324,21 @@ export default function RoleTable({
                                   <TableRow>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         Cargo
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         Nome de Operador
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography
-                                        sx={{ fontSize: "14px", color: "#777" }}
+                                        sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         Perfil de Acesso
                                       </Typography>
@@ -341,15 +348,17 @@ export default function RoleTable({
                                 <TableBody>
                                   <TableRow>
                                     <TableCell align="center">
-                                      <Typography>Gerente</Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        Gerente
+                                      </Typography>
                                     </TableCell>
                                     <TableCell align="center">
-                                      <Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
                                         {row.username ? row.username : "-"}
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
-                                      <Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
                                         {row.role ? row.role : "-"}
                                       </Typography>
                                     </TableCell>

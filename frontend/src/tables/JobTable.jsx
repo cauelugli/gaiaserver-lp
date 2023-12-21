@@ -214,7 +214,7 @@ export default function JobTable({
         <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
           Mostrar Jobs Concluídos
         </Typography>
-      </Box>{" "}
+      </Box>
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
@@ -256,7 +256,6 @@ export default function JobTable({
                 const shouldApplyStatusFilter =
                   statusFilter || searchStatus === "&nbsp";
 
-                // Verifica se a condição para aplicar o filtro é atendida
                 const shouldShowJob =
                   userProperty &&
                   userProperty
@@ -264,7 +263,6 @@ export default function JobTable({
                     .includes(searchValue.toLowerCase()) &&
                   shouldApplyStatusFilter;
 
-                // Se a opção para mostrar jobs concluídos estiver desmarcada, oculta os jobs concluídos
                 return (
                   shouldShowJob &&
                   (showCompletedJobs || job.status !== "Concluido")
@@ -376,21 +374,21 @@ export default function JobTable({
                               <TableRow>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Título do Job
                                   </Typography>
                                 </TableCell>
                                 <TableCell align="left">
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Solicitante
                                   </Typography>
                                 </TableCell>
                                 <TableCell align="left">
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Status
                                   </Typography>
@@ -400,17 +398,21 @@ export default function JobTable({
                             <TableBody>
                               <TableRow>
                                 <TableCell align="left">
-                                  <Typography>{job.title}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {job.title}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell align="left">
-                                  <Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
                                     {job.requester}
                                     {job.customer.cnpj &&
                                       `(${job.customer.name})`}
                                   </Typography>
                                 </TableCell>
                                 <TableCell align="left">
-                                  <Typography>{job.status}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {job.status}
+                                  </Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>
@@ -428,7 +430,7 @@ export default function JobTable({
                               <TableRow>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Sobre
                                   </Typography>
@@ -438,7 +440,9 @@ export default function JobTable({
                             <TableBody>
                               <TableRow>
                                 <TableCell align="left">
-                                  <Typography>{job.description}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {job.description}
+                                  </Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>
@@ -456,21 +460,21 @@ export default function JobTable({
                               <TableRow>
                                 <TableCell align="left">
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Nome do Departamento
                                   </Typography>
                                 </TableCell>
                                 <TableCell align="left">
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Gerente Responsável
                                   </Typography>
                                 </TableCell>
                                 <TableCell align="left">
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Colaborador Designado
                                   </Typography>
@@ -480,7 +484,9 @@ export default function JobTable({
                             <TableBody>
                               <TableRow>
                                 <TableCell align="left">
-                                  <Typography>{job.department.name}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {job.department.name}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell align="left">
                                   <Grid container direction="row">
@@ -547,28 +553,28 @@ export default function JobTable({
                               <TableRow>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Nº do Orçamento
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Serviço
                                   </Typography>
                                 </TableCell>
                                 <TableCell align="left">
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Materiais
                                   </Typography>
                                 </TableCell>
                                 <TableCell align="left">
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Valor Total (serviço + materiais)
                                   </Typography>
@@ -578,16 +584,23 @@ export default function JobTable({
                             <TableBody>
                               <TableRow>
                                 <TableCell component="th" scope="row">
-                                  <Typography>{job.quoteNumber}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {job.quoteNumber}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell align="left">
-                                  <Typography>{job.service.name}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {job.service.name}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell align="left">
-                                  <Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
                                     {job.materials.length > 0
                                       ? job.materials.map((material) => (
-                                          <Typography key={material.id}>
+                                          <Typography
+                                            sx={{ fontSize: 13 }}
+                                            key={material.id}
+                                          >
                                             x{material.quantity} {material.name}
                                           </Typography>
                                         ))
@@ -595,7 +608,9 @@ export default function JobTable({
                                   </Typography>
                                 </TableCell>
                                 <TableCell align="left">
-                                  <Typography>R${job.price}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    R${job.price}
+                                  </Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>
@@ -613,21 +628,21 @@ export default function JobTable({
                               <TableRow>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     #
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Data
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Colaborador
                                   </Typography>
@@ -635,14 +650,14 @@ export default function JobTable({
 
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Atividade
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Reações
                                   </Typography>
@@ -661,29 +676,29 @@ export default function JobTable({
                                   }}
                                 >
                                   <TableCell>
-                                    <Typography sx={{ fontSize: 12 }}>
+                                    <Typography sx={{ fontSize: 13 }}>
                                       {interaction.number}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="left">
-                                    <Typography sx={{ fontSize: 12 }}>
+                                    <Typography sx={{ fontSize: 13 }}>
                                       {interaction.date}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="left">
-                                    <Typography sx={{ fontSize: 12 }}>
+                                    <Typography sx={{ fontSize: 13 }}>
                                       {interaction.user}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="left">
-                                    <Typography sx={{ fontSize: 12 }}>
+                                    <Typography sx={{ fontSize: 13 }}>
                                       {interaction.activity}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="left">
                                     {interaction.activity !==
                                       "Job aprovado" && (
-                                      <Typography sx={{ fontSize: 12 }}>
+                                      <Typography sx={{ fontSize: 13 }}>
                                         <InteractionReactions
                                           user={user}
                                           manager={job.manager}
@@ -737,21 +752,21 @@ export default function JobTable({
                                 <TableRow>
                                   <TableCell>
                                     <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
+                                      sx={{ fontSize: 13, color: "#777" }}
                                     >
                                       Data da Resolução
                                     </Typography>
                                   </TableCell>
                                   <TableCell>
                                     <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
+                                      sx={{ fontSize: 13, color: "#777" }}
                                     >
                                       Resolvido por
                                     </Typography>
                                   </TableCell>
                                   <TableCell>
                                     <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
+                                      sx={{ fontSize: 13, color: "#777" }}
                                     >
                                       Resolução
                                     </Typography>
@@ -761,17 +776,17 @@ export default function JobTable({
                               <TableBody>
                                 <TableRow>
                                   <TableCell>
-                                    <Typography sx={{ fontSize: 12 }}>
+                                    <Typography sx={{ fontSize: 13 }}>
                                       {job.resolvedAt}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="left">
-                                    <Typography sx={{ fontSize: 12 }}>
+                                    <Typography sx={{ fontSize: 13 }}>
                                       {job.resolvedBy}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="left">
-                                    <Typography sx={{ fontSize: 12 }}>
+                                    <Typography sx={{ fontSize: 13 }}>
                                       {job.resolution}
                                     </Typography>
                                   </TableCell>

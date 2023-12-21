@@ -25,6 +25,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Grid,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -322,19 +323,29 @@ export default function CustomerTable({
                             <TableBody>
                               <TableRow>
                                 <TableCell component="th" scope="row">
-                                  <Typography>{customer.address}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {customer.address}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>{customer.phone}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {customer.phone}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>{customer.cnpj}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {customer.cnpj}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>{customer.segment}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {customer.segment}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>{customer.employees}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {customer.employees}
+                                  </Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>
@@ -374,17 +385,17 @@ export default function CustomerTable({
                             <TableBody>
                               <TableRow>
                                 <TableCell>
-                                  <Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
                                     {customer.mainContactName}
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
                                     {customer.mainContactEmail}
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
                                     {customer.mainContactPosition}
                                   </Typography>
                                 </TableCell>
@@ -419,10 +430,14 @@ export default function CustomerTable({
                             <TableBody>
                               <TableRow>
                                 <TableCell>
-                                  <Typography>{customer.website}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {customer.website}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>{customer.domain}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {customer.domain}
+                                  </Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>
@@ -430,9 +445,17 @@ export default function CustomerTable({
                         </Box>
 
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                            Pedidos Recentes
-                          </Typography>
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{ fontWeight: "bold" }}
+                            >
+                              Pedidos Recentes{" "}
+                            </Typography>
+                            <FormHelperText sx={{ fontSize: 13, my:"auto", ml:1 }}>
+                              (últimos 5)
+                            </FormHelperText>
+                          </Grid>
                           <Table size="small">
                             <TableHead>
                               <TableRow>

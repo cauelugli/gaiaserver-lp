@@ -273,28 +273,28 @@ export default function DepartmentTable({
                               <TableRow>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Nome do Departamento
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Tipo
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Telefone
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     E-mail Principal
                                   </Typography>
@@ -304,16 +304,20 @@ export default function DepartmentTable({
                             <TableBody>
                               <TableRow>
                                 <TableCell component="th" scope="row">
-                                  <Typography>{department.name}</Typography>
+                                <Typography sx={{ fontSize: 13 }}>
+                                    {department.name}</Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>{department.type}</Typography>
+                                <Typography sx={{ fontSize: 13 }}>
+                                    {department.type}</Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>{department.phone}</Typography>
+                                <Typography sx={{ fontSize: 13 }}>
+                                    {department.phone}</Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>{department.email}</Typography>
+                                <Typography sx={{ fontSize: 13 }}>
+                                    {department.email}</Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>
@@ -332,21 +336,21 @@ export default function DepartmentTable({
                               <TableRow>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Nome do Gerente
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     E-mail
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
+                                    sx={{ fontSize: 13, color: "#777" }}
                                   >
                                     Telefone
                                   </Typography>
@@ -387,14 +391,14 @@ export default function DepartmentTable({
                                   </Grid>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>
+                                <Typography sx={{ fontSize: 13 }}>
                                     {department.manager
                                       ? department.manager.email
                                       : "-"}
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
-                                  <Typography>
+                                <Typography sx={{ fontSize: 13 }}>
                                     {department.manager
                                       ? department.manager.phone
                                       : "-"}

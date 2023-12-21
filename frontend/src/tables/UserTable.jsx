@@ -392,13 +392,19 @@ export default function UserTable({
                                 <TableBody>
                                   <TableRow>
                                     <TableCell>
-                                      <Typography>{row.name}</Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {row.name}
+                                      </Typography>
                                     </TableCell>
                                     <TableCell align="center">
-                                      <Typography>{row.email}</Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {row.email}
+                                      </Typography>
                                     </TableCell>
                                     <TableCell align="center">
-                                      <Typography>{row.phone}</Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {row.phone}
+                                      </Typography>
                                     </TableCell>
                                     <TableCell>
                                       <Typography>
@@ -459,17 +465,17 @@ export default function UserTable({
                                 <TableBody>
                                   <TableRow>
                                     <TableCell align="center">
-                                      <Typography>
+                                    <Typography sx={{ fontSize: 13 }}>
                                         {row.position ? row.position : "-"}
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
-                                      <Typography>
+                                    <Typography sx={{ fontSize: 13 }}>
                                         {row.username ? row.username : "-"}
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="center">
-                                      <Typography>
+                                    <Typography sx={{ fontSize: 13 }}>
                                         {row.role ? row.role : "-"}
                                       </Typography>
                                     </TableCell>

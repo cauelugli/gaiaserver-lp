@@ -325,7 +325,7 @@ export default function ProductsTable({
                                       <TableCell>
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -335,7 +335,7 @@ export default function ProductsTable({
                                       <TableCell align="center">
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -345,7 +345,7 @@ export default function ProductsTable({
                                       <TableCell align="center">
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -355,7 +355,7 @@ export default function ProductsTable({
                                       <TableCell align="center">
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -365,7 +365,7 @@ export default function ProductsTable({
                                       <TableCell align="center">
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -377,19 +377,29 @@ export default function ProductsTable({
                                   <TableBody>
                                     <TableRow>
                                       <TableCell align="center">
-                                        <Typography>{product.name}</Typography>
+                                        <Typography sx={{ fontSize: 13 }}>
+                                          {product.name}
+                                        </Typography>
                                       </TableCell>
                                       <TableCell align="center">
-                                        <Typography>{product.brand}</Typography>
+                                        <Typography sx={{ fontSize: 13 }}>
+                                          {product.brand}
+                                        </Typography>
                                       </TableCell>
                                       <TableCell align="center">
-                                        <Typography>{product.type}</Typography>
+                                        <Typography sx={{ fontSize: 13 }}>
+                                          {product.type}
+                                        </Typography>
                                       </TableCell>
                                       <TableCell align="center">
-                                        <Typography>{product.model}</Typography>
+                                        <Typography sx={{ fontSize: 13 }}>
+                                          {product.model}
+                                        </Typography>
                                       </TableCell>
                                       <TableCell align="center">
-                                        <Typography>{product.size}</Typography>
+                                        <Typography sx={{ fontSize: 13 }}>
+                                          {product.size}
+                                        </Typography>
                                       </TableCell>
                                     </TableRow>
                                   </TableBody>
@@ -400,7 +410,7 @@ export default function ProductsTable({
                                       <TableCell>
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -410,7 +420,7 @@ export default function ProductsTable({
                                       <TableCell>
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -420,7 +430,7 @@ export default function ProductsTable({
                                       <TableCell>
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -430,7 +440,7 @@ export default function ProductsTable({
                                       <TableCell>
                                         <Typography
                                           sx={{
-                                            fontSize: "14px",
+                                            fontSize: 13,
                                             color: "#777",
                                           }}
                                         >
@@ -442,17 +452,22 @@ export default function ProductsTable({
                                   <TableBody>
                                     <TableRow>
                                       <TableCell>
-                                        <Typography>
+                                        <Typography sx={{ fontSize: 13 }}>
                                           R${product.buyValue}
                                         </Typography>
                                       </TableCell>
                                       <TableCell>
-                                        <Typography>
+                                        <Typography sx={{ fontSize: 13 }}>
                                           R${product.sellValue}
                                         </Typography>
                                       </TableCell>
                                       <TableCell align="center">
-                                        <Typography sx={{ color: "#32CD32" }}>
+                                        <Typography
+                                          sx={{
+                                            color: "#32CD32",
+                                            fontSize: 13,
+                                          }}
+                                        >
                                           {(
                                             ((product.sellValue -
                                               product.buyValue) /
@@ -463,7 +478,7 @@ export default function ProductsTable({
                                         </Typography>
                                       </TableCell>
                                       <TableCell align="center">
-                                        <Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
                                           {product.quantity}
                                         </Typography>
                                       </TableCell>

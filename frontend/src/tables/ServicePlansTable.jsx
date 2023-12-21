@@ -196,14 +196,14 @@ export default function ServicePlansTable({
                                 <TableRow>
                                   <TableCell sx={{ width: "350px" }}>
                                     <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
+                                      sx={{ fontSize: 13, color: "#777" }}
                                     >
                                       Nome
                                     </Typography>
                                   </TableCell>
                                   <TableCell>
                                     <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
+                                      sx={{ fontSize: 13, color: "#777" }}
                                     >
                                       Valor do Plano
                                     </Typography>
@@ -213,10 +213,12 @@ export default function ServicePlansTable({
                               <TableBody>
                                 <TableRow>
                                   <TableCell sx={{ width: "350px" }}>
-                                    <Typography>{servicePlan.name}</Typography>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {servicePlan.name}
+                                    </Typography>
                                   </TableCell>
                                   <TableCell>
-                                    <Typography>
+                                    <Typography sx={{ fontSize: 13 }}>
                                       R${servicePlan.value}
                                     </Typography>
                                   </TableCell>
@@ -236,14 +238,14 @@ export default function ServicePlansTable({
                                 <TableRow>
                                   <TableCell sx={{ width: "350px" }}>
                                     <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
+                                      sx={{ fontSize: 13, color: "#777" }}
                                     >
                                       Serviço
                                     </Typography>
                                   </TableCell>
                                   <TableCell sx={{ width: "350px" }}>
                                     <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
+                                      sx={{ fontSize: 13, color: "#777" }}
                                     >
                                       Departamento
                                     </Typography>
@@ -254,10 +256,12 @@ export default function ServicePlansTable({
                                 {servicePlan.services.map((service) => (
                                   <TableRow key={service.id}>
                                     <TableCell sx={{ width: "350px" }}>
-                                      <Typography>{service.name}</Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {service.name}
+                                      </Typography>
                                     </TableCell>
                                     <TableCell sx={{ width: "350px" }}>
-                                      <Typography>
+                                      <Typography sx={{ fontSize: 13 }}>
                                         {service.department.name}
                                       </Typography>
                                     </TableCell>
