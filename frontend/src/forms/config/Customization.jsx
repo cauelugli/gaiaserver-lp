@@ -252,7 +252,8 @@ export default function Customization({ onClose }) {
                     title={
                       <Typography sx={{ fontSize: 12 }}>
                         O logotipo da sua empresa. Tamanho máximo da imagem:
-                        2MB. Suportados formatos '.png' e '.jpeg'.
+                        2MB. Suportados formatos '.png' e '.jpeg'. O tamanho
+                        ideal é em torno de 500x200.
                       </Typography>
                     }
                   >
@@ -274,7 +275,7 @@ export default function Customization({ onClose }) {
                     htmlFor="logoInput"
                     size="small"
                     onClick={handleImageClick}
-                    sx={{mr:3}}
+                    sx={{ mr: 3 }}
                   >
                     Carregar Imagem
                     <input
