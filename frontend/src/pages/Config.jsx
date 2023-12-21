@@ -25,6 +25,7 @@ import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import LanIcon from "@mui/icons-material/Lan";
+import LockIcon from '@mui/icons-material/Lock';
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
@@ -39,6 +40,7 @@ import StockModal from "../forms/config/Stock";
 import FinanceModal from "../forms/config/Finance";
 import FilesModal from "../forms/config/Files";
 import CustomizationModal from "../forms/config/Customization";
+import SecurityModal from "../forms/config/Security";
 
 const options = [
   {
@@ -91,10 +93,14 @@ const options = [
     text: "Personalização",
     modal: <CustomizationModal />,
   },
+  {
+    icon: <LockIcon sx={{ fontSize: 48 }} />,
+    text: "Segurança",
+    modal: <SecurityModal />,
+  },
 ];
 
 export default function Config({ user }) {
-  // const [refreshData, setRefreshData] = React.useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [openModal, setOpenModal] = useState(null);
   const [configData, setConfigData] = useState([]);

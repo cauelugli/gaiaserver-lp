@@ -73,7 +73,7 @@ export default function Requests({ onClose }) {
 
   return (
     <form onSubmit={handleChangeRequestConfig}>
-      <DialogTitle>Alterando Configurações de Pedidos</DialogTitle>
+      <DialogTitle>Configurações de Pedidos</DialogTitle>
       {configData.length !== 0 && (
         <>
           <DialogContent>

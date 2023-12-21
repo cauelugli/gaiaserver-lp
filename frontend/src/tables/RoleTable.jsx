@@ -34,6 +34,7 @@ const api = axios.create({
 
 export default function RoleTable({
   refreshData,
+  configData,
   setRefreshData,
   searchValue,
   searchOption,

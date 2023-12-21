@@ -22,18 +22,16 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function Users({ onClose }) {
+export default function Security({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
-  const [usersCanBeDeleted, setUsersCanBeDeleted] = React.useState(null);
-  const [managersCanBeDeleted, setManagersCanBeDeleted] = React.useState(null);
+  const [passwordComplexity, setPasswordComplexity] = React.useState(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data[0].users);
-        setUsersCanBeDeleted(config.data[0].users.usersCanBeDeleted);
-        setManagersCanBeDeleted(config.data[0].users.managersCanBeDeleted);
+        setConfigData(config.data[0].security);
+        setPasswordComplexity(config.data[0].security.passwordComplexity);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -44,9 +42,8 @@ export default function Users({ onClose }) {
   const handleChangeRequestConfig = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.put("/config/users", {
-        usersCanBeDeleted,
-        managersCanBeDeleted,
+      const res = await api.put("/config/security", {
+        passwordComplexity,
       });
 
       if (res.data) {
@@ -71,7 +68,7 @@ export default function Users({ onClose }) {
 
   return (
     <form onSubmit={handleChangeRequestConfig}>
-      <DialogTitle>Configurações de Colaboradores</DialogTitle>
+      <DialogTitle>Configurações de Segurança</DialogTitle>
       {configData.length !== 0 && (
         <>
           <DialogContent>
@@ -84,14 +81,19 @@ export default function Users({ onClose }) {
             >
               <Grid item sx={{ my: 1.5 }}>
                 <Grid container direction="row">
-                  <Typography sx={{ my: "auto", mr: 1 }}>
-                    Colaboradores Podem ser Deletados
+                  <Typography sx={{ my: "auto" }}>
+                    Complexidade de Senha
                   </Typography>
                   <Tooltip
                     title={
                       <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", os Colaboradores poderão
-                        ser deletados DEFINITIVAMENTE. A opção padrão é "Sim".
+                        Para a opção "Baixo", não há exigência de complexidade,
+                        exemplo: "senha123". Para a opção "Alto" é exigido no
+                        mínimo 10 caracteres, incluindo letras maiúsculas,
+                        minúsculas, números e caracteres especiais, exemplo: "SeNh@123#CjM". Para a opção
+                        "Extremo" é exigido no mínimo 16 caracteres,
+                        com combinação robusta de letras maiúsculas, minúsculas,
+                        números, caracteres especiais, exemplo: "J#rL$bm*9W!p2Qz". A opção padrão é "Baixo".
                       </Typography>
                     }
                   >
@@ -110,70 +112,35 @@ export default function Users({ onClose }) {
                   </Tooltip>
                   <RadioGroup
                     row
-                    value={usersCanBeDeleted}
-                    onChange={(e) => setUsersCanBeDeleted(e.target.value)}
+                    value={passwordComplexity}
+                    onChange={(e) => setPasswordComplexity(e.target.value)}
                   >
                     <FormControlLabel
-                      value={Boolean(true)}
+                      value={"low"}
                       control={
                         <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
                       }
-                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
+                      label={
+                        <Typography sx={{ fontSize: 13 }}>Baixo</Typography>
+                      }
                     />
                     <FormControlLabel
-                      value={Boolean(false)}
+                      value={"high"}
                       control={
                         <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
                       }
-                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
-                    />
-                  </RadioGroup>
-                </Grid>
-              </Grid>
-              <Grid item sx={{ my: 1.5 }}>
-                <Grid container direction="row">
-                  <Typography sx={{ my: "auto", mr: 1 }}>
-                    Gerentes Podem ser Deletados
-                  </Typography>
-                  <Tooltip
-                    title={
-                      <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", os Gerentes poderão
-                        ser deletados DEFINITIVAMENTE. A opção padrão é "Sim".
-                      </Typography>
-                    }
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "#32aacd",
-                        "&:hover": {
-                          backgroundColor: "white",
-                        },
-                      }}
-                    >
-                      ?
-                    </Button>
-                  </Tooltip>
-                  <RadioGroup
-                    row
-                    value={managersCanBeDeleted}
-                    onChange={(e) => setManagersCanBeDeleted(e.target.value)}
-                  >
-                    <FormControlLabel
-                      value={Boolean(true)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      label={
+                        <Typography sx={{ fontSize: 13 }}>Alto</Typography>
                       }
-                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
                     />
                     <FormControlLabel
-                      value={Boolean(false)}
+                      value={"extreme"}
                       control={
                         <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
                       }
-                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
+                      label={
+                        <Typography sx={{ fontSize: 13 }}>Extremo</Typography>
+                      }
                     />
                   </RadioGroup>
                 </Grid>

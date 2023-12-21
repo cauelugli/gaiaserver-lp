@@ -59,6 +59,7 @@ function CustomTabPanel(props) {
 // eslint-disable-next-line no-unused-vars
 export default function Users({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
+  const [config, setConfig] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
   const [users, setUsers] = React.useState([]);
@@ -140,6 +141,8 @@ export default function Users({ user }) {
         const usersData = users.data;
         const managersData = managers.data;
         const combinedData = [...usersData, ...managersData];
+        const config = await api.get("/config/users");
+        setConfig(config.data);
         setUsers(usersData);
         setManagers(managersData);
         setDepartments(departments.data);
@@ -274,6 +277,7 @@ export default function Users({ user }) {
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               searchValue={searchValue}
+              configData={config}
               // searchDepartment={searchDepartment}
               searchOption={searchOption}
             />
@@ -297,6 +301,7 @@ export default function Users({ user }) {
             />
 
             <ManagerTable
+              configData={config}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               searchValue={searchValue}
@@ -322,6 +327,7 @@ export default function Users({ user }) {
             />
 
             <OperatorTable
+              configData={config}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               searchValue={searchValue}
@@ -347,6 +353,7 @@ export default function Users({ user }) {
             />
 
             <RoleTable
+              configData={config}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               searchValue={searchValue}

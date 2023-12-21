@@ -102,7 +102,7 @@ export default function Customization({ onClose }) {
 
   return (
     <form onSubmit={handleChangeCustomizationConfig}>
-      <DialogTitle>Alterando Configurações de Personalização</DialogTitle>
+      <DialogTitle>Configurações de Personalização</DialogTitle>
       {configData.length !== 0 && (
         <>
           <DialogContent>

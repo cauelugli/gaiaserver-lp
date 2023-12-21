@@ -34,6 +34,7 @@ const api = axios.create({
 
 export default function OperatorTable({
   refreshData,
+  configData,
   setRefreshData,
   searchValue,
   searchOption,

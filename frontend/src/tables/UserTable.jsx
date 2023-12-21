@@ -34,6 +34,7 @@ const api = axios.create({
 
 export default function UserTable({
   refreshData,
+  configData,
   setRefreshData,
   searchValue,
   searchOption,
@@ -482,11 +483,13 @@ export default function UserTable({
                                 onClick={() => handleOpenEdit(row)}
                                 sx={{ color: "grey", mr: 2 }}
                               />
-                              <DeleteIcon
-                                cursor="pointer"
-                                onClick={() => handleConfirmDelete(row)}
-                                sx={{ color: "#ff4444" }}
-                              />
+                              {configData.usersCanBeDeleted && (
+                                <DeleteIcon
+                                  cursor="pointer"
+                                  onClick={() => handleConfirmDelete(row)}
+                                  sx={{ color: "#ff4444" }}
+                                />
+                              )}
                             </Box>
                           </Grid>
                         </Box>

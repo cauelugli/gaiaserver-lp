@@ -15,14 +15,13 @@ const configSchema = new Schema({
   },
 
   users: {
-    canSee: {
-      type: Array,
+    usersCanBeDeleted: {
+      type: Boolean,
+      default: true,
     },
-    canCreate: {
-      type: Array,
-    },
-    canDelete: {
-      type: Array,
+    managersCanBeDeleted: {
+      type: Boolean,
+      default: true,
     },
   },
 
@@ -124,6 +123,13 @@ const configSchema = new Schema({
     logo: {
       type: String,
       default: "default.png",
+    },
+  },
+
+  security: {
+    passwordComplexity: {
+      type: String,
+      default: "low",
     },
   },
 });

@@ -35,6 +35,7 @@ const api = axios.create({
 
 export default function ManagerTable({
   refreshData,
+  configData,
   setRefreshData,
   searchValue,
   searchOption,
@@ -460,11 +461,13 @@ export default function ManagerTable({
                                 onClick={() => handleOpenEdit(row)}
                                 sx={{ color: "grey", mr: 2 }}
                               />
-                              <DeleteIcon
-                                cursor="pointer"
-                                onClick={() => handleConfirmDelete(row)}
-                                sx={{ color: "#ff4444" }}
-                              />
+                              {configData.managersCanBeDeleted && (
+                                <DeleteIcon
+                                  cursor="pointer"
+                                  onClick={() => handleConfirmDelete(row)}
+                                  sx={{ color: "#ff4444" }}
+                                />
+                              )}
                             </Box>
                           </Grid>
                         </Box>
