@@ -178,7 +178,7 @@ export default function QuoteTable({
   };
 
   return (
-    <Box>
+    <Box sx={{ minWidth: "1250px" }}>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>

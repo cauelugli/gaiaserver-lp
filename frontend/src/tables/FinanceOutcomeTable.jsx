@@ -115,7 +115,7 @@ export default function FinanceOutcomeTable({
 
   return (
     <>
-      <Box sx={{ minWidth: "1050px" }}>
+    <Box sx={{ minWidth: "1250px" }}>
         <TableContainer component={Paper}>
           <Table>
             <TableBody>

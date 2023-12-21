@@ -146,7 +146,7 @@ export default function DocumentTable() {
         <NoDataText option="Documentos" />
       ) : (
         <>
-          <Box sx={{ minWidth: "1050px" }}>
+    <Box sx={{ minWidth: "1250px" }}>
             <Grid container direction="row" sx={{ py: 2 }}>
               <Typography sx={{ my: "auto" }}>
                 Tamanho em Disco: {totalSpaceOccupiedMB}MB

@@ -143,7 +143,7 @@ export default function SaleTable({
   };
 
   return (
-    <Box>
+    <Box sx={{ minWidth: "1250px" }}>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
         <Checkbox
           checked={showCompletedSales}

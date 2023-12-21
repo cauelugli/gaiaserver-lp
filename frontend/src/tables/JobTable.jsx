@@ -205,7 +205,7 @@ export default function JobTable({
   };
 
   return (
-    <Box sx={{ minWidth: "1050px" }}>
+    <Box sx={{ minWidth: "1250px" }}>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
         <Checkbox
           checked={showCompletedJobs}

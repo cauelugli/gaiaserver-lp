@@ -162,7 +162,7 @@ export default function CustomerTable({
   };
 
   return (
-    <Box>
+    <Box sx={{ minWidth: "1250px" }}>
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
