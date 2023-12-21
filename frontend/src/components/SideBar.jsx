@@ -95,7 +95,7 @@ const SideBar = ({ configData }) => {
                   pr: 2,
                   pl: 2,
                   py: 0.5,
-                  borderRadius:3,
+                  borderRadius: 3,
                   position: "relative",
                   opacity: hoveredIndex === index ? 1 : 0,
                   transition:
@@ -105,7 +105,7 @@ const SideBar = ({ configData }) => {
                   })`,
                 }}
               >
-                  {option.label}
+                {option.label}
               </Typography>
               <span
                 style={{
@@ -130,30 +130,15 @@ const SideBar = ({ configData }) => {
           </Link>
         ))}
         <ListItemButton>
-          <Grid container direction="column" alignItems="center">
-            <img
-              src={`http://localhost:3000/static/logo_dog.png`}
-              alt="Logo do Tenant"
-              style={{
-                width: "65%",
-                cursor: "pointer",
-              }}
-              onClick={() => alert("GS é um sonho feito com muito amor")}
-            />
-            <Typography
-              sx={{
-                my: 0.5,
-                fontSize: 10,
-                fontWeight: "bold",
-                color: configData.customization
-                  ? configData.customization.fontColor
-                  : "white",
-                display: hoveredIndex === null ? "none" : "block",
-              }}
-            >
-              <em>Our Roots Run Deeper</em>
-            </Typography>
-          </Grid>
+          <img
+            src={`http://localhost:3000/static/logo_dog.png`}
+            alt="Logo do Tenant"
+            style={{
+              width: "65%",
+              cursor: "pointer",
+            }}
+            onClick={() => alert("GS é um sonho feito com muito amor")}
+          />
         </ListItemButton>
       </List>
     </>
