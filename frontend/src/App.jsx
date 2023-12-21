@@ -12,9 +12,6 @@ import axios from "axios";
 
 import { Box, Button, Grid } from "@mui/material";
 
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-
 import SideBar from "./components/SideBar";
 import NavBar from "./components/NavBar";
 
@@ -42,14 +39,9 @@ function isAuthenticated(login, userData) {
 
 export default function App() {
   const [configData, setConfigData] = useState([]);
-  const [sidebarStatus, setSidebarStatus] = useState(false);
   const login = JSON.parse(sessionStorage.getItem("login"));
   const userData = JSON.parse(sessionStorage.getItem("userData"));
   console.log("App mounted control");
-
-  const handleSidebarStatusChange = () => {
-    setSidebarStatus(!sidebarStatus);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,24 +95,17 @@ export default function App() {
         {login && (
           <Grid
             item
-            xs={sidebarStatus ? 1.5 : 0.6}
-            xl={sidebarStatus ? 1.2 : 0.4}
             sx={{
               textAlign: "center",
               backgroundColor: configData.customization
                 ? configData.customization.mainColor
                 : "32aacd",
-              minHeight: "50vw",
+              height: "auto",
+              maxWidth:60
             }}
           >
             <Box>
-              <Button
-                onClick={handleSidebarStatusChange}
-                sx={{ color: "black", my: -1 }}
-              >
-                {sidebarStatus ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-              </Button>
-              <SideBar sidebarOpen={sidebarStatus} configData={configData} />
+              <SideBar configData={configData} />
             </Box>
           </Grid>
         )}

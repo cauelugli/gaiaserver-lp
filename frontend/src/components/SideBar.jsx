@@ -41,11 +41,15 @@ const options = [
   },
 ];
 
-const SideBar = ({ sidebarOpen, configData }) => {
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+const SideBar = ({ configData }) => {
+  const [hoveredIndex, setHoveredIndex] = React.useState(null);
 
-  const handleClickOption = (index) => {
-    setSelectedIndex(index);
+  const handleMouseEnter = (index) => {
+    setHoveredIndex(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredIndex(null);
   };
 
   return (
@@ -54,33 +58,70 @@ const SideBar = ({ sidebarOpen, configData }) => {
         {options.map((option, index) => (
           <Link
             key={index}
-            onClick={() => handleClickOption(index)}
+            onClick={() => setHoveredIndex(index)}
             to={option.link}
             style={{
               textDecoration: "none",
               color: "black",
+              position: "relative",
+              overflow: "hidden",
             }}
           >
             <ListItemButton
-              selected={selectedIndex === index}
+              selected={hoveredIndex === index}
               disabled={option.disabled}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
               sx={{
-                color:
-                  selectedIndex === index
-                    ? "#063970"
-                    : configData.customization
-                    ? configData.customization.fontColor
-                    : "white",
-                backgroundColor: selectedIndex === index ? "white" : "",
-                "&:hover": {
-                  backgroundColor: "",
-                },
+                color: configData.customization
+                  ? configData.customization.fontColor
+                  : "white",
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
               }}
             >
               {option.icon}
-              {sidebarOpen && (
-                <Typography sx={{ ml: 1 }}>{option.label}</Typography>
-              )}
+              <Typography
+                sx={{
+                  ml: 1,
+                  color: configData.customization
+                    ? configData.customization.fontColor
+                    : "white",
+                  backgroundColor: configData.customization
+                    ? configData.customization.mainColor
+                    : "#32aacd",
+                  zIndex: 1,
+                  pr: 2,
+                  pl: 2,
+                  py: 0.5,
+                  borderRadius:3,
+                  position: "relative",
+                  opacity: hoveredIndex === index ? 1 : 0,
+                  transition:
+                    "opacity 0.3s ease-in-out, transform 0.3s ease-in-out",
+                  transform: `translateX(${
+                    hoveredIndex === index ? "0" : "-100%"
+                  })`,
+                }}
+              >
+                  {option.label}
+              </Typography>
+              <span
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: configData.customization
+                    ? configData.customization.mainColor
+                    : "#32aacd",
+                  zIndex: 0,
+                  opacity: hoveredIndex === index ? 1 : 0,
+                  transition: "opacity 0.3s ease-in-out",
+                }}
+              />
             </ListItemButton>
             {option.label === "Financeiro" && <Divider sx={{ my: 0.75 }} />}
             {option.label === "Configurações" && (
@@ -89,11 +130,7 @@ const SideBar = ({ sidebarOpen, configData }) => {
           </Link>
         ))}
         <ListItemButton>
-          <Grid
-            container
-            direction="column"
-            alignItems={sidebarOpen ? "center" : ""}
-          >
+          <Grid container direction="column" alignItems="center">
             <img
               src={`http://localhost:3000/static/logo_dog.png`}
               alt="Logo do Tenant"
@@ -103,18 +140,19 @@ const SideBar = ({ sidebarOpen, configData }) => {
               }}
               onClick={() => alert("GS é um sonho feito com muito amor")}
             />
-            {sidebarOpen && (
-              <Typography
-                sx={{
-                  my: 0.5,
-                  fontSize: 10,
-                  fontWeight: "bold",
-                  color: "white",
-                }}
-              >
-                <em>Our Roots Run Deeper</em>
-              </Typography>
-            )}
+            <Typography
+              sx={{
+                my: 0.5,
+                fontSize: 10,
+                fontWeight: "bold",
+                color: configData.customization
+                  ? configData.customization.fontColor
+                  : "white",
+                display: hoveredIndex === null ? "none" : "block",
+              }}
+            >
+              <em>Our Roots Run Deeper</em>
+            </Typography>
           </Grid>
         </ListItemButton>
       </List>
