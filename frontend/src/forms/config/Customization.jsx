@@ -11,6 +11,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormHelperText,
   Grid,
   IconButton,
   Paper,
@@ -31,6 +32,8 @@ export default function Customization({ onClose }) {
   const [mainColor, setMainColor] = React.useState(null);
   const [fontColor, setFontColor] = React.useState(null);
   const [logo, setLogo] = React.useState(null);
+  const [newLogo, setNewLogo] = React.useState(null);
+  const [logoPreview, setLogoPreview] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
 
@@ -49,13 +52,32 @@ export default function Customization({ onClose }) {
     fetchData();
   }, []);
 
+  const handleImageClick = () => {
+    document.getElementById("logoInput").click();
+  };
+
+  const handleLogoChange = (e) => {
+    const selectedLogo = e.target.files[0];
+    setNewLogo(selectedLogo);
+    setLogoPreview(URL.createObjectURL(selectedLogo));
+  };
+
   const handleChangeCustomizationConfig = async (e) => {
     e.preventDefault();
+    let updatedImagePath = configData.logo;
+
+    if (newLogo) {
+      const formData = new FormData();
+      formData.append("image", newLogo);
+      const uploadResponse = await api.post("/uploads/singleProduct", formData);
+      updatedImagePath = uploadResponse.data.imagePath;
+    }
+
     try {
       const res = await api.put("/config/customization", {
         mainColor,
         fontColor,
-        logo,
+        logo: updatedImagePath,
       });
 
       if (res.data) {
@@ -145,7 +167,15 @@ export default function Customization({ onClose }) {
                       disableAlpha
                     />
                   </Popover>
-                  <Paper sx={{m:1,width:28, height:28, backgroundColor:mainColor, borderRadius:50}} />
+                  <Paper
+                    sx={{
+                      m: 1,
+                      width: 28,
+                      height: 28,
+                      backgroundColor: mainColor,
+                      borderRadius: 50,
+                    }}
+                  />
                 </Grid>
               </Grid>
               <Grid item sx={{ my: 1.5 }}>
@@ -204,8 +234,83 @@ export default function Customization({ onClose }) {
                       presetColors={["#ffffff", "#000000"]}
                     />
                   </Popover>
-                  <Paper sx={{m:1,width:28, height:28, backgroundColor:fontColor, borderRadius:50}} />
-
+                  <Paper
+                    sx={{
+                      m: 1,
+                      width: 28,
+                      height: 28,
+                      backgroundColor: fontColor,
+                      borderRadius: 50,
+                    }}
+                  />
+                </Grid>
+              </Grid>
+              <Grid item sx={{ mt: 2.5 }}>
+                <Grid container direction="row" alignItems="center">
+                  <Typography sx={{ my: "auto", mr: 4 }}>Logotipo</Typography>
+                  <Tooltip
+                    title={
+                      <Typography sx={{ fontSize: 12 }}>
+                        O logotipo da sua empresa. Tamanho máximo da imagem:
+                        2MB. Suportados formatos '.png' e '.jpeg'.
+                      </Typography>
+                    }
+                  >
+                    <Button
+                      size="small"
+                      sx={{
+                        backgroundColor: "white",
+                        color: "#32aacd",
+                        "&:hover": {
+                          backgroundColor: "white",
+                        },
+                      }}
+                    >
+                      ?
+                    </Button>
+                  </Tooltip>
+                  <Button
+                    component="label"
+                    htmlFor="logoInput"
+                    size="small"
+                    onClick={handleImageClick}
+                    sx={{mr:3}}
+                  >
+                    Carregar Imagem
+                    <input
+                      type="file"
+                      id="logoInput"
+                      accept=".png, .jpeg, .jpg"
+                      onChange={handleLogoChange}
+                      style={{ display: "none" }}
+                    />
+                  </Button>
+                  {logo && !newLogo && (
+                    <img
+                      src={`http://localhost:3000/static/${logo}`}
+                      style={{ width: "auto", height: 90, marginLeft: 10 }}
+                    />
+                  )}
+                  <Grid item>
+                    {newLogo && (
+                      <Grid
+                        container
+                        direction="column"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <img
+                          src={URL.createObjectURL(newLogo)}
+                          alt="Prévia da Imagem"
+                          style={{
+                            width: 200,
+                            height: 100,
+                          }}
+                        />
+                        <FormHelperText>Novo Logotipo</FormHelperText>
+                      </Grid>
+                    )}
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
