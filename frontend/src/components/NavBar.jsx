@@ -8,7 +8,6 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import UserButton from "./small/buttons/UserButton";
 
 export default function NavBar({ user, configData }) {
-  console.log("configData", configData);
   return (
     <Grid
       container
