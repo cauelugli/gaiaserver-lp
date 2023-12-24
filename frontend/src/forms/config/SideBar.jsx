@@ -4,13 +4,20 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+
 import {
   Button,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Grid,
+  Tooltip,
   Typography,
 } from "@mui/material";
+
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 import TransferList from "../../components/small/TransferList";
 
 const api = axios.create({
@@ -22,7 +29,6 @@ export default function SideBar({ onClose }) {
   const [roles, setRoles] = useState([]);
   const [selectedLists, setSelectedLists] = useState({});
   // IMPORTANT: THESE TITLES MUST BE IN ORDER WITH THE MODEL!
-  // this doesnt make sense...
   const title = [
     "Dashboard",
     "Clientes",
@@ -105,13 +111,46 @@ export default function SideBar({ onClose }) {
       });
     }
   };
-  console.log("configData", configData);
-
-  let index = 0;
 
   return (
     <form onSubmit={handleChangeSidebarConfig}>
       <DialogTitle>Configurações da Barra Lateral</DialogTitle>
+      <Tooltip
+        title={
+          <Typography sx={{ fontSize: 12 }}>
+            Nesta sessão escolha o que os Perfis de Acesso podem visualizar nos
+            itens da Barra Lateral. A coluna à esquerda mostra as Páginas, a
+            coluna central mostra os Perfis que não possuem permissão (o item do
+            menu não será exibido), e os da coluna da direita mostra os que
+            possuem permissão para visualizar as Páginas.
+          </Typography>
+        }
+      >
+        <Button
+          size="small"
+          sx={{
+            backgroundColor: "white",
+            color: "#32aacd",
+            "&:hover": {
+              backgroundColor: "white",
+            },
+          }}
+        >
+          ?
+        </Button>
+      </Tooltip>
+      <Grid container direction="row" sx={{ mb: -3 }}>
+        <Grid item sx={{ ml: 45 }}>
+          <Typography>
+            <VisibilityOffIcon sx={{ fontSize: 40, color: "#D00000" }} />
+          </Typography>
+        </Grid>
+        <Grid item sx={{ ml: 34 }}>
+          <Typography>
+            <VisibilityIcon sx={{ fontSize: 40, color: "#417505" }} />
+          </Typography>
+        </Grid>
+      </Grid>
       {Object.keys(configData).map((key, index) => (
         <TransferList
           key={key}

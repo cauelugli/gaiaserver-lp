@@ -3,13 +3,7 @@ const Schema = mongoose.Schema;
 
 const configSchema = new Schema({
   customer: {
-    canSee: {
-      type: Array,
-    },
     canCreate: {
-      type: Array,
-    },
-    canDelete: {
       type: Array,
     },
   },
@@ -26,13 +20,7 @@ const configSchema = new Schema({
   },
 
   departments: {
-    canSee: {
-      type: Array,
-    },
     canCreate: {
-      type: Array,
-    },
-    canDelete: {
       type: Array,
     },
   },
@@ -52,60 +40,30 @@ const configSchema = new Schema({
   },
 
   quotes: {
-    canSee: {
-      type: Array,
-    },
-    canCreate: {
-      type: Array,
-    },
     canDelete: {
       type: Array,
     },
   },
 
   services: {
-    canSee: {
-      type: Array,
-    },
     canCreate: {
-      type: Array,
-    },
-    canDelete: {
       type: Array,
     },
   },
 
   stock: {
-    canSee: {
-      type: Array,
-    },
     canCreate: {
-      type: Array,
-    },
-    canDelete: {
       type: Array,
     },
   },
 
   finance: {
-    canSee: {
-      type: Array,
-    },
     canCreate: {
-      type: Array,
-    },
-    canDelete: {
       type: Array,
     },
   },
 
   files: {
-    canSee: {
-      type: Array,
-    },
-    canCreate: {
-      type: Array,
-    },
     canDelete: {
       type: Array,
     },
@@ -122,7 +80,7 @@ const configSchema = new Schema({
     },
     logo: {
       type: String,
-      default: "default.png",
+      default: "/images/logo_text.png",
     },
   },
 
@@ -132,7 +90,6 @@ const configSchema = new Schema({
       default: "low",
     },
   },
-
 
   sidebar: {
     dashboard: {

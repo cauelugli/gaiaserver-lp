@@ -1,10 +1,8 @@
-// TransferList.js
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import axios from "axios";
+
 import {
-  Avatar,
   Checkbox,
   FormControlLabel,
   FormGroup,
@@ -14,15 +12,11 @@ import {
   Typography,
 } from "@mui/material";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 export default function TransferList({
   onSelectedChange,
   options,
   selectedList,
-  title
+  title,
 }) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
 
@@ -58,7 +52,6 @@ export default function TransferList({
     }
   };
 
-  // Filtra as opções que não estão na selectedList
   const filteredOptions = options.filter(
     (option) => !selectedList.some((item) => item._id === option._id)
   );
@@ -69,10 +62,12 @@ export default function TransferList({
       direction="row"
       alignItems="center"
       justifyContent="space-around"
-      sx={{ mt: 2 }}
+      sx={{ mt: 3 }}
     >
-      <Grid item>{title}</Grid>
-      <Grid item>
+      <Grid item sx={{ width: 150 }}>
+        {title}
+      </Grid>
+      <Grid item sx={{ width: 200 }}>
         <Paper
           sx={{
             width: 175,
@@ -127,8 +122,7 @@ export default function TransferList({
           </FormGroup>
         </Paper>
       </Grid>
-
-      <Grid item>
+      <Grid item sx={{ width: 200 }}>
         <Paper
           sx={{
             width: 175,
@@ -140,7 +134,7 @@ export default function TransferList({
         >
           {selectedList.map((item) => (
             <li key={item._id}>
-              <Grid container direction="row" sx={{ p: 0 }}>
+              <Grid container direction="row" sx={{ mt: 1 }}>
                 <IconButton
                   sx={{
                     ml: 1,
