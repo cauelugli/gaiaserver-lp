@@ -43,7 +43,9 @@ export default function TransferList({
 
   const handleRemove = (itemId) => {
     const item = selectedList.find((item) => item._id === itemId);
-    if (item) {
+    if (item.name === "Admin") {
+      return alert("Não é possível remover Admin");
+    } else if (item) {
       const updatedSelectedList = selectedList.filter(
         (item) => item._id !== itemId
       );
@@ -62,18 +64,18 @@ export default function TransferList({
       direction="row"
       alignItems="center"
       justifyContent="space-around"
-      sx={{ mt: 3 }}
+      sx={{ mt: 3, border: "1px solid #ddd", px: 1, py: 2, borderRadius: 3 }}
     >
-      <Grid item sx={{ width: 150 }}>
-        {title}
+      <Grid item sx={{ width: 100, ml: 5, mr: -2 }}>
+        <Typography sx={{ fontWeight: "bold" }}>
+          {title.toUpperCase()}
+        </Typography>
       </Grid>
-      <Grid item sx={{ width: 200 }}>
-        <Paper
+      <Grid item sx={{ width: 250, ml: 4 }}>
+        <Grid
           sx={{
-            width: 175,
             height: 120,
             overflow: "auto",
-            backgroundColor: "#ddd",
           }}
         >
           <FormGroup sx={{ mt: 1 }}>
@@ -120,43 +122,44 @@ export default function TransferList({
               />
             ))}
           </FormGroup>
-        </Paper>
+        </Grid>
       </Grid>
-      <Grid item sx={{ width: 200 }}>
-        <Paper
+      <Grid item sx={{ width: 250 }}>
+        <Grid
           sx={{
-            width: 175,
             height: 120,
             overflow: "auto",
-            position: "relative",
-            backgroundColor: "#ddd",
           }}
         >
-          {selectedList.map((item) => (
-            <li key={item._id}>
-              <Grid container direction="row" sx={{ mt: 1 }}>
-                <IconButton
-                  sx={{
-                    ml: 1,
-                    height: 18,
-                    maxWidth: 18,
-                    color: "white",
-                    backgroundColor: "red",
-                    borderRadius: 3,
-                    "&:hover": {
+          {selectedList.length === 0 ? (
+            <Typography sx={{ mt: 5, ml: 4 }}>Não há selecionados</Typography>
+          ) : (
+            selectedList.map((item) => (
+              <li key={item._id}>
+                <Grid container direction="row" sx={{ mt: 1 }}>
+                  <IconButton
+                    sx={{
+                      ml: 1,
+                      height: 18,
+                      maxWidth: 18,
                       color: "white",
                       backgroundColor: "red",
-                    },
-                  }}
-                  onClick={() => handleRemove(item._id)}
-                >
-                  <Typography sx={{ fontWeight: "bold" }}>-</Typography>
-                </IconButton>
-                <Typography sx={{ ml: 2 }}>{item.name}</Typography>
-              </Grid>
-            </li>
-          ))}
-        </Paper>
+                      borderRadius: 3,
+                      "&:hover": {
+                        color: "white",
+                        backgroundColor: "red",
+                      },
+                    }}
+                    onClick={() => handleRemove(item._id)}
+                  >
+                    <Typography sx={{ fontWeight: "bold" }}>-</Typography>
+                  </IconButton>
+                  <Typography sx={{ ml: 2 }}>{item.name}</Typography>
+                </Grid>
+              </li>
+            ))
+          )}
+        </Grid>
       </Grid>
     </Grid>
   );

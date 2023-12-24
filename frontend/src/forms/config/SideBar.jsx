@@ -114,38 +114,41 @@ export default function SideBar({ onClose }) {
 
   return (
     <form onSubmit={handleChangeSidebarConfig}>
-      <DialogTitle>Configurações da Barra Lateral</DialogTitle>
-      <Tooltip
-        title={
-          <Typography sx={{ fontSize: 12 }}>
-            Nesta sessão escolha o que os Perfis de Acesso podem visualizar nos
-            itens da Barra Lateral. A coluna à esquerda mostra as Páginas, a
-            coluna central mostra os Perfis que não possuem permissão (o item do
-            menu não será exibido), e os da coluna da direita mostra os que
-            possuem permissão para visualizar as Páginas.
-          </Typography>
-        }
-      >
-        <Button
-          size="small"
-          sx={{
-            backgroundColor: "white",
-            color: "#32aacd",
-            "&:hover": {
-              backgroundColor: "white",
-            },
-          }}
+      <Grid container direction="row">
+        <DialogTitle>Configurações da Barra Lateral</DialogTitle>
+        <Tooltip
+          title={
+            <Typography sx={{ fontSize: 12 }}>
+              Nesta sessão escolha o que os Perfis de Acesso podem visualizar
+              nos itens da Barra Lateral. A coluna à esquerda mostra as Páginas,
+              a coluna central mostra os Perfis que não possuem permissão (o
+              item do menu não será exibido), e os da coluna da direita mostra
+              os que possuem permissão para visualizar as Páginas.
+            </Typography>
+          }
         >
-          ?
-        </Button>
-      </Tooltip>
-      <Grid container direction="row" sx={{ mb: -3 }}>
+          <Button
+            size="small"
+            sx={{
+              backgroundColor: "white",
+              color: "#32aacd",
+              "&:hover": {
+                backgroundColor: "white",
+              },
+            }}
+          >
+            ?
+          </Button>
+        </Tooltip>
+      </Grid>
+
+      <Grid container direction="row" sx={{ mb: -2 }}>
         <Grid item sx={{ ml: 45 }}>
           <Typography>
             <VisibilityOffIcon sx={{ fontSize: 40, color: "#D00000" }} />
           </Typography>
         </Grid>
-        <Grid item sx={{ ml: 34 }}>
+        <Grid item sx={{ ml: 33 }}>
           <Typography>
             <VisibilityIcon sx={{ fontSize: 40, color: "#417505" }} />
           </Typography>
