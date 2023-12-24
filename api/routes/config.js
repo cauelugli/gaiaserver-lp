@@ -129,4 +129,40 @@ router.put("/security", async (req, res) => {
   }
 });
 
+// GET SIDEBAR CONFIGS
+router.get("/sidebar", async (req, res) => {
+  try {
+    const config = await Config.findOne();
+    const sidebarConfig = config ? config.sidebar : null;
+    res.status(200).json(sidebarConfig);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// SIDEBAR
+router.put("/sidebar", async (req, res) => {
+  try {
+    const payload = req.body;
+
+    // Extrair ID e nome de cada item em cada array
+    const updatedPayload = {};
+    Object.keys(payload).forEach((key) => {
+      updatedPayload[key] = payload[key].map((item) => ({
+        _id: item._id,
+        name: item.name,
+      }));
+    });
+
+    // Atualizar o objeto config com ID e nome
+    const config = await Config.findOneAndUpdate({}, { sidebar: updatedPayload }, { new: true });
+
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
 module.exports = router;
