@@ -22,8 +22,8 @@ export default function TransferList({
   onSelectedChange,
   options,
   selectedList,
+  title
 }) {
-  const title = ["Dashboard", "Clientes"];
   const [selectedItemId, setSelectedItemId] = React.useState(null);
 
   const handleChecked = (id) => {

@@ -21,6 +21,23 @@ export default function SideBar({ onClose }) {
   const [configData, setConfigData] = useState({});
   const [roles, setRoles] = useState([]);
   const [selectedLists, setSelectedLists] = useState({});
+  // IMPORTANT: THESE TITLES MUST BE IN ORDER WITH THE MODEL!
+  // this doesnt make sense...
+  const title = [
+    "Dashboard",
+    "Clientes",
+    "Usuários",
+    "Departamentos",
+    "Pedidos",
+    "Orçamentos",
+    "Serviços",
+    "Estoque",
+    "Financeiro",
+    "Arquivos",
+    "Personalização",
+    "Segurança",
+    "Configurações",
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +52,7 @@ export default function SideBar({ onClose }) {
           initialState[key] = {
             selected: config.data[0].sidebar[key],
             options: config.data[0].sidebar[key],
+            title: title[key],
           };
         });
 
@@ -44,14 +62,16 @@ export default function SideBar({ onClose }) {
       }
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSelectedChange = (key, selected, options) => {
+  const handleSelectedChange = (key, selected, options, title) => {
     setSelectedLists((prevLists) => ({
       ...prevLists,
       [key]: {
         selected,
         options,
+        title,
       },
     }));
   };
@@ -85,15 +105,17 @@ export default function SideBar({ onClose }) {
       });
     }
   };
-  console.log('configData', configData)
+  console.log("configData", configData);
+
+  let index = 0;
 
   return (
     <form onSubmit={handleChangeSidebarConfig}>
       <DialogTitle>Configurações da Barra Lateral</DialogTitle>
-      {Object.keys(configData).map((key) => (
+      {Object.keys(configData).map((key, index) => (
         <TransferList
           key={key}
-          title={key.charAt(0).toUpperCase() + key.slice(1)}
+          title={title[index]}
           options={roles}
           selectedList={selectedLists[key].selected}
           onSelectedChange={(selected, options) =>
