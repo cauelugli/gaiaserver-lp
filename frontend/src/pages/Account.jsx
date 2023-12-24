@@ -161,7 +161,7 @@ export default function Account({ user }) {
                   <Typography>{user.username ? user.username : "-"}</Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography>{user.role ? user.role : "-"}</Typography>
+                  <Typography>{user.role ? user.role.name : "-"}</Typography>
                 </TableCell>
               </TableRow>
             </TableBody>

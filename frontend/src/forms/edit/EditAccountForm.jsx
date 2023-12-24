@@ -54,7 +54,7 @@ const EditAccountForm = ({ openEdit, user, setOpenEdit, toast }) => {
         image: updatedImagePath,
         previousData,
         option: "account",
-        isManager: Boolean(user.role === "Gerente"),
+        isManager: Boolean(user.role.name === "Gerente"),
       });
       if (res.data) {
         setIsSuccessDialogOpen(!isSuccessDialogOpen);

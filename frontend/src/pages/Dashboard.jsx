@@ -14,7 +14,7 @@ const Dashboard = ({ user }) => {
         Departamento: {user.department ? user.department.name : "-"}
       </Typography>
       <Typography sx={{ my: 1 }}>
-        Acesso: {user.role ? user.role : "-"}
+        Acesso: {user.role ? user.role.name : "-"}
       </Typography>
       <Typography sx={{ my: 1 }}>
         Cargo: {user.position ? user.position : "-"}

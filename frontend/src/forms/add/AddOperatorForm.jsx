@@ -36,7 +36,7 @@ const AddOperatorForm = ({
   const handleOperatorChange = (e) => {
     const selectedOperator = e.target.value;
     setOperator(selectedOperator);
-    if (selectedOperator.role === "Gerente") {
+    if (selectedOperator.role.name === "Gerente") {
       setRole("Gerente");
     }
 
