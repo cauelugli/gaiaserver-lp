@@ -25,8 +25,8 @@ userSchema = new mongoose.Schema({
     type: String,
   },
   role: {
-    type: String,
-    default: "Colaborador"
+    type: Object,
+    default: { id: 0, name: "Colaborador" },
   },
   position: {
     type: String,

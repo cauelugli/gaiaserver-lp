@@ -476,7 +476,7 @@ export default function UserTable({
                                     </TableCell>
                                     <TableCell align="center">
                                     <Typography sx={{ fontSize: 13 }}>
-                                        {row.role ? row.role : "-"}
+                                        {row.role ? row.role.name : "-"}
                                       </Typography>
                                     </TableCell>
                                   </TableRow>

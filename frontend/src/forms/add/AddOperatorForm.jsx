@@ -56,7 +56,7 @@ const AddOperatorForm = ({
         operatorId: operator._id,
         username,
         password,
-        role: role.name,
+        role: { id: role._id, name: role.name },
         operator,
         option: "password",
       });

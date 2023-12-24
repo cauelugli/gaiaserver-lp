@@ -101,7 +101,7 @@ export default function Users({ user }) {
       options: [
         { value: "name", label: "Nome" },
         { value: "username", label: "Nome de Operador" },
-        { value: "role", label: "Nível de Acesso" },
+        { value: "role", label: "Perfil de Acesso" },
       ],
     },
     {
@@ -328,6 +328,7 @@ export default function Users({ user }) {
 
             <OperatorTable
               configData={config}
+              roles={roles}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               searchValue={searchValue}

@@ -28,6 +28,7 @@ const EditOperatorForm = ({
   refreshData,
   setRefreshData,
   toast,
+  roles
 }) => {
   const [username, setUsername] = React.useState(selectedOperator.username);
   const [role, setRole] = React.useState(selectedOperator.role);
@@ -46,7 +47,7 @@ const EditOperatorForm = ({
           operatorId: selectedOperator._id,
           operator: selectedOperator,
           username,
-          role,
+          role: { id: role._id, name: role.name },
           option,
         });
         if (res.data) {
@@ -165,19 +166,11 @@ const EditOperatorForm = ({
                     size="small"
                     sx={{ width: 245 }}
                   >
-                    <MenuItem
-                      value={"Colaborador"}
-                      disabled={selectedOperator.role === "Gerente"}
-                    >
-                      Colaborador
-                    </MenuItem>
-                    <MenuItem
-                      value={"Supervisor"}
-                      disabled={selectedOperator.role === "Gerente"}
-                    >
-                      Supervisor
-                    </MenuItem>
-                    <MenuItem value={"Gerente"}>Gerente</MenuItem>
+                    {roles.map((item) => (
+                      <MenuItem value={item} key={item.id}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </Grid>
               </Grid>

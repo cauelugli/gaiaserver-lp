@@ -359,7 +359,7 @@ export default function RoleTable({
                                     </TableCell>
                                     <TableCell align="center">
                                       <Typography sx={{ fontSize: 13 }}>
-                                        {row.role ? row.role : "-"}
+                                        {row.role ? row.role.name : "-"}
                                       </Typography>
                                     </TableCell>
                                   </TableRow>

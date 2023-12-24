@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -35,6 +36,7 @@ const api = axios.create({
 export default function OperatorTable({
   refreshData,
   configData,
+  roles,
   setRefreshData,
   searchValue,
   searchOption,
@@ -84,7 +86,7 @@ export default function OperatorTable({
     },
     {
       id: "role",
-      label: "Nível de Acesso",
+      label: "Perfil de Acesso",
     },
     {
       id: "actions",
@@ -222,7 +224,7 @@ export default function OperatorTable({
                       </TableCell>
                       <TableCell cursor="pointer" align="center">
                         <Typography sx={{ fontSize: 13 }}>
-                          {row.role}
+                          {row.role ? row.role.name : "-"}
                         </Typography>
                       </TableCell>
                       <TableCell align="center" sx={{ py: 0 }}>
@@ -285,6 +287,7 @@ export default function OperatorTable({
             <EditOperatorForm
               option={option}
               openEdit={openEdit}
+              roles={roles}
               selectedOperator={selectedOperator}
               setOpenEdit={setOpenEdit}
               refreshData={refreshData}

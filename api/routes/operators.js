@@ -72,6 +72,7 @@ router.put("/", async (req, res) => {
   }
 
   if (req.body.option === "operator") {
+    console.log("req.body", req.body)
     try {
       const updatedOperator = await type.findByIdAndUpdate(
         req.body.operatorId,

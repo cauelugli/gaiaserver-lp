@@ -25,8 +25,8 @@ managerSchema = new mongoose.Schema({
     type: String,
   },
   role: {
-    type: String,
-    default: "Gerente"
+    type: Object,
+    default: { id: 1, name: "Gerente" },
   },
   isActive: {
     type: Boolean,
@@ -38,7 +38,7 @@ managerSchema = new mongoose.Schema({
   },
   notifications: {
     type: Object,
-    default: {}
+    default: {},
   },
 });
 
