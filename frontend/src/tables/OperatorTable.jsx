@@ -85,7 +85,7 @@ export default function OperatorTable({
       label: "Nome de Operador",
     },
     {
-      id: "role",
+      id: "role.name",
       label: "Perfil de Acesso",
     },
     {
@@ -95,7 +95,7 @@ export default function OperatorTable({
   ];
 
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("role");
+  const [orderBy, setOrderBy] = React.useState("name");
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -191,8 +191,8 @@ export default function OperatorTable({
                       .includes(searchValue.toLowerCase())
                   );
                 })
-                .map((row) => (
-                  <>
+                .map((row) =>
+                  row.role && row.role.name !== "Admin" ? (
                     <TableRow
                       key={row._id}
                       sx={{
@@ -258,8 +258,8 @@ export default function OperatorTable({
                         </Grid>
                       </TableCell>
                     </TableRow>
-                  </>
-                ))
+                  ) : null
+                )
                 .slice(startIndex, endIndex)}
             </TableBody>
           </Table>
