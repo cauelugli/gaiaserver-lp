@@ -10,7 +10,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 
 import SideBar from "./components/SideBar";
 import NavBar from "./components/NavBar";
@@ -35,6 +35,14 @@ const api = axios.create({
 
 function isAuthenticated(login, userData) {
   return login && userData && userData.isActive;
+}
+
+function hasPermission(user, configData, routePath) {
+  if (!configData.sidebar) return false;
+
+  const allowedRoles = configData.sidebar[routePath];
+
+  return allowedRoles && allowedRoles.some((role) => role._id === user.role.id);
 }
 
 export default function App() {
@@ -97,15 +105,16 @@ export default function App() {
             item
             sx={{
               textAlign: "center",
-              backgroundColor: configData && configData.customization
-                ? configData.customization.mainColor
-                : "32aacd",
+              backgroundColor:
+                configData && configData.customization
+                  ? configData.customization.mainColor
+                  : "32aacd",
               height: "auto",
-              maxWidth:60
+              maxWidth: 60,
             }}
           >
             <Box>
-              <SideBar configData={configData} user={userData}/>
+              <SideBar configData={configData} user={userData} />
             </Box>
           </Grid>
         )}
@@ -141,8 +150,11 @@ export default function App() {
                 <Route
                   path="/users"
                   element={
-                    isAuthenticated(login, userData) ? (
+                    isAuthenticated(login, userData) &&
+                    hasPermission(userData, configData, "users") ? (
                       <Users user={userData} />
+                    ) : isAuthenticated(login, userData) ? (
+                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -151,8 +163,11 @@ export default function App() {
                 <Route
                   path="/customers"
                   element={
-                    isAuthenticated(login, userData) ? (
+                    isAuthenticated(login, userData) &&
+                    hasPermission(userData, configData, "customers") ? (
                       <Customers user={userData} />
+                    ) : isAuthenticated(login, userData) ? (
+                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -161,8 +176,11 @@ export default function App() {
                 <Route
                   path="/departments"
                   element={
-                    isAuthenticated(login, userData) ? (
+                    isAuthenticated(login, userData) &&
+                    hasPermission(userData, configData, "departments") ? (
                       <Departments user={userData} />
+                    ) : isAuthenticated(login, userData) ? (
+                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -171,8 +189,11 @@ export default function App() {
                 <Route
                   path="/services"
                   element={
-                    isAuthenticated(login, userData) ? (
+                    isAuthenticated(login, userData) &&
+                    hasPermission(userData, configData, "services") ? (
                       <Services user={userData} />
+                    ) : isAuthenticated(login, userData) ? (
+                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -181,8 +202,11 @@ export default function App() {
                 <Route
                   path="/stock"
                   element={
-                    isAuthenticated(login, userData) ? (
+                    isAuthenticated(login, userData) &&
+                    hasPermission(userData, configData, "stock") ? (
                       <Stock user={userData} />
+                    ) : isAuthenticated(login, userData) ? (
+                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -191,8 +215,11 @@ export default function App() {
                 <Route
                   path="/requests"
                   element={
-                    isAuthenticated(login, userData) ? (
+                    isAuthenticated(login, userData) &&
+                    hasPermission(userData, configData, "requests") ? (
                       <Requests user={userData} />
+                    ) : isAuthenticated(login, userData) ? (
+                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -201,8 +228,11 @@ export default function App() {
                 <Route
                   path="/quotes"
                   element={
-                    isAuthenticated(login, userData) ? (
+                    isAuthenticated(login, userData) &&
+                    hasPermission(userData, configData, "quotes") ? (
                       <Quotes user={userData} />
+                    ) : isAuthenticated(login, userData) ? (
+                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -211,8 +241,11 @@ export default function App() {
                 <Route
                   path="/files"
                   element={
-                    isAuthenticated(login, userData) ? (
+                    isAuthenticated(login, userData) &&
+                    hasPermission(userData, configData, "files") ? (
                       <Files user={userData} />
+                    ) : isAuthenticated(login, userData) ? (
+                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -221,8 +254,11 @@ export default function App() {
                 <Route
                   path="/finance"
                   element={
-                    isAuthenticated(login, userData) ? (
+                    isAuthenticated(login, userData) &&
+                    hasPermission(userData, configData, "finance") ? (
                       <Finance user={userData} />
+                    ) : isAuthenticated(login, userData) ? (
+                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -231,8 +267,11 @@ export default function App() {
                 <Route
                   path="/config"
                   element={
-                    isAuthenticated(login, userData) ? (
-                      <Config user={userData} />
+                    isAuthenticated(login, userData) &&
+                    hasPermission(userData, configData, "config") ? (
+                      <Finance user={userData} />
+                    ) : isAuthenticated(login, userData) ? (
+                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
