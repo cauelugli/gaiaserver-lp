@@ -122,7 +122,7 @@ const configSchema = new Schema({
     files: {
       type: Array,
     },
-    customization: {
+    config: {
       type: Array,
     },
   },

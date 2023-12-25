@@ -54,11 +54,12 @@ const SideBar = ({ configData, user }) => {
 
   function hasPermission(user, configData, routePath) {
     if (!configData.sidebar) return false;
+    if (user.role.name === "Admin") return true;
     const route = routePath === "/" ? "dashboard" : routePath.slice(1);
     if (route === "help" || route === "account") {
       return true;
     }
-    
+
     if (!route) {
       return false;
     }

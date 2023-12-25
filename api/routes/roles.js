@@ -16,6 +16,11 @@ router.get("/", async (req, res) => {
 // CREATE ROLE
 router.post("/", async (req, res) => {
   const { name } = req.body;
+  if (name === "Admin") {
+    return res
+      .status(420)
+      .json({ error: "Não é possível nomear para 'Admin'." });
+  }
   const existingName = await Role.findOne({ name });
   if (existingName) {
     return res.status(422).json({ error: "Nome de Perfil já cadastrado" });
@@ -51,6 +56,12 @@ router.delete("/:id", async (req, res) => {
 // UPDATE ROLE
 router.put("/", async (req, res) => {
   const { name, roleId } = req.body;
+
+  if (name === "Admin") {
+    return res
+      .status(420)
+      .json({ error: "Não é possível nomear para 'Admin'." });
+  }
   const existingName = await Role.findOne({ name });
 
   if (existingName && existingName.name !== req.body.previousData.name) {

@@ -39,6 +39,7 @@ function isAuthenticated(login, userData) {
 
 function hasPermission(user, configData, routePath) {
   if (!configData.sidebar) return false;
+  if (user.role.name === "Admin") return true;
 
   const allowedRoles = configData.sidebar[routePath];
 
@@ -154,7 +155,9 @@ export default function App() {
                     hasPermission(userData, configData, "users") ? (
                       <Users user={userData} />
                     ) : isAuthenticated(login, userData) ? (
-                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
+                      <Typography sx={{ m: 2, fontSize: 16 }}>
+                        Seu usuário não possui autorização à página.
+                      </Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -167,7 +170,9 @@ export default function App() {
                     hasPermission(userData, configData, "customers") ? (
                       <Customers user={userData} />
                     ) : isAuthenticated(login, userData) ? (
-                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
+                      <Typography sx={{ m: 2, fontSize: 16 }}>
+                        Seu usuário não possui autorização à página.
+                      </Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -180,7 +185,9 @@ export default function App() {
                     hasPermission(userData, configData, "departments") ? (
                       <Departments user={userData} />
                     ) : isAuthenticated(login, userData) ? (
-                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
+                      <Typography sx={{ m: 2, fontSize: 16 }}>
+                        Seu usuário não possui autorização à página.
+                      </Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -193,7 +200,9 @@ export default function App() {
                     hasPermission(userData, configData, "services") ? (
                       <Services user={userData} />
                     ) : isAuthenticated(login, userData) ? (
-                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
+                      <Typography sx={{ m: 2, fontSize: 16 }}>
+                        Seu usuário não possui autorização à página.
+                      </Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -206,7 +215,9 @@ export default function App() {
                     hasPermission(userData, configData, "stock") ? (
                       <Stock user={userData} />
                     ) : isAuthenticated(login, userData) ? (
-                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
+                      <Typography sx={{ m: 2, fontSize: 16 }}>
+                        Seu usuário não possui autorização à página.
+                      </Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -219,7 +230,9 @@ export default function App() {
                     hasPermission(userData, configData, "requests") ? (
                       <Requests user={userData} />
                     ) : isAuthenticated(login, userData) ? (
-                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
+                      <Typography sx={{ m: 2, fontSize: 16 }}>
+                        Seu usuário não possui autorização à página.
+                      </Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -232,7 +245,9 @@ export default function App() {
                     hasPermission(userData, configData, "quotes") ? (
                       <Quotes user={userData} />
                     ) : isAuthenticated(login, userData) ? (
-                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
+                      <Typography sx={{ m: 2, fontSize: 16 }}>
+                        Seu usuário não possui autorização à página.
+                      </Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -245,7 +260,9 @@ export default function App() {
                     hasPermission(userData, configData, "files") ? (
                       <Files user={userData} />
                     ) : isAuthenticated(login, userData) ? (
-                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
+                      <Typography sx={{ m: 2, fontSize: 16 }}>
+                        Seu usuário não possui autorização à página.
+                      </Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -258,7 +275,9 @@ export default function App() {
                     hasPermission(userData, configData, "finance") ? (
                       <Finance user={userData} />
                     ) : isAuthenticated(login, userData) ? (
-                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
+                      <Typography sx={{ m: 2, fontSize: 16 }}>
+                        Seu usuário não possui autorização à página.
+                      </Typography>
                     ) : (
                       <Navigate to="/login" />
                     )
@@ -269,9 +288,11 @@ export default function App() {
                   element={
                     isAuthenticated(login, userData) &&
                     hasPermission(userData, configData, "config") ? (
-                      <Finance user={userData} />
+                      <Config user={userData} />
                     ) : isAuthenticated(login, userData) ? (
-                      <Typography sx={{m:2, fontSize:16}}>Seu usuário não possui autorização à página.</Typography>
+                      <Typography sx={{ m: 2, fontSize: 16 }}>
+                        Seu usuário não possui autorização à página.
+                      </Typography>
                     ) : (
                       <Navigate to="/login" />
                     )

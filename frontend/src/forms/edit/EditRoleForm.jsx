@@ -48,7 +48,7 @@ export default function EditRoleForm({
       setOpenEdit(!openEdit);
       setRefreshData(!refreshData)
     } catch (err) {
-      if (err.response && err.response.status === 422) {
+      if (err.response && err.response.status === 422 || err.response.status === 420) {
         toast.error(err.response.data.error, {
           closeOnClick: true,
           pauseOnHover: false,

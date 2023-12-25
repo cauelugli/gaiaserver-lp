@@ -43,15 +43,11 @@ export default function TransferList({
 
   const handleRemove = (itemId) => {
     const item = selectedList.find((item) => item._id === itemId);
-    if (item.name === "Admin") {
-      return alert("Não é possível remover Admin");
-    } else if (item) {
-      const updatedSelectedList = selectedList.filter(
-        (item) => item._id !== itemId
-      );
+    const updatedSelectedList = selectedList.filter(
+      (item) => item._id !== itemId
+    );
 
-      onSelectedChange(updatedSelectedList, [...options, { ...item }]);
-    }
+    onSelectedChange(updatedSelectedList, [...options, { ...item }]);
   };
 
   const filteredOptions = options.filter(
