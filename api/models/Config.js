@@ -104,6 +104,9 @@ const configSchema = new Schema({
     departments: {
       type: Array,
     },
+    requests: {
+      type: Array,
+    },
     quotes: {
       type: Array,
     },
@@ -119,7 +122,7 @@ const configSchema = new Schema({
     files: {
       type: Array,
     },
-    config: {
+    customization: {
       type: Array,
     },
   },

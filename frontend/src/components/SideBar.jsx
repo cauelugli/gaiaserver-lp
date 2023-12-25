@@ -41,7 +41,7 @@ const options = [
   },
 ];
 
-const SideBar = ({ configData }) => {
+const SideBar = ({ configData, user }) => {
   const [hoveredIndex, setHoveredIndex] = React.useState(null);
 
   const handleMouseEnter = (index) => {
@@ -52,10 +52,31 @@ const SideBar = ({ configData }) => {
     setHoveredIndex(null);
   };
 
+  function hasPermission(user, configData, routePath) {
+    if (!configData.sidebar) return false;
+    const route = routePath === "/" ? "dashboard" : routePath.slice(1);
+    if (route === "help" || route === "account") {
+      return true;
+    }
+    
+    if (!route) {
+      return false;
+    }
+
+    const allowedRoles = configData.sidebar[route];
+    return (
+      allowedRoles && allowedRoles.some((role) => role._id === user.role.id)
+    );
+  }
+
+  const filteredOptions = options.filter((option) =>
+    hasPermission(user, configData, option.link)
+  );
+
   return (
     <>
       <List>
-        {options.map((option, index) => (
+        {filteredOptions.map((option, index) => (
           <Link
             key={index}
             onClick={() => setHoveredIndex(index)}
@@ -66,9 +87,10 @@ const SideBar = ({ configData }) => {
               position: "relative",
               overflow: "hidden",
 
-              backgroundColor: configData && configData.customization
-              ? configData.customization.mainColor
-              : "#32aacd",
+              backgroundColor:
+                configData && configData.customization
+                  ? configData.customization.mainColor
+                  : "#32aacd",
             }}
           >
             <ListItemButton
@@ -77,11 +99,13 @@ const SideBar = ({ configData }) => {
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={handleMouseLeave}
               sx={{
-                color: configData && configData.customization
-                  ? configData.customization.fontColor
-                  : "white",
+                color:
+                  configData && configData.customization
+                    ? configData.customization.fontColor
+                    : "white",
 
-                  backgroundColor: configData && configData.customization
+                backgroundColor:
+                  configData && configData.customization
                     ? configData.customization.mainColor
                     : "#32aacd",
                 position: "relative",
@@ -93,12 +117,14 @@ const SideBar = ({ configData }) => {
               <Typography
                 sx={{
                   ml: 1,
-                  color: configData && configData.customization
-                    ? configData.customization.fontColor
-                    : "white",
-                  backgroundColor: configData && configData.customization
-                    ? configData.customization.mainColor
-                    : "#32aacd",
+                  color:
+                    configData && configData.customization
+                      ? configData.customization.fontColor
+                      : "white",
+                  backgroundColor:
+                    configData && configData.customization
+                      ? configData.customization.mainColor
+                      : "#32aacd",
                   zIndex: 1,
                   pr: 2,
                   pl: 2,
@@ -122,9 +148,10 @@ const SideBar = ({ configData }) => {
                   left: 0,
                   width: "100%",
                   height: "100%",
-                  backgroundColor: configData && configData.customization
-                    ? configData.customization.mainColor
-                    : "#32aacd",
+                  backgroundColor:
+                    configData && configData.customization
+                      ? configData.customization.mainColor
+                      : "#32aacd",
                   zIndex: 0,
                   opacity: hoveredIndex === index ? 1 : 0,
                   transition: "opacity 0.3s ease-in-out",
