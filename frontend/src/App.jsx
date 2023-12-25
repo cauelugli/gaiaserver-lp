@@ -105,7 +105,7 @@ export default function App() {
             }}
           >
             <Box>
-              <SideBar configData={configData} />
+              <SideBar configData={configData} user={userData}/>
             </Box>
           </Grid>
         )}
