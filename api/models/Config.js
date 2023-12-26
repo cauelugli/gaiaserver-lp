@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const configSchema = new Schema({
-  customer: {
-    canCreate: {
-      type: Array,
+  customers: {
+    customersCanBeDeleted: {
+      type: Boolean,
+      default: true,
     },
   },
 

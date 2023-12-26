@@ -24,6 +24,34 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET CUSTOMERS CONFIGS
+router.get("/customers", async (req, res) => {
+  try {
+    const config = await Config.findOne();
+    const requestsConfig = config ? config.customers : null;
+    res.status(200).json(requestsConfig);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// CUSTOMERS
+router.put("/customers", async (req, res) => {
+  try {
+    const { customersCanBeDeleted } = req.body;
+
+    const config = await Config.findOne();
+
+    config.customers.customersCanBeDeleted = customersCanBeDeleted;
+
+    await config.save();
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // GET USERS CONFIGS
 router.get("/users", async (req, res) => {
   try {

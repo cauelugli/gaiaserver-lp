@@ -39,6 +39,7 @@ const api = axios.create({
 });
 
 export default function CustomerTable({
+  configData,
   refreshData,
   setRefreshData,
   searchValue,
@@ -452,7 +453,9 @@ export default function CustomerTable({
                             >
                               Pedidos Recentes{" "}
                             </Typography>
-                            <FormHelperText sx={{ fontSize: 13, my:"auto", ml:1 }}>
+                            <FormHelperText
+                              sx={{ fontSize: 13, my: "auto", ml: 1 }}
+                            >
                               (últimos 5)
                             </FormHelperText>
                           </Grid>
@@ -558,12 +561,14 @@ export default function CustomerTable({
                             onClick={() => handleOpenEdit(customer)}
                             sx={{ color: "grey", mr: 2 }}
                           />
-                          <DeleteIcon
-                            cursor="pointer"
-                            option="delete"
-                            onClick={() => handleConfirmDelete(customer)}
-                            sx={{ color: "#ff4444" }}
-                          />
+                          {configData.customersCanBeDeleted && (
+                            <DeleteIcon
+                              cursor="pointer"
+                              option="delete"
+                              onClick={() => handleConfirmDelete(customer)}
+                              sx={{ color: "#ff4444" }}
+                            />
+                          )}
                         </Box>
                       </Collapse>
                     </TableCell>

@@ -55,6 +55,7 @@ function CustomTabPanel(props) {
 
 export default function Customers({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
+  const [config, setConfig] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [clients, setClients] = React.useState([]);
   const [customers, setCustomers] = React.useState([]);
@@ -109,6 +110,8 @@ export default function Customers({ user }) {
       try {
         const customers = await api.get("/customers");
         const clients = await api.get("/clients");
+        const config = await api.get("/config/customers");
+        setConfig(config.data);
         setClients(clients.data);
         setCustomers(customers.data);
       } catch (error) {
@@ -213,6 +216,7 @@ export default function Customers({ user }) {
             />
 
             <CustomerTable
+              configData={config}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               searchValue={searchValue}
@@ -238,6 +242,7 @@ export default function Customers({ user }) {
             />
 
             <ClientTable
+              configData={config}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               searchValue={searchValue}

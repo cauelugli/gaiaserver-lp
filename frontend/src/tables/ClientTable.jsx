@@ -36,6 +36,7 @@ const api = axios.create({
 });
 
 export default function ClientTable({
+  configData,
   refreshData,
   setRefreshData,
   searchOption,
@@ -457,12 +458,14 @@ export default function ClientTable({
                             onClick={() => handleOpenEdit(client)}
                             sx={{ color: "grey", mr: 2 }}
                           />
-                          <DeleteIcon
-                            cursor="pointer"
-                            option="delete"
-                            onClick={() => handleConfirmDelete(client)}
-                            sx={{ color: "#ff4444" }}
-                          />
+                          {configData.customersCanBeDeleted && (
+                            <DeleteIcon
+                              cursor="pointer"
+                              option="delete"
+                              onClick={() => handleConfirmDelete(client)}
+                              sx={{ color: "#ff4444" }}
+                            />
+                          )}
                         </Box>
                       </Collapse>
                     </TableCell>
