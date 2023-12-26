@@ -26,8 +26,8 @@ export default function Departments({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
   const [departmentsCanBeDeleted, setDepartmentsCanBeDeleted] =
     React.useState(null);
-
-  // const [x, setx] = React.useState(null);
+  const [departmentsNeedManager, setDepartmentsNeedManager] =
+    React.useState(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +36,9 @@ export default function Departments({ onClose }) {
         setConfigData(config.data[0].departments);
         setDepartmentsCanBeDeleted(
           config.data[0].departments.departmentsCanBeDeleted
+        );
+        setDepartmentsNeedManager(
+          config.data[0].departments.departmentsNeedManager
         );
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -49,6 +52,7 @@ export default function Departments({ onClose }) {
     try {
       const res = await api.put("/config/departments", {
         departmentsCanBeDeleted,
+        departmentsNeedManager,
       });
 
       if (res.data) {
@@ -92,8 +96,8 @@ export default function Departments({ onClose }) {
                   <Tooltip
                     title={
                       <Typography sx={{ fontSize: 12 }}>
-                      Se a opção marcada for "Sim", os Departamentos poderão
-                      ser deletados DEFINITIVAMENTE. A opção padrão é "Sim".
+                        Se a opção marcada for "Sim", os Departamentos poderão
+                        ser deletados DEFINITIVAMENTE. A opção padrão é "Sim".
                       </Typography>
                     }
                   >
@@ -114,6 +118,55 @@ export default function Departments({ onClose }) {
                     row
                     value={departmentsCanBeDeleted}
                     onChange={(e) => setDepartmentsCanBeDeleted(e.target.value)}
+                  >
+                    <FormControlLabel
+                      value={Boolean(true)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
+                    />
+
+                    <FormControlLabel
+                      value={Boolean(false)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
+                    />
+                  </RadioGroup>
+                </Grid>
+              </Grid>
+              <Grid item sx={{ my: 1.5 }}>
+                <Grid container direction="row">
+                  <Typography sx={{ my: "auto" }}>
+                    Departamentos Devem Possuir um Gerente
+                  </Typography>
+                  <Tooltip
+                    title={
+                      <Typography sx={{ fontSize: 12 }}>
+                        Se a opção marcada for "Sim", os Departamentos deverão
+                        sempre possuir um Gerente. A opção padrão é "Não".
+                      </Typography>
+                    }
+                  >
+                    <Button
+                      size="small"
+                      sx={{
+                        backgroundColor: "white",
+                        color: "#32aacd",
+                        "&:hover": {
+                          backgroundColor: "white",
+                        },
+                      }}
+                    >
+                      ?
+                    </Button>
+                  </Tooltip>
+                  <RadioGroup
+                    row
+                    value={departmentsNeedManager}
+                    onChange={(e) => setDepartmentsNeedManager(e.target.value)}
                   >
                     <FormControlLabel
                       value={Boolean(true)}

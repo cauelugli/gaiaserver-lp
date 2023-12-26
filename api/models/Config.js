@@ -24,6 +24,10 @@ const configSchema = new Schema({
       type: Boolean,
       default: true,
     },
+    departmentsNeedManager: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   requests: {

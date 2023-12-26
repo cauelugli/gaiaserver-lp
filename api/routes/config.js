@@ -115,11 +115,12 @@ router.get("/departments", async (req, res) => {
 // DEPARTMENTS
 router.put("/departments", async (req, res) => {
   try {
-    const { departmentsCanBeDeleted } = req.body;
+    const { departmentsCanBeDeleted, departmentsNeedManager } = req.body;
 
     const config = await Config.findOne();
 
     config.departments.departmentsCanBeDeleted = departmentsCanBeDeleted;
+    config.departments.departmentsNeedManager = departmentsNeedManager;
 
     await config.save();
     res.status(200).json(config);
