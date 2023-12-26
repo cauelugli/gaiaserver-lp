@@ -20,8 +20,9 @@ const configSchema = new Schema({
   },
 
   departments: {
-    canCreate: {
-      type: Array,
+    departmentsCanBeDeleted: {
+      type: Boolean,
+      default: true,
     },
   },
 
@@ -72,11 +73,11 @@ const configSchema = new Schema({
   customization: {
     mainColor: {
       type: String,
-      default: '#32aacd',
+      default: "#32aacd",
     },
     fontColor: {
       type: String,
-      default: 'white',
+      default: "white",
     },
     logo: {
       type: String,

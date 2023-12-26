@@ -101,6 +101,34 @@ router.put("/customization", async (req, res) => {
   }
 });
 
+// GET DEPARTMENTS CONFIGS
+router.get("/departments", async (req, res) => {
+  try {
+    const config = await Config.findOne();
+    const requestsConfig = config ? config.departments : null;
+    res.status(200).json(requestsConfig);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// DEPARTMENTS
+router.put("/departments", async (req, res) => {
+  try {
+    const { departmentsCanBeDeleted } = req.body;
+
+    const config = await Config.findOne();
+
+    config.departments.departmentsCanBeDeleted = departmentsCanBeDeleted;
+
+    await config.save();
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // GET SECURITY CONFIGS
 router.get("/security", async (req, res) => {
   try {
