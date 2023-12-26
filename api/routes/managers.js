@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const Config = require("../models/Config");
 const Manager = require("../models/Manager");
 const Department = require("../models/Department");
 
@@ -105,6 +106,37 @@ router.put("/", async (req, res) => {
       },
       { new: true }
     );
+
+    console.log("req.body.previousData._id", req.body.previousData._id);
+
+    const configToUpdate = await Config.findOne({
+      "stock.stockentriesDispatcherDepartment.manager.id":
+        req.body.previousData._id,
+    });
+
+    if (configToUpdate) {
+      console.log("configToUpdate is true", configToUpdate);
+      await Config.findOneAndUpdate(
+        {
+          "stock.stockentriesDispatcherDepartment.manager.id":
+            req.body.previousData._id,
+        },
+        {
+          $set: {
+            "stock.stockentriesDispatcherDepartment.manager": {
+              id: updatedManager.id,
+              name: updatedManager.name,
+              email: updatedManager.email,
+              phone: updatedManager.phone,
+              image: updatedManager.image,
+            },
+          },
+        },
+        { new: true }
+      );
+    } else {
+      console.log("\nconfigToUpdate not found\n");
+    }
 
     let updatedDepartment;
 
