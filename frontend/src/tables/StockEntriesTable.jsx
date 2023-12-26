@@ -19,6 +19,8 @@ import {
   TablePagination,
 } from "@mui/material";
 
+import RequestApproval from "../components/small/buttons/RequestApproval";
+
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -54,6 +56,10 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
     {
       id: "createdBy",
       label: "Criado por",
+    },
+    {
+      id: "status",
+      label: "Status",
     },
     {
       id: "createdAt",
@@ -173,6 +179,19 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
                         <Typography sx={{ fontSize: 13 }}>
                           {entry.createdBy}
                         </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Grid
+                          container
+                          direction="row"
+                          alignContent="center"
+                          justifyContent="center"
+                        >
+                          <Typography sx={{ fontSize: 13, my: "auto" }}>
+                            {entry.status}
+                          </Typography>
+                          {entry.status === "Aberto" && <RequestApproval />}
+                        </Grid>
                       </TableCell>
                       <TableCell align="center">
                         <Typography sx={{ fontSize: 13 }}>
