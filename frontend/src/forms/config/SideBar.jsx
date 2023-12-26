@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import {
   Button,
   DialogActions,
-  DialogContent,
   DialogTitle,
   Grid,
   Tooltip,
@@ -18,7 +17,7 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-import TransferList from "../../components/small/TransferList";
+import SideBarConfigTransferList from "../../components/small/SideBarConfigTransferList";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -155,7 +154,7 @@ export default function SideBar({ onClose }) {
         </Grid>
       </Grid>
       {Object.keys(configData).map((key, index) => (
-        <TransferList
+        <SideBarConfigTransferList
           key={key}
           title={title[index]}
           options={roles}

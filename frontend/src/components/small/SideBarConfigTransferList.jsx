@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 
-export default function TransferList({
+export default function SideBarConfigTransferList({
   onSelectedChange,
   options,
   selectedList,
