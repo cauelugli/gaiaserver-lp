@@ -77,7 +77,7 @@ export default function Departments({ onClose }) {
 
   return (
     <form onSubmit={handleChangeDepartmentConfig}>
-      <DialogTitle>Configurações de Segurança</DialogTitle>
+      <DialogTitle>Configurações de Departamentos</DialogTitle>
       {configData.length !== 0 && (
         <>
           <DialogContent>
