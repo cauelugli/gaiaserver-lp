@@ -27,6 +27,7 @@ import EditDepartmentForm from "../forms/edit/EditDepartmentForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 export default function DepartmentTable({
+  configData,
   searchValue,
   searchOption,
   departments,
@@ -304,20 +305,24 @@ export default function DepartmentTable({
                             <TableBody>
                               <TableRow>
                                 <TableCell component="th" scope="row">
-                                <Typography sx={{ fontSize: 13 }}>
-                                    {department.name}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {department.name}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell>
-                                <Typography sx={{ fontSize: 13 }}>
-                                    {department.type}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {department.type}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell>
-                                <Typography sx={{ fontSize: 13 }}>
-                                    {department.phone}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {department.phone}
+                                  </Typography>
                                 </TableCell>
                                 <TableCell>
-                                <Typography sx={{ fontSize: 13 }}>
-                                    {department.email}</Typography>
+                                  <Typography sx={{ fontSize: 13 }}>
+                                    {department.email}
+                                  </Typography>
                                 </TableCell>
                               </TableRow>
                             </TableBody>
@@ -391,14 +396,14 @@ export default function DepartmentTable({
                                   </Grid>
                                 </TableCell>
                                 <TableCell>
-                                <Typography sx={{ fontSize: 13 }}>
+                                  <Typography sx={{ fontSize: 13 }}>
                                     {department.manager
                                       ? department.manager.email
                                       : "-"}
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
-                                <Typography sx={{ fontSize: 13 }}>
+                                  <Typography sx={{ fontSize: 13 }}>
                                     {department.manager
                                       ? department.manager.phone
                                       : "-"}
@@ -564,12 +569,14 @@ export default function DepartmentTable({
                             onClick={() => handleOpenEdit(department)}
                             sx={{ color: "grey", mr: 2 }}
                           />
-                          <DeleteIcon
-                            cursor="pointer"
-                            option="delete"
-                            onClick={() => handleConfirmDelete(department)}
-                            sx={{ color: "#ff4444" }}
-                          />
+                          {configData.departmentsCanBeDeleted && (
+                            <DeleteIcon
+                              cursor="pointer"
+                              option="delete"
+                              onClick={() => handleConfirmDelete(department)}
+                              sx={{ color: "#ff4444" }}
+                            />
+                          )}
                         </Box>
                       </Collapse>
                     </TableCell>

@@ -26,6 +26,7 @@ import EditPositionForm from "../forms/edit/EditPositionForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 export default function PositionTable({
+  configData,
   positions,
   toast,
   searchValue,
@@ -190,13 +191,15 @@ export default function PositionTable({
                               sx={{ color: "#333" }}
                             />
                           </IconButton>
-                          <IconButton>
-                            <DeleteIcon
-                              cursor="pointer"
-                              onClick={() => handleConfirmDelete(position)}
-                              sx={{ color: "#ff4444" }}
-                            />
-                          </IconButton>
+                          {configData.departmentsCanBeDeleted && (
+                            <IconButton>
+                              <DeleteIcon
+                                cursor="pointer"
+                                onClick={() => handleConfirmDelete(position)}
+                                sx={{ color: "#ff4444" }}
+                              />
+                            </IconButton>
+                          )}
                         </Grid>
                       </TableCell>
                     </TableRow>

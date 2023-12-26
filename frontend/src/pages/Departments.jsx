@@ -57,6 +57,7 @@ function CustomTabPanel(props) {
 
 export default function Departments({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
+  const [config, setConfig] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
   const [openAddDepartment, setOpenAddDepartment] = React.useState(false);
@@ -123,6 +124,8 @@ export default function Departments({ user }) {
         const managers = await api.get("/managers");
         const departments = await api.get("/departments");
         const positions = await api.get("/positions");
+        const config = await api.get("/config/departments");
+        setConfig(config.data);
         setUsers(users.data);
         setManagers(managers.data);
         setServiceDepartments(
@@ -254,6 +257,7 @@ export default function Departments({ user }) {
             />
 
             <DepartmentTable
+              configData={config}
               users={users}
               managers={managers}
               searchValue={searchValue}
@@ -285,6 +289,7 @@ export default function Departments({ user }) {
             />
 
             <DepartmentTable
+              configData={config}
               toast={toast}
               users={users}
               managers={managers}
@@ -316,6 +321,7 @@ export default function Departments({ user }) {
             />
 
             <DepartmentTable
+              configData={config}
               toast={toast}
               users={users}
               managers={managers}
@@ -347,6 +353,7 @@ export default function Departments({ user }) {
             />
 
             <PositionTable
+              configData={config}
               toast={toast}
               searchValue={searchValue}
               searchOption={searchOption}
@@ -367,6 +374,7 @@ export default function Departments({ user }) {
           onClose={() => setOpenAddDepartment(!openAddDepartment)}
         >
           <AddDepartmentForm
+            configData={config}
             openAdd={openAddDepartment}
             users={users}
             managers={managers}

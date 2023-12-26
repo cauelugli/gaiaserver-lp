@@ -30,6 +30,7 @@ const api = axios.create({
 });
 
 const AddDepartmentForm = ({
+  configData,
   openAdd,
   users,
   managers,
@@ -43,7 +44,7 @@ const AddDepartmentForm = ({
   const [description, setDescription] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
-  const [manager, setManager] = React.useState("");
+  const [manager, setManager] = React.useState(null);
   const [managerName, setManagerName] = React.useState("");
   const [managerEmail, setManagerEmail] = React.useState("");
   const [managerPhone, setManagerPhone] = React.useState("");
@@ -54,6 +55,7 @@ const AddDepartmentForm = ({
 
   const handleNewManager = (event) => {
     setNewManager(event.target.checked);
+    setManager({})
   };
 
   const handleClickColor = (event) => {
@@ -69,24 +71,15 @@ const AddDepartmentForm = ({
     handleCloseColor();
   };
 
-  // const [icon, setIcon] = React.useState("");
-  // const [iconAnchorEl, setIconAnchorEl] = React.useState(null);
-
-  // const handleCloseIcon = () => {
-  //   setIconAnchorEl(null);
-  // };
-
-  // const handleClickIcon = (event) => {
-  //   setIconAnchorEl(event.currentTarget);
-  // };
-
-  // const handleChangeIcon = (selectedIcon) => {
-  //   setIcon(selectedIcon);
-  //   handleCloseIcon();
-  // };
-
   const handleAdd = async (e) => {
     e.preventDefault();
+    if (configData.departmentsNeedManager && !manager)
+      return toast.warning("É necessário um Gerente para o Novo Departamento", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
     try {
       const membersData = selectedUsers.map((user) => ({
         id: user._id,
