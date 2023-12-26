@@ -15,6 +15,10 @@ const stockEntrySchema = new mongoose.Schema({
   createdBy: {
     type: String,
   },
+  status: {
+    type: String,
+    default: "Aberto",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
