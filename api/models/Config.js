@@ -58,8 +58,8 @@ const configSchema = new Schema({
   },
 
   stock: {
-    canCreate: {
-      type: Array,
+    stockentriesDispatcherDepartment: {
+      type: Object,
     },
   },
 

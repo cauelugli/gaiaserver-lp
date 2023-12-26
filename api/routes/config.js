@@ -110,6 +110,34 @@ router.put("/requests", async (req, res) => {
   }
 });
 
+// GET STOCK CONFIGS
+router.get("/stock", async (req, res) => {
+  try {
+    const config = await Config.findOne();
+    const requestsConfig = config ? config.stock : null;
+    res.status(200).json(requestsConfig);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// STOCK
+router.put("/stock", async (req, res) => {
+  try {
+    const { stockentriesDispatcherDepartment } = req.body;
+
+    const config = await Config.findOne();
+
+    config.stock.stockentriesDispatcherDepartment = stockentriesDispatcherDepartment;
+
+    await config.save();
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // CUSTOMIZATION
 router.put("/customization", async (req, res) => {
   try {
