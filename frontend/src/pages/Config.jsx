@@ -143,7 +143,6 @@ export default function Config({ user }) {
     try {
       const config = await api.get("/config");
       setConfigData(config.data);
-      console.log("config.data", config.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

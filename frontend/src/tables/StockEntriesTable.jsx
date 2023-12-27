@@ -190,7 +190,7 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
                           <Typography sx={{ fontSize: 13, my: "auto" }}>
                             {entry.status}
                           </Typography>
-                          {entry.status === "Aberto" && <RequestApproval />}
+                          {entry.status === "Aberto" && <RequestApproval entry={entry}/>}
                         </Grid>
                       </TableCell>
                       <TableCell align="center">

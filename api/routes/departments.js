@@ -21,7 +21,9 @@ router.post("/", async (req, res) => {
   const existingName = await Department.findOne({ name });
   const existingEmail = await Department.findOne({ email });
   if (existingName) {
-    return res.status(422).json({ error: "Nome do Departamento já cadastrado" });
+    return res
+      .status(422)
+      .json({ error: "Nome do Departamento já cadastrado" });
   }
   if (existingEmail) {
     return res.status(422).json({ error: "E-mail já cadastrado" });
@@ -89,7 +91,7 @@ router.post("/", async (req, res) => {
     } catch (err) {
       console.log(err);
     }
-  } else if (req.body.manager.name !== "") {
+  } else if (!req.body.manager) {
     const newDepartment = new Department({
       name: req.body.name,
       type: req.body.type,
@@ -104,22 +106,24 @@ router.post("/", async (req, res) => {
       savedDepartment = await newDepartment.save();
 
       // UPDATING MEMBERS
-      const memberIds = req.body.members.map((member) => member.id);
+      if (req.body.members.length !== 0) {
+        const memberIds = req.body.members.map((member) => member.id);
 
-      for (const memberId of memberIds) {
-        const updatedMember = await User.updateOne(
-          { _id: memberId },
-          {
-            $set: {
-              "department.id": savedDepartment._id,
-              "department.name": savedDepartment.name,
-              "department.phone": savedDepartment.phone,
-              "department.email": savedDepartment.email,
-              "department.color": savedDepartment.color,
-            },
-          }
-        );
-        updatedMembers.push(updatedMember);
+        for (const memberId of memberIds) {
+          const updatedMember = await User.updateOne(
+            { _id: memberId },
+            {
+              $set: {
+                "department.id": savedDepartment._id,
+                "department.name": savedDepartment.name,
+                "department.phone": savedDepartment.phone,
+                "department.email": savedDepartment.email,
+                "department.color": savedDepartment.color,
+              },
+            }
+          );
+          updatedMembers.push(updatedMember);
+        }
       }
 
       // UPDATING MANAGER, IF SELECTED
@@ -149,7 +153,6 @@ router.post("/", async (req, res) => {
       color: req.body.color,
       members: req.body.members,
       manager: req.body.manager,
-
     });
     const memberIds = req.body.members.map((member) => member.id);
 
@@ -197,7 +200,7 @@ router.delete("/:id", async (req, res) => {
     for (const service of deletedDepartment.services) {
       const updatedService = await Service.updateOne(
         { _id: service._id || service.id },
-        { $unset: { department: "" } },
+        { $unset: { department: "" } }
       );
       updatedServices.push(updatedService);
     }
@@ -227,7 +230,9 @@ router.put("/", async (req, res) => {
 
   if (existingName) {
     if (existingName.name !== req.body.previousData.name) {
-      return res.status(422).json({ error: "Nome do Departamento já cadastrado" });
+      return res
+        .status(422)
+        .json({ error: "Nome do Departamento já cadastrado" });
     }
   }
   if (existingEmail) {

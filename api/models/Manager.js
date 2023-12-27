@@ -26,7 +26,11 @@ managerSchema = new mongoose.Schema({
   },
   role: {
     type: Object,
-    default: { id: 1, name: "Gerente" },
+    default: {},
+  },
+  position: {
+    type: Object,
+    default: {},
   },
   isActive: {
     type: Boolean,

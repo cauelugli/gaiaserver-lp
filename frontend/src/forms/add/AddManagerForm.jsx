@@ -57,7 +57,6 @@ const AddManagerForm = ({
         name,
         email,
         phone,
-        position: "Gerente",
         image: imagePath,
         notifications: { 0: "" },
         department: {
@@ -194,7 +193,7 @@ const AddManagerForm = ({
                     Disponíveis
                   </ListSubheader>
                   {departments
-                    .filter((department) => department.manager === "")
+                    .filter((department) => !department.manager)
                     .map((department) => (
                       <MenuItem
                         value={department}
@@ -221,7 +220,7 @@ const AddManagerForm = ({
                     Gerenciados
                   </ListSubheader>
                   {departments
-                    .filter((department) => department.manager !== "")
+                    .filter((department) => department.manager)
                     .map((department) => (
                       <MenuItem
                         disabled

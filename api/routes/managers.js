@@ -59,6 +59,24 @@ router.delete("/:id", async (req, res) => {
   const managerId = req.params.id;
   let updatedDepartment;
   try {
+    const configToUpdate = await Config.findOne({
+      "stock.stockentriesDispatcherDepartment.manager.id": managerId,
+    });
+
+    if (configToUpdate) {
+      await Config.findOneAndUpdate(
+        {
+          "stock.stockentriesDispatcherDepartment.manager.id": managerId,
+        },
+        {
+          $set: {
+            "stock.stockentriesDispatcherDepartment.manager": {},
+          },
+        },
+        { new: true }
+      );
+    }
+
     const deletedManager = await Manager.findByIdAndDelete(managerId);
 
     {
@@ -107,15 +125,33 @@ router.put("/", async (req, res) => {
       { new: true }
     );
 
-    console.log("req.body.previousData._id", req.body.previousData._id);
-
     const configToUpdate = await Config.findOne({
       "stock.stockentriesDispatcherDepartment.manager.id":
         req.body.previousData._id,
     });
 
-    if (configToUpdate) {
-      console.log("configToUpdate is true", configToUpdate);
+    if (
+      configToUpdate &&
+      req.body.previousData.department.name !== req.body.department.name
+    ) {
+      await Config.findOneAndUpdate(
+        {
+          "stock.stockentriesDispatcherDepartment.manager.id":
+            req.body.previousData._id,
+        },
+        {
+          $set: {
+            "stock.stockentriesDispatcherDepartment.manager": {},
+          },
+        },
+        { new: true }
+      );
+    }
+
+    if (
+      configToUpdate &&
+      req.body.previousData.department.name === req.body.department.name
+    ) {
       await Config.findOneAndUpdate(
         {
           "stock.stockentriesDispatcherDepartment.manager.id":
@@ -134,8 +170,6 @@ router.put("/", async (req, res) => {
         },
         { new: true }
       );
-    } else {
-      console.log("\nconfigToUpdate not found\n");
     }
 
     let updatedDepartment;

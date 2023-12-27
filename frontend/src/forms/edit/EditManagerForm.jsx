@@ -10,8 +10,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  FormHelperText,
   Grid,
   ListSubheader,
   MenuItem,
@@ -226,7 +224,7 @@ const EditManagerForm = ({
                 Disponíveis
               </ListSubheader>
               {departments
-                .filter((department) => department.manager === "")
+                .filter((department) => !department.manager)
                 .map((department) => (
                   <MenuItem
                     value={department}
@@ -253,7 +251,7 @@ const EditManagerForm = ({
                 Gerenciados
               </ListSubheader>
               {departments
-                .filter((department) => department.manager !== "")
+                .filter((department) => department.manager)
                 .map((department) => (
                   <MenuItem
                     disabled

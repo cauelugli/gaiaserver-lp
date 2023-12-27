@@ -5,7 +5,7 @@ import * as React from "react";
 
 import { IconButton, Tooltip, Typography } from "@mui/material";
 
-export default function RequestApproval() {
+export default function RequestApproval({entry}) {
   return (
     <Tooltip
       title={
@@ -14,7 +14,7 @@ export default function RequestApproval() {
         </Typography>
       }
     >
-      <IconButton size="small" onClick={() => alert("clicked")}>
+      <IconButton size="small" onClick={() => console.log(entry)}>
         <Typography
           sx={{
             color: "white",

@@ -209,37 +209,45 @@ export default function DepartmentTable({
                         {department.email}
                       </Typography>
                     </TableCell>
-                    <TableCell
-                      onClick={() => handleOpenDetail(department)}
-                      cursor="pointer"
-                    >
-                      <Grid container direction="row" justifyContent="center">
-                        <Grid item>
-                          <Avatar
-                            alt="Imagem do Gerente"
-                            src={
-                              managers.find(
-                                (manager) =>
-                                  manager.name === department.manager.name
-                              )
-                                ? `http://localhost:3000/static/${
-                                    managers.find(
-                                      (manager) =>
-                                        manager.name === department.manager.name
-                                    ).image
-                                  }`
-                                : ""
-                            }
-                            sx={{ width: 32, height: 32, mr: 1 }}
-                          />
+                    {department.manager ? (
+                      <TableCell
+                        onClick={() => handleOpenDetail(department)}
+                        cursor="pointer"
+                      >
+                        <Grid container direction="row" justifyContent="center">
+                          <Grid item>
+                            <Avatar
+                              alt="Imagem do Gerente"
+                              src={
+                                managers.find(
+                                  (manager) =>
+                                    manager.name === department.manager.name
+                                )
+                                  ? `http://localhost:3000/static/${
+                                      managers.find(
+                                        (manager) =>
+                                          manager.name ===
+                                          department.manager.name
+                                      ).image
+                                    }`
+                                  : ""
+                              }
+                              sx={{ width: 32, height: 32, mr: 1 }}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <Typography sx={{ fontSize: 13, mt: 1 }}>
+                              {department.manager && department.manager.name}
+                            </Typography>
+                          </Grid>
                         </Grid>
-                        <Grid item>
-                          <Typography sx={{ fontSize: 13, mt: 1 }}>
-                            {department.manager && department.manager.name}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </TableCell>
+                      </TableCell>
+                    ) : (
+                      <TableCell
+                        onClick={() => handleOpenDetail(department)}
+                        cursor="pointer"
+                      />
+                    )}
                     <TableCell
                       onClick={() => handleOpenDetail(department)}
                       cursor="pointer"
@@ -364,37 +372,46 @@ export default function DepartmentTable({
                             </TableHead>
                             <TableBody>
                               <TableRow>
-                                <TableCell>
-                                  <Grid container direction="row">
-                                    <Grid item>
-                                      <Avatar
-                                        alt="Imagem do Gerente"
-                                        src={
-                                          managers.find(
-                                            (manager) =>
-                                              manager.name ===
-                                              department.manager.name
-                                          )
-                                            ? `http://localhost:3000/static/${
-                                                managers.find(
-                                                  (manager) =>
-                                                    manager.name ===
-                                                    department.manager.name
-                                                ).image
-                                              }`
-                                            : ""
-                                        }
-                                        sx={{ width: 32, height: 32, mr: 1 }}
-                                      />
+                                {department.manager ? (
+                                  <TableCell>
+                                    <Grid container direction="row">
+                                      <Grid item>
+                                        <Avatar
+                                          alt="Imagem do Gerente"
+                                          src={
+                                            managers.find(
+                                              (manager) =>
+                                                manager.name ===
+                                                department.manager.name
+                                            )
+                                              ? `http://localhost:3000/static/${
+                                                  managers.find(
+                                                    (manager) =>
+                                                      manager.name ===
+                                                      department.manager.name
+                                                  ).image
+                                                }`
+                                              : ""
+                                          }
+                                          sx={{ width: 32, height: 32, mr: 1 }}
+                                        />
+                                      </Grid>
+                                      <Grid item>
+                                        <Typography
+                                          sx={{ fontSize: 13, mt: 1 }}
+                                        >
+                                          {department.manager &&
+                                            department.manager.name}
+                                        </Typography>
+                                      </Grid>
                                     </Grid>
-                                    <Grid item>
-                                      <Typography sx={{ fontSize: 13, mt: 1 }}>
-                                        {department.manager &&
-                                          department.manager.name}
-                                      </Typography>
-                                    </Grid>
-                                  </Grid>
-                                </TableCell>
+                                  </TableCell>
+                                ) : (
+                                  <TableCell
+                                    onClick={() => handleOpenDetail(department)}
+                                    cursor="pointer"
+                                  />
+                                )}
                                 <TableCell>
                                   <Typography sx={{ fontSize: 13 }}>
                                     {department.manager
