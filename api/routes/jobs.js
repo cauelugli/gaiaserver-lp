@@ -253,12 +253,12 @@ router.put("/", async (req, res) => {
       );
       res.status(200).json(updatedJob);
     } else if (option === "requestApproval") {
+      console.log('manager', manager)
       const notifiedManager = await Manager.findOneAndUpdate(
-        { _id: manager._id },
+        { _id: manager.id },
         {
           $set: {
             [`notifications.${Date.now()}`]: {
-              status: "Não Lida",
               itemId: jobId,
               sender: worker,
               receiver: manager,

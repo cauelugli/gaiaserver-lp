@@ -17,20 +17,10 @@ import {
 } from "@mui/material";
 
 import PersonIcon from "@mui/icons-material/Person";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function UserButton({ user }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
-
-  const handleOpenNotifications = (e) => {
-    setNotificationsAnchorEl(e.currentTarget);
-  };
-
-  const handleCloseNotifications = () => {
-    setNotificationsAnchorEl(null);
-  };
 
   const handleLogout = () => {
     sessionStorage.clear();
@@ -55,7 +45,7 @@ export default function UserButton({ user }) {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <List sx={{ width: 180 }}>
+        <List sx={{ width: 170 }}>
           <Link
             to={"/account"}
             style={{
@@ -64,7 +54,7 @@ export default function UserButton({ user }) {
             }}
             onClick={() => setAnchorEl(null)}
           >
-            <ListItemButton>
+            <ListItemButton sx={{ mb: -1, ml:2 }}>
               <ListItemIcon>
                 <PersonIcon />
               </ListItemIcon>
@@ -72,44 +62,7 @@ export default function UserButton({ user }) {
             </ListItemButton>
           </Link>
 
-          <ListItemButton onClick={handleOpenNotifications}>
-            <ListItemIcon>
-              <NotificationsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Notificações" sx={{ ml: -2 }} />
-          </ListItemButton>
-
-          {user.notifications ? (
-            <Menu
-              anchorEl={notificationsAnchorEl}
-              open={Boolean(notificationsAnchorEl)}
-              onClose={handleCloseNotifications}
-            >
-              <List>
-                {Object.keys(user.notifications).map((key) => (
-                  <ListItemButton key={key}>
-                    <ListItemText primary={user.notifications[key].body} />
-                  </ListItemButton>
-                ))}
-              </List>
-            </Menu>
-          ) : (
-            <Menu
-              anchorEl={notificationsAnchorEl}
-              open={Boolean(notificationsAnchorEl)}
-              onClose={handleCloseNotifications}
-            >
-              <List>
-                <ListItemButton>
-                  <ListItemText primary="Não há Novas Notificações" />
-                </ListItemButton>
-              </List>
-            </Menu>
-          )}
-
-          <Divider sx={{ my: 1 }} />
-
-          <ListItemButton sx={{ mb: -1 }} onClick={handleLogout}>
+          <ListItemButton sx={{ mb: -1, ml:2 }} onClick={handleLogout}>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>

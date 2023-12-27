@@ -3,9 +3,9 @@
 import * as React from "react";
 
 import { Grid } from "@mui/material";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 
 import UserButton from "./small/buttons/UserButton";
+import NotificationsButton from "./small/buttons/NotificationsButton";
 
 export default function NavBar({ user, configData }) {
   return (
@@ -15,13 +15,18 @@ export default function NavBar({ user, configData }) {
       alignItems="center"
       justifyContent="flex-start"
       sx={{
-        backgroundColor: configData && configData.customization
-          ? configData.customization.mainColor
-          : "#32aacd",
+        backgroundColor:
+          configData && configData.customization
+            ? configData.customization.mainColor
+            : "#32aacd",
       }}
     >
       <img
-        src={`http://localhost:3000/static/${configData && configData.customization ? configData.customization.logo : ""}`}
+        src={`http://localhost:3000/static/${
+          configData && configData.customization
+            ? configData.customization.logo
+            : ""
+        }`}
         alt="Logotipo da Empresa"
         style={{
           width: "8%",
@@ -33,7 +38,7 @@ export default function NavBar({ user, configData }) {
         }}
         onClick={() => alert("Esse é o logo da sua empresa!")}
       />
-      <NotificationsIcon sx={{ mr: 2, color: "#333" }} />
+      <NotificationsButton user={user} sx={{ mr: 2, color: "#333" }} />
       <UserButton user={user} />
     </Grid>
   );

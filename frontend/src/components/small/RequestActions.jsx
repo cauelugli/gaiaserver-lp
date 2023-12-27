@@ -29,7 +29,7 @@ const RequestActions = ({
         my: 7,
       }}
     >
-      {user.role === "Gerente" && job.status !== "Aprovado" && (
+      {user.role.name === "Gerente" && job.status === "Aprovação Solicitada" && (
         <Button
           cursor="pointer"
           variant="contained"
@@ -41,7 +41,7 @@ const RequestActions = ({
         </Button>
       )}
 
-      {job.status === "Aberto" && user.role !== "Gerente" && (
+      {job.status === "Aberto" && user.role.name !== "Gerente" && (
         <Button
           cursor="pointer"
           variant="contained"
@@ -55,7 +55,7 @@ const RequestActions = ({
 
       {job.status !== "Aberto" &&
         job.status !== "Concluido" &&
-        user.role !== "Gerente" && (
+        user.role.name !== "Gerente" && (
           <Button
             cursor="pointer"
             variant="contained"
