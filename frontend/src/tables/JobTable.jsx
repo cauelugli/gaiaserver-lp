@@ -169,7 +169,12 @@ export default function JobTable({
         date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
       };
       const res = await api.put("/jobs", requestBody);
-      if (res.data) {
+      const newNotification = await api.post("/notifications", {
+        noteBody: `Olá ${job.manager.name}! ${job.worker.name} está solicitando aprovação para o job "${job.title}" em ${requestBody.date}.`,
+        sender: user,
+        receiver: job.manager,
+      });
+      if (res.data && newNotification.data) {
         toast.success("Aprovação Solicitada!", {
           closeOnClick: true,
           pauseOnHover: false,

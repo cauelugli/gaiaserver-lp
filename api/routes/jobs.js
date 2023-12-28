@@ -252,24 +252,8 @@ router.put("/", async (req, res) => {
         { new: true }
       );
       res.status(200).json(updatedJob);
-    } else if (option === "requestApproval") {
-      console.log('manager', manager)
-      const notifiedManager = await Manager.findOneAndUpdate(
-        { _id: manager.id },
-        {
-          $set: {
-            [`notifications.${Date.now()}`]: {
-              itemId: jobId,
-              sender: worker,
-              receiver: manager,
-              body: `Olá ${manager.name}! ${worker.name} está solicitando aprovação para o job "${req.body.job.title}" em ${req.body.date}.`,
-              sentDate: req.body.date,
-            },
-          },
-        },
-        { new: true }
-      );
-
+    } 
+    else if (option === "requestApproval") {
       const updatedJob = await Job.findByIdAndUpdate(
         jobId,
         {
@@ -288,8 +272,9 @@ router.put("/", async (req, res) => {
         { new: true }
       );
 
-      res.status(200).json({ updatedJob, notifiedManager });
-    } else if (option === "managerApproval") {
+      res.status(200).json({ updatedJob });
+    } 
+    else if (option === "managerApproval") {
       const updatedJob = await Job.findByIdAndUpdate(
         jobId,
         {
