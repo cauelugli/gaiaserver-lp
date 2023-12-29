@@ -2,10 +2,14 @@ const express = require("express");
 const router = express.Router();
 const Notification = require("../models/Notification");
 
-// GET ALL NOTIFICATIONS
-router.get("/", async (req, res) => {
+// GET NOTIFICATIONS BY USER ID
+router.get("/:userId", async (req, res) => {
   try {
-    const notifications = await Notification.find();
+    const userId = req.params.userId;
+    const notifications = await Notification.find({
+      "receiver.id": userId,
+      status: "Não Lida",
+    });
     res.status(200).json(notifications);
   } catch (err) {
     res.status(500).json(err);
@@ -23,7 +27,6 @@ router.post("/", async (req, res) => {
 
   try {
     const note = await newNotification.save();
-    console.log("\nnote", note, "\n");
     res.status(200).json(note);
   } catch (err) {
     console.log(err);
@@ -31,22 +34,11 @@ router.post("/", async (req, res) => {
   }
 });
 
-// DELETE CLIENT
-// router.delete("/:id", async (req, res) => {
-//   const clientId = req.params.id;
-//   try {
-//     const deletedClient = await Client.findByIdAndDelete(clientId);
-//     res.status(200).json(deletedClient);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
-
-// READ NOTIFICATION
 router.put("/", async (req, res) => {
   try {
-    const readNotification = await Client.findByIdAndUpdate(
-      req.body.notification,
+    const notificationId = req.body.notification;
+    const readNotification = await Notification.findByIdAndUpdate(
+      notificationId,
       {
         status: "Lida",
       },
