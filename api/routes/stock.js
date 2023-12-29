@@ -55,7 +55,6 @@ router.put("/managerApproval", async (req, res) => {
         type: req.body.entry.type,
         status: "Aprovado",
         user: req.body.user.name,
-        type: "Entrada de Estoque",
         department: req.body.user.department.name,
         items: req.body.entry.items,
         price: req.body.entry.quoteValue.toFixed(2),
@@ -69,10 +68,10 @@ router.put("/managerApproval", async (req, res) => {
   }
 });
 
-
 router.put("/", async (req, res) => {
   const itemList = req.body.itemList;
   const user = req.body.createdBy;
+  const status = req.body.status;
   const updatedStockItems = [];
 
   if (req.body.type === "stock") {
@@ -100,6 +99,7 @@ router.put("/", async (req, res) => {
         items: items,
         quoteValue: totalValue,
         createdBy: user,
+        status: status,
       });
       await newStockEntry.save();
 
@@ -133,10 +133,28 @@ router.put("/", async (req, res) => {
         items: items,
         quoteValue: totalValue,
         createdBy: user,
+        status: status,
       });
       await newStockEntry.save();
 
-      res.json(newStockEntry);
+      let savedFinanceOutcome;
+
+      if (status === "Aprovado") {
+        const newFinanceOutcome = new FinanceOutcome({
+          entry: newStockEntry,
+          status: "Aprovado",
+          user: req.body.user.name,
+          type: req.body.type,
+          department: req.body.user.department
+            ? req.body.user.department.name
+            : "Sem Departamento",
+          items: newStockEntry.items,
+          price: newStockEntry.quoteValue.toFixed(2),
+        });
+        savedFinanceOutcome = await newFinanceOutcome.save();
+      }
+
+      res.json({ newStockEntry, savedFinanceOutcome });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Erro ao atualizar os itens do estoque" });

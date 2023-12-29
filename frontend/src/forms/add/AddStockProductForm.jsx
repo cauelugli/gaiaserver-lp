@@ -35,6 +35,7 @@ export default function AddStockProductForm({
   onClose,
   refreshData,
   setRefreshData,
+  configData,
   toast,
 }) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
@@ -67,7 +68,9 @@ export default function AddStockProductForm({
       const res = await api.put("/stock", {
         itemList,
         createdBy: user.username,
+        user,
         type: "product",
+        status: configData.stockEntriesNeedApproval ? "Aberto" : "Aprovado",
       });
       if (res.data) {
         toast.success("Entrada de Produtos Adicionada!", {

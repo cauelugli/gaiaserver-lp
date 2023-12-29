@@ -310,6 +310,7 @@ export default function Stock({ user }) {
         >
           <AddStockProductForm
             user={user}
+            configData={config}
             products={products}
             onClose={() => closeModal(3)}
             refreshData={refreshData}
@@ -328,6 +329,7 @@ export default function Stock({ user }) {
         >
           <AddStockForm
             user={user}
+            configData={config}
             stockItems={stockItems}
             onClose={() => closeModal(4)}
             refreshData={refreshData}

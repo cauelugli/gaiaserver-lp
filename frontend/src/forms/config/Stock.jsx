@@ -11,9 +11,12 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
   Grid,
   MenuItem,
   Paper,
+  Radio,
+  RadioGroup,
   Select,
   Tooltip,
   Typography,
@@ -31,6 +34,10 @@ export default function Departments({ onClose }) {
     stockentriesDispatcherDepartment,
     setStockentriesDispatcherDepartment,
   ] = React.useState(null);
+  const [stockEntriesNeedApproval, setStockEntriesNeedApproval] =
+    React.useState(null);
+  const [stockEntriesCanBeChallenged, setStockEntriesCanBeChallenged] =
+    React.useState(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +48,12 @@ export default function Departments({ onClose }) {
         setConfigData(config.data[0].stock);
         setStockentriesDispatcherDepartment(
           config.data[0].stock.stockentriesDispatcherDepartment
+        );
+        setStockEntriesNeedApproval(
+          config.data[0].stock.stockEntriesNeedApproval
+        );
+        setStockEntriesCanBeChallenged(
+          config.data[0].stock.stockEntriesCanBeChallenged
         );
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -54,6 +67,8 @@ export default function Departments({ onClose }) {
     try {
       const res = await api.put("/config/stock", {
         stockentriesDispatcherDepartment,
+        stockEntriesNeedApproval,
+        stockEntriesCanBeChallenged,
       });
 
       if (res.data) {
@@ -75,11 +90,6 @@ export default function Departments({ onClose }) {
       });
     }
   };
-
-  console.log(
-    "stockentriesDispatcherDepartment",
-    stockentriesDispatcherDepartment
-  );
 
   return (
     <form onSubmit={handleChangeStockConfig}>
@@ -136,6 +146,7 @@ export default function Departments({ onClose }) {
                         value={stockentriesDispatcherDepartment}
                         size="small"
                         displayEmpty
+                        disabled={!stockEntriesNeedApproval}
                         required
                         renderValue={(selected) => {
                           if (!selected) {
@@ -161,7 +172,7 @@ export default function Departments({ onClose }) {
                             );
                           }
                         }}
-                        sx={{ minWidth: "200px", mr:1 }}
+                        sx={{ minWidth: "200px", mr: 1 }}
                       >
                         {departments.map((item) => (
                           <MenuItem value={item} key={item.id}>
@@ -183,6 +194,7 @@ export default function Departments({ onClose }) {
                         ))}
                       </Select>
                       {stockentriesDispatcherDepartment &&
+                        stockEntriesNeedApproval &&
                         stockentriesDispatcherDepartment.manager && (
                           <Grid
                             container
@@ -194,7 +206,7 @@ export default function Departments({ onClose }) {
                               ml: 1,
                             }}
                           >
-                            <Typography sx={{mr:1}}>Gerente: </Typography>
+                            <Typography sx={{ mr: 1 }}>Gerente: </Typography>
                             <Avatar
                               src={`http://localhost:3000/static/${stockentriesDispatcherDepartment.manager.image}`}
                               style={{
@@ -209,6 +221,110 @@ export default function Departments({ onClose }) {
                         )}
                     </Grid>
                   </Grid>
+                </Grid>
+              </Grid>
+              <Grid item sx={{ my: 1.5 }}>
+                <Grid container direction="row">
+                  <Typography sx={{ my: "auto" }}>
+                    Entradas de Estoque Precisam de Aprovação do Gerente
+                  </Typography>
+                  <Tooltip
+                    title={
+                      <Typography sx={{ fontSize: 12 }}>
+                        Se a opção marcada for "Sim", o 'status' de uma nova
+                        Entrada de Estoque será "Aberto". Se estiver marcado
+                        "Não", o status será 'Aprovado'. A opção padrão é "Sim".
+                      </Typography>
+                    }
+                  >
+                    <Button
+                      size="small"
+                      sx={{
+                        backgroundColor: "white",
+                        color: "#32aacd",
+                        "&:hover": {
+                          backgroundColor: "white",
+                        },
+                      }}
+                    >
+                      ?
+                    </Button>
+                  </Tooltip>
+                  <RadioGroup
+                    row
+                    value={stockEntriesNeedApproval}
+                    onChange={(e) =>
+                      setStockEntriesNeedApproval(e.target.value)
+                    }
+                  >
+                    <FormControlLabel
+                      value={Boolean(true)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
+                    />
+                    <FormControlLabel
+                      value={Boolean(false)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
+                    />
+                  </RadioGroup>
+                </Grid>
+              </Grid>
+              <Grid item sx={{ my: 1.5 }}>
+                <Grid container direction="row">
+                  <Typography sx={{ my: "auto" }}>
+                    Entradas de Estoque Aprovadas podem ser Contestadas
+                  </Typography>
+                  <Tooltip
+                    title={
+                      <Typography sx={{ fontSize: 12 }}>
+                        Se a opção marcada for "Sim", os operadores com acesso à
+                        página 'Financeiro' poderão rejeitar as aprovações do
+                        Gerente designado às Entradas de Estoque. Se estiver
+                        marcado "Não", os operadores não poderão fazer nenhuma
+                        contestação. A opção padrão é "Sim".
+                      </Typography>
+                    }
+                  >
+                    <Button
+                      size="small"
+                      sx={{
+                        backgroundColor: "white",
+                        color: "#32aacd",
+                        "&:hover": {
+                          backgroundColor: "white",
+                        },
+                      }}
+                    >
+                      ?
+                    </Button>
+                  </Tooltip>
+                  <RadioGroup
+                    row
+                    value={stockEntriesCanBeChallenged}
+                    onChange={(e) =>
+                      setStockEntriesCanBeChallenged(e.target.value)
+                    }
+                  >
+                    <FormControlLabel
+                      value={Boolean(true)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
+                    />
+                    <FormControlLabel
+                      value={Boolean(false)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
+                    />
+                  </RadioGroup>
                 </Grid>
               </Grid>
             </Grid>

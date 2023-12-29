@@ -276,11 +276,10 @@ router.post("/challengeApproval", async (req, res) => {
     );
 
     const newNotification = new Notification({
-      noteBody: `Olá, ${req.body.selectedFinanceoutcome.name}! 
-      O colaborador ${req.body.user.name} contestou uma aprovação de Entrada de Estoque 
-      com a seguinte mensagem: ${req.body.message}`,
+      noteBody: `Olá! O colaborador ${req.body.user.name} contestou uma aprovação de Entrada de Estoque 
+      com a seguinte mensagem: ${req.body.message}.`,
       sender: req.body.user.name,
-      receiver: req.body.selectedFinanceoutcome.name,
+      receiver: "StockEntriesDispatcherDepartment",
       status: "Não Lida",
     });
     const note = await newNotification.save();

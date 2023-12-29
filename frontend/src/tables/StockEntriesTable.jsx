@@ -34,6 +34,7 @@ export default function StockEntriesTable({
   configData,
 }) {
   const [stockEntries, setStockEntries] = React.useState([]);
+  console.log("configData", configData)
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -261,7 +262,7 @@ export default function StockEntriesTable({
                               </Typography>
                             )}
                           </Typography>
-                          {entry.status === "Aberto" && (
+                          {entry.status === "Aberto" && configData.stockEntriesNeedApproval && (
                             <RequestApproval
                               entry={entry}
                               refreshData={refreshData}

@@ -61,6 +61,14 @@ const configSchema = new Schema({
     stockentriesDispatcherDepartment: {
       type: Object,
     },
+    stockEntriesNeedApproval: {
+      type: Boolean,
+      default: true,
+    },
+    stockEntriesCanBeChallenged: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   finance: {
