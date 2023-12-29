@@ -251,7 +251,14 @@ export default function StockEntriesTable({
                                 </Button>
                               </Grid>
                             ) : (
-                              entry.status
+                              <Typography
+                                sx={{
+                                  fontSize: 13,
+                                  color: entry.status === "Contestado" && "red",
+                                }}
+                              >
+                                {entry.status}
+                              </Typography>
                             )}
                           </Typography>
                           {entry.status === "Aberto" && (

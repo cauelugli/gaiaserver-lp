@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const financeOutcomeSchema = new mongoose.Schema({
   status: {
     type: String,
-    default: "Aberto",
   },
   quote: {
     type: String,
@@ -56,6 +55,9 @@ const financeOutcomeSchema = new mongoose.Schema({
   },
   commentary: {
     type: String,
+  },
+  entry: {
+    type: Object,
   },
 });
 

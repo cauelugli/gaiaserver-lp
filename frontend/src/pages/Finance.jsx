@@ -35,6 +35,7 @@ import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import TableFilters from "../components/TableFilters";
 import FinanceIncomeTable from "../tables/FinanceIncomeTable";
+import FinanceOutcomeTable from "../tables/FinanceOutcomeTable";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -58,7 +59,7 @@ export default function Finance({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [incoming, setIncoming] = React.useState([]);
-  // const [outcoming, setOutcoming] = React.useState([]);
+  const [outcoming, setOutcoming] = React.useState([]);
 
   const [searchOption, setSearchOption] = React.useState("quote");
   const [searchOptionLabel, setSearchOptionLabel] = React.useState("Orçamento");
@@ -67,13 +68,11 @@ export default function Finance({ user }) {
   const searchOptionList = [
     {
       // FINANCE INCOME TABLE
-      options: [
-        { value: "quote", label: "Orçamento" },
-      ],
+      options: [{ value: "quote", label: "Orçamento" }],
     },
     {
       // FINANCE OUTCOME TABLE
-      options: [{ value: "quote", label: "Orçamento" }],
+      options: [{ value: "type", label: "Tipo" }],
     },
   ];
 
@@ -84,16 +83,18 @@ export default function Finance({ user }) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
     setSearchValue("");
-    setSearchOption("quote");
-    setSearchOptionLabel("Orçamento");
+    newValue === 0
+      ? (setSearchOption("quote"), setSearchOptionLabel("Orçamento"))
+      : (setSearchOption("type"), setSearchOptionLabel("Tipo"));
   };
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const finance = await api.get("/finances");
-        setIncoming(finance.data);
-        // setOutcoming(finance.data);
+        const incomes = await api.get("/finances/income");
+        const outcomes = await api.get("/finances/outcome");
+        setIncoming(incomes.data);
+        setOutcoming(outcomes.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -137,7 +138,7 @@ export default function Finance({ user }) {
       </Box>
       <CustomTabPanel value={value} index={0}>
         {incoming.length === 0 ? (
-          <NoDataText option="Contas a Receber" femaleGender={true}/>
+          <NoDataText option="Contas a Receber" femaleGender={true} />
         ) : (
           <>
             <TableFilters
@@ -164,8 +165,8 @@ export default function Finance({ user }) {
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={1}>
-        {incoming.length === 0 ? (
-          <NoDataText option="Contas a Pagar" femaleGender={true}/>
+        {outcoming.length === 0 ? (
+          <NoDataText option="Contas a Pagar" femaleGender={true} />
         ) : (
           <>
             <TableFilters
@@ -179,12 +180,15 @@ export default function Finance({ user }) {
               handleSearchChange={handleSearchChange}
             />
 
-            {/* <ClientTable
+            <FinanceOutcomeTable
+              outcoming={outcoming}
+              user={user}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
+              toast={toast}
               searchValue={searchValue}
               searchOption={searchOption}
-            /> */}
+            />
           </>
         )}
       </CustomTabPanel>

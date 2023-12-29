@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import dayjs from "dayjs";
 
 import {
   Box,
@@ -92,6 +93,10 @@ export default function FinanceIncomeTable({
     {
       id: "status",
       label: "Status",
+    },
+    {
+      id: "createdAt",
+      label: "Criado em",
     },
     {
       id: "actions",
@@ -445,6 +450,12 @@ export default function FinanceIncomeTable({
                             : income.status}
                         </Typography>
                       </TableCell>
+
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {dayjs(income.createdAt).format("DD/MM/YYYY")}
+                      </Typography>
+                    </TableCell>
 
                       <TableCell align="center" sx={{ py: 0 }}>
                         {!income.payment &&

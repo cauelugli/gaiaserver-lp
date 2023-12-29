@@ -51,8 +51,9 @@ router.put("/managerApproval", async (req, res) => {
 
     if (req.body.status === "Aprovado") {
       const newFinanceOutcome = new FinanceOutcome({
-        id: req.body.entry._id,
+        entry: req.body.entry,
         type: req.body.entry.type,
+        status: "Aprovado",
         user: req.body.user.name,
         type: "Entrada de Estoque",
         department: req.body.user.department.name,
@@ -67,6 +68,7 @@ router.put("/managerApproval", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 
 router.put("/", async (req, res) => {
   const itemList = req.body.itemList;

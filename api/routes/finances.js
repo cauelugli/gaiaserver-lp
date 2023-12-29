@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const FinanceIncome = require("../models/FinanceIncome");
 const FinanceOutcome = require("../models/FinanceOutcome");
+const Notification = require("../models/Notification");
+const StockEntry = require("../models/StockEntry");
 
 // GET ALL FINANCES
 router.get("/income", async (req, res) => {
@@ -257,6 +259,46 @@ router.put("/receivePayment/cash", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao processar o pagamento à vista." });
+  }
+});
+
+// CHALLENGE ENTRY APPROVAL
+router.post("/challengeApproval", async (req, res) => {
+  try {
+    const updatedOutcome = await FinanceOutcome.findByIdAndUpdate(
+      req.body.selectedFinanceoutcome._id,
+      {
+        $set: {
+          status: "Contestado",
+        },
+      },
+      { new: true }
+    );
+
+    const newNotification = new Notification({
+      noteBody: `Olá, ${req.body.selectedFinanceoutcome.name}! 
+      O colaborador ${req.body.user.name} contestou uma aprovação de Entrada de Estoque 
+      com a seguinte mensagem: ${req.body.message}`,
+      sender: req.body.user.name,
+      receiver: req.body.selectedFinanceoutcome.name,
+      status: "Não Lida",
+    });
+    const note = await newNotification.save();
+
+    const updatedEntry = await StockEntry.findByIdAndUpdate(
+      req.body.selectedFinanceoutcome.entry._id,
+      {
+        $set: {
+          status: "Contestado",
+        },
+      },
+      { new: true }
+    );
+
+    res.status(200).json({ updatedOutcome, updatedEntry, note });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
   }
 });
 
