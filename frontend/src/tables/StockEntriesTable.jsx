@@ -116,6 +116,7 @@ export default function StockEntriesTable({
         entry,
         entryId: entry._id,
         user,
+        type: entry.type,
         status: status,
       });
       if (res.data) {

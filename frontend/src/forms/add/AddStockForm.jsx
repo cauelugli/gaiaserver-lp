@@ -60,7 +60,7 @@ export default function AddStockForm({
       const res = await api.put("/stock", {
         itemList,
         createdBy: user.username,
-        type: "stock",
+        type: "Estoque",
         status: configData.stockEntriesNeedApproval ? "Aberto" : "Aprovado",
       });
       if (res.data) {

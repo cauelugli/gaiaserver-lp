@@ -69,7 +69,7 @@ export default function AddStockProductForm({
         itemList,
         createdBy: user.username,
         user,
-        type: "product",
+        type: "Produto",
         status: configData.stockEntriesNeedApproval ? "Aberto" : "Aprovado",
       });
       if (res.data) {

@@ -49,6 +49,8 @@ router.put("/managerApproval", async (req, res) => {
 
     let savedFinanceOutcome;
 
+    console.log("\nreq.body", req.body, "\n");
+
     if (req.body.status === "Aprovado") {
       const newFinanceOutcome = new FinanceOutcome({
         entry: req.body.entry,
@@ -68,13 +70,15 @@ router.put("/managerApproval", async (req, res) => {
   }
 });
 
+// CREATE STOCK ENTRY
 router.put("/", async (req, res) => {
   const itemList = req.body.itemList;
   const user = req.body.createdBy;
   const status = req.body.status;
   const updatedStockItems = [];
 
-  if (req.body.type === "stock") {
+
+  if (req.body.type === "Estoque") {
     try {
       let totalValue = 0;
       const items = [];
@@ -99,16 +103,34 @@ router.put("/", async (req, res) => {
         items: items,
         quoteValue: totalValue,
         createdBy: user,
+        type: req.body.type,
         status: status,
       });
       await newStockEntry.save();
 
-      res.json(newStockEntry);
+      let savedFinanceOutcome;
+
+      if (status === "Aprovado") {
+        const newFinanceOutcome = new FinanceOutcome({
+          entry: newStockEntry,
+          status: "Aprovado",
+          user: req.body.user.name,
+          type: `Entrada de Estoque - ${req.body.type}`,
+          department: req.body.user.department
+            ? req.body.user.department.name
+            : "Sem Departamento",
+          items: newStockEntry.items,
+          price: newStockEntry.quoteValue.toFixed(2),
+        });
+        savedFinanceOutcome = await newFinanceOutcome.save();
+      }
+
+      res.json({ newStockEntry, savedFinanceOutcome });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Erro ao atualizar os itens do estoque" });
     }
-  } else if (req.body.type === "product") {
+  } else if (req.body.type === "Produto") {
     try {
       let totalValue = 0;
       const items = [];
@@ -133,6 +155,7 @@ router.put("/", async (req, res) => {
         items: items,
         quoteValue: totalValue,
         createdBy: user,
+        type: req.body.type,
         status: status,
       });
       await newStockEntry.save();
@@ -144,7 +167,7 @@ router.put("/", async (req, res) => {
           entry: newStockEntry,
           status: "Aprovado",
           user: req.body.user.name,
-          type: req.body.type,
+          type: `Entrada de Estoque - ${req.body.type}`,
           department: req.body.user.department
             ? req.body.user.department.name
             : "Sem Departamento",
