@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const FinanceIncome = require("../models/FinanceIncome");
+const FinanceOutcome = require("../models/FinanceOutcome");
 
 // GET ALL FINANCES
-router.get("/", async (req, res) => {
+router.get("/income", async (req, res) => {
   try {
     const incomes = await FinanceIncome.find();
     res.status(200).json(incomes);
@@ -12,11 +13,46 @@ router.get("/", async (req, res) => {
   }
 });
 
-// UPDATE INCOME/OUTCOME
+// GET ALL FINANCES
+router.get("/outcome", async (req, res) => {
+  try {
+    const outcomes = await FinanceOutcome.find();
+    res.status(200).json(outcomes);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// UPDATE INCOME
 router.put("/", async (req, res) => {
   try {
     // make this dynamic later
     const updatedFinance = await FinanceIncome.findByIdAndUpdate(
+      req.body.financeId,
+      {
+        type: req.body.type,
+        status: req.body.status,
+        quote: req.body.status,
+        user: req.body.status,
+        department: req.body.status,
+        items: req.body.status,
+        price: req.body.status,
+        commissioned: req.body.status,
+        commission: req.body.status,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedFinance);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// UPDATE OUTCOME
+router.put("/", async (req, res) => {
+  try {
+    // make this dynamic later
+    const updatedFinance = await FinanceOutcome.findByIdAndUpdate(
       req.body.financeId,
       {
         type: req.body.type,
@@ -60,7 +96,7 @@ router.put("/schedulePayment", async (req, res) => {
 
   try {
     let payment = {};
-  
+
     if (req.body.paymentOption === "A vista") {
       payment = {
         date: req.body.cashPaymentDate,
@@ -83,7 +119,7 @@ router.put("/schedulePayment", async (req, res) => {
         finalPrice: req.body.finalPrice,
         paymentDates: {},
       };
-  
+
       for (const key in paymentDates) {
         const date = paymentDates[key];
         payment.paymentDates[key] = {
@@ -95,7 +131,7 @@ router.put("/schedulePayment", async (req, res) => {
         };
       }
     }
-  
+
     const scheduledPayment = await FinanceIncome.findByIdAndUpdate(
       req.body.id,
       {
@@ -104,7 +140,7 @@ router.put("/schedulePayment", async (req, res) => {
       },
       { new: true }
     );
-  
+
     res.status(200).json(scheduledPayment);
   } catch (err) {
     console.log(err);

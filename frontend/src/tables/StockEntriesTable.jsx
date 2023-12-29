@@ -114,6 +114,7 @@ export default function StockEntriesTable({
       const res = await api.put("/stock/managerApproval", {
         entry,
         entryId: entry._id,
+        user,
         status: status,
       });
       if (res.data) {
@@ -196,7 +197,7 @@ export default function StockEntriesTable({
                               <Grid item>
                                 <Typography sx={{ fontSize: 13 }}>
                                   {item.item.name} x{item.quantity} = R$
-                                  {item.buyValue * item.quantity}
+                                  {(item.buyValue * item.quantity).toFixed(2)}
                                 </Typography>
                               </Grid>
                             </Grid>

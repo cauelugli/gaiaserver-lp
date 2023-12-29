@@ -3,6 +3,7 @@ const router = express.Router();
 const StockItem = require("../models/StockItem");
 const Product = require("../models/Product");
 const StockEntry = require("../models/StockEntry");
+const FinanceOutcome = require("../models/FinanceOutcome");
 
 // GET STOCK ENTRIES
 router.get("/", async (req, res) => {
@@ -35,7 +36,6 @@ router.put("/requestApproval", async (req, res) => {
 
 // REQUEST MANAGER ENTRY APPROVAL
 router.put("/managerApproval", async (req, res) => {
-  console.log("\nreq.body.entry", req.body.entry, '\n');
   try {
     const updatedEntry = await StockEntry.findByIdAndUpdate(
       req.body.entryId,
@@ -46,7 +46,22 @@ router.put("/managerApproval", async (req, res) => {
       },
       { new: true }
     );
-    res.status(200).json(updatedEntry);
+
+    let savedFinanceOutcome;
+
+    if (req.body.status === "Aprovado") {
+      const newFinanceOutcome = new FinanceOutcome({
+        id: req.body.entry._id,
+        type: req.body.entry.type,
+        user: req.body.user.name,
+        type: "Entrada de Estoque",
+        department: req.body.user.department.name,
+        items: req.body.entry.items,
+        price: req.body.entry.quoteValue.toFixed(2),
+      });
+      savedFinanceOutcome = await newFinanceOutcome.save();
+    }
+    res.status(200).json({ updatedEntry, savedFinanceOutcome });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
