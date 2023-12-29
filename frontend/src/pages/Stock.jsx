@@ -4,14 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import {
-  Box,
-  Dialog,
-  Grid,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
+import { Box, Dialog, Grid, Tab, Tabs, Typography } from "@mui/material";
 
 import AddStockItemForm from "../forms/add/AddStockItemForm";
 import AddStockProductForm from "../forms/add/AddStockProductForm";
@@ -48,7 +41,9 @@ function CustomTabPanel(props) {
 
 export default function Stock({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
+  const [config, setConfig] = React.useState(false);
   const [value, setValue] = React.useState(0);
+
   const [stockItems, setStockItems] = React.useState([]);
   const [products, setProducts] = React.useState([]);
   const [stock, setStock] = React.useState([]);
@@ -126,6 +121,9 @@ export default function Stock({ user }) {
         const stockItems = await api.get("/stockItems");
         const products = await api.get("/products");
         const stockEntries = await api.get("/stock");
+        const config = await api.get("/config/stock");
+        setConfig(config.data);
+
         setStockItems(stockItems.data);
         setProducts(products.data);
         setStock(stockEntries.data);
@@ -227,7 +225,7 @@ export default function Stock({ user }) {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         {stock.length === 0 ? (
-          <NoDataText option="Entradas de Estoque"  femaleGender={true}/>
+          <NoDataText option="Entradas de Estoque" femaleGender={true} />
         ) : (
           <>
             <TableFilters
@@ -241,6 +239,8 @@ export default function Stock({ user }) {
               handleSearchChange={handleSearchChange}
             />
             <StockEntriesTable
+              user={user}
+              configData={config}
               searchValue={searchValue}
               searchOption={searchOption}
               refreshData={refreshData}

@@ -3,6 +3,7 @@
 import * as React from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import { toast } from "react-toastify";
 
 import {
   Avatar,
@@ -17,6 +18,7 @@ import {
   TableRow,
   Typography,
   TablePagination,
+  Button,
 } from "@mui/material";
 
 import RequestApproval from "../components/small/buttons/RequestApproval";
@@ -25,7 +27,12 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function StockEntriesTable({ refreshData, setRefreshData }) {
+export default function StockEntriesTable({
+  user,
+  refreshData,
+  setRefreshData,
+  configData,
+}) {
   const [stockEntries, setStockEntries] = React.useState([]);
 
   React.useEffect(() => {
@@ -101,6 +108,32 @@ export default function StockEntriesTable({ refreshData, setRefreshData }) {
 
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
+
+  const handleApproveReprove = async (entry, status) => {
+    try {
+      const res = await api.put("/stock/managerApproval", {
+        entry,
+        entryId: entry._id,
+        status: status,
+      });
+      if (res.data) {
+        toast.success("Solicitação Respondida!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+        setRefreshData(!refreshData);
+      }
+    } catch (error) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+    }
+  };
 
   return (
     <>
@@ -188,7 +221,37 @@ export default function StockEntriesTable({ refreshData, setRefreshData }) {
                           justifyContent="center"
                         >
                           <Typography sx={{ fontSize: 13, my: "auto" }}>
-                            {entry.status}
+                            {entry.status === "Aprovação Solicitada" &&
+                            user.role.name === "Gerente" &&
+                            user.department.name ===
+                              configData.stockentriesDispatcherDepartment
+                                .name ? (
+                              <Grid container direction="row">
+                                <Button
+                                  onClick={() =>
+                                    handleApproveReprove(entry, "Aprovado")
+                                  }
+                                  size="small"
+                                  variant="contained"
+                                  color="success"
+                                >
+                                  Aprovar
+                                </Button>
+                                <Button
+                                  onClick={() =>
+                                    handleApproveReprove(entry, "Reprovado")
+                                  }
+                                  size="small"
+                                  variant="contained"
+                                  color="error"
+                                  sx={{ ml: 1 }}
+                                >
+                                  Reprovar
+                                </Button>
+                              </Grid>
+                            ) : (
+                              entry.status
+                            )}
                           </Typography>
                           {entry.status === "Aberto" && (
                             <RequestApproval

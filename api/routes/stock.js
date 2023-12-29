@@ -28,7 +28,27 @@ router.put("/requestApproval", async (req, res) => {
     );
     res.status(200).json(updatedEntry);
   } catch (err) {
-    console.log(err)
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// REQUEST MANAGER ENTRY APPROVAL
+router.put("/managerApproval", async (req, res) => {
+  console.log("\nreq.body.entry", req.body.entry, '\n');
+  try {
+    const updatedEntry = await StockEntry.findByIdAndUpdate(
+      req.body.entryId,
+      {
+        $set: {
+          status: req.body.status,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedEntry);
+  } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
