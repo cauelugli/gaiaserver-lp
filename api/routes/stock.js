@@ -4,12 +4,31 @@ const StockItem = require("../models/StockItem");
 const Product = require("../models/Product");
 const StockEntry = require("../models/StockEntry");
 
-// GER STOCK ENTRIES
+// GET STOCK ENTRIES
 router.get("/", async (req, res) => {
   try {
     const stockEntries = await StockEntry.find();
     res.status(200).json(stockEntries);
   } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// REQUEST STOCK ENTRY APPROVAL
+router.put("/requestApproval", async (req, res) => {
+  try {
+    const updatedEntry = await StockEntry.findByIdAndUpdate(
+      req.body.entryId,
+      {
+        $set: {
+          status: "Aprovação Solicitada",
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedEntry);
+  } catch (err) {
+    console.log(err)
     res.status(500).json(err);
   }
 });

@@ -25,7 +25,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function StockEntriesTable({ searchValue, searchOption }) {
+export default function StockEntriesTable({ refreshData, setRefreshData }) {
   const [stockEntries, setStockEntries] = React.useState([]);
 
   React.useEffect(() => {
@@ -38,7 +38,7 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   const tableHeaderRow = [
     {
@@ -190,7 +190,13 @@ export default function StockEntriesTable({ searchValue, searchOption }) {
                           <Typography sx={{ fontSize: 13, my: "auto" }}>
                             {entry.status}
                           </Typography>
-                          {entry.status === "Aberto" && <RequestApproval entry={entry}/>}
+                          {entry.status === "Aberto" && (
+                            <RequestApproval
+                              entry={entry}
+                              refreshData={refreshData}
+                              setRefreshData={setRefreshData}
+                            />
+                          )}
                         </Grid>
                       </TableCell>
                       <TableCell align="center">
