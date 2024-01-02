@@ -1,6 +1,9 @@
 const express = require("express");
-const app = express();
 const dotenv = require("dotenv");
+const http = require("http");
+const initSocket = require("./websocket");
+const app = express();
+const server = http.createServer(app);
 const mongoose = require("mongoose");
 const cors = require("cors");
 
@@ -21,7 +24,6 @@ const jobRoutes = require("./routes/jobs");
 const saleRoutes = require("./routes/sales");
 const userRoute = require("./routes/users");
 const managerRoute = require("./routes/managers");
-const notificationRoute = require("./routes/notification");
 const operatorsRoute = require("./routes/operators");
 const quickNotesRoute = require("./routes/quicknotes");
 const quoteRoute = require("./routes/quotes");
@@ -58,12 +60,14 @@ app.use("/api/stock", stockRoutes);
 app.use("/api/stockItems", stockItemRoutes);
 app.use("/api/users", userRoute);
 app.use("/api/managers", managerRoute);
-app.use("/api/notifications", notificationRoute);
 app.use("/api/operators", operatorsRoute);
 app.use("/api/quicknotes", quickNotesRoute);
 app.use("/api/quotes", quoteRoute);
 app.use("/api/uploads", uploadsRoute);
 
-app.listen("3000", () => {
+initSocket(server);
+
+// Altere a linha abaixo para usar o servidor HTTP com o Socket.IO
+server.listen(3000, () => {
   console.log("Backend is running.");
 });

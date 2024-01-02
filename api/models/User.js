@@ -26,7 +26,11 @@ userSchema = new mongoose.Schema({
   },
   role: {
     type: Object,
-    default: { id: 0, name: "Colaborador" },
+    default: {},
+  },
+  notifications: {
+    type: Object,
+    default: { 0: "" },
   },
   position: {
     type: String,

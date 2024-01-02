@@ -7,7 +7,7 @@ import { Grid } from "@mui/material";
 import UserButton from "./small/buttons/UserButton";
 import NotificationsButton from "./small/buttons/NotificationsButton";
 
-export default function NavBar({ user, configData }) {
+export default function NavBar({ user, configData, userKey, setUserKey }) {
   return (
     <Grid
       container
@@ -38,7 +38,12 @@ export default function NavBar({ user, configData }) {
         }}
         onClick={() => alert("Esse é o logo da sua empresa!")}
       />
-      <NotificationsButton user={user} sx={{ mr: 2, color: "#333" }} />
+      <NotificationsButton
+        user={user}
+        userKey={userKey}
+        setUserKey={setUserKey}
+        sx={{ mr: 2, color: "#333" }}
+      />
       <UserButton user={user} />
     </Grid>
   );

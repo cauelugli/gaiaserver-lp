@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const FinanceIncome = require("../models/FinanceIncome");
 const FinanceOutcome = require("../models/FinanceOutcome");
-const Notification = require("../models/Notification");
 const StockEntry = require("../models/StockEntry");
 
 // GET ALL FINANCES

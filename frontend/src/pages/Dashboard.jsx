@@ -2,10 +2,12 @@
 /* eslint-disable no-unused-vars */
 import * as React from "react";
 import { Typography } from "@mui/material";
+import TestWebSocketButton from "../components/small/buttons/TestWebsocketButton";
 
 const Dashboard = ({ user }) => {
   return (
     <>
+      <TestWebSocketButton />
       <p>Dashboard</p>
       <Typography sx={{ my: 3 }}>
         Hellow, <strong>{user.name}</strong> !

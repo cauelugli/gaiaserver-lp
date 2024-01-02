@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
+import { io } from "socket.io-client";
 import "react-toastify/dist/ReactToastify.css";
 import dayjs from "dayjs";
 import axios from "axios";
@@ -33,6 +34,8 @@ import RequestActions from "../components/small/RequestActions";
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
+
+const socket = io("http://localhost:3000");
 
 export default function JobTable({
   config,
@@ -169,17 +172,19 @@ export default function JobTable({
         date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
       };
       const res = await api.put("/jobs", requestBody);
-      const newNotification = await api.post("/notifications", {
-        noteBody: `Olá ${job.manager.name}! ${job.worker.name} está solicitando aprovação para o job "${job.title}" em ${requestBody.date}.`,
-        sender: user,
-        receiver: job.manager,
-      });
-      if (res.data && newNotification.data) {
+      
+      if (res.data) {
         toast.success("Aprovação Solicitada!", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("requestApproval", {
+          sender: user,
+          receiver: job.manager,
+          job,
+          date: dayjs(Date.now()).format("DD/MM/YYYY"),
         });
         setRefreshData(!refreshData);
       }

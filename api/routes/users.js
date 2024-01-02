@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
       const existingPosition = await Position.findOne({
         name: newPosition,
       });
-      
+
       if (existingPosition) {
         return res.status(422).json({ error: "Cargo já cadastrado" });
       }
@@ -266,4 +266,27 @@ router.put("/", async (req, res) => {
   }
 });
 
+// MARK NOTIFICATION AS READ
+router.put("/readNotification", async (req, res) => {
+  try {
+    const { userId, notificationId } = req.body;
+
+    const user = await User.findById(userId);
+
+    if (!user || !user.notifications[notificationId]) {
+      return res.status(404).json({ success: false, error: "Not found" });
+    }
+
+    user.notifications[notificationId].status = "Lida";
+    user.markModified('notifications');
+    await user.save();
+
+    return res.json({ success: true });
+  } catch (error) {
+    console.error("Error marking notification as read:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal Server Error" });
+  }
+});
 module.exports = router;

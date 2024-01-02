@@ -32,6 +32,10 @@ managerSchema = new mongoose.Schema({
     type: Object,
     default: {},
   },
+  notifications: {
+    type: Object,
+    default: { 0: "" },
+  },
   isActive: {
     type: Boolean,
     default: true,

@@ -9,8 +9,9 @@ import {
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { io } from "socket.io-client";
 
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 import SideBar from "./components/SideBar";
 import NavBar from "./components/NavBar";
@@ -33,6 +34,8 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
+const socket = io("http://localhost:3000");
+
 function isAuthenticated(login, userData) {
   return login && userData && userData.isActive;
 }
@@ -48,6 +51,7 @@ function hasPermission(user, configData, routePath) {
 
 export default function App() {
   const [configData, setConfigData] = useState([]);
+  const [userKey, setUserKey] = useState(0);
   const login = JSON.parse(sessionStorage.getItem("login"));
   const userData = JSON.parse(sessionStorage.getItem("userData"));
   console.log("App mounted control");
@@ -82,7 +86,28 @@ export default function App() {
     return () => {
       window.removeEventListener("beforeunload", handleUnload);
     };
-  }, [login, userData]);
+  }, [login, userData, userKey]);
+
+  useEffect(() => {
+    const handleUnload = () => {
+      const readNotifications = Object.values(userData.notifications)
+        .filter((notification) => notification.status === "Lida")
+        .map((notification) => notification._id);
+
+      if (readNotifications.length > 0) {
+        localStorage.setItem(
+          "readNotifications",
+          JSON.stringify(readNotifications)
+        );
+      }
+    };
+
+    window.addEventListener("beforeunload", handleUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleUnload);
+    };
+  }, [userData]);
 
   useEffect(() => {
     const keepData = sessionStorage.getItem("keepData");
@@ -100,7 +125,14 @@ export default function App() {
   return (
     <Router>
       <Grid container sx={{ m: -1 }}>
-        {login && <NavBar user={userData} configData={configData} />}
+        {login && (
+          <NavBar
+            user={userData}
+            configData={configData}
+            userKey={userKey}
+            setUserKey={setUserKey}
+          />
+        )}
         {login && (
           <Grid
             item
