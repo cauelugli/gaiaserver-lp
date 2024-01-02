@@ -29,8 +29,12 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function NotificationsButton({ user, userKey, setUserKey }) {
-  const [notifications, setNotifications] = useState([]);
+export default function NotificationsButton({
+  user,
+  socket,
+  notifications,
+  setNotifications,
+}) {
   const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
   const [expanded, setExpanded] = React.useState(false);
 
@@ -42,13 +46,27 @@ export default function NotificationsButton({ user, userKey, setUserKey }) {
     setNotificationsAnchorEl(null);
   };
 
-  useEffect(() => {
-    const unreadNotifications = Object.values(user.notifications).filter(
-      (notification) => notification.status === "Não Lida"
-    );
+  socket.on("connect", () => {
+    console.log("Connected to server");
+  });
+  socket.on("notificationsUpdate", (data) => {
+    console.log("Received notificationsUpdate", data);
+    setNotifications(data.notifications);
+  });
+  console.log("Sending userId:", user._id);
+  socket.emit("userId", user._id);
 
-    setNotifications(unreadNotifications);
-  }, [user]);
+  useEffect(() => {
+    // Adicione um ouvinte para o evento de atualização de notificações via socket
+    const handleNotificationsUpdate = (data) => {
+      setNotifications(data.notifications);
+    };
+
+    // Remova o ouvinte quando o componente for desmontado
+    return () => {
+      socket.off("notificationsUpdate", handleNotificationsUpdate);
+    };
+  }, [socket, setNotifications]);
 
   const handleMarkAsRead = async (notificationId) => {
     try {
@@ -57,27 +75,19 @@ export default function NotificationsButton({ user, userKey, setUserKey }) {
         notificationId,
       });
 
-      // Atualize o estado local da notificação para "Lida"
-      const updatedUser = {
-        ...user,
-        notifications: {
-          ...user.notifications,
-          [notificationId]: {
-            ...user.notifications[notificationId],
-            status: "Lida",
-          },
-        },
-      };
-
-      // Atualize o localStorage
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-
-      // Força a re-renderização, alterando diretamente o estado do usuário
-      setNotifications((prevNotifications) =>
-        prevNotifications.filter((note) => note.id !== notificationId)
-      );
+      // Após marcar como lida, busque as notificações atualizadas
+      fetchNotifications();
     } catch (error) {
       console.error("Error marking notification as read:", error);
+    }
+  };
+
+  const fetchNotifications = async () => {
+    try {
+      const response = await api.get(`/managers/notifications/${user._id}`);
+      setNotifications(response.data);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
     }
   };
 
@@ -86,7 +96,11 @@ export default function NotificationsButton({ user, userKey, setUserKey }) {
       <Badge
         color="error"
         size="small"
-        badgeContent={notifications.length}
+        badgeContent={
+          Object.values(notifications).filter(
+            (note) => note.status === "Não Lida"
+          ).length
+        }
         overlap="circular"
         anchorOrigin={{
           vertical: "top",
@@ -104,8 +118,8 @@ export default function NotificationsButton({ user, userKey, setUserKey }) {
         onClose={handleCloseNotifications}
       >
         <List>
-          {notifications.length > 0 ? (
-            notifications
+          {Object.values(notifications).length > 0 ? (
+            Object.values(notifications)
               .filter((note) => note.status === "Não Lida")
               .map((notification) => (
                 <Card
@@ -156,7 +170,9 @@ export default function NotificationsButton({ user, userKey, setUserKey }) {
           ) : (
             <ListItemButton>
               <ListItemText
-                primary={`${notifications.length} Novas Notificações`}
+                primary={`${
+                  Object.values(notifications).length
+                } Novas Notificações`}
               />
             </ListItemButton>
           )}

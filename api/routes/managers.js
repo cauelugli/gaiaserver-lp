@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Config = require("../models/Config");
 const Manager = require("../models/Manager");
+const User = require("../models/User");
 const Department = require("../models/Department");
 
 // GET ALL MANAGERS
@@ -235,6 +236,23 @@ router.put("/", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
+  }
+});
+
+
+// GET MANAGER'S NOTIFICATIONS
+router.get('/notifications/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    let userNotifications;
+    userNotifications = await Manager.findById(userId).select('notifications');
+    if (!userNotifications) {
+      userNotifications = await User.findById(userId).select('notifications');
+    }
+    res.json(userNotifications.notifications);
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

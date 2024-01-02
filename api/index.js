@@ -67,7 +67,6 @@ app.use("/api/uploads", uploadsRoute);
 
 initSocket(server);
 
-// Altere a linha abaixo para usar o servidor HTTP com o Socket.IO
 server.listen(3000, () => {
   console.log("Backend is running.");
 });

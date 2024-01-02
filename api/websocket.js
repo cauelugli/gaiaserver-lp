@@ -1,6 +1,4 @@
-const socketIo = require("socket.io");
 const http = require("http");
-const mongoose = require("mongoose");
 const { Server } = require("socket.io");
 const User = require("./models/User");
 const Manager = require("./models/Manager");
@@ -13,22 +11,36 @@ const initSocket = (server) => {
     },
   });
 
+  const userSocketMap = {};
+
   io.on("connection", (socket) => {
+    console.log(`Socket connected: ${socket.id}`);
+    socket.on("userId", (userId) => {
+      console.log(`User connected: ${userId}`);
+      console.log("userSocketMap:", userSocketMap);
+
+      userSocketMap[userId] = socket.id;
+    });
+
     socket.on("test", () => {
       console.log("\nWebsocket Test OK!\n");
     });
 
     socket.on("requestApproval", async (data) => {
       try {
-        const receiver = await Manager.findById(data.receiver.id);
+        // Obtém o ID do socket do usuário receptor
+        const receiverSocketId = userSocketMap[data.receiver.id];
 
-        if (receiver) {
+        console.log("data.receiver.id:", data.receiver.id); // Adicione este log para depuração
+        console.log("receiverSocketId:", receiverSocketId); // Adicione este log para depuração
+
+        if (receiverSocketId) {
           const newNotification = {
             id: Date.now(),
             type: "Aprovação",
-            noteBody: `Olá ${receiver.name}! ${data.sender.name} está solicitando aprovação para o job "${data.job.title}" em ${data.date}.`,
+            noteBody: `Olá ${data.receiver.name}! ${data.sender.name} está solicitando aprovação para o job "${data.job.title}" em ${data.date}.`,
             sender: data.sender.name,
-            status: "Não Lida"
+            status: "Não Lida",
           };
 
           await Manager.updateOne(
@@ -38,7 +50,8 @@ const initSocket = (server) => {
 
           const updatedReceiver = await Manager.findById(data.receiver.id);
 
-          io.to(receiver._id).emit("notificationsUpdate", {
+          // Emita o evento apenas para o socket do receptor específico
+          io.to(receiverSocketId).emit("notificationsUpdate", {
             notifications: updatedReceiver.notifications,
           });
         } else {

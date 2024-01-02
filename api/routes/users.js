@@ -266,6 +266,21 @@ router.put("/", async (req, res) => {
   }
 });
 
+// GET USER'S NOTIFICATIONS
+router.get('/notifications/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Substitua a linha abaixo pela lógica real para obter as notificações do usuário
+    const userNotifications = await User.findById(userId).select('notifications');
+
+    res.json(userNotifications.notifications);
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // MARK NOTIFICATION AS READ
 router.put("/readNotification", async (req, res) => {
   try {
@@ -289,4 +304,5 @@ router.put("/readNotification", async (req, res) => {
       .json({ success: false, error: "Internal Server Error" });
   }
 });
+
 module.exports = router;

@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { io } from "socket.io-client";
+const socket = io("http://localhost:3000");
 
 import { Box, Grid, Typography } from "@mui/material";
 
@@ -34,8 +35,6 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const socket = io("http://localhost:3000");
-
 function isAuthenticated(login, userData) {
   return login && userData && userData.isActive;
 }
@@ -51,6 +50,7 @@ function hasPermission(user, configData, routePath) {
 
 export default function App() {
   const [configData, setConfigData] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const [userKey, setUserKey] = useState(0);
   const login = JSON.parse(sessionStorage.getItem("login"));
   const userData = JSON.parse(sessionStorage.getItem("userData"));
@@ -60,7 +60,11 @@ export default function App() {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
+        const notifications = await api.get(
+          `/managers/notifications/${userData._id}`
+        );
         setConfigData(config.data[0]);
+        setNotifications(notifications.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -127,10 +131,11 @@ export default function App() {
       <Grid container sx={{ m: -1 }}>
         {login && (
           <NavBar
+            socket={socket}
             user={userData}
             configData={configData}
-            userKey={userKey}
-            setUserKey={setUserKey}
+            notifications={notifications}
+            setNotifications={setNotifications}
           />
         )}
         {login && (
