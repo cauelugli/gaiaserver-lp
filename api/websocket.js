@@ -55,10 +55,7 @@ const initSocket = (server) => {
           io.to(receiverSocketId).emit("notificationsUpdate", {
             notifications: updatedReceiver.notifications,
           });
-        } else {
-          console.log("Receiver not found");
-        }
-        
+        }         
       } catch (error) {
         console.error("Error processing requestApproval:", error);
       }
