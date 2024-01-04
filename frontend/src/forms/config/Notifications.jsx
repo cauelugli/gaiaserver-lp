@@ -22,7 +22,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function Security({ onClose }) {
+export default function Notifications({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
   const [passwordComplexity, setPasswordComplexity] = React.useState(null);
 
@@ -30,8 +30,8 @@ export default function Security({ onClose }) {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data[0].security);
-        setPasswordComplexity(config.data[0].security.passwordComplexity);
+        setConfigData(config.data[0].notifications);
+        // setPasswordComplexity(config.data[0].security.passwordComplexity);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -39,7 +39,7 @@ export default function Security({ onClose }) {
     fetchData();
   }, []);
 
-  const handleChangeSecurityConfig = async (e) => {
+  const handleChangeNotificationConfig = async (e) => {
     e.preventDefault();
     try {
       const res = await api.put("/config/security", {
@@ -67,8 +67,8 @@ export default function Security({ onClose }) {
   };
 
   return (
-    <form onSubmit={handleChangeSecurityConfig}>
-      <DialogTitle>Configurações de Segurança</DialogTitle>
+    <form onSubmit={handleChangeNotificationConfig}>
+      <DialogTitle>Configurações de Notificações</DialogTitle>
       {configData.length !== 0 && (
         <>
           <DialogContent>
@@ -81,67 +81,30 @@ export default function Security({ onClose }) {
             >
               <Grid item sx={{ my: 1.5 }}>
                 <Grid container direction="row">
-                  <Typography sx={{ my: "auto" }}>
-                    Complexidade de Senha
+                  <Typography sx={{ my: "auto", mr: 2 }}>
+                    Notificar quando Novo Usuário for criado
                   </Typography>
-                  <Tooltip
-                    title={
-                      <Typography sx={{ fontSize: 12 }}>
-                        Para a opção "Baixo", não há exigência de complexidade,
-                        exemplo: "senha123". Para a opção "Alto" é exigido no
-                        mínimo 10 caracteres, incluindo letras maiúsculas,
-                        minúsculas, números e caracteres especiais, exemplo: "SeNh@123#CjM". Para a opção
-                        "Extremo" é exigido no mínimo 16 caracteres,
-                        com combinação robusta de letras maiúsculas, minúsculas,
-                        números, caracteres especiais, exemplo: "J#rL$bm*9W!p2Qz". A opção padrão é "Baixo".
-                      </Typography>
-                    }
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "#32aacd",
-                        "&:hover": {
-                          backgroundColor: "white",
-                        },
-                      }}
-                    >
-                      ?
-                    </Button>
-                  </Tooltip>
                   <RadioGroup
                     row
                     value={passwordComplexity}
                     onChange={(e) => setPasswordComplexity(e.target.value)}
                   >
                     <FormControlLabel
-                      value={"low"}
+                      value={Boolean(true)}
                       control={
                         <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
                       }
-                      label={
-                        <Typography sx={{ fontSize: 13 }}>Baixo</Typography>
-                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
                     />
                     <FormControlLabel
-                      value={"high"}
+                      value={Boolean(false)}
                       control={
                         <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
                       }
-                      label={
-                        <Typography sx={{ fontSize: 13 }}>Alto</Typography>
-                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
                     />
-                    <FormControlLabel
-                      value={"extreme"}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={
-                        <Typography sx={{ fontSize: 13 }}>Extremo</Typography>
-                      }
-                    />
+
+                    <Typography sx={{ my:"auto", fontSize: 13 }}>Lista de Notificados:</Typography>
                   </RadioGroup>
                 </Grid>
               </Grid>

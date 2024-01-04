@@ -140,6 +140,18 @@ const configSchema = new Schema({
       type: Array,
     },
   },
+
+  notifications: {
+    x: {
+      type: Object,
+    },
+    y: {
+      type: Object,
+    },
+    z: {
+      type: Object,
+    },
+  },
 });
 
 const Config = mongoose.model("Config", configSchema);

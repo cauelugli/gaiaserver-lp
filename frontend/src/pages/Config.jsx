@@ -30,6 +30,7 @@ import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
 import ViewSidebarIcon from "@mui/icons-material/ViewSidebar";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 import CustomersModal from "../forms/config/Customers";
 import UsersModal from "../forms/config/Users";
@@ -43,6 +44,7 @@ import FilesModal from "../forms/config/Files";
 import CustomizationModal from "../forms/config/Customization";
 import SecurityModal from "../forms/config/Security";
 import SideBarModal from "../forms/config/SideBar";
+import NotificationsModal from "../forms/config/Notifications";
 
 const options = [
   {
@@ -112,6 +114,12 @@ const options = [
     text: "Barra Lateral",
     modal: <SideBarModal />,
   },
+
+  {
+    icon: <NotificationsIcon sx={{ fontSize: 48 }} />,
+    text: "Notificações",
+    modal: <NotificationsModal />,
+  },
 ];
 
 export default function Config({ user }) {
@@ -179,7 +187,7 @@ export default function Config({ user }) {
         Configurações
       </Typography>
       {configData ? (
-        <Grid container rowSpacing={2} columnSpacing={{ md: 4, lg: 4 }}>
+        <Grid container rowSpacing={3} columnSpacing={{ md: 1.8, lg: 1.8 }}>
           {options.map((config, index) => (
             <Grid
               item
