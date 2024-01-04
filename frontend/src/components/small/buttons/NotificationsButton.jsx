@@ -18,6 +18,7 @@ import {
   Avatar,
   Card,
   Badge,
+  Tooltip,
 } from "@mui/material";
 
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -161,12 +162,14 @@ export default function NotificationsButton({
                       </Typography>
                     </CardContent>
                     <CardActions disableSpacing>
-                      <IconButton
-                        sx={{ ml: "auto" }}
-                        onClick={() => handleMarkAsRead(notification.id)}
-                      >
-                        <CheckIcon />
-                      </IconButton>
+                      <Tooltip title={"Marcar como Lida"}>
+                        <IconButton
+                          sx={{ ml: "auto" }}
+                          onClick={() => handleMarkAsRead(notification.id)}
+                        >
+                          <CheckIcon />
+                        </IconButton>
+                      </Tooltip>
                     </CardActions>
                   </Collapse>
                 </Card>{" "}
