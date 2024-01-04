@@ -49,11 +49,11 @@ export default function NotificationsButton({
   socket.on("connect", () => {
     console.log("Connected to server");
   });
+
   socket.on("notificationsUpdate", (data) => {
-    console.log("Received notificationsUpdate", data);
     setNotifications(data.notifications);
   });
-  console.log("Sending userId:", user._id);
+
   socket.emit("userId", user._id);
 
   useEffect(() => {
@@ -118,10 +118,14 @@ export default function NotificationsButton({
         onClose={handleCloseNotifications}
       >
         <List>
-          {Object.values(notifications).length > 0 ? (
-            Object.values(notifications)
-              .filter((note) => note.status === "Não Lida")
-              .map((notification) => (
+          {Object.values(notifications)
+            .filter((note) => note.status === "Não Lida")
+            .map((notification) => (
+              <Card
+                key={notification._id}
+                id={notification._id}
+                sx={{ width: 220 }}
+              >
                 <Card
                   key={notification._id}
                   id={notification._id}
@@ -165,15 +169,14 @@ export default function NotificationsButton({
                       </IconButton>
                     </CardActions>
                   </Collapse>
-                </Card>
-              ))
-          ) : (
+                </Card>{" "}
+              </Card>
+            ))}
+          {Object.values(notifications).filter(
+            (note) => note.status === "Não Lida"
+          ).length === 0 && (
             <ListItemButton>
-              <ListItemText
-                primary={`${
-                  Object.values(notifications).length
-                } Novas Notificações`}
-              />
+              <ListItemText primary={"Sem Novas Notificações"} />
             </ListItemButton>
           )}
         </List>
