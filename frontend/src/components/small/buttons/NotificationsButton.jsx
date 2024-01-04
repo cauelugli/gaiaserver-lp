@@ -15,7 +15,6 @@ import {
   Typography,
   Collapse,
   CardHeader,
-  Avatar,
   Card,
   Badge,
   Tooltip,
@@ -76,7 +75,6 @@ export default function NotificationsButton({
         notificationId,
       });
 
-      // Após marcar como lida, busque as notificações atualizadas
       fetchNotifications();
     } catch (error) {
       console.error("Error marking notification as read:", error);
@@ -172,7 +170,7 @@ export default function NotificationsButton({
                       </Tooltip>
                     </CardActions>
                   </Collapse>
-                </Card>{" "}
+                </Card>
               </Card>
             ))}
           {Object.values(notifications).filter(
