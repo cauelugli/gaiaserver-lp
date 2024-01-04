@@ -27,7 +27,7 @@ export default function SideBar({ onClose }) {
   const [configData, setConfigData] = useState({});
   const [roles, setRoles] = useState([]);
   const [selectedLists, setSelectedLists] = useState({});
-  // IMPORTANT: THESE TITLES MUST BE IN ORDER WITH THE MODEL!
+  // IMPORTANT: THESE TITLES MUST BE IN ORDER WITH THE MODEL 'CONFIG' !
   const title = [
     "Dashboard",
     "Clientes",

@@ -142,14 +142,8 @@ const configSchema = new Schema({
   },
 
   notifications: {
-    x: {
-      type: Object,
-    },
-    y: {
-      type: Object,
-    },
-    z: {
-      type: Object,
+    whenUserIsCreated: {
+      type: Array,
     },
   },
 });
