@@ -124,11 +124,16 @@ router.get("/stock", async (req, res) => {
 // STOCK
 router.put("/stock", async (req, res) => {
   try {
-    const { stockentriesDispatcherDepartment, stockEntriesNeedApproval, stockEntriesCanBeChallenged } = req.body;
+    const {
+      stockentriesDispatcherDepartment,
+      stockEntriesNeedApproval,
+      stockEntriesCanBeChallenged,
+    } = req.body;
 
     const config = await Config.findOne();
 
-    config.stock.stockentriesDispatcherDepartment = stockentriesDispatcherDepartment;
+    config.stock.stockentriesDispatcherDepartment =
+      stockentriesDispatcherDepartment;
     config.stock.stockEntriesNeedApproval = stockEntriesNeedApproval;
     config.stock.stockEntriesCanBeChallenged = stockEntriesCanBeChallenged;
 
@@ -242,7 +247,11 @@ router.put("/sidebar", async (req, res) => {
     });
 
     // Atualizar o objeto config com ID e nome
-    const config = await Config.findOneAndUpdate({}, { sidebar: updatedPayload }, { new: true });
+    const config = await Config.findOneAndUpdate(
+      {},
+      { sidebar: updatedPayload },
+      { new: true }
+    );
 
     res.status(200).json(config);
   } catch (err) {
@@ -265,18 +274,21 @@ router.get("/notifications", async (req, res) => {
 // NOTIFICATIONS
 router.put("/notifications", async (req, res) => {
   try {
-    const payload = req.body;
+    const { notifications, notificationsBooleans } = req.body;
 
-    // Extrair ID e nome de cada item em cada array
-    const updatedPayload = {};
-    Object.keys(payload).forEach((key) => {
-      updatedPayload[key] = payload[key].map((item) => ({
+    const updatedNotifications = {};
+    Object.keys(notifications).forEach((key) => {
+      updatedNotifications[key] = notifications[key].map((item) => ({
         _id: item._id,
         name: item.name,
       }));
     });
 
-    const config = await Config.findOneAndUpdate({}, { notifications: updatedPayload }, { new: true });
+    const config = await Config.findOneAndUpdate(
+      {},
+      { notifications: updatedNotifications, notificationsBooleans },
+      { new: true }
+    );
 
     res.status(200).json(config);
   } catch (err) {

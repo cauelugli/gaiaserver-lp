@@ -146,6 +146,13 @@ const configSchema = new Schema({
       type: Array,
     },
   },
+
+  notificationsBooleans: {
+    whenUserIsCreated: {
+      type: Boolean,
+      default: false,
+    },
+  },
 });
 
 const Config = mongoose.model("Config", configSchema);
