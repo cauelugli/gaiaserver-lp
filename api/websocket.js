@@ -14,11 +14,7 @@ const initSocket = (server) => {
   const userSocketMap = {};
 
   io.on("connection", (socket) => {
-    console.log(`Socket connected: ${socket.id}`);
     socket.on("userId", (userId) => {
-      console.log(`User connected: ${userId}`);
-      console.log("userSocketMap:", userSocketMap);
-
       userSocketMap[userId] = socket.id;
     });
 
@@ -30,9 +26,6 @@ const initSocket = (server) => {
       try {
         // Obtém o ID do socket do usuário receptor
         const receiverSocketId = userSocketMap[data.receiver.id];
-
-        console.log("data.receiver.id:", data.receiver.id); // Adicione este log para depuração
-        console.log("receiverSocketId:", receiverSocketId); // Adicione este log para depuração
 
         if (receiverSocketId) {
           const newNotification = {
