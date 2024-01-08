@@ -50,7 +50,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Requests({ user }) {
+export default function Requests({ user, configTables }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
   const [value, setValue] = React.useState(0);
@@ -191,77 +191,85 @@ export default function Requests({ user }) {
           onChange={handleChange}
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
-          <Tab
-            label={<Typography sx={{ fontSize: 13 }}>Jobs</Typography>}
-            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-          />
-          <Tab
-            label={<Typography sx={{ fontSize: 13 }}>Vendas</Typography>}
-            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-          />
+          {configTables.requestJob && (
+            <Tab
+              label={<Typography sx={{ fontSize: 13 }}>Jobs</Typography>}
+              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+            />
+          )}
+          {configTables.requestSale && (
+            <Tab
+              label={<Typography sx={{ fontSize: 13 }}>Vendas</Typography>}
+              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+            />
+          )}
           <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
           />
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        {jobs.length === 0 ? (
-          <NoDataText option="Jobs" />
-        ) : (
-          <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[0]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
+      {configTables.requestJob && (
+        <CustomTabPanel value={value} index={0}>
+          {jobs.length === 0 ? (
+            <NoDataText option="Jobs" />
+          ) : (
+            <>
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[0]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
 
-            <JobTable
-              config={config}
-              user={user}
-              searchValue={searchValue}
-              searchOption={searchOption}
-              jobs={jobs}
-              managers={managers}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-            />
-          </>
-        )}
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        {sales.length === 0 ? (
-          <NoDataText option="Vendas" femaleGender={true} />
-        ) : (
-          <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[1]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
+              <JobTable
+                config={config}
+                user={user}
+                searchValue={searchValue}
+                searchOption={searchOption}
+                jobs={jobs}
+                managers={managers}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+              />
+            </>
+          )}
+        </CustomTabPanel>
+      )}
+      {configTables.requestSale && (
+        <CustomTabPanel value={value} index={configTables.requestJob ? 1 : 0}>
+          {sales.length === 0 ? (
+            <NoDataText option="Vendas" femaleGender={true} />
+          ) : (
+            <>
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[1]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
 
-            <SaleTable
-              config={config}
-              searchValue={searchValue}
-              searchOption={searchOption}
-              sales={sales}
-              managers={managers}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-            />
-          </>
-        )}
-      </CustomTabPanel>
+              <SaleTable
+                config={config}
+                searchValue={searchValue}
+                searchOption={searchOption}
+                sales={sales}
+                managers={managers}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+              />
+            </>
+          )}
+        </CustomTabPanel>
+      )}
       {openAddJob && (
         <Dialog
           fullWidth

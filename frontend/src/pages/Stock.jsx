@@ -39,7 +39,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Stock({ user }) {
+export default function Stock({ user, configTables }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
   const [value, setValue] = React.useState(0);
@@ -155,14 +155,18 @@ export default function Stock({ user }) {
           onChange={handleChange}
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
-          <Tab
-            label={<Typography sx={{ fontSize: 13 }}>Produtos</Typography>}
-            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-          />
-          <Tab
-            label={<Typography sx={{ fontSize: 13 }}>Materiais</Typography>}
-            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-          />
+          {configTables.stockProduct && (
+            <Tab
+              label={<Typography sx={{ fontSize: 13 }}>Produtos</Typography>}
+              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+            />
+          )}
+          {configTables.stockItems && (
+            <Tab
+              label={<Typography sx={{ fontSize: 13 }}>Materiais</Typography>}
+              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+            />
+          )}
           <Tab
             label={<Typography sx={{ fontSize: 13 }}>Entradas</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
@@ -173,57 +177,70 @@ export default function Stock({ user }) {
           />
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        {products.length === 0 ? (
-          <NoDataText option="Produtos" />
-        ) : (
-          <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[0]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
+      {configTables.stockProduct && (
+        <CustomTabPanel value={value} index={0}>
+          {products.length === 0 ? (
+            <NoDataText option="Produtos" />
+          ) : (
+            <>
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[0]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
 
-            <ProductsTable
-              searchValue={searchValue}
-              searchOption={searchOption}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-            />
-          </>
-        )}
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        {stockItems.length === 0 ? (
-          <NoDataText option="Items de Estoque" />
-        ) : (
-          <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[1]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
-            <StockTable
-              stockItems={stockItems}
-              searchValue={searchValue}
-              searchOption={searchOption}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-            />
-          </>
-        )}
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
+              <ProductsTable
+                searchValue={searchValue}
+                searchOption={searchOption}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+              />
+            </>
+          )}
+        </CustomTabPanel>
+      )}
+      {configTables.stockItems && (
+        <CustomTabPanel value={value} index={configTables.stockProduct ? 1 : 0}>
+          {stockItems.length === 0 ? (
+            <NoDataText option="Items de Estoque" />
+          ) : (
+            <>
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[1]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+              <StockTable
+                stockItems={stockItems}
+                searchValue={searchValue}
+                searchOption={searchOption}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+              />
+            </>
+          )}
+        </CustomTabPanel>
+      )}
+      <CustomTabPanel
+        value={value}
+        index={
+          configTables.stockProduct && configTables.stockItems
+            ? 2
+            : !configTables.stockProduct && !configTables.stockItems
+            ? 0
+            : 1
+        }
+      >
         {stock.length === 0 ? (
           <NoDataText option="Entradas de Estoque" femaleGender={true} />
         ) : (

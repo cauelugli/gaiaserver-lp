@@ -53,9 +53,10 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Customers({ user }) {
+export default function Customers({ user, configTables }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
+  // const [configTables, setConfigTables] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [clients, setClients] = React.useState([]);
   const [customers, setCustomers] = React.useState([]);
@@ -121,6 +122,9 @@ export default function Customers({ user }) {
     fetchData();
   }, [refreshData]);
 
+  console.log("configTables.customerClient", configTables.customerClient);
+  console.log("configTables.customerCustomer", configTables.customerCustomer);
+
   return (
     <Box>
       <Grid
@@ -185,72 +189,85 @@ export default function Customers({ user }) {
           onChange={handleChange}
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
-          <Tab
-            label={<Typography sx={{ fontSize: 13 }}>Empresas</Typography>}
-            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-          />
-          <Tab
-            label={<Typography sx={{ fontSize: 13 }}>Pessoa Física</Typography>}
-            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-          />
+          {configTables.customerCustomer && (
+            <Tab
+              label={<Typography sx={{ fontSize: 13 }}>Empresas</Typography>}
+              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+            />
+          )}
+          {configTables.customerClient && (
+            <Tab
+              label={
+                <Typography sx={{ fontSize: 13 }}>Pessoa Física</Typography>
+              }
+              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+            />
+          )}
           <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
           />
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        {customers.length === 0 ? (
-          <NoDataText option="Clientes Empresa" />
-        ) : (
-          <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[0]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
+      {configTables.customerCustomer && (
+        <CustomTabPanel value={value} index={0}>
+          {customers.length === 0 ? (
+            <NoDataText option="Clientes Empresa" />
+          ) : (
+            <>
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[0]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
 
-            <CustomerTable
-              configData={config}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              searchValue={searchValue}
-              searchOption={searchOption}
-            />
-          </>
-        )}
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        {clients.length === 0 ? (
-          <NoDataText option="Clientes Pessoa Física" />
-        ) : (
-          <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[1]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
+              <CustomerTable
+                configData={config}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                searchValue={searchValue}
+                searchOption={searchOption}
+              />
+            </>
+          )}
+        </CustomTabPanel>
+      )}
+      {configTables.customerClient && (
+        <CustomTabPanel
+          value={value}
+          index={configTables.customerCustomer ? 1 : 0}
+        >
+          {clients.length === 0 ? (
+            <NoDataText option="Clientes Pessoa Física" />
+          ) : (
+            <>
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[1]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
 
-            <ClientTable
-              configData={config}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              searchValue={searchValue}
-              searchOption={searchOption}
-            />
-          </>
-        )}
-      </CustomTabPanel>
+              <ClientTable
+                configData={config}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                searchValue={searchValue}
+                searchOption={searchOption}
+              />
+            </>
+          )}
+        </CustomTabPanel>
+      )}
 
       {openAddCustomer && (
         <Dialog

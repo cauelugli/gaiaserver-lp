@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import {
@@ -50,6 +51,7 @@ function hasPermission(user, configData, routePath) {
 
 export default function App() {
   const [configData, setConfigData] = useState([]);
+  const [configTables, setConfigTables] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [userKey, setUserKey] = useState(0);
   const login = JSON.parse(sessionStorage.getItem("login"));
@@ -60,10 +62,12 @@ export default function App() {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
+        const configTables = await api.get("/config/tables");
         const notifications = await api.get(
           `/managers/notifications/${userData._id}`
         );
         setConfigData(config.data[0]);
+        setConfigTables(configTables.data);
         setNotifications(notifications.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -205,7 +209,7 @@ export default function App() {
                   element={
                     isAuthenticated(login, userData) &&
                     hasPermission(userData, configData, "customers") ? (
-                      <Customers user={userData} />
+                      <Customers user={userData} configTables={configTables} />
                     ) : isAuthenticated(login, userData) ? (
                       <Typography sx={{ m: 2, fontSize: 16 }}>
                         Seu usuário não possui autorização à página.
@@ -220,7 +224,10 @@ export default function App() {
                   element={
                     isAuthenticated(login, userData) &&
                     hasPermission(userData, configData, "departments") ? (
-                      <Departments user={userData} />
+                      <Departments
+                        user={userData}
+                        configTables={configTables}
+                      />
                     ) : isAuthenticated(login, userData) ? (
                       <Typography sx={{ m: 2, fontSize: 16 }}>
                         Seu usuário não possui autorização à página.
@@ -235,7 +242,7 @@ export default function App() {
                   element={
                     isAuthenticated(login, userData) &&
                     hasPermission(userData, configData, "services") ? (
-                      <Services user={userData} />
+                      <Services user={userData} configTables={configTables} />
                     ) : isAuthenticated(login, userData) ? (
                       <Typography sx={{ m: 2, fontSize: 16 }}>
                         Seu usuário não possui autorização à página.
@@ -250,7 +257,7 @@ export default function App() {
                   element={
                     isAuthenticated(login, userData) &&
                     hasPermission(userData, configData, "stock") ? (
-                      <Stock user={userData} />
+                      <Stock user={userData} configTables={configTables}/>
                     ) : isAuthenticated(login, userData) ? (
                       <Typography sx={{ m: 2, fontSize: 16 }}>
                         Seu usuário não possui autorização à página.
@@ -265,7 +272,7 @@ export default function App() {
                   element={
                     isAuthenticated(login, userData) &&
                     hasPermission(userData, configData, "requests") ? (
-                      <Requests user={userData} />
+                      <Requests user={userData} configTables={configTables} />
                     ) : isAuthenticated(login, userData) ? (
                       <Typography sx={{ m: 2, fontSize: 16 }}>
                         Seu usuário não possui autorização à página.

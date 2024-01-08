@@ -56,7 +56,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Services({ user }) {
+export default function Services({ user, configTables }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
@@ -200,14 +200,18 @@ export default function Services({ user }) {
             label={<Typography sx={{ fontSize: 13 }}>Setores</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
-          <Tab
-            label={<Typography sx={{ fontSize: 13 }}>Consultoria</Typography>}
-            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-          />
-          <Tab
-            label={<Typography sx={{ fontSize: 13 }}>Planos</Typography>}
-            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-          />
+          {configTables.serviceConsulting && (
+            <Tab
+              label={<Typography sx={{ fontSize: 13 }}>Consultoria</Typography>}
+              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+            />
+          )}
+          {configTables.servicePlan && (
+            <Tab
+              label={<Typography sx={{ fontSize: 13 }}>Planos</Typography>}
+              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+            />
+          )}
           <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
@@ -241,58 +245,65 @@ export default function Services({ user }) {
           </>
         )}
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        {supports.length === 0 ? (
-          <NoDataText option="Serviços de Consultoria" />
-        ) : (
-          <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[1]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
-            <ServiceTable
-              searchOption={searchOption}
-              searchValue={searchValue}
-              services={supports}
-              departments={departments}
-              stockItems={stockItems}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-            />
-          </>
-        )}
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        {servicePlans.length === 0 ? (
-          <NoDataText option="Planos de Serviços" />
-        ) : (
-          <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[2]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
-            <ServicePlansTable
-              searchOption={searchOption}
-              searchValue={searchValue}
-              servicePlans={servicePlans}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-            />
-          </>
-        )}
-      </CustomTabPanel>
+      {configTables.serviceConsulting && (
+        <CustomTabPanel value={value} index={1}>
+          {supports.length === 0 ? (
+            <NoDataText option="Serviços de Consultoria" />
+          ) : (
+            <>
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[1]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+              <ServiceTable
+                searchOption={searchOption}
+                searchValue={searchValue}
+                services={supports}
+                departments={departments}
+                stockItems={stockItems}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+              />
+            </>
+          )}
+        </CustomTabPanel>
+      )}
+      {configTables.servicePlan && (
+        <CustomTabPanel
+          value={value}
+          index={configTables.serviceConsulting ? 2 : 1}
+        >
+          {servicePlans.length === 0 ? (
+            <NoDataText option="Planos de Serviços" />
+          ) : (
+            <>
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[2]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+              <ServicePlansTable
+                searchOption={searchOption}
+                searchValue={searchValue}
+                servicePlans={servicePlans}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+              />
+            </>
+          )}
+        </CustomTabPanel>
+      )}
       {openAddService && (
         <Dialog
           fullWidth

@@ -55,7 +55,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Departments({ user }) {
+export default function Departments({ user, configTables }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
   const [value, setValue] = React.useState(0);
@@ -226,10 +226,12 @@ export default function Departments({ user }) {
             label="Vendas"
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
-          <Tab
-            label="Internos"
-            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-          />
+          {configTables.departmentInternal && (
+            <Tab
+              label="Internos"
+              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+            />
+          )}
           <Tab
             label="Cargos"
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
@@ -304,39 +306,44 @@ export default function Departments({ user }) {
           </>
         )}
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        {internalDepartments.length === 0 ? (
-          <NoDataText option="Departamentos Internos" />
-        ) : (
-          <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[2]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
+      {configTables.departmentInternal && (
+        <CustomTabPanel value={value} index={2}>
+          {internalDepartments.length === 0 ? (
+            <NoDataText option="Departamentos Internos" />
+          ) : (
+            <>
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[2]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
 
-            <DepartmentTable
-              configData={config}
-              toast={toast}
-              users={users}
-              managers={managers}
-              searchValue={searchValue}
-              searchOption={searchOption}
-              departments={internalDepartments}
-              openAdd={openAddDepartment}
-              setOpenAdd={setOpenAddDepartment}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-            />
-          </>
-        )}
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={3}>
+              <DepartmentTable
+                configData={config}
+                toast={toast}
+                users={users}
+                managers={managers}
+                searchValue={searchValue}
+                searchOption={searchOption}
+                departments={internalDepartments}
+                openAdd={openAddDepartment}
+                setOpenAdd={setOpenAddDepartment}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+              />
+            </>
+          )}
+        </CustomTabPanel>
+      )}
+      <CustomTabPanel
+        value={value}
+        index={configTables.departmentInternal ? 3 : 2}
+      >
         {positions.length === 0 ? (
           <NoDataText option="Cargos" />
         ) : (
