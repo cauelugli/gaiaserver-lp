@@ -56,6 +56,18 @@ export default function NotificationsButton({
 
   socket.emit("userId", user._id);
 
+  let adjustEndpoint;
+
+  if (!user.position) {
+    adjustEndpoint = "managers";
+  } else {
+    if (user.position.startsWith("Gerente")) {
+      adjustEndpoint = "managers";
+    } else {
+      adjustEndpoint = "users";
+    }
+  }
+
   useEffect(() => {
     // Adicione um ouvinte para o evento de atualização de notificações via socket
     const handleNotificationsUpdate = (data) => {
@@ -70,7 +82,7 @@ export default function NotificationsButton({
 
   const handleMarkAsRead = async (notificationId) => {
     try {
-      await api.put("/managers/readNotification", {
+      await api.put(`/${adjustEndpoint}/readNotification`, {
         userId: user._id,
         notificationId,
       });

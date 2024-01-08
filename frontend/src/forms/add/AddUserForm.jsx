@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+import dayjs from "dayjs";
 
 import {
   Avatar,
@@ -17,7 +19,6 @@ import {
   Typography,
 } from "@mui/material";
 
-// import FileUploadIcon from "@mui/icons-material/FileUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { IMaskInput } from "react-imask";
@@ -26,7 +27,13 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
+const socket = io("http://localhost:3000");
+
 const AddUserForm = ({
+  user,
+  // configData,
+  configNotifications,
+  configNotificationsBooleans,
   openAdd,
   departments,
   positions,
@@ -79,6 +86,15 @@ const AddUserForm = ({
           theme: "colored",
           autoClose: 1200,
         });
+
+        if (configNotificationsBooleans.whenUserIsCreated) {
+          socket.emit("whenUserIsCreated", {
+            sender: user.name,
+            createdUser: name,
+            list: configNotifications.whenUserIsCreated,
+            date: dayjs(Date.now()).format("DD/MM/YYYY"),
+          });
+        }
       }
 
       setOpenAdd(!openAdd);
@@ -92,7 +108,6 @@ const AddUserForm = ({
           autoClose: 1200,
         });
       } else {
-        console.log
         toast.error("Houve algum erro...", {
           closeOnClick: true,
           pauseOnHover: false,

@@ -60,6 +60,8 @@ function CustomTabPanel(props) {
 export default function Users({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
+  const [configNotifications, setConfigNotifications] = React.useState(false);
+  const [configNotificationsBooleans, setConfigNotificationsBooleans] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
   const [users, setUsers] = React.useState([]);
@@ -142,7 +144,11 @@ export default function Users({ user }) {
         const managersData = managers.data;
         const combinedData = [...usersData, ...managersData];
         const config = await api.get("/config/users");
+        const configNotifications = await api.get("/config/notifications");
+        const configNotificationsBooleans = await api.get("/config/notificationsBooleans");
         setConfig(config.data);
+        setConfigNotifications(configNotifications.data);
+        setConfigNotificationsBooleans(configNotificationsBooleans.data);
         setUsers(usersData);
         setManagers(managersData);
         setDepartments(departments.data);
@@ -371,6 +377,10 @@ export default function Users({ user }) {
           onClose={() => setOpenAddUser(!openAddUser)}
         >
           <AddUserForm
+            user={user}
+            configData={config}
+            configNotifications={configNotifications}
+            configNotificationsBooleans={configNotificationsBooleans}
             openAdd={openAddUser}
             departments={departments}
             positions={positions}

@@ -271,6 +271,17 @@ router.get("/notifications", async (req, res) => {
   }
 });
 
+// GET NOTIFICATIONS BOOLEANS CONFIGS
+router.get("/notificationsBooleans", async (req, res) => {
+  try {
+    const config = await Config.findOne();
+    const sidebarConfig = config ? config.notificationsBooleans : null;
+    res.status(200).json(sidebarConfig);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // NOTIFICATIONS
 router.put("/notifications", async (req, res) => {
   try {

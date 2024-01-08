@@ -16,9 +16,6 @@ const initSocket = (server) => {
   io.on("connection", (socket) => {
     // console.log(`Socket connected: ${socket.id}`);
     socket.on("userId", (userId) => {
-      // console.log(`User connected: ${userId}`);
-      // console.log("userSocketMap:", userSocketMap);
-
       userSocketMap[userId] = socket.id;
     });
 
@@ -26,13 +23,62 @@ const initSocket = (server) => {
       console.log("\nWebsocket Test OK!\n");
     });
 
+    socket.on("whenUserIsCreated", async (data) => {
+      try {
+        const usersToNotify = await Promise.all(
+          data.list.map(async (role) => {
+            if (role.name.startsWith("Gerente")) {
+              return await Manager.findOne({ "role.name": role.name });
+            } else {
+              return await User.findOne({ "role.name": role.name });
+            }
+          })
+        );
+
+        for (const user of usersToNotify) {
+          if (!user) {
+            continue;
+          }
+
+          const newNotification = {
+            id: Date.now(),
+            type: "Novo Usuário",
+            noteBody: `Usuário ${data.createdUser} criado por ${data.sender} em ${data.date}.`,
+            sender: data.sender,
+            status: "Não Lida",
+          };
+
+          let updatedUser;
+
+          if (user instanceof User) {
+            await User.updateOne(
+              { _id: user._id },
+              { $set: { [`notifications.${Date.now()}`]: newNotification } }
+            );
+            updatedUser = await User.findById(user._id);
+          } else if (user instanceof Manager) {
+            await Manager.updateOne(
+              { _id: user._id },
+              { $set: { [`notifications.${Date.now()}`]: newNotification } }
+            );
+            updatedUser = await Manager.findById(user._id);
+          }
+
+          const receiverSocketId = userSocketMap[user._id];
+          if (receiverSocketId) {
+            io.to(receiverSocketId).emit("notificationsUpdate", {
+              notifications: updatedUser.notifications,
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error processing whenUserIsCreated:", error);
+      }
+    });
+
     socket.on("requestApproval", async (data) => {
       try {
-        // Obtém o ID do socket do usuário receptor
         const receiverSocketId = userSocketMap[data.receiver.id];
-
-        // console.log("data.receiver.id:", data.receiver.id); // Adicione este log para depuração
-        // console.log("receiverSocketId:", receiverSocketId); // Adicione este log para depuração
 
         const newNotification = {
           id: Date.now(),
@@ -41,21 +87,21 @@ const initSocket = (server) => {
           sender: data.sender.name,
           status: "Não Lida",
         };
-        
+
         // Sempre salve a notificação
         await Manager.updateOne(
           { _id: data.receiver.id },
           { $set: { [`notifications.${Date.now()}`]: newNotification } }
         );
-        
+
         const updatedReceiver = await Manager.findById(data.receiver.id);
-        
+
         if (receiverSocketId) {
           // Emita o evento apenas para o socket do receptor específico
           io.to(receiverSocketId).emit("notificationsUpdate", {
             notifications: updatedReceiver.notifications,
           });
-        }         
+        }
       } catch (error) {
         console.error("Error processing requestApproval:", error);
       }
