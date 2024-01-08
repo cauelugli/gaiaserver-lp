@@ -93,7 +93,7 @@ export default function AddServicePlanForm({
             />
           </Grid>
           <Grid item>
-            <Typography>Valor</Typography>
+            <Typography>Valor Mensal</Typography>
             <TextField
               type="number"
               size="small"
