@@ -127,18 +127,20 @@ router.post("/", async (req, res) => {
       }
 
       // UPDATING MANAGER, IF SELECTED
-      updatedManager = await Manager.findOneAndUpdate(
-        { _id: req.body.manager._id },
-        {
-          $set: {
-            "department.id": savedDepartment._id,
-            "department.name": savedDepartment.name,
-            "department.phone": savedDepartment.phone,
-            "department.email": savedDepartment.email,
-            "department.color": savedDepartment.color,
-          },
-        }
-      );
+      if (req.body.manager) {
+        updatedManager = await Manager.findOneAndUpdate(
+          { _id: req.body.manager._id },
+          {
+            $set: {
+              "department.id": savedDepartment._id,
+              "department.name": savedDepartment.name,
+              "department.phone": savedDepartment.phone,
+              "department.email": savedDepartment.email,
+              "department.color": savedDepartment.color,
+            },
+          }
+        );
+      }
       res.status(200).json({ savedDepartment, updatedMembers, updatedManager });
     } catch (err) {
       console.log(err);
