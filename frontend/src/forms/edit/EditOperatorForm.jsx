@@ -111,13 +111,11 @@ const EditOperatorForm = ({
       <DialogTitle>
         {option === "operator" && (
           <Typography variant="h6">
-            {" "}
             Editando Operador - {selectedOperator.name}
           </Typography>
         )}
         {option === "password" && (
           <Typography variant="h6">
-            {" "}
             Alterar Senha - {selectedOperator.name}
           </Typography>
         )}
@@ -165,6 +163,13 @@ const EditOperatorForm = ({
                     value={role}
                     size="small"
                     sx={{ width: 245 }}
+                    renderValue={(selected) => {
+                      if (selected.length === 0) {
+                        return <Typography>{selectedOperator.role.name}</Typography>;
+                      }
+    
+                      return selected.name;
+                    }}
                   >
                     {roles.map((item) => (
                       <MenuItem value={item} key={item.id}>

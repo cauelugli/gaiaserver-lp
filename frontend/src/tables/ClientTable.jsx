@@ -67,15 +67,6 @@ export default function ClientTable({
     fetchData();
   }, [refreshData]);
 
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await api.get("/clients");
-  //     setClients(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
   const handleOpenDetail = (client) => {
     setOpenDetail(!openDetail);
     setSelectedClient(client.name);

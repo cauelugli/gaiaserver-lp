@@ -174,216 +174,38 @@ export default function RoleTable({
                   .includes(searchValue.toLowerCase())
               )
               .map((row) => (
-                <React.Fragment key={row._id}>
-                  <TableRow
-                    sx={{
-                      cursor: "pointer",
-                      backgroundColor:
-                        selectedRole.name === row.name && openDetail
-                          ? "#eee"
-                          : "none",
-                      "&:hover": { backgroundColor: "#eee " },
-                    }}
-                    onClick={() => handleOpenDetail(row)}
-                  >
-                    <TableCell
-                      onClick={() => handleOpenDetail(row)}
-                      cursor="pointer"
+                <TableRow
+                  key={row._id}
+                  sx={{ "&:hover": { backgroundColor: "#eee " } }}
+                  onClick={() => handleOpenDetail(row)}
+                >
+                  <TableCell onClick={() => handleOpenDetail(row)}>
+                    <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
+                  </TableCell>
+                  <TableCell align="center" sx={{ py: 0 }}>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
                     >
-                      <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
-                    </TableCell>
-                    <TableCell align="center" sx={{ py: 0 }}>
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                      >
-                        <IconButton>
-                          <ModeEditIcon
-                            cursor="pointer"
-                            onClick={() => handleOpenEdit(row)}
-                            sx={{ color: "#333" }}
-                          />
-                        </IconButton>
-                        <IconButton>
-                          <DeleteIcon
-                            cursor="pointer"
-                            onClick={() => handleConfirmDelete(row)}
-                            sx={{ color: "#ff4444" }}
-                          />
-                        </IconButton>
-                      </Grid>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell
-                      colSpan={6}
-                      style={{ paddingBottom: 0, paddingTop: 0 }}
-                    >
-                      <Collapse
-                        in={openDetail && selectedRole.name === row.name}
-                        timeout="auto"
-                        unmountOnExit
-                      >
-                        <Box sx={{ my: 4, px: 2 }}>
-                          <Typography
-                            variant="h6"
-                            sx={{ fontSize: 18, fontWeight: "bold", my: 2 }}
-                          >
-                            Informações
-                          </Typography>
-                          <Grid
-                            container
-                            direction="row"
-                            justifyContent="space-around"
-                          >
-                            <Grid item>
-                              <Table size="small">
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Nome
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        E-mail
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Telefone
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Departamento
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  <TableRow>
-                                    <TableCell>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {row.name}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {row.email}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {row.phone}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {row.department ? (
-                                          <Grid container direction="row">
-                                            <Paper
-                                              elevation={0}
-                                              sx={{
-                                                mr: 1,
-                                                mt: 0.5,
-                                                width: 15,
-                                                height: 15,
-                                                borderRadius: 50,
-                                                backgroundColor:
-                                                  row.department.color,
-                                              }}
-                                            >
-                                              {" "}
-                                            </Paper>
-                                            <Typography>
-                                              {row.department.name}
-                                            </Typography>
-                                          </Grid>
-                                        ) : (
-                                          "-"
-                                        )}
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableBody>
-                              </Table>
-                              <Table size="small" sx={{ mt: 4 }}>
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Cargo
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Nome de Operador
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Perfil de Acesso
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  <TableRow>
-                                    <TableCell align="center">
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        Gerente
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {row.username ? row.username : "-"}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {row.role ? row.role.name : "-"}
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableBody>
-                              </Table>
-                            </Grid>
-                            <Box sx={{ mt: 3, ml: "90%" }}>
-                              <ModeEditIcon
-                                cursor="pointer"
-                                onClick={() => handleOpenEdit(row)}
-                                sx={{ color: "grey", mr: 2 }}
-                              />
-                              <DeleteIcon
-                                cursor="pointer"
-                                onClick={() => handleConfirmDelete(row)}
-                                sx={{ color: "#ff4444" }}
-                              />
-                            </Box>
-                          </Grid>
-                        </Box>
-                      </Collapse>
-                    </TableCell>
-                  </TableRow>
-                </React.Fragment>
+                      <IconButton>
+                        <ModeEditIcon
+                          cursor="pointer"
+                          onClick={() => handleOpenEdit(row)}
+                          sx={{ color: "#333" }}
+                        />
+                      </IconButton>
+                      <IconButton>
+                        <DeleteIcon
+                          cursor="pointer"
+                          onClick={() => handleConfirmDelete(row)}
+                          sx={{ color: "#ff4444" }}
+                        />
+                      </IconButton>
+                    </Grid>
+                  </TableCell>
+                </TableRow>
               ))
               .slice(startIndex, endIndex)}
           </Table>

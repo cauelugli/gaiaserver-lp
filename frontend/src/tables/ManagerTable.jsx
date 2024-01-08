@@ -182,16 +182,12 @@ export default function ManagerTable({
               .map((row) => (
                 <TableRow
                   key={row._id}
-                  sx={{
-                    cursor: "pointer",
-                    "&:hover": { backgroundColor: "#eee " },
-                  }}
+                  sx={{ "&:hover": { backgroundColor: "#eee " } }}
                 >
-                  <TableCell cursor="pointer" sx={{ py: 0 }}>
+                  <TableCell sx={{ py: 0 }}>
                     <Avatar
                       src={`http://localhost:3000/static/${row.image}`}
                       alt={row.name[0]}
-                      cursor="pointer"
                       style={{
                         marginLeft: 10,
                         width: 42,
@@ -199,16 +195,16 @@ export default function ManagerTable({
                       }}
                     />
                   </TableCell>
-                  <TableCell cursor="pointer">
+                  <TableCell>
                     <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
                   </TableCell>
-                  <TableCell cursor="pointer" align="center">
+                  <TableCell align="center">
                     <Typography sx={{ fontSize: 13 }}>{row.email}</Typography>
                   </TableCell>
-                  <TableCell cursor="pointer" align="center">
+                  <TableCell align="center">
                     <Typography sx={{ fontSize: 13 }}>{row.phone}</Typography>
                   </TableCell>
-                  <TableCell cursor="pointer" align="center">
+                  <TableCell align="center">
                     <Typography sx={{ fontSize: 13 }}>
                       {row.department ? (
                         <Grid container direction="row" justifyContent="center">

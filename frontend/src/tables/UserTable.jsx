@@ -206,17 +206,11 @@ export default function UserTable({
 
               .map((row) => (
                 <React.Fragment key={row._id}>
-                  <TableRow
-                    sx={{
-                      cursor: "pointer",
-                      "&:hover": { backgroundColor: "#eee " },
-                    }}
-                  >
-                    <TableCell cursor="pointer" sx={{ py: 0 }}>
+                  <TableRow sx={{ "&:hover": { backgroundColor: "#eee " } }}>
+                    <TableCell sx={{ py: 0 }}>
                       <Avatar
                         src={`http://localhost:3000/static/${row.image}`}
                         alt={row.name[0]}
-                        cursor="pointer"
                         style={{
                           marginLeft: 10,
                           width: 42,
@@ -224,21 +218,21 @@ export default function UserTable({
                         }}
                       />
                     </TableCell>
-                    <TableCell cursor="pointer">
+                    <TableCell>
                       <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
                     </TableCell>
-                    <TableCell cursor="pointer" align="center">
+                    <TableCell align="center">
                       <Typography sx={{ fontSize: 13 }}>{row.email}</Typography>
                     </TableCell>
-                    <TableCell cursor="pointer" align="center">
+                    <TableCell align="center">
                       <Typography sx={{ fontSize: 13 }}>{row.phone}</Typography>
                     </TableCell>
-                    <TableCell cursor="pointer" align="center">
+                    <TableCell align="center">
                       <Typography sx={{ fontSize: 13 }}>
                         {row.position}
                       </Typography>
                     </TableCell>
-                    <TableCell cursor="pointer" align="center">
+                    <TableCell align="center">
                       <Typography sx={{ fontSize: 13 }}>
                         {row.department ? (
                           <Grid

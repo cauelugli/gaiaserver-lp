@@ -207,8 +207,8 @@ const AddJobForm = ({
               <Select
                 onChange={(e) => handleCustomerTypeChange(e.target.value)}
                 value={customerType}
-                displayEmpty
                 required
+                displayEmpty
                 renderValue={(selected) => {
                   if (selected.length === 0) {
                     return <Typography>Tipo de Cliente</Typography>;

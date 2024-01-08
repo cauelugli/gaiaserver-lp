@@ -220,12 +220,15 @@ export default function CustomerTable({
                     >
                       <Avatar
                         src={`http://localhost:3000/static/${customer.image}`}
-                        alt="L"
+                        alt={
+                          <Typography sx={{ fontSize: 12, my: "auto" }}>
+                            Logotipo da Empresa
+                          </Typography>
+                        }
                         cursor="pointer"
                         style={{
                           borderRadius: 1,
                           width: "auto",
-                          height: "auto",
                           margin: "auto",
                           opacity:
                             openDetail &&

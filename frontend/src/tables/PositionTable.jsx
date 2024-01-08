@@ -162,12 +162,9 @@ export default function PositionTable({
                   <>
                     <TableRow
                       key={position._id}
-                      sx={{
-                        cursor: "pointer",
-                        "&:hover": { backgroundColor: "#eee " },
-                      }}
+                      sx={{"&:hover": { backgroundColor: "#eee " }}}
                     >
-                      <TableCell cursor="pointer">
+                      <TableCell>
                         <Typography sx={{ fontSize: 13 }}>
                           {position.name}
                         </Typography>
