@@ -33,9 +33,7 @@ export default function Requests({ onClose }) {
         const config = await api.get("/config");
         setConfigData(config.data[0].requests);
         setRequestsNeedApproval(config.data[0].requests.requestsNeedApproval);
-        setRequestsCanBeDeleted(
-          config.data[0].requests.canBeDeleted
-        );
+        setRequestsCanBeDeleted(config.data[0].requests.canBeDeleted);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -73,7 +71,11 @@ export default function Requests({ onClose }) {
 
   return (
     <form onSubmit={handleChangeRequestConfig}>
-      <DialogTitle>Configurações de Pedidos</DialogTitle>
+      <DialogTitle
+        sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
+      >
+        Configurações de Pedidos
+      </DialogTitle>
       {configData.length !== 0 && (
         <>
           <DialogContent>

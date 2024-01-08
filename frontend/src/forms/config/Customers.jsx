@@ -71,7 +71,11 @@ export default function Customers({ onClose }) {
 
   return (
     <form onSubmit={handleChangeCustomersConfig}>
-      <DialogTitle>Configurações de Clientes</DialogTitle>
+      <DialogTitle
+        sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
+      >
+        Configurações de Clientes
+      </DialogTitle>
       {configData.length !== 0 && (
         <>
           <DialogContent>
@@ -90,8 +94,8 @@ export default function Customers({ onClose }) {
                   <Tooltip
                     title={
                       <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", os Clientes poderão
-                        ser deletados DEFINITIVAMENTE. A opção padrão é "Sim".
+                        Se a opção marcada for "Sim", os Clientes poderão ser
+                        deletados DEFINITIVAMENTE. A opção padrão é "Sim".
                       </Typography>
                     }
                   >
@@ -131,7 +135,6 @@ export default function Customers({ onClose }) {
                   </RadioGroup>
                 </Grid>
               </Grid>
-              
             </Grid>
           </DialogContent>
           <DialogActions>

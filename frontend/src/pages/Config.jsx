@@ -31,6 +31,7 @@ import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
 import ViewSidebarIcon from "@mui/icons-material/ViewSidebar";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import TableViewIcon from '@mui/icons-material/TableView';
 
 import CustomersModal from "../forms/config/Customers";
 import UsersModal from "../forms/config/Users";
@@ -45,6 +46,7 @@ import CustomizationModal from "../forms/config/Customization";
 import SecurityModal from "../forms/config/Security";
 import SideBarModal from "../forms/config/SideBar";
 import NotificationsModal from "../forms/config/Notifications";
+import TablesModal from "../forms/config/Tables";
 
 const options = [
   {
@@ -119,6 +121,11 @@ const options = [
     icon: <NotificationsIcon sx={{ fontSize: 48 }} />,
     text: "Notificações",
     modal: <NotificationsModal />,
+  },
+  {
+    icon: <TableViewIcon sx={{ fontSize: 48 }} />,
+    text: "Tabelas",
+    modal: <TablesModal />,
   },
 ];
 

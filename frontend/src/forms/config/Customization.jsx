@@ -102,7 +102,11 @@ export default function Customization({ onClose }) {
 
   return (
     <form onSubmit={handleChangeCustomizationConfig}>
-      <DialogTitle>Configurações de Personalização</DialogTitle>
+      <DialogTitle
+        sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
+      >
+        Configurações de Personalização
+      </DialogTitle>
       {configData.length !== 0 && (
         <>
           <DialogContent>
@@ -289,7 +293,12 @@ export default function Customization({ onClose }) {
                   {logo && !newLogo && (
                     <img
                       src={`http://localhost:3000/static/${logo}`}
-                      style={{ width: "auto", height: 90, marginLeft: 10, backgroundColor:"#ccc" }}
+                      style={{
+                        width: "auto",
+                        height: 90,
+                        marginLeft: 10,
+                        backgroundColor: "#ccc",
+                      }}
                     />
                   )}
                   <Grid item>
@@ -306,7 +315,7 @@ export default function Customization({ onClose }) {
                           style={{
                             width: "auto",
                             height: 90,
-                            backgroundColor:"#ccc"
+                            backgroundColor: "#ccc",
                           }}
                         />
                         <FormHelperText>Novo Logotipo</FormHelperText>

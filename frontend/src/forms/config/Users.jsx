@@ -71,7 +71,11 @@ export default function Users({ onClose }) {
 
   return (
     <form onSubmit={handleChangeRequestConfig}>
-      <DialogTitle>Configurações de Colaboradores</DialogTitle>
+      <DialogTitle
+        sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
+      >
+        Configurações de Colaboradores
+      </DialogTitle>
       {configData.length !== 0 && (
         <>
           <DialogContent>
@@ -138,8 +142,8 @@ export default function Users({ onClose }) {
                   <Tooltip
                     title={
                       <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", os Gerentes poderão
-                        ser deletados DEFINITIVAMENTE. A opção padrão é "Sim".
+                        Se a opção marcada for "Sim", os Gerentes poderão ser
+                        deletados DEFINITIVAMENTE. A opção padrão é "Sim".
                       </Typography>
                     }
                   >

@@ -68,7 +68,11 @@ export default function Security({ onClose }) {
 
   return (
     <form onSubmit={handleChangeSecurityConfig}>
-      <DialogTitle>Configurações de Segurança</DialogTitle>
+      <DialogTitle
+        sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
+      >
+        Configurações de Segurança
+      </DialogTitle>
       {configData.length !== 0 && (
         <>
           <DialogContent>
@@ -90,10 +94,11 @@ export default function Security({ onClose }) {
                         Para a opção "Baixo", não há exigência de complexidade,
                         exemplo: "senha123". Para a opção "Alto" é exigido no
                         mínimo 10 caracteres, incluindo letras maiúsculas,
-                        minúsculas, números e caracteres especiais, exemplo: "SeNh@123#CjM". Para a opção
-                        "Extremo" é exigido no mínimo 16 caracteres,
-                        com combinação robusta de letras maiúsculas, minúsculas,
-                        números, caracteres especiais, exemplo: "J#rL$bm*9W!p2Qz". A opção padrão é "Baixo".
+                        minúsculas, números e caracteres especiais, exemplo:
+                        "SeNh@123#CjM". Para a opção "Extremo" é exigido no
+                        mínimo 16 caracteres, com combinação robusta de letras
+                        maiúsculas, minúsculas, números, caracteres especiais,
+                        exemplo: "J#rL$bm*9W!p2Qz". A opção padrão é "Baixo".
                       </Typography>
                     }
                   >

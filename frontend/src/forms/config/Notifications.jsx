@@ -119,9 +119,11 @@ export default function Notifications({ onClose }) {
 
   return (
     <form onSubmit={handleChangeNotificationsConfig}>
-      <Grid container direction="row">
-        <DialogTitle>Configurações de Notificações</DialogTitle>
-      </Grid>
+      <DialogTitle
+        sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
+      >
+        Configurações de Notificações
+      </DialogTitle>
 
       <Grid container direction="row" sx={{ mb: -2 }}>
         <Grid item sx={{ ml: 45 }}>

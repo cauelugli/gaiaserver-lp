@@ -308,5 +308,34 @@ router.put("/notifications", async (req, res) => {
   }
 });
 
+// GET TABLES CONFIGS
+router.get("/tables", async (req, res) => {
+  try {
+    const config = await Config.findOne();
+    const sidebarConfig = config ? config.tables : null;
+    res.status(200).json(sidebarConfig);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// TABLES
+router.put("/tables", async (req, res) => {
+  try {
+    const payload = req.body;
+    const config = await Config.findOneAndUpdate(
+      {},
+      { tables: payload },
+      { new: true }
+    );
+
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
 
 module.exports = router;

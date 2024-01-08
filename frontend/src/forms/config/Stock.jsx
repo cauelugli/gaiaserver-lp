@@ -93,7 +93,11 @@ export default function Departments({ onClose }) {
 
   return (
     <form onSubmit={handleChangeStockConfig}>
-      <DialogTitle>Configurações de Estoque</DialogTitle>
+      <DialogTitle
+        sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
+      >
+        Configurações de Estoque
+      </DialogTitle>
       {configData.length !== 0 && (
         <>
           <DialogContent>

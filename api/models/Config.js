@@ -153,6 +153,45 @@ const configSchema = new Schema({
       default: false,
     },
   },
+
+  tables: {
+    customerCustomer: {
+      type: Boolean,
+      default: true,
+    },
+    customerClient: {
+      type: Boolean,
+      default: true,
+    },
+    departmentInternal: {
+      type: Boolean,
+      default: true,
+    },
+    requestJob: {
+      type: Boolean,
+      default: true,
+    },
+    requestSale: {
+      type: Boolean,
+      default: true,
+    },
+    serviceConsulting: {
+      type: Boolean,
+      default: true,
+    },
+    servicePlan: {
+      type: Boolean,
+      default: true,
+    },
+    stockProduct: {
+      type: Boolean,
+      default: true,
+    },
+    stockItems: {
+      type: Boolean,
+      default: true,
+    },
+  },
 });
 
 const Config = mongoose.model("Config", configSchema);

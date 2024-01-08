@@ -77,7 +77,11 @@ export default function Departments({ onClose }) {
 
   return (
     <form onSubmit={handleChangeDepartmentConfig}>
-      <DialogTitle>Configurações de Departamentos</DialogTitle>
+      <DialogTitle
+        sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
+      >
+        Configurações de Departamentos
+      </DialogTitle>
       {configData.length !== 0 && (
         <>
           <DialogContent>

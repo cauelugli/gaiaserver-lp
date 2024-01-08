@@ -1,0 +1,109 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import React from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControlLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import TablesConfigTransferList from "../../components/small/TablesConfigTransferList";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
+export default function Tables({ onClose }) {
+  const [configData, setConfigData] = React.useState([]);
+  const [tableStates, setTableStates] = React.useState({}); // State to store table states
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const config = await api.get("/config");
+        setConfigData(config.data[0].tables);
+        setTableStates(config.data[0].tables); // Initialize table states
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleChangeTablesConfig = async (e) => {
+    e.preventDefault();
+    try {
+      const payload = Object.entries(tableStates).reduce(
+        (acc, [tableName, tableState]) => {
+          acc[tableName] = tableState;
+          return acc;
+        },
+        {}
+      );
+
+      const res = await api.put("/config/tables", payload);
+
+      if (res.data) {
+        toast.success("Configuração Alterada!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
+      onClose();
+    } catch (err) {
+      console.log("erro", err);
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+    }
+  };
+
+  return (
+    <form onSubmit={handleChangeTablesConfig}>
+      <DialogTitle
+        sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
+      >
+        Configurações de Tabelas
+      </DialogTitle>
+      {configData.length !== 0 && (
+        <>
+          <DialogContent>
+            <Grid
+              container
+              sx={{ mt: 2 }}
+              direction="column"
+              justifyContent="center"
+              alignItems="flex-start"
+            >
+              <TablesConfigTransferList
+                configData={configData}
+                tableStates={tableStates}
+                setTableStates={setTableStates}
+              />
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button type="submit" variant="contained" color="success">
+              OK
+            </Button>
+          </DialogActions>
+        </>
+      )}
+    </form>
+  );
+}
