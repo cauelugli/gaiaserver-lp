@@ -4,13 +4,7 @@ import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import {
-  Box,
-  Grid,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, Tab, Tabs, Typography } from "@mui/material";
 
 import QuoteTable from "../tables/QuoteTable";
 
@@ -36,9 +30,10 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Quotes({ user }) {
+export default function Quotes({ user, configData }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
+  // const [config, setConfig] = React.useState([]);
 
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("number");
@@ -143,10 +138,12 @@ export default function Quotes({ user }) {
             />
             <QuoteTable
               quotes={quotes.filter((quote) => quote.type === "job")}
+              config={configData}
               type={"job"}
               searchOption={searchOption}
               searchValue={searchValue}
-              // fetchData={fetchData}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
             />
           </>
         )}
@@ -169,9 +166,11 @@ export default function Quotes({ user }) {
             <QuoteTable
               quotes={quotes.filter((quote) => quote.type === "sale")}
               type={"sale"}
+              config={configData}
               searchOption={searchOption}
               searchValue={searchValue}
-              // fetchData={fetchData}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
             />
           </>
         )}

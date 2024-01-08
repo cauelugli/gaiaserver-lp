@@ -145,6 +145,34 @@ router.put("/stock", async (req, res) => {
   }
 });
 
+// GET QUOTES CONFIGS
+router.get("/quotes", async (req, res) => {
+  try {
+    const config = await Config.findOne();
+    const requestsConfig = config ? config.quotes : null;
+    res.status(200).json(requestsConfig);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// QUOTES
+router.put("/quotes", async (req, res) => {
+  try {
+    const { canBeDeleted } = req.body;
+
+    const config = await Config.findOne();
+
+    config.quotes.canBeDeleted = canBeDeleted;
+
+    await config.save();
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // CUSTOMIZATION
 router.put("/customization", async (req, res) => {
   try {
@@ -335,7 +363,5 @@ router.put("/tables", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-
 
 module.exports = router;

@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import axios from "axios";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
+import { toast } from "react-toastify";
 
 import {
   Box,
@@ -25,12 +27,20 @@ import {
 } from "@mui/material";
 
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 export default function QuoteTable({
   type,
   searchValue,
   searchOption,
   quotes,
+  config,
+  refreshData,
+  setRefreshData,
 }) {
   let tableHeaderRow;
 
@@ -177,6 +187,28 @@ export default function QuoteTable({
     }
   };
 
+  const handleDelete = async (quote) => {
+    try {
+      const res = await api.delete(`/quotes/${quote._id}`);
+      if (res.data) {
+        toast.success("Orçamento Deletado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
+      setRefreshData(!refreshData);
+    } catch (err) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+    }
+  };
+
   return (
     <Box sx={{ minWidth: "1250px" }}>
       <TableContainer component={Paper}>
@@ -295,6 +327,17 @@ export default function QuoteTable({
                             sx={{ color: "#444" }}
                           />
                         </IconButton>
+                        {config.canBeDeleted && (
+                          <IconButton>
+                            <DeleteIcon
+                              onClick={() => handleDelete(quote)}
+                              size="small"
+                              variant="contained"
+                              color="error"
+                              cursor="pointer"
+                            />
+                          </IconButton>
+                        )}
                       </Grid>
                     </TableCell>
                   </TableRow>
@@ -332,7 +375,7 @@ export default function QuoteTable({
             </Worker>
           </Box>
         </DialogContent>
-        <DialogActions sx={{ my: 1, mr:2 }}>
+        <DialogActions sx={{ my: 1, mr: 2 }}>
           <Button
             onClick={handlePrint}
             color="primary"

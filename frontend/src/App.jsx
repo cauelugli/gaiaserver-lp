@@ -257,7 +257,7 @@ export default function App() {
                   element={
                     isAuthenticated(login, userData) &&
                     hasPermission(userData, configData, "stock") ? (
-                      <Stock user={userData} configTables={configTables}/>
+                      <Stock user={userData} configTables={configTables} />
                     ) : isAuthenticated(login, userData) ? (
                       <Typography sx={{ m: 2, fontSize: 16 }}>
                         Seu usuário não possui autorização à página.
@@ -287,7 +287,7 @@ export default function App() {
                   element={
                     isAuthenticated(login, userData) &&
                     hasPermission(userData, configData, "quotes") ? (
-                      <Quotes user={userData} />
+                      <Quotes user={userData} configData={configData.quotes} />
                     ) : isAuthenticated(login, userData) ? (
                       <Typography sx={{ m: 2, fontSize: 16 }}>
                         Seu usuário não possui autorização à página.

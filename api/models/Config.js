@@ -46,8 +46,9 @@ const configSchema = new Schema({
   },
 
   quotes: {
-    canDelete: {
-      type: Array,
+    canBeDeleted: {
+      type: Boolean,
+      default: false
     },
   },
 
