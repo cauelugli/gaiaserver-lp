@@ -18,7 +18,6 @@ saleSchema = new mongoose.Schema({
   },
   manager: {
     type: Object,
-    required: true,
   },
   department: {
     type: Object,

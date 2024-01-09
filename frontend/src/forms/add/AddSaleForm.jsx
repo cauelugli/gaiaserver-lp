@@ -124,7 +124,7 @@ const AddSaleForm = ({
           color: department.color,
         },
         seller,
-        manager: department.manager,
+        manager: department.manager || "",
         status: config.requestsNeedApproval ? "Aberto" : "Aprovado",
         price: materialsCost,
         items: materials,
