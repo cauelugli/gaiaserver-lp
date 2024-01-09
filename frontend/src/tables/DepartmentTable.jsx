@@ -18,10 +18,12 @@ import {
   TableSortLabel,
   Grid,
   TablePagination,
+  IconButton,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditDepartmentForm from "../forms/edit/EditDepartmentForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
@@ -39,6 +41,10 @@ export default function DepartmentTable({
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
+  const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
+  const [openDetailManager, setOpenDetailManager] = React.useState(false);
+  const [openDetailMembers, setOpenDetailMembers] = React.useState(false);
+  const [openDetailServices, setOpenDetailServices] = React.useState(false);
   const [selectedDepartment, setSelectedDepartment] = React.useState([]);
   const [hoveredMember, setHoveredMember] = React.useState(null);
   const [selectedItem, setSelectedItem] = React.useState("");
@@ -271,312 +277,395 @@ export default function DepartmentTable({
                         unmountOnExit
                       >
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography
-                            variant="h6"
-                            sx={{ fontSize: 18, fontWeight: "bold" }}
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
+                            >
+                              Informações Gerais
+                            </Typography>
+                            <IconButton
+                              onClick={() => setOpenDetailInfo(!openDetailInfo)}
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={openDetailInfo}
+                            timeout="auto"
+                            unmountOnExit
                           >
-                            Geral
-                          </Typography>
-                          <Table size="small">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Nome do Departamento
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Tipo
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Telefone
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    E-mail Principal
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell component="th" scope="row">
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {department.name}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {department.type}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {department.phone}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {department.email}
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
-                        </Box>
-
-                        <Box sx={{ my: 4, px: 6 }}>
-                          <Typography
-                            variant="h6"
-                            sx={{ fontSize: 18, fontWeight: "bold" }}
-                          >
-                            Gerência
-                          </Typography>
-                          <Table size="small">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Nome do Gerente
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    E-mail
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Telefone
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              <TableRow>
-                                {department.manager ? (
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
                                   <TableCell>
-                                    <Grid container direction="row">
-                                      <Grid item>
-                                        <Avatar
-                                          alt="Imagem do Gerente"
-                                          src={
-                                            managers.find(
-                                              (manager) =>
-                                                manager.name ===
-                                                department.manager.name
-                                            )
-                                              ? `http://localhost:3000/static/${
-                                                  managers.find(
-                                                    (manager) =>
-                                                      manager.name ===
-                                                      department.manager.name
-                                                  ).image
-                                                }`
-                                              : ""
-                                          }
-                                          sx={{ width: 32, height: 32, mr: 1 }}
-                                        />
-                                      </Grid>
-                                      <Grid item>
-                                        <Typography
-                                          sx={{ fontSize: 13, mt: 1 }}
-                                        >
-                                          {department.manager &&
-                                            department.manager.name}
-                                        </Typography>
-                                      </Grid>
-                                    </Grid>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Nome do Departamento
+                                    </Typography>
                                   </TableCell>
-                                ) : (
-                                  <TableCell
-                                    onClick={() => handleOpenDetail(department)}
-                                    cursor="pointer"
-                                  />
-                                )}
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {department.manager
-                                      ? department.manager.email
-                                      : "-"}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {department.manager
-                                      ? department.manager.phone
-                                      : "-"}
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Tipo
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Telefone
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      E-mail Principal
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell component="th" scope="row">
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {department.name}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {department.type}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {department.phone}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {department.email}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Collapse>
                         </Box>
 
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography
-                            variant="h6"
-                            sx={{ fontSize: 18, fontWeight: "bold" }}
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
+                            >
+                              Gerência
+                            </Typography>
+                            <IconButton
+                              onClick={() =>
+                                setOpenDetailManager(!openDetailManager)
+                              }
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={openDetailManager}
+                            timeout="auto"
+                            unmountOnExit
                           >
-                            Membros ({department.members.length})
-                          </Typography>
-                          <Table size="small">
-                            <TableBody>
-                              <Grid container diretion="row">
-                                {department.members.map((user) => (
-                                  <TableCell
-                                    key={user.id}
-                                    style={{ position: "relative" }}
-                                  >
-                                    <Chip
-                                      sx={{ mx: 0 }}
-                                      onMouseEnter={() =>
-                                        setHoveredMember(user)
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Nome do Gerente
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      E-mail
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Telefone
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  {department.manager ? (
+                                    <TableCell>
+                                      <Grid container direction="row">
+                                        <Grid item>
+                                          <Avatar
+                                            alt="Imagem do Gerente"
+                                            src={
+                                              managers.find(
+                                                (manager) =>
+                                                  manager.name ===
+                                                  department.manager.name
+                                              )
+                                                ? `http://localhost:3000/static/${
+                                                    managers.find(
+                                                      (manager) =>
+                                                        manager.name ===
+                                                        department.manager.name
+                                                    ).image
+                                                  }`
+                                                : ""
+                                            }
+                                            sx={{
+                                              width: 32,
+                                              height: 32,
+                                              mr: 1,
+                                            }}
+                                          />
+                                        </Grid>
+                                        <Grid item>
+                                          <Typography
+                                            sx={{ fontSize: 13, mt: 1 }}
+                                          >
+                                            {department.manager &&
+                                              department.manager.name}
+                                          </Typography>
+                                        </Grid>
+                                      </Grid>
+                                    </TableCell>
+                                  ) : (
+                                    <TableCell
+                                      onClick={() =>
+                                        handleOpenDetail(department)
                                       }
-                                      onMouseLeave={() =>
-                                        setHoveredMember(null)
-                                      }
-                                      avatar={
-                                        <Avatar
-                                          alt="Imagem do Colaborador"
-                                          src={`http://localhost:3000/static/${user.image}`}
-                                          sx={{
-                                            width: 32,
-                                            height: 32,
-                                            mr: 1,
-                                          }}
-                                        />
-                                      }
-                                      label={
-                                        <Typography
-                                          sx={{
-                                            fontSize: "100%",
-                                          }}
-                                        >
-                                          {user.name}
-                                        </Typography>
-                                      }
+                                      cursor="pointer"
                                     />
-                                    {hoveredMember === user && (
-                                      <Paper
+                                  )}
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {department.manager
+                                        ? department.manager.email
+                                        : "-"}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {department.manager
+                                        ? department.manager.phone
+                                        : "-"}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Collapse>
+                        </Box>
+
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
+                            >
+                              Membros
+                            </Typography>
+                            <IconButton
+                              onClick={() =>
+                                setOpenDetailMembers(!openDetailMembers)
+                              }
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={openDetailMembers}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Table size="small">
+                              <TableBody>
+                                <Grid container diretion="row">
+                                  {department.members.map((user) => (
+                                    <TableCell
+                                      key={user.id}
+                                      style={{ position: "relative" }}
+                                    >
+                                      <Chip
+                                        sx={{ mx: 0 }}
                                         onMouseEnter={() =>
                                           setHoveredMember(user)
                                         }
                                         onMouseLeave={() =>
                                           setHoveredMember(null)
                                         }
-                                        style={{
-                                          position: "absolute",
-                                          width: 200,
-                                          height: 220,
-                                          boxShadow:
-                                            "0 2px 4px rgba(0, 0, 0, 0.2)",
-                                          bottom: -50,
-                                          left: "14%",
-                                          zIndex: 999,
-                                          border: "2px solid #444",
-                                          borderRadius: 15,
-                                        }}
-                                      >
-                                        <Grid
-                                          container
-                                          direction="column"
-                                          alignItems="center"
-                                          justifyContent="center"
+                                        avatar={
+                                          <Avatar
+                                            alt="Imagem do Colaborador"
+                                            src={`http://localhost:3000/static/${user.image}`}
+                                            sx={{
+                                              width: 32,
+                                              height: 32,
+                                              mr: 1,
+                                            }}
+                                          />
+                                        }
+                                        label={
+                                          <Typography
+                                            sx={{
+                                              fontSize: "100%",
+                                            }}
+                                          >
+                                            {user.name}
+                                          </Typography>
+                                        }
+                                      />
+                                      {hoveredMember === user && (
+                                        <Paper
+                                          onMouseEnter={() =>
+                                            setHoveredMember(user)
+                                          }
+                                          onMouseLeave={() =>
+                                            setHoveredMember(null)
+                                          }
+                                          style={{
+                                            position: "absolute",
+                                            width: 200,
+                                            height: 220,
+                                            boxShadow:
+                                              "0 2px 4px rgba(0, 0, 0, 0.2)",
+                                            bottom: -50,
+                                            left: "14%",
+                                            zIndex: 999,
+                                            border: "2px solid #444",
+                                            borderRadius: 15,
+                                          }}
                                         >
-                                          <Grid item sx={{ mt: 1 }}>
-                                            <Typography>{user.name}</Typography>
-                                          </Grid>
+                                          <Grid
+                                            container
+                                            direction="column"
+                                            alignItems="center"
+                                            justifyContent="center"
+                                          >
+                                            <Grid item sx={{ mt: 1 }}>
+                                              <Typography>
+                                                {user.name}
+                                              </Typography>
+                                            </Grid>
 
-                                          <Grid item sx={{ my: 1 }}>
-                                            <Avatar
-                                              alt="Imagem do Colaborador"
-                                              src={`http://localhost:3000/static/${user.image}`}
-                                              sx={{
-                                                width: 120,
-                                                height: 120,
-                                              }}
-                                            />
+                                            <Grid item sx={{ my: 1 }}>
+                                              <Avatar
+                                                alt="Imagem do Colaborador"
+                                                src={`http://localhost:3000/static/${user.image}`}
+                                                sx={{
+                                                  width: 120,
+                                                  height: 120,
+                                                }}
+                                              />
+                                            </Grid>
+                                            <Grid item sx={{ my: 0.5 }}>
+                                              <Typography
+                                                sx={{
+                                                  fontSize: 10,
+                                                  fontWeight: "bold",
+                                                }}
+                                              >
+                                                {user.position
+                                                  ? user.position.toUpperCase()
+                                                  : "-"}
+                                              </Typography>
+                                            </Grid>
+                                            <Grid item>
+                                              <Typography sx={{ fontSize: 10 }}>
+                                                {user.email}
+                                              </Typography>
+                                            </Grid>
                                           </Grid>
-                                          <Grid item sx={{ my: 0.5 }}>
-                                            <Typography
-                                              sx={{
-                                                fontSize: 10,
-                                                fontWeight: "bold",
-                                              }}
-                                            >
-                                              {user.position
-                                                ? user.position.toUpperCase()
-                                                : "-"}
-                                            </Typography>
-                                          </Grid>
-                                          <Grid item>
-                                            <Typography sx={{ fontSize: 10 }}>
-                                              {user.email}
-                                            </Typography>
-                                          </Grid>
-                                        </Grid>
-                                      </Paper>
-                                    )}
-                                  </TableCell>
-                                ))}
-                              </Grid>
-                            </TableBody>
-                          </Table>
+                                        </Paper>
+                                      )}
+                                    </TableCell>
+                                  ))}
+                                </Grid>
+                              </TableBody>
+                            </Table>
+                          </Collapse>
                         </Box>
 
                         {department.services.length > 0 && (
                           <Box sx={{ my: 4, px: 6 }}>
-                            <Typography
-                              variant="h6"
-                              sx={{ fontSize: 18, fontWeight: "bold" }}
+                            <Grid container direction="row">
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  fontSize: 18,
+                                  fontWeight: "bold",
+                                  my: "auto",
+                                }}
+                              >
+                                Serviços ({department.services.length})
+                              </Typography>
+                              <IconButton
+                                onClick={() =>
+                                  setOpenDetailServices(!openDetailServices)
+                                }
+                              >
+                                <ExpandMoreIcon />
+                              </IconButton>
+                            </Grid>
+
+                            <Collapse
+                              in={openDetailServices}
+                              timeout="auto"
+                              unmountOnExit
                             >
-                              Serviços ({department.services.length})
-                            </Typography>
-                            <Table size="small">
-                              <TableBody>
-                                <TableRow>
-                                  <TableCell>
-                                    <Typography>
-                                      {department.services.map((service) => (
-                                        <Chip
-                                          sx={{ mx: 1 }}
-                                          size="small"
-                                          key={service.id}
-                                          label={
-                                            <Typography
-                                              sx={{
-                                                fontSize: "100%",
-                                              }}
-                                            >
-                                              {service.name}
-                                            </Typography>
-                                          }
-                                        />
-                                      ))}
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableBody>
-                            </Table>
+                              <Table size="small">
+                                <TableBody>
+                                  <TableRow>
+                                    <TableCell>
+                                      <Typography>
+                                        {department.services.map((service) => (
+                                          <Chip
+                                            sx={{ mx: 1 }}
+                                            size="small"
+                                            key={service.id}
+                                            label={
+                                              <Typography
+                                                sx={{
+                                                  fontSize: "100%",
+                                                }}
+                                              >
+                                                {service.name}
+                                              </Typography>
+                                            }
+                                          />
+                                        ))}
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableBody>
+                              </Table>
+                            </Collapse>
                           </Box>
                         )}
                         <Box sx={{ my: 2, ml: "90%" }}>

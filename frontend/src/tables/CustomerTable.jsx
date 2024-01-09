@@ -657,6 +657,7 @@ export default function CustomerTable({
                             />
                           )}
                         </Box>
+                        
                       </Collapse>
                     </TableCell>
                   </TableRow>
