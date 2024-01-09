@@ -8,6 +8,8 @@ import {
   Box,
   Collapse,
   Dialog,
+  Grid,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -22,6 +24,7 @@ import {
 
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditServiceForm from "../forms/edit/EditServiceForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
@@ -36,6 +39,8 @@ export default function ServicePlansTable({
   const [selectedService, setSelectedService] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
+  const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
+  const [openDetailServices, setOpenDetailServices] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
 
@@ -185,90 +190,129 @@ export default function ServicePlansTable({
                           unmountOnExit
                         >
                           <Box sx={{ my: 4, px: 6 }}>
-                            <Typography
-                              variant="h6"
-                              sx={{ fontSize: 18, fontWeight: "bold" }}
+                            <Grid container direction="row">
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  fontSize: 18,
+                                  fontWeight: "bold",
+                                  my: "auto",
+                                }}
+                              >
+                                Informações do Serviço
+                              </Typography>
+                              <IconButton
+                                onClick={() =>
+                                  setOpenDetailInfo(!openDetailInfo)
+                                }
+                              >
+                                <ExpandMoreIcon />
+                              </IconButton>
+                            </Grid>
+                            <Collapse
+                              in={openDetailInfo}
+                              timeout="auto"
+                              unmountOnExit
                             >
-                              Informações do Plano
-                            </Typography>
-                            <Table size="small">
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell sx={{ width: "350px" }}>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Nome
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Valor do Plano
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                <TableRow>
-                                  <TableCell sx={{ width: "350px" }}>
-                                    <Typography sx={{ fontSize: 13 }}>
-                                      {servicePlan.name}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell>
-                                    <Typography sx={{ fontSize: 13 }}>
-                                      R${servicePlan.value}
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableBody>
-                            </Table>
-                          </Box>
-                          <Box sx={{ my: 4, px: 6 }}>
-                            <Typography
-                              variant="h6"
-                              sx={{ fontSize: 18, fontWeight: "bold" }}
-                            >
-                              Serviços Contemplados
-                            </Typography>
-                            <Table size="small">
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell sx={{ width: "350px" }}>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Serviço
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell sx={{ width: "350px" }}>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Departamento
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                {servicePlan.services.map((service) => (
-                                  <TableRow key={service.id}>
+                              <Table size="small">
+                                <TableHead>
+                                  <TableRow>
                                     <TableCell sx={{ width: "350px" }}>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {service.name}
+                                      <Typography
+                                        sx={{ fontSize: 13, color: "#777" }}
+                                      >
+                                        Nome
                                       </Typography>
                                     </TableCell>
-                                    <TableCell sx={{ width: "350px" }}>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {service.department.name}
+                                    <TableCell>
+                                      <Typography
+                                        sx={{ fontSize: 13, color: "#777" }}
+                                      >
+                                        Valor do Plano
                                       </Typography>
                                     </TableCell>
                                   </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
+                                </TableHead>
+                                <TableBody>
+                                  <TableRow>
+                                    <TableCell sx={{ width: "350px" }}>
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {servicePlan.name}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        R${servicePlan.value}
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableBody>
+                              </Table>
+                            </Collapse>
+                          </Box>
+                          <Box sx={{ my: 4, px: 6 }}>
+                            <Grid container direction="row">
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  fontSize: 18,
+                                  fontWeight: "bold",
+                                  my: "auto",
+                                }}
+                              >
+                                Serviços Contemplados
+                              </Typography>
+                              <IconButton
+                                onClick={() =>
+                                  setOpenDetailServices(!openDetailServices)
+                                }
+                              >
+                                <ExpandMoreIcon />
+                              </IconButton>
+                            </Grid>
+                            <Collapse
+                              in={openDetailServices}
+                              timeout="auto"
+                              unmountOnExit
+                            >
+                              <Table size="small">
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell sx={{ width: "350px" }}>
+                                      <Typography
+                                        sx={{ fontSize: 13, color: "#777" }}
+                                      >
+                                        Serviço
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell sx={{ width: "350px" }}>
+                                      <Typography
+                                        sx={{ fontSize: 13, color: "#777" }}
+                                      >
+                                        Departamento
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {servicePlan.services.map((service) => (
+                                    <TableRow key={service.id}>
+                                      <TableCell sx={{ width: "350px" }}>
+                                        <Typography sx={{ fontSize: 13 }}>
+                                          {service.name}
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell sx={{ width: "350px" }}>
+                                        <Typography sx={{ fontSize: 13 }}>
+                                          {service.department.name}
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </Collapse>
+
                             <Box sx={{ mt: 3, ml: "90%" }}>
                               <ModeEditIcon
                                 cursor="pointer"
