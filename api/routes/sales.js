@@ -20,7 +20,6 @@ router.get("/", async (req, res) => {
 // CREATE SALES
 router.post("/", async (req, res) => {
   const newSale = new Sale(req.body);
-  console.log("newSale", newSale)
   if (newSale.items.length > 0) {
     for (const item of newSale.items) {
       const items = await Product.findById(item._id);
