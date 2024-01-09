@@ -403,9 +403,7 @@ export default function JobTable({
                           </Grid>
 
                           <Collapse
-                            in={
-                              openDetailGeral && selectedJob.title === job.title
-                            }
+                            in={openDetailGeral}
                             timeout="auto"
                             unmountOnExit
                           >

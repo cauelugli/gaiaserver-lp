@@ -22,10 +22,12 @@ import {
   TableSortLabel,
   TablePagination,
   Checkbox,
+  IconButton,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 // import EditRequestForm from "../forms/edit/EditRequestForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
@@ -41,6 +43,9 @@ export default function SaleTable({
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
+  const [openDetailDepartment, setOpenDetailDepartment] = React.useState(false);
+  const [openDetailQuote, setOpenDetailQuote] = React.useState(true);
+  const [openDetailRequester, setOpenDetailRequester] = React.useState(false);
   const [selectedSale, setSelectedSale] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -152,7 +157,7 @@ export default function SaleTable({
         <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
           Mostrar Vendas Concluídas
         </Typography>
-      </Box>{" "}
+      </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
@@ -324,217 +329,276 @@ export default function SaleTable({
                         unmountOnExit
                       >
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography
-                            variant="h6"
-                            sx={{ fontSize: 18, fontWeight: "bold" }}
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
+                            >
+                              Departamento
+                            </Typography>
+                            <IconButton
+                              onClick={() =>
+                                setOpenDetailDepartment(!openDetailDepartment)
+                              }
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={openDetailDepartment}
+                            timeout="auto"
+                            unmountOnExit
                           >
-                            Departamento
-                          </Typography>
-                          <Table size="small">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell align="left">
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Nome do Departamento
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Vendedor
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Feita em
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell align="left">
-                                  <Typography>
-                                    {sale.department.name}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Grid container direction="row">
-                                    <Grid item>
-                                      <Avatar
-                                        alt="Imagem do Colaborador"
-                                        src={`http://localhost:3000/static/${sale.seller.image}`}
-                                        sx={{ width: 32, height: 32, mr: 1 }}
-                                      />
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Nome do Departamento
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Vendedor
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Feita em
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell align="left">
+                                    <Typography>
+                                      {sale.department.name}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Grid container direction="row">
+                                      <Grid item>
+                                        <Avatar
+                                          alt="Imagem do Colaborador"
+                                          src={`http://localhost:3000/static/${sale.seller.image}`}
+                                          sx={{ width: 32, height: 32, mr: 1 }}
+                                        />
+                                      </Grid>
+                                      <Grid item>
+                                        <Typography
+                                          sx={{ mt: 0.75, fontSize: 13 }}
+                                        >
+                                          {sale.seller.name}
+                                        </Typography>
+                                      </Grid>
                                     </Grid>
-                                    <Grid item>
-                                      <Typography
-                                        sx={{ mt: 0.75, fontSize: 13 }}
-                                      >
-                                        {sale.seller.name}
-                                      </Typography>
-                                    </Grid>
-                                  </Grid>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography>
-                                    {dayjs(sale.createdAt).format("DD/MM/YYYY")}
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography>
+                                      {dayjs(sale.createdAt).format(
+                                        "DD/MM/YYYY"
+                                      )}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Collapse>
                         </Box>
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography
-                            variant="h6"
-                            sx={{ fontSize: 18, fontWeight: "bold" }}
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
+                            >
+                              Orçamento
+                            </Typography>
+                            <IconButton
+                              onClick={() =>
+                                setOpenDetailQuote(!openDetailQuote)
+                              }
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={openDetailQuote}
+                            timeout="auto"
+                            unmountOnExit
                           >
-                            Orçamento
-                          </Typography>
-                          <Table size="small">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Nº do Orçamento
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Produtos
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Valor Total (serviço + materiais)
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell component="th" scope="row">
-                                  <Typography>{sale.quoteNumber}</Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography>
-                                    {sale.items.length > 0
-                                      ? sale.items.map((item) => (
-                                          <Grid
-                                            key={item.id}
-                                            container
-                                            direction="row"
-                                            justifyContent="flex-start"
-                                            alignItems="flex-start"
-                                            sx={{ mt: 0.5 }}
-                                          >
-                                            <Typography
-                                              sx={{
-                                                fontSize: 12,
-                                                color: "#777",
-                                                my: "auto",
-                                              }}
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Nº do Orçamento
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Produtos
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Valor Total (serviço + materiais)
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell component="th" scope="row">
+                                    <Typography>{sale.quoteNumber}</Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography>
+                                      {sale.items.length > 0
+                                        ? sale.items.map((item) => (
+                                            <Grid
+                                              key={item.id}
+                                              container
+                                              direction="row"
+                                              justifyContent="flex-start"
+                                              alignItems="flex-start"
+                                              sx={{ mt: 0.5 }}
                                             >
-                                              x{item.quantity} {item.name}
-                                            </Typography>
-                                            <Avatar
-                                              alt="Imagem do Produto"
-                                              src={`http://localhost:3000/static/${item.image}`}
-                                              sx={{
-                                                width: 26,
-                                                height: 26,
-                                                ml: 1,
-                                              }}
-                                            />
-                                          </Grid>
-                                        ))
-                                      : "Não há uso de Materiais"}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography>R${sale.price}</Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
+                                              <Typography
+                                                sx={{
+                                                  fontSize: 12,
+                                                  color: "#777",
+                                                  my: "auto",
+                                                }}
+                                              >
+                                                x{item.quantity} {item.name}
+                                              </Typography>
+                                              <Avatar
+                                                alt="Imagem do Produto"
+                                                src={`http://localhost:3000/static/${item.image}`}
+                                                sx={{
+                                                  width: 26,
+                                                  height: 26,
+                                                  ml: 1,
+                                                }}
+                                              />
+                                            </Grid>
+                                          ))
+                                        : "Não há uso de Materiais"}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography>R${sale.price}</Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Collapse>
                         </Box>
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography
-                            variant="h6"
-                            sx={{ fontSize: 18, fontWeight: "bold" }}
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
+                            >
+                              Solicitante
+                            </Typography>
+                            <IconButton
+                              onClick={() =>
+                                setOpenDetailRequester(!openDetailRequester)
+                              }
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={openDetailRequester}
+                            timeout="auto"
+                            unmountOnExit
                           >
-                            Solicitante
-                          </Typography>
-                          <Table size="small">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell align="left">
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Nome do Solicitante
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Contato de Entrega
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Endereço de Entrega
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography
-                                    sx={{ fontSize: "14px", color: "#777" }}
-                                  >
-                                    Data da Entrega
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell align="left">
-                                  <Typography>{sale.requester}</Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography sx={{ mt: 0.75 }}>
-                                    {sale.deliveryReceiverPhone}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography sx={{ mt: 0.75 }}>
-                                    {sale.deliveryAddress}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography>
-                                    {dayjs(sale.deliveryScheduledTo).format(
-                                      "DD/MM/YYYY"
-                                    )}
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Nome do Solicitante
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Contato de Entrega
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Endereço de Entrega
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: "14px", color: "#777" }}
+                                    >
+                                      Data da Entrega
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell align="left">
+                                    <Typography>{sale.requester}</Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ mt: 0.75 }}>
+                                      {sale.deliveryReceiverPhone}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ mt: 0.75 }}>
+                                      {sale.deliveryAddress}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography>
+                                      {dayjs(sale.deliveryScheduledTo).format(
+                                        "DD/MM/YYYY"
+                                      )}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Collapse>
                           <Box sx={{ mt: 3, ml: "90%" }}>
                             <ModeEditIcon
                               cursor="pointer"
