@@ -34,6 +34,7 @@ import ChallengeApproval from "../forms/misc/ChallengeApproval";
 
 export default function FinanceOutcomeTable({
   outcoming,
+  configData,
   toast,
   user,
   searchValue,

@@ -36,6 +36,7 @@ import AddParcelPaymentForm from "../forms/add/AddParcelPaymentForm";
 
 export default function FinanceIncomeTable({
   incoming,
+  configData,
   toast,
   searchValue,
   searchOption,
@@ -49,7 +50,6 @@ export default function FinanceIncomeTable({
   const [openSchedulePayment, setOpenSchedulePayment] = React.useState(false);
   const [openCashPayment, setOpenCashPayment] = React.useState(false);
   const [openAddParcelPayment, setOpenAddParcelPayment] = React.useState(false);
-  const [openAddFullPayment, setOpenAddFullPayment] = React.useState(false);
 
   const [openConfirmChangeStatus, setOpenConfirmChangeStatus] =
     React.useState(false);
@@ -159,9 +159,11 @@ export default function FinanceIncomeTable({
     setshowCompletedIncomes(!showCompletedIncomes);
   };
 
+  console.log("configData", configData);
+
   return (
     <>
-    <Box sx={{ minWidth: "1250px" }}>
+      <Box sx={{ minWidth: "1250px" }}>
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
           <Checkbox
             checked={showCompletedIncomes}
@@ -450,15 +452,15 @@ export default function FinanceIncomeTable({
                             : income.status}
                         </Typography>
                       </TableCell>
-
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        {dayjs(income.createdAt).format("DD/MM/YYYY")}
-                      </Typography>
-                    </TableCell>
+                      <TableCell align="center">
+                        <Typography sx={{ fontSize: 13 }}>
+                          {dayjs(income.createdAt).format("DD/MM/YYYY")}
+                        </Typography>
+                      </TableCell>
 
                       <TableCell align="center" sx={{ py: 0 }}>
-                        {!income.payment &&
+                        {configData.canReceiveInstallments &&
+                          !income.payment &&
                           income.status === "Aguardando Agendamento" && (
                             <Grid
                               container
@@ -503,6 +505,28 @@ export default function FinanceIncomeTable({
                                 </span>
                               </Tooltip>
                             </Grid>
+                          )}
+                        {!configData.canReceiveInstallments &&
+                          !income.payment &&
+                          income.status === "Aguardando Agendamento" && (
+                            <Tooltip
+                              title={
+                                <Typography sx={{ fontSize: 12 }}>
+                                  Receber a Vista
+                                </Typography>
+                              }
+                            >
+                              <span>
+                                <IconButton>
+                                  <AttachMoneyIcon
+                                    cursor="pointer"
+                                    onClick={() =>
+                                      handleOpenAddCashPayment(income)
+                                    }
+                                  />
+                                </IconButton>
+                              </span>
+                            </Tooltip>
                           )}
                         {income.payment &&
                           income.payment.paymentDates &&

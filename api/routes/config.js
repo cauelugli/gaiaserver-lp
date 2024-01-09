@@ -173,6 +173,35 @@ router.put("/quotes", async (req, res) => {
   }
 });
 
+
+// GET FINANCE CONFIGS
+router.get("/finance", async (req, res) => {
+  try {
+    const config = await Config.findOne();
+    const financeConfig = config ? config.finance : null;
+    res.status(200).json(financeConfig);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// QUOTES
+router.put("/finance", async (req, res) => {
+  try {
+    const { canReceiveInstallments } = req.body;
+
+    const config = await Config.findOne();
+
+    config.finance.canReceiveInstallments = canReceiveInstallments;
+
+    await config.save();
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // CUSTOMIZATION
 router.put("/customization", async (req, res) => {
   try {

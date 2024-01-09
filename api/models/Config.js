@@ -73,8 +73,9 @@ const configSchema = new Schema({
   },
 
   finance: {
-    canCreate: {
-      type: Array,
+    canReceiveInstallments: {
+      type: Boolean,
+      default: true
     },
   },
 

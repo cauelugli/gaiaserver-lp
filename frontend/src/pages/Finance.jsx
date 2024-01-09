@@ -58,6 +58,7 @@ function CustomTabPanel(props) {
 export default function Finance({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
+  const [configData, setConfigData] = React.useState([]);
   const [incoming, setIncoming] = React.useState([]);
   const [outcoming, setOutcoming] = React.useState([]);
 
@@ -93,6 +94,8 @@ export default function Finance({ user }) {
       try {
         const incomes = await api.get("/finances/income");
         const outcomes = await api.get("/finances/outcome");
+        const config = await api.get("/config");
+        setConfigData(config.data[0].finance);
         setIncoming(incomes.data);
         setOutcoming(outcomes.data);
       } catch (error) {
@@ -154,6 +157,7 @@ export default function Finance({ user }) {
 
             <FinanceIncomeTable
               incoming={incoming}
+              configData={configData}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
@@ -182,6 +186,7 @@ export default function Finance({ user }) {
 
             <FinanceOutcomeTable
               outcoming={outcoming}
+              configData={configData}
               user={user}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
