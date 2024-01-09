@@ -26,10 +26,12 @@ import {
   DialogContent,
   DialogActions,
   Grid,
+  IconButton,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditCustomerForm from "../forms/edit/EditCustomerForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
@@ -47,6 +49,10 @@ export default function CustomerTable({
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
+  const [openDetailGeral, setOpenDetailGeral] = React.useState(true);
+  const [openDetailContato, setOpenDetailContato] = React.useState(false);
+  const [openDetailDominio, setOpenDetailDominio] = React.useState(false);
+  const [openDetailPedidos, setOpenDetailPedidos] = React.useState(false);
   const [selectedCustomer, setSelectedCustomer] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -281,171 +287,237 @@ export default function CustomerTable({
                         unmountOnExit
                       >
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                            Geral
-                          </Typography>
-                          <Table size="small">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Endereço
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Telefone
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    CNPJ
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Segmento
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    # de Colaboradores
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell component="th" scope="row">
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {customer.address}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {customer.phone}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {customer.cnpj}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {customer.segment}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {customer.employees}
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
+                            >
+                              Informações Gerais
+                            </Typography>
+                            <IconButton
+                              onClick={() =>
+                                setOpenDetailGeral(!openDetailGeral)
+                              }
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={openDetailGeral}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Endereço
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Telefone
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      CNPJ
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Segmento
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      # de Colaboradores
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell component="th" scope="row">
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {customer.address}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {customer.phone}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {customer.cnpj}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {customer.segment}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {customer.employees}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Collapse>
                         </Box>
 
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                            Contato Principal
-                          </Typography>
-                          <Table size="small">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Nome
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    E-mail
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Posição
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {customer.mainContactName}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {customer.mainContactEmail}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {customer.mainContactPosition}
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
+                            >
+                              Contato Principal
+                            </Typography>
+                            <IconButton
+                              onClick={() =>
+                                setOpenDetailContato(!openDetailContato)
+                              }
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={openDetailContato}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Nome
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      E-mail
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Posição
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {customer.mainContactName}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {customer.mainContactEmail}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {customer.mainContactPosition}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Collapse>
                         </Box>
 
                         <Box sx={{ my: 4, px: 6 }}>
-                          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                            Domínio
-                          </Typography>
-                          <Table size="small">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Website
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Domínio
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {customer.website}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    {customer.domain}
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
+                            >
+                              Domínio
+                            </Typography>
+                            <IconButton
+                              onClick={() =>
+                                setOpenDetailDominio(!openDetailDominio)
+                              }
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={openDetailDominio}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Website
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Domínio
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {customer.website}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {customer.domain}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Collapse>
                         </Box>
 
                         <Box sx={{ my: 4, px: 6 }}>
@@ -461,100 +533,112 @@ export default function CustomerTable({
                             >
                               (últimos 5)
                             </FormHelperText>
+                            <IconButton
+                              onClick={() =>
+                                setOpenDetailPedidos(!openDetailPedidos)
+                              }
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
                           </Grid>
-                          <Table size="small">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Orçamento
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="left">
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Título
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Tipo de Pedido
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Solicitado em
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 13, color: "#777" }}
-                                  >
-                                    Solicitado por
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              {customer.recentRequests
-                                .slice(0, 5)
-                                .map((item, index) => (
-                                  <TableRow
-                                    key={index}
-                                    sx={{
-                                      backgroundColor:
-                                        index % 2 === 0 ? "#eee" : "white",
-                                    }}
-                                  >
-                                    <TableCell>
-                                      <Button
-                                        sx={{ color: "black" }}
-                                        onClick={() => openViewDialog(item)}
-                                      >
+                          <Collapse
+                            in={openDetailPedidos}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Orçamento
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Título
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Tipo de Pedido
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Solicitado em
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Solicitado por
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                {customer.recentRequests
+                                  .slice(0, 5)
+                                  .map((item, index) => (
+                                    <TableRow
+                                      key={index}
+                                      sx={{
+                                        backgroundColor:
+                                          index % 2 === 0 ? "#eee" : "white",
+                                      }}
+                                    >
+                                      <TableCell>
+                                        <Button
+                                          sx={{ color: "black" }}
+                                          onClick={() => openViewDialog(item)}
+                                        >
+                                          <Typography sx={{ fontSize: 13 }}>
+                                            {item.number}
+                                          </Typography>
+                                        </Button>
+                                      </TableCell>
+                                      <TableCell align="left">
                                         <Typography sx={{ fontSize: 13 }}>
-                                          {item.number}
+                                          {item.title || "Venda"}
                                         </Typography>
-                                      </Button>
-                                    </TableCell>
-                                    <TableCell align="left">
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {item.title || "Venda"}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {item.type.charAt(0).toUpperCase() +
-                                          item.type.slice(1)}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {new Date(item.date).toLocaleDateString(
-                                          "pt-BR",
-                                          {
+                                      </TableCell>
+                                      <TableCell>
+                                        <Typography sx={{ fontSize: 13 }}>
+                                          {item.type.charAt(0).toUpperCase() +
+                                            item.type.slice(1)}
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell>
+                                        <Typography sx={{ fontSize: 13 }}>
+                                          {new Date(
+                                            item.date
+                                          ).toLocaleDateString("pt-BR", {
                                             day: "2-digit",
                                             month: "2-digit",
                                             year: "numeric",
-                                          }
-                                        )}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {item.requester}
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                ))}
-                            </TableBody>
-                          </Table>
+                                          })}
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell>
+                                        <Typography sx={{ fontSize: 13 }}>
+                                          {item.requester}
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  ))}
+                              </TableBody>
+                            </Table>
+                          </Collapse>
                         </Box>
 
                         <Box sx={{ my: 4, ml: "90%" }}>
