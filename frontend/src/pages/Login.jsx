@@ -4,10 +4,8 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 import {
-  Box,
   Button,
   CircularProgress,
-  Container,
   Grid,
   TextField,
   Typography,
@@ -68,69 +66,63 @@ const Login = () => {
 
   return (
     <Grid
-      sx={{
-        backgroundColor: "#32aacd",
-        ml: -2,
-        mt: -4,
-        mr: -25,
-        pt: 5,
-        pb: 10,
-        pr: 18,
-      }}
+      container
+      direction="row"
+      alignItems="center"
+      justifyContent="space-evenly"
+      sx={{ mt: "10%", ml: "5em" }}
     >
-      <Container
-        maxWidth="xs"
-        sx={{
-          mt: 2,
-          ml: "37%",
-          border: "2px solid #eee",
-          borderRadius: 4,
-          backgroundColor: "white",
-        }}
+      <Grid
+        container
+        item
+        xs={5}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
       >
-        <Box
-          sx={{
-            mt: 6,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+        <img
+          src={`http://localhost:3000/static/logo_dog_blue.png`}
+          alt="Logo GaiaServer"
+          style={{ cursor: "pointer" }}
+          onClick={() => alert("GS é um sonho feito com muito amor")}
+        />
+        <Typography
+          component="h1"
+          variant="h4"
+          style={{ fontFamily: "Roboto, sans-serif" }}
         >
-          <img
-            src={`http://localhost:3000/static/logo_dog_blue.png`}
-            alt="Logo GaiaServer"
-            style={{
-              margin: 1,
-              cursor: "pointer",
-            }}
-            onClick={() => alert("GS é um sonho feito com muito amor")}
-          />
-          <Typography component="h1" variant="h5">
-            GaiaServer
-          </Typography>
-          {loading ? (
-            <div>
-              <CircularProgress color="inherit" sx={{ mb: 6, pb:20 }} />
-            </div>
-          ) : (
-            <form onSubmit={handleTry} style={{ marginTop: 1 }}>
+          GaiaServer
+        </Typography>
+      </Grid>
+      <Grid
+        container
+        item
+        xs={5}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        {loading ? (
+          <div>
+            <CircularProgress color="inherit" sx={{ mb: 6, pb: 20 }} />
+          </div>
+        ) : (
+          <form onSubmit={handleTry}>
+            <Grid container direction="column" sx={{ mt: 8 }}>
               <TextField
                 size="small"
                 required
-                fullWidth
-                id="email"
-                margin="normal"
                 label="Usuário"
+                variant="standard"
+                sx={{ mb: 1 }}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
               <TextField
                 size="small"
-                margin="dense"
                 required
-                fullWidth
-                name="password"
                 label="Senha"
+                variant="standard"
                 type="password"
                 autoComplete="current-password"
                 value={password}
@@ -138,16 +130,15 @@ const Login = () => {
               />
               <Button
                 type="submit"
-                fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 6 }}
+                sx={{ mt: 3, mb: 6, width: "50%", backgroundColor: "#32aacd" }}
               >
                 Login
               </Button>
-            </form>
-          )}
-        </Box>
-      </Container>
+            </Grid>
+          </form>
+        )}
+      </Grid>
     </Grid>
   );
 };
