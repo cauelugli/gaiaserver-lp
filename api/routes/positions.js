@@ -35,7 +35,7 @@ router.delete("/:id", async (req, res) => {
   const positionId = req.params.id;
   try {
     const deletedPosition = await Position.findByIdAndDelete(positionId);
-    const usersToUpdate = await User.find({ 'position._id': positionId });
+    const usersToUpdate = await User.find({ "position._id": positionId });
     for (const user of usersToUpdate) {
       user.position = {};
       await user.save();
@@ -43,16 +43,15 @@ router.delete("/:id", async (req, res) => {
 
     res.status(200).json(deletedPosition);
   } catch (err) {
-    console.log("error", err)
+    console.log("error", err);
     res.status(500).json(err);
   }
 });
 
-
 // UPDATE POSITION
 router.put("/", async (req, res) => {
   const { name, positionId } = req.body;
-  const existingName = await Position.findOne({ name });
+  const existingName = await Position.findOne({ name: name });
 
   if (existingName && existingName.name !== req.body.previousData.name) {
     return res.status(422).json({ error: "Nome de Cargo já cadastrado" });
@@ -65,12 +64,14 @@ router.put("/", async (req, res) => {
       { new: true }
     );
 
-    const usersToUpdate = await User.find({
-      position: req.body.previousData.name,
-    });
+    const usersToUpdate = await User.find({ "position._id": positionId });
+
     for (const user of usersToUpdate) {
-      user.position = name;
-      await user.save();
+      await User.findByIdAndUpdate(
+        user._id,
+        { $set: { "position.name": updatedPosition.name } },
+        { new: true }
+      );
     }
 
     res.status(200).json(updatedPosition);

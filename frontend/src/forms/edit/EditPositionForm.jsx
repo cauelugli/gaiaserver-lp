@@ -33,9 +33,8 @@ export default function EditPositionForm({
     try {
       const res = await api.put("/positions", {
         positionId: selectedPosition._id,
-        name,
-        members: selectedPosition.members,
         previousData,
+        name,
       });
       if (res.data) {
         toast.success("Cargo Editado!", {
