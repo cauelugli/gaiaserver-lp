@@ -164,7 +164,7 @@ export default function PositionTable({
                   <>
                     <TableRow
                       key={position._id}
-                      sx={{"&:hover": { backgroundColor: "#eee " }}}
+                      sx={{ "&:hover": { backgroundColor: "#eee " } }}
                     >
                       <TableCell>
                         <Typography sx={{ fontSize: 13 }}>
@@ -172,9 +172,7 @@ export default function PositionTable({
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          <PositionMembers />
-                        </Typography>
+                        <PositionMembers members={position.members} users={users}/>
                       </TableCell>
                       <TableCell align="center" sx={{ py: 0 }}>
                         <Grid

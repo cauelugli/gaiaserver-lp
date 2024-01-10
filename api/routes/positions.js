@@ -34,19 +34,20 @@ router.post("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   const positionId = req.params.id;
   try {
-    const positionToDelete = await Position.findById(positionId);
-    const positionNameToDelete = positionToDelete.name;
     const deletedPosition = await Position.findByIdAndDelete(positionId);
-    const usersToUpdate = await User.find({ position: positionNameToDelete });
+    const usersToUpdate = await User.find({ 'position._id': positionId });
     for (const user of usersToUpdate) {
-      user.position = "-";
+      user.position = {};
       await user.save();
     }
+
     res.status(200).json(deletedPosition);
   } catch (err) {
+    console.log("error", err)
     res.status(500).json(err);
   }
 });
+
 
 // UPDATE POSITION
 router.put("/", async (req, res) => {

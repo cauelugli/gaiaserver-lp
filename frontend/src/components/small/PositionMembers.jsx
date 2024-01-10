@@ -1,18 +1,50 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React from "react";
-
 import { Avatar, Grid, Typography } from "@mui/material";
 
-const PositionMembers = () => {
-  const map = [1, 2, 3, 4, 5, 6, 7];
+const PositionMembers = ({ members, users }) => {
+  const [userDetails, setUserDetails] = React.useState({});
+
+  React.useEffect(() => {
+    // Função para obter detalhes dos usuários associados à posição
+    const fetchUserDetails = async () => {
+      const details = {};
+      for (const memberId of members) {
+        const user = users.find((user) => user._id === memberId);
+        if (user) {
+          details[memberId] = user;
+        }
+      }
+      setUserDetails(details);
+    };
+
+    fetchUserDetails();
+  }, [members, users]);
+
+  const displayedMembers = members.slice(0, 3);
+  const remainingMembersCount = members.length - displayedMembers.length;
+
   return (
     <Grid container direction="row" alignItems="center" justifyContent="center">
-      {map.slice(0, 3).map((item) => (
-        <Avatar key alt={item} sx={{ width: 30, height: 30, ml: 0.5 }} />
-      ))}
-      {map.length > 3 && (
+      {displayedMembers.map((userId) => {
+        const user = userDetails[userId];
+        if (user) {
+          return (
+            <Avatar
+              key={user._id}
+              alt={user.name}
+              src={`http://localhost:3000/static/${user.image}`}
+              sx={{ width: 30, height: 30, ml: 0.5 }}
+            />
+          );
+        } else {
+          return null;
+        }
+      })}
+      {remainingMembersCount > 0 && (
         <Typography sx={{ fontSize: 13, color: "#777", ml: 0.5 }}>
-          ...+{map.length - 3}
+          ...+{remainingMembersCount}
         </Typography>
       )}
     </Grid>

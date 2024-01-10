@@ -7,6 +7,7 @@ const positionSchema = new mongoose.Schema({
   },
   members: {
     type: Array,
+    default: []
   },
   createdAt: {
     type: Date,
