@@ -229,7 +229,7 @@ export default function UserTable({
                     </TableCell>
                     <TableCell align="center">
                       <Typography sx={{ fontSize: 13 }}>
-                        {row.position}
+                        {row.position ? row.position.name : "-"}
                       </Typography>
                     </TableCell>
                     <TableCell align="center">

@@ -292,11 +292,11 @@ const EditUserForm = ({
               <Grid item>
                 <Typography sx={{ mb: 1 }}>Cargo</Typography>
                 <Select
-                  onChange={(e) => setPosition(e.target.value.name)}
+                  onChange={(e) => setPosition(e.target.value)}
                   renderValue={(selected) => selected.name}
                   size="small"
                   sx={{ minWidth: 250 }}
-                  value={{ name: position }}
+                  value={position}
                 >
                   {positions.map((item) => (
                     <MenuItem value={item} key={item.id}>

@@ -24,10 +24,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditPositionForm from "../forms/edit/EditPositionForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+import PositionMembers from "../components/small/PositionMembers";
 
 export default function PositionTable({
   configData,
   positions,
+  users,
   toast,
   searchValue,
   searchOption,
@@ -171,7 +173,7 @@ export default function PositionTable({
                       </TableCell>
                       <TableCell align="center">
                         <Typography sx={{ fontSize: 13 }}>
-                          {position.members.length}
+                          <PositionMembers />
                         </Typography>
                       </TableCell>
                       <TableCell align="center" sx={{ py: 0 }}>

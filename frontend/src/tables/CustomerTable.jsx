@@ -524,7 +524,7 @@ export default function CustomerTable({
                           <Grid container direction="row">
                             <Typography
                               variant="h6"
-                              sx={{ fontWeight: "bold" }}
+                              sx={{ fontWeight: "bold", fontSize: 18 }}
                             >
                               Pedidos Recentes{" "}
                             </Typography>
@@ -657,7 +657,6 @@ export default function CustomerTable({
                             />
                           )}
                         </Box>
-                        
                       </Collapse>
                     </TableCell>
                   </TableRow>

@@ -21,6 +21,7 @@ router.post("/", async (req, res) => {
   try {
     const existingNameUser = await User.findOne({ name });
     const existingEmailUser = await User.findOne({ email });
+
     if (existingNameUser) {
       return res.status(422).json({ error: "Nome de Usuário já cadastrado" });
     }
@@ -36,9 +37,6 @@ router.post("/", async (req, res) => {
         return res.status(422).json({ error: "Cargo já cadastrado" });
       }
 
-      const newPositionObj = new Position({ name: newPosition, members: [] });
-      await newPositionObj.save();
-
       const newUser = new User({
         name: name,
         phone: req.body.phone,
@@ -49,6 +47,12 @@ router.post("/", async (req, res) => {
         role: req.body.role,
       });
       const savedUser = await newUser.save();
+
+      const newPositionObj = new Position({
+        name: newPosition,
+        members: [savedUser._id],
+      });
+      await newPositionObj.save();
 
       await Department.findOneAndUpdate(
         { _id: req.body.department.id },
@@ -67,15 +71,6 @@ router.post("/", async (req, res) => {
         },
         { upsert: true }
       );
-      await Position.findOneAndUpdate(
-        { _id: newPositionObj._id },
-        {
-          $addToSet: {
-            members: savedUser._id.toString(),
-          },
-        },
-        { upsert: true }
-      );
       res.status(200).json(savedUser);
     } else {
       const newUser = new User({
@@ -84,7 +79,7 @@ router.post("/", async (req, res) => {
         department: req.body.department,
         email: req.body.email,
         image: req.body.image,
-        position: req.body.position.name,
+        position: req.body.position,
         role: req.body.role,
       });
       const savedUser = await newUser.save();
@@ -143,6 +138,7 @@ router.delete("/:id", async (req, res) => {
 // UPDATE USER
 router.put("/", async (req, res) => {
   const { name, email, option, isManager } = req.body;
+  const position = {_id:req.body.position._id, name:req.body.position.name}
   const userModel = isManager ? Manager : User;
 
   const existingName = await userModel.findOne({ name });
@@ -158,6 +154,7 @@ router.put("/", async (req, res) => {
       return res.status(422).json({ error: "E-mail já cadastrado" });
     }
   }
+
 
   try {
     let updateFields = {};
@@ -176,12 +173,12 @@ router.put("/", async (req, res) => {
         phone: req.body.phone,
         image: req.body.image,
         department: req.body.department,
-        position: req.body.position,
+        position: position,
         role: req.body.role,
       };
       if (req.body.department) {
         updateFields.department = req.body.department;
-        updateFields.position = req.body.position;
+        updateFields.position = position;
         updateFields.role = req.body.role;
       }
     }
@@ -209,7 +206,7 @@ router.put("/", async (req, res) => {
                     "members.$.name": req.body.name,
                     "members.$.phone": req.body.phone,
                     "members.$.email": req.body.email,
-                    "members.$.position": req.body.position,
+                    "members.$.position": position,
                     "members.$.image": req.body.image,
                     "members.$.role": req.body.role,
                   },
@@ -231,7 +228,7 @@ router.put("/", async (req, res) => {
                       email: updatedUser.email,
                       phone: updatedUser.phone,
                       image: updatedUser.image,
-                      position: updatedUser.position,
+                      position: position,
                       role: updatedUser.role,
                     },
                   },
@@ -248,7 +245,7 @@ router.put("/", async (req, res) => {
                     name: updatedUser.name,
                     email: updatedUser.email,
                     phone: updatedUser.phone,
-                    position: updatedUser.position,
+                    position: position,
                     image: updatedUser.image,
                     role: updatedUser.role,
                   },
@@ -267,17 +264,19 @@ router.put("/", async (req, res) => {
 });
 
 // GET USER'S NOTIFICATIONS
-router.get('/notifications/:userId', async (req, res) => {
+router.get("/notifications/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
 
     // Substitua a linha abaixo pela lógica real para obter as notificações do usuário
-    const userNotifications = await User.findById(userId).select('notifications');
+    const userNotifications = await User.findById(userId).select(
+      "notifications"
+    );
 
     res.json(userNotifications.notifications);
   } catch (error) {
-    console.error('Error fetching notifications:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error fetching notifications:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -293,7 +292,7 @@ router.put("/readNotification", async (req, res) => {
     }
 
     user.notifications[notificationId].status = "Lida";
-    user.markModified('notifications');
+    user.markModified("notifications");
     await user.save();
 
     return res.json({ success: true });

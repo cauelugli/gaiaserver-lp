@@ -47,7 +47,7 @@ const AddUserForm = ({
   const [phone, setPhone] = React.useState("");
   const [department, setDepartment] = React.useState("");
   const [image, setImage] = React.useState("");
-  const [position, setPosition] = React.useState("");
+  const [position, setPosition] = React.useState(null);
   const [newPosition, setNewPosition] = React.useState("");
   const [isNewPosition, setIsNewPosition] = React.useState(false);
 
@@ -75,7 +75,7 @@ const AddUserForm = ({
           email: department.email,
           color: department.color,
         },
-        position,
+        position: { _id: position._id, name: position.name },
         newPosition,
       });
 

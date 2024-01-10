@@ -33,8 +33,8 @@ userSchema = new mongoose.Schema({
     default: { 0: "" },
   },
   position: {
-    type: String,
-    default: "-",
+    type: Object,
+    default: {},
   },
   isActive: {
     type: Boolean,

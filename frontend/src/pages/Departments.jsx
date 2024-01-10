@@ -365,6 +365,7 @@ export default function Departments({ user, configTables }) {
               searchValue={searchValue}
               searchOption={searchOption}
               positions={positions}
+              users={users}
               openAdd={openAddPosition}
               setOpenAdd={setOpenAddPosition}
               refreshData={refreshData}
