@@ -31,7 +31,7 @@ import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
 import ViewSidebarIcon from "@mui/icons-material/ViewSidebar";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import TableViewIcon from '@mui/icons-material/TableView';
+import TableViewIcon from "@mui/icons-material/TableView";
 
 import CustomersModal from "../forms/config/Customers";
 import UsersModal from "../forms/config/Users";
@@ -133,9 +133,12 @@ export default function Config({ user }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [openModal, setOpenModal] = useState(null);
   const [configData, setConfigData] = useState([]);
+  const [chosenModal, setChosenModal] = useState("");
 
   const handleItemClick = (modal) => {
     setOpenModal(modal);
+    console.log("modal.type.name", modal.type.name);
+    setChosenModal(modal.type.name);
   };
 
   const handleCloseModal = () => {
@@ -243,8 +246,9 @@ export default function Config({ user }) {
         open={!!openModal}
         onClose={handleCloseModal}
         fullWidth
-        maxWidth="md"
-        test="hey"
+        maxWidth={
+          chosenModal === "SideBar" || chosenModal === "Tables" ? "sm" : "md"
+        }
       >
         <DialogContent>
           {openModal &&

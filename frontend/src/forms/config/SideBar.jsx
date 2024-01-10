@@ -146,13 +146,22 @@ export default function SideBar({ onClose }) {
         </DialogTitle>
       </>
 
-      <Grid container direction="row" sx={{ mb: -2 }}>
-        <Grid item sx={{ ml: 45 }}>
+      <Grid
+        container
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+        sx={{ mb: -2 }}
+      >
+        <Grid item sx={{ width: 200 }}>
+          <Typography sx={{ color: "white" }}>#</Typography>
+        </Grid>
+        <Grid item sx={{ width: 180, ml:1 }}>
           <Typography>
             <VisibilityOffIcon sx={{ fontSize: 40, color: "#D00000" }} />
           </Typography>
         </Grid>
-        <Grid item sx={{ ml: 33 }}>
+        <Grid item sx={{ width: 160, ml:0.5 }}>
           <Typography>
             <VisibilityIcon sx={{ fontSize: 40, color: "#417505" }} />
           </Typography>

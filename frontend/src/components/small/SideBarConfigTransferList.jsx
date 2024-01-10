@@ -58,15 +58,15 @@ export default function SideBarConfigTransferList({
       container
       direction="row"
       alignItems="center"
-      justifyContent="space-around"
-      sx={{ mt: 3, border: "1px solid #ddd", px: 1, py: 2, borderRadius: 3 }}
+      justifyContent="center"
+      sx={{ mt: 2, border: "1px solid #ddd", borderRadius: 3 }}
     >
-      <Grid item sx={{ width: 100, ml: 5, mr: -2 }}>
+      <Grid item sx={{width:160, ml:1}}>
         <Typography sx={{ fontWeight: "bold" }}>
           {title.toUpperCase()}
         </Typography>
       </Grid>
-      <Grid item sx={{ width: 250, ml: 4 }}>
+      <Grid item sx={{width:180, my:2}}>
         <Grid
           sx={{
             height: 120,
@@ -119,7 +119,7 @@ export default function SideBarConfigTransferList({
           </FormGroup>
         </Grid>
       </Grid>
-      <Grid item sx={{ width: 250 }}>
+      <Grid item sx={{width:180, my:2}}>
         <Grid
           sx={{
             height: 120,
@@ -135,8 +135,8 @@ export default function SideBarConfigTransferList({
                   <IconButton
                     sx={{
                       ml: 1,
-                      height: 18,
-                      maxWidth: 18,
+                      height: 16,
+                      maxWidth: 16,
                       color: "white",
                       backgroundColor: "red",
                       borderRadius: 3,
