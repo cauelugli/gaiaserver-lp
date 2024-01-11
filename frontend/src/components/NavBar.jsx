@@ -19,39 +19,44 @@ export default function NavBar({
       container
       direction="row"
       alignItems="center"
-      justifyContent="flex-start"
+      justifyContent="space-between"
       sx={{
-        backgroundColor:
+          backgroundColor:
           configData && configData.customization
             ? configData.customization.mainColor
             : "#32aacd",
       }}
     >
-      <img
-        src={`http://localhost:3000/static/${
-          configData && configData.customization
-            ? configData.customization.logo
-            : ""
-        }`}
-        alt="Logotipo da Empresa"
-        style={{
-          width: "8%",
-          marginLeft: 30,
-          marginRight: "83%",
-          marginTop: 2,
-          marginBottom: 2,
-          cursor: "pointer",
-        }}
-        onClick={() => alert("Esse é o logo da sua empresa!")}
-      />
-      <NotificationsButton
-        socket={socket}
-        user={user}
-        notifications={notifications}
-        setNotifications={setNotifications}
-        sx={{ mr: 2, color: "#333" }}
-      />
-      <UserButton user={user} />
+      <Grid item>
+        <img
+          src={`http://localhost:3000/static/${
+            configData && configData.customization
+              ? configData.customization.logo
+              : ""
+          }`}
+          alt="Logotipo da Empresa"
+          style={{
+            width: "20%",
+            marginLeft: 30,
+            marginTop: 2,
+            marginBottom: 2,
+            cursor: "pointer",
+          }}
+          onClick={() => alert("Esse é o logo da sua empresa!")}
+        />
+      </Grid>
+      <Grid item sx={{mr:2}}>
+        <Grid container direction="row">
+          <NotificationsButton
+            socket={socket}
+            user={user}
+            notifications={notifications}
+            setNotifications={setNotifications}
+            sx={{ mr: 3, color: "#333" }}
+          />
+          <UserButton user={user} />
+        </Grid>
+      </Grid>
     </Grid>
   );
 }
