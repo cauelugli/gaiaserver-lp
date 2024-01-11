@@ -27,12 +27,12 @@ import {
   IconButton,
 } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditClientForm from "../forms/edit/EditClientForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+
+import CustomerTableActionsButton from "../components/small/buttons/CustomerTableActionsButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -514,21 +514,17 @@ export default function ClientTable({
                           </Collapse>
                         </Box>
 
-                        <Box sx={{ my: 4, ml: "90%" }}>
-                          <ModeEditIcon
-                            cursor="pointer"
-                            option="delete"
-                            onClick={() => handleOpenEdit(client)}
-                            sx={{ color: "grey", mr: 2 }}
+                        <Box sx={{ my: 4, ml: "70%" }}>
+                          <CustomerTableActionsButton
+                            configData={configData}
+                            openEdit={openEdit}
+                            handleOpenEdit={handleOpenEdit}
+                            customer={client}
+                            tableType="Client"
+                            handleConfirmDelete={handleConfirmDelete}
+                            onClick={() => handleConfirmDelete(client)}
+                            openDialog={openDialog}
                           />
-                          {configData.clientsCanBeDeleted && (
-                            <DeleteIcon
-                              cursor="pointer"
-                              option="delete"
-                              onClick={() => handleConfirmDelete(client)}
-                              sx={{ color: "#ff4444" }}
-                            />
-                          )}
                         </Box>
                       </Collapse>
                     </TableCell>

@@ -29,12 +29,12 @@ import {
   IconButton,
 } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditCustomerForm from "../forms/edit/EditCustomerForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+
+import CustomerTableActionsButton from "../components/small/buttons/CustomerTableActionsButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -641,21 +641,18 @@ export default function CustomerTable({
                           </Collapse>
                         </Box>
 
-                        <Box sx={{ my: 4, ml: "90%" }}>
-                          <ModeEditIcon
-                            cursor="pointer"
-                            option="delete"
-                            onClick={() => handleOpenEdit(customer)}
-                            sx={{ color: "grey", mr: 2 }}
+                        <Box sx={{ my: 4, ml: "70%" }}>
+                          <CustomerTableActionsButton
+                            configData={configData}
+                            openEdit={openEdit}
+                            handleOpenEdit={handleOpenEdit}
+                            customer={customer}
+                            tableType="Customer"
+                            handleConfirmDelete={handleConfirmDelete}
+                            onClick={() => handleConfirmDelete(customer)}
+                            openDialog={openDialog}
                           />
-                          {configData.customersCanBeDeleted && (
-                            <DeleteIcon
-                              cursor="pointer"
-                              option="delete"
-                              onClick={() => handleConfirmDelete(customer)}
-                              sx={{ color: "#ff4444" }}
-                            />
-                          )}
+                          
                         </Box>
                       </Collapse>
                     </TableCell>
