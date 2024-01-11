@@ -12,7 +12,7 @@ export default function CustomerTableActionsButton({
   customer,
   handleOpenEdit,
   handleConfirmDelete,
-  tableType
+  tableType,
 }) {
   return (
     <Grid container direction="row">
@@ -38,12 +38,15 @@ export default function CustomerTableActionsButton({
         </Button>
       )}
       {tableType === "Client" && configData.clientsCanBeDeleted && (
-        <DeleteIcon
+        <Button
           cursor="pointer"
-          option="delete"
+          color="error"
+          variant="contained"
           onClick={() => handleConfirmDelete(customer)}
-          sx={{ color: "#ff4444" }}
-        />
+          startIcon={<DeleteIcon />}
+        >
+          Deletar
+        </Button>
       )}
     </Grid>
   );

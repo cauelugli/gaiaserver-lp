@@ -7,6 +7,10 @@ const configSchema = new Schema({
       type: Boolean,
       default: true,
     },
+    clientsCanBeDeleted: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   users: {

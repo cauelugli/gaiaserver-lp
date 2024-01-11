@@ -38,11 +38,12 @@ router.get("/customers", async (req, res) => {
 // CUSTOMERS
 router.put("/customers", async (req, res) => {
   try {
-    const { customersCanBeDeleted } = req.body;
+    const { customersCanBeDeleted, clientsCanBeDeleted } = req.body;
 
     const config = await Config.findOne();
 
     config.customers.customersCanBeDeleted = customersCanBeDeleted;
+    config.customers.clientsCanBeDeleted = clientsCanBeDeleted;
 
     await config.save();
     res.status(200).json(config);
