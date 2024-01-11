@@ -11,15 +11,15 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Divider,
   Box,
   IconButton,
 } from "@mui/material";
 
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
+import DarkModeButton from "./DarkModeButton";
 
-export default function UserButton({ user }) {
+export default function UserButton({ user, darkMode, setDarkMode }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleLogout = () => {
@@ -45,7 +45,7 @@ export default function UserButton({ user }) {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <List sx={{ width: 170 }}>
+        <List sx={{ width: 180 }}>
           <Link
             to={"/account"}
             style={{
@@ -61,6 +61,10 @@ export default function UserButton({ user }) {
               <ListItemText primary="Perfil" sx={{ ml: -2 }} />
             </ListItemButton>
           </Link>
+
+          <ListItemButton sx={{ mb: -1 }} onClick={() => setDarkMode(!darkMode)}>
+            <DarkModeButton />
+          </ListItemButton>
 
           <ListItemButton sx={{ mb: -1, ml:2 }} onClick={handleLogout}>
             <ListItemIcon>

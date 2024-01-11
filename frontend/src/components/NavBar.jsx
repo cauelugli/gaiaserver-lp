@@ -13,6 +13,9 @@ export default function NavBar({
   configData,
   notifications,
   setNotifications,
+  darkMode,
+  setDarkMode,
+  darkenedColor
 }) {
   return (
     <Grid
@@ -21,11 +24,13 @@ export default function NavBar({
       alignItems="center"
       justifyContent="space-between"
       sx={{
-          backgroundColor:
-          configData && configData.customization
-            ? configData.customization.mainColor
-            : "#32aacd",
-      }}
+
+        backgroundColor:
+        configData && configData.customization
+          ? darkMode
+            ? darkenedColor
+            : configData.customization.mainColor
+          : "#32aacd",      }}
     >
       <Grid item>
         <img
@@ -45,7 +50,7 @@ export default function NavBar({
           onClick={() => alert("Esse é o logo da sua empresa!")}
         />
       </Grid>
-      <Grid item sx={{mr:2}}>
+      <Grid item sx={{ mr: 2 }}>
         <Grid container direction="row">
           <NotificationsButton
             socket={socket}
@@ -54,7 +59,11 @@ export default function NavBar({
             setNotifications={setNotifications}
             sx={{ mr: 3, color: "#333" }}
           />
-          <UserButton user={user} />
+          <UserButton
+            user={user}
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
+          />
         </Grid>
       </Grid>
     </Grid>

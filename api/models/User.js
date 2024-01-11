@@ -36,12 +36,9 @@ userSchema = new mongoose.Schema({
     type: Object,
     default: {},
   },
-  isActive: {
+  hasDarkModeActive: {
     type: Boolean,
-    default: true,
-  },
-  isAllocated: {
-    type: Boolean,
+    default: false,
   },
   createdAt: {
     type: Date,

@@ -37,7 +37,7 @@ const api = axios.create({
 });
 
 function isAuthenticated(login, userData) {
-  return login && userData && userData.isActive;
+  return login && userData;
 }
 
 function hasPermission(user, configData, routePath) {
@@ -49,9 +49,33 @@ function hasPermission(user, configData, routePath) {
   return allowedRoles && allowedRoles.some((role) => role._id === user.role.id);
 }
 
+function darkenColor(hex, factor) {
+  hex = hex.replace(/^#/, "");
+  const bigint = parseInt(hex, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+
+  const newR = Math.max(0, Math.round(r - factor));
+  const newG = Math.max(0, Math.round(g - factor));
+  const newB = Math.max(0, Math.round(b - factor));
+
+  const darkenedHex = `#${((newR << 16) | (newG << 8) | newB)
+    .toString(16)
+    .padStart(6, "0")}`;
+
+  return darkenedHex;
+}
+
 export default function App() {
-  const [darkMode, setDarkMode] = useState(false);
   const [configData, setConfigData] = useState([]);
+  const [darkMode, setDarkMode] = useState(false);
+  const darkenedColor = darkenColor(
+    configData && configData.customization && configData.customization.mainColor
+      ? configData.customization.mainColor
+      : "32aacd",
+    25
+  );
   const [configTables, setConfigTables] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [userKey, setUserKey] = useState(0);
@@ -132,11 +156,9 @@ export default function App() {
   }, [userData]);
 
   return (
-    <Grid
-      sx={{ width: "auto", height: "auto", m: -1, mr:-2 }}
-    >
+    <Grid sx={{ width: "auto", height: "auto", m: -1, mr: -2 }}>
       <Router>
-        <Grid container sx={{  }}>
+        <Grid container>
           {login && (
             <NavBar
               socket={socket}
@@ -144,6 +166,9 @@ export default function App() {
               configData={configData}
               notifications={notifications}
               setNotifications={setNotifications}
+              darkMode={darkMode}
+              setDarkMode={setDarkMode}
+              darkenedColor={darkenedColor}
             />
           )}
           {login && (
@@ -151,19 +176,29 @@ export default function App() {
               item
               sx={{
                 textAlign: "center",
-                backgroundColor:
-                  configData && configData.customization
-                    ? configData.customization.mainColor
-                    : "32aacd",
+                backgroundColor: darkMode ? darkenedColor : "#32aacd",
                 height: "auto",
                 maxWidth: 58,
               }}
             >
-              <SideBar configData={configData} user={userData} />
+              <SideBar
+                configData={configData}
+                user={userData}
+                darkMode={darkMode}
+                darkenedColor={darkenedColor}
+              />
             </Grid>
           )}
 
-          <Grid sx={{ width: "95%", backgroundColor: "#777", color:"black" }}>
+          <Grid
+            sx={{
+              width: "95%",
+              backgroundColor: darkMode ? "#666" : "",
+              // userData && userData.hasDarkmodeActive ? "#777" : "",
+              // color: userData && userData.hasDarkmodeActive ? "white" : "black",
+              // color: darkMode ? "white" : "black",
+            }}
+          >
             <Grid container sx={{ p: 2 }}>
               <Grid item xs={12} xl={12}>
                 <Routes>

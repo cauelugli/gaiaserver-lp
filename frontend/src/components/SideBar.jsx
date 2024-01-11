@@ -41,9 +41,9 @@ const options = [
   },
 ];
 
-const SideBar = ({ configData, user }) => {
+const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
   const [hoveredIndex, setHoveredIndex] = React.useState(null);
-
+  console.log("darkMode", darkMode);
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
   };
@@ -76,7 +76,16 @@ const SideBar = ({ configData, user }) => {
 
   return (
     <>
-      <List>
+      <List
+        sx={{
+          backgroundColor:
+            configData && configData.customization
+              ? darkMode
+                ? darkenedColor
+                : configData.customization.mainColor
+              : "#32aacd",
+        }}
+      >
         {filteredOptions.map((option, index) => (
           <Link
             key={index}
@@ -90,7 +99,9 @@ const SideBar = ({ configData, user }) => {
 
               backgroundColor:
                 configData && configData.customization
-                  ? configData.customization.mainColor
+                  ? darkMode
+                    ? darkenedColor
+                    : configData.customization.mainColor
                   : "#32aacd",
             }}
           >
@@ -107,7 +118,9 @@ const SideBar = ({ configData, user }) => {
 
                 backgroundColor:
                   configData && configData.customization
-                    ? configData.customization.mainColor
+                    ? darkMode
+                      ? darkenedColor
+                      : configData.customization.mainColor
                     : "#32aacd",
                 position: "relative",
                 display: "flex",
@@ -122,9 +135,12 @@ const SideBar = ({ configData, user }) => {
                     configData && configData.customization
                       ? configData.customization.fontColor
                       : "white",
+
                   backgroundColor:
                     configData && configData.customization
-                      ? configData.customization.mainColor
+                      ? darkMode
+                        ? darkenedColor
+                        : configData.customization.mainColor
                       : "#32aacd",
                   zIndex: 1,
                   pr: 2,
@@ -149,9 +165,12 @@ const SideBar = ({ configData, user }) => {
                   left: 0,
                   width: "100%",
                   height: "100%",
+
                   backgroundColor:
                     configData && configData.customization
-                      ? configData.customization.mainColor
+                      ? darkMode
+                        ? darkenedColor
+                        : configData.customization.mainColor
                       : "#32aacd",
                   zIndex: 0,
                   opacity: hoveredIndex === index ? 1 : 0,
@@ -159,19 +178,59 @@ const SideBar = ({ configData, user }) => {
                 }}
               />
             </ListItemButton>
-            {option.label === "Financeiro" && <Divider sx={{ my: 0.75 }} />}
+            {option.label === "Financeiro" && (
+              <Divider
+                sx={{
+                  my: 0.75,
+                  backgroundColor:
+                    configData && configData.customization
+                      ? darkMode
+                        ? darkenedColor
+                        : configData.customization.mainColor
+                      : "#32aacd",
+                }}
+              />
+            )}
             {option.label === "Configurações" && (
-              <Grid sx={{ mt: 10, mb: 0.75, pb: 0.75 }} />
+              <Grid
+                sx={{
+                  mt: 10,
+                  mb: 0.75,
+                  pb: 0.75,
+                  backgroundColor:
+                    configData && configData.customization
+                      ? darkMode
+                        ? darkenedColor
+                        : configData.customization.mainColor
+                      : "#32aacd",
+                }}
+              />
             )}
           </Link>
         ))}
-        <ListItemButton>
+        <ListItemButton
+          sx={{
+            backgroundColor:
+              configData && configData.customization
+                ? darkMode
+                  ? darkenedColor
+                  : configData.customization.mainColor
+                : "#32aacd",
+          }}
+        >
           <img
             src={`http://localhost:3000/static/logo_dog.png`}
             alt="Logo do Tenant"
             style={{
               width: "65%",
               cursor: "pointer",
+
+              backgroundColor:
+                configData && configData.customization
+                  ? darkMode
+                    ? darkenedColor
+                    : configData.customization.mainColor
+                  : "#32aacd",
             }}
             onClick={() => alert("GS é um sonho feito com muito amor")}
           />
