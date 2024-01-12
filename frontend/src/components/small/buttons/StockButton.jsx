@@ -30,8 +30,8 @@ export default function BasicMenu(props) {
   };
 
   const handleMenuItemClick = (menuIndex) => {
-    handleClose(); // Fecha o menu após a seleção
-    props.openModal(menuIndex); // Chama a função passada via props para abrir o modal correspondente
+    handleClose();
+    props.openModal(menuIndex);
   };
 
   const [openSubmenu, setOpenSubmenu] = useState(false);

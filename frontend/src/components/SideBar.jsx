@@ -43,7 +43,6 @@ const options = [
 
 const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
   const [hoveredIndex, setHoveredIndex] = React.useState(null);
-  console.log("darkMode", darkMode);
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
   };

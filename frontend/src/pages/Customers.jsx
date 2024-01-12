@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   Dialog,
+  Divider,
   Grid,
   InputAdornment,
   ListItemIcon,
@@ -25,6 +26,7 @@ import {
 
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import PersonIcon from "@mui/icons-material/Person";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 
 import CustomerTable from "../tables/CustomerTable";
 import ClientTable from "../tables/ClientTable";
@@ -34,6 +36,7 @@ import AddCustomerForm from "../forms/add/AddCustomerForm";
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import TableFilters from "../components/TableFilters";
+import ImportContacts from "../forms/misc/ImportContacts";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -56,13 +59,13 @@ function CustomTabPanel(props) {
 export default function Customers({ user, configTables }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
-  // const [configTables, setConfigTables] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [clients, setClients] = React.useState([]);
   const [customers, setCustomers] = React.useState([]);
 
   const [openAddCustomer, setOpenAddCustomer] = React.useState(false);
   const [openAddClient, setOpenAddClient] = React.useState(false);
+  const [openImportContacts, setOpenImportContacts] = React.useState(false);
 
   const [searchOption, setSearchOption] = React.useState("name");
   const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
@@ -122,9 +125,6 @@ export default function Customers({ user, configTables }) {
     fetchData();
   }, [refreshData]);
 
-  console.log("configTables.customerClient", configTables.customerClient);
-  console.log("configTables.customerCustomer", configTables.customerCustomer);
-
   return (
     <Box>
       <Grid
@@ -166,7 +166,7 @@ export default function Customers({ user, configTables }) {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuList sx={{ width: 170 }}>
+            <MenuList sx={{ width: 200 }}>
               <MenuItem onClick={() => setOpenAddCustomer(!openAddCustomer)}>
                 <ListItemIcon>
                   <ApartmentIcon />
@@ -178,6 +178,16 @@ export default function Customers({ user, configTables }) {
                   <PersonIcon />
                 </ListItemIcon>
                 <ListItemText>Pessoa Física</ListItemText>
+              </MenuItem>
+              <Divider sx={{mx:2}}/>
+
+              <MenuItem
+                onClick={() => setOpenImportContacts(!openImportContacts)}
+              >
+                <ListItemIcon>
+                  <UploadFileIcon />
+                </ListItemIcon>
+                <ListItemText>Importar Contatos</ListItemText>
               </MenuItem>
             </MenuList>
           </Menu>
@@ -295,6 +305,23 @@ export default function Customers({ user, configTables }) {
           <AddClientForm
             openAdd={openAddClient}
             setOpenAdd={setOpenAddClient}
+            toast={toast}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+          />
+        </Dialog>
+      )}
+
+      {openImportContacts && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openImportContacts}
+          onClose={() => setOpenImportContacts(!openImportContacts)}
+        >
+          <ImportContacts
+            openAdd={openImportContacts}
+            setOpenAdd={setOpenImportContacts}
             toast={toast}
             refreshData={refreshData}
             setRefreshData={setRefreshData}

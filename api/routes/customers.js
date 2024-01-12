@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Customer = require("../models/Customer");
+const Client = require("../models/Client");
 
 // GET ALL CUSTOMERS
 router.get("/", async (req, res) => {
@@ -65,6 +66,78 @@ router.put("/", async (req, res) => {
     res.status(200).json(updatedCustomer);
   } catch (err) {
     res.status(500).json(err);
+  }
+});
+
+// CREATE CUSTOMER OR CLIENT FROM IMPORT CSV FILE
+const formatString = (value, mask) => {
+  const valueArray = value.split("");
+  let result = "";
+
+  for (let i = 0, j = 0; i < mask.length && j < valueArray.length; i++) {
+    if (mask[i] === "0") {
+      result += valueArray[j];
+      j++;
+    } else {
+      result += mask[i];
+    }
+  }
+
+  return result;
+};
+router.post("/importContacts", async (req, res) => {
+  try {
+    const fileData = req.body.fileData.slice(1, -1);
+    const createdEntities = [];
+
+    for (let i = 0; i < fileData.length; i++) {
+      const row = fileData[i];
+      const isCustomer =
+        row[row.length - 1] !== "" && row[row.length - 1] !== Boolean(false);
+
+      let specificData = {};
+
+      if (isCustomer) {
+        specificData = {
+          name: row[0],
+          cnpj: formatString(row[1], "00.000.000/0000-00"),
+          phone: formatString(
+            row[2],
+            row[2].length === 10 ? "(00) 0000-0000" : "(00) 00000-0000"
+          ),
+          mainContactEmail: row[3],
+          address: row[4],
+        };
+      } else {
+        specificData = {
+          name: row[0],
+          cpf: formatString(row[1], "000.000.000-00"),
+          phone: formatString(
+            row[2],
+            row[2].length === 10 ? "(00) 0000-0000" : "(00) 00000-0000"
+          ),
+          email: row[3],
+          addressHome: row[4],
+        };
+      }
+
+      const entityData = { ...specificData };
+
+      if (isCustomer) {
+        const newCustomer = new Customer(entityData);
+        const savedCustomer = await newCustomer.save();
+        createdEntities.push(savedCustomer);
+      } else {
+        const newClient = new Client(entityData);
+        const savedClient = await newClient.save();
+        createdEntities.push(savedClient);
+      }
+    }
+
+    res.status(201).json(createdEntities);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erro ao processar a importação" });
   }
 });
 
