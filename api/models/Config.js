@@ -15,10 +15,6 @@ const configSchema = new Schema({
       type: Boolean,
       default: false,
     },
-    allowSameNameClient: {
-      type: Boolean,
-      default: false,
-    },
   },
 
   users: {
