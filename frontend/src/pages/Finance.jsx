@@ -23,14 +23,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import ApartmentIcon from "@mui/icons-material/Apartment";
-import PersonIcon from "@mui/icons-material/Person";
-
-import CustomerTable from "../tables/CustomerTable";
-import ClientTable from "../tables/ClientTable";
-import AddClientForm from "../forms/add/AddClientForm";
-import AddCustomerForm from "../forms/add/AddCustomerForm";
-
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import TableFilters from "../components/TableFilters";
