@@ -11,6 +11,14 @@ const configSchema = new Schema({
       type: Boolean,
       default: true,
     },
+    allowSameNameCustomer: {
+      type: Boolean,
+      default: false,
+    },
+    allowSameNameClient: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   users: {

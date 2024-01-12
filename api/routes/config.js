@@ -38,12 +38,14 @@ router.get("/customers", async (req, res) => {
 // CUSTOMERS
 router.put("/customers", async (req, res) => {
   try {
-    const { customersCanBeDeleted, clientsCanBeDeleted } = req.body;
+    const { customersCanBeDeleted, clientsCanBeDeleted, allowSameNameCustomer, allowSameNameClient } = req.body;
 
     const config = await Config.findOne();
 
     config.customers.customersCanBeDeleted = customersCanBeDeleted;
     config.customers.clientsCanBeDeleted = clientsCanBeDeleted;
+    config.customers.allowSameNameCustomer = allowSameNameCustomer;
+    config.customers.allowSameNameClient = allowSameNameClient;
 
     await config.save();
     res.status(200).json(config);

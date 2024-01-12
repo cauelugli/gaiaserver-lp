@@ -27,6 +27,9 @@ export default function Customers({ onClose }) {
   const [customersCanBeDeleted, setCustomersCanBeDeleted] =
     React.useState(null);
   const [clientsCanBeDeleted, setClientsCanBeDeleted] = React.useState(null);
+  const [allowSameNameCustomer, setAllowSameNameCustomer] =
+    React.useState(null);
+  const [allowSameNameClient, setAllowSameNameClient] = React.useState(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +40,10 @@ export default function Customers({ onClose }) {
           config.data[0].customers.customersCanBeDeleted
         );
         setClientsCanBeDeleted(config.data[0].customers.clientsCanBeDeleted);
+        setAllowSameNameCustomer(
+          config.data[0].customers.allowSameNameCustomer
+        );
+        setAllowSameNameClient(config.data[0].customers.allowSameNameClient);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -50,6 +57,8 @@ export default function Customers({ onClose }) {
       const res = await api.put("/config/customers", {
         customersCanBeDeleted,
         clientsCanBeDeleted,
+        allowSameNameCustomer,
+        allowSameNameClient,
       });
 
       if (res.data) {
@@ -170,6 +179,107 @@ export default function Customers({ onClose }) {
                     row
                     value={clientsCanBeDeleted}
                     onChange={(e) => setClientsCanBeDeleted(e.target.value)}
+                  >
+                    <FormControlLabel
+                      value={Boolean(true)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
+                    />
+
+                    <FormControlLabel
+                      value={Boolean(false)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
+                    />
+                  </RadioGroup>
+                </Grid>
+              </Grid>
+              <Grid item sx={{ my: 1.5 }}>
+                <Grid container direction="row">
+                  <Typography sx={{ my: "auto" }}>
+                    Permitir Criação de Cliente Empresa com Nome já Cadastrado
+                  </Typography>
+                  <Tooltip
+                    title={
+                      <Typography sx={{ fontSize: 12 }}>
+                        Se a opção marcada for "Sim", novos Clientes Empresa
+                        poderão ser criados com nomes que já existem no sistema.
+                        A opção padrão é "Não".
+                      </Typography>
+                    }
+                  >
+                    <Button
+                      size="small"
+                      sx={{
+                        backgroundColor: "white",
+                        color: "#32aacd",
+                        "&:hover": {
+                          backgroundColor: "white",
+                        },
+                      }}
+                    >
+                      ?
+                    </Button>
+                  </Tooltip>
+                  <RadioGroup
+                    row
+                    value={allowSameNameCustomer}
+                    onChange={(e) => setAllowSameNameCustomer(e.target.value)}
+                  >
+                    <FormControlLabel
+                      value={Boolean(true)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
+                    />
+
+                    <FormControlLabel
+                      value={Boolean(false)}
+                      control={
+                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                      }
+                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
+                    />
+                  </RadioGroup>
+                </Grid>
+              </Grid>
+              <Grid item sx={{ my: 1.5 }}>
+                <Grid container direction="row">
+                  <Typography sx={{ my: "auto" }}>
+                    Permitir Criação de Cliente Pessoa Física com Nome já
+                    Cadastrado
+                  </Typography>
+                  <Tooltip
+                    title={
+                      <Typography sx={{ fontSize: 12 }}>
+                        Se a opção marcada for "Sim", novos Clientes Pessoa
+                        Física poderão ser criados com nomes que já existem no
+                        sistema. A opção padrão é "Não".
+                      </Typography>
+                    }
+                  >
+                    <Button
+                      size="small"
+                      sx={{
+                        backgroundColor: "white",
+                        color: "#32aacd",
+                        "&:hover": {
+                          backgroundColor: "white",
+                        },
+                      }}
+                    >
+                      ?
+                    </Button>
+                  </Tooltip>
+                  <RadioGroup
+                    row
+                    value={allowSameNameClient}
+                    onChange={(e) => setAllowSameNameClient(e.target.value)}
                   >
                     <FormControlLabel
                       value={Boolean(true)}
