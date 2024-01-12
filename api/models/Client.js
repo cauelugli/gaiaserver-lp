@@ -15,11 +15,9 @@ const clientSchema = new mongoose.Schema({
   },
   addressDelivery: {
     type: String,
-    required: true,
   },
   addressBill: {
     type: String,
-    required: true,
   },
   phone: {
     type: String,
@@ -31,11 +29,9 @@ const clientSchema = new mongoose.Schema({
   },
   birthdate: {
     type: Date,
-    required: true,
   },
   gender: {
     type: String,
-    required: true,
   },
   createdAt: {
     type: Date,

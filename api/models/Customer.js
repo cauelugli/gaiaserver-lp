@@ -27,7 +27,6 @@ const customerSchema = new mongoose.Schema({
   },
   segment: {
     type: String,
-    required: true,
   },
   domain: {
     type: String,
