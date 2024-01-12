@@ -33,6 +33,7 @@ const AddCustomerForm = ({
   refreshData,
   setRefreshData,
   toast,
+  config,
 }) => {
   const [name, setName] = React.useState("");
   const [address, setAddress] = React.useState("");
@@ -79,6 +80,7 @@ const AddCustomerForm = ({
         cnpj,
         segment,
         employees,
+        config,
       });
       if (res.data) {
         toast.success("Cliente Adicionado!", {
@@ -91,8 +93,21 @@ const AddCustomerForm = ({
       setOpenAdd(!openAdd);
       setRefreshData(!refreshData);
     } catch (err) {
-      alert("Vish, deu não...");
-      console.log(err);
+      if (err.response && err.response.status === 422) {
+        toast.error(err.response.data.error, {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      } else {
+        toast.error("Houve algum erro...", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
     }
   };
 

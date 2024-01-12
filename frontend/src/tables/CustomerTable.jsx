@@ -684,6 +684,7 @@ export default function CustomerTable({
         >
           <EditCustomerForm
             openEdit={openEdit}
+            config={configData}
             selectedCustomer={selectedCustomer}
             setOpenEdit={setOpenEdit}
             refreshData={refreshData}

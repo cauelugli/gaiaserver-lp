@@ -290,6 +290,7 @@ export default function Customers({ user, configTables }) {
             openAdd={openAddCustomer}
             setOpenAdd={setOpenAddCustomer}
             toast={toast}
+            config={config}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
           />

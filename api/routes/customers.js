@@ -20,11 +20,13 @@ router.post("/", async (req, res) => {
   try {
     const existingNameUser = await Customer.findOne({ name });
     if (existingNameUser) {
-      return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
-    } else {
-      const savedCustomer = await newCustomer.save();
-      res.status(200).json(savedCustomer);
+      if (!req.body.config.allowSameNameCustomer) {
+        return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
+      }
     }
+
+    const savedCustomer = await newCustomer.save();
+    res.status(200).json(savedCustomer);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -44,7 +46,15 @@ router.delete("/:id", async (req, res) => {
 
 // UPDATE CUSTOMER
 router.put("/", async (req, res) => {
+  const { name } = req.body;
   try {
+    const existingNameUser = await Customer.findOne({ name });
+    if (existingNameUser) {
+      if (!req.body.config.allowSameNameCustomer) {
+        return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
+      }
+    }
+    
     const updatedCustomer = await Customer.findByIdAndUpdate(
       req.body.customer,
       {
