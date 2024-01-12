@@ -349,4 +349,23 @@ router.put("/readNotification", async (req, res) => {
   }
 });
 
+// SET USER DARK MODE
+router.put("/darkMode", async (req, res) => {
+  try {
+    const { userId, darkMode } = req.body;
+
+    const user = await User.findById(userId);
+
+    user.hasDarkModeActive = !darkMode;
+    await user.save();
+
+    return res.json({ success: true });
+  } catch (error) {
+    console.error("There's an error");
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

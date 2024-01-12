@@ -94,6 +94,9 @@ export default function App() {
         setConfigData(config.data[0]);
         setConfigTables(configTables.data);
         setNotifications(notifications.data);
+        if (userData.hasDarkModeActive) {
+          setDarkMode(true);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -193,7 +196,7 @@ export default function App() {
           <Grid
             sx={{
               width: "95%",
-              backgroundColor: darkMode ? "#666" : "",
+              backgroundColor: darkMode ? "#181c24" : "",
               // userData && userData.hasDarkmodeActive ? "#777" : "",
               // color: userData && userData.hasDarkmodeActive ? "white" : "black",
               // color: darkMode ? "white" : "black",

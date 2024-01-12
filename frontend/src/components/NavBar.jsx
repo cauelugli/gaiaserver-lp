@@ -15,7 +15,7 @@ export default function NavBar({
   setNotifications,
   darkMode,
   setDarkMode,
-  darkenedColor
+  darkenedColor,
 }) {
   return (
     <Grid
@@ -24,13 +24,13 @@ export default function NavBar({
       alignItems="center"
       justifyContent="space-between"
       sx={{
-
         backgroundColor:
-        configData && configData.customization
-          ? darkMode
-            ? darkenedColor
-            : configData.customization.mainColor
-          : "#32aacd",      }}
+          configData && configData.customization
+            ? darkMode || user.hasDarkModeActive
+              ? darkenedColor
+              : configData.customization.mainColor
+            : "#32aacd",
+      }}
     >
       <Grid item>
         <img

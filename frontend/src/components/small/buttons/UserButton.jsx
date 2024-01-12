@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -15,8 +16,13 @@ import {
   IconButton,
 } from "@mui/material";
 
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
+
 import DarkModeButton from "./DarkModeButton";
 
 export default function UserButton({ user, darkMode, setDarkMode }) {
@@ -33,6 +39,22 @@ export default function UserButton({ user, darkMode, setDarkMode }) {
     setTimeout(() => {
       window.location.reload();
     }, 1500);
+  };
+
+  const handleUseDarkMode = async () => {
+    let res;
+    res = await api.put("/users/darkMode", {
+      userId: user._id,
+      darkMode,
+    });
+    if (res.data) {
+      toast.success("Dark Mode Alterado!", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+    }
   };
 
   return (
@@ -54,7 +76,7 @@ export default function UserButton({ user, darkMode, setDarkMode }) {
             }}
             onClick={() => setAnchorEl(null)}
           >
-            <ListItemButton sx={{ mb: -1, ml:2 }}>
+            <ListItemButton sx={{ mb: -1, ml: 2 }}>
               <ListItemIcon>
                 <PersonIcon />
               </ListItemIcon>
@@ -62,11 +84,16 @@ export default function UserButton({ user, darkMode, setDarkMode }) {
             </ListItemButton>
           </Link>
 
-          <ListItemButton sx={{ mb: -1 }} onClick={() => setDarkMode(!darkMode)}>
+          <ListItemButton
+            sx={{ mb: -1 }}
+            onClick={() => {
+              setDarkMode(!darkMode), handleUseDarkMode();
+            }}
+          >
             <DarkModeButton />
           </ListItemButton>
 
-          <ListItemButton sx={{ mb: -1, ml:2 }} onClick={handleLogout}>
+          <ListItemButton sx={{ mb: -1, ml: 2 }} onClick={handleLogout}>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
