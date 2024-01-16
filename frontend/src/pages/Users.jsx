@@ -361,6 +361,8 @@ export default function Users({ user }) {
 
             <RoleTable
               configData={config}
+              users={users}
+              managers={managers}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               searchValue={searchValue}

@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import { Avatar, Grid, Typography } from "@mui/material";
 
-const PositionMembers = ({ members, users }) => {
+const PositionMembers = ({ members, users, managers }) => {
+  const allUsers = [...users, ...managers];
   const [userDetails, setUserDetails] = React.useState({});
 
   React.useEffect(() => {
@@ -11,7 +13,7 @@ const PositionMembers = ({ members, users }) => {
     const fetchUserDetails = async () => {
       const details = {};
       for (const memberId of members) {
-        const user = users.find((user) => user._id === memberId);
+        const user = allUsers.find((user) => user._id === memberId);
         if (user) {
           details[memberId] = user;
         }
@@ -20,7 +22,7 @@ const PositionMembers = ({ members, users }) => {
     };
 
     fetchUserDetails();
-  }, [members, users]);
+  }, [members, allUsers]);
 
   const displayedMembers = members.slice(0, 3);
   const remainingMembersCount = members.length - displayedMembers.length;

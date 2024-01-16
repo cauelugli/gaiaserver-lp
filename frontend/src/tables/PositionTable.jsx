@@ -172,7 +172,7 @@ export default function PositionTable({
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        <PositionMembers members={position.members} users={users}/>
+                        <PositionMembers members={position.members} users={users} managers=""/>
                       </TableCell>
                       <TableCell align="center" sx={{ py: 0 }}>
                         <Grid

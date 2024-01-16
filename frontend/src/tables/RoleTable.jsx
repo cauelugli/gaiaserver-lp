@@ -28,6 +28,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditRoleForm from "../forms/edit/EditRoleForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+import PositionMembers from "../components/small/PositionMembers";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -36,6 +37,8 @@ const api = axios.create({
 export default function RoleTable({
   refreshData,
   configData,
+  users,
+  managers,
   setRefreshData,
   searchValue,
   searchOption,
@@ -79,6 +82,10 @@ export default function RoleTable({
     {
       id: "name",
       label: "Nome",
+    },
+    {
+      id: "members",
+      label: "Colaboradores",
     },
     {
       id: "actions",
@@ -182,6 +189,10 @@ export default function RoleTable({
                   <TableCell onClick={() => handleOpenDetail(row)}>
                     <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
                   </TableCell>
+
+                  <TableCell align="center">
+                    <PositionMembers members={row.members} users={users} managers={managers} />
+                  </TableCell>
                   <TableCell align="center" sx={{ py: 0 }}>
                     <Grid
                       container
@@ -247,7 +258,7 @@ export default function RoleTable({
               openDialog={openDialog}
               setOpenDialog={setOpenDialog}
               refreshData={refreshData}
-              setRefreshData={setRefreshData}  
+              setRefreshData={setRefreshData}
               toast={toast}
               endpoint="roles"
               successMessage={`${
