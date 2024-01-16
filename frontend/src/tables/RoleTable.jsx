@@ -246,6 +246,8 @@ export default function RoleTable({
               selectedItem={selectedItem}
               openDialog={openDialog}
               setOpenDialog={setOpenDialog}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}  
               toast={toast}
               endpoint="roles"
               successMessage={`${

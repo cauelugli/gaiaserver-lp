@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Role = require("../models/Role");
 const User = require("../models/User");
+const Manager = require("../models/Manager");
 
 // GET ALL ROLES
 router.get("/", async (req, res) => {
@@ -39,13 +40,16 @@ router.post("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   const roleId = req.params.id;
   try {
-    const roleToDelete = await Role.findById(roleId);
-    const roleNameToDelete = roleToDelete.name;
     const deletedRole = await Role.findByIdAndDelete(roleId);
-    const usersToUpdate = await User.find({ role: roleNameToDelete });
+    const usersToUpdate = await User.find({ 'role.id': roleId });
     for (const user of usersToUpdate) {
-      user.role = "-";
+      user.role = { id: null, name: "-" };
       await user.save();
+    }
+    const managersToUpdate = await Manager.find({ 'role.id': roleId });
+    for (const manager of managersToUpdate) {
+      manager.role = { id: null, name: "-" };
+      await manager.save();
     }
     res.status(200).json(deletedRole);
   } catch (err) {
@@ -75,12 +79,15 @@ router.put("/", async (req, res) => {
       { new: true }
     );
 
-    const usersToUpdate = await User.find({
-      role: req.body.previousData.name,
-    });
+    const usersToUpdate = await User.find({ 'role.id': roleId });
     for (const user of usersToUpdate) {
-      user.role = name;
+      user.role = { id: roleId, name: name };
       await user.save();
+    }
+    const managersToUpdate = await Manager.find({ 'role.id': roleId });
+    for (const manager of managersToUpdate) {
+      manager.role = { id: roleId, name: name };
+      await manager.save();
     }
 
     res.status(200).json(updatedRole);

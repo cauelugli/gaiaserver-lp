@@ -22,8 +22,9 @@ const DeleteOperatorForm = ({
   openDelete,
   setOpenDelete,
   selectedOperator,
-  fetchData,
-  toast,
+  refreshData,
+  setRefreshData,
+  toast
 }) => {
   const handleEdit = async (e) => {
     e.preventDefault();
@@ -43,8 +44,9 @@ const DeleteOperatorForm = ({
         });
       }
       setOpenDelete(!openDelete);
-      fetchData();
+      setRefreshData(!refreshData);
     } catch (err) {
+      console.log("err", err)
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {
           closeOnClick: true,

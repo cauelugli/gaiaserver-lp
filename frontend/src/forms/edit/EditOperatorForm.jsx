@@ -47,7 +47,7 @@ const EditOperatorForm = ({
           operatorId: selectedOperator._id,
           operator: selectedOperator,
           username,
-          role: { id: role._id, name: role.name },
+          role: { id: role._id || role.id, name: role.name },
           option,
         });
         if (res.data) {

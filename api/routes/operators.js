@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const router = express.Router();
+const Role = require("../models/Role");
 const User = require("../models/User");
 const Manager = require("../models/Manager");
 
@@ -23,6 +24,10 @@ router.put("/", async (req, res) => {
         { new: true }
       );
 
+      await Role.findByIdAndUpdate(req.body.operator.role.id, {
+        $pull: { members: req.body.operatorId },
+      });
+
       return res.status(200).json(updatedOperator);
     } catch (err) {
       console.log(err);
@@ -42,6 +47,9 @@ router.put("/", async (req, res) => {
           },
           { new: true }
         );
+        await Role.findByIdAndUpdate(req.body.role.id, {
+          $addToSet: { members: req.body.operatorId },
+        });
 
         res.status(200).json(updatedOperator);
       } catch (err) {
@@ -62,6 +70,9 @@ router.put("/", async (req, res) => {
           },
           { new: true }
         );
+        await Role.findByIdAndUpdate(req.body.role.id, {
+          $addToSet: { members: req.body.operatorId },
+        });
 
         res.status(200).json(updatedOperator);
       } catch (err) {
@@ -81,6 +92,16 @@ router.put("/", async (req, res) => {
         },
         { new: true }
       );
+
+      if (req.body.role.id !== req.body.operator.role.id) {
+        await Role.findByIdAndUpdate(req.body.operator.role.id, {
+          $pull: { members: req.body.operatorId },
+        });
+
+        await Role.findByIdAndUpdate(req.body.role.id, {
+          $addToSet: { members: req.body.operatorId },
+        });
+      }
 
       res.status(200).json(updatedOperator);
     } catch (err) {
