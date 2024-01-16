@@ -53,6 +53,13 @@ const configSchema = new Schema({
     },
   },
 
+  projects: {
+    canBeDeleted: {
+      type: Boolean,
+      default: true,
+    },
+  },
+
   quotes: {
     canBeDeleted: {
       type: Boolean,
@@ -75,6 +82,13 @@ const configSchema = new Schema({
       default: true,
     },
     stockEntriesCanBeChallenged: {
+      type: Boolean,
+      default: true,
+    },
+  },
+
+  reports: {
+    canBeDeleted: {
       type: Boolean,
       default: true,
     },

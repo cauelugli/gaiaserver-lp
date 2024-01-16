@@ -18,6 +18,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
+import AssessmentIcon from "@mui/icons-material/Assessment";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import AutoFixNormalIcon from "@mui/icons-material/AutoFixNormal";
 import BuildIcon from "@mui/icons-material/Build";
@@ -26,12 +27,13 @@ import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import LanIcon from "@mui/icons-material/Lan";
 import LockIcon from "@mui/icons-material/Lock";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
+import SchemaIcon from "@mui/icons-material/Schema";
+import TableViewIcon from "@mui/icons-material/TableView";
+import ViewSidebarIcon from "@mui/icons-material/ViewSidebar";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
-import ViewSidebarIcon from "@mui/icons-material/ViewSidebar";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import TableViewIcon from "@mui/icons-material/TableView";
 
 import CustomersModal from "../forms/config/Customers";
 import UsersModal from "../forms/config/Users";
@@ -70,6 +72,11 @@ const options = [
     modal: <RequestsModal />,
   },
   {
+    icon: <SchemaIcon sx={{ fontSize: 48 }} />,
+    text: "Projetos",
+    modal: <RequestsModal />,
+  },
+  {
     icon: <RequestQuoteIcon sx={{ fontSize: 48 }} />,
     text: "Orçamentos",
     modal: <QuotesModal />,
@@ -83,6 +90,12 @@ const options = [
     icon: <WarehouseIcon sx={{ fontSize: 48 }} />,
     text: "Estoque",
     modal: <StockModal />,
+  },
+
+  {
+    icon: <AssessmentIcon sx={{ fontSize: 48 }} />,
+    text: "Relatórios",
+    modal: <RequestsModal />,
   },
   {
     icon: <AttachMoneyIcon sx={{ fontSize: 48 }} />,
@@ -137,7 +150,6 @@ export default function Config({ user }) {
 
   const handleItemClick = (modal) => {
     setOpenModal(modal);
-    console.log("modal.type.name", modal.type.name);
     setChosenModal(modal.type.name);
   };
 
