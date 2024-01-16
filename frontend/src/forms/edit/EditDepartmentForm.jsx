@@ -288,6 +288,7 @@ const EditDepartmentForm = ({
             )}
             value={selectedUsers}
             onChange={handleUserSelectionChange}
+            option="department"
           />
         </Grid>
 

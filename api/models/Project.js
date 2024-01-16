@@ -1,0 +1,60 @@
+const mongoose = require("mongoose");
+
+const projectSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  creator: {
+    type: String,
+    required: true,
+  },
+  customer: {
+    type: Object,
+    required: true,
+  },
+  customerType: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+  },
+  mainDepartment: {
+    type: Object,
+  },
+  members: {
+    type: Array,
+  },
+  departments: {
+    type: Array,
+  },
+  value: {
+    type: Array,
+  },
+  createdAt: {
+    type: String,
+  },
+  dueTo: {
+    type: String,
+  },
+  interactions: {
+    type: Array,
+  },
+  milestones: {
+    type: Object,
+  },
+  stages: {
+    type: Object,
+  },
+  goals: {
+    type: Object,
+  },
+  attachments: {
+    type: Object,
+  },
+});
+
+const Project = mongoose.model("Project", projectSchema);
+
+module.exports = Project;

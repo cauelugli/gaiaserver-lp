@@ -266,6 +266,7 @@ const AddDepartmentForm = ({
             users={users.filter((user) => !user.department)}
             value={selectedUsers}
             onChange={setSelectedUsers}
+            option="department"
           />
         </Grid>
 

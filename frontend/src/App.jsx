@@ -31,6 +31,7 @@ import Account from "./pages/Account";
 import Quotes from "./pages/Quotes";
 import Finance from "./pages/Finance";
 import Config from "./pages/Config";
+import Projects from "./pages/Projects";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -316,6 +317,21 @@ export default function App() {
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "requests") ? (
                         <Requests user={userData} configTables={configTables} />
+                      ) : isAuthenticated(login, userData) ? (
+                        <Typography sx={{ m: 2, fontSize: 16 }}>
+                          Seu usuário não possui autorização à página.
+                        </Typography>
+                      ) : (
+                        <Navigate to="/login" />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/projects"
+                    element={
+                      isAuthenticated(login, userData) &&
+                      hasPermission(userData, configData, "projects") ? (
+                        <Projects user={userData} configTables={configTables} />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
                           Seu usuário não possui autorização à página.

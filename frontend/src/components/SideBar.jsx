@@ -27,7 +27,7 @@ const options = [
   { label: "Colaboradores", icon: <GroupIcon />, link: "/users" },
   { label: "Departamentos", icon: <LanIcon />, link: "/departments" },
   { label: "Pedidos", icon: <GradingIcon />, link: "/requests" },
-  { label: "Projetos", icon: <SchemaIcon />, link: "/projects", disabled: true },
+  { label: "Projetos", icon: <SchemaIcon />, link: "/projects" },
   { label: "Orçamentos", icon: <RequestQuoteIcon />, link: "/quotes" },
   { label: "Serviços", icon: <BuildIcon />, link: "/services" },
   { label: "Estoque", icon: <WarehouseIcon />, link: "/stock" },
