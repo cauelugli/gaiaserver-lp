@@ -21,8 +21,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
 
 import Members from "../../components/small/Members";
+import ProjectStages from "../../components/small/ProjectStages";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -39,6 +41,7 @@ export default function AddProjectForm({
   clients,
   departments,
 }) {
+  const [firstPartOK, setFirstPartOK] = React.useState(false);
   const [customer, setCustomer] = React.useState("");
   const [customerType, setCustomerType] = React.useState("");
   const [name, setName] = React.useState("");
@@ -107,6 +110,7 @@ export default function AddProjectForm({
         Novo Projeto
       </DialogTitle>
       <DialogContent>
+        {/* FIRST PART */}
         {/* FIRST LINE */}
         <Grid
           sx={{ mt: 2 }}
@@ -343,6 +347,30 @@ export default function AddProjectForm({
           </FormControl>
         )}
         {/* FOURTH LINE */}
+        {mainDepartment && description.length > 0 && (
+          <Grid
+            sx={{ mt: 2 }}
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Button
+              sx={{ my: 2 }}
+              variant="contained"
+              color="success"
+              disabled={firstPartOK}
+              startIcon={<CheckIcon />}
+              onClick={() => setFirstPartOK(Boolean(true))}
+            >
+              OK e Prosseguir
+            </Button>
+          </Grid>
+        )}
+        {/* FIRST PART */}
+        {/* SECOND PART */}
+        {firstPartOK && <ProjectStages />}
+        {/* SECOND PART */}
       </DialogContent>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">

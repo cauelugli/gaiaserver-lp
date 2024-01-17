@@ -3,16 +3,27 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
+  FormControl,
+  FormLabel,
   Grid,
   IconButton,
   TextField,
   Typography,
 } from "@mui/material";
+
+import { IMaskInput } from "react-imask";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ProjectStageTasks from "./ProjectStageTasks";
 
 const ProjectStages = () => {
   const [boxes, setBoxes] = useState([
-    { title: "", objective: "", tasks: "", status: "" },
+    {
+      title: "",
+      objective: "",
+      tasks: [],
+      dueTo: "",
+      anchorEl: null,
+    },
   ]);
 
   const getColor = (index) => {
@@ -32,9 +43,18 @@ const ProjectStages = () => {
     return colors[index % colors.length];
   };
 
-  const handleAddBox = () => {
+  const handleAddBox = (event, index) => {
     if (boxes.length < 10) {
-      setBoxes([...boxes, { title: "", objective: "", tasks: "", status: "" }]);
+      setBoxes([
+        ...boxes,
+        {
+          title: "",
+          objective: "",
+          tasks: [],
+          dueTo: "",
+          anchorEl: null,
+        },
+      ]);
     }
   };
 
@@ -48,6 +68,36 @@ const ProjectStages = () => {
     const updatedBoxes = [...boxes];
     updatedBoxes[index][field] = value;
     setBoxes(updatedBoxes);
+  };
+
+  const handleTaskClick = (event, index) => {
+    const updatedBoxes = [...boxes];
+    updatedBoxes[index].anchorEl = event.currentTarget;
+    setBoxes(updatedBoxes);
+  };
+
+  const handleTaskClose = (index) => {
+    const updatedBoxes = [...boxes];
+    updatedBoxes[index].anchorEl = null;
+    setBoxes(updatedBoxes);
+  };
+
+  const handleAddTask = (boxIndex, newTask) => {
+    const updatedBoxes = [...boxes];
+    updatedBoxes[boxIndex].tasks.push(newTask);
+    setBoxes(updatedBoxes);
+  };
+
+  const handleClearTasks = () => {
+    setBoxes([
+      {
+        title: "",
+        objective: "",
+        tasks: [],
+        dueTo: "",
+        anchorEl: null,
+      },
+    ]);
   };
 
   return (
@@ -64,7 +114,7 @@ const ProjectStages = () => {
         justifyContent="center"
       >
         {boxes.map((box, index) => (
-          <Box key={index}>
+          <Box key={index} sx={{ width: "100%" }}>
             <Grid
               container
               direction="column"
@@ -74,7 +124,7 @@ const ProjectStages = () => {
               <Grid item>
                 {index === boxes.length - 1 && (
                   <IconButton
-                    sx={{ mt: 1 }}
+                    sx={{ mt: 2 }}
                     onClick={() => handleRemoveBox(index)}
                     disabled={index === 0}
                   >
@@ -85,7 +135,7 @@ const ProjectStages = () => {
                   label={`Fase ${index + 1}`}
                   size="small"
                   value={box.title}
-                  sx={{ width: 200, backgroundColor: getColor(index), m: 1 }}
+                  sx={{ width: 150, backgroundColor: getColor(index), mt: 2 }}
                   onChange={(e) =>
                     handleInputChange(index, "title", e.target.value)
                   }
@@ -94,29 +144,43 @@ const ProjectStages = () => {
                   label={`Objetivo`}
                   size="small"
                   value={box.objective}
-                  sx={{ width: 200, m: 1 }}
+                  sx={{ width: 250, mx: 1, mt: 2 }}
                   onChange={(e) =>
                     handleInputChange(index, "objective", e.target.value)
                   }
                 />
-                <TextField
-                  label={`Tarefas`}
-                  size="small"
-                  value={box.tasks}
-                  sx={{ width: 200, m: 1 }}
-                  onChange={(e) =>
-                    handleInputChange(index, "tasks", e.target.value)
-                  }
-                />
-                <TextField
-                  label={`Status`}
-                  size="small"
-                  value={box.status}
-                  sx={{ width: 200, m: 1 }}
-                  onChange={(e) =>
-                    handleInputChange(index, "status", e.target.value)
-                  }
-                />
+                <FormControl sx={{ mr: 1, mt:2 }}>
+                  <ProjectStageTasks
+                    tasks={box.tasks}
+                    anchorEl={box.anchorEl}
+                    onClose={() => handleTaskClose(index)}
+                    onAddTask={(newTask) => handleAddTask(index, newTask)}
+                    onClearTasks={handleClearTasks}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>
+                    <Typography sx={{ fontSize: 13, color: "#777" }}>
+                      Prazo Final da Fase
+                    </Typography>
+                  </FormLabel>
+                  <IMaskInput
+                    style={{
+                      padding: "5%",
+                      borderColor: "#eee",
+                      width: 150,
+                    }}
+                    mask="00/00/0000"
+                    definitions={{
+                      "#": /[1-9]/,
+                    }}
+                    onChange={(e) =>
+                      handleInputChange(index, "dueTo", e.target.value)
+                    }
+                    overwrite
+                    value={box.dueTo}
+                  />
+                </FormControl>
               </Grid>
             </Grid>
           </Box>
