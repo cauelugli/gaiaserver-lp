@@ -20,7 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import SchemaIcon from '@mui/icons-material/Schema';
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
@@ -146,7 +146,7 @@ export default function Projects({ user }) {
             <MenuList sx={{ width: 170 }}>
               <MenuItem onClick={() => setOpenAddProject(true)}>
                 <ListItemIcon>
-                  <SchemaIcon />
+                  <RocketLaunchIcon />
                 </ListItemIcon>
                 <ListItemText>Novo Projeto</ListItemText>
               </MenuItem>

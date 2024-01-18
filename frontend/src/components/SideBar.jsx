@@ -16,7 +16,7 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import LanIcon from "@mui/icons-material/Lan";
 import PersonIcon from "@mui/icons-material/Person";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
-import SchemaIcon from '@mui/icons-material/Schema';
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import SettingsIcon from "@mui/icons-material/Settings";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
@@ -27,7 +27,7 @@ const options = [
   { label: "Colaboradores", icon: <GroupIcon />, link: "/users" },
   { label: "Departamentos", icon: <LanIcon />, link: "/departments" },
   { label: "Pedidos", icon: <GradingIcon />, link: "/requests" },
-  { label: "Projetos", icon: <SchemaIcon />, link: "/projects" },
+  { label: "Projetos", icon: <RocketLaunchIcon />, link: "/projects" },
   { label: "Orçamentos", icon: <RequestQuoteIcon />, link: "/quotes" },
   { label: "Serviços", icon: <BuildIcon />, link: "/services" },
   { label: "Estoque", icon: <WarehouseIcon />, link: "/stock" },

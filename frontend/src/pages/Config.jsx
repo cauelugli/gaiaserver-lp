@@ -29,8 +29,7 @@ import LanIcon from "@mui/icons-material/Lan";
 import LockIcon from "@mui/icons-material/Lock";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
-import SchemaIcon from "@mui/icons-material/Schema";
-import TableViewIcon from "@mui/icons-material/TableView";
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';import TableViewIcon from "@mui/icons-material/TableView";
 import ViewSidebarIcon from "@mui/icons-material/ViewSidebar";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
@@ -72,7 +71,7 @@ const options = [
     modal: <RequestsModal />,
   },
   {
-    icon: <SchemaIcon sx={{ fontSize: 48 }} />,
+    icon: <RocketLaunchIcon sx={{ fontSize: 48 }} />,
     text: "Projetos",
     modal: <RequestsModal />,
   },
