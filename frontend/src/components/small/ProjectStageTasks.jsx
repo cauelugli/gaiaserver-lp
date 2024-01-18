@@ -25,6 +25,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import ProjectStageTaskMembers from "./ProjectStageTaskMembers";
 
 const ProjectStageTasks = ({
   tasks,
@@ -40,7 +41,6 @@ const ProjectStageTasks = ({
     status: "Não Executado",
   });
   const [expanded, setExpanded] = React.useState(false);
-  const [openMenus, setOpenMenus] = useState([]); // Para controlar os menus abertos
 
   const handleInputChange = (index, field, value) => {
     const updatedTasks = [...tasks];
@@ -67,7 +67,6 @@ const ProjectStageTasks = ({
     setAnchorElArray(newAnchorElArray);
     setOpenedPopoverIndex(index);
   };
-  
 
   const handleClose = () => {
     setAnchorElArray([]);
@@ -130,51 +129,15 @@ const ProjectStageTasks = ({
                       }
                     />
                     <Grid item>
-                      <Tooltip
-                        title={
-                          <Typography sx={{ fontSize: 12 }}>
-                            Designados
-                          </Typography>
-                        }
-                      >
-                        <IconButton
-                          onClick={(event) => handleClick(event, index)}
-                        >
-                          <Avatar sx={{ width: 32, height: 32 }} />
-                        </IconButton>
-                      </Tooltip>
-                      <Popover
-                        elevation={0}
-                        open={
-                          openedPopoverIndex === index &&
-                          anchorElArray[index] !== undefined
-                        }
-                        anchorEl={anchorElArray[index]}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                          vertical: "bottom",
-                          horizontal: "left",
-                        }}
-                        disableRestoreFocus
-                      >
-                        <Grid
-                          sx={{
-                            p: 2,
-                            border: "1px solid #444",
-                            borderRadius: 1,
-                          }}
-                        >
-                          {/* Index: {index} */}
-                          {/* Index: {anchorElArray} */}
-                          Index: {index + 1}
-                          <Button
-                            variant="contained"
-                            onClick={() => console.log("index", index)}
-                          >
-                            LOG ME
-                          </Button>
-                        </Grid>
-                      </Popover>
+                      <ProjectStageTaskMembers
+                        handleClick={handleClick}
+                        members={members}
+                        index={index}
+                        title={task.title}
+                        openedPopoverIndex={openedPopoverIndex}
+                        anchorElArray={anchorElArray}
+                        handleClose={handleClose}
+                      />
                     </Grid>
 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>

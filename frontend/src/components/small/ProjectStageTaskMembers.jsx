@@ -1,0 +1,122 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+import React, { useState } from "react";
+import {
+  Avatar,
+  Checkbox,
+  Grid,
+  IconButton,
+  Paper,
+  Popover,
+  Switch,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+
+const ProjectStageTaskMembers = ({
+  handleClick,
+  index,
+  title,
+  openedPopoverIndex,
+  anchorElArray,
+  handleClose,
+  members,
+}) => {
+  const [selectedMembers, setSelectedMembers] = React.useState([]);
+
+  return (
+    <>
+      <Tooltip
+        title={<Typography sx={{ fontSize: 12 }}>Designados</Typography>}
+      >
+        <IconButton onClick={(event) => handleClick(event, index)}>
+          <Avatar sx={{ width: 32, height: 32 }} />
+        </IconButton>
+      </Tooltip>
+      <Popover
+        elevation={0}
+        open={
+          openedPopoverIndex === index && anchorElArray[index] !== undefined
+        }
+        anchorEl={anchorElArray[index]}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        disableRestoreFocus
+      >
+        <Grid sx={{ p: 2, border: "1px solid #555" }}>
+          <Grid container direction="row">
+            <Typography sx={{ fontSize: 14 }}>
+              Alocar Membros para a Tarefa&nbsp;
+            </Typography>
+            <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
+              {title || `#${index + 1}`}
+            </Typography>
+          </Grid>
+          <Grid
+            sx={{
+              p: 1,
+              border: "1px solid #555",
+              borderRadius: 1,
+              height: 150,
+              overflow: "auto",
+            }}
+          >
+            <Typography sx={{ fontSize: 13, color:"#555" }}>Disponíveis</Typography>
+            {members.map((member, index) => (
+              <Grid
+                key={index}
+                container
+                direction="row"
+                alignItems="center"
+                justifyContent="center"
+                sx={{ mx: 1, mb: 1 }}
+              >
+                <Avatar
+                  alt="Imagem do Colaborador"
+                  src={`http://localhost:3000/static/${member.image}`}
+                  sx={{ width: 24, height: 24 }}
+                />
+                <Typography sx={{ mx: 0.5, fontSize: 13 }}>
+                  {member.name}
+                </Typography>
+                <IconButton
+                  sx={{
+                    height: 18,
+                    maxWidth: 18,
+                    color: "white",
+                    backgroundColor: "green",
+                    borderRadius: 3,
+                    "&:hover": {
+                      color: "white",
+                      backgroundColor: "green",
+                    },
+                  }}
+                  // onClick={() => handleRemoveMember(member)}
+                >
+                  <Typography sx={{ fontWeight: "bold" }}>+</Typography>
+                </IconButton>
+              </Grid>
+            ))}
+          </Grid>
+          <Grid id="phantomDiv" sx={{ my: 1 }} />
+          <Grid
+            sx={{
+              p: 1,
+              border: "1px solid #555",
+              borderRadius: 1,
+              height: 150,
+              overflow: "auto",
+            }}
+          >
+            <Typography sx={{ fontSize: 13, color:"#555" }}>Alocados</Typography>
+          </Grid>
+        </Grid>
+      </Popover>
+    </>
+  );
+};
+
+export default ProjectStageTaskMembers;

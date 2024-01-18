@@ -225,7 +225,7 @@ export default function AddProjectForm({
               </FormControl>
             )}
             {name.length > 0 && (
-              <FormControl sx={{ ml: 1, mt: -2 }}>
+              <FormControl sx={{ ml: 2, mt: -2 }}>
                 <FormLabel>
                   <Typography sx={{ fontSize: 13, color: "#777" }}>
                     Departamento Principal
@@ -237,7 +237,7 @@ export default function AddProjectForm({
                   required
                   size="small"
                   displayEmpty
-                  sx={{ width: 220 }}
+                  sx={{ width: 210 }}
                 >
                   {departments.map((item) => (
                     <MenuItem value={item} key={item.id}>
