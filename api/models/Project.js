@@ -41,13 +41,7 @@ const projectSchema = new mongoose.Schema({
   interactions: {
     type: Array,
   },
-  milestones: {
-    type: Object,
-  },
   stages: {
-    type: Object,
-  },
-  goals: {
     type: Object,
   },
   attachments: {

@@ -24,6 +24,19 @@ const ProjectStageTaskMembers = ({
 }) => {
   const [selectedMembers, setSelectedMembers] = React.useState([]);
 
+  const handleAddMember = (member) => {
+    setSelectedMembers((prevSelectedMembers) => [
+      ...prevSelectedMembers,
+      member,
+    ]);
+  };
+
+  const handleRemoveMember = (member) => {
+    setSelectedMembers((prevSelectedMembers) =>
+      prevSelectedMembers.filter((m) => m !== member)
+    );
+  };
+
   return (
     <>
       <Tooltip
@@ -64,8 +77,69 @@ const ProjectStageTaskMembers = ({
               overflow: "auto",
             }}
           >
-            <Typography sx={{ fontSize: 13, color:"#555" }}>Disponíveis</Typography>
-            {members.map((member, index) => (
+            <Typography sx={{ fontSize: 13, color: "#555" }}>
+              Disponíveis
+            </Typography>
+            {members.map((member, index) => {
+              const isMemberAllocated = selectedMembers.some(
+                (allocatedMember) => allocatedMember === member
+              );
+
+              if (!isMemberAllocated) {
+                return (
+                  <Grid
+                    key={index}
+                    container
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="center"
+                    sx={{ mx: 1, mb: 1 }}
+                  >
+                    <Avatar
+                      alt="Imagem do Colaborador"
+                      src={`http://localhost:3000/static/${member.image}`}
+                      sx={{ width: 24, height: 24 }}
+                    />
+                    <Typography sx={{ mx: 0.5, fontSize: 13 }}>
+                      {member.name}
+                    </Typography>
+                    <IconButton
+                      sx={{
+                        height: 18,
+                        maxWidth: 18,
+                        color: "white",
+                        backgroundColor: "green",
+                        borderRadius: 3,
+                        "&:hover": {
+                          color: "white",
+                          backgroundColor: "green",
+                        },
+                      }}
+                      onClick={() => handleAddMember(member)}
+                    >
+                      <Typography sx={{ fontWeight: "bold" }}>+</Typography>
+                    </IconButton>
+                  </Grid>
+                );
+              }
+              return null;
+            })}
+          </Grid>
+          <Grid id="phantomDiv" sx={{ my: 1 }} />
+
+          <Grid
+            sx={{
+              p: 1,
+              border: "1px solid #555",
+              borderRadius: 1,
+              height: 150,
+              overflow: "auto",
+            }}
+          >
+            <Typography sx={{ fontSize: 13, color: "#555" }}>
+              Alocados
+            </Typography>
+            {selectedMembers.map((member, index) => (
               <Grid
                 key={index}
                 container
@@ -87,31 +161,19 @@ const ProjectStageTaskMembers = ({
                     height: 18,
                     maxWidth: 18,
                     color: "white",
-                    backgroundColor: "green",
+                    backgroundColor: "red",
                     borderRadius: 3,
                     "&:hover": {
                       color: "white",
-                      backgroundColor: "green",
+                      backgroundColor: "red",
                     },
                   }}
-                  // onClick={() => handleRemoveMember(member)}
+                  onClick={() => handleRemoveMember(member)}
                 >
-                  <Typography sx={{ fontWeight: "bold" }}>+</Typography>
+                  <Typography sx={{ fontWeight: "bold" }}>-</Typography>
                 </IconButton>
               </Grid>
             ))}
-          </Grid>
-          <Grid id="phantomDiv" sx={{ my: 1 }} />
-          <Grid
-            sx={{
-              p: 1,
-              border: "1px solid #555",
-              borderRadius: 1,
-              height: 150,
-              overflow: "auto",
-            }}
-          >
-            <Typography sx={{ fontSize: 13, color:"#555" }}>Alocados</Typography>
           </Grid>
         </Grid>
       </Popover>

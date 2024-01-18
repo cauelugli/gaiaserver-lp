@@ -11,7 +11,6 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
-  FormControlLabel,
   FormLabel,
   Grid,
   IconButton,
@@ -21,7 +20,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
 import CheckIcon from "@mui/icons-material/Check";
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
 import Members from "../../components/small/Members";
 import ProjectStages from "../../components/small/ProjectStages";
@@ -42,6 +43,7 @@ export default function AddProjectForm({
   departments,
 }) {
   const [firstPartOK, setFirstPartOK] = React.useState(false);
+  const [secondPartOK, setSecondPartOK] = React.useState(false);
   const [customer, setCustomer] = React.useState("");
   const [customerType, setCustomerType] = React.useState("");
   const [name, setName] = React.useState("");
@@ -76,7 +78,6 @@ export default function AddProjectForm({
     }
   };
 
-  // Função para remover um membro da lista
   const handleRemoveMember = (memberToRemove) => {
     setMembers((prevMembers) =>
       prevMembers.filter((member) => member !== memberToRemove)
@@ -94,7 +95,6 @@ export default function AddProjectForm({
       []
     );
 
-    // Incluir membros do departamento principal
     const mainDepartmentMembers = mainDepartment
       ? mainDepartment.members.concat(mainDepartment.manager || [])
       : [];
@@ -111,242 +111,247 @@ export default function AddProjectForm({
       </DialogTitle>
       <DialogContent>
         {/* FIRST PART */}
-        {/* FIRST LINE */}
-        <Grid
-          sx={{ mt: 2 }}
-          container
-          direction="row"
-          alignItems="center"
-          justifyContent="flex-start"
-        >
-          <Grid
-            container
-            direction="row"
-            alignItems="center"
-            justifyContent="flex-start"
-            sx={{ mb: 2 }}
-          >
-            <Typography sx={{ my: "auto" }}>Criador: </Typography>
-            <Typography
-              sx={{ color: "#777", fontWeight: "bold", mx: 1, my: "auto" }}
+        {!firstPartOK && (
+          <>
+            {/* FIRST LINE */}
+            <Grid
+              sx={{ mt: 2 }}
+              container
+              direction="row"
+              alignItems="center"
+              justifyContent="flex-start"
             >
-              {user.name}
-            </Typography>
-            <Avatar
-              src={`http://localhost:3000/static${user.image}`}
-              sx={{ width: 32, height: 32 }}
-            />
-            <FormControl sx={{ ml: 2, mt: -2 }}>
-              <FormLabel>
-                <Typography sx={{ fontSize: 13, color: "#777" }}>
-                  Tipo de Cliente
-                </Typography>
-              </FormLabel>
-              <Select
-                onChange={(e) => setCustomerType(e.target.value)}
-                value={customerType}
-                required
-                size="small"
-                displayEmpty
-                renderValue={(selected) => {
-                  if (selected.length === 0) {
-                    return <Typography>Tipo de Cliente</Typography>;
-                  }
-
-                  return selected;
-                }}
-                sx={{ width: 170 }}
+              <Grid
+                container
+                direction="row"
+                alignItems="center"
+                justifyContent="flex-start"
+                sx={{ mb: 2 }}
               >
-                <MenuItem disabled value="">
-                  Tipo de Cliente
-                </MenuItem>
-                <MenuItem value={"Empresa"}>Empresa</MenuItem>
-                <MenuItem value={"Pessoa Fisica"}>Pessoa Física</MenuItem>
-              </Select>
-            </FormControl>
-
-            {customerType && (
-              <FormControl sx={{ ml: 1, mt: -2 }}>
-                <FormLabel sx={{ ml: 1 }}>
-                  <Typography sx={{ fontSize: 13, color: "#777" }}>
-                    Cliente
-                  </Typography>
-                </FormLabel>
-                <Select
-                  onChange={(e) => setCustomer(e.target.value)}
-                  value={customer}
-                  size="small"
-                  displayEmpty
-                  required
-                  renderValue={(selected) => {
-                    if (selected.length === 0) {
-                      return <Typography>Selecione um Cliente</Typography>;
-                    }
-
-                    return selected.name;
-                  }}
-                  sx={{ width: 200, mx: 1 }}
+                <Typography sx={{ my: "auto" }}>Criador: </Typography>
+                <Typography
+                  sx={{ color: "#777", fontWeight: "bold", mx: 1, my: "auto" }}
                 >
-                  <MenuItem disabled value="">
-                    {customerType === "Empresa"
-                      ? "Empresas"
-                      : "Clientes Pessoa Física"}
-                  </MenuItem>
+                  {user.name}
+                </Typography>
+                <Avatar
+                  src={`http://localhost:3000/static${user.image}`}
+                  sx={{ width: 32, height: 32 }}
+                />
+                <FormControl sx={{ ml: 2, mt: -2 }}>
+                  <FormLabel>
+                    <Typography sx={{ fontSize: 13, color: "#777" }}>
+                      Tipo de Cliente
+                    </Typography>
+                  </FormLabel>
+                  <Select
+                    onChange={(e) => setCustomerType(e.target.value)}
+                    value={customerType}
+                    required
+                    size="small"
+                    displayEmpty
+                    renderValue={(selected) => {
+                      if (selected.length === 0) {
+                        return <Typography>Tipo de Cliente</Typography>;
+                      }
 
-                  {customerType === "Empresa"
-                    ? customers.map((item) => (
-                        <MenuItem value={item} key={item._id}>
-                          {item.name}
+                      return selected;
+                    }}
+                    sx={{ width: 170 }}
+                  >
+                    <MenuItem disabled value="">
+                      Tipo de Cliente
+                    </MenuItem>
+                    <MenuItem value={"Empresa"}>Empresa</MenuItem>
+                    <MenuItem value={"Pessoa Fisica"}>Pessoa Física</MenuItem>
+                  </Select>
+                </FormControl>
+
+                {customerType && (
+                  <FormControl sx={{ ml: 1, mt: -2 }}>
+                    <FormLabel sx={{ ml: 1 }}>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
+                        Cliente
+                      </Typography>
+                    </FormLabel>
+                    <Select
+                      onChange={(e) => setCustomer(e.target.value)}
+                      value={customer}
+                      size="small"
+                      displayEmpty
+                      required
+                      renderValue={(selected) => {
+                        if (selected.length === 0) {
+                          return <Typography>Selecione um Cliente</Typography>;
+                        }
+
+                        return selected.name;
+                      }}
+                      sx={{ width: 200, mx: 1 }}
+                    >
+                      <MenuItem disabled value="">
+                        {customerType === "Empresa"
+                          ? "Empresas"
+                          : "Clientes Pessoa Física"}
+                      </MenuItem>
+
+                      {customerType === "Empresa"
+                        ? customers.map((item) => (
+                            <MenuItem value={item} key={item._id}>
+                              {item.name}
+                            </MenuItem>
+                          ))
+                        : clients.map((item) => (
+                            <MenuItem value={item} key={item._id}>
+                              {item.name}
+                            </MenuItem>
+                          ))}
+                    </Select>
+                  </FormControl>
+                )}
+                {customer && (
+                  <FormControl sx={{ ml: 1, mt: -2 }}>
+                    <FormLabel>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
+                        Nome do Projeto
+                      </Typography>
+                    </FormLabel>
+                    <TextField
+                      size="small"
+                      placeholder="Melhorias, Expansão, Integração, ..."
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                      sx={{ width: 300 }}
+                    />
+                  </FormControl>
+                )}
+                {name.length > 0 && (
+                  <FormControl sx={{ ml: 2, mt: -2 }}>
+                    <FormLabel>
+                      <Typography sx={{ fontSize: 13, color: "#777" }}>
+                        Departamento Principal
+                      </Typography>
+                    </FormLabel>
+                    <Select
+                      onChange={(e) => setMainDepartment(e.target.value)}
+                      value={mainDepartment}
+                      required
+                      size="small"
+                      displayEmpty
+                      sx={{ width: 210 }}
+                    >
+                      {departments.map((item) => (
+                        <MenuItem value={item} key={item.id}>
+                          <Grid container direction="row">
+                            <Paper
+                              elevation={0}
+                              sx={{
+                                mr: 1,
+                                mt: 0.5,
+                                width: 15,
+                                height: 15,
+                                borderRadius: 50,
+                                backgroundColor: item.color,
+                              }}
+                            />
+                            <Typography>{item.name}</Typography>
+                          </Grid>
                         </MenuItem>
-                      ))
-                    : clients.map((item) => (
-                        <MenuItem value={item} key={item._id}>
-                          {item.name}
-                        </MenuItem>
-                      ))}
-                </Select>
-              </FormControl>
+                      ))}{" "}
+                    </Select>
+                  </FormControl>
+                )}
+              </Grid>
+            </Grid>
+            {/* SECOND LINE */}
+            {mainDepartment && (
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="space-between"
+                justifyContent="flex-start"
+              >
+                <Members
+                  users={departments.filter((item) => item !== mainDepartment)}
+                  value={selectedDepartments}
+                  onChange={setSelectedDepartments}
+                  option="projectDepartments"
+                />
+                <FormControl sx={{ ml: 2, mt: -2, width: "54%" }}>
+                  <FormLabel>
+                    <Typography sx={{ fontSize: 13, color: "#444" }}>
+                      Membros do Projeto
+                    </Typography>
+                  </FormLabel>
+                  <Grid
+                    container
+                    sx={{ border: "1px solid #ddd", borderRadius: 1 }}
+                  >
+                    {members.map((member, index) => (
+                      <Grid
+                        key={index}
+                        sx={{ m: 1 }}
+                        sm={3}
+                        md={3}
+                        lg={3}
+                        container
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="flex-start"
+                      >
+                        <Avatar
+                          alt="Imagem do Colaborador"
+                          src={`http://localhost:3000/static/${member.image}`}
+                          sx={{ width: 28, height: 28 }}
+                        />
+                        <Typography sx={{ mx: 0.5, fontSize: 13 }}>
+                          {member.name}
+                        </Typography>
+                        <IconButton
+                          sx={{
+                            height: 18,
+                            maxWidth: 18,
+                            color: "white",
+                            backgroundColor: "red",
+                            borderRadius: 3,
+                            "&:hover": {
+                              color: "white",
+                              backgroundColor: "red",
+                            },
+                          }}
+                          onClick={() => handleRemoveMember(member)}
+                        >
+                          <Typography sx={{ fontWeight: "bold" }}>-</Typography>
+                        </IconButton>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </FormControl>
+              </Grid>
             )}
-            {customer && (
-              <FormControl sx={{ ml: 1, mt: -2 }}>
+            {/* THIRD LINE */}
+            {mainDepartment && (
+              <FormControl fullWidth sx={{ mt: 1 }}>
                 <FormLabel>
                   <Typography sx={{ fontSize: 13, color: "#777" }}>
-                    Nome do Projeto
+                    Descrição
                   </Typography>
                 </FormLabel>
                 <TextField
                   size="small"
-                  placeholder="Melhorias, Expansão, Integração, ..."
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Adicione uma breve descrição"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   required
-                  sx={{ width: 300 }}
                 />
               </FormControl>
             )}
-            {name.length > 0 && (
-              <FormControl sx={{ ml: 2, mt: -2 }}>
-                <FormLabel>
-                  <Typography sx={{ fontSize: 13, color: "#777" }}>
-                    Departamento Principal
-                  </Typography>
-                </FormLabel>
-                <Select
-                  onChange={(e) => setMainDepartment(e.target.value)}
-                  value={mainDepartment}
-                  required
-                  size="small"
-                  displayEmpty
-                  sx={{ width: 210 }}
-                >
-                  {departments.map((item) => (
-                    <MenuItem value={item} key={item.id}>
-                      <Grid container direction="row">
-                        <Paper
-                          elevation={0}
-                          sx={{
-                            mr: 1,
-                            mt: 0.5,
-                            width: 15,
-                            height: 15,
-                            borderRadius: 50,
-                            backgroundColor: item.color,
-                          }}
-                        />
-                        <Typography>{item.name}</Typography>
-                      </Grid>
-                    </MenuItem>
-                  ))}{" "}
-                </Select>
-              </FormControl>
-            )}
-          </Grid>
-        </Grid>
-        {/* SECOND LINE */}
-        {mainDepartment && (
-          <Grid
-            sx={{ mt: 2 }}
-            container
-            direction="row"
-            alignItems="space-between"
-            justifyContent="flex-start"
-          >
-            <Members
-              users={departments.filter((item) => item !== mainDepartment)}
-              value={selectedDepartments}
-              onChange={setSelectedDepartments}
-              option="projectDepartments"
-            />
-            <FormControl sx={{ ml: 2, mt: -2, width: "54%" }}>
-              <FormLabel>
-                <Typography sx={{ fontSize: 13, color: "#444" }}>
-                  Membros do Projeto
-                </Typography>
-              </FormLabel>
-              <Grid
-                container
-                sx={{ border: "1px solid #ddd", borderRadius: 1 }}
-              >
-                {members.map((member, index) => (
-                  <Grid
-                    key={index}
-                    sx={{ m: 1 }}
-                    sm={3}
-                    md={3}
-                    lg={3}
-                    container
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="flex-start"
-                  >
-                    <Avatar
-                      alt="Imagem do Colaborador"
-                      src={`http://localhost:3000/static/${member.image}`}
-                      sx={{ width: 28, height: 28 }}
-                    />
-                    <Typography sx={{ mx: 0.5, fontSize: 13 }}>
-                      {member.name}
-                    </Typography>
-                    <IconButton
-                      sx={{
-                        height: 18,
-                        maxWidth: 18,
-                        color: "white",
-                        backgroundColor: "red",
-                        borderRadius: 3,
-                        "&:hover": {
-                          color: "white",
-                          backgroundColor: "red",
-                        },
-                      }}
-                      onClick={() => handleRemoveMember(member)}
-                    >
-                      <Typography sx={{ fontWeight: "bold" }}>-</Typography>
-                    </IconButton>
-                  </Grid>
-                ))}
-              </Grid>
-            </FormControl>
-          </Grid>
+            {/* FIRST PART */}
+          </>
         )}
-        {/* THIRD LINE */}
-        {mainDepartment && (
-          <FormControl fullWidth sx={{ mt: 1 }}>
-            <FormLabel>
-              <Typography sx={{ fontSize: 13, color: "#777" }}>
-                Descrição
-              </Typography>
-            </FormLabel>
-            <TextField
-              size="small"
-              placeholder="Adicione uma breve descrição"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </FormControl>
-        )}
-        {/* FOURTH LINE */}
+
         {mainDepartment && description.length > 0 && (
           <Grid
             sx={{ mt: 2 }}
@@ -355,19 +360,30 @@ export default function AddProjectForm({
             alignItems="center"
             justifyContent="center"
           >
-            <Button
-              sx={{ my: 2 }}
-              variant="contained"
-              color="success"
-              disabled={firstPartOK}
-              startIcon={<CheckIcon />}
-              onClick={() => setFirstPartOK(Boolean(true))}
-            >
-              OK e Prosseguir
-            </Button>
+            {firstPartOK ? (
+              <Button
+                sx={{ mb: 2 }}
+                variant="contained"
+                color="warning"
+                startIcon={<KeyboardReturnIcon />}
+                onClick={() => setFirstPartOK(Boolean(false))}
+              >
+                Retornar para Parte 1
+              </Button>
+            ) : (
+              <Button
+                sx={{ my: 2 }}
+                variant="contained"
+                color="success"
+                startIcon={<CheckIcon />}
+                onClick={() => setFirstPartOK(Boolean(true))}
+              >
+                OK e Prosseguir
+              </Button>
+            )}
           </Grid>
         )}
-        {/* FIRST PART */}
+
         {/* SECOND PART */}
         {firstPartOK && <ProjectStages members={members} />}
         {/* SECOND PART */}
