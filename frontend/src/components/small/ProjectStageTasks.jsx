@@ -1,17 +1,19 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
+import dayjs from "dayjs";
+
 import {
-  Button,
   TextField,
-  ListItemText,
   Avatar,
   IconButton,
-  FormControl,
-  FormLabel,
   Typography,
   Grid,
   Collapse,
+  Tooltip,
+  Menu,
+  Popover,
+  Button,
 } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -19,30 +21,57 @@ import ClearIcon from "@mui/icons-material/Clear";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
-import { IMaskInput } from "react-imask";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-const ProjectStageTasks = ({ tasks, onAddTask, onClearTasks }) => {
+const ProjectStageTasks = ({
+  tasks,
+  members,
+  onAddTask,
+  onUpdateTask,
+  onClearTasks,
+}) => {
   const [newTask, setNewTask] = useState({
     title: "",
-    assignee: "",
+    assignee: [],
     dueTo: "",
     status: "Não Executado",
   });
   const [expanded, setExpanded] = React.useState(false);
+  const [openMenus, setOpenMenus] = useState([]); // Para controlar os menus abertos
 
   const handleInputChange = (index, field, value) => {
     const updatedTasks = [...tasks];
     updatedTasks[index] = { ...updatedTasks[index], [field]: value };
+    onUpdateTask(updatedTasks);
   };
 
   const handleAddTask = () => {
     onAddTask([...tasks, newTask]);
     setNewTask({
       title: "",
-      assignee: "",
+      assignee: [],
       dueTo: "",
       status: "Não Executado",
     });
+  };
+
+  const [openedPopoverIndex, setOpenedPopoverIndex] = useState(null);
+  const [anchorElArray, setAnchorElArray] = useState([]);
+
+  const handleClick = (event, index) => {
+    const newAnchorElArray = [...anchorElArray];
+    newAnchorElArray[index] = event.currentTarget;
+    setAnchorElArray(newAnchorElArray);
+    setOpenedPopoverIndex(index);
+  };
+  
+
+  const handleClose = () => {
+    setAnchorElArray([]);
+    setOpenedPopoverIndex(null);
   };
 
   return (
@@ -60,7 +89,7 @@ const ProjectStageTasks = ({ tasks, onAddTask, onClearTasks }) => {
           justifyContent="space-between"
           onClick={() => setExpanded(!expanded)}
         >
-          <Typography sx={{ mr: 1, ml: 2, my: "auto", color: "#777" }}>
+          <Typography sx={{ mr: 1, ml: 1.5, mt: 1.5, mb: 2, color: "#666" }}>
             Tarefas
           </Typography>
           <IconButton>
@@ -71,7 +100,7 @@ const ProjectStageTasks = ({ tasks, onAddTask, onClearTasks }) => {
         <Grid
           container
           direction="column"
-          alignItems="center"
+          alignItems={tasks.length !== 0 ? "flex-start" : "center"}
           justifyContent="center"
         >
           <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -86,63 +115,80 @@ const ProjectStageTasks = ({ tasks, onAddTask, onClearTasks }) => {
                 {tasks.map((task, index) => (
                   <Grid
                     container
-                    direction="row"
                     key={index}
+                    direction="row"
                     alignItems="center"
                     justifyContent="flex-start"
-                    sx={{ mb: 2 }}
+                    sx={{ width: 495 }}
                   >
-                    <Typography sx={{ mr: 1, ml: -1 }}>{index + 1}</Typography>
-                    <ListItemText>
-                      <TextField
-                        size="small"
-                        placeholder="Título"
-                        sx={{ width: 150 }}
-                        value={task.title}
-                        onChange={(e) =>
-                          handleInputChange(index, "title", e.target.value)
-                        }
-                      />
-                    </ListItemText>
-                    <ListItemText sx={{ mx: -2 }}>
-                      <FormControl>
-                        <FormLabel>
-                          <Typography sx={{ fontSize: 13, color: "#777" }}>
+                    <TextField
+                      placeholder={"Tarefa #" + (index + 1)}
+                      sx={{ width: 215, mx: 1, mt: 1 }}
+                      value={task.title}
+                      onChange={(e) =>
+                        handleInputChange(index, "title", e.target.value)
+                      }
+                    />
+                    <Grid item>
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
                             Designados
                           </Typography>
-                        </FormLabel>
-                        <IconButton>
-                          <Avatar sx={{ width: 26, height: 26 }} />
+                        }
+                      >
+                        <IconButton
+                          onClick={(event) => handleClick(event, index)}
+                        >
+                          <Avatar sx={{ width: 32, height: 32 }} />
                         </IconButton>
-                      </FormControl>
-                    </ListItemText>
-                    <ListItemText>
-                      <FormControl>
-                        <FormLabel>
-                          <Typography
-                            sx={{ fontSize: 13, color: "#777", mb: 0.5 }}
+                      </Tooltip>
+                      <Popover
+                        elevation={0}
+                        open={
+                          openedPopoverIndex === index &&
+                          anchorElArray[index] !== undefined
+                        }
+                        anchorEl={anchorElArray[index]}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "left",
+                        }}
+                        disableRestoreFocus
+                      >
+                        <Grid
+                          sx={{
+                            p: 2,
+                            border: "1px solid #444",
+                            borderRadius: 1,
+                          }}
+                        >
+                          {/* Index: {index} */}
+                          {/* Index: {anchorElArray} */}
+                          Index: {index + 1}
+                          <Button
+                            variant="contained"
+                            onClick={() => console.log("index", index)}
                           >
-                            Prazo Final da Tarefa
-                          </Typography>
-                        </FormLabel>
-                        <IMaskInput
-                          style={{
-                            padding: "5%",
-                            borderColor: "#eee",
-                            width: 120,
-                          }}
-                          mask="00/00/0000"
-                          definitions={{
-                            "#": /[1-9]/,
-                          }}
-                          onChange={(e) =>
-                            handleInputChange(index, "dueTo", e.target.value)
+                            LOG ME
+                          </Button>
+                        </Grid>
+                      </Popover>
+                    </Grid>
+
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={["DatePicker"]} sx={{ ml: 1 }}>
+                        <DatePicker
+                          sx={{ width: 50 }}
+                          label="Prazo da Tarefa"
+                          value={task.dueTo || null}
+                          onChange={(date) =>
+                            handleInputChange(index, "dueTo", date)
                           }
-                          overwrite
-                          value={task.dueTo}
                         />
-                      </FormControl>
-                    </ListItemText>
+                      </DemoContainer>
+                    </LocalizationProvider>
                   </Grid>
                 ))}
               </>

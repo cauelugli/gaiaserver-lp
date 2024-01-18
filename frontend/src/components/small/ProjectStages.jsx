@@ -1,26 +1,32 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
+import dayjs from "dayjs";
+
 import {
   Box,
   Button,
   FormControl,
-  FormLabel,
   Grid,
   IconButton,
   TextField,
   Typography,
 } from "@mui/material";
 
-import { IMaskInput } from "react-imask";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import ProjectStageTasks from "./ProjectStageTasks";
 
-const ProjectStages = () => {
+const ProjectStages = ({members}) => {
   const [boxes, setBoxes] = useState([
     {
       title: "",
-      objective: "",
       tasks: [],
+      startAt: "",
       dueTo: "",
       anchorEl: null,
     },
@@ -49,8 +55,8 @@ const ProjectStages = () => {
         ...boxes,
         {
           title: "",
-          objective: "",
           tasks: [],
+          startAt: "",
           dueTo: "",
           anchorEl: null,
         },
@@ -70,12 +76,6 @@ const ProjectStages = () => {
     setBoxes(updatedBoxes);
   };
 
-  const handleTaskClick = (event, index) => {
-    const updatedBoxes = [...boxes];
-    updatedBoxes[index].anchorEl = event.currentTarget;
-    setBoxes(updatedBoxes);
-  };
-
   const handleTaskClose = (index) => {
     const updatedBoxes = [...boxes];
     updatedBoxes[index].anchorEl = null;
@@ -88,12 +88,18 @@ const ProjectStages = () => {
     setBoxes(updatedBoxes);
   };
 
+  const handleUpdateTask = (boxIndex, updatedTasks) => {
+    const updatedBoxes = [...boxes];
+    updatedBoxes[boxIndex].tasks = updatedTasks;
+    setBoxes(updatedBoxes);
+  };
+
   const handleClearTasks = () => {
     setBoxes([
       {
         title: "",
-        objective: "",
         tasks: [],
+        startAt: "",
         dueTo: "",
         anchorEl: null,
       },
@@ -117,69 +123,77 @@ const ProjectStages = () => {
           <Box key={index} sx={{ width: "100%" }}>
             <Grid
               container
-              direction="column"
+              direction="row"
               alignItems="center"
-              justifyContent="center"
+              justifyContent="flex-start"
             >
-              <Grid item>
-                {index === boxes.length - 1 && (
-                  <IconButton
-                    sx={{ mt: 2 }}
-                    onClick={() => handleRemoveBox(index)}
-                    disabled={index === 0}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                )}
+              {index === boxes.length - 1 ? (
+                <IconButton
+                  onClick={() => handleRemoveBox(index)}
+                  disabled={index === 0}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              ) : (
+                <IconButton disabled sx={{ opacity: 0 }}>
+                  <DeleteIcon />
+                </IconButton>
+              )}
+              <Grid>
                 <TextField
                   label={`Fase ${index + 1}`}
-                  size="small"
                   value={box.title}
-                  sx={{ width: 150, backgroundColor: getColor(index), mt: 2 }}
+                  sx={{
+                    width: 130,
+                    backgroundColor: getColor(index),
+                    mt: 1,
+                  }}
                   onChange={(e) =>
                     handleInputChange(index, "title", e.target.value)
                   }
                 />
-                <TextField
-                  label={`Objetivo`}
-                  size="small"
-                  value={box.objective}
-                  sx={{ width: 250, mx: 1, mt: 2 }}
-                  onChange={(e) =>
-                    handleInputChange(index, "objective", e.target.value)
-                  }
-                />
-                <FormControl sx={{ mr: 1, mt:2 }}>
+                <FormControl sx={{ mx: 1, mt: 1 }}>
                   <ProjectStageTasks
                     tasks={box.tasks}
+                    members={members}
                     anchorEl={box.anchorEl}
+                    indexB={index}
                     onClose={() => handleTaskClose(index)}
                     onAddTask={(newTask) => handleAddTask(index, newTask)}
+                    onUpdateTask={(updatedTasks) =>
+                      handleUpdateTask(index, updatedTasks)
+                    }
                     onClearTasks={handleClearTasks}
                   />
                 </FormControl>
+
+                <FormControl sx={{ mr: 1 }}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DatePicker"]}>
+                      <DatePicker
+                        sx={{ width: 2 }}
+                        label="Início da Fase"
+                        value={box.startAt || null}
+                        onChange={(date) =>
+                          handleInputChange(index, "startAt", date)
+                        }
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                </FormControl>
                 <FormControl>
-                  <FormLabel>
-                    <Typography sx={{ fontSize: 13, color: "#777" }}>
-                      Prazo Final da Fase
-                    </Typography>
-                  </FormLabel>
-                  <IMaskInput
-                    style={{
-                      padding: "5%",
-                      borderColor: "#eee",
-                      width: 150,
-                    }}
-                    mask="00/00/0000"
-                    definitions={{
-                      "#": /[1-9]/,
-                    }}
-                    onChange={(e) =>
-                      handleInputChange(index, "dueTo", e.target.value)
-                    }
-                    overwrite
-                    value={box.dueTo}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DatePicker"]}>
+                      <DatePicker
+                        sx={{ width: 50 }}
+                        label="Término da Fase"
+                        value={box.dueTo || null}
+                        onChange={(date) =>
+                          handleInputChange(index, "dueTo", date)
+                        }
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
                 </FormControl>
               </Grid>
             </Grid>
@@ -191,9 +205,9 @@ const ProjectStages = () => {
           variant="contained"
           color="inherit"
           onClick={handleAddBox}
-          sx={{ mt: 2 }}
+          sx={{ mt: 3 }}
         >
-          +
+          + ADICIONAR FASE
         </Button>
       )}
     </Grid>
