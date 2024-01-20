@@ -21,7 +21,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ProjectStageTasks from "./ProjectStageTasks";
 
-const ProjectStages = ({members}) => {
+const ProjectStages = ({ members }) => {
   const [boxes, setBoxes] = useState([
     {
       title: "",
@@ -33,24 +33,13 @@ const ProjectStages = ({members}) => {
   ]);
 
   const getColor = (index) => {
-    const colors = [
-      "#FF4500",
-      "#FFA500",
-      "#FFD700",
-      "#32CD32",
-      "#008000",
-      "#00FFFF",
-      "#0000FF",
-      "#4B0082",
-      "#800080",
-      "#9932CC",
-    ];
+    const colors = ["#FF4500", "#FFA500", "#FFD700", "#32CD32", "#008000"];
 
     return colors[index % colors.length];
   };
 
   const handleAddBox = (event, index) => {
-    if (boxes.length < 10) {
+    if (boxes.length < 5) {
       setBoxes([
         ...boxes,
         {
@@ -141,7 +130,7 @@ const ProjectStages = ({members}) => {
               )}
               <Grid>
                 <TextField
-                  label={`Fase ${index + 1}`}
+                  placeholder={`Fase ${index + 1}`}
                   value={box.title}
                   sx={{
                     width: 130,
@@ -200,7 +189,7 @@ const ProjectStages = ({members}) => {
           </Box>
         ))}
       </Grid>
-      {boxes.length < 10 && (
+      {boxes.length < 5 && (
         <Button
           variant="contained"
           color="inherit"
