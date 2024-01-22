@@ -22,10 +22,11 @@ import {
 } from "@mui/material";
 
 import CheckIcon from "@mui/icons-material/Check";
-import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
+import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 
 import Members from "../../components/small/Members";
 import ProjectStages from "../../components/small/ProjectStages";
+import ProjectStageTasks from "../../components/small/ProjectStageTasks";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -44,12 +45,15 @@ export default function AddProjectForm({
 }) {
   const [firstPartOK, setFirstPartOK] = React.useState(false);
   const [secondPartOK, setSecondPartOK] = React.useState(false);
+  const [thirdPartOK, setThirdPartOK] = React.useState(false);
   const [customer, setCustomer] = React.useState("");
   const [customerType, setCustomerType] = React.useState("");
   const [name, setName] = React.useState("");
   const [mainDepartment, setMainDepartment] = React.useState("");
   const [selectedDepartments, setSelectedDepartments] = React.useState([]);
   const [members, setMembers] = React.useState([]);
+  const [stages, setStages] = React.useState([]);
+  const [stagesColorSchema, setStagesSchemaColor] = React.useState(0);
   const [description, setDescription] = React.useState("");
 
   const handleAdd = async (e) => {
@@ -360,17 +364,7 @@ export default function AddProjectForm({
             alignItems="center"
             justifyContent="center"
           >
-            {firstPartOK ? (
-              <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="warning"
-                startIcon={<KeyboardReturnIcon />}
-                onClick={() => setFirstPartOK(Boolean(false))}
-              >
-                Retornar para Parte 1
-              </Button>
-            ) : (
+            {!firstPartOK && !secondPartOK && (
               <Button
                 sx={{ my: 2 }}
                 variant="contained"
@@ -381,29 +375,68 @@ export default function AddProjectForm({
                 OK e Prosseguir
               </Button>
             )}
+            {firstPartOK && !secondPartOK && (
+              <Button
+                sx={{ mb: 2 }}
+                variant="contained"
+                color="warning"
+                startIcon={<KeyboardReturnIcon />}
+                onClick={() => setFirstPartOK(Boolean(false))}
+              >
+                Retornar para Parte 1
+              </Button>
+            )}
+            {firstPartOK && secondPartOK && (
+              <Button
+                sx={{ mb: 2 }}
+                variant="contained"
+                color="warning"
+                startIcon={<KeyboardReturnIcon />}
+                onClick={() => setSecondPartOK(Boolean(false))}
+              >
+                Retornar para Parte 2
+              </Button>
+            )}
           </Grid>
         )}
+        {/* FIRST PART */}
 
         {/* SECOND PART */}
-        {firstPartOK && <ProjectStages />}
+        {firstPartOK && !secondPartOK && (
+          <ProjectStages
+            name={name}
+            stages={stages}
+            updateStages={(newStagesList) => setStages(newStagesList)}
+            setStagesSchemaColor={setStagesSchemaColor}
+            setSecondPartOK={setSecondPartOK}
+          />
+        )}
         {/* SECOND PART */}
 
         {/* THIRD PART */}
-        {/* {secondPartOK && <ProjectTasks members={members} />} */}
-        {/* SECOND PART */}
+        {secondPartOK && (
+          <ProjectStageTasks
+            members={members}
+            stages={stages}
+            stagesColorSchema={stagesColorSchema}
+          />
+        )}
+        {/* THIRD PART */}
       </DialogContent>
-      <DialogActions>
-        <Button type="submit" variant="contained" color="success">
-          OK
-        </Button>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => setOpenAdd(!openAdd)}
-        >
-          X
-        </Button>
-      </DialogActions>
+      {thirdPartOK && (
+        <DialogActions>
+          <Button type="submit" variant="contained" color="success">
+            OK
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => setOpenAdd(!openAdd)}
+          >
+            X
+          </Button>
+        </DialogActions>
+      )}
     </form>
   );
 }

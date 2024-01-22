@@ -4,15 +4,12 @@ import React, { useState } from "react";
 import dayjs from "dayjs";
 
 import {
-  Box,
   Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardHeader,
   Collapse,
-  FormControl,
   FormControlLabel,
   Grid,
   IconButton,
@@ -25,14 +22,13 @@ import {
 
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from "@mui/icons-material/Check";
 
-const ProjectStages = () => {
+const ProjectStages = ({ name, updateStages, setStagesSchemaColor,setSecondPartOK }) => {
   const [colorSchema, setColorSchema] = useState(0);
-  const [stages, setStages] = useState(1);
+  const [stagesNumber, setStagesNumbers] = useState(1);
   const [stagesList, setStagesList] = useState([
     {
       title: "",
@@ -52,7 +48,7 @@ const ProjectStages = () => {
   };
 
   const handleStagesChange = (newStages) => {
-    setStages(newStages);
+    setStagesNumbers(newStages);
     const newStagesList = Array.from({ length: newStages }, (_, index) => {
       return (
         stagesList[index] || {
@@ -152,8 +148,8 @@ const ProjectStages = () => {
   return (
     <>
       <Grid>
-        <Typography sx={{ textAlign: "center", fontSize: 28 }}>
-          Etapas do Projeto X
+        <Typography sx={{ textAlign: "center", fontSize: 26 }}>
+          Etapas do Projeto {name}
         </Typography>
         <Grid
           container
@@ -169,8 +165,8 @@ const ProjectStages = () => {
             sx={{ my: 2 }}
           >
             <Button
-              onClick={() => handleStagesChange(stages - 1)}
-              disabled={stages === 1}
+              onClick={() => handleStagesChange(stagesNumber - 1)}
+              disabled={stagesNumber === 1}
             >
               <Typography sx={{ fontSize: 22 }}>-</Typography>
             </Button>
@@ -183,13 +179,13 @@ const ProjectStages = () => {
                 mx: 1,
               }}
             >
-              {stages}
+              {stagesNumber}
             </Typography>
             <Button
-              onClick={() => handleStagesChange(stages + 1)}
-              disabled={stages === 10}
+              onClick={() => handleStagesChange(stagesNumber + 1)}
+              disabled={stagesNumber === 10}
             >
-              <Typography sx={{ fontSize: 28 }} disabled={stages === 10}>
+              <Typography sx={{ fontSize: 28 }} disabled={stagesNumber === 10}>
                 +
               </Typography>
             </Button>
@@ -307,6 +303,25 @@ const ProjectStages = () => {
             </Collapse>
           </Card>
         ))}
+        <Grid
+          sx={{ mt: 2 }}
+          container
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Button
+            sx={{ my: 2 }}
+            variant="contained"
+            color="success"
+            startIcon={<CheckIcon />}
+            onClick={() => {
+              updateStages(stagesList), setStagesSchemaColor(colorSchema), setSecondPartOK(Boolean(true));
+            }}
+          >
+            OK e Prosseguir
+          </Button>
+        </Grid>
       </Grid>
     </>
   );
