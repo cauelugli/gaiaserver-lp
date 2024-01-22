@@ -80,7 +80,7 @@ const ProjectStageTasks = ({
         direction="column"
         alignItems="flex-start"
         justifyContent="flex-start"
-        sx={{ border: "1px solid #bbb", borderRadius: 1, width: 500 }}
+        sx={{ border: "1px solid #bbb", borderRadius: 1, width: 500, mt:1, mr:1 }}
       >
         <Grid
           container

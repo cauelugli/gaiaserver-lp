@@ -6,9 +6,19 @@ import dayjs from "dayjs";
 import {
   Box,
   Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Collapse,
   FormControl,
+  FormControlLabel,
   Grid,
   IconButton,
+  Popover,
+  Radio,
+  RadioGroup,
   TextField,
   Typography,
 } from "@mui/material";
@@ -17,186 +27,288 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ProjectStageTasks from "./ProjectStageTasks";
 
-const ProjectStages = ({ members }) => {
-  const [index, setIndex] = useState(0);
-  const [title, setTitle] = useState("");
-  const [tasks, setTasks] = useState([]);
-  const [startAt, setStartAt] = useState(null);
-  const [dueTo, setDueTo] = useState(null);
-  const [boxes, setBoxes] = useState([]);
+const ProjectStages = () => {
+  const [colorSchema, setColorSchema] = useState(0);
+  const [stages, setStages] = useState(1);
+  const [stagesList, setStagesList] = useState([
+    {
+      title: "",
+      startAt: dayjs(),
+      dueTo: dayjs(),
+    },
+  ]);
 
-  const getColor = (index) => {
-    const colors = ["#FF4500", "#FFA500", "#FFD700", "#32CD32", "#008000"];
-    return colors[index % colors.length];
+  const [colorPopoverAnchorEl, setColorPopoverAnchorEl] = useState(null);
+  const colorPopoverOpen = Boolean(colorPopoverAnchorEl);
+
+  const handleColorClick = (event) => {
+    setColorPopoverAnchorEl(event.currentTarget);
+  };
+  const handleColorClose = () => {
+    setColorPopoverAnchorEl(null);
   };
 
-  const addStage = () => {
-    const newBox = {
-      id: index,
-      title,
-      tasks,
-      startAt: dayjs(startAt).format("DD/MM/YYYY"),
-      dueTo: dayjs(dueTo).format("DD/MM/YYYY"),
-      color: getColor(index),
-    };
-
-    setBoxes([...boxes, newBox]);
-    setTitle("");
-    setTasks([]);
-    setStartAt(null);
-    setDueTo(null);
-    setIndex(index + 1);
+  const handleStagesChange = (newStages) => {
+    setStages(newStages);
+    const newStagesList = Array.from({ length: newStages }, (_, index) => {
+      return (
+        stagesList[index] || {
+          title: "",
+          startAt: dayjs(),
+          dueTo: dayjs(),
+          expanded: false,
+        }
+      );
+    });
+    setStagesList(newStagesList);
   };
 
-  const removeLastStage = (boxIndex) => {
-    if (boxes.length > 0) {
-      setIndex(index - 1);
-      const updatedBoxes = [...boxes];
-      updatedBoxes.pop();
-      setBoxes(updatedBoxes);
-    }
+  const handleStageChange = (index, field, value) => {
+    const newStagesList = [...stagesList];
+    newStagesList[index][field] = value;
+    setStagesList(newStagesList);
   };
 
-  const handleAddTask = (boxIndex, newTasks) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[boxIndex] = { ...updatedTasks[boxIndex], tasks: newTasks };
-    setTasks(updatedTasks);
+  const handleExpandClick = (index) => {
+    const newStagesList = [...stagesList];
+    newStagesList[index].expanded = !newStagesList[index].expanded;
+    setStagesList(newStagesList);
   };
 
-  const handleUpdateTask = (boxIndex, updatedTasks) => {
-    const updatedTasksArray = [...tasks];
-    updatedTasksArray[boxIndex] = {
-      ...updatedTasksArray[boxIndex],
-      tasks: updatedTasks,
-    };
-    setTasks(updatedTasksArray);
-  };
+  const normalColors = [
+    "#ff0000",
+    "#ff3300",
+    "#ff6600",
+    "#ff9900",
+    "#ffcc00",
+    "#ffff00",
+    "#ccff00",
+    "#99ff00",
+    "#66ff00",
+    "#33ff00",
+  ];
 
-  const handleClearTasks = (boxIndex) => {
-    const updatedTasksArray = [...tasks];
-    updatedTasksArray[boxIndex] = { ...updatedTasksArray[boxIndex], tasks: [] };
-    setTasks(updatedTasksArray);
-  };
+  const pastelColors = [
+    "#ff5555",
+    "#ff8855",
+    "#ffbb55",
+    "#ffdd55",
+    "#ffff55",
+    "#ccff55",
+    "#99ff55",
+    "#66ff55",
+    "#33ff55",
+    "#00ff55",
+  ];
 
-  const renderBox = (box, editable) => (
-    <Box
-      key={box.id}
-      sx={{
-        mt: 2,
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      <Grid container direction="row" alignItems="center">
-        <Typography sx={{ my: "auto", mr: 1 }}>{box.id + 1}</Typography>
-        <TextField
-          sx={{ backgroundColor: box.color, mr: 1, width: 200 }}
-          value={box.title}
-          disabled={!editable}
-        />
-        <TextField
-          placeholder="Tasks"
-          value={box.tasks}
-          disabled={!editable}
-          sx={{ mr: 1 }}
-        />
-        <TextField
-          placeholder="Início da Fase"
-          value={box.startAt || ""}
-          disabled={!editable}
-          sx={{ mr: 1 }}
-        />
-        <TextField
-          placeholder="Due To"
-          value={box.dueTo || ""}
-          disabled={!editable}
-        />
-        {editable ? (
-          <IconButton onClick={() => removeLastStage(box.id)}>
-            <DeleteIcon />
-          </IconButton>
-        ) : (
-          <IconButton disabled>
-            <DeleteIcon sx={{ opacity: 0 }} />
-          </IconButton>
-        )}
-      </Grid>
-    </Box>
+  const renderColorGrid = (colors) => (
+    <Grid container spacing={0.3} sx={{ mt: 1 }}>
+      {colors.map((color, index) => (
+        <Grid key={index} item>
+          <div
+            style={{
+              width: 16,
+              height: 16,
+              backgroundColor: color,
+              border: "1px solid #aaa",
+              borderRadius: 3,
+            }}
+          />
+        </Grid>
+      ))}
+    </Grid>
   );
 
+  const renderCardHeader = (index, title) => {
+    const backgroundColor =
+      colorSchema !== 0
+        ? (colorSchema === 1 ? normalColors : pastelColors)[index]
+        : undefined;
+    return (
+      <CardHeader
+        title={
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Typography sx={{ fontSize: 18 }}>
+              {title ? title : `Etapa #${index + 1}`}
+            </Typography>
+            <IconButton>
+              <ExpandMoreIcon />
+            </IconButton>
+          </Grid>
+        }
+        sx={{ backgroundColor: backgroundColor }}
+      />
+    );
+  };
+
   return (
-    <Grid
-      container
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-    >
+    <>
+      <Grid>
+        <Typography sx={{ textAlign: "center", fontSize: 28 }}>
+          Etapas do Projeto X
+        </Typography>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ my: 2 }}
+          >
+            <Button
+              onClick={() => handleStagesChange(stages - 1)}
+              disabled={stages === 1}
+            >
+              <Typography sx={{ fontSize: 22 }}>-</Typography>
+            </Button>
+            <Typography
+              sx={{
+                border: "1px solid #666",
+                borderRadius: 1,
+                p: 2,
+                fontSize: 28,
+                mx: 1,
+              }}
+            >
+              {stages}
+            </Typography>
+            <Button
+              onClick={() => handleStagesChange(stages + 1)}
+              disabled={stages === 10}
+            >
+              <Typography sx={{ fontSize: 28 }} disabled={stages === 10}>
+                +
+              </Typography>
+            </Button>
+          </Grid>
+        </Grid>
+        <Typography sx={{ textAlign: "center", fontSize: 14 }}>
+          <Button
+            sx={{ color: "inherit", backgroundColor: "lightgrey" }}
+            onClick={handleColorClick}
+          >
+            Habilitar Cores
+          </Button>
+          <Popover
+            open={colorPopoverOpen}
+            anchorEl={colorPopoverAnchorEl}
+            onClose={handleColorClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
+            <Grid sx={{ width: 350, height: 150, p: 1 }}>
+              <RadioGroup
+                value={colorSchema}
+                onChange={(e) => setColorSchema(Number(e.target.value))}
+              >
+                <FormControlLabel
+                  value={0}
+                  control={<Radio sx={{ mt: -0.25, mr: -0.5 }} />}
+                  label={
+                    <Typography sx={{ fontSize: 13 }}>Desabilitado</Typography>
+                  }
+                />
+
+                <FormControlLabel
+                  value={1}
+                  control={<Radio sx={{ mt: -0.25, mr: -0.5 }} />}
+                  label={
+                    <Grid container direction="row">
+                      <Grid sx={{ m: "auto" }}>
+                        <Typography sx={{ fontSize: 13 }}>Padrão</Typography>
+                      </Grid>
+                      <Grid sx={{ ml: 1, mb: 1 }}>
+                        {renderColorGrid(normalColors)}
+                      </Grid>
+                    </Grid>
+                  }
+                />
+                <FormControlLabel
+                  value={2}
+                  control={<Radio sx={{ mt: -0.25, mr: -0.5 }} />}
+                  label={
+                    <Grid container direction="row">
+                      <Grid sx={{ m: "auto" }}>
+                        <Typography sx={{ fontSize: 13 }}>
+                          Tons Pastéis
+                        </Typography>
+                      </Grid>
+                      <Grid sx={{ ml: 1, mb: 1 }}>
+                        {renderColorGrid(pastelColors)}
+                      </Grid>
+                    </Grid>
+                  }
+                />
+              </RadioGroup>
+            </Grid>
+          </Popover>
+        </Typography>
+      </Grid>
+
       <Grid
         container
         direction="row"
+        justifyContent="space-evenly"
         alignItems="center"
-        justifyContent="center"
       >
-        <TextField
-          placeholder="Nome da Etapa"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          sx={{ mt: 1, mr: 1, width: 200 }}
-        />
-        <ProjectStageTasks
-          tasks={tasks}
-          members={members}
-          onAddTask={(newTasks) => handleAddTask(index, newTasks)}
-          onUpdateTask={(updatedTasks) => handleUpdateTask(index, updatedTasks)}
-          onClearTasks={() => handleClearTasks(index)}
-        />
-
-        <FormControl sx={{ mr: 1 }}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={["DatePicker"]}>
-              <DatePicker
-                label="Início da Fase"
-                value={startAt || null}
-                onChange={(date) => setStartAt(date)}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
-        </FormControl>
-        <FormControl>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={["DatePicker"]}>
-              <DatePicker
-                label="Due To"
-                value={dueTo || null}
-                onChange={(date) => setDueTo(date)}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
-        </FormControl>
+        {stagesList.map((stage, index) => (
+          <Card key={index} sx={{ my: 2, width: 220 }}>
+            <CardActionArea onClick={() => handleExpandClick(index)}>
+              {renderCardHeader(index, stage.title)}
+            </CardActionArea>
+            <Collapse in={stage.expanded} timeout="auto" unmountOnExit>
+              <CardContent>
+                <TextField
+                  label="Nome da Etapa"
+                  value={stage.title}
+                  onChange={(e) =>
+                    handleStageChange(index, "title", e.target.value)
+                  }
+                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="Início em"
+                    value={stage.startAt}
+                    format="DD/MM/YYYY"
+                    onChange={(date) =>
+                      handleStageChange(index, "startAt", date)
+                    }
+                    renderInput={(params) => <TextField {...params} />}
+                    sx={{ my: 2 }}
+                  />
+                  <DatePicker
+                    label="Término"
+                    value={stage.dueTo}
+                    format="DD/MM/YYYY"
+                    onChange={(date) => handleStageChange(index, "dueTo", date)}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </CardContent>
+            </Collapse>
+          </Card>
+        ))}
       </Grid>
-      <Button
-        variant="contained"
-        color="inherit"
-        sx={{ mt: 3 }}
-        onClick={addStage}
-      >
-        + ADICIONAR FASE
-      </Button>
-
-      {boxes.length > 0 && (
-        <>
-          <Typography variant="h5" sx={{ mt: 3 }}>
-            Fases do Projeto
-          </Typography>
-          {boxes.map((box, index) =>
-            renderBox(box, index === boxes.length - 1)
-          )}
-        </>
-      )}
-    </Grid>
+    </>
   );
 };
 

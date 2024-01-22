@@ -385,7 +385,11 @@ export default function AddProjectForm({
         )}
 
         {/* SECOND PART */}
-        {firstPartOK && <ProjectStages members={members} />}
+        {firstPartOK && <ProjectStages />}
+        {/* SECOND PART */}
+
+        {/* THIRD PART */}
+        {/* {secondPartOK && <ProjectTasks members={members} />} */}
         {/* SECOND PART */}
       </DialogContent>
       <DialogActions>
