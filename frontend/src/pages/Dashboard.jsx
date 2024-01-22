@@ -4,9 +4,11 @@ import * as React from "react";
 import { Typography } from "@mui/material";
 import TestWebSocketButton from "../components/small/buttons/TestWebsocketButton";
 import ProjectStages from "../components/small/ProjectStages";
+import TestComponent from "../components/small/TestComponent";
 
 const Dashboard = ({ user }) => {
   return (
+    // <TestComponent />
     <ProjectStages />
     // <>
     //   <TestWebSocketButton />
