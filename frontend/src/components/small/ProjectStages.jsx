@@ -13,87 +13,119 @@ import {
   Typography,
 } from "@mui/material";
 
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import ProjectStageTasks from "./ProjectStageTasks";
 
 const ProjectStages = ({ members }) => {
-  const [boxes, setBoxes] = useState([
-    {
-      title: "",
-      tasks: [],
-      startAt: "",
-      dueTo: "",
-      anchorEl: null,
-    },
-  ]);
+  const [index, setIndex] = useState(0);
+  const [title, setTitle] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [startAt, setStartAt] = useState(null);
+  const [dueTo, setDueTo] = useState(null);
+  const [boxes, setBoxes] = useState([]);
 
   const getColor = (index) => {
     const colors = ["#FF4500", "#FFA500", "#FFD700", "#32CD32", "#008000"];
-
     return colors[index % colors.length];
   };
 
-  const handleAddBox = (event, index) => {
-    if (boxes.length < 5) {
-      setBoxes([
-        ...boxes,
-        {
-          title: "",
-          tasks: [],
-          startAt: "",
-          dueTo: "",
-          anchorEl: null,
-        },
-      ]);
+  const addStage = () => {
+    const newBox = {
+      id: index,
+      title,
+      tasks,
+      startAt: dayjs(startAt).format("DD/MM/YYYY"),
+      dueTo: dayjs(dueTo).format("DD/MM/YYYY"),
+      color: getColor(index),
+    };
+
+    setBoxes([...boxes, newBox]);
+    setTitle("");
+    setTasks([]);
+    setStartAt(null);
+    setDueTo(null);
+    setIndex(index + 1);
+  };
+
+  const removeLastStage = (boxIndex) => {
+    if (boxes.length > 0) {
+      setIndex(index - 1);
+      const updatedBoxes = [...boxes];
+      updatedBoxes.pop();
+      setBoxes(updatedBoxes);
     }
   };
 
-  const handleRemoveBox = (index) => {
-    if (index === boxes.length - 1) {
-      setBoxes(boxes.slice(0, -1));
-    }
-  };
-
-  const handleInputChange = (index, field, value) => {
-    const updatedBoxes = [...boxes];
-    updatedBoxes[index][field] = value;
-    setBoxes(updatedBoxes);
-  };
-
-  const handleTaskClose = (index) => {
-    const updatedBoxes = [...boxes];
-    updatedBoxes[index].anchorEl = null;
-    setBoxes(updatedBoxes);
-  };
-
-  const handleAddTask = (boxIndex, newTask) => {
-    const updatedBoxes = [...boxes];
-    updatedBoxes[boxIndex].tasks.push(newTask);
-    setBoxes(updatedBoxes);
+  const handleAddTask = (boxIndex, newTasks) => {
+    const updatedTasks = [...tasks];
+    updatedTasks[boxIndex] = { ...updatedTasks[boxIndex], tasks: newTasks };
+    setTasks(updatedTasks);
   };
 
   const handleUpdateTask = (boxIndex, updatedTasks) => {
-    const updatedBoxes = [...boxes];
-    updatedBoxes[boxIndex].tasks = updatedTasks;
-    setBoxes(updatedBoxes);
+    const updatedTasksArray = [...tasks];
+    updatedTasksArray[boxIndex] = {
+      ...updatedTasksArray[boxIndex],
+      tasks: updatedTasks,
+    };
+    setTasks(updatedTasksArray);
   };
 
-  const handleClearTasks = () => {
-    setBoxes([
-      {
-        title: "",
-        tasks: [],
-        startAt: "",
-        dueTo: "",
-        anchorEl: null,
-      },
-    ]);
+  const handleClearTasks = (boxIndex) => {
+    const updatedTasksArray = [...tasks];
+    updatedTasksArray[boxIndex] = { ...updatedTasksArray[boxIndex], tasks: [] };
+    setTasks(updatedTasksArray);
   };
+
+  const renderBox = (box, editable) => (
+    <Box
+      key={box.id}
+      sx={{
+        mt: 2,
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <Grid container direction="row" alignItems="center">
+        <Typography sx={{ my: "auto", mr: 1 }}>{box.id + 1}</Typography>
+        <TextField
+          sx={{ backgroundColor: box.color, mr: 1, width: 200 }}
+          value={box.title}
+          disabled={!editable}
+        />
+        <TextField
+          placeholder="Tasks"
+          value={box.tasks}
+          disabled={!editable}
+          sx={{ mr: 1 }}
+        />
+        <TextField
+          placeholder="Início da Fase"
+          value={box.startAt || ""}
+          disabled={!editable}
+          sx={{ mr: 1 }}
+        />
+        <TextField
+          placeholder="Due To"
+          value={box.dueTo || ""}
+          disabled={!editable}
+        />
+        {editable ? (
+          <IconButton onClick={() => removeLastStage(box.id)}>
+            <DeleteIcon />
+          </IconButton>
+        ) : (
+          <IconButton disabled>
+            <DeleteIcon sx={{ opacity: 0 }} />
+          </IconButton>
+        )}
+      </Grid>
+    </Box>
+  );
 
   return (
     <Grid
@@ -104,100 +136,65 @@ const ProjectStages = ({ members }) => {
     >
       <Grid
         container
-        direction="column"
+        direction="row"
         alignItems="center"
         justifyContent="center"
       >
-        {boxes.map((box, index) => (
-          <Box key={index} sx={{ width: "100%" }}>
-            <Grid
-              container
-              direction="row"
-              alignItems="center"
-              justifyContent="flex-start"
-            >
-              {index === boxes.length - 1 ? (
-                <IconButton
-                  onClick={() => handleRemoveBox(index)}
-                  disabled={index === 0}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              ) : (
-                <IconButton disabled sx={{ opacity: 0 }}>
-                  <DeleteIcon />
-                </IconButton>
-              )}
-              <Grid>
-                <TextField
-                  placeholder={`Fase ${index + 1}`}
-                  value={box.title}
-                  sx={{
-                    width: 130,
-                    backgroundColor: getColor(index),
-                    mt: 1,
-                  }}
-                  onChange={(e) =>
-                    handleInputChange(index, "title", e.target.value)
-                  }
-                />
-                <FormControl sx={{ mx: 1, mt: 1 }}>
-                  <ProjectStageTasks
-                    tasks={box.tasks}
-                    members={members}
-                    anchorEl={box.anchorEl}
-                    indexB={index}
-                    onClose={() => handleTaskClose(index)}
-                    onAddTask={(newTask) => handleAddTask(index, newTask)}
-                    onUpdateTask={(updatedTasks) =>
-                      handleUpdateTask(index, updatedTasks)
-                    }
-                    onClearTasks={handleClearTasks}
-                  />
-                </FormControl>
+        <TextField
+          placeholder="Nome da Etapa"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          sx={{ mt: 1, mr: 1, width: 200 }}
+        />
+        <ProjectStageTasks
+          tasks={tasks}
+          members={members}
+          onAddTask={(newTasks) => handleAddTask(index, newTasks)}
+          onUpdateTask={(updatedTasks) => handleUpdateTask(index, updatedTasks)}
+          onClearTasks={() => handleClearTasks(index)}
+        />
 
-                <FormControl sx={{ mr: 1 }}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["DatePicker"]}>
-                      <DatePicker
-                        sx={{ width: 2 }}
-                        label="Início da Fase"
-                        value={box.startAt || null}
-                        onChange={(date) =>
-                          handleInputChange(index, "startAt", date)
-                        }
-                      />
-                    </DemoContainer>
-                  </LocalizationProvider>
-                </FormControl>
-                <FormControl>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["DatePicker"]}>
-                      <DatePicker
-                        sx={{ width: 50 }}
-                        label="Término da Fase"
-                        value={box.dueTo || null}
-                        onChange={(date) =>
-                          handleInputChange(index, "dueTo", date)
-                        }
-                      />
-                    </DemoContainer>
-                  </LocalizationProvider>
-                </FormControl>
-              </Grid>
-            </Grid>
-          </Box>
-        ))}
+        <FormControl sx={{ mr: 1 }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={["DatePicker"]}>
+              <DatePicker
+                label="Início da Fase"
+                value={startAt || null}
+                onChange={(date) => setStartAt(date)}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
+        </FormControl>
+        <FormControl>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={["DatePicker"]}>
+              <DatePicker
+                label="Due To"
+                value={dueTo || null}
+                onChange={(date) => setDueTo(date)}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
+        </FormControl>
       </Grid>
-      {boxes.length < 5 && (
-        <Button
-          variant="contained"
-          color="inherit"
-          onClick={handleAddBox}
-          sx={{ mt: 3 }}
-        >
-          + ADICIONAR FASE
-        </Button>
+      <Button
+        variant="contained"
+        color="inherit"
+        sx={{ mt: 3 }}
+        onClick={addStage}
+      >
+        + ADICIONAR FASE
+      </Button>
+
+      {boxes.length > 0 && (
+        <>
+          <Typography variant="h5" sx={{ mt: 3 }}>
+            Fases do Projeto
+          </Typography>
+          {boxes.map((box, index) =>
+            renderBox(box, index === boxes.length - 1)
+          )}
+        </>
       )}
     </Grid>
   );
