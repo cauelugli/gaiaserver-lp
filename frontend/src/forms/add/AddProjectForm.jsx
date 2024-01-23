@@ -111,7 +111,7 @@ export default function AddProjectForm({
       <DialogTitle
         sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold", my: 2 }}
       >
-        Novo Projeto
+        {firstPartOK ? name : "Novo Projeto"}
       </DialogTitle>
       <DialogContent>
         {/* FIRST PART */}

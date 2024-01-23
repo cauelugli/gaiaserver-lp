@@ -26,7 +26,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckIcon from "@mui/icons-material/Check";
 
-const ProjectStages = ({ name, updateStages, setStagesSchemaColor,setSecondPartOK }) => {
+const ProjectStages = ({
+  name,
+  updateStages,
+  setStagesSchemaColor,
+  setSecondPartOK,
+}) => {
   const [colorSchema, setColorSchema] = useState(0);
   const [stagesNumber, setStagesNumbers] = useState(1);
   const [stagesList, setStagesList] = useState([
@@ -68,11 +73,11 @@ const ProjectStages = ({ name, updateStages, setStagesSchemaColor,setSecondPartO
     setStagesList(newStagesList);
   };
 
-  const handleExpandClick = (index) => {
-    const newStagesList = [...stagesList];
-    newStagesList[index].expanded = !newStagesList[index].expanded;
-    setStagesList(newStagesList);
-  };
+  // const handleExpandClick = (index) => {
+  //   const newStagesList = [...stagesList];
+  //   newStagesList[index].expanded = !newStagesList[index].expanded;
+  //   setStagesList(newStagesList);
+  // };
 
   const normalColors = [
     "#ff0000",
@@ -145,11 +150,29 @@ const ProjectStages = ({ name, updateStages, setStagesSchemaColor,setSecondPartO
     );
   };
 
+  const [selectedStage, setSelectedStage] = useState(null);
+  const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
+
+  const handlePopoverOpen = (event, index) => {
+    setPopoverAnchorEl(event.currentTarget);
+    setSelectedStage(index);
+  };
+
+  const handlePopoverClose = () => {
+    setPopoverAnchorEl(null);
+    setSelectedStage(null);
+  };
+
   return (
-    <>
+    <Grid
+      container
+      direction="row"
+      justifyContent="space-evenly"
+      alignItems="center"
+    >
       <Grid>
-        <Typography sx={{ textAlign: "center", fontSize: 26 }}>
-          Etapas do Projeto {name}
+        <Typography sx={{ textAlign: "center", fontSize: 22 }}>
+          Etapas do Projeto
         </Typography>
         <Grid
           container
@@ -172,10 +195,8 @@ const ProjectStages = ({ name, updateStages, setStagesSchemaColor,setSecondPartO
             </Button>
             <Typography
               sx={{
-                border: "1px solid #666",
-                borderRadius: 1,
-                p: 2,
-                fontSize: 28,
+                p: 1,
+                fontSize: 24,
                 mx: 1,
               }}
             >
@@ -259,22 +280,30 @@ const ProjectStages = ({ name, updateStages, setStagesSchemaColor,setSecondPartO
           </Popover>
         </Typography>
       </Grid>
-
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-evenly"
-        alignItems="center"
-      >
+      <Grid sx={{ width: 700 }} container direction="row">
         {stagesList.map((stage, index) => (
-          <Card key={index} sx={{ my: 2, width: 220 }}>
-            <CardActionArea onClick={() => handleExpandClick(index)}>
-              {renderCardHeader(index, stage.title)}
-            </CardActionArea>
-            <Collapse in={stage.expanded} timeout="auto" unmountOnExit>
-              <CardContent>
+          <React.Fragment key={index}>
+            <Card sx={{ mr: 1, mb: 0.5, width: 220 }}>
+              <CardActionArea onClick={(e) => handlePopoverOpen(e, index)}>
+                {renderCardHeader(index, stage.title)}
+              </CardActionArea>
+            </Card>
+            <Popover
+              open={selectedStage === index}
+              anchorEl={popoverAnchorEl}
+              onClose={handlePopoverClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+            >
+              <Grid container direction="column" sx={{p:2}}>
                 <TextField
-                  label="Nome da Etapa"
+                  label={`Nome da Etapa ${index}`}
                   value={stage.title}
                   onChange={(e) =>
                     handleStageChange(index, "title", e.target.value)
@@ -299,31 +328,34 @@ const ProjectStages = ({ name, updateStages, setStagesSchemaColor,setSecondPartO
                     renderInput={(params) => <TextField {...params} />}
                   />
                 </LocalizationProvider>
-              </CardContent>
-            </Collapse>
-          </Card>
+              </Grid>
+            </Popover>
+          </React.Fragment>
         ))}
-        <Grid
-          sx={{ mt: 2 }}
-          container
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Button
-            sx={{ my: 2 }}
-            variant="contained"
-            color="success"
-            startIcon={<CheckIcon />}
-            onClick={() => {
-              updateStages(stagesList), setStagesSchemaColor(colorSchema), setSecondPartOK(Boolean(true));
-            }}
-          >
-            OK e Prosseguir
-          </Button>
-        </Grid>
       </Grid>
-    </>
+
+      <Grid
+        sx={{ mt: 2 }}
+        container
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Button
+          sx={{ my: 2 }}
+          variant="contained"
+          color="success"
+          startIcon={<CheckIcon />}
+          onClick={() => {
+            updateStages(stagesList),
+              setStagesSchemaColor(colorSchema),
+              setSecondPartOK(Boolean(true));
+          }}
+        >
+          OK e Prosseguir
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 
