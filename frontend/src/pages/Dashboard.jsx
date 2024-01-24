@@ -3,13 +3,19 @@
 import * as React from "react";
 import { Typography } from "@mui/material";
 import TestWebSocketButton from "../components/small/buttons/TestWebsocketButton";
-import ProjectStages from "../components/small/ProjectStages";
+import ProjectStageTasks from "../components/small/ProjectStageTasks";
 import TestComponent from "../components/small/TestComponent";
 
 const Dashboard = ({ user }) => {
+  const fakelist = [
+    { title: "Etapa Alpha", startAt: "", dueTo: "" },
+    { title: "Etapa Beta", startAt: "", dueTo: "" },
+    { title: "Etapa Gamma", startAt: "", dueTo: "" },
+    { title: "Etapa Delta", startAt: "", dueTo: "" },
+  ];
   return (
     // <TestComponent />
-    <ProjectStages />
+    <ProjectStageTasks stages={fakelist} members={Array.from(user)}/>
     // <>
     //   <TestWebSocketButton />
     //   <p>Dashboard</p>

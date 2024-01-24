@@ -15,6 +15,7 @@ import {
 
 const ProjectStageTaskMembers = ({
   handleClick,
+  setNewTaskAssignees,
   index,
   title,
   openedPopoverIndex,
@@ -29,10 +30,17 @@ const ProjectStageTaskMembers = ({
       ...prevSelectedMembers,
       member,
     ]);
+    setNewTaskAssignees((prevSelectedMembers) => [
+      ...prevSelectedMembers,
+      member,
+    ]);
   };
 
   const handleRemoveMember = (member) => {
     setSelectedMembers((prevSelectedMembers) =>
+      prevSelectedMembers.filter((m) => m !== member)
+    );
+    setNewTaskAssignees((prevSelectedMembers) =>
       prevSelectedMembers.filter((m) => m !== member)
     );
   };
@@ -126,7 +134,6 @@ const ProjectStageTaskMembers = ({
             })}
           </Grid>
           <Grid id="phantomDiv" sx={{ my: 1 }} />
-
           <Grid
             sx={{
               p: 1,

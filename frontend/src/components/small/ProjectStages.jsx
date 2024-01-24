@@ -366,7 +366,6 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
         <Button
           variant="contained"
           color="primary"
-          sx={{ my: 2 }}
           startIcon={<CheckIcon />}
           onClick={() => {
             updateStages(stagesList);

@@ -107,13 +107,13 @@ export default function AddProjectForm({
   }, [selectedDepartments, mainDepartment]);
 
   return (
-    <form onSubmit={handleAdd} style={{marginBottom:10}}>
+    <form onSubmit={handleAdd} style={{ marginBottom: 10 }}>
       <DialogTitle
         sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold", my: 2 }}
       >
         {firstPartOK ? name : "Novo Projeto"}
       </DialogTitle>
-      <DialogContent >
+      <DialogContent>
         {/* FIRST PART */}
         {!firstPartOK && (
           <>
