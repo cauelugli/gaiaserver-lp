@@ -329,7 +329,7 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
               >
                 <Grid container direction="column" sx={{ p: 2 }}>
                   <TextField
-                    label={`Nome da Etapa ${index}`}
+                    label={`Nome da Etapa ${index+1}`}
                     value={stage.title}
                     onChange={(e) =>
                       handleStageChange(index, "title", e.target.value)
