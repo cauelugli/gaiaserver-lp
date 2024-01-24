@@ -89,17 +89,14 @@ const ProjectStageTasks = ({ members, stages, stagesColorSchema }) => {
           </Grid>
 
           <Collapse in={expandedStage === index}>
-            {/* Render tasks for the current stage */}
             {tasks[index]?.map((task, taskIndex) => (
               <div key={taskIndex}>
-                {/* Render task details here */}
                 <Typography>{task.title}</Typography>
                 <Typography>Assigned to: {task.assigned}</Typography>
                 <Typography>Due to: {task.dueTo}</Typography>
               </div>
             ))}
 
-            {/* Input field for new task title */}
             <TextField
               label="Tarefa"
               variant="outlined"

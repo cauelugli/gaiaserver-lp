@@ -356,59 +356,14 @@ export default function AddProjectForm({
           </>
         )}
 
-        {mainDepartment && description.length > 0 && (
-          <Grid
-            sx={{ mt: 2 }}
-            container
-            direction="row"
-            alignItems="center"
-            justifyContent="center"
-          >
-            {!firstPartOK && !secondPartOK && (
-              <Button
-                sx={{ my: 2 }}
-                variant="contained"
-                color="success"
-                startIcon={<CheckIcon />}
-                onClick={() => setFirstPartOK(Boolean(true))}
-              >
-                OK e Prosseguir
-              </Button>
-            )}
-            {firstPartOK && !secondPartOK && (
-              <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="warning"
-                startIcon={<KeyboardReturnIcon />}
-                onClick={() => setFirstPartOK(Boolean(false))}
-              >
-                Retornar para Parte 1
-              </Button>
-            )}
-            {firstPartOK && secondPartOK && (
-              <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="warning"
-                startIcon={<KeyboardReturnIcon />}
-                onClick={() => setSecondPartOK(Boolean(false))}
-              >
-                Retornar para Parte 2
-              </Button>
-            )}
-          </Grid>
-        )}
         {/* FIRST PART */}
 
         {/* SECOND PART */}
         {firstPartOK && !secondPartOK && (
           <ProjectStages
-            name={name}
             stages={stages}
             updateStages={(newStagesList) => setStages(newStagesList)}
             setStagesSchemaColor={setStagesSchemaColor}
-            setSecondPartOK={setSecondPartOK}
           />
         )}
         {/* SECOND PART */}
@@ -423,6 +378,53 @@ export default function AddProjectForm({
         )}
         {/* THIRD PART */}
       </DialogContent>
+      <DialogActions>
+        {mainDepartment && description.length > 0 && (
+          <>
+            {!firstPartOK && !secondPartOK && (
+              <Button
+                variant="contained"
+                color="success"
+                startIcon={<CheckIcon />}
+                onClick={() => setFirstPartOK(Boolean(true))}
+              >
+                Prosseguir para "Etapas"
+              </Button>
+            )}
+          </>
+        )}
+        {firstPartOK && !secondPartOK && (
+          <>
+            <Button
+              variant="contained"
+              color="warning"
+              startIcon={<KeyboardReturnIcon />}
+              onClick={() => setFirstPartOK(Boolean(false))}
+            >
+              Retornar para "Informações"
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              disabled={stages.length <= 1}
+              startIcon={<CheckIcon />}
+              onClick={() => setSecondPartOK(Boolean(true))}
+            >
+              Prosseguir para "Tarefas"
+            </Button>
+          </>
+        )}
+        {firstPartOK && secondPartOK && (
+          <Button
+            variant="contained"
+            color="warning"
+            startIcon={<KeyboardReturnIcon />}
+            onClick={() => setSecondPartOK(Boolean(false))}
+          >
+            Retornar para "Etapas"
+          </Button>
+        )}
+      </DialogActions>
       {thirdPartOK && (
         <DialogActions>
           <Button type="submit" variant="contained" color="success">

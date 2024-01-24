@@ -25,22 +25,24 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckIcon from "@mui/icons-material/Check";
+import DeleteIcon from "@mui/icons-material/Delete";
+import PaletteIcon from "@mui/icons-material/Palette";
 
-const ProjectStages = ({
-  name,
-  updateStages,
-  setStagesSchemaColor,
-  setSecondPartOK,
-}) => {
+const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
+  const [visibleButton, setVisibleButton] = useState(Boolean(true));
   const [colorSchema, setColorSchema] = useState(0);
-  const [stagesNumber, setStagesNumbers] = useState(1);
-  const [stagesList, setStagesList] = useState([
-    {
-      title: "",
-      startAt: dayjs(),
-      dueTo: dayjs(),
-    },
-  ]);
+  const [stagesNumber, setStagesNumber] = useState(1);
+  const [stagesList, setStagesList] = useState(
+    stages && stages.length !== 0
+      ? stages
+      : [
+          {
+            title: "",
+            startAt: dayjs(),
+            dueTo: dayjs(),
+          },
+        ]
+  );
 
   const [colorPopoverAnchorEl, setColorPopoverAnchorEl] = useState(null);
   const colorPopoverOpen = Boolean(colorPopoverAnchorEl);
@@ -48,12 +50,13 @@ const ProjectStages = ({
   const handleColorClick = (event) => {
     setColorPopoverAnchorEl(event.currentTarget);
   };
+
   const handleColorClose = () => {
     setColorPopoverAnchorEl(null);
   };
 
   const handleStagesChange = (newStages) => {
-    setStagesNumbers(newStages);
+    setStagesNumber(newStages);
     const newStagesList = Array.from({ length: newStages }, (_, index) => {
       return (
         stagesList[index] || {
@@ -72,12 +75,6 @@ const ProjectStages = ({
     newStagesList[index][field] = value;
     setStagesList(newStagesList);
   };
-
-  // const handleExpandClick = (index) => {
-  //   const newStagesList = [...stagesList];
-  //   newStagesList[index].expanded = !newStagesList[index].expanded;
-  //   setStagesList(newStagesList);
-  // };
 
   const normalColors = [
     "#ff0000",
@@ -166,195 +163,220 @@ const ProjectStages = ({
   return (
     <Grid
       container
-      direction="row"
-      justifyContent="space-evenly"
+      direction="column"
+      justifyContent="center"
       alignItems="center"
     >
-      <Grid>
-        <Typography sx={{ textAlign: "center", fontSize: 22 }}>
-          Etapas do Projeto
-        </Typography>
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-        >
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-around"
+        alignItems="center"
+        sx={{ height: 320 }}
+      >
+        <Grid>
+          <Typography sx={{ textAlign: "center", fontSize: 22 }}>
+            Etapas do Projeto
+          </Typography>
           <Grid
             container
             direction="row"
-            alignItems="center"
             justifyContent="center"
-            sx={{ my: 2 }}
+            alignItems="center"
           >
-            <Button
-              onClick={() => handleStagesChange(stagesNumber - 1)}
-              disabled={stagesNumber === 1}
+            <Grid
+              container
+              direction="row"
+              alignItems="center"
+              justifyContent="center"
+              sx={{ my: 2 }}
             >
-              <Typography sx={{ fontSize: 22 }}>-</Typography>
-            </Button>
-            <Typography
-              sx={{
-                p: 1,
-                fontSize: 24,
-                mx: 1,
-              }}
-            >
-              {stagesNumber}
-            </Typography>
-            <Button
-              onClick={() => handleStagesChange(stagesNumber + 1)}
-              disabled={stagesNumber === 10}
-            >
-              <Typography sx={{ fontSize: 28 }} disabled={stagesNumber === 10}>
-                +
-              </Typography>
-            </Button>
-          </Grid>
-        </Grid>
-        <Typography sx={{ textAlign: "center", fontSize: 14 }}>
-          <Button
-            sx={{ color: "inherit", backgroundColor: "lightgrey" }}
-            onClick={handleColorClick}
-          >
-            Habilitar Cores
-          </Button>
-          <Popover
-            open={colorPopoverOpen}
-            anchorEl={colorPopoverAnchorEl}
-            onClose={handleColorClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-          >
-            <Grid sx={{ width: 350, height: 150, p: 1 }}>
-              <RadioGroup
-                value={colorSchema}
-                onChange={(e) => setColorSchema(Number(e.target.value))}
+              <Button
+                onClick={() => handleStagesChange(stagesNumber - 1)}
+                disabled={stagesNumber === 1}
               >
-                <FormControlLabel
-                  value={0}
-                  control={<Radio sx={{ mt: -0.25, mr: -0.5 }} />}
-                  label={
-                    <Typography sx={{ fontSize: 13 }}>Desabilitado</Typography>
-                  }
-                />
-
-                <FormControlLabel
-                  value={1}
-                  control={<Radio sx={{ mt: -0.25, mr: -0.5 }} />}
-                  label={
-                    <Grid container direction="row">
-                      <Grid sx={{ m: "auto" }}>
-                        <Typography sx={{ fontSize: 13 }}>Padrão</Typography>
-                      </Grid>
-                      <Grid sx={{ ml: 1, mb: 1 }}>
-                        {renderColorGrid(normalColors)}
-                      </Grid>
-                    </Grid>
-                  }
-                />
-                <FormControlLabel
-                  value={2}
-                  control={<Radio sx={{ mt: -0.25, mr: -0.5 }} />}
-                  label={
-                    <Grid container direction="row">
-                      <Grid sx={{ m: "auto" }}>
-                        <Typography sx={{ fontSize: 13 }}>
-                          Tons Pastéis
-                        </Typography>
-                      </Grid>
-                      <Grid sx={{ ml: 1, mb: 1 }}>
-                        {renderColorGrid(pastelColors)}
-                      </Grid>
-                    </Grid>
-                  }
-                />
-              </RadioGroup>
+                <Typography sx={{ fontSize: 22 }}>-</Typography>
+              </Button>
+              <Typography sx={{ fontSize: 22 }}>{stagesNumber}</Typography>
+              <Button
+                onClick={() => handleStagesChange(stagesNumber + 1)}
+                disabled={stagesNumber === 12}
+              >
+                <Typography
+                  sx={{ fontSize: 28 }}
+                  disabled={stagesNumber === 12}
+                >
+                  +
+                </Typography>
+              </Button>
             </Grid>
-          </Popover>
-        </Typography>
-      </Grid>
-      <Grid sx={{ width: 700 }} container direction="row">
-        {stagesList.map((stage, index) => (
-          <React.Fragment key={index}>
-            <Card sx={{ mr: 1, mb: 0.5, width: 220 }}>
-              <CardActionArea onClick={(e) => handlePopoverOpen(e, index)}>
-                {renderCardHeader(index, stage.title)}
-              </CardActionArea>
-            </Card>
+          </Grid>
+          <Grid container direction="column">
+            <Button
+              startIcon={<PaletteIcon />}
+              variant="contained"
+              onClick={handleColorClick}
+              size="small"
+            >
+              Habilitar Cores
+            </Button>
+            <Button
+              size="small"
+              color="error"
+              variant="outlined"
+              sx={{ mt: 1 }}
+              startIcon={<DeleteIcon />}
+              onClick={() =>
+                setStagesList(
+                  [
+                    {
+                      title: "",
+                      startAt: dayjs(),
+                      dueTo: dayjs(),
+                    },
+                  ],
+                  setStagesNumber(1),
+                  setVisibleButton(Boolean(true)),
+                  updateStages([])
+                )
+              }
+            >
+              Limpar Etapas
+            </Button>
             <Popover
-              open={selectedStage === index}
-              anchorEl={popoverAnchorEl}
-              onClose={handlePopoverClose}
+              open={colorPopoverOpen}
+              anchorEl={colorPopoverAnchorEl}
+              onClose={handleColorClose}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
+                vertical: "top",
+                horizontal: "left",
               }}
             >
-              <Grid container direction="column" sx={{p:2}}>
-                <TextField
-                  label={`Nome da Etapa ${index}`}
-                  value={stage.title}
-                  onChange={(e) =>
-                    handleStageChange(index, "title", e.target.value)
-                  }
-                />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Início em"
-                    value={stage.startAt}
-                    format="DD/MM/YYYY"
-                    onChange={(date) =>
-                      handleStageChange(index, "startAt", date)
+              <Grid sx={{ width: 350, height: 150, p: 1 }}>
+                <RadioGroup
+                  value={colorSchema}
+                  onChange={(e) => setColorSchema(Number(e.target.value))}
+                >
+                  <FormControlLabel
+                    value={0}
+                    control={<Radio sx={{ mt: -0.25, mr: -0.5 }} />}
+                    label={
+                      <Typography sx={{ fontSize: 13 }}>
+                        Desabilitado
+                      </Typography>
                     }
-                    renderInput={(params) => <TextField {...params} />}
-                    sx={{ my: 2 }}
                   />
-                  <DatePicker
-                    label="Término"
-                    value={stage.dueTo}
-                    format="DD/MM/YYYY"
-                    onChange={(date) => handleStageChange(index, "dueTo", date)}
-                    renderInput={(params) => <TextField {...params} />}
+
+                  <FormControlLabel
+                    value={1}
+                    control={<Radio sx={{ mt: -0.25, mr: -0.5 }} />}
+                    label={
+                      <Grid container direction="row">
+                        <Grid sx={{ m: "auto" }}>
+                          <Typography sx={{ fontSize: 13 }}>Padrão</Typography>
+                        </Grid>
+                        <Grid sx={{ ml: 1, mb: 1 }}>
+                          {renderColorGrid(normalColors)}
+                        </Grid>
+                      </Grid>
+                    }
                   />
-                </LocalizationProvider>
+                  <FormControlLabel
+                    value={2}
+                    control={<Radio sx={{ mt: -0.25, mr: -0.5 }} />}
+                    label={
+                      <Grid container direction="row">
+                        <Grid sx={{ m: "auto" }}>
+                          <Typography sx={{ fontSize: 13 }}>
+                            Tons Pastéis
+                          </Typography>
+                        </Grid>
+                        <Grid sx={{ ml: 1, mb: 1 }}>
+                          {renderColorGrid(pastelColors)}
+                        </Grid>
+                      </Grid>
+                    }
+                  />
+                </RadioGroup>
               </Grid>
             </Popover>
-          </React.Fragment>
-        ))}
+          </Grid>
+        </Grid>
+        <Grid sx={{ width: 700 }} container direction="row">
+          {stagesList.map((stage, index) => (
+            <React.Fragment key={index}>
+              <Card sx={{ mr: 1, mb: 0.5, width: 220 }}>
+                <CardActionArea onClick={(e) => handlePopoverOpen(e, index)}>
+                  {renderCardHeader(index, stage.title)}
+                </CardActionArea>
+              </Card>
+              <Popover
+                open={selectedStage === index}
+                anchorEl={popoverAnchorEl}
+                onClose={handlePopoverClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+              >
+                <Grid container direction="column" sx={{ p: 2 }}>
+                  <TextField
+                    label={`Nome da Etapa ${index}`}
+                    value={stage.title}
+                    onChange={(e) =>
+                      handleStageChange(index, "title", e.target.value)
+                    }
+                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="Início em"
+                      value={stage.startAt}
+                      format="DD/MM/YYYY"
+                      onChange={(date) =>
+                        handleStageChange(index, "startAt", date)
+                      }
+                      renderInput={(params) => <TextField {...params} />}
+                      sx={{ my: 2 }}
+                    />
+                    <DatePicker
+                      label="Término"
+                      value={stage.dueTo}
+                      format="DD/MM/YYYY"
+                      onChange={(date) =>
+                        handleStageChange(index, "dueTo", date)
+                      }
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
+                </Grid>
+              </Popover>
+            </React.Fragment>
+          ))}
+        </Grid>
       </Grid>
-
-      <Grid
-        sx={{ mt: 2 }}
-        container
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-      >
+      {stagesList[1] && visibleButton && (
         <Button
-          sx={{ my: 2 }}
           variant="contained"
-          color="success"
+          color="primary"
+          sx={{ my: 2 }}
           startIcon={<CheckIcon />}
           onClick={() => {
-            updateStages(stagesList),
-              setStagesSchemaColor(colorSchema),
-              setSecondPartOK(Boolean(true));
+            updateStages(stagesList);
+            setVisibleButton(Boolean(false));
+            setStagesSchemaColor(colorSchema);
           }}
         >
-          OK e Prosseguir
+          SALVAR ETAPAS
         </Button>
-      </Grid>
+      )}
     </Grid>
   );
 };
