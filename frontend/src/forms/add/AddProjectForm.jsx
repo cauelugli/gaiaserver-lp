@@ -28,6 +28,7 @@ import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import Members from "../../components/small/Members";
 import ProjectStages from "../../components/small/ProjectStages";
 import ProjectStageTasks from "../../components/small/ProjectStageTasks";
+import ProjectReviewTable from "../../components/ProjectReviewTable";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -348,7 +349,7 @@ export default function AddProjectForm({
                       option="projectDepartments"
                       sx={{ mt: 2, width: 300 }}
                     />
-                    <FormControl sx={{mt:2}}>
+                    <FormControl sx={{ mt: 2 }}>
                       <FormLabel>
                         <Typography sx={{ fontSize: 13, color: "#444" }}>
                           Membros do Projeto
@@ -451,11 +452,28 @@ export default function AddProjectForm({
           />
         )}
         {/* THIRD PART */}
+
+        {/* LAST PART */}
+        {thirdPartOK && (
+          <ProjectReviewTable
+            type={type}
+            customer={customer}
+            customerType={customerType}
+            name={name}
+            price={price}
+            mainDepartment={mainDepartment}
+            selectedDepartments={selectedDepartments}
+            members={members}
+            stages={stages}
+            description={description}
+          />
+        )}
+        {/* LAST PART */}
       </DialogContent>
       <DialogActions>
         {mainDepartment && description.length > 0 && (
           <>
-            {!firstPartOK && !secondPartOK && (
+            {!firstPartOK && !secondPartOK && !thirdPartOK && (
               <Button
                 variant="contained"
                 color="success"
@@ -467,7 +485,7 @@ export default function AddProjectForm({
             )}
           </>
         )}
-        {firstPartOK && !secondPartOK && (
+        {firstPartOK && !secondPartOK && !thirdPartOK && (
           <>
             <Button
               variant="contained"
@@ -488,15 +506,25 @@ export default function AddProjectForm({
             </Button>
           </>
         )}
-        {firstPartOK && secondPartOK && (
-          <Button
-            variant="contained"
-            color="warning"
-            startIcon={<KeyboardReturnIcon />}
-            onClick={() => setSecondPartOK(Boolean(false))}
-          >
-            Retornar para "Etapas"
-          </Button>
+        {firstPartOK && secondPartOK && !thirdPartOK && (
+          <>
+            <Button
+              variant="contained"
+              color="warning"
+              startIcon={<KeyboardReturnIcon />}
+              onClick={() => setSecondPartOK(Boolean(false))}
+            >
+              Retornar para "Etapas"
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              startIcon={<CheckIcon />}
+              onClick={() => setThirdPartOK(Boolean(true))}
+            >
+              Prosseguir para "Revisão"
+            </Button>
+          </>
         )}
       </DialogActions>
       {thirdPartOK && (
