@@ -76,31 +76,8 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
     setStagesList(newStagesList);
   };
 
-  const normalColors = [
-    "#ff0000",
-    "#ff3300",
-    "#ff6600",
-    "#ff9900",
-    "#ffcc00",
-    "#ffff00",
-    "#ccff00",
-    "#99ff00",
-    "#66ff00",
-    "#33ff00",
-  ];
-
-  const pastelColors = [
-    "#ff5555",
-    "#ff8855",
-    "#ffbb55",
-    "#ffdd55",
-    "#ffff55",
-    "#ccff55",
-    "#99ff55",
-    "#66ff55",
-    "#33ff55",
-    "#00ff55",
-  ];
+  const normalColors = ["#ff0000", "#33ff00"];
+  const pastelColors = ["#ff5555", "#00ff55"];
 
   const renderColorGrid = (colors) => (
     <Grid container spacing={0.3} sx={{ mt: 1 }}>
@@ -120,11 +97,32 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
     </Grid>
   );
 
+  const interpolateColor = (index, totalStages, colorSchema) => {
+    if (colorSchema === 0) return undefined; // Sem cor para esquema desabilitado
+  
+    const startColor = colorSchema === 1 ? normalColors[0] : pastelColors[0];
+    const endColor = colorSchema === 1 ? normalColors[1] : pastelColors[1];
+  
+    if (totalStages <= 1) return startColor;
+  
+    const mixRatio = index / (totalStages - 1);
+    const startRGB = startColor.match(/\w\w/g).map(hex => parseInt(hex, 16));
+    const endRGB = endColor.match(/\w\w/g).map(hex => parseInt(hex, 16));
+  
+    const interpolatedRGB = startRGB.map((start, i) => {
+      return Math.round(start + (endRGB[i] - start) * mixRatio);
+    });
+  
+    return `#${interpolatedRGB.map(val => val.toString(16).padStart(2, '0')).join('')}`;
+  };
+  
+
   const renderCardHeader = (index, title) => {
-    const backgroundColor =
-      colorSchema !== 0
-        ? (colorSchema === 1 ? normalColors : pastelColors)[index]
-        : undefined;
+    const backgroundColor = interpolateColor(
+      index,
+      stagesList.length,
+      colorSchema
+    );
     return (
       <CardHeader
         title={
@@ -142,7 +140,7 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
             </IconButton>
           </Grid>
         }
-        sx={{ backgroundColor: backgroundColor }}
+        sx={{ backgroundColor: backgroundColor || "inherit" }} // Usa a cor calculada ou herda a cor padrão
       />
     );
   };
@@ -224,7 +222,7 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
               size="small"
               color="error"
               variant="outlined"
-              sx={{ mt: 1 }}
+              sx={{ my: 1 }}
               startIcon={<DeleteIcon />}
               onClick={() =>
                 setStagesList(
@@ -243,6 +241,20 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
             >
               Limpar Etapas
             </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="small"
+              startIcon={<CheckIcon />}
+              disabled={stagesList.length === 1 || !visibleButton}
+              onClick={() => {
+                updateStages(stagesList);
+                setVisibleButton(Boolean(false));
+                setStagesSchemaColor(colorSchema);
+              }}
+            >
+              SALVAR ETAPAS
+            </Button>
             <Popover
               open={colorPopoverOpen}
               anchorEl={colorPopoverAnchorEl}
@@ -256,7 +268,7 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
                 horizontal: "left",
               }}
             >
-              <Grid sx={{ width: 350, height: 150, p: 1 }}>
+              <Grid sx={{ width: 200, height: 150, p: 1 }}>
                 <RadioGroup
                   value={colorSchema}
                   onChange={(e) => setColorSchema(Number(e.target.value))}
@@ -329,7 +341,7 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
               >
                 <Grid container direction="column" sx={{ p: 2 }}>
                   <TextField
-                    label={`Nome da Etapa ${index+1}`}
+                    label={`Nome da Etapa ${index + 1}`}
                     value={stage.title}
                     onChange={(e) =>
                       handleStageChange(index, "title", e.target.value)
@@ -362,7 +374,7 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
           ))}
         </Grid>
       </Grid>
-      {stagesList[1] && visibleButton && (
+      {/* {stagesList[1] && visibleButton && (
         <Button
           variant="contained"
           color="primary"
@@ -375,7 +387,7 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
         >
           SALVAR ETAPAS
         </Button>
-      )}
+      )} */}
     </Grid>
   );
 };
