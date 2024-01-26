@@ -54,6 +54,7 @@ export default function AddProjectForm({
   const [members, setMembers] = React.useState([]);
   const [stages, setStages] = React.useState([]);
   const [stagesColorSchema, setStagesSchemaColor] = React.useState(0);
+  const [definedStagesColors, setDefinedStagesColors] = React.useState([]);
   const [description, setDescription] = React.useState("");
 
   const handleAdd = async (e) => {
@@ -352,10 +353,8 @@ export default function AddProjectForm({
                 />
               </FormControl>
             )}
-            {/* FIRST PART */}
           </>
         )}
-
         {/* FIRST PART */}
 
         {/* SECOND PART */}
@@ -364,6 +363,7 @@ export default function AddProjectForm({
             stages={stages}
             updateStages={(newStagesList) => setStages(newStagesList)}
             setStagesSchemaColor={setStagesSchemaColor}
+            setDefinedStagesColors={setDefinedStagesColors}
           />
         )}
         {/* SECOND PART */}
@@ -373,7 +373,7 @@ export default function AddProjectForm({
           <ProjectStageTasks
             members={members}
             stages={stages}
-            stagesColorSchema={stagesColorSchema}
+            definedStagesColors={definedStagesColors}
           />
         )}
         {/* THIRD PART */}

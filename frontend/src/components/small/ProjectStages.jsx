@@ -28,7 +28,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PaletteIcon from "@mui/icons-material/Palette";
 
-const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
+const ProjectStages = ({ stages, updateStages, setStagesSchemaColor, setDefinedStagesColors }) => {
   const [visibleButton, setVisibleButton] = useState(Boolean(true));
   const [colorSchema, setColorSchema] = useState(0);
   const [stagesNumber, setStagesNumber] = useState(1);
@@ -76,8 +76,8 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
     setStagesList(newStagesList);
   };
 
-  const normalColors = ["#ff0000", "#33ff00"];
-  const pastelColors = ["#ff5555", "#00ff55"];
+  const normalColors = ["#ff0000", "#3300ff"];
+  const pastelColors = ["#ff5555", "#0055ff"];
 
   const renderColorGrid = (colors) => (
     <Grid container spacing={0.3} sx={{ mt: 1 }}>
@@ -249,6 +249,7 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor }) => {
               disabled={stagesList.length === 1 || !visibleButton}
               onClick={() => {
                 updateStages(stagesList);
+                setDefinedStagesColors(stagesList.map((_, index) => interpolateColor(index, stagesList.length, colorSchema)));
                 setVisibleButton(Boolean(false));
                 setStagesSchemaColor(colorSchema);
               }}

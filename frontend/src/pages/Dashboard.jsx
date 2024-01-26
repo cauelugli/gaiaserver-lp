@@ -13,36 +13,21 @@ const Dashboard = ({ user }) => {
     { title: "Etapa Gamma", startAt: "", dueTo: "" },
     { title: "Etapa Delta", startAt: "", dueTo: "" },
   ];
+  const fakeColors = ["#ff5555", "#0055ff"];
+
   return (
     // <TestComponent />
-    <ProjectStageTasks stages={fakelist} members={Array.from(user)}/>
+    <ProjectStageTasks
+      stages={fakelist}
+      members={Array.from(user)}
+      definedStagesColors={fakeColors}
+    />
     // <>
     //   <TestWebSocketButton />
     //   <p>Dashboard</p>
     //   <Typography sx={{ my: 3 }}>
     //     Hellow, <strong>{user.name}</strong> !
     //   </Typography>
-    //   <Typography sx={{ my: 1 }}>
-    //     Departamento: {user.department ? user.department.name : "-"}
-    //   </Typography>
-    //   <Typography sx={{ my: 1 }}>
-    //     Acesso: {user.role ? user.role.name : "-"}
-    //   </Typography>
-    //   <Typography sx={{ my: 1 }}>
-    //     Cargo: {user.position ? user.position : "-"}
-    //   </Typography>
-    //   <Typography sx={{ my: 1 }}>Usuário: {user.username}</Typography>
-
-    //   <img
-    //     src={`http://localhost:3000/static${user.image}`}
-    //     alt="Logo do Tenant"
-    //     style={{
-    //       width: "8%",
-    //       marginTop: 2,
-    //       marginBottom: 2,
-    //       cursor: "pointer",
-    //     }}
-    //   />
     // </>
   );
 };

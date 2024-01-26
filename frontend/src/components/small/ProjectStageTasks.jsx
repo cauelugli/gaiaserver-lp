@@ -10,25 +10,24 @@ import {
   Typography,
   Grid,
   Collapse,
-  Tooltip,
-  Menu,
-  Popover,
   Button,
   Divider,
   FormLabel,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
 } from "@mui/material";
 
-import AddIcon from "@mui/icons-material/Add";
-import ClearIcon from "@mui/icons-material/Clear";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import ProjectStageTaskMembers from "./ProjectStageTaskMembers";
 
-const ProjectStageTasks = ({ members, stages, stagesColorSchema }) => {
+const ProjectStageTasks = ({ members, stages, definedStagesColors }) => {
   const [expandedStage, setExpandedStage] = useState(null);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskAssignees, setNewTaskAssignees] = useState([]);
@@ -75,7 +74,12 @@ const ProjectStageTasks = ({ members, stages, stagesColorSchema }) => {
       {stages.map((stage, index) => (
         <Grid
           key={index}
-          sx={{ mx: "20%", mb: 1, border: "1px solid #bbb", borderRadius: 2 }}
+          sx={{
+            mx: "20%",
+            mb: 1,
+            border: "1px solid #bbb",
+            borderRadius: 2,
+          }}
         >
           <Grid
             container
@@ -84,16 +88,23 @@ const ProjectStageTasks = ({ members, stages, stagesColorSchema }) => {
             sx={{
               p: 2,
               cursor: "pointer",
+              backgroundColor: definedStagesColors[index],
             }}
             onClick={() => handleExpand(index)}
           >
-            <Typography variant="h6" sx={{ fontSize: 18, my: "auto" }}>
-              {stage.title || `Etapa #${index}`}
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: 18,
+                my: "auto",
+              }}
+            >
+              {stage.title || `Etapa #${index+1}`}
               <IconButton sx={{ m: "auto" }}>
                 <ExpandMoreIcon />
               </IconButton>
             </Typography>
-            {expandedStage === index && <Divider />}
+            {expandedStage === index && <Divider sx={{ color: "lightgrey" }} />}
           </Grid>
 
           <Collapse in={expandedStage === index}>
@@ -101,7 +112,7 @@ const ProjectStageTasks = ({ members, stages, stagesColorSchema }) => {
               container
               direction="row"
               justifyContent="center"
-              sx={{ mb: 2 }}
+              sx={{ my: 2 }}
             >
               <TextField
                 label="Nova Tarefa"
@@ -142,54 +153,66 @@ const ProjectStageTasks = ({ members, stages, stagesColorSchema }) => {
               </Button>
             </Grid>
 
-            {tasks[index]?.map((task, taskIndex) => (
-              <Grid
-                container
-                key={taskIndex}
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-                sx={{ ml: 4, width: "90%", mb: 0.5 }}
-              >
-                <Grid item sx={{ my: "auto" }}>
-                  <Typography sx={{ color: "grey", fontWeight: "bold" }}>
-                    {task.title}:
-                  </Typography>
-                </Grid>
-                <Grid item sx={{ mx: 2 }}>
-                  <Grid
-                    container
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <FormLabel>
-                      <Typography sx={{ fontSize: 12, color: "grey" }}>
-                        Designados
-                      </Typography>
-                    </FormLabel>
-                    {task.assignees.map((assignee, assigneeIndex) => (
-                      <Avatar
-                        key={assigneeIndex}
-                        alt={assignee.name}
-                        src={`http://localhost:3000/static/${assignee.image}`}
-                        sx={{ width: 24, height: 24, mx: 1 }}
-                      />
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              {tasks[index].length > 0 && (
+                <Table sx={{ width: "75%", mb: 1 }} size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left">#</TableCell>
+                      <TableCell align="left">Tarefa</TableCell>
+                      <TableCell align="center">Designados</TableCell>
+                      <TableCell align="right">Prazo de Conclusão</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {tasks[index]?.map((task, taskIndex) => (
+                      <TableRow
+                        key={taskIndex}
+                        sx={{
+                          backgroundColor:
+                            taskIndex % 2 === 0 ? "white" : "lightgrey",
+                        }}
+                      >
+                        <TableCell align="left">{taskIndex + 1}</TableCell>
+
+                        <TableCell align="left">
+                          <Typography sx={{ fontSize: 13 }}>
+                            {task.title}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                          >
+                            {task.assignees.map((assignee, assigneeIndex) => (
+                              <Avatar
+                                key={assigneeIndex}
+                                alt={assignee.name}
+                                src={`http://localhost:3000/static/${assignee.image}`}
+                                sx={{ width: 24, height: 24, mx: 1 }}
+                              />
+                            ))}
+                          </Grid>
+                        </TableCell>
+                        <TableCell align="right">
+                          <Typography sx={{ fontSize: 13 }}>
+                            {task.dueTo}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </Grid>
-                </Grid>
-                <Grid item>
-                  <FormLabel>
-                    <Typography sx={{ fontSize: 12, color: "grey" }}>
-                      Prazo
-                    </Typography>
-                    <Typography sx={{ color: "grey", fontWeight: "bold" }}>
-                      {task.dueTo}
-                    </Typography>
-                  </FormLabel>
-                </Grid>
-              </Grid>
-            ))}
+                  </TableBody>
+                </Table>
+              )}
+            </Grid>
           </Collapse>
         </Grid>
       ))}
