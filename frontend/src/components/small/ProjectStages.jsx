@@ -28,10 +28,16 @@ import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PaletteIcon from "@mui/icons-material/Palette";
 
-const ProjectStages = ({ stages, updateStages, setStagesSchemaColor, setDefinedStagesColors }) => {
+const ProjectStages = ({
+  stages,
+  stagesColorSchema,
+  updateStages,
+  setStagesSchemaColor,
+  setDefinedStagesColors,
+}) => {
   const [visibleButton, setVisibleButton] = useState(Boolean(true));
-  const [colorSchema, setColorSchema] = useState(0);
-  const [stagesNumber, setStagesNumber] = useState(1);
+  const [colorSchema, setColorSchema] = useState(stagesColorSchema || 0);
+  const [stagesNumber, setStagesNumber] = useState(stages.length || 1);
   const [stagesList, setStagesList] = useState(
     stages && stages.length !== 0
       ? stages
@@ -99,23 +105,24 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor, setDefinedS
 
   const interpolateColor = (index, totalStages, colorSchema) => {
     if (colorSchema === 0) return undefined; // Sem cor para esquema desabilitado
-  
+
     const startColor = colorSchema === 1 ? normalColors[0] : pastelColors[0];
     const endColor = colorSchema === 1 ? normalColors[1] : pastelColors[1];
-  
+
     if (totalStages <= 1) return startColor;
-  
+
     const mixRatio = index / (totalStages - 1);
-    const startRGB = startColor.match(/\w\w/g).map(hex => parseInt(hex, 16));
-    const endRGB = endColor.match(/\w\w/g).map(hex => parseInt(hex, 16));
-  
+    const startRGB = startColor.match(/\w\w/g).map((hex) => parseInt(hex, 16));
+    const endRGB = endColor.match(/\w\w/g).map((hex) => parseInt(hex, 16));
+
     const interpolatedRGB = startRGB.map((start, i) => {
       return Math.round(start + (endRGB[i] - start) * mixRatio);
     });
-  
-    return `#${interpolatedRGB.map(val => val.toString(16).padStart(2, '0')).join('')}`;
+
+    return `#${interpolatedRGB
+      .map((val) => val.toString(16).padStart(2, "0"))
+      .join("")}`;
   };
-  
 
   const renderCardHeader = (index, title) => {
     const backgroundColor = interpolateColor(
@@ -249,7 +256,11 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor, setDefinedS
               disabled={stagesList.length === 1 || !visibleButton}
               onClick={() => {
                 updateStages(stagesList);
-                setDefinedStagesColors(stagesList.map((_, index) => interpolateColor(index, stagesList.length, colorSchema)));
+                setDefinedStagesColors(
+                  stagesList.map((_, index) =>
+                    interpolateColor(index, stagesList.length, colorSchema)
+                  )
+                );
                 setVisibleButton(Boolean(false));
                 setStagesSchemaColor(colorSchema);
               }}
@@ -375,20 +386,6 @@ const ProjectStages = ({ stages, updateStages, setStagesSchemaColor, setDefinedS
           ))}
         </Grid>
       </Grid>
-      {/* {stagesList[1] && visibleButton && (
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<CheckIcon />}
-          onClick={() => {
-            updateStages(stagesList);
-            setVisibleButton(Boolean(false));
-            setStagesSchemaColor(colorSchema);
-          }}
-        >
-          SALVAR ETAPAS
-        </Button>
-      )} */}
     </Grid>
   );
 };

@@ -9,6 +9,10 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  type: {
+    type: String,
+    required: true,
+  },
   customer: {
     type: Object,
     required: true,
@@ -29,7 +33,7 @@ const projectSchema = new mongoose.Schema({
   departments: {
     type: Array,
   },
-  value: {
+  price: {
     type: Array,
   },
   createdAt: {

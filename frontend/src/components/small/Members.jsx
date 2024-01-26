@@ -45,14 +45,14 @@ const Members = ({ users, value, onChange, option }) => {
         />
       )}
       {option === "projectDepartments" && (
-        <FormControl sx={{ mt: -2 }}>
+        <FormControl sx={{ m: 2 }}>
           <FormLabel>
             <Typography sx={{ fontSize: 13, color: "#777" }}>
               Departamentos Secundários
             </Typography>
           </FormLabel>
           <Autocomplete
-            sx={{ width: 500 }}
+            sx={{ width: 300 }}
             multiple
             size="small"
             options={filteredUsers}

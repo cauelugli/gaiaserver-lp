@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import {
   Avatar,
+  Button,
   Checkbox,
   Grid,
   IconButton,
@@ -16,6 +17,7 @@ import {
 const ProjectStageTaskMembers = ({
   handleClick,
   setNewTaskAssignees,
+  allocatedMembersForTask,
   index,
   title,
   openedPopoverIndex,
@@ -24,6 +26,10 @@ const ProjectStageTaskMembers = ({
   members,
 }) => {
   const [selectedMembers, setSelectedMembers] = React.useState([]);
+
+  React.useEffect(() => {
+    setSelectedMembers(allocatedMembersForTask || []);
+  }, [allocatedMembersForTask]);
 
   const handleAddMember = (member) => {
     setSelectedMembers((prevSelectedMembers) => [
@@ -67,13 +73,17 @@ const ProjectStageTaskMembers = ({
         }}
         disableRestoreFocus
       >
+        <Button onClick={() => console.log("members", members)}>members</Button>
+        <Button onClick={() => console.log("selectedMembers", selectedMembers)}>
+          selectedMembers
+        </Button>
         <Grid sx={{ p: 2, border: "1px solid #555" }}>
           <Grid container direction="row">
             <Typography sx={{ fontSize: 14 }}>
               Alocar Membros para a Tarefa&nbsp;
             </Typography>
             <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
-              {title || `#${index + 1}`}
+              {title || `Sem título`}
             </Typography>
           </Grid>
           <Grid
@@ -90,7 +100,7 @@ const ProjectStageTaskMembers = ({
             </Typography>
             {members.map((member, index) => {
               const isMemberAllocated = selectedMembers.some(
-                (allocatedMember) => allocatedMember === member
+                (allocatedMember) => allocatedMember.id === member.id
               );
 
               if (!isMemberAllocated) {

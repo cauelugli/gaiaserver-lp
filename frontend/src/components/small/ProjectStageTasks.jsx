@@ -53,6 +53,7 @@ const ProjectStageTasks = ({ members, stages, definedStagesColors }) => {
     setNewTaskTitle("");
     setNewTaskAssignees([]);
     setNewTaskDueTo(dayjs());
+
   };
 
   const [openedPopoverIndex, setOpenedPopoverIndex] = useState(null);
@@ -64,6 +65,7 @@ const ProjectStageTasks = ({ members, stages, definedStagesColors }) => {
     setAnchorElArray(newAnchorElArray);
     setOpenedPopoverIndex(index);
   };
+  
   const handleClose = () => {
     setAnchorElArray([]);
     setOpenedPopoverIndex(null);
@@ -123,6 +125,7 @@ const ProjectStageTasks = ({ members, stages, definedStagesColors }) => {
               <ProjectStageTaskMembers
                 members={members}
                 setNewTaskAssignees={setNewTaskAssignees}
+                allocatedMembersForTask={newTaskAssignees}
                 handleClick={handleClick}
                 index={index}
                 title={newTaskTitle}
