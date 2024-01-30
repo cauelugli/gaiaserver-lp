@@ -73,10 +73,6 @@ const ProjectStageTaskMembers = ({
         }}
         disableRestoreFocus
       >
-        <Button onClick={() => console.log("members", members)}>members</Button>
-        <Button onClick={() => console.log("selectedMembers", selectedMembers)}>
-          selectedMembers
-        </Button>
         <Grid sx={{ p: 2, border: "1px solid #555" }}>
           <Grid container direction="row">
             <Typography sx={{ fontSize: 14 }}>

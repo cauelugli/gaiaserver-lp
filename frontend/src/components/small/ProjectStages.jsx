@@ -44,6 +44,7 @@ const ProjectStages = ({
       : [
           {
             title: "",
+            tasks: [],
             startAt: dayjs(),
             dueTo: dayjs(),
           },
@@ -67,6 +68,7 @@ const ProjectStages = ({
       return (
         stagesList[index] || {
           title: "",
+          tasks: [],
           startAt: dayjs(),
           dueTo: dayjs(),
           expanded: false,

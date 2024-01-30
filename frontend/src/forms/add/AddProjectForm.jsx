@@ -87,6 +87,17 @@ export default function AddProjectForm({
     }
   };
 
+  const handleAddTask = (stageIndex, newTask) => {
+    setStages((prevStages) => {
+      const updatedStages = [...prevStages];
+      updatedStages[stageIndex] = {
+        ...updatedStages[stageIndex],
+        tasks: [...updatedStages[stageIndex].tasks, newTask],
+      };
+      return updatedStages;
+    });
+  };
+
   const handleRemoveMember = (memberToRemove) => {
     setMembers((prevMembers) =>
       prevMembers.filter((member) => member !== memberToRemove)
@@ -444,11 +455,12 @@ export default function AddProjectForm({
         {/* SECOND PART */}
 
         {/* THIRD PART */}
-        {secondPartOK && (
+        {secondPartOK && !thirdPartOK && (
           <ProjectStageTasks
             members={members}
             stages={stages}
             definedStagesColors={definedStagesColors}
+            addTaskFromParent={handleAddTask}
           />
         )}
         {/* THIRD PART */}
