@@ -19,15 +19,20 @@ import {
   TableCell,
   TableBody,
   Badge,
+  Popover,
+  Tooltip,
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import SellIcon from "@mui/icons-material/Sell";
 
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import ProjectStageTaskMembers from "./ProjectStageTaskMembers";
 import MultipleServicesSelect from "./selects/MultipleServicesSelect";
+import MaterialList from "./MaterialList";
+import MultipleProductsSelect from "./selects/MultipleProductsSelect";
 
 const ProjectStageTasks = ({
   members,
@@ -43,6 +48,7 @@ const ProjectStageTasks = ({
   const [newTaskServices, setNewTaskServices] = useState([]);
   const [newTaskProducts, setNewTaskProducts] = useState([]);
   const [newTaskDueTo, setNewTaskDueTo] = useState(dayjs());
+  const [materialsCost, setMaterialsCost] = React.useState(0);
 
   const handleExpand = (stageIndex) => {
     setExpandedStage(expandedStage === stageIndex ? null : stageIndex);
@@ -68,6 +74,12 @@ const ProjectStageTasks = ({
 
   const [openedPopoverIndex, setOpenedPopoverIndex] = useState(null);
   const [anchorElArray, setAnchorElArray] = useState([]);
+  const [openedPopoverServicesIndex, setOpenedPopoverServicesIndex] =
+    useState(null);
+  const [anchorElServicesArray, setAnchorElServicesArray] = useState([]);
+  const [openedPopoverProductsIndex, setOpenedPopoverProductsIndex] =
+    useState(null);
+  const [anchorElProductsArray, setAnchorElProductsArray] = useState([]);
 
   const handleClick = (event, index) => {
     const newAnchorElArray = [...anchorElArray];
@@ -76,8 +88,24 @@ const ProjectStageTasks = ({
     setOpenedPopoverIndex(index);
   };
 
+  const handleClickServices = (event, index) => {
+    const newAnchorElServicesArray = [...anchorElServicesArray];
+    newAnchorElServicesArray[index] = event.currentTarget;
+    setAnchorElServicesArray(newAnchorElServicesArray);
+    setOpenedPopoverServicesIndex(index);
+  };
+
+  const handleClickProducts = (event, index) => {
+    const newAnchorElProductsArray = [...anchorElProductsArray];
+    newAnchorElProductsArray[index] = event.currentTarget;
+    setAnchorElProductsArray(newAnchorElProductsArray);
+    setOpenedPopoverProductsIndex(index);
+  };
+
   const handleClose = () => {
     setAnchorElArray([]);
+    setAnchorElServicesArray([]);
+    setAnchorElProductsArray([]);
     setOpenedPopoverIndex(null);
   };
 
@@ -136,22 +164,80 @@ const ProjectStageTasks = ({
                 members={members}
                 setNewTaskAssignees={setNewTaskAssignees}
                 allocatedMembersForTask={newTaskAssignees}
-                handleClick={handleClick}
                 index={index}
                 title={newTaskTitle}
                 openedPopoverIndex={openedPopoverIndex}
                 anchorElArray={anchorElArray}
+                handleClick={handleClick}
                 handleClose={handleClose}
                 sx={{ mx: 2 }}
               />
               <MultipleServicesSelect
                 services={services}
+                handleClickServices={handleClickServices}
+                openedPopoverServicesIndex={openedPopoverServicesIndex}
+                index={index}
+                handleClose={handleClose}
+                anchorElArray={anchorElServicesArray}
                 allocatedServicesForTask={newTaskServices}
                 setNewTaskServices={(selectedServices) =>
                   setNewTaskServices(selectedServices, index)
                 }
               />
-              {/* Produtos */}
+
+              <Tooltip
+                title={<Typography sx={{ fontSize: 12 }}>Produtos</Typography>}
+              >
+                <Badge
+                  key
+                  color={newTaskProducts.length === 0 ? "error" : "success"}
+                  overlap="circular"
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  variant="dot"
+                >
+                  <Avatar sx={{ my: "auto", ml: 1, width: 32, height: 32 }}>
+                    <IconButton
+                      onClick={(event) => handleClickProducts(event, index)}
+                    >
+                      <SellIcon sx={{ color: "white" }} />
+                    </IconButton>
+                    <Popover
+                      elevation={0}
+                      open={
+                        openedPopoverProductsIndex === index &&
+                        anchorElProductsArray[index] !== undefined
+                      }
+                      anchorEl={anchorElArray[index]}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "center",
+                      }}
+                      disableRestoreFocus
+                    >
+                      <Grid
+                        sx={{ p: 2, border: "1px solid #bbb", borderRadius: 2 }}
+                      >
+                        <MaterialList
+                          option="project"
+                          stockItems={products}
+                          materials={newTaskProducts}
+                          materialsEditCost={""}
+                          setMaterials={setNewTaskProducts}
+                          setMaterialsFinalCost={setMaterialsCost}
+                        />
+                      </Grid>
+                    </Popover>
+                  </Avatar>
+                </Badge>
+              </Tooltip>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   sx={{ width: 150, mx: 1 }}
@@ -179,7 +265,7 @@ const ProjectStageTasks = ({
               justifyContent="center"
               alignItems="center"
             >
-              <Table sx={{ width: "80%", mb: 1 }} size="small">
+              <Table sx={{ width: "85%", mb: 1 }} size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell align="left">#</TableCell>
@@ -234,7 +320,11 @@ const ProjectStageTasks = ({
                       </TableCell>
                       <TableCell align="center">
                         <Typography sx={{ fontSize: 13 }}>
-                          {task.products}
+                          {task.products.map((product) => (
+                            <Typography key sx={{ fontSize: 13, mr: 1 }}>
+                              {product.name} x{product.quantity}
+                            </Typography>
+                          ))}
                         </Typography>
                       </TableCell>
                       <TableCell align="right">

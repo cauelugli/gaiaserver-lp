@@ -1,25 +1,29 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import ListItemText from "@mui/material/ListItemText";
-import Select from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
-import Typography from "@mui/material/Typography";
 
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: 200,
-      width: 200,
-    },
-  },
-};
+import {
+  Avatar,
+  Badge,
+  Typography,
+  Checkbox,
+  Select,
+  MenuItem,
+  ListItemText,
+  IconButton,
+  Popover,
+  Tooltip,
+} from "@mui/material";
+
+import BuildIcon from '@mui/icons-material/Build';
 
 export default function MultipleServicesSelect({
   services,
+  handleClickServices,
+  index,
+  openedPopoverServicesIndex,
+  anchorElArray,
+  handleClose,
   allocatedServicesForTask,
   setNewTaskServices,
 }) {
@@ -39,30 +43,59 @@ export default function MultipleServicesSelect({
 
   return (
     <div>
-      <FormControl sx={{ width: 160 }}>
-        <InputLabel>Serviços</InputLabel>
+      <Tooltip title={<Typography sx={{ fontSize: 12 }}>Serviços</Typography>}>
+        <Badge
+          key
+          color={selectedServices.length === 0 ? "error" : "success"}
+          overlap="circular"
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          variant="dot"
+        >
+          <IconButton onClick={(event) => handleClickServices(event, index)}>
+            <Avatar sx={{ mt:0.5, width: 32, height: 32 }}>
+              <BuildIcon />
+            </Avatar>
+          </IconButton>
+        </Badge>
+      </Tooltip>
+      <Popover
+        elevation={0}
+        open={
+          openedPopoverServicesIndex === index &&
+          anchorElArray[index] !== undefined
+        }
+        anchorEl={anchorElArray[index]}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        disableRestoreFocus
+      >
         <Select
           multiple
           value={selectedServices}
           onChange={handleChange}
-          input={<OutlinedInput label="Serviços" />}
-          renderValue={() => (
-            <Typography sx={{ fontSize: 12 }}>
-              {selectedServices[0].name}
-              {selectedServices.length > 1 &&
-                `, ... +${selectedServices.length - 1}`}
-            </Typography>
-          )}
-          MenuProps={MenuProps}
+          displayEmpty
+          renderValue={() => {
+            return <Typography> Escolha os Serviços</Typography>;
+          }}
         >
           {services.map((service) => (
             <MenuItem key={service} value={service} sx={{ p: 0 }}>
               <Checkbox checked={selectedServices.indexOf(service) > -1} />
-              <ListItemText primary={<Typography sx={{fontSize:13}}>{service.name}</Typography>} />
+              <ListItemText
+                primary={
+                  <Typography sx={{ fontSize: 13 }}>{service.name}</Typography>
+                }
+              />
             </MenuItem>
           ))}
         </Select>
-      </FormControl>
+      </Popover>
     </div>
   );
 }

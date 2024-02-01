@@ -25,6 +25,7 @@ export default function MaterialList({
   materialsEditCost,
   materialsAddJobCost,
   setMaterialsFinalCost,
+  option,
 }) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
   const [options, setOptions] = React.useState(stockItems);
@@ -79,7 +80,7 @@ export default function MaterialList({
     if (item) {
       // Subtrair o valor do item vendido por unidade, em vez do valor total
       const itemValue = item.sellValue;
-      
+
       // Atualizar o custo
       setMaterialsCost(materialsCost - itemValue);
       setMaterialsFinalCost((prevCost) => prevCost - item.sellValue);
@@ -90,14 +91,14 @@ export default function MaterialList({
           item._id === itemId ? { ...item, quantity: item.quantity - 1 } : item
         )
         .filter((item) => item.quantity > 0);
-  
+
       // Atualizar as opções no estoque
       const updatedOptions = options.map((option) =>
         option._id === itemId
           ? { ...option, quantity: option.quantity + 1 }
           : option
       );
-  
+
       setStockList(updatedStockList);
       setMaterials(updatedStockList);
       setOptions(updatedOptions);
