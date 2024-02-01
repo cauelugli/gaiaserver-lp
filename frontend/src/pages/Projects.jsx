@@ -20,7 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
@@ -55,6 +55,8 @@ export default function Projects({ user }) {
   const [customers, setCustomers] = React.useState([]);
   const [clients, setClients] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
+  const [services, setServices] = React.useState([]);
+  const [products, setProducts] = React.useState([]);
 
   const [openAddProject, setOpenAddProject] = React.useState(false);
 
@@ -89,12 +91,16 @@ export default function Projects({ user }) {
         const customers = await api.get("/customers");
         const clients = await api.get("/clients");
         const departments = await api.get("/departments");
+        const services = await api.get("/services");
+        const products = await api.get("/products");
         const config = await api.get("/config");
         setConfigData(config.data[0].projects);
         setProjects(projects.data);
         setCustomers(customers.data);
         setClients(clients.data);
         setDepartments(departments.data);
+        setServices(services.data);
+        setProducts(products.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -244,6 +250,8 @@ export default function Projects({ user }) {
             openAdd={openAddProject}
             user={user}
             customers={customers}
+            services={services}
+            products={products}
             clients={clients}
             departments={departments}
             // users={users}

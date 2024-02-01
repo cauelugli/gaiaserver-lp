@@ -18,6 +18,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Badge,
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -26,18 +27,22 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import ProjectStageTaskMembers from "./ProjectStageTaskMembers";
+import MultipleServicesSelect from "./selects/MultipleServicesSelect";
 
 const ProjectStageTasks = ({
   members,
   stages,
+  services,
+  products,
   definedStagesColors,
   addTaskFromParent,
 }) => {
   const [expandedStage, setExpandedStage] = useState(null);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskAssignees, setNewTaskAssignees] = useState([]);
+  const [newTaskServices, setNewTaskServices] = useState([]);
+  const [newTaskProducts, setNewTaskProducts] = useState([]);
   const [newTaskDueTo, setNewTaskDueTo] = useState(dayjs());
-  // const [tasks, setTasks] = useState(stages.map(() => []));
 
   const handleExpand = (stageIndex) => {
     setExpandedStage(expandedStage === stageIndex ? null : stageIndex);
@@ -47,6 +52,8 @@ const ProjectStageTasks = ({
     const newTask = {
       title: newTaskTitle,
       assignees: newTaskAssignees,
+      services: newTaskServices,
+      products: newTaskProducts,
       dueTo: newTaskDueTo.format("DD/MM/YYYY"),
     };
 
@@ -54,6 +61,8 @@ const ProjectStageTasks = ({
 
     setNewTaskTitle("");
     setNewTaskAssignees([]);
+    setNewTaskProducts([]);
+    setNewTaskServices([]);
     setNewTaskDueTo(dayjs());
   };
 
@@ -78,7 +87,7 @@ const ProjectStageTasks = ({
         <Grid
           key={index}
           sx={{
-            mx: "20%",
+            mx: "10%",
             mb: 1,
             border: "1px solid #bbb",
             borderRadius: 2,
@@ -133,8 +142,16 @@ const ProjectStageTasks = ({
                 openedPopoverIndex={openedPopoverIndex}
                 anchorElArray={anchorElArray}
                 handleClose={handleClose}
+                sx={{ mx: 2 }}
               />
-
+              <MultipleServicesSelect
+                services={services}
+                allocatedServicesForTask={newTaskServices}
+                setNewTaskServices={(selectedServices) =>
+                  setNewTaskServices(selectedServices, index)
+                }
+              />
+              {/* Produtos */}
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   sx={{ width: 150, mx: 1 }}
@@ -145,7 +162,6 @@ const ProjectStageTasks = ({
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
-
               <Button
                 variant="outlined"
                 color="primary"
@@ -169,6 +185,8 @@ const ProjectStageTasks = ({
                     <TableCell align="left">#</TableCell>
                     <TableCell align="left">Tarefa</TableCell>
                     <TableCell align="center">Designados</TableCell>
+                    <TableCell align="center">Serviços</TableCell>
+                    <TableCell align="center">Produtos</TableCell>
                     <TableCell align="right">Prazo de Conclusão</TableCell>
                   </TableRow>
                 </TableHead>
@@ -204,6 +222,20 @@ const ProjectStageTasks = ({
                             />
                           ))}
                         </Grid>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography sx={{ fontSize: 13 }}>
+                          {task.services.map((service) => (
+                            <Typography key sx={{ fontSize: 13, mr: 1 }}>
+                              {service.name}
+                            </Typography>
+                          ))}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography sx={{ fontSize: 13 }}>
+                          {task.products}
+                        </Typography>
                       </TableCell>
                       <TableCell align="right">
                         <Typography sx={{ fontSize: 13 }}>

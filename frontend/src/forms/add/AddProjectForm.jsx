@@ -44,6 +44,8 @@ export default function AddProjectForm({
   customers,
   clients,
   departments,
+  services,
+  products
 }) {
   const [firstPartOK, setFirstPartOK] = React.useState(false);
   const [secondPartOK, setSecondPartOK] = React.useState(false);
@@ -458,6 +460,8 @@ export default function AddProjectForm({
         {secondPartOK && !thirdPartOK && (
           <ProjectStageTasks
             members={members}
+            products={products}
+            services={services}
             stages={stages}
             definedStagesColors={definedStagesColors}
             addTaskFromParent={handleAddTask}

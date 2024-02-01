@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import {
   Avatar,
+  Badge,
   Button,
   Checkbox,
   Grid,
@@ -56,9 +57,20 @@ const ProjectStageTaskMembers = ({
       <Tooltip
         title={<Typography sx={{ fontSize: 12 }}>Designados</Typography>}
       >
-        <IconButton onClick={(event) => handleClick(event, index)}>
-          <Avatar sx={{ width: 32, height: 32 }} />
-        </IconButton>
+        <Badge
+          key
+          color={selectedMembers.length === 0 ? "error" : "success"}
+          overlap="circular"
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          variant="dot"
+        >
+          <IconButton onClick={(event) => handleClick(event, index)}>
+            <Avatar sx={{ width: 32, height: 32 }} />
+          </IconButton>
+        </Badge>
       </Tooltip>
       <Popover
         elevation={0}
