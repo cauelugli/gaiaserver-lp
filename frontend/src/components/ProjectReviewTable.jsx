@@ -23,6 +23,7 @@ import {
 } from "@mui/material";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { purple } from "@mui/material/colors";
 
 const ProjectReviewTable = ({
   type,
@@ -38,165 +39,236 @@ const ProjectReviewTable = ({
 }) => {
   return (
     <Grid sx={{ px: "10%" }}>
-      <Accordion defaultExpanded>
+      {/* <Accordion defaultExpanded> */}
+      <Accordion>
         <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
           <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
             Informações do Projeto
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
+          {/* PART ONE */}
           <Table size="small">
-            {/* PART ONE */}
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontSize: 13, color: "#777" }}>
-                  Tipo de Projeto
+                <TableCell>
+                  <Grid container direction="column">
+                    <Typography sx={{ fontSize: 13, color: "#777", mb: 1 }}>
+                      Tipo de Projeto
+                    </Typography>
+                    <Typography sx={{ fontSize: 13 }}>{type}</Typography>
+                  </Grid>
                 </TableCell>
-                <TableCell align="left" sx={{ fontSize: 13, color: "#777" }}>
-                  Nome do Projeto
+                <TableCell align="left" sx={{ fontSize: 13 }}>
+                  <Grid container direction="column">
+                    <Typography sx={{ fontSize: 13, color: "#777", mb: 1 }}>
+                      None do Projeto
+                    </Typography>
+                    <Typography sx={{ fontSize: 13 }}>{name}</Typography>
+                  </Grid>
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>
-                  <Typography sx={{ fontSize: 13 }}>{type}</Typography>
-                </TableCell>
-                <TableCell align="left">
-                  <Typography sx={{ fontSize: 13 }}>{name}</Typography>
-                </TableCell>
-              </TableRow>
-            </TableBody>
           </Table>
           {/* PART ONE */}
           {/* PART ONE.HALF */}
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell align="left" sx={{ fontSize: 13, color: "#777" }}>
-                  Descrição
+                <TableCell align="left">
+                  <Grid container direction="column">
+                    <Typography sx={{ fontSize: 13, color: "#777", mb: 1 }}>
+                      Descrição
+                    </Typography>
+                    <Typography sx={{ fontSize: 13 }}>{description}</Typography>
+                  </Grid>
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell align="left">
-                  <Typography sx={{ fontSize: 13 }}>{description}</Typography>
-                </TableCell>
-              </TableRow>
-            </TableBody>
           </Table>
           {/* PART ONE.HALF */}
           {/* PART TWO */}
           <Table size="small">
             <TableHead sx={{ mt: 1 }}>
               <TableRow>
-                <TableCell align="left" sx={{ fontSize: 13, color: "#777" }}>
-                  Tipo de Cliente
+                <TableCell align="left">
+                  <Grid container direction="column">
+                    <Typography sx={{ fontSize: 13, color: "#777", mb: 1 }}>
+                      Tipo de Cliente
+                    </Typography>
+                    <Typography sx={{ fontSize: 13 }}>
+                      {customerType}
+                    </Typography>
+                  </Grid>
                 </TableCell>
-                <TableCell align="left" sx={{ fontSize: 13, color: "#777" }}>
-                  Cliente
+                <TableCell align="left">
+                  <Grid container direction="column">
+                    <Typography sx={{ fontSize: 13, color: "#777", mb: 1 }}>
+                      Cliente
+                    </Typography>
+                    <Typography sx={{ fontSize: 13 }}>
+                      {customer && customer.name}
+                    </Typography>
+                  </Grid>
                 </TableCell>
-                <TableCell align="left" sx={{ fontSize: 13, color: "#777" }}>
-                  Valor
+                <TableCell align="left">
+                  <Grid container direction="column">
+                    <Typography sx={{ fontSize: 13, color: "#777", mb: 1 }}>
+                      Valor
+                    </Typography>
+                    <Typography sx={{ fontSize: 13 }}>{price}</Typography>
+                  </Grid>
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell align="left">
-                  <Typography sx={{ fontSize: 13 }}>{customerType}</Typography>
-                </TableCell>
-                <TableCell align="left">
-                  <Typography sx={{ fontSize: 13 }}>
-                    {customer && customer.name}
-                  </Typography>
-                </TableCell>
-                <TableCell align="left">
-                  <Typography sx={{ fontSize: 13 }}>R${price}</Typography>
-                </TableCell>
-              </TableRow>
-            </TableBody>
           </Table>
           {/* PART TWO */}
           {/* PART THREE */}
           <Table size="small">
             <TableHead sx={{ mt: 1 }}>
               <TableRow>
-                <TableCell sx={{ fontSize: 13, color: "#777" }}>
-                  Departamento Principal
+                <TableCell>
+                  <Grid container direction="column">
+                    <Typography sx={{ fontSize: 13, color: "#777", mb: 1 }}>
+                      Departamento Principal
+                    </Typography>
+                    <Typography sx={{ fontSize: 13 }}>
+                      {mainDepartment && mainDepartment.name}
+                    </Typography>
+                  </Grid>
                 </TableCell>
-                <TableCell align="left" sx={{ fontSize: 13, color: "#777" }}>
-                  Departamentos Secundários
+                <TableCell align="left">
+                  <Grid container direction="column">
+                    <Typography sx={{ fontSize: 13, color: "#777", mb: 1 }}>
+                      Departamentos Secundários
+                    </Typography>
+                    <Typography sx={{ fontSize: 13 }}>
+                      {selectedDepartments &&
+                        selectedDepartments.map((dept) => (
+                          <Typography key sx={{ fontSize: 13 }}>
+                            {dept.name}
+                          </Typography>
+                        ))}
+                    </Typography>
+                  </Grid>
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>
-                  <Typography sx={{ fontSize: 13 }}>
-                    {mainDepartment && mainDepartment.name}
-                  </Typography>
-                </TableCell>
-                <TableCell align="left">
-                  {selectedDepartments &&
-                    selectedDepartments.map((dept) => (
-                      <Typography key sx={{ fontSize: 13 }}>
-                        {dept.name}
-                      </Typography>
-                    ))}
-                </TableCell>
-              </TableRow>
-            </TableBody>
           </Table>
           {/* PART THREE */}
           {/* PART FOUR */}
           <Table size="small">
             <TableHead sx={{ mt: 1 }}>
               <TableRow>
-                <TableCell align="left" sx={{ fontSize: 13, color: "#777" }}>
-                  Membros do Projeto
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
                 <TableCell align="left">
-                  <Grid container direction="row" alignItems="center">
-                    {members.map((member) => (
-                      <>
-                        <Grid item>
-                          <Avatar
-                            alt="Imagem do Colaborador"
-                            src={`http://localhost:3000/static/${member.image}`}
-                            sx={{ width: 22, height: 22 }}
-                          />
-                        </Grid>
-                        <Grid item>
-                          <Typography
-                            sx={{ ml: 0.5, mr: 1, fontSize: 13, my: "auto" }}
-                          >
-                            {member.name}
-                          </Typography>
-                        </Grid>
-                      </>
-                    ))}
+                  <Grid container direction="column">
+                    <Typography sx={{ fontSize: 13, color: "#777", mb: 1 }}>
+                      Membros do Projeto
+                    </Typography>
+                    <Grid container direction="row" alignItems="center">
+                      {members &&
+                        members.map((member) => (
+                          <>
+                            <Grid item>
+                              <Avatar
+                                alt="Imagem do Colaborador"
+                                src={`http://localhost:3000/static/${member.image}`}
+                                sx={{ width: 22, height: 22 }}
+                              />
+                            </Grid>
+                            <Grid item>
+                              <Typography
+                                sx={{
+                                  ml: 0.5,
+                                  mr: 1,
+                                  fontSize: 13,
+                                  my: "auto",
+                                }}
+                              >
+                                {member.name}
+                              </Typography>
+                            </Grid>
+                          </>
+                        ))}
+                    </Grid>
                   </Grid>
                 </TableCell>
               </TableRow>
-            </TableBody>
-            {/* PART FOUR */}
+            </TableHead>
           </Table>
+          {/* PART FOUR */}
         </AccordionDetails>
       </Accordion>
-      <Accordion sx={{ my: 1 }}>
+      <Accordion sx={{ my: 1 }} defaultExpanded>
         <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
           <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
             Etapas e Tarefas
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>Faça um map fodastico aqui</Typography>
+          {stages.map((stage, index) => (
+            <Table key size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="left">
+                    <Grid container direction="column">
+                      <Typography sx={{ fontSize: 13, mb: 1 }}>
+                        Etapa {index}: {stage.title}
+                      </Typography>
+                      {stage.tasks.map((task) => (
+                        <Grid
+                          container
+                          direction="row"
+                          key
+                          sx={{ fontSize: 13, mb: 1 }}
+                        >
+                          <Typography sx={{ fontSize: 13 }}>
+                            Tarefa: {task.title}
+                          </Typography>
+                          <Grid item sx={{ mx: 1 }}>
+                            <Grid container direction="row">
+                              {task.assignees.map((assignee) => (
+                                <>
+                                  <Grid item>
+                                    <Avatar
+                                      alt="Imagem do Colaborador"
+                                      src={`http://localhost:3000/static/${assignee.image}`}
+                                      sx={{ width: 20, height: 20 }}
+                                    />
+                                  </Grid>
+                                  <Grid item>
+                                    <Typography
+                                      sx={{
+                                        ml: 0.5,
+                                        mr: 1,
+                                        fontSize: 13,
+                                        my: "auto",
+                                      }}
+                                    >
+                                      {assignee.name}
+                                    </Typography>
+                                  </Grid>
+                                </>
+                              ))}
+                            </Grid>
+                          </Grid>
+                          <Typography sx={{ fontSize: 13 }}>
+                            Prazo: {task.dueTo}
+                          </Typography>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+            </Table>
+          ))}
+          <Button
+            variant="contained"
+            onClick={() => console.log("stages", stages)}
+          >
+            Stages pls
+          </Button>
         </AccordionDetails>
       </Accordion>
     </Grid>
