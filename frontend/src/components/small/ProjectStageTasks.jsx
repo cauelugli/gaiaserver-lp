@@ -253,6 +253,7 @@ const ProjectStageTasks = ({
                 color="primary"
                 size="small"
                 sx={{ my: "auto" }}
+                disabled={newTaskAssignees.length === 0 || newTaskTitle === ""}
                 onClick={() => addTask(index)}
               >
                 + Adicionar
