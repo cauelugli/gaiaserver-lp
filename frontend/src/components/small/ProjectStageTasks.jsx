@@ -21,6 +21,7 @@ import {
   Badge,
   Popover,
   Tooltip,
+  Box,
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -110,238 +111,245 @@ const ProjectStageTasks = ({
   };
 
   return (
-    <>
-      {stages.map((stage, index) => (
-        <Grid
-          key={index}
-          sx={{
-            mx: "10%",
-            mb: 1,
-            border: "1px solid #bbb",
-            borderRadius: 2,
-          }}
-        >
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid
+        container
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+      >
+        {stages.map((stage, index) => (
           <Grid
+            xs={1}
+            item
             container
-            direction="row"
+            alignItems="center"
             justifyContent="center"
+            key={index}
             sx={{
-              p: 2,
+              my: 3,
+              mx: 10,
               cursor: "pointer",
+              borderRadius: 100,
+              border: "1px solid #bbb",
+              height: 90,
               backgroundColor: definedStagesColors[index],
             }}
             onClick={() => handleExpand(index)}
           >
             <Typography
-              variant="h6"
               sx={{
-                fontSize: 18,
-                my: "auto",
+                fontSize: 16,
+                mt: "25%",
               }}
             >
               {stage.title || `Etapa #${index + 1}`}
-              <IconButton sx={{ m: "auto" }}>
-                <ExpandMoreIcon />
-              </IconButton>
             </Typography>
-            {expandedStage === index && <Divider sx={{ color: "lightgrey" }} />}
-          </Grid>
 
-          <Collapse in={expandedStage === index}>
-            <Grid
-              container
-              direction="row"
-              justifyContent="center"
-              sx={{ my: 2 }}
-            >
-              <TextField
-                label="Nova Tarefa"
-                variant="outlined"
-                value={newTaskTitle}
-                onChange={(e) => setNewTaskTitle(e.target.value)}
-              />
-              <ProjectStageTaskMembers
-                members={members}
-                setNewTaskAssignees={setNewTaskAssignees}
-                allocatedMembersForTask={newTaskAssignees}
-                index={index}
-                title={newTaskTitle}
-                openedPopoverIndex={openedPopoverIndex}
-                anchorElArray={anchorElArray}
-                handleClick={handleClick}
-                handleClose={handleClose}
-                sx={{ mx: 2 }}
-              />
-              <MultipleServicesSelect
-                services={services}
-                handleClickServices={handleClickServices}
-                openedPopoverServicesIndex={openedPopoverServicesIndex}
-                index={index}
-                handleClose={handleClose}
-                anchorElArray={anchorElServicesArray}
-                allocatedServicesForTask={newTaskServices}
-                setNewTaskServices={(selectedServices) =>
-                  setNewTaskServices(selectedServices, index)
-                }
-              />
-
-              <Tooltip
-                title={<Typography sx={{ fontSize: 12 }}>Produtos</Typography>}
+            <Collapse in={expandedStage === index}>
+              <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                sx={{ my: 2 }}
               >
-                <Badge
-                  key
-                  color={newTaskProducts.length === 0 ? "error" : "success"}
-                  overlap="circular"
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  variant="dot"
-                >
-                  <Avatar sx={{ my: "auto", ml: 1, width: 32, height: 32 }}>
-                    <IconButton
-                      onClick={(event) => handleClickProducts(event, index)}
-                    >
-                      <SellIcon sx={{ color: "white" }} />
-                    </IconButton>
-                    <Popover
-                      elevation={0}
-                      open={
-                        openedPopoverProductsIndex === index &&
-                        anchorElProductsArray[index] !== undefined
-                      }
-                      anchorEl={anchorElArray[index]}
-                      onClose={handleClose}
-                      anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "center",
-                      }}
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "center",
-                      }}
-                      disableRestoreFocus
-                    >
-                      <Grid
-                        sx={{ p: 2, border: "1px solid #bbb", borderRadius: 2 }}
-                      >
-                        <MaterialList
-                          option="project"
-                          stockItems={products}
-                          materials={newTaskProducts}
-                          materialsEditCost={""}
-                          setMaterials={setNewTaskProducts}
-                          setMaterialsFinalCost={setMaterialsCost}
-                        />
-                      </Grid>
-                    </Popover>
-                  </Avatar>
-                </Badge>
-              </Tooltip>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  sx={{ width: 150, mx: 1 }}
-                  label="Término"
-                  value={newTaskDueTo}
-                  format="DD/MM/YYYY"
-                  onChange={(date) => setNewTaskDueTo(date)}
-                  renderInput={(params) => <TextField {...params} />}
+                <TextField
+                  label="Nova Tarefa"
+                  variant="outlined"
+                  value={newTaskTitle}
+                  onChange={(e) => setNewTaskTitle(e.target.value)}
                 />
-              </LocalizationProvider>
-              <Button
-                variant="outlined"
-                color="primary"
-                size="small"
-                sx={{ my: "auto" }}
-                disabled={newTaskAssignees.length === 0 || newTaskTitle === ""}
-                onClick={() => addTask(index)}
-              >
-                + Adicionar
-              </Button>
-            </Grid>
+                <ProjectStageTaskMembers
+                  members={members}
+                  setNewTaskAssignees={setNewTaskAssignees}
+                  allocatedMembersForTask={newTaskAssignees}
+                  index={index}
+                  title={newTaskTitle}
+                  openedPopoverIndex={openedPopoverIndex}
+                  anchorElArray={anchorElArray}
+                  handleClick={handleClick}
+                  handleClose={handleClose}
+                  sx={{ mx: 2 }}
+                />
+                <MultipleServicesSelect
+                  services={services}
+                  handleClickServices={handleClickServices}
+                  openedPopoverServicesIndex={openedPopoverServicesIndex}
+                  index={index}
+                  handleClose={handleClose}
+                  anchorElArray={anchorElServicesArray}
+                  allocatedServicesForTask={newTaskServices}
+                  setNewTaskServices={(selectedServices) =>
+                    setNewTaskServices(selectedServices, index)
+                  }
+                />
 
-            <Grid
-              container
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Table sx={{ width: "85%", mb: 1 }} size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">#</TableCell>
-                    <TableCell align="left">Tarefa</TableCell>
-                    <TableCell align="center">Designados</TableCell>
-                    <TableCell align="center">Serviços</TableCell>
-                    <TableCell align="center">Produtos</TableCell>
-                    <TableCell align="right">Prazo de Conclusão</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {stages[index].tasks?.map((task, taskIndex) => (
-                    <TableRow
-                      key={taskIndex}
-                      sx={{
-                        backgroundColor:
-                          taskIndex % 2 === 0 ? "white" : "lightgrey",
-                      }}
-                    >
-                      <TableCell align="left">{taskIndex + 1}</TableCell>
-
-                      <TableCell align="left">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {task.title}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
+                <Tooltip
+                  title={
+                    <Typography sx={{ fontSize: 12 }}>Produtos</Typography>
+                  }
+                >
+                  <Badge
+                    key
+                    color={newTaskProducts.length === 0 ? "error" : "success"}
+                    overlap="circular"
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    variant="dot"
+                  >
+                    <Avatar sx={{ my: "auto", ml: 1, width: 32, height: 32 }}>
+                      <IconButton
+                        onClick={(event) => handleClickProducts(event, index)}
+                      >
+                        <SellIcon sx={{ color: "white" }} />
+                      </IconButton>
+                      <Popover
+                        elevation={0}
+                        open={
+                          openedPopoverProductsIndex === index &&
+                          anchorElProductsArray[index] !== undefined
+                        }
+                        anchorEl={anchorElArray[index]}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "center",
+                        }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "center",
+                        }}
+                        disableRestoreFocus
+                      >
                         <Grid
-                          container
-                          direction="row"
-                          justifyContent="center"
-                          alignItems="center"
+                          sx={{
+                            p: 2,
+                            border: "1px solid #bbb",
+                            borderRadius: 2,
+                          }}
                         >
-                          {task.assignees.map((assignee, assigneeIndex) => (
-                            <Avatar
-                              key={assigneeIndex}
-                              alt={assignee.name}
-                              src={`http://localhost:3000/static/${assignee.image}`}
-                              sx={{ width: 24, height: 24, mx: 1 }}
-                            />
-                          ))}
+                          <MaterialList
+                            option="project"
+                            stockItems={products}
+                            materials={newTaskProducts}
+                            materialsEditCost={""}
+                            setMaterials={setNewTaskProducts}
+                            setMaterialsFinalCost={setMaterialsCost}
+                          />
                         </Grid>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {task.services.map((service) => (
-                            <Typography key sx={{ fontSize: 13, mr: 1 }}>
-                              {service.name}
-                            </Typography>
-                          ))}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {task.products.map((product) => (
-                            <Typography key sx={{ fontSize: 13, mr: 1 }}>
-                              {product.name} x{product.quantity}
-                            </Typography>
-                          ))}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="right">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {task.dueTo}
-                        </Typography>
-                      </TableCell>
+                      </Popover>
+                    </Avatar>
+                  </Badge>
+                </Tooltip>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    sx={{ width: 150, mx: 1 }}
+                    label="Término"
+                    value={newTaskDueTo}
+                    format="DD/MM/YYYY"
+                    onChange={(date) => setNewTaskDueTo(date)}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size="small"
+                  sx={{ my: "auto" }}
+                  disabled={
+                    newTaskAssignees.length === 0 || newTaskTitle === ""
+                  }
+                  onClick={() => addTask(index)}
+                >
+                  + Adicionar
+                </Button>
+              </Grid>
+
+              <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Table sx={{ width: "85%", mb: 1 }} size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left">#</TableCell>
+                      <TableCell align="left">Tarefa</TableCell>
+                      <TableCell align="center">Designados</TableCell>
+                      <TableCell align="center">Serviços</TableCell>
+                      <TableCell align="center">Produtos</TableCell>
+                      <TableCell align="right">Prazo de Conclusão</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Grid>
-          </Collapse>
-        </Grid>
-      ))}
-    </>
+                  </TableHead>
+                  <TableBody>
+                    {stages[index].tasks?.map((task, taskIndex) => (
+                      <TableRow
+                        key={taskIndex}
+                        sx={{
+                          backgroundColor:
+                            taskIndex % 2 === 0 ? "white" : "lightgrey",
+                        }}
+                      >
+                        <TableCell align="left">{taskIndex + 1}</TableCell>
+
+                        <TableCell align="left">
+                          <Typography sx={{ fontSize: 13 }}>
+                            {task.title}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                          >
+                            {task.assignees.map((assignee, assigneeIndex) => (
+                              <Avatar
+                                key={assigneeIndex}
+                                alt={assignee.name}
+                                src={`http://localhost:3000/static/${assignee.image}`}
+                                sx={{ width: 24, height: 24, mx: 1 }}
+                              />
+                            ))}
+                          </Grid>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Typography sx={{ fontSize: 13 }}>
+                            {task.services.map((service) => (
+                              <Typography key sx={{ fontSize: 13, mr: 1 }}>
+                                {service.name}
+                              </Typography>
+                            ))}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Typography sx={{ fontSize: 13 }}>
+                            {task.products.map((product) => (
+                              <Typography key sx={{ fontSize: 13, mr: 1 }}>
+                                {product.name} x{product.quantity}
+                              </Typography>
+                            ))}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="right">
+                          <Typography sx={{ fontSize: 13 }}>
+                            {task.dueTo}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Grid>
+            </Collapse>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 };
 
