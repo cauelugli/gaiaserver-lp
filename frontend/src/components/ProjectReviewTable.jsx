@@ -7,23 +7,16 @@ import {
   AccordionDetails,
   AccordionSummary,
   Avatar,
-  Box,
   Button,
-  Collapse,
   Grid,
-  IconButton,
-  Paper,
   Table,
-  TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   Typography,
 } from "@mui/material";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { purple } from "@mui/material/colors";
 
 const ProjectReviewTable = ({
   type,
@@ -37,10 +30,41 @@ const ProjectReviewTable = ({
   stages,
   description,
 }) => {
+  const totalServices = [];
+  const totalProducts = [];
+
+  stages.forEach((stage) => {
+    stage.tasks.forEach((task) => {
+      if (task.services) {
+        task.services.forEach((service) => {
+          totalServices.push({ ...service, taskTitle: task.title });
+        });
+      }
+      if (task.products) {
+        task.products.forEach((product) => {
+          totalProducts.push({ ...product, taskTitle: task.title });
+        });
+      }
+    });
+  });
+
+  const totalServicesValue = totalServices.reduce(
+    (acc, curr) => acc + curr.value,
+    0
+  );
+
+  const totalProductsValue = totalProducts.reduce(
+    (acc, curr) => acc + curr.sellValue * curr.quantity,
+    0
+  );
+
+  const grandTotal = totalServicesValue + totalProductsValue;
+
+  const finalTotal = grandTotal + price;
+
   return (
     <Grid sx={{ px: "10%" }}>
-      {/* <Accordion defaultExpanded> */}
-      <Accordion>
+      <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
           <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
             Informações do Projeto
@@ -199,7 +223,7 @@ const ProjectReviewTable = ({
           {/* PART FOUR */}
         </AccordionDetails>
       </Accordion>
-      <Accordion sx={{ my: 1 }} defaultExpanded>
+      <Accordion sx={{ my: 1 }}>
         <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
           <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
             Etapas e Tarefas
@@ -216,7 +240,7 @@ const ProjectReviewTable = ({
                         <Typography
                           sx={{ fontSize: 16, my: 1, fontWeight: "bold" }}
                         >
-                          Etapa {index} - {stage.title}
+                          Etapa {index + 1} - {stage.title}
                         </Typography>
                         {stage.tasks.map((task, index) => (
                           <Grid
@@ -250,7 +274,7 @@ const ProjectReviewTable = ({
                                         sx={{
                                           ml: 0.5,
                                           mr: 1,
-                                          fontSize: 13,
+                                          fontSize: 14,
                                           my: "auto",
                                         }}
                                       >
@@ -307,6 +331,71 @@ const ProjectReviewTable = ({
             ))}
           </Grid>
         </AccordionDetails>
+      </Accordion>
+      <Accordion sx={{ my: 1 }}>
+        <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+          <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+            Serviços e Produtos
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography sx={{ mb: 2, fontWeight: "bold" }}>Serviços</Typography>
+          {totalServices.length > 0 ? (
+            totalServices.map((service, index) => (
+              <Typography key={index}>
+                {index + 1}. Tarefa: {service.taskTitle} -{" "}
+                {service.name || service.title} - R$ {service.value}
+              </Typography>
+            ))
+          ) : (
+            <Typography> Não há Serviços no Projeto</Typography>
+          )}
+
+          {totalServices.length > 0 ? (
+            <Typography sx={{ mt: 2 }}>
+              Valor Total dos Serviços: R$ {totalServicesValue.toFixed(2)}
+            </Typography>
+          ) : (
+            ""
+          )}
+
+          <Typography sx={{ mb: 2, mt: 4, fontWeight: "bold" }}>
+            Produtos
+          </Typography>
+          {totalProducts.length > 0 ? (
+            totalProducts.map((product, index) => (
+              <Typography key={index}>
+                {index + 1}. Tarefa: {product.taskTitle}{" "}
+                {product.name || product.title} x{product.quantity} - R${" "}
+                {product.sellValue} por unidade - Total: R${" "}
+                {(product.sellValue * product.quantity).toFixed(2)}
+              </Typography>
+            ))
+          ) : (
+            <Typography sx={{mb:4}}> Não há Produtos no Projeto</Typography>
+          )}
+
+          {totalProducts.length > 0 ? (
+            <Typography sx={{ mt: 2 }}>
+              Valor Total dos Produtos: R$ {totalProductsValue.toFixed(2)}
+            </Typography>
+          ) : (
+            ""
+          )}
+
+          {totalProducts.length > 0 || totalServices.length > 0 ? (
+            <Typography sx={{ mt: 4, fontWeight: "bold", color: "grey" }}>
+              Total Geral (Produtos + Serviços): R$ {grandTotal.toFixed(2)}
+            </Typography>
+          ) : (
+            ""
+          )}
+
+          <Typography sx={{ mt: 1, fontWeight: "bold" }}>
+            Total Geral (Produtos + Serviços + Projeto): R${" "}
+            {finalTotal.toFixed(2)}
+          </Typography>
+        </AccordionDetails>{" "}
       </Accordion>
     </Grid>
   );
