@@ -51,6 +51,10 @@ const projectSchema = new mongoose.Schema({
   attachments: {
     type: Object,
   },
+  status: {
+    type: String,
+    default: "Aberto",
+  },
 });
 
 const Project = mongoose.model("Project", projectSchema);
