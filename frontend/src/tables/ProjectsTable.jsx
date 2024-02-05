@@ -26,7 +26,6 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import EditServiceForm from "../forms/edit/EditServiceForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
 export default function ProjectsTable({
@@ -36,11 +35,10 @@ export default function ProjectsTable({
   refreshData,
   setRefreshData,
 }) {
-  const [selectedService, setSelectedService] = React.useState("");
+  const [selectedProject, setSelectedProject] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
-  const [openDetailServices, setOpenDetailServices] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
 
@@ -49,20 +47,35 @@ export default function ProjectsTable({
     setOpenDialog(true);
   };
 
-  const handleOpenDetail = (service) => {
+  const handleOpenDetail = (project) => {
     setOpenDetail(!openDetail);
-    setSelectedService(service);
-  };
-
-  const handleOpenEdit = (service) => {
-    setOpenEdit(!openEdit);
-    setSelectedService(service);
+    setSelectedProject(project);
   };
 
   const tableHeaderRow = [
     {
       id: "name",
       label: "Nome do Projeto",
+    },
+    {
+      id: "type",
+      label: "Tipo",
+    },
+    {
+      id: "customer.name",
+      label: "Cliente",
+    },
+    {
+      id: "stage",
+      label: "Fase Atual",
+    },
+    {
+      id: "creator",
+      label: "Criador",
+    },
+    {
+      id: "status",
+      label: "Status",
     },
   ];
 
@@ -87,7 +100,7 @@ export default function ProjectsTable({
       }
     };
 
-    if (orderBy === "service.name") {
+    if (orderBy === "project.name") {
       return [...projects].sort(compare);
     }
 
@@ -133,6 +146,7 @@ export default function ProjectsTable({
                     sx={{
                       fontSize: 13,
                       fontWeight: "bold",
+                      pl: headCell.label === "Nome do Projeto" ? "" : 5,
                     }}
                     key={headCell.id}
                     sortDirection={orderBy === headCell.id ? order : false}
@@ -148,31 +162,74 @@ export default function ProjectsTable({
                 ))}
               </TableRow>
               {sortedRows
-                // .filter((user) =>
-                //   user[searchOption]
-                //     .toLowerCase()
-                //     .includes(searchValue.toLowerCase())
-                // )
-                .map((servicePlan) => (
+                .filter((user) =>
+                  user[searchOption]
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())
+                )
+                .map((project) => (
                   <>
                     <TableRow
-                      key={servicePlan._id}
+                      key={project._id}
                       sx={{
                         cursor: "pointer",
                         backgroundColor:
-                          selectedService.name === servicePlan.name &&
-                          openDetail
+                          selectedProject.name === project.name && openDetail
                             ? "#eee"
                             : "none",
                         "&:hover": { backgroundColor: "#eee " },
                       }}
                     >
                       <TableCell
-                        onClick={() => handleOpenDetail(servicePlan)}
+                        onClick={() => handleOpenDetail(project)}
                         cursor="pointer"
                       >
                         <Typography sx={{ fontSize: 13 }}>
-                          {servicePlan.name}
+                          {project.name}
+                        </Typography>
+                      </TableCell>
+
+                      <TableCell
+                        onClick={() => handleOpenDetail(project)}
+                        cursor="pointer"
+                        align="center"
+                      >
+                        <Typography sx={{ fontSize: 13 }}>
+                          {project.type}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        onClick={() => handleOpenDetail(project)}
+                        cursor="pointer"
+                        align="center"
+                      >
+                        <Typography sx={{ fontSize: 13 }}>
+                          {project.customer.name}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        onClick={() => handleOpenDetail(project)}
+                        cursor="pointer"
+                        align="center"
+                      >
+                        <Typography sx={{ fontSize: 13 }}>Fase X/Y</Typography>
+                      </TableCell>
+                      <TableCell
+                        onClick={() => handleOpenDetail(project)}
+                        cursor="pointer"
+                        align="center"
+                      >
+                        <Typography sx={{ fontSize: 13 }}>
+                          {project.creator}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        onClick={() => handleOpenDetail(project)}
+                        cursor="pointer"
+                        align="center"
+                      >
+                        <Typography sx={{ fontSize: 13 }}>
+                          {project.status}
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -183,8 +240,7 @@ export default function ProjectsTable({
                       >
                         <Collapse
                           in={
-                            openDetail &&
-                            selectedService.name === servicePlan.name
+                            openDetail && selectedProject.name === project.name
                           }
                           timeout="auto"
                           unmountOnExit
@@ -237,78 +293,18 @@ export default function ProjectsTable({
                                   <TableRow>
                                     <TableCell sx={{ width: "350px" }}>
                                       <Typography sx={{ fontSize: 13 }}>
-                                        {servicePlan.name}
+                                        {project.name}
                                       </Typography>
                                     </TableCell>
                                     <TableCell>
                                       <Typography sx={{ fontSize: 13 }}>
-                                        R${servicePlan.value}
+                                        R${project.value}
                                       </Typography>
                                     </TableCell>
                                   </TableRow>
                                 </TableBody>
                               </Table>
                             </Collapse>
-                          </Box>
-                          <Box sx={{ my: 4, px: 6 }}>
-                            <Grid container direction="row">
-                              <Typography
-                                variant="h6"
-                                sx={{
-                                  fontSize: 18,
-                                  fontWeight: "bold",
-                                  my: "auto",
-                                }}
-                              >
-                                Serviços Contemplados
-                              </Typography>
-                              <IconButton
-                                onClick={() =>
-                                  setOpenDetailServices(!openDetailServices)
-                                }
-                              >
-                                <ExpandMoreIcon />
-                              </IconButton>
-                            </Grid>
-                            <Collapse
-                              in={openDetailServices}
-                              timeout="auto"
-                              unmountOnExit
-                            >
-                              <Table size="small">
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell sx={{ width: "350px" }}>
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Serviço
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell sx={{ width: "350px" }}>
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Departamento
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
-                              </Table>
-                            </Collapse>
-
-                            <Box sx={{ mt: 3, ml: "90%" }}>
-                              <ModeEditIcon
-                                cursor="pointer"
-                                onClick={() => handleOpenEdit(servicePlan)}
-                                sx={{ color: "grey", mr: 2 }}
-                              />
-                              <DeleteIcon
-                                cursor="pointer"
-                                onClick={() => handleConfirmDelete(servicePlan)}
-                                sx={{ color: "#ff4444" }}
-                              />
-                            </Box>
                           </Box>
                         </Collapse>
                       </TableCell>
@@ -331,24 +327,6 @@ export default function ProjectsTable({
             }}
           />
         </TableContainer>
-        {/* {openEdit && (
-          <Dialog
-            fullWidth
-            maxWidth="md"
-            open={openEdit}
-            onClose={() => setOpenEdit(!openEdit)}
-          >
-            <EditServiceForm
-              openEdit={openEdit}
-              selectedService={selectedService}
-              previousMaterials={selectedService.materials}
-              setOpenEdit={setOpenEdit}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-            />
-          </Dialog>
-        )} */}
         {openDialog && (
           <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
             <GenericDeleteForm
