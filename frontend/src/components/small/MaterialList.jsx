@@ -3,6 +3,7 @@
 import * as React from "react";
 import {
   Avatar,
+  Button,
   Checkbox,
   FormControlLabel,
   FormGroup,
@@ -26,6 +27,7 @@ export default function MaterialList({
   materialsAddJobCost,
   setMaterialsFinalCost,
   option,
+  handleClose,
 }) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
   const [options, setOptions] = React.useState(stockItems);
@@ -34,6 +36,7 @@ export default function MaterialList({
     materialsEditCost || materialsAddJobCost || 0
   );
   const [searchValue, setSearchValue] = React.useState("");
+  const hasCloseButton = option === "project" ? true : false;
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -277,6 +280,17 @@ export default function MaterialList({
             Total: R${materialsCost.toFixed(2)}
           </Typography>
         </FormHelperText>
+        {hasCloseButton && (
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handleClose}
+            sx={{ml:"85%"}}
+            size="small"
+          >
+            OK
+          </Button>
+        )}
       </Grid>
     </Grid>
   );
