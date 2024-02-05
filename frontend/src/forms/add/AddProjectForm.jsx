@@ -23,6 +23,7 @@ import {
 } from "@mui/material";
 
 import CheckIcon from "@mui/icons-material/Check";
+import DeleteIcon from "@mui/icons-material/Delete";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 
 import Members from "../../components/small/Members";
@@ -45,7 +46,7 @@ export default function AddProjectForm({
   clients,
   departments,
   services,
-  products
+  products,
 }) {
   const [firstPartOK, setFirstPartOK] = React.useState(false);
   const [secondPartOK, setSecondPartOK] = React.useState(false);
@@ -68,6 +69,19 @@ export default function AddProjectForm({
     try {
       const res = await api.post("/projects", {
         name,
+        creator: user.name,
+        type,
+        customer,
+        customerType,
+        description,
+        mainDepartment,
+        members,
+        departments,
+        price,
+        createdAt: "date.now",
+        dueTo:"dueTo",
+        stages
+
       });
       if (res.data) {
         toast.success("Projeto Adicionado!", {
@@ -476,7 +490,7 @@ export default function AddProjectForm({
             customer={customer}
             customerType={customerType}
             name={name}
-            price={price}
+            price={parseFloat(price)}
             mainDepartment={mainDepartment}
             selectedDepartments={selectedDepartments}
             members={members}
@@ -545,15 +559,29 @@ export default function AddProjectForm({
       </DialogActions>
       {thirdPartOK && (
         <DialogActions>
-          <Button type="submit" variant="contained" color="success">
-            OK
+          <Button
+            variant="contained"
+            color="warning"
+            startIcon={<KeyboardReturnIcon />}
+            onClick={() => setThirdPartOK(Boolean(false))}
+          >
+            Retornar para "Tarefas"
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            color="success"
+            startIcon={<CheckIcon />}
+          >
+            Criar Projeto
           </Button>
           <Button
             variant="contained"
             color="error"
+            startIcon={<DeleteIcon />}
             onClick={() => setOpenAdd(!openAdd)}
           >
-            X
+            Cancelar
           </Button>
         </DialogActions>
       )}

@@ -32,7 +32,7 @@ import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 export default function ProjectsTable({
   searchValue,
   searchOption,
-  servicePlans,
+  projects,
   refreshData,
   setRefreshData,
 }) {
@@ -88,10 +88,10 @@ export default function ProjectsTable({
     };
 
     if (orderBy === "service.name") {
-      return [...servicePlans].sort(compare);
+      return [...projects].sort(compare);
     }
 
-    return [...servicePlans].sort((a, b) => {
+    return [...projects].sort((a, b) => {
       const isAsc = order === "asc";
       if (isAsc) {
         return a[orderBy] < b[orderBy] ? -1 : 1;
@@ -99,7 +99,7 @@ export default function ProjectsTable({
         return b[orderBy] < a[orderBy] ? -1 : 1;
       }
     });
-  }, [servicePlans, order, orderBy]);
+  }, [projects, order, orderBy]);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -148,11 +148,11 @@ export default function ProjectsTable({
                 ))}
               </TableRow>
               {sortedRows
-                .filter((user) =>
-                  user[searchOption]
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase())
-                )
+                // .filter((user) =>
+                //   user[searchOption]
+                //     .toLowerCase()
+                //     .includes(searchValue.toLowerCase())
+                // )
                 .map((servicePlan) => (
                   <>
                     <TableRow
@@ -294,22 +294,6 @@ export default function ProjectsTable({
                                     </TableCell>
                                   </TableRow>
                                 </TableHead>
-                                <TableBody>
-                                  {servicePlan.services.map((service) => (
-                                    <TableRow key={service.id}>
-                                      <TableCell sx={{ width: "350px" }}>
-                                        <Typography sx={{ fontSize: 13 }}>
-                                          {service.name}
-                                        </Typography>
-                                      </TableCell>
-                                      <TableCell sx={{ width: "350px" }}>
-                                        <Typography sx={{ fontSize: 13 }}>
-                                          {service.department.name}
-                                        </Typography>
-                                      </TableCell>
-                                    </TableRow>
-                                  ))}
-                                </TableBody>
                               </Table>
                             </Collapse>
 
@@ -374,7 +358,7 @@ export default function ProjectsTable({
               toast={toast}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
-              endpoint="servicePlans"
+              endpoint="projects"
               successMessage={`${
                 selectedItem.name && selectedItem.name
               } Deletado com Sucesso`}
