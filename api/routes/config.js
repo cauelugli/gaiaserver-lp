@@ -38,7 +38,11 @@ router.get("/customers", async (req, res) => {
 // CUSTOMERS
 router.put("/customers", async (req, res) => {
   try {
-    const { customersCanBeDeleted, clientsCanBeDeleted, allowSameNameCustomer } = req.body;
+    const {
+      customersCanBeDeleted,
+      clientsCanBeDeleted,
+      allowSameNameCustomer,
+    } = req.body;
 
     const config = await Config.findOne();
 
@@ -175,6 +179,34 @@ router.put("/quotes", async (req, res) => {
   }
 });
 
+// GET PROJECTS CONFIGS
+router.get("/projects", async (req, res) => {
+  try {
+    const config = await Config.findOne();
+    const projectsConfig = config ? config.projects : null;
+    res.status(200).json(projectsConfig);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// USERS
+router.put("/projects", async (req, res) => {
+  try {
+    const { canBeDeleted, projectTypes } = req.body;
+
+    const config = await Config.findOne();
+
+    config.projects.canBeDeleted = canBeDeleted;
+    config.projects.projectTypes = projectTypes;
+
+    await config.save();
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 // GET FINANCE CONFIGS
 router.get("/finance", async (req, res) => {

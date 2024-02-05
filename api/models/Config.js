@@ -58,12 +58,16 @@ const configSchema = new Schema({
       type: Boolean,
       default: true,
     },
+    projectTypes: {
+      type: Array,
+      default: ["Melhorias", "Expansão"],
+    },
   },
 
   quotes: {
     canBeDeleted: {
       type: Boolean,
-      default: false
+      default: false,
     },
   },
 
@@ -97,7 +101,7 @@ const configSchema = new Schema({
   finance: {
     canReceiveInstallments: {
       type: Boolean,
-      default: true
+      default: true,
     },
   },
 

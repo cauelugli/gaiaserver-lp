@@ -60,8 +60,8 @@ export default function Projects({ user }) {
 
   const [openAddProject, setOpenAddProject] = React.useState(false);
 
-  const [searchOption, setSearchOption] = React.useState("quote");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Orçamento");
+  const [searchOption, setSearchOption] = React.useState("name");
+  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
   const [searchValue, setSearchValue] = React.useState("");
 
   const searchOptionList = [{ options: [{ value: "name", label: "Nome" }] }];
