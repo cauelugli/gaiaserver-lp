@@ -37,6 +37,7 @@ const api = axios.create({
 
 export default function AddProjectForm({
   user,
+  configData,
   openAdd,
   setOpenAdd,
   refreshData,
@@ -79,9 +80,8 @@ export default function AddProjectForm({
         departments,
         price,
         createdAt: "date.now",
-        dueTo:"dueTo",
-        stages
-
+        dueTo: "dueTo",
+        stages,
       });
       if (res.data) {
         toast.success("Projeto Adicionado!", {
@@ -269,8 +269,11 @@ export default function AddProjectForm({
                       <MenuItem disabled value="">
                         Tipo de Projeto
                       </MenuItem>
-                      <MenuItem value={"Melhorias"}>Melhorias</MenuItem>
-                      <MenuItem value={"Expansão"}>Expansão</MenuItem>
+                      {configData.projectTypes.map((type) => (
+                        <MenuItem key value={type}>
+                          {type}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 )}
