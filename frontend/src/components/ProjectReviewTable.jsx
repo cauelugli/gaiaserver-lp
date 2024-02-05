@@ -116,7 +116,7 @@ const ProjectReviewTable = ({
                     <Typography sx={{ fontSize: 13, color: "#777", mb: 1 }}>
                       Valor
                     </Typography>
-                    <Typography sx={{ fontSize: 13 }}>{price}</Typography>
+                    <Typography sx={{ fontSize: 13 }}>R$ {price}</Typography>
                   </Grid>
                 </TableCell>
               </TableRow>
@@ -218,84 +218,86 @@ const ProjectReviewTable = ({
                         >
                           Etapa {index} - {stage.title}
                         </Typography>
-                        {stage.tasks.map((task) => (
-                          <>
-                            <Grid
-                              container
-                              direction="row"
-                              sx={{ fontSize: 13 }}
-                            >
-                              <Typography sx={{ fontSize: 13 }}>
-                                Tarefa: {task.title}
-                              </Typography>
-                              <Grid item sx={{ mx: 1 }}>
-                                <Grid container direction="row">
-                                  {task.assignees.map((assignee) => (
-                                    <>
-                                      <Grid item>
-                                        <Avatar
-                                          alt="Imagem do Colaborador"
-                                          src={`http://localhost:3000/static/${assignee.image}`}
-                                          sx={{ width: 20, height: 20 }}
-                                        />
-                                      </Grid>
-                                      <Grid item>
-                                        <Typography
-                                          sx={{
-                                            ml: 0.5,
-                                            mr: 1,
-                                            fontSize: 13,
-                                            my: "auto",
-                                          }}
-                                        >
-                                          {assignee.name}
-                                        </Typography>
-                                      </Grid>
-                                    </>
-                                  ))}
-                                </Grid>
+                        {stage.tasks.map((task, index) => (
+                          <Grid
+                            key={index}
+                            container
+                            direction="row"
+                            sx={{
+                              fontSize: 14,
+                              mt: 1,
+                              py: 1,
+                              backgroundColor:
+                                index % 2 ? "lightgrey" : "white",
+                            }}
+                          >
+                            <Typography sx={{ fontSize: 14 }}>
+                              Tarefa: {task.title}
+                            </Typography>
+                            <Grid item sx={{ mx: 1 }}>
+                              <Grid container direction="row">
+                                {task.assignees.map((assignee) => (
+                                  <>
+                                    <Grid item>
+                                      <Avatar
+                                        alt="Imagem do Colaborador"
+                                        src={`http://localhost:3000/static/${assignee.image}`}
+                                        sx={{ width: 20, height: 20 }}
+                                      />
+                                    </Grid>
+                                    <Grid item>
+                                      <Typography
+                                        sx={{
+                                          ml: 0.5,
+                                          mr: 1,
+                                          fontSize: 13,
+                                          my: "auto",
+                                        }}
+                                      >
+                                        {assignee.name}
+                                      </Typography>
+                                    </Grid>
+                                  </>
+                                ))}
                               </Grid>
-                              <Typography sx={{ fontSize: 13 }}>
-                                Prazo: {task.dueTo}
-                              </Typography>
                             </Grid>
-                            <Grid container direction="row">
-                              {task.services.length > 0 && (
-                                <>
-                                  <Typography key sx={{ fontSize: 13 }}>
-                                    Serviço:{" "}
-                                  </Typography>
-                                  {task.services.length > 0 &&
-                                    task.services.map((service) => (
-                                      <Typography
-                                        key
-                                        sx={{ fontSize: 13, mr: 1 }}
-                                      >
-                                        {service.name}
-                                      </Typography>
-                                    ))}
-                                </>
-                              )}
-                            </Grid>
-                            <Grid container direction="row">
-                              {task.products.length > 0 && (
-                                <>
-                                  <Typography key sx={{ fontSize: 13 }}>
-                                    Produtos:{" "}
-                                  </Typography>
-                                  {task.products.length > 0 &&
-                                    task.products.map((product) => (
-                                      <Typography
-                                        key
-                                        sx={{ fontSize: 13, mr: 1 }}
-                                      >
-                                        {product.name}
-                                      </Typography>
-                                    ))}
-                                </>
-                              )}
-                            </Grid>
-                          </>
+
+                            <Typography sx={{ fontSize: 14 }}>
+                              Prazo: {task.dueTo}
+                            </Typography>
+                            {task.services.length > 0 && (
+                              <Grid container direction="row" sx={{ mt: 1 }}>
+                                <Typography key sx={{ fontSize: 14, mr: 1 }}>
+                                  Serviço:
+                                </Typography>
+                                {task.services.length > 0 &&
+                                  task.services.map((service) => (
+                                    <Typography
+                                      key
+                                      sx={{ fontSize: 14, mr: 1 }}
+                                    >
+                                      {service.name}
+                                    </Typography>
+                                  ))}
+                              </Grid>
+                            )}
+                            {task.products.length > 0 && (
+                              <Grid container direction="row " sx={{ mt: 1 }}>
+                                <Typography key sx={{ fontSize: 14, mr: 1 }}>
+                                  Produtos:
+                                </Typography>
+                                {task.products.length > 0 &&
+                                  task.products.map((product) => (
+                                    <Typography
+                                      key
+                                      sx={{ fontSize: 14, mr: 1 }}
+                                    >
+                                      {product.name}
+                                    </Typography>
+                                  ))}
+                              </Grid>
+                            )}
+                          </Grid>
                         ))}
                       </Grid>
                     </TableCell>

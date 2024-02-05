@@ -62,6 +62,12 @@ const ProjectStages = ({
     setColorPopoverAnchorEl(null);
   };
 
+  const handleColorChange = (e) => {
+    const selectedColor = Number(e.target.value);
+    setColorSchema(selectedColor);
+    handleColorClose();
+  };
+
   const handleStagesChange = (newStages) => {
     setStagesNumber(newStages);
     const newStagesList = Array.from({ length: newStages }, (_, index) => {
@@ -285,8 +291,8 @@ const ProjectStages = ({
               <Grid sx={{ width: 200, height: 150, p: 1 }}>
                 <RadioGroup
                   value={colorSchema}
-                  onChange={(e) => setColorSchema(Number(e.target.value))}
-                >
+                  onChange={handleColorChange}
+                  >
                   <FormControlLabel
                     value={0}
                     control={<Radio sx={{ mt: -0.25, mr: -0.5 }} />}
