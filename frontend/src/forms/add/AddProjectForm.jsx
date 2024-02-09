@@ -82,6 +82,7 @@ export default function AddProjectForm({
         createdAt: "date.now",
         dueTo: "dueTo",
         stages,
+        colorSchema: stagesColorSchema
       });
       if (res.data) {
         toast.success("Projeto Adicionado!", {
