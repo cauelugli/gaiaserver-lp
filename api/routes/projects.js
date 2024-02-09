@@ -54,4 +54,17 @@ router.put("/", async (req, res) => {
   }
 });
 
+// CREATE PROJECT INTERACTION
+router.post("/addInteraction", async (req, res) => {
+  // const newProject = new Project(req.body);
+  console.log("\nreq.body\n", req.body)
+  // try {
+  //   const savedRole = await newProject.save();
+  //   res.status(200).json(savedRole);
+  // } catch (err) {
+  //   console.log(err);
+  //   res.status(500).json(err);
+  // }
+});
+
 module.exports = router;

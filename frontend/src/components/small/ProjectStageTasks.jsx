@@ -63,6 +63,7 @@ const ProjectStageTasks = ({
       products: newTaskProducts,
       dueTo: newTaskDueTo.format("DD/MM/YYYY"),
       status: "Aberto",
+      interactions: []
     };
 
     addTaskFromParent(stageIndex, newTask);

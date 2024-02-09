@@ -216,6 +216,7 @@ export default function Projects({ user }) {
             />
 
             <ProjectsTable
+              user={user}
               projects={projects}
               configData={configData}
               refreshData={refreshData}
@@ -299,10 +300,19 @@ export default function Projects({ user }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" color="success" onClick={() => handleCloseConfirmDialog(false)}>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handleCloseConfirmDialog(false)}
+          >
             Manter o Formulário
           </Button>
-          <Button variant="contained" color="error" onClick={() => handleCloseConfirmDialog(true)} autoFocus>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => handleCloseConfirmDialog(true)}
+            autoFocus
+          >
             Fechar e Apagar
           </Button>
         </DialogActions>

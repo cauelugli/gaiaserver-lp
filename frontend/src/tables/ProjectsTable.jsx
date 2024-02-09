@@ -3,9 +3,11 @@
 import * as React from "react";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import axios from "axios";
 
 import {
   Accordion,
+  AccordionActions,
   AccordionDetails,
   AccordionSummary,
   Avatar,
@@ -24,17 +26,22 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+import ProjectTaskActions from "../components/small/buttons/ProjectTaskActions";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 export default function ProjectsTable({
+  user,
   searchValue,
   searchOption,
   projects,
@@ -48,11 +55,11 @@ export default function ProjectsTable({
   const [openDetailStages, setOpenDetailStages] = React.useState(true);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [isAddingInteraction, setIsAddingInteraction] = React.useState(false);
 
-  // const handleConfirmDelete = (position) => {
-  //   setSelectedItem(position);
-  //   setOpenDialog(true);
-  // };
+  const [newInteractionText, setNewInteractionText] = React.useState("");
+  const [selectedStageIndex, setSelectedStageIndex] = React.useState(null);
+  const [selectedTaskIndex, setSelectedTaskIndex] = React.useState(null);
 
   const handleOpenDetail = (project) => {
     setOpenDetail(!openDetail);
@@ -135,6 +142,29 @@ export default function ProjectsTable({
 
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
+
+  const handleAddInteraction = async () => {
+    try {
+      const response = await api.post("/projects/addInteraction", {
+        projectId: selectedProject._id,
+        stageIndex: selectedStageIndex,
+        taskIndex: selectedTaskIndex,
+        interaction: newInteractionText,
+      });
+
+      if (response.status === 200) {
+        setNewInteractionText("");
+        setSelectedTaskIndex(null);
+        setSelectedStageIndex(null);
+        setIsAddingInteraction(false);
+        setRefreshData(!refreshData);
+      } else {
+        console.error("Erro ao adicionar interação:", response.status);
+      }
+    } catch (error) {
+      console.error("Erro ao adicionar interação:", error);
+    }
+  };
 
   return (
     <>
@@ -291,7 +321,7 @@ export default function ProjectsTable({
                                       <Typography
                                         sx={{ fontSize: 13, color: "#777" }}
                                       >
-                                        Valor do Plano
+                                        ####
                                       </Typography>
                                     </TableCell>
                                   </TableRow>
@@ -305,7 +335,7 @@ export default function ProjectsTable({
                                     </TableCell>
                                     <TableCell>
                                       <Typography sx={{ fontSize: 13 }}>
-                                        R${project.value}
+                                        ####
                                       </Typography>
                                     </TableCell>
                                   </TableRow>
@@ -342,6 +372,7 @@ export default function ProjectsTable({
                                 {project.stages.map((stage, index) => (
                                   <Accordion
                                     key={index}
+                                    onClick={() => setSelectedStageIndex(index)}
                                     sx={{ mx: "15%", mb: 1 }}
                                   >
                                     <AccordionSummary
@@ -417,90 +448,211 @@ export default function ProjectsTable({
                                       </Grid>
                                     </AccordionSummary>
                                     <AccordionDetails>
+                                      <Typography
+                                        sx={{
+                                          fontSize: 16,
+                                          mx: 2,
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        Tarefas
+                                      </Typography>
                                       {stage.tasks.map((task, index) => (
                                         <>
-                                          <Typography
+                                          <Accordion
+                                            key={index}
+                                            onClick={() =>
+                                              setSelectedTaskIndex(index)
+                                            }
                                             sx={{
-                                              fontSize: 16,
-                                              ml: 2,
-                                              fontWeight: "bold",
+                                              backgroundColor:
+                                                index % 2
+                                                  ? "lightgrey"
+                                                  : "white",
                                             }}
                                           >
-                                            Tarefas
-                                          </Typography>
-                                          <Grid
-                                            key={index}
-                                            sx={{ mx: "5%" }}
-                                            spacing={3}
-                                            container
-                                            direction="row"
-                                            alignItems="center"
-                                            justifyContent="flex-start"
-                                          >
-                                            <Grid item sx={{ mr: -3 }}>
-                                              {index + 1}.
-                                            </Grid>
-                                            <Grid item sx={{ width: "20%" }}>
-                                              <Typography sx={{ fontSize: 13 }}>
-                                                Tarefa: {task.title}
-                                              </Typography>
-                                            </Grid>
-                                            <Grid
-                                              item
-                                              sx={{ mt: 0.5, width: "25%" }}
+                                            <AccordionSummary
+                                              sx={{
+                                                backgroundColor:
+                                                  index % 2
+                                                    ? "lightgrey"
+                                                    : "white",
+                                              }}
                                             >
-                                              <Grid container direction="row">
-                                                <Typography
-                                                  sx={{ fontSize: 13, mr: 1 }}
-                                                >
-                                                  Designados:
-                                                </Typography>
-                                                {task.assignees.map(
-                                                  (assignee) => (
-                                                    <>
-                                                      <Avatar
-                                                        alt="Imagem do Colaborador"
-                                                        src={`http://localhost:3000/static/${assignee.image}`}
-                                                        sx={{
-                                                          width: 22,
-                                                          height: 22,
-                                                        }}
-                                                      />
-                                                      <Typography
-                                                        sx={{ fontSize: 13 }}
-                                                      >
-                                                        {assignee.name}
-                                                      </Typography>
-                                                    </>
-                                                  )
-                                                )}
-                                              </Grid>
-                                            </Grid>
-                                            <Grid item sx={{ width: "15%" }}>
-                                              <Typography sx={{ fontSize: 13 }}>
-                                                Prazo: {task.dueTo}
-                                              </Typography>
-                                            </Grid>
-
-                                            <Grid item sx={{ width: "10%" }}>
-                                              <Typography sx={{ fontSize: 13 }}>
-                                                Status:{task.status}
-                                              </Typography>
-                                            </Grid>
-                                            <Grid item sx={{ width: "15%" }}>
-                                              <Button
-                                                variant="contained"
-                                                size="small"
-                                                onClick={() =>
-                                                  alert(
-                                                    `you chose ${task.title}`
-                                                  )
-                                                }
+                                              <Grid
+                                                key={index}
+                                                container
+                                                direction="row"
+                                                alignItems="center"
+                                                justifyContent="flex-start"
                                               >
-                                                View title
-                                              </Button>
-                                            </Grid>
-                                          </Grid>
+                                                <Grid item>{index + 1}.</Grid>
+                                                <Grid
+                                                  item
+                                                  sx={{ width: "25%" }}
+                                                >
+                                                  <Typography
+                                                    sx={{ fontSize: 14 }}
+                                                  >
+                                                    Tarefa: {task.title}
+                                                  </Typography>
+                                                </Grid>
+                                                <Grid
+                                                  item
+                                                  sx={{ width: "30%" }}
+                                                >
+                                                  <Grid
+                                                    container
+                                                    direction="row"
+                                                  >
+                                                    <Typography
+                                                      sx={{
+                                                        fontSize: 14,
+                                                        mr: 1,
+                                                      }}
+                                                    >
+                                                      Designados:
+                                                    </Typography>
+                                                    {task.assignees.map(
+                                                      (assignee) => (
+                                                        <Tooltip
+                                                          key
+                                                          title={
+                                                            <Typography>
+                                                              {assignee.name}
+                                                            </Typography>
+                                                          }
+                                                        >
+                                                          <Avatar
+                                                            alt="Imagem do Colaborador"
+                                                            src={`http://localhost:3000/static/${assignee.image}`}
+                                                            sx={{
+                                                              width: 22,
+                                                              height: 22,
+                                                            }}
+                                                          />
+                                                        </Tooltip>
+                                                      )
+                                                    )}
+                                                  </Grid>
+                                                </Grid>
+                                                <Grid
+                                                  item
+                                                  sx={{ width: "20%" }}
+                                                >
+                                                  <Typography
+                                                    sx={{ fontSize: 14 }}
+                                                  >
+                                                    Status:{task.status}
+                                                  </Typography>
+                                                </Grid>
+                                                <Grid
+                                                  item
+                                                  sx={{ width: "15%" }}
+                                                >
+                                                  <Typography
+                                                    sx={{ fontSize: 14 }}
+                                                  >
+                                                    Prazo: {task.dueTo}
+                                                  </Typography>
+                                                </Grid>
+                                              </Grid>
+                                            </AccordionSummary>
+                                            <AccordionDetails
+                                              sx={{
+                                                m: 2,
+                                                border: "1px solid #bbb",
+                                                borderRadius: 1,
+                                                backgroundColor: "white",
+                                              }}
+                                            >
+                                              <Typography
+                                                sx={{
+                                                  fontSize: 16,
+                                                  fontWeight: "bold",
+                                                }}
+                                              >
+                                                Interações
+                                              </Typography>
+                                              <Grid sx={{ ml: 2 }}>
+                                                {task.interactions.length === 0
+                                                  ? "Não há Interações na Tarefa"
+                                                  : task.interactions.map(
+                                                      (interaction) =>
+                                                        interaction
+                                                    )}
+                                              </Grid>
+                                            </AccordionDetails>
+                                            {isAddingInteraction && (
+                                              <>
+                                                <Typography
+                                                  sx={{
+                                                    m: 2,
+                                                    fontSize: 16,
+                                                    fontWeight: "bold",
+                                                  }}
+                                                >
+                                                  Nova Interação
+                                                </Typography>
+                                                <Grid
+                                                  container
+                                                  direction="row"
+                                                  alignItems="center"
+                                                  justifyContent="flex-start"
+                                                  sx={{
+                                                    m: 2,
+                                                    ml: 10,
+                                                  }}
+                                                >
+                                                  <Grid item>
+                                                    <Avatar
+                                                      alt="Imagem do Colaborador"
+                                                      src={`http://localhost:3000/static/${user.image}`}
+                                                      sx={{
+                                                        mx: 2,
+                                                        width: 36,
+                                                        height: 36,
+                                                      }}
+                                                    />
+                                                  </Grid>
+                                                  <Grid item>
+                                                    <TextField
+                                                      size="small"
+                                                      onChange={(e) =>
+                                                        setNewInteractionText(
+                                                          e.target.value
+                                                        )
+                                                      }
+                                                      placeholder="Insira as informações aqui..."
+                                                      sx={{
+                                                        width: 750,
+                                                        backgroundColor:
+                                                          "white",
+                                                      }}
+                                                    />
+                                                  </Grid>
+                                                </Grid>
+                                              </>
+                                            )}
+                                            <AccordionActions>
+                                              <ProjectTaskActions
+                                                task={task}
+                                                index={index}
+                                                isAddingInteraction={
+                                                  isAddingInteraction
+                                                }
+                                                setIsAddingInteraction={
+                                                  setIsAddingInteraction
+                                                }
+                                                handleAddInteraction={
+                                                  handleAddInteraction
+                                                }
+                                                handleResolveTask={
+                                                  "handleResolveTask"
+                                                }
+                                              />
+                                            </AccordionActions>
+                                          </Accordion>
                                         </>
                                       ))}
                                     </AccordionDetails>
