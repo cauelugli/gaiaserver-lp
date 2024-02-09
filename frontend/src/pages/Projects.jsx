@@ -9,6 +9,10 @@ import {
   Box,
   Button,
   Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   ListItemIcon,
   ListItemText,
@@ -68,9 +72,11 @@ export default function Projects({ user }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
+
   const handleClickAddButton = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleCloseAddButton = () => {
     setAnchorEl(null);
   };
@@ -107,6 +113,19 @@ export default function Projects({ user }) {
     };
     fetchData();
   }, [refreshData]);
+
+  const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false);
+
+  const handleOpenConfirmDialog = () => {
+    setOpenConfirmDialog(true);
+  };
+
+  const handleCloseConfirmDialog = (confirm) => {
+    setOpenConfirmDialog(false);
+    if (confirm) {
+      setOpenAddProject(false);
+    }
+  };
 
   return (
     <Box>
@@ -243,7 +262,13 @@ export default function Projects({ user }) {
           fullWidth
           maxWidth="lg"
           open={openAddProject}
-          onClose={() => setOpenAddProject(!openAddProject)}
+          onClose={(event, reason) => {
+            if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+              setOpenAddProject(!openAddProject);
+            } else {
+              handleOpenConfirmDialog();
+            }
+          }}
         >
           <AddProjectForm
             configData={configData}
@@ -263,6 +288,25 @@ export default function Projects({ user }) {
           />
         </Dialog>
       )}
+      <Dialog
+        open={openConfirmDialog}
+        onClose={() => handleCloseConfirmDialog(false)}
+      >
+        <DialogContent>
+          <DialogContentText>
+            Deseja realmente fechar este formulário? Todas as alterações não
+            salvas serão perdidas.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" color="success" onClick={() => handleCloseConfirmDialog(false)}>
+            Manter o Formulário
+          </Button>
+          <Button variant="contained" color="error" onClick={() => handleCloseConfirmDialog(true)} autoFocus>
+            Fechar e Apagar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
