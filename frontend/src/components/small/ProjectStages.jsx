@@ -7,9 +7,7 @@ import {
   Button,
   Card,
   CardActionArea,
-  CardContent,
   CardHeader,
-  Collapse,
   FormControlLabel,
   Grid,
   IconButton,
@@ -23,9 +21,9 @@ import {
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PaletteIcon from "@mui/icons-material/Palette";
 
 const ProjectStages = ({
@@ -162,7 +160,7 @@ const ProjectStages = ({
             </IconButton>
           </Grid>
         }
-        sx={{ backgroundColor: backgroundColor || "inherit" }} // Usa a cor calculada ou herda a cor padrão
+        sx={{ backgroundColor: backgroundColor || "inherit" }}
       />
     );
   };

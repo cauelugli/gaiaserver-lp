@@ -51,9 +51,8 @@ const projectSchema = new mongoose.Schema({
   attachments: {
     type: Object,
   },
-  colorSchema: {
-    type: Number,
-    default: 0,
+  definedStagesColors: {
+    type: Array,
   },
   status: {
     type: String,

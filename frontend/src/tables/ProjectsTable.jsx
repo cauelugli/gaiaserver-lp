@@ -2,10 +2,15 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import dayjs from "dayjs";
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Avatar,
   Box,
+  Button,
   Collapse,
   Dialog,
   Grid,
@@ -25,6 +30,7 @@ import {
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 
@@ -39,13 +45,14 @@ export default function ProjectsTable({
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
+  const [openDetailStages, setOpenDetailStages] = React.useState(true);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
 
-  const handleConfirmDelete = (position) => {
-    setSelectedItem(position);
-    setOpenDialog(true);
-  };
+  // const handleConfirmDelete = (position) => {
+  //   setSelectedItem(position);
+  //   setOpenDialog(true);
+  // };
 
   const handleOpenDetail = (project) => {
     setOpenDetail(!openDetail);
@@ -255,7 +262,7 @@ export default function ProjectsTable({
                                   my: "auto",
                                 }}
                               >
-                                Informações do Serviço
+                                Informações do Projeto
                               </Typography>
                               <IconButton
                                 onClick={() =>
@@ -304,6 +311,202 @@ export default function ProjectsTable({
                                   </TableRow>
                                 </TableBody>
                               </Table>
+                            </Collapse>
+                          </Box>
+                          <Box sx={{ my: 4, px: 6 }}>
+                            <Grid container direction="row">
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  fontSize: 18,
+                                  fontWeight: "bold",
+                                  my: "auto",
+                                }}
+                              >
+                                Etapas
+                              </Typography>
+                              <IconButton
+                                onClick={() =>
+                                  setOpenDetailStages(!openDetailStages)
+                                }
+                              >
+                                <ExpandMoreIcon />
+                              </IconButton>
+                            </Grid>
+                            <Collapse
+                              in={openDetailStages}
+                              timeout="auto"
+                              unmountOnExit
+                            >
+                              <Grid container direction="column">
+                                {project.stages.map((stage, index) => (
+                                  <Accordion
+                                    key={index}
+                                    sx={{ mx: "15%", mb: 1 }}
+                                  >
+                                    <AccordionSummary
+                                      expandIcon={<ArrowDropDownIcon />}
+                                    >
+                                      <Grid
+                                        container
+                                        direction="row"
+                                        justifyContent="space-between"
+                                      >
+                                        <Grid item sx={{ width: 200 }}>
+                                          <Grid container direction="row">
+                                            <Grid
+                                              sx={{
+                                                width: 24,
+                                                height: 24,
+                                                borderRadius: 100,
+                                                mr: 1,
+                                                backgroundColor:
+                                                  project.definedStagesColors[
+                                                    index
+                                                  ],
+                                              }}
+                                            />
+                                            <Typography
+                                              sx={{
+                                                fontSize: 16,
+                                                mt: 0.5,
+                                                fontWeight: "bold",
+                                              }}
+                                            >
+                                              {stage.title === "" ? (
+                                                <Typography
+                                                  sx={{ fontSize: 14 }}
+                                                >
+                                                  Etapa #{index + 1}
+                                                </Typography>
+                                              ) : (
+                                                <Typography
+                                                  sx={{ fontSize: 14 }}
+                                                >
+                                                  Etapa {stage.title}
+                                                </Typography>
+                                              )}{" "}
+                                            </Typography>
+                                          </Grid>
+                                        </Grid>
+
+                                        <Typography
+                                          sx={{
+                                            fontSize: 14,
+                                          }}
+                                        >
+                                          {index > 0 &&
+                                          project.stages[index - 1].status ===
+                                            "Aberto" &&
+                                          stage.status === "Aberto"
+                                            ? "Aguardando"
+                                            : stage.status}
+                                        </Typography>
+
+                                        <Typography
+                                          sx={{
+                                            fontSize: 14,
+                                            mr: 1,
+                                          }}
+                                        >
+                                          Prazo de Execução:{" "}
+                                          {dayjs(stage.dueTo).format(
+                                            "DD/MM/YYYY"
+                                          )}
+                                        </Typography>
+                                      </Grid>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                      {stage.tasks.map((task, index) => (
+                                        <>
+                                          <Typography
+                                            sx={{
+                                              fontSize: 16,
+                                              ml: 2,
+                                              fontWeight: "bold",
+                                            }}
+                                          >
+                                            Tarefas
+                                          </Typography>
+                                          <Grid
+                                            key={index}
+                                            sx={{ mx: "5%" }}
+                                            spacing={3}
+                                            container
+                                            direction="row"
+                                            alignItems="center"
+                                            justifyContent="flex-start"
+                                          >
+                                            <Grid item sx={{ mr: -3 }}>
+                                              {index + 1}.
+                                            </Grid>
+                                            <Grid item sx={{ width: "20%" }}>
+                                              <Typography sx={{ fontSize: 13 }}>
+                                                Tarefa: {task.title}
+                                              </Typography>
+                                            </Grid>
+                                            <Grid
+                                              item
+                                              sx={{ mt: 0.5, width: "25%" }}
+                                            >
+                                              <Grid container direction="row">
+                                                <Typography
+                                                  sx={{ fontSize: 13, mr: 1 }}
+                                                >
+                                                  Designados:
+                                                </Typography>
+                                                {task.assignees.map(
+                                                  (assignee) => (
+                                                    <>
+                                                      <Avatar
+                                                        alt="Imagem do Colaborador"
+                                                        src={`http://localhost:3000/static/${assignee.image}`}
+                                                        sx={{
+                                                          width: 22,
+                                                          height: 22,
+                                                        }}
+                                                      />
+                                                      <Typography
+                                                        sx={{ fontSize: 13 }}
+                                                      >
+                                                        {assignee.name}
+                                                      </Typography>
+                                                    </>
+                                                  )
+                                                )}
+                                              </Grid>
+                                            </Grid>
+                                            <Grid item sx={{ width: "15%" }}>
+                                              <Typography sx={{ fontSize: 13 }}>
+                                                Prazo: {task.dueTo}
+                                              </Typography>
+                                            </Grid>
+
+                                            <Grid item sx={{ width: "10%" }}>
+                                              <Typography sx={{ fontSize: 13 }}>
+                                                Status:{task.status}
+                                              </Typography>
+                                            </Grid>
+                                            <Grid item sx={{ width: "15%" }}>
+                                              <Button
+                                                variant="contained"
+                                                size="small"
+                                                onClick={() =>
+                                                  alert(
+                                                    `you chose ${task.title}`
+                                                  )
+                                                }
+                                              >
+                                                View title
+                                              </Button>
+                                            </Grid>
+                                          </Grid>
+                                        </>
+                                      ))}
+                                    </AccordionDetails>
+                                  </Accordion>
+                                ))}
+                              </Grid>
                             </Collapse>
                           </Box>
                         </Collapse>
