@@ -51,6 +51,10 @@ const projectSchema = new mongoose.Schema({
   attachments: {
     type: Object,
   },
+  colorSchema: {
+    type: Number,
+    default: 0,
+  },
   status: {
     type: String,
     default: "Aberto",
