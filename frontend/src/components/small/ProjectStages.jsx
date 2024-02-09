@@ -46,7 +46,8 @@ const ProjectStages = ({
             title: "",
             tasks: [],
             startAt: dayjs(),
-            dueTo: dayjs(),
+            dueTo: dayjs().add(7, "day"),
+            status: "Aberto",
           },
         ]
   );
@@ -75,9 +76,9 @@ const ProjectStages = ({
         stagesList[index] || {
           title: "",
           tasks: [],
-          startAt: dayjs(),
-          dueTo: dayjs(),
-          expanded: false,
+          startAt: dayjs().add(7*index, "day"),
+          dueTo: dayjs().add(7*index+2, "day"),
+          status: "Aberto",
         }
       );
     });
@@ -92,6 +93,12 @@ const ProjectStages = ({
 
   const normalColors = ["#ff0000", "#3300ff"];
   const pastelColors = ["#ff5555", "#0055ff"];
+  // let customColor1 = "white";
+  // let customColor2 = "black";
+  // const [customColors, setCustomColors] = useState([
+  //   customColor1,
+  //   customColor2,
+  // ]);
 
   const renderColorGrid = (colors) => (
     <Grid container spacing={0.3} sx={{ mt: 1 }}>
@@ -112,7 +119,7 @@ const ProjectStages = ({
   );
 
   const interpolateColor = (index, totalStages, colorSchema) => {
-    if (colorSchema === 0) return undefined; // Sem cor para esquema desabilitado
+    if (colorSchema === 0) return undefined;
 
     const startColor = colorSchema === 1 ? normalColors[0] : pastelColors[0];
     const endColor = colorSchema === 1 ? normalColors[1] : pastelColors[1];
@@ -289,10 +296,7 @@ const ProjectStages = ({
               }}
             >
               <Grid sx={{ width: 200, height: 150, p: 1 }}>
-                <RadioGroup
-                  value={colorSchema}
-                  onChange={handleColorChange}
-                  >
+                <RadioGroup value={colorSchema} onChange={handleColorChange}>
                   <FormControlLabel
                     value={0}
                     control={<Radio sx={{ mt: -0.25, mr: -0.5 }} />}
