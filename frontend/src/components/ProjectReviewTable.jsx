@@ -414,9 +414,6 @@ const ProjectReviewTable = ({
               onChange={(e) => setRecurrent(e.target.checked)}
               inputProps={{ "aria-label": "controlled" }}
             />
-            <Typography sx={{ my: "auto", mx: 1 }}>
-              {recurrent ? "Sim" : "Não"}
-            </Typography>
             {recurrent && (
               <TextField
                 sx={{ my: "auto", width: 350, ml: 1 }}
