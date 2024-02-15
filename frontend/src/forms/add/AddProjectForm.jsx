@@ -93,6 +93,7 @@ export default function AddProjectForm({
         stages,
         definedStagesColors,
         recurrent,
+        templateName,
       });
       if (res.data) {
         toast.success("Projeto Adicionado!", {

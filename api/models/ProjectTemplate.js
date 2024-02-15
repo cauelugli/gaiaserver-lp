@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const projectTemplateSchema = new mongoose.Schema({
-  name: {
+  title: {
     type: String,
     required: true,
   },
@@ -10,14 +10,6 @@ const projectTemplateSchema = new mongoose.Schema({
     required: true,
   },
   type: {
-    type: String,
-    required: true,
-  },
-  customer: {
-    type: Object,
-    required: true,
-  },
-  customerType: {
     type: String,
     required: true,
   },

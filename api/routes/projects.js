@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Project = require("../models/Project");
+const ProjectTemplate = require("../models/ProjectTemplate");
 const User = require("../models/User");
 const Manager = require("../models/Manager");
 
@@ -17,9 +18,27 @@ router.get("/", async (req, res) => {
 // CREATE PROJECT
 router.post("/", async (req, res) => {
   const newProject = new Project(req.body);
+  let savedProjectTemplate;
+  if (req.body.recurrent) {
+    console.log("\nselecionado recurrent\n")
+    const newProjectTemplate = new ProjectTemplate({
+      title: req.body.templateName,
+      creator: req.body.creator,
+      type: req.body.type,
+      description: req.body.description,
+      mainDepartment: req.body.mainDepartment,
+      members: req.body.members,
+      departments: req.body.departments,
+      price: req.body.price,
+      stages: req.body.stages,
+      attachments: req.body.attachments,
+      definedStagesColors: req.body.definedStagesColors,
+    });
+    savedProjectTemplate = await newProjectTemplate.save();
+  }
   try {
-    const savedRole = await newProject.save();
-    res.status(200).json(savedRole);
+    const savedProject = await newProject.save();
+    res.status(200).json({ savedProject, savedProjectTemplate });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -46,7 +65,6 @@ router.put("/", async (req, res) => {
       { new: true }
     );
 
-
     res.status(200).json(updatedRole);
   } catch (err) {
     console.log(err);
@@ -57,7 +75,7 @@ router.put("/", async (req, res) => {
 // CREATE PROJECT INTERACTION
 router.post("/addInteraction", async (req, res) => {
   // const newProject = new Project(req.body);
-  console.log("\nreq.body\n", req.body)
+  console.log("\nreq.body\n", req.body);
   // try {
   //   const savedRole = await newProject.save();
   //   res.status(200).json(savedRole);
