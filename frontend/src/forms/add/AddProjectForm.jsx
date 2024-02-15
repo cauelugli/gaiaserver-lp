@@ -3,6 +3,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import dayjs from "dayjs";
 
 import {
   Avatar,
@@ -21,6 +22,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -48,7 +52,7 @@ export default function AddProjectForm({
   departments,
   services,
   products,
-  handleOpenConfirmDialog
+  handleOpenConfirmDialog,
 }) {
   const [firstPartOK, setFirstPartOK] = React.useState(false);
   const [secondPartOK, setSecondPartOK] = React.useState(false);
@@ -66,13 +70,16 @@ export default function AddProjectForm({
   const [stagesColorSchema, setStagesSchemaColor] = React.useState(0);
   const [definedStagesColors, setDefinedStagesColors] = React.useState([]);
   const [description, setDescription] = React.useState("");
+  const [recurrent, setRecurrent] = React.useState(false);
+  const [templateName, setTemplateName] = React.useState("");
+  const [dueTo, setDueTo] = React.useState(dayjs().add(1, "month"));
 
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
       const res = await api.post("/projects", {
         name,
-        creator: user.name,
+        creator: { name: user.name, id: user._id },
         type,
         customer,
         customerType,
@@ -81,10 +88,11 @@ export default function AddProjectForm({
         members,
         departments,
         price,
-        createdAt: "date.now",
-        dueTo: "dueTo",
+        createdAt: dayjs().format("DD/MM/YYYY"),
+        dueTo: dayjs(dueTo).format("DD/MM/YYYY"),
         stages,
         definedStagesColors,
+        recurrent,
       });
       if (res.data) {
         toast.success("Projeto Adicionado!", {
@@ -153,7 +161,7 @@ export default function AddProjectForm({
       <DialogTitle
         sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold", my: 2 }}
       >
-        {firstPartOK ? name : "Novo Projeto"}
+        {firstPartOK ? ("Projeto - ",name) : "Novo Projeto"}
       </DialogTitle>
       <DialogContent>
         {/* FIRST PART */}
@@ -452,20 +460,26 @@ export default function AddProjectForm({
 
             {/* THIRD LINE */}
             {mainDepartment && (
-              <FormControl fullWidth sx={{ mt: 1 }}>
-                <FormLabel>
-                  <Typography sx={{ fontSize: 13, color: "#777" }}>
-                    Descrição
-                  </Typography>
-                </FormLabel>
-                <TextField
-                  size="small"
-                  placeholder="Adicione uma breve descrição"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
-                />
-              </FormControl>
+              <Grid sx={{ mt: 2 }}>
+                <FormControl sx={{ width: "85%" }}>
+                  <TextField
+                    placeholder="Descrição do Projeto"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                  />
+                </FormControl>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="Prazo"
+                    value={dueTo}
+                    sx={{ width: 160, ml: 1.5 }}
+                    format="DD/MM/YYYY"
+                    onChange={(newValue) => setDueTo(newValue)}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </Grid>
             )}
           </>
         )}
@@ -508,6 +522,10 @@ export default function AddProjectForm({
             selectedDepartments={selectedDepartments}
             members={members}
             stages={stages}
+            recurrent={recurrent}
+            setRecurrent={setRecurrent}
+            templateName={templateName}
+            setTemplateName={setTemplateName}
             description={description}
           />
         )}

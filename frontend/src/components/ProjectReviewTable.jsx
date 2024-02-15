@@ -7,12 +7,13 @@ import {
   AccordionDetails,
   AccordionSummary,
   Avatar,
-  Button,
+  Checkbox,
   Grid,
   Table,
   TableCell,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 
@@ -29,6 +30,10 @@ const ProjectReviewTable = ({
   members,
   stages,
   description,
+  recurrent,
+  setRecurrent,
+  templateName,
+  setTemplateName,
 }) => {
   const totalServices = [];
   const totalProducts = [];
@@ -372,7 +377,7 @@ const ProjectReviewTable = ({
               </Typography>
             ))
           ) : (
-            <Typography sx={{mb:4}}> Não há Produtos no Projeto</Typography>
+            <Typography sx={{ mb: 4 }}> Não há Produtos no Projeto</Typography>
           )}
 
           {totalProducts.length > 0 ? (
@@ -397,6 +402,31 @@ const ProjectReviewTable = ({
           </Typography>
         </AccordionDetails>{" "}
       </Accordion>
+      <Grid item sx={{ mt: 2 }}>
+        <Grid container direction="row">
+          <Typography sx={{ my: "auto", fontWeight: "bold", ml: 2 }}>
+            Tornar este Projeto Recorrente?
+          </Typography>
+          <Checkbox
+            checked={recurrent}
+            onChange={(e) => setRecurrent(e.target.checked)}
+            inputProps={{ "aria-label": "controlled" }}
+          />
+          <Typography sx={{ my: "auto", mx: 1 }}>
+            {recurrent ? "Sim" : "Não"}
+          </Typography>
+          {recurrent && (
+            <TextField
+              sx={{ my: "auto", width:350, ml:1 }}
+              size="small"
+              label="Insira um Nome para o Template"
+              variant="outlined"
+              value={templateName}
+              onChange={(e) => setTemplateName(e.target.value)}
+            />
+          )}
+        </Grid>
+      </Grid>
     </Grid>
   );
 };

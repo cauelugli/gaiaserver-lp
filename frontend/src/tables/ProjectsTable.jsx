@@ -84,7 +84,7 @@ export default function ProjectsTable({
       label: "Fase Atual",
     },
     {
-      id: "creator",
+      id: "creator.name",
       label: "Criador",
     },
     {
@@ -257,7 +257,7 @@ export default function ProjectsTable({
                         align="center"
                       >
                         <Typography sx={{ fontSize: 13 }}>
-                          {project.creator}
+                          {project.creator.name}
                         </Typography>
                       </TableCell>
                       <TableCell

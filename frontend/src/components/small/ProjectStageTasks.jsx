@@ -146,7 +146,7 @@ const ProjectStageTasks = ({
             onClick={(e) => handlePopoverOpen(e, index)}
           >
             <Typography sx={{ fontSize: 16 }}>
-              {stage.title || `Etapa #${index + 1}`}
+              {`Etapa #${index + 1}`}
             </Typography>
 
             <Popover

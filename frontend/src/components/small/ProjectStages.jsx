@@ -152,7 +152,7 @@ const ProjectStages = ({
             alignItems="center"
             justifyContent="space-between"
           >
-            <Typography sx={{ fontSize: 18 }}>
+            <Typography sx={{ fontSize: 16 }}>
               {title ? title : `Etapa #${index + 1}`}
             </Typography>
             <IconButton>

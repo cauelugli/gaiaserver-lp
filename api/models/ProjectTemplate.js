@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const projectSchema = new mongoose.Schema({
+const projectTemplateSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -54,16 +54,8 @@ const projectSchema = new mongoose.Schema({
   definedStagesColors: {
     type: Array,
   },
-  status: {
-    type: String,
-    default: "Aberto",
-  },
-  recurrent: {
-    type: Boolean,
-    default: false
-  }
 });
 
-const Project = mongoose.model("Project", projectSchema);
+const ProjectTemplate = mongoose.model("ProjectTemplate", projectTemplateSchema);
 
-module.exports = Project;
+module.exports = ProjectTemplate;
