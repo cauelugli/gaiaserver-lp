@@ -58,6 +58,10 @@ const projectSchema = new mongoose.Schema({
     type: String,
     default: "Aberto",
   },
+  recurrent: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const Project = mongoose.model("Project", projectSchema);
