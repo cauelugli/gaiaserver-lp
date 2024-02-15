@@ -48,6 +48,7 @@ export default function AddProjectForm({
   departments,
   services,
   products,
+  handleOpenConfirmDialog
 }) {
   const [firstPartOK, setFirstPartOK] = React.useState(false);
   const [secondPartOK, setSecondPartOK] = React.useState(false);
@@ -591,7 +592,7 @@ export default function AddProjectForm({
             variant="contained"
             color="error"
             startIcon={<DeleteIcon />}
-            onClick={() => setOpenAdd(!openAdd)}
+            onClick={handleOpenConfirmDialog}
           >
             Cancelar
           </Button>

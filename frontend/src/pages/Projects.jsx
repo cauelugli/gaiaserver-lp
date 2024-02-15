@@ -275,13 +275,12 @@ export default function Projects({ user }) {
             configData={configData}
             openAdd={openAddProject}
             user={user}
+            handleOpenConfirmDialog={handleOpenConfirmDialog}
             customers={customers}
             services={services}
             products={products}
             clients={clients}
             departments={departments}
-            // users={users}
-            // managers={managers}
             setOpenAdd={setOpenAddProject}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
