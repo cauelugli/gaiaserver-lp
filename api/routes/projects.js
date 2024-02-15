@@ -8,8 +8,18 @@ const Manager = require("../models/Manager");
 // GET ALL PROJECTS
 router.get("/", async (req, res) => {
   try {
-    const roles = await Project.find();
-    res.status(200).json(roles);
+    const projects = await Project.find();
+    res.status(200).json(projects);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// GET ALL PROJECTS TEMPLATES
+router.get("/projectsTemplates", async (req, res) => {
+  try {
+    const templates = await ProjectTemplate.find();
+    res.status(200).json(templates);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -20,14 +30,12 @@ router.post("/", async (req, res) => {
   const newProject = new Project(req.body);
   let savedProjectTemplate;
   if (req.body.recurrent) {
-    console.log("\nselecionado recurrent\n")
     const newProjectTemplate = new ProjectTemplate({
       title: req.body.templateName,
       creator: req.body.creator,
       type: req.body.type,
       description: req.body.description,
       mainDepartment: req.body.mainDepartment,
-      members: req.body.members,
       departments: req.body.departments,
       price: req.body.price,
       stages: req.body.stages,

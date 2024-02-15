@@ -57,6 +57,7 @@ export default function Projects({ user }) {
   const [value, setValue] = React.useState(0);
   const [configData, setConfigData] = React.useState([]);
   const [projects, setProjects] = React.useState([]);
+  const [projectsTemplates, setProjectsTemplates] = React.useState([]);
   const [customers, setCustomers] = React.useState([]);
   const [clients, setClients] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
@@ -64,6 +65,8 @@ export default function Projects({ user }) {
   const [products, setProducts] = React.useState([]);
 
   const [openAddProject, setOpenAddProject] = React.useState(false);
+  const [openAddTemplate, setOpenAddTemplate] = React.useState(false);
+  const [selectedTemplate, setSelectedTemplate] = React.useState(null);
 
   const [searchOption, setSearchOption] = React.useState("name");
   const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
@@ -72,15 +75,6 @@ export default function Projects({ user }) {
   const searchOptionList = [{ options: [{ value: "name", label: "Nome" }] }];
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const openAddButton = Boolean(anchorEl);
-
-  const handleClickAddButton = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseAddButton = () => {
-    setAnchorEl(null);
-  };
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -95,6 +89,7 @@ export default function Projects({ user }) {
     const fetchData = async () => {
       try {
         const projects = await api.get("/projects");
+        const projectsTemplates = await api.get("/projects/projectsTemplates");
         const customers = await api.get("/customers");
         const clients = await api.get("/clients");
         const departments = await api.get("/departments");
@@ -103,6 +98,7 @@ export default function Projects({ user }) {
         const config = await api.get("/config");
         setConfigData(config.data[0].projects);
         setProjects(projects.data);
+        setProjectsTemplates(projectsTemplates.data);
         setCustomers(customers.data);
         setClients(clients.data);
         setDepartments(departments.data);
@@ -141,7 +137,10 @@ export default function Projects({ user }) {
         >
           Projetos
         </Typography>
-        <ProjectsButton setOpenAddProject={setOpenAddProject}/>
+        <ProjectsButton
+          setOpenAddProject={setOpenAddProject}
+          setOpenAddTemplate={setOpenAddTemplate}
+        />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -153,10 +152,6 @@ export default function Projects({ user }) {
             label={<Typography sx={{ fontSize: 13 }}>Em execução</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
-          {/* <Tab
-            label={<Typography sx={{ fontSize: 13 }}>Concluidos</Typography>}
-            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-          /> */}
           <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
@@ -220,7 +215,43 @@ export default function Projects({ user }) {
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
+            template=""
           />
+        </Dialog>
+      )}
+      {openAddTemplate && (
+        <Dialog
+          fullWidth
+          maxWidth={selectedTemplate ? "lg" : "md"}
+          open={openAddTemplate}
+          onClose={() => {
+            setOpenAddTemplate(!openAddTemplate), setSelectedTemplate(null);
+          }}
+        >
+          {!selectedTemplate &&
+            projectsTemplates.map((template) => (
+              <Button key onClick={() => setSelectedTemplate(template)}>
+                {template.title}
+              </Button>
+            ))}
+          {selectedTemplate && (
+            <AddProjectForm
+              configData={configData}
+              openAdd={openAddProject}
+              user={user}
+              handleOpenConfirmDialog={handleOpenConfirmDialog}
+              customers={customers}
+              services={services}
+              products={products}
+              clients={clients}
+              departments={departments}
+              setOpenAdd={setOpenAddProject}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              toast={toast}
+              template={selectedTemplate}
+            />
+          )}
         </Dialog>
       )}
       <Dialog

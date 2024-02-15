@@ -53,23 +53,32 @@ export default function AddProjectForm({
   services,
   products,
   handleOpenConfirmDialog,
+  template,
 }) {
   const [firstPartOK, setFirstPartOK] = React.useState(false);
   const [secondPartOK, setSecondPartOK] = React.useState(false);
   const [thirdPartOK, setThirdPartOK] = React.useState(false);
-  const [type, setType] = React.useState("");
+  const [type, setType] = React.useState(template.type || "");
   const [customer, setCustomer] = React.useState("");
   const [customerType, setCustomerType] = React.useState("");
-  const [name, setName] = React.useState("");
-  const [price, setPrice] = React.useState(0);
-  const [mainDepartment, setMainDepartment] = React.useState("");
-  const [selectedDepartments, setSelectedDepartments] = React.useState([]);
+  const [name, setName] = React.useState(template.title || "");
+  const [price, setPrice] = React.useState(template.price || 0);
+  const [mainDepartment, setMainDepartment] = React.useState(
+    template.mainDepartment || ""
+  );
+  const [selectedDepartments, setSelectedDepartments] = React.useState(
+    template.departments || []
+  );
   const [availableDepartments, setAvailableDepartments] = React.useState([]);
   const [members, setMembers] = React.useState([]);
-  const [stages, setStages] = React.useState([]);
+  const [stages, setStages] = React.useState(template.stages || []);
   const [stagesColorSchema, setStagesSchemaColor] = React.useState(0);
-  const [definedStagesColors, setDefinedStagesColors] = React.useState([]);
-  const [description, setDescription] = React.useState("");
+  const [definedStagesColors, setDefinedStagesColors] = React.useState(
+    template.definedStagesColors || []
+  );
+  const [description, setDescription] = React.useState(
+    template.description || ""
+  );
   const [recurrent, setRecurrent] = React.useState(false);
   const [templateName, setTemplateName] = React.useState("");
   const [dueTo, setDueTo] = React.useState(dayjs().add(1, "month"));
@@ -86,7 +95,7 @@ export default function AddProjectForm({
         description,
         mainDepartment,
         members,
-        departments,
+        departments: selectedDepartments,
         price,
         createdAt: dayjs().format("DD/MM/YYYY"),
         dueTo: dayjs(dueTo).format("DD/MM/YYYY"),
@@ -159,10 +168,30 @@ export default function AddProjectForm({
 
   return (
     <form onSubmit={handleAdd} style={{ marginBottom: 10 }}>
-      <DialogTitle
-        sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold", my: 2 }}
-      >
-        {firstPartOK ? ("Projeto - ",name) : "Novo Projeto"}
+      <DialogTitle>
+        {firstPartOK ? (
+          <Grid container direction="row" justifyContent="center">
+            <Typography sx={{ mr: 1, fontSize: 16, fontWeight: "bold" }}>
+              {name}
+            </Typography>
+            {template && (
+              <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                ({template.title})
+              </Typography>
+            )}
+          </Grid>
+        ) : (
+          <Grid container direction="row" justifyContent="center">
+            <Typography sx={{ mr: 1, fontSize: 16, fontWeight: "bold" }}>
+              Novo Projeto
+            </Typography>
+            {template && (
+              <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                ({template.title})
+              </Typography>
+            )}
+          </Grid>
+        )}
       </DialogTitle>
       <DialogContent>
         {/* FIRST PART */}
@@ -361,8 +390,15 @@ export default function AddProjectForm({
                       value={mainDepartment}
                       required
                       size="small"
-                      displayEmpty
+                      displayEmpty={template ? false : true}
                       sx={{ width: 190 }}
+                      renderValue={(selected) => {
+                        if (selected.length === 0) {
+                          return <Typography>Departamentos</Typography>;
+                        }
+
+                        return selected.name;
+                      }}
                     >
                       {availableDepartments.map((item) => (
                         <MenuItem value={item} key={item.id}>
@@ -494,6 +530,7 @@ export default function AddProjectForm({
             updateStages={(newStagesList) => setStages(newStagesList)}
             setStagesSchemaColor={setStagesSchemaColor}
             setDefinedStagesColors={setDefinedStagesColors}
+            isTemplate={template ? Boolean(true) : Boolean(false)}
           />
         )}
         {/* SECOND PART */}
@@ -528,6 +565,7 @@ export default function AddProjectForm({
             templateName={templateName}
             setTemplateName={setTemplateName}
             description={description}
+            isTemplate={template ? Boolean(true) : Boolean(false)}
           />
         )}
         {/* LAST PART */}

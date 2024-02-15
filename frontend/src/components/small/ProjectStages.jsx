@@ -32,13 +32,23 @@ const ProjectStages = ({
   updateStages,
   setStagesSchemaColor,
   setDefinedStagesColors,
+  isTemplate
 }) => {
   const [visibleButton, setVisibleButton] = useState(Boolean(true));
   const [colorSchema, setColorSchema] = useState(stagesColorSchema || 0);
   const [stagesNumber, setStagesNumber] = useState(stages.length || 1);
+  
+  const convertDatesToDayjs = (stage) => ({
+    ...stage,
+    startAt: dayjs(stage.startAt),
+    dueTo: dayjs(stage.dueTo),
+  });
+
   const [stagesList, setStagesList] = useState(
     stages && stages.length !== 0
-      ? stages
+      ? isTemplate
+        ? stages.map(convertDatesToDayjs) // Converte datas somente se isTemplate for true
+        : stages
       : [
           {
             title: "",

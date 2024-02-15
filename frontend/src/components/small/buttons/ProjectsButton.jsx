@@ -78,7 +78,7 @@ export default function ProjectsButton(props) {
               </ListItemButton>
               <ListItemButton
                 onClick={() => {
-                  alert("You know nothing, Jon Snow."), setAnchorEl(null);
+                  props.setOpenAddTemplate(true), setAnchorEl(null);
                 }}
                 sx={{ pl: 4 }}
               >
