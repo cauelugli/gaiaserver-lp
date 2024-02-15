@@ -32,6 +32,7 @@ import TableFilters from "../components/TableFilters";
 
 import AddProjectForm from "../forms/add/AddProjectForm";
 import ProjectsTable from "../tables/ProjectsTable";
+import ProjectsButton from "../components/small/buttons/ProjectsButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -140,44 +141,7 @@ export default function Projects({ user }) {
         >
           Projetos
         </Typography>
-        <div>
-          <Button
-            id="basic-button"
-            aria-controls={openAddButton ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={openAddButton ? "true" : undefined}
-            onClick={handleClickAddButton}
-            size="small"
-            sx={{
-              borderRadius: 3,
-              bottom: 3,
-              "&:hover": { borderColor: "#eee" },
-            }}
-          >
-            <Typography variant="h6">+</Typography>
-            <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>
-              Novo
-            </Typography>
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={openAddButton}
-            onClick={handleCloseAddButton}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <MenuList sx={{ width: 170 }}>
-              <MenuItem onClick={() => setOpenAddProject(true)}>
-                <ListItemIcon>
-                  <RocketLaunchIcon />
-                </ListItemIcon>
-                <ListItemText>Novo Projeto</ListItemText>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </div>
+        <ProjectsButton setOpenAddProject={setOpenAddProject}/>
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -229,35 +193,6 @@ export default function Projects({ user }) {
         )}
       </CustomTabPanel>
 
-      {/* <CustomTabPanel value={value} index={1}>
-        {outcoming.length === 0 ? (
-          <NoDataText option="Contas a Pagar" femaleGender={true} />
-        ) : (
-          <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[1]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
-
-            <FinanceOutcomeTable
-              outcoming={outcoming}
-              configData={configData}
-              user={user}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-              searchValue={searchValue}
-              searchOption={searchOption}
-            />
-          </>
-        )}
-      </CustomTabPanel> */}
       {openAddProject && (
         <Dialog
           fullWidth
