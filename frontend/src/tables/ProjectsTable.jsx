@@ -373,7 +373,7 @@ export default function ProjectsTable({
                                   <Accordion
                                     key={index}
                                     onClick={() => setSelectedStageIndex(index)}
-                                    sx={{ mx: "15%", mb: 1 }}
+                                    sx={{ mx: "10%", mb: 1 }}
                                   >
                                     <AccordionSummary
                                       expandIcon={<ArrowDropDownIcon />}
@@ -414,7 +414,7 @@ export default function ProjectsTable({
                                                 <Typography
                                                   sx={{ fontSize: 14 }}
                                                 >
-                                                  Etapa {stage.title}
+                                                  {stage.title}
                                                 </Typography>
                                               )}{" "}
                                             </Typography>

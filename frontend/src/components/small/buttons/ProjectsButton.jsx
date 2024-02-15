@@ -27,11 +27,6 @@ export default function ProjectsButton(props) {
     setAnchorEl(null);
   };
 
-  const handleMenuItemClick = (menuIndex) => {
-    handleClose();
-    props.openModal(menuIndex);
-  };
-
   const [openSubmenu, setOpenSubmenu] = useState(false);
 
   const handleClickSubmenu = () => {

@@ -33,6 +33,7 @@ import TableFilters from "../components/TableFilters";
 import AddProjectForm from "../forms/add/AddProjectForm";
 import ProjectsTable from "../tables/ProjectsTable";
 import ProjectsButton from "../components/small/buttons/ProjectsButton";
+import ProjectTemplates from "../forms/misc/ProjectTemplates";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -73,8 +74,6 @@ export default function Projects({ user }) {
   const [searchValue, setSearchValue] = React.useState("");
 
   const searchOptionList = [{ options: [{ value: "name", label: "Nome" }] }];
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -222,18 +221,20 @@ export default function Projects({ user }) {
       {openAddTemplate && (
         <Dialog
           fullWidth
-          maxWidth={selectedTemplate ? "lg" : "md"}
+          maxWidth={selectedTemplate ? "lg" : "sm"}
           open={openAddTemplate}
           onClose={() => {
             setOpenAddTemplate(!openAddTemplate), setSelectedTemplate(null);
           }}
         >
-          {!selectedTemplate &&
-            projectsTemplates.map((template) => (
-              <Button key onClick={() => setSelectedTemplate(template)}>
-                {template.title}
-              </Button>
-            ))}
+          {!selectedTemplate && (
+            <ProjectTemplates
+              departments={departments}
+              projectsTemplates={projectsTemplates}
+              setSelectedTemplate={setSelectedTemplate}
+            />
+          )}
+
           {selectedTemplate && (
             <AddProjectForm
               configData={configData}
