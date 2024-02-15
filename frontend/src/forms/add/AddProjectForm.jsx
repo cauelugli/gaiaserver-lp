@@ -59,6 +59,7 @@ export default function AddProjectForm({
   const [price, setPrice] = React.useState(0);
   const [mainDepartment, setMainDepartment] = React.useState("");
   const [selectedDepartments, setSelectedDepartments] = React.useState([]);
+  const [availableDepartments, setAvailableDepartments] = React.useState([]);
   const [members, setMembers] = React.useState([]);
   const [stages, setStages] = React.useState([]);
   const [stagesColorSchema, setStagesSchemaColor] = React.useState(0);
@@ -82,7 +83,7 @@ export default function AddProjectForm({
         createdAt: "date.now",
         dueTo: "dueTo",
         stages,
-        definedStagesColors
+        definedStagesColors,
       });
       if (res.data) {
         toast.success("Projeto Adicionado!", {
@@ -138,6 +139,13 @@ export default function AddProjectForm({
 
     setMembers([...selectedMembers, ...mainDepartmentMembers]);
   }, [selectedDepartments, mainDepartment]);
+
+  React.useEffect(() => {
+    const filteredDepartments = departments.filter(
+      (department) => !selectedDepartments.includes(department)
+    );
+    setAvailableDepartments(filteredDepartments);
+  }, [departments, selectedDepartments]);
 
   return (
     <form onSubmit={handleAdd} style={{ marginBottom: 10 }}>
@@ -346,7 +354,7 @@ export default function AddProjectForm({
                       displayEmpty
                       sx={{ width: 190 }}
                     >
-                      {departments.map((item) => (
+                      {availableDepartments.map((item) => (
                         <MenuItem value={item} key={item.id}>
                           <Grid container direction="row">
                             <Paper
@@ -363,7 +371,7 @@ export default function AddProjectForm({
                             <Typography>{item.name}</Typography>
                           </Grid>
                         </MenuItem>
-                      ))}{" "}
+                      ))}
                     </Select>
                   </FormControl>
                 )}
