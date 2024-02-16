@@ -7,7 +7,6 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogTitle,
   FormHelperText,
   Grid,
   InputAdornment,
@@ -17,15 +16,21 @@ import {
   Typography,
 } from "@mui/material";
 
-import FileUploadIcon from "@mui/icons-material/FileUpload";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DialogHeader from "../../components/small/DialogHeader";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddProductForm({ user,onClose, refreshData,
-  setRefreshData, toast }) {
+export default function AddProductForm({
+  user,
+  onClose,
+  refreshData,
+  setRefreshData,
+  toast,
+}) {
   const [name, setName] = React.useState("");
   const [brand, setBrand] = React.useState("");
   const [image, setImage] = React.useState("");
@@ -75,7 +80,7 @@ export default function AddProductForm({ user,onClose, refreshData,
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Produto</DialogTitle>
+      <DialogHeader title="Produto" femaleGender={false} />
       <DialogContent>
         <Grid
           container
@@ -103,7 +108,7 @@ export default function AddProductForm({ user,onClose, refreshData,
               onChange={(e) => setBrand(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 100 }}
+              sx={{ width: 120 }}
             />
           </Grid>
 
@@ -115,7 +120,7 @@ export default function AddProductForm({ user,onClose, refreshData,
               onChange={(e) => setType(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 100 }}
+              sx={{ width: 120 }}
             />
           </Grid>
 
@@ -127,7 +132,7 @@ export default function AddProductForm({ user,onClose, refreshData,
               onChange={(e) => setSize(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 100 }}
+              sx={{ width: 120 }}
             />
           </Grid>
 
@@ -139,7 +144,7 @@ export default function AddProductForm({ user,onClose, refreshData,
               onChange={(e) => setModel(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 100 }}
+              sx={{ width: 120 }}
             />
           </Grid>
 
@@ -150,7 +155,7 @@ export default function AddProductForm({ user,onClose, refreshData,
               value={groupingType}
               onChange={(e) => setGroupingType(e.target.value)}
               required
-              sx={{ width: 110 }}
+              sx={{ width: 120 }}
             >
               <MenuItem value="Unidade">
                 <Typography>Unidade</Typography>
@@ -188,7 +193,7 @@ export default function AddProductForm({ user,onClose, refreshData,
             />
           </Grid>
 
-          <Grid item>
+          <Grid item sx={{ mt: sellValue > 0 && buyValue > 0 ? 2 : 0 }}>
             <Typography sx={{ fontSize: 13 }}>Valor de Venda</Typography>
             <TextField
               type="number"
@@ -211,16 +216,14 @@ export default function AddProductForm({ user,onClose, refreshData,
               variant="outlined"
               sx={{ width: 120 }}
             />
-          </Grid>
-          <Grid item sx={{ ml: 1, mt: 2.5 }}>
             {sellValue > 0 && buyValue > 0 && (
-              <Typography style={{ color: "green", fontSize: 12 }}>
-                +{(((sellValue - buyValue) / buyValue) * 100).toFixed(2)}% por{" "}
+              <Typography style={{ color: "green", fontSize: 11, mt: 1 }}>
+                {(((sellValue - buyValue) / buyValue) * 100).toFixed(2)}% por{" "}
                 {groupingType}
               </Typography>
             )}
           </Grid>
-          <Grid item sx={{ mt: 2 }}>
+          <Grid item sx={{ mt: 2, ml: 1 }}>
             <div>
               <input
                 type="file"
@@ -233,19 +236,20 @@ export default function AddProductForm({ user,onClose, refreshData,
                 }}
                 required
               />
-              {!image && (
-                <label htmlFor="fileInput">
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    component="span"
-                    size="small"
-                    startIcon={<FileUploadIcon />}
-                  >
-                    Imagem
-                  </Button>
-                </label>
-              )}
+              <label htmlFor="fileInput">
+                <Grid
+                  sx={{
+                    borderRadius: 100,
+                    cursor: "pointer",
+                    px: 1.25,
+                    py: 1,
+                    backgroundColor: "#32aacd",
+                  }}
+                  disabled={image}
+                >
+                  <PhotoCameraIcon sx={{ color: "white", mt: 0.25 }} />
+                </Grid>
+              </label>
             </div>
           </Grid>
         </Grid>
@@ -284,7 +288,7 @@ export default function AddProductForm({ user,onClose, refreshData,
           </Grid>
         )}
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ mt: 2 }}>
         <Button type="submit" variant="contained" color="success">
           OK
         </Button>
