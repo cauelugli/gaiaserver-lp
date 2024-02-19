@@ -193,12 +193,13 @@ router.get("/projects", async (req, res) => {
 // PROJECTS
 router.put("/projects", async (req, res) => {
   try {
-    const { canBeDeleted, projectTypes } = req.body;
+    const { canBeDeleted, projectTypes, notifyWhenProjectIsCreated } = req.body;
 
     const config = await Config.findOne();
 
     config.projects.canBeDeleted = canBeDeleted;
     config.projects.projectTypes = projectTypes;
+    config.projects.notifyWhenProjectIsCreated = notifyWhenProjectIsCreated;
 
     await config.save();
     res.status(200).json(config);

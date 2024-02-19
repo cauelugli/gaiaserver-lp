@@ -62,6 +62,10 @@ const configSchema = new Schema({
       type: Array,
       default: ["Melhorias", "Expansão"],
     },
+    notifyWhenProjectIsCreated: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   quotes: {
@@ -184,10 +188,7 @@ const configSchema = new Schema({
       type: Boolean,
       default: false,
     },
-    whenProjectIsCreated: {
-      type: Boolean,
-      default: true,
-    },
+    
   },
 
   tables: {

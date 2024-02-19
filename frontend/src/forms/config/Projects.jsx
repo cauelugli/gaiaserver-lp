@@ -6,6 +6,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Button,
   DialogActions,
   DialogContent,
@@ -24,6 +27,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const api = axios.create({
@@ -33,9 +37,10 @@ const api = axios.create({
 export default function Projects({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
   const [canBeDeleted, setCanBeDeleted] = React.useState(null);
+  const [notifyWhenProjectIsCreated, setNotifyWhenProjectIsCreated] =
+    React.useState(null);
   const [projectTypes, setProjectTypes] = React.useState([]);
-  const [newType, setNewType] = React.useState('');
-
+  const [newType, setNewType] = React.useState("");
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +49,9 @@ export default function Projects({ onClose }) {
         setConfigData(config.data[0].projects);
         setCanBeDeleted(config.data[0].projects.canBeDeleted);
         setProjectTypes(config.data[0].projects.projectTypes);
+        setNotifyWhenProjectIsCreated(
+          config.data[0].projects.notifyWhenProjectIsCreated
+        );
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -57,6 +65,7 @@ export default function Projects({ onClose }) {
       const res = await api.put("/config/projects", {
         canBeDeleted,
         projectTypes,
+        notifyWhenProjectIsCreated,
       });
 
       if (res.data) {
@@ -82,7 +91,7 @@ export default function Projects({ onClose }) {
   const handleAddType = () => {
     if (newType && !projectTypes.includes(newType)) {
       setProjectTypes([...projectTypes, newType]);
-      setNewType('');
+      setNewType("");
     }
   };
 
@@ -107,95 +116,177 @@ export default function Projects({ onClose }) {
               justifyContent="center"
               alignItems="flex-start"
             >
-              <Grid item sx={{ my: 1.5 }}>
-                <Grid container direction="row">
-                  <Typography sx={{ my: "auto", mr: 1 }}>
-                    Projetos Podem ser Deletados
+              <Accordion sx={{ width: "100%" }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Permissões
                   </Typography>
-                  <Tooltip
-                    title={
-                      <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", os Projetos poderão ser
-                        deletados DEFINITIVAMENTE. A opção padrão é "Não".
-                      </Typography>
-                    }
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "#32aacd",
-                        "&:hover": {
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid container direction="row">
+                    <Typography sx={{ my: "auto", mr: 1 }}>
+                      Projetos Podem ser Deletados
+                    </Typography>
+                    <Tooltip
+                      title={
+                        <Typography sx={{ fontSize: 12 }}>
+                          Se a opção marcada for "Sim", os Projetos poderão ser
+                          deletados DEFINITIVAMENTE. A opção padrão é "Não".
+                        </Typography>
+                      }
+                    >
+                      <Button
+                        size="small"
+                        sx={{
                           backgroundColor: "white",
-                        },
-                      }}
+                          color: "#32aacd",
+                          "&:hover": {
+                            backgroundColor: "white",
+                          },
+                        }}
+                      >
+                        ?
+                      </Button>
+                    </Tooltip>
+                    <RadioGroup
+                      row
+                      value={canBeDeleted}
+                      onChange={(e) => setCanBeDeleted(e.target.value)}
                     >
-                      ?
-                    </Button>
-                  </Tooltip>
-                  <RadioGroup
-                    row
-                    value={canBeDeleted}
-                    onChange={(e) => setCanBeDeleted(e.target.value)}
+                      <FormControlLabel
+                        value={Boolean(true)}
+                        control={
+                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                        }
+                      />
+                      <FormControlLabel
+                        value={Boolean(false)}
+                        control={
+                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                        }
+                      />
+                    </RadioGroup>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion sx={{ width: "100%", mt: 2 }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Tipos de Projeto
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List sx={{ mx: "30%" }}>
+                    {projectTypes.map((type, index) => (
+                      <ListItem key={index} sx={{ pl: 0 }}>
+                        <ListItemText primary={type} />
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge="end"
+                            onClick={() => handleRemoveType(type)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ))}
+                  </List>
+                  <Grid
+                    container
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="center"
                   >
-                    <FormControlLabel
-                      value={Boolean(true)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
-                    />
-                    <FormControlLabel
-                      value={Boolean(false)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
-                    />
-                  </RadioGroup>
-                </Grid>
-              </Grid>
-              <Grid item sx={{ my: 1.5 }}>
-                <Typography variant="h6" gutterBottom>
-                  Tipos de Projeto
-                </Typography>
-                <List>
-                  {projectTypes.map((type, index) => (
-                    <ListItem key={index} sx={{ pl: 0 }}>
-                      <ListItemText primary={type} />
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          edge="end"
-                          onClick={() => handleRemoveType(type)}
+                    <Grid item>
+                      <TextField
+                        variant="outlined"
+                        label="Adicionar novo tipo"
+                        value={newType}
+                        onChange={(e) => setNewType(e.target.value)}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleAddType}
+                        sx={{ ml: 1 }}
+                      >
+                        Adicionar
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion sx={{ width: "100%", mt: 2 }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Notificações
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {" "}
+                  <AccordionDetails>
+                    <Grid container direction="row">
+                      <Typography sx={{ my: "auto", mr: 1 }}>
+                        Notificar Membros ao Criar Projeto
+                      </Typography>
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Se a opção marcada for "Sim", os Membros de Novos
+                            Projetos serão notificados quando um novo projeto
+                            for criado. A opção padrão é "Sim".
+                          </Typography>
+                        }
+                      >
+                        <Button
+                          size="small"
+                          sx={{
+                            backgroundColor: "white",
+                            color: "#32aacd",
+                            "&:hover": {
+                              backgroundColor: "white",
+                            },
+                          }}
                         >
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  ))}
-                </List>
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item xs>
-                    <TextField
-                      fullWidth
-                      variant="outlined"
-                      label="Adicionar novo tipo"
-                      value={newType}
-                      onChange={(e) => setNewType(e.target.value)}
-                      onKeyPress={(e) => e.key === "Enter" && handleAddType()}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleAddType}
-                    >
-                      Adicionar
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Grid>
+                          ?
+                        </Button>
+                      </Tooltip>
+                      <RadioGroup
+                        row
+                        value={notifyWhenProjectIsCreated}
+                        onChange={(e) => setNotifyWhenProjectIsCreated(e.target.value)}
+                      >
+                        <FormControlLabel
+                          value={Boolean(true)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                          }
+                        />
+                        <FormControlLabel
+                          value={Boolean(false)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                          }
+                        />
+                      </RadioGroup>
+                    </Grid>
+                  </AccordionDetails>
+                </AccordionDetails>
+              </Accordion>
             </Grid>
           </DialogContent>
           <DialogActions>

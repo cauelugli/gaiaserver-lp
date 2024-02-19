@@ -12,10 +12,9 @@ import {
   Typography,
 } from "@mui/material";
 
-// Dentro do componente filho NotificationsConfigTransferList
 export default function NotificationsConfigTransferList({
   onSelectedChange,
-  onSwitchChange, // Adicione onSwitchChange como prop
+  onSwitchChange,
   options,
   booleans,
   selectedList,

@@ -119,7 +119,7 @@ export default function AddProjectForm({
           autoClose: 1200,
         });
 
-        if (configNotificationsBooleans.whenProjectIsCreated) {
+        if (configData.notifyWhenProjectIsCreated) {
           const memberIds = members.map(member => member.id);
           socket.emit("whenProjectIsCreated", {
             sender: user.name,
