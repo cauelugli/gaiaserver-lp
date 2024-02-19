@@ -6,23 +6,12 @@ import axios from "axios";
 
 import {
   Box,
-  Button,
   Dialog,
   Grid,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  MenuList,
   Tab,
   Tabs,
   Typography,
 } from "@mui/material";
-
-import PersonIcon from "@mui/icons-material/Person";
-import Person4Icon from "@mui/icons-material/Person4";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
 import UserTable from "../tables/UserTable";
 import ManagerTable from "../tables/ManagerTable";
@@ -37,6 +26,7 @@ import AddRoleForm from "../forms/add/AddRoleForm";
 import TableFilters from "../components/TableFilters";
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
+import CustomerTableButton from "../components/small/buttons/CustomerTableButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -182,62 +172,16 @@ export default function Users({ user }) {
         >
           Colaboradores
         </Typography>
-        <div>
-          <Button
-            id="basic-button"
-            aria-controls={openAddButton ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={openAddButton ? "true" : undefined}
-            onClick={handleClickAddButton}
-            size="small"
-            sx={{
-              borderRadius: 3,
-              bottom: 3,
-              "&:hover": { borderColor: "#eee" },
-            }}
-          >
-            <Typography variant="h6">+</Typography>
-            <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>
-              Novo
-            </Typography>
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={openAddButton}
-            onClick={handleCloseAddButton}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <MenuList sx={{ width: 190 }}>
-              <MenuItem onClick={() => setOpenAddUser(true)}>
-                <ListItemIcon>
-                  <PersonIcon />
-                </ListItemIcon>
-                <ListItemText>Colaborador</ListItemText>
-              </MenuItem>
-              <MenuItem onClick={() => setOpenAddManager(true)}>
-                <ListItemIcon>
-                  <Person4Icon />
-                </ListItemIcon>
-                <ListItemText>Gerente</ListItemText>
-              </MenuItem>
-              <MenuItem onClick={() => setOpenAddOperator(true)}>
-                <ListItemIcon>
-                  <ManageAccountsIcon />
-                </ListItemIcon>
-                <ListItemText>Operador</ListItemText>
-              </MenuItem>
-              <MenuItem onClick={() => setOpenAddRole(true)}>
-                <ListItemIcon>
-                  <AdminPanelSettingsIcon />
-                </ListItemIcon>
-                <ListItemText>Perfil de Acesso</ListItemText>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </div>
+        <CustomerTableButton
+          anchorEl={anchorEl}
+          openAddButton={openAddButton}
+          handleClickAddButton={handleClickAddButton}
+          handleCloseAddButton={handleCloseAddButton}
+          setOpenAddUser={setOpenAddUser}
+          setOpenAddManager={setOpenAddManager}
+          setOpenAddOperator={setOpenAddOperator}
+          setOpenAddRole={setOpenAddRole}
+        />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs

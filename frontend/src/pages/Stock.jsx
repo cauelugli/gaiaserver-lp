@@ -17,7 +17,7 @@ import StockEntriesTable from "../tables/StockEntriesTable";
 import ProductsTable from "../tables/ProductsTable";
 
 import TableFilters from "../components/TableFilters";
-import StockButton from "../components/small/buttons/StockButton";
+import StockTableButton from "../components/small/buttons/StockTableButton";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 
@@ -150,7 +150,7 @@ export default function Stock({ user, configTables }) {
         >
           Estoque
         </Typography>
-        <StockButton openModal={openModal} />
+        <StockTableButton openModal={openModal} />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
