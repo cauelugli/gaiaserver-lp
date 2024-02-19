@@ -26,7 +26,7 @@ import AddRoleForm from "../forms/add/AddRoleForm";
 import TableFilters from "../components/TableFilters";
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
-import CustomerTableButton from "../components/small/buttons/CustomerTableButton";
+import UserTableButton from "../components/small/buttons/UserTableButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -172,7 +172,7 @@ export default function Users({ user }) {
         >
           Colaboradores
         </Typography>
-        <CustomerTableButton
+        <UserTableButton
           anchorEl={anchorEl}
           openAddButton={openAddButton}
           handleClickAddButton={handleClickAddButton}
