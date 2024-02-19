@@ -7,7 +7,7 @@ import axios from "axios";
 
 import {
   Box,
-  Button,
+  CircularProgress,
   Dialog,
   FormControlLabel,
   Grid,
@@ -45,6 +45,7 @@ function CustomTabPanel(props) {
 }
 
 export default function Files({ user }) {
+  const [isLoading, setIsLoading] = React.useState(true);
   const [value, setValue] = React.useState(1);
 
   const [searchValue, setSearchValue] = React.useState("");
@@ -75,7 +76,9 @@ export default function Files({ user }) {
         setServices(services.data.filter((service) => service.value > 0));
         setDepartments(departments.data);
         setStockItems(stockItems.data);
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.error("Error fetching data:", error);
       }
     };
@@ -94,6 +97,19 @@ export default function Files({ user }) {
       console.error("Error fetching data:", error);
     }
   };
+
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>

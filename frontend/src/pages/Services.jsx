@@ -5,7 +5,15 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import { Box, Dialog, Grid, Tab, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Dialog,
+  Grid,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 
 import ServiceTable from "../tables/ServiceTable";
 import ServicePlansTable from "../tables/ServicePlansTable";
@@ -37,6 +45,7 @@ function CustomTabPanel(props) {
 }
 
 export default function Services({ user, configTables }) {
+  const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [configCustomization, setConfigCustomization] = React.useState(0);
@@ -108,12 +117,27 @@ export default function Services({ user, configTables }) {
         setConfigCustomization(configCustomization.data[0].customization);
         setDepartments(departments.data);
         setStockItems(stockItems.data);
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, [refreshData]);
+
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>

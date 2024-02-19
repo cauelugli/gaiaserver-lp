@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import { Box, Dialog, Grid, Tab, Tabs, Typography } from "@mui/material";
+import { Box, CircularProgress, Dialog, Grid, Tab, Tabs, Typography } from "@mui/material";
 
 import AddStockItemForm from "../forms/add/AddStockItemForm";
 import AddStockProductForm from "../forms/add/AddStockProductForm";
@@ -40,6 +40,7 @@ function CustomTabPanel(props) {
 }
 
 export default function Stock({ user, configTables }) {
+  const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
   const [value, setValue] = React.useState(0);
@@ -130,12 +131,27 @@ export default function Stock({ user, configTables }) {
         setStockItems(stockItems.data);
         setProducts(products.data);
         setStock(stockEntries.data);
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, [refreshData]);
+
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>

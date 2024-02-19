@@ -4,7 +4,14 @@ import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import { Box, Grid, Tab, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Grid,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 
 import QuoteTable from "../tables/QuoteTable";
 
@@ -31,6 +38,8 @@ function CustomTabPanel(props) {
 }
 
 export default function Quotes({ user, configData }) {
+  const [isLoading, setIsLoading] = React.useState(true);
+
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
@@ -80,12 +89,27 @@ export default function Quotes({ user, configData }) {
         const configCustomization = await api.get("/config");
         setQuotes(quotes.data);
         setConfigCustomization(configCustomization.data[0].customization);
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, [refreshData]);
+
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>

@@ -4,14 +4,7 @@ import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-import {
-  Box,
-  Dialog,
-  Grid,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
+import { Box, CircularProgress, Dialog, Grid, Tab, Tabs, Typography } from "@mui/material";
 
 import DepartmentTable from "../tables/DepartmentTable";
 import PositionTable from "../tables/PositionTable";
@@ -43,6 +36,8 @@ function CustomTabPanel(props) {
 }
 
 export default function Departments({ user, configTables }) {
+  const [isLoading, setIsLoading] = React.useState(true);
+
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState(false);
@@ -130,7 +125,9 @@ export default function Departments({ user, configTables }) {
           departments.data.filter((department) => department.type === "Interno")
         );
         setPositions(positions.data);
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.error("Error fetching data:", error);
       }
     };
@@ -143,6 +140,19 @@ export default function Departments({ user, configTables }) {
     setSearchOption("name");
     setSearchOptionLabel("Nome");
   };
+
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>

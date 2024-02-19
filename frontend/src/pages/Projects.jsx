@@ -8,6 +8,7 @@ import axios from "axios";
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -48,6 +49,8 @@ function CustomTabPanel(props) {
 }
 
 export default function Projects({ user }) {
+  const [isLoading, setIsLoading] = React.useState(true);
+
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [configData, setConfigData] = React.useState([]);
@@ -99,7 +102,9 @@ export default function Projects({ user }) {
         setDepartments(departments.data);
         setServices(services.data);
         setProducts(products.data);
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.error("Error fetching data:", error);
       }
     };
@@ -118,6 +123,19 @@ export default function Projects({ user }) {
       setOpenAddProject(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>

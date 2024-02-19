@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import { Box, Dialog, Grid, Tab, Tabs, Typography } from "@mui/material";
+import { Box, CircularProgress, Dialog, Grid, Tab, Tabs, Typography } from "@mui/material";
 
 import JobTable from "../tables/JobTable";
 import SaleTable from "../tables/SaleTable";
@@ -36,6 +36,8 @@ function CustomTabPanel(props) {
 }
 
 export default function Requests({ user, configTables }) {
+  const [isLoading, setIsLoading] = React.useState(true);
+
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState(false);
@@ -93,7 +95,9 @@ export default function Requests({ user, configTables }) {
         setJobs(jobs.data);
         setSales(sales.data);
         setManagers(managers.data);
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.error("Error fetching data:", error);
       }
     };
@@ -114,6 +118,19 @@ export default function Requests({ user, configTables }) {
     setSearchOption("requester");
     setSearchOptionLabel("Solicitante");
   };
+
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>

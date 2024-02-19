@@ -8,6 +8,7 @@ import axios from "axios";
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   Divider,
   Grid,
@@ -54,6 +55,8 @@ function CustomTabPanel(props) {
 }
 
 export default function Customers({ user, configTables }) {
+  const [isLoading, setIsLoading] = React.useState(true);
+
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState(false);
@@ -118,12 +121,27 @@ export default function Customers({ user, configTables }) {
         setConfigCustomization(configCustomization.data[0].customization);
         setClients(clients.data);
         setCustomers(customers.data);
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, [refreshData]);
+
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>

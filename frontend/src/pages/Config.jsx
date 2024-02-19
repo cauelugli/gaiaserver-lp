@@ -12,6 +12,8 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Box,
+  CircularProgress,
 } from "@mui/material";
 
 const api = axios.create({
@@ -144,6 +146,8 @@ const options = [
 ];
 
 export default function Config({ user }) {
+  const [isLoading, setIsLoading] = React.useState(true);
+
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [openModal, setOpenModal] = useState(null);
   const [configData, setConfigData] = useState([]);
@@ -163,7 +167,9 @@ export default function Config({ user }) {
       try {
         const config = await api.get("/config");
         setConfigData(config.data[0]);
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.error("Error fetching data:", error);
       }
     };
@@ -201,6 +207,19 @@ export default function Config({ user }) {
       });
     }
   };
+
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <>

@@ -6,6 +6,7 @@ import axios from "axios";
 
 import {
   Box,
+  CircularProgress,
   Dialog,
   Grid,
   Tab,
@@ -48,6 +49,7 @@ function CustomTabPanel(props) {
 
 // eslint-disable-next-line no-unused-vars
 export default function Users({ user }) {
+  const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState(false);
@@ -152,12 +154,27 @@ export default function Users({ user }) {
         setDepartments(departments.data);
         setPositions(positions.data);
         setRoles(roles.data);
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, [refreshData]);
+
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>
