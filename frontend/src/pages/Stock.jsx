@@ -43,7 +43,7 @@ export default function Stock({ user, configTables }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
   const [value, setValue] = React.useState(0);
-  const [configCustomization, setConfigCustomization] = React.useState(null);
+  const [configCustomization, setConfigCustomization] = React.useState([]);
 
   const [stockItems, setStockItems] = React.useState([]);
   const [products, setProducts] = React.useState([]);
@@ -150,7 +150,10 @@ export default function Stock({ user, configTables }) {
         >
           Estoque
         </Typography>
-        <StockTableButton openModal={openModal} />
+        <StockTableButton
+          openModal={openModal}
+          configCustomization={configCustomization}
+        />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs

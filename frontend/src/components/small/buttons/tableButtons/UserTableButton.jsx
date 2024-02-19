@@ -17,7 +17,6 @@ import Person4Icon from "@mui/icons-material/Person4";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
-
 export default function UserTableButton({
   anchorEl,
   openAddButton,
@@ -26,7 +25,8 @@ export default function UserTableButton({
   setOpenAddUser,
   setOpenAddManager,
   setOpenAddOperator,
-  setOpenAddRole
+  setOpenAddRole,
+  configCustomization,
 }) {
   return (
     <div>
@@ -38,13 +38,22 @@ export default function UserTableButton({
         onClick={handleClickAddButton}
         size="small"
         sx={{
-          borderRadius: 3,
+          color: configCustomization.mainColor || "#32aacd",
           bottom: 3,
           "&:hover": { borderColor: "#eee" },
         }}
       >
         <Typography variant="h6">+</Typography>
-        <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>Novo</Typography>
+        <Typography
+          sx={{
+            fontSize: 16,
+            mt: 0.5,
+            ml: 0.5,
+            color: configCustomization.mainColor || "#32aacd",
+          }}
+        >
+          Novo
+        </Typography>
       </Button>
       <Menu
         id="basic-menu"

@@ -26,7 +26,7 @@ export default function ProjectsTableButton(props) {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -48,10 +48,20 @@ export default function ProjectsTableButton(props) {
         sx={{
           borderRadius: 3,
           "&:hover": { borderColor: "#eee" },
+          color: props.configCustomization.mainColor || "#32aacd",
         }}
       >
         <Typography variant="h6">+</Typography>
-        <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>Novo</Typography>
+        <Typography
+          sx={{
+            fontSize: 16,
+            mt: 0.5,
+            ml: 0.5,
+            color: props.configCustomization.mainColor || "#32aacd",
+          }}
+        >
+          Novo
+        </Typography>
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <List sx={{ width: 230 }}>

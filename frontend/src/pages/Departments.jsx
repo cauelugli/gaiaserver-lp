@@ -6,26 +6,12 @@ import { toast } from "react-toastify";
 
 import {
   Box,
-  Button,
   Dialog,
   Grid,
-  InputAdornment,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  MenuList,
-  Select,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
-
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
-import LanIcon from "@mui/icons-material/Lan";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 
 import DepartmentTable from "../tables/DepartmentTable";
 import PositionTable from "../tables/PositionTable";
@@ -36,7 +22,7 @@ import AddDepartmentForm from "../forms/add/AddDepartmentForm";
 import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
-import DepartmentTableButton from "../components/small/buttons/DepartmentTableButton";
+import DepartmentTableButton from "../components/small/buttons/tableButtons/DepartmentTableButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -178,51 +164,8 @@ export default function Departments({ user, configTables }) {
           handleCloseAddButton={handleCloseAddButton}
           setOpenAddDepartment={setOpenAddDepartment}
           setOpenAddPosition={setOpenAddPosition}
+          configCustomization={configCustomization}
         />
-        {/* <div>
-          <Button
-            id="basic-button"
-            aria-controls={openAddButton ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={openAddButton ? "true" : undefined}
-            onClick={handleClickAddButton}
-            size="small"
-            sx={{
-              borderRadius: 3,
-              bottom: 3,
-              "&:hover": { borderColor: "#eee" },
-            }}
-          >
-            <Typography variant="h6">+</Typography>
-            <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>
-              Novo
-            </Typography>
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={openAddButton}
-            onClick={handleCloseAddButton}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <MenuList sx={{ width: 170 }}>
-              <MenuItem onClick={() => setOpenAddDepartment(true)}>
-                <ListItemIcon>
-                  <LanIcon />
-                </ListItemIcon>
-                <ListItemText>Departamento</ListItemText>
-              </MenuItem>
-              <MenuItem onClick={() => setOpenAddPosition(true)}>
-                <ListItemIcon>
-                  <AssignmentIndIcon />
-                </ListItemIcon>
-                <ListItemText>Cargo</ListItemText>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </div> */}
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs

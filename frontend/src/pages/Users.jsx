@@ -142,7 +142,7 @@ export default function Users({ user }) {
           "/config/notificationsBooleans"
         );
         setConfig(config.data);
-        setConfigCustomization(configCustomization.data);
+        setConfigCustomization(configCustomization.data[0].customization);
         setConfigNotifications(configNotifications.data);
         setConfigNotificationsBooleans(configNotificationsBooleans.data);
         setUsers(usersData);
@@ -181,6 +181,7 @@ export default function Users({ user }) {
           setOpenAddManager={setOpenAddManager}
           setOpenAddOperator={setOpenAddOperator}
           setOpenAddRole={setOpenAddRole}
+          configCustomization={configCustomization}
         />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

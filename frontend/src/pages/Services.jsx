@@ -135,6 +135,7 @@ export default function Services({ user, configTables }) {
           handleCloseAddButton={handleCloseAddButton}
           setOpenAddService={setOpenAddService}
           setOpenAddServicePlan={setOpenAddServicePlan}
+          configCustomization={configCustomization}
         />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

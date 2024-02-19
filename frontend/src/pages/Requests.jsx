@@ -135,6 +135,7 @@ export default function Requests({ user, configTables }) {
           handleCloseAddButton={handleCloseAddButton}
           setOpenAddSale={setOpenAddSale}
           setOpenAddJob={setOpenAddJob}
+          configCustomization={configCustomization}
         />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

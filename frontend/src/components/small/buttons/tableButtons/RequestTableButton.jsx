@@ -22,6 +22,7 @@ export default function RequestTableButton({
   handleCloseAddButton,
   setOpenAddSale,
   setOpenAddJob,
+  configCustomization
 }) {
   return (
     <div>
@@ -36,10 +37,20 @@ export default function RequestTableButton({
           borderRadius: 3,
           bottom: 3,
           "&:hover": { borderColor: "#eee" },
+          color: configCustomization.mainColor || "#32aacd",
         }}
       >
         <Typography variant="h6">+</Typography>
-        <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>Novo</Typography>
+        <Typography
+          sx={{
+            fontSize: 16,
+            mt: 0.5,
+            ml: 0.5,
+            color: configCustomization.mainColor || "#32aacd",
+          }}
+        >
+          Novo
+        </Typography>
       </Button>
       <Menu
         id="basic-menu"

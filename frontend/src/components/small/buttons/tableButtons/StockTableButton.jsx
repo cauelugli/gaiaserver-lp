@@ -49,12 +49,21 @@ export default function BasicMenu(props) {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         sx={{
-          borderRadius: 3,
+          color: props.configCustomization.mainColor || "#32aacd",
           "&:hover": { borderColor: "#eee" },
         }}
       >
         <Typography variant="h6">+</Typography>
-        <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>Novo</Typography>
+        <Typography
+          sx={{
+            fontSize: 16,
+            mt: 0.5,
+            ml: 0.5,
+            color: props.configCustomization.mainColor || "#32aacd",
+          }}
+        >
+          Novo
+        </Typography>
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <List sx={{ width: 220 }}>
@@ -85,13 +94,19 @@ export default function BasicMenu(props) {
           </ListItemButton>
           <Collapse in={openSubmenu} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton onClick={() => handleMenuItemClick(3)} sx={{ pl: 5 }}>
+              <ListItemButton
+                onClick={() => handleMenuItemClick(3)}
+                sx={{ pl: 5 }}
+              >
                 <ListItemIcon>
                   <ShoppingBasketIcon />
                 </ListItemIcon>
                 <ListItemText primary="Produtos" sx={{ ml: -2 }} />
               </ListItemButton>
-              <ListItemButton onClick={() => handleMenuItemClick(4)} sx={{ pl: 5 }}>
+              <ListItemButton
+                onClick={() => handleMenuItemClick(4)}
+                sx={{ pl: 5 }}
+              >
                 <ListItemIcon>
                   <WarehouseIcon />
                 </ListItemIcon>

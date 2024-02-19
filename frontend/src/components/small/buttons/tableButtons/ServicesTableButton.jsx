@@ -15,7 +15,6 @@ import {
 import BuildIcon from "@mui/icons-material/Build";
 import HubIcon from "@mui/icons-material/Hub";
 
-
 export default function ServicesTableButton({
   anchorEl,
   openAddButton,
@@ -23,6 +22,7 @@ export default function ServicesTableButton({
   handleCloseAddButton,
   setOpenAddService,
   setOpenAddServicePlan,
+  configCustomization,
 }) {
   return (
     <div>
@@ -34,13 +34,22 @@ export default function ServicesTableButton({
         onClick={handleClickAddButton}
         size="small"
         sx={{
-          borderRadius: 3,
           bottom: 3,
           "&:hover": { borderColor: "#eee" },
+          color: configCustomization.mainColor || "#32aacd",
         }}
       >
         <Typography variant="h6">+</Typography>
-        <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>Novo</Typography>
+        <Typography
+          sx={{
+            fontSize: 16,
+            mt: 0.5,
+            ml: 0.5,
+            color: configCustomization.mainColor || "#32aacd",
+          }}
+        >
+          Novo
+        </Typography>
       </Button>
       <Menu
         id="basic-menu"

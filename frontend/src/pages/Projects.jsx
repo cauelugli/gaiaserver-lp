@@ -135,6 +135,7 @@ export default function Projects({ user }) {
         <ProjectsTableButton
           setOpenAddProject={setOpenAddProject}
           setOpenAddTemplate={setOpenAddTemplate}
+          configCustomization={configCustomization}
         />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
