@@ -43,6 +43,7 @@ export default function Stock({ user, configTables }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
   const [value, setValue] = React.useState(0);
+  const [configCustomization, setConfigCustomization] = React.useState(null);
 
   const [stockItems, setStockItems] = React.useState([]);
   const [products, setProducts] = React.useState([]);
@@ -122,7 +123,9 @@ export default function Stock({ user, configTables }) {
         const products = await api.get("/products");
         const stockEntries = await api.get("/stock");
         const config = await api.get("/config/stock");
+        const configCustomization = await api.get("/config");
         setConfig(config.data);
+        setConfigCustomization(configCustomization.data[0].customization);
 
         setStockItems(stockItems.data);
         setProducts(products.data);
@@ -278,6 +281,7 @@ export default function Stock({ user, configTables }) {
             user={user}
             onClose={() => closeModal(0)}
             refreshData={refreshData}
+            configCustomization={configCustomization}
             setRefreshData={setRefreshData}
             toast={toast}
           />
@@ -295,6 +299,7 @@ export default function Stock({ user, configTables }) {
             user={user}
             onClose={() => closeModal(1)}
             refreshData={refreshData}
+            configCustomization={configCustomization}
             setRefreshData={setRefreshData}
             toast={toast}
           />
@@ -312,6 +317,7 @@ export default function Stock({ user, configTables }) {
             user={user}
             onClose={() => closeModal(2)}
             refreshData={refreshData}
+            configCustomization={configCustomization}
             setRefreshData={setRefreshData}
             toast={toast}
           />
@@ -328,6 +334,7 @@ export default function Stock({ user, configTables }) {
           <AddStockProductForm
             user={user}
             configData={config}
+            configCustomization={configCustomization}
             products={products}
             onClose={() => closeModal(3)}
             refreshData={refreshData}
@@ -350,6 +357,7 @@ export default function Stock({ user, configTables }) {
             stockItems={stockItems}
             onClose={() => closeModal(4)}
             refreshData={refreshData}
+            configCustomization={configCustomization}
             setRefreshData={setRefreshData}
             toast={toast}
           />

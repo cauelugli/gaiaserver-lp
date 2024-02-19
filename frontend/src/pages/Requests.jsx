@@ -53,6 +53,7 @@ function CustomTabPanel(props) {
 export default function Requests({ user, configTables }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
+  const [configCustomization, setConfigCustomization] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
   const [openAddJob, setOpenAddJob] = React.useState(false);
@@ -101,7 +102,9 @@ export default function Requests({ user, configTables }) {
         const sales = await api.get("/sales");
         const managers = await api.get("/managers");
         const config = await api.get("/config/requests");
+        const configCustomization = await api.get("/config");
         setConfig(config.data);
+        setConfigCustomization(configCustomization.data[0].customization);
         setJobs(jobs.data);
         setSales(sales.data);
         setManagers(managers.data);
@@ -283,6 +286,7 @@ export default function Requests({ user, configTables }) {
             setOpenAddJob={setOpenAddJob}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
             toast={toast}
           />
         </Dialog>
@@ -299,6 +303,7 @@ export default function Requests({ user, configTables }) {
             openAddSale={openAddSale}
             setOpenAddSale={setOpenAddSale}
             refreshData={refreshData}
+            configCustomization={configCustomization}
             setRefreshData={setRefreshData}
             toast={toast}
           />

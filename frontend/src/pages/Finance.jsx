@@ -51,6 +51,7 @@ export default function Finance({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [configData, setConfigData] = React.useState([]);
+  const [configCustomization, setConfigCustomization] = React.useState([]);
   const [incoming, setIncoming] = React.useState([]);
   const [outcoming, setOutcoming] = React.useState([]);
 
@@ -88,6 +89,7 @@ export default function Finance({ user }) {
         const outcomes = await api.get("/finances/outcome");
         const config = await api.get("/config");
         setConfigData(config.data[0].finance);
+        setConfigCustomization(config.data[0].customization);
         setIncoming(incomes.data);
         setOutcoming(outcomes.data);
       } catch (error) {
@@ -149,6 +151,7 @@ export default function Finance({ user }) {
 
             <FinanceIncomeTable
               incoming={incoming}
+              configCustomization={configCustomization}
               configData={configData}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
@@ -180,6 +183,7 @@ export default function Finance({ user }) {
               outcoming={outcoming}
               configData={configData}
               user={user}
+              configCustomization={configCustomization}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}

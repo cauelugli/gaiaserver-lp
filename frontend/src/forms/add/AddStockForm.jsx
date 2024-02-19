@@ -25,6 +25,8 @@ import {
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -37,6 +39,7 @@ export default function AddStockForm({
   refreshData,
   setRefreshData,
   configData,
+  configCustomization,
   toast,
 }) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
@@ -105,7 +108,7 @@ export default function AddStockForm({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Adicionar Itens ao Estoque</DialogTitle>
+      <DialogHeader special specialTitle="Adicionar Produtos ao Estoque" />
       <DialogContent>
         <TableContainer component={Paper}>
           <Table>
@@ -334,6 +337,7 @@ export default function AddStockForm({
           </Typography>
         </Grid>
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization} />
       <DialogActions>
         {itemList.length > 0 && (
           <Button type="submit" variant="contained" color="success">

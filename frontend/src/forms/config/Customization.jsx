@@ -32,8 +32,11 @@ export default function Customization({ onClose }) {
   const [mainColor, setMainColor] = React.useState(null);
   const [fontColor, setFontColor] = React.useState(null);
   const [logo, setLogo] = React.useState(null);
+  const [logoBlack, setLogoBlack] = React.useState(null);
   const [newLogo, setNewLogo] = React.useState(null);
+  const [newLogoBlack, setNewLogoBlack] = React.useState(null);
   const [logoPreview, setLogoPreview] = React.useState(null);
+  const [logoBlackPreview, setLogoBlackPreview] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
 
@@ -45,6 +48,7 @@ export default function Customization({ onClose }) {
         setMainColor(config.data[0].customization.mainColor);
         setFontColor(config.data[0].customization.fontColor);
         setLogo(config.data[0].customization.logo);
+        setLogoBlack(config.data[0].customization.logoBlack);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -62,9 +66,20 @@ export default function Customization({ onClose }) {
     setLogoPreview(URL.createObjectURL(selectedLogo));
   };
 
+  const handleImageBlackClick = () => {
+    document.getElementById("logoBlackInput").click();
+  };
+
+  const handleLogoBlackChange = (e) => {
+    const selectedLogo = e.target.files[0];
+    setNewLogoBlack(selectedLogo);
+    setLogoBlackPreview(URL.createObjectURL(selectedLogo));
+  };
+
   const handleChangeCustomizationConfig = async (e) => {
     e.preventDefault();
     let updatedImagePath = configData.logo;
+    let updatedImageBlackPath = configData.logoBlack;
 
     if (newLogo) {
       const formData = new FormData();
@@ -72,12 +87,19 @@ export default function Customization({ onClose }) {
       const uploadResponse = await api.post("/uploads/singleProduct", formData);
       updatedImagePath = uploadResponse.data.imagePath;
     }
+    if (newLogoBlack) {
+      const formData = new FormData();
+      formData.append("image", newLogoBlack);
+      const uploadResponse = await api.post("/uploads/singleProduct", formData);
+      updatedImageBlackPath = uploadResponse.data.imagePath;
+    }
 
     try {
       const res = await api.put("/config/customization", {
         mainColor,
         fontColor,
         logo: updatedImagePath,
+        logoBlack: updatedImageBlackPath,
       });
 
       if (res.data) {
@@ -324,6 +346,84 @@ export default function Customization({ onClose }) {
                   </Grid>
                 </Grid>
               </Grid>
+
+              <Grid item sx={{ mt: 2.5 }}>
+                <Grid container direction="row" alignItems="center">
+                  <Typography sx={{ my: "auto", mr: 4 }}>Logotipo Preto</Typography>
+                  <Tooltip
+                    title={
+                      <Typography sx={{ fontSize: 12 }}>
+                        O logotipo da sua empresa na cor preta, ou com uma cor de fundo.
+                        Será utilizado em partes do sistema onde a cor do fundo é branca.
+                        Tamanho máximo da imagem: 2MB. Suportados formatos '.png' e '.jpeg'. O tamanho
+                        ideal é em torno de 500x200.
+                      </Typography>
+                    }
+                  >
+                    <Button
+                      size="small"
+                      sx={{
+                        backgroundColor: "white",
+                        color: "#32aacd",
+                        "&:hover": {
+                          backgroundColor: "white",
+                        },
+                      }}
+                    >
+                      ?
+                    </Button>
+                  </Tooltip>
+                  <Button
+                    component="label"
+                    htmlFor="logoBlackInput"
+                    size="small"
+                    onClick={handleImageBlackClick}
+                    sx={{ mr: 3 }}
+                  >
+                    Carregar Imagem
+                    <input
+                      type="file"
+                      id="logoBlackInput"
+                      accept=".png, .jpeg, .jpg"
+                      onChange={handleLogoBlackChange}
+                      style={{ display: "none" }}
+                    />
+                  </Button>
+                  {logoBlack && !newLogoBlack && (
+                    <img
+                      src={`http://localhost:3000/static/${logoBlack}`}
+                      style={{
+                        width: "auto",
+                        height: 90,
+                        marginLeft: 10,
+                        backgroundColor: "#ccc",
+                      }}
+                    />
+                  )}
+                  <Grid item>
+                    {newLogoBlack && (
+                      <Grid
+                        container
+                        direction="column"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <img
+                          src={URL.createObjectURL(newLogoBlack)}
+                          alt="Prévia da Imagem"
+                          style={{
+                            width: "auto",
+                            height: 90,
+                            backgroundColor: "#ccc",
+                          }}
+                        />
+                        <FormHelperText>Novo Logotipo Preto</FormHelperText>
+                      </Grid>
+                    )}
+                  </Grid>
+                </Grid>
+              </Grid>
+
             </Grid>
           </DialogContent>
           <DialogActions>

@@ -34,6 +34,9 @@ import Members from "../../components/small/Members";
 import ProjectStages from "../../components/small/ProjectStages";
 import ProjectStageTasks from "../../components/small/ProjectStageTasks";
 import ProjectReviewTable from "../../components/ProjectReviewTable";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLine from "../../components/small/FormEndLine";
+import FormEndLineProjectLogo from "../../components/small/FormEndLineProjectLogo";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -168,31 +171,37 @@ export default function AddProjectForm({
 
   return (
     <form onSubmit={handleAdd} style={{ marginBottom: 10 }}>
-      <DialogTitle>
-        {firstPartOK ? (
-          <Grid container direction="row" justifyContent="center">
-            <Typography sx={{ mr: 1, fontSize: 16, fontWeight: "bold" }}>
-              {name}
-            </Typography>
-            {template && (
-              <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                ({template.title})
+      <DialogHeader
+        special
+        specialTitle={
+          firstPartOK ? (
+            <Grid container direction="row" justifyContent="center">
+              <Typography sx={{ mr: 1, fontSize: 16, fontWeight: "bold" }}>
+                {name}
               </Typography>
-            )}
-          </Grid>
-        ) : (
-          <Grid container direction="row" justifyContent="center">
-            <Typography sx={{ mr: 1, fontSize: 16, fontWeight: "bold" }}>
-              Novo Projeto
-            </Typography>
-            {template && (
-              <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                ({template.title})
+              {template && (
+                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                  ({template.title})
+                </Typography>
+              )}
+            </Grid>
+          ) : (
+            <Grid container direction="row" justifyContent="center">
+              <Typography sx={{ mr: 1, fontSize: 16, fontWeight: "bold" }}>
+                Novo Projeto
               </Typography>
-            )}
-          </Grid>
-        )}
-      </DialogTitle>
+              {template && (
+                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                  ({template.title})
+                </Typography>
+              )}
+            </Grid>
+          )
+        }
+      />
+
+      <DialogTitle></DialogTitle>
+
       <DialogContent>
         {/* FIRST PART */}
         {!firstPartOK && (
@@ -654,6 +663,11 @@ export default function AddProjectForm({
             Cancelar
           </Button>
         </DialogActions>
+      )}
+      {customer ? (
+        <FormEndLineProjectLogo image={customer.image} />
+      ) : (
+        <FormEndLine />
       )}
     </form>
   );

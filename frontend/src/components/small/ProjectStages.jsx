@@ -32,12 +32,12 @@ const ProjectStages = ({
   updateStages,
   setStagesSchemaColor,
   setDefinedStagesColors,
-  isTemplate
+  isTemplate,
 }) => {
   const [visibleButton, setVisibleButton] = useState(Boolean(true));
   const [colorSchema, setColorSchema] = useState(stagesColorSchema || 0);
   const [stagesNumber, setStagesNumber] = useState(stages.length || 1);
-  
+
   const convertDatesToDayjs = (stage) => ({
     ...stage,
     startAt: dayjs(stage.startAt),
@@ -84,8 +84,8 @@ const ProjectStages = ({
         stagesList[index] || {
           title: "",
           tasks: [],
-          startAt: dayjs().add(7*index, "day"),
-          dueTo: dayjs().add(7*index+2, "day"),
+          startAt: dayjs().add(7 * index, "day"),
+          dueTo: dayjs().add(7 * index + 2, "day"),
           status: "Aberto",
         }
       );
@@ -162,7 +162,7 @@ const ProjectStages = ({
             alignItems="center"
             justifyContent="space-between"
           >
-            <Typography sx={{ fontSize: 16 }}>
+            <Typography sx={{ fontSize: 14 }}>
               {title ? title : `Etapa #${index + 1}`}
             </Typography>
             <IconButton>
@@ -350,10 +350,10 @@ const ProjectStages = ({
             </Popover>
           </Grid>
         </Grid>
-        <Grid sx={{ width: 700 }} container direction="row">
+        <Grid sx={{ width: 750, backgroundColor:"red" }} container direction="row">
           {stagesList.map((stage, index) => (
             <React.Fragment key={index}>
-              <Card sx={{ mr: 1, mb: 0.5, width: 220 }}>
+              <Card sx={{ mr: 1, mb: 0.5, width: 240 }}>
                 <CardActionArea onClick={(e) => handlePopoverOpen(e, index)}>
                   {renderCardHeader(index, stage.title)}
                 </CardActionArea>

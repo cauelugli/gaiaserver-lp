@@ -60,8 +60,10 @@ function CustomTabPanel(props) {
 export default function Users({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
+  const [configCustomization, setConfigCustomization] = React.useState(false);
   const [configNotifications, setConfigNotifications] = React.useState(false);
-  const [configNotificationsBooleans, setConfigNotificationsBooleans] = React.useState(false);
+  const [configNotificationsBooleans, setConfigNotificationsBooleans] =
+    React.useState(false);
   const [value, setValue] = React.useState(0);
 
   const [users, setUsers] = React.useState([]);
@@ -144,9 +146,13 @@ export default function Users({ user }) {
         const managersData = managers.data;
         const combinedData = [...usersData, ...managersData];
         const config = await api.get("/config/users");
+        const configCustomization = await api.get("/config");
         const configNotifications = await api.get("/config/notifications");
-        const configNotificationsBooleans = await api.get("/config/notificationsBooleans");
+        const configNotificationsBooleans = await api.get(
+          "/config/notificationsBooleans"
+        );
         setConfig(config.data);
+        setConfigCustomization(configCustomization.data);
         setConfigNotifications(configNotifications.data);
         setConfigNotificationsBooleans(configNotificationsBooleans.data);
         setUsers(usersData);
@@ -381,6 +387,7 @@ export default function Users({ user }) {
           <AddUserForm
             user={user}
             configData={config}
+            configCustomization={configCustomization}
             configNotifications={configNotifications}
             configNotificationsBooleans={configNotificationsBooleans}
             openAdd={openAddUser}
@@ -401,6 +408,8 @@ export default function Users({ user }) {
           onClose={() => setOpenAddManager(!openAddManager)}
         >
           <AddManagerForm
+            config={config}
+            configCustomization={configCustomization}
             openAdd={openAddManager}
             departments={departments}
             setOpenAdd={setOpenAddManager}
@@ -421,6 +430,7 @@ export default function Users({ user }) {
             operators={operators.filter((op) => !op.username)}
             roles={roles}
             openAdd={openAddOperator}
+            configCustomization={configCustomization}
             setOpenAdd={setOpenAddOperator}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
@@ -440,6 +450,7 @@ export default function Users({ user }) {
             setOpenAdd={setOpenAddRole}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
             toast={toast}
           />
         </Dialog>

@@ -124,6 +124,10 @@ const configSchema = new Schema({
       type: String,
       default: "/images/logo_text.png",
     },
+    logoBlack: {
+      type: String,
+      default: "",
+    },
   },
 
   security: {

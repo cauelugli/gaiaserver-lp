@@ -18,6 +18,8 @@ import {
 
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -27,7 +29,7 @@ export default function AddStockItemForm({
   user,
   onClose,
   refreshData,
-  setRefreshData,
+  setRefreshData,configCustomization,
   toast,
 }) {
   const [name, setName] = React.useState("");
@@ -68,7 +70,7 @@ export default function AddStockItemForm({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Material</DialogTitle>
+      <DialogHeader title="Material" femaleGender={false} extraSmall/>
       <DialogContent>
         <>
           <Grid
@@ -203,6 +205,7 @@ export default function AddStockItemForm({
           </Grid>
         </>
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization} extraSmall/>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

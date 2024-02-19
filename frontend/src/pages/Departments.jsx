@@ -58,6 +58,7 @@ function CustomTabPanel(props) {
 export default function Departments({ user, configTables }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
+  const [configCustomization, setConfigCustomization] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
   const [openAddDepartment, setOpenAddDepartment] = React.useState(false);
@@ -125,7 +126,9 @@ export default function Departments({ user, configTables }) {
         const departments = await api.get("/departments");
         const positions = await api.get("/positions");
         const config = await api.get("/config/departments");
+        const configCustomization = await api.get("/config");
         setConfig(config.data);
+        setConfigCustomization(configCustomization.data[0].customization);
         setUsers(users.data);
         setManagers(managers.data);
         setServiceDepartments(
@@ -389,6 +392,7 @@ export default function Departments({ user, configTables }) {
             setOpenAdd={setOpenAddDepartment}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
             toast={toast}
           />
         </Dialog>
@@ -406,6 +410,7 @@ export default function Departments({ user, configTables }) {
             setOpenAdd={setOpenAddPosition}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
             toast={toast}
           />
         </Dialog>

@@ -7,13 +7,14 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Grid,
   MenuItem,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -26,6 +27,7 @@ const AddOperatorForm = ({
   setOpenAdd,
   refreshData,
   setRefreshData,
+  configCustomization,
   toast,
 }) => {
   const [username, setUsername] = React.useState("");
@@ -91,7 +93,7 @@ const AddOperatorForm = ({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle sx={{ mb: 1 }}>Novo Operador</DialogTitle>
+      <DialogHeader title="Operador" femaleGender={false} />
       <DialogContent sx={{ pl: 5 }}>
         <Grid
           container
@@ -176,6 +178,7 @@ const AddOperatorForm = ({
           </Grid>
         </Grid>
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization[0].customization}/>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

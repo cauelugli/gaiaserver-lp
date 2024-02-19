@@ -7,7 +7,6 @@ import {
   Checkbox,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Divider,
   FormControl,
   FormControlLabel,
@@ -24,6 +23,8 @@ import {
 import { IMaskInput } from "react-imask";
 import ColorPicker from "../../components/small/ColorPicker";
 import Members from "../../components/small/Members";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -37,6 +38,7 @@ const AddDepartmentForm = ({
   setOpenAdd,
   refreshData,
   setRefreshData,
+  configCustomization,
   toast,
 }) => {
   const [name, setName] = React.useState("");
@@ -136,7 +138,7 @@ const AddDepartmentForm = ({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Departamento</DialogTitle>
+      <DialogHeader title="Departamento" femaleGender={false} />
       <DialogContent>
         <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
           Geral
@@ -406,6 +408,7 @@ const AddDepartmentForm = ({
           </Grid> */}
         </Grid>
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization}/>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

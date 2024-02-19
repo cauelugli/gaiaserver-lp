@@ -7,7 +7,6 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogTitle,
   FormHelperText,
   Grid,
   ListSubheader,
@@ -18,10 +17,11 @@ import {
   Typography,
 } from "@mui/material";
 
-// import FileUploadIcon from "@mui/icons-material/FileUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { IMaskInput } from "react-imask";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -34,6 +34,7 @@ const AddManagerForm = ({
   refreshData,
   setRefreshData,
   toast,
+  configCustomization
 }) => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -99,7 +100,7 @@ const AddManagerForm = ({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Gerente</DialogTitle>
+      <DialogHeader title="Gerente" femaleGender={false} />
       <DialogContent>
         <Grid container direction="row" justifyContent="space-around">
           <Grid item>
@@ -123,7 +124,7 @@ const AddManagerForm = ({
                 <Avatar
                   alt="Imagem do Usuário"
                   value={image}
-                  sx={{ width: 200, height: 200, cursor: "pointer" }}
+                  sx={{ width: 100, height: 100, cursor: "pointer" }}
                   onClick={handleImageClick}
                 >
                   {image ? (
@@ -268,6 +269,8 @@ const AddManagerForm = ({
           </Grid>
         </Grid>
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization[0].customization}/>
+
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

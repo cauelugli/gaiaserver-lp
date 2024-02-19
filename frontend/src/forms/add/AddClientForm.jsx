@@ -7,7 +7,6 @@ import {
   Checkbox,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Divider,
   Grid,
   InputLabel,
@@ -22,6 +21,8 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -33,6 +34,8 @@ const AddClientForm = ({
   refreshData,
   setRefreshData,
   toast,
+  configCustomization,
+  extraSmall
 }) => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -81,7 +84,7 @@ const AddClientForm = ({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Cliente Pessoa Física</DialogTitle>
+      <DialogHeader title="Cliente Pessoa Física" femaleGender={false} extraSmall={extraSmall}/>
       <DialogContent>
         <Typography sx={{ my: 1, fontWeight: "bold" }}>Dados</Typography>
         <Grid container direction="column" alignItems="center">
@@ -209,6 +212,7 @@ const AddClientForm = ({
 
         {showAdditionalOptions && <></>}
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization} extraSmall={extraSmall}/>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

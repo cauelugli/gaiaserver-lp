@@ -30,6 +30,8 @@ import { IMaskInput } from "react-imask";
 import dayjs from "dayjs";
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -41,6 +43,7 @@ export default function AddPaymentScheduleForm({
   setOpenEdit,
   refreshData,
   setRefreshData,
+  configCustomization,
   toast,
 }) {
   const previousData = selectedFinanceIncome;
@@ -150,11 +153,7 @@ export default function AddPaymentScheduleForm({
 
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle
-        sx={{ textAlign: "center", my: 1, fontSize: 24, fontWeight: "bold" }}
-      >
-        Agendamento de Pagamento
-      </DialogTitle>
+      <DialogHeader title="Agendamento de Pagamento" femaleGender={false} />
       <DialogContent>
         <Typography sx={{ my: 1, ml: 4, fontSize: 18, fontWeight: "bold" }}>
           Informações
@@ -667,6 +666,7 @@ export default function AddPaymentScheduleForm({
           </>
         )}
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization} />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

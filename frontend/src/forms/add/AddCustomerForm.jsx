@@ -9,7 +9,6 @@ import {
   Checkbox,
   DialogActions,
   DialogContent,
-  DialogTitle,
   FormControl,
   FormHelperText,
   Grid,
@@ -20,8 +19,11 @@ import {
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 import { IMaskInput } from "react-imask";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -34,6 +36,7 @@ const AddCustomerForm = ({
   setRefreshData,
   toast,
   config,
+  configCustomization
 }) => {
   const [name, setName] = React.useState("");
   const [address, setAddress] = React.useState("");
@@ -113,11 +116,8 @@ const AddCustomerForm = ({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Cliente</DialogTitle>
+      <DialogHeader title="Cliente" femaleGender={false} />
       <DialogContent>
-        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
-          Logotipo
-        </Typography>
         <Grid
           container
           direction="column"
@@ -152,7 +152,7 @@ const AddCustomerForm = ({
                   alt="Prévia da Imagem"
                   style={{ width: "100%", height: "100%" }}
                 />
-              ) : null}
+              ) : <PhotoCameraIcon />}
             </Avatar>
           </label>
           {image && (
@@ -325,6 +325,7 @@ const AddCustomerForm = ({
           </Box>
         )}
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization} />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

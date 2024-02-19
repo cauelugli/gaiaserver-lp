@@ -12,6 +12,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -22,6 +24,7 @@ export default function AddRoleForm({
   setOpenAdd,
   refreshData,
   setRefreshData,
+  configCustomization,
   toast,
 }) {
   const [name, setName] = React.useState("");
@@ -41,9 +44,12 @@ export default function AddRoleForm({
         });
       }
       setOpenAdd(!openAdd);
-      setRefreshData(!refreshData)
+      setRefreshData(!refreshData);
     } catch (err) {
-      if (err.response && err.response.status === 422|| err.response.status === 420) {
+      if (
+        (err.response && err.response.status === 422) ||
+        err.response.status === 420
+      ) {
         toast.error(err.response.data.error, {
           closeOnClick: true,
           pauseOnHover: false,
@@ -63,7 +69,7 @@ export default function AddRoleForm({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Perfil de Acesso</DialogTitle>
+      <DialogHeader title="Perfil de Acesso" femaleGender={false} extraSmall />
       <DialogContent>
         <Grid
           container
@@ -72,7 +78,7 @@ export default function AddRoleForm({
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item sx={{mb:2}}>
+          <Grid item sx={{ mb: 2 }}>
             <Typography>Nome do Perfil</Typography>
             <TextField
               size="small"
@@ -84,6 +90,10 @@ export default function AddRoleForm({
           </Grid>
         </Grid>
       </DialogContent>
+      <FormEndLineTenant
+        configCustomization={configCustomization[0].customization}
+        extraSmall
+      />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

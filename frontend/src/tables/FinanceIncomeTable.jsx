@@ -41,6 +41,7 @@ export default function FinanceIncomeTable({
   searchValue,
   searchOption,
   refreshData,
+  configCustomization,
   setRefreshData,
 }) {
   const [selectedFinanceIncome, setSelectedFinanceIncome] = React.useState("");
@@ -158,8 +159,6 @@ export default function FinanceIncomeTable({
   const handleChangeshowCompletedIncomes = () => {
     setshowCompletedIncomes(!showCompletedIncomes);
   };
-
-  console.log("configData", configData);
 
   return (
     <>
@@ -620,6 +619,7 @@ export default function FinanceIncomeTable({
             <AddParcelPaymentForm
               selectedFinanceIncome={selectedFinanceIncome}
               openEdit={openAddParcelPayment}
+              configCustomization={configCustomization}
               setOpenEdit={setOpenAddParcelPayment}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
@@ -638,6 +638,7 @@ export default function FinanceIncomeTable({
               selectedFinanceIncome={selectedFinanceIncome}
               openEdit={openCashPayment}
               setOpenEdit={setOpenCashPayment}
+              configCustomization={configCustomization}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
@@ -656,6 +657,7 @@ export default function FinanceIncomeTable({
               selectedFinanceIncome={selectedFinanceIncome}
               previousMaterials={selectedFinanceIncome.materials}
               setOpenEdit={setOpenSchedulePayment}
+              configCustomization={configCustomization}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
@@ -675,6 +677,7 @@ export default function FinanceIncomeTable({
               openEdit={openConfirmChangeStatus}
               setOpenEdit={setOpenConfirmChangeStatus}
               prevStatus={previousStatus}
+              configCustomization={configCustomization}
               newData={newStatus}
               refreshData={refreshData}
               setRefreshData={setRefreshData}

@@ -239,13 +239,14 @@ router.put("/finance", async (req, res) => {
 // CUSTOMIZATION
 router.put("/customization", async (req, res) => {
   try {
-    const { mainColor, fontColor, logo } = req.body;
+    const { mainColor, fontColor, logo, logoBlack } = req.body;
 
     const config = await Config.findOne();
 
     config.customization.mainColor = mainColor;
     config.customization.fontColor = fontColor;
     config.customization.logo = logo;
+    config.customization.logoBlack = logoBlack;
 
     await config.save();
     res.status(200).json(config);

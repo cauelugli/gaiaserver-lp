@@ -7,13 +7,14 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Grid,
   InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
 import ServicePlanList from "../../components/small/ServicePlanList";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -24,6 +25,7 @@ export default function AddServicePlanForm({
   setOpenAdd,
   refreshData,
   setRefreshData,
+  configCustomization,
   toast,
 }) {
   const [name, setName] = React.useState("");
@@ -73,7 +75,7 @@ export default function AddServicePlanForm({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Plano de Serviço</DialogTitle>
+      <DialogHeader title="Plano de Serviço" femaleGender={false} />
       <DialogContent>
         <Grid
           container
@@ -124,6 +126,7 @@ export default function AddServicePlanForm({
           </Grid>
         </Grid>
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization}/>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

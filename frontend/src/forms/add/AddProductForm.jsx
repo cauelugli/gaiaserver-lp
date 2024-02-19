@@ -19,6 +19,7 @@ import {
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -29,6 +30,7 @@ export default function AddProductForm({
   onClose,
   refreshData,
   setRefreshData,
+  configCustomization,
   toast,
 }) {
   const [name, setName] = React.useState("");
@@ -288,6 +290,7 @@ export default function AddProductForm({
           </Grid>
         )}
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization} />
       <DialogActions sx={{ mt: 2 }}>
         <Button type="submit" variant="contained" color="success">
           OK

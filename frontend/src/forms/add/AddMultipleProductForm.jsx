@@ -7,8 +7,6 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  FormHelperText,
   Grid,
   IconButton,
   InputAdornment,
@@ -21,6 +19,8 @@ import {
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -31,6 +31,7 @@ export default function AddMultipleProductForm({
   onClose,
   refreshData,
   setRefreshData,
+  configCustomization,
   toast,
 }) {
   const [productList, setProductList] = React.useState([
@@ -122,7 +123,7 @@ export default function AddMultipleProductForm({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novos Produtos</DialogTitle>
+      <DialogHeader title="Produtos" femaleGender={false} plural />
       <DialogContent>
         {productList.map((product, index) => (
           <Grid
@@ -386,6 +387,7 @@ export default function AddMultipleProductForm({
           </Button>
         </Grid>
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization}/>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

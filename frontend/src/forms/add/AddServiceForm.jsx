@@ -19,6 +19,8 @@ import {
   Typography,
 } from "@mui/material";
 import MaterialList from "../../components/small/MaterialList";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -31,6 +33,7 @@ export default function AddServiceForm({
   setOpenAdd,
   refreshData,
   setRefreshData,
+  configCustomization,
   toast,
 }) {
   const [name, setName] = React.useState("");
@@ -96,7 +99,7 @@ export default function AddServiceForm({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Serviço</DialogTitle>
+      <DialogHeader title="Serviço" femaleGender={false} />
       <DialogContent>
         <Grid
           container
@@ -247,6 +250,7 @@ export default function AddServiceForm({
           </Grid>
         </Grid>
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization}/>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

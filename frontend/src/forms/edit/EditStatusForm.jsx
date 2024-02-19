@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import EastIcon from "@mui/icons-material/East";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -27,6 +28,7 @@ export default function EditStatusForm({
   setOpenEdit,
   refreshData,
   setRefreshData,
+  configCustomization,
   toast,
 }) {
   const handleEdit = async (e) => {
@@ -119,6 +121,7 @@ export default function EditStatusForm({
           </Grid>
         </Grid>
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization} />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

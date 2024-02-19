@@ -29,6 +29,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers";
 
 import MaterialList from "../../components/small/MaterialList";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -40,6 +42,7 @@ const AddSaleForm = ({
   setOpenAddSale,
   refreshData,
   setRefreshData,
+  configCustomization,
   toast,
 }) => {
   const [config, setConfig] = React.useState([]);
@@ -152,9 +155,7 @@ const AddSaleForm = ({
 
   return (
     <form onSubmit={handleAdd}>
-      <Grid container sx={{ mt: 1 }}>
-        <DialogTitle>Nova Venda</DialogTitle>
-      </Grid>
+      <DialogHeader title="Venda" femaleGender={true} />
 
       <DialogContent>
         <Grid container>
@@ -291,10 +292,7 @@ const AddSaleForm = ({
               {departments
                 .filter((department) => department.type === "Vendas")
                 .map((item) => (
-                  <MenuItem
-                    value={item}
-                    key={item.id}
-                  >
+                  <MenuItem value={item} key={item.id}>
                     {item.name}
                   </MenuItem>
                 ))}
@@ -432,6 +430,7 @@ const AddSaleForm = ({
           </Box>
         )}
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization}/>
 
       <DialogActions>
         <Button type="submit" variant="contained" color="success">

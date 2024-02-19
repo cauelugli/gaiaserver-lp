@@ -59,6 +59,7 @@ function CustomTabPanel(props) {
 export default function Services({ user, configTables }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
+  const [configCustomization, setConfigCustomization] = React.useState(0);
 
   const [openAddService, setOpenAddService] = React.useState(false);
   const [openAddServicePlan, setOpenAddServicePlan] = React.useState(false);
@@ -120,9 +121,11 @@ export default function Services({ user, configTables }) {
         const servicePlans = await api.get("/servicePlans");
         const departments = await api.get("/departments");
         const stockItems = await api.get("/stockItems");
+        const configCustomization = await api.get("/config");
         setServices(services.data.filter((service) => service.value > 0));
         setSupports(services.data.filter((service) => service.value === 0));
         setServicePlans(servicePlans.data);
+        setConfigCustomization(configCustomization.data[0].customization);
         setDepartments(departments.data);
         setStockItems(stockItems.data);
       } catch (error) {
@@ -317,6 +320,7 @@ export default function Services({ user, configTables }) {
             departments={departments}
             stockItems={stockItems}
             refreshData={refreshData}
+            configCustomization={configCustomization}
             setRefreshData={setRefreshData}
             toast={toast}
           />
@@ -333,6 +337,7 @@ export default function Services({ user, configTables }) {
             openAdd={openAddServicePlan}
             setOpenAdd={setOpenAddServicePlan}
             departments={departments}
+            configCustomization={configCustomization}
             stockItems={stockItems}
             refreshData={refreshData}
             setRefreshData={setRefreshData}

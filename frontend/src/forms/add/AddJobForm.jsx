@@ -8,7 +8,6 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Divider,
   FormControl,
   Grid,
@@ -34,6 +33,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers";
 import MaterialList from "../../components/small/MaterialList";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -45,6 +46,7 @@ const AddJobForm = ({
   setOpenAddJob,
   refreshData,
   setRefreshData,
+  configCustomization,
   toast,
 }) => {
   const [config, setConfig] = React.useState([]);
@@ -182,9 +184,7 @@ const AddJobForm = ({
 
   return (
     <form onSubmit={handleAdd}>
-      <Grid container sx={{ mt: 3 }}>
-        <DialogTitle>Novo Job</DialogTitle>
-      </Grid>
+      <DialogHeader title="Job" femaleGender={false} />
 
       <DialogContent>
         <Grid container>
@@ -655,6 +655,7 @@ const AddJobForm = ({
           </Grid>
         )}
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization} />
 
       <DialogActions sx={{ pr: "4%" }}>
         <Button type="submit" variant="contained" color="success">

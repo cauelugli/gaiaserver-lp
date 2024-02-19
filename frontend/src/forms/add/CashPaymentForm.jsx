@@ -25,6 +25,8 @@ import {
 
 import { IMaskInput } from "react-imask";
 import dayjs from "dayjs";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -35,6 +37,7 @@ export default function CashPaymentForm({
   openEdit,
   setOpenEdit,
   refreshData,
+  configCustomization,
   setRefreshData,
   toast,
 }) {
@@ -82,11 +85,7 @@ export default function CashPaymentForm({
 
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle
-        sx={{ textAlign: "center", my: 1, fontSize: 24, fontWeight: "bold" }}
-      >
-        Pagamento a Vista
-      </DialogTitle>
+      <DialogHeader title="Pagamento a Vista" femaleGender={false} />
       <DialogContent>
         <Typography sx={{ m: 1, fontSize: 18, fontWeight: "bold" }}>
           Dados do Pagamento
@@ -227,6 +226,7 @@ export default function CashPaymentForm({
           </Table>
         </Box>
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization} />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

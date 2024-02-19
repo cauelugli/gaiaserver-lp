@@ -59,6 +59,7 @@ function CustomTabPanel(props) {
 export default function Customers({ user, configTables }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
+  const [configCustomization, setConfigCustomization] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [clients, setClients] = React.useState([]);
   const [customers, setCustomers] = React.useState([]);
@@ -115,7 +116,9 @@ export default function Customers({ user, configTables }) {
         const customers = await api.get("/customers");
         const clients = await api.get("/clients");
         const config = await api.get("/config/customers");
+        const configCustomization = await api.get("/config");
         setConfig(config.data);
+        setConfigCustomization(configCustomization.data[0].customization);
         setClients(clients.data);
         setCustomers(customers.data);
       } catch (error) {
@@ -291,6 +294,7 @@ export default function Customers({ user, configTables }) {
             setOpenAdd={setOpenAddCustomer}
             toast={toast}
             config={config}
+            configCustomization={configCustomization}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
           />
@@ -309,6 +313,8 @@ export default function Customers({ user, configTables }) {
             toast={toast}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
+            extraSmall
           />
         </Dialog>
       )}

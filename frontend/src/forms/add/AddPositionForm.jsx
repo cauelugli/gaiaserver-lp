@@ -12,6 +12,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import DialogHeader from "../../components/small/DialogHeader";
+import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -22,6 +24,7 @@ export default function AddPositionForm({
   setOpenAdd,
   refreshData,
   setRefreshData,
+  configCustomization,
   toast,
 }) {
   const [name, setName] = React.useState("");
@@ -63,7 +66,7 @@ export default function AddPositionForm({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogTitle>Novo Cargo</DialogTitle>
+      <DialogHeader title="Cargo" femaleGender={false} extraSmall/>
       <DialogContent>
         <Grid
           container
@@ -84,6 +87,7 @@ export default function AddPositionForm({
           </Grid>
         </Grid>
       </DialogContent>
+      <FormEndLineTenant configCustomization={configCustomization} extraSmall/>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK
