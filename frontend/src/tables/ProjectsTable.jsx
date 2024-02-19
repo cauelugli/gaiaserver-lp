@@ -150,6 +150,8 @@ export default function ProjectsTable({
         stageIndex: selectedStageIndex,
         taskIndex: selectedTaskIndex,
         interaction: newInteractionText,
+        user: { id: user._id, name: user.name },
+        createdAt: dayjs().format("DD/MM/YYYY"),
       });
 
       if (response.status === 200) {
@@ -572,15 +574,123 @@ export default function ProjectsTable({
                                                   fontWeight: "bold",
                                                 }}
                                               >
-                                                Interações
+                                                Atividades
                                               </Typography>
                                               <Grid sx={{ ml: 2 }}>
-                                                {task.interactions.length === 0
-                                                  ? "Não há Interações na Tarefa"
-                                                  : task.interactions.map(
-                                                      (interaction) =>
-                                                        interaction
-                                                    )}
+                                                {task.interactions.length ===
+                                                0 ? (
+                                                  "Não há Atividades na Tarefa"
+                                                ) : (
+                                                  <Table size="small">
+                                                    <TableHead>
+                                                      <TableRow>
+                                                        <TableCell>
+                                                          <Typography
+                                                            sx={{
+                                                              fontSize: 13,
+                                                              color: "#777",
+                                                            }}
+                                                          >
+                                                            #
+                                                          </Typography>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                          <Typography
+                                                            sx={{
+                                                              fontSize: 13,
+                                                              color: "#777",
+                                                            }}
+                                                          >
+                                                            Data
+                                                          </Typography>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                          <Typography
+                                                            sx={{
+                                                              fontSize: 13,
+                                                              color: "#777",
+                                                            }}
+                                                          >
+                                                            Colaborador
+                                                          </Typography>
+                                                        </TableCell>
+
+                                                        <TableCell>
+                                                          <Typography
+                                                            sx={{
+                                                              fontSize: 13,
+                                                              color: "#777",
+                                                            }}
+                                                          >
+                                                            Atividade
+                                                          </Typography>
+                                                        </TableCell>
+                                                      </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                      {task.interactions.map(
+                                                        (
+                                                          interaction,
+                                                          index
+                                                        ) => (
+                                                          <TableRow
+                                                            key={index}
+                                                            sx={{
+                                                              backgroundColor:
+                                                                index % 2 === 0
+                                                                  ? "#eee"
+                                                                  : "white",
+                                                            }}
+                                                          >
+                                                            <TableCell>
+                                                              <Typography
+                                                                sx={{
+                                                                  fontSize: 13,
+                                                                }}
+                                                              >
+                                                                {index+1}
+                                                              </Typography>
+                                                            </TableCell>
+                                                            <TableCell align="left">
+                                                              <Typography
+                                                                sx={{
+                                                                  fontSize: 13,
+                                                                }}
+                                                              >
+                                                                {
+                                                                  interaction.createdAt
+                                                                }
+                                                              </Typography>
+                                                            </TableCell>
+                                                            <TableCell align="left">
+                                                              <Typography
+                                                                sx={{
+                                                                  fontSize: 13,
+                                                                }}
+                                                              >
+                                                                {
+                                                                  interaction
+                                                                    .user.name
+                                                                }
+                                                              </Typography>
+                                                            </TableCell>
+                                                            <TableCell align="left">
+                                                              <Typography
+                                                                sx={{
+                                                                  fontSize: 13,
+                                                                }}
+                                                              >
+                                                                {
+                                                                  interaction.interaction
+                                                                }
+                                                              </Typography>
+                                                            </TableCell>
+                                                          </TableRow>
+                                                        )
+                                                      )}
+                                                    </TableBody>
+                                                  </Table>
+                                                )}
                                               </Grid>
                                             </AccordionDetails>
                                             {isAddingInteraction && (

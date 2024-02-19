@@ -82,15 +82,32 @@ router.put("/", async (req, res) => {
 
 // CREATE PROJECT INTERACTION
 router.post("/addInteraction", async (req, res) => {
-  // const newProject = new Project(req.body);
-  console.log("\nreq.body\n", req.body);
-  // try {
-  //   const savedRole = await newProject.save();
-  //   res.status(200).json(savedRole);
-  // } catch (err) {
-  //   console.log(err);
-  //   res.status(500).json(err);
-  // }
+  const { projectId, stageIndex, taskIndex, interaction, user, createdAt } = req.body;
+
+  try {
+    const updatedProject = await Project.findOneAndUpdate(
+      { _id: projectId, "stages.tasks": { $exists: true } },
+      {
+        $push: {
+          [`stages.${stageIndex}.tasks.${taskIndex}.interactions`]: {
+            interaction,
+            user,
+            createdAt,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (updatedProject) {
+      res.status(200).json(updatedProject);
+    } else {
+      res.status(404).json({ message: "Project not found" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error updating project", error: err });
+  }
 });
 
 module.exports = router;
