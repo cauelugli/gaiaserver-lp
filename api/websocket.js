@@ -107,6 +107,59 @@ const initSocket = (server) => {
       }
     });
 
+    socket.on("whenProjectIsCreated", async (data) => {
+      try {
+        const usersToNotify = await Promise.all(
+          data.list.map(async (userId) => {
+            let user = await User.findById(userId);
+            if (!user) {
+              user = await Manager.findById(userId);
+            }
+            return user;
+          })
+        );
+    
+        for (const user of usersToNotify) {
+          if (!user) {
+            continue;
+          }
+    
+          const newNotification = {
+            id: Date.now(),
+            type: "Novo Projeto",
+            noteBody: `Olá! Você foi incluido no projeto ${data.projectName} criado por ${data.sender} em ${data.date}.`,
+            sender: data.sender,
+            status: "Não Lida",
+          };
+    
+          let updatedUser;
+    
+          if (user instanceof User) {
+            await User.updateOne(
+              { _id: user._id },
+              { $set: { [`notifications.${Date.now()}`]: newNotification } }
+            );
+            updatedUser = await User.findById(user._id);
+          } else if (user instanceof Manager) {
+            await Manager.updateOne(
+              { _id: user._id },
+              { $set: { [`notifications.${Date.now()}`]: newNotification } }
+            );
+            updatedUser = await Manager.findById(user._id);
+          }
+    
+          const receiverSocketId = userSocketMap[user._id];
+          if (receiverSocketId) {
+            io.to(receiverSocketId).emit("notificationsUpdate", {
+              notifications: updatedUser.notifications,
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error processing whenProjectIsCreated:", error);
+      }
+    });
+
     socket.on("disconnect", () => {
       // console.log("User disconnected");
     });

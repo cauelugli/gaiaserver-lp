@@ -55,6 +55,7 @@ export default function Projects({ user }) {
   const [value, setValue] = React.useState(0);
   const [configData, setConfigData] = React.useState([]);
   const [configCustomization, setConfigCustomization] = React.useState([]);
+  const [configNotificationsBooleans, setConfigNotificationsBooleans] = React.useState([]);
   const [projects, setProjects] = React.useState([]);
   const [projectsTemplates, setProjectsTemplates] = React.useState([]);
   const [customers, setCustomers] = React.useState([]);
@@ -95,6 +96,7 @@ export default function Projects({ user }) {
         const config = await api.get("/config");
         setConfigData(config.data[0].projects);
         setConfigCustomization(config.data[0].customization);
+        setConfigNotificationsBooleans(config.data[0].notificationsBooleans);
         setProjects(projects.data);
         setProjectsTemplates(projectsTemplates.data);
         setCustomers(customers.data);
@@ -218,6 +220,7 @@ export default function Projects({ user }) {
         >
           <AddProjectForm
             configData={configData}
+            configNotificationsBooleans={configNotificationsBooleans}
             openAdd={openAddProject}
             user={user}
             handleOpenConfirmDialog={handleOpenConfirmDialog}
@@ -256,6 +259,7 @@ export default function Projects({ user }) {
               configData={configData}
               openAdd={openAddProject}
               user={user}
+              configNotificationsBooleans={configNotificationsBooleans}
               handleOpenConfirmDialog={handleOpenConfirmDialog}
               customers={customers}
               services={services}

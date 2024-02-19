@@ -190,7 +190,7 @@ router.get("/projects", async (req, res) => {
   }
 });
 
-// USERS
+// PROJECTS
 router.put("/projects", async (req, res) => {
   try {
     const { canBeDeleted, projectTypes } = req.body;

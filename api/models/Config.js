@@ -184,6 +184,10 @@ const configSchema = new Schema({
       type: Boolean,
       default: false,
     },
+    whenProjectIsCreated: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   tables: {

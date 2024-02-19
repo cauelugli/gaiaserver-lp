@@ -4,6 +4,7 @@
 import React from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import { io } from "socket.io-client";
 
 import {
   Avatar,
@@ -42,6 +43,8 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
+const socket = io("http://localhost:3000");
+
 export default function AddProjectForm({
   user,
   configData,
@@ -56,6 +59,7 @@ export default function AddProjectForm({
   services,
   products,
   handleOpenConfirmDialog,
+  configNotificationsBooleans,
   template,
 }) {
   const [firstPartOK, setFirstPartOK] = React.useState(false);
@@ -114,10 +118,21 @@ export default function AddProjectForm({
           theme: "colored",
           autoClose: 1200,
         });
+
+        if (configNotificationsBooleans.whenProjectIsCreated) {
+          const memberIds = members.map(member => member.id);
+          socket.emit("whenProjectIsCreated", {
+            sender: user.name,
+            list: memberIds,
+            date: dayjs(Date.now()).format("DD/MM/YYYY"),
+            projectName: name
+          });
+        }
       }
       setOpenAdd(!openAdd);
       setRefreshData(!refreshData);
     } catch (err) {
+      console.log('err', err)
       toast.error("Houve algum erro...", {
         closeOnClick: true,
         pauseOnHover: false,
