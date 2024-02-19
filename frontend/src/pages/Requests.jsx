@@ -6,21 +6,12 @@ import axios from "axios";
 
 import {
   Box,
-  Button,
   Dialog,
   Grid,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  MenuList,
   Tab,
   Tabs,
   Typography,
 } from "@mui/material";
-
-import EngineeringIcon from "@mui/icons-material/Engineering";
-import SellIcon from "@mui/icons-material/Sell";
 
 import JobTable from "../tables/JobTable";
 import SaleTable from "../tables/SaleTable";
@@ -31,6 +22,7 @@ import AddSaleForm from "../forms/add/AddSaleForm";
 import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
+import RequestTableButton from "../components/small/buttons/RequestTableButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -143,50 +135,14 @@ export default function Requests({ user, configTables }) {
         >
           Pedidos
         </Typography>
-        <div>
-          <Button
-            id="basic-button"
-            aria-controls={openAddButton ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={openAddButton ? "true" : undefined}
-            onClick={handleClickAddButton}
-            size="small"
-            sx={{
-              borderRadius: 3,
-              bottom: 3,
-              "&:hover": { borderColor: "#eee" },
-            }}
-          >
-            <Typography variant="h6">+</Typography>
-            <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>
-              Novo
-            </Typography>
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={openAddButton}
-            onClick={handleCloseAddButton}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <MenuList sx={{ width: 200 }}>
-              <MenuItem onClick={() => setOpenAddJob(!openAddJob)}>
-                <ListItemIcon>
-                  <EngineeringIcon />
-                </ListItemIcon>
-                <ListItemText>Job / Atendimento</ListItemText>
-              </MenuItem>
-              <MenuItem onClick={() => setOpenAddSale(!openAddSale)}>
-                <ListItemIcon>
-                  <SellIcon />
-                </ListItemIcon>
-                <ListItemText>Venda</ListItemText>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </div>
+        <RequestTableButton
+          anchorEl={anchorEl}
+          openAddButton={openAddButton}
+          handleClickAddButton={handleClickAddButton}
+          handleCloseAddButton={handleCloseAddButton}
+          setOpenAddSale={setOpenAddSale}
+          setOpenAddJob={setOpenAddJob}
+        />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
