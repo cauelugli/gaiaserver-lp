@@ -130,6 +130,7 @@ export default function Finance({ user }) {
           <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
           />
         </Tabs>
       </Box>

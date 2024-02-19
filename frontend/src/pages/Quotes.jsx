@@ -33,7 +33,6 @@ function CustomTabPanel(props) {
 export default function Quotes({ user, configData }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
-  // const [config, setConfig] = React.useState([]);
 
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("number");
@@ -47,7 +46,6 @@ export default function Quotes({ user, configData }) {
         { value: "customer", label: "Cliente" },
         { value: "user", label: "Colaborador" },
         { value: "department", label: "Departamento" },
-        // { value: "value", label: "Valor" },
       ],
     },
     {
@@ -58,7 +56,6 @@ export default function Quotes({ user, configData }) {
         { value: "customer", label: "Cliente" },
         { value: "user", label: "Colaborador" },
         { value: "department", label: "Departamento" },
-        // { value: "value", label: "Valor" },
       ],
     },
   ];
@@ -68,6 +65,7 @@ export default function Quotes({ user, configData }) {
   };
 
   const [quotes, setQuotes] = React.useState([]);
+  const [configCustomization, setConfigCustomization] = React.useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -79,7 +77,9 @@ export default function Quotes({ user, configData }) {
     const fetchData = async () => {
       try {
         const quotes = await api.get("/quotes");
+        const configCustomization = await api.get("/config");
         setQuotes(quotes.data);
+        setConfigCustomization(configCustomization.data[0].customization);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -118,6 +118,7 @@ export default function Quotes({ user, configData }) {
           <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
           />
         </Tabs>
       </Box>

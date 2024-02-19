@@ -146,6 +146,7 @@ export default function Customers({ user, configTables }) {
           setOpenAddCustomer={setOpenAddCustomer}
           setOpenAddClient={setOpenAddClient}
           setOpenImportContacts={setOpenImportContacts}
+          configCustomization={configCustomization}
         />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -171,6 +172,7 @@ export default function Customers({ user, configTables }) {
           <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
           />
         </Tabs>
       </Box>

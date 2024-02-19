@@ -162,6 +162,7 @@ export default function Services({ user, configTables }) {
           <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
           />
         </Tabs>
       </Box>

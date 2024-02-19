@@ -51,6 +51,7 @@ export default function Projects({ user }) {
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const [configData, setConfigData] = React.useState([]);
+  const [configCustomization, setConfigCustomization] = React.useState([]);
   const [projects, setProjects] = React.useState([]);
   const [projectsTemplates, setProjectsTemplates] = React.useState([]);
   const [customers, setCustomers] = React.useState([]);
@@ -90,6 +91,7 @@ export default function Projects({ user }) {
         const products = await api.get("/products");
         const config = await api.get("/config");
         setConfigData(config.data[0].projects);
+        setConfigCustomization(config.data[0].customization);
         setProjects(projects.data);
         setProjectsTemplates(projectsTemplates.data);
         setCustomers(customers.data);
@@ -148,6 +150,7 @@ export default function Projects({ user }) {
           <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
           />
         </Tabs>
       </Box>

@@ -4,14 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import {
-  Box,
-  Dialog,
-  Grid,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
+import { Box, Dialog, Grid, Tab, Tabs, Typography } from "@mui/material";
 
 import JobTable from "../tables/JobTable";
 import SaleTable from "../tables/SaleTable";
@@ -165,6 +158,7 @@ export default function Requests({ user, configTables }) {
           <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
           />
         </Tabs>
       </Box>

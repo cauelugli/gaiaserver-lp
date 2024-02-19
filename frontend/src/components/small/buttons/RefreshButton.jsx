@@ -6,12 +6,32 @@ import { Box, IconButton, Typography } from "@mui/material";
 
 import RefreshIcon from "@mui/icons-material/Refresh";
 
-export default function RefreshButton({ refreshData, setRefreshData}) {
+export default function RefreshButton({
+  refreshData,
+  setRefreshData,
+  configCustomization,
+}) {
   return (
-    <Box sx={{m:1}}>
+    <Box sx={{ m: 1 }}>
       <IconButton size="inherit" onClick={() => setRefreshData(!refreshData)}>
-        <RefreshIcon sx={{color:"#32aacd"}}/>
-        <Typography sx={{fontSize:12, ml:0.5, color:"#32aacd"}}>ATUALIZAR</Typography>
+        <RefreshIcon
+          sx={{
+            color: configCustomization.mainColor
+              ? configCustomization.mainColor
+              : "#32aacd",
+          }}
+        />
+        <Typography
+          sx={{
+            fontSize: 12,
+            ml: 0.5,
+            color: configCustomization.mainColor
+              ? configCustomization.mainColor
+              : "#32aacd",
+          }}
+        >
+          ATUALIZAR
+        </Typography>
       </IconButton>
     </Box>
   );

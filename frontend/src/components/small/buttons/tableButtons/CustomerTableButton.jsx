@@ -25,6 +25,7 @@ export default function CustomerTableButton({
   setOpenAddCustomer,
   setOpenAddClient,
   setOpenImportContacts,
+  configCustomization,
 }) {
   return (
     <div>
@@ -39,6 +40,7 @@ export default function CustomerTableButton({
           borderRadius: 3,
           bottom: 3,
           "&:hover": { borderColor: "#eee" },
+          color: configCustomization.mainColor || "#32aacd",
         }}
       >
         <Typography variant="h6">+</Typography>
