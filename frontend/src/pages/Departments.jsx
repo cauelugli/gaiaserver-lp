@@ -36,6 +36,7 @@ import AddDepartmentForm from "../forms/add/AddDepartmentForm";
 import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
+import DepartmentTableButton from "../components/small/buttons/DepartmentTableButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -170,7 +171,15 @@ export default function Departments({ user, configTables }) {
         >
           Departamentos
         </Typography>
-        <div>
+        <DepartmentTableButton
+          anchorEl={anchorEl}
+          openAddButton={openAddButton}
+          handleClickAddButton={handleClickAddButton}
+          handleCloseAddButton={handleCloseAddButton}
+          setOpenAddDepartment={setOpenAddDepartment}
+          setOpenAddPosition={setOpenAddPosition}
+        />
+        {/* <div>
           <Button
             id="basic-button"
             aria-controls={openAddButton ? "basic-menu" : undefined}
@@ -213,7 +222,7 @@ export default function Departments({ user, configTables }) {
               </MenuItem>
             </MenuList>
           </Menu>
-        </div>
+        </div> */}
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs

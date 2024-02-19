@@ -24,10 +24,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import ApartmentIcon from "@mui/icons-material/Apartment";
-import PersonIcon from "@mui/icons-material/Person";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
-
 import CustomerTable from "../tables/CustomerTable";
 import ClientTable from "../tables/ClientTable";
 import AddClientForm from "../forms/add/AddClientForm";
@@ -37,6 +33,7 @@ import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import TableFilters from "../components/TableFilters";
 import ImportContacts from "../forms/misc/ImportContacts";
+import CustomerTableButton from "../components/small/buttons/CustomerTableButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -141,60 +138,15 @@ export default function Customers({ user, configTables }) {
         >
           Clientes
         </Typography>
-        <div>
-          <Button
-            id="basic-button"
-            aria-controls={openAddButton ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={openAddButton ? "true" : undefined}
-            onClick={handleClickAddButton}
-            size="small"
-            sx={{
-              borderRadius: 3,
-              bottom: 3,
-              "&:hover": { borderColor: "#eee" },
-            }}
-          >
-            <Typography variant="h6">+</Typography>
-            <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>
-              Novo
-            </Typography>
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={openAddButton}
-            onClick={handleCloseAddButton}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <MenuList sx={{ width: 200 }}>
-              <MenuItem onClick={() => setOpenAddCustomer(!openAddCustomer)}>
-                <ListItemIcon>
-                  <ApartmentIcon />
-                </ListItemIcon>
-                <ListItemText>Empresa</ListItemText>
-              </MenuItem>
-              <MenuItem onClick={() => setOpenAddClient(!openAddClient)}>
-                <ListItemIcon>
-                  <PersonIcon />
-                </ListItemIcon>
-                <ListItemText>Pessoa Física</ListItemText>
-              </MenuItem>
-              <Divider sx={{mx:2}}/>
-
-              <MenuItem
-                onClick={() => setOpenImportContacts(!openImportContacts)}
-              >
-                <ListItemIcon>
-                  <UploadFileIcon />
-                </ListItemIcon>
-                <ListItemText>Importar Contatos</ListItemText>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </div>
+        <CustomerTableButton
+          anchorEl={anchorEl}
+          openAddButton={openAddButton}
+          handleClickAddButton={handleClickAddButton}
+          handleCloseAddButton={handleCloseAddButton}
+          setOpenAddCustomer={setOpenAddCustomer}
+          setOpenAddClient={setOpenAddClient}
+          setOpenImportContacts={setOpenImportContacts}
+        />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs

@@ -10,21 +10,18 @@ import {
   Typography,
   MenuItem,
   MenuList,
-  Divider,
 } from "@mui/material";
 
-import ApartmentIcon from "@mui/icons-material/Apartment";
-import PersonIcon from "@mui/icons-material/Person";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
+import LanIcon from "@mui/icons-material/Lan";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 
-export default function CustomerTableButton({
+export default function DepartmentTableButton({
   anchorEl,
   openAddButton,
   handleClickAddButton,
   handleCloseAddButton,
-  setOpenAddCustomer,
-  setOpenAddClient,
-  setOpenImportContacts,
+  setOpenAddDepartment,
+  setOpenAddPosition,
 }) {
   return (
     <div>
@@ -53,26 +50,18 @@ export default function CustomerTableButton({
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuList sx={{ width: 200 }}>
-          <MenuItem onClick={() => setOpenAddCustomer(true)}>
+        <MenuList sx={{ width: 170 }}>
+          <MenuItem onClick={() => setOpenAddDepartment(true)}>
             <ListItemIcon>
-              <ApartmentIcon />
+              <LanIcon />
             </ListItemIcon>
-            <ListItemText>Empresa</ListItemText>
+            <ListItemText>Departamento</ListItemText>
           </MenuItem>
-          <MenuItem onClick={() => setOpenAddClient(true)}>
+          <MenuItem onClick={() => setOpenAddPosition(true)}>
             <ListItemIcon>
-              <PersonIcon />
+              <AssignmentIndIcon />
             </ListItemIcon>
-            <ListItemText>Pessoa Física</ListItemText>
-          </MenuItem>
-          <Divider sx={{ mx: 2 }} />
-
-          <MenuItem onClick={() => setOpenImportContacts(true)}>
-            <ListItemIcon>
-              <UploadFileIcon />
-            </ListItemIcon>
-            <ListItemText>Importar Contatos</ListItemText>
+            <ListItemText>Cargo</ListItemText>
           </MenuItem>
         </MenuList>
       </Menu>
