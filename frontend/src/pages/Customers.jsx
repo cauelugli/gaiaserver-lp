@@ -33,7 +33,7 @@ import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import TableFilters from "../components/TableFilters";
 import ImportContacts from "../forms/misc/ImportContacts";
-import CustomerTableButton from "../components/small/buttons/CustomerTableButton";
+import CustomerTableButton from "../components/small/buttons/tableButtons/CustomerTableButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

@@ -26,7 +26,7 @@ import AddRoleForm from "../forms/add/AddRoleForm";
 import TableFilters from "../components/TableFilters";
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
-import UserTableButton from "../components/small/buttons/UserTableButton";
+import UserTableButton from "../components/small/buttons/tableButtons/UserTableButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

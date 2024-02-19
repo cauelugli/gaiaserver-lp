@@ -12,13 +12,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
   Grid,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  MenuList,
   Tab,
   Tabs,
   Typography,
@@ -32,7 +26,7 @@ import TableFilters from "../components/TableFilters";
 
 import AddProjectForm from "../forms/add/AddProjectForm";
 import ProjectsTable from "../tables/ProjectsTable";
-import ProjectsButton from "../components/small/buttons/ProjectsButton";
+import ProjectsTableButton from "../components/small/buttons/tableButtons/ProjectsTableButton";
 import ProjectTemplates from "../forms/misc/ProjectTemplates";
 
 const api = axios.create({
@@ -136,7 +130,7 @@ export default function Projects({ user }) {
         >
           Projetos
         </Typography>
-        <ProjectsButton
+        <ProjectsTableButton
           setOpenAddProject={setOpenAddProject}
           setOpenAddTemplate={setOpenAddTemplate}
         />

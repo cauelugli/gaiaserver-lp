@@ -17,7 +17,7 @@ import StockEntriesTable from "../tables/StockEntriesTable";
 import ProductsTable from "../tables/ProductsTable";
 
 import TableFilters from "../components/TableFilters";
-import StockTableButton from "../components/small/buttons/StockTableButton";
+import StockTableButton from "../components/small/buttons/tableButtons/StockTableButton";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 

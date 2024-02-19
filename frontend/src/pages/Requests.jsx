@@ -22,7 +22,7 @@ import AddSaleForm from "../forms/add/AddSaleForm";
 import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
-import RequestTableButton from "../components/small/buttons/RequestTableButton";
+import RequestTableButton from "../components/small/buttons/tableButtons/RequestTableButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

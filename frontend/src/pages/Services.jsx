@@ -5,28 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import {
-  Box,
-  Button,
-  Dialog,
-  Grid,
-  InputAdornment,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  MenuList,
-  Select,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
-} from "@mui/material";
-
-import BuildIcon from "@mui/icons-material/Build";
-import ClearIcon from "@mui/icons-material/Clear";
-import HubIcon from "@mui/icons-material/Hub";
-import SearchIcon from "@mui/icons-material/Search";
+import { Box, Dialog, Grid, Tab, Tabs, Typography } from "@mui/material";
 
 import ServiceTable from "../tables/ServiceTable";
 import ServicePlansTable from "../tables/ServicePlansTable";
@@ -37,6 +16,7 @@ import AddServicePlanForm from "../forms/add/AddServicePlanForm";
 import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
+import ServicesTableButton from "../components/small/buttons/tableButtons/ServicesTableButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -148,50 +128,14 @@ export default function Services({ user, configTables }) {
         >
           Serviços
         </Typography>
-        <div>
-          <Button
-            id="basic-button"
-            aria-controls={openAddButton ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={openAddButton ? "true" : undefined}
-            onClick={handleClickAddButton}
-            size="small"
-            sx={{
-              borderRadius: 3,
-              bottom: 3,
-              "&:hover": { borderColor: "#eee" },
-            }}
-          >
-            <Typography variant="h6">+</Typography>
-            <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>
-              Novo
-            </Typography>
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={openAddButton}
-            onClick={handleCloseAddButton}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <MenuList sx={{ width: 195 }}>
-              <MenuItem onClick={() => setOpenAddService(true)}>
-                <ListItemIcon>
-                  <BuildIcon />
-                </ListItemIcon>
-                <ListItemText>Serviço</ListItemText>
-              </MenuItem>
-              <MenuItem onClick={() => setOpenAddServicePlan(true)}>
-                <ListItemIcon>
-                  <HubIcon />
-                </ListItemIcon>
-                <ListItemText>Plano de Serviço</ListItemText>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </div>
+        <ServicesTableButton
+          anchorEl={anchorEl}
+          openAddButton={openAddButton}
+          handleClickAddButton={handleClickAddButton}
+          handleCloseAddButton={handleCloseAddButton}
+          setOpenAddService={setOpenAddService}
+          setOpenAddServicePlan={setOpenAddServicePlan}
+        />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
