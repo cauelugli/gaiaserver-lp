@@ -1,15 +1,17 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
+
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Typography,
-  Button,
   Grid,
   Paper,
+  Chip,
 } from "@mui/material";
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const ProjectTemplates = ({
@@ -66,18 +68,15 @@ const ProjectTemplates = ({
                     filterTemplatesByDepartment(department._id).map(
                       (template) => (
                         <Grid item key={template._id}>
-                          <Button
-                            color="inherit"
-                            size="small"
+                          <Chip
                             sx={{
-                              mb: 1,
-                              border: "1px solid lightgrey",
-                              borderRadius: 1,
+                              m: 0.5,
+                              // border: "1px solid lightgrey",
+                              // borderRadius: 1,
                             }}
                             onClick={() => setSelectedTemplate(template)}
-                          >
-                            {template.title}
-                          </Button>
+                            label={template.title}
+                          />
                         </Grid>
                       )
                     )
