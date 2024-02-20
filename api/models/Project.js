@@ -61,6 +61,10 @@ const projectSchema = new mongoose.Schema({
   recurrent: {
     type: Boolean,
     default: false
+  },
+  currentStage: {
+    type: Number,
+    default: 0
   }
 });
 

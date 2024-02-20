@@ -218,7 +218,7 @@ export default function ProjectsTable({
                       sx={{
                         cursor: "pointer",
                         backgroundColor:
-                          selectedProject.name === project.name && openDetail
+                          selectedProject._id === project._id && openDetail
                             ? "#eee"
                             : "none",
                         "&:hover": { backgroundColor: "#eee " },
@@ -256,7 +256,32 @@ export default function ProjectsTable({
                         cursor="pointer"
                         align="center"
                       >
-                        <Typography sx={{ fontSize: 13 }}>Fase X/Y</Typography>
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          <Paper
+                            elevation={0}
+                            sx={{
+                              mr: 1,
+                              width: 13,
+                              height: 13,
+                              borderRadius: 100,
+                              backgroundColor:
+                                project.definedStagesColors[0] !== null
+                                  ? project.definedStagesColors[
+                                      project.currentStage
+                                    ]
+                                  : "black",
+                            }}
+                          />
+                          <Typography sx={{ fontSize: 13 }}>
+                            {project.stages[project.currentStage].title} (
+                            {project.currentStage + 1}/{project.stages.length})
+                          </Typography>
+                        </Grid>
                       </TableCell>
                       <TableCell
                         onClick={() => handleOpenDetail(project)}
@@ -291,9 +316,7 @@ export default function ProjectsTable({
                         colSpan={8}
                       >
                         <Collapse
-                          in={
-                            openDetail && selectedProject.name === project.name
-                          }
+                          in={openDetail && selectedProject._id === project._id}
                           timeout="auto"
                           unmountOnExit
                         >

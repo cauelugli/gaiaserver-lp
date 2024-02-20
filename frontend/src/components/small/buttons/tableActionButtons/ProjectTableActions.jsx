@@ -11,10 +11,12 @@ import {
   ListItemIcon,
   ListItemText,
   Menu,
+  Typography,
 } from "@mui/material";
 
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ChatIcon from "@mui/icons-material/Chat";
 import MenuIcon from "@mui/icons-material/Menu";
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 
@@ -61,12 +63,28 @@ export default function ProjectsTableActions(props) {
         <MenuIcon sx={{ color: "#888" }} />
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <List sx={{ width: 230 }}>
+        <List sx={{ width: 200 }}>
+          <ListItemButton disabled onClick={handleClickSubmenu}>
+            <ListItemIcon>
+              <ChatIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: 14 }}>Enviar Comunicado</Typography>
+              }
+              sx={{ ml: -3 }}
+            />
+          </ListItemButton>
           <ListItemButton onClick={handleClickSubmenu}>
             <ListItemIcon>
               <ModeEditIcon />
             </ListItemIcon>
-            <ListItemText primary="Editar Projeto" sx={{ ml: -2 }} />
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: 14 }}>Editar Projeto</Typography>
+              }
+              sx={{ ml: -3 }}
+            />
           </ListItemButton>
           <ListItemButton
             onClick={(item) => handleConfirmDelete(item)}
@@ -75,7 +93,12 @@ export default function ProjectsTableActions(props) {
             <ListItemIcon>
               <DeleteIcon sx={{ color: "red" }} />
             </ListItemIcon>
-            <ListItemText primary="Deletar Projeto" sx={{ ml: -2 }} />
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: 14 }}>Deletar Projeto</Typography>
+              }
+              sx={{ ml: -3 }}
+            />
           </ListItemButton>
         </List>
       </Menu>

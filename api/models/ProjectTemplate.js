@@ -46,6 +46,10 @@ const projectTemplateSchema = new mongoose.Schema({
   definedStagesColors: {
     type: Array,
   },
+  currentStage: {
+    type: Number,
+    default: 0
+  }
 });
 
 const ProjectTemplate = mongoose.model("ProjectTemplate", projectTemplateSchema);
