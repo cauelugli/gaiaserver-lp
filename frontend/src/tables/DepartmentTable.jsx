@@ -592,7 +592,7 @@ export default function DepartmentTable({
                                                 }}
                                               >
                                                 {user.position
-                                                  ? user.position.toUpperCase()
+                                                  ? user.position.name.toUpperCase()
                                                   : "-"}
                                               </Typography>
                                             </Grid>
