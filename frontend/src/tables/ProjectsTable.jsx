@@ -35,6 +35,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import ProjectTaskActions from "../components/small/buttons/ProjectTaskActions";
+import ProjectTableActions from "../components/small/buttons/tableActionButtons/ProjectTableActions";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -90,6 +91,10 @@ export default function ProjectsTable({
     {
       id: "status",
       label: "Status",
+    },
+    {
+      id: "actions",
+      label: "Ações",
     },
   ];
 
@@ -271,11 +276,19 @@ export default function ProjectsTable({
                           {project.status}
                         </Typography>
                       </TableCell>
+                      <TableCell cursor="pointer" align="center">
+                        <ProjectTableActions
+                          configCustomization={"configCustomization"}
+                          selectedItem={project}
+                          refreshData={refreshData}
+                          setRefreshData={setRefreshData}
+                        />
+                      </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell
                         style={{ paddingBottom: 0, paddingTop: 0 }}
-                        colSpan={6}
+                        colSpan={8}
                       >
                         <Collapse
                           in={
@@ -648,7 +661,7 @@ export default function ProjectsTable({
                                                                   fontSize: 13,
                                                                 }}
                                                               >
-                                                                {index+1}
+                                                                {index + 1}
                                                               </Typography>
                                                             </TableCell>
                                                             <TableCell align="left">

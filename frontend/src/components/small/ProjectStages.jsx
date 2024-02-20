@@ -350,7 +350,7 @@ const ProjectStages = ({
             </Popover>
           </Grid>
         </Grid>
-        <Grid sx={{ width: 750, backgroundColor:"red" }} container direction="row">
+        <Grid sx={{ width: 750 }} container direction="row">
           {stagesList.map((stage, index) => (
             <React.Fragment key={index}>
               <Card sx={{ mr: 1, mb: 0.5, width: 240 }}>
