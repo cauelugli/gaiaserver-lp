@@ -190,28 +190,35 @@ router.delete("/:id", async (req, res) => {
     const deletedDepartment = await Department.findByIdAndDelete(departmentId);
     const updatedMembers = [];
     const updatedServices = [];
-    for (const member of deletedDepartment.members) {
-      const updatedMember = await User.updateOne(
-        { _id: member._id || member.id },
+    if (deletedDepartment.members.length !== 0) {
+      for (const member of deletedDepartment.members) {
+        const updatedMember = await User.updateOne(
+          { _id: member._id || member.id },
+          {
+            department: {},
+          }
+        );
+        updatedMembers.push(updatedMember);
+      }
+    }
+    if (deletedDepartment.services.length !== 0) {
+      for (const service of deletedDepartment.services) {
+        const updatedService = await Service.updateOne(
+          { _id: service._id || service.id },
+          { $unset: { department: "" } }
+        );
+        updatedServices.push(updatedService);
+      }
+    }
+    let updatedManager;
+    if (deletedDepartment.manager) {
+      updatedManager = await Manager.findByIdAndUpdate(
+        deletedDepartment.manager._id || deletedDepartment.manager.id,
         {
           department: {},
         }
       );
-      updatedMembers.push(updatedMember);
     }
-    for (const service of deletedDepartment.services) {
-      const updatedService = await Service.updateOne(
-        { _id: service._id || service.id },
-        { $unset: { department: "" } }
-      );
-      updatedServices.push(updatedService);
-    }
-    const updatedManager = await Manager.findByIdAndUpdate(
-      deletedDepartment.manager._id || deletedDepartment.manager.id,
-      {
-        department: {},
-      }
-    );
     res.status(200).json({
       deletedDepartment,
       updatedMembers,

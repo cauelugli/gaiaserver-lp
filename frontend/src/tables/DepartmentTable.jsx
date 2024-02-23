@@ -21,12 +21,13 @@ import {
   IconButton,
 } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
+// import DeleteIcon from "@mui/icons-material/Delete";
+// import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditDepartmentForm from "../forms/edit/EditDepartmentForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+import DepartmentTableActions from "../components/small/buttons/tableActionButtons/DepartmentTableActions";
 
 export default function DepartmentTable({
   configData,
@@ -47,23 +48,23 @@ export default function DepartmentTable({
   const [openDetailServices, setOpenDetailServices] = React.useState(false);
   const [selectedDepartment, setSelectedDepartment] = React.useState([]);
   const [hoveredMember, setHoveredMember] = React.useState(null);
-  const [selectedItem, setSelectedItem] = React.useState("");
+  // const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
 
-  const handleConfirmDelete = (position) => {
-    setSelectedItem(position);
-    setOpenDialog(true);
-  };
+  // const handleConfirmDelete = (position) => {
+  //   setSelectedItem(position);
+  //   setOpenDialog(true);
+  // };
 
   const handleOpenDetail = (customer) => {
     setOpenDetail(!openDetail);
     setSelectedDepartment(customer.name);
   };
 
-  const handleOpenEdit = (customer) => {
-    setOpenEdit(!openEdit);
-    setSelectedDepartment(customer);
-  };
+  // const handleOpenEdit = (customer) => {
+  //   setOpenEdit(!openEdit);
+  //   setSelectedDepartment(customer);
+  // };
 
   const tableHeaderRow = [
     {
@@ -81,6 +82,10 @@ export default function DepartmentTable({
     {
       id: "members",
       label: "Nº de Colaboradores",
+    },
+    {
+      id: "actions",
+      label: "Ações",
     },
   ];
 
@@ -262,6 +267,19 @@ export default function DepartmentTable({
                       <Typography sx={{ fontSize: 13 }}>
                         {department.members.length}
                       </Typography>
+                    </TableCell>
+                    <TableCell
+                      cursor="pointer"
+                      align="center"
+                      onClick={() => setSelectedDepartment(department)}
+                    >
+                      <DepartmentTableActions
+                        configData={configData}
+                        setOpenEdit={setOpenEdit}
+                        selectedItem={selectedDepartment}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                      />
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -668,22 +686,6 @@ export default function DepartmentTable({
                             </Collapse>
                           </Box>
                         )}
-                        <Box sx={{ my: 2, ml: "90%" }}>
-                          <ModeEditIcon
-                            cursor="pointer"
-                            option="delete"
-                            onClick={() => handleOpenEdit(department)}
-                            sx={{ color: "grey", mr: 2 }}
-                          />
-                          {configData.departmentsCanBeDeleted && (
-                            <DeleteIcon
-                              cursor="pointer"
-                              option="delete"
-                              onClick={() => handleConfirmDelete(department)}
-                              sx={{ color: "#ff4444" }}
-                            />
-                          )}
-                        </Box>
                       </Collapse>
                     </TableCell>
                   </TableRow>
@@ -727,7 +729,7 @@ export default function DepartmentTable({
       {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
-            selectedItem={selectedItem}
+            selectedItem={selectedDepartment}
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
             toast={toast}
@@ -735,7 +737,7 @@ export default function DepartmentTable({
             refreshData={refreshData}
             endpoint="departments"
             successMessage={`${
-              selectedItem.name && selectedItem.name
+              selectedDepartment.name && selectedDepartment.name
             } Deletado com Sucesso`}
           />
         </Dialog>
