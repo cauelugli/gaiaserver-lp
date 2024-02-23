@@ -313,7 +313,7 @@ const AddUserForm = ({
           </Grid>
         </Grid>
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization[0].customization}/>
+      <FormEndLineTenant configCustomization={configCustomization}/>
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

@@ -91,7 +91,7 @@ export default function AddRoleForm({
         </Grid>
       </DialogContent>
       <FormEndLineTenant
-        configCustomization={configCustomization[0].customization}
+        configCustomization={configCustomization}
         extraSmall
       />
       <DialogActions>
