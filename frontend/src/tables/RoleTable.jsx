@@ -29,6 +29,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditRoleForm from "../forms/edit/EditRoleForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import PositionMembers from "../components/small/PositionMembers";
+import RoleTableActions from "../components/small/buttons/tableActionButtons/RoleTableActions";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -191,30 +192,23 @@ export default function RoleTable({
                   </TableCell>
 
                   <TableCell align="center">
-                    <PositionMembers members={row.members} users={users} managers={managers} />
+                    <PositionMembers
+                      members={row.members}
+                      users={users}
+                      managers={managers}
+                    />
                   </TableCell>
-                  <TableCell align="center" sx={{ py: 0 }}>
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="center"
-                      alignItems="center"
-                    >
-                      <IconButton>
-                        <ModeEditIcon
-                          cursor="pointer"
-                          onClick={() => handleOpenEdit(row)}
-                          sx={{ color: "#333" }}
-                        />
-                      </IconButton>
-                      <IconButton>
-                        <DeleteIcon
-                          cursor="pointer"
-                          onClick={() => handleConfirmDelete(row)}
-                          sx={{ color: "#ff4444" }}
-                        />
-                      </IconButton>
-                    </Grid>
+                  <TableCell
+                    cursor="pointer"
+                    align="center"
+                    onClick={() => setSelectedRole(row)}
+                  >
+                    <RoleTableActions
+                      setOpenEdit={setOpenEdit}
+                      selectedItem={selectedRole}
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
+                    />
                   </TableCell>
                 </TableRow>
               ))
