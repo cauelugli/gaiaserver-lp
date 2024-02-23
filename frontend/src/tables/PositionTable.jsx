@@ -25,6 +25,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditPositionForm from "../forms/edit/EditPositionForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import PositionMembers from "../components/small/PositionMembers";
+import PositionTableActions from "../components/small/buttons/tableActionButtons/PositionTableActions";
 
 export default function PositionTable({
   configData,
@@ -172,32 +173,24 @@ export default function PositionTable({
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        <PositionMembers members={position.members} users={users} managers=""/>
+                        <PositionMembers
+                          members={position.members}
+                          users={users}
+                          managers=""
+                        />
                       </TableCell>
-                      <TableCell align="center" sx={{ py: 0 }}>
-                        <Grid
-                          container
-                          direction="row"
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <IconButton>
-                            <ModeEditIcon
-                              cursor="pointer"
-                              onClick={() => handleOpenEdit(position)}
-                              sx={{ color: "#333" }}
-                            />
-                          </IconButton>
-                          {configData.departmentsCanBeDeleted && (
-                            <IconButton>
-                              <DeleteIcon
-                                cursor="pointer"
-                                onClick={() => handleConfirmDelete(position)}
-                                sx={{ color: "#ff4444" }}
-                              />
-                            </IconButton>
-                          )}
-                        </Grid>
+                      <TableCell
+                        cursor="pointer"
+                        align="center"
+                        onClick={() => setSelectedPosition(position)}
+                      >
+                        <PositionTableActions
+                          configData={configData}
+                          setOpenEdit={setOpenEdit}
+                          selectedItem={selectedPosition}
+                          refreshData={refreshData}
+                          setRefreshData={setRefreshData}
+                        />
                       </TableCell>
                     </TableRow>
                   </>
