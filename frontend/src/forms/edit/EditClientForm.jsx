@@ -91,7 +91,7 @@ const EditClientForm = ({
 
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle>Novo Cliente Pessoa Física</DialogTitle>
+      <DialogTitle>Editando - {selectedClient.name}</DialogTitle>
       <DialogContent>
         <Typography sx={{ my: 1, fontWeight: "bold" }}>Dados</Typography>
         <Grid container direction="column" alignItems="center">
