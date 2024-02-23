@@ -18,11 +18,9 @@ import {
   Typography,
 } from "@mui/material";
 
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
-
 import EditUserForm from "../forms/edit/EditUserForm";
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+// import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+import UserTableActions from "../components/small/buttons/tableActionButtons/UserTableActions";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -38,13 +36,13 @@ export default function UserTable({
 }) {
   const [selectedUser, setSelectedUser] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState("");
-  const [openDialog, setOpenDialog] = React.useState(false);
+  // const [selectedItem, setSelectedItem] = React.useState("");
+  // const [openDialog, setOpenDialog] = React.useState(false);
 
-  const handleConfirmDelete = (position) => {
-    setSelectedItem(position);
-    setOpenDialog(true);
-  };
+  // const handleConfirmDelete = (position) => {
+  //   setSelectedItem(position);
+  //   setOpenDialog(true);
+  // };
 
   const [users, setUsers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
@@ -66,10 +64,10 @@ export default function UserTable({
     fetchData();
   }, [refreshData]);
 
-  const handleOpenEdit = (user) => {
-    setOpenEdit(!openEdit);
-    setSelectedUser(user);
-  };
+  // const handleOpenEdit = (user) => {
+  //   setOpenEdit(!openEdit);
+  //   setSelectedUser(user);
+  // };
 
   const tableHeaderRow = [
     {
@@ -262,26 +260,19 @@ export default function UserTable({
                         )}
                       </Typography>
                     </TableCell>
-                    <TableCell>
-                      <Grid
-                        container
-                        direction="row"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <ModeEditIcon
-                          cursor="pointer"
-                          onClick={() => handleOpenEdit(row)}
-                          sx={{ color: "grey", mr: 2 }}
-                        />
-                        {configData.usersCanBeDeleted && (
-                          <DeleteIcon
-                            cursor="pointer"
-                            onClick={() => handleConfirmDelete(row)}
-                            sx={{ color: "#ff4444" }}
-                          />
-                        )}
-                      </Grid>
+
+                    <TableCell
+                      cursor="pointer"
+                      align="center"
+                      onClick={() => setSelectedUser(row)}
+                    >
+                      <UserTableActions
+                        configData={configData}
+                        setOpenEdit={setOpenEdit}
+                        selectedItem={row}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                      />
                     </TableCell>
                   </TableRow>
                 </React.Fragment>
@@ -318,22 +309,6 @@ export default function UserTable({
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
-            />
-          </Dialog>
-        )}
-        {openDialog && (
-          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-            <GenericDeleteForm
-              selectedItem={selectedItem}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-              endpoint="users"
-              successMessage={`${
-                selectedItem.name && selectedItem.name
-              } Deletado com Sucesso`}
             />
           </Dialog>
         )}

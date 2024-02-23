@@ -19,11 +19,8 @@ import {
   Typography,
 } from "@mui/material";
 
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
-
 import EditManagerForm from "../forms/edit/EditManagerForm";
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+import ManagerTableActions from "../components/small/buttons/tableActionButtons/ManagerTableActions";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -38,13 +35,6 @@ export default function ManagerTable({
 }) {
   const [selectedManager, setSelectedManager] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState("");
-  const [openDialog, setOpenDialog] = React.useState(false);
-
-  const handleConfirmDelete = (position) => {
-    setSelectedItem(position);
-    setOpenDialog(true);
-  };
 
   const [managers, setManagers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
@@ -62,11 +52,6 @@ export default function ManagerTable({
     };
     fetchData();
   }, [refreshData]);
-
-  const handleOpenEdit = (manager) => {
-    setOpenEdit(!openEdit);
-    setSelectedManager(manager);
-  };
 
   const tableHeaderRow = [
     {
@@ -218,7 +203,7 @@ export default function ManagerTable({
                               borderRadius: 50,
                               backgroundColor: row.department.color,
                             }}
-                          ></Paper>
+                          />
                           <Typography sx={{ fontSize: 13 }}>
                             {row.department.name}
                           </Typography>
@@ -228,27 +213,19 @@ export default function ManagerTable({
                       )}
                     </Typography>
                   </TableCell>
-                  <TableCell>
-                    <Grid
-                      container
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="center"
+                  <TableCell
+                      cursor="pointer"
+                      align="center"
+                      onClick={() => setSelectedManager(row)}
                     >
-                      <ModeEditIcon
-                        cursor="pointer"
-                        onClick={() => handleOpenEdit(row)}
-                        sx={{ color: "grey", mr: 2 }}
+                      <ManagerTableActions
+                        configData={configData}
+                        setOpenEdit={setOpenEdit}
+                        selectedItem={selectedManager}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
                       />
-                      {configData.managersCanBeDeleted && (
-                        <DeleteIcon
-                          cursor="pointer"
-                          onClick={() => handleConfirmDelete(row)}
-                          sx={{ color: "#ff4444" }}
-                        />
-                      )}
-                    </Grid>
-                  </TableCell>
+                    </TableCell>
                 </TableRow>
               ))
               .slice(startIndex, endIndex)}
@@ -282,22 +259,6 @@ export default function ManagerTable({
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
-            />
-          </Dialog>
-        )}
-        {openDialog && (
-          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-            <GenericDeleteForm
-              selectedItem={selectedItem}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-              endpoint="managers"
-              successMessage={`${
-                selectedItem.name && selectedItem.name
-              } Deletado com Sucesso`}
             />
           </Dialog>
         )}

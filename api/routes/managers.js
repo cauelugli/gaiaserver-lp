@@ -92,7 +92,7 @@ router.delete("/:id", async (req, res) => {
 
     res.status(200).json({ deletedManager, updatedDepartment });
   } catch (err) {
-    console.log(err);
+    console.log("err", err);
     res.status(500).json(err);
   }
 });
@@ -238,7 +238,6 @@ router.put("/", async (req, res) => {
     res.status(500).json(err);
   }
 });
-
 
 // GET MANAGER'S NOTIFICATIONS
 router.get('/notifications/:userId', async (req, res) => {
