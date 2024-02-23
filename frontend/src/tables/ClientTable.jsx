@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -31,8 +32,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditClientForm from "../forms/edit/EditClientForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
-
-import CustomerTableActionsButton from "../components/small/buttons/CustomerTableActionsButton";
+import CustomerTableActions from "../components/small/buttons/tableActionButtons/CustomerTableActions";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -53,11 +53,6 @@ export default function ClientTable({
   const [openDetailPedidos, setOpenDetailPedidos] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
-
-  const handleConfirmDelete = (position) => {
-    setSelectedItem(position);
-    setOpenDialog(true);
-  };
 
   const [clients, setClients] = React.useState([]);
 
@@ -95,6 +90,10 @@ export default function ClientTable({
     {
       id: "phone",
       label: "Telefone",
+    },
+    {
+      id: "actions",
+      label: "Ações",
     },
   ];
 
@@ -235,6 +234,18 @@ export default function ClientTable({
                       <Typography sx={{ fontSize: 13 }}>
                         {client.phone}
                       </Typography>
+                    </TableCell>
+                    <TableCell
+                      cursor="pointer"
+                      align="left"
+                      onClick={() => setSelectedClient(client)}
+                    >
+                      <CustomerTableActions
+                        setOpenEdit={setOpenEdit}
+                        selectedItem={selectedClient}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                      />
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -512,19 +523,6 @@ export default function ClientTable({
                               </TableBody>
                             </Table>
                           </Collapse>
-                        </Box>
-
-                        <Box sx={{ my: 4, ml: "70%" }}>
-                          <CustomerTableActionsButton
-                            configData={configData}
-                            openEdit={openEdit}
-                            handleOpenEdit={handleOpenEdit}
-                            customer={client}
-                            tableType="Client"
-                            handleConfirmDelete={handleConfirmDelete}
-                            onClick={() => handleConfirmDelete(client)}
-                            openDialog={openDialog}
-                          />
                         </Box>
                       </Collapse>
                     </TableCell>

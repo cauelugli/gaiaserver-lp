@@ -50,7 +50,7 @@ router.put("/", async (req, res) => {
   try {
     const existingNameUser = await Customer.findOne({ name });
     if (existingNameUser) {
-      if (!req.body.config.allowSameNameCustomer) {
+      if (!req.body.config.allowSameNameCustomer && name !== req.body.prevData.name) {
         return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
       }
     }
@@ -95,6 +95,7 @@ const formatString = (value, mask) => {
 
   return result;
 };
+
 router.post("/importContacts", async (req, res) => {
   try {
     const fileData = req.body.fileData.slice(1, -1);

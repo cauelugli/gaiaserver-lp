@@ -36,8 +36,9 @@ const EditCustomerForm = ({
   refreshData,
   setRefreshData,
   toast,
-  config
+  config,
 }) => {
+  const prevData = selectedCustomer;
   const [name, setName] = React.useState(selectedCustomer.name);
   const [address, setAddress] = React.useState(selectedCustomer.address);
   const [phone, setPhone] = React.useState(selectedCustomer.phone);
@@ -87,7 +88,8 @@ const EditCustomerForm = ({
         employees,
         website,
         cnpj,
-        config
+        config,
+        prevData: { name: prevData.name },
       });
       if (res.data) {
         toast.success("Cliente Editado!", {

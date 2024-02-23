@@ -125,7 +125,7 @@ const EditClientForm = ({
                 marginTop: "1%",
                 borderColor: "#eee",
               }}
-              mask="(00) 0000-0000"
+              mask="(00) 00000-0000"
               definitions={{
                 "#": /[1-9]/,
               }}

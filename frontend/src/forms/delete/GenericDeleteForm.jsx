@@ -32,7 +32,7 @@ const GenericDeleteForm = ({
       setOpenDialog(false);
       setRefreshData(!refreshData)
     } catch (err) {
-      alert("Oops, something went wrong...");
+      alert("Ops, houve um erro na deleção...");
       console.log(err);
     }
   };

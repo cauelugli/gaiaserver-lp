@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import * as React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -32,9 +33,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditCustomerForm from "../forms/edit/EditCustomerForm";
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
-
-import CustomerTableActionsButton from "../components/small/buttons/CustomerTableActionsButton";
+import CustomerTableActions from "../components/small/buttons/tableActionButtons/CustomerTableActions";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -54,13 +53,6 @@ export default function CustomerTable({
   const [openDetailDominio, setOpenDetailDominio] = React.useState(false);
   const [openDetailPedidos, setOpenDetailPedidos] = React.useState(false);
   const [selectedCustomer, setSelectedCustomer] = React.useState([]);
-  const [selectedItem, setSelectedItem] = React.useState("");
-  const [openDialog, setOpenDialog] = React.useState(false);
-
-  const handleConfirmDelete = (position) => {
-    setSelectedItem(position);
-    setOpenDialog(true);
-  };
 
   const [customers, setCustomers] = React.useState([]);
 
@@ -81,11 +73,6 @@ export default function CustomerTable({
     setSelectedCustomer(customer.name);
   };
 
-  const handleOpenEdit = (customer) => {
-    setOpenEdit(!openEdit);
-    setSelectedCustomer(customer);
-  };
-
   const tableHeaderRow = [
     {
       id: "logo",
@@ -102,6 +89,10 @@ export default function CustomerTable({
     {
       id: "mainContactName",
       label: "Contato Principal",
+    },
+    {
+      id: "actions",
+      label: "Ações",
     },
   ];
 
@@ -274,6 +265,18 @@ export default function CustomerTable({
                       <FormHelperText sx={{ mt: -0.5 }}>
                         ({customer.mainContactEmail})
                       </FormHelperText>
+                    </TableCell>
+                    <TableCell
+                      cursor="pointer"
+                      align="left"
+                      onClick={() => setSelectedCustomer(customer)}
+                    >
+                      <CustomerTableActions
+                        setOpenEdit={setOpenEdit}
+                        selectedItem={selectedCustomer}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                      />
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -640,20 +643,6 @@ export default function CustomerTable({
                             </Table>
                           </Collapse>
                         </Box>
-
-                        <Box sx={{ my: 4, ml: "70%" }}>
-                          <CustomerTableActionsButton
-                            configData={configData}
-                            openEdit={openEdit}
-                            handleOpenEdit={handleOpenEdit}
-                            customer={customer}
-                            tableType="Customer"
-                            handleConfirmDelete={handleConfirmDelete}
-                            onClick={() => handleConfirmDelete(customer)}
-                            openDialog={openDialog}
-                          />
-                          
-                        </Box>
                       </Collapse>
                     </TableCell>
                   </TableRow>
@@ -690,22 +679,6 @@ export default function CustomerTable({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
-          />
-        </Dialog>
-      )}
-      {openDialog && (
-        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-          <GenericDeleteForm
-            selectedItem={selectedItem}
-            openDialog={openDialog}
-            setOpenDialog={setOpenDialog}
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-            toast={toast}
-            endpoint="customers"
-            successMessage={`${
-              selectedItem.name && selectedItem.name
-            } Deletado com Sucesso`}
           />
         </Dialog>
       )}

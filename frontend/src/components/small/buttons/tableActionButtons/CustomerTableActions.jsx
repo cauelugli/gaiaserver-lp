@@ -16,11 +16,11 @@ import {
 
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ChatIcon from "@mui/icons-material/Chat";
 import MenuIcon from "@mui/icons-material/Menu";
+
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 
-export default function ProjectsTableActions(props) {
+export default function CustomerTableActions(props) {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState(props.selectedItem);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -33,12 +33,6 @@ export default function ProjectsTableActions(props) {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const [openSubmenu, setOpenSubmenu] = useState(false);
-
-  const handleClickSubmenu = () => {
-    setOpenSubmenu(!openSubmenu);
   };
 
   const handleConfirmDelete = () => {
@@ -54,33 +48,23 @@ export default function ProjectsTableActions(props) {
         size="small"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        sx={{
-          borderRadius: 3,
-          "&:hover": { borderColor: "#eee" },
-        }}
+        sx={{ "&:hover": { borderColor: "#eee" } }}
       >
-        <MenuIcon sx={{ color: "#888" }} />
+        <MenuIcon sx={{ color: "#888", mr: 3 }} />
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <List sx={{ width: 200 }}>
-          <ListItemButton disabled onClick={handleClickSubmenu}>
-            <ListItemIcon>
-              <ChatIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary={
-                <Typography sx={{ fontSize: 14 }}>Enviar Comunicado</Typography>
-              }
-              sx={{ ml: -3 }}
-            />
-          </ListItemButton>
-          <ListItemButton onClick={handleClickSubmenu}>
+          <ListItemButton
+            onClick={() => {
+              props.setOpenEdit(true), setAnchorEl(null);
+            }}
+          >
             <ListItemIcon>
               <ModeEditIcon />
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>Editar Projeto</Typography>
+                <Typography sx={{ fontSize: 14 }}>Editar Cliente</Typography>
               }
               sx={{ ml: -3 }}
             />
@@ -94,7 +78,7 @@ export default function ProjectsTableActions(props) {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>Deletar Projeto</Typography>
+                <Typography sx={{ fontSize: 14 }}>Deletar Cliente</Typography>
               }
               sx={{ ml: -3 }}
             />
@@ -104,15 +88,15 @@ export default function ProjectsTableActions(props) {
       {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
-            selectedItem={selectedItem}
+            selectedItem={props.selectedItem}
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
             toast={toast}
-            endpoint="projects"
+            endpoint={props.selectedItem.cpf ? "clients" : "customers"}
             successMessage={`${
-              selectedItem.name && selectedItem.name
+              props.selectedItem.name && props.selectedItem.name
             } Deletado com Sucesso`}
           />
         </Dialog>
