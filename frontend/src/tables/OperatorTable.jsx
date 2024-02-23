@@ -23,11 +23,11 @@ import {
 } from "@mui/material";
 
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import LockIcon from "@mui/icons-material/Lock";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditOperatorForm from "../forms/edit/EditOperatorForm";
 import DeleteOperatorForm from "../forms/delete/DeleteOperatorForm";
+import OperatorTableActions from "../components/small/buttons/tableActionButtons/OperatorTableActions";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -44,7 +44,7 @@ export default function OperatorTable({
   const [selectedOperator, setSelectedOperator] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
-  const [option, setOption] = React.useState("false");
+  const [option, setOption] = React.useState("");
 
   const [operators, setOperators] = React.useState([]);
 
@@ -223,35 +223,21 @@ export default function OperatorTable({
                           {row.role ? row.role.name : "-"}
                         </Typography>
                       </TableCell>
-                      <TableCell align="center" sx={{ py: 0 }}>
-                        <Grid
-                          container
-                          direction="row"
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <IconButton>
-                            <ModeEditIcon
-                              cursor="pointer"
-                              onClick={() => handleOpenEdit(row, "operator")}
-                              sx={{ color: "#333" }}
-                            />
-                          </IconButton>
-                          <IconButton sx={{ mx: -1 }}>
-                            <LockIcon
-                              cursor="pointer"
-                              onClick={() => handleOpenEdit(row, "password")}
-                              sx={{ color: "#333" }}
-                            />
-                          </IconButton>
-                          <IconButton>
-                            <DeleteIcon
-                              cursor="pointer"
-                              onClick={() => handleConfirmDelete(row)}
-                              sx={{ color: "#ff4444" }}
-                            />
-                          </IconButton>
-                        </Grid>
+
+                      <TableCell
+                        cursor="pointer"
+                        align="center"
+                        onClick={() => setSelectedOperator(row)}
+                      >
+                        <OperatorTableActions
+                          configData={configData}
+                          setOpenEdit={setOpenEdit}
+                          handleConfirmDelete={handleConfirmDelete}
+                          selectedItem={selectedOperator}
+                          refreshData={refreshData}
+                          setOption={setOption}
+                          setRefreshData={setRefreshData}
+                        />
                       </TableCell>
                     </TableRow>
                   ) : null
@@ -292,6 +278,7 @@ export default function OperatorTable({
             />
           </Dialog>
         )}
+
         {openDelete && (
           <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
             <DeleteOperatorForm

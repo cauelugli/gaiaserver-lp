@@ -167,7 +167,7 @@ export default function ManagerTable({
               .map((row) => (
                 <TableRow
                   key={row._id}
-                  sx={{ "&:hover": { backgroundColor: "#eee " } }}
+                  sx={{ "&:hover": { backgroundColor: "#eee" } }}
                 >
                   <TableCell sx={{ py: 0 }}>
                     <Avatar
@@ -214,18 +214,18 @@ export default function ManagerTable({
                     </Typography>
                   </TableCell>
                   <TableCell
-                      cursor="pointer"
-                      align="center"
-                      onClick={() => setSelectedManager(row)}
-                    >
-                      <ManagerTableActions
-                        configData={configData}
-                        setOpenEdit={setOpenEdit}
-                        selectedItem={selectedManager}
-                        refreshData={refreshData}
-                        setRefreshData={setRefreshData}
-                      />
-                    </TableCell>
+                    cursor="pointer"
+                    align="center"
+                    onClick={() => setSelectedManager(row)}
+                  >
+                    <ManagerTableActions
+                      configData={configData}
+                      setOpenEdit={setOpenEdit}
+                      selectedItem={selectedManager}
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
+                    />
+                  </TableCell>
                 </TableRow>
               ))
               .slice(startIndex, endIndex)}

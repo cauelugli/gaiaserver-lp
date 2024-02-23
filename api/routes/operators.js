@@ -47,10 +47,6 @@ router.put("/", async (req, res) => {
           },
           { new: true }
         );
-        await Role.findByIdAndUpdate(req.body.role.id, {
-          $addToSet: { members: req.body.operatorId },
-        });
-
         res.status(200).json(updatedOperator);
       } catch (err) {
         console.log(err);

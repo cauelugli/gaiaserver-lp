@@ -58,10 +58,10 @@ export default function NotificationsButton({
 
   let adjustEndpoint;
 
-  if (!user.position) {
+  if (!user.position.name) {
     adjustEndpoint = "managers";
   } else {
-    if (user.position.startsWith("Gerente")) {
+    if (user.position && user.position.name.startsWith("Gerente")) {
       adjustEndpoint = "managers";
     } else {
       adjustEndpoint = "users";
@@ -69,7 +69,6 @@ export default function NotificationsButton({
   }
 
   useEffect(() => {
-    // Adicione um ouvinte para o evento de atualização de notificações via socket
     const handleNotificationsUpdate = (data) => {
       setNotifications(data.notifications);
     };
