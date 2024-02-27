@@ -118,12 +118,12 @@ const initSocket = (server) => {
             return user;
           })
         );
-    
+
         for (const user of usersToNotify) {
           if (!user) {
             continue;
           }
-    
+
           const newNotification = {
             id: Date.now(),
             type: "Novo Projeto",
@@ -131,9 +131,9 @@ const initSocket = (server) => {
             sender: data.sender,
             status: "Não Lida",
           };
-    
+
           let updatedUser;
-    
+
           if (user instanceof User) {
             await User.updateOne(
               { _id: user._id },
@@ -147,7 +147,60 @@ const initSocket = (server) => {
             );
             updatedUser = await Manager.findById(user._id);
           }
-    
+
+          const receiverSocketId = userSocketMap[user._id];
+          if (receiverSocketId) {
+            io.to(receiverSocketId).emit("notificationsUpdate", {
+              notifications: updatedUser.notifications,
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error processing whenProjectIsCreated:", error);
+      }
+    });
+
+    socket.on("notifyTaskAssignees", async (data) => {
+      try {
+        const usersToNotify = await Promise.all(
+          data.list.map(async (userId) => {
+            let user = await User.findById(userId);
+            if (!user) {
+              user = await Manager.findById(userId);
+            }
+            return user;
+          })
+        );
+
+        for (const user of usersToNotify) {
+          if (!user) {
+            continue;
+          }
+
+          const newNotification = {
+            id: Date.now(),
+            type: "Nova Interação em Tarefa",
+            noteBody: `Olá! Há um novo comentário de ${data.sender} em uma tarefa em que você é Designado, no projeto ${data.projectName}.`,
+            sender: data.sender,
+            status: "Não Lida",
+          };
+
+          let updatedUser;
+
+          if (user instanceof User) {
+            await User.updateOne(
+              { _id: user._id },
+              { $set: { [`notifications.${Date.now()}`]: newNotification } }
+            );
+            updatedUser = await User.findById(user._id);
+          } else if (user instanceof Manager) {
+            await Manager.updateOne(
+              { _id: user._id },
+              { $set: { [`notifications.${Date.now()}`]: newNotification } }
+            );
+            updatedUser = await Manager.findById(user._id);
+          }
+
           const receiverSocketId = userSocketMap[user._id];
           if (receiverSocketId) {
             io.to(receiverSocketId).emit("notificationsUpdate", {

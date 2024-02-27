@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
+import { io } from "socket.io-client";
 import dayjs from "dayjs";
 import axios from "axios";
 
@@ -12,7 +13,6 @@ import {
   AccordionSummary,
   Avatar,
   Box,
-  Button,
   Collapse,
   Dialog,
   Grid,
@@ -40,6 +40,8 @@ import ProjectTableActions from "../components/small/buttons/tableActionButtons/
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
+
+const socket = io("http://localhost:3000");
 
 export default function ProjectsTable({
   user,
@@ -165,6 +167,15 @@ export default function ProjectsTable({
         setSelectedStageIndex(null);
         setIsAddingInteraction(false);
         setRefreshData(!refreshData);
+        const memberIds = response.data.stages[selectedStageIndex].tasks[
+          selectedTaskIndex
+        ].assignees.map((assignee) => assignee.id);
+        socket.emit("notifyTaskAssignees", {
+          sender: user.name,
+          list: memberIds,
+          date: dayjs(Date.now()).format("DD/MM/YYYY"),
+          projectName: selectedProject.name,
+        });
       } else {
         console.error("Erro ao adicionar interação:", response.status);
       }
