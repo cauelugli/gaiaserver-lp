@@ -58,14 +58,18 @@ export default function NotificationsButton({
 
   let adjustEndpoint;
 
-  if (!user.position.name) {
-    adjustEndpoint = "managers";
-  } else {
-    if (user.position && user.position.name.startsWith("Gerente")) {
+  if (user.position) {
+    if (!user.position.name) {
       adjustEndpoint = "managers";
     } else {
-      adjustEndpoint = "users";
+      if (user.position && user.position.name.startsWith("Gerente")) {
+        adjustEndpoint = "managers";
+      } else {
+        adjustEndpoint = "users";
+      }
     }
+  } else {
+    adjustEndpoint = "managers";
   }
 
   useEffect(() => {
