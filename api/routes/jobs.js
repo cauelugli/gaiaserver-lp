@@ -97,7 +97,11 @@ router.post("/", async (req, res) => {
     doc.pipe(fs.createWriteStream(pdfPath));
 
     doc.image("../uploads/logo.png", 5, 5, { width: 120 });
-    doc.image(`../uploads/${req.body.customer.image}`, 450, 5, { width: 120 });
+    if (req.body.customer.image) {
+      doc.image(`../uploads/${req.body.customer.image}`, 450, 5, {
+        width: 120,
+      });
+    }
     doc.moveUp(3);
 
     doc
@@ -252,8 +256,7 @@ router.put("/", async (req, res) => {
         { new: true }
       );
       res.status(200).json(updatedJob);
-    } 
-    else if (option === "requestApproval") {
+    } else if (option === "requestApproval") {
       const updatedJob = await Job.findByIdAndUpdate(
         jobId,
         {
@@ -273,8 +276,7 @@ router.put("/", async (req, res) => {
       );
 
       res.status(200).json({ updatedJob });
-    } 
-    else if (option === "managerApproval") {
+    } else if (option === "managerApproval") {
       const updatedJob = await Job.findByIdAndUpdate(
         jobId,
         {
