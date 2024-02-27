@@ -294,7 +294,7 @@ export default function JobTable({
                     sx={{
                       cursor: "pointer",
                       backgroundColor:
-                        selectedJob.title === job.title && openDetail
+                        selectedJob._id === job._id && openDetail
                           ? "#eee"
                           : "none",
                       "&:hover": { backgroundColor: "#eee " },
@@ -377,7 +377,7 @@ export default function JobTable({
                       colSpan={6}
                     >
                       <Collapse
-                        in={openDetail && selectedJob.title === job.title}
+                        in={openDetail && selectedJob._id === job._id}
                         timeout="auto"
                         unmountOnExit
                       >
@@ -480,7 +480,7 @@ export default function JobTable({
                           <Collapse
                             in={
                               openDetailDescrição &&
-                              selectedJob.title === job.title
+                              selectedJob._id === job._id
                             }
                             timeout="auto"
                             unmountOnExit
@@ -534,7 +534,7 @@ export default function JobTable({
                           <Collapse
                             in={
                               openDetailDepartamento &&
-                              selectedJob.title === job.title
+                              selectedJob._id === job._id
                             }
                             timeout="auto"
                             unmountOnExit
@@ -650,7 +650,7 @@ export default function JobTable({
                           <Collapse
                             in={
                               openDetailOrçamento &&
-                              selectedJob.title === job.title
+                              selectedJob._id === job._id
                             }
                             timeout="auto"
                             unmountOnExit
@@ -748,7 +748,7 @@ export default function JobTable({
                           <Collapse
                             in={
                               openDetailAtividades &&
-                              selectedJob.title === job.title
+                              selectedJob._id === job._id
                             }
                             timeout="auto"
                             unmountOnExit
