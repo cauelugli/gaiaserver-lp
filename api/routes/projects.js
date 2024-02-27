@@ -147,7 +147,6 @@ router.post("/resolveTask", async (req, res) => {
       );
 
       if (allTasksResolved) {
-        // Se todas as tarefas estiverem resolvidas, atualize o status do estágio para "Resolvido"
         const stageStatusPath = `stages.${stageIndex}.status`;
         await Project.updateOne(
           { _id: projectId },
@@ -157,12 +156,10 @@ router.post("/resolveTask", async (req, res) => {
           }
         );
 
-        // Buscar o projeto atualizado para retornar na resposta
         const projectWithUpdatedStage = await Project.findById(projectId);
 
         res.status(200).json(projectWithUpdatedStage);
       } else {
-        // Se nem todas as tarefas estiverem resolvidas, apenas retorna o projeto com a tarefa atualizada
         res.status(200).json(updatedProject);
       }
     } else {
