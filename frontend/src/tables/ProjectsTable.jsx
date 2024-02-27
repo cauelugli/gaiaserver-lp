@@ -59,8 +59,10 @@ export default function ProjectsTable({
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
   const [isAddingInteraction, setIsAddingInteraction] = React.useState(false);
+  const [isAddingResolution, setIsAddingResolution] = React.useState(false);
 
   const [newInteractionText, setNewInteractionText] = React.useState("");
+  const [resolutionText, setResolutionText] = React.useState("");
   const [selectedStageIndex, setSelectedStageIndex] = React.useState(null);
   const [selectedTaskIndex, setSelectedTaskIndex] = React.useState(null);
 
@@ -184,6 +186,40 @@ export default function ProjectsTable({
     }
   };
 
+  const handleResolveTask = async () => {
+    try {
+      const response = await api.post("/projects/resolveTask", {
+        projectId: selectedProject._id,
+        stageIndex: selectedStageIndex,
+        taskIndex: selectedTaskIndex,
+        resolution: resolutionText,
+        user: { id: user._id, name: user.name },
+        createdAt: dayjs().format("DD/MM/YYYY"),
+      });
+
+      if (response.status === 200) {
+        setResolutionText("");
+        setSelectedTaskIndex(null);
+        setSelectedStageIndex(null);
+        setIsAddingResolution(false);
+        setRefreshData(!refreshData);
+        const memberIds = response.data.stages[selectedStageIndex].tasks[
+          selectedTaskIndex
+        ].assignees.map((assignee) => assignee.id);
+        socket.emit("resolvedTask", {
+          sender: user.name,
+          list: memberIds,
+          date: dayjs(Date.now()).format("DD/MM/YYYY"),
+          projectName: selectedProject.name,
+        });
+      } else {
+        console.error("Erro ao Resolver Tarefa:", response.status);
+      }
+    } catch (error) {
+      console.error("Erro ao Resolver Tarefa:", error);
+    }
+  };
+
   return (
     <>
       <Box sx={{ minWidth: "1250px" }}>
@@ -289,8 +325,12 @@ export default function ProjectsTable({
                             }}
                           />
                           <Typography sx={{ fontSize: 13 }}>
-                            {project.stages[project.currentStage].title} (
-                            {project.currentStage + 1}/{project.stages.length})
+                            {project.stages.length > project.currentStage
+                              ? project.stages[project.currentStage].title(
+                                  project.currentStage +
+                                    1 / project.stages.length
+                                )
+                              : "Resolvido"}
                           </Typography>
                         </Grid>
                       </TableCell>
@@ -739,7 +779,101 @@ export default function ProjectsTable({
                                                   </Table>
                                                 )}
                                               </Grid>
+
+                                              {task.status === "Resolvido" && (
+                                                <Grid sx={{ mt: 3 }}>
+                                                  <Typography
+                                                    sx={{
+                                                      fontSize: 16,
+                                                      fontWeight: "bold",
+                                                    }}
+                                                  >
+                                                    Resolução
+                                                  </Typography>
+                                                  <Table
+                                                    size="small"
+                                                    sx={{ ml: 2 }}
+                                                  >
+                                                    <TableHead>
+                                                      <TableRow>
+                                                        <TableCell>
+                                                          <Typography
+                                                            sx={{
+                                                              fontSize: 13,
+                                                              color: "#777",
+                                                            }}
+                                                          >
+                                                            Data
+                                                          </Typography>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                          <Typography
+                                                            sx={{
+                                                              fontSize: 13,
+                                                              color: "#777",
+                                                            }}
+                                                          >
+                                                            Colaborador
+                                                          </Typography>
+                                                        </TableCell>
+
+                                                        <TableCell>
+                                                          <Typography
+                                                            sx={{
+                                                              fontSize: 13,
+                                                              color: "#777",
+                                                            }}
+                                                          >
+                                                            Resolução
+                                                          </Typography>
+                                                        </TableCell>
+                                                      </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                      <TableRow>
+                                                        <TableCell>
+                                                          <Typography
+                                                            sx={{
+                                                              fontSize: 13,
+                                                            }}
+                                                          >
+                                                            {
+                                                              task.resolution[0]
+                                                                .createdAt
+                                                            }
+                                                          </Typography>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                          <Typography
+                                                            sx={{
+                                                              fontSize: 13,
+                                                            }}
+                                                          >
+                                                            {
+                                                              task.resolution[0]
+                                                                .user.name
+                                                            }
+                                                          </Typography>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                          <Typography
+                                                            sx={{
+                                                              fontSize: 13,
+                                                            }}
+                                                          >
+                                                            {
+                                                              task.resolution[0]
+                                                                .resolution
+                                                            }
+                                                          </Typography>
+                                                        </TableCell>
+                                                      </TableRow>
+                                                    </TableBody>
+                                                  </Table>
+                                                </Grid>
+                                              )}
                                             </AccordionDetails>
+
                                             {isAddingInteraction && (
                                               <>
                                                 <Typography
@@ -791,6 +925,57 @@ export default function ProjectsTable({
                                                 </Grid>
                                               </>
                                             )}
+                                            {isAddingResolution && (
+                                              <>
+                                                <Typography
+                                                  sx={{
+                                                    m: 2,
+                                                    fontSize: 16,
+                                                    fontWeight: "bold",
+                                                  }}
+                                                >
+                                                  Resolver Tarefa
+                                                </Typography>
+                                                <Grid
+                                                  container
+                                                  direction="row"
+                                                  alignItems="center"
+                                                  justifyContent="flex-start"
+                                                  sx={{
+                                                    m: 2,
+                                                    ml: 10,
+                                                  }}
+                                                >
+                                                  <Grid item>
+                                                    <Avatar
+                                                      alt="Imagem do Colaborador"
+                                                      src={`http://localhost:3000/static/${user.image}`}
+                                                      sx={{
+                                                        mx: 2,
+                                                        width: 36,
+                                                        height: 36,
+                                                      }}
+                                                    />
+                                                  </Grid>
+                                                  <Grid item>
+                                                    <TextField
+                                                      size="small"
+                                                      onChange={(e) =>
+                                                        setResolutionText(
+                                                          e.target.value
+                                                        )
+                                                      }
+                                                      placeholder="Insira a resolução da tarefa..."
+                                                      sx={{
+                                                        width: 750,
+                                                        backgroundColor:
+                                                          "white",
+                                                      }}
+                                                    />
+                                                  </Grid>
+                                                </Grid>
+                                              </>
+                                            )}
                                             <AccordionActions>
                                               <ProjectTaskActions
                                                 task={task}
@@ -804,8 +989,14 @@ export default function ProjectsTable({
                                                 handleAddInteraction={
                                                   handleAddInteraction
                                                 }
+                                                isAddingResolution={
+                                                  isAddingResolution
+                                                }
+                                                setIsAddingResolution={
+                                                  setIsAddingResolution
+                                                }
                                                 handleResolveTask={
-                                                  "handleResolveTask"
+                                                  handleResolveTask
                                                 }
                                               />
                                             </AccordionActions>

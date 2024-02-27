@@ -80,7 +80,8 @@ router.put("/", async (req, res) => {
 
 // CREATE PROJECT INTERACTION
 router.post("/addInteraction", async (req, res) => {
-  const { projectId, stageIndex, taskIndex, interaction, user, createdAt } = req.body;
+  const { projectId, stageIndex, taskIndex, interaction, user, createdAt } =
+    req.body;
 
   try {
     const updatedProject = await Project.findOneAndUpdate(
@@ -105,6 +106,71 @@ router.post("/addInteraction", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Error updating project", error: err });
+  }
+});
+
+// RESOLVE PROJECT TASK
+router.post("/resolveTask", async (req, res) => {
+  const { projectId, stageIndex, taskIndex, resolution, user, createdAt } =
+    req.body;
+
+  try {
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    const updatedProject = await Project.findOneAndUpdate(
+      {
+        _id: projectId,
+        "stages.tasks": { $exists: true },
+      },
+      {
+        $push: {
+          [`stages.${stageIndex}.tasks.${taskIndex}.resolution`]: {
+            resolution,
+            user,
+            createdAt,
+          },
+        },
+        $set: {
+          [`stages.${stageIndex}.tasks.${taskIndex}.status`]: "Resolvido",
+        },
+      },
+      { new: true }
+    );
+
+    if (updatedProject) {
+      const stageTasks = updatedProject.stages[stageIndex].tasks;
+      const allTasksResolved = stageTasks.every(
+        (task) => task.status === "Resolvido"
+      );
+
+      if (allTasksResolved) {
+        // Se todas as tarefas estiverem resolvidas, atualize o status do estágio para "Resolvido"
+        const stageStatusPath = `stages.${stageIndex}.status`;
+        await Project.updateOne(
+          { _id: projectId },
+          {
+            $set: { [stageStatusPath]: "Resolvido" },
+            $inc: { currentStage: 1 },
+          }
+        );
+
+        // Buscar o projeto atualizado para retornar na resposta
+        const projectWithUpdatedStage = await Project.findById(projectId);
+
+        res.status(200).json(projectWithUpdatedStage);
+      } else {
+        // Se nem todas as tarefas estiverem resolvidas, apenas retorna o projeto com a tarefa atualizada
+        res.status(200).json(updatedProject);
+      }
+    } else {
+      res.status(404).json({ message: "Project task not found" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error resolving task", error: err });
   }
 });
 
