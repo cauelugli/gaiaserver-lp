@@ -154,7 +154,7 @@ export default function Account({ user }) {
               <TableRow>
                 <TableCell align="center">
                   <Typography>
-                    {user.position ? user.position : "-"}
+                    {user.position ? user.position.name : "-"}
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
