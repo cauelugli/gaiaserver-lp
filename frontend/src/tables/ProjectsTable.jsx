@@ -326,10 +326,10 @@ export default function ProjectsTable({
                           />
                           <Typography sx={{ fontSize: 13 }}>
                             {project.stages.length > project.currentStage
-                              ? project.stages[project.currentStage].title(
-                                  project.currentStage +
-                                    1 / project.stages.length
-                                )
+                              ? `${project.stages[project.currentStage].title}
+                                  (${project.currentStage + 1}/${
+                                  project.stages.length
+                                })`
                               : "Resolvido"}
                           </Typography>
                         </Grid>
@@ -976,30 +976,32 @@ export default function ProjectsTable({
                                                 </Grid>
                                               </>
                                             )}
-                                            <AccordionActions>
-                                              <ProjectTaskActions
-                                                task={task}
-                                                index={index}
-                                                isAddingInteraction={
-                                                  isAddingInteraction
-                                                }
-                                                setIsAddingInteraction={
-                                                  setIsAddingInteraction
-                                                }
-                                                handleAddInteraction={
-                                                  handleAddInteraction
-                                                }
-                                                isAddingResolution={
-                                                  isAddingResolution
-                                                }
-                                                setIsAddingResolution={
-                                                  setIsAddingResolution
-                                                }
-                                                handleResolveTask={
-                                                  handleResolveTask
-                                                }
-                                              />
-                                            </AccordionActions>
+                                            {task.status !== "Resolvido" && (
+                                              <AccordionActions>
+                                                <ProjectTaskActions
+                                                  task={task}
+                                                  index={index}
+                                                  isAddingInteraction={
+                                                    isAddingInteraction
+                                                  }
+                                                  setIsAddingInteraction={
+                                                    setIsAddingInteraction
+                                                  }
+                                                  handleAddInteraction={
+                                                    handleAddInteraction
+                                                  }
+                                                  isAddingResolution={
+                                                    isAddingResolution
+                                                  }
+                                                  setIsAddingResolution={
+                                                    setIsAddingResolution
+                                                  }
+                                                  handleResolveTask={
+                                                    handleResolveTask
+                                                  }
+                                                />
+                                              </AccordionActions>
+                                            )}
                                           </Accordion>
                                         </>
                                       ))}
