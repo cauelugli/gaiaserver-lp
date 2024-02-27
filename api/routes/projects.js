@@ -157,8 +157,19 @@ router.post("/resolveTask", async (req, res) => {
         );
 
         const projectWithUpdatedStage = await Project.findById(projectId);
+        const allStagesResolved = projectWithUpdatedStage.stages.every(
+          (stage) => stage.status === "Resolvido"
+        );
 
-        res.status(200).json(projectWithUpdatedStage);
+        if (allStagesResolved) {
+          await Project.updateOne(
+            { _id: projectId },
+            { $set: { status: "Concluido" } }
+          );
+        }
+
+        const finalProject = await Project.findById(projectId);
+        res.status(allStagesResolved ? 207 : 200).json(finalProject);
       } else {
         res.status(200).json(updatedProject);
       }
