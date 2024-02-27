@@ -32,6 +32,10 @@ userSchema = new mongoose.Schema({
     type: Object,
     default: { 0: "" },
   },
+  agenda: {
+    type: Array,
+    default: [],
+  },
   position: {
     type: Object,
     default: {},

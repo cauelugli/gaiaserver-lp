@@ -15,6 +15,10 @@ managerSchema = new mongoose.Schema({
   department: {
     type: Object,
   },
+  agenda: {
+    type: Array,
+    default: [],
+  },
   image: {
     type: String,
   },
