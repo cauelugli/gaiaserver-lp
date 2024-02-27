@@ -197,16 +197,25 @@ export default function ProjectsTable({
         createdAt: dayjs().format("DD/MM/YYYY"),
       });
 
+      setResolutionText("");
+      setSelectedTaskIndex(null);
+      setSelectedStageIndex(null);
+      setIsAddingResolution(false);
+      setRefreshData(!refreshData);
+
       if (response.status === 200) {
-        setResolutionText("");
-        setSelectedTaskIndex(null);
-        setSelectedStageIndex(null);
-        setIsAddingResolution(false);
-        setRefreshData(!refreshData);
         const memberIds = response.data.stages[selectedStageIndex].tasks[
           selectedTaskIndex
         ].assignees.map((assignee) => assignee.id);
         socket.emit("resolvedTask", {
+          sender: user.name,
+          list: memberIds,
+          date: dayjs(Date.now()).format("DD/MM/YYYY"),
+          projectName: selectedProject.name,
+        });
+      } else if (response.status === 207) {
+        const memberIds = response.data.members.map((member) => member.id);
+        socket.emit("resolvedProject", {
           sender: user.name,
           list: memberIds,
           date: dayjs(Date.now()).format("DD/MM/YYYY"),
