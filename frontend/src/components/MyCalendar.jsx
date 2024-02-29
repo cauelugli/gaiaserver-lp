@@ -17,6 +17,9 @@ import {
   Typography,
   Slide,
 } from "@mui/material";
+
+import AgendaActions from "./small/buttons/AgendaActions";
+
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -33,8 +36,15 @@ minTime.setHours(7, 0, 0);
 const maxTime = new Date();
 maxTime.setHours(22, 0, 0);
 
-const MyCalendar = ({ user, userAgenda }) => {
-  const [events, setEvents] = useState([]);
+const MyCalendar = ({ user }) => {
+  const [refreshCount, setRefreshCount] = React.useState(0);
+  const [userAgenda, setUserAgenda] = React.useState([]);
+  const [events, setEvents] = React.useState([]);
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [newEvent, setNewEvent] = useState({});
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
 
   const parseDateString = (dateStr, timeStr = "00:00") => {
     const [day, month, year] = dateStr.split("/");
@@ -42,33 +52,25 @@ const MyCalendar = ({ user, userAgenda }) => {
     return new Date(year, month - 1, day, hours, minutes);
   };
 
-  // Converter as datas de userAgenda para objetos Date
-  React.useEffect(() => {
-    const convertedEvents = userAgenda.map((event) => {
-      const start = event.start
-        ? parseDateString(event.start.split(" ")[0], event.start.split(" ")[1])
-        : parseDateString(event.date);
-      const end = event.end
-        ? parseDateString(event.end.split(" ")[0], event.end.split(" ")[1])
-        : start;
-      return { ...event, start, end };
-    });
-    setEvents(convertedEvents);
-  }, [userAgenda]);
-
-  const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState("");
-  const [newEvent, setNewEvent] = useState({});
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false); // Novo estado para o Dialog de detalhes
-
-  const handleSelectSlot = ({ start, end }) => {
-    setOpen(true);
-    setNewEvent({ start, end });
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+  const fetchData = async () => {
+    try {
+      const userAgenda = await api.get(`/agenda/${user._id}`);
+      const convertedEvents = userAgenda.data.map((event) => {
+        const start = event.start
+          ? parseDateString(
+              event.start.split(" ")[0],
+              event.start.split(" ")[1]
+            )
+          : parseDateString(event.date);
+        const end = event.end
+          ? parseDateString(event.end.split(" ")[0], event.end.split(" ")[1])
+          : start;
+        return { ...event, start, end };
+      });
+      setEvents(convertedEvents);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   const handleAddEvent = () => {
@@ -79,18 +81,46 @@ const MyCalendar = ({ user, userAgenda }) => {
         end: moment(newEvent.end).format("DD/MM/YYYY HH:mm"),
         status: "Aberto",
       };
-      console.log("Evento a ser adicionado:", eventToAdd);
       api
         .post("/agenda/addAgendaEvent", { ...eventToAdd, userId: user._id })
-        .then((response) => {
-          setOpen(false);
-          setEvents([...events, response.data]);
-          setTitle("");
+        .then(() => {
+          setRefreshCount((currentCount) => currentCount + 1);
+          fetchData(); // Atualiza os eventos após adicionar
         })
         .catch((error) => {
           console.error("Erro ao salvar o evento:", error);
         });
+      setOpen(false);
+      setTitle("");
     }
+  };
+
+  const handleDeleteEvent = () => {
+    const payload = {
+      userId: user._id,
+      start: moment(selectedEvent.start).format("DD/MM/YYYY HH:mm"),
+      end: moment(selectedEvent.end).format("DD/MM/YYYY HH:mm"),
+    };
+
+    api
+      .put("/agenda/deleteAgendaEvent", payload)
+      .then(() => {
+        setRefreshCount((currentCount) => currentCount + 1);
+        fetchData(); // Atualiza os eventos após excluir
+      })
+      .catch((error) => {
+        console.error("Erro ao excluir o evento:", error);
+      });
+    setDetailsDialogOpen(false);
+  };
+  
+  const handleSelectSlot = ({ start, end }) => {
+    setOpen(true);
+    setNewEvent({ start, end });
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const EventModal = ({
@@ -129,8 +159,20 @@ const MyCalendar = ({ user, userAgenda }) => {
       TransitionComponent={Transition}
       BackdropProps={{ style: { backgroundColor: "transparent" } }}
     >
-      <DialogTitle>Detalhes do Evento</DialogTitle>
-      <DialogContent>
+      <DialogTitle>
+        <Typography
+          sx={{
+            fontSize: 20,
+            fontWeight: "bold",
+            textAlign: "center",
+            mt: 1,
+            mb: 2,
+          }}
+        >
+          Detalhes do Evento
+        </Typography>
+      </DialogTitle>
+      <DialogContent sx={{ width: 450 }}>
         <Typography gutterBottom>Título: {event?.title}</Typography>
         <Typography gutterBottom>
           Início: {moment(event?.start).format("DD/MM/YYYY HH:mm")}
@@ -141,7 +183,10 @@ const MyCalendar = ({ user, userAgenda }) => {
         <Typography>Status: {event?.status}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Fechar</Button>
+        <AgendaActions
+          onClose={onClose}
+          handleDeleteEvent={handleDeleteEvent}
+        />
       </DialogActions>
     </Dialog>
   );

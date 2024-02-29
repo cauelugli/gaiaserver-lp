@@ -19,20 +19,6 @@ const api = axios.create({
 import MyCalendar from "../components/MyCalendar";
 
 const Dashboard = ({ user }) => {
-  const [userAgenda, setUserAgenda] = React.useState([]);
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userAgenda = await api.get(`/agenda/${user._id}`);
-        setUserAgenda(userAgenda.data)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [user]);
-
   return (
     <Grid>
       <Accordion sx={{ mx: "20%" }} defaultExpanded>
@@ -42,7 +28,7 @@ const Dashboard = ({ user }) => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <MyCalendar  user={user} userAgenda={userAgenda}/>
+          <MyCalendar user={user} />
         </AccordionDetails>
       </Accordion>
     </Grid>

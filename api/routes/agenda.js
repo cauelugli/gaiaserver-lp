@@ -62,4 +62,28 @@ router.post("/addAgendaEvent", async (req, res) => {
   }
 });
 
+// EDIT (REMOVE) EVENT FROM USER'S AGENDA
+router.put("/deleteAgendaEvent", async (req, res) => {
+  const { userId, start, end } = req.body;
+  try {
+    const agenda = await Agenda.findOne({});
+    const filteredEvents = agenda.events[userId].filter(event => event.start !== start || event.end !== end);
+    const updatedAgenda = await Agenda.findOneAndUpdate(
+      {},
+      {
+        $set: { [`events.${userId}`]: filteredEvents },
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.status(200).json({ message: "Evento removido com sucesso.", updatedAgenda });
+  } catch (err) {
+    console.error("Erro ao editar (remover) evento da agenda:", err);
+    res.status(500).json({ message: "Erro ao editar (remover) evento da agenda.", error: err });
+  }
+});
+
+
 module.exports = router;
