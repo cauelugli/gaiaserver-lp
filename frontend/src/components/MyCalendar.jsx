@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import axios from "axios";
@@ -14,7 +14,12 @@ import {
   TextField,
   DialogActions,
   Button,
+  Typography,
+  Slide,
 } from "@mui/material";
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 moment.locale("pt-br");
 const localizer = momentLocalizer(moment);
@@ -37,8 +42,8 @@ const MyCalendar = ({ user, userAgenda }) => {
     return new Date(year, month - 1, day, hours, minutes);
   };
 
+  // Converter as datas de userAgenda para objetos Date
   React.useEffect(() => {
-    // Converter as datas de userAgenda para objetos Date
     const convertedEvents = userAgenda.map((event) => {
       const start = event.start
         ? parseDateString(event.start.split(" ")[0], event.start.split(" ")[1])
@@ -54,6 +59,8 @@ const MyCalendar = ({ user, userAgenda }) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [newEvent, setNewEvent] = useState({});
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false); // Novo estado para o Dialog de detalhes
 
   const handleSelectSlot = ({ start, end }) => {
     setOpen(true);
@@ -115,10 +122,44 @@ const MyCalendar = ({ user, userAgenda }) => {
     </Dialog>
   );
 
+  const EventDetailsDialog = ({ event, open, onClose }) => (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      TransitionComponent={Transition}
+      BackdropProps={{ style: { backgroundColor: "transparent" } }}
+    >
+      <DialogTitle>Detalhes do Evento</DialogTitle>
+      <DialogContent>
+        <Typography gutterBottom>Título: {event?.title}</Typography>
+        <Typography gutterBottom>
+          Início: {moment(event?.start).format("DD/MM/YYYY HH:mm")}
+        </Typography>
+        <Typography gutterBottom>
+          Fim: {moment(event?.end).format("DD/MM/YYYY HH:mm")}
+        </Typography>
+        <Typography>Status: {event?.status}</Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Fechar</Button>
+      </DialogActions>
+    </Dialog>
+  );
+
+  const handleSelectEvent = (event) => {
+    setSelectedEvent(event);
+    setDetailsDialogOpen(true);
+  };
+
+  const handleCloseDetailsDialog = () => {
+    setDetailsDialogOpen(false);
+  };
+
   return (
     <>
       <div style={{ height: 700 }}>
         <Calendar
+          onSelectEvent={(event) => handleSelectEvent(event)}
           localizer={localizer}
           events={events}
           startAccessor="start"
@@ -152,6 +193,13 @@ const MyCalendar = ({ user, userAgenda }) => {
         setTitle={setTitle}
         handleAddEvent={handleAddEvent}
       />
+      {selectedEvent && (
+        <EventDetailsDialog
+          event={selectedEvent}
+          open={detailsDialogOpen}
+          onClose={handleCloseDetailsDialog}
+        />
+      )}
     </>
   );
 };
