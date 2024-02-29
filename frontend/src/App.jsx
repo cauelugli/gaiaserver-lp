@@ -13,7 +13,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 const socket = io("http://localhost:3000");
 
-import { Box, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 
 import SideBar from "./components/SideBar";
 import NavBar from "./components/NavBar";

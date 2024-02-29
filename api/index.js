@@ -29,6 +29,7 @@ const operatorsRoute = require("./routes/operators");
 const quickNotesRoute = require("./routes/quicknotes");
 const quoteRoute = require("./routes/quotes");
 const uploadsRoute = require("./routes/uploads");
+const agendaRoute = require("./routes/agenda");
 
 dotenv.config();
 app.use(cors());
@@ -66,6 +67,7 @@ app.use("/api/operators", operatorsRoute);
 app.use("/api/quicknotes", quickNotesRoute);
 app.use("/api/quotes", quoteRoute);
 app.use("/api/uploads", uploadsRoute);
+app.use("/api/agenda", agendaRoute);
 
 initSocket(server);
 
