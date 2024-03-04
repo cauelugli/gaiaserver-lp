@@ -14,14 +14,9 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  TextField,
   DialogActions,
-  Button,
   Typography,
   Slide,
-  Select,
-  MenuItem,
-  Grid,
 } from "@mui/material";
 
 import AgendaActions from "./small/buttons/AgendaActions";
@@ -75,7 +70,7 @@ const MyCalendar = ({ user, config }) => {
 
   React.useEffect(() => {
     fetchData();
-  }, []); 
+  }, []);
 
   const handleAddEvent = () => {
     if (title) {
@@ -116,6 +111,27 @@ const MyCalendar = ({ user, config }) => {
     setDetailsDialogOpen(false);
   };
 
+  const handleResolveEvent = () => {
+    const startFormatted = moment(selectedEvent.start).format(
+      "DD/MM/YYYY HH:mm"
+    );
+    const endFormatted = moment(selectedEvent.end).format("DD/MM/YYYY HH:mm");
+
+    api
+      .put(`/agenda/resolveAgendaEvent`, {
+        userId: user._id,
+        start: startFormatted,
+        end: endFormatted,
+      })
+      .then(() => {
+        fetchData();
+        setDetailsDialogOpen(false);
+      })
+      .catch((error) => {
+        console.error("Erro ao atualizar o status do evento:", error);
+      });
+  };
+
   const handleSelectSlot = ({ start, end }) => {
     setOpen(true);
     setNewEvent({ start, end });
@@ -130,6 +146,7 @@ const MyCalendar = ({ user, config }) => {
       open={open}
       onClose={onClose}
       TransitionComponent={Transition}
+      handleResolveEvent={handleResolveEvent}
       BackdropProps={{ style: { backgroundColor: "transparent" } }}
     >
       <DialogTitle>
@@ -158,6 +175,7 @@ const MyCalendar = ({ user, config }) => {
       <DialogActions>
         <AgendaActions
           onClose={onClose}
+          handleResolveEvent={handleResolveEvent}
           handleDeleteEvent={handleDeleteEvent}
         />
       </DialogActions>
@@ -223,6 +241,7 @@ const MyCalendar = ({ user, config }) => {
       {selectedEvent && (
         <EventDetailsDialog
           event={selectedEvent}
+          handleResolveEvent={handleResolveEvent}
           open={detailsDialogOpen}
           onClose={handleCloseDetailsDialog}
         />

@@ -8,7 +8,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function AgendaActions({ onClose, handleDeleteEvent }) {
+export default function AgendaActions({ onClose, handleResolveEvent, handleDeleteEvent }) {
   return (
     <Grid
       container
@@ -22,6 +22,7 @@ export default function AgendaActions({ onClose, handleDeleteEvent }) {
         variant="contained"
         color="success"
         size="small"
+        onClick={handleResolveEvent}
         sx={{ mx: 0.5 }}
         startIcon={<CheckIcon />}
       >
