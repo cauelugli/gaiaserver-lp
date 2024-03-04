@@ -18,9 +18,13 @@ import {
   Button,
   Typography,
   Slide,
+  Select,
+  MenuItem,
+  Grid,
 } from "@mui/material";
 
 import AgendaActions from "./small/buttons/AgendaActions";
+import CalendarEventModal from "../forms/misc/CalendarEventModal";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -38,11 +42,10 @@ const maxTime = new Date();
 maxTime.setHours(22, 0, 0);
 
 const MyCalendar = ({ user }) => {
-  const [refreshCount, setRefreshCount] = React.useState(0);
-  const [userAgenda, setUserAgenda] = React.useState([]);
   const [events, setEvents] = React.useState([]);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
+  const [type, setType] = useState("");
   const [newEvent, setNewEvent] = useState({});
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
@@ -85,8 +88,7 @@ const MyCalendar = ({ user }) => {
       api
         .post("/agenda/addAgendaEvent", { ...eventToAdd, userId: user._id })
         .then(() => {
-          setRefreshCount((currentCount) => currentCount + 1);
-          fetchData(); // Atualiza os eventos após adicionar
+          fetchData();
         })
         .catch((error) => {
           console.error("Erro ao salvar o evento:", error);
@@ -106,8 +108,7 @@ const MyCalendar = ({ user }) => {
     api
       .put("/agenda/deleteAgendaEvent", payload)
       .then(() => {
-        setRefreshCount((currentCount) => currentCount + 1);
-        fetchData(); // Atualiza os eventos após excluir
+        fetchData();
       })
       .catch((error) => {
         console.error("Erro ao excluir o evento:", error);
@@ -123,35 +124,6 @@ const MyCalendar = ({ user }) => {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const EventModal = ({
-    open,
-    handleClose,
-    title,
-    setTitle,
-    handleAddEvent,
-  }) => (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Adicionar Evento</DialogTitle>
-      <DialogContent>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="title"
-          label="Título do Evento"
-          type="text"
-          fullWidth
-          variant="outlined"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancelar</Button>
-        <Button onClick={handleAddEvent}>Adicionar</Button>
-      </DialogActions>
-    </Dialog>
-  );
 
   const EventDetailsDialog = ({ event, open, onClose }) => (
     <Dialog
@@ -231,11 +203,13 @@ const MyCalendar = ({ user }) => {
           }}
         />
       </div>
-      <EventModal
+      <CalendarEventModal
         open={open}
         handleClose={handleClose}
         title={title}
         setTitle={setTitle}
+        type={type}
+        setType={setType}
         handleAddEvent={handleAddEvent}
       />
       {selectedEvent && (
