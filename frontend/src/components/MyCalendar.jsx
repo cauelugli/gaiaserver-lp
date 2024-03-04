@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState, forwardRef } from "react";
@@ -71,6 +72,10 @@ const MyCalendar = ({ user, config }) => {
       console.error("Error fetching data:", error);
     }
   };
+
+  React.useEffect(() => {
+    fetchData();
+  }, []); 
 
   const handleAddEvent = () => {
     if (title) {
