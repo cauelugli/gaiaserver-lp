@@ -78,6 +78,7 @@ export default function App() {
     25
   );
   const [configTables, setConfigTables] = useState(null);
+  const [configAgenda, setConfigAgenda] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [userKey, setUserKey] = useState(0);
   const login = JSON.parse(sessionStorage.getItem("login"));
@@ -89,11 +90,13 @@ export default function App() {
       try {
         const config = await api.get("/config");
         const configTables = await api.get("/config/tables");
+        const configAgenda = await api.get("/config/agenda");
         const notifications = await api.get(
           `/managers/notifications/${userData._id}`
         );
         setConfigData(config.data[0]);
         setConfigTables(configTables.data);
+        setConfigAgenda(configAgenda.data);
         setNotifications(notifications.data);
         if (userData.hasDarkModeActive) {
           setDarkMode(true);
@@ -183,7 +186,6 @@ export default function App() {
                 backgroundColor: darkMode ? darkenedColor : "#32aacd",
                 height: "auto",
                 maxWidth: 58,
-                ml: 0.5,
               }}
             >
               <SideBar
@@ -211,7 +213,7 @@ export default function App() {
                     path="/"
                     element={
                       isAuthenticated(login, userData) ? (
-                        <Dashboard user={userData} />
+                        <Dashboard user={userData} config={configAgenda}/>
                       ) : (
                         <Navigate to="/login" />
                       )

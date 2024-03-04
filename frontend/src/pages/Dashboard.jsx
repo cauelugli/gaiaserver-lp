@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
-import axios from "axios";
 
 import {
   Accordion,
@@ -15,7 +14,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import MyCalendar from "../components/MyCalendar";
 
-const Dashboard = ({ user }) => {
+const Dashboard = ({ user, config }) => {
   return (
     <Grid>
       <Accordion sx={{ mx: "20%" }} defaultExpanded>
@@ -25,7 +24,7 @@ const Dashboard = ({ user }) => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <MyCalendar user={user} />
+          <MyCalendar user={user} config={config}/>
         </AccordionDetails>
       </Accordion>
     </Grid>

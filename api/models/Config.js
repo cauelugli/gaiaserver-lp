@@ -229,6 +229,22 @@ const configSchema = new Schema({
       default: true,
     },
   },
+
+  agenda: {
+    minTime: {
+      type: Number,
+      default: 7,
+    },
+    maxTime: {
+      type: Number,
+      default: 22,
+    },
+    eventTypes: {
+      type: Array,
+      default: ["Job", "Tarefa", "Particular"],
+    },
+
+  },
 });
 
 const Config = mongoose.model("Config", configSchema);

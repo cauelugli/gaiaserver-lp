@@ -24,6 +24,7 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import AutoFixNormalIcon from "@mui/icons-material/AutoFixNormal";
 import BuildIcon from "@mui/icons-material/Build";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
@@ -52,6 +53,7 @@ import SideBarModal from "../forms/config/SideBar";
 import NotificationsModal from "../forms/config/Notifications";
 import TablesModal from "../forms/config/Tables";
 import ProjectsModal from "../forms/config/Projects";
+import AgendaModal from "../forms/config/Agenda";
 
 const options = [
   {
@@ -142,6 +144,11 @@ const options = [
     icon: <TableViewIcon sx={{ fontSize: 48 }} />,
     text: "Tabelas",
     modal: <TablesModal />,
+  },
+  {
+    icon: <CalendarMonthIcon sx={{ fontSize: 48 }} />,
+    text: "Agenda",
+    modal: <AgendaModal />,
   },
 ];
 

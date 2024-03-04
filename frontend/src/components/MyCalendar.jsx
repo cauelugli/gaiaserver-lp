@@ -36,12 +36,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const minTime = new Date();
-minTime.setHours(7, 0, 0);
-const maxTime = new Date();
-maxTime.setHours(22, 0, 0);
-
-const MyCalendar = ({ user }) => {
+const MyCalendar = ({ user, config }) => {
   const [events, setEvents] = React.useState([]);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -172,6 +167,11 @@ const MyCalendar = ({ user }) => {
   const handleCloseDetailsDialog = () => {
     setDetailsDialogOpen(false);
   };
+
+  const minTime = new Date();
+  minTime.setHours(config.minTime || 7, 0, 0);
+  const maxTime = new Date();
+  maxTime.setHours(config.maxTime || 22, 0, 0);
 
   return (
     <>

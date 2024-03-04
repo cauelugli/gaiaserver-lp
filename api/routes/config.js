@@ -209,6 +209,36 @@ router.put("/projects", async (req, res) => {
   }
 });
 
+// GET AGENDA CONFIGS
+router.get("/agenda", async (req, res) => {
+  try {
+    const config = await Config.findOne();
+    const agendaConfig = config ? config.agenda : null;
+    res.status(200).json(agendaConfig);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// AGENDA
+router.put("/agenda", async (req, res) => {
+  try {
+    const { minTime, maxTime, eventTypes } = req.body;
+
+    const config = await Config.findOne();
+
+    config.agenda.minTime = minTime;
+    config.agenda.maxTime = maxTime;
+    config.agenda.eventTypes = eventTypes;
+
+    await config.save();
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // GET FINANCE CONFIGS
 router.get("/finance", async (req, res) => {
   try {
