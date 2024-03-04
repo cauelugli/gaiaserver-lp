@@ -204,6 +204,9 @@ const MyCalendar = ({ user }) => {
         />
       </div>
       <CalendarEventModal
+        selectedDate={`${moment(newEvent.start).format(
+          "DD/MM/YYYY HH:mm"
+        )} até ${moment(newEvent.end).format("HH:mm")}`}
         open={open}
         handleClose={handleClose}
         title={title}

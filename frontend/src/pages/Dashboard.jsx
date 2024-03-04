@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import * as React from "react";
 import axios from "axios";
+
 import {
   Accordion,
   AccordionDetails,
@@ -11,10 +12,6 @@ import {
 } from "@mui/material";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 import MyCalendar from "../components/MyCalendar";
 

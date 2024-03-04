@@ -18,7 +18,11 @@ import {
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+import CustomerSelect from "../../components/small/selects/CustomerSelect";
+import ServiceSelect from "../../components/small/selects/ServiceSelect";
+
 const CalendarEventModal = ({
+  selectedDate,
   open,
   handleClose,
   title,
@@ -31,13 +35,18 @@ const CalendarEventModal = ({
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>
         <Typography
-          sx={{ fontSize: 16, fontWeight: "bold", textAlign: "center", mb: 2 }}
+          sx={{ fontSize: 16, fontWeight: "bold", textAlign: "center" }}
         >
-          Adicionar Evento
+          Novo Evento
+        </Typography>
+        <Typography
+          sx={{ fontSize: 14, textAlign: "center", mb: 1, color: "#555" }}
+        >
+          {selectedDate}
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <Grid container direction="column">
+        <Grid container direction="row">
           <TextField
             label="Título do Evento"
             type="text"
@@ -45,16 +54,26 @@ const CalendarEventModal = ({
             variant="outlined"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            sx={{ my: 3, width: 400 }}
+            sx={{ my: 3 }}
           />
           <Select
             value={type}
-            size="small"
+            sx={{ width: 180, mt: 1 }}
             onChange={(e) => setType(e.target.value)}
+            displayEmpty
+            renderValue={(selected) => {
+              if (!selected) {
+                return <Typography>Tipo de Evento</Typography>;
+              }
+
+              return selected;
+            }}
           >
             <MenuItem value={"Job"}>Job</MenuItem>
             <MenuItem value={"Tarefa de Projeto"}>Tarefa de Projeto</MenuItem>
           </Select>
+          <CustomerSelect mx075 />
+          <ServiceSelect />
         </Grid>
       </DialogContent>
       <DialogActions>

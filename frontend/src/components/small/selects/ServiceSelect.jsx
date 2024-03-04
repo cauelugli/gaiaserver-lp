@@ -2,8 +2,8 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import axios from "axios";
+
 import {
-  Avatar,
   FormControl,
   Grid,
   InputAdornment,
@@ -18,17 +18,15 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const CustomerSelect = (props) => {
-  const [customers, setCustomers] = React.useState([]);
+const ServceSelect = () => {
+  const [services, setServices] = React.useState([]);
   const [searchValue, setSearchValue] = React.useState("");
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const resCustomers = await api.get("/customers");
-        const resClients = await api.get("/clients");
-        const combinedData = [...resCustomers.data, ...resClients.data];
-        setCustomers(combinedData);
+        const services = await api.get("/services");
+        setServices(services.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -36,17 +34,17 @@ const CustomerSelect = (props) => {
     fetchData();
   }, []);
 
-  const filteredCustomers = customers.filter((customer) =>
-    customer.name.toLowerCase().includes(searchValue.toLowerCase())
+  const filteredServices = services.filter((service) =>
+    service.name.toLowerCase().includes(searchValue.toLowerCase())
   );
 
   return (
-    <FormControl sx={{ mx: props.mx075 ? 0.75 : 0 }}>
+    <FormControl>
       <Select
         displayEmpty
         renderValue={(selected) => {
           if (!selected) {
-            return <Typography>Cliente</Typography>;
+            return <Typography>Serviço</Typography>;
           }
 
           return selected.name;
@@ -56,6 +54,7 @@ const CustomerSelect = (props) => {
         <TextField
           placeholder="Pesquisar"
           variant="outlined"
+          autoFocus
           sx={{ my: 1, mx: "10%" }}
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
@@ -67,23 +66,17 @@ const CustomerSelect = (props) => {
             ),
           }}
         />
-        {filteredCustomers.length > 0 ? (
-          filteredCustomers.map((item) => (
+        {filteredServices.length > 0 ? (
+          filteredServices.map((item) => (
             <MenuItem value={item} key={item._id}>
-              <Grid container direction="row" alignItems="center">
-                <Avatar
-                  alt="Imagem do Cliente"
-                  src={`http://localhost:3000/static/${item.image}`}
-                  sx={{ width: 24, height: 24, marginRight: 2 }}
-                />
-                <Typography>{item.name}</Typography>
-              </Grid>
+              <Typography id="ghostText" sx={{ color: "white" }}>{"•"}</Typography>
+              <Typography>{item.name}</Typography>
             </MenuItem>
           ))
         ) : (
           <MenuItem disabled>
             <Typography sx={{ textAlign: "center" }}>
-              Nenhum cliente encontrado
+              Nenhum serviço encontrado
             </Typography>
           </MenuItem>
         )}
@@ -92,4 +85,4 @@ const CustomerSelect = (props) => {
   );
 };
 
-export default CustomerSelect;
+export default ServceSelect;
