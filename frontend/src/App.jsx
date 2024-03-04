@@ -183,6 +183,7 @@ export default function App() {
                 backgroundColor: darkMode ? darkenedColor : "#32aacd",
                 height: "auto",
                 maxWidth: 58,
+                ml: 0.5,
               }}
             >
               <SideBar
