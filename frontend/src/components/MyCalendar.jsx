@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState, forwardRef } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
+import { Calendar, luxonLocalizer } from "react-big-calendar";
+import { DateTime, Settings } from "luxon";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import axios from "axios";
 import moment from "moment";
-import "moment/locale/pt-br";
+
+Settings.defaultLocale = "pt-BR";
 
 import {
   Dialog,
@@ -24,8 +26,7 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-moment.locale("pt-br");
-const localizer = momentLocalizer(moment);
+const localizer = luxonLocalizer(DateTime);
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -113,7 +114,7 @@ const MyCalendar = ({ user }) => {
       });
     setDetailsDialogOpen(false);
   };
-  
+
   const handleSelectSlot = ({ start, end }) => {
     setOpen(true);
     setNewEvent({ start, end });
@@ -228,7 +229,6 @@ const MyCalendar = ({ user }) => {
             noEventsInRange: "Não há eventos neste período.",
             showMore: (total) => `+ Ver mais (${total})`,
           }}
-          culture="pt-br"
         />
       </div>
       <EventModal
