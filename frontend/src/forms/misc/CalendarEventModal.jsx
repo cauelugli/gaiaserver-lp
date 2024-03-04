@@ -28,7 +28,10 @@ const CalendarEventModal = ({
   title,
   setTitle,
   type,
+  types,
   setType,
+  setCustomer,
+  setService,
   handleAddEvent,
 }) => {
   return (
@@ -69,11 +72,14 @@ const CalendarEventModal = ({
               return selected;
             }}
           >
-            <MenuItem value={"Job"}>Job</MenuItem>
-            <MenuItem value={"Tarefa de Projeto"}>Tarefa de Projeto</MenuItem>
+            {types && types.map((type) => (
+              <MenuItem key value={type}>
+                {type}
+              </MenuItem>
+            ))}
           </Select>
-          <CustomerSelect mx075 />
-          <ServiceSelect />
+          <CustomerSelect mx075 setCustomer={setCustomer} />
+          <ServiceSelect setService={setService} />
         </Grid>
       </DialogContent>
       <DialogActions>

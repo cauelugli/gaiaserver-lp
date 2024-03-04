@@ -52,6 +52,12 @@ const CustomerSelect = (props) => {
           return selected.name;
         }}
         sx={{ mt: 1, width: 180 }}
+        onChange={(e) =>
+          props.setCustomer({
+            id: e.target.value._id,
+            name: e.target.value.name,
+          })
+        }
       >
         <TextField
           placeholder="Pesquisar"

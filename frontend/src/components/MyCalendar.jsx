@@ -37,6 +37,8 @@ const MyCalendar = ({ user, config }) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [type, setType] = useState("");
+  const [customer, setCustomer] = useState({});
+  const [service, setService] = useState({});
   const [newEvent, setNewEvent] = useState({});
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
@@ -72,6 +74,8 @@ const MyCalendar = ({ user, config }) => {
     fetchData();
   }, []);
 
+  console.log("config", config.eventTypes)
+
   const handleAddEvent = () => {
     if (title) {
       const eventToAdd = {
@@ -79,6 +83,9 @@ const MyCalendar = ({ user, config }) => {
         start: moment(newEvent.start).format("DD/MM/YYYY HH:mm"),
         end: moment(newEvent.end).format("DD/MM/YYYY HH:mm"),
         status: "Aberto",
+        type,
+        customer,
+        service,
       };
       api
         .post("/agenda/addAgendaEvent", { ...eventToAdd, userId: user._id })
@@ -170,7 +177,14 @@ const MyCalendar = ({ user, config }) => {
         <Typography gutterBottom>
           Fim: {moment(event?.end).format("DD/MM/YYYY HH:mm")}
         </Typography>
-        <Typography>Status: {event?.status}</Typography>
+        <Typography gutterBottom>Status: {event?.status}</Typography>
+        <Typography gutterBottom>Tipo de Evento: {event?.type}</Typography>
+        <Typography gutterBottom>
+          Cliente: {event.customer ? event.customer.name : "-"}
+        </Typography>
+        <Typography gutterBottom>
+          Serviço: {event.service ? event.service.name : "-"}
+        </Typography>
       </DialogContent>
       <DialogActions>
         <AgendaActions
@@ -235,7 +249,12 @@ const MyCalendar = ({ user, config }) => {
         title={title}
         setTitle={setTitle}
         type={type}
+        types={config.eventTypes}
         setType={setType}
+        service={service}
+        setService={setService}
+        customer={customer}
+        setCustomer={setCustomer}
         handleAddEvent={handleAddEvent}
       />
       {selectedEvent && (

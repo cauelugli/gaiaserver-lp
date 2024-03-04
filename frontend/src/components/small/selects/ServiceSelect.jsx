@@ -5,7 +5,6 @@ import axios from "axios";
 
 import {
   FormControl,
-  Grid,
   InputAdornment,
   MenuItem,
   Select,
@@ -18,7 +17,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const ServceSelect = () => {
+const ServiceSelect = (props) => {
   const [services, setServices] = React.useState([]);
   const [searchValue, setSearchValue] = React.useState("");
 
@@ -50,6 +49,12 @@ const ServceSelect = () => {
           return selected.name;
         }}
         sx={{ mt: 1, width: 180 }}
+        onChange={(e) =>
+          props.setService({
+            id: e.target.value._id,
+            name: e.target.value.name,
+          })
+        }
       >
         <TextField
           placeholder="Pesquisar"
@@ -69,7 +74,9 @@ const ServceSelect = () => {
         {filteredServices.length > 0 ? (
           filteredServices.map((item) => (
             <MenuItem value={item} key={item._id}>
-              <Typography id="ghostText" sx={{ color: "white" }}>{"•"}</Typography>
+              <Typography id="ghostText" sx={{ color: "white" }}>
+                {"•"}
+              </Typography>
               <Typography>{item.name}</Typography>
             </MenuItem>
           ))
@@ -85,4 +92,4 @@ const ServceSelect = () => {
   );
 };
 
-export default ServceSelect;
+export default ServiceSelect;

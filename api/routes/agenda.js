@@ -25,7 +25,8 @@ router.get("/:userId", async (req, res) => {
 
 // CREATE EVENT TO USER'S AGENDA
 router.post("/addAgendaEvent", async (req, res) => {
-  const { userId, title, start, end, status } = req.body;
+  const { userId, title, start, end, status, type, customer, service } =
+    req.body;
   try {
     const agenda = await Agenda.findOne({});
 
@@ -39,7 +40,15 @@ router.post("/addAgendaEvent", async (req, res) => {
       res.status(200).json(savedAgenda);
     } else {
       const userEvents = agenda.events[userId] || [];
-      userEvents.push({ title, start, end, status });
+      userEvents.push({
+        title,
+        start,
+        end,
+        status,
+        type,
+        customer,
+        service,
+      });
 
       const updatedAgenda = await Agenda.findOneAndUpdate(
         {},
@@ -80,12 +89,10 @@ router.put("/resolveAgendaEvent", async (req, res) => {
       { new: true }
     );
 
-    res
-      .status(200)
-      .json({
-        message: "Status do evento atualizado com sucesso.",
-        updatedAgenda,
-      });
+    res.status(200).json({
+      message: "Status do evento atualizado com sucesso.",
+      updatedAgenda,
+    });
   } catch (err) {
     console.error("Erro ao atualizar o status do evento:", err);
     res
@@ -117,12 +124,10 @@ router.put("/deleteAgendaEvent", async (req, res) => {
       .json({ message: "Evento removido com sucesso.", updatedAgenda });
   } catch (err) {
     console.error("Erro ao editar (remover) evento da agenda:", err);
-    res
-      .status(500)
-      .json({
-        message: "Erro ao editar (remover) evento da agenda.",
-        error: err,
-      });
+    res.status(500).json({
+      message: "Erro ao editar (remover) evento da agenda.",
+      error: err,
+    });
   }
 });
 
