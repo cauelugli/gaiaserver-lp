@@ -198,8 +198,18 @@ const MyCalendar = ({ user, config }) => {
   );
 
   const eventStyleGetter = (event) => {
+    const hexToRGB = (hex) => {
+      let r, g, b;
+      r = parseInt(hex[1] + hex[2], 16);
+      g = parseInt(hex[3] + hex[4], 16);
+      b = parseInt(hex[5] + hex[6], 16);
+      return [r, g, b];
+    };
+
+    const [r, g, b] = hexToRGB(event.type.color);
+
     let style = {
-      backgroundColor: event.type.color,
+      backgroundColor: `rgba(${r}, ${g}, ${b}, 0.55)`,
       border: "1px solid white",
       color: "white",
     };
@@ -224,7 +234,6 @@ const MyCalendar = ({ user, config }) => {
   maxTime.setHours(config.maxTime || 22, 0, 0);
 
   const customFormats = {
-    // This removes the event time on the event container
     eventTimeRangeFormat: () => "",
   };
 
