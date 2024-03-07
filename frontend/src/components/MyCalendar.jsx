@@ -198,7 +198,6 @@ const MyCalendar = ({ user, config }) => {
   );
 
   const eventStyleGetter = (event) => {
-    console.log("event.", event.type);
     let style = {
       backgroundColor: event.type.color,
       border: "1px solid white",
