@@ -13,23 +13,21 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControlLabel,
   Grid,
   IconButton,
-  InputAdornment,
   List,
   ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-  Radio,
-  RadioGroup,
+  Paper,
+  Popover,
   TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
+
+import { SketchPicker } from "react-color";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -40,7 +38,9 @@ export default function Agenda({ onClose }) {
   const [minTime, setMinTime] = React.useState(null);
   const [maxTime, setMaxTime] = React.useState(null);
   const [eventTypes, setEventTypes] = React.useState([]);
-  const [newType, setNewType] = React.useState("");
+  const [newType, setNewType] = React.useState({ name: "", color: "white" });
+  // const [newTypeColor, setNewTypeColor] = React.useState("#32aacd");
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -57,7 +57,7 @@ export default function Agenda({ onClose }) {
     fetchData();
   }, []);
 
-  const handleChangeRequestConfig = async (e) => {
+  const handleChangeAgendaConfig = async (e) => {
     e.preventDefault();
     try {
       const res = await api.put("/config/agenda", {
@@ -87,9 +87,9 @@ export default function Agenda({ onClose }) {
   };
 
   const handleAddType = () => {
-    if (newType && !eventTypes.includes(newType)) {
+    if (newType.name && !eventTypes.includes(newType.name)) {
       setEventTypes([...eventTypes, newType]);
-      setNewType("");
+      setNewType({ name: "", color: "white" });
     }
   };
 
@@ -98,7 +98,7 @@ export default function Agenda({ onClose }) {
   };
 
   return (
-    <form onSubmit={handleChangeRequestConfig}>
+    <form onSubmit={handleChangeAgendaConfig}>
       <DialogTitle
         sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
       >
@@ -164,35 +164,103 @@ export default function Agenda({ onClose }) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <List sx={{ mx: "30%" }}>
-                    {eventTypes.map((type, index) => (
-                      <ListItem key={index} sx={{ pl: 0 }}>
-                        <ListItemText primary={type} />
-                        <ListItemSecondaryAction>
-                          <IconButton
-                            edge="end"
-                            onClick={() => handleRemoveType(type)}
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <List>
+                      {eventTypes.map((type, index) => (
+                        <ListItem key={index} sx={{ pl: 0 }}>
+                          <Grid
+                            container
+                            direction="row"
+                            alignItems="center"
+                            justifyContent="flex-start"
                           >
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    ))}
-                  </List>
+                            <Paper
+                              elevation={0}
+                              sx={{
+                                mr: 1.5,
+                                width: 15,
+                                height: 15,
+                                borderRadius: 50,
+                                backgroundColor: type.color || "lightgrey",
+                              }}
+                            />
+                            <Typography sx={{ width: 180 }}>
+                              {type.name || type}
+                            </Typography>
+                            <IconButton
+                              edge="end"
+                              onClick={() => handleRemoveType(type)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Grid>
+                        </ListItem>
+                      ))}
+                    </List>
+                  </Grid>
                   <Grid
                     container
                     direction="row"
                     alignItems="center"
                     justifyContent="center"
+                    sx={{ my: 3 }}
                   >
                     <Grid item>
                       <TextField
                         variant="outlined"
-                        label="Adicionar novo tipo"
-                        value={newType}
-                        onChange={(e) => setNewType(e.target.value)}
+                        label="Novo tipo"
+                        value={newType.name}
+                        onChange={(e) =>
+                          setNewType({
+                            name: e.target.value,
+                            color: newType.color,
+                          })
+                        }
+                        sx={{ width: 200 }}
                       />
                     </Grid>
+                    <IconButton
+                      edge="start"
+                      sx={{ ml: 2 }}
+                      onClick={(e) => setAnchorEl(e.currentTarget)}
+                    >
+                      <ColorLensIcon sx={{ fontSize: 28 }} />
+                    </IconButton>
+                    <Popover
+                      open={Boolean(anchorEl)}
+                      anchorEl={anchorEl}
+                      onClose={() => setAnchorEl(null)}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "center",
+                      }}
+                    >
+                      <SketchPicker
+                        color={newType.color || "white"}
+                        onChange={(color) =>
+                          setNewType({ name: newType.name, color: color.hex })
+                        }
+                        disableAlpha
+                      />
+                    </Popover>
+                    <Paper
+                      sx={{
+                        m: 1,
+                        width: 28,
+                        height: 28,
+                        backgroundColor: newType.color,
+                        borderRadius: 50,
+                      }}
+                    />
                     <Grid item>
                       <Button
                         variant="contained"

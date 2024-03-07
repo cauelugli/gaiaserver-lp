@@ -241,7 +241,7 @@ const configSchema = new Schema({
     },
     eventTypes: {
       type: Array,
-      default: ["Job", "Tarefa", "Particular"],
+      default: [],
     },
 
   },

@@ -19,8 +19,9 @@ import {
   Slide,
 } from "@mui/material";
 
-import AgendaActions from "./small/buttons/AgendaActions";
 import CalendarEventModal from "../forms/misc/CalendarEventModal";
+import AgendaActions from "./small/buttons/AgendaActions";
+import CalendarEvents from "./small/CalendarEvents";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -73,8 +74,6 @@ const MyCalendar = ({ user, config }) => {
   React.useEffect(() => {
     fetchData();
   }, []);
-
-  console.log("config", config.eventTypes)
 
   const handleAddEvent = () => {
     if (title) {
@@ -196,6 +195,37 @@ const MyCalendar = ({ user, config }) => {
     </Dialog>
   );
 
+  const eventStyleGetter = (event) => {
+    console.log("event.", event.type);
+    let style = {
+      backgroundColor:
+        event.type === "Job"
+          ? "red"
+          : event.type === "Reunião"
+          ? "blue"
+          : "none",
+      border: "1px solid black",
+      color: "white",
+    };
+
+    let definedType;
+
+    if (event.type === "Job") {
+      definedType === "red";
+    } else if (event.type === "Reunião") {
+      definedType === "blue";
+    }
+
+    // Exemplo de lógica condicional para estilos baseados em propriedades do evento
+    if (event.isImportant) {
+      style.backgroundColor = definedType;
+    }
+
+    return {
+      style: style,
+    };
+  };
+
   const handleSelectEvent = (event) => {
     setSelectedEvent(event);
     setDetailsDialogOpen(true);
@@ -210,6 +240,11 @@ const MyCalendar = ({ user, config }) => {
   const maxTime = new Date();
   maxTime.setHours(config.maxTime || 22, 0, 0);
 
+  const customFormats = {
+    // This removes the event time on the event container
+    eventTimeRangeFormat: () => "",
+  };
+
   return (
     <>
       <div style={{ height: 700 }}>
@@ -222,8 +257,13 @@ const MyCalendar = ({ user, config }) => {
           onSelectSlot={handleSelectSlot}
           selectable={true}
           defaultView="week"
+          formats={customFormats}
           min={minTime}
           max={maxTime}
+          components={{
+            event: CalendarEvents,
+          }}
+          eventPropGetter={eventStyleGetter}
           messages={{
             next: "Próximo",
             previous: "Anterior",

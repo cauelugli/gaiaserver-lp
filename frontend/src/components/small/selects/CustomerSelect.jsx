@@ -82,6 +82,9 @@ const CustomerSelect = (props) => {
                   src={`http://localhost:3000/static/${item.image}`}
                   sx={{ width: 24, height: 24, marginRight: 2 }}
                 />
+                <Typography id="ghostText" sx={{ color: "white" }}>
+                  {"•"}
+                </Typography>
                 <Typography>{item.name}</Typography>
               </Grid>
             </MenuItem>
