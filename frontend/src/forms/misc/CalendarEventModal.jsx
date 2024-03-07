@@ -10,6 +10,7 @@ import {
   DialogTitle,
   Grid,
   MenuItem,
+  Paper,
   Select,
   TextField,
   Typography,
@@ -69,14 +70,51 @@ const CalendarEventModal = ({
                 return <Typography>Tipo de Evento</Typography>;
               }
 
-              return selected;
+              return (
+                <Grid
+                  container
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="flex-start"
+                >
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      mr: 1,
+                      width: 15,
+                      height: 15,
+                      borderRadius: 50,
+                      backgroundColor: selected.color,
+                    }}
+                  />
+                  <Typography>{selected.name}</Typography>
+                </Grid>
+              );
             }}
           >
-            {types && types.map((type) => (
-              <MenuItem key value={type}>
-                {type}
-              </MenuItem>
-            ))}
+            {types &&
+              types.map((type) => (
+                <MenuItem key value={type}>
+                  <Grid
+                    container
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="flex-start"
+                  >
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        mr: 1.5,
+                        width: 15,
+                        height: 15,
+                        borderRadius: 50,
+                        backgroundColor: type.color || "lightgrey",
+                      }}
+                    />
+                    <Typography>{type.name}</Typography>
+                  </Grid>
+                </MenuItem>
+              ))}
           </Select>
           <CustomerSelect mx075 setCustomer={setCustomer} />
           <ServiceSelect setService={setService} />

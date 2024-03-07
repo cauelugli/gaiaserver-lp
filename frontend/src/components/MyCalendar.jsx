@@ -96,6 +96,8 @@ const MyCalendar = ({ user, config }) => {
         });
       setOpen(false);
       setTitle("");
+      setType("");
+      setCustomer({});
     }
   };
 
@@ -177,7 +179,7 @@ const MyCalendar = ({ user, config }) => {
           Fim: {moment(event?.end).format("DD/MM/YYYY HH:mm")}
         </Typography>
         <Typography gutterBottom>Status: {event?.status}</Typography>
-        <Typography gutterBottom>Tipo de Evento: {event?.type}</Typography>
+        <Typography gutterBottom>Tipo de Evento: {event?.type.name}</Typography>
         <Typography gutterBottom>
           Cliente: {event.customer ? event.customer.name : "-"}
         </Typography>
@@ -198,28 +200,10 @@ const MyCalendar = ({ user, config }) => {
   const eventStyleGetter = (event) => {
     console.log("event.", event.type);
     let style = {
-      backgroundColor:
-        event.type === "Job"
-          ? "red"
-          : event.type === "Reunião"
-          ? "blue"
-          : "none",
-      border: "1px solid black",
+      backgroundColor: event.type.color,
+      border: "1px solid white",
       color: "white",
     };
-
-    let definedType;
-
-    if (event.type === "Job") {
-      definedType === "red";
-    } else if (event.type === "Reunião") {
-      definedType === "blue";
-    }
-
-    // Exemplo de lógica condicional para estilos baseados em propriedades do evento
-    if (event.isImportant) {
-      style.backgroundColor = definedType;
-    }
 
     return {
       style: style,
