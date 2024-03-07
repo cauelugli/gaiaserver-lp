@@ -21,6 +21,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import CustomerSelect from "../../components/small/selects/CustomerSelect";
 import ServiceSelect from "../../components/small/selects/ServiceSelect";
+import WorkerSelect from "../../components/small/selects/WorkerSelect";
 
 const CalendarEventModal = ({
   selectedDate,
@@ -33,6 +34,9 @@ const CalendarEventModal = ({
   setType,
   setCustomer,
   setService,
+  setWorker,
+  setProject,
+  setGroup,
   handleAddEvent,
 }) => {
   return (
@@ -60,41 +64,18 @@ const CalendarEventModal = ({
             onChange={(e) => setTitle(e.target.value)}
             sx={{ my: 3 }}
           />
-          <Select
-            value={type}
-            sx={{ width: 180, mt: 1 }}
-            onChange={(e) => setType(e.target.value)}
-            displayEmpty
-            renderValue={(selected) => {
-              if (!selected) {
-                return <Typography>Tipo de Evento</Typography>;
-              }
+          <Grid sx={{ mb: 3 }}>
+            <Select
+              value={type}
+              sx={{ width: 180, mt: 1 }}
+              onChange={(e) => setType(e.target.value)}
+              displayEmpty
+              renderValue={(selected) => {
+                if (!selected) {
+                  return <Typography>Tipo de Evento</Typography>;
+                }
 
-              return (
-                <Grid
-                  container
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="flex-start"
-                >
-                  <Paper
-                    elevation={0}
-                    sx={{
-                      mr: 1,
-                      width: 15,
-                      height: 15,
-                      borderRadius: 50,
-                      backgroundColor: selected.color,
-                    }}
-                  />
-                  <Typography>{selected.name}</Typography>
-                </Grid>
-              );
-            }}
-          >
-            {types &&
-              types.map((type) => (
-                <MenuItem key value={type}>
+                return (
                   <Grid
                     container
                     direction="row"
@@ -104,20 +85,54 @@ const CalendarEventModal = ({
                     <Paper
                       elevation={0}
                       sx={{
-                        mr: 1.5,
+                        mr: 1,
                         width: 15,
                         height: 15,
                         borderRadius: 50,
-                        backgroundColor: type.color || "lightgrey",
+                        backgroundColor: selected.color,
                       }}
                     />
-                    <Typography>{type.name}</Typography>
+                    <Typography>{selected.name}</Typography>
                   </Grid>
-                </MenuItem>
-              ))}
-          </Select>
-          <CustomerSelect mx075 setCustomer={setCustomer} />
-          <ServiceSelect setService={setService} />
+                );
+              }}
+            >
+              {types &&
+                types.map((type) => (
+                  <MenuItem key value={type}>
+                    <Grid
+                      container
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="flex-start"
+                    >
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          mr: 1.5,
+                          width: 15,
+                          height: 15,
+                          borderRadius: 50,
+                          backgroundColor: type.color || "lightgrey",
+                        }}
+                      />
+                      <Typography>{type.name}</Typography>
+                    </Grid>
+                  </MenuItem>
+                ))}
+            </Select>
+            <CustomerSelect mx075 setCustomer={setCustomer} />
+            <ServiceSelect setService={setService} />
+          </Grid>
+
+
+          <Grid sx={{ mb: 3 }}>
+            <WorkerSelect setWorker={setWorker} />
+            <CustomerSelect mx075 setCustomer={setCustomer} />
+            <ServiceSelect setService={setService} />
+          </Grid>
+
+
         </Grid>
       </DialogContent>
       <DialogActions>

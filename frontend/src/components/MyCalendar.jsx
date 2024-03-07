@@ -40,6 +40,9 @@ const MyCalendar = ({ user, config }) => {
   const [type, setType] = useState("");
   const [customer, setCustomer] = useState({});
   const [service, setService] = useState({});
+  const [worker, setWorker] = useState("");
+  const [project, setProject] = useState("");
+  const [group, setGroup] = useState("");
   const [newEvent, setNewEvent] = useState({});
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
@@ -85,6 +88,9 @@ const MyCalendar = ({ user, config }) => {
         type,
         customer,
         service,
+        worker,
+        project,
+        group
       };
       api
         .post("/agenda/addAgendaEvent", { ...eventToAdd, userId: user._id })
@@ -98,6 +104,9 @@ const MyCalendar = ({ user, config }) => {
       setTitle("");
       setType("");
       setCustomer({});
+      setProject("");
+      setWorker("");
+      setGroup("");
     }
   };
 
@@ -283,10 +292,11 @@ const MyCalendar = ({ user, config }) => {
         type={type}
         types={config.eventTypes}
         setType={setType}
-        service={service}
         setService={setService}
-        customer={customer}
         setCustomer={setCustomer}
+        setWorker={setWorker}
+        setGroup={setGroup}
+        setProject={setProject}
         handleAddEvent={handleAddEvent}
       />
       {selectedEvent && (
