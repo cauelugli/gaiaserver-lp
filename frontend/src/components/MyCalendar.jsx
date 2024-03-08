@@ -90,7 +90,7 @@ const MyCalendar = ({ user, config }) => {
         service,
         worker,
         project,
-        group
+        group,
       };
       api
         .post("/agenda/addAgendaEvent", { ...eventToAdd, userId: user._id })
@@ -286,6 +286,7 @@ const MyCalendar = ({ user, config }) => {
           "DD/MM/YYYY HH:mm"
         )} até ${moment(newEvent.end).format("HH:mm")}`}
         open={open}
+        user={user}
         handleClose={handleClose}
         title={title}
         setTitle={setTitle}

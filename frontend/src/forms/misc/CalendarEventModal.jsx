@@ -22,8 +22,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CustomerSelect from "../../components/small/selects/CustomerSelect";
 import ServiceSelect from "../../components/small/selects/ServiceSelect";
 import WorkerSelect from "../../components/small/selects/WorkerSelect";
+import ProjectSelect from "../../components/small/selects/ProjectSelect";
 
 const CalendarEventModal = ({
+  user,
   selectedDate,
   open,
   handleClose,
@@ -125,14 +127,11 @@ const CalendarEventModal = ({
             <ServiceSelect setService={setService} />
           </Grid>
 
-
           <Grid sx={{ mb: 3 }}>
             <WorkerSelect setWorker={setWorker} />
-            <CustomerSelect mx075 setCustomer={setCustomer} />
+            <ProjectSelect mx075 setProject={setProject} user={user} />
             <ServiceSelect setService={setService} />
           </Grid>
-
-
         </Grid>
       </DialogContent>
       <DialogActions>

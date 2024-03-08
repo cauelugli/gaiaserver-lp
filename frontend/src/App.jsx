@@ -183,7 +183,7 @@ export default function App() {
               item
               sx={{
                 textAlign: "center",
-                backgroundColor: darkMode ? darkenedColor : "#32aacd",
+                backgroundColor: darkMode ? darkenedColor : "white",
                 height: "auto",
                 maxWidth: 58,
               }}
@@ -201,9 +201,6 @@ export default function App() {
             sx={{
               width: "95%",
               backgroundColor: darkMode ? "#181c24" : "",
-              // userData && userData.hasDarkmodeActive ? "#777" : "",
-              // color: userData && userData.hasDarkmodeActive ? "white" : "black",
-              // color: darkMode ? "white" : "black",
             }}
           >
             <Grid container sx={{ p: 2 }}>

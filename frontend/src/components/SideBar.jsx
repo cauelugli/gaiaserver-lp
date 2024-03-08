@@ -86,7 +86,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
               ? darkMode || user.hasDarkModeActive
                 ? darkenedColor
                 : configData.customization.mainColor
-              : "#32aacd",
+              : "white",
         }}
       >
         {filteredOptions.map((option, index) => (
@@ -105,7 +105,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
                   ? darkMode || user.hasDarkModeActive
                     ? darkenedColor
                     : configData.customization.mainColor
-                  : "#32aacd",
+                  : "white",
             }}
           >
             <ListItemButton
@@ -124,7 +124,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
                     ? darkMode || user.hasDarkModeActive
                       ? darkenedColor
                       : configData.customization.mainColor
-                    : "#32aacd",
+                    : "white",
                 position: "relative",
                 display: "flex",
                 alignItems: "center",
@@ -144,7 +144,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
                       ? darkMode || user.hasDarkModeActive
                         ? darkenedColor
                         : configData.customization.mainColor
-                      : "#32aacd",
+                      : "white",
                   zIndex: 1,
                   pr: 2,
                   pl: 2,
@@ -174,7 +174,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
                       ? darkMode || user.hasDarkModeActive
                         ? darkenedColor
                         : configData.customization.mainColor
-                      : "#32aacd",
+                      : "white",
                   zIndex: 0,
                   opacity: hoveredIndex === index ? 1 : 0,
                   transition: "opacity 0.3s ease-in-out",
@@ -190,7 +190,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
                       ? darkMode || user.hasDarkModeActive
                         ? darkenedColor
                         : configData.customization.mainColor
-                      : "#32aacd",
+                      : "white",
                 }}
               />
             )}
@@ -205,7 +205,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
                       ? darkMode || user.hasDarkModeActive
                         ? darkenedColor
                         : configData.customization.mainColor
-                      : "#32aacd",
+                      : "white",
                 }}
               />
             )}
@@ -218,7 +218,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
                 ? darkMode || user.hasDarkModeActive
                   ? darkenedColor
                   : configData.customization.mainColor
-                : "#32aacd",
+                : "white",
           }}
         >
           <img
@@ -233,7 +233,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
                   ? darkMode || user.hasDarkModeActive
                     ? darkenedColor
                     : configData.customization.mainColor
-                  : "#32aacd",
+                  : "white",
             }}
             onClick={() => alert("GS é um sonho feito com muito amor")}
           />

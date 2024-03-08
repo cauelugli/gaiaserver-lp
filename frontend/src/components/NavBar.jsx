@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 import { Grid } from "@mui/material";
 
@@ -33,22 +34,38 @@ export default function NavBar({
       }}
     >
       <Grid item>
-        <img
-          src={`http://localhost:3000/static/${
-            configData && configData.customization
-              ? configData.customization.logo
-              : ""
-          }`}
-          alt="Logotipo da Empresa"
+        <Link
+          to={"/"}
           style={{
-            width: "20%",
-            marginLeft: 30,
-            marginTop: 2,
-            marginBottom: 2,
-            cursor: "pointer",
+            textDecoration: "none",
+            color: "black",
+            position: "relative",
+            overflow: "hidden",
+
+            backgroundColor:
+              configData && configData.customization
+                ? darkMode || user.hasDarkModeActive
+                  ? darkenedColor
+                  : configData.customization.mainColor
+                : "white",
           }}
-          onClick={() => alert("Esse é o logo da sua empresa!")}
-        />
+        >
+          <img
+            src={`http://localhost:3000/static/${
+              configData && configData.customization
+                ? configData.customization.logo
+                : ""
+            }`}
+            alt="Logotipo da Empresa"
+            style={{
+              width: "20%",
+              marginLeft: 30,
+              marginTop: 2,
+              marginBottom: 2,
+              cursor: "pointer",
+            }}
+          />
+        </Link>
       </Grid>
       <Grid item sx={{ mr: 2 }}>
         <Grid container direction="row">
