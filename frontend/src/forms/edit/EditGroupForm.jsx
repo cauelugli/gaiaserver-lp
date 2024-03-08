@@ -13,46 +13,45 @@ import {
   Typography,
 } from "@mui/material";
 
-import DialogHeader from "../../components/small/DialogHeader";
-import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 import Members from "../../components/small/Members";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddGroupForm({
-  openAdd,
-  user,
+export default function EditGroupForm({
+  selectedGroup,
   users,
-  setOpenAdd,
+  openEdit,
+  setOpenEdit,
   refreshData,
   setRefreshData,
-  configCustomization,
   toast,
 }) {
-  const [name, setName] = React.useState("");
-  const [members, setMembers] = React.useState([]);
+  const [name, setName] = React.useState(selectedGroup.name);
+  const [members, setMembers] = React.useState(selectedGroup.members);
+  const previousData = selectedGroup;
 
-  const handleAdd = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
     const membersToSend = members.map(({ _id, name }) => ({ _id, name }));
 
     try {
-      const res = await api.post("/groups", {
+      const res = await api.put("/groups", {
+        groupId: selectedGroup._id,
+        previousData,
         name,
         members: membersToSend,
-        creator: user.name,
       });
       if (res.data) {
-        toast.success("Grupo Adicionado!", {
+        toast.success("Grupo Editado!", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
         });
       }
-      setOpenAdd(!openAdd);
+      setOpenEdit(!openEdit);
       setRefreshData(!refreshData);
     } catch (err) {
       if (err.response && err.response.status === 422) {
@@ -63,7 +62,6 @@ export default function AddGroupForm({
           autoClose: 1200,
         });
       } else {
-        console.log("err", err);
         toast.error("Houve algum erro...", {
           closeOnClick: true,
           pauseOnHover: false,
@@ -75,13 +73,13 @@ export default function AddGroupForm({
   };
 
   return (
-    <form onSubmit={handleAdd}>
-      <DialogHeader title="Grupo" femaleGender={false} extraSmall />
+    <form onSubmit={handleEdit}>
+      <DialogTitle>Editando Grupo - {selectedGroup.name}</DialogTitle>
       <DialogContent>
         <Grid
           container
           sx={{ mt: 2 }}
-          direction="column"
+          direction="row"
           justifyContent="center"
           alignItems="center"
         >
@@ -106,7 +104,6 @@ export default function AddGroupForm({
           </Grid>
         </Grid>
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization} extraSmall />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK
@@ -114,7 +111,7 @@ export default function AddGroupForm({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenEdit(!openEdit)}
         >
           X
         </Button>

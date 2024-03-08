@@ -16,15 +16,15 @@ import {
   Typography,
 } from "@mui/material";
 
-import EditPositionForm from "../forms/edit/EditPositionForm";
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+import EditGroupForm from "../forms/edit/EditGroupForm";
 
 import GroupMembers from "../components/small/GroupMembers";
-import PositionTableActions from "../components/small/buttons/tableActionButtons/PositionTableActions";
+import GroupTableActions from "../components/small/buttons/tableActionButtons/GroupTableActions";
 
 export default function GroupTable({
   configData,
   groups,
+  allUsers,
   users,
   managers,
   toast,
@@ -35,8 +35,6 @@ export default function GroupTable({
 }) {
   const [selectedGroup, setSelectedGroup] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState("");
-  const [openDialog, setOpenDialog] = React.useState(false);
 
   const tableHeaderRow = [
     {
@@ -159,7 +157,6 @@ export default function GroupTable({
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        {/* here */}
                         <GroupMembers
                           members={group.members}
                           users={users}
@@ -171,8 +168,7 @@ export default function GroupTable({
                         align="center"
                         onClick={() => setSelectedGroup(group)}
                       >
-                        {/* here */}
-                        <PositionTableActions
+                        <GroupTableActions
                           configData={configData}
                           setOpenEdit={setOpenEdit}
                           selectedItem={selectedGroup}
@@ -207,29 +203,14 @@ export default function GroupTable({
             onClose={() => setOpenEdit(!openEdit)}
           >
             {/* here */}
-            <EditPositionForm
+            <EditGroupForm
               openEdit={openEdit}
+              users={allUsers}
               selectedGroup={selectedGroup}
               setOpenEdit={setOpenEdit}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
-            />
-          </Dialog>
-        )}
-        {openDialog && (
-          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-            <GenericDeleteForm
-              selectedItem={selectedItem}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-              toast={toast}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              endpoint="groups"
-              successMessage={`${
-                selectedItem.name && selectedItem.name
-              } Deletado com Sucesso`}
             />
           </Dialog>
         )}

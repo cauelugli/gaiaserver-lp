@@ -393,6 +393,7 @@ export default function Departments({ user, configTables }) {
               searchOption={searchOption}
               positions={positions}
               users={users}
+              allUsers={allUsers}
               groups={groups}
               managers={managers}
               openAdd={openAddGroup}

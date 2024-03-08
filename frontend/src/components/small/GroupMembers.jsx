@@ -13,10 +13,10 @@ const GroupMembers = ({ members, users, managers }) => {
       const details = {};
       for (const member of members) {
         const user = allUsers.find(
-          (user) => user._id.toString() === member.id.toString()
+          (user) => user._id.toString() === member._id.toString()
         );
         if (user) {
-          details[member.id] = user;
+          details[member._id] = user;
         }
       }
       setUserDetails(details);
@@ -31,7 +31,7 @@ const GroupMembers = ({ members, users, managers }) => {
   return (
     <Grid container direction="row" alignItems="center" justifyContent="center">
       {displayedMembers.map((member) => {
-        const user = userDetails[member.id];
+        const user = userDetails[member._id];
         if (user) {
           return (
             <Avatar
