@@ -215,7 +215,7 @@ const MyCalendar = ({ user, config }) => {
       return [r, g, b];
     };
 
-    const [r, g, b] = hexToRGB(event.type.color);
+    const [r, g, b] = hexToRGB(event.type.color || "#ffffff");
 
     let style = {
       backgroundColor: `rgba(${r}, ${g}, ${b}, 0.55)`,
