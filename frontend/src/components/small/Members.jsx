@@ -9,6 +9,7 @@ import {
   Typography,
   FormControl,
   FormLabel,
+  Button,
 } from "@mui/material";
 
 import Autocomplete from "@mui/material/Autocomplete";
@@ -18,6 +19,10 @@ const Members = ({ users, value, onChange, option }) => {
     (user) =>
       !value.some((selectedUser) => selectedUser._id === user._id) &&
       !value.some((prevUser) => prevUser.id === user._id)
+  );
+
+  const filteredGroupMembers = users.filter(
+    (user) => !value.some((selectedUser) => selectedUser._id === user._id)
   );
 
   return (
@@ -64,6 +69,42 @@ const Members = ({ users, value, onChange, option }) => {
             renderInput={(params) => <TextField {...params} />}
           />
         </FormControl>
+      )}
+      {option === "group" && (
+        <Autocomplete
+          multiple
+          size="small"
+          options={users}
+          value={value}
+          sx={{ width: 300 }}
+          onChange={(event, newValue) => {
+            onChange(newValue);
+          }}
+          getOptionLabel={(option) => option.name}
+          filterOptions={(options, { inputValue }) => {
+            const filteredOptionsByName = options.filter((option) =>
+              option.name.toLowerCase().includes(inputValue.toLowerCase())
+            );
+
+            return filteredOptionsByName.filter(
+              (option) =>
+                !value.some((selectedUser) => selectedUser._id === option._id)
+            );
+          }}
+          renderOption={(props, option) => (
+            <li {...props}>
+              <Box display="flex" alignItems="center">
+                <Avatar
+                  alt="Imagem do Colaborador"
+                  src={`http://localhost:3000/static/${option.image}`}
+                  sx={{ width: 22, height: 22, marginRight: 1 }}
+                />
+                {option.name}
+              </Box>
+            </li>
+          )}
+          renderInput={(params) => <TextField {...params} />}
+        />
       )}
     </Box>
   );

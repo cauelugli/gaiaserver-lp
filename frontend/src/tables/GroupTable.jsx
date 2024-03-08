@@ -18,20 +18,22 @@ import {
 
 import EditPositionForm from "../forms/edit/EditPositionForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
-import PositionMembers from "../components/small/PositionMembers";
+
+import GroupMembers from "../components/small/GroupMembers";
 import PositionTableActions from "../components/small/buttons/tableActionButtons/PositionTableActions";
 
-export default function PositionTable({
+export default function GroupTable({
   configData,
-  positions,
+  groups,
   users,
+  managers,
   toast,
   searchValue,
   searchOption,
   refreshData,
   setRefreshData,
 }) {
-  const [selectedPosition, setSelectedPosition] = React.useState("");
+  const [selectedGroup, setSelectedGroup] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -39,11 +41,11 @@ export default function PositionTable({
   const tableHeaderRow = [
     {
       id: "name",
-      label: "Nome do Cargo",
+      label: "Nome do Grupo",
     },
     {
       id: "members",
-      label: "Colaboradores",
+      label: "Membros",
     },
     {
       id: "actions",
@@ -73,10 +75,10 @@ export default function PositionTable({
     };
 
     if (orderBy === "position.name") {
-      return [...positions].sort(compare);
+      return [...groups].sort(compare);
     }
 
-    return [...positions].sort((a, b) => {
+    return [...groups].sort((a, b) => {
       const isAsc = order === "asc";
       if (isAsc) {
         return a[orderBy] < b[orderBy] ? -1 : 1;
@@ -84,7 +86,7 @@ export default function PositionTable({
         return b[orderBy] < a[orderBy] ? -1 : 1;
       }
     });
-  }, [positions, order, orderBy]);
+  }, [groups, order, orderBy]);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -114,11 +116,11 @@ export default function PositionTable({
               >
                 {tableHeaderRow.map((headCell) => (
                   <TableCell
-                    align={headCell.label === "Nome do Cargo" ? "" : "center"}
+                    align={headCell.label === "Nome do Grupo" ? "" : "center"}
                     sx={{
                       fontSize: 13,
                       fontWeight: "bold",
-                      pl: headCell.label === "Nome do Cargo" ? "" : 5,
+                      pl: headCell.label === "Nome do Grupo" ? "" : 5,
                     }}
                     key={headCell.id}
                     sortDirection={orderBy === headCell.id ? order : false}
@@ -145,33 +147,35 @@ export default function PositionTable({
                       .includes(searchValue.toLowerCase())
                   );
                 })
-                .map((position) => (
+                .map((group) => (
                   <>
                     <TableRow
-                      key={position._id}
+                      key={group._id}
                       sx={{ "&:hover": { backgroundColor: "#eee " } }}
                     >
                       <TableCell>
                         <Typography sx={{ fontSize: 13 }}>
-                          {position.name}
+                          {group.name}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        <PositionMembers
-                          members={position.members}
+                        {/* here */}
+                        <GroupMembers
+                          members={group.members}
                           users={users}
-                          managers=""
+                          managers={managers}
                         />
                       </TableCell>
                       <TableCell
                         cursor="pointer"
                         align="center"
-                        onClick={() => setSelectedPosition(position)}
+                        onClick={() => setSelectedGroup(group)}
                       >
+                        {/* here */}
                         <PositionTableActions
                           configData={configData}
                           setOpenEdit={setOpenEdit}
-                          selectedItem={selectedPosition}
+                          selectedItem={selectedGroup}
                           refreshData={refreshData}
                           setRefreshData={setRefreshData}
                         />
@@ -202,10 +206,10 @@ export default function PositionTable({
             open={openEdit}
             onClose={() => setOpenEdit(!openEdit)}
           >
+            {/* here */}
             <EditPositionForm
               openEdit={openEdit}
-              selectedPosition={selectedPosition}
-              previousMaterials={selectedPosition.materials}
+              selectedGroup={selectedGroup}
               setOpenEdit={setOpenEdit}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
@@ -222,7 +226,7 @@ export default function PositionTable({
               toast={toast}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
-              endpoint="positions"
+              endpoint="groups"
               successMessage={`${
                 selectedItem.name && selectedItem.name
               } Deletado com Sucesso`}

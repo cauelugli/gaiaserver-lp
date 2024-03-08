@@ -14,15 +14,17 @@ import {
 
 import LanIcon from "@mui/icons-material/Lan";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import GroupsIcon from '@mui/icons-material/Groups';
 
 export default function DepartmentTableButton({
+  configCustomization,
   anchorEl,
   openAddButton,
   handleClickAddButton,
   handleCloseAddButton,
   setOpenAddDepartment,
   setOpenAddPosition,
-  configCustomization,
+  setOpenAddGroup,
 }) {
   return (
     <div>
@@ -72,6 +74,12 @@ export default function DepartmentTableButton({
               <AssignmentIndIcon />
             </ListItemIcon>
             <ListItemText>Cargo</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={() => setOpenAddGroup(true)}>
+            <ListItemIcon>
+              <GroupsIcon />
+            </ListItemIcon>
+            <ListItemText>Grupo</ListItemText>
           </MenuItem>
         </MenuList>
       </Menu>

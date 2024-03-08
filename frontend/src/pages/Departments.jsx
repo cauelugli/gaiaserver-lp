@@ -4,7 +4,15 @@ import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-import { Box, CircularProgress, Dialog, Grid, Tab, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Dialog,
+  Grid,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 
 import DepartmentTable from "../tables/DepartmentTable";
 import PositionTable from "../tables/PositionTable";
@@ -16,6 +24,8 @@ import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 import DepartmentTableButton from "../components/small/buttons/tableButtons/DepartmentTableButton";
+import GroupTable from "../tables/GroupTable";
+import AddGroupForm from "../forms/add/AddGroupForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -45,6 +55,7 @@ export default function Departments({ user, configTables }) {
 
   const [openAddDepartment, setOpenAddDepartment] = React.useState(false);
   const [openAddPosition, setOpenAddPosition] = React.useState(false);
+  const [openAddGroup, setOpenAddGroup] = React.useState(false);
 
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("name");
@@ -78,6 +89,10 @@ export default function Departments({ user, configTables }) {
       // POSITIONS TABLE
       options: [{ value: "name", label: "Nome" }],
     },
+    {
+      // GROUP TABLE
+      options: [{ value: "name", label: "Nome" }],
+    },
   ];
 
   const handleSearchChange = (event) => {
@@ -99,6 +114,8 @@ export default function Departments({ user, configTables }) {
   const [saleDepartments, setSaleDepartments] = React.useState([]);
   const [internalDepartments, setInternalDepartments] = React.useState([]);
   const [positions, setPositions] = React.useState([]);
+  const [groups, setGroups] = React.useState([]);
+  const [allUsers, setAllUsers] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -107,12 +124,16 @@ export default function Departments({ user, configTables }) {
         const managers = await api.get("/managers");
         const departments = await api.get("/departments");
         const positions = await api.get("/positions");
+        const groups = await api.get("/groups");
         const config = await api.get("/config/departments");
         const configCustomization = await api.get("/config");
+        const allUsersData = [...users.data, ...managers.data];
+
         setConfig(config.data);
         setConfigCustomization(configCustomization.data[0].customization);
         setUsers(users.data);
         setManagers(managers.data);
+        setGroups(groups.data);
         setServiceDepartments(
           departments.data.filter(
             (department) => department.type === "Serviços"
@@ -125,6 +146,7 @@ export default function Departments({ user, configTables }) {
           departments.data.filter((department) => department.type === "Interno")
         );
         setPositions(positions.data);
+        setAllUsers(allUsersData);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -174,6 +196,7 @@ export default function Departments({ user, configTables }) {
           handleCloseAddButton={handleCloseAddButton}
           setOpenAddDepartment={setOpenAddDepartment}
           setOpenAddPosition={setOpenAddPosition}
+          setOpenAddGroup={setOpenAddGroup}
           configCustomization={configCustomization}
         />
       </Grid>
@@ -199,6 +222,10 @@ export default function Departments({ user, configTables }) {
           )}
           <Tab
             label="Cargos"
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
+          <Tab
+            label="Grupos"
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <RefreshButton
@@ -340,6 +367,42 @@ export default function Departments({ user, configTables }) {
           </>
         )}
       </CustomTabPanel>
+      <CustomTabPanel
+        value={value}
+        index={configTables.departmentInternal ? 4 : 3}
+      >
+        {groups.length === 0 ? (
+          <NoDataText option="Grupos" />
+        ) : (
+          <>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[3]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
+
+            <GroupTable
+              configData={config}
+              toast={toast}
+              searchValue={searchValue}
+              searchOption={searchOption}
+              positions={positions}
+              users={users}
+              groups={groups}
+              managers={managers}
+              openAdd={openAddGroup}
+              setOpenAdd={setOpenAddGroup}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+            />
+          </>
+        )}
+      </CustomTabPanel>
       {openAddDepartment && (
         <Dialog
           fullWidth
@@ -371,6 +434,25 @@ export default function Departments({ user, configTables }) {
             user={user}
             openAdd={openAddPosition}
             setOpenAdd={setOpenAddPosition}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openAddGroup && (
+        <Dialog
+          fullWidth
+          maxWidth="xs"
+          open={openAddGroup}
+          onClose={() => setOpenAddGroup(!openAddGroup)}
+        >
+          <AddGroupForm
+            user={user}
+            users={allUsers}
+            openAdd={openAddGroup}
+            setOpenAdd={setOpenAddGroup}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
