@@ -18,19 +18,20 @@ import WorkerSelect from "../components/small/selects/WorkerSelect";
 
 const Dashboard = ({ user, config }) => {
   const [worker, setWorker] = React.useState("");
+  const [expanded, setExpanded] = React.useState(true);
 
   return (
     <Grid>
-      <Accordion sx={{ mx: "20%" }} defaultExpanded>
+      <Accordion sx={{ mx: "20%" }} expanded={expanded}>
         {user.username === "admin" ? (
-          <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+          <AccordionSummary expandIcon={<ArrowDropDownIcon />} >
             <Grid
               container
               direction="row"
               alignItems="center"
               justifyContent="flex-start"
             >
-              <Typography sx={{ fontSize: 22, fontWeight: "bold", mr:2 }}>
+              <Typography sx={{ fontSize: 22, fontWeight: "bold", mr: 2 }}>
                 Agenda
               </Typography>
               {user.username === "admin" && (
@@ -39,7 +40,10 @@ const Dashboard = ({ user, config }) => {
             </Grid>
           </AccordionSummary>
         ) : (
-          <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+          <AccordionSummary
+            expandIcon={<ArrowDropDownIcon />}
+            onClick={() => setExpanded(!expanded)}
+          >
             <Typography sx={{ fontSize: 22, fontWeight: "bold" }}>
               Minha Agenda
             </Typography>

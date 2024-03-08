@@ -168,13 +168,19 @@ const MyCalendar = ({ user, config, selectedWorker }) => {
 
     api
       .put(`/agenda/resolveAgendaEvent`, {
-        userId: user._id,
+        userId: selectedWorker ? selectedWorker._id : user._id,
         start: startFormatted,
         end: endFormatted,
       })
       .then(() => {
         fetchData();
         setDetailsDialogOpen(false);
+        toast.success("Evento Resolvido!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
       })
       .catch((error) => {
         console.error("Erro ao atualizar o status do evento:", error);
