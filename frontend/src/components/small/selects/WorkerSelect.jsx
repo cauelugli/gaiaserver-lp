@@ -62,7 +62,9 @@ const WorkerSelect = (props) => {
           );
         }}
         sx={{ mt: 1, width: 180 }}
-        onChange={(e) => props.setWorker(e.target.value.name)}
+        onChange={(e) =>
+          props.setWorker(props.needId ? e.target.value : e.target.value.name)
+        }
       >
         <TextField
           placeholder="Pesquisar"

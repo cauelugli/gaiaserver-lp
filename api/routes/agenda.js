@@ -7,11 +7,10 @@ router.get("/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
     const agenda = await Agenda.findOne({});
-    const userEvents = agenda.events[userId];
+    let userEvents = agenda.events[userId];
+
     if (!userEvents) {
-      return res
-        .status(404)
-        .json({ message: "Eventos para este usuário não encontrados." });
+      return res.status(200).json((userEvents = []));
     }
 
     res.status(200).json(userEvents);

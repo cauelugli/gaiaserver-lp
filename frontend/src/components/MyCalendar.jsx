@@ -9,7 +9,6 @@ import axios from "axios";
 import moment from "moment";
 import { toast } from "react-toastify";
 
-
 Settings.defaultLocale = "pt-BR";
 
 import {
@@ -37,7 +36,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const MyCalendar = ({ user, config }) => {
+const MyCalendar = ({ user, config, selectedWorker }) => {
   const [events, setEvents] = React.useState([]);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -59,7 +58,14 @@ const MyCalendar = ({ user, config }) => {
 
   const fetchData = async () => {
     try {
-      const userAgenda = await api.get(`/agenda/${user._id}`);
+      let url = `/agenda/${user._id}`;
+      if (selectedWorker) {
+        url = `/agenda/${selectedWorker._id}`;
+      }
+      let userAgenda = await api.get(url);
+      if (!userAgenda.data || userAgenda.data === undefined) {
+        userAgenda = [];
+      }
       const convertedEvents = userAgenda.data.map((event) => {
         const start = event.start
           ? parseDateString(
@@ -80,7 +86,7 @@ const MyCalendar = ({ user, config }) => {
 
   React.useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedWorker]);
 
   const handleAddEvent = () => {
     if (title) {
@@ -97,7 +103,10 @@ const MyCalendar = ({ user, config }) => {
         group,
       };
       api
-        .post("/agenda/addAgendaEvent", { ...eventToAdd, userId: user._id })
+        .post("/agenda/addAgendaEvent", {
+          ...eventToAdd,
+          userId: selectedWorker ? selectedWorker._id : user._id,
+        })
         .then(() => {
           fetchData();
           toast.success("Evento Adicionado!", {
@@ -128,7 +137,7 @@ const MyCalendar = ({ user, config }) => {
 
   const handleDeleteEvent = () => {
     const payload = {
-      userId: user._id,
+      userId: selectedWorker ? selectedWorker._id : user._id,
       start: moment(selectedEvent.start).format("DD/MM/YYYY HH:mm"),
       end: moment(selectedEvent.end).format("DD/MM/YYYY HH:mm"),
     };
