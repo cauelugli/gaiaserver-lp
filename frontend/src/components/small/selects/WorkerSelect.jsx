@@ -47,7 +47,7 @@ const WorkerSelect = (props) => {
         displayEmpty
         renderValue={(selected) => {
           if (!selected) {
-            return <Typography>com Colaborador</Typography>;
+            return <Typography>Colaborador</Typography>;
           }
 
           return (

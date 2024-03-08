@@ -7,6 +7,8 @@ import { DateTime, Settings } from "luxon";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import axios from "axios";
 import moment from "moment";
+import { toast } from "react-toastify";
+
 
 Settings.defaultLocale = "pt-BR";
 
@@ -18,6 +20,8 @@ import {
   Typography,
   Slide,
 } from "@mui/material";
+
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import CalendarEventModal from "../forms/misc/CalendarEventModal";
 import AgendaActions from "./small/buttons/AgendaActions";
@@ -96,9 +100,21 @@ const MyCalendar = ({ user, config }) => {
         .post("/agenda/addAgendaEvent", { ...eventToAdd, userId: user._id })
         .then(() => {
           fetchData();
+          toast.success("Evento Adicionado!", {
+            closeOnClick: true,
+            pauseOnHover: false,
+            theme: "colored",
+            autoClose: 1200,
+          });
         })
         .catch((error) => {
           console.error("Erro ao salvar o evento:", error);
+          toast.error("Houve algum erro...", {
+            closeOnClick: true,
+            pauseOnHover: false,
+            theme: "colored",
+            autoClose: 1200,
+          });
         });
       setOpen(false);
       setTitle("");
@@ -121,6 +137,13 @@ const MyCalendar = ({ user, config }) => {
       .put("/agenda/deleteAgendaEvent", payload)
       .then(() => {
         fetchData();
+        toast.error("Evento Deletado", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+          icon: <DeleteIcon />,
+        });
       })
       .catch((error) => {
         console.error("Erro ao excluir o evento:", error);
@@ -189,12 +212,18 @@ const MyCalendar = ({ user, config }) => {
         </Typography>
         <Typography gutterBottom>Status: {event?.status}</Typography>
         <Typography gutterBottom>Tipo de Evento: {event?.type.name}</Typography>
-        <Typography gutterBottom>
-          Cliente: {event.customer ? event.customer.name : "-"}
-        </Typography>
-        <Typography gutterBottom>
-          Serviço: {event.service ? event.service.name : "-"}
-        </Typography>
+        {event.customer.name && (
+          <Typography gutterBottom>Cliente: {event.customer.name}</Typography>
+        )}
+        {event.service && event.service.name && (
+          <Typography gutterBottom>Serviço: {event.service.name}</Typography>
+        )}
+        {event.project && event.project.name && (
+          <Typography gutterBottom>Projeto: {event.group.name}</Typography>
+        )}
+        {event.group && event.group.name && (
+          <Typography gutterBottom>Grupo: {event.group.name}</Typography>
+        )}
       </DialogContent>
       <DialogActions>
         <AgendaActions

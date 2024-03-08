@@ -25,15 +25,26 @@ router.get("/:userId", async (req, res) => {
 
 // CREATE EVENT TO USER'S AGENDA
 router.post("/addAgendaEvent", async (req, res) => {
-  const { userId, title, start, end, status, type, customer, service } =
-    req.body;
+  const {
+    userId,
+    title,
+    start,
+    end,
+    status,
+    type,
+    customer,
+    service,
+    worker,
+    project,
+    group,
+  } = req.body;
   try {
     const agenda = await Agenda.findOne({});
 
     if (!agenda) {
       const newAgenda = new Agenda({
         events: {
-          [userId]: [{ title, start, end, status }],
+          [userId]: [{ title, start, end, status, worker, project, group }],
         },
       });
       const savedAgenda = await newAgenda.save();
@@ -48,6 +59,9 @@ router.post("/addAgendaEvent", async (req, res) => {
         type,
         customer,
         service,
+        worker,
+        project,
+        group,
       });
 
       const updatedAgenda = await Agenda.findOneAndUpdate(

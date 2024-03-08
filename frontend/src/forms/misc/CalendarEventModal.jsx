@@ -23,6 +23,7 @@ import CustomerSelect from "../../components/small/selects/CustomerSelect";
 import ServiceSelect from "../../components/small/selects/ServiceSelect";
 import WorkerSelect from "../../components/small/selects/WorkerSelect";
 import ProjectSelect from "../../components/small/selects/ProjectSelect";
+import GroupSelect from "../../components/small/selects/GroupSelect";
 
 const CalendarEventModal = ({
   user,
@@ -130,7 +131,7 @@ const CalendarEventModal = ({
           <Grid sx={{ mb: 3 }}>
             <WorkerSelect setWorker={setWorker} />
             <ProjectSelect mx075 setProject={setProject} user={user} />
-            <ServiceSelect setService={setService} />
+            <GroupSelect setGroup={setGroup} />
           </Grid>
         </Grid>
       </DialogContent>

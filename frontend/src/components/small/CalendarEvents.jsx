@@ -12,20 +12,39 @@ const CalendarEvents = ({ event }) => {
           textAlign: "center",
           fontSize: 15,
           color: "black",
-          mb: 1.5,
+          mb: 1,
           fontWeight: "bold",
         }}
       >
         {event.title}
       </Typography>
-      {event.service.name && (
-        <Typography sx={{ fontSize: 13, color: "black" }}>
+
+      {event.service && event.service.name && (
+        <Typography sx={{ fontSize: 13, color: "black", mt: 0.5 }}>
           <strong>Serviço:</strong> {event.service.name}
         </Typography>
       )}
-      {event.customer.name && (
-        <Typography sx={{ fontSize: 13, color: "black" }}>
+      {event.customer && event.customer.name && (
+        <Typography sx={{ fontSize: 13, color: "black", mt: 0.5 }}>
           <strong>Cliente:</strong> {event.customer.name}
+        </Typography>
+      )}
+
+      {event.worker && (
+        <Typography sx={{ fontSize: 13, color: "black", mt: 0.5 }}>
+          <strong>Colaborador:</strong> {event.worker}
+        </Typography>
+      )}
+
+      {event.project && (
+        <Typography sx={{ fontSize: 13, color: "black", mt: 0.5 }}>
+          <strong>Projeto:</strong> {event.project.name}
+        </Typography>
+      )}
+
+      {event.group && event.group.name && (
+        <Typography sx={{ fontSize: 13, color: "black", mt: 0.5 }}>
+          <strong>Grupo:</strong> {event.group.name}
         </Typography>
       )}
     </Grid>
