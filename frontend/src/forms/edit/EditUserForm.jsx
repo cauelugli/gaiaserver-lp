@@ -245,7 +245,7 @@ const EditUserForm = ({
               alignItems="center"
             >
               <Grid item>
-                <Typography sx={{ mb: 1 }}>Departamento</Typography>
+                <Typography>Departamento</Typography>
                 <Select
                   onChange={(e) => setDepartment(e.target.value)}
                   value={department}
@@ -290,7 +290,7 @@ const EditUserForm = ({
               </Grid>
 
               <Grid item>
-                <Typography sx={{ mb: 1 }}>Cargo</Typography>
+                <Typography>Cargo</Typography>
                 <Select
                   onChange={(e) => setPosition(e.target.value)}
                   renderValue={(selected) => selected.name}
