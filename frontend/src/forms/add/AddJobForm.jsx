@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -6,6 +8,7 @@ import dayjs from "dayjs";
 import {
   Avatar,
   Button,
+  Checkbox,
   DialogActions,
   DialogContent,
   Divider,
@@ -64,6 +67,14 @@ const AddJobForm = ({
   const [scheduledTo, setScheduledTo] = React.useState(dayjs());
   const [editQuote, setEditQuote] = React.useState(false);
   const [approvedQuote, setApprovedQuote] = React.useState(false);
+  const [scheduleToWorker, setScheduleToWorker] = React.useState(false);
+  const [selectedSchedule, setSelectedSchedule] = React.useState(null);
+  const [scheduleOptions, setScheduleOptions] = React.useState([]);
+
+  React.useEffect(() => {
+    const options = generateScheduleOptions();
+    setScheduleOptions(options);
+  }, [scheduledTo, service, worker]);
 
   const [customers, setCustomers] = React.useState([]);
   const [clients, setClients] = React.useState([]);
@@ -125,6 +136,70 @@ const AddJobForm = ({
     setLocal(customer.address || customer.addressHome);
   };
 
+  const generateScheduleOptions = () => {
+    const workingHoursStart = 8; 
+    const workingHoursEnd = 17; 
+    const executionTimeHours = service.executionTime; 
+
+    const dayEvents = [];
+    const availableTimes = [];
+
+    let currentTime = workingHoursStart * 60;
+    const endTime = workingHoursEnd * 60;
+
+    while (currentTime + executionTimeHours * 60 <= endTime) {
+      let isTimeAvailable = true;
+      const currentTimeEnd = currentTime + executionTimeHours * 60;
+
+      dayEvents.forEach((event) => {
+        const eventStart = event.start.hour() * 60 + event.start.minute();
+        const eventEnd = event.end.hour() * 60 + event.end.minute();
+
+        if (
+          (currentTime >= eventStart && currentTime < eventEnd) ||
+          (currentTimeEnd > eventStart && currentTimeEnd <= eventEnd)
+        ) {
+          isTimeAvailable = false;
+        }
+      });
+
+      if (isTimeAvailable) {
+        const startHour = Math.floor(currentTime / 60);
+        const startMinute = currentTime % 60;
+        const endHour = Math.floor(currentTimeEnd / 60);
+        const endMinute = currentTimeEnd % 60;
+
+        const timeString = `${startHour
+          .toString()
+          .padStart(2, "0")}:${startMinute
+          .toString()
+          .padStart(2, "0")} - ${endHour
+          .toString()
+          .padStart(2, "0")}:${endMinute.toString().padStart(2, "0")}`;
+
+        availableTimes.push(timeString);
+      }
+
+      currentTime += 30;
+    }
+
+    return availableTimes;
+  };
+
+  const handleScheduleSelection = (event) => {
+    const schedule = event.target.value;
+    setSelectedSchedule(schedule);
+  };
+
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: 250,
+        width: 250,
+      },
+    },
+  };
+
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
@@ -160,6 +235,7 @@ const AddJobForm = ({
         local,
         scheduledTo,
         createdBy: user.username,
+        selectedSchedule,
       });
       if (res.data) {
         toast.success(
@@ -175,7 +251,12 @@ const AddJobForm = ({
       setOpenAddJob(!openAddJob);
       setRefreshData(!refreshData);
     } catch (err) {
-      alert("Vish, deu não...");
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
       console.log(err);
     }
   };
@@ -277,7 +358,7 @@ const AddJobForm = ({
                   onChange={(e) => setRequester(e.target.value)}
                   required
                   variant="outlined"
-                  sx={{ width: 190, ml: 1 }}
+                  sx={{ width: 190 }}
                 />
               </Grid>
             )}
@@ -690,6 +771,43 @@ const AddJobForm = ({
                   </Grid>
                 </Grid>
               )}
+            </Grid>
+          )}
+
+          {true && (
+            // {approvedQuote && (
+            <Grid sx={{ mr: 10 }}>
+              <Divider sx={{ my: 3 }} />
+              <Grid container>
+                <Typography sx={{ mt: 1.5, fontSize: 18, fontWeight: "bold" }}>
+                  Agendar para o Colaborador
+                </Typography>
+                <Checkbox
+                  sx={{ ml: 1 }}
+                  checked={scheduleToWorker}
+                  onChange={(e) => setScheduleToWorker(e.target.checked)}
+                  inputProps={{ "aria-label": "controlled" }}
+                />
+                {scheduleToWorker && service && (
+                  <Select
+                    onChange={handleScheduleSelection}
+                    value={selectedSchedule}
+                    sx={{ width: 250 }}
+                    MenuProps={MenuProps}
+                  >
+                    {scheduleOptions.map((timeOption, index) => (
+                      <MenuItem
+                        key={index}
+                        value={`${scheduledTo.format(
+                          "DD/MM/YYYY"
+                        )} - ${timeOption}`}
+                      >
+                        {`${scheduledTo.format("DD/MM/YYYY")} - ${timeOption}`}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              </Grid>
             </Grid>
           )}
         </DialogContent>

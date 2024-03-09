@@ -6,6 +6,7 @@ const Job = require("../models/Job");
 const StockItem = require("../models/StockItem");
 const Quote = require("../models/Quote");
 const Manager = require("../models/Manager");
+const Agenda = require("../models/Agenda");
 const FinanceIncome = require("../models/FinanceIncome");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
@@ -48,7 +49,9 @@ router.post("/", async (req, res) => {
       serviceValue: req.body.service.value,
       type: "job",
       local: req.body.local,
-      scheduledTo: req.body.scheduledTo,
+      scheduledTo: req.body.selectedSchedule
+        ? req.body.selectedSchedule
+        : req.body.scheduledTo,
       createdBy: req.body.createdBy,
       value: req.body.price,
       materials: req.body.materials,
@@ -84,6 +87,31 @@ router.post("/", async (req, res) => {
         { new: true }
       );
     }
+
+    const workerId = req.body.worker.id;
+
+    const [date, startTime, endTime] = req.body.selectedSchedule.split(" - ");
+
+    const start = `${date} ${startTime}`;
+    const end = `${date} ${endTime}`;
+
+    await Agenda.findOneAndUpdate(
+      {},
+      {
+        $push: {
+          [`events.${workerId}`]: {
+            title: req.body.title,
+            start,
+            end,
+            status: "Aberto",
+            type: "Job",
+            customer: req.body.customer.name,
+            service: req.body.service.name,
+          },
+        },
+      },
+      { new: true }
+    );
 
     // START PDF
     const doc = new PDFDocument();
