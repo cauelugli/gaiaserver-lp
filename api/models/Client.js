@@ -40,6 +40,10 @@ const clientSchema = new mongoose.Schema({
   recentRequests: {
     type: Array,
   },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const Client = mongoose.model("Client", clientSchema);

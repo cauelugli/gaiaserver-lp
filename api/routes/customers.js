@@ -33,6 +33,23 @@ router.post("/", async (req, res) => {
   }
 });
 
+// ACTIVATE/INACTIVATE CUSTOMER
+router.put("/activate/:id", async (req, res) => {
+  const customerId = req.params.id;
+  try {
+    const updatedCustomer = await Customer.findByIdAndUpdate(
+      customerId,
+      {
+        isActive: req.body.isActive,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedCustomer);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // DELETE CUSTOMER
 router.delete("/:id", async (req, res) => {
   const customerId = req.params.id;
@@ -50,11 +67,14 @@ router.put("/", async (req, res) => {
   try {
     const existingNameUser = await Customer.findOne({ name });
     if (existingNameUser) {
-      if (!req.body.config.allowSameNameCustomer && name !== req.body.prevData.name) {
+      if (
+        !req.body.config.allowSameNameCustomer &&
+        name !== req.body.prevData.name
+      ) {
         return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
       }
     }
-    
+
     const updatedCustomer = await Customer.findByIdAndUpdate(
       req.body.customer,
       {

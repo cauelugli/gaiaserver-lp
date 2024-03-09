@@ -14,14 +14,17 @@ import {
   Typography,
 } from "@mui/material";
 
+import ArchiveIcon from '@mui/icons-material/Archive';
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
+import GenericActivateForm from "../../../../forms/misc/GenericActivateForm";
 
 export default function CustomerTableActions(props) {
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openActivate, setOpenActivate] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState(props.selectedItem);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -37,6 +40,11 @@ export default function CustomerTableActions(props) {
 
   const handleConfirmDelete = () => {
     setOpenDialog(true);
+    setAnchorEl(null);
+  };
+
+  const handleConfirmActivate = () => {
+    setOpenActivate(true);
     setAnchorEl(null);
   };
 
@@ -70,6 +78,19 @@ export default function CustomerTableActions(props) {
             />
           </ListItemButton>
           <ListItemButton
+            onClick={(item) => handleConfirmActivate(item)}
+          >
+            <ListItemIcon>
+              <ArchiveIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: 14 }}>Arquivar Cliente</Typography>
+              }
+              sx={{ ml: -3 }}
+            />
+          </ListItemButton>
+          <ListItemButton
             onClick={(item) => handleConfirmDelete(item)}
             sx={{ color: "red" }}
           >
@@ -98,6 +119,22 @@ export default function CustomerTableActions(props) {
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
             } Deletado com Sucesso`}
+          />
+        </Dialog>
+      )}
+      {openActivate && (
+        <Dialog open={openActivate} onClose={() => setOpenActivate(!openActivate)}>
+          <GenericActivateForm
+            selectedItem={props.selectedItem}
+            openDialog={openActivate}
+            setOpenDialog={setOpenActivate}
+            refreshData={props.refreshData}
+            setRefreshData={props.setRefreshData}
+            toast={toast}
+            endpoint={props.selectedItem.cpf ? "clients/activate" : "customers/activate"}
+            successMessage={`${
+              props.selectedItem.name && props.selectedItem.name
+            } Arquivado com Sucesso`}
           />
         </Dialog>
       )}
