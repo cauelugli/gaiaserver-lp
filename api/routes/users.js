@@ -118,6 +118,23 @@ router.post("/", async (req, res) => {
   }
 });
 
+// ACTIVATE/INACTIVATE USER
+router.put("/activate/:id", async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        isActive: req.body.isActive,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // DELETE USER
 router.delete("/:id", async (req, res) => {
   const userId = req.params.id;

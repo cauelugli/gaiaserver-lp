@@ -48,6 +48,10 @@ userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const User = mongoose.model("User", userSchema);

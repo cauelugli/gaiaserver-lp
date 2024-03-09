@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// ACTIVATE/INACTIVATE CUSTOMER
+// ACTIVATE/INACTIVATE CLIENT
 router.put("/activate/:id", async (req, res) => {
   const clientId = req.params.id;
   try {
