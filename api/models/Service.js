@@ -23,6 +23,9 @@ const serviceSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  executionTime: {
+    type: Number,
+  }
 });
 
 const Service = mongoose.model("Service", serviceSchema);

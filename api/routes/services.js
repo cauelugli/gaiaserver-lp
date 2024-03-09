@@ -92,6 +92,7 @@ router.put("/", async (req, res) => {
         value: req.body.value,
         materials: validMaterials,
         materialsCost: req.body.materialsCost,
+        executionTime: req.body.executionTime,
       },
       { new: true }
     );

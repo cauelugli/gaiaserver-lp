@@ -254,14 +254,14 @@ export default function ServiceTable({
                               <Table size="small">
                                 <TableHead>
                                   <TableRow>
-                                    <TableCell sx={{ width: "350px" }}>
+                                    <TableCell>
                                       <Typography
                                         sx={{ fontSize: 13, color: "#777" }}
                                       >
                                         Nome
                                       </Typography>
                                     </TableCell>
-                                    <TableCell sx={{ width: "350px" }}>
+                                    <TableCell>
                                       <Typography
                                         sx={{ fontSize: 13, color: "#777" }}
                                       >
@@ -275,25 +275,38 @@ export default function ServiceTable({
                                         Valor do Serviço
                                       </Typography>
                                     </TableCell>
+                                    <TableCell>
+                                      <Typography
+                                        sx={{ fontSize: 13, color: "#777" }}
+                                      >
+                                        Tempo de Execução
+                                      </Typography>
+                                    </TableCell>
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
                                   <TableRow>
-                                    <TableCell sx={{ width: "350px" }}>
+                                    <TableCell>
                                       <Typography sx={{ fontSize: 13 }}>
                                         {service.name}
                                       </Typography>
                                     </TableCell>
-                                    <TableCell sx={{ width: "350px" }}>
+                                    <TableCell>
                                       <Typography sx={{ fontSize: 13 }}>
-                                        {service.department
-                                          ? service.department.name
-                                          : "-"}
+                                        {service.department.name}
                                       </Typography>
                                     </TableCell>
                                     <TableCell>
                                       <Typography sx={{ fontSize: 13 }}>
                                         R${service.value}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {service.executionTime === 0.5 &&
+                                          "30 min"}
+                                        {service.executionTime > 0.5 &&
+                                          `${service.executionTime}h`}
                                       </Typography>
                                     </TableCell>
                                   </TableRow>

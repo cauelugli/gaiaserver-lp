@@ -47,11 +47,9 @@ export default function EditServiceForm({
   const [materialsEditCost, setMaterialsEditCost] = React.useState(
     selectedService.materialsCost
   );
-  const [isSupport, setIsSupport] = React.useState(selectedService.isSupport);
-
-  const handleIsSupport = (event) => {
-    setIsSupport((prevIsSupport) => !prevIsSupport);
-  };
+  const [executionTime, setExecutionTime] = React.useState(
+    selectedService.executionTime
+  );
 
   const [showUsesMaterials, setUsesMaterials] = React.useState(
     selectedService.materials.length >= 1
@@ -74,11 +72,12 @@ export default function EditServiceForm({
           email: department.email,
           color: department.color,
         },
-        value: isSupport ? 0 : value,
+        value,
         previousMaterials,
         materials,
         materialsCost: materialsEditCost,
-        isSupport,
+        executionTime,
+        isSupport: value === 0 ? true : false,
       });
       if (res.data) {
         toast.success("Serviço Editado!", {
@@ -108,8 +107,6 @@ export default function EditServiceForm({
       }
     }
   };
-
-  console.log("selectedService", selectedService);
 
   return (
     <form onSubmit={handleEdit}>
@@ -178,13 +175,12 @@ export default function EditServiceForm({
                 ))}
             </Select>
           </Grid>
-          <Grid item>
+          <Grid item sx={{ mr: 2 }}>
             <Typography>Valor</Typography>
             <TextField
               type="number"
               size="small"
               value={value}
-              disabled={isSupport}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start" sx={{ mr: 0 }}>
@@ -203,38 +199,23 @@ export default function EditServiceForm({
               sx={{ width: 120 }}
             />
           </Grid>
-          <Grid item sx={{ pt: 2, ml: 2 }}>
-            <Grid
-              container
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
+          <Grid item>
+            <Typography>Tempo de Execução</Typography>
+            <Select
+              value={executionTime}
+              size="small"
+              required
+              onChange={(e) => setExecutionTime(e.target.value)}
+              sx={{ width: 120 }}
             >
-              <Grid item>
-                <label
-                  style={{ fontSize: 13, fontFamily: "Verdana, sans-serif" }}
-                >
-                  Serviço de Consultoria?
-                </label>
-
-                <Checkbox
-                  checked={isSupport}
-                  onChange={handleIsSupport}
-                  value={isSupport}
-                />
-              </Grid>
-              <Grid item>
-                <Typography
-                  sx={{
-                    fontSize: 12,
-                    fontFamily: "Verdana, sans-serif",
-                    color: isSupport ? "green" : "#aaa",
-                  }}
-                >
-                  Sim, atendimento sem custo
-                </Typography>
-              </Grid>
-            </Grid>
+              <MenuItem value={0.5}>30 min</MenuItem>
+              <MenuItem value={1}>01:00h</MenuItem>
+              <MenuItem value={1.5}>01:30h</MenuItem>
+              <MenuItem value={2}>02:00h</MenuItem>
+              <MenuItem value={2.5}>02:30h</MenuItem>
+              <MenuItem value={3}>03:00h</MenuItem>
+              <MenuItem value={4}>+03:00h</MenuItem>
+            </Select>
           </Grid>
         </Grid>
         <Grid
