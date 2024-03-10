@@ -104,15 +104,17 @@ router.delete("/:id", async (req, res) => {
       { $pull: { members: { id: userId } } },
       { new: true }
     );
-    await Position.findOneAndUpdate(
-      { _id: deletedUser.position._id },
-      {
-        $pull: {
-          members: userId.toString(),
+    if (deletedUser.position.name) {
+      await Position.findOneAndUpdate(
+        { _id: deletedUser.position._id },
+        {
+          $pull: {
+            members: userId.toString(),
+          },
         },
-      },
-      { upsert: true }
-    );
+        { upsert: true }
+      );
+    }
 
     res.status(200).json({ deletedUser, updatedDepartment });
   } catch (err) {
@@ -124,42 +126,6 @@ router.delete("/:id", async (req, res) => {
 router.put("/", async (req, res) => {
   const { name, email, option, isManager } = req.body;
   const position = { _id: req.body.position._id, name: req.body.position.name };
-  if (
-    req.body.previousData.position &&
-    req.body.previousData.position._id !== position._id
-  ) {
-    await Position.findOneAndUpdate(
-      { _id: position._id },
-      {
-        $addToSet: {
-          members: req.body.userId.toString(),
-        },
-      },
-      { upsert: true }
-    );
-
-    await Position.findOneAndUpdate(
-      { _id: req.body.previousData.position._id },
-      {
-        $pull: {
-          members: req.body.userId.toString(),
-        },
-      },
-      { upsert: true }
-    );
-  }
-
-  if (!req.body.previousData.position && req.body.position) {
-    await Position.findOneAndUpdate(
-      { _id: position._id },
-      {
-        $addToSet: {
-          members: req.body.userId.toString(),
-        },
-      },
-      { upsert: true }
-    );
-  }
 
   const userModel = isManager ? Manager : User;
 
@@ -174,6 +140,45 @@ router.put("/", async (req, res) => {
   if (existingEmail) {
     if (existingEmail.email !== req.body.previousData.email) {
       return res.status(422).json({ error: "E-mail já cadastrado" });
+    }
+  }
+
+  if (req.body.position.name) {
+    if (
+      req.body.previousData.position.name &&
+      req.body.previousData.position._id !== position._id
+    ) {
+      await Position.findOneAndUpdate(
+        { _id: position._id },
+        {
+          $addToSet: {
+            members: req.body.userId.toString(),
+          },
+        },
+        { upsert: true }
+      );
+
+      await Position.findOneAndUpdate(
+        { _id: req.body.previousData.position._id },
+        {
+          $pull: {
+            members: req.body.userId.toString(),
+          },
+        },
+        { upsert: true }
+      );
+    }
+
+    if (!req.body.previousData.position.name && req.body.position.name) {
+      await Position.findOneAndUpdate(
+        { _id: position._id },
+        {
+          $addToSet: {
+            members: req.body.userId.toString(),
+          },
+        },
+        { upsert: true }
+      );
     }
   }
 

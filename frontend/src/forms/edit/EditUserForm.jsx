@@ -44,7 +44,7 @@ const EditUserForm = ({
   const [department, setDepartment] = React.useState(
     selectedUser.department || ""
   );
-  const [position, setPosition] = React.useState(selectedUser.position);
+  const [position, setPosition] = React.useState(selectedUser.position || "");
   const previousData = selectedUser;
 
   const handleEdit = async (e) => {
@@ -69,14 +69,14 @@ const EditUserForm = ({
         phone,
         role: selectedUser.role,
         image: updatedImagePath,
-        department: {
+        department: department && {
           id: department.id || department._id,
           name: department.name,
           phone: department.phone,
           email: department.email,
           color: department.color,
         },
-        position,
+        position: position && position,
         previousData,
       });
       if (res.data) {
