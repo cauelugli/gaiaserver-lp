@@ -32,7 +32,6 @@ const socket = io("http://localhost:3000");
 
 const AddUserForm = ({
   user,
-  // configData,
   configCustomization,
   configNotifications,
   configNotificationsBooleans,
@@ -49,9 +48,7 @@ const AddUserForm = ({
   const [phone, setPhone] = React.useState("");
   const [department, setDepartment] = React.useState("");
   const [image, setImage] = React.useState("");
-  const [position, setPosition] = React.useState(null);
-  const [newPosition, setNewPosition] = React.useState("");
-  const [isNewPosition, setIsNewPosition] = React.useState(false);
+  const [position, setPosition] = React.useState("");
 
   const handleImageClick = () => {
     document.getElementById("fileInput").click();
@@ -70,15 +67,14 @@ const AddUserForm = ({
         email,
         phone,
         image: imagePath,
-        department: {
+        department: department && {
           id: department._id,
           name: department.name,
           phone: department.phone,
           email: department.email,
           color: department.color,
         },
-        position: { _id: position._id, name: position.name },
-        newPosition,
+        position: position && { _id: position._id, name: position.name },
       });
 
       if (res.data) {
@@ -116,6 +112,7 @@ const AddUserForm = ({
           theme: "colored",
           autoClose: 1200,
         });
+        console.log(err);
       }
     }
   };
@@ -230,7 +227,7 @@ const AddUserForm = ({
               alignItems="center"
             >
               <Grid item>
-                <Typography sx={{ mb: 1 }}>Departamento</Typography>
+                <Typography>Departamento</Typography>
                 <Select
                   onChange={(e) => setDepartment(e.target.value)}
                   value={department}
@@ -274,18 +271,10 @@ const AddUserForm = ({
                 </Select>
               </Grid>
               <Grid item>
-                <Typography sx={{ mb: 1 }}>Cargo</Typography>
+                <Typography>Cargo</Typography>
                 <Select
-                  onChange={(e) => {
-                    const selectedValue = e.target.value;
-                    if (selectedValue === "other") {
-                      setIsNewPosition(true);
-                    } else {
-                      setIsNewPosition(false);
-                      setPosition(selectedValue);
-                    }
-                  }}
-                  value={isNewPosition ? "other" : position}
+                  onChange={(e) => setPosition(e.target.value)}
+                  value={position}
                   renderValue={(selected) => selected.name}
                   size="small"
                   sx={{ minWidth: 250 }}
@@ -295,25 +284,13 @@ const AddUserForm = ({
                       {item.name}
                     </MenuItem>
                   ))}
-                  <MenuItem value="other" sx={{ color: "#777" }}>
-                    *Adicionar Novo*
-                  </MenuItem>
                 </Select>
-                {isNewPosition && (
-                  <TextField
-                    label="Novo Cargo"
-                    size="small"
-                    value={newPosition}
-                    onChange={(e) => setNewPosition(e.target.value)}
-                    sx={{ mt: 1, minWidth: 250 }}
-                  />
-                )}
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization}/>
+      <FormEndLineTenant configCustomization={configCustomization} />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK
