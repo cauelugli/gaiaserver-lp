@@ -252,7 +252,7 @@ router.delete("/:id", async (req, res) => {
 // UPDATE JOB
 router.put("/", async (req, res) => {
   try {
-    const jobId = req.body.jobId;
+    const jobId = req.body.jobId || req.body.job._id;
     const option = req.body.option;
     const status = req.body.status;
     const user = req.body.user;
@@ -294,7 +294,7 @@ router.put("/", async (req, res) => {
           $push: {
             interactions: {
               number: req.body.number || 1,
-              activity: `Aprovação solicitada a ${manager.name} para execução`,
+              activity: `Aprovação solicitada a ${req.body.job.manager.name} para execução`,
               user: user.name,
               date: req.body.date,
             },

@@ -137,9 +137,9 @@ const AddJobForm = ({
   };
 
   const generateScheduleOptions = () => {
-    const workingHoursStart = 8; 
-    const workingHoursEnd = 17; 
-    const executionTimeHours = service.executionTime; 
+    const workingHoursStart = 8;
+    const workingHoursEnd = 17;
+    const executionTimeHours = service.executionTime;
 
     const dayEvents = [];
     const availableTimes = [];
@@ -234,7 +234,7 @@ const AddJobForm = ({
         price: service.value + materialsCost,
         local,
         scheduledTo,
-        createdBy: user.username,
+        createdBy: user.name,
         selectedSchedule,
       });
       if (res.data) {
@@ -257,8 +257,17 @@ const AddJobForm = ({
         theme: "colored",
         autoClose: 1200,
       });
-      console.log(err);
+      console.log("err", err);
     }
+  };
+
+  const handleAutofillTitleAndDescription = () => {
+    setTitle(`${service.name} - ${requester}`);
+    setDescription(
+      `Realizar o serviço de ${service.name} para ${requester} (${
+        customer.name
+      }) na data de ${dayjs(scheduledTo).format("DD/MM/YYYY")} em ${local}.`
+    );
   };
 
   return (
@@ -475,8 +484,8 @@ const AddJobForm = ({
                 </Grid>
                 <Grid item sx={{ mt: -7, mx: -10 }}>
                   {department && (
-                    <>
-                      <Typography sx={{ my: 2 }}>Serviço</Typography>
+                    <Grid sx={{ mt: 4 }}>
+                      <Typography>Serviço</Typography>
                       <Select
                         disabled={approvedQuote}
                         onChange={(e) => {
@@ -507,16 +516,19 @@ const AddJobForm = ({
                             </MenuItem>
                           ))}
                       </Select>
-                    </>
+                    </Grid>
                   )}
                 </Grid>
 
                 <Grid item sx={{ mt: -7 }}>
-                  {department && (
-                    <>
-                      <Typography sx={{ my: 2 }}>Colaborador</Typography>
+                  {department && service && (
+                    <Grid sx={{ mt: 4 }}>
+                      <Typography>Colaborador</Typography>
                       <Select
-                        onChange={(e) => setWorker(e.target.value)}
+                        onChange={(e) => {
+                          setWorker(e.target.value);
+                          handleAutofillTitleAndDescription();
+                        }}
                         value={worker}
                         size="small"
                         displayEmpty
@@ -554,7 +566,7 @@ const AddJobForm = ({
                           </MenuItem>
                         ))}
                       </Select>
-                    </>
+                    </Grid>
                   )}
                 </Grid>
               </Grid>
@@ -774,8 +786,7 @@ const AddJobForm = ({
             </Grid>
           )}
 
-          {true && (
-            // {approvedQuote && (
+          {approvedQuote && (
             <Grid sx={{ mr: 10 }}>
               <Divider sx={{ my: 3 }} />
               <Grid container>

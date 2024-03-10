@@ -32,7 +32,7 @@ import InteractionReactions from "../components/small/InteractionReactions";
 
 import EditJobForm from "../forms/edit/EditJobForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
-import RequestActions from "../components/small/RequestActions";
+import JobTableActions from "../components/small/buttons/tableActionButtons/JobTableActions";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -91,6 +91,10 @@ export default function JobTable({
       label: "Solicitante",
     },
     {
+      id: "customer.name",
+      label: "Cliente",
+    },
+    {
       id: "createdBy",
       label: "Criado por",
     },
@@ -105,6 +109,10 @@ export default function JobTable({
     {
       id: "status",
       label: "Status",
+    },
+    {
+      id: "actions",
+      label: "Ações",
     },
   ];
 
@@ -173,7 +181,7 @@ export default function JobTable({
     try {
       const requestBody = {
         jobId: job._id,
-        job,
+        job: selectedJob,
         option: "requestApproval",
         user,
         worker: job.worker,
@@ -198,8 +206,12 @@ export default function JobTable({
         setRefreshData(!refreshData);
       }
     } catch (err) {
-      alert("Vish, deu não...");
-      console.error(err);
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
     }
   };
 
@@ -314,7 +326,15 @@ export default function JobTable({
                     >
                       <Typography sx={{ fontSize: 13 }}>
                         {job.requester}
-                        {job.customer.cnpj && `(${job.customer.name})`}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(job)}
+                      cursor="pointer"
+                      align="center"
+                    >
+                      <Typography sx={{ fontSize: 13 }}>
+                        {job.customer.name}
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -370,11 +390,30 @@ export default function JobTable({
                         {job.status}
                       </Typography>
                     </TableCell>
+
+                    <TableCell
+                      cursor="pointer"
+                      align="center"
+                      onClick={() => setSelectedJob(job)}
+                    >
+                      <JobTableActions
+                        selectedItem={selectedJob}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                        config={config}
+                        user={user}
+                        job={job}
+                        handleManagerApproval={handleManagerApproval}
+                        handleRequestApproval={handleRequestApproval}
+                        handleOpenEdit={handleOpenEdit}
+                        handleConfirmDelete={handleConfirmDelete}
+                      />
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell
                       style={{ paddingBottom: 0, paddingTop: 0 }}
-                      colSpan={6}
+                      colSpan={8}
                     >
                       <Collapse
                         in={openDetail && selectedJob._id === job._id}
@@ -428,6 +467,13 @@ export default function JobTable({
                                     <Typography
                                       sx={{ fontSize: 13, color: "#777" }}
                                     >
+                                      Cliente
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
                                       Status
                                     </Typography>
                                   </TableCell>
@@ -443,8 +489,12 @@ export default function JobTable({
                                   <TableCell align="left">
                                     <Typography sx={{ fontSize: 13 }}>
                                       {job.requester}
-                                      {job.customer.cnpj &&
-                                        `(${job.customer.name})`}
+                                    </Typography>
+                                  </TableCell>
+
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {job.customer.name}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="left">
@@ -479,8 +529,7 @@ export default function JobTable({
                           </Grid>
                           <Collapse
                             in={
-                              openDetailDescrição &&
-                              selectedJob._id === job._id
+                              openDetailDescrição && selectedJob._id === job._id
                             }
                             timeout="auto"
                             unmountOnExit
@@ -649,8 +698,7 @@ export default function JobTable({
                           </Grid>
                           <Collapse
                             in={
-                              openDetailOrçamento &&
-                              selectedJob._id === job._id
+                              openDetailOrçamento && selectedJob._id === job._id
                             }
                             timeout="auto"
                             unmountOnExit
@@ -857,7 +905,7 @@ export default function JobTable({
                             </Table>
                           </Collapse>
 
-                          {job.status !== "Concluido" && (
+                          {/* {job.status !== "Concluido" && (
                             <RequestActions
                               config={config}
                               selectedJob={selectedJob}
@@ -868,7 +916,7 @@ export default function JobTable({
                               handleOpenEdit={handleOpenEdit}
                               handleConfirmDelete={handleConfirmDelete}
                             />
-                          )}
+                          )} */}
                         </Box>
                         {job.status === "Concluido" && (
                           <Box sx={{ my: 4, px: 6, mb: 6 }}>
