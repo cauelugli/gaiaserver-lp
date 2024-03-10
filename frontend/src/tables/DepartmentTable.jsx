@@ -21,13 +21,12 @@ import {
   IconButton,
 } from "@mui/material";
 
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditDepartmentForm from "../forms/edit/EditDepartmentForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import DepartmentTableActions from "../components/small/buttons/tableActionButtons/DepartmentTableActions";
+import DepartmentMembers from "../components/small/DepartmentMembers";
 
 export default function DepartmentTable({
   configData,
@@ -48,23 +47,12 @@ export default function DepartmentTable({
   const [openDetailServices, setOpenDetailServices] = React.useState(false);
   const [selectedDepartment, setSelectedDepartment] = React.useState([]);
   const [hoveredMember, setHoveredMember] = React.useState(null);
-  // const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
-
-  // const handleConfirmDelete = (position) => {
-  //   setSelectedItem(position);
-  //   setOpenDialog(true);
-  // };
 
   const handleOpenDetail = (customer) => {
     setOpenDetail(!openDetail);
     setSelectedDepartment(customer.name);
   };
-
-  // const handleOpenEdit = (customer) => {
-  //   setOpenEdit(!openEdit);
-  //   setSelectedDepartment(customer);
-  // };
 
   const tableHeaderRow = [
     {
@@ -76,12 +64,12 @@ export default function DepartmentTable({
       label: "E-mail",
     },
     {
-      id: "manager",
-      label: "Gerente",
+      id: "members",
+      label: "Colaboradores",
     },
     {
-      id: "members",
-      label: "Nº de Colaboradores",
+      id: "manager",
+      label: "Gerente",
     },
     {
       id: "actions",
@@ -220,6 +208,19 @@ export default function DepartmentTable({
                         {department.email}
                       </Typography>
                     </TableCell>
+
+                    <TableCell
+                      onClick={() => handleOpenDetail(department)}
+                      cursor="pointer"
+                      align="center"
+                    >
+                      <DepartmentMembers
+                        members={department.members}
+                        users={users}
+                        managers={managers}
+                      />
+                    </TableCell>
+
                     {department.manager ? (
                       <TableCell
                         onClick={() => handleOpenDetail(department)}
@@ -259,15 +260,6 @@ export default function DepartmentTable({
                         cursor="pointer"
                       />
                     )}
-                    <TableCell
-                      onClick={() => handleOpenDetail(department)}
-                      cursor="pointer"
-                      align="center"
-                    >
-                      <Typography sx={{ fontSize: 13 }}>
-                        {department.members.length}
-                      </Typography>
-                    </TableCell>
                     <TableCell
                       cursor="pointer"
                       align="center"
