@@ -52,7 +52,7 @@ export default function EditServiceForm({
   );
 
   const [showUsesMaterials, setUsesMaterials] = React.useState(
-    selectedService.materials.length >= 1
+    selectedService.materials && selectedService.materials.length >= 1
   );
   const handleUsesMaterials = (event) => {
     setUsesMaterials(event.target.checked);

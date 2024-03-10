@@ -27,8 +27,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditServiceForm from "../forms/edit/EditServiceForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+import ServiceTableActions from "../components/small/buttons/tableActionButtons/ServiceTableActions";
 
 export default function ServiceTable({
+  configData,
   searchValue,
   searchOption,
   services,
@@ -68,6 +70,10 @@ export default function ServiceTable({
     {
       id: "department.name",
       label: "Departamento",
+    },
+    {
+      id: "actions",
+      label: "Ações",
     },
   ];
 
@@ -212,6 +218,20 @@ export default function ServiceTable({
                             "-"
                           )}
                         </Typography>
+                      </TableCell>
+
+                      <TableCell
+                        cursor="pointer"
+                        align="center"
+                        onClick={() => setSelectedService(service)}
+                      >
+                        <ServiceTableActions
+                          configData={configData}
+                          setOpenEdit={setOpenEdit}
+                          selectedItem={selectedService}
+                          refreshData={refreshData}
+                          setRefreshData={setRefreshData}
+                        />
                       </TableCell>
                     </TableRow>
                     <TableRow>

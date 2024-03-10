@@ -290,7 +290,11 @@ export default function App() {
                     element={
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "services") ? (
-                        <Services user={userData} configTables={configTables} />
+                        <Services
+                          user={userData}
+                          configTables={configTables}
+                          configData={configData}
+                        />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
                           Seu usuário não possui autorização à página.

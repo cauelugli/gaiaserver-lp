@@ -44,7 +44,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Services({ user, configTables }) {
+export default function Services({ user, configTables, configData }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
@@ -207,6 +207,7 @@ export default function Services({ user, configTables }) {
               handleSearchChange={handleSearchChange}
             />
             <ServiceTable
+              configData={configData}
               searchOption={searchOption}
               searchValue={searchValue}
               services={services}
