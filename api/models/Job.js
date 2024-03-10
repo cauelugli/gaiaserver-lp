@@ -56,6 +56,9 @@ jobSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  selectedSchedule: {
+    type: String,
+  },
   interactions: [
     {
       number: Number,

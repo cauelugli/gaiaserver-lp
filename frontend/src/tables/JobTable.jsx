@@ -177,18 +177,17 @@ export default function JobTable({
     }
   };
 
-  const handleRequestApproval = async (job) => {
+  const handleRequestApproval = async () => {
     try {
       const requestBody = {
-        jobId: job._id,
-        job: selectedJob,
-        option: "requestApproval",
         user,
-        worker: job.worker,
-        manager: job.manager,
+        jobId: selectedJob._id,
+        job: selectedJob,
+        worker: selectedJob.worker,
+        manager: selectedJob.manager,
         date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
       };
-      const res = await api.put("/jobs", requestBody);
+      const res = await api.put("/jobs/requestApproval", requestBody);
 
       if (res.data) {
         toast.success("Aprovação Solicitada!", {
@@ -199,8 +198,8 @@ export default function JobTable({
         });
         socket.emit("requestApproval", {
           sender: user,
-          receiver: job.manager,
-          job,
+          receiver: selectedJob.manager,
+          job: selectedJob,
           date: dayjs(Date.now()).format("DD/MM/YYYY"),
         });
         setRefreshData(!refreshData);
@@ -372,7 +371,10 @@ export default function JobTable({
                       align="center"
                     >
                       <Typography sx={{ fontSize: 13 }}>
-                        {dayjs(job.scheduledTo).format("DD/MM/YYYY")}
+                        {job.selectedSchedule
+                          ? job.selectedSchedule
+                          : // dayjs(job.selectedSchedule).format("DD/MM/YYYY")
+                            dayjs(job.scheduledTo).format("DD/MM/YYYY")}
                       </Typography>
                     </TableCell>
                     <TableCell

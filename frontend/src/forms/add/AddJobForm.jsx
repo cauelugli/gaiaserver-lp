@@ -236,7 +236,7 @@ const AddJobForm = ({
         local,
         scheduledTo,
         createdBy: user.name,
-        selectedSchedule,
+        selectedSchedule: scheduleToWorker ? selectedSchedule : null,
       });
       if (res.data) {
         toast.success(

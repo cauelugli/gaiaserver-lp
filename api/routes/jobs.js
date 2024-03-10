@@ -88,30 +88,30 @@ router.post("/", async (req, res) => {
       );
     }
 
-    const workerId = req.body.worker.id;
+    if (req.body.selectedSchedule) {
+      const workerId = req.body.worker.id;
+      const [date, startTime, endTime] = req.body.selectedSchedule.split(" - ");
+      const start = `${date} ${startTime}`;
+      const end = `${date} ${endTime}`;
 
-    const [date, startTime, endTime] = req.body.selectedSchedule.split(" - ");
-
-    const start = `${date} ${startTime}`;
-    const end = `${date} ${endTime}`;
-
-    await Agenda.findOneAndUpdate(
-      {},
-      {
-        $push: {
-          [`events.${workerId}`]: {
-            title: req.body.title,
-            start,
-            end,
-            status: "Aberto",
-            type: "Job",
-            customer: req.body.customer.name,
-            service: req.body.service.name,
+      await Agenda.findOneAndUpdate(
+        {},
+        {
+          $push: {
+            [`events.${workerId}`]: {
+              title: req.body.title,
+              start,
+              end,
+              status: "Aberto",
+              type: "Job",
+              customer: req.body.customer.name,
+              service: req.body.service.name,
+            },
           },
         },
-      },
-      { new: true }
-    );
+        { new: true }
+      );
+    }
 
     // START PDF
     const doc = new PDFDocument();
@@ -249,6 +249,35 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// REQUEST APPROVAL JOB
+router.put("/requestApproval", async (req, res) => {
+  try {
+    const jobId = req.body.jobId || req.body.job._id
+    const updatedJob = await Job.findByIdAndUpdate(
+      jobId,
+      {
+        $set: {
+          status: "Aprovação Solicitada",
+        },
+        $push: {
+          interactions: {
+            number: req.body.number || 1,
+            activity: `Aprovação solicitada a ${req.body.job.manager.name} para execução`,
+            user: req.body.user.name,
+            date: req.body.date,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    res.status(200).json({ updatedJob });
+  } catch (err) {
+    console.log("err", err);
+    res.status(500).json(err);
+  }
+});
+
 // UPDATE JOB
 router.put("/", async (req, res) => {
   try {
@@ -284,26 +313,6 @@ router.put("/", async (req, res) => {
         { new: true }
       );
       res.status(200).json(updatedJob);
-    } else if (option === "requestApproval") {
-      const updatedJob = await Job.findByIdAndUpdate(
-        jobId,
-        {
-          $set: {
-            status: "Aprovação Solicitada",
-          },
-          $push: {
-            interactions: {
-              number: req.body.number || 1,
-              activity: `Aprovação solicitada a ${req.body.job.manager.name} para execução`,
-              user: user.name,
-              date: req.body.date,
-            },
-          },
-        },
-        { new: true }
-      );
-
-      res.status(200).json({ updatedJob });
     } else if (option === "managerApproval") {
       const updatedJob = await Job.findByIdAndUpdate(
         jobId,
