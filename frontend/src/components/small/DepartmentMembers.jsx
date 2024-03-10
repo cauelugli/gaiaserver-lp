@@ -16,7 +16,7 @@ const DepartmentMembers = ({ members, users, managers }) => {
           (user) => user._id.toString() === member.id.toString()
         );
         if (user) {
-          details[member._id] = user;
+          details[member.id] = user;
         }
       }
       setUserDetails(details);
@@ -31,7 +31,7 @@ const DepartmentMembers = ({ members, users, managers }) => {
   return (
     <Grid container direction="row" alignItems="center" justifyContent="center">
       {displayedMembers.map((member) => {
-        const user = userDetails[member._id];
+        const user = userDetails[member.id];
         if (user) {
           return (
             <Avatar
