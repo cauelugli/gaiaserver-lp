@@ -38,6 +38,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import MaterialList from "../../components/small/MaterialList";
 import DialogHeader from "../../components/small/DialogHeader";
 import FormEndLineTenant from "../../components/small/FormEndLineTenant";
+import CustomerSelect from "../../components/small/selects/CustomerSelect";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -322,42 +323,12 @@ const AddJobForm = ({
               </FormControl>
             </Grid>
             {customerType && (
-              <Grid item>
-                <FormControl>
-                  <Select
-                    onChange={(e) => handleCustomerChange(e.target.value)}
-                    value={customer}
-                    displayEmpty
-                    required
-                    renderValue={(selected) => {
-                      if (selected.length === 0) {
-                        return <Typography>Selecione um Cliente</Typography>;
-                      }
-
-                      return selected.name;
-                    }}
-                    sx={{ width: 200, mx: 1 }}
-                  >
-                    <MenuItem disabled value="">
-                      {customerType === "Empresa"
-                        ? "Empresas"
-                        : "Clientes Pessoa Física"}
-                    </MenuItem>
-
-                    {customerType === "Empresa"
-                      ? customers.map((item) => (
-                          <MenuItem value={item} key={item._id}>
-                            {item.name}
-                          </MenuItem>
-                        ))
-                      : clients.map((item) => (
-                          <MenuItem value={item} key={item._id}>
-                            {item.name}
-                          </MenuItem>
-                        ))}
-                  </Select>
-                </FormControl>
-              </Grid>
+              <CustomerSelect
+                marginAddJobForm
+                handleCustomerChange={handleCustomerChange}
+                setCustomer={setCustomer}
+                customerType={customerType}
+              />
             )}
             {customer && (
               <Grid item>

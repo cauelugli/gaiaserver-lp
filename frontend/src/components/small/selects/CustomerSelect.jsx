@@ -28,20 +28,28 @@ const CustomerSelect = (props) => {
         const resCustomers = await api.get("/customers");
         const resClients = await api.get("/clients");
         const combinedData = [...resCustomers.data, ...resClients.data];
-        setCustomers(combinedData);
+        setCustomers(
+          props.customerType
+            ? props.customerType === "Empresa"
+              ? resCustomers.data
+              : resClients.data
+            : combinedData
+        );
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, []);
+  }, [props.customerType]);
 
   const filteredCustomers = customers.filter((customer) =>
     customer.name.toLowerCase().includes(searchValue.toLowerCase())
   );
 
   return (
-    <FormControl sx={{ mx: props.mx075 ? 0.75 : 0 }}>
+    <FormControl
+      sx={{ mx: props.mx075 ? 0.75 : props.marginAddJobForm ? 2 : 0 }}
+    >
       <Select
         displayEmpty
         renderValue={(selected) => {
@@ -51,12 +59,14 @@ const CustomerSelect = (props) => {
 
           return selected.name;
         }}
-        sx={{ mt: 1, width: 180 }}
+        sx={{ mt: props.marginAddJobForm ? 0 : 1, width: 180 }}
         onChange={(e) =>
-          props.setCustomer({
-            id: e.target.value._id,
-            name: e.target.value.name,
-          })
+          props.handleCustomerChange
+            ? props.handleCustomerChange(e.target.value)
+            : props.setCustomer({
+                id: e.target.value._id,
+                name: e.target.value.name,
+              })
         }
       >
         <TextField
