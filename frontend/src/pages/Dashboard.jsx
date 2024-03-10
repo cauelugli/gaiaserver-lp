@@ -7,7 +7,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Grid,
-  Select,
   Typography,
 } from "@mui/material";
 
@@ -16,15 +15,29 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MyCalendar from "../components/MyCalendar";
 import WorkerSelect from "../components/small/selects/WorkerSelect";
 
-const Dashboard = ({ user, config }) => {
+const Dashboard = ({ user, config, configCustomization }) => {
   const [worker, setWorker] = React.useState("");
   const [expanded, setExpanded] = React.useState(true);
 
   return (
     <Grid>
+      {user.username === "admin" && (
+        <Typography
+          sx={{
+            mb: 1,
+            fontSize: 12,
+            textAlign: "right",
+            cursor: "pointer",
+            color: configCustomization ? configCustomization.mainColor : "black",
+          }}
+          onClick={() => setExpanded(!expanded)}
+        >
+          {expanded ? "Minimizar Agenda" : "Maximizar Agenda"}
+        </Typography>
+      )}
       <Accordion sx={{ mx: "20%" }} expanded={expanded}>
         {user.username === "admin" ? (
-          <AccordionSummary expandIcon={<ArrowDropDownIcon />} >
+          <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
             <Grid
               container
               direction="row"

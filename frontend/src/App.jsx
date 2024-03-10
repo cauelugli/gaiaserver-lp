@@ -210,7 +210,11 @@ export default function App() {
                     path="/"
                     element={
                       isAuthenticated(login, userData) ? (
-                        <Dashboard user={userData} config={configAgenda}/>
+                        <Dashboard
+                          user={userData}
+                          config={configAgenda}
+                          configCustomization={configData.customization}
+                        />
                       ) : (
                         <Navigate to="/login" />
                       )
