@@ -10,17 +10,24 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormHelperText,
   Grid,
+  IconButton,
   InputAdornment,
   MenuItem,
   Paper,
+  Popover,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
-import MaterialList from "../../components/small/MaterialList";
+
 import DialogHeader from "../../components/small/DialogHeader";
 import FormEndLineTenant from "../../components/small/FormEndLineTenant";
+import MaterialList from "../../components/small/MaterialList";
+import PaletteIcon from "@mui/icons-material/Palette";
+
+import { SketchPicker } from "react-color";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -42,6 +49,8 @@ export default function AddServiceForm({
   const [materials, setMaterials] = React.useState([]);
   const [materialsCost, setMaterialsCost] = React.useState(0);
   const [executionTime, setExecutionTime] = React.useState(0);
+  const [color, setColor] = React.useState("#ffffff");
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [showUsesMaterials, setUsesMaterials] = React.useState(false);
 
   const handleAdd = async (e) => {
@@ -61,6 +70,7 @@ export default function AddServiceForm({
         materialsCost,
         executionTime,
         isSupport: value === 0 ? true : false,
+        color,
       });
       if (res.data) {
         toast.success("Serviço Adicionado!", {
@@ -206,6 +216,50 @@ export default function AddServiceForm({
               </Grid>
             </>
           )}
+          <Grid item sx={{ ml: 2, color: executionTime ? null : "white" }}>
+            {executionTime && (
+              <Grid container direction="column">
+                <Typography>Cor</Typography>
+                <Grid container direction="row">
+                  <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+                    <PaletteIcon />
+                  </IconButton>
+                  <Popover
+                    open={Boolean(anchorEl)}
+                    anchorEl={anchorEl}
+                    onClose={() => setAnchorEl(null)}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                  >
+                    <SketchPicker
+                      color={color}
+                      onChange={(color) => setColor(color.hex)}
+                      disableAlpha
+                    />
+                  </Popover>
+                  {color !== "ffffff" && (
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        ml: 1,
+                        mt: 1.25,
+                        width: 20,
+                        height: 20,
+                        borderRadius: 50,
+                        backgroundColor: color,
+                      }}
+                    />
+                  )}
+                </Grid>
+              </Grid>
+            )}
+          </Grid>
         </Grid>
         {executionTime > 0 && (
           <Grid

@@ -29,6 +29,7 @@ router.post("/", async (req, res) => {
           services: {
             id: newService.id,
             name: newService.name,
+            color: newService.color,
           },
         },
       },
@@ -93,6 +94,7 @@ router.put("/", async (req, res) => {
         materials: validMaterials,
         materialsCost: req.body.materialsCost,
         executionTime: req.body.executionTime,
+        color:req.body.color
       },
       { new: true }
     );
@@ -113,6 +115,7 @@ router.put("/", async (req, res) => {
                 services: {
                   id: req.body.serviceId,
                   name: req.body.name,
+                  color: req.body.color,
                 },
               },
             },
@@ -126,6 +129,7 @@ router.put("/", async (req, res) => {
             {
               $set: {
                 "services.$.name": req.body.name,
+                "services.$.color": req.body.color,
               },
             },
             { new: true }
@@ -137,6 +141,7 @@ router.put("/", async (req, res) => {
               services: {
                 id: req.body.serviceId,
                 name: req.body.name,
+                color: req.body.color,
               },
             },
           },

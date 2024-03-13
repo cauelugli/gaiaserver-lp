@@ -25,7 +25,11 @@ const serviceSchema = new mongoose.Schema({
   },
   executionTime: {
     type: Number,
-  }
+  },
+  color: {
+    type: String,
+    default: "#ffffff",
+  },
 });
 
 const Service = mongoose.model("Service", serviceSchema);
