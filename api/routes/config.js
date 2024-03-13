@@ -223,12 +223,22 @@ router.get("/agenda", async (req, res) => {
 // AGENDA
 router.put("/agenda", async (req, res) => {
   try {
-    const { minTime, maxTime, eventTypes } = req.body;
+    const { minTime, maxTime, newJobEventTypeColor } = req.body;
+
+    let eventTypes = req.body.eventTypes;
 
     const config = await Config.findOne();
 
     config.agenda.minTime = minTime;
     config.agenda.maxTime = maxTime;
+
+    if (newJobEventTypeColor) {
+      eventTypes[0] = {
+        name: "Job",
+        color: newJobEventTypeColor,
+      };
+    }
+
     config.agenda.eventTypes = eventTypes;
 
     await config.save();

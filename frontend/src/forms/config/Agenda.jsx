@@ -13,6 +13,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormHelperText,
   Grid,
   IconButton,
   List,
@@ -26,6 +27,7 @@ import {
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
+import PaletteIcon from "@mui/icons-material/Palette";
 
 import { SketchPicker } from "react-color";
 
@@ -39,8 +41,9 @@ export default function Agenda({ onClose }) {
   const [maxTime, setMaxTime] = React.useState(null);
   const [eventTypes, setEventTypes] = React.useState([]);
   const [newType, setNewType] = React.useState({ name: "", color: "white" });
-  // const [newTypeColor, setNewTypeColor] = React.useState("#32aacd");
+  const [newJobEventTypeColor, setNewJobEventTypeColor] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl2, setAnchorEl2] = React.useState(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -64,6 +67,7 @@ export default function Agenda({ onClose }) {
         minTime,
         maxTime,
         eventTypes,
+        newJobEventTypeColor
       });
 
       if (res.data) {
@@ -189,15 +193,82 @@ export default function Agenda({ onClose }) {
                                 backgroundColor: type.color || "lightgrey",
                               }}
                             />
-                            <Typography sx={{ width: 180 }}>
+                            <Typography
+                              sx={{
+                                width: 180,
+                                color: type.name === "Job" && "grey",
+                              }}
+                            >
                               {type.name || type}
                             </Typography>
-                            <IconButton
-                              edge="end"
-                              onClick={() => handleRemoveType(type)}
-                            >
-                              <DeleteIcon />
-                            </IconButton>
+                            {type.name === "Job" ? (
+                              <>
+                                <IconButton
+                                  edge="end"
+                                  onClick={(e) => setAnchorEl2(e.currentTarget)}
+                                >
+                                  <PaletteIcon />
+                                </IconButton>
+                                {newJobEventTypeColor && (
+                                  <>
+                                    <Paper
+                                      sx={{
+                                        ml: 2,
+                                        width: 20,
+                                        height: 20,
+                                        backgroundColor: newJobEventTypeColor,
+                                        borderRadius: 50,
+                                      }}
+                                    />
+                                    <FormHelperText
+                                      sx={{
+                                        fontSize: 10,
+                                        ml: 1,
+                                        color: "grey",
+                                      }}
+                                    >
+                                      Nova cor de Job
+                                    </FormHelperText>
+                                    <IconButton
+                                      sx={{ color: "red", fontSize:12 }}
+                                      onClick={() =>
+                                        setNewJobEventTypeColor(null)
+                                      }
+                                    >
+                                      X
+                                    </IconButton>
+                                  </>
+                                )}
+                                <Popover
+                                  open={Boolean(anchorEl2)}
+                                  anchorEl={anchorEl2}
+                                  onClose={() => setAnchorEl2(null)}
+                                  anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "center",
+                                  }}
+                                  transformOrigin={{
+                                    vertical: "top",
+                                    horizontal: "center",
+                                  }}
+                                >
+                                  <SketchPicker
+                                    color={newJobEventTypeColor || "white"}
+                                    onChange={(color) =>
+                                      setNewJobEventTypeColor(color.hex)
+                                    }
+                                    disableAlpha
+                                  />
+                                </Popover>
+                              </>
+                            ) : (
+                              <IconButton
+                                edge="end"
+                                onClick={() => handleRemoveType(type)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            )}
                           </Grid>
                         </ListItem>
                       ))}

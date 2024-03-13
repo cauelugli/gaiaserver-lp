@@ -188,7 +188,6 @@ const configSchema = new Schema({
       type: Boolean,
       default: false,
     },
-    
   },
 
   tables: {
@@ -241,9 +240,8 @@ const configSchema = new Schema({
     },
     eventTypes: {
       type: Array,
-      default: [],
+      default: [{ name: "Job", color: "#4a90e2" }],
     },
-
   },
 });
 

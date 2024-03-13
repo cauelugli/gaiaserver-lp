@@ -103,7 +103,7 @@ router.post("/", async (req, res) => {
               start,
               end,
               status: "Aberto",
-              type: "Job",
+              type: { name: "Job", color: "#4a90e2" },
               customer: req.body.customer.name,
               service: req.body.service.name,
             },
@@ -252,7 +252,7 @@ router.delete("/:id", async (req, res) => {
 // REQUEST APPROVAL JOB
 router.put("/requestApproval", async (req, res) => {
   try {
-    const jobId = req.body.jobId || req.body.job._id
+    const jobId = req.body.jobId || req.body.job._id;
     const updatedJob = await Job.findByIdAndUpdate(
       jobId,
       {
