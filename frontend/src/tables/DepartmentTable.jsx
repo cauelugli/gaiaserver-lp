@@ -187,7 +187,7 @@ export default function DepartmentTable({
                             borderRadius: 50,
                             backgroundColor: department.color,
                           }}
-                        ></Paper>
+                        />
                       </Typography>
                     </TableCell>
                     <TableCell
