@@ -212,7 +212,8 @@ export default function App() {
                       isAuthenticated(login, userData) ? (
                         <Dashboard
                           user={userData}
-                          config={configAgenda}
+                          configAgenda={configAgenda}
+                          configDashboard={configData.dashboard}
                           configCustomization={configData.customization}
                         />
                       ) : (

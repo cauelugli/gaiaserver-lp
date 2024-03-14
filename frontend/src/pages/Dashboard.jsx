@@ -15,9 +15,19 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MyCalendar from "../components/MyCalendar";
 import WorkerSelect from "../components/small/selects/WorkerSelect";
 
-const Dashboard = ({ user, config, configCustomization }) => {
+const Dashboard = ({
+  user,
+  configDashboard,
+  configAgenda,
+  configCustomization,
+}) => {
   const [worker, setWorker] = React.useState("");
   const [expanded, setExpanded] = React.useState(true);
+  const [showAgenda, setShowAgenda] = React.useState(true);
+
+  React.useEffect(() => {
+    configDashboard && setShowAgenda(configDashboard.showAgenda);
+  }, [configDashboard]);
 
   return (
     <Grid>
@@ -28,45 +38,53 @@ const Dashboard = ({ user, config, configCustomization }) => {
             fontSize: 12,
             textAlign: "right",
             cursor: "pointer",
-            color: configCustomization ? configCustomization.mainColor : "black",
+            color: configCustomization
+              ? configCustomization.mainColor
+              : "black",
           }}
           onClick={() => setExpanded(!expanded)}
         >
           {expanded ? "Minimizar Agenda" : "Maximizar Agenda"}
         </Typography>
       )}
-      <Accordion sx={{ mx: "20%" }} expanded={expanded}>
-        {user.username === "admin" ? (
-          <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-            <Grid
-              container
-              direction="row"
-              alignItems="center"
-              justifyContent="flex-start"
+      {showAgenda && (
+        <Accordion sx={{ mx: "20%" }} expanded={expanded}>
+          {user.username === "admin" ? (
+            <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+              <Grid
+                container
+                direction="row"
+                alignItems="center"
+                justifyContent="flex-start"
+              >
+                <Typography sx={{ fontSize: 22, fontWeight: "bold", mr: 2 }}>
+                  Agenda
+                </Typography>
+                {user.username === "admin" && (
+                  <WorkerSelect setWorker={setWorker} needId />
+                )}
+              </Grid>
+            </AccordionSummary>
+          ) : (
+            <AccordionSummary
+              expandIcon={<ArrowDropDownIcon />}
+              onClick={() => setExpanded(!expanded)}
             >
-              <Typography sx={{ fontSize: 22, fontWeight: "bold", mr: 2 }}>
-                Agenda
+              <Typography sx={{ fontSize: 22, fontWeight: "bold" }}>
+                Minha Agenda
               </Typography>
-              {user.username === "admin" && (
-                <WorkerSelect setWorker={setWorker} needId />
-              )}
-            </Grid>
-          </AccordionSummary>
-        ) : (
-          <AccordionSummary
-            expandIcon={<ArrowDropDownIcon />}
-            onClick={() => setExpanded(!expanded)}
-          >
-            <Typography sx={{ fontSize: 22, fontWeight: "bold" }}>
-              Minha Agenda
-            </Typography>
-          </AccordionSummary>
-        )}
+            </AccordionSummary>
+          )}
 
-        <AccordionDetails>
-          <MyCalendar user={user} config={config} selectedWorker={worker} />
-        </AccordionDetails>
-      </Accordion>
+          <AccordionDetails>
+            <MyCalendar
+              user={user}
+              config={configAgenda}
+              selectedWorker={worker}
+            />
+          </AccordionDetails>
+        </Accordion>
+      )}
     </Grid>
   );
 };

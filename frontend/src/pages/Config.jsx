@@ -24,7 +24,8 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import AutoFixNormalIcon from "@mui/icons-material/AutoFixNormal";
 import BuildIcon from "@mui/icons-material/Build";
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
@@ -39,6 +40,7 @@ import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
 
 import CustomersModal from "../forms/config/Customers";
+import DashboardModal from "../forms/config/Dashboard";
 import UsersModal from "../forms/config/Users";
 import DepartmentsModal from "../forms/config/Departments";
 import RequestsModal from "../forms/config/Requests";
@@ -56,6 +58,11 @@ import ProjectsModal from "../forms/config/Projects";
 import AgendaModal from "../forms/config/Agenda";
 
 const options = [
+  {
+    icon: <DashboardIcon sx={{ fontSize: 48 }} />,
+    text: "Dashboard",
+    modal: <DashboardModal />,
+  },
   {
     icon: <WorkIcon sx={{ fontSize: 48 }} />,
     text: "Clientes",

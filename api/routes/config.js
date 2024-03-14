@@ -24,6 +24,34 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET DASHBOARD CONFIGS
+router.get("/dashboard", async (req, res) => {
+  try {
+    const config = await Config.findOne();
+    const dashboardConfig = config ? config.dashboard : null;
+    res.status(200).json(dashboardConfig);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// DASHBOARD
+router.put("/dashboard", async (req, res) => {
+  try {
+    const { showAgenda } = req.body;
+
+    const config = await Config.findOne();
+
+    config.dashboard.showAgenda = showAgenda;
+
+    await config.save();
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // GET CUSTOMERS CONFIGS
 router.get("/customers", async (req, res) => {
   try {
@@ -261,7 +289,7 @@ router.get("/finance", async (req, res) => {
   }
 });
 
-// QUOTES
+// FINANCE
 router.put("/finance", async (req, res) => {
   try {
     const { canReceiveInstallments } = req.body;

@@ -247,6 +247,13 @@ const configSchema = new Schema({
       default: [{ name: "Job", color: "#4a90e2" }],
     },
   },
+
+  dashboard: {
+    showAgenda: {
+      type: Boolean,
+      default: true,
+    },
+  },
 });
 
 const Config = mongoose.model("Config", configSchema);
