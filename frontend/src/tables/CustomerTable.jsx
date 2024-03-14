@@ -527,15 +527,14 @@ export default function CustomerTable({
                           <Grid container direction="row">
                             <Typography
                               variant="h6"
-                              sx={{ fontWeight: "bold", fontSize: 18 }}
+                              sx={{
+                                fontWeight: "bold",
+                                fontSize: 18,
+                                my: "auto",
+                              }}
                             >
-                              Pedidos Recentes{" "}
+                              Pedidos Recentes
                             </Typography>
-                            <FormHelperText
-                              sx={{ fontSize: 13, my: "auto", ml: 1 }}
-                            >
-                              (últimos 5)
-                            </FormHelperText>
                             <IconButton
                               onClick={() =>
                                 setOpenDetailPedidos(!openDetailPedidos)

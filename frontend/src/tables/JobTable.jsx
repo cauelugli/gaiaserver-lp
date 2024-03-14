@@ -230,6 +230,7 @@ export default function JobTable({
   const endIndex = startIndex + rowsPerPage;
 
   const [showCompletedJobs, setShowCompletedJobs] = React.useState(false);
+
   const handleChangeShowCompletedJobs = () => {
     setShowCompletedJobs(!showCompletedJobs);
   };
@@ -372,9 +373,10 @@ export default function JobTable({
                     >
                       <Typography sx={{ fontSize: 13 }}>
                         {job.selectedSchedule
-                          ? job.selectedSchedule
-                          : // dayjs(job.selectedSchedule).format("DD/MM/YYYY")
-                            dayjs(job.scheduledTo).format("DD/MM/YYYY")}
+                          ? job.selectedSchedule.split(" - ")[0] +
+                            " " +
+                            job.selectedSchedule.split(" - ")[1]
+                          : dayjs(job.scheduledTo).format("DD/MM/YYYY")}
                       </Typography>
                     </TableCell>
                     <TableCell
