@@ -182,9 +182,26 @@ export default function ServiceTable({
                         onClick={() => handleOpenDetail(service)}
                         cursor="pointer"
                       >
-                        <Typography sx={{ fontSize: 13 }}>
-                          {service.name}
-                        </Typography>
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                        >
+                          <Paper
+                            elevation={0}
+                            sx={{
+                              mb: 0.5,
+                              mr: 0.5,
+                              width: 12,
+                              height: 12,
+                              borderRadius: 50,
+                              backgroundColor: service.color,
+                            }}
+                          />
+                          <Typography sx={{ fontSize: 13 }}>
+                            {service.name}
+                          </Typography>
+                        </Grid>
                       </TableCell>
                       <TableCell
                         onClick={() => handleOpenDetail(service)}
