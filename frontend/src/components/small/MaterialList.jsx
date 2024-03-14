@@ -28,6 +28,7 @@ export default function MaterialList({
   setMaterialsFinalCost,
   option,
   handleClose,
+  productsDefined,
 }) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
   const [options, setOptions] = React.useState(stockItems);
@@ -108,131 +109,135 @@ export default function MaterialList({
     }
   };
 
+  console.log("productsDefined", productsDefined);
+
   return (
     <Grid container sx={{ mt: 2 }}>
-      <Grid item>
-        <Grid container direction="row" justifyContent="flex-start">
-          <Grid item>
-            <Typography>Em estoque:</Typography>
-          </Grid>
-          <Grid item>
-            <TextField
-              placeholder="Pesquise aqui..."
-              size="small"
-              sx={{ ml: 2, mt: -2, width: 175 }}
-              value={searchValue}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment:
-                  searchValue.length > 0 ? (
-                    <InputAdornment position="end">
-                      <ClearIcon
-                        cursor="pointer"
-                        sx={{ color: "#d21404" }}
-                        onClick={() => setSearchValue("")}
-                      />
+      {!productsDefined && (
+        <Grid item>
+          <Grid container direction="row" justifyContent="flex-start">
+            <Grid item>
+              <Typography>Em estoque:</Typography>
+            </Grid>
+            <Grid item>
+              <TextField
+                placeholder="Pesquise aqui..."
+                size="small"
+                sx={{ ml: 2, mt: -2, width: 175 }}
+                value={searchValue}
+                onChange={handleSearchChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
                     </InputAdornment>
-                  ) : (
-                    ""
                   ),
-              }}
-            />
-          </Grid>
-        </Grid>
-
-        <Paper sx={{ width: 400, height: 200, overflow: "auto" }}>
-          <FormGroup sx={{ mt: 1 }}>
-            {options
-              .filter((opt) =>
-                opt.name.toLowerCase().includes(searchValue.toLowerCase())
-              )
-              .map((option) => (
-                <FormControlLabel
-                  sx={{ ml: 1 }}
-                  key={option._id}
-                  control={
-                    <Checkbox
-                      size="small"
-                      sx={{ mb: 0.5 }}
-                      checked={option._id === selectedItemId}
-                      onChange={() => handleChecked(option._id)}
-                    />
-                  }
-                  label={
-                    <Grid>
-                      <Grid container direction="row">
-                        <Avatar
-                          alt="Imagem do Produto"
-                          src={`http://localhost:3000/static/${option.image}`}
-                          sx={{
-                            width: 20,
-                            height: 20,
-                            marginRight: 1,
-                            opacity: option.quantity === 0 ? 0.5 : 1,
-                          }}
+                  endAdornment:
+                    searchValue.length > 0 ? (
+                      <InputAdornment position="end">
+                        <ClearIcon
+                          cursor="pointer"
+                          sx={{ color: "#d21404" }}
+                          onClick={() => setSearchValue("")}
                         />
-                        <Typography
-                          sx={{
-                            fontSize: 12,
-                            color: option.quantity === 0 ? "grey" : "black",
-                          }}
-                        >
-                          {option.name}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            mx: 1,
-                            fontSize: 12,
-                            color: option.quantity === 0 ? "grey" : "black",
-                          }}
-                        >
-                          R${option.sellValue}
-                        </Typography>
-                        <Typography sx={{ fontSize: 12, color: "#777" }}>
-                          (x{option.quantity}){" "}
-                        </Typography>
-                        {option._id === selectedItemId && (
-                          <IconButton
+                      </InputAdornment>
+                    ) : (
+                      ""
+                    ),
+                }}
+              />
+            </Grid>
+          </Grid>
+
+          <Paper sx={{ width: 400, height: 200, overflow: "auto" }}>
+            <FormGroup sx={{ mt: 1 }}>
+              {options
+                .filter((opt) =>
+                  opt.name.toLowerCase().includes(searchValue.toLowerCase())
+                )
+                .map((option) => (
+                  <FormControlLabel
+                    sx={{ ml: 1 }}
+                    key={option._id}
+                    control={
+                      <Checkbox
+                        size="small"
+                        sx={{ mb: 0.5 }}
+                        checked={option._id === selectedItemId}
+                        onChange={() => handleChecked(option._id)}
+                      />
+                    }
+                    label={
+                      <Grid>
+                        <Grid container direction="row">
+                          <Avatar
+                            alt="Imagem do Produto"
+                            src={`http://localhost:3000/static/${option.image}`}
                             sx={{
-                              ml: 1,
-                              height: 18,
-                              maxWidth: 18,
-                              color: "white",
-                              backgroundColor: "green",
-                              borderRadius: 3,
-                              "&:hover": {
+                              width: 20,
+                              height: 20,
+                              marginRight: 1,
+                              opacity: option.quantity === 0 ? 0.5 : 1,
+                            }}
+                          />
+                          <Typography
+                            sx={{
+                              fontSize: 12,
+                              color: option.quantity === 0 ? "grey" : "black",
+                            }}
+                          >
+                            {option.name}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              mx: 1,
+                              fontSize: 12,
+                              color: option.quantity === 0 ? "grey" : "black",
+                            }}
+                          >
+                            R${option.sellValue}
+                          </Typography>
+                          <Typography sx={{ fontSize: 12, color: "#777" }}>
+                            (x{option.quantity}){" "}
+                          </Typography>
+                          {option._id === selectedItemId && (
+                            <IconButton
+                              sx={{
+                                ml: 1,
+                                height: 18,
+                                maxWidth: 18,
                                 color: "white",
                                 backgroundColor: "green",
-                              },
-                            }}
-                            disabled={option.quantity === 0}
-                            onClick={handleAddToStock}
-                          >
-                            <Typography sx={{ fontWeight: "bold" }}>
-                              +
-                            </Typography>
-                          </IconButton>
-                        )}
+                                borderRadius: 3,
+                                "&:hover": {
+                                  color: "white",
+                                  backgroundColor: "green",
+                                },
+                              }}
+                              disabled={option.quantity === 0}
+                              onClick={handleAddToStock}
+                            >
+                              <Typography sx={{ fontWeight: "bold" }}>
+                                +
+                              </Typography>
+                            </IconButton>
+                          )}
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  }
-                />
-              ))}
-          </FormGroup>
-        </Paper>
-      </Grid>
+                    }
+                  />
+                ))}
+            </FormGroup>
+          </Paper>
+        </Grid>
+      )}
 
-      <Grid item sx={{ ml: "40px" }}>
+      <Grid item sx={{ ml: productsDefined ? "20px" : "40px" }}>
         <Typography>Selecionados:</Typography>
         <Paper
           sx={{
-            width: 400,
-            height: 200,
+            width: productsDefined ? 800 : 400,
+            height: productsDefined ? 150 : 200,
             overflow: "auto",
             position: "relative",
           }}
@@ -240,23 +245,25 @@ export default function MaterialList({
           {stockList.map((item) => (
             <li key={item._id}>
               <Grid container direction="row" sx={{ mt: 2, px: 0.5 }}>
-                <IconButton
-                  sx={{
-                    ml: 1,
-                    height: 18,
-                    maxWidth: 18,
-                    color: "white",
-                    backgroundColor: "red",
-                    borderRadius: 3,
-                    "&:hover": {
+                {!productsDefined && (
+                  <IconButton
+                    sx={{
+                      ml: 1,
+                      height: 18,
+                      maxWidth: 18,
                       color: "white",
                       backgroundColor: "red",
-                    },
-                  }}
-                  onClick={() => handleRemoveFromStock(item._id || item.id)}
-                >
-                  <Typography sx={{ fontWeight: "bold" }}>-</Typography>
-                </IconButton>
+                      borderRadius: 3,
+                      "&:hover": {
+                        color: "white",
+                        backgroundColor: "red",
+                      },
+                    }}
+                    onClick={() => handleRemoveFromStock(item._id || item.id)}
+                  >
+                    <Typography sx={{ fontWeight: "bold" }}>-</Typography>
+                  </IconButton>
+                )}
                 <Avatar
                   alt="Imagem do Produto"
                   src={`http://localhost:3000/static/${item.image}`}
@@ -285,7 +292,7 @@ export default function MaterialList({
             variant="contained"
             color="success"
             onClick={handleClose}
-            sx={{ml:"85%"}}
+            sx={{ ml: "85%" }}
             size="small"
           >
             OK

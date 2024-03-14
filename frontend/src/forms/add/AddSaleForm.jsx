@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -6,16 +5,14 @@ import dayjs from "dayjs";
 
 import {
   Avatar,
-  Box,
   Button,
-  Checkbox,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Divider,
   FormControl,
   Grid,
   MenuItem,
+  Paper,
   Select,
   TextField,
   Typography,
@@ -31,6 +28,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import MaterialList from "../../components/small/MaterialList";
 import DialogHeader from "../../components/small/DialogHeader";
 import FormEndLineTenant from "../../components/small/FormEndLineTenant";
+import CustomerSelect from "../../components/small/selects/CustomerSelect";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -47,10 +45,11 @@ const AddSaleForm = ({
 }) => {
   const [config, setConfig] = React.useState([]);
   const [customer, setCustomer] = React.useState("");
-  const [customerType, setCustomerType] = React.useState("Empresa");
+  const [customerType, setCustomerType] = React.useState("");
   const [requester, setRequester] = React.useState("");
   const [seller, setSeller] = React.useState("");
   const [department, setDepartment] = React.useState("");
+  const [productsDefined, setProductsDefined] = React.useState(false);
   const [deliveryAddress, setDeliveryAddress] = React.useState("");
   const [deliveryReceiver, setDeliveryReceiver] = React.useState("");
   const [deliveryReceiverPhone, setDeliveryReceiverPhone] = React.useState("");
@@ -58,22 +57,16 @@ const AddSaleForm = ({
   const [materials, setMaterials] = React.useState([]);
   const [materialsCost, setMaterialsCost] = React.useState(0);
 
-  const [customers, setCustomers] = React.useState([]);
-  const [clients, setClients] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
   const [products, setProducts] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const customers = await api.get("/customers");
-        const clients = await api.get("/clients");
         const departments = await api.get("/departments");
         const products = await api.get("/products");
         const config = await api.get("/config/requests");
         setConfig(config.data);
-        setCustomers(customers.data);
-        setClients(clients.data);
         setDepartments(
           departments.data.filter((department) => !department.isInternal)
         );
@@ -85,13 +78,6 @@ const AddSaleForm = ({
 
     fetchData();
   }, []);
-
-  const [showAdditionalOptions, setShowAdditionalOptions] =
-    React.useState(false);
-
-  const handleCheckboxChange = (event) => {
-    setShowAdditionalOptions(event.target.checked);
-  };
 
   const handleCustomerTypeChange = (type) => {
     setCustomerType(type);
@@ -135,10 +121,10 @@ const AddSaleForm = ({
         deliveryReceiver,
         deliveryReceiverPhone,
         deliveryScheduledTo,
-        createdBy: user.username,
+        createdBy: user.name,
       });
       if (res.data) {
-        toast.success(`Venda Adicionada! Orçamento #${res.data.quoteNumber}`, {
+        toast.success(`Venda Adicionada! Orçamento #${res.data.savedQuote.number}`, {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
@@ -162,10 +148,15 @@ const AddSaleForm = ({
           <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
             Informações do Cliente
           </Typography>
-          {customerType && customer && requester && (
-            <CheckCircleOutlineOutlinedIcon sx={{ color: "#50C878", ml: 1 }} />
-          )}
+          <CheckCircleOutlineOutlinedIcon
+            sx={{
+              color:
+                customerType && customer && requester ? "#50C878" : "lightgrey",
+              ml: 1,
+            }}
+          />
         </Grid>
+
         <Grid
           container
           justifyContent="space-between"
@@ -186,7 +177,7 @@ const AddSaleForm = ({
 
                   return selected;
                 }}
-                sx={{ width: 180 }}
+                sx={{ width: 200 }}
               >
                 <MenuItem disabled value="">
                   Tipo de Cliente
@@ -197,48 +188,17 @@ const AddSaleForm = ({
             </FormControl>
           </Grid>
 
-          <Grid item>
-            {customerType && (
-              <Grid item>
-                <FormControl>
-                  <Select
-                    size="small"
-                    onChange={(e) => {
-                      handleCustomerChange(e.target.value);
-                    }}
-                    value={customer}
-                    displayEmpty
-                    renderValue={(selected) => {
-                      if (selected.length === 0) {
-                        return <Typography>Selecione um Cliente</Typography>;
-                      }
-
-                      return selected.name;
-                    }}
-                    sx={{ width: 250 }}
-                  >
-                    <MenuItem disabled value="">
-                      {customerType === "Empresa"
-                        ? "Empresas"
-                        : "Clientes Pessoa Física"}
-                    </MenuItem>
-
-                    {customerType === "Empresa"
-                      ? customers.map((item) => (
-                          <MenuItem value={item} key={item._id}>
-                            {item.name}
-                          </MenuItem>
-                        ))
-                      : clients.map((item) => (
-                          <MenuItem value={item} key={item._id}>
-                            {item.name}
-                          </MenuItem>
-                        ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-            )}
-          </Grid>
+          {customerType && (
+            <Grid item>
+              <CustomerSelect
+                marginAddJobForm
+                sizeSmall
+                handleCustomerChange={handleCustomerChange}
+                setCustomer={setCustomer}
+                customerType={customerType}
+              />
+            </Grid>
+          )}
 
           <Grid item>
             <TextField
@@ -248,189 +208,254 @@ const AddSaleForm = ({
               onChange={(e) => setRequester(e.target.value)}
               required
               variant="outlined"
-              sx={{ width: 250 }}
+              sx={{ width: 250, opacity: customer ? 1 : 0 }}
             />
           </Grid>
         </Grid>
 
-        <Divider sx={{ mt: 2 }} />
-        <Grid container>
-          <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
-            Departamento
-          </Typography>
-          {department && seller && (
-            <CheckCircleOutlineOutlinedIcon
-              sx={{ color: "#50C878", ml: 1, mt: 2 }}
-            />
-          )}
-        </Grid>
-        <Grid
-          container
-          justifyContent="center"
-          alignItems="center"
-          sx={{ mb: 4 }}
-        >
-          <Grid item>
-            <Select
-              onChange={(e) => {
-                setDepartment(e.target.value), setSeller("");
-              }}
-              value={department}
-              size="small"
-              displayEmpty
-              renderValue={(selected) => {
-                if (!selected) {
-                  return <Typography>Selecione o Departamento</Typography>;
-                } else {
-                  return <Typography>{selected.name}</Typography>;
-                }
-              }}
+        {requester && (
+          <>
+            <Divider sx={{ mt: 2 }} />
+            <Grid container>
+              <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
+                Departamento
+              </Typography>
+
+              <CheckCircleOutlineOutlinedIcon
+                sx={{
+                  color: department && seller ? "#50C878" : "lightgrey",
+                  ml: 1,
+                  mt: 2,
+                }}
+              />
+            </Grid>
+
+            <Grid
+              container
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ mb: 4 }}
             >
-              <MenuItem disabled value="">
-                Departamentos
-              </MenuItem>
-              {departments
-                .filter((department) => department.type === "Vendas")
-                .map((item) => (
-                  <MenuItem value={item} key={item.id}>
-                    {item.name}
+              <Grid item>
+                <Select
+                  onChange={(e) => {
+                    setDepartment(e.target.value), setSeller("");
+                  }}
+                  value={department}
+                  size="small"
+                  displayEmpty
+                  renderValue={(selected) => {
+                    if (!selected) {
+                      return <Typography>Selecione o Departamento</Typography>;
+                    } else {
+                      return (
+                        <Grid container direction="row">
+                          <Paper
+                            elevation={0}
+                            sx={{
+                              mr: 1,
+                              mt: 0.5,
+                              width: 15,
+                              height: 15,
+                              borderRadius: 50,
+                              backgroundColor: selected.color,
+                            }}
+                          />
+                          <Typography>{selected.name}</Typography>
+                        </Grid>
+                      );
+                    }
+                  }}
+                >
+                  <MenuItem disabled value="">
+                    Departamentos
                   </MenuItem>
-                ))}
-            </Select>
-          </Grid>
-          {department && (
-            <Grid item sx={{ ml: 10 }}>
-              <Select
-                onChange={(e) => setSeller(e.target.value)}
-                value={seller}
-                size="small"
-                displayEmpty
-                renderValue={(selected) => {
-                  if (selected.length === 0) {
-                    return <Typography>Selecione o Vendedor</Typography>;
-                  } else {
-                    return (
-                      <Grid container direction="row">
+                  {departments
+                    .filter((department) => department.type === "Vendas")
+                    .map((item) => (
+                      <MenuItem value={item} key={item.id}>
+                        <Grid container direction="row">
+                          <Paper
+                            elevation={0}
+                            sx={{
+                              mr: 1,
+                              mt: 0.5,
+                              width: 15,
+                              height: 15,
+                              borderRadius: 50,
+                              backgroundColor: item.color,
+                            }}
+                          />
+                          <Typography>{item.name}</Typography>
+                        </Grid>
+                      </MenuItem>
+                    ))}
+                </Select>
+              </Grid>
+              {department && (
+                <Grid item sx={{ ml: 10 }}>
+                  <Select
+                    onChange={(e) => setSeller(e.target.value)}
+                    value={seller}
+                    size="small"
+                    sx={{ width: 250 }}
+                    displayEmpty
+                    renderValue={(selected) => {
+                      if (selected.length === 0) {
+                        return <Typography>Selecione o Vendedor</Typography>;
+                      } else {
+                        return (
+                          <Grid container direction="row">
+                            <Avatar
+                              alt="Imagem do Colaborador"
+                              src={`http://localhost:3000/static/${selected.image}`}
+                              sx={{ width: 22, height: 22, mr: 1 }}
+                            />
+                            <Typography>{selected.name}</Typography>
+                          </Grid>
+                        );
+                      }
+                    }}
+                  >
+                    <MenuItem disabled value="">
+                      Vendedores
+                    </MenuItem>
+                    {department.members.map((item) => (
+                      <MenuItem value={item} key={item.id}>
                         <Avatar
                           alt="Imagem do Colaborador"
-                          src={`http://localhost:3000/static/${selected.image}`}
-                          sx={{ width: 22, height: 22, mr: 1 }}
+                          src={`http://localhost:3000/static/${item.image}`}
+                          sx={{ width: 22, height: 22, mr: 2 }}
                         />
-                        <Typography>{selected.name}</Typography>
-                      </Grid>
-                    );
-                  }
-                }}
-              >
-                <MenuItem disabled value="">
-                  Vendedores
-                </MenuItem>
-                {department.members.map((item) => (
-                  <MenuItem value={item} key={item.id}>
-                    <Avatar
-                      alt="Imagem do Colaborador"
-                      src={`http://localhost:3000/static/${item.image}`}
-                      sx={{ width: 22, height: 22, mr: 2 }}
-                    />
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+              )}
             </Grid>
-          )}
-        </Grid>
+          </>
+        )}
 
-        <Divider sx={{ mt: 2 }} />
-        <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
-          Produtos
-        </Typography>
-        <Grid container>
-          <Grid item>
-            {products.length > 0 && (
-              <MaterialList
-                stockItems={products}
-                materials={materials}
-                materialsEditCost={materialsCost}
-                setMaterials={setMaterials}
-                setMaterialsFinalCost={setMaterialsCost}
-              />
-            )}
-          </Grid>
-        </Grid>
+        {seller && (
+          <>
+            <Divider sx={{ mt: 2 }} />
+            <Grid container>
+              <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
+                Produtos
+              </Typography>
 
-        <Divider sx={{ my: 2 }} />
-        <Grid container>
-          <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
-            Entrega
-          </Typography>
-          {deliveryAddress &&
-            deliveryReceiver &&
-            deliveryReceiverPhone &&
-            deliveryScheduledTo && (
               <CheckCircleOutlineOutlinedIcon
-                sx={{ color: "#50C878", ml: 1, mt: 2 }}
+                sx={{
+                  color: productsDefined ? "#50C878" : "lightgrey",
+                  ml: 1,
+                  mt: 2,
+                }}
               />
-            )}
-        </Grid>
-        <Grid container sx={{ mt: 2 }}>
-          <Grid item>
-            <TextField
-              label="Local de Entrega"
-              value={deliveryAddress}
-              onChange={(e) => setDeliveryAddress(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ width: 250 }}
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              label="Recebedor"
-              value={deliveryReceiver}
-              onChange={(e) => setDeliveryReceiver(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ width: 170, mx: 1 }}
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              label="Contato"
-              value={deliveryReceiverPhone}
-              onChange={(e) => setDeliveryReceiverPhone(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ width: 170, mr: 1 }}
-            />
-          </Grid>
-          <Grid item sx={{ mt: -1, width: "24%" }}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DatePicker"]}>
-                <DatePicker
-                  value={deliveryScheduledTo}
-                  format="DD/MM/YYYY"
-                  onChange={(newValue) => setDeliveryScheduledTo(newValue)}
-                  label="Entregar em"
-                />
-              </DemoContainer>
-            </LocalizationProvider>
-          </Grid>
-        </Grid>
+            </Grid>
 
-        <Divider sx={{ my: 2, mt: 4 }} />
-        <Checkbox
-          checked={showAdditionalOptions}
-          onChange={handleCheckboxChange}
-        />
-        <label>Observações</label>
+            <Grid container>
+              <Grid item>
+                {products.length > 0 && (
+                  <MaterialList
+                    productsDefined={productsDefined}
+                    stockItems={products}
+                    materials={materials}
+                    materialsEditCost={materialsCost}
+                    setMaterials={setMaterials}
+                    setMaterialsFinalCost={setMaterialsCost}
+                  />
+                )}
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              sx={{ mt: 1 }}
+            >
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => setProductsDefined(true)}
+                disabled={productsDefined || materials.length === 0}
+              >
+                Salvar e Prosseguir
+              </Button>
+            </Grid>
+          </>
+        )}
 
-        {showAdditionalOptions && (
-          <Box>
+        {productsDefined && (
+          <>
             <Divider sx={{ my: 2 }} />
-          </Box>
+            <Grid container>
+              <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
+                Entrega
+              </Typography>
+
+              <CheckCircleOutlineOutlinedIcon
+                sx={{
+                  color:
+                    deliveryAddress &&
+                    deliveryReceiver &&
+                    deliveryReceiverPhone &&
+                    deliveryScheduledTo
+                      ? "#50C878"
+                      : "lightgrey",
+                  ml: 1,
+                  mt: 2,
+                }}
+              />
+            </Grid>
+            <Grid container sx={{ mt: 2 }}>
+              <Grid item>
+                <TextField
+                  label="Local de Entrega"
+                  value={deliveryAddress}
+                  onChange={(e) => setDeliveryAddress(e.target.value)}
+                  required
+                  variant="outlined"
+                  sx={{ width: 250 }}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  label="Recebedor"
+                  value={deliveryReceiver}
+                  onChange={(e) => setDeliveryReceiver(e.target.value)}
+                  required
+                  variant="outlined"
+                  sx={{ width: 170, mx: 1 }}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  label="Contato"
+                  value={deliveryReceiverPhone}
+                  onChange={(e) => setDeliveryReceiverPhone(e.target.value)}
+                  required
+                  variant="outlined"
+                  sx={{ width: 170, mr: 1 }}
+                />
+              </Grid>
+              <Grid item sx={{ mt: -1, width: "24%" }}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer components={["DatePicker"]}>
+                    <DatePicker
+                      value={deliveryScheduledTo}
+                      format="DD/MM/YYYY"
+                      onChange={(newValue) => setDeliveryScheduledTo(newValue)}
+                      label="Entregar em"
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
+              </Grid>
+            </Grid>
+          </>
         )}
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization}/>
+      <FormEndLineTenant configCustomization={configCustomization} />
 
       <DialogActions>
         <Button type="submit" variant="contained" color="success">

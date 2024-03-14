@@ -52,6 +52,7 @@ const CustomerSelect = (props) => {
     >
       <Select
         displayEmpty
+        size={props.sizeSmall && "small"}
         renderValue={(selected) => {
           if (!selected) {
             return <Typography>Cliente</Typography>;
