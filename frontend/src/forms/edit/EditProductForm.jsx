@@ -70,19 +70,22 @@ export default function EditProductForm({
     e.preventDefault();
     try {
       let updatedImagePath = selectedProduct.image;
-  
+
       if (newImage) {
         const formData = new FormData();
         formData.append("image", newImage);
-        const uploadResponse = await api.post("/uploads/singleProduct", formData);
+        const uploadResponse = await api.post(
+          "/uploads/singleProduct",
+          formData
+        );
         updatedImagePath = uploadResponse.data.imagePath;
       }
-  
+
       const res = await api.put("/products", {
         productId: selectedProduct._id,
         name,
         brand,
-        image: updatedImagePath, 
+        image: updatedImagePath,
         type,
         model,
         size,
@@ -90,7 +93,7 @@ export default function EditProductForm({
         buyValue,
         sellValue,
       });
-  
+
       if (res.data) {
         toast.success("Produto Editado!", {
           closeOnClick: true,
@@ -99,15 +102,19 @@ export default function EditProductForm({
           autoClose: 1200,
         });
       }
-  
+
       setOpenEdit(!openEdit);
       setRefreshData(!refreshData);
     } catch (err) {
-      alert("Vish, deu não...");
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
       console.log(err);
     }
   };
-  
 
   return (
     <form onSubmit={handleEdit}>

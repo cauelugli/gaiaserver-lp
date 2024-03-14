@@ -124,17 +124,25 @@ const AddSaleForm = ({
         createdBy: user.name,
       });
       if (res.data) {
-        toast.success(`Venda Adicionada! Orçamento #${res.data.savedQuote.number}`, {
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-          autoClose: 1200,
-        });
+        toast.success(
+          `Venda Adicionada! Orçamento #${res.data.savedQuote.number}`,
+          {
+            closeOnClick: true,
+            pauseOnHover: false,
+            theme: "colored",
+            autoClose: 1200,
+          }
+        );
       }
       setOpenAddSale(!openAddSale);
       setRefreshData(!refreshData);
     } catch (err) {
-      alert("Vish, deu não...");
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
       console.log(err);
     }
   };

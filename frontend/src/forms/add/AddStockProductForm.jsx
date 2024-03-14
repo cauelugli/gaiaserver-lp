@@ -86,7 +86,12 @@ export default function AddStockProductForm({
       onClose();
       setRefreshData(!refreshData);
     } catch (err) {
-      alert("Vish, deu não...");
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
       console.log(err);
     }
   };
@@ -397,7 +402,7 @@ export default function AddStockProductForm({
           </Typography>
         </Grid>
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization}/>
+      <FormEndLineTenant configCustomization={configCustomization} />
       <DialogActions>
         {itemList.length > 0 && (
           <Button type="submit" variant="contained" color="success">

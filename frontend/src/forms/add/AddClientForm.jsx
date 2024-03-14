@@ -35,7 +35,7 @@ const AddClientForm = ({
   setRefreshData,
   toast,
   configCustomization,
-  extraSmall
+  extraSmall,
 }) => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -77,14 +77,23 @@ const AddClientForm = ({
       setOpenAdd(!openAdd);
       setRefreshData(!refreshData);
     } catch (err) {
-      alert("Vish, deu não...");
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
       console.log(err);
     }
   };
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogHeader title="Cliente Pessoa Física" femaleGender={false} extraSmall={extraSmall}/>
+      <DialogHeader
+        title="Cliente Pessoa Física"
+        femaleGender={false}
+        extraSmall={extraSmall}
+      />
       <DialogContent>
         <Typography sx={{ my: 1, fontWeight: "bold" }}>Dados</Typography>
         <Grid container direction="column" alignItems="center">
@@ -212,7 +221,10 @@ const AddClientForm = ({
 
         {showAdditionalOptions && <></>}
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization} extraSmall={extraSmall}/>
+      <FormEndLineTenant
+        configCustomization={configCustomization}
+        extraSmall={extraSmall}
+      />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

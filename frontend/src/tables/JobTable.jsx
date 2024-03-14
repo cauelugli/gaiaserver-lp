@@ -172,7 +172,12 @@ export default function JobTable({
         setRefreshData(!refreshData);
       }
     } catch (err) {
-      alert("Vish, deu não...");
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
       console.error(err);
     }
   };

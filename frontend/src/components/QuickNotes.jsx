@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+
 import {
   Grid,
   Typography,
@@ -8,7 +11,6 @@ import {
   TableFooter,
   TextField,
 } from "@mui/material";
-import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -52,7 +54,12 @@ const QuickNotes = () => {
       await api.delete(`/quicknotes/${noteId}`);
       setNotes((prevNotes) => prevNotes.filter((note) => note._id !== noteId));
     } catch (err) {
-      alert("Vish, deletou não..");
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
       console.log(err);
     }
   };
@@ -88,7 +95,7 @@ const QuickNotes = () => {
   const handleMouseLeave = () => {
     // Defina o tempo de atraso desejado em milissegundos (por exemplo, 1000 ms = 1 segundo)
     const delayTime = 3000;
-  
+
     // Use setTimeout para agendar a execução da função após o atraso
     setTimeout(() => {
       setHoveredIndex(null);

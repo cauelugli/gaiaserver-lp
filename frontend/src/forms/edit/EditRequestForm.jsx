@@ -25,7 +25,7 @@ const EditRequestForm = ({
   setOpenEdit,
   selectedCustomer,
   fetchData,
-  toast
+  toast,
 }) => {
   const [name, setName] = React.useState(selectedCustomer.name);
   const [address, setAddress] = React.useState(selectedCustomer.address);
@@ -73,7 +73,12 @@ const EditRequestForm = ({
       setOpenEdit(!openEdit);
       fetchData();
     } catch (err) {
-      alert("Vish, editei não...");
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
       console.log(err);
     }
   };

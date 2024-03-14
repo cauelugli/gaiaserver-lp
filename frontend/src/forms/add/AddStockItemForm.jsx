@@ -29,7 +29,8 @@ export default function AddStockItemForm({
   user,
   onClose,
   refreshData,
-  setRefreshData,configCustomization,
+  setRefreshData,
+  configCustomization,
   toast,
 }) {
   const [name, setName] = React.useState("");
@@ -63,14 +64,19 @@ export default function AddStockItemForm({
       onClose();
       setRefreshData(!refreshData);
     } catch (err) {
-      alert("Vish, deu não...");
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
       console.log(err);
     }
   };
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogHeader title="Material" femaleGender={false} extraSmall/>
+      <DialogHeader title="Material" femaleGender={false} extraSmall />
       <DialogContent>
         <>
           <Grid
@@ -205,7 +211,7 @@ export default function AddStockItemForm({
           </Grid>
         </>
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization} extraSmall/>
+      <FormEndLineTenant configCustomization={configCustomization} extraSmall />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

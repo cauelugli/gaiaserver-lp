@@ -164,7 +164,12 @@ const EditJobForm = ({
         setOpenEditJob(!openEditJob);
         setRefreshData(!refreshData);
       } catch (err) {
-        alert("Vish, deu não...");
+        toast.error("Houve algum erro...", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
         console.log(err);
       }
     } else if (option === "resolve") {
@@ -190,7 +195,12 @@ const EditJobForm = ({
         setOpenEditJob(!openEditJob);
         setRefreshData(!refreshData);
       } catch (err) {
-        alert("Vish, deu não...");
+        toast.error("Houve algum erro...", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
         console.log(err);
       }
     } else {
@@ -230,7 +240,12 @@ const EditJobForm = ({
         setOpenEditJob(!openEditJob);
         setRefreshData(!refreshData);
       } catch (err) {
-        alert("Vish, deu não...");
+        toast.error("Houve algum erro...", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
         console.log(err);
       }
     }
