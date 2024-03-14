@@ -259,7 +259,11 @@ const MyCalendar = ({ user, config, selectedWorker }) => {
       return [r, g, b];
     };
 
-    const [r, g, b] = hexToRGB(event.type.color || "#ffffff");
+    const [r, g, b] = hexToRGB(
+      config.showServiceColorOnEvents
+        ? event.service.color
+        : event.type.color || "#ffffff"
+    );
 
     let style = {
       backgroundColor: `rgba(${r}, ${g}, ${b}, 0.55)`,

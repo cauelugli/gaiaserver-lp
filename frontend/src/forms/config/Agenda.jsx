@@ -13,6 +13,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
   FormHelperText,
   Grid,
   IconButton,
@@ -20,7 +21,10 @@ import {
   ListItem,
   Paper,
   Popover,
+  Radio,
+  RadioGroup,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -39,6 +43,8 @@ export default function Agenda({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
   const [minTime, setMinTime] = React.useState(null);
   const [maxTime, setMaxTime] = React.useState(null);
+  const [showServiceColorOnEvents, setShowServiceColorOnEvents] =
+    React.useState(null);
   const [eventTypes, setEventTypes] = React.useState([]);
   const [newType, setNewType] = React.useState({ name: "", color: "white" });
   const [newJobEventTypeColor, setNewJobEventTypeColor] = React.useState(null);
@@ -53,6 +59,9 @@ export default function Agenda({ onClose }) {
         setMinTime(config.data[0].agenda.minTime);
         setMaxTime(config.data[0].agenda.maxTime);
         setEventTypes(config.data[0].agenda.eventTypes);
+        setShowServiceColorOnEvents(
+          config.data[0].agenda.showServiceColorOnEvents
+        );
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -67,7 +76,8 @@ export default function Agenda({ onClose }) {
         minTime,
         maxTime,
         eventTypes,
-        newJobEventTypeColor
+        newJobEventTypeColor,
+        showServiceColorOnEvents,
       });
 
       if (res.data) {
@@ -119,6 +129,48 @@ export default function Agenda({ onClose }) {
               alignItems="flex-start"
             >
               <Accordion sx={{ width: "100%" }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Preferências
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid container direction="row">
+                    <Typography sx={{ my: "auto", mr: 1 }}>
+                      Utilizar cor do Serviço para Jobs na Agenda
+                    </Typography>
+                    <RadioGroup
+                      row
+                      value={showServiceColorOnEvents}
+                      onChange={(e) =>
+                        setShowServiceColorOnEvents(e.target.value)
+                      }
+                    >
+                      <FormControlLabel
+                        value={Boolean(true)}
+                        control={
+                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                        }
+                      />
+                      <FormControlLabel
+                        value={Boolean(false)}
+                        control={
+                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: 13 }}>
+                            Não, utilizar cor padrão do tipo de evento "Job"
+                          </Typography>
+                        }
+                      />
+                    </RadioGroup>
+                  </Grid>{" "}
+                </AccordionDetails>
+              </Accordion>
+              <Accordion sx={{ width: "100%", mt: 2 }}>
                 <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Horário da Agenda
@@ -230,7 +282,7 @@ export default function Agenda({ onClose }) {
                                       Nova cor de Job
                                     </FormHelperText>
                                     <IconButton
-                                      sx={{ color: "red", fontSize:12 }}
+                                      sx={{ color: "red", fontSize: 12 }}
                                       onClick={() =>
                                         setNewJobEventTypeColor(null)
                                       }

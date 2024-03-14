@@ -223,7 +223,7 @@ router.get("/agenda", async (req, res) => {
 // AGENDA
 router.put("/agenda", async (req, res) => {
   try {
-    const { minTime, maxTime, newJobEventTypeColor } = req.body;
+    const { minTime, maxTime, newJobEventTypeColor,showServiceColorOnEvents } = req.body;
 
     let eventTypes = req.body.eventTypes;
 
@@ -231,6 +231,7 @@ router.put("/agenda", async (req, res) => {
 
     config.agenda.minTime = minTime;
     config.agenda.maxTime = maxTime;
+    config.agenda.showServiceColorOnEvents = showServiceColorOnEvents;
 
     if (newJobEventTypeColor) {
       eventTypes[0] = {

@@ -53,6 +53,7 @@ const ServiceSelect = (props) => {
           props.setService({
             id: e.target.value._id,
             name: e.target.value.name,
+            color: e.target.value.color,
           })
         }
       >

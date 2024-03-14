@@ -238,6 +238,10 @@ const configSchema = new Schema({
       type: Number,
       default: 22,
     },
+    showServiceColorOnEvents: {
+      type: Boolean,
+      default: false,
+    },
     eventTypes: {
       type: Array,
       default: [{ name: "Job", color: "#4a90e2" }],
