@@ -109,8 +109,6 @@ export default function MaterialList({
     }
   };
 
-  console.log("productsDefined", productsDefined);
-
   return (
     <Grid container sx={{ mt: 2 }}>
       {!productsDefined && (
@@ -156,20 +154,29 @@ export default function MaterialList({
                   opt.name.toLowerCase().includes(searchValue.toLowerCase())
                 )
                 .map((option) => (
-                  <FormControlLabel
-                    sx={{ ml: 1 }}
+                  <Grid
                     key={option._id}
-                    control={
-                      <Checkbox
-                        size="small"
-                        sx={{ mb: 0.5 }}
-                        checked={option._id === selectedItemId}
-                        onChange={() => handleChecked(option._id)}
-                      />
-                    }
-                    label={
-                      <Grid>
-                        <Grid container direction="row">
+                    container
+                    direction="row"
+                    sx={{ mx: 8 }}
+                  >
+                    <FormControlLabel
+                      sx={{ ml: 1 }}
+                      control={
+                        <Checkbox
+                          size="small"
+                          sx={{ mb: 0.5 }}
+                          checked={option._id === selectedItemId}
+                          onChange={() => handleChecked(option._id)}
+                        />
+                      }
+                      label={
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
                           <Avatar
                             alt="Imagem do Produto"
                             src={`http://localhost:3000/static/${option.image}`}
@@ -223,9 +230,9 @@ export default function MaterialList({
                             </IconButton>
                           )}
                         </Grid>
-                      </Grid>
-                    }
-                  />
+                      }
+                    />
+                  </Grid>
                 ))}
             </FormGroup>
           </Paper>
@@ -244,7 +251,7 @@ export default function MaterialList({
         >
           {stockList.map((item) => (
             <li key={item._id}>
-              <Grid container direction="row" sx={{ mt: 2, px: 0.5 }}>
+              <Grid container direction="row" sx={{ mt: 2, px: 0.5, mx: 8 }}>
                 {!productsDefined && (
                   <IconButton
                     sx={{
@@ -267,15 +274,19 @@ export default function MaterialList({
                 <Avatar
                   alt="Imagem do Produto"
                   src={`http://localhost:3000/static/${item.image}`}
-                  sx={{ width: 20, height: 20, marginLeft: 1 }}
+                  sx={{
+                    width: 20,
+                    height: 20,
+                    marginLeft: 1,
+                  }}
                 />
-                <Typography sx={{ ml: 2, fontSize: 12 }}>
+                <Typography sx={{ ml: 2, fontSize:12 }}>
                   {item.name}
                 </Typography>
-                <Typography sx={{ mx: 1, fontSize: 12, color: "#777" }}>
+                <Typography sx={{ mx: 1, fontSize:12, color: "#777" }}>
                   (x{item.quantity}){" "}
                 </Typography>
-                <Typography sx={{ fontSize: 12 }}>
+                <Typography sx={{ fontSize:12 }}>
                   = R${(item.sellValue * item.quantity).toFixed(2)}{" "}
                 </Typography>
               </Grid>
@@ -283,7 +294,7 @@ export default function MaterialList({
           ))}
         </Paper>
         <FormHelperText>
-          <Typography textAlign="right" sx={{ color: "black" }}>
+          <Typography textAlign="right" sx={{ fontWeight:"bold", fontSize:16 }}>
             Total: R${materialsCost.toFixed(2)}
           </Typography>
         </FormHelperText>
