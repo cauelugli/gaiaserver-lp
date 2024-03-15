@@ -138,8 +138,6 @@ export default function StockTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
-  console.log("selectedStockItem", selectedStockItem);
-
   return (
     <>
       <Box sx={{ minWidth: "1250px" }}>
