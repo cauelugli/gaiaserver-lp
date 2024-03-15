@@ -3,11 +3,13 @@ import React from "react";
 import axios from "axios";
 
 import {
+  Avatar,
   Button,
   Checkbox,
   DialogActions,
   DialogContent,
   Divider,
+  FormHelperText,
   Grid,
   InputLabel,
   MenuItem,
@@ -15,6 +17,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
+import PersonIcon from "@mui/icons-material/Person";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { IMaskInput } from "react-imask";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -46,18 +51,28 @@ const AddClientForm = ({
   const [cpf, setCpf] = React.useState("");
   const [birthdate, setBirthdate] = React.useState(dayjs("11/02/2014"));
   const [gender, setGender] = React.useState("Masculino");
+  const [image, setImage] = React.useState("");
   const [showAdditionalOptions, setShowAdditionalOptions] =
     React.useState(false);
   const handleCheckboxChange = (event) => {
     setShowAdditionalOptions(event.target.checked);
   };
 
+  const handleImageClick = () => {
+    document.getElementById("fileInput").click();
+  };
+
   const handleAdd = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("image", image);
     try {
+      const uploadResponse = await api.post("/uploads/singleProduct", formData);
+      const imagePath = uploadResponse.data.imagePath;
       const res = await api.post("/clients", {
         name,
         email,
+        image: imagePath,
         addressHome,
         addressDelivery,
         addressBill,
@@ -95,6 +110,60 @@ const AddClientForm = ({
         extraSmall={extraSmall}
       />
       <DialogContent>
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <input
+            type="file"
+            accept="image/*"
+            id="fileInput"
+            style={{ display: "none" }}
+            onChange={(e) => {
+              const selectedImage = e.target.files[0];
+              setImage(selectedImage);
+            }}
+          />
+          <label htmlFor="fileInput">
+            <Avatar
+              alt="Imagem do Cliente"
+              value={image}
+              sx={{
+                width: 128,
+                height: 128,
+                borderRadius: 50,
+                cursor: "pointer",
+              }}
+              onClick={handleImageClick}
+            >
+              {image ? (
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="Prévia da Imagem"
+                  style={{ width: "100%", height: "100%" }}
+                />
+              ) : (
+                <PersonIcon sx={{ fontSize: 80 }} />
+              )}
+            </Avatar>
+          </label>
+          {image && (
+            <FormHelperText>
+              <Button
+                variant="outlined"
+                color="error"
+                size="small"
+                startIcon={<DeleteIcon />}
+                onClick={() => setImage("")}
+                sx={{ mt: 1 }}
+              >
+                Remover
+              </Button>
+            </FormHelperText>
+          )}
+        </Grid>
         <Typography sx={{ my: 1, fontWeight: "bold" }}>Dados</Typography>
         <Grid container direction="column" alignItems="center">
           <TextField
@@ -127,7 +196,7 @@ const AddClientForm = ({
                 marginTop: "1%",
                 borderColor: "#eee",
               }}
-              mask="(00) 0000-0000"
+              mask="(00) 00000-0000"
               definitions={{
                 "#": /[1-9]/,
               }}

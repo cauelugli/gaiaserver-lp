@@ -26,6 +26,7 @@ import {
   DialogActions,
   Grid,
   IconButton,
+  Avatar,
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -171,6 +172,7 @@ export default function ClientTable({
                 backgroundColor: "#ccc",
               }}
             >
+              <TableCell padding="checkbox"></TableCell>
               {tableHeaderRow.map((headCell) => (
                 <TableCell
                   align={headCell.label === "Nome" ? "" : "left"}
@@ -210,6 +212,17 @@ export default function ClientTable({
                       "&:hover": { backgroundColor: "#eee " },
                     }}
                   >
+                    <TableCell sx={{ py: 0 }}>
+                      <Avatar
+                        src={`http://localhost:3000/static/${client.image}`}
+                        alt={client.name[0]}
+                        style={{
+                          marginLeft: 10,
+                          width: 42,
+                          height: 42,
+                        }}
+                      />
+                    </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(client)}
                       cursor="pointer"

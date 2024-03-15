@@ -3,6 +3,7 @@ import React from "react";
 import axios from "axios";
 
 import {
+  Avatar,
   Button,
   Checkbox,
   DialogActions,
@@ -16,6 +17,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { IMaskInput } from "react-imask";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -37,6 +41,7 @@ const EditClientForm = ({
 }) => {
   const [name, setName] = React.useState(selectedClient.name);
   const [email, setEmail] = React.useState(selectedClient.email);
+
   const [addressHome, setAddressHome] = React.useState(
     selectedClient.addressHome
   );
@@ -52,6 +57,8 @@ const EditClientForm = ({
     dayjs(selectedClient.birthdate)
   );
   const [gender, setGender] = React.useState(selectedClient.gender);
+  const [newImage, setNewImage] = React.useState("");
+
   const [showAdditionalOptions, setShowAdditionalOptions] =
     React.useState(false);
   const handleCheckboxChange = (event) => {
@@ -60,6 +67,14 @@ const EditClientForm = ({
 
   const handleEdit = async (e) => {
     e.preventDefault();
+    let updatedImagePath = selectedClient.image;
+
+    if (newImage) {
+      const formData = new FormData();
+      formData.append("image", newImage);
+      const uploadResponse = await api.post("/uploads/singleProduct", formData);
+      updatedImagePath = uploadResponse.data.imagePath;
+    }
     try {
       const res = await api.put("/clients", {
         client: selectedClient._id,
@@ -67,6 +82,7 @@ const EditClientForm = ({
         email,
         addressHome,
         addressDelivery,
+        image: updatedImagePath,
         addressBill,
         phone,
         cpf,
@@ -98,6 +114,83 @@ const EditClientForm = ({
     <form onSubmit={handleEdit}>
       <DialogTitle>Editando - {selectedClient.name}</DialogTitle>
       <DialogContent>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item>
+            <Avatar
+              alt="Logotipo da Empresa"
+              src={`http://localhost:3000/static/${selectedClient.image}`}
+              sx={{
+                width: 128,
+                height: 128,
+                borderRadius: 50,
+                cursor: "pointer",
+                opacity: newImage ? "0.5" : "1",
+                marginRight: newImage ? 3 : 0,
+              }}
+            />
+          </Grid>
+
+          <Grid item>
+            {newImage && (
+              <Avatar
+                src={URL.createObjectURL(newImage)}
+                alt="Prévia da Imagem"
+                style={{
+                  width: 128,
+                  height: 128,
+                  borderRadius: 50,
+                }}
+              />
+            )}
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <input
+            type="file"
+            accept="image/*"
+            id="fileInput"
+            style={{ display: "none" }}
+            onChange={(e) => {
+              const selectedImage = e.target.files[0];
+              setNewImage(selectedImage);
+            }}
+          />
+          {!newImage ? (
+            <label htmlFor="fileInput">
+              <Button
+                variant="outlined"
+                color="primary"
+                component="span"
+                size="small"
+                startIcon={<FileUploadIcon />}
+                sx={{ my: 2 }}
+              >
+                Alterar Imagem
+              </Button>
+            </label>
+          ) : (
+            <Button
+              variant="outlined"
+              color="error"
+              size="small"
+              startIcon={<DeleteIcon />}
+              onClick={() => setNewImage("")}
+              sx={{ my: 2 }}
+            >
+              Remover Imagem
+            </Button>
+          )}
+        </Grid>
         <Typography sx={{ my: 1, fontWeight: "bold" }}>Dados</Typography>
         <Grid container direction="column" alignItems="center">
           <TextField

@@ -67,6 +67,7 @@ router.put("/", async (req, res) => {
         cpf: req.body.cpf,
         birthdate: req.body.birthdate,
         gender: req.body.gender,
+        image: req.body.image,
       },
       { new: true }
     );

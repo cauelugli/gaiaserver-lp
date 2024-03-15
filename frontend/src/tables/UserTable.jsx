@@ -19,7 +19,6 @@ import {
 } from "@mui/material";
 
 import EditUserForm from "../forms/edit/EditUserForm";
-// import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import UserTableActions from "../components/small/buttons/tableActionButtons/UserTableActions";
 
 const api = axios.create({
@@ -36,14 +35,6 @@ export default function UserTable({
 }) {
   const [selectedUser, setSelectedUser] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  // const [selectedItem, setSelectedItem] = React.useState("");
-  // const [openDialog, setOpenDialog] = React.useState(false);
-
-  // const handleConfirmDelete = (position) => {
-  //   setSelectedItem(position);
-  //   setOpenDialog(true);
-  // };
-
   const [users, setUsers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
   const [positions, setPositions] = React.useState([]);
@@ -63,11 +54,6 @@ export default function UserTable({
     };
     fetchData();
   }, [refreshData]);
-
-  // const handleOpenEdit = (user) => {
-  //   setOpenEdit(!openEdit);
-  //   setSelectedUser(user);
-  // };
 
   const tableHeaderRow = [
     {

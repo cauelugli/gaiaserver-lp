@@ -44,6 +44,10 @@ const clientSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  image: {
+    type: String,
+    default: '/images/default_userPicture.png',
+  },
 });
 
 const Client = mongoose.model("Client", clientSchema);

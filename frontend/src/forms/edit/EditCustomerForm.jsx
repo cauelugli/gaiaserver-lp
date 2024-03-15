@@ -42,7 +42,6 @@ const EditCustomerForm = ({
   const [name, setName] = React.useState(selectedCustomer.name);
   const [address, setAddress] = React.useState(selectedCustomer.address);
   const [phone, setPhone] = React.useState(selectedCustomer.phone);
-  const [image, setImage] = React.useState(selectedCustomer.image);
   const [newImage, setNewImage] = React.useState("");
   const [mainContactName, setMainContactName] = React.useState(
     selectedCustomer.mainContactName
