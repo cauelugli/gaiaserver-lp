@@ -54,11 +54,16 @@ const CustomerSelect = (props) => {
         displayEmpty
         size={props.sizeSmall && "small"}
         renderValue={(selected) => {
-          if (!selected) {
-            return <Typography>Cliente</Typography>;
-          }
+          if (props.selectedCustomer.isActive) {
+            selected = props.selectedCustomer;
+            return selected.name;
+          } else {
+            if (!selected) {
+              return <Typography>Cliente</Typography>;
+            }
 
-          return selected.name;
+            return selected.name;
+          }
         }}
         sx={{ mt: props.marginAddJobForm ? 0 : 1, width: 180 }}
         onChange={(e) =>

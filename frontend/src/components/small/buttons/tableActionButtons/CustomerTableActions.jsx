@@ -14,16 +14,21 @@ import {
   Typography,
 } from "@mui/material";
 
-import ArchiveIcon from '@mui/icons-material/Archive';
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import ArchiveIcon from "@mui/icons-material/Archive";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EngineeringIcon from "@mui/icons-material/Engineering";
 import MenuIcon from "@mui/icons-material/Menu";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import SellIcon from "@mui/icons-material/Sell";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 import GenericActivateForm from "../../../../forms/misc/GenericActivateForm";
+import AddJobForm from "../../../../forms/add/AddJobForm";
 
 export default function CustomerTableActions(props) {
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openAddJob, setOpenAddJob] = React.useState(false);
+  const [openAddSale, setOpenAddSale] = React.useState(false);
   const [openActivate, setOpenActivate] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState(props.selectedItem);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -64,6 +69,35 @@ export default function CustomerTableActions(props) {
         <List sx={{ width: 200 }}>
           <ListItemButton
             onClick={() => {
+              setOpenAddJob(true), setAnchorEl(null);
+            }}
+          >
+            <ListItemIcon>
+              <EngineeringIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={<Typography sx={{ fontSize: 14 }}>Novo Job</Typography>}
+              sx={{ ml: -3 }}
+            />
+          </ListItemButton>
+          <ListItemButton
+            onClick={() => {
+              setOpenAddSale(true), setAnchorEl(null);
+            }}
+          >
+            <ListItemIcon>
+              <SellIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: 14 }}>Nova Venda</Typography>
+              }
+              sx={{ ml: -3 }}
+            />
+          </ListItemButton>
+
+          <ListItemButton
+            onClick={() => {
               props.setOpenEdit(true), setAnchorEl(null);
             }}
           >
@@ -77,9 +111,8 @@ export default function CustomerTableActions(props) {
               sx={{ ml: -3 }}
             />
           </ListItemButton>
-          <ListItemButton
-            onClick={(item) => handleConfirmActivate(item)}
-          >
+
+          <ListItemButton onClick={(item) => handleConfirmActivate(item)}>
             <ListItemIcon>
               <ArchiveIcon />
             </ListItemIcon>
@@ -122,8 +155,29 @@ export default function CustomerTableActions(props) {
           />
         </Dialog>
       )}
+      {openAddJob && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openAddJob}
+          onClose={() => setOpenAddJob(!openAddJob)}
+        >
+          <AddJobForm
+            user={props.user}
+            openAddJob={openAddJob}
+            setOpenAddJob={setOpenAddJob}
+            refreshData={props.refreshData}
+            setRefreshData={props.setRefreshData}
+            selectedItem={props.selectedItem}
+            toast={toast}
+          />
+        </Dialog>
+      )}
       {openActivate && (
-        <Dialog open={openActivate} onClose={() => setOpenActivate(!openActivate)}>
+        <Dialog
+          open={openActivate}
+          onClose={() => setOpenActivate(!openActivate)}
+        >
           <GenericActivateForm
             selectedItem={props.selectedItem}
             openDialog={openActivate}
@@ -131,7 +185,30 @@ export default function CustomerTableActions(props) {
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
             toast={toast}
-            endpoint={props.selectedItem.cpf ? "clients/activate" : "customers/activate"}
+            endpoint={
+              props.selectedItem.cpf ? "clients/activate" : "customers/activate"
+            }
+            successMessage={`${
+              props.selectedItem.name && props.selectedItem.name
+            } Arquivado com Sucesso`}
+          />
+        </Dialog>
+      )}
+      {openActivate && (
+        <Dialog
+          open={openActivate}
+          onClose={() => setOpenActivate(!openActivate)}
+        >
+          <GenericActivateForm
+            selectedItem={props.selectedItem}
+            openDialog={openActivate}
+            setOpenDialog={setOpenActivate}
+            refreshData={props.refreshData}
+            setRefreshData={props.setRefreshData}
+            toast={toast}
+            endpoint={
+              props.selectedItem.cpf ? "clients/activate" : "customers/activate"
+            }
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
             } Arquivado com Sucesso`}

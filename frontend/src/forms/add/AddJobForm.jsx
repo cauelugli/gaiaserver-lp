@@ -46,26 +46,51 @@ const api = axios.create({
 
 const AddJobForm = ({
   user,
+  selectedItem,
   openAddJob,
   setOpenAddJob,
   refreshData,
   setRefreshData,
-  configCustomization,
   toast,
 }) => {
   const [config, setConfig] = React.useState([]);
-  const [title, setTitle] = React.useState("");
-  const [customer, setCustomer] = React.useState("");
-  const [customerType, setCustomerType] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [requester, setRequester] = React.useState("");
-  const [worker, setWorker] = React.useState("");
+  let selectedCustomer = {};
+  if (selectedItem) {
+    selectedCustomer = selectedItem;
+  }
+
+  const [customerType, setCustomerType] = React.useState(
+    selectedCustomer.cnpj
+      ? "Empresa"
+      : selectedCustomer.cpf
+      ? "Pessoa Física"
+      : ""
+  );
+  const [customer, setCustomer] = React.useState(
+    selectedItem ? selectedCustomer : ""
+  );
+  const [requester, setRequester] = React.useState(
+    selectedCustomer.mainContactName
+      ? selectedCustomer.mainContactName
+      : selectedCustomer.name
+      ? selectedCustomer.name
+      : ""
+  );
+  const [local, setLocal] = React.useState(
+    selectedCustomer.address
+      ? selectedCustomer.address
+      : selectedCustomer.addressHome
+      ? selectedCustomer.addressHome
+      : ""
+  );
+  const [scheduledTo, setScheduledTo] = React.useState(dayjs());
   const [department, setDepartment] = React.useState("");
   const [service, setService] = React.useState({});
+  const [worker, setWorker] = React.useState("");
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
   const [materials, setMaterials] = React.useState([]);
   const [materialsCost, setMaterialsCost] = React.useState(0);
-  const [local, setLocal] = React.useState("");
-  const [scheduledTo, setScheduledTo] = React.useState(dayjs());
   const [editQuote, setEditQuote] = React.useState(false);
   const [approvedQuote, setApprovedQuote] = React.useState(false);
   const [scheduleToWorker, setScheduleToWorker] = React.useState(false);
@@ -82,6 +107,7 @@ const AddJobForm = ({
   const [departments, setDepartments] = React.useState([]);
   const [services, setServices] = React.useState([]);
   const [stockItems, setStockItems] = React.useState([]);
+  const [configCustomization, setConfigCustomization] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -92,6 +118,7 @@ const AddJobForm = ({
         const services = await api.get("/services");
         const stockItems = await api.get("/stockItems");
         const config = await api.get("/config/requests");
+        const configCustomization = await api.get("/config");
         setConfig(config.data);
         setCustomers(customers.data);
         setClients(clients.data);
@@ -102,6 +129,7 @@ const AddJobForm = ({
         );
         setServices(services.data);
         setStockItems(stockItems.data);
+        setConfigCustomization(configCustomization.data[0].customization);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -328,6 +356,7 @@ const AddJobForm = ({
                 handleCustomerChange={handleCustomerChange}
                 setCustomer={setCustomer}
                 customerType={customerType}
+                selectedCustomer={selectedCustomer}
               />
             )}
             {customer && (

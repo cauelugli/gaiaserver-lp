@@ -243,6 +243,8 @@ export default function Customers({ user, configTables }) {
               />
 
               <ClientTable
+                user={user}
+                configCustomization={configCustomization}
                 configData={config}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}

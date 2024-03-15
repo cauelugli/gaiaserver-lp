@@ -40,6 +40,7 @@ const api = axios.create({
 });
 
 export default function CustomerTable({
+  user,
   configData,
   refreshData,
   setRefreshData,
@@ -272,6 +273,7 @@ export default function CustomerTable({
                       onClick={() => setSelectedCustomer(customer)}
                     >
                       <CustomerTableActions
+                        user={user}
                         setOpenEdit={setOpenEdit}
                         selectedItem={selectedCustomer}
                         refreshData={refreshData}
