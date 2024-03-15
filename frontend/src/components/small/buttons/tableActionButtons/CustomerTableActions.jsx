@@ -24,6 +24,7 @@ import SellIcon from "@mui/icons-material/Sell";
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 import GenericActivateForm from "../../../../forms/misc/GenericActivateForm";
 import AddJobForm from "../../../../forms/add/AddJobForm";
+import AddSaleForm from "../../../../forms/add/AddSaleForm";
 
 export default function CustomerTableActions(props) {
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -166,6 +167,24 @@ export default function CustomerTableActions(props) {
             user={props.user}
             openAddJob={openAddJob}
             setOpenAddJob={setOpenAddJob}
+            refreshData={props.refreshData}
+            setRefreshData={props.setRefreshData}
+            selectedItem={props.selectedItem}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openAddSale && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddSale}
+          onClose={() => setOpenAddSale(!openAddSale)}
+        >
+          <AddSaleForm
+            user={props.user}
+            openAddSale={openAddSale}
+            setOpenAddSale={setOpenAddSale}
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
             selectedItem={props.selectedItem}

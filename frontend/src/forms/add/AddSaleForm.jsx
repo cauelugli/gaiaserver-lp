@@ -36,21 +36,47 @@ const api = axios.create({
 
 const AddSaleForm = ({
   user,
+  selectedItem,
   openAddSale,
   setOpenAddSale,
   refreshData,
   setRefreshData,
-  configCustomization,
   toast,
 }) => {
   const [config, setConfig] = React.useState([]);
-  const [customer, setCustomer] = React.useState("");
-  const [customerType, setCustomerType] = React.useState("");
-  const [requester, setRequester] = React.useState("");
+  let selectedCustomer = {};
+  if (selectedItem) {
+    selectedCustomer = selectedItem;
+  }
+
+  const [customerType, setCustomerType] = React.useState(
+    selectedCustomer.cnpj
+      ? "Empresa"
+      : selectedCustomer.cpf
+      ? "Pessoa Física"
+      : ""
+  );
+  const [customer, setCustomer] = React.useState(
+    selectedItem ? selectedCustomer : ""
+  );
+  const [requester, setRequester] = React.useState(
+    selectedCustomer.mainContactName
+      ? selectedCustomer.mainContactName
+      : selectedCustomer.name
+      ? selectedCustomer.name
+      : ""
+  );
+  const [deliveryAddress, setDeliveryAddress] = React.useState(
+    selectedCustomer.address
+      ? selectedCustomer.address
+      : selectedCustomer.addressHome
+      ? selectedCustomer.addressHome
+      : ""
+  );
+
   const [seller, setSeller] = React.useState("");
   const [department, setDepartment] = React.useState("");
   const [productsDefined, setProductsDefined] = React.useState(false);
-  const [deliveryAddress, setDeliveryAddress] = React.useState("");
   const [deliveryReceiver, setDeliveryReceiver] = React.useState("");
   const [deliveryReceiverPhone, setDeliveryReceiverPhone] = React.useState("");
   const [deliveryScheduledTo, setDeliveryScheduledTo] = React.useState(dayjs());
@@ -59,6 +85,7 @@ const AddSaleForm = ({
 
   const [departments, setDepartments] = React.useState([]);
   const [products, setProducts] = React.useState([]);
+  const [configCustomization, setConfigCustomization] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -66,11 +93,13 @@ const AddSaleForm = ({
         const departments = await api.get("/departments");
         const products = await api.get("/products");
         const config = await api.get("/config/requests");
+        const configCustomization = await api.get("/config");
         setConfig(config.data);
         setDepartments(
           departments.data.filter((department) => !department.isInternal)
         );
         setProducts(products.data);
+        setConfigCustomization(configCustomization.data[0].customization);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -201,6 +230,7 @@ const AddSaleForm = ({
               <CustomerSelect
                 marginAddJobForm
                 sizeSmall
+                selectedCustomer={selectedCustomer}
                 handleCustomerChange={handleCustomerChange}
                 setCustomer={setCustomer}
                 customerType={customerType}
