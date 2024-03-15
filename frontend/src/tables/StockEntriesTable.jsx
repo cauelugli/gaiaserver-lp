@@ -128,7 +128,8 @@ export default function StockEntriesTable({
         });
         setRefreshData(!refreshData);
       }
-    } catch (error) {
+    } catch (err) {
+      console.log('err',err)
       toast.error("Houve algum erro...", {
         closeOnClick: true,
         pauseOnHover: false,

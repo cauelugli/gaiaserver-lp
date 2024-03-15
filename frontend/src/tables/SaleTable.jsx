@@ -31,6 +31,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 // import EditRequestForm from "../forms/edit/EditRequestForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+import SaleTableActions from "../components/small/buttons/tableActionButtons/SaleTableActions";
 
 export default function SaleTable({
   config,
@@ -89,6 +90,10 @@ export default function SaleTable({
     {
       id: "status",
       label: "Status",
+    },
+    {
+      id: "actions",
+      label: "Ações",
     },
   ];
 
@@ -316,6 +321,22 @@ export default function SaleTable({
                       align="center"
                     >
                       {sale.status}
+                    </TableCell>
+                    <TableCell
+                      cursor="pointer"
+                      align="center"
+                      onClick={() => setSelectedSale(sale)}
+                    >
+                      <SaleTableActions
+                        selectedItem={selectedSale}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                        config={config}
+                        // user={user}
+                        sale={sale}
+                        handleOpenEdit={handleOpenEdit}
+                        handleConfirmDelete={handleConfirmDelete}
+                      />
                     </TableCell>
                   </TableRow>
                   <TableRow>
