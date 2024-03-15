@@ -78,12 +78,17 @@ const initSocket = (server) => {
 
     socket.on("requestApproval", async (data) => {
       try {
-        const receiverSocketId = userSocketMap[data.receiver.id];
+        const receiverSocketId =
+          userSocketMap[data.receiver.id || data.receiver._id];
 
         const newNotification = {
           id: Date.now(),
           type: "Aprovação",
-          noteBody: `Olá ${data.receiver.name}! ${data.sender.name} está solicitando aprovação para o job "${data.job.title}" em ${data.date}.`,
+          noteBody: `Olá ${data.receiver.name}! ${
+            data.sender.name
+          } está solicitando aprovação para ${
+            data.type ? "Entrada de Estoque" : "o Job"
+          } "${!data.type && data.job.title}" em ${data.date}.`,
           sender: data.sender.name,
           status: "Não Lida",
         };

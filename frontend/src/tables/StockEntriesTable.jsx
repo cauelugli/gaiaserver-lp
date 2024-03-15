@@ -34,7 +34,11 @@ export default function StockEntriesTable({
   configData,
 }) {
   const [stockEntries, setStockEntries] = React.useState([]);
-  console.log("configData", configData)
+
+  console.log(
+    "configData",
+    configData.stockentriesDispatcherDepartment.manager
+  );
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -129,7 +133,7 @@ export default function StockEntriesTable({
         setRefreshData(!refreshData);
       }
     } catch (err) {
-      console.log('err',err)
+      console.log("err", err);
       toast.error("Houve algum erro...", {
         closeOnClick: true,
         pauseOnHover: false,
@@ -264,13 +268,19 @@ export default function StockEntriesTable({
                               </Typography>
                             )}
                           </Typography>
-                          {entry.status === "Aberto" && configData.stockEntriesNeedApproval && (
-                            <RequestApproval
-                              entry={entry}
-                              refreshData={refreshData}
-                              setRefreshData={setRefreshData}
-                            />
-                          )}
+                          {entry.status === "Aberto" &&
+                            configData.stockEntriesNeedApproval && (
+                              <RequestApproval
+                                user={user}
+                                entry={entry}
+                                refreshData={refreshData}
+                                setRefreshData={setRefreshData}
+                                dispatcherManager={
+                                  configData.stockentriesDispatcherDepartment
+                                    .manager
+                                }
+                              />
+                            )}
                         </Grid>
                       </TableCell>
                       <TableCell align="center">

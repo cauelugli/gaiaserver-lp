@@ -138,6 +138,8 @@ export default function StockTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
+  console.log("selectedStockItem", selectedStockItem);
+
   return (
     <>
       <Box sx={{ minWidth: "1250px" }}>
@@ -374,12 +376,12 @@ export default function StockTable({
                                   <TableBody>
                                     <TableRow>
                                       <TableCell align="center">
-                                      <Typography sx={{ fontSize: 13 }}>
+                                        <Typography sx={{ fontSize: 13 }}>
                                           R${stockItem.buyValue}
                                         </Typography>
                                       </TableCell>
                                       <TableCell align="center">
-                                      <Typography sx={{ fontSize: 13 }}>
+                                        <Typography sx={{ fontSize: 13 }}>
                                           R${stockItem.sellValue}
                                         </Typography>
                                       </TableCell>
