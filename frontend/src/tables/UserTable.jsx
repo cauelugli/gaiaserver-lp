@@ -190,77 +190,85 @@ export default function UserTable({
 
               .map((row) => (
                 <React.Fragment key={row._id}>
-                  <TableRow sx={{ "&:hover": { backgroundColor: "#eee " } }}>
-                    <TableCell sx={{ py: 0 }}>
-                      <Avatar
-                        src={`http://localhost:3000/static/${row.image}`}
-                        alt={row.name[0]}
-                        style={{
-                          marginLeft: 10,
-                          width: 42,
-                          height: 42,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>{row.email}</Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>{row.phone}</Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        {row.position ? row.position.name : "-"}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        {row.department ? (
-                          <Grid
-                            container
-                            direction="row"
-                            justifyContent="center"
-                          >
-                            <Paper
-                              elevation={0}
-                              sx={{
-                                mr: 1,
-                                mt: 0.5,
-                                width: 12,
-                                height: 12,
-                                borderRadius: 50,
-                                backgroundColor: row.department.color,
-                              }}
+                  {row.position.name && (
+                    <TableRow sx={{ "&:hover": { backgroundColor: "#eee " } }}>
+                      <TableCell sx={{ py: 0 }}>
+                        <Avatar
+                          src={`http://localhost:3000/static/${row.image}`}
+                          alt={row.name[0]}
+                          style={{
+                            marginLeft: 10,
+                            width: 42,
+                            height: 42,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Typography sx={{ fontSize: 13 }}>
+                          {row.name}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography sx={{ fontSize: 13 }}>
+                          {row.email}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography sx={{ fontSize: 13 }}>
+                          {row.phone}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography sx={{ fontSize: 13 }}>
+                          {row.position ? row.position.name : "-"}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography sx={{ fontSize: 13 }}>
+                          {row.department ? (
+                            <Grid
+                              container
+                              direction="row"
+                              justifyContent="center"
                             >
-                              {" "}
-                            </Paper>
-                            <Typography sx={{ fontSize: 13 }}>
-                              {row.department.name}
-                            </Typography>
-                          </Grid>
-                        ) : (
-                          "-"
-                        )}
-                      </Typography>
-                    </TableCell>
+                              <Paper
+                                elevation={0}
+                                sx={{
+                                  mr: 1,
+                                  mt: 0.5,
+                                  width: 12,
+                                  height: 12,
+                                  borderRadius: 50,
+                                  backgroundColor: row.department.color,
+                                }}
+                              >
+                                {" "}
+                              </Paper>
+                              <Typography sx={{ fontSize: 13 }}>
+                                {row.department.name}
+                              </Typography>
+                            </Grid>
+                          ) : (
+                            "-"
+                          )}
+                        </Typography>
+                      </TableCell>
 
-                    <TableCell
-                      cursor="pointer"
-                      align="center"
-                      onClick={() => setSelectedUser(row)}
-                    >
-                      <UserTableActions
-                        configData={configData}
-                        setOpenEdit={setOpenEdit}
-                        selectedItem={row}
-                        refreshData={refreshData}
-                        setRefreshData={setRefreshData}
-                      />
-                    </TableCell>
-                  </TableRow>
+                      <TableCell
+                        cursor="pointer"
+                        align="center"
+                        onClick={() => setSelectedUser(row)}
+                      >
+                        <UserTableActions
+                          configData={configData}
+                          setOpenEdit={setOpenEdit}
+                          selectedItem={row}
+                          refreshData={refreshData}
+                          setRefreshData={setRefreshData}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </React.Fragment>
               ))
               .slice(startIndex, endIndex)}
