@@ -48,6 +48,12 @@ managerSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  gender: {
+    type: String,
+  },
+  birthdate: {
+    type: Date,
+  },
 });
 
 const Manager = mongoose.model("Manager", managerSchema);

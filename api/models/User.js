@@ -52,6 +52,12 @@ userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  gender: {
+    type: String,
+  },
+  birthdate: {
+    type: Date,
+  },
 });
 
 const User = mongoose.model("User", userSchema);

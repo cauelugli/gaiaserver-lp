@@ -9,8 +9,10 @@ import {
   Button,
   DialogActions,
   DialogContent,
+  Divider,
   FormHelperText,
   Grid,
+  InputLabel,
   MenuItem,
   Paper,
   Select,
@@ -18,11 +20,15 @@ import {
   Typography,
 } from "@mui/material";
 
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { IMaskInput } from "react-imask";
 import DialogHeader from "../../components/small/DialogHeader";
 import FormEndLineTenant from "../../components/small/FormEndLineTenant";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -44,6 +50,8 @@ const AddUserForm = ({
   toast,
 }) => {
   const [name, setName] = React.useState("");
+  const [birthdate, setBirthdate] = React.useState(dayjs("11/02/2014"));
+  const [gender, setGender] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [department, setDepartment] = React.useState("");
@@ -65,6 +73,8 @@ const AddUserForm = ({
       const res = await api.post("/users", {
         name,
         email,
+        gender,
+        birthdate,
         phone,
         image: imagePath,
         department: department && {
@@ -121,7 +131,7 @@ const AddUserForm = ({
     <form onSubmit={handleAdd}>
       <DialogHeader title="Colaborador" femaleGender={false} />
       <DialogContent>
-        <Grid container direction="row" justifyContent="space-around">
+        <Grid container direction="column" justifyContent="flex-start">
           <Grid item>
             <Grid
               container
@@ -172,86 +182,129 @@ const AddUserForm = ({
             </Grid>
           </Grid>
           <Grid item>
+            <Grid container>
+              <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
+                Informações Pessoais
+              </Typography>
+              <CheckCircleOutlineOutlinedIcon
+                sx={{
+                  color:
+                    name && birthdate && gender && phone
+                      ? "#50C878"
+                      : "lightgrey",
+                  ml: 1,
+                }}
+              />
+            </Grid>
             <Grid
               container
-              sx={{ mt: 2 }}
+              sx={{ mt: 1 }}
               direction="row"
               justifyContent="flex-start"
               alignItems="center"
             >
               <Grid item>
-                <Typography>Nome</Typography>
+                <InputLabel>Nome</InputLabel>
                 <TextField
-                  size="small"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  sx={{ mr: 1, width: 300 }}
+                  sx={{ width: 250 }}
                 />
               </Grid>
-              <Grid item>
-                <Typography>Email</Typography>
-                <TextField
-                  value={email}
-                  size="small"
-                  required
-                  onChange={(e) => setEmail(e.target.value)}
-                  sx={{ mr: 1, width: 285 }}
-                />
-              </Grid>
-              <Grid item>
-                <Typography>Telefone</Typography>
-                <IMaskInput
-                  style={{
-                    padding: "5%",
-                    marginRight: "4%",
-                    marginTop: "1%",
-                    borderColor: "#eee",
-                    borderRadius: 4,
-                  }}
-                  mask="(00) 00000-0000"
-                  definitions={{
-                    "#": /[1-9]/,
-                  }}
-                  onAccept={(value) => setPhone(value)}
-                  overwrite
-                  value={phone}
-                />
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              sx={{ mt: 2 }}
-              direction="row"
-              justifyContent="space-evenly"
-              alignItems="center"
-            >
-              <Grid item>
-                <Typography>Departamento</Typography>
-                <Select
-                  onChange={(e) => setDepartment(e.target.value)}
-                  value={department}
-                  renderValue={(selected) => (
-                    <Grid container direction="row">
-                      <Paper
-                        elevation={0}
-                        sx={{
-                          mr: 1,
-                          mt: 0.5,
-                          width: 15,
-                          height: 15,
-                          borderRadius: 50,
-                          backgroundColor: selected.color,
-                        }}
+              {name && (
+                <Grid item sx={{ ml: 2, mr: 4 }}>
+                  <InputLabel>Telefone</InputLabel>
+                  <IMaskInput
+                    style={{
+                      padding: "10%",
+                      marginRight: "4%",
+                      marginTop: "1%",
+                      borderColor: "#eee",
+                      borderRadius: 4,
+                    }}
+                    mask="(00) 00000-0000"
+                    definitions={{
+                      "#": /[1-9]/,
+                    }}
+                    onAccept={(value) => setPhone(value)}
+                    overwrite
+                    value={phone}
+                  />
+                </Grid>
+              )}
+
+              {phone && (
+                <Grid item sx={{ mx: 2, mt: 1 }}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DatePicker"]}>
+                      <DatePicker
+                        value={birthdate}
+                        format="DD/MM/YYYY"
+                        onChange={(newValue) => setBirthdate(newValue)}
+                        label="Data de Nascimento"
+                        sx={{ width: 80 }}
                       />
-                      <Typography>{selected.name}</Typography>
-                    </Grid>
-                  )}
-                  size="small"
-                  sx={{ minWidth: 250 }}
-                >
-                  {departments.map((item) => (
-                    <MenuItem value={item} key={item.id}>
+                    </DemoContainer>
+                  </LocalizationProvider>
+                </Grid>
+              )}
+
+              {phone && (
+                <Grid item sx={{ mb: 1 }}>
+                  <InputLabel>Gênero</InputLabel>
+                  <Select
+                    value={gender}
+                    sx={{ width: 120 }}
+                    onChange={(e) => setGender(e.target.value)}
+                  >
+                    <MenuItem value={"m"}>Masculino</MenuItem>
+                    <MenuItem value={"n"}>Feminino</MenuItem>
+                    <MenuItem value={"0"}>Não Informar</MenuItem>
+                  </Select>
+                </Grid>
+              )}
+            </Grid>
+          </Grid>
+
+          {name && birthdate && gender && phone && (
+            <Grid item>
+              <Divider sx={{ my: 2 }} />
+              <Grid container>
+                <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
+                  Dados Internos
+                </Typography>
+                <CheckCircleOutlineOutlinedIcon
+                  sx={{
+                    color: email ? "#50C878" : "lightgrey",
+                    ml: 1,
+                  }}
+                />
+              </Grid>
+
+              <Grid
+                container
+                sx={{ mt: 1 }}
+                direction="row"
+                justifyContent="space-between"
+              >
+                <Grid item>
+                  <Typography>Email</Typography>
+                  <TextField
+                    value={email}
+                    size="small"
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                    sx={{ width: 230 }}
+                  />
+                </Grid>
+
+                <Grid item sx={{ opacity: email ? 1 : 0 }}>
+                  <Typography>Departamento</Typography>
+                  <Select
+                    onChange={(e) => setDepartment(e.target.value)}
+                    value={department}
+                    renderValue={(selected) => (
                       <Grid container direction="row">
                         <Paper
                           elevation={0}
@@ -261,33 +314,54 @@ const AddUserForm = ({
                             width: 15,
                             height: 15,
                             borderRadius: 50,
-                            backgroundColor: item.color,
+                            backgroundColor: selected.color,
                           }}
                         />
-                        <Typography>{item.name}</Typography>
+                        <Typography>{selected.name}</Typography>
                       </Grid>
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid item>
-                <Typography>Cargo</Typography>
-                <Select
-                  onChange={(e) => setPosition(e.target.value)}
-                  value={position}
-                  renderValue={(selected) => selected.name}
-                  size="small"
-                  sx={{ minWidth: 250 }}
-                >
-                  {positions.map((item) => (
-                    <MenuItem value={item} key={item.id}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
+                    )}
+                    size="small"
+                    sx={{ width: 200 }}
+                  >
+                    {departments.map((item) => (
+                      <MenuItem value={item} key={item.id}>
+                        <Grid container direction="row">
+                          <Paper
+                            elevation={0}
+                            sx={{
+                              mr: 1,
+                              mt: 0.5,
+                              width: 15,
+                              height: 15,
+                              borderRadius: 50,
+                              backgroundColor: item.color,
+                            }}
+                          />
+                          <Typography>{item.name}</Typography>
+                        </Grid>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+                <Grid item sx={{ opacity: department ? 1 : 0 }}>
+                  <Typography>Cargo</Typography>
+                  <Select
+                    onChange={(e) => setPosition(e.target.value)}
+                    value={position}
+                    renderValue={(selected) => selected.name}
+                    size="small"
+                    sx={{ width: 230 }}
+                  >
+                    {positions.map((item) => (
+                      <MenuItem value={item} key={item.id}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          )}
         </Grid>
       </DialogContent>
       <FormEndLineTenant configCustomization={configCustomization} />
