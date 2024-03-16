@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Sale = require("../models/Sale");
+const Customer = require("../models/Customer");
+const Client = require("../models/Client");
 const Quote = require("../models/Quote");
 const Product = require("../models/Product");
 const PDFDocument = require("pdfkit");
@@ -17,7 +19,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// CREATE SALES
+// CREATE SALE
 router.post("/", async (req, res) => {
   const newSale = new Sale(req.body);
   if (newSale.items.length > 0) {
@@ -29,6 +31,7 @@ router.post("/", async (req, res) => {
   }
   try {
     const savedRequest = await newSale.save();
+
     const newQuote = new Quote({
       number: savedRequest.quoteNumber,
       title: "",
@@ -46,6 +49,35 @@ router.post("/", async (req, res) => {
       materials: req.body.items,
     });
     const savedQuote = await newQuote.save();
+
+    const recentRequestData = {
+      number: savedQuote.number,
+      title: savedQuote.title,
+      type: "sale",
+      date: savedQuote.createdAt,
+      requester: req.body.requester,
+    };
+
+    let updatedClient;
+    let updatedCustomer;
+    if (req.body.customer.type === "Client") {
+      updatedClient = await Client.findByIdAndUpdate(
+        req.body.customer.id,
+        {
+          $push: { recentRequests: recentRequestData },
+        },
+        { new: true }
+      );
+    } else if (req.body.customer.type === "Customer") {
+      updatedCustomer = await Customer.findByIdAndUpdate(
+        req.body.customer.id,
+        {
+          $push: { recentRequests: recentRequestData },
+        },
+        { new: true }
+      );
+    }
+
     const doc = new PDFDocument();
 
     // Construa o caminho completo para o arquivo PDF na pasta estática
@@ -113,7 +145,9 @@ router.post("/", async (req, res) => {
 
     doc.end();
 
-    res.status(200).json({ savedRequest, savedQuote });
+    res
+      .status(200)
+      .json({ savedRequest, savedQuote, updatedCustomer, updatedClient });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -137,7 +171,7 @@ router.put("/activate/:id", async (req, res) => {
   }
 });
 
-// DELETE SALES
+// DELETE SALE
 router.delete("/:id", async (req, res) => {
   const saleId = req.params.id;
   try {

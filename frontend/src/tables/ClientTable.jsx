@@ -41,7 +41,7 @@ const api = axios.create({
 
 export default function ClientTable({
   user,
-  configData,
+  configCustomization,
   refreshData,
   setRefreshData,
   searchOption,
@@ -52,7 +52,7 @@ export default function ClientTable({
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openDetailGeral, setOpenDetailGeral] = React.useState(true);
   const [openDetailEndereço, setOpenDetailEndereço] = React.useState(false);
-  const [openDetailPedidos, setOpenDetailPedidos] = React.useState(false);
+  const [openDetailRequests, setOpenDetailRequests] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
 
@@ -430,18 +430,18 @@ export default function ClientTable({
                                 my: "auto",
                               }}
                             >
-                              Pedidos
+                              Solicitações
                             </Typography>
                             <IconButton
                               onClick={() =>
-                                setOpenDetailPedidos(!openDetailPedidos)
+                                setOpenDetailRequests(!openDetailRequests)
                               }
                             >
                               <ExpandMoreIcon />
                             </IconButton>
                           </Grid>{" "}
                           <Collapse
-                            in={openDetailPedidos}
+                            in={openDetailRequests}
                             timeout="auto"
                             unmountOnExit
                           >
@@ -513,8 +513,11 @@ export default function ClientTable({
                                       </TableCell>
                                       <TableCell>
                                         <Typography sx={{ fontSize: 13 }}>
-                                          {item.type.charAt(0).toUpperCase() +
-                                            item.type.slice(1)}
+                                          {item.type === "job"
+                                            ? "Job"
+                                            : item.type === "sale"
+                                            ? "Venda"
+                                            : ""}
                                         </Typography>
                                       </TableCell>
                                       <TableCell>

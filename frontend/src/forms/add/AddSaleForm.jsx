@@ -73,15 +73,27 @@ const AddSaleForm = ({
       ? selectedCustomer.addressHome
       : ""
   );
+  const [deliveryReceiver, setDeliveryReceiver] = React.useState(
+    selectedCustomer.mainContactName
+      ? selectedCustomer.mainContactName
+      : selectedCustomer.name
+      ? selectedCustomer.name
+      : ""
+  );
+  const [deliveryReceiverPhone, setDeliveryReceiverPhone] = React.useState(
+    selectedCustomer.mainContactPhone
+      ? selectedCustomer.mainContactPhone
+      : selectedCustomer.phone
+      ? selectedCustomer.phone
+      : ""
+  );
 
   const [seller, setSeller] = React.useState("");
   const [department, setDepartment] = React.useState("");
   const [productsDefined, setProductsDefined] = React.useState(false);
-  const [deliveryReceiver, setDeliveryReceiver] = React.useState("");
-  const [deliveryReceiverPhone, setDeliveryReceiverPhone] = React.useState("");
-  const [deliveryScheduledTo, setDeliveryScheduledTo] = React.useState(dayjs());
   const [materials, setMaterials] = React.useState([]);
   const [materialsCost, setMaterialsCost] = React.useState(0);
+  const [deliveryScheduledTo, setDeliveryScheduledTo] = React.useState(dayjs());
 
   const [departments, setDepartments] = React.useState([]);
   const [products, setProducts] = React.useState([]);
@@ -132,7 +144,9 @@ const AddSaleForm = ({
         customer: {
           id: customer._id,
           name: customer.name,
+          image: customer.image,
           cnpj: customer.cnpj || "",
+          type: customer.cnpj ? "Customer" : "Client",
         },
         requester,
         department: {

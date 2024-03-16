@@ -42,6 +42,7 @@ const api = axios.create({
 export default function CustomerTable({
   user,
   configData,
+  configCustomization,
   refreshData,
   setRefreshData,
   searchValue,
@@ -51,8 +52,8 @@ export default function CustomerTable({
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openDetailGeral, setOpenDetailGeral] = React.useState(true);
   const [openDetailContato, setOpenDetailContato] = React.useState(false);
-  const [openDetailDominio, setOpenDetailDominio] = React.useState(false);
-  const [openDetailPedidos, setOpenDetailPedidos] = React.useState(false);
+  // const [openDetailDominio, setOpenDetailDominio] = React.useState(false);
+  const [openDetailRequests, setOpenDetailRequests] = React.useState(false);
   const [selectedCustomer, setSelectedCustomer] = React.useState([]);
 
   const [customers, setCustomers] = React.useState([]);
@@ -160,6 +161,28 @@ export default function CustomerTable({
   const closeViewDialog = () => {
     setViewDialogOpen(false);
   };
+
+  const eventStyleGetter = () => {
+    const hexToRGB = (hex) => {
+      let r, g, b;
+      r = parseInt(hex[1] + hex[2], 16);
+      g = parseInt(hex[3] + hex[4], 16);
+      b = parseInt(hex[5] + hex[6], 16);
+      return [r, g, b];
+    };
+
+    const [r, g, b] = hexToRGB(configCustomization.mainColor);
+
+    let style = {
+      backgroundColor: `rgba(${r}, ${g}, ${b}, 0.55)`,
+    };
+
+    return {
+      style: style,
+    };
+  };
+
+  const eventStyle = eventStyleGetter().style;
 
   return (
     <Box sx={{ minWidth: "1250px" }}>
@@ -269,7 +292,7 @@ export default function CustomerTable({
                     </TableCell>
                     <TableCell
                       cursor="pointer"
-                      align="left"
+                      // align="left"
                       onClick={() => setSelectedCustomer(customer)}
                     >
                       <CustomerTableActions
@@ -463,7 +486,8 @@ export default function CustomerTable({
                           </Collapse>
                         </Box>
 
-                        <Box sx={{ my: 4, px: 6 }}>
+                        {/* DOMAIN BOX, DOESNT MAKE SO MUCH SENSE RIGHT NOW... */}
+                        {/* <Box sx={{ my: 4, px: 6 }}>
                           <Grid container direction="row">
                             <Typography
                               variant="h6"
@@ -523,7 +547,7 @@ export default function CustomerTable({
                               </TableBody>
                             </Table>
                           </Collapse>
-                        </Box>
+                        </Box> */}
 
                         <Box sx={{ my: 4, px: 6 }}>
                           <Grid container direction="row">
@@ -535,21 +559,67 @@ export default function CustomerTable({
                                 my: "auto",
                               }}
                             >
-                              Pedidos Recentes
+                              Solicitações
                             </Typography>
                             <IconButton
                               onClick={() =>
-                                setOpenDetailPedidos(!openDetailPedidos)
+                                setOpenDetailRequests(!openDetailRequests)
                               }
                             >
                               <ExpandMoreIcon />
                             </IconButton>
                           </Grid>
                           <Collapse
-                            in={openDetailPedidos}
+                            in={openDetailRequests}
                             timeout="auto"
                             unmountOnExit
                           >
+                            <Grid
+                              container
+                              direction="row"
+                              justifyContent="space-around"
+                              sx={{
+                                py: 1,
+                                mt: 1,
+                                mb: 2,
+                                borderRadius: 1,
+                                ...eventStyle,
+                              }}
+                            >
+                              <Grid item>
+                                <Typography
+                                  sx={{
+                                    fontFamily: "Roboto, sans-serif",
+                                    fontWeight: "bold",
+                                    color: "white",
+                                  }}
+                                >
+                                  Jobs:
+                                  {
+                                    customer.recentRequests.filter(
+                                      (request) => request.type === "job"
+                                    ).length
+                                  }
+                                </Typography>
+                              </Grid>
+                              <Grid item>
+                                <Typography
+                                  sx={{
+                                    fontFamily: "Roboto, sans-serif",
+                                    fontWeight: "bold",
+                                    color: "white",
+                                  }}
+                                >
+                                  Vendas:
+                                  {
+                                    customer.recentRequests.filter(
+                                      (request) => request.type === "sale"
+                                    ).length
+                                  }
+                                </Typography>
+                              </Grid>
+                            </Grid>
+
                             <Table size="small">
                               <TableHead>
                                 <TableRow>
@@ -618,8 +688,11 @@ export default function CustomerTable({
                                       </TableCell>
                                       <TableCell>
                                         <Typography sx={{ fontSize: 13 }}>
-                                          {item.type.charAt(0).toUpperCase() +
-                                            item.type.slice(1)}
+                                          {item.type === "job"
+                                            ? "Job"
+                                            : item.type === "sale"
+                                            ? "Venda"
+                                            : ""}
                                         </Typography>
                                       </TableCell>
                                       <TableCell>
