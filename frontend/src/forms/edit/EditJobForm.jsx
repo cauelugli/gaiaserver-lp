@@ -151,7 +151,7 @@ const EditJobForm = ({
           toast.success(
             option === "interaction"
               ? "Interação Adicionada!"
-              : "Pedido Editado!",
+              : "Solicitação Editada!",
 
             {
               closeOnClick: true,
@@ -230,7 +230,7 @@ const EditJobForm = ({
         const res = await api.put("/jobs", requestBody);
 
         if (res.data) {
-          toast.success("Pedido Editado!", {
+          toast.success("Solicitação Editada!", {
             closeOnClick: true,
             pauseOnHover: false,
             theme: "colored",

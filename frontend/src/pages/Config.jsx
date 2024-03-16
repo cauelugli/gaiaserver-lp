@@ -80,7 +80,7 @@ const options = [
   },
   {
     icon: <GradingIcon sx={{ fontSize: 48 }} />,
-    text: "Pedidos",
+    text: "Solicitações",
     modal: <RequestsModal />,
   },
   {

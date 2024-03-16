@@ -117,7 +117,7 @@ export default function Departments({ onClose }) {
                     title={
                       <Typography sx={{ fontSize: 12 }}>
                         Escolha qual será o departamento responsável por Aprovar
-                        pedidos de Entrada de Estoque. Este departamento terá o
+                        solicitações de Entrada de Estoque. Este departamento terá o
                         Gerente notificado sobre TODAS as movimentações
                         relacionadas a Estoque.
                       </Typography>

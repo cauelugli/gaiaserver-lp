@@ -26,7 +26,7 @@ const options = [
   { label: "Clientes", icon: <WorkIcon />, link: "/customers" },
   { label: "Colaboradores", icon: <GroupIcon />, link: "/users" },
   { label: "Departamentos", icon: <LanIcon />, link: "/departments" },
-  { label: "Pedidos", icon: <GradingIcon />, link: "/requests" },
+  { label: "Solicitações", icon: <GradingIcon />, link: "/requests" },
   { label: "Projetos", icon: <RocketLaunchIcon />, link: "/projects" },
   { label: "Orçamentos", icon: <RequestQuoteIcon />, link: "/quotes" },
   { label: "Serviços", icon: <BuildIcon />, link: "/services" },

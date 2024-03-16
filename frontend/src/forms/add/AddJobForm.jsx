@@ -268,7 +268,7 @@ const AddJobForm = ({
       });
       if (res.data) {
         toast.success(
-          `Pedido Adicionado! Orçamento #${res.data.savedQuote.number}`,
+          `Solicitação Adicionada! Orçamento #${res.data.savedQuote.number}`,
           {
             closeOnClick: true,
             pauseOnHover: false,

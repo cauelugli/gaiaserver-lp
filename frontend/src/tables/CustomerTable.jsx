@@ -641,7 +641,7 @@ export default function CustomerTable({
                                     <Typography
                                       sx={{ fontSize: 13, color: "#777" }}
                                     >
-                                      Tipo de Pedido
+                                      Tipo de Solicitação
                                     </Typography>
                                   </TableCell>
                                   <TableCell>

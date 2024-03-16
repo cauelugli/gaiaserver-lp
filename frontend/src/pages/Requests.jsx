@@ -143,7 +143,7 @@ export default function Requests({ user, configTables }) {
         <Typography
           sx={{ fontSize: 23, mt: 0.5, ml: 1, mr: 2, fontWeight: "bold" }}
         >
-          Pedidos
+          Solicitações
         </Typography>
         <RequestTableButton
           anchorEl={anchorEl}

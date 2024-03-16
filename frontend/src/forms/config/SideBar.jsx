@@ -33,7 +33,7 @@ export default function SideBar({ onClose }) {
     "Clientes",
     "Usuários",
     "Departamentos",
-    "Pedidos",
+    "Solicitações",
     "Orçamentos",
     "Serviços",
     "Estoque",

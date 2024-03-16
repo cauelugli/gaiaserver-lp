@@ -74,7 +74,7 @@ export default function Requests({ onClose }) {
       <DialogTitle
         sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
       >
-        Configurações de Pedidos
+        Configurações de Solicitações
       </DialogTitle>
       {configData.length !== 0 && (
         <>
@@ -89,13 +89,13 @@ export default function Requests({ onClose }) {
               <Grid item sx={{ my: 1.5 }}>
                 <Grid container direction="row">
                   <Typography sx={{ my: "auto" }}>
-                    Pedidos Precisam de Aprovação do Gerente
+                    Solicitações Precisam de Aprovação do Gerente
                   </Typography>
                   <Tooltip
                     title={
                       <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", o 'status' de um novo
-                        pedido de Job será "Aberto". Se estiver marcado "Não", o
+                        Se a opção marcada for "Sim", o 'status' de uma nova
+                        solicitação de Job será "Aberto". Se estiver marcado "Não", o
                         status será 'Aprovado'. A opção padrão é "Sim".
                       </Typography>
                     }
@@ -138,13 +138,13 @@ export default function Requests({ onClose }) {
               <Grid item sx={{ my: 1.5 }}>
                 <Grid container direction="row">
                   <Typography sx={{ my: "auto", mr: 1 }}>
-                    Pedidos Podem ser Deletados
+                    Solicitações Podem ser Deletadas
                   </Typography>
                   <Tooltip
                     title={
                       <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", os pedidos de Jobs e
-                        Vendas poderão ser deletados. A opção padrão é "Sim".
+                        Se a opção marcada for "Sim", as solicitações de Jobs e
+                        Vendas poderão ser deletadas. A opção padrão é "Sim".
                       </Typography>
                     }
                   >
