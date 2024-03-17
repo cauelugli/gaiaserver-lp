@@ -11,6 +11,7 @@ import {
   MenuItem,
   MenuList,
   Divider,
+  Grid,
 } from "@mui/material";
 
 import ApartmentIcon from "@mui/icons-material/Apartment";
@@ -30,21 +31,24 @@ export default function CustomerTableButton({
   return (
     <div>
       <Button
-        id="basic-button"
-        aria-controls={openAddButton ? "basic-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={openAddButton ? "true" : undefined}
         onClick={handleClickAddButton}
         size="small"
         sx={{
-          borderRadius: 3,
-          bottom: 3,
           "&:hover": { borderColor: "#eee" },
           color: configCustomization.mainColor || "#32aacd",
         }}
       >
-        <Typography variant="h6">+</Typography>
-        <Typography sx={{ fontSize: 16, mt: 0.5, ml: 0.5 }}>Novo</Typography>
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Typography variant="h6" sx={{ mb: 0.5, mr: 0.5 }}>
+            +
+          </Typography>
+          <Typography sx={{ fontSize: 16 }}>Novo</Typography>
+        </Grid>
       </Button>
       <Menu
         id="basic-menu"

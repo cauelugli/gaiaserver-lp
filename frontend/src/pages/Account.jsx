@@ -31,9 +31,7 @@ export default function Account({ user }) {
 
   return (
     <>
-      <Typography
-        sx={{ fontSize: 23, mt: 0.5, ml: 1, mr: 2, fontWeight: "bold" }}
-      >
+      <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }}>
         Perfil
       </Typography>
       <Grid

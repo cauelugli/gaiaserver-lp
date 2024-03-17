@@ -182,11 +182,10 @@ export default function Departments({ user, configTables }) {
         container
         direction="row"
         justifyContent="flex-start"
-        alignItems="flex-start"
+        alignItems="center"
+        sx={{ m: 2 }}
       >
-        <Typography
-          sx={{ fontSize: 23, mt: 0.5, ml: 1, mr: 2, fontWeight: "bold" }}
-        >
+        <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           Departamentos
         </Typography>
         <DepartmentTableButton

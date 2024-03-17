@@ -85,18 +85,18 @@ export default function Files({ user }) {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const services = await api.get("/services");
-      const departments = await api.get("/departments");
-      const stockItems = await api.get("/stockItems");
-      setServices(services.data);
-      setDepartments(departments.data);
-      setStockItems(stockItems.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const services = await api.get("/services");
+  //     const departments = await api.get("/departments");
+  //     const stockItems = await api.get("/stockItems");
+  //     setServices(services.data);
+  //     setDepartments(departments.data);
+  //     setStockItems(stockItems.data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
   if (isLoading) {
     return (
@@ -113,18 +113,9 @@ export default function Files({ user }) {
 
   return (
     <Box>
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-      >
-        <Typography
-          sx={{ fontSize: 23, mt: 0.5, ml: 1, mr: 2, fontWeight: "bold" }}
-        >
-          Arquivos
-        </Typography>
-      </Grid>
+      <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }}>
+        Arquivos
+      </Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}

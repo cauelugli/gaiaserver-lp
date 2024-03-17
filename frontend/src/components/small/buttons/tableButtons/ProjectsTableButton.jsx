@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import {
   Button,
   Collapse,
+  Grid,
   List,
   ListItemButton,
   ListItemIcon,
@@ -40,28 +41,24 @@ export default function ProjectsTableButton(props) {
   return (
     <div>
       <Button
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
         size="small"
-        aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         sx={{
-          borderRadius: 3,
           "&:hover": { borderColor: "#eee" },
           color: props.configCustomization.mainColor || "#32aacd",
         }}
       >
-        <Typography variant="h6">+</Typography>
-        <Typography
-          sx={{
-            fontSize: 16,
-            mt: 0.5,
-            ml: 0.5,
-            color: props.configCustomization.mainColor || "#32aacd",
-          }}
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
         >
-          Novo
-        </Typography>
+          <Typography variant="h6" sx={{ mb: 0.5, mr: 0.5 }}>
+            +
+          </Typography>
+          <Typography sx={{ fontSize: 16 }}>Novo</Typography>
+        </Grid>
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <List sx={{ width: 230 }}>

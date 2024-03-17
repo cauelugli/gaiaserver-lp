@@ -55,7 +55,8 @@ export default function Projects({ user }) {
   const [value, setValue] = React.useState(0);
   const [configData, setConfigData] = React.useState([]);
   const [configCustomization, setConfigCustomization] = React.useState([]);
-  const [configNotificationsBooleans, setConfigNotificationsBooleans] = React.useState([]);
+  const [configNotificationsBooleans, setConfigNotificationsBooleans] =
+    React.useState([]);
   const [projects, setProjects] = React.useState([]);
   const [projectsTemplates, setProjectsTemplates] = React.useState([]);
   const [customers, setCustomers] = React.useState([]);
@@ -145,11 +146,10 @@ export default function Projects({ user }) {
         container
         direction="row"
         justifyContent="flex-start"
-        alignItems="flex-start"
+        alignItems="center"
+        sx={{ m: 2 }}
       >
-        <Typography
-          sx={{ fontSize: 23, mt: 0.5, ml: 1, mr: 2, fontWeight: "bold" }}
-        >
+        <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           Projetos
         </Typography>
         <ProjectsTableButton

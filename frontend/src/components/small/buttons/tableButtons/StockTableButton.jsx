@@ -18,6 +18,7 @@ import SellIcon from "@mui/icons-material/Sell";
 import SpokeIcon from "@mui/icons-material/Spoke";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import { Grid } from "@mui/material";
 
 export default function BasicMenu(props) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -43,27 +44,24 @@ export default function BasicMenu(props) {
   return (
     <div>
       <Button
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
         size="small"
-        aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         sx={{
           color: props.configCustomization.mainColor || "#32aacd",
           "&:hover": { borderColor: "#eee" },
         }}
       >
-        <Typography variant="h6">+</Typography>
-        <Typography
-          sx={{
-            fontSize: 16,
-            mt: 0.5,
-            ml: 0.5,
-            color: props.configCustomization.mainColor || "#32aacd",
-          }}
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
         >
-          Novo
-        </Typography>
+          <Typography variant="h6" sx={{ mb: 0.5, mr: 0.5 }}>
+            +
+          </Typography>
+          <Typography sx={{ fontSize: 16 }}>Novo</Typography>
+        </Grid>
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <List sx={{ width: 220 }}>

@@ -113,18 +113,9 @@ export default function Quotes({ user, configData }) {
 
   return (
     <Box>
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-      >
-        <Typography
-          sx={{ fontSize: 23, mt: 0.5, ml: 1, mr: 2, fontWeight: "bold" }}
-        >
-          Orçamentos
-        </Typography>
-      </Grid>
+      <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }}>
+        Orçamentos
+      </Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}

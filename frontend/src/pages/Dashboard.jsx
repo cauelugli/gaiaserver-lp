@@ -32,9 +32,11 @@ const Dashboard = ({
   return (
     <Grid>
       {user.username === "admin" ? (
-        <Typography>Bem vindo, {user.name}</Typography>
+        <Typography sx={{ fontSize: 23, m: 2, fontWeight: "bold" }}>
+          Bem vindo, {user.name}
+        </Typography>
       ) : (
-        <Typography>
+        <Typography sx={{ fontSize: 23, m: 2, fontWeight: "bold" }}>
           Bem vind{user.gender === "m" ? "o" : "a"}, {user.name}
         </Typography>
       )}

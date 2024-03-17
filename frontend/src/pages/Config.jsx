@@ -237,9 +237,7 @@ export default function Config({ user }) {
 
   return (
     <>
-      <Typography
-        sx={{ fontSize: 23, mt: 0.5, ml: 1, mr: 2, mb: 2, fontWeight: "bold" }}
-      >
+      <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }}>
         Configurações
       </Typography>
       {configData ? (
