@@ -109,7 +109,7 @@ export default function GroupTable({
             <TableBody>
               <TableRow
                 sx={{
-                  backgroundColor: "#ccc",
+                   backgroundColor: "#eee",
                 }}
               >
                 {tableHeaderRow.map((headCell) => (

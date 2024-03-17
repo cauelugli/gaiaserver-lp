@@ -133,7 +133,7 @@ export default function AddStockProductForm({
             <TableBody>
               <TableRow
                 sx={{
-                  backgroundColor: "#ccc",
+                  backgroundColor: "#eee",
                 }}
               >
                 <TableCell>

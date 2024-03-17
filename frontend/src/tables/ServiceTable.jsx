@@ -135,7 +135,7 @@ export default function ServiceTable({
             <TableBody>
               <TableRow
                 sx={{
-                  backgroundColor: "#ccc",
+                   backgroundColor: "#eee",
                 }}
               >
                 {tableHeaderRow.map((headCell) => (

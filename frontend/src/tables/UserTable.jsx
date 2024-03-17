@@ -139,7 +139,7 @@ export default function UserTable({
           <Table>
             <TableRow
               sx={{
-                backgroundColor: "#ccc",
+                 backgroundColor: "#eee",
               }}
             >
               <TableCell padding="checkbox"></TableCell>

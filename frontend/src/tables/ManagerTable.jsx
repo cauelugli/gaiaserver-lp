@@ -133,7 +133,7 @@ export default function ManagerTable({
           <Table>
             <TableRow
               sx={{
-                backgroundColor: "#ccc",
+                 backgroundColor: "#eee",
               }}
             >
               <TableCell padding="checkbox"></TableCell>

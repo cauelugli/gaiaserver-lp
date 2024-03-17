@@ -569,7 +569,7 @@ const EditJobForm = ({
               <TableBody>
                 <TableRow
                   sx={{
-                    backgroundColor: "#ccc",
+                    backgroundColor: "#eee",
                   }}
                 >
                   <TableCell>

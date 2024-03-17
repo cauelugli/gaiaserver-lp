@@ -180,7 +180,7 @@ export default function FinanceOutcomeTable({
             <TableBody>
               <TableRow
                 sx={{
-                  backgroundColor: "#ccc",
+                   backgroundColor: "#eee",
                 }}
               >
                 {tableHeaderRow.map((headCell) => (

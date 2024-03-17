@@ -177,7 +177,7 @@ export default function FinanceIncomeTable({
             <TableBody>
               <TableRow
                 sx={{
-                  backgroundColor: "#ccc",
+                   backgroundColor: "#eee",
                 }}
               >
                 {tableHeaderRow.map((headCell) => (

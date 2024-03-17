@@ -237,7 +237,7 @@ export default function ProjectsTable({
             <TableBody>
               <TableRow
                 sx={{
-                  backgroundColor: "#ccc",
+                   backgroundColor: "#eee",
                 }}
               >
                 {tableHeaderRow.map((headCell) => (

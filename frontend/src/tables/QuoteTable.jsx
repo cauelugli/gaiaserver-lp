@@ -216,7 +216,7 @@ export default function QuoteTable({
           <TableBody>
             <TableRow
               sx={{
-                backgroundColor: "#ccc",
+                 backgroundColor: "#eee",
               }}
             >
               {tableHeaderRow.map((headCell) => (

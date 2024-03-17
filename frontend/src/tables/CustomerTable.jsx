@@ -191,7 +191,7 @@ export default function CustomerTable({
           <TableBody>
             <TableRow
               sx={{
-                backgroundColor: "#ccc",
+                backgroundColor: "#eee",
               }}
             >
               {tableHeaderRow.map((headCell) => (

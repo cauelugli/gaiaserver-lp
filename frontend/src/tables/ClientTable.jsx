@@ -170,7 +170,7 @@ export default function ClientTable({
           <TableBody>
             <TableRow
               sx={{
-                backgroundColor: "#ccc",
+                backgroundColor: "#eee",
               }}
             >
               <TableCell padding="checkbox"></TableCell>
