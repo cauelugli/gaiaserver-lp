@@ -24,6 +24,7 @@ import {
   TablePagination,
   Checkbox,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -256,7 +257,7 @@ export default function JobTable({
           <TableBody>
             <TableRow
               sx={{
-                 backgroundColor: "#eee",
+                backgroundColor: "#eee",
               }}
             >
               {tableHeaderRow.map((headCell) => (
@@ -357,18 +358,13 @@ export default function JobTable({
                       align="center"
                     >
                       <Grid container direction="row" justifyContent="center">
-                        <Grid item>
+                        <Tooltip title={job.worker.name}>
                           <Avatar
                             alt="Imagem do Colaborador"
                             src={`http://localhost:3000/static/${job.worker.image}`}
                             sx={{ width: 32, height: 32, mr: 1 }}
                           />
-                        </Grid>
-                        <Grid item>
-                          <Typography sx={{ mt: 0.75, fontSize: 13 }}>
-                            {job.worker.name}
-                          </Typography>
-                        </Grid>
+                        </Tooltip>
                       </Grid>
                     </TableCell>
                     <TableCell

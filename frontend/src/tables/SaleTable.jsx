@@ -23,6 +23,7 @@ import {
   TablePagination,
   Checkbox,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -168,7 +169,7 @@ export default function SaleTable({
           <TableBody>
             <TableRow
               sx={{
-                 backgroundColor: "#eee",
+                backgroundColor: "#eee",
               }}
             >
               {tableHeaderRow.map((headCell) => (
@@ -250,23 +251,14 @@ export default function SaleTable({
                             alignItems="center"
                             sx={{ mr: 1 }}
                           >
-                            <Grid item>
-                              <Avatar
-                                alt="Imagem do Produto"
-                                src={`http://localhost:3000/static/${item.image}`}
-                                sx={{ width: 32, height: 32, mx: "auto" }}
-                              />
-                            </Grid>
-                            <Grid item>
-                              <Typography sx={{ fontSize: 12 }}>
-                                x{item.quantity}
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <Typography sx={{ fontSize: 12, color: "#777" }}>
-                                {item.name}
-                              </Typography>
-                            </Grid>
+                            <Avatar
+                              alt="Imagem do Produto"
+                              src={`http://localhost:3000/static/${item.image}`}
+                              sx={{ width: 32, height: 32, mx: "auto" }}
+                            />
+                            <Typography sx={{ fontSize: 10, color: "#777" }}>
+                              x{item.quantity} {item.name}
+                            </Typography>
                           </Grid>
                         ))}
                         {sale.items.length > 3 && (
@@ -287,18 +279,13 @@ export default function SaleTable({
                       cursor="pointer"
                     >
                       <Grid container direction="row" justifyContent="center">
-                        <Grid item>
+                        <Tooltip title={sale.seller.name}>
                           <Avatar
                             alt="Imagem do Colaborador"
                             src={`http://localhost:3000/static/${sale.seller.image}`}
-                            sx={{ width: 32, height: 32, mr: 1.5 }}
+                            sx={{ width: 32, height: 32, mr: 1 }}
                           />
-                        </Grid>
-                        <Grid item>
-                          <Typography sx={{ mt: 1, fontSize: 13 }}>
-                            {sale.seller.name}
-                          </Typography>
-                        </Grid>
+                        </Tooltip>
                       </Grid>
                     </TableCell>
                     <TableCell
@@ -483,7 +470,7 @@ export default function SaleTable({
                                     <Typography
                                       sx={{ fontSize: "14px", color: "#777" }}
                                     >
-                                      Valor Total (serviço + materiais)
+                                      Valor Total
                                     </Typography>
                                   </TableCell>
                                 </TableRow>
@@ -494,42 +481,42 @@ export default function SaleTable({
                                     <Typography>{sale.quoteNumber}</Typography>
                                   </TableCell>
                                   <TableCell align="left">
-                                    <Typography>
-                                      {sale.items.length > 0
-                                        ? sale.items.map((item) => (
-                                            <Grid
-                                              key={item.id}
-                                              container
-                                              direction="row"
-                                              justifyContent="flex-start"
-                                              alignItems="flex-start"
-                                              sx={{ mt: 0.5 }}
+                                    {sale.items.length > 0
+                                      ? sale.items.map((item) => (
+                                          <Grid
+                                            key={item.id}
+                                            container
+                                            direction="row"
+                                            justifyContent="flex-start"
+                                            alignItems="flex-start"
+                                            sx={{ mt: 0.5 }}
+                                          >
+                                            <Typography
+                                              sx={{
+                                                fontSize: 12,
+                                                color: "#777",
+                                                my: "auto",
+                                              }}
                                             >
-                                              <Typography
-                                                sx={{
-                                                  fontSize: 12,
-                                                  color: "#777",
-                                                  my: "auto",
-                                                }}
-                                              >
-                                                x{item.quantity} {item.name}
-                                              </Typography>
-                                              <Avatar
-                                                alt="Imagem do Produto"
-                                                src={`http://localhost:3000/static/${item.image}`}
-                                                sx={{
-                                                  width: 26,
-                                                  height: 26,
-                                                  ml: 1,
-                                                }}
-                                              />
-                                            </Grid>
-                                          ))
-                                        : "Não há uso de Materiais"}
-                                    </Typography>
+                                              x{item.quantity} {item.name}
+                                            </Typography>
+                                            <Avatar
+                                              alt="Imagem do Produto"
+                                              src={`http://localhost:3000/static/${item.image}`}
+                                              sx={{
+                                                width: 26,
+                                                height: 26,
+                                                ml: 1,
+                                              }}
+                                            />
+                                          </Grid>
+                                        ))
+                                      : "Não há uso de Materiais"}
                                   </TableCell>
                                   <TableCell align="left">
-                                    <Typography>R${sale.price}</Typography>
+                                    <Typography>
+                                      R${sale.price.toFixed(2)}
+                                    </Typography>
                                   </TableCell>
                                 </TableRow>
                               </TableBody>
