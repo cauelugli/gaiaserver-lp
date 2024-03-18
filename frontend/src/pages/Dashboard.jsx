@@ -22,7 +22,9 @@ const Dashboard = ({
   configCustomization,
 }) => {
   const [worker, setWorker] = React.useState("");
-  const [expanded, setExpanded] = React.useState(true);
+  const [expanded, setExpanded] = React.useState(
+    user.username === "admin" ? false : true
+  );
   const [showAgenda, setShowAgenda] = React.useState(true);
 
   React.useEffect(() => {
@@ -57,7 +59,7 @@ const Dashboard = ({
         </Typography>
       )}
       {showAgenda && (
-        <Accordion sx={{ mx: "20%" }} expanded={expanded}>
+        <Accordion sx={{ m: 2 }} expanded={expanded}>
           {user.username === "admin" ? (
             <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
               <Grid
