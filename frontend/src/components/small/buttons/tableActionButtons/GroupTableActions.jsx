@@ -14,9 +14,10 @@ import {
   Typography,
 } from "@mui/material";
 
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import GroupIcon from "@mui/icons-material/Group";
 import MenuIcon from "@mui/icons-material/Menu";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 
@@ -56,7 +57,7 @@ export default function GroupTableActions(props) {
         <List sx={{ width: 210 }}>
           <ListItemButton
             onClick={() => {
-              props.setOpenEdit(true), setAnchorEl(null);
+              props.setRename(true), setAnchorEl(null);
             }}
           >
             <ListItemIcon>
@@ -64,7 +65,23 @@ export default function GroupTableActions(props) {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>Editar Grupo</Typography>
+                <Typography sx={{ fontSize: 14 }}>Renomear Grupo</Typography>
+              }
+              sx={{ ml: -3 }}
+            />
+          </ListItemButton>
+
+          <ListItemButton
+            onClick={() => {
+              props.setOpenEditMembers(true), setAnchorEl(null);
+            }}
+          >
+            <ListItemIcon>
+              <GroupIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: 14 }}>Editar Membros</Typography>
               }
               sx={{ ml: -3 }}
             />

@@ -36,6 +36,9 @@ userSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  groups: {
+    type: Array,
+  },
   position: {
     type: Object,
     default: {},

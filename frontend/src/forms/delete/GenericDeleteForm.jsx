@@ -30,9 +30,14 @@ const GenericDeleteForm = ({
         });
       }
       setOpenDialog(false);
-      setRefreshData(!refreshData)
+      setRefreshData(!refreshData);
     } catch (err) {
-      alert("Ops, houve um erro na deleção...");
+      toast.error("Houve um erro na deleção...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
       console.log(err);
     }
   };

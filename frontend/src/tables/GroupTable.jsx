@@ -16,10 +16,10 @@ import {
   Typography,
 } from "@mui/material";
 
-import EditGroupForm from "../forms/edit/EditGroupForm";
-
 import GroupMembers from "../components/small/GroupMembers";
 import GroupTableActions from "../components/small/buttons/tableActionButtons/GroupTableActions";
+import EditGroupRenameForm from "../forms/edit/EditGroupRenameForm";
+import EditGroupMembersForm from "../forms/edit/EditGroupMembersForm";
 
 export default function GroupTable({
   configData,
@@ -34,7 +34,8 @@ export default function GroupTable({
   setRefreshData,
 }) {
   const [selectedGroup, setSelectedGroup] = React.useState("");
-  const [openEdit, setOpenEdit] = React.useState(false);
+  const [openRename, setRename] = React.useState(false);
+  const [openEditMembers, setOpenEditMembers] = React.useState(false);
 
   const tableHeaderRow = [
     {
@@ -109,7 +110,7 @@ export default function GroupTable({
             <TableBody>
               <TableRow
                 sx={{
-                   backgroundColor: "#eee",
+                  backgroundColor: "#eee",
                 }}
               >
                 {tableHeaderRow.map((headCell) => (
@@ -170,7 +171,8 @@ export default function GroupTable({
                       >
                         <GroupTableActions
                           configData={configData}
-                          setOpenEdit={setOpenEdit}
+                          setRename={setRename}
+                          setOpenEditMembers={setOpenEditMembers}
                           selectedItem={selectedGroup}
                           refreshData={refreshData}
                           setRefreshData={setRefreshData}
@@ -195,19 +197,35 @@ export default function GroupTable({
             }}
           />
         </TableContainer>
-        {openEdit && (
+        {openRename && (
           <Dialog
             fullWidth
             maxWidth="xs"
-            open={openEdit}
-            onClose={() => setOpenEdit(!openEdit)}
+            open={openRename}
+            onClose={() => setRename(!openRename)}
           >
-            {/* here */}
-            <EditGroupForm
-              openEdit={openEdit}
+            <EditGroupRenameForm
+              setRename={setRename}
+              selectedGroup={selectedGroup}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              toast={toast}
+            />
+          </Dialog>
+        )}
+
+        {openEditMembers && (
+          <Dialog
+            fullWidth
+            maxWidth="xs"
+            open={openRename}
+            onClose={() => setOpenEditMembers(!openEditMembers)}
+          >
+            <EditGroupMembersForm
+              openEdit={openRename}
               users={allUsers}
               selectedGroup={selectedGroup}
-              setOpenEdit={setOpenEdit}
+              setOpenEditMembers={setOpenEditMembers}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}

@@ -54,6 +54,9 @@ managerSchema = new mongoose.Schema({
   birthdate: {
     type: Date,
   },
+  groups: {
+    type: Array,
+  },
 });
 
 const Manager = mongoose.model("Manager", managerSchema);

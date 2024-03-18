@@ -13,28 +13,25 @@ import {
   Typography,
 } from "@mui/material";
 
-import DialogHeader from "../../components/small/DialogHeader";
-import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 import Members from "../../components/small/Members";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AddGroupForm({
-  openAdd,
-  user,
+export default function EditGroupMembersForm({
+  selectedGroup,
   users,
-  setOpenAdd,
+  openEdit,
+  setOpenEdit,
   refreshData,
   setRefreshData,
-  configCustomization,
   toast,
 }) {
-  const [name, setName] = React.useState("");
-  const [members, setMembers] = React.useState([]);
+  const [members, setMembers] = React.useState(selectedGroup.members);
+  const previousData = selectedGroup;
 
-  const handleAdd = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
     const membersToSend = members.map(({ _id, name, position }) => ({
       _id,
@@ -43,20 +40,20 @@ export default function AddGroupForm({
     }));
 
     try {
-      const res = await api.post("/groups", {
-        name,
+      const res = await api.put("/groups/editMembers", {
+        groupId: selectedGroup._id,
+        previousData,
         members: membersToSend,
-        creator: user.name,
       });
       if (res.data) {
-        toast.success("Grupo Adicionado!", {
+        toast.success("Grupo Editado!", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
         });
       }
-      setOpenAdd(!openAdd);
+      setOpenEdit(!openEdit);
       setRefreshData(!refreshData);
     } catch (err) {
       if (err.response && err.response.status === 422) {
@@ -67,7 +64,6 @@ export default function AddGroupForm({
           autoClose: 1200,
         });
       } else {
-        console.log("err", err);
         toast.error("Houve algum erro...", {
           closeOnClick: true,
           pauseOnHover: false,
@@ -79,26 +75,16 @@ export default function AddGroupForm({
   };
 
   return (
-    <form onSubmit={handleAdd}>
-      <DialogHeader title="Grupo" femaleGender={false} extraSmall />
+    <form onSubmit={handleEdit}>
+      <DialogTitle>Editando Membros do Grupo - {selectedGroup.name}</DialogTitle>
       <DialogContent>
         <Grid
           container
           sx={{ mt: 2 }}
-          direction="column"
+          direction="row"
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item sx={{ mb: 2 }}>
-            <Typography>Nome do Grupo</Typography>
-            <TextField
-              size="small"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              sx={{ width: 300 }}
-            />
-          </Grid>
           <Grid item sx={{ mb: 2 }}>
             <Typography>Membros</Typography>
             <Members
@@ -110,7 +96,6 @@ export default function AddGroupForm({
           </Grid>
         </Grid>
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization} extraSmall />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK
@@ -118,7 +103,7 @@ export default function AddGroupForm({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenEdit(!openEdit)}
         >
           X
         </Button>

@@ -13,35 +13,27 @@ import {
   Typography,
 } from "@mui/material";
 
-import Members from "../../components/small/Members";
-
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function EditGroupForm({
+export default function EditGroupRenameForm({
   selectedGroup,
-  users,
-  openEdit,
-  setOpenEdit,
+  setRename,
   refreshData,
   setRefreshData,
   toast,
 }) {
   const [name, setName] = React.useState(selectedGroup.name);
-  const [members, setMembers] = React.useState(selectedGroup.members);
-  const previousData = selectedGroup;
+  const prevName = selectedGroup.name;
 
   const handleEdit = async (e) => {
     e.preventDefault();
-    const membersToSend = members.map(({ _id, name }) => ({ _id, name }));
-
     try {
-      const res = await api.put("/groups", {
+      const res = await api.put("/groups/rename", {
         groupId: selectedGroup._id,
-        previousData,
         name,
-        members: membersToSend,
+        prevName
       });
       if (res.data) {
         toast.success("Grupo Editado!", {
@@ -51,9 +43,10 @@ export default function EditGroupForm({
           autoClose: 1200,
         });
       }
-      setOpenEdit(!openEdit);
+      setRename(false);
       setRefreshData(!refreshData);
     } catch (err) {
+      console.log("err", err);
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {
           closeOnClick: true,
@@ -74,7 +67,7 @@ export default function EditGroupForm({
 
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle>Editando Grupo - {selectedGroup.name}</DialogTitle>
+      <DialogTitle>Renomeando Grupo - {selectedGroup.name}</DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -84,22 +77,13 @@ export default function EditGroupForm({
           alignItems="center"
         >
           <Grid item sx={{ mb: 2 }}>
-            <Typography>Nome do Grupo</Typography>
+            <Typography>Novo Nome do Grupo</Typography>
             <TextField
               size="small"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
               sx={{ width: 300 }}
-            />
-          </Grid>
-          <Grid item sx={{ mb: 2 }}>
-            <Typography>Membros</Typography>
-            <Members
-              users={users}
-              value={members}
-              onChange={(newValue) => setMembers(newValue)}
-              option="group"
             />
           </Grid>
         </Grid>
@@ -111,7 +95,7 @@ export default function EditGroupForm({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenEdit(!openEdit)}
+          onClick={() => setRename(false)}
         >
           X
         </Button>
