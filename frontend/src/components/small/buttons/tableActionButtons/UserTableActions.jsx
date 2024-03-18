@@ -18,6 +18,7 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MenuIcon from "@mui/icons-material/Menu";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 import GenericActivateForm from "../../../../forms/misc/GenericActivateForm";
@@ -62,6 +63,23 @@ export default function UserTableActions(props) {
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <List sx={{ width: 210 }}>
+          <ListItemButton
+            onClick={() => {
+              props.setOpenDetails(true), setAnchorEl(null);
+            }}
+          >
+            <ListItemIcon>
+              <VisibilityIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: 14 }}>
+                  Ver Detalhes
+                </Typography>
+              }
+              sx={{ ml: -3 }}
+            />
+          </ListItemButton>
           <ListItemButton
             onClick={() => {
               props.setOpenEdit(true), setAnchorEl(null);

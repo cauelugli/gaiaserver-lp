@@ -21,6 +21,7 @@ import {
 
 import EditManagerForm from "../forms/edit/EditManagerForm";
 import ManagerTableActions from "../components/small/buttons/tableActionButtons/ManagerTableActions";
+import ViewUserDetails from "../forms/misc/ViewUserDetails";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -35,6 +36,7 @@ export default function ManagerTable({
 }) {
   const [selectedManager, setSelectedManager] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
+  const [openDetails, setOpenDetails] = React.useState(false);
 
   const [managers, setManagers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
@@ -133,7 +135,7 @@ export default function ManagerTable({
           <Table>
             <TableRow
               sx={{
-                 backgroundColor: "#eee",
+                backgroundColor: "#eee",
               }}
             >
               <TableCell padding="checkbox"></TableCell>
@@ -221,6 +223,7 @@ export default function ManagerTable({
                     <ManagerTableActions
                       configData={configData}
                       setOpenEdit={setOpenEdit}
+                      setOpenDetails={setOpenDetails}
                       selectedItem={selectedManager}
                       refreshData={refreshData}
                       setRefreshData={setRefreshData}
@@ -259,6 +262,20 @@ export default function ManagerTable({
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
+            />
+          </Dialog>
+        )}
+        {openDetails && (
+          <Dialog
+            fullWidth
+            maxWidth="md"
+            open={openDetails}
+            onClose={() => setOpenDetails(!openDetails)}
+          >
+            <ViewUserDetails
+              selectedUser={selectedManager}
+              setOpenDetails={setOpenDetails}
+              manager
             />
           </Dialog>
         )}

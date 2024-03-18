@@ -20,6 +20,7 @@ import {
 
 import EditUserForm from "../forms/edit/EditUserForm";
 import UserTableActions from "../components/small/buttons/tableActionButtons/UserTableActions";
+import ViewUserDetails from "../forms/misc/ViewUserDetails";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -35,6 +36,7 @@ export default function UserTable({
 }) {
   const [selectedUser, setSelectedUser] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
+  const [openDetails, setOpenDetails] = React.useState(false);
   const [users, setUsers] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
   const [positions, setPositions] = React.useState([]);
@@ -262,6 +264,7 @@ export default function UserTable({
                         <UserTableActions
                           configData={configData}
                           setOpenEdit={setOpenEdit}
+                          setOpenDetails={setOpenDetails}
                           selectedItem={row}
                           refreshData={refreshData}
                           setRefreshData={setRefreshData}
@@ -303,6 +306,19 @@ export default function UserTable({
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
+            />
+          </Dialog>
+        )}
+        {openDetails && (
+          <Dialog
+            fullWidth
+            maxWidth="md"
+            open={openDetails}
+            onClose={() => setOpenDetails(!openDetails)}
+          >
+            <ViewUserDetails
+              selectedUser={selectedUser}
+              setOpenDetails={setOpenDetails}
             />
           </Dialog>
         )}
