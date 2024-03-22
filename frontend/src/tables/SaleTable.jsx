@@ -26,15 +26,14 @@ import {
   Tooltip,
 } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
 // import EditRequestForm from "../forms/edit/EditRequestForm";
+
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import SaleTableActions from "../components/small/buttons/tableActionButtons/SaleTableActions";
 
 export default function SaleTable({
+  user,
   config,
   searchValue,
   searchStatus,
@@ -152,6 +151,10 @@ export default function SaleTable({
   const handleChangeShowCompletedSales = () => {
     setShowCompletedSales(!showCompletedSales);
   };
+  const [showArchivedSales, setShowArchivedSales] = React.useState(false);
+  const handleChangeShowArchivedSales = () => {
+    setShowArchivedSales(!showArchivedSales);
+  };
 
   return (
     <Box sx={{ minWidth: "1250px" }}>
@@ -161,7 +164,14 @@ export default function SaleTable({
           onChange={handleChangeShowCompletedSales}
         />
         <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
-          Mostrar Vendas Concluídas
+          Mostrar Concluídas
+        </Typography>
+        <Checkbox
+          checked={showArchivedSales}
+          onChange={handleChangeShowArchivedSales}
+        />
+        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
+          Mostrar Arquivadas
         </Typography>
       </Box>
       <TableContainer component={Paper}>
@@ -215,7 +225,8 @@ export default function SaleTable({
 
                 return (
                   shouldShowSale &&
-                  (showCompletedSales || sale.status !== "Concluido")
+                  (showCompletedSales || sale.status !== "Concluido") &&
+                  (showArchivedSales || sale.status !== "Arquivado")
                 );
               })
               .map((sale) => (
@@ -319,7 +330,7 @@ export default function SaleTable({
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}
                         config={config}
-                        // user={user}
+                        user={user}
                         sale={sale}
                         handleOpenEdit={handleOpenEdit}
                         handleConfirmDelete={handleConfirmDelete}
@@ -607,21 +618,63 @@ export default function SaleTable({
                               </TableBody>
                             </Table>
                           </Collapse>
-                          <Box sx={{ mt: 3, ml: "90%" }}>
-                            <ModeEditIcon
-                              cursor="pointer"
-                              onClick={() => handleOpenEdit(sale)}
-                              sx={{ color: "grey", mr: 2 }}
-                            />
-                            {config.canBeDeleted && (
-                              <DeleteIcon
-                                cursor="pointer"
-                                onClick={() => handleConfirmDelete(sale)}
-                                sx={{ color: "#ff4444" }}
-                              />
-                            )}
-                          </Box>
                         </Box>
+                        {sale.status === "Concluido" && (
+                          <Box sx={{ my: 4, px: 6, mb: 6 }}>
+                            <Typography
+                              variant="h6"
+                              sx={{ fontSize: 18, fontWeight: "bold" }}
+                            >
+                              Conclusão
+                            </Typography>
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Data
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Concluido por
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Conclusão
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {sale.resolvedAt}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {sale.resolvedBy}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {sale.commentary}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Box>
+                        )}
                       </Collapse>
                     </TableCell>
                   </TableRow>

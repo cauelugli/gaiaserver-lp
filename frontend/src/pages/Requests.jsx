@@ -236,6 +236,7 @@ export default function Requests({ user, configTables }) {
               />
 
               <SaleTable
+                user={user}
                 config={config}
                 searchValue={searchValue}
                 searchOption={searchOption}

@@ -76,6 +76,15 @@ saleSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  resolvedBy: {
+    type: String,
+  },
+  resolvedAt: {
+    type: String,
+  },
+  commentary: {
+    type: String,
+  },
 });
 
 saleSchema.plugin(autoIncrement.plugin, {

@@ -434,7 +434,7 @@ export default function FinanceOutcomeTable({
                     </TableCell>
                     <TableCell align="center">
                       <Typography sx={{ fontSize: 13 }}>
-                        R${outcome.price}
+                        R${outcome.price.toFixed(2)}
                       </Typography>
                     </TableCell>
                     <TableCell align="center">

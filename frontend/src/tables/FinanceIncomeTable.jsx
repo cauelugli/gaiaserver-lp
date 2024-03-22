@@ -171,7 +171,7 @@ export default function FinanceIncomeTable({
           <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
             Mostrar Pagos
           </Typography>
-        </Box>{" "}
+        </Box>
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
@@ -441,7 +441,7 @@ export default function FinanceIncomeTable({
                       </TableCell>
                       <TableCell align="center">
                         <Typography sx={{ fontSize: 13 }}>
-                          R${income.price}
+                          R${income.price.toFixed(2)}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">

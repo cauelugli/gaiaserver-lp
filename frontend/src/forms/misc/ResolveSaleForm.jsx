@@ -14,7 +14,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const ResolveJobForm = ({
+const ResolveSaleForm = ({
   user,
   selectedItem,
   refreshData,
@@ -23,14 +23,14 @@ const ResolveJobForm = ({
   toast,
   successMessage,
 }) => {
-  const [resolution, setResolution] = React.useState("");
+  const [commentary, setCommentary] = React.useState("");
 
-  const handleResolveJob = async () => {
+  const handleResolveSale = async () => {
     try {
-      const res = await api.put(`/jobs/resolve`, {
-        jobId: selectedItem._id,
+      const res = await api.put(`/sales/resolve`, {
+        saleId: selectedItem._id,
         user: user.name,
-        resolution,
+        commentary,
       });
       if (res.data) {
         toast.success(successMessage, {
@@ -55,15 +55,14 @@ const ResolveJobForm = ({
 
   return (
     <>
-      <DialogTitle>Resolver Job: {selectedItem.title}</DialogTitle>
+      <DialogTitle>Concluindo Venda</DialogTitle>
       <DialogContent>
         <TextField
           variant="outlined"
           size="small"
-          placeholder="Resolução"
-          value={resolution}
-          required
-          onChange={(e) => setResolution(e.target.value)}
+          placeholder="Comentários (opcional)"
+          value={commentary}
+          onChange={(e) => setCommentary(e.target.value)}
           fullWidth
           sx={{ mt: 1 }}
         />
@@ -76,7 +75,7 @@ const ResolveJobForm = ({
           <Button
             variant="contained"
             color="success"
-            onClick={handleResolveJob}
+            onClick={handleResolveSale}
             sx={{ mr: 2 }}
           >
             OK
@@ -94,4 +93,4 @@ const ResolveJobForm = ({
   );
 };
 
-export default ResolveJobForm;
+export default ResolveSaleForm;

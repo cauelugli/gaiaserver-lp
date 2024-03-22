@@ -17,15 +17,18 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 import GenericActivateForm from "../../../../forms/misc/GenericActivateForm";
+import ResolveSaleForm from "../../../../forms/misc/ResolveSaleForm";
 
 export default function SaleTableActions(props) {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openActivate, setOpenActivate] = React.useState(false);
+  const [openResolve, setOpenResolve] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState(props.selectedItem);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -49,13 +52,15 @@ export default function SaleTableActions(props) {
     setAnchorEl(null);
   };
 
+  const handleConfirmResolve = () => {
+    setOpenResolve(true);
+    setAnchorEl(null);
+  };
+
   return (
     <div>
       <Button
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
         size="small"
-        aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         sx={{ "&:hover": { borderColor: "#eee" } }}
       >
@@ -63,7 +68,24 @@ export default function SaleTableActions(props) {
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <List sx={{ width: 210 }}>
+          {props.sale.status === "Aprovado" ||
+            (props.sale.status === "Aberto" && (
+              <ListItemButton onClick={(item) => handleConfirmResolve(item)}>
+                <ListItemIcon>
+                  <DoneOutlineIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <Typography sx={{ fontSize: 14 }}>
+                      Concluir Venda
+                    </Typography>
+                  }
+                  sx={{ ml: -3 }}
+                />
+              </ListItemButton>
+            ))}
           <ListItemButton
+            disabled={props.sale.status === "Concluido"}
             onClick={(item) => {
               props.handleOpenEdit(item), setAnchorEl(null);
             }}
@@ -80,6 +102,7 @@ export default function SaleTableActions(props) {
           </ListItemButton>
 
           <ListItemButton
+            disabled={props.sale.status === "Concluido"}
             onClick={(item) => props.handleOpenEdit(item)}
           >
             <ListItemIcon>
@@ -95,7 +118,10 @@ export default function SaleTableActions(props) {
             />
           </ListItemButton>
 
-          <ListItemButton onClick={(item) => handleConfirmActivate(item)}>
+          <ListItemButton
+            disabled={props.sale.status === "Concluido"}
+            onClick={(item) => handleConfirmActivate(item)}
+          >
             <ListItemIcon>
               <ArchiveIcon />
             </ListItemIcon>
@@ -108,6 +134,7 @@ export default function SaleTableActions(props) {
           </ListItemButton>
 
           <ListItemButton
+            disabled={props.sale.status === "Concluido"}
             onClick={(item) => handleConfirmDelete(item)}
             sx={{ color: "red" }}
           >
@@ -155,6 +182,25 @@ export default function SaleTableActions(props) {
             successMessage={`Venda ${
               props.selectedItem.quoteNumber && props.selectedItem.quoteNumber
             } Arquivada com Sucesso`}
+          />
+        </Dialog>
+      )}
+      {openResolve && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openResolve}
+          onClose={() => setOpenResolve(!openResolve)}
+        >
+          <ResolveSaleForm
+            user={props.user}
+            selectedItem={props.selectedItem}
+            refreshData={props.refreshData}
+            setRefreshData={props.setRefreshData}
+            openDialog={openResolve}
+            setOpenDialog={setOpenResolve}
+            toast={toast}
+            successMessage="Venda Concluida"
           />
         </Dialog>
       )}

@@ -5,6 +5,7 @@ const Customer = require("../models/Customer");
 const Client = require("../models/Client");
 const Quote = require("../models/Quote");
 const Product = require("../models/Product");
+const FinanceIncome = require("../models/FinanceIncome");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
@@ -154,6 +155,49 @@ router.post("/", async (req, res) => {
   }
 });
 
+// RESOLVE SALE
+router.put("/resolve", async (req, res) => {
+  try {
+    const saleId = req.body.saleId;
+    const user = req.body.user;
+    const commentary = req.body.commentary;
+
+    const updatedSale = await Sale.findByIdAndUpdate(
+      saleId,
+      {
+        status: "Concluido",
+        commentary: commentary,
+        resolvedBy: user,
+        resolvedAt: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
+      },
+      { new: true }
+    );
+
+    const newIncome = new FinanceIncome({
+      quote: updatedSale.quoteNumber,
+      customer: updatedSale.customer.name,
+      department: updatedSale.department.name,
+      user: updatedSale.seller.name,
+      type: "sale",
+      commissioned: updatedSale.commissioned,
+      commission: updatedSale.commission,
+      items: updatedSale.materials,
+      scheduledTo: updatedSale.scheduledTo,
+      resolvedAt: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
+      paidAt: "",
+      commentary: "",
+      price: updatedSale.price,
+    });
+
+    const savedIncome = await newIncome.save();
+
+    res.status(200).json({ updatedSale, savedIncome });
+  } catch (err) {
+    console.log("err", err);
+    res.status(500).json(err);
+  }
+});
+
 // ACTIVATE/INACTIVATE SALE
 router.put("/activate/:id", async (req, res) => {
   const saleId = req.params.id;
@@ -162,6 +206,7 @@ router.put("/activate/:id", async (req, res) => {
       saleId,
       {
         isActive: req.body.isActive,
+        status: "Arquivado",
       },
       { new: true }
     );
