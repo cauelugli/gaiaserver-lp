@@ -18,6 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import PersonIcon from "@mui/icons-material/Person";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -50,7 +51,7 @@ const AddClientForm = ({
   const [phone, setPhone] = React.useState("");
   const [cpf, setCpf] = React.useState("");
   const [birthdate, setBirthdate] = React.useState(dayjs("11/02/2014"));
-  const [gender, setGender] = React.useState("Masculino");
+  const [gender, setGender] = React.useState("");
   const [image, setImage] = React.useState("");
   const [showAdditionalOptions, setShowAdditionalOptions] =
     React.useState(false);
@@ -115,6 +116,7 @@ const AddClientForm = ({
           direction="column"
           alignItems="center"
           justifyContent="center"
+          sx={{ mb: 1 }}
         >
           <input
             type="file"
@@ -164,7 +166,18 @@ const AddClientForm = ({
             </FormHelperText>
           )}
         </Grid>
-        <Typography sx={{ my: 1, fontWeight: "bold" }}>Dados</Typography>
+        <Grid container>
+          <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
+            Informações
+          </Typography>
+          <CheckCircleOutlineOutlinedIcon
+            sx={{
+              color: name && email && phone && cpf ? "#50C878" : "lightgrey",
+              ml: 1,
+            }}
+          />
+        </Grid>
+
         <Grid container direction="column" alignItems="center">
           <TextField
             label="Nome do Cliente"
@@ -176,7 +189,7 @@ const AddClientForm = ({
             variant="outlined"
           />
           <TextField
-            sx={{ my: 2 }}
+            sx={{ my: 2, opacity: name ? 1 : 0 }}
             label="E-mail"
             value={email}
             size="small"
@@ -186,46 +199,52 @@ const AddClientForm = ({
             fullWidth
           />
         </Grid>
-        <Grid container direction="row" alignItems="center">
-          <Grid item>
-            <Typography>Telefone</Typography>
-            <IMaskInput
-              style={{
-                padding: "3%",
-                marginRight: "2%",
-                marginTop: "1%",
-                borderColor: "#eee",
-              }}
-              mask="(00) 00000-0000"
-              definitions={{
-                "#": /[1-9]/,
-              }}
-              onAccept={(value) => setPhone(value)}
-              overwrite
-              value={phone}
-            />
+        {email && (
+          <Grid container direction="row" alignItems="center">
+            <Grid item>
+              <Typography>Telefone</Typography>
+              <IMaskInput
+                style={{
+                  padding: "3%",
+                  marginRight: "2%",
+                  marginTop: "1%",
+                  borderColor: "#eee",
+                }}
+                mask="(00) 00000-0000"
+                definitions={{
+                  "#": /[1-9]/,
+                }}
+                onAccept={(value) => setPhone(value)}
+                overwrite
+                value={phone}
+              />
+            </Grid>
+            <Grid item sx={{ ml: 3, opacity: phone ? 1 : 0 }}>
+              <Typography>CPF</Typography>
+              <IMaskInput
+                style={{
+                  padding: "3%",
+                  marginRight: "2%",
+                  marginTop: "1%",
+                  borderColor: "#eee",
+                }}
+                mask="000.000.000-00"
+                definitions={{
+                  "#": /[1-9]/,
+                }}
+                onAccept={(value) => setCpf(value)}
+                overwrite
+                value={cpf}
+              />
+            </Grid>
           </Grid>
-          <Grid item sx={{ ml: 3 }}>
-            <Typography>CPF</Typography>
-            <IMaskInput
-              style={{
-                padding: "3%",
-                marginRight: "2%",
-                marginTop: "1%",
-                borderColor: "#eee",
-              }}
-              mask="000.000.000-00"
-              definitions={{
-                "#": /[1-9]/,
-              }}
-              onAccept={(value) => setCpf(value)}
-              overwrite
-              value={cpf}
-            />
-          </Grid>
-        </Grid>
-
-        <Grid container direction="row" alignItems="center" sx={{ mt: 2 }}>
+        )}
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          sx={{ mt: 2, opacity: cpf ? 1 : 0 }}
+        >
           <Grid item sx={{ width: "60%" }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker"]}>
@@ -240,7 +259,11 @@ const AddClientForm = ({
           </Grid>
           <Grid item sx={{ mb: 2, ml: 2 }}>
             <InputLabel>Gênero</InputLabel>
-            <Select value={gender} onChange={(e) => setGender(e.target.value)}>
+            <Select
+              sx={{ width: 135 }}
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+            >
               <MenuItem value={"Masculino"}>Masculino</MenuItem>
               <MenuItem value={"Feminino"}>Feminino</MenuItem>
               <MenuItem value={"Não Informado"}>Não Informar</MenuItem>
@@ -248,47 +271,62 @@ const AddClientForm = ({
           </Grid>
         </Grid>
 
-        <Typography sx={{ mt: 2, fontWeight: "bold" }}>Endereços</Typography>
-        <Grid container direction="column" alignItems="center">
-          <TextField
-            fullWidth
-            required
-            sx={{ mt: 1 }}
-            value={addressHome}
-            size="small"
-            onChange={(e) => setAddressHome(e.target.value)}
-            variant="outlined"
-            label="Endereço de Residência"
-          />
-          <TextField
-            sx={{ my: 2 }}
-            fullWidth
-            required
-            value={addressDelivery}
-            size="small"
-            onChange={(e) => setAddressDelivery(e.target.value)}
-            variant="outlined"
-            label="Endereço de Entrega"
-          />
-          <TextField
-            fullWidth
-            required
-            value={addressBill}
-            size="small"
-            onChange={(e) => setAddressBill(e.target.value)}
-            variant="outlined"
-            label="Endereço de Cobrança"
-          />
-        </Grid>
-
-        <Divider sx={{ my: 2 }} />
-        <Checkbox
-          checked={showAdditionalOptions}
-          onChange={handleCheckboxChange}
-        />
-        <label>Dados Completos</label>
-
-        {showAdditionalOptions && <></>}
+        {gender && (
+          <>
+            <Grid container>
+              <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
+                Endereços
+              </Typography>
+              <CheckCircleOutlineOutlinedIcon
+                sx={{
+                  color:
+                    addressHome && addressDelivery && addressBill
+                      ? "#50C878"
+                      : "lightgrey",
+                  ml: 1,
+                }}
+              />
+            </Grid>
+            <Grid container direction="column" alignItems="center">
+              <TextField
+                fullWidth
+                required
+                sx={{ mt: 1 }}
+                value={addressHome}
+                size="small"
+                onChange={(e) => setAddressHome(e.target.value)}
+                variant="outlined"
+                label="Endereço de Residência"
+              />
+              <TextField
+                sx={{ my: 2 }}
+                fullWidth
+                required
+                value={addressDelivery}
+                size="small"
+                onChange={(e) => setAddressDelivery(e.target.value)}
+                variant="outlined"
+                label="Endereço de Entrega"
+              />
+              <TextField
+                fullWidth
+                required
+                value={addressBill}
+                size="small"
+                onChange={(e) => setAddressBill(e.target.value)}
+                variant="outlined"
+                label="Endereço de Cobrança"
+              />
+            </Grid>
+            <Divider sx={{ my: 2 }} />
+            <Checkbox
+              checked={showAdditionalOptions}
+              onChange={handleCheckboxChange}
+            />
+            <label>Dados Completos</label>
+            {showAdditionalOptions && <></>}
+          </>
+        )}
       </DialogContent>
       <FormEndLineTenant
         configCustomization={configCustomization}
