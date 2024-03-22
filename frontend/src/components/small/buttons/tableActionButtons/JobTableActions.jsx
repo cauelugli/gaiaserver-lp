@@ -61,10 +61,7 @@ export default function JobTableActions(props) {
   return (
     <div>
       <Button
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
         size="small"
-        aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         sx={{ "&:hover": { borderColor: "#eee" } }}
       >
