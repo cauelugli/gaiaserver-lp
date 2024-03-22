@@ -9,6 +9,7 @@ import {
   Checkbox,
   DialogActions,
   DialogContent,
+  Divider,
   FormControl,
   FormHelperText,
   Grid,
@@ -18,6 +19,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
@@ -36,7 +38,7 @@ const AddCustomerForm = ({
   setRefreshData,
   toast,
   config,
-  configCustomization
+  configCustomization,
 }) => {
   const [name, setName] = React.useState("");
   const [address, setAddress] = React.useState("");
@@ -152,7 +154,9 @@ const AddCustomerForm = ({
                   alt="Prévia da Imagem"
                   style={{ width: "100%", height: "100%" }}
                 />
-              ) : <PhotoCameraIcon />}
+              ) : (
+                <PhotoCameraIcon />
+              )}
             </Avatar>
           </label>
           {image && (
@@ -171,9 +175,18 @@ const AddCustomerForm = ({
           )}
         </Grid>
 
-        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
-          Geral
-        </Typography>
+        <Grid container>
+          <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
+            Informações
+          </Typography>
+          <CheckCircleOutlineOutlinedIcon
+            sx={{
+              color: name && address && phone && cnpj ? "#50C878" : "lightgrey",
+              ml: 1,
+            }}
+          />
+        </Grid>
+
         <TextField
           label="Nome da Empresa"
           value={name}
@@ -183,8 +196,9 @@ const AddCustomerForm = ({
           variant="outlined"
           sx={{ mr: 1, width: 350 }}
         />
+
         <TextField
-          sx={{ mr: 1, width: 450 }}
+          sx={{ mr: 1, width: 450, opacity: name ? 1 : 0 }}
           required
           value={address}
           size="small"
@@ -192,6 +206,7 @@ const AddCustomerForm = ({
           variant="outlined"
           label="Endereço"
         />
+
         <Grid
           container
           sx={{ pr: "4%", mt: 2, mb: 4 }}
@@ -199,7 +214,7 @@ const AddCustomerForm = ({
           justifyContent="space-between"
           alignItems="center"
         >
-          <Grid item>
+          <Grid item sx={{ opacity: address ? 1 : 0 }}>
             <Typography>Telefone</Typography>
             <IMaskInput
               style={{
@@ -217,7 +232,7 @@ const AddCustomerForm = ({
               value={phone}
             />
           </Grid>
-          <Grid item>
+          <Grid item sx={{ opacity: phone ? 1 : 0 }}>
             <Typography>CNPJ</Typography>
             <IMaskInput
               style={{
@@ -235,7 +250,7 @@ const AddCustomerForm = ({
               value={cnpj}
             />
           </Grid>
-          <Grid item>
+          <Grid item sx={{ opacity: cnpj ? 1 : 0 }}>
             <TextField
               variant="outlined"
               label="Segmento"
@@ -248,81 +263,103 @@ const AddCustomerForm = ({
           </Grid>
         </Grid>
 
-        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
-          Contato Principal
-        </Typography>
-        <TextField
-          label="Nome"
-          value={mainContactName}
-          onChange={(e) => setMainContactName(e.target.value)}
-          required
-          size="small"
-          variant="outlined"
-          sx={{ mr: 1, width: 340 }}
-        />
-        <TextField
-          label="Email"
-          value={mainContactEmail}
-          onChange={(e) => setMainContactEmail(e.target.value)}
-          required
-          size="small"
-          variant="outlined"
-          sx={{ mr: 1, width: 300 }}
-        />
-
-        <FormControl sx={{ mb: 1, width: 155 }}>
-          <Select
-            value={mainContactPosition}
-            onChange={(e) => setMainContactPosition(e.target.value)}
-            size="small"
-            required
-          >
-            <MenuItem value={"Sócio"}>Sócio</MenuItem>
-            <MenuItem value={"Proprietário"}>Proprietário</MenuItem>
-          </Select>
-        </FormControl>
-
-        <Checkbox
-          checked={showAdditionalOptions}
-          onChange={handleCheckboxChange}
-        />
-        <label>Dados Completos</label>
-
-        {showAdditionalOptions && (
-          <Box>
-            <Typography sx={{ my: 2 }}>Domínio</Typography>
+        {name && address && phone && cnpj && (
+          <>
+            <Divider sx={{ my: 3 }} />
+            <Grid container>
+              <Typography sx={{ mb: 2, fontSize: 18, fontWeight: "bold" }}>
+                Contato Principal
+              </Typography>
+              <CheckCircleOutlineOutlinedIcon
+                sx={{
+                  color:
+                    mainContactName && mainContactEmail && mainContactPosition
+                      ? "#50C878"
+                      : "lightgrey",
+                  ml: 1,
+                }}
+              />
+            </Grid>
             <TextField
-              variant="outlined"
-              label="Website"
+              label="Nome"
+              value={mainContactName}
+              onChange={(e) => setMainContactName(e.target.value)}
+              required
               size="small"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-              sx={{ mr: 1, width: 270 }}
+              variant="outlined"
+              sx={{ mr: 1, width: 340 }}
             />
             <TextField
-              variant="outlined"
-              label="Domínio"
+              label="Email"
+              value={mainContactEmail}
+              onChange={(e) => setMainContactEmail(e.target.value)}
+              required
               size="small"
-              value={domain}
-              onChange={(e) => setDomain(e.target.value)}
-              sx={{ mr: 1, width: 250 }}
+              variant="outlined"
+              sx={{ mr: 1, width: 300, opacity: mainContactName ? 1 : 0 }}
             />
 
-            <FormControl sx={{ width: 165 }}>
+            <FormControl
+              sx={{ mb: 1, width: 155, opacity: mainContactEmail ? 1 : 0 }}
+            >
               <Select
-                value={employees}
+                value={mainContactPosition}
+                onChange={(e) => setMainContactPosition(e.target.value)}
                 size="small"
-                onChange={(e) => setEmployees(e.target.value)}
+                required
               >
-                <MenuItem value={"1-9"}>1 à 9</MenuItem>
-                <MenuItem value={"10-50"}>10 à 50</MenuItem>
-                <MenuItem value={"51-100"}>51 à 100</MenuItem>
-                <MenuItem value={"101-200"}>100 à 200</MenuItem>
-                <MenuItem value={"+201"}>201 ou mais</MenuItem>
+                <MenuItem value={"Sócio"}>Sócio</MenuItem>
+                <MenuItem value={"Proprietário"}>Proprietário</MenuItem>
               </Select>
-              <FormHelperText># de Colaboradores</FormHelperText>
             </FormControl>
-          </Box>
+          </>
+        )}
+
+        {mainContactPosition && (
+          <>
+            <Checkbox
+              checked={showAdditionalOptions}
+              onChange={handleCheckboxChange}
+            />
+            <label>Dados Completos</label>
+
+            {showAdditionalOptions && (
+              <Box>
+                <Typography sx={{ my: 2 }}>Domínio</Typography>
+                <TextField
+                  variant="outlined"
+                  label="Website"
+                  size="small"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                  sx={{ mr: 1, width: 270 }}
+                />
+                <TextField
+                  variant="outlined"
+                  label="Domínio"
+                  size="small"
+                  value={domain}
+                  onChange={(e) => setDomain(e.target.value)}
+                  sx={{ mr: 1, width: 250 }}
+                />
+
+                <FormControl sx={{ width: 165 }}>
+                  <Select
+                    value={employees}
+                    size="small"
+                    onChange={(e) => setEmployees(e.target.value)}
+                  >
+                    <MenuItem value={"1-9"}>1 à 9</MenuItem>
+                    <MenuItem value={"10-50"}>10 à 50</MenuItem>
+                    <MenuItem value={"51-100"}>51 à 100</MenuItem>
+                    <MenuItem value={"101-200"}>100 à 200</MenuItem>
+                    <MenuItem value={"+201"}>201 ou mais</MenuItem>
+                  </Select>
+                  <FormHelperText># de Colaboradores</FormHelperText>
+                </FormControl>
+              </Box>
+            )}
+          </>
         )}
       </DialogContent>
       <FormEndLineTenant configCustomization={configCustomization} />
