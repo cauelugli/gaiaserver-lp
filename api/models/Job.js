@@ -89,6 +89,10 @@ jobSchema = new mongoose.Schema({
   resolvedAt: {
     type: String,
   },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 jobSchema.plugin(autoIncrement.plugin, {

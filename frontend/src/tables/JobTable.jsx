@@ -152,13 +152,13 @@ export default function JobTable({
     });
   }, [jobs, order, orderBy]);
 
-  const handleManagerApproval = async (job) => {
+  const handleManagerApproval = async () => {
     try {
       const requestBody = {
-        jobId: job._id,
+        jobId: selectedJob.id || selectedJob._id,
         option: "managerApproval",
         status: "Aprovado",
-        manager: job.manager,
+        manager: selectedJob.manager,
         user: user.name,
         date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
       };
@@ -240,6 +240,11 @@ export default function JobTable({
   const handleChangeShowCompletedJobs = () => {
     setShowCompletedJobs(!showCompletedJobs);
   };
+  const [showArchivedJobs, setShowArchivedJobs] = React.useState(false);
+
+  const handleChangeShowArchivedJobs = () => {
+    setShowArchivedJobs(!showArchivedJobs);
+  };
 
   return (
     <Box sx={{ minWidth: "1250px" }}>
@@ -249,7 +254,14 @@ export default function JobTable({
           onChange={handleChangeShowCompletedJobs}
         />
         <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
-          Mostrar Jobs Concluídos
+          Mostrar Concluídos
+        </Typography>
+        <Checkbox
+          checked={showArchivedJobs}
+          onChange={handleChangeShowArchivedJobs}
+        />
+        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
+          Mostrar Arquivados
         </Typography>
       </Box>
       <TableContainer component={Paper}>
@@ -302,7 +314,8 @@ export default function JobTable({
 
                 return (
                   shouldShowJob &&
-                  (showCompletedJobs || job.status !== "Concluido")
+                  (showCompletedJobs || job.status !== "Concluido") &&
+                  (showArchivedJobs || job.status !== "Arquivado")
                 );
               })
               .map((job) => (
@@ -909,19 +922,6 @@ export default function JobTable({
                               </TableBody>
                             </Table>
                           </Collapse>
-
-                          {/* {job.status !== "Concluido" && (
-                            <RequestActions
-                              config={config}
-                              selectedJob={selectedJob}
-                              user={user}
-                              job={job}
-                              handleManagerApproval={handleManagerApproval}
-                              handleRequestApproval={handleRequestApproval}
-                              handleOpenEdit={handleOpenEdit}
-                              handleConfirmDelete={handleConfirmDelete}
-                            />
-                          )} */}
                         </Box>
                         {job.status === "Concluido" && (
                           <Box sx={{ my: 4, px: 6, mb: 6 }}>

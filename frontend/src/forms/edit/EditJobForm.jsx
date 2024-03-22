@@ -172,38 +172,40 @@ const EditJobForm = ({
         });
         console.log(err);
       }
-    } else if (option === "resolve") {
-      const requestBody = {
-        jobId: selectedJob._id,
-        option: "resolve",
-        activity,
-        user,
-        worker: selectedJob.worker,
-        manager: selectedJob.manager,
-        date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
-      };
-      try {
-        const res = await api.put("/jobs", requestBody);
-        if (res.data) {
-          toast.success("Job Resolvido", {
-            closeOnClick: true,
-            pauseOnHover: false,
-            theme: "colored",
-            autoClose: 1200,
-          });
-        }
-        setOpenEditJob(!openEditJob);
-        setRefreshData(!refreshData);
-      } catch (err) {
-        toast.error("Houve algum erro...", {
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-          autoClose: 1200,
-        });
-        console.log(err);
-      }
-    } else {
+    } 
+    // else if (option === "resolve") {
+    //   const requestBody = {
+    //     jobId: selectedJob._id,
+    //     option: "resolve",
+    //     activity,
+    //     user,
+    //     worker: selectedJob.worker,
+    //     manager: selectedJob.manager,
+    //     date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
+    //   };
+    //   try {
+    //     const res = await api.put("/jobs", requestBody);
+    //     if (res.data) {
+    //       toast.success("Job Resolvido", {
+    //         closeOnClick: true,
+    //         pauseOnHover: false,
+    //         theme: "colored",
+    //         autoClose: 1200,
+    //       });
+    //     }
+    //     setOpenEditJob(!openEditJob);
+    //     setRefreshData(!refreshData);
+    //   } catch (err) {
+    //     toast.error("Houve algum erro...", {
+    //       closeOnClick: true,
+    //       pauseOnHover: false,
+    //       theme: "colored",
+    //       autoClose: 1200,
+    //     });
+    //     console.log(err);
+    //   }
+    // } 
+    else {
       const requestBody = {
         jobId: selectedJob._id,
         option: "edit",
@@ -639,7 +641,7 @@ const EditJobForm = ({
           </DialogActions>
         </>
       )}
-      {option === "resolve" && (
+      {/* {option === "resolve" && (
         <>
           <DialogContent>
             <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
@@ -940,7 +942,7 @@ const EditJobForm = ({
             </Button>
           </DialogActions>
         </>
-      )}
+      )} */}
       {option === "edit" && (
         <>
           <DialogContent>

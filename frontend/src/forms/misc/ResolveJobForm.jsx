@@ -2,26 +2,35 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
-import { Button, DialogContent, DialogTitle, Grid } from "@mui/material";
+import {
+  Button,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  TextField,
+} from "@mui/material";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const GenericActivateForm = ({
+const ResolveJobForm = ({
+  user,
   selectedItem,
   refreshData,
   setRefreshData,
-  openDialog,
   setOpenDialog,
   toast,
-  endpoint,
   successMessage,
 }) => {
-  const handleIActivate = async () => {
+  const [resolution, setResolution] = React.useState("");
+
+  const handleResolveJob = async () => {
     try {
-      const res = await api.put(`/${endpoint}/${selectedItem._id}`, {
-        isActive: selectedItem.isActive ? !selectedItem.isActive : false,
+      const res = await api.put(`/jobs/resolve`, {
+        jobId: selectedItem._id,
+        user: user.name,
+        resolution,
       });
       if (res.data) {
         toast.success(successMessage, {
@@ -34,27 +43,39 @@ const GenericActivateForm = ({
       setOpenDialog(false);
       setRefreshData(!refreshData);
     } catch (err) {
-      alert("Houve algum erro...");
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
       console.log(err);
     }
   };
 
   return (
     <>
-      <DialogTitle>{`Arquivar ${
-        selectedItem.name || selectedItem.title || selectedItem.quoteNumber
-      } ?`}</DialogTitle>
+      <DialogTitle>Resolver Job: {selectedItem.title}</DialogTitle>
       <DialogContent>
+        <TextField
+          variant="outlined"
+          size="small"
+          placeholder="Resolução"
+          value={resolution}
+          onChange={(e) => setResolution(e.target.value)}
+          fullWidth
+          sx={{ mt: 1 }}
+        />
         <Grid
           container
-          justifyContent="center"
-          alignItems="center"
+          justifyContent="flex-end"
+          alignItems="flex-end"
           sx={{ my: 4 }}
         >
           <Button
             variant="contained"
             color="success"
-            onClick={handleIActivate}
+            onClick={handleResolveJob}
             sx={{ mr: 2 }}
           >
             OK
@@ -62,7 +83,7 @@ const GenericActivateForm = ({
           <Button
             variant="contained"
             color="error"
-            onClick={() => setOpenDialog(!openDialog)}
+            onClick={() => setOpenDialog(false)}
           >
             X
           </Button>
@@ -72,4 +93,4 @@ const GenericActivateForm = ({
   );
 };
 
-export default GenericActivateForm;
+export default ResolveJobForm;

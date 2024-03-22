@@ -238,6 +238,24 @@ router.post("/", async (req, res) => {
   }
 });
 
+// ACTIVATE/INACTIVATE JOB
+router.put("/activate/:id", async (req, res) => {
+  const jobId = req.params.id;
+  try {
+    const updatedJob = await Job.findByIdAndUpdate(
+      jobId,
+      {
+        isActive: req.body.isActive,
+        status: "Arquivado",
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedJob);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // DELETE JOB
 router.delete("/:id", async (req, res) => {
   const requestId = req.params.id;
@@ -394,42 +412,54 @@ router.put("/", async (req, res) => {
         { new: true }
       );
       res.status(200).json(updatedJob);
-    } else if (option === "resolve") {
-      const updatedJob = await Job.findByIdAndUpdate(
-        jobId,
-        {
-          status: "Concluido",
-          resolution: req.body.activity,
-          resolvedBy: user.name,
-          resolvedAt: new Date()
-            .toLocaleDateString("pt-BR")
-            .replace(/\//g, "-"),
-        },
-        { new: true }
-      );
-      const newIncome = new FinanceIncome({
-        quote: updatedJob.quoteNumber,
-        title: updatedJob.title,
-        customer: updatedJob.customer.name,
-        department: updatedJob.department.name,
-        user: updatedJob.worker.name,
-        service: updatedJob.service.name,
-        type: "job",
-        commissioned: updatedJob.commissioned,
-        commission: updatedJob.commission,
-        items: updatedJob.materials,
-        scheduledTo: updatedJob.scheduledTo,
-        resolvedAt: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
-        paidAt: "",
-        commentary: "",
-        price: updatedJob.price,
-      });
-      const savedIncome = await newIncome.save();
-
-      res.status(200).json(updatedJob);
     } else {
       res.status(400).json({ error: "Opção inválida" });
     }
+  } catch (err) {
+    console.log("err", err);
+    res.status(500).json(err);
+  }
+});
+
+// RESOLVE JOB
+router.put("/resolve", async (req, res) => {
+  try {
+    const jobId = req.body.jobId;
+    const user = req.body.user;
+    const resolution = req.body.resolution;
+
+    const updatedJob = await Job.findByIdAndUpdate(
+      jobId,
+      {
+        status: "Concluido",
+        resolution: resolution,
+        resolvedBy: user,
+        resolvedAt: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
+      },
+      { new: true }
+    );
+
+    const newIncome = new FinanceIncome({
+      quote: updatedJob.quoteNumber,
+      title: updatedJob.title,
+      customer: updatedJob.customer.name,
+      department: updatedJob.department.name,
+      user: updatedJob.worker.name,
+      service: updatedJob.service.name,
+      type: "job",
+      commissioned: updatedJob.commissioned,
+      commission: updatedJob.commission,
+      items: updatedJob.materials,
+      scheduledTo: updatedJob.scheduledTo,
+      resolvedAt: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
+      paidAt: "",
+      commentary: "",
+      price: updatedJob.price,
+    });
+
+    const savedIncome = await newIncome.save();
+
+    res.status(200).json({ updatedJob, savedIncome });
   } catch (err) {
     console.log("err", err);
     res.status(500).json(err);

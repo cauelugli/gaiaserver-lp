@@ -15,15 +15,21 @@ import {
 } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
+import ArchiveIcon from "@mui/icons-material/Archive";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
+import GenericActivateForm from "../../../../forms/misc/GenericActivateForm";
+import ResolveJobForm from "../../../../forms/misc/ResolveJobForm";
 
 export default function JobTableActions(props) {
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openActivate, setOpenActivate] = React.useState(false);
+  const [openResolve, setOpenResolve] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState(props.selectedItem);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -42,6 +48,16 @@ export default function JobTableActions(props) {
     setAnchorEl(null);
   };
 
+  const handleConfirmActivate = () => {
+    setOpenActivate(true);
+    setAnchorEl(null);
+  };
+
+  const handleConfirmResolve = () => {
+    setOpenResolve(true);
+    setAnchorEl(null);
+  };
+
   return (
     <div>
       <Button
@@ -57,6 +73,7 @@ export default function JobTableActions(props) {
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <List sx={{ width: 210 }}>
           <ListItemButton
+            disabled={props.job.status === "Concluido"}
             onClick={(item) => {
               props.handleOpenEdit(item, "edit"), setAnchorEl(null);
             }}
@@ -75,6 +92,7 @@ export default function JobTableActions(props) {
           {props.user.role.name === "Gerente" &&
             props.job.status === "Aprovação Solicitada" && (
               <ListItemButton
+                disabled={props.job.status === "Concluido"}
                 onClick={(item) => props.handleManagerApproval(item)}
               >
                 <ListItemIcon>
@@ -110,7 +128,38 @@ export default function JobTableActions(props) {
               </ListItemButton>
             )}
 
+          {props.job.status === "Aprovado" &&
+            props.user.role.name !== "Gerente" && (
+              <ListItemButton onClick={(item) => handleConfirmResolve(item)}>
+                <ListItemIcon>
+                  <DoneOutlineIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <Typography sx={{ fontSize: 14 }}>Resolver Job</Typography>
+                  }
+                  sx={{ ml: -3 }}
+                />
+              </ListItemButton>
+            )}
+
           <ListItemButton
+            disabled={props.job.status === "Concluido"}
+            onClick={(item) => handleConfirmActivate(item)}
+          >
+            <ListItemIcon>
+              <ArchiveIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: 14 }}>Arquivar Job</Typography>
+              }
+              sx={{ ml: -3 }}
+            />
+          </ListItemButton>
+
+          <ListItemButton
+            disabled={props.job.status === "Concluido"}
             onClick={(item) => props.handleOpenEdit(item, "interaction")}
           >
             <ListItemIcon>
@@ -127,6 +176,7 @@ export default function JobTableActions(props) {
           </ListItemButton>
 
           <ListItemButton
+            disabled={props.job.status === "Concluido"}
             onClick={(item) => handleConfirmDelete(item)}
             sx={{ color: "red" }}
           >
@@ -142,6 +192,7 @@ export default function JobTableActions(props) {
           </ListItemButton>
         </List>
       </Menu>
+
       {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
@@ -155,6 +206,44 @@ export default function JobTableActions(props) {
             successMessage={`${
               props.selectedItem.title && props.selectedItem.title
             } Deletado com Sucesso`}
+          />
+        </Dialog>
+      )}
+      {openActivate && (
+        <Dialog
+          open={openActivate}
+          onClose={() => setOpenActivate(!openActivate)}
+        >
+          <GenericActivateForm
+            selectedItem={props.selectedItem}
+            openDialog={openActivate}
+            setOpenDialog={setOpenActivate}
+            refreshData={props.refreshData}
+            setRefreshData={props.setRefreshData}
+            toast={toast}
+            endpoint="jobs/activate"
+            successMessage={`${
+              props.selectedItem.title && props.selectedItem.title
+            } Arquivado com Sucesso`}
+          />
+        </Dialog>
+      )}
+      {openResolve && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openResolve}
+          onClose={() => setOpenResolve(!openResolve)}
+        >
+          <ResolveJobForm
+            user={props.user}
+            selectedItem={props.selectedItem}
+            refreshData={props.refreshData}
+            setRefreshData={props.setRefreshData}
+            openDialog={openResolve}
+            setOpenDialog={setOpenResolve}
+            toast={toast}
+            successMessage="Job Resolvido"
           />
         </Dialog>
       )}
