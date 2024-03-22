@@ -22,14 +22,12 @@ const api = axios.create({
 export default function EditGroupMembersForm({
   selectedGroup,
   users,
-  openEdit,
-  setOpenEdit,
+  setOpenEditMembers,
   refreshData,
   setRefreshData,
   toast,
 }) {
   const [members, setMembers] = React.useState(selectedGroup.members);
-  const previousData = selectedGroup;
 
   const handleEdit = async (e) => {
     e.preventDefault();
@@ -42,18 +40,19 @@ export default function EditGroupMembersForm({
     try {
       const res = await api.put("/groups/editMembers", {
         groupId: selectedGroup._id,
-        previousData,
+        name: selectedGroup.name,
+        previousMembers: selectedGroup.members,
         members: membersToSend,
       });
       if (res.data) {
-        toast.success("Grupo Editado!", {
+        toast.success("Membros do Grupo Editados!", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
         });
       }
-      setOpenEdit(!openEdit);
+      setOpenEditMembers(false);
       setRefreshData(!refreshData);
     } catch (err) {
       if (err.response && err.response.status === 422) {
@@ -76,7 +75,9 @@ export default function EditGroupMembersForm({
 
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle>Editando Membros do Grupo - {selectedGroup.name}</DialogTitle>
+      <DialogTitle>
+        Membros do Grupo - {selectedGroup.name}
+      </DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -103,7 +104,7 @@ export default function EditGroupMembersForm({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenEdit(!openEdit)}
+          onClick={() => setOpenEditMembers(false)}
         >
           X
         </Button>

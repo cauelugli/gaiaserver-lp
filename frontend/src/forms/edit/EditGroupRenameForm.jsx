@@ -25,7 +25,6 @@ export default function EditGroupRenameForm({
   toast,
 }) {
   const [name, setName] = React.useState(selectedGroup.name);
-  const prevName = selectedGroup.name;
 
   const handleEdit = async (e) => {
     e.preventDefault();
@@ -33,7 +32,6 @@ export default function EditGroupRenameForm({
       const res = await api.put("/groups/rename", {
         groupId: selectedGroup._id,
         name,
-        prevName
       });
       if (res.data) {
         toast.success("Grupo Editado!", {

@@ -50,40 +50,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// DELETE GROUP
-router.delete("/:id", async (req, res) => {
-  const groupId = req.params.id;
-  let updatedMembers = [];
-  try {
-    const deletedGroup = await Group.findByIdAndDelete(groupId);
-    for (const member of deletedGroup.members) {
-      let type;
-      if ("position" in member) {
-        type = User;
-      } else {
-        type = Manager;
-      }
-
-      const updatedMember = await type.updateOne(
-        { _id: member._id },
-        {
-          $pull: {
-            groups: {
-              id: groupId,
-            },
-          },
-        }
-      );
-      updatedMembers.push(updatedMember);
-    }
-
-    res.status(200).json({ deletedGroup, updatedMembers });
-  } catch (err) {
-    console.log("err", err);
-    res.status(500).json(err);
-  }
-});
-
 // UPDATE RENAME GROUP
 router.put("/rename", async (req, res) => {
   try {
@@ -120,15 +86,79 @@ router.put("/rename", async (req, res) => {
 // UPDATE GROUP MEMBERS
 router.put("/editMembers", async (req, res) => {
   try {
+    const { groupId, previousMembers, members } = req.body;
+
+    const newMembers = members.filter(
+      (member) =>
+        !previousMembers.some((prevMember) => prevMember._id === member._id)
+    );
+
+    const formerMembers = previousMembers.filter(
+      (prevMember) => !members.some((member) => member._id === prevMember._id)
+    );
+
+    for (const newMember of newMembers) {
+      let type = newMember.position ? User : Manager;
+      await type.findByIdAndUpdate(newMember._id, {
+        $push: { groups: { id: groupId, name: req.body.name } },
+      });
+    }
+
+    for (const formerMember of formerMembers) {
+      let type = formerMember.position ? User : Manager;
+      await type.findByIdAndUpdate(formerMember._id, {
+        $pull: { groups: { id: groupId } },
+      });
+    }
+
+    const updatedCurrentMembers = members.filter(
+      (member) =>
+        !formerMembers.some((formerMember) => formerMember._id === member._id)
+    );
+
     const updatedGroup = await Group.findByIdAndUpdate(
       req.body.groupId,
-      {
-        members: req.body.members,
-      },
+      { $set: { members: updatedCurrentMembers } },
       { new: true }
     );
-    res.status(200).json(updatedGroup);
+
+    res.status(200).json({ updatedGroup, updatedCurrentMembers });
   } catch (err) {
+    console.log("err", err);
+    res.status(500).json(err);
+  }
+});
+
+// DELETE GROUP
+router.delete("/:id", async (req, res) => {
+  const groupId = req.params.id;
+  let updatedMembers = [];
+  try {
+    const deletedGroup = await Group.findByIdAndDelete(groupId);
+    for (const member of deletedGroup.members) {
+      let type;
+      if ("position" in member) {
+        type = User;
+      } else {
+        type = Manager;
+      }
+
+      const updatedMember = await type.updateOne(
+        { _id: member._id },
+        {
+          $pull: {
+            groups: {
+              id: groupId,
+            },
+          },
+        }
+      );
+      updatedMembers.push(updatedMember);
+    }
+
+    res.status(200).json({ deletedGroup, updatedMembers });
+  } catch (err) {
+    console.log("err", err);
     res.status(500).json(err);
   }
 });

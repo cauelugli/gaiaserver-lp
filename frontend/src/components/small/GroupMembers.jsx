@@ -23,7 +23,7 @@ const GroupMembers = ({ members, users, managers }) => {
     };
 
     fetchUserDetails();
-  }, []);
+  }, [members]);
 
   const displayedMembers = members.slice(0, 6);
   const remainingMembersCount = members.length - displayedMembers.length;

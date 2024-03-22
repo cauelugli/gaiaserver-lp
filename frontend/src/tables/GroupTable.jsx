@@ -218,11 +218,11 @@ export default function GroupTable({
           <Dialog
             fullWidth
             maxWidth="xs"
-            open={openRename}
+            open={openEditMembers}
             onClose={() => setOpenEditMembers(!openEditMembers)}
           >
             <EditGroupMembersForm
-              openEdit={openRename}
+              openEdit={openEditMembers}
               users={allUsers}
               selectedGroup={selectedGroup}
               setOpenEditMembers={setOpenEditMembers}
