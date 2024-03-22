@@ -120,16 +120,24 @@ const AddOperatorForm = ({
               size="small"
               sx={{ mr: 1, width: 245 }}
             >
-              {operators.map((item) => (
-                <MenuItem value={item} key={item.id}>
-                  <Avatar
-                    alt="Imagem do Colaborador"
-                    src={`http://localhost:3000/static/${item.image}`}
-                    sx={{ width: 22, height: 22, mr: 2 }}
-                  />
-                  {item.name}
+              {operators.length === 0 ? (
+                <MenuItem disabled>
+                  <Typography sx={{ textAlign: "center" }}>
+                    Nenhum colaborador disponível
+                  </Typography>
                 </MenuItem>
-              ))}
+              ) : (
+                operators.map((item) => (
+                  <MenuItem value={item} key={item.id}>
+                    <Avatar
+                      alt="Imagem do Colaborador"
+                      src={`http://localhost:3000/static/${item.image}`}
+                      sx={{ width: 22, height: 22, mr: 2 }}
+                    />
+                    {item.name}
+                  </MenuItem>
+                ))
+              )}
             </Select>
           </Grid>
 
@@ -178,7 +186,7 @@ const AddOperatorForm = ({
           </Grid>
         </Grid>
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization}/>
+      <FormEndLineTenant configCustomization={configCustomization} />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

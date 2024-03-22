@@ -7,9 +7,18 @@ const Manager = require("../models/Manager");
 
 // UPDATE OPERATOR
 router.put("/", async (req, res) => {
+  const { username } = req.body;
+
   let type;
 
   req.body.operator.position ? (type = User) : (type = Manager);
+
+  const userExists = await User.findOne({ username });
+  const managerExists = await Manager.findOne({ username });
+
+  if (userExists || managerExists) {
+    return res.status(422).json({ error: "Nome de Operador já cadastrado" });
+  }
 
   if (req.body.option === "delete") {
     try {
