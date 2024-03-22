@@ -64,11 +64,6 @@ export default function OperatorTable({
     fetchData();
   }, [refreshData]);
 
-  const handleOpenEdit = (user, option) => {
-    setOption(option);
-    setSelectedOperator(user);
-    setOpenEdit(!openEdit);
-  };
 
   const handleConfirmDelete = (user) => {
     setOpenDelete(!openDelete);
@@ -152,7 +147,7 @@ export default function OperatorTable({
             <TableBody>
               <TableRow
                 sx={{
-                   backgroundColor: "#eee",
+                  backgroundColor: "#eee",
                 }}
               >
                 <TableCell padding="checkbox"></TableCell>
@@ -178,6 +173,7 @@ export default function OperatorTable({
                 ))}
               </TableRow>
               {sortedRows
+                .filter((row) => row.role && row.role.name !== "Admin")
                 .filter((user) => {
                   const searchOptionValue =
                     searchOption === "role.name"
@@ -191,57 +187,53 @@ export default function OperatorTable({
                       .includes(searchValue.toLowerCase())
                   );
                 })
-                .map((row) =>
-                  row.role && row.role.name !== "Admin" ? (
-                    <TableRow
-                      key={row._id}
-                      sx={{ "&:hover": { backgroundColor: "#eee " } }}
-                    >
-                      <TableCell sx={{ py: 0 }}>
-                        <Avatar
-                          src={`http://localhost:3000/static/${row.image}`}
-                          alt={row.name[0]}
-                          style={{
-                            marginLeft: 10,
-                            width: 42,
-                            height: 42,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Typography sx={{ fontSize: 13 }}>
-                          {row.name}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {row.username}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {row.role ? row.role.name : "-"}
-                        </Typography>
-                      </TableCell>
+                .map((row) => (
+                  <TableRow
+                    key={row._id}
+                    sx={{ "&:hover": { backgroundColor: "#eee " } }}
+                  >
+                    <TableCell sx={{ py: 0 }}>
+                      <Avatar
+                        src={`http://localhost:3000/static/${row.image}`}
+                        alt={row.name[0]}
+                        style={{
+                          marginLeft: 10,
+                          width: 42,
+                          height: 42,
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {row.username}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {row.role ? row.role.name : "-"}
+                      </Typography>
+                    </TableCell>
 
-                      <TableCell
-                        cursor="pointer"
-                        align="center"
-                        onClick={() => setSelectedOperator(row)}
-                      >
-                        <OperatorTableActions
-                          configData={configData}
-                          setOpenEdit={setOpenEdit}
-                          handleConfirmDelete={handleConfirmDelete}
-                          selectedItem={selectedOperator}
-                          refreshData={refreshData}
-                          setOption={setOption}
-                          setRefreshData={setRefreshData}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ) : null
-                )
+                    <TableCell
+                      cursor="pointer"
+                      align="center"
+                      onClick={() => setSelectedOperator(row)}
+                    >
+                      <OperatorTableActions
+                        configData={configData}
+                        setOpenEdit={setOpenEdit}
+                        handleConfirmDelete={handleConfirmDelete}
+                        selectedItem={selectedOperator}
+                        refreshData={refreshData}
+                        setOption={setOption}
+                        setRefreshData={setRefreshData}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))
                 .slice(startIndex, endIndex)}
             </TableBody>
           </Table>
