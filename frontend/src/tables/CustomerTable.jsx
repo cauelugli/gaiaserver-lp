@@ -28,6 +28,7 @@ import {
   DialogActions,
   Grid,
   IconButton,
+  Checkbox,
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -44,6 +45,7 @@ export default function CustomerTable({
   configData,
   configAgenda,
   configCustomization,
+  searchDepartment,
   refreshData,
   setRefreshData,
   searchValue,
@@ -189,8 +191,24 @@ export default function CustomerTable({
 
   const eventStyle = eventStyleGetter().style;
 
+  const [showArchivedCustomers, setShowArchivedCustomers] =
+    React.useState(false);
+
+  const handleChangeShowArchivedCustomers = () => {
+    setShowArchivedCustomers(!showArchivedCustomers);
+  };
+
   return (
     <Box sx={{ minWidth: "1250px" }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
+        <Checkbox
+          checked={showArchivedCustomers}
+          onChange={handleChangeShowArchivedCustomers}
+        />
+        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
+          Mostrar Arquivados
+        </Typography>
+      </Box>
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
@@ -221,11 +239,30 @@ export default function CustomerTable({
             </TableRow>
 
             {sortedRows
-              .filter((user) =>
-                user[searchOption]
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase())
-              )
+              .filter((user) => {
+                const searchOptionValue =
+                  searchOption === "department.name"
+                    ? user.department?.name
+                    : user[searchOption];
+
+                const departmentFilter =
+                  !searchDepartment ||
+                  user.department?.name === searchDepartment;
+
+                const shouldApplyDepartmentFilter =
+                  departmentFilter || searchDepartment === "&nbsp;";
+
+                const shouldShowUser = showArchivedCustomers || user.isActive;
+
+                return (
+                  searchOptionValue &&
+                  searchOptionValue
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase()) &&
+                  shouldApplyDepartmentFilter &&
+                  shouldShowUser
+                );
+              })
               .map((customer) => (
                 <>
                   <TableRow

@@ -7,6 +7,7 @@ import axios from "axios";
 import {
   Avatar,
   Box,
+  Checkbox,
   Dialog,
   Grid,
   Paper,
@@ -32,6 +33,7 @@ export default function ManagerTable({
   configData,
   setRefreshData,
   searchValue,
+  searchDepartment,
   searchOption,
 }) {
   const [selectedManager, setSelectedManager] = React.useState("");
@@ -131,10 +133,24 @@ export default function ManagerTable({
 
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
+  const [showArchivedUsers, setShowArchivedUsers] = React.useState(false);
+
+  const handleChangeShowArchivedUsers = () => {
+    setShowArchivedUsers(!showArchivedUsers);
+  };
 
   return (
     <>
       <Box sx={{ minWidth: "1250px" }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
+          <Checkbox
+            checked={showArchivedUsers}
+            onChange={handleChangeShowArchivedUsers}
+          />
+          <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
+            Mostrar Arquivados
+          </Typography>
+        </Box>
         <TableContainer component={Paper}>
           <Table>
             <TableRow
@@ -165,11 +181,30 @@ export default function ManagerTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((user) =>
-                user[searchOption]
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase())
-              )
+              .filter((user) => {
+                const searchOptionValue =
+                  searchOption === "department.name"
+                    ? user.department?.name
+                    : user[searchOption];
+
+                const departmentFilter =
+                  !searchDepartment ||
+                  user.department?.name === searchDepartment;
+
+                const shouldApplyDepartmentFilter =
+                  departmentFilter || searchDepartment === "&nbsp;";
+
+                const shouldShowUser = showArchivedUsers || user.isActive;
+
+                return (
+                  searchOptionValue &&
+                  searchOptionValue
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase()) &&
+                  shouldApplyDepartmentFilter &&
+                  shouldShowUser
+                );
+              })
               .map((row) => (
                 <TableRow
                   key={row._id}

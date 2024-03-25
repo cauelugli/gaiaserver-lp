@@ -6,6 +6,7 @@ import axios from "axios";
 import {
   Avatar,
   Box,
+  Checkbox,
   Dialog,
   Grid,
   Paper,
@@ -138,9 +139,24 @@ export default function UserTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
+  const [showArchivedUsers, setShowArchivedUsers] = React.useState(false);
+
+  const handleChangeShowArchivedUsers = () => {
+    setShowArchivedUsers(!showArchivedUsers);
+  };
+
   return (
     <>
       <Box sx={{ minWidth: "1250px" }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
+          <Checkbox
+            checked={showArchivedUsers}
+            onChange={handleChangeShowArchivedUsers}
+          />
+          <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
+            Mostrar Arquivados
+          </Typography>
+        </Box>
         <TableContainer component={Paper}>
           <Table>
             <TableRow
@@ -183,14 +199,19 @@ export default function UserTable({
 
                 // Verifica se a condição para aplicar o filtro é atendida
                 const shouldApplyDepartmentFilter =
-                  departmentFilter || searchDepartment === "&nbsp";
+                  departmentFilter || searchDepartment === "&nbsp;";
+
+                // Corrige a condição para filtrar por usuários ativos corretamente
+                // Mostra usuários ativos por padrão; quando showArchivedUsers está marcado, mostra todos
+                const shouldShowUser = showArchivedUsers || user.isActive;
 
                 return (
                   searchOptionValue &&
                   searchOptionValue
                     .toLowerCase()
                     .includes(searchValue.toLowerCase()) &&
-                  shouldApplyDepartmentFilter
+                  shouldApplyDepartmentFilter &&
+                  shouldShowUser // Corrigido para aplicar o filtro de atividade do usuário corretamente
                 );
               })
 
