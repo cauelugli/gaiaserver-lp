@@ -32,6 +32,7 @@ router.put("/activate/:id", async (req, res) => {
       clientId,
       {
         isActive: req.body.isActive,
+        status: req.body.status,
       },
       { new: true }
     );

@@ -206,7 +206,7 @@ router.put("/activate/:id", async (req, res) => {
       saleId,
       {
         isActive: req.body.isActive,
-        status: "Arquivado",
+        status: req.body.status,
       },
       { new: true }
     );

@@ -20,6 +20,7 @@ import EngineeringIcon from "@mui/icons-material/Engineering";
 import MenuIcon from "@mui/icons-material/Menu";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import SellIcon from "@mui/icons-material/Sell";
+import UpgradeIcon from "@mui/icons-material/Upgrade";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 import GenericActivateForm from "../../../../forms/misc/GenericActivateForm";
@@ -56,10 +57,7 @@ export default function CustomerTableActions(props) {
 
   return (
     <div>
-      <Button
-        size="small"
-        onClick={handleClick}
-      >
+      <Button size="small" onClick={handleClick}>
         <MenuIcon sx={{ color: "#888", mr: 3 }} />
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
@@ -111,11 +109,13 @@ export default function CustomerTableActions(props) {
 
           <ListItemButton onClick={(item) => handleConfirmActivate(item)}>
             <ListItemIcon>
-              <ArchiveIcon />
+            {props.sale.status === "Arquivado" ? <UpgradeIcon /> : <ArchiveIcon />}
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>Arquivar Cliente</Typography>
+                <Typography sx={{ fontSize: 14 }}>
+                  {selectedItem.isActive ? "Arquivar" : "Reativar"} Cliente
+                </Typography>
               }
               sx={{ ml: -3 }}
             />

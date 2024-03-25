@@ -20,6 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import UpgradeIcon from "@mui/icons-material/Upgrade";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 import GenericActivateForm from "../../../../forms/misc/GenericActivateForm";
@@ -123,11 +124,18 @@ export default function SaleTableActions(props) {
             onClick={(item) => handleConfirmActivate(item)}
           >
             <ListItemIcon>
-              <ArchiveIcon />
+              {props.sale.status === "Arquivado" ? (
+                <UpgradeIcon />
+              ) : (
+                <ArchiveIcon />
+              )}
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>Arquivar Venda</Typography>
+                <Typography sx={{ fontSize: 14 }}>
+                  {props.sale.status === "Arquivado" ? "Reativar" : "Arquivar"}{" "}
+                  Venda
+                </Typography>
               }
               sx={{ ml: -3 }}
             />

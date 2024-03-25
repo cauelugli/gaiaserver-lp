@@ -19,6 +19,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MenuIcon from "@mui/icons-material/Menu";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import UpgradeIcon from "@mui/icons-material/Upgrade";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 import GenericActivateForm from "../../../../forms/misc/GenericActivateForm";
@@ -95,11 +96,13 @@ export default function ManagerTableActions(props) {
           </ListItemButton>
           <ListItemButton onClick={(item) => handleConfirmActivate(item)}>
             <ListItemIcon>
-              <ArchiveIcon />
+            {props.sale.status === "Arquivado" ? <UpgradeIcon /> : <ArchiveIcon />}
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>Arquivar Gerente</Typography>
+                <Typography sx={{ fontSize: 14 }}>
+                  {selectedItem.isActive ? "Arquivar" : "Reativar"} Gerente
+                </Typography>
               }
               sx={{ ml: -3 }}
             />

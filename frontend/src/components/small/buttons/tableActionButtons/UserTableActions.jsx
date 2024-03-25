@@ -19,6 +19,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MenuIcon from "@mui/icons-material/Menu";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import UpgradeIcon from "@mui/icons-material/Upgrade";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 import GenericActivateForm from "../../../../forms/misc/GenericActivateForm";
@@ -73,9 +74,7 @@ export default function UserTableActions(props) {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>
-                  Ver Detalhes
-                </Typography>
+                <Typography sx={{ fontSize: 14 }}>Ver Detalhes</Typography>
               }
               sx={{ ml: -3 }}
             />
@@ -99,12 +98,16 @@ export default function UserTableActions(props) {
           </ListItemButton>
           <ListItemButton onClick={(item) => handleConfirmActivate(item)}>
             <ListItemIcon>
-              <ArchiveIcon />
+              {props.sale.status === "Arquivado" ? (
+                <UpgradeIcon />
+              ) : (
+                <ArchiveIcon />
+              )}
             </ListItemIcon>
             <ListItemText
               primary={
                 <Typography sx={{ fontSize: 14 }}>
-                  Arquivar Colaborador
+                  {selectedItem.isActive ? "Arquivar" : "Reativar"} Colaborador
                 </Typography>
               }
               sx={{ ml: -3 }}

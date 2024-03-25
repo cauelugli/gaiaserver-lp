@@ -246,7 +246,7 @@ router.put("/activate/:id", async (req, res) => {
       jobId,
       {
         isActive: req.body.isActive,
-        status: "Arquivado",
+        status: req.body.status,
       },
       { new: true }
     );
