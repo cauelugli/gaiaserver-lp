@@ -42,6 +42,7 @@ const api = axios.create({
 export default function ClientTable({
   user,
   configCustomization,
+  configAgenda,
   refreshData,
   setRefreshData,
   searchOption,
@@ -256,6 +257,7 @@ export default function ClientTable({
                     >
                       <CustomerTableActions
                         user={user}
+                        configAgenda={configAgenda}
                         setOpenEdit={setOpenEdit}
                         selectedItem={selectedClient}
                         refreshData={refreshData}

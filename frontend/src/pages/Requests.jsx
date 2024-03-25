@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -43,7 +44,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Requests({ user, configTables }) {
+export default function Requests({ user, configTables, configAgenda }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
@@ -263,6 +264,7 @@ export default function Requests({ user, configTables }) {
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
+            configAgenda={configAgenda}
             toast={toast}
           />
         </Dialog>

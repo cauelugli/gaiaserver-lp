@@ -54,7 +54,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Customers({ user, configTables }) {
+export default function Customers({ user, configTables, configAgenda }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
@@ -164,6 +164,7 @@ export default function Customers({ user, configTables }) {
           setOpenAddClient={setOpenAddClient}
           setOpenImportContacts={setOpenImportContacts}
           configCustomization={configCustomization}
+          configAgenda={configAgenda}
         />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -214,6 +215,7 @@ export default function Customers({ user, configTables }) {
                 user={user}
                 configCustomization={configCustomization}
                 configData={config}
+                configAgenda={configAgenda}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
                 searchValue={searchValue}
@@ -245,6 +247,7 @@ export default function Customers({ user, configTables }) {
 
               <ClientTable
                 user={user}
+                configAgenda={configAgenda}
                 configCustomization={configCustomization}
                 configData={config}
                 refreshData={refreshData}

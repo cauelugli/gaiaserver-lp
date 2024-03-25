@@ -257,6 +257,7 @@ export default function App() {
                       hasPermission(userData, configData, "customers") ? (
                         <Customers
                           user={userData}
+                          configAgenda={configAgenda}
                           configTables={configTables}
                         />
                       ) : isAuthenticated(login, userData) ? (
@@ -325,7 +326,7 @@ export default function App() {
                     element={
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "requests") ? (
-                        <Requests user={userData} configTables={configTables} />
+                        <Requests user={userData} configTables={configTables} configAgenda={configAgenda}/>
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
                           Seu usuário não possui autorização à página.

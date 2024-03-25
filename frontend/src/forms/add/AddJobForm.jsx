@@ -46,6 +46,7 @@ const api = axios.create({
 
 const AddJobForm = ({
   user,
+  configAgenda,
   selectedItem,
   openAddJob,
   setOpenAddJob,
@@ -166,8 +167,10 @@ const AddJobForm = ({
   };
 
   const generateScheduleOptions = () => {
-    const workingHoursStart = 8;
-    const workingHoursEnd = 17;
+
+    const workingHoursStart = configAgenda.minTime;
+    const workingHoursEnd = configAgenda.maxTime;
+
     const executionTimeHours = service.executionTime;
 
     const dayEvents = [];
