@@ -130,21 +130,26 @@ export default function ViewUserDetails(props) {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center" sx={{width:300}}>
+                    <TableCell align="center" sx={{ width: 300 }}>
                       <Typography sx={{ fontSize: "14px", color: "#777" }}>
                         Departamento
                       </Typography>
                     </TableCell>
-                    <TableCell align="center" sx={{width:300}}>
+                    <TableCell align="center" sx={{ width: 300 }}>
                       <Typography sx={{ fontSize: "14px", color: "#777" }}>
                         Cargo
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center" sx={{ width: 300 }}>
+                      <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                        Grupos
                       </Typography>
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                  <TableCell align="center" sx={{width:300}}>
+                    <TableCell align="center" sx={{ width: 300 }}>
                       <Typography>
                         {props.selectedUser.department ? (
                           <Grid
@@ -174,11 +179,18 @@ export default function ViewUserDetails(props) {
                         )}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center" sx={{width:300}}>
+                    <TableCell align="center" sx={{ width: 300 }}>
                       <Typography>
                         {props.selectedUser.position &&
                           props.selectedUser.position.name}
                         {props.manager && "Gerente"}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center" sx={{ width: 300 }}>
+                      <Typography>
+                        {props.selectedUser.groups.length > 0
+                          ? props.selectedUser.groups.map((group) => group.name)
+                          : "-"}
                       </Typography>
                     </TableCell>
                   </TableRow>
