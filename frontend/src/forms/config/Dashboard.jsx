@@ -126,7 +126,7 @@ export default function Dashboard({ onClose }) {
                         }
                       />
                     </RadioGroup>
-                  </Grid>{" "}
+                  </Grid>
                 </AccordionDetails>
               </Accordion>
               {/* <Accordion sx={{ width: "100%", mt: 2 }}> */}
