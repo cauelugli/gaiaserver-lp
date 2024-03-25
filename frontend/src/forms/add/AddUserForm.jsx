@@ -131,7 +131,7 @@ const AddUserForm = ({
     <form onSubmit={handleAdd}>
       <DialogHeader title="Colaborador" femaleGender={false} />
       <DialogContent>
-        <Grid container direction="column" justifyContent="flex-start">
+        <Grid container direction="column">
           <Grid item>
             <Grid
               container
@@ -153,7 +153,7 @@ const AddUserForm = ({
                 <Avatar
                   alt="Imagem do Usuário"
                   value={image}
-                  sx={{ width: 200, height: 200, cursor: "pointer" }}
+                  sx={{ width: 160, height: 160, cursor: "pointer" }}
                   onClick={handleImageClick}
                 >
                   {image ? (
@@ -181,7 +181,7 @@ const AddUserForm = ({
               )}
             </Grid>
           </Grid>
-          <Grid item>
+          <Grid item sx={{ mt: 1 }}>
             <Grid container>
               <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
                 Informações Pessoais

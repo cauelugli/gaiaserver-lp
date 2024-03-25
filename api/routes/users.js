@@ -36,6 +36,8 @@ router.post("/", async (req, res) => {
       image: req.body.image,
       position: req.body.position,
       role: req.body.role,
+      birthdate: req.body.birthdate,
+      gender: req.body.gender,
     });
     const savedUser = await newUser.save();
 
