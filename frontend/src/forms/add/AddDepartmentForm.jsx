@@ -115,66 +115,70 @@ const AddDepartmentForm = ({
     <form onSubmit={handleAdd}>
       <DialogHeader title="Departamento" femaleGender={false} />
       <DialogContent>
-        <Grid container sx={{ mb: 1 }}>
-          <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
-            Informações
-          </Typography>
-          <CheckCircleOutlineOutlinedIcon
-            sx={{
-              color:
-                name && email && phone && description ? "#50C878" : "lightgrey",
-              ml: 1,
-            }}
-          />
-        </Grid>
-        <Grid container direction="row">
-          <Grid item sx={{ mt: 1 }}>
-            <TextField
-              size="small"
-              label="Nome do Departamento"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              sx={{ width: 320 }}
-            />
-          </Grid>
-          <Grid item sx={{ m: 1, opacity: name ? 1 : 0 }}>
-            <TextField
-              value={email}
-              size="small"
-              label="E-mail do Departamento"
-              required
-              onChange={(e) => setEmail(e.target.value)}
-              sx={{ width: 300 }}
-            />
-          </Grid>
-          <Grid item sx={{ mt: 1, opacity: email ? 1 : 0 }}>
-            <IMaskInput
-              style={{
-                padding: "6%",
-                borderColor: "#eee",
-                borderRadius: 4,
+        <>
+          <Grid container sx={{ mb: 1 }}>
+            <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
+              Informações
+            </Typography>
+            <CheckCircleOutlineOutlinedIcon
+              sx={{
+                color:
+                  name && email && phone && description
+                    ? "#50C878"
+                    : "lightgrey",
+                ml: 1,
               }}
-              mask="(00) 0000-0000"
-              placeholder="Telefone: (00) 0000-0000"
-              definitions={{
-                "#": /[1-9]/,
-              }}
-              onAccept={(value) => setPhone(value)}
-              overwrite
-              value={phone}
             />
           </Grid>
-        </Grid>
-        <Grid item sx={{ opacity: phone ? 1 : 0 }}>
-          <TextField
-            value={description}
-            size="small"
-            label="Descrição"
-            onChange={(e) => setDescription(e.target.value)}
-            sx={{ my: 2, width: "100%" }}
-          />
-        </Grid>
+          <Grid container direction="row">
+            <Grid item sx={{ mt: 1 }}>
+              <TextField
+                size="small"
+                label="Nome do Departamento"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                sx={{ width: 320 }}
+              />
+            </Grid>
+            <Grid item sx={{ m: 1, opacity: name ? 1 : 0 }}>
+              <TextField
+                value={email}
+                size="small"
+                label="E-mail do Departamento"
+                required
+                onChange={(e) => setEmail(e.target.value)}
+                sx={{ width: 300 }}
+              />
+            </Grid>
+            <Grid item sx={{ mt: 1, opacity: email ? 1 : 0 }}>
+              <IMaskInput
+                style={{
+                  padding: "6%",
+                  borderColor: "#eee",
+                  borderRadius: 4,
+                }}
+                mask="(00) 0000-0000"
+                placeholder="Telefone: (00) 0000-0000"
+                definitions={{
+                  "#": /[1-9]/,
+                }}
+                onAccept={(value) => setPhone(value)}
+                overwrite
+                value={phone}
+              />
+            </Grid>
+          </Grid>
+          <Grid item sx={{ opacity: phone ? 1 : 0 }}>
+            <TextField
+              value={description}
+              size="small"
+              label="Descrição"
+              onChange={(e) => setDescription(e.target.value)}
+              sx={{ my: 2, width: "100%" }}
+            />
+          </Grid>
+        </>
 
         {name && email && phone && description && (
           <Grid sx={{ mt: 2 }}>
@@ -365,12 +369,12 @@ const AddDepartmentForm = ({
                     anchorEl={anchorEl}
                     onClose={() => setAnchorEl(null)}
                     anchorOrigin={{
-                      vertical: 'center',
-                      horizontal: 'right',
+                      vertical: "center",
+                      horizontal: "right",
                     }}
                     transformOrigin={{
-                      vertical: 'center',
-                      horizontal: 'left',
+                      vertical: "center",
+                      horizontal: "left",
                     }}
                   >
                     <SketchPicker
