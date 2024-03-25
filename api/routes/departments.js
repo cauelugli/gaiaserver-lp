@@ -32,66 +32,7 @@ router.post("/", async (req, res) => {
   let updatedManager;
   let updatedMembers = [];
 
-  // CREATES A NEW MANAGER, IF SELECTED IN FRONTEND
-  // MUST DO IT FIRST BECAUSE WE NEED THE MANAGER._ID PROP
-  // WHICH CAN ONLY BE ACHIEVED BY CREATING THE MANAGER ON DB
-  if (req.body.newManagerData.name !== "") {
-    const newManager = new Manager({
-      name: req.body.newManagerData.name,
-      email: req.body.newManagerData.email,
-      phone: req.body.newManagerData.phone,
-    });
-    const newDepartment = new Department({
-      name: req.body.name,
-      type: req.body.type,
-      description: req.body.description,
-      phone: req.body.phone,
-      email: req.body.email,
-      color: req.body.color,
-      members: req.body.members,
-      manager: newManager,
-    });
-    try {
-      updatedManager = await newManager.save();
-      savedDepartment = await newDepartment.save();
-
-      // UPDATING MEMBERS
-      const memberIds = req.body.members.map((member) => member.id);
-
-      for (const memberId of memberIds) {
-        const updatedMember = await User.updateOne(
-          { _id: memberId },
-          {
-            $set: {
-              "department.id": savedDepartment._id,
-              "department.name": savedDepartment.name,
-              "department.phone": savedDepartment.phone,
-              "department.email": savedDepartment.email,
-              "department.color": savedDepartment.color,
-            },
-          }
-        );
-        updatedMembers.push(updatedMember);
-      }
-
-      // UPDATING MANAGER, IF SELECTED
-      updatedManager = await Manager.findOneAndUpdate(
-        { _id: savedDepartment.manager._id },
-        {
-          $set: {
-            "department.id": savedDepartment._id,
-            "department.name": savedDepartment.name,
-            "department.phone": savedDepartment.phone,
-            "department.email": savedDepartment.email,
-            "department.color": savedDepartment.color,
-          },
-        }
-      );
-      res.status(200).json({ savedDepartment, updatedMembers, updatedManager });
-    } catch (err) {
-      console.log(err);
-    }
-  } else if (!req.body.manager) {
+  if (!req.body.manager) {
     const newDepartment = new Department({
       name: req.body.name,
       type: req.body.type,

@@ -4,15 +4,15 @@ import axios from "axios";
 
 import {
   Button,
-  Checkbox,
   DialogActions,
   DialogContent,
-  Divider,
   FormControl,
   FormControlLabel,
   Grid,
   ListSubheader,
   MenuItem,
+  Paper,
+  Popover,
   Radio,
   RadioGroup,
   Select,
@@ -20,11 +20,13 @@ import {
   Typography,
 } from "@mui/material";
 
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+
 import { IMaskInput } from "react-imask";
-import ColorPicker from "../../components/small/ColorPicker";
 import Members from "../../components/small/Members";
 import DialogHeader from "../../components/small/DialogHeader";
 import FormEndLineTenant from "../../components/small/FormEndLineTenant";
+import { SketchPicker } from "react-color";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -47,31 +49,9 @@ const AddDepartmentForm = ({
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [manager, setManager] = React.useState(null);
-  const [managerName, setManagerName] = React.useState("");
-  const [managerEmail, setManagerEmail] = React.useState("");
-  const [managerPhone, setManagerPhone] = React.useState("");
   const [selectedUsers, setSelectedUsers] = React.useState([]);
   const [color, setColor] = React.useState("#ffffff");
-  const [colorAnchorEl, setColorAnchorEl] = React.useState(null);
-  const [newManager, setNewManager] = React.useState(false);
-
-  const handleNewManager = (event) => {
-    setNewManager(event.target.checked);
-    setManager({})
-  };
-
-  const handleClickColor = (event) => {
-    setColorAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseColor = () => {
-    setColorAnchorEl(null);
-  };
-
-  const handleChangeColor = (selectedColor) => {
-    setColor(selectedColor.hex);
-    handleCloseColor();
-  };
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -100,11 +80,6 @@ const AddDepartmentForm = ({
         email,
         color,
         manager,
-        newManagerData: {
-          name: managerName,
-          phone: managerPhone,
-          email: managerEmail,
-        },
         members: membersData,
       });
       if (res.data) {
@@ -140,41 +115,48 @@ const AddDepartmentForm = ({
     <form onSubmit={handleAdd}>
       <DialogHeader title="Departamento" femaleGender={false} />
       <DialogContent>
-        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
-          Geral
-        </Typography>
+        <Grid container sx={{ mb: 1 }}>
+          <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
+            Informações
+          </Typography>
+          <CheckCircleOutlineOutlinedIcon
+            sx={{
+              color:
+                name && email && phone && description ? "#50C878" : "lightgrey",
+              ml: 1,
+            }}
+          />
+        </Grid>
         <Grid container direction="row">
-          <Grid item>
+          <Grid item sx={{ mt: 1 }}>
             <TextField
               size="small"
               label="Nome do Departamento"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              sx={{ mr: 1, mt: 3, width: 320 }}
+              sx={{ width: 320 }}
             />
           </Grid>
-          <Grid item>
+          <Grid item sx={{ m: 1, opacity: name ? 1 : 0 }}>
             <TextField
               value={email}
               size="small"
               label="E-mail do Departamento"
               required
               onChange={(e) => setEmail(e.target.value)}
-              sx={{ mr: 1, mt: 3, width: 300 }}
+              sx={{ width: 300 }}
             />
           </Grid>
-          <Grid item>
-            <Typography>Telefone</Typography>
+          <Grid item sx={{ mt: 1, opacity: email ? 1 : 0 }}>
             <IMaskInput
               style={{
-                padding: "5%",
-                marginRight: "4%",
-                marginBottom: "1%",
+                padding: "6%",
                 borderColor: "#eee",
                 borderRadius: 4,
               }}
               mask="(00) 0000-0000"
+              placeholder="Telefone: (00) 0000-0000"
               definitions={{
                 "#": /[1-9]/,
               }}
@@ -184,7 +166,7 @@ const AddDepartmentForm = ({
             />
           </Grid>
         </Grid>
-        <Grid item>
+        <Grid item sx={{ opacity: phone ? 1 : 0 }}>
           <TextField
             value={description}
             size="small"
@@ -194,221 +176,216 @@ const AddDepartmentForm = ({
           />
         </Grid>
 
-        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
-          Tipo de Departamento
-        </Typography>
-        <Grid container direction="row" justifyContent="center" sx={{ py: 1 }}>
-          <FormControl>
-            <RadioGroup
-              row
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              sx={{ alignItems: "center" }}
+        {name && email && phone && description && (
+          <Grid sx={{ mt: 2 }}>
+            <Grid container>
+              <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
+                Tipo de Departamento
+              </Typography>
+              <CheckCircleOutlineOutlinedIcon sx={{ color: "#50C878", m: 1 }} />
+            </Grid>
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              sx={{ py: 1 }}
             >
-              <Grid item>
-                <Grid container direction="column" alignItems="center">
-                  <FormControlLabel
-                    value="Serviços"
-                    control={<Radio />}
-                    label="Serviços"
-                  />
-                  <Typography sx={{ fontSize: 10, color: "#777" }}>
-                    Prestadores de Serviços e Atendimentos
-                  </Typography>
-                  <Typography
-                    sx={{ fontSize: 10, fontWeight: "bold", color: "#777" }}
-                  >
-                    Não realizam Vendas
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Grid item sx={{ mx: 6 }}>
-                <Grid container direction="column" alignItems="center">
-                  <FormControlLabel
-                    value="Vendas"
-                    control={<Radio />}
-                    label="Vendas"
-                  />
-                  <Typography sx={{ fontSize: 10, color: "#777" }}>
-                    Setor de Vendas
-                  </Typography>
-                  <Typography
-                    sx={{ fontSize: 10, fontWeight: "bold", color: "#777" }}
-                  >
-                    Não realizam Serviços
-                  </Typography>{" "}
-                </Grid>
-              </Grid>
-              <Grid item>
-                <Grid container direction="column" alignItems="center">
-                  <FormControlLabel
-                    value="Interno"
-                    control={<Radio />}
-                    label="Interno"
-                  />
-                  <Typography sx={{ fontSize: 10, color: "#777" }}>
-                    Administração da Empresa
-                  </Typography>
-                  <Typography
-                    sx={{ fontSize: 10, fontWeight: "bold", color: "#777" }}
-                  >
-                    Não realizam Serviços nem Vendas
-                  </Typography>{" "}
-                </Grid>
-              </Grid>
-            </RadioGroup>
-          </FormControl>
-        </Grid>
-
-        <Grid item>
-          <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
-            Membros
-          </Typography>
-          <Members
-            users={users.filter((user) => !user.department)}
-            value={selectedUsers}
-            onChange={setSelectedUsers}
-            option="department"
-          />
-        </Grid>
-
-        <Divider sx={{ mt: 2, mb: 1 }} />
-        <Grid
-          container
-          direction="row"
-          justifyContent="space-between"
-          width="50%"
-        >
-          <Grid item>
-            <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
-              Gerência
-            </Typography>
-          </Grid>
-          <Grid item>
-            <label style={{ fontSize: 13, fontFamily: "Verdana, sans-serif" }}>
-              Novo Gerente
-            </label>
-            <Checkbox
-              checked={newManager}
-              onChange={handleNewManager}
-              inputProps={{ "aria-label": "controlled" }}
-            />
-          </Grid>
-          {newManager ? (
-            <Grid container direction="row">
-              <Grid item>
-                <TextField
-                  label="Nome do Gerente"
-                  value={managerName}
-                  size="small"
-                  onChange={(e) => setManagerName(e.target.value)}
-                  variant="outlined"
-                  sx={{ mt: 1, width: 300 }}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  label="E-mail Gerente"
-                  value={managerEmail}
-                  size="small"
-                  onChange={(e) => setManagerEmail(e.target.value)}
-                  variant="outlined"
-                  sx={{ mt: 1, width: 300 }}
-                />
-              </Grid>
-              <Grid item sx={{ mt: 1, mr: 2 }}>
-                <Typography>Telefone</Typography>
-                <IMaskInput
-                  style={{
-                    padding: "5%",
-                    marginRight: "6%",
-                    marginBottom: "1%",
-                    borderColor: "#eee",
-                    borderRadius: 4,
-                  }}
-                  mask="(00) 00000-0000"
-                  definitions={{
-                    "#": /[1-9]/,
-                  }}
-                  onAccept={(value) => setManagerPhone(value)}
-                  overwrite
-                  value={managerPhone}
-                />
-              </Grid>
-            </Grid>
-          ) : (
-            <Grid container direction="row">
-              <Grid item>
-                <Select
-                  size="small"
-                  onChange={(e) => setManager(e.target.value)}
-                  value={manager}
-                  renderValue={(selected) => selected.name}
+              <FormControl>
+                <RadioGroup
+                  row
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                  sx={{ alignItems: "center" }}
                 >
-                  <ListSubheader sx={{ color: "green", m: -1 }}>
-                    Disponíveis
-                  </ListSubheader>
-                  {managers
-                    .filter((manager) => !manager.department)
-                    .map((manager) => (
-                      <MenuItem
-                        value={manager}
-                        key={manager._id}
-                        sx={{ fontSize: "100%" }}
+                  <Grid item>
+                    <Grid container direction="column" alignItems="center">
+                      <FormControlLabel
+                        value="Serviços"
+                        control={<Radio />}
+                        label="Serviços"
+                      />
+                      <Typography sx={{ fontSize: 10, color: "#777" }}>
+                        Prestadores de Serviços e Atendimentos
+                      </Typography>
+                      <Typography
+                        sx={{ fontSize: 10, fontWeight: "bold", color: "#777" }}
                       >
-                        {manager.name}
-                      </MenuItem>
-                    ))}
-                  <ListSubheader sx={{ color: "red", m: -1, mt: 0 }}>
-                    Alocados
-                  </ListSubheader>
-                  {managers
-                    .filter((manager) => manager.department)
-                    .map((manager) => (
-                      <MenuItem
-                        disabled
-                        value={manager}
-                        key={manager._id}
-                        sx={{ fontSize: "100%" }}
+                        Não realizam Vendas
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid item sx={{ mx: 6 }}>
+                    <Grid container direction="column" alignItems="center">
+                      <FormControlLabel
+                        value="Vendas"
+                        control={<Radio />}
+                        label="Vendas"
+                      />
+                      <Typography sx={{ fontSize: 10, color: "#777" }}>
+                        Setor de Vendas
+                      </Typography>
+                      <Typography
+                        sx={{ fontSize: 10, fontWeight: "bold", color: "#777" }}
                       >
-                        {manager.name}
-                      </MenuItem>
-                    ))}
-                </Select>
-              </Grid>
+                        Não realizam Serviços
+                      </Typography>{" "}
+                    </Grid>
+                  </Grid>
+                  <Grid item>
+                    <Grid container direction="column" alignItems="center">
+                      <FormControlLabel
+                        value="Interno"
+                        control={<Radio />}
+                        label="Interno"
+                      />
+                      <Typography sx={{ fontSize: 10, color: "#777" }}>
+                        Administração da Empresa
+                      </Typography>
+                      <Typography
+                        sx={{ fontSize: 10, fontWeight: "bold", color: "#777" }}
+                      >
+                        Não realizam Serviços nem Vendas
+                      </Typography>{" "}
+                    </Grid>
+                  </Grid>
+                </RadioGroup>
+              </FormControl>
             </Grid>
-          )}
-        </Grid>
+          </Grid>
+        )}
 
-        <Divider sx={{ my: 2 }} />
-
-        <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
-          Personalização
-        </Typography>
-        <Grid container direction="row" justifyContent="center">
-          <Grid item>
-            <Typography>Cor</Typography>
-            <ColorPicker
-              handleClickColor={handleClickColor}
-              color={color}
-              colorAnchorEl={colorAnchorEl}
-              handleCloseColor={handleCloseColor}
-              handleChangeColor={handleChangeColor}
+        {name && email && phone && description && (
+          <Grid sx={{ mt: 2 }}>
+            <Grid container>
+              <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
+                Membros
+              </Typography>
+              <CheckCircleOutlineOutlinedIcon
+                sx={{
+                  color: selectedUsers.length > 0 ? "#50C878" : "lightgrey",
+                  m: 1,
+                }}
+              />
+            </Grid>
+            <Members
+              users={users.filter((user) => !user.department)}
+              value={selectedUsers}
+              onChange={setSelectedUsers}
+              option="department"
             />
           </Grid>
-          {/* <Grid item sx={{ mr: "20%" }}>
-            <Typography>Ícone</Typography>
-            <IconPicker
-              handleClickIcon={handleClickIcon}
-              icon={icon}
-              iconAnchorEl={iconAnchorEl}
-              handleCloseIcon={handleCloseIcon}
-              handleChangeIcon={handleChangeIcon}
-            />
-          </Grid> */}
-        </Grid>
+        )}
+
+        {name && email && phone && description && (
+          <Grid sx={{ my: 3 }}>
+            <Grid container>
+              <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
+                Gerência
+              </Typography>
+              <CheckCircleOutlineOutlinedIcon
+                sx={{
+                  color: selectedUsers.length > 0 ? "#50C878" : "lightgrey",
+                  m: 1,
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <Select
+                size="small"
+                onChange={(e) => setManager(e.target.value)}
+                value={manager}
+                renderValue={(selected) => {
+                  if (!selected) {
+                    return <Typography>Selecione um Gerente</Typography>;
+                  }
+                  return selected.name;
+                }}
+              >
+                <ListSubheader sx={{ color: "green", m: -1 }}>
+                  Disponíveis
+                </ListSubheader>
+                {managers
+                  .filter((manager) => !manager.department)
+                  .map((manager) => (
+                    <MenuItem
+                      value={manager}
+                      key={manager._id}
+                      sx={{ fontSize: "100%" }}
+                    >
+                      {manager.name}
+                    </MenuItem>
+                  ))}
+                <ListSubheader sx={{ color: "red", m: -1, mt: 0 }}>
+                  Alocados
+                </ListSubheader>
+                {managers
+                  .filter((manager) => manager.department)
+                  .map((manager) => (
+                    <MenuItem
+                      disabled
+                      value={manager}
+                      key={manager._id}
+                      sx={{ fontSize: "100%" }}
+                    >
+                      {manager.name}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </Grid>
+          </Grid>
+        )}
+
+        {name && email && phone && description && (
+          <Grid sx={{ mt: 2 }}>
+            <Grid container>
+              <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
+                Personalização
+              </Typography>
+              <CheckCircleOutlineOutlinedIcon
+                sx={{
+                  color: color !== "#ffffff" ? "#50C878" : "lightgrey",
+                  m: 1,
+                }}
+              />
+            </Grid>
+            <Grid container direction="row" justifyContent="center">
+              <Grid item>
+                <>
+                  <Paper
+                    sx={{
+                      width: 64,
+                      height: 64,
+                      backgroundColor: color,
+                      borderRadius: 40,
+                    }}
+                    onClick={(e) => setAnchorEl(e.currentTarget)}
+                  />
+                  <Popover
+                    open={Boolean(anchorEl)}
+                    anchorEl={anchorEl}
+                    onClose={() => setAnchorEl(null)}
+                    anchorOrigin={{
+                      vertical: 'center',
+                      horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                      vertical: 'center',
+                      horizontal: 'left',
+                    }}
+                  >
+                    <SketchPicker
+                      color={"white"}
+                      onChange={(color) => setColor(color.hex)}
+                      disableAlpha
+                    />
+                  </Popover>
+                </>
+              </Grid>
+            </Grid>
+          </Grid>
+        )}
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization}/>
+      <FormEndLineTenant configCustomization={configCustomization} />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK
