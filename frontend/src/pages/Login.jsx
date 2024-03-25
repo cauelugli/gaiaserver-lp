@@ -16,8 +16,11 @@ const api = axios.create({
 });
 
 const Login = () => {
+  const [loginOrNew, setLoginOrNew] = useState(true);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleTry = async (e) => {
@@ -64,13 +67,45 @@ const Login = () => {
     }
   };
 
+  const handleTryNew = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const res = await api.post("/new", {
+        username,
+        password,
+        email,
+      });
+      if (res.data) {
+        toast.success("Usuário Criado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 2000,
+        });
+      }
+    } catch (err) {
+      setLoading(false);
+      if (err.response && err.response.status === 422) {
+        toast.error(err.response.data.error, {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+        setLoginOrNew(true);
+        setPassword("");
+      }
+    }
+  };
+
   return (
     <Grid
       container
       direction="row"
       alignItems="center"
       justifyContent="space-evenly"
-      sx={{ mt: "10%", ml: "5em" }}
+      sx={{ mt: loginOrNew ? "10%" : "5%", ml: "5em" }}
     >
       <Grid
         container
@@ -107,36 +142,102 @@ const Login = () => {
             <CircularProgress color="inherit" sx={{ mb: 6, pb: 20 }} />
           </div>
         ) : (
-          <form onSubmit={handleTry}>
-            <Grid container direction="column" sx={{ mt: 8 }}>
-              <TextField
-                size="small"
-                required
-                label="Usuário"
-                variant="standard"
-                sx={{ mb: 1 }}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-              <TextField
-                size="small"
-                required
-                label="Senha"
-                variant="standard"
-                type="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{ mt: 3, mb: 6, width: "50%", backgroundColor: "#32aacd" }}
-              >
-                Login
-              </Button>
-            </Grid>
-          </form>
+          <>
+            {loginOrNew ? (
+              <form onSubmit={handleTry}>
+                <Grid
+                  container
+                  direction="column"
+                  alignItems="center"
+                  sx={{ mt: 8 }}
+                >
+                  <TextField
+                    size="small"
+                    required
+                    label="Usuário"
+                    variant="standard"
+                    sx={{ mb: 1 }}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                  <TextField
+                    size="small"
+                    required
+                    label="Senha"
+                    variant="standard"
+                    type="password"
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                      mt: 3,
+                      mb: 6,
+                      width: "50%",
+                      backgroundColor: "#32aacd",
+                    }}
+                  >
+                    Login
+                  </Button>
+                </Grid>
+              </form>
+            ) : (
+              <form onSubmit={handleTryNew}>
+                <Grid
+                  container
+                  direction="column"
+                  alignItems="center"
+                  sx={{ mt: 8 }}
+                >
+                  <TextField
+                    size="small"
+                    disabled
+                    label="Usuário"
+                    variant="standard"
+                    value="admin"
+                  />
+                  <TextField
+                    sx={{ my: 1 }}
+                    size="small"
+                    required
+                    label="Senha"
+                    variant="standard"
+                    type="password"
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <TextField
+                    size="small"
+                    required
+                    label="E-mail"
+                    variant="standard"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                      mt: 2,
+                      backgroundColor: "#32aacd",
+                    }}
+                  >
+                    Registrar
+                  </Button>
+                </Grid>
+              </form>
+            )}
+            <Typography
+              onClick={() => setLoginOrNew(!loginOrNew)}
+              sx={{ mt: 3, mb: 2, cursor: "pointer", color: "#5F9EA0" }}
+            >
+              {loginOrNew ? "+ criar novo" : "realizar login"}
+            </Typography>
+          </>
         )}
       </Grid>
     </Grid>

@@ -7,6 +7,7 @@ const server = http.createServer(app);
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+const newRoute = require("./routes/new");
 const authRoute = require("./routes/auth");
 const configRoute = require("./routes/config");
 const clientRoute = require("./routes/clients");
@@ -46,6 +47,7 @@ mongoose
   .then(console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 
+app.use("/api/new", newRoute);
 app.use("/api/login", authRoute);
 app.use("/api/config", configRoute);
 app.use("/api/clients", clientRoute);
