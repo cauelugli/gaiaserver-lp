@@ -98,16 +98,12 @@ export default function UserTableActions(props) {
           </ListItemButton>
           <ListItemButton onClick={(item) => handleConfirmActivate(item)}>
             <ListItemIcon>
-              {props.sale.status === "Arquivado" ? (
-                <UpgradeIcon />
-              ) : (
-                <ArchiveIcon />
-              )}
+              {props.user.isActive ? <ArchiveIcon /> : <UpgradeIcon />}
             </ListItemIcon>
             <ListItemText
               primary={
                 <Typography sx={{ fontSize: 14 }}>
-                  {selectedItem.isActive ? "Arquivar" : "Reativar"} Colaborador
+                  {props.user.isActive ? "Arquivar" : "Reativar"} Colaborador
                 </Typography>
               }
               sx={{ ml: -3 }}
@@ -162,7 +158,9 @@ export default function UserTableActions(props) {
             endpoint="users/activate"
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
-            } Arquivado com Sucesso`}
+            } ${
+              props.selectedItem.isActive ? "Arquivado" : "Reativado"
+            } com Sucesso`}
           />
         </Dialog>
       )}

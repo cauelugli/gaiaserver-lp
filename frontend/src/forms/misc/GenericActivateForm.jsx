@@ -21,8 +21,8 @@ const GenericActivateForm = ({
   const handleIActivate = async () => {
     try {
       const res = await api.put(`/${endpoint}/${selectedItem._id}`, {
-        isActive: selectedItem.isActive ? !selectedItem.isActive : false,
-        status: selectedItem.status === "Arquivado" ? "Aberto" : "Arquivado"
+        isActive: selectedItem.isActive ? false : true,
+        status: selectedItem.status === "Arquivado" ? "Aberto" : "Arquivado",
       });
       if (res.data) {
         toast.success(successMessage, {
@@ -42,7 +42,15 @@ const GenericActivateForm = ({
 
   return (
     <>
-      <DialogTitle>{`${selectedItem.status === "Arquivado" ? "Reativar" : "Arquivar"} ${
+      <DialogTitle>{`${
+        selectedItem.name
+          ? selectedItem.isActive
+            ? "Arquivar"
+            : "Reativar"
+          : selectedItem.status === "Arquivado"
+          ? "Reativar"
+          : "Arquivar"
+      } ${
         selectedItem.name || selectedItem.title || selectedItem.quoteNumber
       } ?`}</DialogTitle>
       <DialogContent>

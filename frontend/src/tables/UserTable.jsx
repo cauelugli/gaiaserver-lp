@@ -79,6 +79,10 @@ export default function UserTable({
       label: "Departamento",
     },
     {
+      id: "isActive",
+      label: "Ativo",
+    },
+    {
       id: "actions",
       label: "Ações",
     },
@@ -141,7 +145,7 @@ export default function UserTable({
           <Table>
             <TableRow
               sx={{
-                 backgroundColor: "#eee",
+                backgroundColor: "#eee",
               }}
             >
               <TableCell padding="checkbox"></TableCell>
@@ -256,12 +260,19 @@ export default function UserTable({
                         </Typography>
                       </TableCell>
 
+                      <TableCell align="center">
+                        <Typography sx={{ fontSize: 13 }}>
+                          {row.isActive ? "Sim" : "Não"}
+                        </Typography>
+                      </TableCell>
+
                       <TableCell
                         cursor="pointer"
                         align="center"
                         onClick={() => setSelectedUser(row)}
                       >
                         <UserTableActions
+                          user={row}
                           configData={configData}
                           setOpenEdit={setOpenEdit}
                           setOpenDetails={setOpenDetails}

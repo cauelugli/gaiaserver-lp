@@ -94,6 +94,10 @@ export default function CustomerTable({
       label: "Contato Principal",
     },
     {
+      id: "isActive",
+      label: "Ativo",
+    },
+    {
       id: "actions",
       label: "Ações",
     },
@@ -292,12 +296,22 @@ export default function CustomerTable({
                       </FormHelperText>
                     </TableCell>
                     <TableCell
+                      onClick={() => handleOpenDetail(customer)}
+                      cursor="pointer"
+                      align="left"
+                    >
+                      <Typography sx={{ fontSize: 13 }}>
+                        {customer.isActive ? "Sim" : "Não"}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
                       cursor="pointer"
                       // align="left"
                       onClick={() => setSelectedCustomer(customer)}
                     >
                       <CustomerTableActions
                         user={user}
+                        customer={customer}
                         configAgenda={configAgenda}
                         setOpenEdit={setOpenEdit}
                         selectedItem={selectedCustomer}

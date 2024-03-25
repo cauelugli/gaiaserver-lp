@@ -146,12 +146,17 @@ export default function JobTableActions(props) {
             onClick={(item) => handleConfirmActivate(item)}
           >
             <ListItemIcon>
-            {props.sale.status === "Arquivado" ? <UpgradeIcon /> : <ArchiveIcon />}
+              {props.job.status === "Arquivado" ? (
+                <UpgradeIcon />
+              ) : (
+                <ArchiveIcon />
+              )}
             </ListItemIcon>
             <ListItemText
               primary={
                 <Typography sx={{ fontSize: 14 }}>
-                  {selectedItem.isActive ? "Arquivar" : "Reativar"} Job
+                  {props.job.status === "Arquivado" ? "Reativar" : "Arquivar"}{" "}
+                  Job
                 </Typography>
               }
               sx={{ ml: -3 }}
@@ -224,7 +229,9 @@ export default function JobTableActions(props) {
             endpoint="jobs/activate"
             successMessage={`${
               props.selectedItem.title && props.selectedItem.title
-            } Arquivado com Sucesso`}
+            } ${
+              props.selectedItem.isActive ? "Arquivado" : "Reativado"
+            } com Sucesso`}
           />
         </Dialog>
       )}

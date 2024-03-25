@@ -73,6 +73,10 @@ export default function ManagerTable({
       label: "Departamento",
     },
     {
+      id: "isActive",
+      label: "Ativo",
+    },
+    {
       id: "actions",
       label: "Ações",
     },
@@ -215,12 +219,19 @@ export default function ManagerTable({
                       )}
                     </Typography>
                   </TableCell>
+
+                  <TableCell align="center">
+                    <Typography sx={{ fontSize: 13 }}>
+                      {row.isActive ? "Sim" : "Não"}
+                    </Typography>
+                  </TableCell>
                   <TableCell
                     cursor="pointer"
                     align="center"
                     onClick={() => setSelectedManager(row)}
                   >
                     <ManagerTableActions
+                      user={row}
                       configData={configData}
                       setOpenEdit={setOpenEdit}
                       setOpenDetails={setOpenDetails}

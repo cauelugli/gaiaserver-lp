@@ -76,11 +76,6 @@ export default function ClientTable({
     setSelectedClient(client.name);
   };
 
-  const handleOpenEdit = (client) => {
-    setOpenEdit(!openEdit);
-    setSelectedClient(client);
-  };
-
   const tableHeaderRow = [
     {
       id: "name",
@@ -93,6 +88,10 @@ export default function ClientTable({
     {
       id: "phone",
       label: "Telefone",
+    },
+    {
+      id: "isActive",
+      label: "Ativo",
     },
     {
       id: "actions",
@@ -251,12 +250,21 @@ export default function ClientTable({
                       </Typography>
                     </TableCell>
                     <TableCell
+                      onClick={() => handleOpenDetail(client)}
+                      cursor="pointer"
+                    >
+                      <Typography sx={{ fontSize: 13 }}>
+                        {client.isActive ? "Sim" : "Não"}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
                       cursor="pointer"
                       align="left"
                       onClick={() => setSelectedClient(client)}
                     >
                       <CustomerTableActions
                         user={user}
+                        customer={client}
                         configAgenda={configAgenda}
                         setOpenEdit={setOpenEdit}
                         selectedItem={selectedClient}

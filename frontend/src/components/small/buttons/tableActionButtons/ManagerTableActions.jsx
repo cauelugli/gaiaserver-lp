@@ -96,12 +96,12 @@ export default function ManagerTableActions(props) {
           </ListItemButton>
           <ListItemButton onClick={(item) => handleConfirmActivate(item)}>
             <ListItemIcon>
-            {props.sale.status === "Arquivado" ? <UpgradeIcon /> : <ArchiveIcon />}
+              {props.user.isActive ? <ArchiveIcon /> : <UpgradeIcon />}
             </ListItemIcon>
             <ListItemText
               primary={
                 <Typography sx={{ fontSize: 14 }}>
-                  {selectedItem.isActive ? "Arquivar" : "Reativar"} Gerente
+                  {props.user.isActive ? "Arquivar" : "Reativar"} Gerente
                 </Typography>
               }
               sx={{ ml: -3 }}
@@ -154,7 +154,9 @@ export default function ManagerTableActions(props) {
             endpoint="managers/activate"
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
-            } Arquivado com Sucesso`}
+            } ${
+              props.selectedItem.isActive ? "Arquivado" : "Reativado"
+            } com Sucesso`}
           />
         </Dialog>
       )}

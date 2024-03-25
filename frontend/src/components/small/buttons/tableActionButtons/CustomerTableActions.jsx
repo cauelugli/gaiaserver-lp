@@ -109,12 +109,12 @@ export default function CustomerTableActions(props) {
 
           <ListItemButton onClick={(item) => handleConfirmActivate(item)}>
             <ListItemIcon>
-            {props.sale.status === "Arquivado" ? <UpgradeIcon /> : <ArchiveIcon />}
+              {props.customer.isActive ? <ArchiveIcon /> : <UpgradeIcon />}
             </ListItemIcon>
             <ListItemText
               primary={
                 <Typography sx={{ fontSize: 14 }}>
-                  {selectedItem.isActive ? "Arquivar" : "Reativar"} Cliente
+                  {props.customer.isActive ? "Arquivar" : "Reativar"} Cliente
                 </Typography>
               }
               sx={{ ml: -3 }}
@@ -227,7 +227,9 @@ export default function CustomerTableActions(props) {
             }
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
-            } Arquivado com Sucesso`}
+            } ${
+              props.selectedItem.isActive ? "Arquivado" : "Reativado"
+            } com Sucesso`}
           />
         </Dialog>
       )}

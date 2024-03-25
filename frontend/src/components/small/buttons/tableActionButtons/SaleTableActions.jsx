@@ -189,7 +189,9 @@ export default function SaleTableActions(props) {
             endpoint="sales/activate"
             successMessage={`Venda ${
               props.selectedItem.quoteNumber && props.selectedItem.quoteNumber
-            } Arquivada com Sucesso`}
+            } ${
+              props.selectedItem.isActive ? "Reativada" : "Arquivada"
+            } com Sucesso`}
           />
         </Dialog>
       )}
