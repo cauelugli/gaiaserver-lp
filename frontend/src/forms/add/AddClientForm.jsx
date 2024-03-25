@@ -264,9 +264,9 @@ const AddClientForm = ({
               value={gender}
               onChange={(e) => setGender(e.target.value)}
             >
-              <MenuItem value={"Masculino"}>Masculino</MenuItem>
-              <MenuItem value={"Feminino"}>Feminino</MenuItem>
-              <MenuItem value={"Não Informado"}>Não Informar</MenuItem>
+              <MenuItem value={"m"}>Masculino</MenuItem>
+              <MenuItem value={"f"}>Feminino</MenuItem>
+              <MenuItem value={"0"}>Não Informar</MenuItem>
             </Select>
           </Grid>
         </Grid>

@@ -259,7 +259,7 @@ const AddUserForm = ({
                     onChange={(e) => setGender(e.target.value)}
                   >
                     <MenuItem value={"m"}>Masculino</MenuItem>
-                    <MenuItem value={"n"}>Feminino</MenuItem>
+                    <MenuItem value={"f"}>Feminino</MenuItem>
                     <MenuItem value={"0"}>Não Informar</MenuItem>
                   </Select>
                 </Grid>
