@@ -33,18 +33,16 @@ const Dashboard = ({
 
   return (
     <Grid>
-      <>
-        {user.username === "admin" ? (
-          <Typography sx={{ fontSize: 23, m: 2, fontWeight: "bold" }}>
-            Bem vindo, {user.name}
-          </Typography>
-        ) : (
-          <Typography sx={{ fontSize: 23, m: 2, fontWeight: "bold" }}>
-            Bem vind{user.gender === "m" ? "o" : "a"}, {user.name}
-          </Typography>
-        )}
-      </>
-      {user.username === "admin" && (
+      {user.username === "admin" ? (
+        <Typography sx={{ fontSize: 23, m: 2, fontWeight: "bold" }}>
+          Bem vindo, {user.name}
+        </Typography>
+      ) : (
+        <Typography sx={{ fontSize: 23, m: 2, fontWeight: "bold" }}>
+          Bem vind{user.gender === "m" ? "o" : "a"}, {user.name}
+        </Typography>
+      )}
+      {user.username === "admin" && showAgenda && (
         <Typography
           sx={{
             mb: 1,
@@ -88,7 +86,6 @@ const Dashboard = ({
               </Typography>
             </AccordionSummary>
           )}
-
           <AccordionDetails>
             <MyCalendar
               user={user}
