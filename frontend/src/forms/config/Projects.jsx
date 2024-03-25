@@ -4,6 +4,9 @@
 import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Accordion,
@@ -77,6 +80,7 @@ export default function Projects({ onClose }) {
         });
       }
       onClose();
+      socket.emit("forceRefresh");
     } catch (err) {
       console.log("erro", err);
       toast.error("Houve algum erro...", {
@@ -262,7 +266,9 @@ export default function Projects({ onClose }) {
                       <RadioGroup
                         row
                         value={notifyWhenProjectIsCreated}
-                        onChange={(e) => setNotifyWhenProjectIsCreated(e.target.value)}
+                        onChange={(e) =>
+                          setNotifyWhenProjectIsCreated(e.target.value)
+                        }
                       >
                         <FormControlLabel
                           value={Boolean(true)}

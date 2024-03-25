@@ -4,6 +4,9 @@
 import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Button,
@@ -58,6 +61,7 @@ export default function Finance({ onClose }) {
         });
       }
       onClose();
+      socket.emit("forceRefresh");
     } catch (err) {
       console.log("erro", err);
       toast.error("Houve algum erro...", {
@@ -95,8 +99,8 @@ export default function Finance({ onClose }) {
                     title={
                       <Typography sx={{ fontSize: 12 }}>
                         Se a opção marcada for "Sim", permite o Agendamento de
-                        Pagamento a prazo na sessão 'Financeiro'. A opção padrão é
-                        "Sim".
+                        Pagamento a prazo na sessão 'Financeiro'. A opção padrão
+                        é "Sim".
                       </Typography>
                     }
                   >

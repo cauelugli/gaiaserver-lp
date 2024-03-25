@@ -5,6 +5,9 @@ import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { SketchPicker } from "react-color";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Button,
@@ -111,6 +114,7 @@ export default function Customization({ onClose }) {
         });
       }
       onClose();
+      socket.emit("forceRefresh");
     } catch (err) {
       console.log("erro", err);
       toast.error("Houve algum erro...", {
@@ -349,14 +353,17 @@ export default function Customization({ onClose }) {
 
               <Grid item sx={{ mt: 2.5 }}>
                 <Grid container direction="row" alignItems="center">
-                  <Typography sx={{ my: "auto", mr: 4 }}>Logotipo Preto</Typography>
+                  <Typography sx={{ my: "auto", mr: 4 }}>
+                    Logotipo Preto
+                  </Typography>
                   <Tooltip
                     title={
                       <Typography sx={{ fontSize: 12 }}>
-                        O logotipo da sua empresa na cor preta, ou com uma cor de fundo.
-                        Será utilizado em partes do sistema onde a cor do fundo é branca.
-                        Tamanho máximo da imagem: 2MB. Suportados formatos '.png' e '.jpeg'. O tamanho
-                        ideal é em torno de 500x200.
+                        O logotipo da sua empresa na cor preta, ou com uma cor
+                        de fundo. Será utilizado em partes do sistema onde a cor
+                        do fundo é branca. Tamanho máximo da imagem: 2MB.
+                        Suportados formatos '.png' e '.jpeg'. O tamanho ideal é
+                        em torno de 500x200.
                       </Typography>
                     }
                   >
@@ -423,7 +430,6 @@ export default function Customization({ onClose }) {
                   </Grid>
                 </Grid>
               </Grid>
-
             </Grid>
           </DialogContent>
           <DialogActions>

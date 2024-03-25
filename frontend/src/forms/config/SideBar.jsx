@@ -4,6 +4,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Button,
@@ -100,6 +103,7 @@ export default function SideBar({ onClose }) {
         });
       }
       onClose();
+      socket.emit("forceRefresh");
     } catch (err) {
       console.log("erro", err);
       toast.error("Houve algum erro...", {
@@ -156,12 +160,12 @@ export default function SideBar({ onClose }) {
         <Grid item sx={{ width: 200 }}>
           <Typography sx={{ color: "white" }}>#</Typography>
         </Grid>
-        <Grid item sx={{ width: 180, ml:1 }}>
+        <Grid item sx={{ width: 180, ml: 1 }}>
           <Typography>
             <VisibilityOffIcon sx={{ fontSize: 40, color: "#D00000" }} />
           </Typography>
         </Grid>
-        <Grid item sx={{ width: 160, ml:0.5 }}>
+        <Grid item sx={{ width: 160, ml: 0.5 }}>
           <Typography>
             <VisibilityIcon sx={{ fontSize: 40, color: "#417505" }} />
           </Typography>

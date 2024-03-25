@@ -4,6 +4,9 @@
 import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Avatar,
@@ -80,6 +83,7 @@ export default function Departments({ onClose }) {
         });
       }
       onClose();
+      socket.emit("forceRefresh");
     } catch (err) {
       console.log("erro", err);
       toast.error("Houve algum erro...", {
@@ -117,8 +121,8 @@ export default function Departments({ onClose }) {
                     title={
                       <Typography sx={{ fontSize: 12 }}>
                         Escolha qual será o departamento responsável por Aprovar
-                        solicitações de Entrada de Estoque. Este departamento terá o
-                        Gerente notificado sobre TODAS as movimentações
+                        solicitações de Entrada de Estoque. Este departamento
+                        terá o Gerente notificado sobre TODAS as movimentações
                         relacionadas a Estoque.
                       </Typography>
                     }
