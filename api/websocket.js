@@ -23,6 +23,10 @@ const initSocket = (server) => {
       console.log("\nWebsocket Test OK!\n");
     });
 
+    socket.on("forceRefresh", () => {
+      io.emit("forceRefresh");
+    });
+
     socket.on("whenUserIsCreated", async (data) => {
       try {
         const usersToNotify = await Promise.all(

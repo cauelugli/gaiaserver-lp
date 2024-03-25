@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import {
   BrowserRouter as Router,
   Routes,
@@ -84,6 +85,29 @@ export default function App() {
   const login = JSON.parse(sessionStorage.getItem("login"));
   const userData = JSON.parse(sessionStorage.getItem("userData"));
   console.log("App mounted control");
+
+  useEffect(() => {
+    socket.on("forceRefresh", () => {
+      toast.info("Atualização necessária! Recarregando a página em 10 segundos", {
+        closeOnClick: false,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 9500,
+      });
+
+      const timer = setTimeout(() => {
+        window.location.reload();
+      }, 10000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    });
+
+    return () => {
+      socket.off("forceRefresh");
+    };
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -326,7 +350,11 @@ export default function App() {
                     element={
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "requests") ? (
-                        <Requests user={userData} configTables={configTables} configAgenda={configAgenda}/>
+                        <Requests
+                          user={userData}
+                          configTables={configTables}
+                          configAgenda={configAgenda}
+                        />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
                           Seu usuário não possui autorização à página.
