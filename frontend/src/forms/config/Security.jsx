@@ -9,6 +9,9 @@ import { io } from "socket.io-client";
 const socket = io("http://localhost:3000");
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Button,
   DialogActions,
   DialogContent,
@@ -20,6 +23,8 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -87,73 +92,85 @@ export default function Security({ onClose }) {
               justifyContent="center"
               alignItems="flex-start"
             >
-              <Grid item sx={{ my: 1.5 }}>
-                <Grid container direction="row">
-                  <Typography sx={{ my: "auto" }}>
-                    Complexidade de Senha
+              <Accordion sx={{ width: "100%" }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Parâmetros
                   </Typography>
-                  <Tooltip
-                    title={
-                      <Typography sx={{ fontSize: 12 }}>
-                        Para a opção "Baixo", não há exigência de complexidade,
-                        exemplo: "senha123". Para a opção "Alto" é exigido no
-                        mínimo 10 caracteres, incluindo letras maiúsculas,
-                        minúsculas, números e caracteres especiais, exemplo:
-                        "SeNh@123#CjM". Para a opção "Extremo" é exigido no
-                        mínimo 16 caracteres, com combinação robusta de letras
-                        maiúsculas, minúsculas, números, caracteres especiais,
-                        exemplo: "J#rL$bm*9W!p2Qz". A opção padrão é "Baixo".
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid container direction="row">
+                      <Typography sx={{ my: "auto" }}>
+                        Complexidade de Senha
                       </Typography>
-                    }
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "#32aacd",
-                        "&:hover": {
-                          backgroundColor: "white",
-                        },
-                      }}
-                    >
-                      ?
-                    </Button>
-                  </Tooltip>
-                  <RadioGroup
-                    row
-                    value={passwordComplexity}
-                    onChange={(e) => setPasswordComplexity(e.target.value)}
-                  >
-                    <FormControlLabel
-                      value={"low"}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={
-                        <Typography sx={{ fontSize: 13 }}>Baixo</Typography>
-                      }
-                    />
-                    <FormControlLabel
-                      value={"high"}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={
-                        <Typography sx={{ fontSize: 13 }}>Alto</Typography>
-                      }
-                    />
-                    <FormControlLabel
-                      value={"extreme"}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={
-                        <Typography sx={{ fontSize: 13 }}>Extremo</Typography>
-                      }
-                    />
-                  </RadioGroup>
-                </Grid>
-              </Grid>
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Para a opção "Baixo", não há exigência de
+                            complexidade, exemplo: "senha123". Para a opção
+                            "Alto" é exigido no mínimo 10 caracteres, incluindo
+                            letras maiúsculas, minúsculas, números e caracteres
+                            especiais, exemplo: "SeNh@123#CjM". Para a opção
+                            "Extremo" é exigido no mínimo 16 caracteres, com
+                            combinação robusta de letras maiúsculas, minúsculas,
+                            números, caracteres especiais, exemplo:
+                            "J#rL$bm*9W!p2Qz". A opção padrão é "Baixo".
+                          </Typography>
+                        }
+                      >
+                        <Button
+                          size="small"
+                          sx={{
+                            backgroundColor: "white",
+                            color: "#32aacd",
+                            "&:hover": {
+                              backgroundColor: "white",
+                            },
+                          }}
+                        >
+                          ?
+                        </Button>
+                      </Tooltip>
+                      <RadioGroup
+                        row
+                        value={passwordComplexity}
+                        onChange={(e) => setPasswordComplexity(e.target.value)}
+                      >
+                        <FormControlLabel
+                          value={"low"}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Baixo</Typography>
+                          }
+                        />
+                        <FormControlLabel
+                          value={"high"}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Alto</Typography>
+                          }
+                        />
+                        <FormControlLabel
+                          value={"extreme"}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>
+                              Extremo
+                            </Typography>
+                          }
+                        />
+                      </RadioGroup>
+                    </Grid>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
             </Grid>
           </DialogContent>
           <DialogActions>

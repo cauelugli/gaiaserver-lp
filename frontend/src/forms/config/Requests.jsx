@@ -9,6 +9,9 @@ import { io } from "socket.io-client";
 const socket = io("http://localhost:3000");
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Button,
   DialogActions,
   DialogContent,
@@ -20,6 +23,8 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -90,103 +95,126 @@ export default function Requests({ onClose }) {
               justifyContent="center"
               alignItems="flex-start"
             >
-              <Grid item sx={{ my: 1.5 }}>
-                <Grid container direction="row">
-                  <Typography sx={{ my: "auto" }}>
-                    Solicitações Precisam de Aprovação do Gerente
+              <Accordion sx={{ width: "100%" }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Permissões
                   </Typography>
-                  <Tooltip
-                    title={
-                      <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", o 'status' de uma nova
-                        solicitação de Job será "Aberto". Se estiver marcado
-                        "Não", o status será 'Aprovado'. A opção padrão é "Sim".
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid container direction="row">
+                      <Typography sx={{ my: "auto" }}>
+                        Solicitações Precisam de Aprovação do Gerente
                       </Typography>
-                    }
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "#32aacd",
-                        "&:hover": {
-                          backgroundColor: "white",
-                        },
-                      }}
-                    >
-                      ?
-                    </Button>
-                  </Tooltip>
-                  <RadioGroup
-                    row
-                    value={requestsNeedApproval}
-                    onChange={(e) => setRequestsNeedApproval(e.target.value)}
-                  >
-                    <FormControlLabel
-                      value={Boolean(true)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
-                    />
-                    <FormControlLabel
-                      value={Boolean(false)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
-                    />
-                  </RadioGroup>
-                </Grid>
-              </Grid>
-              <Grid item sx={{ my: 1.5 }}>
-                <Grid container direction="row">
-                  <Typography sx={{ my: "auto", mr: 1 }}>
-                    Solicitações Podem ser Deletadas
-                  </Typography>
-                  <Tooltip
-                    title={
-                      <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", as solicitações de Jobs e
-                        Vendas poderão ser deletadas. A opção padrão é "Sim".
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Se a opção marcada for "Sim", o 'status' de uma nova
+                            solicitação de Job será "Aberto". Se estiver marcado
+                            "Não", o status será 'Aprovado'. A opção padrão é
+                            "Sim".
+                          </Typography>
+                        }
+                      >
+                        <Button
+                          size="small"
+                          sx={{
+                            backgroundColor: "white",
+                            color: "#32aacd",
+                            "&:hover": {
+                              backgroundColor: "white",
+                            },
+                          }}
+                        >
+                          ?
+                        </Button>
+                      </Tooltip>
+                      <RadioGroup
+                        row
+                        value={requestsNeedApproval}
+                        onChange={(e) =>
+                          setRequestsNeedApproval(e.target.value)
+                        }
+                      >
+                        <FormControlLabel
+                          value={Boolean(true)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                          }
+                        />
+                        <FormControlLabel
+                          value={Boolean(false)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                          }
+                        />
+                      </RadioGroup>
+                    </Grid>
+                  </Grid>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid container direction="row">
+                      <Typography sx={{ my: "auto", mr: 1 }}>
+                        Solicitações Podem ser Deletadas
                       </Typography>
-                    }
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "#32aacd",
-                        "&:hover": {
-                          backgroundColor: "white",
-                        },
-                      }}
-                    >
-                      ?
-                    </Button>
-                  </Tooltip>
-                  <RadioGroup
-                    row
-                    value={requestsCanBeDeleted}
-                    onChange={(e) => setRequestsCanBeDeleted(e.target.value)}
-                  >
-                    <FormControlLabel
-                      value={Boolean(true)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
-                    />
-                    <FormControlLabel
-                      value={Boolean(false)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
-                    />
-                  </RadioGroup>
-                </Grid>
-              </Grid>
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Se a opção marcada for "Sim", as solicitações de
+                            Jobs e Vendas poderão ser deletadas. A opção padrão
+                            é "Sim".
+                          </Typography>
+                        }
+                      >
+                        <Button
+                          size="small"
+                          sx={{
+                            backgroundColor: "white",
+                            color: "#32aacd",
+                            "&:hover": {
+                              backgroundColor: "white",
+                            },
+                          }}
+                        >
+                          ?
+                        </Button>
+                      </Tooltip>
+                      <RadioGroup
+                        row
+                        value={requestsCanBeDeleted}
+                        onChange={(e) =>
+                          setRequestsCanBeDeleted(e.target.value)
+                        }
+                      >
+                        <FormControlLabel
+                          value={Boolean(true)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                          }
+                        />
+                        <FormControlLabel
+                          value={Boolean(false)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                          }
+                        />
+                      </RadioGroup>
+                    </Grid>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
             </Grid>
           </DialogContent>
           <DialogActions>

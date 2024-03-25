@@ -9,6 +9,9 @@ import { io } from "socket.io-client";
 const socket = io("http://localhost:3000");
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Avatar,
   Button,
   DialogActions,
@@ -24,6 +27,8 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -112,57 +117,54 @@ export default function Departments({ onClose }) {
               justifyContent="center"
               alignItems="flex-start"
             >
-              <Grid item sx={{ my: 1.5 }}>
-                <Grid container direction="row">
-                  <Typography sx={{ my: "auto" }}>
-                    Departamento Responsável pelo Estoque
+              <Accordion sx={{ width: "100%" }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Departamento Responsável
                   </Typography>
-                  <Tooltip
-                    title={
-                      <Typography sx={{ fontSize: 12 }}>
-                        Escolha qual será o departamento responsável por Aprovar
-                        solicitações de Entrada de Estoque. Este departamento
-                        terá o Gerente notificado sobre TODAS as movimentações
-                        relacionadas a Estoque.
-                      </Typography>
-                    }
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "#32aacd",
-                        "&:hover": {
-                          backgroundColor: "white",
-                        },
-                      }}
-                    >
-                      ?
-                    </Button>
-                  </Tooltip>
-                  <Grid item>
-                    <Grid
-                      container
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      <Select
-                        onChange={(e) =>
-                          setStockentriesDispatcherDepartment(e.target.value)
-                        }
-                        value={stockentriesDispatcherDepartment}
-                        size="small"
-                        displayEmpty
-                        disabled={!stockEntriesNeedApproval}
-                        required
-                        renderValue={(selected) => {
-                          if (!selected) {
-                            return (
-                              <Typography>Selecione o Departamento</Typography>
-                            );
-                          } else {
-                            return (
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid container direction="row" justifyContent="space-evenly">
+                      <Grid item sx={{my:"auto"}}>
+                        <Select
+                          onChange={(e) =>
+                            setStockentriesDispatcherDepartment(e.target.value)
+                          }
+                          value={stockentriesDispatcherDepartment}
+                          displayEmpty
+                          disabled={!stockEntriesNeedApproval}
+                          required
+                          renderValue={(selected) => {
+                            if (!selected) {
+                              return (
+                                <Typography>
+                                  Selecione o Departamento
+                                </Typography>
+                              );
+                            } else {
+                              return (
+                                <Grid container direction="row">
+                                  <Paper
+                                    elevation={0}
+                                    sx={{
+                                      mr: 1,
+                                      mt: 0.5,
+                                      width: 15,
+                                      height: 15,
+                                      borderRadius: 50,
+                                      backgroundColor: selected.color,
+                                    }}
+                                  />
+                                  <Typography>{selected.name}</Typography>
+                                </Grid>
+                              );
+                            }
+                          }}
+                          sx={{ minWidth: "200px", mr: 1 }}
+                        >
+                          {departments.map((item) => (
+                            <MenuItem value={item} key={item.id}>
                               <Grid container direction="row">
                                 <Paper
                                   elevation={0}
@@ -172,169 +174,175 @@ export default function Departments({ onClose }) {
                                     width: 15,
                                     height: 15,
                                     borderRadius: 50,
-                                    backgroundColor: selected.color,
+                                    backgroundColor: item.color,
                                   }}
                                 />
-                                <Typography>{selected.name}</Typography>
+                                <Typography>{item.name}</Typography>
                               </Grid>
-                            );
-                          }
-                        }}
-                        sx={{ minWidth: "200px", mr: 1 }}
-                      >
-                        {departments.map((item) => (
-                          <MenuItem value={item} key={item.id}>
-                            <Grid container direction="row">
-                              <Paper
-                                elevation={0}
-                                sx={{
-                                  mr: 1,
-                                  mt: 0.5,
-                                  width: 15,
-                                  height: 15,
-                                  borderRadius: 50,
-                                  backgroundColor: item.color,
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </Grid>
+                      <Grid item>
+                        {stockentriesDispatcherDepartment &&
+                          stockEntriesNeedApproval &&
+                          stockentriesDispatcherDepartment.manager && (
+                            <Grid
+                              container
+                              direction="column"
+                              alignItems="center"
+                              justifyContent="space-around"
+                            >
+                              <Avatar
+                                src={`http://localhost:3000/static/${stockentriesDispatcherDepartment.manager.image}`}
+                                style={{
+                                  width: 82,
+                                  height: 82,
                                 }}
                               />
-                              <Typography>{item.name}</Typography>
+                              <Typography
+                                sx={{ mt: 1, fontSize: 12, color: "grey" }}
+                              >
+                                Gerente:{" "}
+                                <strong>
+                                  {
+                                    stockentriesDispatcherDepartment.manager
+                                      .name
+                                  }
+                                </strong>
+                              </Typography>
                             </Grid>
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      {stockentriesDispatcherDepartment &&
-                        stockEntriesNeedApproval &&
-                        stockentriesDispatcherDepartment.manager && (
-                          <Grid
-                            container
-                            direction="row"
-                            alignItems="center"
-                            justifyContent="center"
-                            sx={{
-                              width: "auto",
-                              ml: 1,
-                            }}
-                          >
-                            <Typography sx={{ mr: 1 }}>Gerente: </Typography>
-                            <Avatar
-                              src={`http://localhost:3000/static/${stockentriesDispatcherDepartment.manager.image}`}
-                              style={{
-                                width: 42,
-                                height: 42,
-                              }}
-                            />
-                            <Typography sx={{ fontSize: 13, ml: 1 }}>
-                              {stockentriesDispatcherDepartment.manager.name}
-                            </Typography>
-                          </Grid>
-                        )}
+                          )}{" "}
+                        {/* </Grid> */}
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-              </Grid>
-              <Grid item sx={{ my: 1.5 }}>
-                <Grid container direction="row">
-                  <Typography sx={{ my: "auto" }}>
-                    Entradas de Estoque Precisam de Aprovação do Gerente
+                </AccordionDetails>
+              </Accordion>
+              
+              <Accordion sx={{ width: "100%", mt: 2 }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Permissões
                   </Typography>
-                  <Tooltip
-                    title={
-                      <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", o 'status' de uma nova
-                        Entrada de Estoque será "Aberto". Se estiver marcado
-                        "Não", o status será 'Aprovado'. A opção padrão é "Sim".
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid container direction="row">
+                      <Typography sx={{ my: "auto" }}>
+                        Entradas de Estoque Precisam de Aprovação do Gerente
                       </Typography>
-                    }
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "#32aacd",
-                        "&:hover": {
-                          backgroundColor: "white",
-                        },
-                      }}
-                    >
-                      ?
-                    </Button>
-                  </Tooltip>
-                  <RadioGroup
-                    row
-                    value={stockEntriesNeedApproval}
-                    onChange={(e) =>
-                      setStockEntriesNeedApproval(e.target.value)
-                    }
-                  >
-                    <FormControlLabel
-                      value={Boolean(true)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
-                    />
-                    <FormControlLabel
-                      value={Boolean(false)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
-                    />
-                  </RadioGroup>
-                </Grid>
-              </Grid>
-              <Grid item sx={{ my: 1.5 }}>
-                <Grid container direction="row">
-                  <Typography sx={{ my: "auto" }}>
-                    Entradas de Estoque Aprovadas podem ser Contestadas
-                  </Typography>
-                  <Tooltip
-                    title={
-                      <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", os operadores com acesso à
-                        página 'Financeiro' poderão rejeitar as aprovações do
-                        Gerente designado às Entradas de Estoque. Se estiver
-                        marcado "Não", os operadores não poderão fazer nenhuma
-                        contestação. A opção padrão é "Sim".
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Se a opção marcada for "Sim", o 'status' de uma nova
+                            Entrada de Estoque será "Aberto". Se estiver marcado
+                            "Não", o status será 'Aprovado'. A opção padrão é
+                            "Sim".
+                          </Typography>
+                        }
+                      >
+                        <Button
+                          size="small"
+                          sx={{
+                            backgroundColor: "white",
+                            color: "#32aacd",
+                            "&:hover": {
+                              backgroundColor: "white",
+                            },
+                          }}
+                        >
+                          ?
+                        </Button>
+                      </Tooltip>
+                      <RadioGroup
+                        row
+                        value={stockEntriesNeedApproval}
+                        onChange={(e) =>
+                          setStockEntriesNeedApproval(e.target.value)
+                        }
+                      >
+                        <FormControlLabel
+                          value={Boolean(true)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                          }
+                        />
+                        <FormControlLabel
+                          value={Boolean(false)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                          }
+                        />
+                      </RadioGroup>
+                    </Grid>
+                  </Grid>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid container direction="row">
+                      <Typography sx={{ my: "auto" }}>
+                        Entradas de Estoque Aprovadas podem ser Contestadas
                       </Typography>
-                    }
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "#32aacd",
-                        "&:hover": {
-                          backgroundColor: "white",
-                        },
-                      }}
-                    >
-                      ?
-                    </Button>
-                  </Tooltip>
-                  <RadioGroup
-                    row
-                    value={stockEntriesCanBeChallenged}
-                    onChange={(e) =>
-                      setStockEntriesCanBeChallenged(e.target.value)
-                    }
-                  >
-                    <FormControlLabel
-                      value={Boolean(true)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
-                    />
-                    <FormControlLabel
-                      value={Boolean(false)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
-                    />
-                  </RadioGroup>
-                </Grid>
-              </Grid>
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Se a opção marcada for "Sim", os operadores com
+                            acesso à página 'Financeiro' poderão rejeitar as
+                            aprovações do Gerente designado às Entradas de
+                            Estoque. Se estiver marcado "Não", os operadores não
+                            poderão fazer nenhuma contestação. A opção padrão é
+                            "Sim".
+                          </Typography>
+                        }
+                      >
+                        <Button
+                          size="small"
+                          sx={{
+                            backgroundColor: "white",
+                            color: "#32aacd",
+                            "&:hover": {
+                              backgroundColor: "white",
+                            },
+                          }}
+                        >
+                          ?
+                        </Button>
+                      </Tooltip>
+                      <RadioGroup
+                        row
+                        value={stockEntriesCanBeChallenged}
+                        onChange={(e) =>
+                          setStockEntriesCanBeChallenged(e.target.value)
+                        }
+                      >
+                        <FormControlLabel
+                          value={Boolean(true)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                          }
+                        />
+                        <FormControlLabel
+                          value={Boolean(false)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                          }
+                        />
+                      </RadioGroup>
+                    </Grid>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
             </Grid>
           </DialogContent>
           <DialogActions>

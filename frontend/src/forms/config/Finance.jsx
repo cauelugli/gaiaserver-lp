@@ -9,6 +9,9 @@ import { io } from "socket.io-client";
 const socket = io("http://localhost:3000");
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Button,
   DialogActions,
   DialogContent,
@@ -20,6 +23,8 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -90,56 +95,71 @@ export default function Finance({ onClose }) {
               justifyContent="center"
               alignItems="flex-start"
             >
-              <Grid item sx={{ my: 1.5 }}>
-                <Grid container direction="row">
-                  <Typography sx={{ my: "auto" }}>
-                    Aceitar Pagamentos Parcelados
+              <Accordion sx={{ width: "100%" }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Pagamentos
                   </Typography>
-                  <Tooltip
-                    title={
-                      <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", permite o Agendamento de
-                        Pagamento a prazo na sessão 'Financeiro'. A opção padrão
-                        é "Sim".
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid container direction="row">
+                      <Typography sx={{ my: "auto" }}>
+                        Aceitar Pagamentos Parcelados
                       </Typography>
-                    }
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "#32aacd",
-                        "&:hover": {
-                          backgroundColor: "white",
-                        },
-                      }}
-                    >
-                      ?
-                    </Button>
-                  </Tooltip>
-                  <RadioGroup
-                    row
-                    value={canReceiveInstallments}
-                    onChange={(e) => setCanReceiveInstallments(e.target.value)}
-                  >
-                    <FormControlLabel
-                      value={Boolean(true)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
-                    />
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Se a opção marcada for "Sim", permite o Agendamento
+                            de Pagamento a prazo na sessão 'Financeiro'. A opção
+                            padrão é "Sim".
+                          </Typography>
+                        }
+                      >
+                        <Button
+                          size="small"
+                          sx={{
+                            backgroundColor: "white",
+                            color: "#32aacd",
+                            "&:hover": {
+                              backgroundColor: "white",
+                            },
+                          }}
+                        >
+                          ?
+                        </Button>
+                      </Tooltip>
+                      <RadioGroup
+                        row
+                        value={canReceiveInstallments}
+                        onChange={(e) =>
+                          setCanReceiveInstallments(e.target.value)
+                        }
+                      >
+                        <FormControlLabel
+                          value={Boolean(true)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                          }
+                        />
 
-                    <FormControlLabel
-                      value={Boolean(false)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
-                    />
-                  </RadioGroup>
-                </Grid>
-              </Grid>
+                        <FormControlLabel
+                          value={Boolean(false)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                          }
+                        />
+                      </RadioGroup>
+                    </Grid>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
             </Grid>
           </DialogContent>
           <DialogActions>

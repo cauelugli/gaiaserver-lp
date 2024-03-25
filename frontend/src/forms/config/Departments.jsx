@@ -9,6 +9,9 @@ import { io } from "socket.io-client";
 const socket = io("http://localhost:3000");
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Button,
   DialogActions,
   DialogContent,
@@ -20,6 +23,8 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -96,104 +101,127 @@ export default function Departments({ onClose }) {
               justifyContent="center"
               alignItems="flex-start"
             >
-              <Grid item sx={{ my: 1.5 }}>
-                <Grid container direction="row">
-                  <Typography sx={{ my: "auto" }}>
-                    Departamentos Podem ser Deletados
+              <Accordion sx={{ width: "100%" }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Permissões
                   </Typography>
-                  <Tooltip
-                    title={
-                      <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", os Departamentos poderão
-                        ser deletados DEFINITIVAMENTE. A opção padrão é "Sim".
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid container direction="row">
+                      <Typography sx={{ my: "auto" }}>
+                        Departamentos Podem ser Deletados
                       </Typography>
-                    }
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "#32aacd",
-                        "&:hover": {
-                          backgroundColor: "white",
-                        },
-                      }}
-                    >
-                      ?
-                    </Button>
-                  </Tooltip>
-                  <RadioGroup
-                    row
-                    value={departmentsCanBeDeleted}
-                    onChange={(e) => setDepartmentsCanBeDeleted(e.target.value)}
-                  >
-                    <FormControlLabel
-                      value={Boolean(true)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
-                    />
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Se a opção marcada for "Sim", os Departamentos
+                            poderão ser deletados DEFINITIVAMENTE. A opção
+                            padrão é "Sim".
+                          </Typography>
+                        }
+                      >
+                        <Button
+                          size="small"
+                          sx={{
+                            backgroundColor: "white",
+                            color: "#32aacd",
+                            "&:hover": {
+                              backgroundColor: "white",
+                            },
+                          }}
+                        >
+                          ?
+                        </Button>
+                      </Tooltip>
+                      <RadioGroup
+                        row
+                        value={departmentsCanBeDeleted}
+                        onChange={(e) =>
+                          setDepartmentsCanBeDeleted(e.target.value)
+                        }
+                      >
+                        <FormControlLabel
+                          value={Boolean(true)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                          }
+                        />
 
-                    <FormControlLabel
-                      value={Boolean(false)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
-                    />
-                  </RadioGroup>
-                </Grid>
-              </Grid>
-              <Grid item sx={{ my: 1.5 }}>
-                <Grid container direction="row">
-                  <Typography sx={{ my: "auto" }}>
-                    Departamentos Devem Possuir um Gerente
-                  </Typography>
-                  <Tooltip
-                    title={
-                      <Typography sx={{ fontSize: 12 }}>
-                        Se a opção marcada for "Sim", os Departamentos deverão
-                        sempre possuir um Gerente. A opção padrão é "Não".
+                        <FormControlLabel
+                          value={Boolean(false)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                          }
+                        />
+                      </RadioGroup>
+                    </Grid>
+                  </Grid>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid container direction="row">
+                      <Typography sx={{ my: "auto" }}>
+                        Departamentos Devem Possuir um Gerente
                       </Typography>
-                    }
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "#32aacd",
-                        "&:hover": {
-                          backgroundColor: "white",
-                        },
-                      }}
-                    >
-                      ?
-                    </Button>
-                  </Tooltip>
-                  <RadioGroup
-                    row
-                    value={departmentsNeedManager}
-                    onChange={(e) => setDepartmentsNeedManager(e.target.value)}
-                  >
-                    <FormControlLabel
-                      value={Boolean(true)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Sim</Typography>}
-                    />
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Se a opção marcada for "Sim", os Departamentos
+                            deverão sempre possuir um Gerente. A opção padrão é
+                            "Não".
+                          </Typography>
+                        }
+                      >
+                        <Button
+                          size="small"
+                          sx={{
+                            backgroundColor: "white",
+                            color: "#32aacd",
+                            "&:hover": {
+                              backgroundColor: "white",
+                            },
+                          }}
+                        >
+                          ?
+                        </Button>
+                      </Tooltip>
+                      <RadioGroup
+                        row
+                        value={departmentsNeedManager}
+                        onChange={(e) =>
+                          setDepartmentsNeedManager(e.target.value)
+                        }
+                      >
+                        <FormControlLabel
+                          value={Boolean(true)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                          }
+                        />
 
-                    <FormControlLabel
-                      value={Boolean(false)}
-                      control={
-                        <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                      }
-                      label={<Typography sx={{ fontSize: 13 }}>Não</Typography>}
-                    />
-                  </RadioGroup>
-                </Grid>
-              </Grid>
+                        <FormControlLabel
+                          value={Boolean(false)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                          }
+                        />
+                      </RadioGroup>
+                    </Grid>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
             </Grid>
           </DialogContent>
           <DialogActions>
