@@ -52,6 +52,7 @@ const CustomerSelect = (props) => {
     >
       <Select
         displayEmpty
+        disabled={props.selectedCustomer.isActive}
         size={props.sizeSmall && "small"}
         renderValue={(selected) => {
           if (props.selectedCustomer.isActive) {

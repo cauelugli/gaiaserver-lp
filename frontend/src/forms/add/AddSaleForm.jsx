@@ -218,6 +218,7 @@ const AddSaleForm = ({
             <FormControl>
               <Select
                 size="small"
+                disabled={selectedCustomer.isActive}
                 onChange={(e) => handleCustomerTypeChange(e.target.value)}
                 value={customerType}
                 displayEmpty

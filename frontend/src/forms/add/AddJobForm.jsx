@@ -332,6 +332,7 @@ const AddJobForm = ({
                   onChange={(e) => handleCustomerTypeChange(e.target.value)}
                   value={customerType}
                   required
+                  disabled={selectedCustomer.isActive}
                   displayEmpty
                   renderValue={(selected) => {
                     if (selected.length === 0) {
