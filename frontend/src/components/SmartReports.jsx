@@ -25,7 +25,28 @@ import {
 
 import Chart from "chart.js/auto";
 
-const SmartReports = ({ requests, customers }) => {
+const SmartReports = ({ requests, customers, users }) => {
+  //USERS
+  const totalAllUsers = users.length - 1;
+  const totalManagers = users.filter((user) => user.isManager).length;
+  const totalUsers = totalAllUsers - totalManagers;
+
+  const allActiveUsers = users.filter((user) => user.isActive).length - 1;
+  const activeManagers = users.filter(
+    (user) => user.isManager && user.isActive
+  ).length;
+  const activeUsers =
+    users.filter((user) => !user.isManager && user.isActive).length - 1;
+
+  const allArchivedUsers = users.filter((user) => !user.isActive).length;
+  const archivedUsers = users.filter(
+    (user) => !user.isActive && !user.isManager
+  ).length;
+  const archivedManagers = users.filter(
+    (user) => !user.isActive && user.isManager
+  ).length;
+
+  //USERS END
   //CUSTOMERS
   const totalAllCustomers = customers.length;
   const totalCustomers = customers.filter((customer) => customer.cnpj).length;
@@ -75,6 +96,164 @@ const SmartReports = ({ requests, customers }) => {
     greyBorder: "rgba(133, 133, 133, 1)",
   };
 
+  //USERS FIRST CHART
+  const allUsersData = {
+    labels: [""],
+    datasets: [
+      {
+        label: "Usuários",
+        data: [totalUsers],
+        backgroundColor: colors.blue,
+        borderColor: colors.blueBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Gerentes",
+        data: [totalManagers],
+        backgroundColor: colors.lightpink,
+        borderColor: colors.lightpinkBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Ativos",
+        data: [allActiveUsers],
+        backgroundColor: colors.lightgreen,
+        borderColor: colors.lightgreenBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Arquivados",
+        data: [allArchivedUsers],
+        backgroundColor: colors.grey,
+        borderColor: colors.greyBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Total",
+        data: [totalAllUsers],
+        backgroundColor: colors.orange,
+        borderColor: colors.orangeBorder,
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const allUsersOptions = {
+    // indexAxis: "y", gráfico na horizontal
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        position: "bottom",
+        labels: {
+          boxWidth: 10,
+        },
+      },
+    },
+  };
+  //USERS FIRST CHART END
+  //USERS SECOND CHART
+  const usersData = {
+    labels: [""],
+    datasets: [
+      {
+        label: "Usuários",
+        data: [totalUsers],
+        backgroundColor: colors.blue,
+        borderColor: colors.blueBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Ativos",
+        data: [activeUsers],
+        backgroundColor: colors.lightgreen,
+        borderColor: colors.lightgreenBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Arquivados",
+        data: [archivedUsers],
+        backgroundColor: colors.grey,
+        borderColor: colors.greyBorder,
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const usersOptions = {
+    // indexAxis: "y", gráfico na horizontal
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        position: "bottom",
+        labels: {
+          boxWidth: 10,
+        },
+      },
+    },
+  };
+  //USERS SECOND CHART END
+  //USERS THIRD CHART
+  const managersData = {
+    labels: [""],
+    datasets: [
+      {
+        label: "Gerentes",
+        data: [totalManagers],
+        backgroundColor: colors.blue,
+        borderColor: colors.blueBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Ativos",
+        data: [activeManagers],
+        backgroundColor: colors.lightgreen,
+        borderColor: colors.lightgreenBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Arquivados",
+        data: [archivedManagers],
+        backgroundColor: colors.grey,
+        borderColor: colors.greyBorder,
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const managersOptions = {
+    // indexAxis: "y", gráfico na horizontal
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        position: "bottom",
+        labels: {
+          boxWidth: 10,
+        },
+      },
+    },
+  };
+  //USERS THIRD CHART END
   //CUSTOMERS FIRST CHART
   const allCustomersData = {
     labels: [""],
@@ -131,7 +310,7 @@ const SmartReports = ({ requests, customers }) => {
       legend: {
         position: "bottom",
         labels: {
-          boxWidth: 5,
+          boxWidth: 7,
         },
       },
     },
@@ -444,7 +623,69 @@ const SmartReports = ({ requests, customers }) => {
         </AccordionSummary>
         <AccordionDetails>
           <Accordion sx={{ mx: "30%" }}>
-            <AccordionSummary>Clientes</AccordionSummary>
+            <AccordionSummary>
+              <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                Usuários
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Grid
+                container
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Grid item>
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography sx={{ fontSize: 12 }}>Geral</Typography>
+                    <div style={{ width: chartWidth, height: chartHeight }}>
+                      <Bar data={allUsersData} options={allUsersOptions} />
+                    </div>
+                  </Grid>
+                </Grid>
+
+                <Grid item>
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography sx={{ fontSize: 12 }}>Usuários</Typography>
+                    <div style={{ width: chartWidth, height: chartHeight }}>
+                      <Bar data={usersData} options={usersOptions} />
+                    </div>
+                  </Grid>
+                </Grid>
+
+                <Grid item>
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography sx={{ fontSize: 12 }}>Gerentes</Typography>
+                    <div style={{ width: chartWidth, height: chartHeight }}>
+                      <Bar data={managersData} options={managersOptions} />
+                    </div>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion sx={{ mx: "30%", mt: 2 }}>
+            <AccordionSummary>
+              <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                Clientes
+              </Typography>
+            </AccordionSummary>
             <AccordionDetails>
               <Grid
                 container
@@ -500,7 +741,11 @@ const SmartReports = ({ requests, customers }) => {
             </AccordionDetails>
           </Accordion>
           <Accordion sx={{ mx: "30%", mt: 2 }}>
-            <AccordionSummary>Solicitações (Jobs e Vendas)</AccordionSummary>
+            <AccordionSummary>
+              <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                Jobs e Vendas
+              </Typography>
+            </AccordionSummary>
             <AccordionDetails>
               <Grid
                 container

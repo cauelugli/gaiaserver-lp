@@ -32,6 +32,10 @@ managerSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  isManager: {
+    type: Boolean,
+    default: true,
+  },
   name: {
     type: String,
     required: true,

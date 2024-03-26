@@ -19,6 +19,7 @@ import SmartReports from "../components/SmartReports";
 
 const Dashboard = ({
   user,
+  users,
   requests,
   customers,
   configDashboard,
@@ -100,7 +101,7 @@ const Dashboard = ({
           </Accordion>
         </>
       )}
-      <SmartReports requests={requests} customers={customers} />
+      <SmartReports requests={requests} customers={customers} users={users}/>
     </Grid>
   );
 };
