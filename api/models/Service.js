@@ -1,17 +1,20 @@
 const mongoose = require("mongoose");
 
 const serviceSchema = new mongoose.Schema({
-  name: {
+  color: {
     type: String,
-    required: true,
+    default: "#ffffff",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
   department: {
     type: Object,
     required: true,
   },
-  value: {
+  executionTime: {
     type: Number,
-    required: true,
   },
   materials: {
     type: Array,
@@ -19,16 +22,13 @@ const serviceSchema = new mongoose.Schema({
   materialsCost: {
     type: Number,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  executionTime: {
-    type: Number,
-  },
-  color: {
+  name: {
     type: String,
-    default: "#ffffff",
+    required: true,
+  },
+  value: {
+    type: Number,
+    required: true,
   },
 });
 

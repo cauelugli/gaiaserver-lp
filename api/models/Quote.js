@@ -1,16 +1,38 @@
 const mongoose = require("mongoose");
 
 const quoteSchema = new mongoose.Schema({
-  number: {
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  createdBy: {
     type: String,
   },
-  title: {
+  customer: {
+    type: Object,
+  },
+  department: {
     type: String,
   },
   description: {
     type: String,
   },
-  department: {
+  local: {
+    type: String,
+  },
+  manager: {
+    type: String,
+  },
+  materials: {
+    type: Array,
+  },
+  materialsCost: {
+    type: Number,
+  },
+  number: {
+    type: String,
+  },
+  scheduledTo: {
     type: String,
   },
   service: {
@@ -19,39 +41,17 @@ const quoteSchema = new mongoose.Schema({
   serviceValue: {
     type: Number,
   },
+  title: {
+    type: String,
+  },
   type: {
     type: String,
   },
   user: {
     type: String,
   },
-  manager: {
-    type: String,
-  },
-  customer: {
-    type: Object,
-  },
-  local: {
-    type: String,
-  },
   value: {
     type: Number,
-  },
-  materials: {
-    type: Array,
-  },
-  materialsCost: {
-    type: Number,
-  },
-  createdBy: {
-    type: String,
-  },
-  scheduledTo: {
-    type: String,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
   },
 });
 

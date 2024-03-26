@@ -1,32 +1,17 @@
 const mongoose = require("mongoose");
 
 const customerSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
   address: {
     type: String,
     required: true,
   },
-  phone: {
+  cnpj: {
     type: String,
     required: true,
   },
-  image: {
-    type: String,
-  },
-  mainContactName: {
-    type: String,
-  },
-  mainContactEmail: {
-    type: String,
-  },
-  mainContactPosition: {
-    type: String,
-  },
-  segment: {
-    type: String,
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
   domain: {
     type: String,
@@ -34,23 +19,38 @@ const customerSchema = new mongoose.Schema({
   employees: {
     type: String,
   },
-  website: {
+  image: {
     type: String,
-  },
-  cnpj: {
-    type: String,
-    required: true,
   },
   isActive: {
     type: Boolean,
     default: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  mainContactEmail: {
+    type: String,
+  },
+  mainContactName: {
+    type: String,
+  },
+  mainContactPosition: {
+    type: String,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  phone: {
+    type: String,
+    required: true,
   },
   recentRequests: {
     type: Array,
+  },
+  segment: {
+    type: String,
+  },
+  website: {
+    type: String,
   },
 });
 

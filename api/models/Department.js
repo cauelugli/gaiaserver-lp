@@ -5,19 +5,18 @@ departmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  type: {
+  color: {
     type: String,
-    required: true,
   },
-  phone: {
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  description: {
     type: String,
     required: true,
   },
   email: {
-    type: String,
-    required: true,
-  },
-  description: {
     type: String,
     required: true,
   },
@@ -27,15 +26,16 @@ departmentSchema = new mongoose.Schema({
   members: {
     type: Array,
   },
+  phone: {
+    type: String,
+    required: true,
+  },
   services: {
     type: Array,
   },
-  color: {
+  type: {
     type: String,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+    required: true,
   },
 });
 

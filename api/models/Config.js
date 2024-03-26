@@ -2,6 +2,24 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const configSchema = new Schema({
+  agenda: {
+    minTime: {
+      type: Number,
+      default: 7,
+    },
+    maxTime: {
+      type: Number,
+      default: 22,
+    },
+    showServiceColorOnEvents: {
+      type: Boolean,
+      default: false,
+    },
+    eventTypes: {
+      type: Array,
+      default: [{ name: "Job", color: "#4a90e2" }],
+    },
+  },
   customers: {
     customersCanBeDeleted: {
       type: Boolean,
@@ -16,105 +34,6 @@ const configSchema = new Schema({
       default: false,
     },
   },
-
-  users: {
-    usersCanBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
-    managersCanBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
-  },
-
-  departments: {
-    departmentsCanBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
-    departmentsNeedManager: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  requests: {
-    requestsNeedApproval: {
-      type: Boolean,
-      default: true,
-    },
-    canBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
-    canCreate: {
-      type: Array,
-    },
-  },
-
-  projects: {
-    canBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
-    projectTypes: {
-      type: Array,
-      default: ["Melhorias", "Expansão"],
-    },
-    notifyWhenProjectIsCreated: {
-      type: Boolean,
-      default: true,
-    },
-  },
-
-  quotes: {
-    canBeDeleted: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  services: {
-    canCreate: {
-      type: Array,
-    },
-  },
-
-  stock: {
-    stockentriesDispatcherDepartment: {
-      type: Object,
-    },
-    stockEntriesNeedApproval: {
-      type: Boolean,
-      default: true,
-    },
-    stockEntriesCanBeChallenged: {
-      type: Boolean,
-      default: true,
-    },
-  },
-
-  reports: {
-    canBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
-  },
-
-  finance: {
-    canReceiveInstallments: {
-      type: Boolean,
-      default: true,
-    },
-  },
-
-  files: {
-    canDelete: {
-      type: Array,
-    },
-  },
-
   customization: {
     mainColor: {
       type: String,
@@ -133,14 +52,94 @@ const configSchema = new Schema({
       default: "",
     },
   },
-
+  dashboard: {
+    showAgenda: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  departments: {
+    departmentsCanBeDeleted: {
+      type: Boolean,
+      default: true,
+    },
+    departmentsNeedManager: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  finance: {
+    canReceiveInstallments: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  files: {
+    canDelete: {
+      type: Array,
+    },
+  },
+  notifications: {
+    whenUserIsCreated: {
+      type: Array,
+    },
+  },
+  notificationsBooleans: {
+    whenUserIsCreated: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  projects: {
+    canBeDeleted: {
+      type: Boolean,
+      default: true,
+    },
+    projectTypes: {
+      type: Array,
+      default: ["Melhorias", "Expansão"],
+    },
+    notifyWhenProjectIsCreated: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  quotes: {
+    canBeDeleted: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  reports: {
+    canBeDeleted: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  requests: {
+    requestsNeedApproval: {
+      type: Boolean,
+      default: true,
+    },
+    canBeDeleted: {
+      type: Boolean,
+      default: true,
+    },
+    canCreate: {
+      type: Array,
+    },
+  },
   security: {
     passwordComplexity: {
       type: String,
       default: "low",
     },
   },
-
+  services: {
+    canCreate: {
+      type: Array,
+    },
+  },
   sidebar: {
     dashboard: {
       type: Array,
@@ -176,20 +175,19 @@ const configSchema = new Schema({
       type: Array,
     },
   },
-
-  notifications: {
-    whenUserIsCreated: {
-      type: Array,
+  stock: {
+    stockentriesDispatcherDepartment: {
+      type: Object,
     },
-  },
-
-  notificationsBooleans: {
-    whenUserIsCreated: {
+    stockEntriesNeedApproval: {
       type: Boolean,
-      default: false,
+      default: true,
+    },
+    stockEntriesCanBeChallenged: {
+      type: Boolean,
+      default: true,
     },
   },
-
   tables: {
     customerCustomer: {
       type: Boolean,
@@ -228,28 +226,12 @@ const configSchema = new Schema({
       default: true,
     },
   },
-
-  agenda: {
-    minTime: {
-      type: Number,
-      default: 7,
-    },
-    maxTime: {
-      type: Number,
-      default: 22,
-    },
-    showServiceColorOnEvents: {
+  users: {
+    usersCanBeDeleted: {
       type: Boolean,
-      default: false,
+      default: true,
     },
-    eventTypes: {
-      type: Array,
-      default: [{ name: "Job", color: "#4a90e2" }],
-    },
-  },
-
-  dashboard: {
-    showAgenda: {
+    managersCanBeDeleted: {
       type: Boolean,
       default: true,
     },

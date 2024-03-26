@@ -1,35 +1,28 @@
 const mongoose = require("mongoose");
 
 const projectTemplateSchema = new mongoose.Schema({
-  title: {
+  attachments: {
+    type: Object,
+  },
+  createdAt: {
     type: String,
-    required: true,
   },
   creator: {
     type: Object,
     required: true,
   },
-  type: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-  },
-  mainDepartment: {
-    type: Object,
-  },
-  members: {
-    type: Array,
+  currentStage: {
+    type: Number,
+    default: 0
   },
   departments: {
     type: Array,
   },
-  price: {
-    type: Number,
-  },
-  createdAt: {
+  description: {
     type: String,
+  },
+  definedStagesColors: {
+    type: Array,
   },
   dueTo: {
     type: String,
@@ -37,19 +30,26 @@ const projectTemplateSchema = new mongoose.Schema({
   interactions: {
     type: Array,
   },
+  mainDepartment: {
+    type: Object,
+  },
+  members: {
+    type: Array,
+  },
+  price: {
+    type: Number,
+  },
   stages: {
     type: Object,
   },
-  attachments: {
-    type: Object,
+  title: {
+    type: String,
+    required: true,
   },
-  definedStagesColors: {
-    type: Array,
+  type: {
+    type: String,
+    required: true,
   },
-  currentStage: {
-    type: Number,
-    default: 0
-  }
 });
 
 const ProjectTemplate = mongoose.model("ProjectTemplate", projectTemplateSchema);

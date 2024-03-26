@@ -1,17 +1,19 @@
 const mongoose = require("mongoose");
 
 const projectSchema = new mongoose.Schema({
-  name: {
+  attachments: {
+    type: Object,
+  },
+  createdAt: {
     type: String,
-    required: true,
   },
   creator: {
     type: Object,
     required: true,
   },
-  type: {
-    type: String,
-    required: true,
+  currentStage: {
+    type: Number,
+    default: 0
   },
   customer: {
     type: Object,
@@ -21,22 +23,13 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description: {
-    type: String,
-  },
-  mainDepartment: {
-    type: Object,
-  },
-  members: {
+  definedStagesColors: {
     type: Array,
   },
   departments: {
     type: Array,
   },
-  price: {
-    type: Number,
-  },
-  createdAt: {
+  description: {
     type: String,
   },
   dueTo: {
@@ -45,27 +38,34 @@ const projectSchema = new mongoose.Schema({
   interactions: {
     type: Array,
   },
-  stages: {
+  mainDepartment: {
     type: Object,
   },
-  attachments: {
-    type: Object,
-  },
-  definedStagesColors: {
+  members: {
     type: Array,
   },
-  status: {
+  name: {
     type: String,
-    default: "Aberto",
+    required: true,
+  },
+  price: {
+    type: Number,
   },
   recurrent: {
     type: Boolean,
     default: false
   },
-  currentStage: {
-    type: Number,
-    default: 0
-  }
+  stages: {
+    type: Object,
+  },
+  status: {
+    type: String,
+    default: "Aberto",
+  },
+  type: {
+    type: String,
+    required: true,
+  },
 });
 
 const Project = mongoose.model("Project", projectSchema);

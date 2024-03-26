@@ -1,20 +1,18 @@
 const mongoose = require("mongoose");
 
 const financeOutcomeSchema = new mongoose.Schema({
-  status: {
+  commission: {
+    type: Object,
+  },
+  commissioned: {
+    type: Boolean,
+  },
+  commentary: {
     type: String,
   },
-  quote: {
-    type: String,
-  },
-  user: {
-    type: String,
-  },
-  type: {
-    type: String,
-  },
-  department: {
-    type: String,
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
   customer: {
     type: String,
@@ -22,42 +20,44 @@ const financeOutcomeSchema = new mongoose.Schema({
   customerType: {
     type: String,
   },
-  items: {
-    type: Array,
-  },
-  service: {
+  department: {
     type: String,
   },
-  price: {
-    type: Number,
+  entry: {
+    type: Object,
   },
   finalPrice: {
     type: Number,
   },
-  commissioned: {
-    type: Boolean,
+  items: {
+    type: Array,
   },
-  commission: {
-    type: Object,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  resolvedAt: {
+  paidAt: {
     type: String,
   },
   payment: {
     type: Object,
   },
-  paidAt: {
+  price: {
+    type: Number,
+  },
+  quote: {
     type: String,
   },
-  commentary: {
+  resolvedAt: {
     type: String,
   },
-  entry: {
-    type: Object,
+  service: {
+    type: String,
+  },
+  status: {
+    type: String,
+  },
+  type: {
+    type: String,
+  },
+  user: {
+    type: String,
   },
 });
 

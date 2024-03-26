@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 
 const groupSchema = new mongoose.Schema({
-  name: {
+  creator: {
     type: String,
   },
   members: {
     type: Array,
   },
-  creator: {
+  name: {
     type: String,
   },
 });

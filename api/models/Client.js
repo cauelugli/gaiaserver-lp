@@ -1,52 +1,52 @@
 const mongoose = require("mongoose");
 
 const clientSchema = new mongoose.Schema({
-  name: {
+  addressBill: {
     type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  addressHome: {
-    type: String,
-    required: true,
   },
   addressDelivery: {
     type: String,
   },
-  addressBill: {
-    type: String,
-  },
-  phone: {
-    type: String,
-    required: true,
-  },
-  cpf: {
+  addressHome: {
     type: String,
     required: true,
   },
   birthdate: {
     type: Date,
   },
-  gender: {
+  cpf: {
     type: String,
+    required: true,
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-  recentRequests: {
-    type: Array,
+  email: {
+    type: String,
+    required: true,
+  },
+  gender: {
+    type: String,
+  },
+  image: {
+    type: String,
+    default: "/images/default_userPicture.png",
   },
   isActive: {
     type: Boolean,
     default: true,
   },
-  image: {
+  name: {
     type: String,
-    default: '/images/default_userPicture.png',
+    required: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
+  recentRequests: {
+    type: Array,
   },
 });
 

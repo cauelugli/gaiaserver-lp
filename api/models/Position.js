@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
 
 const positionSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
   members: {
     type: Array,
     default: []
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  name: {
+    type: String,
+    required: true,
   },
 });
 

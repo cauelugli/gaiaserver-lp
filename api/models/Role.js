@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
 
 const roleSchema = new mongoose.Schema({
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
   name: {
     type: String,
     required: true,
   },
   members: {
     type: Array,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
   },
 });
 

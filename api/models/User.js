@@ -1,65 +1,65 @@
 const mongoose = require("mongoose");
 
 userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  phone: {
-    type: String,
-  },
-  department: {
-    type: Object,
-  },
-  image: {
-    type: String,
-  },
-  username: {
-    type: String,
-  },
-  password: {
-    type: String,
-  },
-  role: {
-    type: Object,
-    default: {},
-  },
-  notifications: {
-    type: Object,
-    default: { 0: "" },
-  },
   agenda: {
     type: Array,
     default: [],
   },
-  groups: {
-    type: Array,
-  },
-  position: {
-    type: Object,
-    default: {},
-  },
-  hasDarkModeActive: {
-    type: Boolean,
-    default: false,
+  birthdate: {
+    type: Date,
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-  isActive: {
-    type: Boolean,
-    default: true,
+  department: {
+    type: Object,
+  },
+  email: {
+    type: String,
+    required: true,
   },
   gender: {
     type: String,
   },
-  birthdate: {
-    type: Date,
+  groups: {
+    type: Array,
+  },
+  hasDarkModeActive: {
+    type: Boolean,
+    default: false,
+  },
+  image: {
+    type: String,
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  notifications: {
+    type: Object,
+    default: { 0: "" },
+  },
+  password: {
+    type: String,
+  },
+  phone: {
+    type: String,
+  },
+  position: {
+    type: Object,
+    default: {},
+  },
+  role: {
+    type: Object,
+    default: {},
+  },
+  username: {
+    type: String,
   },
 });
 

@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const servicePlanSchema = new mongoose.Schema({
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
   name: {
     type: String,
     required: true,
@@ -12,10 +16,6 @@ const servicePlanSchema = new mongoose.Schema({
   value: {
     type: Number,
     required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
   },
 });
 

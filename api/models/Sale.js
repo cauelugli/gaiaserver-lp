@@ -4,53 +4,22 @@ const autoIncrement = require("mongoose-auto-increment");
 autoIncrement.initialize(mongoose.connection);
 
 saleSchema = new mongoose.Schema({
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  createdBy: {
+    type: String,
+  },
   customer: {
     type: Object,
     required: true,
   },
-  requester: {
-    type: String,
-    required: true,
-  },
-  seller: {
-    type: Object,
-    required: true,
-  },
-  manager: {
-    type: Object,
-  },
-  department: {
-    type: Object,
-    required: true,
-  },
-  status: {
+  commentary: {
     type: String,
   },
-  price: {
-    type: Number,
-    default: 0,
-    required: true,
-  },
-  items: {
-    type: Object,
-  },
-  interactions: [
-    {
-      number: Number,
-      activity: String,
-      user: String,
-      date: String,
-      reactions: {
-        love: { quantity: Number, usersReacted: [] },
-        like: { quantity: Number, usersReacted: [] },
-        dislike: { quantity: Number, usersReacted: [] },
-        haha: { quantity: Number, usersReacted: [] },
-      },
-    },
-  ],
-  deliveryScheduledTo: {
+  deliveredIn: {
     type: String,
-    required: true,
   },
   deliveryAddress: {
     type: String,
@@ -62,36 +31,67 @@ saleSchema = new mongoose.Schema({
   deliveryReceiverPhone: {
     type: String,
   },
-  deliveredIn: {
+  deliveryScheduledTo: {
     type: String,
+    required: true,
   },
-  createdBy: {
-    type: String,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  department: {
+    type: Object,
+    required: true,
   },
   isActive: {
     type: Boolean,
     default: true,
   },
-  resolvedBy: {
+  interactions: [
+    {
+      activity: String,
+      date: String,
+      number: Number,
+      reactions: {
+        dislike: { quantity: Number, usersReacted: [] },
+        haha: { quantity: Number, usersReacted: [] },
+        like: { quantity: Number, usersReacted: [] },
+        love: { quantity: Number, usersReacted: [] },
+      },
+      user: String,
+    },
+  ],
+  items: {
+    type: Object,
+  },
+  manager: {
+    type: Object,
+  },
+  price: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
+  requester: {
     type: String,
+    required: true,
   },
   resolvedAt: {
     type: String,
   },
-  commentary: {
+  resolvedBy: {
+    type: String,
+  },
+  seller: {
+    type: Object,
+    required: true,
+  },
+  status: {
     type: String,
   },
 });
 
 saleSchema.plugin(autoIncrement.plugin, {
-  model: "Job",
   field: "quoteNumber",
-  startAt: 1,
   incrementBy: 1,
+  model: "Sale",
+  startAt: 1,
 });
 
 const Sale = mongoose.model("Sale", saleSchema);

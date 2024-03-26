@@ -1,61 +1,61 @@
 const mongoose = require("mongoose");
 
 managerSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  phone: {
-    type: String,
-  },
-  department: {
-    type: Object,
-  },
   agenda: {
     type: Array,
     default: [],
   },
-  image: {
-    type: String,
-  },
-  username: {
-    type: String,
-  },
-  password: {
-    type: String,
-  },
-  role: {
-    type: Object,
-    default: {},
-  },
-  position: {
-    type: Object,
-    default: {},
-  },
-  notifications: {
-    type: Object,
-    default: { 0: "" },
-  },
-  isActive: {
-    type: Boolean,
-    default: true,
+  birthdate: {
+    type: Date,
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
+  department: {
+    type: Object,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
   gender: {
     type: String,
   },
-  birthdate: {
-    type: Date,
-  },
   groups: {
     type: Array,
+  },
+  image: {
+    type: String,
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  notifications: {
+    type: Object,
+    default: { 0: "" },
+  },
+  password: {
+    type: String,
+  },
+  phone: {
+    type: String,
+  },
+  position: {
+    type: Object,
+    default: {},
+  },
+  role: {
+    type: Object,
+    default: {},
+  },
+  username: {
+    type: String,
   },
 });
 

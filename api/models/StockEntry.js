@@ -4,6 +4,13 @@ const autoIncrement = require("mongoose-auto-increment");
 autoIncrement.initialize(mongoose.connection);
 
 const stockEntrySchema = new mongoose.Schema({
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  createdBy: {
+    type: String,
+  },
   items: {
     type: Array,
     required: true,
@@ -12,18 +19,11 @@ const stockEntrySchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  createdBy: {
-    type: String,
-  },
   status: {
     type: String,
   },
   type: {
     type: String,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
   },
 });
 
