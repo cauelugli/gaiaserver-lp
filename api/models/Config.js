@@ -59,7 +59,7 @@ const configSchema = new Schema({
     },
     showHello: {
       type: Object,
-      default: { isActive: true, helloInitialText: "Olá", helloFinalText: "" },
+      default: { isActive: true, helloInitialText: "hello", helloFinalText: "" },
     },
   },
   departments: {
