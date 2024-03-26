@@ -2,7 +2,15 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 
-import { Grid, Typography } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Grid,
+  Typography,
+} from "@mui/material";
+
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import {
   Bar,
@@ -17,7 +25,31 @@ import {
 
 import Chart from "chart.js/auto";
 
-const SmartReports = ({ requests }) => {
+const SmartReports = ({ requests, customers }) => {
+  //CUSTOMERS
+  const totalAllCustomers = customers.length;
+  const totalCustomers = customers.filter((customer) => customer.cnpj).length;
+  const totalClients = customers.filter((customer) => customer.cpf).length;
+
+  const allActiveCustomers = customers.filter(
+    (customer) => customer.isActive
+  ).length;
+  const activeCustomers = customers.filter(
+    (customer) => customer.isActive && customer.cnpj
+  ).length;
+  const activeClients = customers.filter(
+    (customer) => customer.isActive && customer.cpf
+  ).length;
+
+  const companyCustomers = customers.filter((customer) => customer.cnpj).length;
+  const personCustomers = customers.filter((customer) => customer.cpf).length;
+
+  const allArchivedCustomers = totalAllCustomers - allActiveCustomers;
+  const archivedCustomers = totalCustomers - activeCustomers;
+  const archivedClients = totalClients - activeClients;
+
+  //CUSTOMERS END
+  //REQUESTS
   const totalRequests = requests.length;
   const activeRequests = requests.filter(
     (request) => request.isActive && request.status !== "Concluido"
@@ -28,6 +60,7 @@ const SmartReports = ({ requests }) => {
   const archivedRequests = requests.filter(
     (request) => request.status === "Arquivado"
   ).length;
+  //REQUESTS END
 
   const colors = {
     blue: "rgba(54, 162, 235, 0.5)",
@@ -36,11 +69,173 @@ const SmartReports = ({ requests }) => {
     lightgreenBorder: "rgba(54, 226, 235, 1)",
     lightpink: "rgba(255, 99, 132, 0.5)",
     lightpinkBorder: "rgba(255, 99, 132, 1)",
+    orange: "rgba(255, 165, 0, 0.5)",
+    orangeBorder: "rgba(255, 165, 0, 1)",
     grey: "rgba(133, 133, 133, 0.5)",
     greyBorder: "rgba(133, 133, 133, 1)",
   };
 
-  //FIRST CHART
+  //CUSTOMERS FIRST CHART
+  const allCustomersData = {
+    labels: [""],
+    datasets: [
+      {
+        label: "Empresas",
+        data: [companyCustomers],
+        backgroundColor: colors.blue,
+        borderColor: colors.blueBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Pessoa Física",
+        data: [personCustomers],
+        backgroundColor: colors.lightpink,
+        borderColor: colors.lightpinkBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Ativos",
+        data: [allActiveCustomers],
+        backgroundColor: colors.lightgreen,
+        borderColor: colors.lightgreenBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Arquivados",
+        data: [allArchivedCustomers],
+        backgroundColor: colors.grey,
+        borderColor: colors.greyBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Total",
+        data: [totalAllCustomers],
+        backgroundColor: colors.orange,
+        borderColor: colors.orangeBorder,
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const allCustomersOptions = {
+    // indexAxis: "y", gráfico na horizontal
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        position: "bottom",
+        labels: {
+          boxWidth: 5,
+        },
+      },
+    },
+  };
+  //CUSTOMERS FIRST CHART END
+  //CUSTOMERS SECOND CHART
+  const customersData = {
+    labels: [""],
+    datasets: [
+      {
+        label: "Ativos",
+        data: [activeCustomers],
+        backgroundColor: colors.lightgreen,
+        borderColor: colors.lightgreenBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Arquivados",
+        data: [archivedCustomers],
+        backgroundColor: colors.grey,
+        borderColor: colors.greyBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Total",
+        data: [totalCustomers],
+        backgroundColor: colors.orange,
+        borderColor: colors.orangeBorder,
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const customersOptions = {
+    // indexAxis: "y", gráfico na horizontal
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        position: "bottom",
+        labels: {
+          boxWidth: 10,
+        },
+      },
+    },
+  };
+  //CUSTOMERS SECOND CHART END
+  //CUSTOMERS THIRD CHART
+
+  const clientsData = {
+    labels: [""],
+    datasets: [
+      {
+        label: "Ativos",
+        data: [activeClients],
+        backgroundColor: colors.lightgreen,
+        borderColor: colors.lightgreenBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Arquivados",
+        data: [archivedClients],
+        backgroundColor: colors.grey,
+        borderColor: colors.greyBorder,
+        borderWidth: 1,
+      },
+      {
+        label: "Total",
+        data: [totalClients],
+        backgroundColor: colors.orange,
+        borderColor: colors.orangeBorder,
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const clientsOptions = {
+    // indexAxis: "y", gráfico na horizontal
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        position: "bottom",
+        labels: {
+          boxWidth: 10,
+        },
+      },
+    },
+  };
+  //CUSTOMERS THIRD CHART END
+
+  //REQUESTS FIRST CHART
   const requestsData = {
     labels: [""],
     datasets: [
@@ -95,9 +290,9 @@ const SmartReports = ({ requests }) => {
     },
   };
 
-  //FIRST CHART END
+  //REQUESTS FIRST CHART END
 
-  //SECOND CHART
+  //REQUESTS SECOND CHART
   const getStartAndEndOfWeek = (date) => {
     const now = date ? new Date(date) : new Date();
     const dayOfWeek = now.getDay();
@@ -163,8 +358,8 @@ const SmartReports = ({ requests }) => {
     },
   };
 
-  //SECOND CHART END
-  //THIRD CHART
+  //REQUESTS SECOND CHART END
+  //REQUESTS THIRD CHART
 
   const getStartOfLastThreeMonths = () => {
     const now = new Date();
@@ -234,58 +429,138 @@ const SmartReports = ({ requests }) => {
     },
   };
 
-  //THIRD CHART END
+  //REQUESTS THIRD CHART END
 
-  const chartWidth = 400;
-  const chartHeight = 350;
+  const chartWidth = 375;
+  const chartHeight = 325;
 
   return (
-    <Grid container direction="row" spacing={2}>
-      <Grid item>
-        <Grid
-          container
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Typography sx={{ fontSize: 12 }}>
-            Solicitações (Jobs e Vendas)
+    <>
+      <Accordion sx={{ m: 2, mt: 4, mx: "30%" }}>
+        <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+          <Typography sx={{ fontSize: 22, fontWeight: "bold", mr: 2 }}>
+            Relatórios
           </Typography>
-          <div style={{ width: chartWidth, height: chartHeight }}>
-            <Bar data={requestsData} options={options} />
-          </div>
-        </Grid>
-      </Grid>
-      <Grid item>
-        <Grid
-          container
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Typography sx={{ fontSize: 12 }}>Semanal</Typography>
-          <div style={{ width: chartWidth, height: chartHeight }}>
-            <Bar data={weekRequestsData} options={weeklyOptions} />
-          </div>
-        </Grid>
-      </Grid>
-      <Grid item>
-        <Grid
-          container
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Typography sx={{ fontSize: 12 }}>Últimos 3 Meses</Typography>
-          <div style={{ width: chartWidth, height: chartHeight }}>
-            <Bar
-              data={lastThreeMonthsRequestsData}
-              options={trimesterOptions}
-            />
-          </div>
-        </Grid>
-      </Grid>
-    </Grid>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Accordion sx={{ mx: "30%" }}>
+            <AccordionSummary>Clientes</AccordionSummary>
+            <AccordionDetails>
+              <Grid
+                container
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Grid item>
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography sx={{ fontSize: 12 }}>Geral</Typography>
+                    <div style={{ width: chartWidth, height: chartHeight }}>
+                      <Bar
+                        data={allCustomersData}
+                        options={allCustomersOptions}
+                      />
+                    </div>
+                  </Grid>
+                </Grid>
+
+                <Grid item>
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography sx={{ fontSize: 12 }}>Empresas</Typography>
+                    <div style={{ width: chartWidth, height: chartHeight }}>
+                      <Bar data={customersData} options={customersOptions} />
+                    </div>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography sx={{ fontSize: 12 }}>Pessoa Física</Typography>
+                    <div style={{ width: chartWidth, height: chartHeight }}>
+                      <Bar data={clientsData} options={clientsOptions} />
+                    </div>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion sx={{ mx: "30%", mt: 2 }}>
+            <AccordionSummary>Solicitações (Jobs e Vendas)</AccordionSummary>
+            <AccordionDetails>
+              <Grid
+                container
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Grid item>
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography sx={{ fontSize: 12 }}>
+                      Solicitações (Jobs e Vendas)
+                    </Typography>
+                    <div style={{ width: chartWidth, height: chartHeight }}>
+                      <Bar data={requestsData} options={options} />
+                    </div>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography sx={{ fontSize: 12 }}>Semanal</Typography>
+                    <div style={{ width: chartWidth, height: chartHeight }}>
+                      <Bar data={weekRequestsData} options={weeklyOptions} />
+                    </div>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography sx={{ fontSize: 12 }}>
+                      Últimos 3 Meses
+                    </Typography>
+                    <div style={{ width: chartWidth, height: chartHeight }}>
+                      <Bar
+                        data={lastThreeMonthsRequestsData}
+                        options={trimesterOptions}
+                      />
+                    </div>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </AccordionDetails>
+          </Accordion>
+        </AccordionDetails>
+      </Accordion>
+    </>
   );
 };
 

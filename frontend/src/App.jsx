@@ -82,6 +82,7 @@ export default function App() {
   const [configAgenda, setConfigAgenda] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [requests, setRequests] = useState([]);
+  const [customers, setCustomers] = useState([]);
   const [userKey, setUserKey] = useState(0);
   const login = JSON.parse(sessionStorage.getItem("login"));
   const userData = JSON.parse(sessionStorage.getItem("userData"));
@@ -119,14 +120,21 @@ export default function App() {
         const notifications = await api.get(
           `/managers/notifications/${userData._id}`
         );
-        const resJobs = await api.get("/jobs");
-        const resSales = await api.get("/sales");
-        const requestsCombinedData = [...resJobs.data, ...resSales.data];
-        setRequests(requestsCombinedData)
         setConfigData(config.data[0]);
         setConfigTables(configTables.data);
         setConfigAgenda(configAgenda.data);
         setNotifications(notifications.data);
+
+        const resJobs = await api.get("/jobs");
+        const resSales = await api.get("/sales");
+        const requestsCombinedData = [...resJobs.data, ...resSales.data];
+        setRequests(requestsCombinedData)
+
+        const resCustomers = await api.get("/customers");
+        const resClients = await api.get("/clients");
+        const customersCombinedData = [...resCustomers.data, ...resClients.data];
+        setCustomers(customersCombinedData)
+        
         if (userData.hasDarkModeActive) {
           setDarkMode(true);
         }
@@ -242,6 +250,7 @@ export default function App() {
                         <Dashboard
                           user={userData}
                           requests={requests}
+                          customers={customers}
                           configAgenda={configAgenda}
                           configDashboard={configData.dashboard}
                           configCustomization={configData.customization}

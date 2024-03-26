@@ -20,6 +20,7 @@ import SmartReports from "../components/SmartReports";
 const Dashboard = ({
   user,
   requests,
+  customers,
   configDashboard,
   configAgenda,
   configCustomization,
@@ -45,14 +46,10 @@ const Dashboard = ({
   return (
     <Grid>
       <WelcomingMessage user={user} showMessage={showMessage} />
-
-      <SmartReports requests={requests}/>
-
       {showAgenda && (
         <>
           <Typography
             sx={{
-              mb: 1,
               opacity: user.username === "admin" && showAgenda ? 1 : 0,
               fontSize: 12,
               textAlign: "right",
@@ -103,6 +100,7 @@ const Dashboard = ({
           </Accordion>
         </>
       )}
+      <SmartReports requests={requests} customers={customers} />
     </Grid>
   );
 };
