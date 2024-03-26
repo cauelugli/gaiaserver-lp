@@ -81,6 +81,7 @@ export default function App() {
   const [configTables, setConfigTables] = useState(null);
   const [configAgenda, setConfigAgenda] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [requests, setRequests] = useState([]);
   const [userKey, setUserKey] = useState(0);
   const login = JSON.parse(sessionStorage.getItem("login"));
   const userData = JSON.parse(sessionStorage.getItem("userData"));
@@ -118,6 +119,10 @@ export default function App() {
         const notifications = await api.get(
           `/managers/notifications/${userData._id}`
         );
+        const resJobs = await api.get("/jobs");
+        const resSales = await api.get("/sales");
+        const requestsCombinedData = [...resJobs.data, ...resSales.data];
+        setRequests(requestsCombinedData)
         setConfigData(config.data[0]);
         setConfigTables(configTables.data);
         setConfigAgenda(configAgenda.data);
@@ -236,6 +241,7 @@ export default function App() {
                       isAuthenticated(login, userData) ? (
                         <Dashboard
                           user={userData}
+                          requests={requests}
                           configAgenda={configAgenda}
                           configDashboard={configData.dashboard}
                           configCustomization={configData.customization}

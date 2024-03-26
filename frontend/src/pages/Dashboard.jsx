@@ -15,9 +15,11 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MyCalendar from "../components/MyCalendar";
 import WorkerSelect from "../components/small/selects/WorkerSelect";
 import WelcomingMessage from "../components/small/WelcomingMessage";
+import SmartReports from "../components/SmartReports";
 
 const Dashboard = ({
   user,
+  requests,
   configDashboard,
   configAgenda,
   configCustomization,
@@ -43,6 +45,8 @@ const Dashboard = ({
   return (
     <Grid>
       <WelcomingMessage user={user} showMessage={showMessage} />
+
+      <SmartReports requests={requests}/>
 
       {showAgenda && (
         <>
