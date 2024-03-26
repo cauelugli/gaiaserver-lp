@@ -167,7 +167,6 @@ const AddJobForm = ({
   };
 
   const generateScheduleOptions = () => {
-
     const workingHoursStart = configAgenda.minTime;
     const workingHoursEnd = configAgenda.maxTime;
 
@@ -253,7 +252,7 @@ const AddJobForm = ({
           color: department.color,
         },
         worker,
-        manager: department.manager,
+        manager: department.manager || {},
         status: config.requestsNeedApproval ? "Aberto" : "Aprovado",
         service: {
           _id: service._id || service.id,

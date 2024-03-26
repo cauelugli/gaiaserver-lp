@@ -321,7 +321,7 @@ const AddUserForm = ({
                       </Grid>
                     )}
                     size="small"
-                    sx={{ width: 200 }}
+                    sx={{ width: 250 }}
                   >
                     {departments.map((item) => (
                       <MenuItem value={item} key={item.id}>

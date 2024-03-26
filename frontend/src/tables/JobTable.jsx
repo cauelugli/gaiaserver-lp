@@ -645,19 +645,21 @@ export default function JobTable({
                                         <Avatar
                                           alt="Imagem do Gerente"
                                           src={
-                                            managers.find(
-                                              (manager) =>
-                                                manager.name ===
-                                                job.manager.name
-                                            )
-                                              ? `http://localhost:3000/static/${
-                                                  managers.find(
-                                                    (manager) =>
-                                                      manager.name ===
-                                                      job.manager.name
-                                                  ).image
-                                                }`
-                                              : ""
+                                            job.manager
+                                              ? managers.find(
+                                                  (manager) =>
+                                                    manager.name ===
+                                                    job.manager.name
+                                                )
+                                                ? `http://localhost:3000/static/${
+                                                    managers.find(
+                                                      (manager) =>
+                                                        manager.name ===
+                                                        job.manager.name
+                                                    ).image
+                                                  }`
+                                                : ""
+                                              : "-"
                                           }
                                           sx={{ width: 32, height: 32, mr: 1 }}
                                         />
