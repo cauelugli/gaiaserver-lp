@@ -31,7 +31,7 @@ const options = [
   { label: "Orçamentos", icon: <RequestQuoteIcon />, link: "/quotes" },
   { label: "Serviços", icon: <BuildIcon />, link: "/services" },
   { label: "Estoque", icon: <WarehouseIcon />, link: "/stock" },
-  { label: "Relatórios", icon: <AssessmentIcon />, link: "/reports", disabled: true },
+  { label: "Relatórios", icon: <AssessmentIcon />, link: "/reports" },
   { label: "Financeiro", icon: <AttachMoneyIcon />, link: "/finance" },
   { label: "Perfil", icon: <PersonIcon />, link: "/account" },
   { label: "Chat", icon: <ChatIcon />, link: "/", disabled: true },

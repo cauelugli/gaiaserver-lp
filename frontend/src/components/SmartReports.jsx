@@ -25,7 +25,7 @@ import {
 
 import Chart from "chart.js/auto";
 
-const SmartReports = ({ requests, customers, users }) => {
+const SmartReports = ({ requests, customers, users, fromPage }) => {
   //USERS
   const totalAllUsers = users.length - 1;
   const totalManagers = users.filter((user) => user.isManager).length;
@@ -615,10 +615,10 @@ const SmartReports = ({ requests, customers, users }) => {
 
   return (
     <>
-      <Accordion sx={{ m: 2, mt: 4, mx: "30%" }}>
+      <Accordion sx={{ m: 2, mt: 4, mx: fromPage ? 2 : "30%" }}>
         <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
           <Typography sx={{ fontSize: 22, fontWeight: "bold", mr: 2 }}>
-            Relatórios
+            Relatórios {fromPage && "Básicos"}
           </Typography>
         </AccordionSummary>
         <AccordionDetails>

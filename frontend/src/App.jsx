@@ -16,23 +16,24 @@ const socket = io("http://localhost:3000");
 
 import { Grid, Typography } from "@mui/material";
 
-import SideBar from "./components/SideBar";
 import NavBar from "./components/NavBar";
+import SideBar from "./components/SideBar";
 
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Users from "./pages/Users";
-import Requests from "./pages/Requests";
+import Account from "./pages/Account";
+import Config from "./pages/Config";
 import Customers from "./pages/Customers";
+import Dashboard from "./pages/Dashboard";
 import Departments from "./pages/Departments";
+import Files from "./pages/Files";
+import Finance from "./pages/Finance";
+import Login from "./pages/Login";
+import Projects from "./pages/Projects";
+import Quotes from "./pages/Quotes";
+import Reports from "./pages/Reports";
+import Requests from "./pages/Requests";
 import Services from "./pages/Services";
 import Stock from "./pages/Stock";
-import Files from "./pages/Files";
-import Account from "./pages/Account";
-import Quotes from "./pages/Quotes";
-import Finance from "./pages/Finance";
-import Config from "./pages/Config";
-import Projects from "./pages/Projects";
+import Users from "./pages/Users";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -323,6 +324,26 @@ export default function App() {
                         <Departments
                           user={userData}
                           configTables={configTables}
+                        />
+                      ) : isAuthenticated(login, userData) ? (
+                        <Typography sx={{ m: 2, fontSize: 16 }}>
+                          Seu usuário não possui autorização à página.
+                        </Typography>
+                      ) : (
+                        <Navigate to="/login" />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/reports"
+                    element={
+                      isAuthenticated(login, userData) &&
+                      hasPermission(userData, configData, "departments") ? (
+                        <Reports
+                          user={userData}
+                          users={users}
+                          requests={requests}
+                          customers={customers}
                         />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
