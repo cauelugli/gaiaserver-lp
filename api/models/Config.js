@@ -57,6 +57,10 @@ const configSchema = new Schema({
       type: Boolean,
       default: true,
     },
+    showHello: {
+      type: Object,
+      default: { isActive: true, helloInitialText: "Olá", helloFinalText: "" },
+    },
   },
   departments: {
     departmentsCanBeDeleted: {

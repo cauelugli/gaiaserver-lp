@@ -38,11 +38,12 @@ router.get("/dashboard", async (req, res) => {
 // DASHBOARD
 router.put("/dashboard", async (req, res) => {
   try {
-    const { showAgenda } = req.body;
+    const { showAgenda, showHello } = req.body;
 
     const config = await Config.findOne();
 
     config.dashboard.showAgenda = showAgenda;
+    config.dashboard.showHello = showHello;
 
     await config.save();
     res.status(200).json(config);
@@ -251,7 +252,8 @@ router.get("/agenda", async (req, res) => {
 // AGENDA
 router.put("/agenda", async (req, res) => {
   try {
-    const { minTime, maxTime, newJobEventTypeColor,showServiceColorOnEvents } = req.body;
+    const { minTime, maxTime, newJobEventTypeColor, showServiceColorOnEvents } =
+      req.body;
 
     let eventTypes = req.body.eventTypes;
 
