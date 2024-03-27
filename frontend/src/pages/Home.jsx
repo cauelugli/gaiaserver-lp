@@ -4,7 +4,7 @@ import * as React from "react";
 
 import WelcomingMessage from "../components/small/WelcomingMessage";
 
-const Home = ({ user, configDashboard }) => {
+const Home = ({ user, configDashboard, onMount, onUnmount }) => {
   const [showMessage, setShowMessage] = React.useState(true);
 
   React.useEffect(() => {
@@ -15,6 +15,18 @@ const Home = ({ user, configDashboard }) => {
       }));
     }
   }, [configDashboard]);
+
+  React.useEffect(() => {
+    if (onMount) {
+      onMount();
+    }
+
+    return () => {
+      if (onUnmount) {
+        onUnmount();
+      }
+    };
+  }, [onMount, onUnmount]);
 
   return (
     <>
