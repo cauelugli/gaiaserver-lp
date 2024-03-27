@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Divider, Grid, List, ListItemButton, Typography } from "@mui/material";
 
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import AssessmentIcon from '@mui/icons-material/Assessment';
+import AssessmentIcon from "@mui/icons-material/Assessment";
 import BuildIcon from "@mui/icons-material/Build";
 import ChatIcon from "@mui/icons-material/Chat";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -17,13 +17,12 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import LanIcon from "@mui/icons-material/Lan";
 import PersonIcon from "@mui/icons-material/Person";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
-import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import SettingsIcon from "@mui/icons-material/Settings";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
 
 const options = [
-  { label: "Home", icon: <HomeIcon />, link: "/" },
   { label: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" },
   { label: "Clientes", icon: <WorkIcon />, link: "/customers" },
   { label: "Colaboradores", icon: <GroupIcon />, link: "/users" },
@@ -59,9 +58,10 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
 
   function hasPermission(user, configData, routePath) {
     if (!configData.sidebar) return false;
-    if (user.role.name === "Admin") return true;
+    if (user.username === "admin") return true;
+
     const route = routePath === "/" ? "dashboard" : routePath.slice(1);
-    if (route === "help" || route === "account") {
+    if (route === "" || route === "help" || route === "account") {
       return true;
     }
 
@@ -91,6 +91,34 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
               : "white",
         }}
       >
+        <Link to="/">
+          <ListItemButton
+            sx={{
+              backgroundColor:
+                configData && configData.customization
+                  ? darkMode || user.hasDarkModeActive
+                    ? darkenedColor
+                    : configData.customization.mainColor
+                  : "white",
+            }}
+          >
+            <HomeIcon
+              sx={{
+                color:
+                  configData && configData.customization
+                    ? configData.customization.fontColor
+                    : "white",
+
+                backgroundColor:
+                  configData && configData.customization
+                    ? darkMode || user.hasDarkModeActive
+                      ? darkenedColor
+                      : configData.customization.mainColor
+                    : "white",
+              }}
+            />
+          </ListItemButton>
+        </Link>
         {filteredOptions.map((option, index) => (
           <Link
             key={index}
