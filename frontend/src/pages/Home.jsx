@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import WelcomingMessage from "../components/small/WelcomingMessage";
+import HomeBlock from "../components/HomeBlock";
 
 const Home = ({ user, configDashboard, onMount, onUnmount }) => {
   const [showMessage, setShowMessage] = React.useState(true);
@@ -31,6 +32,7 @@ const Home = ({ user, configDashboard, onMount, onUnmount }) => {
   return (
     <>
       <WelcomingMessage user={user} showMessage={showMessage} />
+      <HomeBlock />
     </>
   );
 };

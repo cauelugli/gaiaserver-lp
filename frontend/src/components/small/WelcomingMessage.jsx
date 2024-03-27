@@ -50,7 +50,7 @@ const WelcomingMessage = ({ user, showMessage }) => {
       return null;
     } else if (shouldRenderMessage.isActive === "true") {
       return (
-        <Typography sx={{ fontSize: 23, m: 2, fontWeight: "bold" }}>
+        <Typography sx={{ fontSize: 22, ml: 2, fontWeight: "bold" }}>
           {initialMessage}, {user.name}. {finalMessage}
         </Typography>
       );
