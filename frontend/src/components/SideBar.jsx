@@ -12,6 +12,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import HelpCenterIcon from "@mui/icons-material/HelpCenter";
+import HomeIcon from "@mui/icons-material/Home";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import LanIcon from "@mui/icons-material/Lan";
 import PersonIcon from "@mui/icons-material/Person";
@@ -22,7 +23,8 @@ import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
 
 const options = [
-  { label: "Dashboard", icon: <DashboardIcon />, link: "/" },
+  { label: "Home", icon: <HomeIcon />, link: "/" },
+  { label: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" },
   { label: "Clientes", icon: <WorkIcon />, link: "/customers" },
   { label: "Colaboradores", icon: <GroupIcon />, link: "/users" },
   { label: "Departamentos", icon: <LanIcon />, link: "/departments" },

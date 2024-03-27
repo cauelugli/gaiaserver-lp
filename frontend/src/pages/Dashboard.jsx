@@ -6,6 +6,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
+  CircularProgress,
   Grid,
   Typography,
 } from "@mui/material";
@@ -26,27 +28,40 @@ const Dashboard = ({
   configAgenda,
   configCustomization,
 }) => {
+  const [isLoading, setIsLoading] = React.useState(true);
+
   const [worker, setWorker] = React.useState("");
   const [expanded, setExpanded] = React.useState(
     user.username === "admin" ? false : true
   );
 
   const [showAgenda, setShowAgenda] = React.useState(true);
-  const [showMessage, setShowMessage] = React.useState(true);
 
   React.useEffect(() => {
     if (configDashboard) {
       setShowAgenda(configDashboard.showAgenda);
-      setShowMessage((prevState) => ({
-        ...prevState,
-        isActive: configDashboard.showHello,
-      }));
+      setIsLoading(false);
     }
   }, [configDashboard]);
 
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Grid>
-      <WelcomingMessage user={user} showMessage={showMessage} />
+      <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }}>
+        Dashboard
+      </Typography>
       {showAgenda && (
         <>
           <Typography
@@ -101,7 +116,7 @@ const Dashboard = ({
           </Accordion>
         </>
       )}
-      <SmartReports requests={requests} customers={customers} users={users}/>
+      <SmartReports requests={requests} customers={customers} users={users} />
     </Grid>
   );
 };

@@ -750,7 +750,7 @@ const SmartReports = ({ requests, customers, users, fromPage }) => {
               <Grid
                 container
                 direction="row"
-                spacing={1}
+                columnSpacing={1}
                 alignItems="center"
                 justifyContent="center"
               >
@@ -762,7 +762,7 @@ const SmartReports = ({ requests, customers, users, fromPage }) => {
                     justifyContent="center"
                   >
                     <Typography sx={{ fontSize: 12 }}>
-                      Solicitações (Jobs e Vendas)
+                      Geral
                     </Typography>
                     <div style={{ width: chartWidth, height: chartHeight }}>
                       <Bar data={requestsData} options={options} />
@@ -791,6 +791,24 @@ const SmartReports = ({ requests, customers, users, fromPage }) => {
                   >
                     <Typography sx={{ fontSize: 12 }}>
                       Últimos 3 Meses
+                    </Typography>
+                    <div style={{ width: chartWidth, height: chartHeight }}>
+                      <Bar
+                        data={lastThreeMonthsRequestsData}
+                        options={trimesterOptions}
+                      />
+                    </div>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography sx={{ fontSize: 12 }}>
+                      por Departamento
                     </Typography>
                     <div style={{ width: chartWidth, height: chartHeight }}>
                       <Bar

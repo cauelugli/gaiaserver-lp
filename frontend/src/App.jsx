@@ -34,6 +34,7 @@ import Requests from "./pages/Requests";
 import Services from "./pages/Services";
 import Stock from "./pages/Stock";
 import Users from "./pages/Users";
+import Home from "./pages/Home";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -92,12 +93,15 @@ export default function App() {
 
   useEffect(() => {
     socket.on("forceRefresh", () => {
-      toast.info("Atualização necessária! Recarregando a página em 10 segundos", {
-        closeOnClick: false,
-        pauseOnHover: false,
-        theme: "colored",
-        autoClose: 9500,
-      });
+      toast.info(
+        "Atualização necessária! Recarregando a página em 10 segundos",
+        {
+          closeOnClick: false,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 9500,
+        }
+      );
 
       const timer = setTimeout(() => {
         window.location.reload();
@@ -130,18 +134,21 @@ export default function App() {
         const resUsers = await api.get("/users");
         const resManagers = await api.get("/managers");
         const usersCombinedData = [...resUsers.data, ...resManagers.data];
-        setUsers(usersCombinedData)
+        setUsers(usersCombinedData);
 
         const resJobs = await api.get("/jobs");
         const resSales = await api.get("/sales");
         const requestsCombinedData = [...resJobs.data, ...resSales.data];
-        setRequests(requestsCombinedData)
+        setRequests(requestsCombinedData);
 
         const resCustomers = await api.get("/customers");
         const resClients = await api.get("/clients");
-        const customersCombinedData = [...resCustomers.data, ...resClients.data];
-        setCustomers(customersCombinedData)
-        
+        const customersCombinedData = [
+          ...resCustomers.data,
+          ...resClients.data,
+        ];
+        setCustomers(customersCombinedData);
+
         if (userData.hasDarkModeActive) {
           setDarkMode(true);
         }
@@ -254,14 +261,9 @@ export default function App() {
                     path="/"
                     element={
                       isAuthenticated(login, userData) ? (
-                        <Dashboard
+                        <Home
                           user={userData}
-                          users={users}
-                          requests={requests}
-                          customers={customers}
-                          configAgenda={configAgenda}
                           configDashboard={configData.dashboard}
-                          configCustomization={configData.customization}
                         />
                       ) : (
                         <Navigate to="/login" />
@@ -277,6 +279,24 @@ export default function App() {
                     element={
                       isAuthenticated(login, userData) ? (
                         <Account user={userData} />
+                      ) : (
+                        <Navigate to="/login" />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      isAuthenticated(login, userData) ? (
+                        <Dashboard
+                          user={userData}
+                          users={users}
+                          requests={requests}
+                          customers={customers}
+                          configAgenda={configAgenda}
+                          configDashboard={configData.dashboard}
+                          configCustomization={configData.customization}
+                        />
                       ) : (
                         <Navigate to="/login" />
                       )
