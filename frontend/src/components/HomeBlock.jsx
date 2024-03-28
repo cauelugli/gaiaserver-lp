@@ -126,8 +126,6 @@ const HomeBlock = ({
   const [isLoading, setIsLoading] = React.useState(true);
   const uniqueAllowedLinks = [...new Set(allowedLinks)];
 
-  console.log("uniqueAllowedLinks",uniqueAllowedLinks)
-
   const allowedListMainblocks = uniqueAllowedLinks.filter((link) =>
     ["customers", "users", "departments", "requests"].includes(link)
   );
@@ -313,7 +311,9 @@ const HomeBlock = ({
                 sx={{ mt: 2, backgroundColor: "yellow" }}
               >
                 {optionsFourItemsRow.map((option, index) => {
-                  if (allowedListFourItemsRow.includes(option.permissionLabel)) {
+                  if (
+                    allowedListFourItemsRow.includes(option.permissionLabel)
+                  ) {
                     return (
                       <Grid
                         item
@@ -397,55 +397,59 @@ const HomeBlock = ({
               <Shortcuts />
             </Grid>
             {optionsRightColumn.map((option, index) => {
-              return (
-                <Grid item key={index} xs={3}>
-                  <Link to={option.link} style={{ textDecoration: "none" }}>
-                    <Paper
-                      onMouseEnter={() => setHoveredIndexRightColumn(index)}
-                      onMouseLeave={() => setHoveredIndexRightColumn(null)}
-                      sx={{
-                        height: 20,
-                        width: 220,
-                        py: 2,
-                        mx: 1,
-                        transition: "background-color 0.3s, color 0.3s",
-                        backgroundColor:
-                          hoveredIndexRightColumn === index
-                            ? "white"
-                            : configData && configData.customization
-                            ? darkMode || user.hasDarkModeActive
-                              ? darkenedColor
-                              : configData.customization.mainColor
-                            : "white",
-                        color:
-                          hoveredIndexRightColumn === index ? "#777" : "white",
-                      }}
-                    >
-                      <Grid
-                        container
-                        direction="row"
-                        alignItems="center"
-                        justifyContent="center"
+              if (allowedListRightColumn.includes(option.permissionLabel)) {
+                return (
+                  <Grid item key={index} xs={3}>
+                    <Link to={option.link} style={{ textDecoration: "none" }}>
+                      <Paper
+                        onMouseEnter={() => setHoveredIndexRightColumn(index)}
+                        onMouseLeave={() => setHoveredIndexRightColumn(null)}
                         sx={{
-                          cursor: "pointer",
+                          height: 20,
+                          width: 220,
+                          py: 2,
+                          mx: 1,
+                          transition: "background-color 0.3s, color 0.3s",
+                          backgroundColor:
+                            hoveredIndexRightColumn === index
+                              ? "white"
+                              : configData && configData.customization
+                              ? darkMode || user.hasDarkModeActive
+                                ? darkenedColor
+                                : configData.customization.mainColor
+                              : "white",
+                          color:
+                            hoveredIndexRightColumn === index
+                              ? "#777"
+                              : "white",
                         }}
                       >
-                        {option.icon}
-                        <Typography
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                          justifyContent="center"
                           sx={{
-                            ml: 1,
-                            fontSize: 14,
-                            fontWeight: "bold",
-                            fontFamily: "Verdana, sans-serif",
+                            cursor: "pointer",
                           }}
                         >
-                          {option.text}
-                        </Typography>
-                      </Grid>
-                    </Paper>
-                  </Link>
-                </Grid>
-              );
+                          {option.icon}
+                          <Typography
+                            sx={{
+                              ml: 1,
+                              fontSize: 14,
+                              fontWeight: "bold",
+                              fontFamily: "Verdana, sans-serif",
+                            }}
+                          >
+                            {option.text}
+                          </Typography>
+                        </Grid>
+                      </Paper>
+                    </Link>
+                  </Grid>
+                );
+              }
             })}
           </Grid>
         </Grid>
