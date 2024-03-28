@@ -296,7 +296,8 @@ export default function App() {
                   <Route
                     path="/dashboard"
                     element={
-                      isAuthenticated(login, userData) ? (
+                      isAuthenticated(login, userData) &&
+                      hasPermission(userData, configData, "dashboard") ? (
                         <Dashboard
                           user={userData}
                           users={users}
