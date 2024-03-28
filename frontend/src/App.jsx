@@ -267,6 +267,9 @@ export default function App() {
                       isAuthenticated(login, userData) ? (
                         <Home
                           user={userData}
+                          configData={configData}
+                          darkMode={darkMode}
+                          darkenedColor={darkenedColor}
                           configDashboard={configData.dashboard}
                           onMount={() => handleSidebarVisibility(false)}
                           onUnmount={() => handleSidebarVisibility(true)}

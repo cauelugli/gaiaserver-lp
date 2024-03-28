@@ -4,8 +4,17 @@ import * as React from "react";
 
 import WelcomingMessage from "../components/small/WelcomingMessage";
 import HomeBlock from "../components/HomeBlock";
+import { Grid } from "@mui/material";
 
-const Home = ({ user, configDashboard, onMount, onUnmount }) => {
+const Home = ({
+  user,
+  configDashboard,
+  onMount,
+  onUnmount,
+  configData,
+  darkenedColor,
+  darkMode,
+}) => {
   const [showMessage, setShowMessage] = React.useState(true);
 
   React.useEffect(() => {
@@ -32,7 +41,17 @@ const Home = ({ user, configDashboard, onMount, onUnmount }) => {
   return (
     <>
       <WelcomingMessage user={user} showMessage={showMessage} />
-      <HomeBlock />
+      <Grid
+        container
+        sx={{ mx: "2%" }}
+      >
+        <HomeBlock
+          user={user}
+          configData={configData}
+          darkenedColor={darkenedColor}
+          darkMode={darkMode}
+        />
+      </Grid>
     </>
   );
 };

@@ -1,12 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Paper, Typography } from "@mui/material";
 
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import AutoFixNormalIcon from "@mui/icons-material/AutoFixNormal";
 import BuildIcon from "@mui/icons-material/Build";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -14,12 +15,9 @@ import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import LanIcon from "@mui/icons-material/Lan";
-import LockIcon from "@mui/icons-material/Lock";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import SettingsIcon from "@mui/icons-material/Settings";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
-import TableViewIcon from "@mui/icons-material/TableView";
-import ViewSidebarIcon from "@mui/icons-material/ViewSidebar";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
 
@@ -46,7 +44,7 @@ const optionsMainblocks = [
   },
 ];
 
-const optionsFourRowColumn = [
+const optionsFourItemsRow = [
   {
     icon: <CalendarMonthIcon sx={{ fontSize: 32 }} />,
     text: "Agenda",
@@ -73,14 +71,13 @@ const optionsFourRowColumn = [
     link: "/files",
   },
   {
-    icon: <LockIcon sx={{ fontSize: 20 }} />,
-    text: "Segurança",
-    // link: "/security",
-    link: "/",
+    icon: <SettingsIcon sx={{ fontSize: 20 }} />,
+    text: "Configurações",
+    link: "/config",
   },
 ];
 
-const optionsTwoColumnsFirstColumn = [
+const optionsRightColumn = [
   {
     icon: <DashboardIcon sx={{ fontSize: 16 }} />,
     text: "Dashboard",
@@ -104,43 +101,59 @@ const optionsTwoColumnsFirstColumn = [
   },
 ];
 
-const optionsTwoColumnsSecondColumn = [];
+const HomeBlock = ({ user, configData, darkenedColor, darkMode }) => {
+  const [isLoading, setIsLoading] = React.useState(true);
 
-const HomeBlock = () => {
+  React.useEffect(() => {
+    if (configData.customization) {
+      setIsLoading(false);
+    }
+  }, [configData, darkenedColor]);
+
   const [hoveredIndexMainblocks, setHoveredIndexMainblocks] = useState(null);
-  const [hoveredIndexFourRowColumn, setHoveredIndexFourRowColumn] =
+  const [hoveredIndexFourItemsRow, setHoveredIndexFourItemsRow] =
     useState(null);
-  const [
-    hoveredIndexTwoColumnsFirstColumn,
-    setHoveredIndexTwoColumnsFirstColumn,
-  ] = useState(null);
+  const [hoveredIndexRightColumn, setHoveredIndexRightColumn] = useState(null);
+
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
-    <Box sx={{ flexGrow: 1, overflow: "hidden", px: 2 }}>
+    <Box sx={{ flexGrow: 1, overflow: "hidden", pl: 4, py: 2 }}>
       <Grid container>
-        <Grid item xs={12} md={8}>
-          <Grid container spacing={4}>
+        <Grid item xs={12} md={9}>
+          <Grid container spacing={1}>
             <>
               {optionsMainblocks.map((option, index) => {
                 return (
-                  <Grid
-                    xs={6}
-                    item
-                    key={index}
-                    onMouseEnter={() => setHoveredIndexMainblocks(index)}
-                    onMouseLeave={() => setHoveredIndexMainblocks(null)}
-                  >
+                  <Grid xs={6} item key={index}>
                     <Link to={option.link} style={{ textDecoration: "none" }}>
                       <Paper
+                        onMouseEnter={() => setHoveredIndexMainblocks(index)}
+                        onMouseLeave={() => setHoveredIndexMainblocks(null)}
                         sx={{
-                          height: 140,
-                          width: "85%",
+                          height: 150,
+                          width: "92%",
                           p: 2,
                           transition: "background-color 0.3s, color 0.3s",
                           backgroundColor:
-                            hoveredIndexMainblocks === index
-                              ? "#ccc"
-                              : "initial",
+                            hoveredIndexMainblocks === index &&
+                            configData &&
+                            configData.customization
+                              ? darkMode || user.hasDarkModeActive
+                                ? darkenedColor
+                                : configData.customization.mainColor
+                              : "white",
                           color:
                             hoveredIndexMainblocks === index ? "white" : "#777",
                         }}
@@ -171,61 +184,56 @@ const HomeBlock = () => {
                   </Grid>
                 );
               })}
-              <Grid
-                container
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                sx={{ mt: 1 }}
-              >
-                {optionsTwoColumnsFirstColumn.map((option, index) => {
+              <Grid container direction="row" sx={{ mt: 2 }}>
+                {optionsRightColumn.map((option, index) => {
                   return (
-                    <Grid
-                      xs={2}
-                      item
-                      sx={{
-                        p: 2,
-                        mx: 4,
-                        transition: "background-color 0.3s, color 0.3s",
-                        backgroundColor:
-                          hoveredIndexTwoColumnsFirstColumn === index
-                            ? "#eee"
-                            : "initial",
-                        color:
-                          hoveredIndexTwoColumnsFirstColumn === index
-                            ? "white"
-                            : "#777",
-                      }}
-                      key={index}
-                      onMouseEnter={() =>
-                        setHoveredIndexTwoColumnsFirstColumn(index)
-                      }
-                      onMouseLeave={() =>
-                        setHoveredIndexTwoColumnsFirstColumn(null)
-                      }
-                    >
+                    <Grid item key={index} xs={3}>
                       <Link to={option.link} style={{ textDecoration: "none" }}>
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                          justifyContent="center"
+                        <Paper
+                          onMouseEnter={() => setHoveredIndexRightColumn(index)}
+                          onMouseLeave={() => setHoveredIndexRightColumn(null)}
                           sx={{
-                            cursor: "pointer",
+                            height: 20,
+                            width: 220,
+                            py: 2,
+                            mx: 1,
+                            transition: "background-color 0.3s, color 0.3s",
+                            backgroundColor:
+                              hoveredIndexRightColumn === index
+                                ? "white"
+                                : configData && configData.customization
+                                ? darkMode || user.hasDarkModeActive
+                                  ? darkenedColor
+                                  : configData.customization.mainColor
+                                : "white",
+                            color:
+                              hoveredIndexRightColumn === index
+                                ? "#777"
+                                : "white",
                           }}
                         >
-                          {option.icon}
-                          <Typography
+                          <Grid
+                            container
+                            direction="row"
+                            alignItems="center"
+                            justifyContent="center"
                             sx={{
-                              ml: 1,
-                              fontSize: 14,
-                              fontWeight: "bold",
-                              fontFamily: "Verdana, sans-serif",
+                              cursor: "pointer",
                             }}
                           >
-                            {option.text}
-                          </Typography>
-                        </Grid>
+                            {option.icon}
+                            <Typography
+                              sx={{
+                                ml: 1,
+                                fontSize: 14,
+                                fontWeight: "bold",
+                                fontFamily: "Verdana, sans-serif",
+                              }}
+                            >
+                              {option.text}
+                            </Typography>
+                          </Grid>
+                        </Paper>
                       </Link>
                     </Grid>
                   );
@@ -235,31 +243,39 @@ const HomeBlock = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs={12} md={4}>
-          <Grid container direction="column" spacing={3}>
-            {optionsFourRowColumn.map((option, index) => {
+        <Grid item xs={12} md={3} justifyContent="center" alignItems="center">
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
+          >
+            {optionsFourItemsRow.map((option, index) => {
               return (
                 <Grid
                   item
                   key={index}
-                  onMouseEnter={() => setHoveredIndexFourRowColumn(index)}
-                  onMouseLeave={() => setHoveredIndexFourRowColumn(null)}
+                  onMouseEnter={() => setHoveredIndexFourItemsRow(index)}
+                  onMouseLeave={() => setHoveredIndexFourItemsRow(null)}
                 >
                   <Link to={option.link} style={{ textDecoration: "none" }}>
                     <Paper
                       sx={{
                         height: 28,
-                        width: "100%",
-                        p: 2,
+                        width: 240,
+                        py: 2,
                         transition: "background-color 0.3s, color 0.3s",
                         backgroundColor:
-                          hoveredIndexFourRowColumn === index
-                            ? "#ccc"
-                            : "initial",
-                        color:
-                          hoveredIndexFourRowColumn === index
+                          hoveredIndexFourItemsRow === index
                             ? "white"
-                            : "#777",
+                            : configData && configData.customization
+                            ? darkMode || user.hasDarkModeActive
+                              ? darkenedColor
+                              : configData.customization.mainColor
+                            : "white",
+                        color:
+                          hoveredIndexFourItemsRow === index ? "#777" : "white",
                       }}
                     >
                       <Grid
@@ -274,7 +290,7 @@ const HomeBlock = () => {
                         {option.icon}
                         <Typography
                           sx={{
-                            ml: 4,
+                            ml: option.text === "Orçamentos" ? 1 : 2,
                             fontSize: 20,
                             fontWeight: "bold",
                             fontFamily: "Verdana, sans-serif",
