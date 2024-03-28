@@ -8,6 +8,7 @@ import { Grid } from "@mui/material";
 
 const Home = ({
   user,
+  allowedLinks,
   configDashboard,
   onMount,
   onUnmount,
@@ -41,11 +42,9 @@ const Home = ({
   return (
     <>
       <WelcomingMessage user={user} showMessage={showMessage} />
-      <Grid
-        container
-        sx={{ mx: "2%" }}
-      >
+      <Grid container sx={{ mx: "2%" }}>
         <HomeBlock
+          allowedLinks={allowedLinks}
           user={user}
           configData={configData}
           darkenedColor={darkenedColor}

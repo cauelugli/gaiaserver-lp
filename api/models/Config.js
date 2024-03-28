@@ -178,6 +178,12 @@ const configSchema = new Schema({
     config: {
       type: Array,
     },
+    reports: {
+      type: Array,
+    },
+    projects: {
+      type: Array,
+    },
   },
   stock: {
     stockentriesDispatcherDepartment: {

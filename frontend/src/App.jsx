@@ -86,6 +86,7 @@ export default function App() {
   const [requests, setRequests] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [users, setUsers] = useState([]);
+  const [allowedLinks, setAllowedLinks] = useState([]);
   const [userKey, setUserKey] = useState(0);
   const login = JSON.parse(sessionStorage.getItem("login"));
   const userData = JSON.parse(sessionStorage.getItem("userData"));
@@ -217,6 +218,19 @@ export default function App() {
     }
   }, [userData]);
 
+  useEffect(() => {
+    if (!configData || !userData || !configData.sidebar) {
+      return;
+    }
+    Object.keys(configData.sidebar).forEach((routePath) => {
+      if (hasPermission(userData, configData, routePath)) {
+        setAllowedLinks((currentLinks) => [...currentLinks, routePath]);
+      }
+    });
+
+    console.log(allowedLinks);
+  }, [configData]);
+
   return (
     <Grid sx={{ width: "auto", height: "auto", m: -1, mr: -2 }}>
       <Router>
@@ -267,6 +281,7 @@ export default function App() {
                       isAuthenticated(login, userData) ? (
                         <Home
                           user={userData}
+                          allowedLinks={allowedLinks}
                           configData={configData}
                           darkMode={darkMode}
                           darkenedColor={darkenedColor}
