@@ -400,8 +400,6 @@ router.get("/sidebar", async (req, res) => {
 router.put("/sidebar", async (req, res) => {
   try {
     const payload = req.body;
-
-    // Extrair ID e nome de cada item em cada array
     const updatedPayload = {};
     Object.keys(payload).forEach((key) => {
       updatedPayload[key] = payload[key].map((item) => ({
@@ -410,7 +408,6 @@ router.put("/sidebar", async (req, res) => {
       }));
     });
 
-    // Atualizar o objeto config com ID e nome
     const config = await Config.findOneAndUpdate(
       {},
       { sidebar: updatedPayload },

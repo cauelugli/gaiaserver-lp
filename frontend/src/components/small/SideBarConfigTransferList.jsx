@@ -18,7 +18,6 @@ export default function SideBarConfigTransferList({
   title,
 }) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
-
   const handleChecked = (id) => {
     setSelectedItemId(id === selectedItemId ? null : id);
   };

@@ -227,8 +227,6 @@ export default function App() {
         setAllowedLinks((currentLinks) => [...currentLinks, routePath]);
       }
     });
-
-    console.log(allowedLinks);
   }, [configData]);
 
   return (

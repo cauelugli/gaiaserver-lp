@@ -178,6 +178,12 @@ const configSchema = new Schema({
     config: {
       type: Array,
     },
+    customization: {
+      type: Array,
+    },
+    security: {
+      type: Array,
+    },
     reports: {
       type: Array,
     },

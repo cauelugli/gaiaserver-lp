@@ -42,9 +42,11 @@ export default function SideBar({ onClose }) {
     "Estoque",
     "Financeiro",
     "Arquivos",
+    "Configurações",
     "Personalização",
     "Segurança",
-    "Configurações",
+    "Relatórios",
+    "Projetos",
   ];
 
   useEffect(() => {
