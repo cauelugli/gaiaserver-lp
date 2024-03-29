@@ -20,6 +20,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import AutoFixNormalIcon from "@mui/icons-material/AutoFixNormal";
@@ -35,7 +36,6 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import TableViewIcon from "@mui/icons-material/TableView";
-import ViewSidebarIcon from "@mui/icons-material/ViewSidebar";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
 
@@ -130,15 +130,8 @@ const options = [
     modal: <SecurityModal />,
   },
   {
-    icon: (
-      <ViewSidebarIcon
-        sx={{
-          fontSize: 48,
-          transform: "rotate(180deg)",
-        }}
-      />
-    ),
-    text: "Barra Lateral",
+    icon: <AdminPanelSettingsIcon sx={{ fontSize: 48 }} />,
+    text: "Permissões",
     modal: <SideBarModal />,
   },
 

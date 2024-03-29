@@ -123,16 +123,15 @@ export default function SideBar({ onClose }) {
         <DialogTitle
           sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
         >
-          Configurações da Barra Lateral
+          Permissões de Perfis{" "}
           <Tooltip
             title={
               <Typography sx={{ fontSize: 12 }}>
-                Nesta sessão escolha o que os Perfis de Acesso podem visualizar
-                nos itens da Barra Lateral. A coluna à esquerda mostra as
-                Páginas, a coluna central mostra os Perfis que não possuem
-                permissão (o item do menu não será exibido), e os da coluna da
-                direita mostra os que possuem permissão para visualizar as
-                Páginas.
+                Nesta sessão escolha o os Perfis de Acesso que podem visualizar
+                os recursos do aplicativo. A coluna à esquerda mostra os
+                Recursos, a coluna central mostra os Perfis que não possuem
+                permissão, e a coluna da direita mostra os que possuem
+                permissão para visualizar os Recursos.
               </Typography>
             }
           >
