@@ -2,9 +2,11 @@
 /* eslint-disable no-unused-vars */
 import * as React from "react";
 
-import WelcomingMessage from "../components/small/WelcomingMessage";
-import HomeBlock from "../components/HomeBlock";
 import { Grid } from "@mui/material";
+
+import HomeBlock from "../components/HomeBlock";
+import HomeSideBar from "../components/HomeSideBar";
+import WelcomingMessage from "../components/small/WelcomingMessage";
 
 const Home = ({
   user,
@@ -42,14 +44,19 @@ const Home = ({
   return (
     <>
       <WelcomingMessage user={user} showMessage={showMessage} />
-      <Grid container sx={{ mx: "2%" }}>
-        <HomeBlock
-          allowedLinks={allowedLinks}
-          user={user}
-          configData={configData}
-          darkenedColor={darkenedColor}
-          darkMode={darkMode}
-        />
+      <Grid container direction="row">
+        <Grid item md={9}>
+          <HomeBlock
+            allowedLinks={allowedLinks}
+            user={user}
+            configData={configData}
+            darkenedColor={darkenedColor}
+            darkMode={darkMode}
+          />
+        </Grid>
+        <Grid item md={3}>
+          <HomeSideBar />
+        </Grid>
       </Grid>
     </>
   );
