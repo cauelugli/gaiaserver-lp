@@ -83,6 +83,7 @@ export default function App() {
   const [configTables, setConfigTables] = useState(null);
   const [configAgenda, setConfigAgenda] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [userPreferences, setUserPreferences] = useState([]);
   const [requests, setRequests] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [users, setUsers] = useState([]);
@@ -122,19 +123,25 @@ export default function App() {
     };
   }, []);
 
+  // fetch data
   useEffect(() => {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
         const configTables = await api.get("/config/tables");
         const configAgenda = await api.get("/config/agenda");
+        console.log("userData._id",userData._id)
         const notifications = await api.get(
           `/managers/notifications/${userData._id}`
+        );
+        const preferences = await api.get(
+          `/userPreferences/${userData._id}`
         );
         setConfigData(config.data[0]);
         setConfigTables(configTables.data);
         setConfigAgenda(configAgenda.data);
         setNotifications(notifications.data);
+        setUserPreferences(preferences.data);
 
         const resUsers = await api.get("/users");
         const resManagers = await api.get("/managers");
@@ -272,13 +279,14 @@ export default function App() {
           >
             <Grid container sx={{ p: 2 }}>
               <Grid item xs={12} xl={12}>
-                <Routes>
+                <Routes >
                   <Route
                     path="/"
                     element={
                       isAuthenticated(login, userData) ? (
                         <Home
                           user={userData}
+                          userPreferences={userPreferences}
                           allowedLinks={allowedLinks}
                           configData={configData}
                           darkMode={darkMode}

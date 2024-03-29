@@ -188,6 +188,9 @@ export default function UserTable({
             </TableRow>
             {sortedRows
               .filter((user) => {
+                if (user.username === "admin") {
+                  return false;
+                }
                 const searchOptionValue =
                   searchOption === "department.name"
                     ? user.department?.name
@@ -317,7 +320,7 @@ export default function UserTable({
             onRowsPerPageChange={handleChangeRowsPerPage}
             labelRowsPerPage={"por Página"}
             labelDisplayedRows={({ from, to, count }) => {
-              return " " + from + " à " + to + " total " + count;
+              return " " + (from-1) + " à " + (to-1) + " total " + (count-1);
             }}
           />
         </TableContainer>

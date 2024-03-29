@@ -3,12 +3,17 @@ const router = express.Router();
 const UserPreferences = require("../models/UserPreferences");
 
 // GET USER PREFERENCES
-router.get("/", async (req, res) => {
+router.get("/:userId", async (req, res) => {
+
   try {
-    const positions = await UserPreferences.find();
-    res.status(200).json(positions);
-  } catch (err) {
-    res.status(500).json(err);
+    const userId = req.params.userId;
+
+    const userPreferences = await UserPreferences.findOne({ userId: userId });
+
+    res.status(200).json(userPreferences);
+  } catch (error) {
+    console.error("Error fetching user preferences:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

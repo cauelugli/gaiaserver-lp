@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const UserPreferences = require("../models/UserPreferences");
 
 // CREATE ADMIN USER
 router.post("/", async (req, res) => {
@@ -18,11 +19,15 @@ router.post("/", async (req, res) => {
       name: "Admin",
       email: req.body.email,
       role: { id: new Date(), name: "Admin" },
+      position: { id: "admin", name: "Administrador" },
     });
 
     try {
       const savedUser = await newUser.save();
-      res.status(200).json(savedUser);
+      const newUserPreferences = new UserPreferences({ userId: savedUser._id });
+      const savedUserPreferences = await newUserPreferences.save();
+
+      res.status(200).json({ savedUser, savedUserPreferences });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);

@@ -3,6 +3,7 @@ const router = express.Router();
 const Config = require("../models/Config");
 const Manager = require("../models/Manager");
 const User = require("../models/User");
+const UserPreferences = require("../models/UserPreferences");
 const Department = require("../models/Department");
 
 // GET ALL MANAGERS
@@ -30,6 +31,9 @@ router.post("/", async (req, res) => {
   const newManager = new Manager(req.body);
   try {
     const savedManager = await newManager.save();
+    const newUserPreferences = new UserPreferences({ userId: savedManager._id });
+    const savedUserPreferences = await newUserPreferences.save();
+
 
     let updatedDepartment;
 
