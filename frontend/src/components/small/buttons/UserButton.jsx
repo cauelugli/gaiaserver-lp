@@ -23,9 +23,7 @@ const api = axios.create({
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import DarkModeButton from "./DarkModeButton";
-
-export default function UserButton({ user, darkMode, setDarkMode }) {
+export default function UserButton({ user, darkMode }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleLogout = () => {
@@ -41,21 +39,21 @@ export default function UserButton({ user, darkMode, setDarkMode }) {
     }, 1500);
   };
 
-  const handleUseDarkMode = async () => {
-    let res;
-    res = await api.put("/users/darkMode", {
-      userId: user._id,
-      darkMode,
-    });
-    if (res.data) {
-      toast.success("Dark Mode Alterado!", {
-        closeOnClick: true,
-        pauseOnHover: false,
-        theme: "colored",
-        autoClose: 1200,
-      });
-    }
-  };
+  // const handleUseDarkMode = async () => {
+  //   let res;
+  //   res = await api.put("/users/darkMode", {
+  //     userId: user._id,
+  //     darkMode,
+  //   });
+  //   if (res.data) {
+  //     toast.success("Dark Mode Alterado!", {
+  //       closeOnClick: true,
+  //       pauseOnHover: false,
+  //       theme: "colored",
+  //       autoClose: 1200,
+  //     });
+  //   }
+  // };
 
   return (
     <Box>
@@ -83,15 +81,6 @@ export default function UserButton({ user, darkMode, setDarkMode }) {
               <ListItemText primary="Perfil" sx={{ ml: -2 }} />
             </ListItemButton>
           </Link>
-
-          <ListItemButton
-            sx={{ mb: -1 }}
-            onClick={() => {
-              setDarkMode(!darkMode), handleUseDarkMode();
-            }}
-          >
-            <DarkModeButton />
-          </ListItemButton>
 
           <ListItemButton sx={{ mb: -1, ml: 2 }} onClick={handleLogout}>
             <ListItemIcon>
