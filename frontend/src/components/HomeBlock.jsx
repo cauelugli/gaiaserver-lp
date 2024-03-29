@@ -157,7 +157,12 @@ const HomeBlock = ({
               {optionsMainblocks.map((option, index) => {
                 if (allowedListMainblocks.includes(option.permissionLabel)) {
                   return (
-                    <Grid item key={index} sx={{ m: 2 }} md={5}>
+                    <Grid
+                      item
+                      key={index}
+                      sx={{ m: 2 }}
+                      md={allowedListMainblocks.length === 2 ? 12 : 5}
+                    >
                       <Link to={option.link} style={{ textDecoration: "none" }}>
                         <Paper
                           onMouseEnter={() => setHoveredIndexMainblocks(index)}
