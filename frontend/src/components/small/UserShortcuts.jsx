@@ -5,7 +5,7 @@ import { Grid, Typography } from "@mui/material";
 
 const UserShortcuts = () => {
   return (
-    <Grid sx={{ height: 100, width:"auto", backgroundColor: "pink" }}>
+    <Grid sx={{ height: 150, width:"auto", backgroundColor: "pink" }}>
       <Typography>Atalhos do Usuário</Typography>
     </Grid>
   );

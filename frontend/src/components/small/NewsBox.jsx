@@ -5,7 +5,7 @@ import { Grid, Typography } from "@mui/material";
 
 const NewsBox = () => {
   return (
-    <Grid sx={{ height: 400, width:"auto", backgroundColor: "teal" }}>
+    <Grid sx={{ height: 350, width:"auto", backgroundColor: "teal" }}>
       <Typography>Notícias e whatever</Typography>
     </Grid>
   );

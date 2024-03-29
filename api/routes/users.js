@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+const UserPreferences = require("../models/UserPreferences");
 const Manager = require("../models/Manager");
 const Department = require("../models/Department");
 const Position = require("../models/Position");
@@ -72,7 +73,11 @@ router.post("/", async (req, res) => {
         { upsert: true }
       );
     }
-    res.status(200).json(savedUser);
+
+    const newUserPreferences = new UserPreferences({ userId: savedUser._id });
+    const savedUserPreferences = await newUserPreferences.save();
+
+    res.status(200).json({ savedUser, savedUserPreferences });
   } catch (err) {
     console.error(err);
     res.status(500).json(err);
