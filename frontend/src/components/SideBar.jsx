@@ -46,7 +46,7 @@ const options = [
   },
 ];
 
-const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
+const SideBar = ({ configData, user, darkenedColor }) => {
   const [hoveredIndex, setHoveredIndex] = React.useState(null);
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
@@ -85,7 +85,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
         sx={{
           backgroundColor:
             configData && configData.customization
-              ? darkMode || user.hasDarkModeActive
+              ? darkenedColor
                 ? darkenedColor
                 : configData.customization.mainColor
               : "white",
@@ -96,7 +96,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
             sx={{
               backgroundColor:
                 configData && configData.customization
-                  ? darkMode || user.hasDarkModeActive
+                  ? darkenedColor
                     ? darkenedColor
                     : configData.customization.mainColor
                   : "white",
@@ -111,7 +111,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
 
                 backgroundColor:
                   configData && configData.customization
-                    ? darkMode || user.hasDarkModeActive
+                    ? darkenedColor
                       ? darkenedColor
                       : configData.customization.mainColor
                     : "white",
@@ -132,7 +132,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
 
               backgroundColor:
                 configData && configData.customization
-                  ? darkMode || user.hasDarkModeActive
+                  ? darkenedColor
                     ? darkenedColor
                     : configData.customization.mainColor
                   : "white",
@@ -151,7 +151,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
 
                 backgroundColor:
                   configData && configData.customization
-                    ? darkMode || user.hasDarkModeActive
+                    ? darkenedColor
                       ? darkenedColor
                       : configData.customization.mainColor
                     : "white",
@@ -171,7 +171,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
 
                   backgroundColor:
                     configData && configData.customization
-                      ? darkMode || user.hasDarkModeActive
+                      ? darkenedColor
                         ? darkenedColor
                         : configData.customization.mainColor
                       : "white",
@@ -201,7 +201,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
 
                   backgroundColor:
                     configData && configData.customization
-                      ? darkMode || user.hasDarkModeActive
+                      ? darkenedColor
                         ? darkenedColor
                         : configData.customization.mainColor
                       : "white",
@@ -217,7 +217,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
                   my: 0.75,
                   backgroundColor:
                     configData && configData.customization
-                      ? darkMode || user.hasDarkModeActive
+                      ? darkenedColor
                         ? darkenedColor
                         : configData.customization.mainColor
                       : "white",
@@ -232,7 +232,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
                   pb: 0.75,
                   backgroundColor:
                     configData && configData.customization
-                      ? darkMode || user.hasDarkModeActive
+                      ? darkenedColor
                         ? darkenedColor
                         : configData.customization.mainColor
                       : "white",
@@ -245,7 +245,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
           sx={{
             backgroundColor:
               configData && configData.customization
-                ? darkMode || user.hasDarkModeActive
+                ? darkenedColor
                   ? darkenedColor
                   : configData.customization.mainColor
                 : "white",
@@ -260,7 +260,7 @@ const SideBar = ({ configData, user, darkMode, darkenedColor }) => {
 
               backgroundColor:
                 configData && configData.customization
-                  ? darkMode || user.hasDarkModeActive
+                  ? darkenedColor
                     ? darkenedColor
                     : configData.customization.mainColor
                   : "white",

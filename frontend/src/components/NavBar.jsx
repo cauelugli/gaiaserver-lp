@@ -14,8 +14,6 @@ export default function NavBar({
   configData,
   notifications,
   setNotifications,
-  darkMode,
-  setDarkMode,
   darkenedColor,
 }) {
   return (
@@ -27,7 +25,7 @@ export default function NavBar({
       sx={{
         backgroundColor:
           configData && configData.customization
-            ? darkMode || user.hasDarkModeActive
+            ? darkenedColor
               ? darkenedColor
               : configData.customization.mainColor
             : "#32aacd",
@@ -44,7 +42,7 @@ export default function NavBar({
 
             backgroundColor:
               configData && configData.customization
-                ? darkMode || user.hasDarkModeActive
+                ? darkenedColor
                   ? darkenedColor
                   : configData.customization.mainColor
                 : "white",
@@ -76,11 +74,7 @@ export default function NavBar({
             setNotifications={setNotifications}
             sx={{ mr: 3, color: "#333" }}
           />
-          <UserButton
-            user={user}
-            darkMode={darkMode}
-            setDarkMode={setDarkMode}
-          />
+          <UserButton user={user} />
         </Grid>
       </Grid>
     </Grid>

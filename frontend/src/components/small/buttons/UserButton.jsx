@@ -23,7 +23,7 @@ const api = axios.create({
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-export default function UserButton({ user, darkMode }) {
+export default function UserButton({ user }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleLogout = () => {
@@ -38,22 +38,6 @@ export default function UserButton({ user, darkMode }) {
       window.location.reload();
     }, 1500);
   };
-
-  // const handleUseDarkMode = async () => {
-  //   let res;
-  //   res = await api.put("/users/darkMode", {
-  //     userId: user._id,
-  //     darkMode,
-  //   });
-  //   if (res.data) {
-  //     toast.success("Dark Mode Alterado!", {
-  //       closeOnClick: true,
-  //       pauseOnHover: false,
-  //       theme: "colored",
-  //       autoClose: 1200,
-  //     });
-  //   }
-  // };
 
   return (
     <Box>

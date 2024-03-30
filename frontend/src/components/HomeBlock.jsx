@@ -115,13 +115,7 @@ const optionsFourItemsRow = [
   },
 ];
 
-const HomeBlock = ({
-  user,
-  allowedLinks,
-  configData,
-  darkenedColor,
-  darkMode,
-}) => {
+const HomeBlock = ({ user, allowedLinks, configData, darkenedColor }) => {
   const uniqueAllowedLinks = [...new Set(allowedLinks)];
 
   const allowedListMainblocks = uniqueAllowedLinks.filter((link) =>
@@ -175,9 +169,7 @@ const HomeBlock = ({
                               hoveredIndexMainblocks === index &&
                               configData &&
                               configData.customization
-                                ? darkMode || user.hasDarkModeActive
-                                  ? darkenedColor
-                                  : configData.customization.mainColor
+                                ? configData.customization.mainColor
                                 : "white",
                             color:
                               hoveredIndexMainblocks === index
@@ -243,9 +235,7 @@ const HomeBlock = ({
                               hoveredIndexFourItemsRow === index
                                 ? "white"
                                 : configData && configData.customization
-                                ? darkMode || user.hasDarkModeActive
-                                  ? darkenedColor
-                                  : configData.customization.mainColor
+                                ? configData.customization.mainColor
                                 : "white",
                             color:
                               hoveredIndexFourItemsRow === index
@@ -311,7 +301,7 @@ const HomeBlock = ({
                               hoveredIndexRightColumn === index
                                 ? "white"
                                 : configData && configData.customization
-                                ? darkMode || user.hasDarkModeActive
+                                ? darkenedColor
                                   ? darkenedColor
                                   : configData.customization.mainColor
                                 : "white",

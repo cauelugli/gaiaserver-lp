@@ -16,7 +16,6 @@ const Home = ({
   onUnmount,
   configData,
   darkenedColor,
-  darkMode,
   handleShortcutClick
 }) => {
   const [showMessage, setShowMessage] = React.useState(true);
@@ -52,7 +51,6 @@ const Home = ({
             user={user}
             configData={configData}
             darkenedColor={darkenedColor}
-            darkMode={darkMode}
           />
         </Grid>
         <Grid item md={3}>

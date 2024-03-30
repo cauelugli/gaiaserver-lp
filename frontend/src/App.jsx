@@ -74,7 +74,7 @@ function darkenColor(hex, factor) {
 
 export default function App() {
   const [configData, setConfigData] = useState([]);
-  const [darkMode, setDarkMode] = useState(false);
+
   const darkenedColor = darkenColor(
     configData && configData.customization && configData.customization.mainColor
       ? configData.customization.mainColor
@@ -166,9 +166,6 @@ export default function App() {
         ];
         setCustomers(customersCombinedData);
 
-        if (userData.hasDarkModeActive) {
-          setDarkMode(true);
-        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -271,8 +268,6 @@ export default function App() {
               configData={configData}
               notifications={notifications}
               setNotifications={setNotifications}
-              darkMode={darkMode}
-              setDarkMode={setDarkMode}
               darkenedColor={darkenedColor}
             />
           )}
@@ -281,7 +276,7 @@ export default function App() {
               item
               sx={{
                 textAlign: "center",
-                backgroundColor: darkMode ? darkenedColor : "white",
+                backgroundColor: darkenedColor ? darkenedColor : "white",
                 height: "auto",
                 maxWidth: 58,
               }}
@@ -289,7 +284,6 @@ export default function App() {
               <SideBar
                 configData={configData}
                 user={userData}
-                darkMode={darkMode}
                 darkenedColor={darkenedColor}
               />
             </Grid>
@@ -298,7 +292,7 @@ export default function App() {
           <Grid
             sx={{
               width: "95%",
-              backgroundColor: darkMode ? "#181c24" : "",
+              backgroundColor: darkenedColor ? "#181c24" : "",
             }}
           >
             <Grid container sx={{ p: 2 }}>
@@ -313,7 +307,6 @@ export default function App() {
                           handleShortcutClick={handleShortcutClick}
                           allowedLinks={allowedLinks}
                           configData={configData}
-                          darkMode={darkMode}
                           darkenedColor={darkenedColor}
                           configDashboard={configData.dashboard}
                           onMount={() => handleSidebarVisibility(false)}

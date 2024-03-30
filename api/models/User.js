@@ -25,10 +25,6 @@ userSchema = new mongoose.Schema({
   groups: {
     type: Array,
   },
-  hasDarkModeActive: {
-    type: Boolean,
-    default: false,
-  },
   image: {
     type: String,
   },
