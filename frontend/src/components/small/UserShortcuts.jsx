@@ -62,10 +62,18 @@ const UserShortcuts = ({ user, onShortcutClick }) => {
     }
   };
 
+  console.log(
+    "active shortcuts.length",
+    shortcuts.filter((shortcut) => shortcut.isActive).length
+  );
+
   return (
     <Grid
       sx={{
-        height: 300,
+        height:
+          shortcuts.filter((shortcut) => shortcut.isActive).length === 5
+            ? 300
+            : shortcuts.length * 40 + 20,
         width: "auto",
         backgroundColor: "#eee",
         border: "1px solid #ddd",
