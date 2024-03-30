@@ -46,7 +46,7 @@ const options = [
   },
 ];
 
-const SideBar = ({ configData, user, darkenedColor }) => {
+const SideBar = ({ configData, user }) => {
   const [hoveredIndex, setHoveredIndex] = React.useState(null);
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
@@ -85,9 +85,7 @@ const SideBar = ({ configData, user, darkenedColor }) => {
         sx={{
           backgroundColor:
             configData && configData.customization
-              ? darkenedColor
-                ? darkenedColor
-                : configData.customization.mainColor
+              ? configData.customization.mainColor
               : "white",
         }}
       >
@@ -96,9 +94,7 @@ const SideBar = ({ configData, user, darkenedColor }) => {
             sx={{
               backgroundColor:
                 configData && configData.customization
-                  ? darkenedColor
-                    ? darkenedColor
-                    : configData.customization.mainColor
+                  ? configData.customization.mainColor
                   : "white",
             }}
           >
@@ -111,9 +107,7 @@ const SideBar = ({ configData, user, darkenedColor }) => {
 
                 backgroundColor:
                   configData && configData.customization
-                    ? darkenedColor
-                      ? darkenedColor
-                      : configData.customization.mainColor
+                    ? configData.customization.mainColor
                     : "white",
               }}
             />
@@ -132,9 +126,7 @@ const SideBar = ({ configData, user, darkenedColor }) => {
 
               backgroundColor:
                 configData && configData.customization
-                  ? darkenedColor
-                    ? darkenedColor
-                    : configData.customization.mainColor
+                  ? configData.customization.mainColor
                   : "white",
             }}
           >
@@ -151,9 +143,7 @@ const SideBar = ({ configData, user, darkenedColor }) => {
 
                 backgroundColor:
                   configData && configData.customization
-                    ? darkenedColor
-                      ? darkenedColor
-                      : configData.customization.mainColor
+                    ? configData.customization.mainColor
                     : "white",
                 position: "relative",
                 display: "flex",
@@ -171,9 +161,7 @@ const SideBar = ({ configData, user, darkenedColor }) => {
 
                   backgroundColor:
                     configData && configData.customization
-                      ? darkenedColor
-                        ? darkenedColor
-                        : configData.customization.mainColor
+                      ? configData.customization.mainColor
                       : "white",
                   zIndex: 1,
                   pr: 2,
@@ -201,9 +189,7 @@ const SideBar = ({ configData, user, darkenedColor }) => {
 
                   backgroundColor:
                     configData && configData.customization
-                      ? darkenedColor
-                        ? darkenedColor
-                        : configData.customization.mainColor
+                      ? configData.customization.mainColor
                       : "white",
                   zIndex: 0,
                   opacity: hoveredIndex === index ? 1 : 0,
@@ -217,9 +203,7 @@ const SideBar = ({ configData, user, darkenedColor }) => {
                   my: 0.75,
                   backgroundColor:
                     configData && configData.customization
-                      ? darkenedColor
-                        ? darkenedColor
-                        : configData.customization.mainColor
+                      ? configData.customization.mainColor
                       : "white",
                 }}
               />
@@ -232,9 +216,7 @@ const SideBar = ({ configData, user, darkenedColor }) => {
                   pb: 0.75,
                   backgroundColor:
                     configData && configData.customization
-                      ? darkenedColor
-                        ? darkenedColor
-                        : configData.customization.mainColor
+                      ? configData.customization.mainColor
                       : "white",
                 }}
               />
@@ -245,9 +227,7 @@ const SideBar = ({ configData, user, darkenedColor }) => {
           sx={{
             backgroundColor:
               configData && configData.customization
-                ? darkenedColor
-                  ? darkenedColor
-                  : configData.customization.mainColor
+                ? configData.customization.mainColor
                 : "white",
           }}
         >
@@ -260,9 +240,7 @@ const SideBar = ({ configData, user, darkenedColor }) => {
 
               backgroundColor:
                 configData && configData.customization
-                  ? darkenedColor
-                    ? darkenedColor
-                    : configData.customization.mainColor
+                  ? configData.customization.mainColor
                   : "white",
             }}
             onClick={() => alert("GS é um sonho feito com muito amor")}

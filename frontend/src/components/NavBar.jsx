@@ -14,7 +14,6 @@ export default function NavBar({
   configData,
   notifications,
   setNotifications,
-  darkenedColor,
 }) {
   return (
     <Grid
@@ -25,9 +24,7 @@ export default function NavBar({
       sx={{
         backgroundColor:
           configData && configData.customization
-            ? darkenedColor
-              ? darkenedColor
-              : configData.customization.mainColor
+            ? configData.customization.mainColor
             : "#32aacd",
       }}
     >
@@ -42,9 +39,7 @@ export default function NavBar({
 
             backgroundColor:
               configData && configData.customization
-                ? darkenedColor
-                  ? darkenedColor
-                  : configData.customization.mainColor
+                ? configData.customization.mainColor
                 : "white",
           }}
         >

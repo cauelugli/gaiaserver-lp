@@ -74,13 +74,6 @@ function darkenColor(hex, factor) {
 
 export default function App() {
   const [configData, setConfigData] = useState([]);
-
-  const darkenedColor = darkenColor(
-    configData && configData.customization && configData.customization.mainColor
-      ? configData.customization.mainColor
-      : "32aacd",
-    25
-  );
   const [configTables, setConfigTables] = useState(null);
   const [configAgenda, setConfigAgenda] = useState([]);
   const [notifications, setNotifications] = useState([]);
@@ -165,7 +158,6 @@ export default function App() {
           ...resClients.data,
         ];
         setCustomers(customersCombinedData);
-
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -268,7 +260,6 @@ export default function App() {
               configData={configData}
               notifications={notifications}
               setNotifications={setNotifications}
-              darkenedColor={darkenedColor}
             />
           )}
           {login && showSidebar && (
@@ -276,23 +267,17 @@ export default function App() {
               item
               sx={{
                 textAlign: "center",
-                backgroundColor: darkenedColor ? darkenedColor : "white",
                 height: "auto",
                 maxWidth: 58,
               }}
             >
-              <SideBar
-                configData={configData}
-                user={userData}
-                darkenedColor={darkenedColor}
-              />
+              <SideBar configData={configData} user={userData} />
             </Grid>
           )}
 
           <Grid
             sx={{
               width: "95%",
-              backgroundColor: darkenedColor ? "#181c24" : "",
             }}
           >
             <Grid container sx={{ p: 2 }}>
@@ -307,7 +292,6 @@ export default function App() {
                           handleShortcutClick={handleShortcutClick}
                           allowedLinks={allowedLinks}
                           configData={configData}
-                          darkenedColor={darkenedColor}
                           configDashboard={configData.dashboard}
                           onMount={() => handleSidebarVisibility(false)}
                           onUnmount={() => handleSidebarVisibility(true)}

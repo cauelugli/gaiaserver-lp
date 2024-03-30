@@ -115,7 +115,7 @@ const optionsFourItemsRow = [
   },
 ];
 
-const HomeBlock = ({ user, allowedLinks, configData, darkenedColor }) => {
+const HomeBlock = ({ user, allowedLinks, configData }) => {
   const uniqueAllowedLinks = [...new Set(allowedLinks)];
 
   const allowedListMainblocks = uniqueAllowedLinks.filter((link) =>
@@ -130,7 +130,7 @@ const HomeBlock = ({ user, allowedLinks, configData, darkenedColor }) => {
     ["dashboard", "projects", "reports", "finance"].includes(link)
   );
 
-  React.useEffect(() => {}, [configData, darkenedColor]);
+  React.useEffect(() => {}, [configData]);
 
   const [hoveredIndexMainblocks, setHoveredIndexMainblocks] = useState(null);
   const [hoveredIndexFourItemsRow, setHoveredIndexFourItemsRow] =
@@ -301,9 +301,7 @@ const HomeBlock = ({ user, allowedLinks, configData, darkenedColor }) => {
                               hoveredIndexRightColumn === index
                                 ? "white"
                                 : configData && configData.customization
-                                ? darkenedColor
-                                  ? darkenedColor
-                                  : configData.customization.mainColor
+                                ? configData.customization.mainColor
                                 : "white",
                             color:
                               hoveredIndexRightColumn === index
