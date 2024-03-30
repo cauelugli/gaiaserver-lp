@@ -286,7 +286,6 @@ export default function App() {
                       isAuthenticated(login, userData) ? (
                         <Home
                           user={userData}
-                          userPreferences={userPreferences}
                           allowedLinks={allowedLinks}
                           configData={configData}
                           darkMode={darkMode}

@@ -10,6 +10,7 @@ import WelcomingMessage from "../components/small/WelcomingMessage";
 
 const Home = ({
   user,
+  userPreferences,
   allowedLinks,
   configDashboard,
   onMount,
@@ -55,7 +56,7 @@ const Home = ({
           />
         </Grid>
         <Grid item md={3}>
-          <HomeSideBar />
+          <HomeSideBar user={user} />
         </Grid>
       </Grid>
     </>
