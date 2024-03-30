@@ -34,11 +34,11 @@ const ShortcutModals = ({
         configCustomization={configCustomization}
       />
     ),
-    addJob: <AddJobForm {...props} setOpenAddJob={onClose} fromShortcut />,
+    addJob: <AddJobForm {...props} setOpenAddJob={onClose} addFromShortcut />,
     addJobToCustomer: (
       <AddJobForm {...props} setOpenAddJob={onClose} fromShortcut />
     ),
-    addSale: <AddSaleForm {...props} setOpenAddSale={onClose} fromShortcut />,
+    addSale: <AddSaleForm {...props} setOpenAddSale={onClose} addFromShortcut />,
     addSaleToCustomer: (
       <AddSaleForm {...props} setOpenAddSale={onClose} fromShortcut />
     ),
