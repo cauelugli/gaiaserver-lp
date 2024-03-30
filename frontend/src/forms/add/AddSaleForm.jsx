@@ -37,11 +37,11 @@ const api = axios.create({
 const AddSaleForm = ({
   user,
   selectedItem,
-  openAddSale,
   setOpenAddSale,
   refreshData,
   setRefreshData,
   toast,
+  fromShortcut,
 }) => {
   const [config, setConfig] = React.useState([]);
   let selectedCustomer = {};
@@ -177,8 +177,10 @@ const AddSaleForm = ({
           }
         );
       }
-      setOpenAddSale(!openAddSale);
-      setRefreshData(!refreshData);
+      setOpenAddSale(false);
+      if (!fromShortcut) {
+        setRefreshData(!refreshData);
+      }
     } catch (err) {
       toast.error("Houve algum erro...", {
         closeOnClick: true,
@@ -517,7 +519,7 @@ const AddSaleForm = ({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAddSale(!openAddSale)}
+          onClick={() => setOpenAddSale(false)}
         >
           X
         </Button>

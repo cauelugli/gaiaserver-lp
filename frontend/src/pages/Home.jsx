@@ -10,7 +10,6 @@ import WelcomingMessage from "../components/small/WelcomingMessage";
 
 const Home = ({
   user,
-  userPreferences,
   allowedLinks,
   configDashboard,
   onMount,
@@ -18,6 +17,7 @@ const Home = ({
   configData,
   darkenedColor,
   darkMode,
+  handleShortcutClick
 }) => {
   const [showMessage, setShowMessage] = React.useState(true);
 
@@ -56,7 +56,7 @@ const Home = ({
           />
         </Grid>
         <Grid item md={3}>
-          <HomeSideBar user={user} />
+          <HomeSideBar user={user} handleShortcutClick={handleShortcutClick}/>
         </Grid>
       </Grid>
     </>

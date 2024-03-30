@@ -35,6 +35,7 @@ import Services from "./pages/Services";
 import Stock from "./pages/Stock";
 import Users from "./pages/Users";
 import Home from "./pages/Home";
+import ShortcutModals from "./components/ShortcutModals";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -91,6 +92,12 @@ export default function App() {
   const [userKey, setUserKey] = useState(0);
   const login = JSON.parse(sessionStorage.getItem("login"));
   const userData = JSON.parse(sessionStorage.getItem("userData"));
+  const [shortcutModalState, setShortcutModalState] = useState({
+    show: false,
+    action: null,
+    props: {},
+  });
+
   console.log("App mounted control");
   const [showSidebar, setShowSidebar] = useState(true);
   const handleSidebarVisibility = (visibility) => {
@@ -130,13 +137,10 @@ export default function App() {
         const config = await api.get("/config");
         const configTables = await api.get("/config/tables");
         const configAgenda = await api.get("/config/agenda");
-        console.log("userData._id",userData._id)
         const notifications = await api.get(
           `/managers/notifications/${userData._id}`
         );
-        const preferences = await api.get(
-          `/userPreferences/${userData._id}`
-        );
+        const preferences = await api.get(`/userPreferences/${userData._id}`);
         setConfigData(config.data[0]);
         setConfigTables(configTables.data);
         setConfigAgenda(configAgenda.data);
@@ -236,6 +240,17 @@ export default function App() {
     });
   }, [configData]);
 
+  const handleShortcutClick = (shortcut) => {
+    setShortcutModalState({
+      show: true,
+      action: shortcut.action,
+      size: shortcut.size,
+      fullWidth: shortcut.fullWidth,
+      maxWidth: shortcut.maxWidth,
+      props: { ...shortcut.props },
+    });
+  };
+
   return (
     <Grid sx={{ width: "auto", height: "auto", m: -1, mr: -2 }}>
       <Router>
@@ -279,13 +294,14 @@ export default function App() {
           >
             <Grid container sx={{ p: 2 }}>
               <Grid item xs={12} xl={12}>
-                <Routes >
+                <Routes>
                   <Route
                     path="/"
                     element={
                       isAuthenticated(login, userData) ? (
                         <Home
                           user={userData}
+                          handleShortcutClick={handleShortcutClick}
                           allowedLinks={allowedLinks}
                           configData={configData}
                           darkMode={darkMode}
@@ -541,6 +557,18 @@ export default function App() {
           </Grid>
         </Grid>
         <ToastContainer />
+        {shortcutModalState.show && (
+          <ShortcutModals
+            {...shortcutModalState.props}
+            user={userData}
+            toast={toast}
+            action={shortcutModalState.action}
+            fullWidth={shortcutModalState.fullWidth}
+            maxWidth={shortcutModalState.maxWidth}
+            configAgenda={configAgenda}
+            onClose={() => setShortcutModalState({ show: false })}
+          />
+        )}
       </Router>
     </Grid>
   );

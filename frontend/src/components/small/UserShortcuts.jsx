@@ -11,7 +11,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const UserShortcuts = ({ user }) => {
+const UserShortcuts = ({ user, onShortcutClick }) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [userPreferences, setUserPreferences] = useState([]);
 
@@ -38,10 +38,6 @@ const UserShortcuts = ({ user }) => {
   }
 
   const shortcuts = userPreferences.userShortcuts || [];
-  console.log(
-    "shortcuts.length",
-    shortcuts.filter((shortcut) => shortcut.isActive).length
-  );
 
   return (
     <Grid
@@ -96,6 +92,7 @@ const UserShortcuts = ({ user }) => {
                   backgroundColor: "#ddd",
                 },
               }}
+              onClick={() => onShortcutClick(shortcut)}
             >
               <Typography
                 id="ghostDiv"
@@ -120,7 +117,6 @@ const UserShortcuts = ({ user }) => {
                 }}
               >
                 {shortcut.name.toUpperCase()}
-                {/* {shortcut.action} */}
               </Typography>
               <Typography
                 sx={{

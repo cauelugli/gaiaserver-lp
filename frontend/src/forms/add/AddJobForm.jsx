@@ -48,11 +48,11 @@ const AddJobForm = ({
   user,
   configAgenda,
   selectedItem,
-  openAddJob,
   setOpenAddJob,
   refreshData,
   setRefreshData,
   toast,
+  fromShortcut,
 }) => {
   const [config, setConfig] = React.useState([]);
   let selectedCustomer = {};
@@ -279,8 +279,10 @@ const AddJobForm = ({
           }
         );
       }
-      setOpenAddJob(!openAddJob);
-      setRefreshData(!refreshData);
+      setOpenAddJob(false);
+      if (!fromShortcut) {
+        setRefreshData(!refreshData);
+      }
     } catch (err) {
       toast.error("Houve algum erro...", {
         closeOnClick: true,
@@ -834,7 +836,7 @@ const AddJobForm = ({
           <Button
             variant="contained"
             color="error"
-            onClick={() => setOpenAddJob(!openAddJob)}
+            onClick={() => setOpenAddJob(false)}
           >
             X
           </Button>
