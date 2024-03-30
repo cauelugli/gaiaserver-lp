@@ -35,7 +35,13 @@ const ShortcutModals = ({
       />
     ),
     addJob: <AddJobForm {...props} setOpenAddJob={onClose} fromShortcut />,
+    addJobToCustomer: (
+      <AddJobForm {...props} setOpenAddJob={onClose} fromShortcut />
+    ),
     addSale: <AddSaleForm {...props} setOpenAddSale={onClose} fromShortcut />,
+    addSaleToCustomer: (
+      <AddSaleForm {...props} setOpenAddSale={onClose} fromShortcut />
+    ),
   };
 
   const SelectedComponent = ACTION_COMPONENTS[action] || null;

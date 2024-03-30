@@ -56,7 +56,7 @@ const AddJobForm = ({
 }) => {
   const [config, setConfig] = React.useState([]);
   let selectedCustomer = {};
-  if (selectedItem) {
+  if (selectedItem || fromShortcut) {
     selectedCustomer = selectedItem;
   }
 
@@ -307,7 +307,6 @@ const AddJobForm = ({
     <form onSubmit={handleAdd}>
       <Grid sx={{ ml: 5 }}>
         <DialogHeader title="Job" femaleGender={false} />
-
         <DialogContent>
           <Grid container>
             <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
@@ -336,7 +335,7 @@ const AddJobForm = ({
                   onChange={(e) => handleCustomerTypeChange(e.target.value)}
                   value={customerType}
                   required
-                  disabled={selectedCustomer.isActive}
+                  disabled={selectedCustomer.isActive || fromShortcut}
                   displayEmpty
                   renderValue={(selected) => {
                     if (selected.length === 0) {
@@ -362,6 +361,7 @@ const AddJobForm = ({
                 setCustomer={setCustomer}
                 customerType={customerType}
                 selectedCustomer={selectedCustomer}
+                fromShortcut={fromShortcut}
               />
             )}
             {customer && (

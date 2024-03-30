@@ -18,6 +18,7 @@ const NewUserShortcut = ({ user, reloadShortcuts }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [newShortcutName, setNewShortcutName] = useState("");
   const [newShortcutAction, setNewShortcutAction] = useState("");
+  const [newShortcutSelectedItem, setNewShortcutSelectedItem] = useState("");
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -26,6 +27,7 @@ const NewUserShortcut = ({ user, reloadShortcuts }) => {
         userId: user._id,
         newShortcutName,
         newShortcutAction,
+        newShortcutSelectedItem
       });
       if (res.data) {
         toast.success("Atalho Adicionado!", {
@@ -83,7 +85,7 @@ const NewUserShortcut = ({ user, reloadShortcuts }) => {
         <Grid
           container
           direction="column"
-          sx={{ width: "100%", height: "100%" }}
+          sx={{ width: "100%", height: "100%", maxWidth: 260 }}
         >
           <TextField
             sx={{ p: 1.5, mt: 2 }}
@@ -94,7 +96,11 @@ const NewUserShortcut = ({ user, reloadShortcuts }) => {
             onChange={(e) => setNewShortcutName(e.target.value)}
           />
           <Grid sx={{ p: 1.5, mb: 2 }}>
-            <NewUserShortcutOptions setOption={setNewShortcutAction} />
+            <NewUserShortcutOptions
+              setOption={setNewShortcutAction}
+              newShortcutSelectedItem={newShortcutSelectedItem}
+              setNewShortcutSelectedItem={setNewShortcutSelectedItem}
+            />
           </Grid>
           {newShortcutName && newShortcutAction && (
             <Grid sx={{ mb: 1.5, mx: "auto" }}>

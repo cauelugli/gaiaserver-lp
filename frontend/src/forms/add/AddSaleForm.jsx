@@ -45,7 +45,7 @@ const AddSaleForm = ({
 }) => {
   const [config, setConfig] = React.useState([]);
   let selectedCustomer = {};
-  if (selectedItem) {
+  if (selectedItem || fromShortcut) {
     selectedCustomer = selectedItem;
   }
 
@@ -220,7 +220,7 @@ const AddSaleForm = ({
             <FormControl>
               <Select
                 size="small"
-                disabled={selectedCustomer.isActive}
+                disabled={selectedCustomer.isActive || fromShortcut}
                 onChange={(e) => handleCustomerTypeChange(e.target.value)}
                 value={customerType}
                 displayEmpty
@@ -251,6 +251,7 @@ const AddSaleForm = ({
                 handleCustomerChange={handleCustomerChange}
                 setCustomer={setCustomer}
                 customerType={customerType}
+                fromShortcut={fromShortcut}
               />
             </Grid>
           )}

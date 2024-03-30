@@ -247,6 +247,7 @@ export default function App() {
       size: shortcut.size,
       fullWidth: shortcut.fullWidth,
       maxWidth: shortcut.maxWidth,
+      selectedItem: shortcut.selectedItem,
       props: { ...shortcut.props },
     });
   };
@@ -566,6 +567,7 @@ export default function App() {
             action={shortcutModalState.action}
             fullWidth={shortcutModalState.fullWidth}
             maxWidth={shortcutModalState.maxWidth}
+            selectedItem={shortcutModalState.selectedItem}
             configAgenda={configAgenda}
             onClose={() => setShortcutModalState({ show: false })}
           />

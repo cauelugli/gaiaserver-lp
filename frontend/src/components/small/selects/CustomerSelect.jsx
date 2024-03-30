@@ -52,10 +52,10 @@ const CustomerSelect = (props) => {
     >
       <Select
         displayEmpty
-        disabled={props.selectedCustomer.isActive}
-        size={props.sizeSmall && "small"}
+        disabled={props.selectedCustomer.isActive || props.fromShortcut}
+        size={props.sizeSmall || (props.addFromShortcut && "small")}
         renderValue={(selected) => {
-          if (props.selectedCustomer.isActive) {
+          if (props.selectedCustomer.isActive || props.fromShortcut) {
             selected = props.selectedCustomer;
             return selected.name;
           } else {
@@ -66,10 +66,27 @@ const CustomerSelect = (props) => {
             return selected.name;
           }
         }}
-        sx={{ mt: props.marginAddJobForm ? 0 : 1, width: 180 }}
+        sx={{
+          mt: props.marginAddJobForm ? 0 : props.addFromShortcut ? 4 : 1,
+          width: props.addFromShortcut ? 235 : 180,
+        }}
         onChange={(e) =>
           props.handleCustomerChange
             ? props.handleCustomerChange(e.target.value)
+            : props.addFromShortcut
+            ? props.setCustomer({
+                _id: e.target.value._id,
+                name: e.target.value.name,
+                address: e.target.value.address,
+                phone: e.target.value.phone,
+                image: e.target.value.image,
+                addressHome: e.target.value.addressHome || null,
+                cpf: e.target.value.cpf || null,
+                cnpj: e.target.value.cnpj || null,
+                mainContactName: e.target.value.mainContactName || null,
+                mainContactEmail: e.target.value.mainContactEmail || null,
+                mainContactPosition: e.target.value.mainContactPosition || null,
+              })
             : props.setCustomer({
                 id: e.target.value._id,
                 name: e.target.value.name,

@@ -18,7 +18,12 @@ router.get("/:userId", async (req, res) => {
 
 // ADD USER SHORTCUT
 router.put("/addShortcut", async (req, res) => {
-  const { userId, newShortcutName, newShortcutAction } = req.body;
+  const {
+    userId,
+    newShortcutName,
+    newShortcutAction,
+    newShortcutSelectedItem,
+  } = req.body;
 
   try {
     const userPreferences = await UserPreferences.findOne({ userId: userId });
@@ -33,6 +38,7 @@ router.put("/addShortcut", async (req, res) => {
       isActive: true,
       fullWidth: newShortcutAction.fullWidth,
       maxWidth: newShortcutAction.maxWidth,
+      selectedItem: newShortcutSelectedItem,
     };
 
     userPreferences.userShortcuts.push(newShortcut);
@@ -58,7 +64,9 @@ router.put("/deleteShortcut", async (req, res) => {
       return res.status(404).json({ error: "User preferences not found." });
     }
 
-    const shortcutIndex = userPreferences.userShortcuts.findIndex(shortcut => shortcut.name === shortcutName);
+    const shortcutIndex = userPreferences.userShortcuts.findIndex(
+      (shortcut) => shortcut.name === shortcutName
+    );
     if (shortcutIndex !== -1) {
       userPreferences.userShortcuts.splice(shortcutIndex, 1);
 
@@ -72,6 +80,5 @@ router.put("/deleteShortcut", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 
 module.exports = router;
