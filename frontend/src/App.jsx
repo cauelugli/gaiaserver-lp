@@ -97,13 +97,14 @@ export default function App() {
     action: null,
     props: {},
   });
-
-  console.log("App mounted control");
   const [showSidebar, setShowSidebar] = useState(true);
+  console.log("App mounted control");
+
   const handleSidebarVisibility = (visibility) => {
     setShowSidebar(visibility);
   };
 
+  // force refresh from websocket
   useEffect(() => {
     socket.on("forceRefresh", () => {
       toast.info(
@@ -175,12 +176,14 @@ export default function App() {
     fetchData();
   }, []);
 
+  // clear up userData if located at login, might cause bug issues, reopen the browser and good
   useEffect(() => {
     if (window.location.pathname === "/login") {
       sessionStorage.clear();
     }
   }, []);
 
+  // keeps userData as user navigates, kinda works as a context
   useEffect(() => {
     const handleUnload = () => {
       if (login && userData) {
@@ -195,6 +198,7 @@ export default function App() {
     };
   }, [login, userData, userKey]);
 
+  // displaying notifications
   useEffect(() => {
     const handleUnload = () => {
       const readNotifications = Object.values(userData.notifications)
@@ -216,6 +220,7 @@ export default function App() {
     };
   }, [userData]);
 
+  // keeps userData as user navigates, kinda works as a context
   useEffect(() => {
     const keepData = sessionStorage.getItem("keepData");
     if (keepData === "true") {
@@ -229,6 +234,8 @@ export default function App() {
     }
   }, [userData]);
 
+  // checks for user's permissions on app based on sidebar (permissions) config
+  // defines 'allowedLinks' as an Array of string with permitted apps
   useEffect(() => {
     if (!configData || !userData || !configData.sidebar) {
       return;
@@ -240,6 +247,7 @@ export default function App() {
     });
   }, [configData]);
 
+  // opening modal according to userShortcuts
   const handleShortcutClick = (shortcut) => {
     setShortcutModalState({
       show: true,
