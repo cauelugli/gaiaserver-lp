@@ -12,11 +12,15 @@ const userPreferencesSchema = new mongoose.Schema({
         name: "Adicionar Job",
         isActive: true,
         action: "addJob",
+        fullWidth: true,
+        maxWidth: "lg",
       },
       {
         name: "Adicionar Venda",
         isActive: true,
         action: "addSale",
+        fullWidth: true,
+        maxWidth: "md",
       },
       {
         name: "Atalho 3",
