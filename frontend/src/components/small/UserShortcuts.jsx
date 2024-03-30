@@ -62,13 +62,16 @@ const UserShortcuts = ({ user, onShortcutClick }) => {
     }
   };
 
+  console.log(
+    "shortcuts.length",
+    shortcuts.filter((shortcut) => shortcut.isActive).length
+  );
+
   return (
     <Grid
       sx={{
         height:
-          shortcuts.filter((shortcut) => shortcut.isActive).length === 5
-            ? 300
-            : shortcuts.length * 60 + 60,
+          shortcuts.filter((shortcut) => shortcut.isActive).length * 50 + 120,
         width: "auto",
         backgroundColor: "#eee",
         border: "1px solid #ddd",
@@ -112,9 +115,7 @@ const UserShortcuts = ({ user, onShortcutClick }) => {
             />
           ))}
 
-        {shortcuts.filter((shortcut) => shortcut.isActive).length !== 5 && (
-          <NewUserShortcut user={user} reloadShortcuts={reloadShortcuts} />
-        )}
+        <NewUserShortcut user={user} reloadShortcuts={reloadShortcuts} />
       </Grid>
     </Grid>
   );
