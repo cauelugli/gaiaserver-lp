@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
@@ -6,6 +7,8 @@ import axios from "axios";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 
 import SwitchAccessShortcutIcon from "@mui/icons-material/SwitchAccessShortcut";
+import NewUserShortcut from "./NewUserShortcut";
+import ShortcutItem from "./ShortcutItem";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -14,20 +17,27 @@ const api = axios.create({
 const UserShortcuts = ({ user, onShortcutClick }) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [userPreferences, setUserPreferences] = useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selectedShortcut, setSelectedShortcut] = React.useState("");
+
+  const fetchData = async () => {
+    try {
+      const preferences = await api.get(`/userPreferences/${user._id}`);
+      setUserPreferences(preferences.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const preferences = await api.get(`/userPreferences/${user._id}`);
-
-        setUserPreferences(preferences.data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
     fetchData();
   }, [user]);
+
+  const reloadShortcuts = () => {
+    setIsLoading(true);
+    fetchData();
+  };
 
   if (isLoading) {
     return (
@@ -39,13 +49,27 @@ const UserShortcuts = ({ user, onShortcutClick }) => {
 
   const shortcuts = userPreferences.userShortcuts || [];
 
+  const handleDeleteShortcut = async (shortcutName) => {
+    try {
+      await api.put("/userPreferences/deleteShortcut", {
+        userId: user._id,
+        shortcutName,
+      });
+      reloadShortcuts();
+      setAnchorEl(null);
+    } catch (error) {
+      console.error("Error deleting shortcut:", error);
+    }
+  };
+
   return (
     <Grid
       sx={{
         height: 300,
         width: "auto",
         backgroundColor: "#eee",
-        borderRadius: 1,
+        border: "1px solid #ddd",
+        borderRadius: 4,
         mb: 1,
       }}
     >
@@ -77,85 +101,16 @@ const UserShortcuts = ({ user, onShortcutClick }) => {
         {shortcuts
           .filter((shortcut) => shortcut.isActive)
           .map((shortcut, index) => (
-            <Grid
-              container
+            <ShortcutItem
               key={index}
-              direction="row"
-              justifyContent="space-between"
-              sx={{
-                mb: 1,
-                backgroundColor: "#fff",
-                borderRadius: 2,
-                color: "#777",
-                cursor: "pointer",
-                "&:hover": {
-                  backgroundColor: "#ddd",
-                },
-              }}
-              onClick={() => onShortcutClick(shortcut)}
-            >
-              <Typography
-                id="ghostDiv"
-                sx={{
-                  p: 1,
-                  fontSize: 12,
-                  color: "white",
-                  "&:hover": {
-                    color: "#ddd",
-                  },
-                }}
-              >
-                .
-              </Typography>
-              <Typography
-                sx={{
-                  p: 1,
-                  fontSize: 12,
-
-                  fontFamily: "Verdana, sans-serif",
-                  mx: "auto",
-                }}
-              >
-                {shortcut.name.toUpperCase()}
-              </Typography>
-              <Typography
-                sx={{
-                  p: 1,
-                  fontSize: 12,
-                  borderRadius: 2,
-
-                  fontFamily: "Verdana, sans-serif",
-                  cursor: "pointer",
-                  "&:hover": {
-                    backgroundColor: "#bbb",
-                  },
-                }}
-              >
-                ...
-              </Typography>
-            </Grid>
+              shortcut={shortcut}
+              onShortcutClick={onShortcutClick}
+              onDeleteShortcut={handleDeleteShortcut}
+            />
           ))}
 
         {shortcuts.filter((shortcut) => shortcut.isActive).length !== 5 && (
-          <Typography
-            sx={{
-              p: 1,
-              px: 2,
-              fontSize: 12,
-              fontFamily: "Verdana, sans-serif",
-              mb: 1,
-              backgroundColor: "#fff",
-              borderRadius: 2,
-              color: "#777",
-              textAlign: "center",
-              cursor: "pointer",
-              "&:hover": {
-                backgroundColor: "#ddd",
-              },
-            }}
-          >
-            ADICIONAR ATALHO
-          </Typography>
+          <NewUserShortcut user={user} reloadShortcuts={reloadShortcuts} />
         )}
       </Grid>
     </Grid>

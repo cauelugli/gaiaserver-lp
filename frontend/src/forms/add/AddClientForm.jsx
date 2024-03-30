@@ -35,8 +35,8 @@ const api = axios.create({
 });
 
 const AddClientForm = ({
-  openAdd,
   setOpenAdd,
+  fromShortcut,
   refreshData,
   setRefreshData,
   toast,
@@ -90,8 +90,10 @@ const AddClientForm = ({
           autoClose: 1200,
         });
       }
-      setOpenAdd(!openAdd);
-      setRefreshData(!refreshData);
+      setOpenAdd(false);
+      if (!fromShortcut) {
+        setRefreshData(!refreshData);
+      }
     } catch (err) {
       toast.error("Houve algum erro...", {
         closeOnClick: true,
@@ -339,7 +341,7 @@ const AddClientForm = ({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenAdd(false)}
         >
           X
         </Button>

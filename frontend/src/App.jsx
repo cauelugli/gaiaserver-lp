@@ -560,6 +560,7 @@ export default function App() {
         {shortcutModalState.show && (
           <ShortcutModals
             {...shortcutModalState.props}
+            configCustomization={configData.customization}
             user={userData}
             toast={toast}
             action={shortcutModalState.action}

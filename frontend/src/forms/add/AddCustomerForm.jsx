@@ -32,8 +32,8 @@ const api = axios.create({
 });
 
 const AddCustomerForm = ({
-  openAdd,
   setOpenAdd,
+  fromShortcut,
   refreshData,
   setRefreshData,
   toast,
@@ -95,8 +95,10 @@ const AddCustomerForm = ({
           autoClose: 1200,
         });
       }
-      setOpenAdd(!openAdd);
-      setRefreshData(!refreshData);
+      setOpenAdd(false);
+      if (!fromShortcut) {
+        setRefreshData(!refreshData);
+      }
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {
@@ -370,7 +372,7 @@ const AddCustomerForm = ({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenAdd(!false)}
         >
           X
         </Button>

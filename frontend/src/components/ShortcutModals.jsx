@@ -3,11 +3,37 @@
 import React from "react";
 import { Dialog } from "@mui/material";
 
+import AddClientForm from "../forms/add/AddClientForm";
+import AddCustomerForm from "../forms/add/AddCustomerForm";
 import AddJobForm from "../forms/add/AddJobForm";
 import AddSaleForm from "../forms/add/AddSaleForm";
 
-const ShortcutModals = ({ action, onClose, fullWidth, maxWidth, ...props }) => {
+const ShortcutModals = ({
+  action,
+  onClose,
+  fullWidth,
+  maxWidth,
+  configCustomization,
+  ...props
+}) => {
   const ACTION_COMPONENTS = {
+    addClient: (
+      <AddClientForm
+        {...props}
+        setOpenAdd={onClose}
+        fromShortcut
+        extraSmall
+        configCustomization={configCustomization}
+      />
+    ),
+    addCustomer: (
+      <AddCustomerForm
+        {...props}
+        setOpenAdd={onClose}
+        fromShortcut
+        configCustomization={configCustomization}
+      />
+    ),
     addJob: <AddJobForm {...props} setOpenAddJob={onClose} fromShortcut />,
     addSale: <AddSaleForm {...props} setOpenAddSale={onClose} fromShortcut />,
   };

@@ -4,7 +4,6 @@ const UserPreferences = require("../models/UserPreferences");
 
 // GET USER PREFERENCES
 router.get("/:userId", async (req, res) => {
-
   try {
     const userId = req.params.userId;
 
@@ -17,33 +16,62 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
-// UPDATE USER PREFERENCES
-// router.put("/", async (req, res) => {
-//   const { name, positionId } = req.body;
-//   const existingName = await Position.findOne({ name: name });
+// ADD USER SHORTCUT
+router.put("/addShortcut", async (req, res) => {
+  const { userId, newShortcutName, newShortcutAction } = req.body;
 
-//   try {
-//     const updatedPosition = await Position.findByIdAndUpdate(
-//       positionId,
-//       { name: name },
-//       { new: true }
-//     );
+  try {
+    const userPreferences = await UserPreferences.findOne({ userId: userId });
 
-//     const usersToUpdate = await User.find({ "position._id": positionId });
+    if (!userPreferences) {
+      return res.status(404).json({ error: "User preferences not found." });
+    }
 
-//     for (const user of usersToUpdate) {
-//       await User.findByIdAndUpdate(
-//         user._id,
-//         { $set: { "position.name": updatedPosition.name } },
-//         { new: true }
-//       );
-//     }
+    const newShortcut = {
+      name: newShortcutName,
+      action: newShortcutAction.action,
+      isActive: true,
+      fullWidth: newShortcutAction.fullWidth,
+      maxWidth: newShortcutAction.maxWidth,
+    };
 
-//     res.status(200).json(updatedPosition);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json(err);
-//   }
-// });
+    userPreferences.userShortcuts.push(newShortcut);
+    await userPreferences.save();
+
+    res
+      .status(200)
+      .json({ message: "Shortcut added successfully", newShortcut });
+  } catch (error) {
+    console.error("Error adding user shortcut:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// DELETE USER SHORTCUT
+router.put("/deleteShortcut", async (req, res) => {
+  const { userId, shortcutName } = req.body;
+
+  try {
+    const userPreferences = await UserPreferences.findOne({ userId: userId });
+
+    if (!userPreferences) {
+      return res.status(404).json({ error: "User preferences not found." });
+    }
+
+    const shortcutIndex = userPreferences.userShortcuts.findIndex(shortcut => shortcut.name === shortcutName);
+    if (shortcutIndex !== -1) {
+      userPreferences.userShortcuts.splice(shortcutIndex, 1);
+
+      await userPreferences.save();
+      res.status(200).json({ message: "Shortcut deleted successfully" });
+    } else {
+      res.status(404).json({ error: "Shortcut not found." });
+    }
+  } catch (error) {
+    console.error("Error deleting user shortcut:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 
 module.exports = router;

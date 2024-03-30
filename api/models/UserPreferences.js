@@ -22,21 +22,6 @@ const userPreferencesSchema = new mongoose.Schema({
         fullWidth: true,
         maxWidth: "md",
       },
-      {
-        name: "Atalho 3",
-        isActive: false,
-        action: "",
-      },
-      {
-        name: "Atalho 4",
-        isActive: false,
-        action: "",
-      },
-      {
-        name: "Atalho 5",
-        isActive: false,
-        action: "",
-      },
     ],
   },
   toggles: {
