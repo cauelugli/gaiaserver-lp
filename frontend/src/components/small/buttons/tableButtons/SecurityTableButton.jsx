@@ -13,16 +13,16 @@ import {
   Grid,
 } from "@mui/material";
 
-import PersonIcon from "@mui/icons-material/Person";
-import Person4Icon from "@mui/icons-material/Person4";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
-export default function UserTableButton({
+export default function SecurityTableButton({
   anchorEl,
   openAddButton,
   handleClickAddButton,
   handleCloseAddButton,
-  setOpenAddUser,
-  setOpenAddManager,
+  setOpenAddOperator,
+  setOpenAddRole,
   configCustomization,
 }) {
   return (
@@ -57,17 +57,17 @@ export default function UserTableButton({
         }}
       >
         <MenuList sx={{ width: 190 }}>
-          <MenuItem onClick={() => setOpenAddUser(true)}>
+          <MenuItem onClick={() => setOpenAddOperator(true)}>
             <ListItemIcon>
-              <PersonIcon />
+              <ManageAccountsIcon />
             </ListItemIcon>
-            <ListItemText>Colaborador</ListItemText>
+            <ListItemText>Operador</ListItemText>
           </MenuItem>
-          <MenuItem onClick={() => setOpenAddManager(true)}>
+          <MenuItem onClick={() => setOpenAddRole(true)}>
             <ListItemIcon>
-              <Person4Icon />
+              <AdminPanelSettingsIcon />
             </ListItemIcon>
-            <ListItemText>Gerente</ListItemText>
+            <ListItemText>Perfil de Acesso</ListItemText>
           </MenuItem>
         </MenuList>
       </Menu>

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import { Divider, Grid, List, ListItemButton, Typography } from "@mui/material";
 
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import BuildIcon from "@mui/icons-material/Build";
@@ -36,6 +37,12 @@ const options = [
   { label: "Financeiro", icon: <AttachMoneyIcon />, link: "/finance" },
   { label: "Perfil", icon: <PersonIcon />, link: "/account" },
   { label: "Chat", icon: <ChatIcon />, link: "/", disabled: true },
+  {
+    label: "Acessos",
+    icon: <AdminPanelSettingsIcon />,
+    link: "/security",
+  },
+
   { label: "Arquivos", icon: <InsertDriveFileIcon />, link: "/files" },
   { label: "Configurações", icon: <SettingsIcon />, link: "/config" },
   {

@@ -26,16 +26,17 @@ import Dashboard from "./pages/Dashboard";
 import Departments from "./pages/Departments";
 import Files from "./pages/Files";
 import Finance from "./pages/Finance";
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Projects from "./pages/Projects";
 import Quotes from "./pages/Quotes";
 import Reports from "./pages/Reports";
 import Requests from "./pages/Requests";
+import Security from "./pages/Security";
 import Services from "./pages/Services";
 import Stock from "./pages/Stock";
-import Users from "./pages/Users";
-import Home from "./pages/Home";
 import ShortcutModals from "./components/ShortcutModals";
+import Users from "./pages/Users";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -365,6 +366,22 @@ export default function App() {
                         </Typography>
                       ) : (
                         <Navigate to="/login" />
+                      )
+                    }
+                  />
+
+                  <Route
+                    path="/security"
+                    element={
+                      isAuthenticated(login, userData) &&
+                      hasPermission(userData, configData, "security") ? (
+                        <Security user={userData} />
+                      ) : isAuthenticated(login, userData) ? (
+                        <Typography sx={{ m: 2, fontSize: 16 }}>
+                          Seu usuário não possui autorização à página.
+                        </Typography>
+                      ) : (
+                        <Navigate to="/security" />
                       )
                     }
                   />

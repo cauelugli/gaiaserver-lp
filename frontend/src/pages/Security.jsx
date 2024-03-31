@@ -14,16 +14,16 @@ import {
   Typography,
 } from "@mui/material";
 
-import UserTable from "../tables/UserTable";
-import ManagerTable from "../tables/ManagerTable";
+import OperatorTable from "../tables/OperatorTable";
+import RoleTable from "../tables/RoleTable";
 
-import AddUserForm from "../forms/add/AddUserForm";
-import AddManagerForm from "../forms/add/AddManagerForm";
+import AddOperatorForm from "../forms/add/AddOperatorForm";
+import AddRoleForm from "../forms/add/AddRoleForm";
 
 import TableFilters from "../components/TableFilters";
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
-import UserTableButton from "../components/small/buttons/tableButtons/UserTableButton";
+import SecurityTableButton from "../components/small/buttons/tableButtons/SecurityTableButton";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -44,23 +44,21 @@ function CustomTabPanel(props) {
 }
 
 // eslint-disable-next-line no-unused-vars
-export default function Users({ user }) {
+export default function Security({ user }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState(false);
-  const [configNotifications, setConfigNotifications] = React.useState(false);
-  const [configNotificationsBooleans, setConfigNotificationsBooleans] =
-    React.useState(false);
+  React.useState(false);
   const [value, setValue] = React.useState(0);
 
   const [users, setUsers] = React.useState([]);
   const [managers, setManagers] = React.useState([]);
-  const [departments, setDepartments] = React.useState([]);
-  const [positions, setPositions] = React.useState([]);
+  const [operators, setOperators] = React.useState([]);
+  const [roles, setRoles] = React.useState([]);
 
-  const [openAddUser, setOpenAddUser] = React.useState(false);
-  const [openAddManager, setOpenAddManager] = React.useState(false);
+  const [openAddOperator, setOpenAddOperator] = React.useState(false);
+  const [openAddRole, setOpenAddRole] = React.useState(false);
 
   const [searchOption, setSearchOption] = React.useState("name");
   const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
@@ -123,25 +121,18 @@ export default function Users({ user }) {
       try {
         const users = await api.get("/users");
         const managers = await api.get("/managers");
-        const departments = await api.get("/departments");
-        const positions = await api.get("/positions");
+        const roles = await api.get("/roles");
         const usersData = users.data;
         const managersData = managers.data;
+        const combinedData = [...usersData, ...managersData];
         const config = await api.get("/config/users");
         const configCustomization = await api.get("/config");
-        const configNotifications = await api.get("/config/notifications");
-        const configNotificationsBooleans = await api.get(
-          "/config/notificationsBooleans"
-        );
         setConfig(config.data);
         setConfigCustomization(configCustomization.data[0].customization);
-        setConfigNotifications(configNotifications.data);
-        setConfigNotificationsBooleans(configNotificationsBooleans.data);
         setUsers(usersData);
         setManagers(managersData);
-        setDepartments(departments.data);
-        setDepartments(departments.data);
-        setPositions(positions.data);
+        setOperators(combinedData);
+        setRoles(roles.data);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -174,15 +165,15 @@ export default function Users({ user }) {
         sx={{ m: 2 }}
       >
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
-          Colaboradores
+          Segurança de Acessos
         </Typography>
-        <UserTableButton
+        <SecurityTableButton
           anchorEl={anchorEl}
           openAddButton={openAddButton}
           handleClickAddButton={handleClickAddButton}
           handleCloseAddButton={handleCloseAddButton}
-          setOpenAddUser={setOpenAddUser}
-          setOpenAddManager={setOpenAddManager}
+          setOpenAddOperator={setOpenAddOperator}
+          setOpenAddRole={setOpenAddRole}
           configCustomization={configCustomization}
         />
       </Grid>
@@ -193,11 +184,13 @@ export default function Users({ user }) {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label={<Typography sx={{ fontSize: 13 }}>Funcionários</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Operadores</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label={<Typography sx={{ fontSize: 13 }}>Gerentes</Typography>}
+            label={
+              <Typography sx={{ fontSize: 13 }}>Perfil de Acesso</Typography>
+            }
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <RefreshButton
@@ -209,49 +202,51 @@ export default function Users({ user }) {
       </Box>
       <CustomTabPanel value={value} index={0}>
         {users.length === 0 ? (
-          <NoDataText option="Funcionários" />
+          <NoDataText option="Operadores" />
         ) : (
           <>
             <TableFilters
               searchValue={searchValue}
               setSearchValue={setSearchValue}
               searchOption={searchOption}
-              searchOptionList={searchOptionList[0]}
+              searchOptionList={searchOptionList[2]}
               setSearchOption={setSearchOption}
               searchOptionLabel={searchOptionLabel}
               setSearchOptionLabel={setSearchOptionLabel}
               handleSearchChange={handleSearchChange}
             />
 
-            <UserTable
+            <OperatorTable
+              configData={config}
+              roles={roles}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               searchValue={searchValue}
-              configData={config}
-              // searchDepartment={searchDepartment}
               searchOption={searchOption}
             />
           </>
         )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        {managers.length === 0 ? (
-          <NoDataText option="Gerentes" />
+        {roles.length === 0 ? (
+          <NoDataText option="Perfil de Acesso" />
         ) : (
           <>
             <TableFilters
               searchValue={searchValue}
               setSearchValue={setSearchValue}
               searchOption={searchOption}
-              searchOptionList={searchOptionList[1]}
+              searchOptionList={searchOptionList[3]}
               setSearchOption={setSearchOption}
               searchOptionLabel={searchOptionLabel}
               setSearchOptionLabel={setSearchOptionLabel}
               handleSearchChange={handleSearchChange}
             />
 
-            <ManagerTable
+            <RoleTable
               configData={config}
+              users={users}
+              managers={managers}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               searchValue={searchValue}
@@ -260,44 +255,38 @@ export default function Users({ user }) {
           </>
         )}
       </CustomTabPanel>
-      {openAddUser && (
+      {openAddOperator && (
         <Dialog
           fullWidth
-          maxWidth="md"
-          open={openAddUser}
-          onClose={() => setOpenAddUser(!openAddUser)}
+          maxWidth="sm"
+          open={openAddOperator}
+          onClose={() => setOpenAddOperator(!openAddOperator)}
         >
-          <AddUserForm
-            user={user}
-            configData={config}
+          <AddOperatorForm
+            operators={operators.filter((op) => !op.username)}
+            roles={roles}
+            openAdd={openAddOperator}
             configCustomization={configCustomization}
-            configNotifications={configNotifications}
-            configNotificationsBooleans={configNotificationsBooleans}
-            openAdd={openAddUser}
-            departments={departments}
-            positions={positions}
-            setOpenAdd={setOpenAddUser}
+            setOpenAdd={setOpenAddOperator}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
           />
         </Dialog>
       )}
-      {openAddManager && (
+      {openAddRole && (
         <Dialog
           fullWidth
-          maxWidth="md"
-          open={openAddManager}
-          onClose={() => setOpenAddManager(!openAddManager)}
+          maxWidth="xs"
+          open={openAddRole}
+          onClose={() => setOpenAddRole(!openAddRole)}
         >
-          <AddManagerForm
-            config={config}
-            configCustomization={configCustomization}
-            openAdd={openAddManager}
-            departments={departments}
-            setOpenAdd={setOpenAddManager}
+          <AddRoleForm
+            openAdd={openAddRole}
+            setOpenAdd={setOpenAddRole}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
             toast={toast}
           />
         </Dialog>

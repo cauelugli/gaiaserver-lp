@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 import { Grid, Paper, Typography } from "@mui/material";
 
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import BuildIcon from "@mui/icons-material/Build";
@@ -80,6 +81,12 @@ const optionsRightColumn = [
     permissionLabel: "files",
   },
   {
+    icon: <AdminPanelSettingsIcon sx={{ fontSize: 26 }} />,
+    text: "Acessos",
+    link: "/security",
+    permissionLabel: "security",
+  },
+  {
     icon: <SettingsIcon sx={{ fontSize: 26 }} />,
     text: "Configurações",
     link: "/config",
@@ -123,7 +130,15 @@ const HomeBlock = ({ user, allowedLinks, configData }) => {
   );
 
   const allowedListRightColumn = uniqueAllowedLinks.filter((link) =>
-    ["agenda", "services", "quotes", "stock", "files", "config"].includes(link)
+    [
+      "agenda",
+      "services",
+      "quotes",
+      "stock",
+      "files",
+      "security",
+      "config",
+    ].includes(link)
   );
 
   const allowedListFourItemsRow = uniqueAllowedLinks.filter((link) =>
