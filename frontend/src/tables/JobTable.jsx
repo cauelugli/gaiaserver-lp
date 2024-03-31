@@ -154,13 +154,12 @@ export default function JobTable({
     try {
       const requestBody = {
         jobId: selectedJob.id || selectedJob._id,
-        option: "managerApproval",
         status: "Aprovado",
         manager: selectedJob.manager,
         user: user.name,
         date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
       };
-      const res = await api.put("/jobs", requestBody);
+      const res = await api.put("/jobs/managerApproval", requestBody);
       if (res.data) {
         toast.success("Job Aprovado!", {
           closeOnClick: true,

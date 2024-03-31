@@ -296,6 +296,35 @@ router.put("/requestApproval", async (req, res) => {
   }
 });
 
+// MANAGE APPROVAL FOR JOB
+router.put("/managerApproval", async (req, res) => {
+  try {
+    const jobId = req.body.jobId || req.body.job._id;
+    const updatedJob = await Job.findByIdAndUpdate(
+      jobId,
+      {
+        $set: {
+          status: "Aprovado",
+        },
+        $push: {
+          interactions: {
+            number: req.body.number || 2,
+            activity: "Job aprovado para execução",
+            user: req.body.user,
+            date: req.body.date,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    res.status(200).json(updatedJob);
+  } catch (err) {
+    console.log("err", err);
+    res.status(500).json(err);
+  }
+});
+
 // UPDATE JOB
 router.put("/", async (req, res) => {
   try {
@@ -303,7 +332,6 @@ router.put("/", async (req, res) => {
     const option = req.body.option;
     const status = req.body.status;
     const user = req.body.user;
-    const manager = req.body.manager;
     const worker = req.body.worker;
 
     if (option === "interaction") {
@@ -330,26 +358,6 @@ router.put("/", async (req, res) => {
         },
         { new: true }
       );
-      res.status(200).json(updatedJob);
-    } else if (option === "managerApproval") {
-      const updatedJob = await Job.findByIdAndUpdate(
-        jobId,
-        {
-          $set: {
-            status: "Aprovado",
-          },
-          $push: {
-            interactions: {
-              number: req.body.number || 2,
-              activity: "Job aprovado para execução",
-              user: req.body.user,
-              date: req.body.date,
-            },
-          },
-        },
-        { new: true }
-      );
-
       res.status(200).json(updatedJob);
     } else if (option === "reaction") {
       const job = await Job.findById(jobId);
