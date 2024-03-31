@@ -228,7 +228,6 @@ const AddSaleForm = ({
           <Grid item>
             <FormControl>
               <Select
-                size="small"
                 disabled={selectedCustomer.isActive || fromShortcut}
                 onChange={(e) => handleCustomerTypeChange(e.target.value)}
                 value={customerType}
@@ -267,7 +266,6 @@ const AddSaleForm = ({
 
           <Grid item>
             <TextField
-              size="small"
               label="Solicitante"
               value={requester}
               onChange={(e) => setRequester(e.target.value)}
