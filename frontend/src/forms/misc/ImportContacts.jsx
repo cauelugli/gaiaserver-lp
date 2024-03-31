@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+// import example from "../../../../uploads/exemplo.csv";
+
 import {
   Button,
   Typography,
@@ -17,6 +19,8 @@ import {
   TextField,
   DialogTitle,
   Switch,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
@@ -62,6 +66,12 @@ const ImportContacts = ({
   const handleSwitchChange = (event, rowIndex, cellIndex) => {
     const newData = [...fileData];
     newData[rowIndex + 1][cellIndex] = event.target.checked;
+    setFileData(newData);
+  };
+
+  const handleGenderChange = (event, rowIndex, cellIndex) => {
+    const newData = [...fileData];
+    newData[rowIndex + 1][cellIndex] = event.target.value;
     setFileData(newData);
   };
 
@@ -124,6 +134,23 @@ const ImportContacts = ({
                           />
                         </TableCell>
                       );
+                    } else if (cellIndex === row.length - 4) {
+                      return (
+                        <TableCell key>
+                          <Select
+                            sx={{ width: 135 }}
+                            size="small"
+                            value={cell}
+                            onChange={(e) =>
+                              handleGenderChange(e, rowIndex, cellIndex)
+                            }
+                          >
+                            <MenuItem value={"m"}>Masculino</MenuItem>
+                            <MenuItem value={"f"}>Feminino</MenuItem>
+                            <MenuItem value={"0"}>Não Informar</MenuItem>
+                          </Select>
+                        </TableCell>
+                      );
                     } else {
                       const handleChange = (e) => {
                         const newData = [...fileData];
@@ -133,6 +160,7 @@ const ImportContacts = ({
                       return (
                         <TableCell key={cellIndex}>
                           <TextField
+                            sx={{ width: cellIndex === 2 ? 130 : 155 }}
                             value={cell}
                             onChange={handleChange}
                             size="small"
@@ -155,22 +183,17 @@ const ImportContacts = ({
             sx={{ my: 3 }}
           >
             <Button
-              variant="outlined"
-              color="inherit"
-              startIcon={<HelpOutlineIcon />}
-              sx={{ mr: 2 }}
-              onClick={handleDelete}
-            >
-              Dúvidas
-            </Button>
-
-            <Button
               variant="contained"
               color="success"
               startIcon={<DownloadIcon />}
-              onClick={handleDelete}
             >
-              Baixar Arquivo Modelo
+              <a
+                href={`http://localhost:3000/static/exemplo.csv`}
+                download
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                Baixar Arquivo Modelo
+              </a>{" "}
             </Button>
           </Grid>
           <Typography
