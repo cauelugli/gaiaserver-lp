@@ -15,7 +15,7 @@ const NewUserShortcutOptions = ({
   let options = [
     {
       value: {
-        label: "Adicionar Job",
+        label: "Job",
         action: "addJob",
         fullWidth: true,
         maxWidth: "lg",
@@ -25,7 +25,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Adicionar Job para Cliente",
+        label: "Job para Cliente",
         action: "addJobToCustomer",
         fullWidth: true,
         maxWidth: "lg",
@@ -35,7 +35,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Adicionar Venda",
+        label: "Venda",
         action: "addSale",
         fullWidth: true,
         maxWidth: "md",
@@ -45,7 +45,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Adicionar Venda para Cliente",
+        label: "Venda para Cliente",
         action: "addSaleToCustomer",
         fullWidth: true,
         maxWidth: "md",
@@ -55,7 +55,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Adicionar Cliente Pessoa Física",
+        label: "Cliente Pessoa Física",
         action: "addClient",
         fullWidth: true,
         maxWidth: "xs",
@@ -65,7 +65,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Adicionar Cliente Empresa",
+        label: "Cliente Empresa",
         action: "addCustomer",
         fullWidth: true,
         maxWidth: "md",
@@ -75,7 +75,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Adicionar Usuário",
+        label: "Usuário",
         action: "addUser",
         fullWidth: true,
         maxWidth: "md",
@@ -85,7 +85,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Adicionar Gerente",
+        label: "Gerente",
         action: "addManager",
         fullWidth: true,
         maxWidth: "md",
@@ -95,7 +95,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Adicionar Departamento",
+        label: "Departamento",
         action: "addDepartment",
         fullWidth: true,
         maxWidth: "md",
@@ -135,13 +135,13 @@ const NewUserShortcutOptions = ({
         sx={{ width: "100%" }}
         displayEmpty
         renderValue={(selected) =>
-          <Typography sx={{ fontSize: 13 }}>{selected.label} </Typography> ||
+          <Typography>{selected.label} </Typography> ||
           "Selecione uma opção"
         }
       >
         {options.map((option, index) => (
           <MenuItem key={index} value={option.value}>
-            <Typography sx={{ fontSize: 13 }}>{option.value.label}</Typography>
+            <Typography>{option.value.label}</Typography>
           </MenuItem>
         ))}
       </Select>
