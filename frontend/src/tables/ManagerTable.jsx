@@ -41,15 +41,12 @@ export default function ManagerTable({
   const [openDetails, setOpenDetails] = React.useState(false);
 
   const [managers, setManagers] = React.useState([]);
-  const [departments, setDepartments] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const managers = await api.get("/managers");
-        const departments = await api.get("/departments");
         setManagers(managers.data);
-        setDepartments(departments.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -303,7 +300,6 @@ export default function ManagerTable({
             <EditManagerForm
               openEdit={openEdit}
               selectedManager={selectedManager}
-              departments={departments}
               setOpenEdit={setOpenEdit}
               refreshData={refreshData}
               setRefreshData={setRefreshData}

@@ -67,7 +67,6 @@ const ShortcutModals = ({
     addManager: (
       <AddManagerForm
         {...props}
-        departments={departments}
         setOpenAdd={onClose}
         configCustomization={configCustomization}
         addFromShortcut

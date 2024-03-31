@@ -1,6 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Avatar,
@@ -30,7 +33,6 @@ const api = axios.create({
 
 const AddManagerForm = ({
   user,
-  departments,
   setOpenAdd,
   refreshData,
   setRefreshData,
@@ -38,11 +40,25 @@ const AddManagerForm = ({
   configCustomization,
   addFromShortcut,
 }) => {
+  const [departments, setDepartments] = React.useState([]);
+
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [department, setDepartment] = React.useState("");
   const [image, setImage] = React.useState("");
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const departments = await api.get("/departments");
+        setDepartments(departments.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleImageClick = () => {
     document.getElementById("fileInput").click();
@@ -79,11 +95,14 @@ const AddManagerForm = ({
         });
 
         await api.post("/recentActivity", {
-          activity: `Colaborador ${user.name} criou um Novo Gerente: "${name} ${
-            department.name && `para o departamento ${department.name}`
-          }"`,
+          activity: `Colaborador ${
+            user.name
+          } criou um Novo Gerente: "${name}" ${
+            department && `para o departamento ${department.name}`
+          }`,
           createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),
         });
+        socket.emit("recentActivityRefresh");
       }
 
       setOpenAdd(false);

@@ -295,7 +295,6 @@ export default function Users({ user }) {
             config={config}
             configCustomization={configCustomization}
             openAdd={openAddManager}
-            departments={departments}
             setOpenAdd={setOpenAddManager}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
