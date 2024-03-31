@@ -175,7 +175,7 @@ export default function JobTableActions(props) {
 
           <ListItemButton
             disabled={props.job.status === "Concluido"}
-            onClick={(item) => props.handleOpenEdit(item, "interaction")}
+            onClick={(item) => props.handleOpenAddJobInteraction(item)}
           >
             <ListItemIcon>
               <AddIcon />

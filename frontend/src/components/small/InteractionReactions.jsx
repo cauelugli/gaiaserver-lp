@@ -69,12 +69,11 @@ const InteractionReactions = ({
 
   const handleReactionClick = async (reactionType) => {
     try {
-      const res = await api.put("/jobs", {
+      const res = await api.put("/jobs/reaction", {
         jobId: job._id,
         job,
         number,
         user,
-        option: "reaction",
         reactionType,
       });
       setUserReactions({

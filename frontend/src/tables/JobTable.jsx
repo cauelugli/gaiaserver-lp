@@ -34,6 +34,7 @@ import InteractionReactions from "../components/small/InteractionReactions";
 import EditJobForm from "../forms/edit/EditJobForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import JobTableActions from "../components/small/buttons/tableActionButtons/JobTableActions";
+import AddJobInteractionForm from "../forms/misc/AddJobInteractionForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -54,6 +55,7 @@ export default function JobTable({
 }) {
   const [userReactions, setUserReactions] = React.useState({});
   const [openEdit, setOpenEdit] = React.useState(false);
+  const [openAddInteraction, setOpenAddInteraction] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openDetailGeral, setOpenDetailGeral] = React.useState(true);
   const [openDetailDescrição, setOpenDetailDescrição] = React.useState(false);
@@ -413,6 +415,7 @@ export default function JobTable({
                         handleManagerApproval={handleManagerApproval}
                         handleRequestApproval={handleRequestApproval}
                         handleOpenEdit={handleOpenEdit}
+                        handleOpenAddJobInteraction={setOpenAddInteraction}
                         handleConfirmDelete={handleConfirmDelete}
                       />
                     </TableCell>
@@ -1003,6 +1006,24 @@ export default function JobTable({
             openEditJob={openEdit}
             selectedJob={selectedJob}
             setOpenEditJob={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openAddInteraction && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openAddInteraction}
+          onClose={() => setOpenAddInteraction(!openAddInteraction)}
+        >
+          <AddJobInteractionForm
+            user={user}
+            openEditJob={openAddInteraction}
+            selectedJob={selectedJob}
+            setOpenEditJob={setOpenAddInteraction}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
