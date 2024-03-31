@@ -1,9 +1,49 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { io } from "socket.io-client";
 
 import { Grid, Typography } from "@mui/material";
 
+const socket = io("http://localhost:3000");
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 const HomeRecentActivity = () => {
+  const [recentActivities, setRecentActivities] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const recentActivities = await api.get("/recentActivity");
+        setRecentActivities(recentActivities.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    socket.on("recentActivityRefresh", () => {
+      const fetchData = async () => {
+        try {
+          const recentActivities = await api.get("/recentActivity");
+          setRecentActivities(recentActivities.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchData();
+    });
+
+    return () => {
+      socket.off("recentActivityRefresh");
+    };
+  }, []);
+
   return (
     <>
       <Grid
@@ -15,7 +55,9 @@ const HomeRecentActivity = () => {
           border: "1px solid #2c9393",
           borderRadius: 2,
         }}
-      ></Grid>
+      >
+        {recentActivities.map((activity) => activity.activity)}
+      </Grid>
       <Typography
         sx={{
           mt: 0.5,

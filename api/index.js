@@ -33,6 +33,7 @@ const uploadsRoute = require("./routes/uploads");
 const agendaRoute = require("./routes/agenda");
 const groupsRoute = require("./routes/groups");
 const userPreferencesRoute = require("./routes/userPreferences");
+const recentActivityRoute = require("./routes/recentActivity");
 
 dotenv.config();
 app.use(cors());
@@ -74,6 +75,7 @@ app.use("/api/uploads", uploadsRoute);
 app.use("/api/agenda", agendaRoute);
 app.use("/api/groups", groupsRoute);
 app.use("/api/userPreferences", userPreferencesRoute);
+app.use("/api/recentActivity", recentActivityRoute);
 
 initSocket(server);
 

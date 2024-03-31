@@ -27,6 +27,10 @@ const initSocket = (server) => {
       io.emit("forceRefresh");
     });
 
+    socket.on("recentActivityRefresh", () => {
+      io.emit("recentActivityRefresh");
+    });
+
     socket.on("whenUserIsCreated", async (data) => {
       try {
         const usersToNotify = await Promise.all(
