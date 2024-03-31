@@ -136,8 +136,9 @@ router.post("/importContacts", async (req, res) => {
             row[2],
             row[2].length === 10 ? "(00) 0000-0000" : "(00) 00000-0000"
           ),
-          mainContactEmail: row[3],
-          address: row[4],
+          gender: row[3],
+          mainContactEmail: row[4],
+          address: row[5],
         };
       } else {
         specificData = {
@@ -147,8 +148,9 @@ router.post("/importContacts", async (req, res) => {
             row[2],
             row[2].length === 10 ? "(00) 0000-0000" : "(00) 00000-0000"
           ),
-          email: row[3],
-          addressHome: row[4],
+          gender: row[3],
+          email: row[4],
+          addressHome: row[5],
         };
       }
 
