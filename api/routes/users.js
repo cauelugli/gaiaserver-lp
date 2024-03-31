@@ -337,4 +337,21 @@ router.put("/readNotification", async (req, res) => {
   }
 });
 
+// UPDATE USER'S PROFILE PICTURE
+router.put("/changeProfilePicture", async (req, res) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.body.userId,
+      { image: req.body.image },
+      { new: true }
+    );
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Erro ao atualizar a imagem de perfil." });
+  }
+});
+
 module.exports = router;

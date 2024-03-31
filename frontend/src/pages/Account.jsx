@@ -1,13 +1,14 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React from "react";
+import { toast } from "react-toastify";
+import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 
 import {
   Avatar,
   Box,
-  Dialog,
-  DialogContent,
+  Button,
   Grid,
   Paper,
   Table,
@@ -18,15 +19,53 @@ import {
   Typography,
 } from "@mui/material";
 
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 export default function Account({ user }) {
-  const [openImage, setOpenImage] = React.useState(false);
+  const [image, setImage] = React.useState("");
 
-  const handleOpenImage = () => {
-    setOpenImage(true);
-  };
+  const handleChangeImage = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("image", image);
 
-  const handleCloseImage = () => {
-    setOpenImage(false);
+    try {
+      const uploadResponse = await api.post("/uploads/singleProduct", formData);
+      const imagePath = uploadResponse.data.imagePath;
+      const res = await api.put("/users/changeProfilePicture", {
+        userId: user._id,
+        image: imagePath,
+      });
+
+      if (res.data) {
+        toast.success("Imagem Alterada Adicionado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+        toast.info("Realize Logout para aplicar a Alteração.", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 8000,
+        });
+      }
+    } catch (err) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+      console.log(err);
+    }
   };
 
   return (
@@ -50,22 +89,80 @@ export default function Account({ user }) {
             cursor="pointer"
             sx={{ mb: 3 }}
           >
-            <Avatar
-              alt="Imagem do Usuário"
-              src={`http://localhost:3000/static/${user.image}`}
-              sx={{ width: 230, height: 230 }}
-              onDoubleClick={handleOpenImage}
-            />
-            <Dialog open={openImage} onClose={handleCloseImage}>
-              <DialogContent>
-                <img
-                  cursor="pointer"
-                  src={`http://localhost:3000/static/${user.image}`}
-                  alt="Imagem do Usuário"
-                  style={{ maxWidth: "100%" }}
+            <Grid
+              container
+              direction="row"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Avatar
+                alt="Imagem do Usuário"
+                src={`http://localhost:3000/static/${user.image}`}
+                sx={{
+                  width: 230,
+                  height: 230,
+                  opacity: image ? 0.5 : 1,
+                }}
+              />
+              {image && (
+                <Avatar
+                  alt="Nova Imagem do Usuário"
+                  src={URL.createObjectURL(image)}
+                  sx={{ ml: 3, width: 230, height: 230 }}
                 />
-              </DialogContent>
-            </Dialog>
+              )}
+            </Grid>
+
+            <input
+              accept="image/*"
+              style={{ display: "none" }}
+              id="raised-button-file"
+              multiple
+              type="file"
+              onChange={(e) => {
+                const selectedImage = e.target.files[0];
+                setImage(selectedImage);
+              }}
+            />
+            <label htmlFor="raised-button-file">
+              <Button
+                variant="outlined"
+                color="primary"
+                component="span"
+                size="small"
+                startIcon={<FileUploadIcon />}
+                sx={{ mt: 2 }}
+              >
+                Nova Imagem
+              </Button>
+            </label>
+            {image && (
+              <Grid
+                container
+                direction="row"
+                justifyContent="space-evenly"
+                sx={{ mt: 2 }}
+              >
+                <Button
+                  variant="contained"
+                  color="error"
+                  size="small"
+                  startIcon={<ClearIcon />}
+                  onClick={() => setImage("")}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  size="small"
+                  startIcon={<CheckIcon />}
+                  onClick={handleChangeImage}
+                >
+                  Salvar Nova Imagem
+                </Button>
+              </Grid>
+            )}
           </Grid>
           <Table size="small">
             <TableHead>
