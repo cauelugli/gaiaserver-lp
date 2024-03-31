@@ -108,7 +108,6 @@ const NewUserShortcutOptions = ({
   options = options.filter((option) =>
     allowedLinks.includes(option.value.permission)
   );
-  
 
   const handleSelectChange = (event) => {
     const value = event.target.value;
