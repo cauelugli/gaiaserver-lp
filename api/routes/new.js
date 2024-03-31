@@ -17,6 +17,7 @@ router.post("/", async (req, res) => {
       username: "admin",
       password: hashedPass,
       name: "Admin",
+      image: "",
       email: req.body.email,
       role: { id: new Date(), name: "Admin" },
       position: { id: "admin", name: "Administrador" },
