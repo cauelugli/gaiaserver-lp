@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
   try {
     const savedManager = await newManager.save();
     const newUserPreferences = new UserPreferences({ userId: savedManager._id });
-    const savedUserPreferences = await newUserPreferences.save();
+    await newUserPreferences.save();
 
 
     let updatedDepartment;
