@@ -56,6 +56,7 @@ const AddJobForm = ({
   setRefreshData,
   toast,
   fromShortcut,
+  addFromShortcut,
 }) => {
   const [config, setConfig] = React.useState([]);
   let selectedCustomer = {};
@@ -283,13 +284,12 @@ const AddJobForm = ({
         );
         await api.post("/recentActivity", {
           activity: `Colaborador ${user.name} criou um Job para ${customer.name}`,
-          createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss")
+          createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),
         });
         socket.emit("recentActivityRefresh");
-
       }
       setOpenAddJob(false);
-      if (!fromShortcut) {
+      if (!addFromShortcut) {
         setRefreshData(!refreshData);
       }
     } catch (err) {

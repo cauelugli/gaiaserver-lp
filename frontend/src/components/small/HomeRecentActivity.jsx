@@ -51,14 +51,13 @@ const HomeRecentActivity = () => {
           textAlign: "center",
           fontWeight: "bold",
           fontSize: 18,
-          ml: 5.5,
+          ml: 0.5,
         }}
       >
         Atividade Recente
       </Typography>
       <Grid
         sx={{
-          mx: 5,
           height: 110,
           width: "100%",
           border: "1px solid #2c9393",
@@ -67,8 +66,8 @@ const HomeRecentActivity = () => {
         }}
       >
         <Grid container direction="column">
-          {recentActivities.map((activity) => (
-            <Grid key item sx={{ mt: 1 }}>
+          {[...recentActivities].reverse().map((activity) => (
+            <Grid key={activity.id} item sx={{ mt: 1 }}>
               <Typography sx={{ ml: 1 }}>
                 <Typography sx={{ fontSize: 12, color: "grey" }}>
                   {activity.createdAt}

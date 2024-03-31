@@ -2,6 +2,9 @@
 import React from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Avatar,
@@ -42,6 +45,7 @@ const AddSaleForm = ({
   setRefreshData,
   toast,
   fromShortcut,
+  addFromShortcut
 }) => {
   const [config, setConfig] = React.useState([]);
   let selectedCustomer = {};
@@ -176,9 +180,14 @@ const AddSaleForm = ({
             autoClose: 1200,
           }
         );
+        await api.post("/recentActivity", {
+          activity: `Colaborador ${user.name} criou um Venda para ${customer.name}`,
+          createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+        });
+        socket.emit("recentActivityRefresh");
       }
       setOpenAddSale(false);
-      if (!fromShortcut) {
+      if (!addFromShortcut) {
         setRefreshData(!refreshData);
       }
     } catch (err) {
