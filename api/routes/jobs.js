@@ -394,29 +394,39 @@ router.put("/", async (req, res) => {
 
         res.status(200).json(updatedJob);
       }
-    } else if (option === "edit") {
-      const updatedJob = await Job.findByIdAndUpdate(
-        jobId,
-        {
-          title: req.body.title,
-          customer: req.body.customer,
-          customerType: req.body.customerType,
-          description: req.body.description,
-          requester: req.body.requester,
-          department: req.body.department,
-          worker: req.body.worker,
-          manager: req.body.manager,
-          service: req.body.service,
-          price: req.body.price,
-          local: req.body.local,
-          scheduledTo: req.body.scheduledTo,
-        },
-        { new: true }
-      );
-      res.status(200).json(updatedJob);
     } else {
       res.status(400).json({ error: "Opção inválida" });
     }
+  } catch (err) {
+    console.log("err", err);
+    res.status(500).json(err);
+  }
+});
+
+// EDIT JOB
+router.put("/edit", async (req, res) => {
+  try {
+    const jobId = req.body.jobId || req.body.job._id;
+
+    const updatedJob = await Job.findByIdAndUpdate(
+      jobId,
+      {
+        title: req.body.title,
+        customer: req.body.customer,
+        customerType: req.body.customerType,
+        description: req.body.description,
+        requester: req.body.requester,
+        department: req.body.department,
+        worker: req.body.worker,
+        manager: req.body.manager,
+        service: req.body.service,
+        price: req.body.price,
+        local: req.body.local,
+        scheduledTo: req.body.scheduledTo,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedJob);
   } catch (err) {
     console.log("err", err);
     res.status(500).json(err);

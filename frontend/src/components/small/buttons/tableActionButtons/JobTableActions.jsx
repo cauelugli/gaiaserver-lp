@@ -73,7 +73,7 @@ export default function JobTableActions(props) {
           <ListItemButton
             disabled={props.job.status === "Concluido"}
             onClick={(item) => {
-              props.handleOpenEdit(item, "edit"), setAnchorEl(null);
+              props.handleOpenEdit(item), setAnchorEl(null);
             }}
           >
             <ListItemIcon>
@@ -110,7 +110,10 @@ export default function JobTableActions(props) {
             props.user.role.name !== "Gerente" && (
               <ListItemButton
                 onClick={(item) => props.handleRequestApproval(item)}
-                disabled={props.job.status === "Aprovação Solicitada"}
+                disabled={
+                  !props.job.manager ||
+                  props.job.status === "Aprovação Solicitada"
+                }
               >
                 <ListItemIcon>
                   <CheckIcon />
@@ -120,6 +123,13 @@ export default function JobTableActions(props) {
                     <Typography sx={{ fontSize: 14 }}>
                       Solicitar Aprovação
                     </Typography>
+                  }
+                  secondary={
+                    !props.job.manager && (
+                      <Typography sx={{ fontSize: 10, fontWeight: "bold" }}>
+                        Departamento não possui Gerente
+                      </Typography>
+                    )
                   }
                   sx={{ ml: -3 }}
                 />

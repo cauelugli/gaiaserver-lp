@@ -135,7 +135,7 @@ export default function ServiceTable({
             <TableBody>
               <TableRow
                 sx={{
-                   backgroundColor: "#eee",
+                  backgroundColor: "#eee",
                 }}
               >
                 {tableHeaderRow.map((headCell) => (
@@ -182,11 +182,7 @@ export default function ServiceTable({
                         onClick={() => handleOpenDetail(service)}
                         cursor="pointer"
                       >
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                        >
+                        <Grid container direction="row" alignItems="center">
                           <Paper
                             elevation={0}
                             sx={{
@@ -228,7 +224,9 @@ export default function ServiceTable({
                                 }}
                               />
                               <Typography sx={{ fontSize: 13 }}>
-                                {service.department.name}
+                                {service.department
+                                  ? service.department.name
+                                  : "-"}
                               </Typography>
                             </Grid>
                           ) : (
@@ -330,7 +328,9 @@ export default function ServiceTable({
                                     </TableCell>
                                     <TableCell>
                                       <Typography sx={{ fontSize: 13 }}>
-                                        {service.department.name}
+                                        {service.department
+                                          ? service.department.name
+                                          : "-"}
                                       </Typography>
                                     </TableCell>
                                     <TableCell>

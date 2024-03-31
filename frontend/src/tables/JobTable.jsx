@@ -54,7 +54,6 @@ export default function JobTable({
 }) {
   const [userReactions, setUserReactions] = React.useState({});
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [option, setOption] = React.useState("interaction");
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openDetailGeral, setOpenDetailGeral] = React.useState(true);
   const [openDetailDescrição, setOpenDetailDescrição] = React.useState(false);
@@ -76,9 +75,8 @@ export default function JobTable({
     setSelectedJob(job);
   };
 
-  const handleOpenEdit = (job, option) => {
+  const handleOpenEdit = (job) => {
     setOpenEdit(!openEdit);
-    setOption(option);
     setSelectedJob(job);
   };
 
@@ -236,29 +234,21 @@ export default function JobTable({
   const endIndex = startIndex + rowsPerPage;
 
   const [showCompletedJobs, setShowCompletedJobs] = React.useState(false);
-
-  const handleChangeShowCompletedJobs = () => {
-    setShowCompletedJobs(!showCompletedJobs);
-  };
   const [showArchivedJobs, setShowArchivedJobs] = React.useState(false);
-
-  const handleChangeShowArchivedJobs = () => {
-    setShowArchivedJobs(!showArchivedJobs);
-  };
 
   return (
     <Box sx={{ minWidth: "1250px" }}>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
         <Checkbox
           checked={showCompletedJobs}
-          onChange={handleChangeShowCompletedJobs}
+          onChange={() => setShowCompletedJobs(!showCompletedJobs)}
         />
         <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
           Mostrar Concluídos
         </Typography>
         <Checkbox
           checked={showArchivedJobs}
-          onChange={handleChangeShowArchivedJobs}
+          onChange={() => setShowArchivedJobs(!showArchivedJobs)}
         />
         <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
           Mostrar Arquivados
@@ -1011,7 +1001,6 @@ export default function JobTable({
         >
           <EditJobForm
             user={user}
-            option={option}
             openEditJob={openEdit}
             selectedJob={selectedJob}
             setOpenEditJob={setOpenEdit}
