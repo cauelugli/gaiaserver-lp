@@ -46,29 +46,40 @@ const HomeRecentActivity = () => {
 
   return (
     <>
-      <Grid
-        sx={{
-          mx: 1,
-          height: 120,
-          width: "100%",
-          backgroundColor: "rgba(44,147,147, 0.9)",
-          border: "1px solid #2c9393",
-          borderRadius: 2,
-        }}
-      >
-        {recentActivities.map((activity) => activity.activity)}
-      </Grid>
       <Typography
         sx={{
-          mt: 0.5,
-          ml: "90%",
-          fontSize: 12,
-          color: "grey",
-          cursor: "pointer",
+          textAlign: "center",
+          fontWeight: "bold",
+          fontSize: 18,
+          ml: 5.5,
         }}
       >
-        ver mais
+        Atividade Recente
       </Typography>
+      <Grid
+        sx={{
+          mx: 5,
+          height: 110,
+          width: "100%",
+          border: "1px solid #2c9393",
+          borderRadius: 2,
+          overflow: "auto",
+        }}
+      >
+        <Grid container direction="column">
+          {recentActivities.map((activity) => (
+            <Grid key item sx={{ mt: 1 }}>
+              <Typography sx={{ ml: 1 }}>
+                <Typography sx={{ fontSize: 12, color: "grey" }}>
+                  {activity.createdAt}
+                </Typography>
+
+                {activity.activity}
+              </Typography>
+            </Grid>
+          ))}
+        </Grid>
+      </Grid>
     </>
   );
 };
