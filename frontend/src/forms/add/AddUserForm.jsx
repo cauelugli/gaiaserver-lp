@@ -47,7 +47,7 @@ const AddUserForm = ({
   refreshData,
   setRefreshData,
   toast,
-  addFromShortcut
+  addFromShortcut,
 }) => {
   const [name, setName] = React.useState("");
   const [birthdate, setBirthdate] = React.useState(dayjs("11/02/2014"));
@@ -103,6 +103,16 @@ const AddUserForm = ({
             date: dayjs(Date.now()).format("DD/MM/YYYY"),
           });
         }
+
+        await api.post("/recentActivity", {
+          activity: `Colaborador ${
+            user.name
+          } criou um Novo Usuário: "${name}" ${
+            position && `no cargo ${position.name}`
+          } ${department && ` para o departamento ${department.name}`}`,
+          createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+        });
+        socket.emit("recentActivityRefresh");
       }
 
       setOpenAdd(false);

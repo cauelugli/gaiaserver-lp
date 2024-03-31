@@ -291,6 +291,7 @@ export default function Users({ user }) {
           onClose={() => setOpenAddManager(!openAddManager)}
         >
           <AddManagerForm
+            user={user}
             config={config}
             configCustomization={configCustomization}
             openAdd={openAddManager}

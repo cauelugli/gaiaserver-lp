@@ -45,10 +45,9 @@ const HomeRecentActivity = () => {
   }, []);
 
   return (
-    <>
+    <Grid sx={{ width: 700, px: 1 }}>
       <Typography
         sx={{
-          textAlign: "center",
           fontWeight: "bold",
           fontSize: 18,
           ml: 0.5,
@@ -59,7 +58,7 @@ const HomeRecentActivity = () => {
       <Grid
         sx={{
           height: 110,
-          width: "100%",
+          width: "auto",
           border: "1px solid #2c9393",
           borderRadius: 2,
           overflow: "auto",
@@ -67,8 +66,8 @@ const HomeRecentActivity = () => {
       >
         <Grid container direction="column">
           {[...recentActivities].reverse().map((activity) => (
-            <Grid key={activity.id} item sx={{ mt: 1 }}>
-              <Typography sx={{ ml: 1 }}>
+            <Grid key={activity.id} item sx={{ mt: 1, px: 1 }}>
+              <Typography sx={{ ml: 1, maxWidth: 650 }}>
                 <Typography sx={{ fontSize: 12, color: "grey" }}>
                   {activity.createdAt}
                 </Typography>
@@ -79,7 +78,7 @@ const HomeRecentActivity = () => {
           ))}
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

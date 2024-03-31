@@ -22,19 +22,21 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { IMaskInput } from "react-imask";
 import DialogHeader from "../../components/small/DialogHeader";
 import FormEndLineTenant from "../../components/small/FormEndLineTenant";
+import dayjs from "dayjs";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
 const AddManagerForm = ({
+  user,
   departments,
   setOpenAdd,
   refreshData,
   setRefreshData,
   toast,
   configCustomization,
-  addFromShortcut
+  addFromShortcut,
 }) => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -74,6 +76,13 @@ const AddManagerForm = ({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+
+        await api.post("/recentActivity", {
+          activity: `Colaborador ${user.name} criou um Novo Gerente: "${name} ${
+            department.name && `para o departamento ${department.name}`
+          }"`,
+          createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),
         });
       }
 
