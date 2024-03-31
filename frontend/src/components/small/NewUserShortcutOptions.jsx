@@ -67,9 +67,38 @@ const NewUserShortcutOptions = ({
         permission: "customers",
       },
     },
+    {
+      value: {
+        label: "Adicionar Usuário",
+        action: "addUser",
+        fullWidth: true,
+        maxWidth: "md",
+        permission: "users",
+      },
+    },
+    {
+      value: {
+        label: "Adicionar Gerente",
+        action: "addManager",
+        fullWidth: true,
+        maxWidth: "md",
+        permission: "users",
+      },
+    },
+    {
+      value: {
+        label: "Adicionar Departamento",
+        action: "addDepartment",
+        fullWidth: true,
+        maxWidth: "md",
+        permission: "departments",
+      },
+    },
   ];
 
-  options = options.filter(option => allowedLinks.includes(option.value.permission));
+  options = options.filter((option) =>
+    allowedLinks.includes(option.value.permission)
+  );
 
   const handleSelectChange = (event) => {
     const value = event.target.value;

@@ -41,13 +41,13 @@ const AddUserForm = ({
   configCustomization,
   configNotifications,
   configNotificationsBooleans,
-  openAdd,
   departments,
   positions,
   setOpenAdd,
   refreshData,
   setRefreshData,
   toast,
+  addFromShortcut
 }) => {
   const [name, setName] = React.useState("");
   const [birthdate, setBirthdate] = React.useState(dayjs("11/02/2014"));
@@ -105,8 +105,10 @@ const AddUserForm = ({
         }
       }
 
-      setOpenAdd(!openAdd);
-      setRefreshData(!refreshData);
+      setOpenAdd(false);
+      if (!addFromShortcut) {
+        setRefreshData(!refreshData);
+      }
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {
@@ -372,7 +374,7 @@ const AddUserForm = ({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenAdd(false)}
         >
           X
         </Button>

@@ -34,7 +34,6 @@ const api = axios.create({
 
 const AddDepartmentForm = ({
   configData,
-  openAdd,
   users,
   managers,
   setOpenAdd,
@@ -42,6 +41,7 @@ const AddDepartmentForm = ({
   setRefreshData,
   configCustomization,
   toast,
+  addFromShortcut,
 }) => {
   const [name, setName] = React.useState("");
   const [type, setType] = React.useState("Serviços");
@@ -90,8 +90,10 @@ const AddDepartmentForm = ({
           autoClose: 1200,
         });
       }
-      setOpenAdd(!openAdd);
-      setRefreshData(!refreshData);
+      setOpenAdd(false);
+      if (!addFromShortcut) {
+        setRefreshData(!refreshData);
+      }
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {
@@ -397,7 +399,7 @@ const AddDepartmentForm = ({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenAdd(false)}
         >
           X
         </Button>

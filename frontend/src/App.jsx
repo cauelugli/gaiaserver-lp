@@ -74,6 +74,8 @@ function darkenColor(hex, factor) {
 
 export default function App() {
   const [configData, setConfigData] = useState([]);
+  const [configNotificationsBooleans, setConfigNotificationsBooleans] =
+    useState([]);
   const [configTables, setConfigTables] = useState(null);
   const [configAgenda, setConfigAgenda] = useState([]);
   const [notifications, setNotifications] = useState([]);
@@ -81,6 +83,9 @@ export default function App() {
   const [requests, setRequests] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [users, setUsers] = useState([]);
+  const [managers, setManagers] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [positions, setPositions] = useState([]);
   const [allowedLinks, setAllowedLinks] = useState([]);
   const [userKey, setUserKey] = useState(0);
   const login = JSON.parse(sessionStorage.getItem("login"));
@@ -129,6 +134,9 @@ export default function App() {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
+        const configNotificationsBooleans = await api.get(
+          "/config/notificationsBooleans"
+        );
         const configTables = await api.get("/config/tables");
         const configAgenda = await api.get("/config/agenda");
         const notifications = await api.get(
@@ -136,6 +144,7 @@ export default function App() {
         );
         const preferences = await api.get(`/userPreferences/${userData._id}`);
         setConfigData(config.data[0]);
+        setConfigNotificationsBooleans(configNotificationsBooleans.data);
         setConfigTables(configTables.data);
         setConfigAgenda(configAgenda.data);
         setNotifications(notifications.data);
@@ -145,6 +154,10 @@ export default function App() {
         const resManagers = await api.get("/managers");
         const usersCombinedData = [...resUsers.data, ...resManagers.data];
         setUsers(usersCombinedData);
+        setManagers(resManagers.data);
+
+        const positions = await api.get("/positions");
+        setPositions(positions.data);
 
         const resJobs = await api.get("/jobs");
         const resSales = await api.get("/sales");
@@ -158,6 +171,9 @@ export default function App() {
           ...resClients.data,
         ];
         setCustomers(customersCombinedData);
+
+        const departments = await api.get("/departments");
+        setDepartments(departments.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -235,8 +251,8 @@ export default function App() {
         newAllowedLinks.push(routePath);
       }
     });
-    setAllowedLinks(newAllowedLinks); 
-  }, [configData]); 
+    setAllowedLinks(newAllowedLinks);
+  }, [configData]);
 
   // opening modal according to userShortcuts
   const handleShortcutClick = (shortcut) => {
@@ -246,6 +262,7 @@ export default function App() {
       size: shortcut.size,
       fullWidth: shortcut.fullWidth,
       maxWidth: shortcut.maxWidth,
+      permission: shortcut.permission,
       selectedItem: shortcut.selectedItem,
       props: { ...shortcut.props },
     });
@@ -548,8 +565,14 @@ export default function App() {
         {shortcutModalState.show && (
           <ShortcutModals
             {...shortcutModalState.props}
+            configData={configData}
             configCustomization={configData.customization}
+            configNotificationsBooleans={configNotificationsBooleans}
             user={userData}
+            users={users}
+            positions={positions}
+            managers={managers}
+            departments={departments}
             toast={toast}
             action={shortcutModalState.action}
             fullWidth={shortcutModalState.fullWidth}

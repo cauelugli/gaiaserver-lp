@@ -28,13 +28,13 @@ const api = axios.create({
 });
 
 const AddManagerForm = ({
-  openAdd,
   departments,
   setOpenAdd,
   refreshData,
   setRefreshData,
   toast,
-  configCustomization
+  configCustomization,
+  addFromShortcut
 }) => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -77,8 +77,10 @@ const AddManagerForm = ({
         });
       }
 
-      setOpenAdd(!openAdd);
-      setRefreshData(!refreshData);
+      setOpenAdd(false);
+      if (!addFromShortcut) {
+        setRefreshData(!refreshData);
+      }
     } catch (err) {
       if (err.response && err.response.status === 422) {
         toast.error(err.response.data.error, {
@@ -269,7 +271,7 @@ const AddManagerForm = ({
           </Grid>
         </Grid>
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization}/>
+      <FormEndLineTenant configCustomization={configCustomization} />
 
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
@@ -278,7 +280,7 @@ const AddManagerForm = ({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenAdd(!openAdd)}
+          onClick={() => setOpenAdd(false)}
         >
           X
         </Button>

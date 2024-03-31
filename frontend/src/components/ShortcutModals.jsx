@@ -7,12 +7,21 @@ import AddClientForm from "../forms/add/AddClientForm";
 import AddCustomerForm from "../forms/add/AddCustomerForm";
 import AddJobForm from "../forms/add/AddJobForm";
 import AddSaleForm from "../forms/add/AddSaleForm";
+import AddUserForm from "../forms/add/AddUserForm";
+import AddManagerForm from "../forms/add/AddManagerForm";
+import AddDepartmentForm from "../forms/add/AddDepartmentForm";
 
 const ShortcutModals = ({
   action,
   onClose,
   fullWidth,
   maxWidth,
+  configData,
+  users,
+  managers,
+  departments,
+  positions,
+  configNotificationsBooleans,
   configCustomization,
   ...props
 }) => {
@@ -43,6 +52,37 @@ const ShortcutModals = ({
     ),
     addSaleToCustomer: (
       <AddSaleForm {...props} setOpenAddSale={onClose} fromShortcut />
+    ),
+    addUser: (
+      <AddUserForm
+        {...props}
+        configNotificationsBooleans={configNotificationsBooleans}
+        departments={departments}
+        positions={positions}
+        setOpenAdd={onClose}
+        configCustomization={configCustomization}
+        addFromShortcut
+      />
+    ),
+    addManager: (
+      <AddManagerForm
+        {...props}
+        departments={departments}
+        setOpenAdd={onClose}
+        configCustomization={configCustomization}
+        addFromShortcut
+      />
+    ),
+    addDepartment: (
+      <AddDepartmentForm
+        {...props}
+        setOpenAdd={onClose}
+        configData={configData}
+        users={users}
+        managers={managers}
+        configCustomization={configCustomization}
+        addFromShortcut
+      />
     ),
   };
 
