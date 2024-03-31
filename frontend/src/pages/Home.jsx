@@ -15,7 +15,7 @@ const Home = ({
   onMount,
   onUnmount,
   configData,
-  handleShortcutClick
+  handleShortcutClick,
 }) => {
   const [showMessage, setShowMessage] = React.useState(true);
 
@@ -52,7 +52,11 @@ const Home = ({
           />
         </Grid>
         <Grid item md={3}>
-          <HomeSideBar user={user} handleShortcutClick={handleShortcutClick}/>
+          <HomeSideBar
+            user={user}
+            handleShortcutClick={handleShortcutClick}
+            allowedLinks={allowedLinks}
+          />
         </Grid>
       </Grid>
     </>

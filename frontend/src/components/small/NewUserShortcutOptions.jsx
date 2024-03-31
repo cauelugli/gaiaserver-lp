@@ -9,15 +9,17 @@ const NewUserShortcutOptions = ({
   setOption,
   newShortcutSelectedItem,
   setNewShortcutSelectedItem,
+  allowedLinks,
 }) => {
   const [selectedOption, setSelectedOption] = useState("");
-  const options = [
+  let options = [
     {
       value: {
         label: "Adicionar Job",
         action: "addJob",
         fullWidth: true,
         maxWidth: "lg",
+        permission: "requests",
       },
     },
     {
@@ -26,6 +28,7 @@ const NewUserShortcutOptions = ({
         action: "addJobToCustomer",
         fullWidth: true,
         maxWidth: "lg",
+        permission: "requests",
       },
     },
     {
@@ -34,6 +37,7 @@ const NewUserShortcutOptions = ({
         action: "addSale",
         fullWidth: true,
         maxWidth: "md",
+        permission: "requests",
       },
     },
     {
@@ -42,6 +46,7 @@ const NewUserShortcutOptions = ({
         action: "addSaleToCustomer",
         fullWidth: true,
         maxWidth: "md",
+        permission: "requests",
       },
     },
     {
@@ -50,6 +55,7 @@ const NewUserShortcutOptions = ({
         action: "addClient",
         fullWidth: true,
         maxWidth: "xs",
+        permission: "customers",
       },
     },
     {
@@ -58,9 +64,12 @@ const NewUserShortcutOptions = ({
         action: "addCustomer",
         fullWidth: true,
         maxWidth: "md",
+        permission: "customers",
       },
     },
   ];
+
+  options = options.filter(option => allowedLinks.includes(option.value.permission));
 
   const handleSelectChange = (event) => {
     const value = event.target.value;

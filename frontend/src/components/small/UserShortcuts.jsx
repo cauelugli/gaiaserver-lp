@@ -14,7 +14,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const UserShortcuts = ({ user, onShortcutClick }) => {
+const UserShortcuts = ({ user, onShortcutClick, allowedLinks }) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [userPreferences, setUserPreferences] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -110,7 +110,11 @@ const UserShortcuts = ({ user, onShortcutClick }) => {
             />
           ))}
 
-        <NewUserShortcut user={user} reloadShortcuts={reloadShortcuts} />
+        <NewUserShortcut
+          user={user}
+          reloadShortcuts={reloadShortcuts}
+          allowedLinks={allowedLinks}
+        />
       </Grid>
     </Grid>
   );

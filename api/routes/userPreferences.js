@@ -38,6 +38,7 @@ router.put("/addShortcut", async (req, res) => {
       isActive: true,
       fullWidth: newShortcutAction.fullWidth,
       maxWidth: newShortcutAction.maxWidth,
+      permission: newShortcutAction.permission,
       selectedItem: newShortcutSelectedItem,
     };
 

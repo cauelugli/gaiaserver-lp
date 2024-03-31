@@ -14,7 +14,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const NewUserShortcut = ({ user, reloadShortcuts }) => {
+const NewUserShortcut = ({ user, reloadShortcuts, allowedLinks }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [newShortcutName, setNewShortcutName] = useState("");
   const [newShortcutAction, setNewShortcutAction] = useState("");
@@ -27,7 +27,7 @@ const NewUserShortcut = ({ user, reloadShortcuts }) => {
         userId: user._id,
         newShortcutName,
         newShortcutAction,
-        newShortcutSelectedItem
+        newShortcutSelectedItem,
       });
       if (res.data) {
         toast.success("Atalho Adicionado!", {
@@ -100,6 +100,7 @@ const NewUserShortcut = ({ user, reloadShortcuts }) => {
               setOption={setNewShortcutAction}
               newShortcutSelectedItem={newShortcutSelectedItem}
               setNewShortcutSelectedItem={setNewShortcutSelectedItem}
+              allowedLinks={allowedLinks}
             />
           </Grid>
           {newShortcutName && newShortcutAction && (

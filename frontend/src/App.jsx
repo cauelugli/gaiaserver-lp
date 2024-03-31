@@ -229,12 +229,14 @@ export default function App() {
     if (!configData || !userData || !configData.sidebar) {
       return;
     }
+    let newAllowedLinks = [];
     Object.keys(configData.sidebar).forEach((routePath) => {
       if (hasPermission(userData, configData, routePath)) {
-        setAllowedLinks((currentLinks) => [...currentLinks, routePath]);
+        newAllowedLinks.push(routePath);
       }
     });
-  }, [configData]);
+    setAllowedLinks(newAllowedLinks); 
+  }, [configData]); 
 
   // opening modal according to userShortcuts
   const handleShortcutClick = (shortcut) => {
