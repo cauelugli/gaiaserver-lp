@@ -14,6 +14,7 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  FormControl,
   FormLabel,
   Grid,
   MenuItem,
@@ -27,10 +28,13 @@ import {
   Typography,
 } from "@mui/material";
 
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers";
+import CustomerSelect from "../../components/small/selects/CustomerSelect";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -46,13 +50,18 @@ const EditJobForm = ({
   setRefreshData,
   toast,
 }) => {
+  console.log("selectedJob", selectedJob);
   const [title, setTitle] = React.useState(selectedJob.title);
   const [description, setDescription] = React.useState(selectedJob.description);
+  const [customer, setCustomer] = React.useState(selectedJob.customer);
+  const [customerType, setCustomerType] = React.useState(
+    selectedJob.customer.cpf ? "Pessoa Física" : "Empresa"
+  );
   const [requester, setRequester] = React.useState(selectedJob.requester);
   const [worker, setWorker] = React.useState(selectedJob.worker);
   const [department, setDepartment] = React.useState(selectedJob.department);
   const [status, setStatus] = React.useState(selectedJob.status);
-  const [service, setService] = React.useState("");
+  const [service, setService] = React.useState(selectedJob.service);
   const [price, setPrice] = React.useState(selectedJob.price);
   const [materials, setMaterials] = React.useState(selectedJob.materials);
   const [materialsCost, setMaterialsCost] = React.useState(
@@ -75,47 +84,12 @@ const EditJobForm = ({
         const departmentsResponse = await api.get("/departments");
         const servicesResponse = await api.get("/services");
 
-        // Organizar os membros nos serviços correspondentes
-        const modifiedDepartments = departmentsResponse.data.map(
-          (department) => {
-            const departmentServices = servicesResponse.data.filter(
-              (service) => service.department._id === department._id
-            );
-
-            const updatedDepartment = {
-              ...department,
-              services: departmentServices.map((service) => {
-                const serviceMembers = department.members.filter((member) =>
-                  service.members.includes(member._id)
-                );
-
-                return {
-                  ...service,
-                  members: serviceMembers,
-                };
-              }),
-            };
-
-            return updatedDepartment;
-          }
-        );
-
         setDepartments(
-          modifiedDepartments.filter(
+          departmentsResponse.data.filter(
             (department) => department.type === "Serviços"
           )
         );
         setServices(servicesResponse.data);
-
-        const selectedDepartment = modifiedDepartments.find(
-          (department) => department._id === selectedJob.department.id
-        );
-        setDepartment(selectedDepartment);
-
-        const selectedService = servicesResponse.data.find(
-          (service) => service._id === selectedJob.service._id
-        );
-        setService(selectedService);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -128,6 +102,25 @@ const EditJobForm = ({
 
   const handleCheckboxChange = (event) => {
     setShowAdditionalOptions(event.target.checked);
+  };
+
+  const handleCustomerTypeChange = (type) => {
+    setCustomerType(type);
+    setCustomer("");
+    setRequester("");
+    setLocal("");
+  };
+
+  const handleCustomerChange = (customer) => {
+    setCustomer(customer);
+    setRequester(customer.mainContactName || customer.name);
+    setLocal(customer.address || customer.addressHome);
+  };
+
+  const handleServiceChange = (service) => {
+    setService(service);
+    setMaterials(service.materials);
+    setMaterialsCost(service.materialsCost);
   };
 
   const handleEdit = async (e) => {
@@ -177,6 +170,8 @@ const EditJobForm = ({
         jobId: selectedJob._id,
         option: "edit",
         title,
+        customer,
+        customerType,
         description,
         requester,
         department: {
@@ -234,9 +229,24 @@ const EditJobForm = ({
       {option === "interaction" && (
         <>
           <DialogContent>
-            <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
-              Informações do Job
-            </Typography>
+            <Grid container>
+              <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
+                Informações do Cliente
+              </Typography>
+              <CheckCircleOutlineOutlinedIcon
+                sx={{
+                  color:
+                    customerType &&
+                    customer &&
+                    requester &&
+                    local &&
+                    scheduledTo
+                      ? "#50C878"
+                      : "lightgrey",
+                  ml: 1,
+                }}
+              />
+            </Grid>
             <Grid
               container
               sx={{ mt: 2 }}
@@ -245,58 +255,292 @@ const EditJobForm = ({
               alignItems="flex-start"
             >
               <Grid item>
-                <TextField
-                  label="Tipo"
-                  variant="outlined"
-                  disabled
-                  value={
-                    selectedJob.customer.cnpj ? "Empresa" : "Pessoa Física"
-                  }
-                  sx={{ width: 180 }}
+                <FormControl>
+                  <Select
+                    onChange={(e) => handleCustomerTypeChange(e.target.value)}
+                    value={customerType}
+                    required
+                    displayEmpty
+                    renderValue={(selected) => {
+                      if (selected.length === 0) {
+                        return <Typography>Tipo de Cliente</Typography>;
+                      }
+
+                      return selected;
+                    }}
+                    sx={{ width: 180 }}
+                  >
+                    <MenuItem disabled value="">
+                      Tipo de Cliente
+                    </MenuItem>
+                    <MenuItem value={"Empresa"}>Empresa</MenuItem>
+                    <MenuItem value={"Pessoa Fisica"}>Pessoa Física</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              {customerType && (
+                <CustomerSelect
+                  marginAddJobForm
+                  handleCustomerChange={handleCustomerChange}
+                  setCustomer={setCustomer}
+                  customerType={customerType}
+                  selectedCustomer={customer}
+                  fromShortcut={Boolean(false)}
                 />
-              </Grid>
-              <Grid item>
-                <TextField
-                  label="Cliente"
-                  variant="outlined"
-                  disabled
-                  value={selectedJob.customer.name}
-                  sx={{ width: 200, ml: 1 }}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  label="Solicitante"
-                  value={selectedJob.requester}
-                  disabled
-                  variant="outlined"
-                  sx={{ width: 200, mx: 1 }}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  label="Local de Execução"
-                  value={selectedJob.local}
-                  disabled
-                  variant="outlined"
-                  sx={{ width: 250, mr: 1 }}
-                />
-              </Grid>
-              <Grid item sx={{ mt: -1 }}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={["DatePicker"]}>
-                    <DatePicker
-                      value={scheduledTo}
-                      disabled
-                      format="DD/MM/YYYY"
-                      onChange={(newValue) => setScheduledTo(newValue)}
-                      label="Agendado para"
-                      sx={{ width: 180 }}
-                    />
-                  </DemoContainer>
-                </LocalizationProvider>
-              </Grid>
+              )}
+              {customer && (
+                <Grid item>
+                  <TextField
+                    label="Solicitante"
+                    value={requester}
+                    onChange={(e) => setRequester(e.target.value)}
+                    required
+                    variant="outlined"
+                    sx={{ width: 190 }}
+                  />
+                </Grid>
+              )}
+              {requester && (
+                <Grid item>
+                  <TextField
+                    label="Local de Execução"
+                    value={local}
+                    onChange={(e) => setLocal(e.target.value)}
+                    required
+                    variant="outlined"
+                    sx={{ width: 220, mx: 1 }}
+                  />
+                </Grid>
+              )}
+              {local && (
+                <Grid item sx={{ mt: -1 }}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DatePicker"]}>
+                      <DatePicker
+                        value={scheduledTo}
+                        format="DD/MM/YYYY"
+                        onChange={(newValue) => setScheduledTo(newValue)}
+                        label="Agendar para"
+                        sx={{ width: 180 }}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                </Grid>
+              )}
             </Grid>
+
+            {local && (
+              <Grid sx={{ mr: 10 }}>
+                <Divider sx={{ my: 3 }} />
+                <Grid container>
+                  <Typography sx={{ mb: 2, fontSize: 18, fontWeight: "bold" }}>
+                    Departamento
+                  </Typography>
+                  <CheckCircleOutlineOutlinedIcon
+                    sx={{
+                      color:
+                        department && service && worker
+                          ? "#50C878"
+                          : "lightgrey",
+                      ml: 1,
+                    }}
+                  />
+                </Grid>
+
+                <Grid
+                  container
+                  direction="row"
+                  alignItems="flex-start"
+                  justifyContent="space-between"
+                >
+                  <Grid item>
+                    <Select
+                      onChange={(e) => {
+                        setDepartment(e.target.value),
+                          setService(""),
+                          setWorker(""),
+                          setMaterials([]),
+                          setMaterialsCost(0);
+                      }}
+                      value={department}
+                      size="small"
+                      displayEmpty
+                      required
+                      renderValue={(selected) => {
+                        if (!selected) {
+                          return (
+                            <Typography>Selecione o Departamento</Typography>
+                          );
+                        } else {
+                          return (
+                            <Grid container direction="row">
+                              <Paper
+                                elevation={0}
+                                sx={{
+                                  mr: 1,
+                                  mt: 0.5,
+                                  width: 15,
+                                  height: 15,
+                                  borderRadius: 50,
+                                  backgroundColor: selected.color,
+                                }}
+                              />
+                              <Typography>{selected.name}</Typography>
+                            </Grid>
+                          );
+                        }
+                      }}
+                      sx={{ minWidth: "200px" }}
+                    >
+                      {departments.map((item) => (
+                        <MenuItem value={item} key={item.id}>
+                          <Grid container direction="row">
+                            <Paper
+                              elevation={0}
+                              sx={{
+                                mr: 1,
+                                mt: 0.5,
+                                width: 15,
+                                height: 15,
+                                borderRadius: 50,
+                                backgroundColor: item.color,
+                              }}
+                            />
+                            <Typography>{item.name}</Typography>
+                          </Grid>
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                  <Grid item sx={{ mt: -7, mx: -10 }}>
+                    {department && (
+                      <Grid sx={{ mt: 4 }}>
+                        <Typography>Serviço</Typography>
+                        <Select
+                          onChange={(e) => {
+                            handleServiceChange(e.target.value);
+                          }}
+                          required
+                          value={service}
+                          size="small"
+                          renderValue={(selected) => {
+                            if (!selected) {
+                              return (
+                                <Typography>Escolha um Serviço</Typography>
+                              );
+                            } else {
+                              return <Typography>{selected.name}</Typography>;
+                            }
+                          }}
+                          sx={{ width: 250 }}
+                        >
+                          {services
+                            .filter(
+                              (service) =>
+                                service.department &&
+                                service.department.id === department._id
+                            )
+
+                            .map((item) => (
+                              <MenuItem value={item} key={item.id}>
+                                {item.name}
+                              </MenuItem>
+                            ))}
+                        </Select>
+                      </Grid>
+                    )}
+                  </Grid>
+
+                  <Grid item sx={{ mt: -7 }}>
+                    {department && service && (
+                      <Grid sx={{ mt: 4 }}>
+                        <Typography>Colaborador</Typography>
+                        <Select
+                          onChange={(e) => setWorker(e.target.value)}
+                          value={worker}
+                          size="small"
+                          displayEmpty
+                          required
+                          renderValue={(selected) => {
+                            if (selected.length === 0) {
+                              return (
+                                <Typography>Selecione o Colaborador</Typography>
+                              );
+                            } else {
+                              return (
+                                <Grid container direction="row">
+                                  <Avatar
+                                    alt="Imagem do Colaborador"
+                                    src={`http://localhost:3000/static/${selected.image}`}
+                                    sx={{ width: 22, height: 22, mr: 1 }}
+                                  />
+                                  <Typography>{selected.name}</Typography>
+                                </Grid>
+                              );
+                            }
+                          }}
+                        >
+                          <MenuItem disabled value="">
+                            Colaboradores
+                          </MenuItem>
+                          {department.members.map((item) => (
+                            <MenuItem value={item} key={item.id}>
+                              <Avatar
+                                alt="Imagem do Colaborador"
+                                src={`http://localhost:3000/static/${item.image}`}
+                                sx={{ width: 22, height: 22, mr: 2 }}
+                              />
+                              {item.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </Grid>
+                    )}
+                  </Grid>
+                </Grid>
+              </Grid>
+            )}
+
+            {worker && (
+              <Grid sx={{ mr: 10 }}>
+                <Divider sx={{ my: 3 }} />
+                <Grid container>
+                  <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
+                    Solicitação
+                  </Typography>
+                  <CheckCircleOutlineOutlinedIcon
+                    sx={{
+                      color: title && description ? "#50C878" : "lightgrey",
+                      ml: 1,
+                    }}
+                  />
+                </Grid>
+                <Grid container sx={{ mt: 2 }} direction="column">
+                  <Grid item>
+                    <TextField
+                      label="Título"
+                      size="small"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      required
+                      variant="outlined"
+                      fullWidth
+                      sx={{ mb: 2 }}
+                    />
+
+                    <TextField
+                      label="Descrição"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      required
+                      variant="outlined"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+            )}
 
             {expand && (
               <>
@@ -611,333 +855,319 @@ const EditJobForm = ({
       {option === "edit" && (
         <>
           <DialogContent>
-            <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
-              Informações do Cliente
-            </Typography>
+            <Grid container>
+              <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
+                Informações do Cliente
+              </Typography>
+              <CheckCircleOutlineOutlinedIcon
+                sx={{
+                  color:
+                    customerType &&
+                    customer &&
+                    requester &&
+                    local &&
+                    scheduledTo
+                      ? "#50C878"
+                      : "lightgrey",
+                  ml: 1,
+                }}
+              />
+            </Grid>
             <Grid
               container
-              sx={{ pr: "4%", mt: 2 }}
+              sx={{ mt: 2 }}
               direction="row"
               justifyContent="flex-start"
               alignItems="flex-start"
             >
               <Grid item>
-                <TextField
-                  label="Tipo"
-                  variant="outlined"
-                  disabled={option === "interaction"}
-                  value={
-                    selectedJob.customer.cnpj ? "Empresa" : "Pessoa Física"
-                  }
-                  sx={{ width: 180 }}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  label="Cliente"
-                  variant="outlined"
-                  value={selectedJob.customer.name}
-                  sx={{ width: 200, mx: 1 }}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  label="Solicitante"
-                  value={requester}
-                  onChange={(e) => setRequester(e.target.value)}
-                  variant="outlined"
-                  sx={{ width: 200, ml: 1 }}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  label="Local de Execução"
-                  value={local}
-                  onChange={(e) => setLocal(e.target.value)}
-                  variant="outlined"
-                  sx={{ width: 250, mx: 1 }}
-                />
-              </Grid>
-              <Grid item sx={{ mt: -1 }}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={["DatePicker"]}>
-                    <DatePicker
-                      value={scheduledTo}
-                      format="DD/MM/YYYY"
-                      onChange={(newValue) => setScheduledTo(newValue)}
-                      label="Agendado para"
-                      sx={{ width: 180 }}
-                    />
-                  </DemoContainer>
-                </LocalizationProvider>
-              </Grid>
-            </Grid>
-
-            <Divider sx={{ mt: 2 }} />
-            <Typography sx={{ my: 3, fontSize: 18, fontWeight: "bold" }}>
-              Departamento
-            </Typography>
-            <Grid
-              container
-              direction="row"
-              alignItems="flex-start"
-              justifyContent="space-evenly"
-            >
-              <Grid item>
-                <Select
-                  onChange={(e) => {
-                    setDepartment(e.target.value),
-                      setService(""),
-                      setWorker("");
-                  }}
-                  value={department || selectedJob.department}
-                  size="small"
-                  sx={{ minWidth: "200px" }}
-                  renderValue={(selected) => (
-                    <Grid container direction="row">
-                      <Paper
-                        elevation={0}
-                        sx={{
-                          mr: 1,
-                          mt: 0.5,
-                          width: 15,
-                          height: 15,
-                          borderRadius: 50,
-                          backgroundColor: selected.color,
-                        }}
-                      />
-                      <Typography>{selected.name}</Typography>
-                    </Grid>
-                  )}
-                >
-                  {departments.map((item) => (
-                    <MenuItem value={item} key={item.id}>
-                      <Grid container direction="row">
-                        <Paper
-                          elevation={0}
-                          sx={{
-                            mr: 1,
-                            mt: 0.5,
-                            width: 15,
-                            height: 15,
-                            borderRadius: 50,
-                            backgroundColor: item.color,
-                          }}
-                        />
-                        <Typography>{item.name}</Typography>
-                      </Grid>
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid item sx={{ mx: -10, mt: -7 }}>
-                <>
-                  <Typography sx={{ my: 2 }}>Serviço</Typography>
+                <FormControl>
                   <Select
-                    onChange={(e) => setService(e.target.value)}
-                    value={service}
-                    size="small"
-                    sx={{ width: 250 }}
-                    renderValue={(selected) => {
-                      if (selected.length === 0) {
-                        return (
-                          <Typography>{selectedJob.service.name}</Typography>
-                        );
-                      }
-
-                      return selected.name;
-                    }}
-                  >
-                    {services
-                      .filter(
-                        (service) =>
-                          service.department.id ===
-                          (department
-                            ? department._id
-                            : selectedJob.department.id)
-                      )
-                      .map((item) => (
-                        <MenuItem value={item} key={item.id}>
-                          {item.name}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </>
-              </Grid>
-              <Grid item sx={{ mt: -7 }}>
-                <>
-                  <Typography sx={{ my: 2 }}>Colaborador</Typography>
-                  <Select
-                    onChange={(e) => setWorker(e.target.value)}
-                    value={worker}
-                    size="small"
-                    displayEmpty
+                    onChange={(e) => handleCustomerTypeChange(e.target.value)}
+                    value={customerType}
                     required
+                    displayEmpty
                     renderValue={(selected) => {
-                      if (selected.length === 0) {
-                        return <Typography>Selecione o Colaborador</Typography>;
-                      } else {
-                        return (
-                          <Grid container direction="row">
-                            <Avatar
-                              alt="Imagem do Colaborador"
-                              src={`http://localhost:3000/static/${selected.image}`}
-                              sx={{ width: 22, height: 22, mr: 1 }}
-                            />
-                            <Typography>{selected.name}</Typography>
-                          </Grid>
-                        );
+                      if (!selected) {
+                        return <Typography>Tipo de Cliente</Typography>;
                       }
+
+                      return selected;
                     }}
+                    sx={{ width: 180 }}
                   >
                     <MenuItem disabled value="">
-                      Colaboradores
+                      Tipo de Cliente
                     </MenuItem>
-                    {department.members &&
-                      department.members.map((item) => (
+                    <MenuItem value={"Empresa"}>Empresa</MenuItem>
+                    <MenuItem value={"Pessoa Fisica"}>Pessoa Física</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              {customerType && (
+                <CustomerSelect
+                  marginAddJobForm
+                  handleCustomerChange={handleCustomerChange}
+                  setCustomer={setCustomer}
+                  customerType={customerType}
+                  selectedCustomer={customer}
+                  fromShortcut={Boolean(false)}
+                />
+              )}
+              {customer && (
+                <Grid item>
+                  <TextField
+                    label="Solicitante"
+                    value={requester}
+                    onChange={(e) => setRequester(e.target.value)}
+                    required
+                    variant="outlined"
+                    sx={{ width: 190 }}
+                  />
+                </Grid>
+              )}
+              {requester && (
+                <Grid item>
+                  <TextField
+                    label="Local de Execução"
+                    value={local}
+                    onChange={(e) => setLocal(e.target.value)}
+                    required
+                    variant="outlined"
+                    sx={{ width: 220, mx: 1 }}
+                  />
+                </Grid>
+              )}
+              {local && (
+                <Grid item sx={{ mt: -1 }}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DatePicker"]}>
+                      <DatePicker
+                        value={scheduledTo}
+                        format="DD/MM/YYYY"
+                        onChange={(newValue) => setScheduledTo(newValue)}
+                        label="Agendar para"
+                        sx={{ width: 180 }}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                </Grid>
+              )}
+            </Grid>
+
+            {local && (
+              <Grid sx={{ mr: 10 }}>
+                <Divider sx={{ my: 3 }} />
+                <Grid container>
+                  <Typography sx={{ mb: 2, fontSize: 18, fontWeight: "bold" }}>
+                    Departamento
+                  </Typography>
+                  <CheckCircleOutlineOutlinedIcon
+                    sx={{
+                      color:
+                        department && service && worker
+                          ? "#50C878"
+                          : "lightgrey",
+                      ml: 1,
+                    }}
+                  />
+                </Grid>
+
+                <Grid
+                  container
+                  direction="row"
+                  alignItems="flex-start"
+                  justifyContent="space-between"
+                >
+                  <Grid item>
+                    <Select
+                      onChange={(e) => {
+                        setDepartment(e.target.value),
+                          setService(""),
+                          setWorker(""),
+                          setMaterials([]),
+                          setMaterialsCost(0);
+                      }}
+                      value={department}
+                      size="small"
+                      displayEmpty
+                      required
+                      renderValue={(selected) => {
+                        if (!selected) {
+                          return (
+                            <Typography>Selecione o Departamento</Typography>
+                          );
+                        } else {
+                          return (
+                            <Grid container direction="row">
+                              <Paper
+                                elevation={0}
+                                sx={{
+                                  mr: 1,
+                                  mt: 0.5,
+                                  width: 15,
+                                  height: 15,
+                                  borderRadius: 50,
+                                  backgroundColor: selected.color,
+                                }}
+                              />
+                              <Typography>{selected.name}</Typography>
+                            </Grid>
+                          );
+                        }
+                      }}
+                      sx={{ minWidth: "200px" }}
+                    >
+                      {departments.map((item) => (
                         <MenuItem value={item} key={item.id}>
-                          <Avatar
-                            alt="Imagem do Colaborador"
-                            src={`http://localhost:3000/static/${item.image}`}
-                            sx={{ width: 22, height: 22, mr: 2 }}
-                          />
-                          {item.name}
+                          <Grid container direction="row">
+                            <Paper
+                              elevation={0}
+                              sx={{
+                                mr: 1,
+                                mt: 0.5,
+                                width: 15,
+                                height: 15,
+                                borderRadius: 50,
+                                backgroundColor: item.color,
+                              }}
+                            />
+                            <Typography>{item.name}</Typography>
+                          </Grid>
                         </MenuItem>
                       ))}
-                  </Select>
-                </>
-              </Grid>
-            </Grid>
+                    </Select>
+                  </Grid>
+                  <Grid item sx={{ mt: -7, mx: -10 }}>
+                    {department && (
+                      <Grid sx={{ mt: 4 }}>
+                        <Typography>Serviço</Typography>
+                        <Select
+                          onChange={(e) => {
+                            handleServiceChange(e.target.value);
+                          }}
+                          required
+                          value={service}
+                          size="small"
+                          renderValue={(selected) => {
+                            if (!selected) {
+                              return (
+                                <Typography>Escolha um Serviço</Typography>
+                              );
+                            } else {
+                              return <Typography>{selected.name}</Typography>;
+                            }
+                          }}
+                          sx={{ width: 250 }}
+                        >
+                          {services
+                            .filter(
+                              (service) =>
+                                service.department &&
+                                service.department.id === department._id
+                            )
 
-            <Divider sx={{ my: 3 }} />
-            <Typography sx={{ my: 1, fontSize: 18, fontWeight: "bold" }}>
-              Solicitação
-            </Typography>
-            <Grid container sx={{ mt: 2 }} direction="column">
-              <Grid item>
-                <TextField
-                  label="Título"
-                  size="small"
-                  value={title}
-                  disabled={option === "interaction"}
-                  onChange={(e) => setTitle(e.target.value)}
-                  variant="outlined"
-                  fullWidth
-                  sx={{ mb: 2 }}
-                />
-
-                <TextField
-                  label="Descrição"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  disabled={option === "interaction"}
-                  variant="outlined"
-                  fullWidth
-                  sx={{ mb: 1 }}
-                />
-              </Grid>
-            </Grid>
-
-            <Divider sx={{ my: 3 }} />
-            <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
-              Orçamento
-            </Typography>
-            <Grid container sx={{ pr: "4%", ml: "5%" }} direction="row">
-              <Grid
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Grid
-                  sx={{
-                    width: 750,
-                    backgroundColor: "#eee",
-                    p: 3,
-                  }}
-                >
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Serviço
-                  </Typography>
-                  <Grid
-                    container
-                    direction="row"
-                    sx={{
-                      width: "70%",
-                      borderRadius: 4,
-                      py: 2,
-                    }}
-                  >
-                    {service && (
-                      <Typography sx={{ fontSize: 16, mx: 1 }}>
-                        {service && `${service.name} = `}{" "}
-                        {service.value ? `R$ ${service.value}` : "R$0,00"}
-                      </Typography>
+                            .map((item) => (
+                              <MenuItem value={item} key={item.id}>
+                                {item.name}
+                              </MenuItem>
+                            ))}
+                        </Select>
+                      </Grid>
                     )}
                   </Grid>
-                  <Typography sx={{ fontSize: 16, mt: 2, fontWeight: "bold" }}>
-                    Materiais
-                  </Typography>
 
-                  <Grid
-                    container
-                    direction="row"
-                    sx={{
-                      width: "70%",
-                      borderRadius: 4,
-                      py: 2,
-                    }}
-                  >
-                    <Grid
-                      item
-                      sx={{
-                        borderRadius: 4,
-                      }}
-                    >
-                      {materials.map((material) => (
-                        <Typography
-                          sx={{ my: 0.5, ml: 1, fontSize: 16 }}
-                          key={material.id}
+                  <Grid item sx={{ mt: -7 }}>
+                    {department && service && (
+                      <Grid sx={{ mt: 4 }}>
+                        <Typography>Colaborador</Typography>
+                        <Select
+                          onChange={(e) => setWorker(e.target.value)}
+                          value={worker}
+                          size="small"
+                          displayEmpty
+                          required
+                          renderValue={(selected) => {
+                            if (selected.length === 0) {
+                              return (
+                                <Typography>Selecione o Colaborador</Typography>
+                              );
+                            } else {
+                              return (
+                                <Grid container direction="row">
+                                  <Avatar
+                                    alt="Imagem do Colaborador"
+                                    src={`http://localhost:3000/static/${selected.image}`}
+                                    sx={{ width: 22, height: 22, mr: 1 }}
+                                  />
+                                  <Typography>{selected.name}</Typography>
+                                </Grid>
+                              );
+                            }
+                          }}
                         >
-                          {material.name} x{material.quantity} = R$
-                          {material.sellValue * material.quantity}
-                        </Typography>
-                      ))}
-                    </Grid>
-                  </Grid>
-                  <Typography sx={{ fontSize: 16, mt: 2, fontWeight: "bold" }}>
-                    Total
-                  </Typography>
-
-                  <Grid
-                    container
-                    direction="row"
-                    sx={{
-                      width: "70%",
-                      borderRadius: 4,
-                      py: 2,
-                    }}
-                  >
-                    <Typography sx={{ fontSize: 16, mx: 1 }}>
-                      Serviço + Materiais ={" "}
-                      {service && `R$ ${materialsCost + service.value}`}
-                    </Typography>
+                          <MenuItem disabled value="">
+                            Colaboradores
+                          </MenuItem>
+                          {department &&
+                            department.members &&
+                            department.members.map((item) => (
+                              <MenuItem value={item} key={item.id}>
+                                <Avatar
+                                  alt="Imagem do Colaborador"
+                                  src={`http://localhost:3000/static/${item.image}`}
+                                  sx={{ width: 22, height: 22, mr: 2 }}
+                                />
+                                {item.name}
+                              </MenuItem>
+                            ))}
+                        </Select>
+                      </Grid>
+                    )}
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
+            )}
 
-            <Divider sx={{ my: 3, mt: 4 }} />
-            <Checkbox
-              checked={showAdditionalOptions}
-              onChange={handleCheckboxChange}
-            />
-            <label>Observações</label>
-
-            {showAdditionalOptions && (
-              <Box>
+            {worker && (
+              <Grid sx={{ mr: 10 }}>
                 <Divider sx={{ my: 3 }} />
-              </Box>
+                <Grid container>
+                  <Typography sx={{ mb: 1, fontSize: 18, fontWeight: "bold" }}>
+                    Solicitação
+                  </Typography>
+                  <CheckCircleOutlineOutlinedIcon
+                    sx={{
+                      color: title && description ? "#50C878" : "lightgrey",
+                      ml: 1,
+                    }}
+                  />
+                </Grid>
+                <Grid container sx={{ mt: 2 }} direction="column">
+                  <Grid item>
+                    <TextField
+                      label="Título"
+                      size="small"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      required
+                      variant="outlined"
+                      fullWidth
+                      sx={{ mb: 2 }}
+                    />
+
+                    <TextField
+                      label="Descrição"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      required
+                      variant="outlined"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
             )}
           </DialogContent>
 

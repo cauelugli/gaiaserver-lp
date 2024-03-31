@@ -399,6 +399,8 @@ router.put("/", async (req, res) => {
         jobId,
         {
           title: req.body.title,
+          customer: req.body.customer,
+          customerType: req.body.customerType,
           description: req.body.description,
           requester: req.body.requester,
           department: req.body.department,

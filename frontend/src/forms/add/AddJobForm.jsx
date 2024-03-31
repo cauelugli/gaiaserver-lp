@@ -245,7 +245,8 @@ const AddJobForm = ({
           id: customer._id,
           name: customer.name,
           image: customer.image,
-          cnpj: customer.cnpj || "",
+          cnpj: customer.cnpj || null,
+          cpf: customer.cpf || null,
           type: customer.cnpj ? "Customer" : "Client",
         },
         requester,
@@ -290,7 +291,9 @@ const AddJobForm = ({
       }
       setOpenAddJob(false);
       if (!addFromShortcut) {
-        setRefreshData(!refreshData);
+        if (!fromShortcut) {
+          setRefreshData(!refreshData);
+        }
       }
     } catch (err) {
       toast.error("Houve algum erro...", {
