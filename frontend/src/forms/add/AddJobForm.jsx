@@ -372,7 +372,7 @@ const AddJobForm = ({
                 handleCustomerChange={handleCustomerChange}
                 setCustomer={setCustomer}
                 customerType={customerType}
-                selectedCustomer={selectedCustomer}
+                selectedCustomer={customer}
                 fromShortcut={fromShortcut}
               />
             )}

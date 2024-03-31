@@ -30,10 +30,10 @@ const api = axios.create({
 const EditManagerForm = ({
   openEdit,
   selectedManager,
-  departments,
   setOpenEdit,
   refreshData,
-  setRefreshData,  toast,
+  setRefreshData,
+  toast,
 }) => {
   const [name, setName] = React.useState(selectedManager.name);
   const [email, setEmail] = React.useState(selectedManager.email);
@@ -45,6 +45,20 @@ const EditManagerForm = ({
     selectedManager.department || ""
   );
   const previousData = selectedManager;
+
+  const [departments, setDepartments] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const departments = await api.get("/departments");
+        setDepartments(departments.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleEdit = async (e) => {
     e.preventDefault();
