@@ -578,6 +578,7 @@ export default function App() {
             fullWidth={shortcutModalState.fullWidth}
             maxWidth={shortcutModalState.maxWidth}
             selectedItem={shortcutModalState.selectedItem}
+            // section={shortcutModalState.section}
             configAgenda={configAgenda}
             onClose={() => setShortcutModalState({ show: false })}
           />

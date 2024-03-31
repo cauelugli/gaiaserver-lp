@@ -20,6 +20,7 @@ const NewUserShortcutOptions = ({
         fullWidth: true,
         maxWidth: "lg",
         permission: "requests",
+        section: "Solicitações",
       },
     },
     {
@@ -29,6 +30,7 @@ const NewUserShortcutOptions = ({
         fullWidth: true,
         maxWidth: "lg",
         permission: "requests",
+        section: "Solicitações",
       },
     },
     {
@@ -38,6 +40,7 @@ const NewUserShortcutOptions = ({
         fullWidth: true,
         maxWidth: "md",
         permission: "requests",
+        section: "Solicitações",
       },
     },
     {
@@ -47,6 +50,7 @@ const NewUserShortcutOptions = ({
         fullWidth: true,
         maxWidth: "md",
         permission: "requests",
+        section: "Solicitações",
       },
     },
     {
@@ -56,6 +60,7 @@ const NewUserShortcutOptions = ({
         fullWidth: true,
         maxWidth: "xs",
         permission: "customers",
+        section: "Clientes",
       },
     },
     {
@@ -65,6 +70,7 @@ const NewUserShortcutOptions = ({
         fullWidth: true,
         maxWidth: "md",
         permission: "customers",
+        section: "Clientes",
       },
     },
     {
@@ -74,6 +80,7 @@ const NewUserShortcutOptions = ({
         fullWidth: true,
         maxWidth: "md",
         permission: "users",
+        section: "Colaboradores",
       },
     },
     {
@@ -83,6 +90,7 @@ const NewUserShortcutOptions = ({
         fullWidth: true,
         maxWidth: "md",
         permission: "users",
+        section: "Colaboradores",
       },
     },
     {
@@ -92,6 +100,7 @@ const NewUserShortcutOptions = ({
         fullWidth: true,
         maxWidth: "md",
         permission: "departments",
+        section: "Departamentos",
       },
     },
   ];
@@ -99,6 +108,7 @@ const NewUserShortcutOptions = ({
   options = options.filter((option) =>
     allowedLinks.includes(option.value.permission)
   );
+  
 
   const handleSelectChange = (event) => {
     const value = event.target.value;
