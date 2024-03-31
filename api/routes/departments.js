@@ -67,21 +67,6 @@ router.post("/", async (req, res) => {
         }
       }
 
-      // UPDATING MANAGER, IF SELECTED
-      if (req.body.manager) {
-        updatedManager = await Manager.findOneAndUpdate(
-          { _id: req.body.manager._id },
-          {
-            $set: {
-              "department.id": savedDepartment._id,
-              "department.name": savedDepartment.name,
-              "department.phone": savedDepartment.phone,
-              "department.email": savedDepartment.email,
-              "department.color": savedDepartment.color,
-            },
-          }
-        );
-      }
       res.status(200).json({ savedDepartment, updatedMembers, updatedManager });
     } catch (err) {
       console.log(err);
@@ -99,9 +84,26 @@ router.post("/", async (req, res) => {
     });
     const memberIds = req.body.members.map((member) => member.id);
 
-    for (const memberId of memberIds) {
-      const updatedMember = await User.updateOne(
-        { _id: memberId },
+    try {
+      savedDepartment = await newDepartment.save();
+      for (const memberId of memberIds) {
+        const updatedMember = await User.updateOne(
+          { _id: memberId },
+          {
+            $set: {
+              "department.id": savedDepartment._id,
+              "department.name": savedDepartment.name,
+              "department.phone": savedDepartment.phone,
+              "department.email": savedDepartment.email,
+              "department.color": savedDepartment.color,
+            },
+          }
+        );
+        updatedMembers.push(updatedMember);
+      }
+
+      await Manager.findOneAndUpdate(
+        { _id: req.body.manager._id },
         {
           $set: {
             "department.id": savedDepartment._id,
@@ -112,10 +114,6 @@ router.post("/", async (req, res) => {
           },
         }
       );
-      updatedMembers.push(updatedMember);
-    }
-    try {
-      savedDepartment = await newDepartment.save();
       res.status(200).json({ savedDepartment, updatedMembers });
     } catch (err) {
       console.log(err);
