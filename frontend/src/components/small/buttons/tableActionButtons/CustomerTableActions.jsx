@@ -66,6 +66,7 @@ export default function CustomerTableActions(props) {
             onClick={() => {
               setOpenAddJob(true), setAnchorEl(null);
             }}
+            disabled={!props.selectedItem.isActive}
           >
             <ListItemIcon>
               <EngineeringIcon />
@@ -79,6 +80,7 @@ export default function CustomerTableActions(props) {
             onClick={() => {
               setOpenAddSale(true), setAnchorEl(null);
             }}
+            disabled={!props.selectedItem.isActive}
           >
             <ListItemIcon>
               <SellIcon />
