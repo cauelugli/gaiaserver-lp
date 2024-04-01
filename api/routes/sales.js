@@ -33,6 +33,24 @@ router.post("/", async (req, res) => {
   try {
     const savedRequest = await newSale.save();
 
+    const sale = await Sale.findById(savedRequest._id);
+    const interactionNumber = sale.interactions.length + 1;
+
+    const updatedJob = await Sale.findByIdAndUpdate(
+      savedRequest._id,
+      {
+        $push: {
+          interactions: {
+            number: interactionNumber,
+            activity: `Venda criada`,
+            user: req.body.createdBy,
+            date: req.body.fullDate,
+          },
+        },
+      },
+      { new: true }
+    );
+
     const newQuote = new Quote({
       number: savedRequest.quoteNumber,
       title: "",
@@ -146,9 +164,13 @@ router.post("/", async (req, res) => {
 
     doc.end();
 
-    res
-      .status(200)
-      .json({ savedRequest, savedQuote, updatedCustomer, updatedClient });
+    res.status(200).json({
+      savedRequest,
+      updatedJob,
+      savedQuote,
+      updatedCustomer,
+      updatedClient,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -212,6 +234,93 @@ router.put("/activate/:id", async (req, res) => {
     );
     res.status(200).json(updatedSale);
   } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// ADD SALE INTERACTION
+router.put("/interaction", async (req, res) => {
+  try {
+    const saleId = req.body.saleId || req.body.sale._id;
+    const user = req.body.user;
+
+    const sale = await Sale.findById(saleId);
+    if (!sale) {
+      return res.status(404).json({ message: "Sale not found" });
+    }
+    const interactionNumber = sale.interactions.length + 1;
+
+    const updatedSale = await Sale.findOneAndUpdate(
+      { _id: saleId },
+      {
+        $push: {
+          interactions: {
+            number: interactionNumber,
+            activity: req.body.activity,
+            user: user.name,
+            date: req.body.date,
+            reactions: {
+              love: { quantity: 0, usersReacted: [] },
+              like: { quantity: 0, usersReacted: [] },
+              dislike: { quantity: 0, usersReacted: [] },
+              haha: { quantity: 0, usersReacted: [] },
+            },
+          },
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedSale);
+  } catch (err) {
+    console.log("err", err);
+    res.status(500).json(err);
+  }
+});
+
+// REACT TO SALE INTERATION
+router.put("/reaction", async (req, res) => {
+  try {
+    const saleId = req.body.jobId || req.body.job._id;
+    const userId = req.body.userId;
+
+    const sale = await Sale.findById(saleId);
+
+    const reactionType = req.body.reactionType;
+    const reactionField = `interactions.$.reactions.${reactionType}.quantity`;
+    const usersReactedField = `interactions.$.reactions.${reactionType}.usersReacted`;
+
+    const userAlreadyReacted = sale.interactions.some((interaction) => {
+      return (
+        interaction.number === req.body.number &&
+        interaction.reactions[reactionType].usersReacted.includes(userId)
+      );
+    });
+
+    if (userAlreadyReacted) {
+      const updatedSale = await Sale.findOneAndUpdate(
+        { _id: saleId, "interactions.number": req.body.number },
+        {
+          $inc: { [reactionField]: -1 },
+          $pull: { [usersReactedField]: userId },
+        },
+        { new: true }
+      );
+
+      res.status(200).json(updatedSale);
+    } else {
+      const updatedSale = await Sale.findOneAndUpdate(
+        { _id: saleId, "interactions.number": req.body.number },
+        {
+          $inc: { [reactionField]: 1 },
+          $addToSet: { [usersReactedField]: userId },
+        },
+        { new: true }
+      );
+
+      res.status(200).json(updatedSale);
+    }
+  } catch (err) {
+    console.log("err", err);
     res.status(500).json(err);
   }
 });

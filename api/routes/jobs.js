@@ -271,6 +271,12 @@ router.delete("/:id", async (req, res) => {
 router.put("/requestApproval", async (req, res) => {
   try {
     const jobId = req.body.jobId || req.body.job._id;
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+    const interactionNumber = job.interactions.length + 1;
+
     const updatedJob = await Job.findByIdAndUpdate(
       jobId,
       {
@@ -279,7 +285,7 @@ router.put("/requestApproval", async (req, res) => {
         },
         $push: {
           interactions: {
-            number: req.body.number || 1,
+            number: interactionNumber,
             activity: `Aprovação solicitada a ${req.body.job.manager.name} para execução`,
             user: req.body.user.name,
             date: req.body.date,
@@ -300,6 +306,12 @@ router.put("/requestApproval", async (req, res) => {
 router.put("/managerApproval", async (req, res) => {
   try {
     const jobId = req.body.jobId || req.body.job._id;
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+    const interactionNumber = job.interactions.length + 1;
+
     const updatedJob = await Job.findByIdAndUpdate(
       jobId,
       {
@@ -308,7 +320,7 @@ router.put("/managerApproval", async (req, res) => {
         },
         $push: {
           interactions: {
-            number: req.body.number || 2,
+            number: interactionNumber,
             activity: "Job aprovado para execução",
             user: req.body.user,
             date: req.body.date,
@@ -331,12 +343,18 @@ router.put("/interaction", async (req, res) => {
     const jobId = req.body.jobId || req.body.job._id;
     const user = req.body.user;
 
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+    const interactionNumber = job.interactions.length + 1;
+
     const updatedJob = await Job.findOneAndUpdate(
       { _id: jobId },
       {
         $push: {
           interactions: {
-            number: req.body.number || 1,
+            number: interactionNumber,
             activity: req.body.activity,
             user: user.name,
             date: req.body.date,
@@ -437,7 +455,7 @@ router.put("/resolve", async (req, res) => {
 router.put("/reaction", async (req, res) => {
   try {
     const jobId = req.body.jobId || req.body.job._id;
-    const user = req.body.user;
+    const userId = req.body.userId;
 
     const job = await Job.findById(jobId);
 
@@ -448,7 +466,7 @@ router.put("/reaction", async (req, res) => {
     const userAlreadyReacted = job.interactions.some((interaction) => {
       return (
         interaction.number === req.body.number &&
-        interaction.reactions[reactionType].usersReacted.includes(user._id)
+        interaction.reactions[reactionType].usersReacted.includes(userId)
       );
     });
 
@@ -457,7 +475,7 @@ router.put("/reaction", async (req, res) => {
         { _id: jobId, "interactions.number": req.body.number },
         {
           $inc: { [reactionField]: -1 },
-          $pull: { [usersReactedField]: user._id },
+          $pull: { [usersReactedField]: userId },
         },
         { new: true }
       );
@@ -468,7 +486,7 @@ router.put("/reaction", async (req, res) => {
         { _id: jobId, "interactions.number": req.body.number },
         {
           $inc: { [reactionField]: 1 },
-          $addToSet: { [usersReactedField]: user._id },
+          $addToSet: { [usersReactedField]: userId },
         },
         { new: true }
       );
