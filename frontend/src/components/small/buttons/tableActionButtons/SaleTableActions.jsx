@@ -190,7 +190,7 @@ export default function SaleTableActions(props) {
             successMessage={`Venda ${
               props.selectedItem.quoteNumber && props.selectedItem.quoteNumber
             } ${
-              props.selectedItem.isActive ? "Reativada" : "Arquivada"
+              props.selectedItem.isActive ? "Arquivada" : "Reativada"
             } com Sucesso`}
           />
         </Dialog>
