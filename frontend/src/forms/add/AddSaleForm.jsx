@@ -192,8 +192,10 @@ const AddSaleForm = ({
         socket.emit("recentActivityRefresh");
       }
       setOpenAddSale(false);
-      if (!addFromShortcut) {
-        setRefreshData(!refreshData);
+      if (!fromShortcut) {
+        if (!addFromShortcut) {
+          setRefreshData(!refreshData);
+        }
       }
     } catch (err) {
       toast.error("Houve algum erro...", {
