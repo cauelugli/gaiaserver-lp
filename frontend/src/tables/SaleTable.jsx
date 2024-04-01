@@ -340,7 +340,7 @@ export default function SaleTable({
                   <TableRow>
                     <TableCell
                       style={{ paddingBottom: 0, paddingTop: 0 }}
-                      colSpan={6}
+                      colSpan={8}
                     >
                       <Collapse
                         in={openDetail && selectedSale._id === sale._id}

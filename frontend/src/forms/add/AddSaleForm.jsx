@@ -45,7 +45,7 @@ const AddSaleForm = ({
   setRefreshData,
   toast,
   fromShortcut,
-  addFromShortcut
+  addFromShortcut,
 }) => {
   const [config, setConfig] = React.useState([]);
   let selectedCustomer = {};
@@ -181,7 +181,12 @@ const AddSaleForm = ({
           }
         );
         await api.post("/recentActivity", {
-          activity: `Colaborador ${user.name} criou um Venda para ${customer.name}`,
+          activity: `Colaborador ${user.name} criou uma Venda de 
+          ${materials
+            .map((product) => `${product.quantity}x ${product.name}`)
+            .join(", ")}
+          
+          para ${customer.name}. Total da Venda: R$${materialsCost}`,
           createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),
         });
         socket.emit("recentActivityRefresh");
@@ -255,7 +260,7 @@ const AddSaleForm = ({
               <CustomerSelect
                 marginAddJobForm
                 sizeSmall
-                selectedCustomer={selectedCustomer}
+                selectedCustomer={customer}
                 handleCustomerChange={handleCustomerChange}
                 setCustomer={setCustomer}
                 customerType={customerType}
