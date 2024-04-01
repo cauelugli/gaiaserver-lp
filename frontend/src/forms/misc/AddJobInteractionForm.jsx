@@ -28,22 +28,23 @@ const AddJobInteractionForm = ({
   refreshData,
   setRefreshData,
   toast,
+  fromSales,
 }) => {
   const [activity, setActivity] = React.useState("");
+  const [endpoint, setEndpoint] = React.useState(fromSales ? "sales" : "jobs");
 
   const handleAddInteraction = async (e) => {
     e.preventDefault();
     const requestBody = {
       jobId: selectedJob._id,
-      number: selectedJob.interactions.length + 1,
       activity,
       user,
       worker: selectedJob.worker,
       manager: selectedJob.manager,
-      date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
+      date: dayjs().format("DD/MM/YYYY HH:mm"),
     };
     try {
-      const res = await api.put("/jobs/interaction", requestBody);
+      const res = await api.put(`/${endpoint}/interaction`, requestBody);
       if (res.data) {
         toast.success("Interação Adicionada!", {
           closeOnClick: true,

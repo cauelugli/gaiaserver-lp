@@ -1,9 +1,14 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import dayjs from "dayjs";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 import {
   Dialog,
@@ -24,6 +29,8 @@ import {
   Checkbox,
   IconButton,
   Tooltip,
+  Button,
+  TextField,
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -31,6 +38,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import SaleTableActions from "../components/small/buttons/tableActionButtons/SaleTableActions";
+import InteractionReactions from "../components/small/InteractionReactions";
+import AddJobInteractionForm from "../forms/misc/AddJobInteractionForm";
 
 export default function SaleTable({
   user,
@@ -42,14 +51,20 @@ export default function SaleTable({
   refreshData,
   setRefreshData,
 }) {
+  const [userReactions, setUserReactions] = React.useState({});
+  const [activity, setActivity] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openDetailDepartment, setOpenDetailDepartment] = React.useState(false);
   const [openDetailQuote, setOpenDetailQuote] = React.useState(true);
   const [openDetailRequester, setOpenDetailRequester] = React.useState(false);
+  const [openDetailActivities, setOpenDetailActivities] = React.useState(false);
   const [selectedSale, setSelectedSale] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openAddInteraction, setOpenAddInteraction] = React.useState(false);
+  const [openAddInteractionOnTable, setOpenAddInteractionOnTable] =
+    React.useState(false);
 
   const handleConfirmDelete = (sale) => {
     setSelectedItem(sale);
@@ -152,12 +167,40 @@ export default function SaleTable({
   const endIndex = startIndex + rowsPerPage;
 
   const [showCompletedSales, setShowCompletedSales] = React.useState(false);
-  const handleChangeShowCompletedSales = () => {
-    setShowCompletedSales(!showCompletedSales);
-  };
   const [showArchivedSales, setShowArchivedSales] = React.useState(false);
-  const handleChangeShowArchivedSales = () => {
-    setShowArchivedSales(!showArchivedSales);
+
+  const handleAddInteractionFromTable = async (e) => {
+    e.preventDefault();
+    const requestBody = {
+      saleId: selectedSale._id,
+      activity,
+      user,
+      worker: selectedSale.worker,
+      manager: selectedSale.manager,
+      date: dayjs().format("DD/MM/YYYY HH:mm"),
+    };
+    try {
+      const res = await api.put("/sales/interaction", requestBody);
+      if (res.data) {
+        toast.success("Interação Adicionada!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
+      setOpenAddInteractionOnTable(false);
+      setActivity("");
+      setRefreshData(!refreshData);
+    } catch (err) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+      console.log(err);
+    }
   };
 
   return (
@@ -165,14 +208,14 @@ export default function SaleTable({
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
         <Checkbox
           checked={showCompletedSales}
-          onChange={handleChangeShowCompletedSales}
+          onChange={() => setShowCompletedSales(!showCompletedSales)}
         />
         <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
           Mostrar Concluídas
         </Typography>
         <Checkbox
           checked={showArchivedSales}
-          onChange={handleChangeShowArchivedSales}
+          onChange={() => setShowArchivedSales(!showArchivedSales)}
         />
         <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
           Mostrar Arquivadas
@@ -345,6 +388,7 @@ export default function SaleTable({
                         user={user}
                         sale={sale}
                         handleOpenEdit={handleOpenEdit}
+                        handleOpenAddJobInteraction={setOpenAddInteraction}
                         handleConfirmDelete={handleConfirmDelete}
                       />
                     </TableCell>
@@ -643,6 +687,188 @@ export default function SaleTable({
                             </Table>
                           </Collapse>
                         </Box>
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
+                            >
+                              Atividades
+                            </Typography>
+                            <IconButton
+                              onClick={() =>
+                                setOpenDetailActivities(!openDetailActivities)
+                              }
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={
+                              openDetailActivities &&
+                              selectedSale._id === sale._id
+                            }
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Colaborador
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Atividade
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Data
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Reações
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                {sale.interactions.map((interaction) => (
+                                  <TableRow
+                                    key={interaction.number}
+                                    sx={{
+                                      backgroundColor:
+                                        interaction.number % 2 === 0
+                                          ? "#eee"
+                                          : "white",
+                                    }}
+                                  >
+                                    <TableCell align="left">
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {interaction.user}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="left">
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {interaction.activity}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="left">
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {interaction.date}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="left">
+                                      {interaction.activity !==
+                                        "Job aprovado" && (
+                                        <Typography sx={{ fontSize: 13 }}>
+                                          <InteractionReactions
+                                            user={user}
+                                            manager={sale.manager}
+                                            refreshData={refreshData}
+                                            setRefreshData={setRefreshData}
+                                            interaction={interaction}
+                                            job={sale}
+                                            number={interaction.number}
+                                            userReactions={
+                                              userReactions[sale._id] || []
+                                            }
+                                            setUserReactions={(reactions) =>
+                                              setUserReactions({
+                                                ...userReactions,
+                                                [sale._id]: reactions,
+                                              })
+                                            }
+                                            jobId={sale._id}
+                                            fromSales
+                                          />
+                                        </Typography>
+                                      )}
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                            {openAddInteractionOnTable ? (
+                              <Grid item>
+                                <Typography
+                                  sx={{
+                                    mb: 2,
+                                    mt: 4,
+                                    fontSize: 18,
+                                    fontWeight: "bold",
+                                  }}
+                                >
+                                  Nova Interação
+                                </Typography>
+                                <TextField
+                                  label="Atividade"
+                                  variant="outlined"
+                                  size="small"
+                                  value={activity}
+                                  onChange={(e) => setActivity(e.target.value)}
+                                  sx={{ width: "100%", mx: "auto" }}
+                                />
+                                <Grid item>
+                                  <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="flex-end"
+                                  >
+                                    <Button
+                                      variant="contained"
+                                      color="success"
+                                      sx={{ my: 2, mr: 2 }}
+                                      onClick={handleAddInteractionFromTable}
+                                    >
+                                      Adicionar
+                                    </Button>
+                                    <Button
+                                      variant="contained"
+                                      color="error"
+                                      onClick={() =>
+                                        setOpenAddInteractionOnTable(false)
+                                      }
+                                      sx={{ my: 2 }}
+                                    >
+                                      X
+                                    </Button>
+                                  </Grid>
+                                </Grid>
+                              </Grid>
+                            ) : (
+                              <Grid sx={{ ml: "90%" }}>
+                                <Button
+                                  sx={{ my: 1 }}
+                                  size="small"
+                                  variant="contained"
+                                  color="success"
+                                  onClick={() =>
+                                    setOpenAddInteractionOnTable(true)
+                                  }
+                                >
+                                  + Interação
+                                </Button>
+                              </Grid>
+                            )}
+                          </Collapse>
+                        </Box>
                         {sale.status === "Concluido" && (
                           <Box sx={{ my: 4, px: 6, mb: 6 }}>
                             <Typography
@@ -735,6 +961,25 @@ export default function SaleTable({
           />
         </Dialog>
       )} */}
+      {openAddInteraction && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openAddInteraction}
+          onClose={() => setOpenAddInteraction(!openAddInteraction)}
+        >
+          <AddJobInteractionForm
+            user={user}
+            openEditJob={openAddInteraction}
+            selectedJob={selectedSale}
+            setOpenEditJob={setOpenAddInteraction}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+            fromSales
+          />
+        </Dialog>
+      )}
       {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm

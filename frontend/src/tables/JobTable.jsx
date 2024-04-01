@@ -195,7 +195,7 @@ export default function JobTable({
         job: selectedJob,
         worker: selectedJob.worker,
         manager: selectedJob.manager,
-        date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
+        date: dayjs().format("DD/MM/YYYY HH:mm"),
       };
       const res = await api.put("/jobs/requestApproval", requestBody);
 
@@ -207,10 +207,10 @@ export default function JobTable({
           autoClose: 1200,
         });
         socket.emit("requestApproval", {
-          sender: user,
-          receiver: selectedJob.manager,
+          sender: user.name,
+          receiver: selectedJob.manager.name,
           job: selectedJob,
-          date: dayjs(Date.now()).format("DD/MM/YYYY"),
+          date: dayjs(Date.now()).format("DD/MM/YYYY HH:mm"),
         });
         setRefreshData(!refreshData);
       }
@@ -228,12 +228,11 @@ export default function JobTable({
     e.preventDefault();
     const requestBody = {
       jobId: selectedJob._id,
-      number: selectedJob.interactions.length + 1,
       activity,
       user,
       worker: selectedJob.worker,
       manager: selectedJob.manager,
-      date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
+      date: dayjs().format("DD/MM/YYYY HH:mm"),
     };
     try {
       const res = await api.put("/jobs/interaction", requestBody);
@@ -246,6 +245,7 @@ export default function JobTable({
         });
       }
       setOpenAddInteractionOnTable(false);
+      setActivity("");
       setRefreshData(!refreshData);
     } catch (err) {
       toast.error("Houve algum erro...", {

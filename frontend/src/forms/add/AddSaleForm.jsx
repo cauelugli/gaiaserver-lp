@@ -169,6 +169,8 @@ const AddSaleForm = ({
         deliveryReceiverPhone,
         deliveryScheduledTo,
         createdBy: user.name,
+        date: dayjs().format("DD/MM/YYYY"),
+        fullDate: dayjs().format("DD/MM/YYYY HH:mm"),
       });
       if (res.data) {
         toast.success(
