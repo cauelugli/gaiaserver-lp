@@ -68,6 +68,10 @@ export default function SaleTable({
 
   const tableHeaderRow = [
     {
+      id: "number",
+      label: "#",
+    },
+    {
       id: "requester",
       label: "Solicitante",
     },
@@ -184,11 +188,11 @@ export default function SaleTable({
             >
               {tableHeaderRow.map((headCell) => (
                 <TableCell
-                  align={headCell.label === "Solicitante" ? "" : "center"}
+                  align={headCell.label === "#" ? "" : "center"}
                   sx={{
                     fontSize: 13,
                     fontWeight: "bold",
-                    pl: headCell.label === "Solicitante" ? "" : 5,
+                    pl: headCell.label === "#" ? "" : 5,
                   }}
                   key={headCell.id}
                   sortDirection={orderBy === headCell.id ? order : false}
@@ -247,12 +251,20 @@ export default function SaleTable({
                       cursor="pointer"
                       align="left"
                     >
+                      {sale.quoteNumber}
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(sale)}
+                      cursor="pointer"
+                      align="center"
+                    >
                       {sale.requester}
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(sale)}
                       cursor="pointer"
                       align="center"
+                      sx={{ py: 0 }}
                     >
                       <Grid container direction="row" justifyContent="center">
                         {sale.items.slice(0, 3).map((item) => (
@@ -393,7 +405,7 @@ export default function SaleTable({
                                     <Typography
                                       sx={{ fontSize: "14px", color: "#777" }}
                                     >
-                                      Feita em
+                                      Criada em
                                     </Typography>
                                   </TableCell>
                                 </TableRow>
@@ -494,33 +506,45 @@ export default function SaleTable({
                                   <TableCell align="left">
                                     {sale.items.length > 0
                                       ? sale.items.map((item) => (
-                                          <Grid
+                                          <Tooltip
                                             key={item.id}
-                                            container
-                                            direction="row"
-                                            justifyContent="flex-start"
-                                            alignItems="flex-start"
-                                            sx={{ mt: 0.5 }}
+                                            title={
+                                              <Typography sx={{ fontSize: 12 }}>
+                                                x{item.quantity} {item.name} =
+                                                R$
+                                                {(
+                                                  item.sellValue * item.quantity
+                                                ).toFixed(2)}
+                                              </Typography>
+                                            }
                                           >
-                                            <Typography
-                                              sx={{
-                                                fontSize: 12,
-                                                color: "#777",
-                                                my: "auto",
-                                              }}
+                                            <Grid
+                                              container
+                                              direction="row"
+                                              justifyContent="flex-start"
+                                              alignItems="flex-start"
+                                              sx={{ mt: 0.5 }}
                                             >
-                                              x{item.quantity} {item.name}
-                                            </Typography>
-                                            <Avatar
-                                              alt="Imagem do Produto"
-                                              src={`http://localhost:3000/static/${item.image}`}
-                                              sx={{
-                                                width: 26,
-                                                height: 26,
-                                                ml: 1,
-                                              }}
-                                            />
-                                          </Grid>
+                                              <Typography
+                                                sx={{
+                                                  fontSize: 12,
+                                                  color: "#777",
+                                                  my: "auto",
+                                                }}
+                                              >
+                                                x{item.quantity} {item.name}
+                                              </Typography>
+                                              <Avatar
+                                                alt="Imagem do Produto"
+                                                src={`http://localhost:3000/static/${item.image}`}
+                                                sx={{
+                                                  width: 26,
+                                                  height: 26,
+                                                  ml: 1,
+                                                }}
+                                              />{" "}
+                                            </Grid>
+                                          </Tooltip>
                                         ))
                                       : "Não há uso de Materiais"}
                                   </TableCell>
@@ -598,12 +622,12 @@ export default function SaleTable({
                                     <Typography>{sale.requester}</Typography>
                                   </TableCell>
                                   <TableCell align="left">
-                                    <Typography sx={{ mt: 0.75 }}>
+                                    <Typography>
                                       {sale.deliveryReceiverPhone}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="left">
-                                    <Typography sx={{ mt: 0.75 }}>
+                                    <Typography>
                                       {sale.deliveryAddress}
                                     </Typography>
                                   </TableCell>
