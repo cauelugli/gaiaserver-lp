@@ -68,7 +68,9 @@ const AddJobInteractionForm = ({
   return (
     <form onSubmit={handleAddInteraction}>
       <Grid container>
-        <Typography sx={{ m: 3 }}>Interações do Job</Typography>
+        <Typography sx={{ m: 3, fontSize: 18, fontWeight: "bold" }}>
+          Histórico do Job
+        </Typography>
         <Grid container direction="column" sx={{ mx: 3 }}>
           <Grid item>
             <Typography sx={{ mt: 3, mb: 1, fontSize: 18, fontWeight: "bold" }}>
@@ -81,16 +83,6 @@ const AddJobInteractionForm = ({
                     backgroundColor: "#eee",
                   }}
                 >
-                  <TableCell>
-                    <Typography sx={{ fontSize: 13, fontWeight: "bold" }}>
-                      #
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="left">
-                    <Typography sx={{ fontSize: 13, fontWeight: "bold" }}>
-                      Data
-                    </Typography>
-                  </TableCell>
                   <TableCell align="left">
                     <Typography sx={{ fontSize: 13, fontWeight: "bold" }}>
                       Colaborador
@@ -99,6 +91,11 @@ const AddJobInteractionForm = ({
                   <TableCell align="left">
                     <Typography sx={{ fontSize: 13, fontWeight: "bold" }}>
                       Atividade
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="left">
+                    <Typography sx={{ fontSize: 13, fontWeight: "bold" }}>
+                      Data
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -111,16 +108,6 @@ const AddJobInteractionForm = ({
                         interaction.number % 2 === 0 ? "#eee" : "white",
                     }}
                   >
-                    <TableCell>
-                      <Typography sx={{ fontSize: 12 }}>
-                        {interaction.number}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="left">
-                      <Typography sx={{ fontSize: 12 }}>
-                        {interaction.date}
-                      </Typography>
-                    </TableCell>
                     <TableCell align="left">
                       <Typography sx={{ fontSize: 12 }}>
                         {interaction.user}
@@ -131,13 +118,17 @@ const AddJobInteractionForm = ({
                         {interaction.activity}
                       </Typography>
                     </TableCell>
+                    <TableCell align="left">
+                      <Typography sx={{ fontSize: 12 }}>
+                        {interaction.date}
+                      </Typography>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </Grid>
 
-          {/* NEW INTERACTION GRID */}
           <Grid item>
             <Typography sx={{ mb: 2, mt: 4, fontSize: 18, fontWeight: "bold" }}>
               Nova Interação
@@ -171,7 +162,6 @@ const AddJobInteractionForm = ({
               </Grid>
             </Grid>
           </Grid>
-          {/* NEW INTERACTION GRID */}
         </Grid>
       </Grid>
     </form>

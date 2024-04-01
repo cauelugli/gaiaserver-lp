@@ -25,6 +25,8 @@ import {
   Checkbox,
   IconButton,
   Tooltip,
+  Button,
+  TextField,
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -66,6 +68,9 @@ export default function JobTable({
   const [selectedJob, setSelectedJob] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openAddInteractionOnTable, setOpenAddInteractionOnTable] =
+    React.useState(false);
+  const [activity, setActivity] = React.useState("");
 
   const handleConfirmDelete = (position) => {
     setSelectedItem(position);
@@ -216,6 +221,40 @@ export default function JobTable({
         theme: "colored",
         autoClose: 1200,
       });
+    }
+  };
+
+  const handleAddInteractionFromTable = async (e) => {
+    e.preventDefault();
+    const requestBody = {
+      jobId: selectedJob._id,
+      number: selectedJob.interactions.length + 1,
+      activity,
+      user,
+      worker: selectedJob.worker,
+      manager: selectedJob.manager,
+      date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
+    };
+    try {
+      const res = await api.put("/jobs/interaction", requestBody);
+      if (res.data) {
+        toast.success("Interação Adicionada!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
+      setOpenAddInteractionOnTable(false);
+      setRefreshData(!refreshData);
+    } catch (err) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+      console.log(err);
     }
   };
 
@@ -820,7 +859,14 @@ export default function JobTable({
                                     <Typography
                                       sx={{ fontSize: 13, color: "#777" }}
                                     >
-                                      #
+                                      Colaborador
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Atividade
                                     </Typography>
                                   </TableCell>
                                   <TableCell>
@@ -828,21 +874,6 @@ export default function JobTable({
                                       sx={{ fontSize: 13, color: "#777" }}
                                     >
                                       Data
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Colaborador
-                                    </Typography>
-                                  </TableCell>
-
-                                  <TableCell>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Atividade
                                     </Typography>
                                   </TableCell>
                                   <TableCell>
@@ -865,16 +896,6 @@ export default function JobTable({
                                           : "white",
                                     }}
                                   >
-                                    <TableCell>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {interaction.number}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="left">
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {interaction.date}
-                                      </Typography>
-                                    </TableCell>
                                     <TableCell align="left">
                                       <Typography sx={{ fontSize: 13 }}>
                                         {interaction.user}
@@ -883,6 +904,11 @@ export default function JobTable({
                                     <TableCell align="left">
                                       <Typography sx={{ fontSize: 13 }}>
                                         {interaction.activity}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell align="left">
+                                      <Typography sx={{ fontSize: 13 }}>
+                                        {interaction.date}
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="left">
@@ -915,6 +941,68 @@ export default function JobTable({
                                 ))}
                               </TableBody>
                             </Table>
+                            {openAddInteractionOnTable ? (
+                              <Grid item>
+                                <Typography
+                                  sx={{
+                                    mb: 2,
+                                    mt: 4,
+                                    fontSize: 18,
+                                    fontWeight: "bold",
+                                  }}
+                                >
+                                  Nova Interação
+                                </Typography>
+                                <TextField
+                                  label="Atividade"
+                                  variant="outlined"
+                                  size="small"
+                                  value={activity}
+                                  onChange={(e) => setActivity(e.target.value)}
+                                  sx={{ width: "100%", mx: "auto" }}
+                                />
+                                <Grid item>
+                                  <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="flex-end"
+                                  >
+                                    <Button
+                                      variant="contained"
+                                      color="success"
+                                      sx={{ my: 2, mr: 2 }}
+                                      onClick={handleAddInteractionFromTable}
+                                    >
+                                      Adicionar
+                                    </Button>
+                                    <Button
+                                      variant="contained"
+                                      color="error"
+                                      onClick={() =>
+                                        setOpenAddInteractionOnTable(false)
+                                      }
+                                      sx={{ my: 2 }}
+                                    >
+                                      X
+                                    </Button>
+                                  </Grid>
+                                </Grid>
+                              </Grid>
+                            ) : (
+                              <Grid sx={{ ml: "90%" }}>
+                                <Button
+                                  sx={{ my: 1 }}
+                                  size="small"
+                                  variant="contained"
+                                  color="success"
+                                  onClick={() =>
+                                    setOpenAddInteractionOnTable(true)
+                                  }
+                                >
+                                  + Interação
+                                </Button>
+                              </Grid>
+                            )}
                           </Collapse>
                         </Box>
                         {job.status === "Concluido" && (

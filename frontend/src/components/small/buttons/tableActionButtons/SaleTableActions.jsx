@@ -14,8 +14,8 @@ import {
   Typography,
 } from "@mui/material";
 
-import AddIcon from "@mui/icons-material/Add";
 import ArchiveIcon from "@mui/icons-material/Archive";
+import CommentIcon from "@mui/icons-material/Comment";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -107,12 +107,12 @@ export default function SaleTableActions(props) {
             onClick={(item) => props.handleOpenEdit(item)}
           >
             <ListItemIcon>
-              <AddIcon />
+              <CommentIcon />
             </ListItemIcon>
             <ListItemText
               primary={
                 <Typography sx={{ fontSize: 14 }}>
-                  Adicionar Interação
+                  Interações
                 </Typography>
               }
               sx={{ ml: -3 }}
