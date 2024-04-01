@@ -43,6 +43,7 @@ const InteractionReactions = ({
   interaction,
   refreshData,
   setRefreshData,
+  fromSales,
 }) => {
   const reactionsMap = {
     love: {
@@ -66,14 +67,15 @@ const InteractionReactions = ({
       color: "#ffdb58",
     },
   };
+  const [endpoint, setEndpoint] = React.useState(fromSales ? "sales" : "jobs");
 
   const handleReactionClick = async (reactionType) => {
     try {
-      const res = await api.put("/jobs/reaction", {
+      const res = await api.put(`/${endpoint}/reaction`, {
         jobId: job._id,
         job,
         number,
-        user,
+        userId: user._id,
         reactionType,
       });
       setUserReactions({
@@ -87,7 +89,9 @@ const InteractionReactions = ({
   };
 
   const userReacted = (reactionType) =>
-    interaction.reactions[reactionType].usersReacted.includes(user._id || user.id);
+    interaction.reactions[reactionType].usersReacted.includes(
+      user._id || user.id
+    );
 
   return (
     <Stack direction="row" alignItems="center" spacing={0.5}>
