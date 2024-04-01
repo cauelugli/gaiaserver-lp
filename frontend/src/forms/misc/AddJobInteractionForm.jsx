@@ -29,7 +29,6 @@ const AddJobInteractionForm = ({
   setRefreshData,
   toast,
 }) => {
-  
   const [activity, setActivity] = React.useState("");
 
   const handleAddInteraction = async (e) => {
@@ -69,7 +68,7 @@ const AddJobInteractionForm = ({
   return (
     <form onSubmit={handleAddInteraction}>
       <Grid container>
-        <Typography sx={{m:3}}>Interações do Job</Typography>
+        <Typography sx={{ m: 3 }}>Interações do Job</Typography>
         <Grid container direction="column" sx={{ mx: 3 }}>
           <Grid item>
             <Typography sx={{ mt: 3, mb: 1, fontSize: 18, fontWeight: "bold" }}>
@@ -137,6 +136,8 @@ const AddJobInteractionForm = ({
               </TableBody>
             </Table>
           </Grid>
+
+          {/* NEW INTERACTION GRID */}
           <Grid item>
             <Typography sx={{ mb: 2, mt: 4, fontSize: 18, fontWeight: "bold" }}>
               Nova Interação
@@ -147,19 +148,30 @@ const AddJobInteractionForm = ({
               size="small"
               value={activity}
               onChange={(e) => setActivity(e.target.value)}
-              sx={{ width: "100%", mx: 1 }}
+              sx={{ width: "100%", mx: "auto" }}
             />
-            <Button type="submit" variant="contained" color="success">
-              Adicionar
-            </Button>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => setOpenEditJob(!openEditJob)}
-            >
-              X
-            </Button>
+            <Grid item>
+              <Grid container direction="row" justifyContent="flex-end">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="success"
+                  sx={{ my: 2, mr: 2 }}
+                >
+                  Adicionar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => setOpenEditJob(!openEditJob)}
+                  sx={{ my: 2 }}
+                >
+                  X
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
+          {/* NEW INTERACTION GRID */}
         </Grid>
       </Grid>
     </form>
