@@ -169,7 +169,7 @@ const NewUserShortcutOptions = ({
         MenuProps={{
           PaperProps: {
             style: {
-              maxHeight: 300, 
+              maxHeight: 250, 
               overflow: 'auto',
             },
           },
