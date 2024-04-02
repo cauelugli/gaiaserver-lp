@@ -2,7 +2,19 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 
-import { FormHelperText, MenuItem, Select, Typography } from "@mui/material";
+import {
+  FormHelperText,
+  Grid,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
+
+import GroupIcon from "@mui/icons-material/Group";
+import GradingIcon from "@mui/icons-material/Grading";
+import LanIcon from "@mui/icons-material/Lan";
+import WorkIcon from "@mui/icons-material/Work";
+
 import CustomerSelect from "./selects/CustomerSelect";
 
 const NewUserShortcutOptions = ({
@@ -12,10 +24,23 @@ const NewUserShortcutOptions = ({
   allowedLinks,
 }) => {
   const [selectedOption, setSelectedOption] = useState("");
+  const sections = [
+    { name: "Clientes", icon: <WorkIcon sx={{ fontSize: 14, mb: 0.5 }} /> },
+    {
+      name: "Solicitações",
+      icon: <GradingIcon sx={{ fontSize: 14, mb: 0.5 }} />,
+    },
+    {
+      name: "Colaboradores",
+      icon: <GroupIcon sx={{ fontSize: 14, mb: 0.5 }} />,
+    },
+    { name: "Departamentos", icon: <LanIcon sx={{ fontSize: 14, mb: 0.5 }} /> },
+  ];
+
   let options = [
     {
       value: {
-        label: "Job",
+        label: "Novo Job",
         action: "addJob",
         fullWidth: true,
         maxWidth: "lg",
@@ -35,7 +60,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Venda",
+        label: "Nova Venda",
         action: "addSale",
         fullWidth: true,
         maxWidth: "md",
@@ -55,7 +80,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Cliente Pessoa Física",
+        label: "Novo Cliente Pessoa Física",
         action: "addClient",
         fullWidth: true,
         maxWidth: "xs",
@@ -65,7 +90,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Cliente Empresa",
+        label: "Novo Cliente Empresa",
         action: "addCustomer",
         fullWidth: true,
         maxWidth: "md",
@@ -75,7 +100,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Usuário",
+        label: "Novo Usuário",
         action: "addUser",
         fullWidth: true,
         maxWidth: "md",
@@ -85,7 +110,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Gerente",
+        label: "Novo Gerente",
         action: "addManager",
         fullWidth: true,
         maxWidth: "md",
@@ -95,7 +120,7 @@ const NewUserShortcutOptions = ({
     },
     {
       value: {
-        label: "Departamento",
+        label: "Novo Departamento",
         action: "addDepartment",
         fullWidth: true,
         maxWidth: "md",
@@ -135,15 +160,45 @@ const NewUserShortcutOptions = ({
         sx={{ width: "100%" }}
         displayEmpty
         renderValue={(selected) =>
-          <Typography>{selected.label} </Typography> ||
-          "Selecione uma opção"
+          selected ? (
+            <Typography>{selected.label}</Typography>
+          ) : (
+            "Selecione uma opção"
+          )
         }
+        MenuProps={{
+          PaperProps: {
+            style: {
+              maxHeight: 300, 
+              overflow: 'auto',
+            },
+          },
+        }}
       >
-        {options.map((option, index) => (
-          <MenuItem key={index} value={option.value}>
-            <Typography>{option.value.label}</Typography>
-          </MenuItem>
-        ))}
+        {sections.map((section) => [
+          <MenuItem
+            key={section.name}
+            value=""
+            disabled
+            sx={{ py: 0, display: "flex", alignItems: "center" }}
+          >
+            {section.icon}
+            <Typography variant="overline" sx={{ ml: 1 }}>
+              {section.name}
+            </Typography>
+          </MenuItem>,
+          ...options
+            .filter((option) => option.value.section === section.name)
+            .map((option, index) => (
+              <MenuItem
+                key={`${section.name}-${index}`}
+                value={option.value}
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                <Typography sx={{ ml: 1 }}>{option.value.label}</Typography>
+              </MenuItem>
+            )),
+        ])}
       </Select>
       {(selectedOption.action === "addSaleToCustomer" ||
         selectedOption.action === "addJobToCustomer") && (
