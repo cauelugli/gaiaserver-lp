@@ -16,7 +16,6 @@ import HelpCenterIcon from "@mui/icons-material/HelpCenter";
 import HomeIcon from "@mui/icons-material/Home";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import LanIcon from "@mui/icons-material/Lan";
-import PersonIcon from "@mui/icons-material/Person";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -26,17 +25,16 @@ import WorkIcon from "@mui/icons-material/Work";
 const options = [
   { label: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" },
   { label: "Clientes", icon: <WorkIcon />, link: "/customers" },
+  { label: "Solicitações", icon: <GradingIcon />, link: "/requests" },
   { label: "Colaboradores", icon: <GroupIcon />, link: "/users" },
   { label: "Departamentos", icon: <LanIcon />, link: "/departments" },
-  { label: "Solicitações", icon: <GradingIcon />, link: "/requests" },
-  { label: "Projetos", icon: <RocketLaunchIcon />, link: "/projects" },
-  { label: "Orçamentos", icon: <RequestQuoteIcon />, link: "/quotes" },
   { label: "Serviços", icon: <BuildIcon />, link: "/services" },
+  { label: "Orçamentos", icon: <RequestQuoteIcon />, link: "/quotes" },
   { label: "Estoque", icon: <WarehouseIcon />, link: "/stock" },
-  { label: "Relatórios", icon: <AssessmentIcon />, link: "/reports" },
-  { label: "Financeiro", icon: <AttachMoneyIcon />, link: "/finance" },
-  { label: "Perfil", icon: <PersonIcon />, link: "/account" },
   { label: "Chat", icon: <ChatIcon />, link: "/", disabled: true },
+  { label: "Projetos", icon: <RocketLaunchIcon />, link: "/projects" },
+  { label: "Financeiro", icon: <AttachMoneyIcon />, link: "/finance" },
+  { label: "Relatórios", icon: <AssessmentIcon />, link: "/reports" },
   {
     label: "Acessos",
     icon: <AdminPanelSettingsIcon />,
@@ -204,7 +202,7 @@ const SideBar = ({ configData, user }) => {
                 }}
               />
             </ListItemButton>
-            {option.label === "Financeiro" && (
+            {option.label === "Relatórios" && (
               <Divider
                 sx={{
                   my: 0.75,
@@ -240,7 +238,7 @@ const SideBar = ({ configData, user }) => {
         >
           <img
             src={`http://localhost:3000/static/logo_dog.png`}
-            alt="Logo do Tenant"
+            alt="Logo do GS"
             style={{
               width: "65%",
               cursor: "pointer",
