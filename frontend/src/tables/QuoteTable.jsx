@@ -163,7 +163,7 @@ export default function QuoteTable({
 
   const openViewDialog = (file) => {
     setPdfUrl(
-      `http://localhost:3000/static/docs/orcamento-${type[0]}-${file.number}.pdf`
+      `http://localhost:3000/static/docs/orcamento-${type[0]}-${file.number}${file.version !== 0 ? `.${file.version}`:""}.pdf`
     );
     setViewDialogOpen(true);
   };

@@ -2,9 +2,9 @@
 import React from "react";
 import axios from "axios";
 import dayjs from "dayjs";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3000");
+// const socket = io("http://localhost:3000");
 
 import {
   Avatar,
@@ -37,67 +37,91 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddSaleForm = ({
-  user,
-  selectedItem,
+const EditSaleForm = ({
   setOpenAddSale,
   refreshData,
   setRefreshData,
   toast,
-  fromShortcut,
-  addFromShortcut,
+  selectedSale,
 }) => {
-  const [config, setConfig] = React.useState([]);
   let selectedCustomer = {};
-  if (selectedItem || fromShortcut) {
-    selectedCustomer = selectedItem;
+  if (selectedSale) {
+    console.log("selectedSale", selectedSale);
+  } else {
+    console.log("tem não");
   }
 
   const [customerType, setCustomerType] = React.useState(
-    selectedCustomer.cnpj
-      ? "Empresa"
-      : selectedCustomer.cpf
-      ? "Pessoa Física"
+    selectedSale
+      ? selectedSale.customer.cnpj !== ""
+        ? "Empresa"
+        : selectedSale.customer.cnpj === ""
+        ? "Pessoa Física"
+        : selectedCustomer.cnpj
+        ? "Empresa"
+        : selectedCustomer.cpf
+        ? "Pessoa Física"
+        : ""
       : ""
   );
+
   const [customer, setCustomer] = React.useState(
-    selectedItem ? selectedCustomer : ""
+    selectedSale ? selectedSale.customer : ""
   );
+
   const [requester, setRequester] = React.useState(
-    selectedCustomer.mainContactName
+    selectedSale
+      ? selectedSale.requester
+      : selectedCustomer.mainContactName
       ? selectedCustomer.mainContactName
       : selectedCustomer.name
       ? selectedCustomer.name
       : ""
   );
   const [deliveryAddress, setDeliveryAddress] = React.useState(
-    selectedCustomer.address
+    selectedSale
+      ? selectedSale.deliveryAddress
+      : selectedCustomer.address
       ? selectedCustomer.address
       : selectedCustomer.addressHome
       ? selectedCustomer.addressHome
       : ""
   );
   const [deliveryReceiver, setDeliveryReceiver] = React.useState(
-    selectedCustomer.mainContactName
+    selectedSale
+      ? selectedSale.deliveryReceiver
+      : selectedCustomer.mainContactName
       ? selectedCustomer.mainContactName
       : selectedCustomer.name
       ? selectedCustomer.name
       : ""
   );
   const [deliveryReceiverPhone, setDeliveryReceiverPhone] = React.useState(
-    selectedCustomer.mainContactPhone
+    selectedSale
+      ? selectedSale.deliveryReceiverPhone
+      : selectedCustomer.mainContactPhone
       ? selectedCustomer.mainContactPhone
       : selectedCustomer.phone
       ? selectedCustomer.phone
       : ""
   );
 
-  const [seller, setSeller] = React.useState("");
-  const [department, setDepartment] = React.useState("");
+  const [seller, setSeller] = React.useState(
+    selectedSale ? selectedSale.seller : ""
+  );
+  const [department, setDepartment] = React.useState(
+    selectedSale ? selectedSale.department : ""
+  );
   const [productsDefined, setProductsDefined] = React.useState(false);
-  const [materials, setMaterials] = React.useState([]);
-  const [materialsCost, setMaterialsCost] = React.useState(0);
-  const [deliveryScheduledTo, setDeliveryScheduledTo] = React.useState(dayjs());
+  const [materials, setMaterials] = React.useState(
+    selectedSale ? selectedSale.items : []
+  );
+  const [materialsCost, setMaterialsCost] = React.useState(
+    selectedSale ? selectedSale.price : 0
+  );
+  const [deliveryScheduledTo, setDeliveryScheduledTo] = React.useState(
+    selectedSale ? dayjs(selectedSale.deliveryScheduledTo) : dayjs()
+  );
 
   const [departments, setDepartments] = React.useState([]);
   const [products, setProducts] = React.useState([]);
@@ -108,9 +132,7 @@ const AddSaleForm = ({
       try {
         const departments = await api.get("/departments");
         const products = await api.get("/products");
-        const config = await api.get("/config/requests");
         const configCustomization = await api.get("/config");
-        setConfig(config.data);
         setDepartments(
           departments.data.filter((department) => !department.isInternal)
         );
@@ -141,10 +163,11 @@ const AddSaleForm = ({
     setDeliveryReceiverPhone(customer.phone);
   };
 
-  const handleAdd = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/sales", {
+      const res = await api.put("/sales", {
+        saleId: selectedSale._id,
         customer: {
           id: customer._id,
           name: customer.name,
@@ -161,20 +184,23 @@ const AddSaleForm = ({
         },
         seller,
         manager: department.manager || "",
-        status: config.requestsNeedApproval ? "Aberto" : "Aprovado",
-        price: materialsCost.toFixed(2),
+        status: selectedSale.status,
+        price: materialsCost,
         items: materials,
         deliveryAddress,
         deliveryReceiver,
         deliveryReceiverPhone,
         deliveryScheduledTo,
-        createdBy: user.name,
-        date: dayjs().format("DD/MM/YYYY"),
-        fullDate: dayjs().format("DD/MM/YYYY HH:mm"),
       });
       if (res.data) {
         toast.success(
-          `Venda Adicionada! Orçamento #${res.data.savedQuote.number}`,
+          "Venda Editada!",
+          {
+            closeOnClick: true,
+            pauseOnHover: false,
+            theme: "colored",
+            autoClose: 2000,
+          },
           {
             closeOnClick: true,
             pauseOnHover: false,
@@ -182,23 +208,19 @@ const AddSaleForm = ({
             autoClose: 1200,
           }
         );
-        await api.post("/recentActivity", {
-          activity: `Colaborador ${user.name} criou uma Venda de 
-          ${materials
-            .map((product) => `${product.quantity}x ${product.name}`)
-            .join(", ")}
-          
-          para ${customer.name}. Total da Venda: R$${materialsCost.toFixed(2)}`,
-          createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),
-        });
-        socket.emit("recentActivityRefresh");
+        // await api.post("/recentActivity", {
+        //   activity: `Colaborador ${user.name} criou uma Venda de
+        //   ${materials
+        //     .map((product) => `${product.quantity}x ${product.name}`)
+        //     .join(", ")}
+
+        //   para ${customer.name}. Total da Venda: R$${materialsCost}`,
+        //   createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+        // });
+        // socket.emit("recentActivityRefresh");
       }
       setOpenAddSale(false);
-      if (!fromShortcut) {
-        if (!addFromShortcut) {
-          setRefreshData(!refreshData);
-        }
-      }
+      setRefreshData(!refreshData);
     } catch (err) {
       toast.error("Houve algum erro...", {
         closeOnClick: true,
@@ -211,8 +233,8 @@ const AddSaleForm = ({
   };
 
   return (
-    <form onSubmit={handleAdd}>
-      <DialogHeader title="Venda" femaleGender={true} />
+    <form onSubmit={handleEdit}>
+      <DialogHeader special specialTitle="Editando Venda" femaleGender={true} />
 
       <DialogContent>
         <Grid container>
@@ -237,7 +259,6 @@ const AddSaleForm = ({
           <Grid item>
             <FormControl>
               <Select
-                disabled={selectedCustomer.isActive || fromShortcut}
                 onChange={(e) => handleCustomerTypeChange(e.target.value)}
                 value={customerType}
                 displayEmpty
@@ -268,7 +289,6 @@ const AddSaleForm = ({
                 handleCustomerChange={handleCustomerChange}
                 setCustomer={setCustomer}
                 customerType={customerType}
-                fromShortcut={fromShortcut}
               />
             </Grid>
           )}
@@ -392,16 +412,18 @@ const AddSaleForm = ({
                     <MenuItem disabled value="">
                       Vendedores
                     </MenuItem>
-                    {department.members.map((item) => (
-                      <MenuItem value={item} key={item.id}>
-                        <Avatar
-                          alt="Imagem do Colaborador"
-                          src={`http://localhost:3000/static/${item.image}`}
-                          sx={{ width: 22, height: 22, mr: 2 }}
-                        />
-                        {item.name}
-                      </MenuItem>
-                    ))}
+                    {department &&
+                      department.members &&
+                      department.members.map((item) => (
+                        <MenuItem value={item} key={item.id}>
+                          <Avatar
+                            alt="Imagem do Colaborador"
+                            src={`http://localhost:3000/static/${item.image}`}
+                            sx={{ width: 22, height: 22, mr: 2 }}
+                          />
+                          {item.name}
+                        </MenuItem>
+                      ))}
                   </Select>
                 </Grid>
               )}
@@ -545,4 +567,4 @@ const AddSaleForm = ({
   );
 };
 
-export default AddSaleForm;
+export default EditSaleForm;

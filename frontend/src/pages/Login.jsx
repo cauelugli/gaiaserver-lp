@@ -18,8 +18,8 @@ const api = axios.create({
 const Login = () => {
   const [loginOrNew, setLoginOrNew] = useState(true);
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("admin");
+  const [password, setPassword] = useState("1234");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 

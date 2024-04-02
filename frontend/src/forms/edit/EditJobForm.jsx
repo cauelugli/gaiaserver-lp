@@ -34,7 +34,6 @@ const api = axios.create({
 });
 
 const EditJobForm = ({
-  // user,
   openEditJob,
   setOpenEditJob,
   selectedJob,

@@ -7,6 +7,7 @@ const Quote = require("../models/Quote");
 const Product = require("../models/Product");
 const FinanceIncome = require("../models/FinanceIncome");
 const PDFDocument = require("pdfkit");
+const dayjs = require("dayjs");
 const fs = require("fs");
 const path = require("path");
 
@@ -61,7 +62,9 @@ router.post("/", async (req, res) => {
       manager: req.body.manager.name || "",
       service: "",
       type: "sale",
-      local: "",
+      local: req.body.deliveryAddress,
+      deliveryReceiver: req.body.deliveryReceiver,
+      deliveryReceiverPhone: req.body.deliveryReceiverPhone,
       scheduledTo: req.body.deliveryScheduledTo,
       createdBy: req.body.createdBy,
       value: req.body.price,
@@ -79,6 +82,7 @@ router.post("/", async (req, res) => {
 
     let updatedClient;
     let updatedCustomer;
+    // review this, this is dangerous
     if (req.body.customer.type === "Client") {
       updatedClient = await Client.findByIdAndUpdate(
         req.body.customer.id,
@@ -96,70 +100,101 @@ router.post("/", async (req, res) => {
         { new: true }
       );
     }
+    // review this, this is dangerous
 
     const doc = new PDFDocument();
 
-    // Construa o caminho completo para o arquivo PDF na pasta estática
     const pdfPath = path.join(
       __dirname,
       "../../uploads/docs",
-      `orcamento-${newQuote.type[0]}-${newQuote.number}.pdf`
+      `orcamento-${savedQuote.type[0]}-${savedQuote.number}.pdf`
     );
 
     doc.pipe(fs.createWriteStream(pdfPath));
 
-    doc.image("../uploads/logo.png", 0, 15, { width: 120 });
+    doc.image("../uploads/logo.png", 5, 5, { width: 120 });
+    if (req.body.customer.image) {
+      doc.image(`../uploads/${req.body.customer.image}`, 450, 5, {
+        width: 120,
+      });
+    }
+    doc.moveUp(3);
 
     doc
       .fontSize(16)
-      .text(`Orçamento de ${newQuote.type === "job" ? "Serviço" : "Venda"}`, {
-        align: "center",
-      });
+      .text(
+        `Orçamento de ${
+          savedQuote.type === "job"
+            ? `Serviço #${savedQuote.number}`
+            : `Venda #${savedQuote.number}`
+        }`,
+        200,
+        10
+      );
+    doc.fontSize(11);
+
+    doc
+      .moveTo(10, 60)
+      .lineTo(doc.page.width - 10, 60)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(`Cliente: ${savedQuote.customer}`, 10, 65);
+    doc.text(`Criado por: ${savedQuote.createdBy}`, 210, 65);
     doc.moveDown();
 
-    doc.fontSize(12);
-    doc.text("Número do Orçamento:", 120, 120, { align: "left" });
-    doc.text(savedQuote.number, 380, 120, { align: "right" });
-    doc.text("Título:", 120, 140, { align: "left" });
-    doc.text(savedQuote.title, 380, 140, { align: "right" });
-    doc.text("Descrição:", 120, 160, { align: "left" });
-    doc.text(savedQuote.description, 380, 160, { align: "right" });
-    doc.text("Cliente:", 120, 180, { align: "left" });
-    doc.text(savedQuote.customer, 380, 180, { align: "right" });
-    doc.text("Serviço:", 120, 200, { align: "left" });
-    doc.text(savedQuote.service, 380, 200, { align: "right" });
-    doc.text("Departamento:", 120, 220, { align: "left" });
-    doc.text(savedQuote.department, 380, 220, { align: "right" });
-    doc.text("Colaborador:", 120, 240, { align: "left" });
-    doc.text(savedQuote.user, 380, 240, { align: "right" });
-    doc.text("Gerente Responsável:", 120, 260, { align: "left" });
-    doc.text(savedQuote.manager, 380, 260, { align: "right" });
-    doc.text("Local de Execução:", 120, 280, { align: "left" });
-    doc.text(savedQuote.local, 380, 280, { align: "right" });
-    doc.text("Agendado para:", 120, 300, { align: "left" });
-    doc.text(savedQuote.scheduledTo, 380, 300, { align: "right" });
-    doc.text("Criado por:", 120, 320, { align: "left" });
-    doc.text(savedQuote.createdBy, 380, 320, { align: "right" });
+    doc
+      .moveTo(10, 90)
+      .lineTo(doc.page.width - 10, 90)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(
+      `Entregar em: ${dayjs(savedQuote.scheduledTo).format(
+        "DD/MM/YYYY"
+      )} no endereço ${savedQuote.local} para ${
+        savedQuote.deliveryReceiver
+      }. Contato: ${savedQuote.deliveryReceiverPhone}`,
+      10,
+      100
+    );
 
-    let yPosition = 245;
+    doc
+      .moveTo(10, 130)
+      .lineTo(doc.page.width - 10, 130)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(`Departamento: ${savedQuote.department}`, 10, 135);
+    doc.text(`Colaborador: ${savedQuote.user}`, 210, 135);
+    doc.text(`Gerente: ${savedQuote.manager}`, 410, 135);
+    doc.moveDown();
 
-    doc.text("Lista de Materiais", 120, yPosition + 15, { align: "left" });
+    doc
+      .moveTo(10, 170)
+      .lineTo(doc.page.width - 10, 170)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text("Lista de Materiais", 15, 175);
+    doc.moveDown();
+
     for (const material of savedQuote.materials) {
-      doc.text(material.name, 130, yPosition + 30, { align: "left" });
+      doc.image(`../uploads/${material.image}`, 15, doc.y, {
+        width: 32,
+        align: "left",
+      });
+
       doc.text(
-        "x" + material.quantity + " " + "R$" + material.sellValue,
-        250,
-        yPosition + 30,
-        { align: "right" }
+        `${material.name} x${material.quantity} R$${material.sellValue}`,
+        55,
+        doc.y - 20 - 0
       );
-      yPosition += 30;
+
+      doc.moveDown();
     }
 
-    doc.text("Valor Total:", 120, yPosition + 70, { align: "left" });
-    doc.text(`R$${savedQuote.value.toFixed(2)}`, 420, yPosition + 70, {
+    doc.moveDown();
+
+    doc.text(`Valor Total da Nota = R$${savedQuote.value.toFixed(2)}`, {
       align: "right",
     });
-
     doc.moveDown();
 
     doc.end();
@@ -173,6 +208,178 @@ router.post("/", async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// EDIT SALE
+router.put("/", async (req, res) => {
+  try {
+    const saleId = req.body.saleId || req.body.sale._id;
+    const saleToUpdate = await Sale.findById(saleId);
+
+    const quoteNumber = saleToUpdate.quoteNumber;
+    const quoteToDelete = await Quote.findOne({ number: quoteNumber });
+
+    if (quoteToDelete) {
+      // Construa o caminho para o PDF e exclua o arquivo
+      const pdfPath = path.join(
+        __dirname,
+        "../../uploads/docs",
+        `orcamento-s-${quoteToDelete.number}${
+          quoteToDelete.version !== 0 ? `.${quoteToDelete.version}` : ""
+        }.pdf`
+      );
+      if (fs.existsSync(pdfPath)) {
+        fs.unlinkSync(pdfPath);
+      } else {
+        console.log("NOT found PDF to delete");
+      }
+
+      await Quote.findByIdAndDelete(quoteToDelete._id);
+    }
+
+    const updatedSale = await Sale.findByIdAndUpdate(
+      saleId,
+      {
+        customer: req.body.customer,
+        requester: req.body.requester,
+        department: req.body.department,
+        seller: req.body.seller,
+        manager: req.body.manager,
+        price: req.body.price,
+        items: req.body.items,
+        deliveryAddress: req.body.deliveryAddress,
+        deliveryReceiver: req.body.deliveryReceiver,
+        deliveryReceiverPhone: req.body.deliveryReceiverPhone,
+        deliveryScheduledTo: req.body.deliveryScheduledTo,
+      },
+      { new: true }
+    );
+
+    const newQuote = new Quote({
+      number: updatedSale.quoteNumber,
+      title: "",
+      description: "",
+      customer: updatedSale.customer.name,
+      department: updatedSale.department.name,
+      user: updatedSale.seller.name,
+      manager: updatedSale.manager.name || "",
+      service: "",
+      type: "sale",
+      local: updatedSale.deliveryAddress,
+      deliveryReceiver: updatedSale.deliveryReceiver,
+      deliveryReceiverPhone: updatedSale.deliveryReceiverPhone,
+      scheduledTo: updatedSale.deliveryScheduledTo,
+      createdBy: req.body.createdBy,
+      value: updatedSale.price,
+      materials: updatedSale.items,
+      version: quoteToDelete.version + 1,
+    });
+    const savedQuote = await newQuote.save();
+
+    const doc = new PDFDocument();
+
+    const pdfPath = path.join(
+      __dirname,
+      "../../uploads/docs",
+      `orcamento-${savedQuote.type[0]}-${
+        quoteToDelete.number
+      }${`.${savedQuote.version}`}.pdf`
+    );
+
+    doc.pipe(fs.createWriteStream(pdfPath));
+
+    doc.image("../uploads/logo.png", 5, 5, { width: 120 });
+    if (req.body.customer.image) {
+      doc.image(`../uploads/${req.body.customer.image}`, 450, 5, {
+        width: 120,
+      });
+    }
+    doc.moveUp(3);
+
+    doc
+      .fontSize(16)
+      .text(
+        `Orçamento de ${
+          savedQuote.type === "job"
+            ? `Serviço #${savedQuote.number}`
+            : `Venda #${savedQuote.number}`
+        }`,
+        200,
+        10
+      );
+    doc.fontSize(11);
+
+    doc
+      .moveTo(10, 60)
+      .lineTo(doc.page.width - 10, 60)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(`Cliente: ${savedQuote.customer}`, 10, 65);
+    doc.text(`Criado por: ${updatedSale.createdBy}`, 210, 65);
+    doc.moveDown();
+
+    doc
+      .moveTo(10, 90)
+      .lineTo(doc.page.width - 10, 90)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(
+      `Entregar em: ${dayjs(savedQuote.scheduledTo).format(
+        "DD/MM/YYYY"
+      )} no endereço ${savedQuote.local} para ${
+        savedQuote.deliveryReceiver
+      }. Contato: ${savedQuote.deliveryReceiverPhone}`,
+      10,
+      95
+    );
+
+    doc
+      .moveTo(10, 130)
+      .lineTo(doc.page.width - 10, 130)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(`Departamento: ${savedQuote.department}`, 10, 135);
+    doc.text(`Colaborador: ${savedQuote.user}`, 210, 135);
+    doc.text(`Gerente: ${savedQuote.manager}`, 410, 135);
+    doc.moveDown();
+
+    doc
+      .moveTo(10, 170)
+      .lineTo(doc.page.width - 10, 170)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text("Lista de Materiais", 15, 175);
+    doc.moveDown();
+
+    for (const material of savedQuote.materials) {
+      doc.image(`../uploads/${material.image}`, 15, doc.y, {
+        width: 32,
+        align: "left",
+      });
+
+      doc.text(
+        `${material.name} x${material.quantity} R$${material.sellValue}`,
+        55,
+        doc.y - 20 - 0
+      );
+
+      doc.moveDown();
+    }
+
+    doc.moveDown();
+
+    doc.text(`Valor Total da Nota = R$${savedQuote.value.toFixed(2)}`, {
+      align: "right",
+    });
+    doc.moveDown();
+
+    doc.end();
+
+    res.status(200).json({ updatedSale, savedQuote });
+  } catch (err) {
+    console.log("err", err);
     res.status(500).json(err);
   }
 });
@@ -330,6 +537,27 @@ router.delete("/:id", async (req, res) => {
   const saleId = req.params.id;
   try {
     const deletedSale = await Sale.findByIdAndDelete(saleId);
+
+    const quoteNumber = deletedSale.quoteNumber;
+    const quoteToDelete = await Quote.findOne({ number: quoteNumber });
+    if (quoteToDelete) {
+      // Construa o caminho para o PDF e exclua o arquivo
+      const pdfPath = path.join(
+        __dirname,
+        "../../uploads/docs",
+        `orcamento-s-${quoteToDelete.number}${
+          quoteToDelete.version !== 0 ? `.${quoteToDelete.version}` : ""
+        }.pdf`
+      );
+      if (fs.existsSync(pdfPath)) {
+        fs.unlinkSync(pdfPath);
+      } else {
+        console.log("NOT found PDF to delete");
+      }
+
+      await Quote.findByIdAndDelete(quoteToDelete._id);
+    }
+
     res.status(200).json(deletedSale);
   } catch (err) {
     res.status(500).json(err);
