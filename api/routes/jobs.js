@@ -104,7 +104,7 @@ router.post("/", async (req, res) => {
               end,
               status: "Aberto",
               type: { name: "Job", color: "#4a90e2" },
-              customer: req.body.customer.name,
+              customer: req.body.customer,
               service: req.body.service.name,
             },
           },
@@ -256,17 +256,6 @@ router.put("/activate/:id", async (req, res) => {
   }
 });
 
-// DELETE JOB
-router.delete("/:id", async (req, res) => {
-  const requestId = req.params.id;
-  try {
-    const deletedRequest = await Job.findByIdAndDelete(requestId);
-    res.status(200).json(deletedRequest);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // REQUEST APPROVAL JOB
 router.put("/requestApproval", async (req, res) => {
   try {
@@ -380,6 +369,27 @@ router.put("/interaction", async (req, res) => {
 router.put("/edit", async (req, res) => {
   try {
     const jobId = req.body.jobId || req.body.job._id;
+    const jobToUpdate = await Job.findById(jobId);
+    const quoteNumber = jobToUpdate.quoteNumber;
+    const quoteToDelete = await Quote.findOne({ number: quoteNumber });
+
+    if (quoteToDelete) {
+      // Construa o caminho para o PDF e exclua o arquivo
+      const pdfPath = path.join(
+        __dirname,
+        "../../uploads/docs",
+        `orcamento-j-${quoteToDelete.number}${
+          quoteToDelete.version !== 0 ? `.${quoteToDelete.version}` : ""
+        }.pdf`
+      );
+      if (fs.existsSync(pdfPath)) {
+        fs.unlinkSync(pdfPath);
+      } else {
+        console.log("NOT found PDF to delete");
+      }
+
+      await Quote.findByIdAndDelete(quoteToDelete._id);
+    }
 
     const updatedJob = await Job.findByIdAndUpdate(
       jobId,
@@ -396,10 +406,152 @@ router.put("/edit", async (req, res) => {
         price: req.body.price,
         local: req.body.local,
         scheduledTo: req.body.scheduledTo,
+        number: jobToUpdate.quoteNumber,
       },
       { new: true }
     );
-    res.status(200).json(updatedJob);
+
+    const newQuote = new Quote({
+      number: jobToUpdate.quoteNumber,
+      title: updatedJob.title,
+      description: updatedJob.description,
+      customer: updatedJob.customer,
+      department: updatedJob.department.name,
+      user: updatedJob.worker.name,
+      manager: updatedJob.manager.name,
+      service: updatedJob.service.name,
+      serviceValue: updatedJob.service.value,
+      type: "job",
+      local: updatedJob.local,
+      scheduledTo: updatedJob.selectedSchedule
+        ? updatedJob.selectedSchedule
+        : updatedJob.scheduledTo,
+      createdBy: updatedJob.createdBy,
+      value: updatedJob.price,
+      materials: updatedJob.materials,
+      materialsCost: updatedJob.materialsCost,
+      version: quoteToDelete.version + 1,
+    });
+    const savedQuote = await newQuote.save();
+
+    // START PDF
+    const doc = new PDFDocument();
+
+    const pdfPath = path.join(
+      __dirname,
+      "../../uploads/docs",
+      `orcamento-${savedQuote.type[0]}-${savedQuote.number}${`.${savedQuote.version}`}.pdf`
+    );
+
+    doc.pipe(fs.createWriteStream(pdfPath));
+
+    doc.image("../uploads/logo.png", 5, 5, { width: 120 });
+    if (req.body.customer.image) {
+      doc.image(`../uploads/${req.body.customer.image}`, 450, 5, {
+        width: 120,
+      });
+    }
+    doc.moveUp(3);
+
+    doc
+      .fontSize(16)
+      .text(
+        `Orçamento de ${
+          savedQuote.type === "job"
+            ? `Serviço #${savedQuote.number}`
+            : `Venda #${savedQuote.number}`
+        }`,
+        200,
+        10
+      );
+    doc.fontSize(11);
+
+    doc
+      .moveTo(10, 50)
+      .lineTo(doc.page.width - 10, 50)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(`Cliente: ${savedQuote.customer.name}`, 10, 55);
+    doc.text(`Serviço: ${savedQuote.service}`, 210, 55);
+    doc.text(`Título: ${savedQuote.title}`, 410, 55);
+    doc.moveDown();
+
+    doc
+      .moveTo(10, 90)
+      .lineTo(doc.page.width - 10, 90)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(`Descrição: ${savedQuote.description}`, 10, 95);
+
+    doc
+      .moveTo(10, 170)
+      .lineTo(doc.page.width - 10, 170)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(`Departamento: ${savedQuote.department}`, 10, 175);
+    doc.text(`Colaborador: ${savedQuote.user}`, 210, 175);
+    doc.text(`Gerente: ${savedQuote.manager}`, 410, 175);
+    doc.moveDown();
+
+    doc
+      .moveTo(10, 210)
+      .lineTo(doc.page.width - 10, 210)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text(
+      `Agendado para: ${dayjs(savedQuote.scheduledTo).format("DD/MM/YYYY")}`,
+      10,
+      215
+    );
+    doc.text(`Local: ${savedQuote.local}`, 210, 215);
+    doc.text(`Criador: ${savedQuote.createdBy}`, 410, 215);
+    doc.moveDown(4);
+
+    doc
+      .moveTo(10, 250)
+      .lineTo(doc.page.width - 10, 250)
+      .strokeColor("lightgrey")
+      .stroke();
+    doc.text("Lista de Materiais", 15, 255);
+    doc.moveDown();
+
+    for (const material of savedQuote.materials) {
+      doc.image(`../uploads/${material.image}`, 15, doc.y, {
+        width: 32,
+        align: "left",
+      });
+
+      doc.text(
+        `${material.name} x${material.quantity} R$${material.sellValue}`,
+        55,
+        doc.y - 20 - 0
+      );
+
+      doc.moveDown();
+    }
+
+    doc.moveDown();
+
+    doc.text(`Total de Materiais = R$${savedQuote.materialsCost.toFixed(2)}`, {
+      align: "right",
+    });
+    doc.moveDown(0.5);
+
+    doc.text(`Valor do Serviço = R$${savedQuote.serviceValue.toFixed(2)}`, {
+      align: "right",
+    });
+    doc.moveDown(0.5);
+
+    doc.text(`Valor Total da Nota = R$${savedQuote.value.toFixed(2)}`, {
+      align: "right",
+    });
+    doc.moveDown();
+
+    doc.end();
+    // END PDF
+
+    
+    res.status(200).json({ updatedJob, savedQuote });
   } catch (err) {
     console.log("err", err);
     res.status(500).json(err);
@@ -427,7 +579,7 @@ router.put("/resolve", async (req, res) => {
     const newIncome = new FinanceIncome({
       quote: updatedJob.quoteNumber,
       title: updatedJob.title,
-      customer: updatedJob.customer.name,
+      customer: updatedJob.customer,
       department: updatedJob.department.name,
       user: updatedJob.worker.name,
       service: updatedJob.service.name,
@@ -495,6 +647,36 @@ router.put("/reaction", async (req, res) => {
     }
   } catch (err) {
     console.log("err", err);
+    res.status(500).json(err);
+  }
+});
+
+// DELETE JOB
+router.delete("/:id", async (req, res) => {
+  const requestId = req.params.id;
+  try {
+    const deletedRequest = await Job.findByIdAndDelete(requestId);
+    const quoteNumber = deletedRequest.quoteNumber;
+    const quoteToDelete = await Quote.findOne({ number: quoteNumber });
+    if (quoteToDelete) {
+      // Construa o caminho para o PDF e exclua o arquivo
+      const pdfPath = path.join(
+        __dirname,
+        "../../uploads/docs",
+        `orcamento-j-${quoteToDelete.number}${
+          quoteToDelete.version !== 0 ? `.${quoteToDelete.version}` : ""
+        }.pdf`
+      );
+      if (fs.existsSync(pdfPath)) {
+        fs.unlinkSync(pdfPath);
+      } else {
+        console.log("NOT found PDF to delete");
+      }
+
+      await Quote.findByIdAndDelete(quoteToDelete._id);
+    }
+    res.status(200).json(deletedRequest);
+  } catch (err) {
     res.status(500).json(err);
   }
 });

@@ -55,7 +55,7 @@ export default function QuoteTable({
         label: "Serviço",
       },
       {
-        id: "customer.name",
+        id: "customer",
         label: "Cliente",
       },
       {
@@ -86,7 +86,7 @@ export default function QuoteTable({
         label: "Itens",
       },
       {
-        id: "customer.name",
+        id: "customer",
         label: "Cliente",
       },
       {
@@ -305,7 +305,7 @@ export default function QuoteTable({
                     </TableCell>
                     <TableCell align="center">
                       <Typography sx={{ mt: 1, fontSize: 13 }}>
-                        {quote.customer}
+                        {quote.customer.name}
                       </Typography>
                     </TableCell>
                     <TableCell align="center">{quote.user}</TableCell>

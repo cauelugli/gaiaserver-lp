@@ -16,7 +16,7 @@ import {
 
 import ArchiveIcon from "@mui/icons-material/Archive";
 import CheckIcon from "@mui/icons-material/Check";
-import CommentIcon from '@mui/icons-material/Comment';
+import CommentIcon from "@mui/icons-material/Comment";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -71,7 +71,11 @@ export default function JobTableActions(props) {
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <List sx={{ width: 210 }}>
           <ListItemButton
-            disabled={props.job.status === "Concluido"}
+            disabled={
+              props.job.status === "Concluido" ||
+              props.job.status === "Aprovação Solicitada" ||
+              props.job.status === "Aprovado"
+            }
             onClick={(item) => {
               props.handleOpenEdit(item), setAnchorEl(null);
             }}
@@ -182,9 +186,7 @@ export default function JobTableActions(props) {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>
-                  Interações
-                </Typography>
+                <Typography sx={{ fontSize: 14 }}>Interações</Typography>
               }
               sx={{ ml: -3 }}
             />
