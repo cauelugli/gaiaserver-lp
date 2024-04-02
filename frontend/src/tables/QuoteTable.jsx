@@ -163,7 +163,7 @@ export default function QuoteTable({
 
   const openViewDialog = (file) => {
     setPdfUrl(
-      `http://localhost:3000/static/docs/orcamento-j-${file.number}.pdf`
+      `http://localhost:3000/static/docs/orcamento-${type[0]}-${file.number}.pdf`
     );
     setViewDialogOpen(true);
   };
@@ -216,7 +216,7 @@ export default function QuoteTable({
           <TableBody>
             <TableRow
               sx={{
-                 backgroundColor: "#eee",
+                backgroundColor: "#eee",
               }}
             >
               {tableHeaderRow.map((headCell) => (
@@ -305,7 +305,7 @@ export default function QuoteTable({
                     </TableCell>
                     <TableCell align="center">
                       <Typography sx={{ mt: 1, fontSize: 13 }}>
-                        {quote.customer.name}
+                        {quote.customer}
                       </Typography>
                     </TableCell>
                     <TableCell align="center">{quote.user}</TableCell>

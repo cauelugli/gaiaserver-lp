@@ -34,12 +34,12 @@ import {
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import EditRequestForm from "../forms/edit/EditRequestForm";
 
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import SaleTableActions from "../components/small/buttons/tableActionButtons/SaleTableActions";
 import InteractionReactions from "../components/small/InteractionReactions";
 import AddJobInteractionForm from "../forms/misc/AddJobInteractionForm";
+import EditSaleForm from "../forms/edit/EditSaleForm";
 
 export default function SaleTable({
   user,
@@ -77,8 +77,8 @@ export default function SaleTable({
   };
 
   const handleOpenEdit = (sale) => {
-    setOpenEdit(!openEdit);
     setSelectedSale(sale);
+    setOpenEdit(!openEdit);
   };
 
   const tableHeaderRow = [
@@ -946,21 +946,22 @@ export default function SaleTable({
           }}
         />
       </TableContainer>
-      {/* {openEdit && (
+      {openEdit && (
         <Dialog
           fullWidth
           maxWidth="md"
           open={openEdit}
           onClose={() => setOpenEdit(!openEdit)}
         >
-          <EditRequestForm
-            openEdit={openEdit}
+          <EditSaleForm
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
             selectedSale={selectedSale}
-            setOpenEdit={setOpenEdit}
-            fetchData={fetchData}
+            setOpenAddSale={setOpenEdit}
           />
         </Dialog>
-      )} */}
+      )}
       {openAddInteraction && (
         <Dialog
           fullWidth
