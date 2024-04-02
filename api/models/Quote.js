@@ -32,6 +32,12 @@ const quoteSchema = new mongoose.Schema({
   number: {
     type: String,
   },
+  deliveryReceiver: {
+    type: String,
+  },
+  deliveryReceiverPhone: {
+    type: String,
+  },
   scheduledTo: {
     type: String,
   },
