@@ -916,7 +916,8 @@ export default function JobTable({
                                         "Job aprovado" && (
                                         <Typography sx={{ fontSize: 13 }}>
                                           <InteractionReactions
-                                            user={user}
+                                            userId={user._id}
+                                            userName={user.name}
                                             manager={job.manager}
                                             refreshData={refreshData}
                                             setRefreshData={setRefreshData}

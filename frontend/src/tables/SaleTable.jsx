@@ -779,7 +779,8 @@ export default function SaleTable({
                                         "Job aprovado" && (
                                         <Typography sx={{ fontSize: 13 }}>
                                           <InteractionReactions
-                                            user={user}
+                                            userId={user._id}
+                                            userName={user.name}
                                             manager={sale.manager}
                                             refreshData={refreshData}
                                             setRefreshData={setRefreshData}
