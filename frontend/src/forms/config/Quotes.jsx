@@ -16,11 +16,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControlLabel,
   Grid,
-  Radio,
-  RadioGroup,
-  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -32,14 +28,12 @@ const api = axios.create({
 
 export default function Users({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
-  const [canBeDeleted, setCanBeDeleted] = React.useState(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
         setConfigData(config.data[0].quotes);
-        setCanBeDeleted(config.data[0].quotes.canBeDeleted);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -51,7 +45,7 @@ export default function Users({ onClose }) {
     e.preventDefault();
     try {
       const res = await api.put("/config/quotes", {
-        canBeDeleted,
+        // canBeDeleted,
       });
 
       if (res.data) {
@@ -100,57 +94,7 @@ export default function Users({ onClose }) {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto", mr: 1 }}>
-                        Orçamentos Podem ser Deletados
-                      </Typography>
-                      <Tooltip
-                        title={
-                          <Typography sx={{ fontSize: 12 }}>
-                            Se a opção marcada for "Sim", os Orçamentos poderão
-                            ser deletados DEFINITIVAMENTE. A opção padrão é
-                            "Não".
-                          </Typography>
-                        }
-                      >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
-                      </Tooltip>
-                      <RadioGroup
-                        row
-                        value={canBeDeleted}
-                        onChange={(e) => setCanBeDeleted(e.target.value)}
-                      >
-                        <FormControlLabel
-                          value={Boolean(true)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
-                          }
-                        />
-                        <FormControlLabel
-                          value={Boolean(false)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
-                          }
-                        />
-                      </RadioGroup>
-                    </Grid>
+                    something in the future
                   </Grid>
                 </AccordionDetails>
               </Accordion>

@@ -194,11 +194,7 @@ router.get("/quotes", async (req, res) => {
 // QUOTES
 router.put("/quotes", async (req, res) => {
   try {
-    const { canBeDeleted } = req.body;
-
     const config = await Config.findOne();
-
-    config.quotes.canBeDeleted = canBeDeleted;
 
     await config.save();
     res.status(200).json(config);
