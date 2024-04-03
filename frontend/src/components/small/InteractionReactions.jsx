@@ -2,10 +2,12 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { keyframes } from "@mui/system";
 
 import { Badge, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 
+import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MoodIcon from "@mui/icons-material/Mood";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
@@ -35,7 +37,8 @@ const growShrinkAnimation = keyframes`
 `;
 
 const InteractionReactions = ({
-  user,
+  userId,
+  userName,
   userReactions,
   setUserReactions,
   job,
@@ -75,7 +78,7 @@ const InteractionReactions = ({
         jobId: job._id,
         job,
         number,
-        userId: user._id,
+        userId: userId,
         reactionType,
       });
       setUserReactions({
@@ -88,10 +91,35 @@ const InteractionReactions = ({
     }
   };
 
+  const handleDeleteInteraction = async (interactionId, activity, userName) => {
+    try {
+      const res = await api.put(`/${endpoint}/interaction/remove`, {
+        jobId: job._id,
+        interactionId: interactionId,
+        activity: activity,
+        userName: userName,
+      });
+      if (res.data) {
+        toast.success("Interação Removida", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
+      setRefreshData(!refreshData);
+    } catch (err) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+    }
+  };
+
   const userReacted = (reactionType) =>
-    interaction.reactions[reactionType].usersReacted.includes(
-      user._id || user.id
-    );
+    interaction.reactions[reactionType].usersReacted.includes(userId);
 
   return (
     <Stack direction="row" alignItems="center" spacing={0.5}>
@@ -123,6 +151,25 @@ const InteractionReactions = ({
           </IconButton>
         </Tooltip>
       ))}
+      {interaction.user === userName &&
+        !interaction.activity.startsWith("Aprovação solicitada") &&
+        !interaction.activity.startsWith("Venda criada") && (
+          <IconButton
+            sx={{ ml: 2 }}
+            onClick={() =>
+              handleDeleteInteraction(interaction._id, interaction.activity)
+            }
+          >
+            <DeleteIcon
+              sx={{
+                color: "#777",
+                "&:hover": {
+                  color: "red",
+                },
+              }}
+            />
+          </IconButton>
+        )}
     </Stack>
   );
 };

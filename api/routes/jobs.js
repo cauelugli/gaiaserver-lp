@@ -365,6 +365,30 @@ router.put("/interaction", async (req, res) => {
   }
 });
 
+// REMOVE JOB INTERACTION
+router.put("/interaction/remove", async (req, res) => {
+  const { jobId, interactionId } = req.body;
+
+  try {
+    const job = await Job.findById(jobId);
+    const updatedInteractions = job.interactions.filter(
+      interaction => interaction._id.toString() !== interactionId
+    );
+
+    const updatedJob = await Job.findByIdAndUpdate(
+      jobId,
+      { $set: { interactions: updatedInteractions } },
+      { new: true }
+    );
+
+    res.json(updatedJob);
+  } catch (err) {
+    console.error("Erro ao 'remover' interação:", err);
+    res.status(500).send(err);
+  }
+});
+
+
 // EDIT JOB
 router.put("/edit", async (req, res) => {
   try {
@@ -440,7 +464,9 @@ router.put("/edit", async (req, res) => {
     const pdfPath = path.join(
       __dirname,
       "../../uploads/docs",
-      `orcamento-${savedQuote.type[0]}-${savedQuote.number}${`.${savedQuote.version}`}.pdf`
+      `orcamento-${savedQuote.type[0]}-${
+        savedQuote.number
+      }${`.${savedQuote.version}`}.pdf`
     );
 
     doc.pipe(fs.createWriteStream(pdfPath));
@@ -550,7 +576,6 @@ router.put("/edit", async (req, res) => {
     doc.end();
     // END PDF
 
-    
     res.status(200).json({ updatedJob, savedQuote });
   } catch (err) {
     console.log("err", err);

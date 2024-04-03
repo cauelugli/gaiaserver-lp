@@ -484,6 +484,30 @@ router.put("/interaction", async (req, res) => {
   }
 });
 
+router.put("/interaction/remove", async (req, res) => {
+  //it's jobId, but dont worry, it works.
+  const { jobId, interactionId } = req.body;
+
+  try {
+    const sale = await Sale.findById(jobId);
+
+    const updatedInteractions = sale.interactions.filter(
+      interaction => interaction._id.toString() !== interactionId
+    );
+
+    const updatedSale = await Sale.findByIdAndUpdate(
+      jobId,
+      { $set: { interactions: updatedInteractions } },
+      { new: true }
+    );
+
+    res.json(updatedSale);
+  } catch (err) {
+    console.error("Erro ao 'remover' interação:", err);
+    res.status(500).send(err);
+  }
+});
+
 // REACT TO SALE INTERATION
 router.put("/reaction", async (req, res) => {
   try {
