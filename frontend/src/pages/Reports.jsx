@@ -25,6 +25,7 @@ const api = axios.create({
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
+  
 
   return (
     <div role="tabpanel" hidden={value !== index}>
@@ -84,7 +85,7 @@ export default function Reports({ user, users, customers, requests }) {
           fromPage
         />
         <Typography sx={{ fontSize: 25, mr: 1, my: 2, fontWeight: "bold" }}>
-          Criar Relatório
+          Relatório Avançado
         </Typography>
         <QueryMaker />
       </Grid>
