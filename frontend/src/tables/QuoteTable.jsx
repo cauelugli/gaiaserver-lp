@@ -163,7 +163,9 @@ export default function QuoteTable({
 
   const openViewDialog = (file) => {
     setPdfUrl(
-      `http://localhost:3000/static/docs/orcamento-${type[0]}-${file.number}${file.version !== 0 ? `.${file.version}`:""}.pdf`
+      `http://localhost:3000/static/docs/orcamento-${type[0]}-${file.number}${
+        file.version !== 0 ? `.${file.version}` : ""
+      }.pdf`
     );
     setViewDialogOpen(true);
   };
@@ -253,10 +255,14 @@ export default function QuoteTable({
               .map((quote) => (
                 <>
                   <TableRow key={quote._id}>
-                    <TableCell align="left">{quote.number}</TableCell>
-                    <TableCell align="center">
+                    <TableCell align="left">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {quote.number}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center" sx={{ py: 0.5 }}>
                       {type === "job" ? (
-                        <Typography sx={{ mt: 1, fontSize: 13 }}>
+                        <Typography sx={{ fontSize: 13 }}>
                           {quote.service}
                         </Typography>
                       ) : (
@@ -276,15 +282,10 @@ export default function QuoteTable({
                                 />
                               </Grid>
                               <Grid item>
-                                <Typography sx={{ fontSize: 12 }}>
-                                  x{item.quantity}
-                                </Typography>
-                              </Grid>
-                              <Grid item>
                                 <Typography
-                                  sx={{ fontSize: 12, color: "#777" }}
+                                  sx={{ fontSize: 10, color: "#777" }}
                                 >
-                                  {item.name}
+                                  x{item.quantity} {item.name}
                                 </Typography>
                               </Grid>
                             </Grid>
@@ -304,14 +305,24 @@ export default function QuoteTable({
                       )}
                     </TableCell>
                     <TableCell align="center">
-                      <Typography sx={{ mt: 1, fontSize: 13 }}>
-                        {quote.customer.name}
+                      <Typography sx={{ fontSize: 13 }}>
+                        {type === "job" ? quote.customer.name : quote.customer}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">{quote.user}</TableCell>
-                    <TableCell align="center">{quote.department}</TableCell>
                     <TableCell align="center">
-                      R${quote.value.toFixed(2)}
+                      <Typography sx={{ fontSize: 13 }}>
+                        {quote.user}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {quote.department}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        R${quote.value.toFixed(2)}
+                      </Typography>
                     </TableCell>
                     <TableCell align="center" sx={{ py: 0 }}>
                       <Grid
