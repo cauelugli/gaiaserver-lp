@@ -29,6 +29,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditProductForm from "../forms/edit/EditProductForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+import StockTableActions from "../components/small/buttons/tableActionButtons/StockTableActions";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -104,7 +105,11 @@ export default function ProductsTable({
     },
     {
       id: "quantity",
-      label: "Quantidade",
+      label: "Estoque",
+    },
+    {
+      id: "actions",
+      label: "Ações",
     },
   ];
 
@@ -149,7 +154,7 @@ export default function ProductsTable({
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
-              <TableRow sx={{  backgroundColor: "#eee" }}>
+              <TableRow sx={{ backgroundColor: "#eee" }}>
                 <TableCell padding="checkbox"></TableCell>
                 {tableHeaderRow.map((headCell) => (
                   <TableCell
@@ -262,6 +267,9 @@ export default function ProductsTable({
                         <Typography sx={{ fontSize: 13 }}>
                           {product.quantity}
                         </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <StockTableActions />
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -478,7 +486,7 @@ export default function ProductsTable({
                                         </Typography>
                                       </TableCell>
                                       <TableCell align="center">
-                                      <Typography sx={{ fontSize: 13 }}>
+                                        <Typography sx={{ fontSize: 13 }}>
                                           {product.quantity}
                                         </Typography>
                                       </TableCell>
