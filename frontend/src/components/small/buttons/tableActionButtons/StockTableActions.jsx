@@ -64,7 +64,24 @@ export default function StockTableActions(props) {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>Editar Material</Typography>
+                <Typography sx={{ fontSize: 14 }}>Editar {props.type}</Typography>
+              }
+              sx={{ ml: -3 }}
+            />
+          </ListItemButton>
+
+          <ListItemButton
+            // onClick={() => {
+            //   props.setOpenEdit(true), setAnchorEl(null);
+            // }}
+            disabled
+          >
+            <ListItemIcon>
+              <ModeEditIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: 14 }}>Solicitar Compra</Typography>
               }
               sx={{ ml: -3 }}
             />
@@ -79,7 +96,7 @@ export default function StockTableActions(props) {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>Deletar Material</Typography>
+                <Typography sx={{ fontSize: 14 }}>Deletar {props.type}</Typography>
               }
               sx={{ ml: -3 }}
             />
@@ -95,7 +112,7 @@ export default function StockTableActions(props) {
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
             toast={toast}
-            endpoint="stockItems"
+            endpoint={props.type ==="Material"?"stockItems":"products"}
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
             } Deletado com Sucesso`}

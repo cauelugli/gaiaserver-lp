@@ -118,7 +118,7 @@ export default function EditProductForm({
 
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle>Novo Produto</DialogTitle>
+      <DialogTitle>Editando Produto</DialogTitle>
       <DialogContent>
         <Grid
           container

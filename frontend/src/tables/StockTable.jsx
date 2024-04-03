@@ -193,6 +193,7 @@ export default function StockTable({
                         onClick={() => setSelectedItem(stockItem)}
                       >
                         <StockTableActions
+                          type="Material"
                           setOpenEdit={setOpenEdit}
                           selectedItem={selectedItem}
                           refreshData={refreshData}
