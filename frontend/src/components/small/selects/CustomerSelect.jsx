@@ -53,14 +53,16 @@ const CustomerSelect = (props) => {
       <Select
         displayEmpty
         disabled={props.fromShortcut}
-        // disabled={props.selectedCustomer.isActive || props.fromShortcut}
         size={props.sizeSmall || (props.addFromShortcut && "small")}
         renderValue={(selected) => {
           if (props.selectedCustomer) {
             selected = props.selectedCustomer;
             return selected.name;
           } else {
-            if (props.selectedCustomer.isActive || props.fromShortcut) {
+            if (
+              (props.selectedCustomer && props.selectedCustomer.isActive) ||
+              props.fromShortcut
+            ) {
               selected = props.selectedCustomer;
               return selected.name;
             } else {
