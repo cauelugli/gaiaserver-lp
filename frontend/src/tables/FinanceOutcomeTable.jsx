@@ -31,30 +31,26 @@ import CashPaymentForm from "../forms/add/CashPaymentForm";
 import EditStatusForm from "../forms/edit/EditStatusForm";
 import AddParcelPaymentForm from "../forms/add/AddParcelPaymentForm";
 import ChallengeApproval from "../forms/misc/ChallengeApproval";
+import FinanceOutcomeTableActions from "../components/small/buttons/tableActionButtons/FinanceOutcomeTableActions";
 
 export default function FinanceOutcomeTable({
   outcoming,
-  configData,
   toast,
   user,
   searchValue,
   searchOption,
   refreshData,
   setRefreshData,
+  configCustomization,
 }) {
   const [selectedFinanceoutcome, setSelectedFinanceoutcome] =
     React.useState("");
-  const [previousStatus, setPreviousStatus] = React.useState("");
-  const [newStatus, setNewStatus] = React.useState("");
   const [hoveredoutcome, setHoveredoutcome] = React.useState(null);
   const [openChallengeApproval, setOpenChallengeApproval] =
     React.useState(false);
   const [openSchedulePayment, setOpenSchedulePayment] = React.useState(false);
   const [openCashPayment, setOpenCashPayment] = React.useState(false);
   const [openAddParcelPayment, setOpenAddParcelPayment] = React.useState(false);
-
-  const [openConfirmChangeStatus, setOpenConfirmChangeStatus] =
-    React.useState(false);
 
   const handleChallengeApproval = (outcome) => {
     setSelectedFinanceoutcome(outcome);
@@ -180,7 +176,7 @@ export default function FinanceOutcomeTable({
             <TableBody>
               <TableRow
                 sx={{
-                   backgroundColor: "#eee",
+                  backgroundColor: "#eee",
                 }}
               >
                 {tableHeaderRow.map((headCell) => (
@@ -448,152 +444,20 @@ export default function FinanceOutcomeTable({
                       </Typography>
                     </TableCell>
 
-                    <TableCell align="center" sx={{ py: 0 }}>
-                      {outcome.status === "Contestado" && (
-                        <Tooltip
-                          title={
-                            <Typography sx={{ fontSize: 12 }}>
-                              Entrada de Estoque Contestada
-                            </Typography>
-                          }
-                        >
-                          <span>
-                            <IconButton disabled>
-                              <ReportIcon cursor="pointer" />
-                            </IconButton>
-                          </span>
-                        </Tooltip>
-                      )}
-                      {!outcome.payment && outcome.status === "Aprovado" && (
-                        <Grid
-                          container
-                          direction="row"
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <Tooltip
-                            title={
-                              <Typography sx={{ fontSize: 12 }}>
-                                {outcome.status === "Contestado"
-                                  ? "Entrada de Estoque Contestado"
-                                  : "Contestar Entrada ao Gerente Aprovador"}
-                              </Typography>
-                            }
-                          >
-                            <span>
-                              <IconButton
-                                disabled={outcome.status === "Contestado"}
-                              >
-                                <ReportIcon
-                                  cursor="pointer"
-                                  color="error"
-                                  onClick={() =>
-                                    handleChallengeApproval(outcome)
-                                  }
-                                />
-                              </IconButton>
-                            </span>
-                          </Tooltip>
-                          <Tooltip
-                            title={
-                              <Typography sx={{ fontSize: 12 }}>
-                                Agendar Pagamento
-                              </Typography>
-                            }
-                          >
-                            <span>
-                              <IconButton>
-                                <CalendarMonthIcon
-                                  cursor="pointer"
-                                  onClick={() =>
-                                    handleOpenAddSchedulePayment(outcome)
-                                  }
-                                />
-                              </IconButton>
-                            </span>
-                          </Tooltip>
-                          <Tooltip
-                            title={
-                              <Typography sx={{ fontSize: 12 }}>
-                                Realizar Pagamento
-                              </Typography>
-                            }
-                          >
-                            <span>
-                              <IconButton>
-                                <AttachMoneyIcon
-                                  cursor="pointer"
-                                  onClick={() =>
-                                    handleOpenAddCashPayment(outcome)
-                                  }
-                                />
-                              </IconButton>
-                            </span>
-                          </Tooltip>
-                        </Grid>
-                      )}
-                      {outcome.payment &&
-                        outcome.payment.paymentDates &&
-                        outcome.status !== "Pago" && (
-                          <Tooltip
-                            title={
-                              <Typography sx={{ fontSize: 12 }}>
-                                Receber Parcela
-                              </Typography>
-                            }
-                          >
-                            <span>
-                              <IconButton>
-                                <PaymentsIcon
-                                  cursor="pointer"
-                                  onClick={() =>
-                                    handleOpenAddParcelPayment(outcome)
-                                  }
-                                />
-                              </IconButton>
-                            </span>
-                          </Tooltip>
-                        )}
-                      {outcome.status !== "Pago" &&
-                        outcome.payment &&
-                        !outcome.payment.paymentDates && (
-                          <Tooltip
-                            title={
-                              <Typography sx={{ fontSize: 12 }}>
-                                Receber a Vista
-                              </Typography>
-                            }
-                          >
-                            <span>
-                              <IconButton>
-                                <AttachMoneyIcon
-                                  cursor="pointer"
-                                  onClick={() =>
-                                    handleOpenAddCashPayment(outcome)
-                                  }
-                                />
-                              </IconButton>
-                            </span>
-                          </Tooltip>
-                        )}
-                      {outcome.status === "Pago" && (
-                        <Tooltip
-                          title={
-                            <Typography sx={{ fontSize: 12 }}>
-                              Pagamento Recebido
-                            </Typography>
-                          }
-                        >
-                          <span>
-                            <IconButton>
-                              <AttachMoneyIcon
-                                disabled
-                                sx={{ color: "darkgreen" }}
-                              />
-                            </IconButton>
-                          </span>
-                        </Tooltip>
-                      )}
+                    <TableCell
+                      align="center"
+                      onClick={() => setSelectedFinanceoutcome(outcome)}
+                    >
+                      <FinanceOutcomeTableActions
+                        // configData={configData}
+                        outcome={outcome}
+                        handleOpenAddSchedulePayment={
+                          handleOpenAddSchedulePayment
+                        }
+                        handleOpenAddCashPayment={handleOpenAddCashPayment}
+                        handleOpenAddParcelPayment={handleOpenAddParcelPayment}
+                        handleChallengeApproval={handleChallengeApproval}
+                      />
                     </TableCell>
                   </TableRow>
                 ))
@@ -621,12 +485,12 @@ export default function FinanceOutcomeTable({
             onClose={() => setOpenAddParcelPayment(!openAddParcelPayment)}
           >
             <AddParcelPaymentForm
-              selectedFinanceoutcome={selectedFinanceoutcome}
-              openEdit={openAddParcelPayment}
+              selectedFinanceIncome={selectedFinanceoutcome}
               setOpenEdit={setOpenAddParcelPayment}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
+              configCustomization={configCustomization}
             />
           </Dialog>
         )}
@@ -638,12 +502,12 @@ export default function FinanceOutcomeTable({
             onClose={() => setOpenCashPayment(!openCashPayment)}
           >
             <CashPaymentForm
-              selectedFinanceoutcome={selectedFinanceoutcome}
-              openEdit={openCashPayment}
+              selectedFinanceIncome={selectedFinanceoutcome}
               setOpenEdit={setOpenCashPayment}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
+              configCustomization={configCustomization}
             />
           </Dialog>
         )}
@@ -655,33 +519,14 @@ export default function FinanceOutcomeTable({
             onClose={() => setOpenSchedulePayment(!openSchedulePayment)}
           >
             <AddPaymentScheduleForm
-              openEdit={openSchedulePayment}
-              selectedFinanceoutcome={selectedFinanceoutcome}
+              selectedFinanceIncome={selectedFinanceoutcome}
               previousMaterials={selectedFinanceoutcome.materials}
               setOpenEdit={setOpenSchedulePayment}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
-            />
-          </Dialog>
-        )}
-        {openConfirmChangeStatus && (
-          <Dialog
-            fullWidth
-            maxWidth="sm"
-            open={openConfirmChangeStatus}
-            onClose={() => setOpenConfirmChangeStatus(!openConfirmChangeStatus)}
-          >
-            <EditStatusForm
-              endpoint={"/finances/status"}
-              selectedItem={selectedFinanceoutcome}
-              openEdit={openConfirmChangeStatus}
-              setOpenEdit={setOpenConfirmChangeStatus}
-              prevStatus={previousStatus}
-              newData={newStatus}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
+              configCustomization={configCustomization}
+
             />
           </Dialog>
         )}
@@ -694,7 +539,7 @@ export default function FinanceOutcomeTable({
           >
             <ChallengeApproval
               user={user}
-              selectedFinanceoutcome={selectedFinanceoutcome}
+              selectedFinanceOutcome={selectedFinanceoutcome}
               entry={selectedFinanceoutcome.entry}
               open={openChallengeApproval}
               setOpen={setOpenChallengeApproval}

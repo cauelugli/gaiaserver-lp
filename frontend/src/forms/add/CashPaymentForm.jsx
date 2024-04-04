@@ -37,7 +37,6 @@ const api = axios.create({
 
 export default function CashPaymentForm({
   selectedFinanceIncome,
-  openEdit,
   setOpenEdit,
   refreshData,
   configCustomization,
@@ -74,7 +73,7 @@ export default function CashPaymentForm({
           autoClose: 1200,
         });
       }
-      setOpenEdit(!openEdit);
+      setOpenEdit(false);
       setRefreshData(!refreshData);
     } catch (err) {
       toast.error("Houve algum erro...", {
@@ -235,7 +234,7 @@ export default function CashPaymentForm({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenEdit(!openEdit)}
+          onClick={() => setOpenEdit(false)}
         >
           X
         </Button>

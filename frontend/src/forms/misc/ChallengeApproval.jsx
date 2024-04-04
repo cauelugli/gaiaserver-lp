@@ -18,8 +18,7 @@ const api = axios.create({
 
 export default function ChallengeApproval({
   user,
-  selectedFinanceoutcome,
-  open,
+  selectedFinanceOutcome,
   entry,
   setOpen,
   refreshData,
@@ -32,10 +31,10 @@ export default function ChallengeApproval({
     e.preventDefault();
     try {
       const res = await api.post("/finances/challengeApproval", {
-        selectedFinanceoutcome,
+        selectedFinanceOutcomeId: selectedFinanceOutcome._id,
+        entryId: entry._id,
         message,
         user,
-        entry
       });
       if (res.data) {
         toast.success("Contestação Enviada ao Gerente!", {
@@ -44,7 +43,14 @@ export default function ChallengeApproval({
           theme: "colored",
           autoClose: 1200,
         });
-        setOpen(!open);
+        // const newNotification = {
+        //   noteBody: `Olá! O colaborador ${user.name} contestou uma aprovação de Entrada de Estoque 
+        //   com a seguinte mensagem: ${message}.`,
+        //   sender: user.name,
+        //   // receiver: "StockEntriesDispatcherDepartment",
+        //   status: "Não Lida",
+        // };
+        setOpen(false);
         setRefreshData(!refreshData);
       }
     } catch (err) {
@@ -76,7 +82,7 @@ export default function ChallengeApproval({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpen(!open)}
+          onClick={() => setOpen(false)}
         >
           X
         </Button>

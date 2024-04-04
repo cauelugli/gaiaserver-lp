@@ -228,12 +228,19 @@ router.put("/receivePayment/cash", async (req, res) => {
       previousData,
     } = req.body;
 
-    const financeIncome = await FinanceIncome.findById(id);
-    if (!financeIncome) {
-      return res.status(404).json({ error: "FinanceIncome não encontrado." });
-    }
+    let financeIncome;
 
-    // Lógica para processar o pagamento à vista
+    const financeIncomeItem = await FinanceIncome.findById(id);
+    if (financeIncomeItem) {
+      financeIncome = financeIncomeItem;
+    } else {
+      const financeOutcomeItem = await FinanceOutcome.findById(id);
+      if (financeOutcomeItem) {
+        financeIncome = financeOutcomeItem;
+      } else {
+        return res.status(404).json({ error: "FinanceIncome não encontrado." });
+      }
+    }
 
     financeIncome.status = "Pago";
     financeIncome.paidAt = date;
@@ -265,7 +272,7 @@ router.put("/receivePayment/cash", async (req, res) => {
 router.post("/challengeApproval", async (req, res) => {
   try {
     const updatedOutcome = await FinanceOutcome.findByIdAndUpdate(
-      req.body.selectedFinanceoutcome._id,
+      req.body.selectedFinanceOutcomeId,
       {
         $set: {
           status: "Contestado",
@@ -273,18 +280,9 @@ router.post("/challengeApproval", async (req, res) => {
       },
       { new: true }
     );
-
-    const newNotification = new Notification({
-      noteBody: `Olá! O colaborador ${req.body.user.name} contestou uma aprovação de Entrada de Estoque 
-      com a seguinte mensagem: ${req.body.message}.`,
-      sender: req.body.user.name,
-      receiver: "StockEntriesDispatcherDepartment",
-      status: "Não Lida",
-    });
-    const note = await newNotification.save();
 
     const updatedEntry = await StockEntry.findByIdAndUpdate(
-      req.body.selectedFinanceoutcome.entry._id,
+      req.body.entryId,
       {
         $set: {
           status: "Contestado",
@@ -293,7 +291,7 @@ router.post("/challengeApproval", async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json({ updatedOutcome, updatedEntry, note });
+    res.status(200).json({ updatedOutcome, updatedEntry });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

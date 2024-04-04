@@ -39,7 +39,6 @@ const api = axios.create({
 
 export default function AddPaymentScheduleForm({
   selectedFinanceIncome,
-  openEdit,
   setOpenEdit,
   refreshData,
   setRefreshData,
@@ -57,9 +56,7 @@ export default function AddPaymentScheduleForm({
   const [parcelMonthlyFee, setParcelMonthlyFee] = React.useState(2.99);
   const [hasDiscount, setHasDiscount] = React.useState(false);
   const [discount, setDiscount] = React.useState(10);
-  const [cashPaymentDate, setCashPaymentDate] = React.useState(
-    dayjs().format("DD/MM/YYYY")
-  );
+  const [cashPaymentDate, setCashPaymentDate] = React.useState(dayjs());
 
   const handleEdit = async (e) => {
     e.preventDefault();
@@ -93,7 +90,7 @@ export default function AddPaymentScheduleForm({
           autoClose: 1200,
         });
       }
-      setOpenEdit(!openEdit);
+      setOpenEdit(false);
       setRefreshData(!refreshData);
     } catch (err) {
       if (err.response && err.response.status === 422) {
@@ -674,7 +671,7 @@ export default function AddPaymentScheduleForm({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenEdit(!openEdit)}
+          onClick={() => setOpenEdit(false)}
         >
           X
         </Button>

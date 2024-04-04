@@ -33,7 +33,6 @@ const api = axios.create({
 
 export default function AddParcelPaymentForm({
   selectedFinanceIncome,
-  openEdit,
   setOpenEdit,
   refreshData,
   setRefreshData,
@@ -98,7 +97,7 @@ export default function AddParcelPaymentForm({
           autoClose: 1200,
         });
       }
-      setOpenEdit(!openEdit);
+      setOpenEdit(false);
       setRefreshData(!refreshData);
     } catch (err) {
       toast.error("Houve algum erro...", {
@@ -379,7 +378,7 @@ export default function AddParcelPaymentForm({
         <Button
           variant="contained"
           color="error"
-          onClick={() => setOpenEdit(!openEdit)}
+          onClick={() => setOpenEdit(false)}
         >
           X
         </Button>
