@@ -166,17 +166,17 @@ export default function ClientTable({
   };
 
   const [showArchivedClients, setShowArchivedClients] = React.useState(false);
-
-  const handleChangeShowArchivedClients = () => {
-    setShowArchivedClients(!showArchivedClients);
-  };
+  const filteredValidCount = sortedRows.filter((row) => row.isActive).length;
+  const filteredArchivedCount = sortedRows.filter(
+    (row) => !row.isActive
+  ).length;
 
   return (
     <Box sx={{ minWidth: "1250px" }}>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
         <Checkbox
           checked={showArchivedClients}
-          onChange={handleChangeShowArchivedClients}
+          onChange={() => setShowArchivedClients(!showArchivedClients)}
         />
         <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
           Mostrar Arquivados
@@ -598,7 +598,9 @@ export default function ClientTable({
         </Table>
         <TablePagination
           component="div"
-          count={sortedRows.length}
+          count={
+            filteredValidCount + (showArchivedClients && filteredArchivedCount)
+          }
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

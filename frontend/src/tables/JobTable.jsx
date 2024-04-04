@@ -276,6 +276,18 @@ export default function JobTable({
   const [showCompletedJobs, setShowCompletedJobs] = React.useState(false);
   const [showArchivedJobs, setShowArchivedJobs] = React.useState(false);
 
+  const filteredResolvedCount = sortedRows.filter(
+    (row) => row.status === "Concluido"
+  ).length;
+
+  const filteredArchivedCount = sortedRows.filter(
+    (row) => row.status === "Arquivado"
+  ).length;
+
+  const filteredValidCount = sortedRows.filter(
+    (row) => row.status !== "Arquivado" && row.status !== "Concluido"
+  ).length;
+
   return (
     <Box sx={{ minWidth: "1250px" }}>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
@@ -1072,7 +1084,11 @@ export default function JobTable({
         </Table>
         <TablePagination
           component="div"
-          count={sortedRows.length}
+          count={
+            filteredValidCount +
+            (showCompletedJobs && filteredResolvedCount) +
+            (showArchivedJobs && filteredArchivedCount)
+          }
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

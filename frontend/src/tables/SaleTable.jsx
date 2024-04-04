@@ -203,6 +203,18 @@ export default function SaleTable({
     }
   };
 
+  const filteredResolvedCount = sortedRows.filter(
+    (row) => row.status === "Concluido"
+  ).length;
+
+  const filteredArchivedCount = sortedRows.filter(
+    (row) => row.status === "Arquivado"
+  ).length;
+
+  const filteredValidCount = sortedRows.filter(
+    (row) => row.status !== "Arquivado" && row.status !== "Concluido"
+  ).length;
+
   return (
     <Box sx={{ minWidth: "1250px" }}>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
@@ -936,7 +948,11 @@ export default function SaleTable({
         </Table>
         <TablePagination
           component="div"
-          count={sortedRows.length}
+          count={
+            filteredValidCount +
+            (showCompletedSales && filteredResolvedCount) +
+            (showArchivedSales && filteredArchivedCount)
+          }
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

@@ -132,9 +132,10 @@ export default function ManagerTable({
   const endIndex = startIndex + rowsPerPage;
   const [showArchivedUsers, setShowArchivedUsers] = React.useState(false);
 
-  const handleChangeShowArchivedUsers = () => {
-    setShowArchivedUsers(!showArchivedUsers);
-  };
+  const filteredValidCount = sortedRows.filter((row) => row.isActive).length;
+  const filteredArchivedCount = sortedRows.filter(
+    (row) => !row.isActive
+  ).length;
 
   return (
     <>
@@ -142,7 +143,7 @@ export default function ManagerTable({
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
           <Checkbox
             checked={showArchivedUsers}
-            onChange={handleChangeShowArchivedUsers}
+            onChange={() => setShowArchivedUsers(!showArchivedUsers)}
           />
           <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
             Mostrar Arquivados
@@ -278,7 +279,9 @@ export default function ManagerTable({
           </Table>
           <TablePagination
             component="div"
-            count={sortedRows.length}
+            count={
+              filteredValidCount + (showArchivedUsers && filteredArchivedCount)
+            }
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}

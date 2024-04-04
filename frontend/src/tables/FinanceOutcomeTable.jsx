@@ -155,9 +155,13 @@ export default function FinanceOutcomeTable({
 
   const [showCompletedOutcomes, setshowCompletedOutcomes] =
     React.useState(false);
-  const handleChangeshowCompletedOutcomes = () => {
-    setshowCompletedOutcomes(!showCompletedOutcomes);
-  };
+
+  const filteredValidCount = sortedRows.filter(
+    (row) => row.status !== "Pago" && row.status !== "Aprovado"
+  ).length;
+  const filteredArchivedCount = sortedRows.filter(
+    (row) => row.status === "Pago"
+  ).length;
 
   return (
     <>
@@ -165,7 +169,7 @@ export default function FinanceOutcomeTable({
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
           <Checkbox
             checked={showCompletedOutcomes}
-            onChange={handleChangeshowCompletedOutcomes}
+            onChange={() => setshowCompletedOutcomes(!showCompletedOutcomes)}
           />
           <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
             Mostrar Pagos
@@ -226,8 +230,7 @@ export default function FinanceOutcomeTable({
                   >
                     <TableCell>
                       <Typography sx={{ fontSize: 13 }}>
-                        {outcome.type.charAt(0).toUpperCase() +
-                          outcome.type.slice(1)}
+                        {outcome.type === "job" ? "Job" : "Venda"}
                       </Typography>
                     </TableCell>
                     <TableCell align="center">
@@ -466,7 +469,10 @@ export default function FinanceOutcomeTable({
           </Table>
           <TablePagination
             component="div"
-            count={sortedRows.length}
+            count={
+              filteredValidCount +
+              (showCompletedOutcomes && filteredArchivedCount)
+            }
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
@@ -526,7 +532,6 @@ export default function FinanceOutcomeTable({
               setRefreshData={setRefreshData}
               toast={toast}
               configCustomization={configCustomization}
-
             />
           </Dialog>
         )}

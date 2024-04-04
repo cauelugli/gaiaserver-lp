@@ -157,9 +157,12 @@ export default function FinanceIncomeTable({
   const endIndex = startIndex + rowsPerPage;
 
   const [showCompletedIncomes, setshowCompletedIncomes] = React.useState(false);
-  const handleChangeshowCompletedIncomes = () => {
-    setshowCompletedIncomes(!showCompletedIncomes);
-  };
+  const filteredValidCount = sortedRows.filter(
+    (row) => row.status !== "Pago" && row.status !== "Aprovado"
+  ).length;
+  const filteredArchivedCount = sortedRows.filter(
+    (row) => row.status === "Pago"
+  ).length;
 
   return (
     <>
@@ -167,7 +170,7 @@ export default function FinanceIncomeTable({
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
           <Checkbox
             checked={showCompletedIncomes}
-            onChange={handleChangeshowCompletedIncomes}
+            onChange={() => setshowCompletedIncomes(!showCompletedIncomes)}
           />
           <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
             Mostrar Pagos
@@ -236,8 +239,7 @@ export default function FinanceIncomeTable({
                       </TableCell>
                       <TableCell align="center">
                         <Typography sx={{ fontSize: 13 }}>
-                          {income.type.charAt(0).toUpperCase() +
-                            income.type.slice(1)}
+                          {income.type === "job" ? "Job" : "Venda"}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
@@ -482,7 +484,10 @@ export default function FinanceIncomeTable({
           </Table>
           <TablePagination
             component="div"
-            count={sortedRows.length}
+            count={
+              filteredValidCount +
+              (showCompletedIncomes && filteredArchivedCount)
+            }
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
