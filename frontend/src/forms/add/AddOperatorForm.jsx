@@ -35,22 +35,6 @@ const AddOperatorForm = ({
   const [operator, setOperator] = React.useState("");
   const [role, setRole] = React.useState("Colaborador");
 
-  const handleOperatorChange = (e) => {
-    const selectedOperator = e.target.value;
-    setOperator(selectedOperator);
-    if (selectedOperator.role.name === "Gerente") {
-      setRole("Gerente");
-    }
-
-    const usernameSuggestion = selectedOperator
-      ? selectedOperator.name
-          .split(" ")
-          .map((namePart) => namePart.toLowerCase())
-          .join(".")
-      : "";
-    setUsername(usernameSuggestion);
-  };
-
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
@@ -105,7 +89,10 @@ const AddOperatorForm = ({
           <Grid item>
             <Typography sx={{ mb: 1 }}>Colaborador</Typography>
             <Select
-              onChange={handleOperatorChange}
+              onChange={(e) => (
+                setOperator(e.target.value),
+                setUsername(e.target.value.name.toLowerCase())
+              )}
               value={operator}
               renderValue={(selected) => (
                 <Grid container direction="row">
@@ -175,7 +162,7 @@ const AddOperatorForm = ({
             />
           </Grid>
           <Grid item>
-            <Typography sx={{ my: 1 }}>Senha</Typography>
+            <Typography sx={{ my: 1 }}>Senha do Primeiro Acesso</Typography>
             <TextField
               size="small"
               type="password"

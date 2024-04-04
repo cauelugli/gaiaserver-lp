@@ -363,8 +363,10 @@ router.put("/changePassFirstAccess", async (req, res) => {
   user = await User.findById(userId);
   if (!user) {
     user = await Manager.findById(userId);
-  } else {
-    res.status(404).json({ error: "Usuário não Encontrado" });
+  }
+
+  if (!user) {
+    return res.status(404).json({ error: "Usuário não encontrado" });
   }
 
   try {

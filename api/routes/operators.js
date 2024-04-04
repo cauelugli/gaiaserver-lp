@@ -16,8 +16,10 @@ router.put("/", async (req, res) => {
   const userExists = await User.findOne({ username });
   const managerExists = await Manager.findOne({ username });
 
-  if (userExists || managerExists) {
-    return res.status(422).json({ error: "Nome de Operador já cadastrado" });
+  if (!req.body.option === "delete") {
+    if (userExists || managerExists) {
+      return res.status(422).json({ error: "Nome de Operador já cadastrado" });
+    }
   }
 
   if (req.body.option === "delete") {
@@ -28,6 +30,9 @@ router.put("/", async (req, res) => {
           $unset: {
             username: 1,
             password: 1,
+          },
+          $set: {
+            isFirstAccess: true,
           },
         },
         { new: true }
