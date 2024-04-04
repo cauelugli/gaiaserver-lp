@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
+import { SketchPicker } from "react-color";
 import axios from "axios";
 
 import {
@@ -11,13 +12,18 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  IconButton,
   InputAdornment,
   MenuItem,
   Paper,
+  Popover,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
+
+import PaletteIcon from "@mui/icons-material/Palette";
+
 import MaterialList from "../../components/small/MaterialList";
 
 const api = axios.create({
@@ -50,10 +56,14 @@ export default function EditServiceForm({
   const [executionTime, setExecutionTime] = React.useState(
     selectedService.executionTime
   );
+  const [color, setColor] = React.useState(selectedService.color);
 
   const [showUsesMaterials, setUsesMaterials] = React.useState(
     selectedService.materials && selectedService.materials.length >= 1
   );
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const handleUsesMaterials = (event) => {
     setUsesMaterials(event.target.checked);
   };
@@ -77,6 +87,7 @@ export default function EditServiceForm({
         materials,
         materialsCost: materialsEditCost,
         executionTime,
+        color,
         isSupport: value === 0 ? true : false,
       });
       if (res.data) {
@@ -107,6 +118,8 @@ export default function EditServiceForm({
       }
     }
   };
+
+  console.log("color",color)
 
   return (
     <form onSubmit={handleEdit}>
@@ -216,6 +229,50 @@ export default function EditServiceForm({
               <MenuItem value={3}>03:00h</MenuItem>
               <MenuItem value={4}>+03:00h</MenuItem>
             </Select>
+          </Grid>
+          <Grid item sx={{ ml: 2, color: color }}>
+            {executionTime && (
+              <Grid container direction="column">
+                <Typography>Cor</Typography>
+                <Grid container direction="row">
+                  <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+                    <PaletteIcon />
+                  </IconButton>
+                  <Popover
+                    open={Boolean(anchorEl)}
+                    anchorEl={anchorEl}
+                    onClose={() => setAnchorEl(null)}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                  >
+                    <SketchPicker
+                      color={color}
+                      onChange={(color) => setColor(color.hex)}
+                      disableAlpha
+                    />
+                  </Popover>
+                  {color !== "ffffff" && (
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        ml: 1,
+                        mt: 1.25,
+                        width: 20,
+                        height: 20,
+                        borderRadius: 50,
+                        backgroundColor: color,
+                      }}
+                    />
+                  )}
+                </Grid>
+              </Grid>
+            )}
           </Grid>
         </Grid>
         <Grid
