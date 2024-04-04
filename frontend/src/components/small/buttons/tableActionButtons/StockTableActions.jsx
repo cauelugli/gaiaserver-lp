@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MenuIcon from "@mui/icons-material/Menu";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
@@ -72,12 +73,12 @@ export default function StockTableActions(props) {
 
           <ListItemButton
             // onClick={() => {
-            //   props.setOpenEdit(true), setAnchorEl(null);
+            //   props.setOpenRequestPurchase(true), setAnchorEl(null);
             // }}
             disabled
           >
             <ListItemIcon>
-              <ModeEditIcon />
+              <AttachMoneyIcon />
             </ListItemIcon>
             <ListItemText
               primary={

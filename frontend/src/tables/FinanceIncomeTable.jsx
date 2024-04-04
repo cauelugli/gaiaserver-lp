@@ -464,17 +464,23 @@ export default function FinanceIncomeTable({
                         onClick={() => setSelectedFinanceIncome(income)}
                         align="center"
                       >
-                        <FinanceIncomeTableActions
-                          configData={configData}
-                          income={income}
-                          handleOpenAddSchedulePayment={
-                            handleOpenAddSchedulePayment
-                          }
-                          handleOpenAddCashPayment={handleOpenAddCashPayment}
-                          handleOpenAddParcelPayment={
-                            handleOpenAddParcelPayment
-                          }
-                        />
+                        {income.status !== "Pago" ? (
+                          <FinanceIncomeTableActions
+                            configData={configData}
+                            income={income}
+                            handleOpenAddSchedulePayment={
+                              handleOpenAddSchedulePayment
+                            }
+                            handleOpenAddCashPayment={handleOpenAddCashPayment}
+                            handleOpenAddParcelPayment={
+                              handleOpenAddParcelPayment
+                            }
+                          />
+                        ) : (
+                          <Typography sx={{ fontSize: 13, color:"darkgrey" }}>
+                            Não há Ações
+                          </Typography>
+                        )}
                       </TableCell>
                     </TableRow>
                   </>

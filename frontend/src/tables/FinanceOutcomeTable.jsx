@@ -451,16 +451,23 @@ export default function FinanceOutcomeTable({
                       align="center"
                       onClick={() => setSelectedFinanceoutcome(outcome)}
                     >
-                      <FinanceOutcomeTableActions
-                        // configData={configData}
-                        outcome={outcome}
-                        handleOpenAddSchedulePayment={
-                          handleOpenAddSchedulePayment
-                        }
-                        handleOpenAddCashPayment={handleOpenAddCashPayment}
-                        handleOpenAddParcelPayment={handleOpenAddParcelPayment}
-                        handleChallengeApproval={handleChallengeApproval}
-                      />
+                      {outcome.status !== "Pago" ? (
+                        <FinanceOutcomeTableActions
+                          outcome={outcome}
+                          handleOpenAddSchedulePayment={
+                            handleOpenAddSchedulePayment
+                          }
+                          handleOpenAddCashPayment={handleOpenAddCashPayment}
+                          handleOpenAddParcelPayment={
+                            handleOpenAddParcelPayment
+                          }
+                          handleChallengeApproval={handleChallengeApproval}
+                        />
+                      ) : (
+                        <Typography sx={{ fontSize: 13, color:"darkgrey" }}>
+                        Não há Ações
+                        </Typography>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))
