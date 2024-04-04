@@ -16,62 +16,57 @@ export default function NavBar({
   setNotifications,
 }) {
   return (
-    <Grid
-      container
-      direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-      sx={{
-        backgroundColor:
-          configData && configData.customization
-            ? configData.customization.mainColor
-            : "#32aacd",
-      }}
-    >
-      <Grid item>
-        <Link
-          to={"/"}
-          style={{
-            textDecoration: "none",
-            color: "black",
-            position: "relative",
-            overflow: "hidden",
-
-            backgroundColor:
-              configData && configData.customization
-                ? configData.customization.mainColor
-                : "white",
-          }}
+    <>
+      {configData && configData.customization && (
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ backgroundColor: configData.customization.mainColor }}
         >
-          <img
-            src={`http://localhost:3000/static/${
-              configData && configData.customization
-                ? configData.customization.logo
-                : ""
-            }`}
-            alt="Logotipo da Empresa"
-            style={{
-              width: "20%",
-              marginLeft: 30,
-              marginTop: 2,
-              marginBottom: 2,
-              cursor: "pointer",
-            }}
-          />
-        </Link>
-      </Grid>
-      <Grid item sx={{ mr: 2 }}>
-        <Grid container direction="row">
-          <NotificationsButton
-            socket={socket}
-            user={user}
-            notifications={notifications}
-            setNotifications={setNotifications}
-            sx={{ mr: 3, color: "#333" }}
-          />
-          <UserButton user={user} />
+          <Grid item>
+            <Link
+              to={"/"}
+              style={{
+                textDecoration: "none",
+                color: "black",
+                position: "relative",
+                overflow: "hidden",
+                backgroundColor: configData.customization.mainColor,
+              }}
+            >
+              <img
+                src={`http://localhost:3000/static/${
+                  configData && configData.customization
+                    ? configData.customization.logo
+                    : ""
+                }`}
+                alt="Logotipo da Empresa"
+                style={{
+                  width: "20%",
+                  marginLeft: 30,
+                  marginTop: 2,
+                  marginBottom: 2,
+                  cursor: "pointer",
+                }}
+              />
+            </Link>
+          </Grid>
+          <Grid item sx={{ mr: 2 }}>
+            <Grid container direction="row">
+              <NotificationsButton
+                socket={socket}
+                user={user}
+                notifications={notifications}
+                setNotifications={setNotifications}
+                sx={{ mr: 3, color: "#333" }}
+              />
+              <UserButton user={user} />
+            </Grid>
+          </Grid>
         </Grid>
-      </Grid>
-    </Grid>
+      )}
+    </>
   );
 }
