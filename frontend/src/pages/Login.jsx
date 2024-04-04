@@ -22,6 +22,9 @@ const Login = () => {
   const [password, setPassword] = useState("1234");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isFirstAccess, setIsFirstAccess] = useState(false);
+  const [isFirstAccessUserId, setIsFirstAccessUserId] = useState(null);
+  const [newPassword, setNewPassword] = useState("");
 
   const handleTry = async (e) => {
     e.preventDefault();
@@ -32,19 +35,34 @@ const Login = () => {
         password,
       });
       if (res.data) {
-        sessionStorage.setItem("userData", JSON.stringify(res.data));
-        sessionStorage.setItem("login", true);
-        toast.success("Login OK!", {
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-          autoClose: 200,
-        });
-
-        setTimeout(() => {
+        if (res.data.isFirstAccess) {
+          setIsFirstAccess(true);
+          setIsFirstAccessUserId(res.data._id);
           setLoading(false);
-          window.location.reload();
-        }, 1000);
+          toast.warning(
+            "É necessária Alteração de Senha em seu Primeiro Acesso",
+            {
+              closeOnClick: true,
+              pauseOnHover: false,
+              theme: "colored",
+              autoClose: 1200,
+            }
+          );
+        } else {
+          sessionStorage.setItem("userData", JSON.stringify(res.data));
+          sessionStorage.setItem("login", true);
+          toast.success("Login OK!", {
+            closeOnClick: true,
+            pauseOnHover: false,
+            theme: "colored",
+            autoClose: 200,
+          });
+
+          setTimeout(() => {
+            setLoading(false);
+            window.location.reload();
+          }, 1000);
+        }
       }
     } catch (err) {
       setLoading(false);
@@ -99,6 +117,38 @@ const Login = () => {
     }
   };
 
+  const handleNewPassword = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const res = await api.put("/users/changePassFirstAccess", {
+        userId: isFirstAccessUserId,
+        password: newPassword,
+      });
+      if (res.data) {
+        toast.success(
+          "Senha atualizada com sucesso! Reinicie o navegador e acesse o sistema.",
+          {
+            closeOnClick: true,
+            pauseOnHover: false,
+            theme: "colored",
+            autoClose: 4000,
+          }
+        );
+      }
+      setIsFirstAccess(false);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      toast.error("Falha ao atualizar senha", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+    }
+  };
+
   return (
     <Grid
       container
@@ -143,95 +193,130 @@ const Login = () => {
           </div>
         ) : (
           <>
-            {loginOrNew ? (
-              <form onSubmit={handleTry}>
+            {isFirstAccess ? (
+              <form onSubmit={handleNewPassword}>
                 <Grid
                   container
                   direction="column"
                   alignItems="center"
                   sx={{ mt: 8 }}
                 >
+                  <Typography variant="h6" sx={{ mb: 2 }}>
+                    Defina uma nova senha
+                  </Typography>
                   <TextField
                     size="small"
                     required
-                    label="Usuário"
-                    variant="standard"
-                    sx={{ mb: 1 }}
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                  <TextField
-                    size="small"
-                    required
-                    label="Senha"
+                    label="Nova Senha"
                     variant="standard"
                     type="password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    sx={{ mb: 1 }}
                   />
                   <Button
-                    autoFocus
                     type="submit"
                     variant="contained"
-                    sx={{
-                      mt: 3,
-                      mb: 6,
-                      width: "50%",
-                      backgroundColor: "#32aacd",
-                    }}
+                    sx={{ mt: 3, backgroundColor: "#32aacd" }}
                   >
-                    Login
+                    Atualizar Senha
                   </Button>
                 </Grid>
               </form>
             ) : (
-              <form onSubmit={handleTryNew}>
-                <Grid
-                  container
-                  direction="column"
-                  alignItems="center"
-                  sx={{ mt: 8 }}
-                >
-                  <TextField
-                    size="small"
-                    disabled
-                    label="Usuário"
-                    variant="standard"
-                    value="admin"
-                  />
-                  <TextField
-                    sx={{ my: 1 }}
-                    size="small"
-                    required
-                    label="Senha"
-                    variant="standard"
-                    type="password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <TextField
-                    size="small"
-                    required
-                    label="E-mail"
-                    variant="standard"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    sx={{
-                      mt: 2,
-                      backgroundColor: "#32aacd",
-                    }}
-                  >
-                    Registrar
-                  </Button>
-                </Grid>
-              </form>
+              <>
+                {loginOrNew ? (
+                  <form onSubmit={handleTry}>
+                    <Grid
+                      container
+                      direction="column"
+                      alignItems="center"
+                      sx={{ mt: 8 }}
+                    >
+                      <TextField
+                        size="small"
+                        required
+                        label="Usuário"
+                        variant="standard"
+                        sx={{ mb: 1 }}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                      <TextField
+                        size="small"
+                        required
+                        label="Senha"
+                        variant="standard"
+                        type="password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                      <Button
+                        autoFocus
+                        type="submit"
+                        variant="contained"
+                        sx={{
+                          mt: 3,
+                          mb: 6,
+                          width: "50%",
+                          backgroundColor: "#32aacd",
+                        }}
+                      >
+                        Login
+                      </Button>
+                    </Grid>
+                  </form>
+                ) : (
+                  <form onSubmit={handleTryNew}>
+                    <Grid
+                      container
+                      direction="column"
+                      alignItems="center"
+                      sx={{ mt: 8 }}
+                    >
+                      <TextField
+                        size="small"
+                        disabled
+                        label="Usuário"
+                        variant="standard"
+                        value="admin"
+                      />
+                      <TextField
+                        sx={{ my: 1 }}
+                        size="small"
+                        required
+                        label="Senha"
+                        variant="standard"
+                        type="password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                      <TextField
+                        size="small"
+                        required
+                        label="E-mail"
+                        variant="standard"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        sx={{
+                          mt: 2,
+                          backgroundColor: "#32aacd",
+                        }}
+                      >
+                        Registrar
+                      </Button>
+                    </Grid>
+                  </form>
+                )}
+              </>
             )}
+
             <Typography
               onClick={() => setLoginOrNew(!loginOrNew)}
               sx={{ mt: 3, mb: 2, cursor: "pointer", color: "#5F9EA0" }}

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const UserPreferences = require("../models/UserPreferences");
 const Manager = require("../models/Manager");
@@ -351,6 +352,38 @@ router.put("/changeProfilePicture", async (req, res) => {
     return res
       .status(500)
       .json({ message: "Erro ao atualizar a imagem de perfil." });
+  }
+});
+
+// CHANGE USER PASSWORD ON FIRST ACCESS
+router.put("/changePassFirstAccess", async (req, res) => {
+  const userId = req.body.userId;
+  let user;
+
+  user = await User.findById(userId);
+  if (!user) {
+    user = await Manager.findById(userId);
+  } else {
+    res.status(404).json({ error: "Usuário não Encontrado" });
+  }
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPass = await bcrypt.hash(req.body.password, salt);
+
+    user.password = hashedPass;
+    user.isFirstAccess = false;
+
+    await user.save();
+
+    res
+      .status(200)
+      .json({
+        message: "Senha atualizada com sucesso e acesso inicial removido.",
+      });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
 

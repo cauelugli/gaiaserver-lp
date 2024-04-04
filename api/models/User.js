@@ -32,6 +32,10 @@ userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  isFirstAccess: {
+    type: Boolean,
+    default: true,
+  },
   name: {
     type: String,
     required: true,
