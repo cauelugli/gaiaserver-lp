@@ -484,6 +484,7 @@ router.put("/interaction", async (req, res) => {
   }
 });
 
+// REMOVE SALE INTERACTION
 router.put("/interaction/remove", async (req, res) => {
   //it's jobId, but dont worry, it works.
   const { jobId, interactionId } = req.body;

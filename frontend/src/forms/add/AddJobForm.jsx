@@ -29,10 +29,12 @@ import {
   Typography,
 } from "@mui/material";
 
-import TaskIcon from "@mui/icons-material/Task";
 import CreateIcon from "@mui/icons-material/Create";
 import CheckIcon from "@mui/icons-material/Check";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import TaskIcon from "@mui/icons-material/Task";
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -101,6 +103,7 @@ const AddJobForm = ({
   const [scheduleToWorker, setScheduleToWorker] = React.useState(false);
   const [selectedSchedule, setSelectedSchedule] = React.useState(null);
   const [scheduleOptions, setScheduleOptions] = React.useState([]);
+  const [attachedFiles, setAttachedFiles] = React.useState([]);
 
   React.useEffect(() => {
     const options = generateScheduleOptions();
@@ -312,6 +315,16 @@ const AddJobForm = ({
       `Realizar o serviço de ${service.name} para ${requester} (${
         customer.name
       }) na data de ${dayjs(scheduledTo).format("DD/MM/YYYY")} em ${local}.`
+    );
+  };
+
+  const handleFileChange = (event) => {
+    setAttachedFiles([...attachedFiles, ...event.target.files]);
+  };
+
+  const removeFile = (indexToRemove) => {
+    setAttachedFiles(
+      attachedFiles.filter((_, index) => index !== indexToRemove)
     );
   };
 
@@ -804,8 +817,69 @@ const AddJobForm = ({
           )}
 
           {approvedQuote && (
-            <Grid sx={{ mr: 10 }}>
-              <Divider sx={{ my: 3 }} />
+            <Grid>
+              <Divider sx={{ my: 3, mr: 10 }} />
+              <Grid
+                container
+                direction="row"
+                alignItems="center"
+                sx={{ mb: 2 }}
+              >
+                <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
+                  Anexar Arquivos
+                </Typography>
+                <input
+                  type="file"
+                  multiple
+                  id="fileInput"
+                  style={{ display: "none" }}
+                  onChange={handleFileChange}
+                />
+                <label htmlFor="fileInput">
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    component="span"
+                    size="small"
+                    startIcon={<FileUploadIcon />}
+                    sx={{ ml: 1 }}
+                  >
+                    Enviar
+                  </Button>
+                </label>
+                <Grid item>
+                  <Grid container direction="row">
+                    {attachedFiles.map((file, index) => (
+                      <Grid key={index} item sx={{ ml: 1 }}>
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                          sx={{
+                            border: "1px solid darkgrey",
+                            borderRadius: 2,
+                          }}
+                        >
+                          <Typography
+                            sx={{ fontSize: 13, ml: 1, color: "#777" }}
+                          >
+                            {file.name}
+                          </Typography>
+
+                          <Button
+                            size="small"
+                            color="error"
+                            onClick={() => removeFile(index)}
+                            sx={{ mx: -1 }}
+                          >
+                            <DeleteIcon />
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Grid>
+              </Grid>
               <Grid container>
                 <Typography sx={{ mt: 1.5, fontSize: 18, fontWeight: "bold" }}>
                   Agendar para o Colaborador
