@@ -33,6 +33,7 @@ import AddPaymentScheduleForm from "../forms/add/AddPaymentScheduleForm";
 import CashPaymentForm from "../forms/add/CashPaymentForm";
 import EditStatusForm from "../forms/edit/EditStatusForm";
 import AddParcelPaymentForm from "../forms/add/AddParcelPaymentForm";
+import FinanceIncomeTableActions from "../components/small/buttons/tableActionButtons/FinanceIncomeTableActions";
 
 export default function FinanceIncomeTable({
   incoming,
@@ -177,7 +178,7 @@ export default function FinanceIncomeTable({
             <TableBody>
               <TableRow
                 sx={{
-                   backgroundColor: "#eee",
+                  backgroundColor: "#eee",
                 }}
               >
                 {tableHeaderRow.map((headCell) => (
@@ -457,138 +458,21 @@ export default function FinanceIncomeTable({
                         </Typography>
                       </TableCell>
 
-                      <TableCell align="center" sx={{ py: 0 }}>
-                        {configData.canReceiveInstallments &&
-                          !income.payment &&
-                          income.status === "Aguardando Agendamento" && (
-                            <Grid
-                              container
-                              direction="row"
-                              justifyContent="center"
-                              alignItems="center"
-                            >
-                              <Tooltip
-                                title={
-                                  <Typography sx={{ fontSize: 12 }}>
-                                    Agendar Pagamento
-                                  </Typography>
-                                }
-                              >
-                                <span>
-                                  <IconButton>
-                                    <CalendarMonthIcon
-                                      cursor="pointer"
-                                      onClick={() =>
-                                        handleOpenAddSchedulePayment(income)
-                                      }
-                                    />
-                                  </IconButton>
-                                </span>
-                              </Tooltip>
-                              <Tooltip
-                                title={
-                                  <Typography sx={{ fontSize: 12 }}>
-                                    Receber a Vista
-                                  </Typography>
-                                }
-                              >
-                                <span>
-                                  <IconButton>
-                                    <AttachMoneyIcon
-                                      cursor="pointer"
-                                      onClick={() =>
-                                        handleOpenAddCashPayment(income)
-                                      }
-                                    />
-                                  </IconButton>
-                                </span>
-                              </Tooltip>
-                            </Grid>
-                          )}
-                        {!configData.canReceiveInstallments &&
-                          !income.payment &&
-                          income.status === "Aguardando Agendamento" && (
-                            <Tooltip
-                              title={
-                                <Typography sx={{ fontSize: 12 }}>
-                                  Receber a Vista
-                                </Typography>
-                              }
-                            >
-                              <span>
-                                <IconButton>
-                                  <AttachMoneyIcon
-                                    cursor="pointer"
-                                    onClick={() =>
-                                      handleOpenAddCashPayment(income)
-                                    }
-                                  />
-                                </IconButton>
-                              </span>
-                            </Tooltip>
-                          )}
-                        {income.payment &&
-                          income.payment.paymentDates &&
-                          income.status !== "Pago" && (
-                            <Tooltip
-                              title={
-                                <Typography sx={{ fontSize: 12 }}>
-                                  Receber Parcela
-                                </Typography>
-                              }
-                            >
-                              <span>
-                                <IconButton>
-                                  <PaymentsIcon
-                                    cursor="pointer"
-                                    onClick={() =>
-                                      handleOpenAddParcelPayment(income)
-                                    }
-                                  />
-                                </IconButton>
-                              </span>
-                            </Tooltip>
-                          )}
-                        {income.status !== "Pago" &&
-                          income.payment &&
-                          !income.payment.paymentDates && (
-                            <Tooltip
-                              title={
-                                <Typography sx={{ fontSize: 12 }}>
-                                  Receber a Vista
-                                </Typography>
-                              }
-                            >
-                              <span>
-                                <IconButton>
-                                  <AttachMoneyIcon
-                                    cursor="pointer"
-                                    onClick={() =>
-                                      handleOpenAddCashPayment(income)
-                                    }
-                                  />
-                                </IconButton>
-                              </span>
-                            </Tooltip>
-                          )}
-                        {income.status === "Pago" && (
-                          <Tooltip
-                            title={
-                              <Typography sx={{ fontSize: 12 }}>
-                                Pagamento Recebido
-                              </Typography>
-                            }
-                          >
-                            <span>
-                              <IconButton>
-                                <AttachMoneyIcon
-                                  disabled
-                                  sx={{ color: "darkgreen" }}
-                                />
-                              </IconButton>
-                            </span>
-                          </Tooltip>
-                        )}
+                      <TableCell
+                        onClick={() => setSelectedFinanceIncome(income)}
+                        align="center"
+                      >
+                        <FinanceIncomeTableActions
+                          configData={configData}
+                          income={income}
+                          handleOpenAddSchedulePayment={
+                            handleOpenAddSchedulePayment
+                          }
+                          handleOpenAddCashPayment={handleOpenAddCashPayment}
+                          handleOpenAddParcelPayment={
+                            handleOpenAddParcelPayment
+                          }
+                        />
                       </TableCell>
                     </TableRow>
                   </>

@@ -3,13 +3,13 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import dayjs from "dayjs";
 
 import {
   Box,
   Button,
   DialogActions,
   DialogContent,
-  DialogTitle,
   InputAdornment,
   MenuItem,
   OutlinedInput,
@@ -23,8 +23,11 @@ import {
   Typography,
 } from "@mui/material";
 
-import { IMaskInput } from "react-imask";
-import dayjs from "dayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers";
+
 import DialogHeader from "../../components/small/DialogHeader";
 import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
@@ -42,7 +45,7 @@ export default function CashPaymentForm({
   toast,
 }) {
   const previousData = selectedFinanceIncome;
-  const [date, setDate] = React.useState(dayjs().format("DD/MM/YYYY"));
+  const [date, setDate] = React.useState(dayjs());
   const [method, setMethod] = React.useState("");
   const [hasDiscount, setHasDicount] = React.useState(false);
   const [discount, setDiscount] = React.useState(10);
@@ -158,31 +161,37 @@ export default function CashPaymentForm({
                     color={hasDiscount ? "darkgreen" : "#777"}
                   >
                     R$
-                    {(
-                      (selectedFinanceIncome.price * (100 - discount)) /
-                      100
-                    ).toFixed(2)}
+                    {hasDiscount
+                      ? (
+                          (selectedFinanceIncome.price * (100 - discount)) /
+                          100
+                        ).toFixed(2)
+                      : selectedFinanceIncome.price}
                   </Typography>
                 </TableCell>
 
-                <TableCell align="center">
-                  <IMaskInput
-                    style={{
-                      width: 100,
-                      padding: "1%",
-                      marginRight: "4%",
-                      marginTop: "1%",
-                      borderColor: "#eee",
-                      borderRadius: 4,
-                    }}
-                    mask="00/00/0000"
-                    definitions={{
-                      "#": /[1-9]/,
-                    }}
-                    onAccept={(value) => setDate(value)}
-                    overwrite
-                    value={date}
-                  />
+                <TableCell
+                  align="center"
+                >
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer
+                      components={["DatePicker"]}
+                      sx={{ py: 0 }}
+                    >
+                      <DatePicker
+                        format="DD/MM/YYYY"
+                        onChange={(newValue) => setDate(newValue)}
+                        value={date}
+                        sx={{
+                          "& .MuiInputBase-root": {
+                            height: 40,
+                            width: 150,
+                            mx: "auto",
+                          },
+                        }}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
                 </TableCell>
                 <TableCell align="center">
                   <Select
@@ -193,18 +202,10 @@ export default function CashPaymentForm({
                     onChange={(e) => setMethod(e.target.value)}
                     renderValue={(selected) => {
                       if (!selected) {
-                        return (
-                          <Typography sx={{ fontSize: 13 }}>
-                            Selecione um Método
-                          </Typography>
-                        );
+                        return <Typography>Selecione um Método</Typography>;
                       }
 
-                      return (
-                        <Typography sx={{ fontSize: 13 }}>
-                          {selected}
-                        </Typography>
-                      );
+                      return <Typography>{selected}</Typography>;
                     }}
                   >
                     <MenuItem disabled value="">

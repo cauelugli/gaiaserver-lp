@@ -4,7 +4,7 @@ const FinanceIncome = require("../models/FinanceIncome");
 const FinanceOutcome = require("../models/FinanceOutcome");
 const StockEntry = require("../models/StockEntry");
 
-// GET ALL FINANCES
+// GET ALL FINANCE INCOMES
 router.get("/income", async (req, res) => {
   try {
     const incomes = await FinanceIncome.find();
@@ -14,7 +14,7 @@ router.get("/income", async (req, res) => {
   }
 });
 
-// GET ALL FINANCES
+// GET ALL FINANCES OUTCOMES
 router.get("/outcome", async (req, res) => {
   try {
     const outcomes = await FinanceOutcome.find();
