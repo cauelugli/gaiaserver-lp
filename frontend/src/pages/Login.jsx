@@ -45,7 +45,7 @@ const Login = () => {
               closeOnClick: true,
               pauseOnHover: false,
               theme: "colored",
-              autoClose: 1200,
+              autoClose: 2000,
             }
           );
         } else {
