@@ -91,13 +91,13 @@ export default function Customization({ onClose }) {
     if (newLogo) {
       const formData = new FormData();
       formData.append("image", newLogo);
-      const uploadResponse = await api.post("/uploads/singleProduct", formData);
+      const uploadResponse = await api.post("/uploads/singleFile", formData);
       updatedImagePath = uploadResponse.data.imagePath;
     }
     if (newLogoBlack) {
       const formData = new FormData();
       formData.append("image", newLogoBlack);
-      const uploadResponse = await api.post("/uploads/singleProduct", formData);
+      const uploadResponse = await api.post("/uploads/singleFile", formData);
       updatedImageBlackPath = uploadResponse.data.imagePath;
     }
 

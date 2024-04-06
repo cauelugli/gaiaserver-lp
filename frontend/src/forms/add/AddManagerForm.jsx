@@ -79,7 +79,7 @@ const AddManagerForm = ({
     formData.append("image", image);
 
     try {
-      const uploadResponse = await api.post("/uploads/singleProduct", formData);
+      const uploadResponse = await api.post("/uploads/singleFile", formData);
       const imagePath = uploadResponse.data.imagePath;
       const res = await api.post("/managers", {
         name,

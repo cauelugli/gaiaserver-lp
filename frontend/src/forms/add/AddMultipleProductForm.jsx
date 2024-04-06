@@ -75,7 +75,7 @@ export default function AddMultipleProductForm({
 
         // Faça o upload da imagem para cada item
         const uploadResponse = await api.post(
-          "/uploads/singleProduct",
+          "/uploads/singleFile",
           formData
         );
         uploadResponses.push(uploadResponse.data.imagePath);

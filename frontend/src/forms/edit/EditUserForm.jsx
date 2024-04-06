@@ -56,7 +56,7 @@ const EditUserForm = ({
         const formData = new FormData();
         formData.append("image", newImage);
         const uploadResponse = await api.post(
-          "/uploads/singleProduct",
+          "/uploads/singleFile",
           formData
         );
         updatedImagePath = uploadResponse.data.imagePath;

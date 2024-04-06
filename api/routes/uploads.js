@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // CREATE SINGLE FILE
-router.post("/singleProduct", upload.single("image"), (req, res) => {
+router.post("/singleFile", upload.single("image"), (req, res) => {
   try {
     // Se o arquivo foi carregado com sucesso, retornar o caminho do arquivo
     const imagePath = req.file ? "/images/" + req.file.filename : "";

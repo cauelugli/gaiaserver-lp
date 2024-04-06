@@ -275,6 +275,7 @@ const AddJobForm = ({
         scheduledTo,
         createdBy: user.name,
         selectedSchedule: scheduleToWorker ? selectedSchedule : null,
+        attachments: attachedFiles
       });
       if (res.data) {
         toast.success(
