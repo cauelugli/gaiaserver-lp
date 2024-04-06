@@ -38,6 +38,7 @@ import JobTableActions from "../components/small/buttons/tableActionButtons/JobT
 import EditJobForm from "../forms/edit/EditJobForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import AddJobInteractionForm from "../forms/misc/AddJobInteractionForm";
+import ViewDialog from "../components/small/ViewDialog";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -68,6 +69,7 @@ export default function JobTable({
   const [openDetailAtividades, setOpenDetailAtividades] = React.useState(false);
   const [selectedJob, setSelectedJob] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState("");
+  const [openViewDialog, setOpenViewDialog] = React.useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openAddInteractionOnTable, setOpenAddInteractionOnTable] =
     React.useState(false);
@@ -288,6 +290,22 @@ export default function JobTable({
   const filteredValidCount = sortedRows.filter(
     (row) => row.status !== "Arquivado" && row.status !== "Concluido"
   ).length;
+
+  const imageExtensions = [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".bmp",
+    ".tiff",
+    ".webp",
+  ];
+
+  const isImage = (filename) =>
+    imageExtensions.some((extension) => filename.endsWith(extension));
+
+  // Função para verificar se o anexo é um PDF
+  const isPdf = (filename) => filename.endsWith(".pdf");
 
   return (
     <Box sx={{ minWidth: "1250px" }}>
@@ -584,21 +602,60 @@ export default function JobTable({
                                   <TableCell align="left">
                                     <Grid container direction="row">
                                       {job.attachments.map((attachment) => (
-                                        <Grid key item sx={{ mr: 1 }}>
+                                        <Grid
+                                          key={attachment}
+                                          item
+                                          sx={{ mr: 1 }}
+                                        >
                                           <Grid
                                             container
-                                            direction="row"
+                                            direction="column"
                                             alignItems="center"
                                             sx={{
                                               border: "1px solid darkgrey",
                                               borderRadius: 2,
+                                              padding: 1,
                                             }}
                                           >
+                                            {isPdf(attachment) ? (
+                                              <img
+                                                src={`http://localhost:3000/static/pdf.png`}
+                                                alt="PDF"
+                                                style={{
+                                                  width: "80px",
+                                                  height: "80px",
+                                                  marginBottom: "8px",
+                                                }}
+                                              />
+                                            ) : isImage(attachment) ? (
+                                              <img
+                                                src={`http://localhost:3000/static/${attachment}`}
+                                                alt="Pré-visualização"
+                                                style={{
+                                                  width: "80px",
+                                                  height: "80px",
+                                                  marginBottom: "8px",
+                                                }}
+                                              />
+                                            ) : (
+                                              <img
+                                                src={`http://localhost:3000/static/doc.png`}
+                                                alt="Other"
+                                                style={{
+                                                  width: "80px",
+                                                  height: "80px",
+                                                  marginBottom: "8px",
+                                                }}
+                                              />
+                                            )}
                                             <Typography
                                               sx={{
-                                                fontSize: 13,
-                                                ml: 1,
+                                                fontSize: 10,
                                                 color: "#777",
+                                                maxWidth: "75px",
+                                                whiteSpace: "nowrap",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
                                               }}
                                             >
                                               {
@@ -611,7 +668,10 @@ export default function JobTable({
 
                                             <Button
                                               size="small"
-                                              // onClick={() => removeFile(index)}
+                                              onClick={() => {
+                                                setSelectedItem(attachment);
+                                                setOpenViewDialog(true);
+                                              }}
                                               sx={{ mx: -1 }}
                                             >
                                               <VisibilityIcon />
@@ -1206,6 +1266,19 @@ export default function JobTable({
             successMessage={`${
               selectedItem.title && selectedItem.title
             } Deletado com Sucesso`}
+          />
+        </Dialog>
+      )}
+      {openViewDialog && (
+        <Dialog
+          open={openViewDialog}
+          onClose={() => setOpenViewDialog(false)}
+          fullWidth
+          maxWidth="lg"
+        >
+          <ViewDialog
+            selectedItem={selectedItem}
+            setOpenViewDialog={setOpenViewDialog}
           />
         </Dialog>
       )}
