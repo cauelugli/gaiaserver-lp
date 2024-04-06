@@ -241,6 +241,19 @@ const AddJobForm = ({
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
+      const uploadResponses = [];
+      for (const file of attachedFiles) {
+        const formData = new FormData();
+        formData.append("attachment", file);
+
+        // Faça o upload para cada item, arrays não funcionam bem
+        const uploadResponse = await api.post(
+          "/uploads/singleAttachment",
+          formData
+        );
+        uploadResponses.push(uploadResponse.data.attachmentPath);
+      }
+
       const res = await api.post("/jobs", {
         title,
         description,
@@ -275,7 +288,7 @@ const AddJobForm = ({
         scheduledTo,
         createdBy: user.name,
         selectedSchedule: scheduleToWorker ? selectedSchedule : null,
-        attachments: attachedFiles
+        attachments: uploadResponses,
       });
       if (res.data) {
         toast.success(

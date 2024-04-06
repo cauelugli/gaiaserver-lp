@@ -17,12 +17,21 @@ const storage = multer.diskStorage({
   },
 });
 
+const storageDocs = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../../uploads/docs"));
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
 const upload = multer({ storage });
+const uploadDocs = multer({ storage: storageDocs });
 
 // CREATE SINGLE FILE
 router.post("/singleFile", upload.single("image"), (req, res) => {
   try {
-    // Se o arquivo foi carregado com sucesso, retornar o caminho do arquivo
     const imagePath = req.file ? "/images/" + req.file.filename : "";
     return res.status(200).json({ imagePath });
   } catch (error) {
@@ -32,6 +41,23 @@ router.post("/singleFile", upload.single("image"), (req, res) => {
       .json({ message: "Erro ao fazer o upload do arquivo." });
   }
 });
+
+// CREATE SINGLE ATTACHEMENT
+router.post(
+  "/singleAttachment",
+  uploadDocs.single("attachment"),
+  (req, res) => {
+    try {
+      const attachmentPath = req.file ? "/docs/" + req.file.filename : "";
+      return res.status(200).json({ attachmentPath });
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(500)
+        .json({ message: "Erro ao fazer o upload do arquivo." });
+    }
+  }
+);
 
 // GET ALL FILES
 router.get("/listFiles", async (req, res) => {
@@ -164,7 +190,9 @@ router.post("/deleteMultipleFiles", (req, res) => {
   const { files } = req.body;
   const directory = path.join(
     __dirname,
-    `../../uploads/${req.body.files[0].name.endsWith(".pdf") ? "docs" : "images"}`
+    `../../uploads/${
+      req.body.files[0].name.endsWith(".pdf") ? "docs" : "images"
+    }`
   );
   try {
     files.forEach((file) => {
