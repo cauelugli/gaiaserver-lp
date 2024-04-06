@@ -13,6 +13,7 @@ import {
   AccordionSummary,
   Avatar,
   Box,
+  Button,
   Collapse,
   Dialog,
   Grid,
@@ -31,11 +32,15 @@ import {
   Typography,
 } from "@mui/material";
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import ProjectTaskActions from "../components/small/buttons/ProjectTaskActions";
 import ProjectTableActions from "../components/small/buttons/tableActionButtons/ProjectTableActions";
+import ViewDialog from "../components/small/ViewDialog";
+import AddAttachmentsForm from "../forms/misc/AddAttachmentsForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -54,12 +59,14 @@ export default function ProjectsTable({
   const [selectedProject, setSelectedProject] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
+  const [openAddAttachments, setOpenAddAttachments] = React.useState(false);
   const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
   const [openDetailStages, setOpenDetailStages] = React.useState(true);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
   const [isAddingInteraction, setIsAddingInteraction] = React.useState(false);
   const [isAddingResolution, setIsAddingResolution] = React.useState(false);
+  const [openViewDialog, setOpenViewDialog] = React.useState(false);
 
   const [newInteractionText, setNewInteractionText] = React.useState("");
   const [resolutionText, setResolutionText] = React.useState("");
@@ -229,6 +236,22 @@ export default function ProjectsTable({
     }
   };
 
+  const imageExtensions = [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".bmp",
+    ".tiff",
+    ".webp",
+  ];
+
+  const isImage = (filename) =>
+    imageExtensions.some((extension) => filename.endsWith(extension));
+
+  // Função para verificar se o anexo é um PDF
+  const isPdf = (filename) => filename.endsWith(".pdf");
+
   return (
     <>
       <Box sx={{ minWidth: "1250px" }}>
@@ -237,7 +260,7 @@ export default function ProjectsTable({
             <TableBody>
               <TableRow
                 sx={{
-                   backgroundColor: "#eee",
+                  backgroundColor: "#eee",
                 }}
               >
                 {tableHeaderRow.map((headCell) => (
@@ -365,6 +388,7 @@ export default function ProjectsTable({
                         <ProjectTableActions
                           configCustomization={"configCustomization"}
                           selectedItem={project}
+                          handleOpenAddAttachment={setOpenAddAttachments}
                           refreshData={refreshData}
                           setRefreshData={setRefreshData}
                         />
@@ -435,6 +459,107 @@ export default function ProjectsTable({
                                       <Typography sx={{ fontSize: 13 }}>
                                         ####
                                       </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableBody>
+                              </Table>
+                              <Table size="small" sx={{ mt: 1 }}>
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell>
+                                      <Typography
+                                        sx={{ fontSize: 13, color: "#777" }}
+                                      >
+                                        Anexos
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  <TableRow>
+                                    <TableCell align="left">
+                                      <Grid container direction="row">
+                                        {project.attachments.map(
+                                          (attachment) => (
+                                            <Grid
+                                              key={attachment}
+                                              item
+                                              sx={{ mr: 1 }}
+                                            >
+                                              <Grid
+                                                container
+                                                direction="column"
+                                                alignItems="center"
+                                                sx={{
+                                                  border: "1px solid darkgrey",
+                                                  borderRadius: 2,
+                                                  padding: 1,
+                                                }}
+                                              >
+                                                {isPdf(attachment) ? (
+                                                  <img
+                                                    src={`http://localhost:3000/static/pdf.png`}
+                                                    alt="PDF"
+                                                    style={{
+                                                      width: "80px",
+                                                      height: "80px",
+                                                      marginBottom: "8px",
+                                                    }}
+                                                  />
+                                                ) : isImage(attachment) ? (
+                                                  <img
+                                                    src={`http://localhost:3000/static/${attachment}`}
+                                                    alt="Pré-visualização"
+                                                    style={{
+                                                      width: "80px",
+                                                      height: "80px",
+                                                      marginBottom: "8px",
+                                                    }}
+                                                  />
+                                                ) : (
+                                                  <img
+                                                    src={`http://localhost:3000/static/doc.png`}
+                                                    alt="Other"
+                                                    style={{
+                                                      width: "80px",
+                                                      height: "80px",
+                                                      marginBottom: "8px",
+                                                    }}
+                                                  />
+                                                )}
+                                                <Typography
+                                                  sx={{
+                                                    fontSize: 10,
+                                                    color: "#777",
+                                                    maxWidth: "75px",
+                                                    whiteSpace: "nowrap",
+                                                    overflow: "hidden",
+                                                    textOverflow: "ellipsis",
+                                                  }}
+                                                >
+                                                  {
+                                                    attachment
+                                                      .split("/")
+                                                      .pop()
+                                                      .split(".")[0]
+                                                  }
+                                                </Typography>
+
+                                                <Button
+                                                  size="small"
+                                                  onClick={() => {
+                                                    setSelectedItem(attachment);
+                                                    setOpenViewDialog(true);
+                                                  }}
+                                                  sx={{ mx: -1 }}
+                                                >
+                                                  <VisibilityIcon />
+                                                </Button>
+                                              </Grid>
+                                            </Grid>
+                                          )
+                                        )}
+                                      </Grid>
                                     </TableCell>
                                   </TableRow>
                                 </TableBody>
@@ -1054,6 +1179,36 @@ export default function ProjectsTable({
               successMessage={`${
                 selectedItem.name && selectedItem.name
               } Deletado com Sucesso`}
+            />
+          </Dialog>
+        )}
+        {openAddAttachments && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddAttachments}
+          onClose={() => setOpenAddAttachments(!openAddAttachments)}
+        >
+          <AddAttachmentsForm
+            selectedJob={selectedProject}
+            setOpenAddAttachments={setOpenAddAttachments}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+            endpoint="projects"
+          />
+        </Dialog>
+      )}
+        {openViewDialog && (
+          <Dialog
+            open={openViewDialog}
+            onClose={() => setOpenViewDialog(false)}
+            fullWidth
+            maxWidth="lg"
+          >
+            <ViewDialog
+              selectedItem={selectedItem}
+              setOpenViewDialog={setOpenViewDialog}
             />
           </Dialog>
         )}

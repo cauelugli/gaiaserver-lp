@@ -36,6 +36,7 @@ import ProjectStages from "../../components/small/ProjectStages";
 import ProjectStageTasks from "../../components/small/ProjectStageTasks";
 import ProjectReviewTable from "../../components/ProjectReviewTable";
 import DialogHeader from "../../components/small/DialogHeader";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 import FormEndLine from "../../components/small/FormEndLine";
 import FormEndLineProjectLogo from "../../components/small/FormEndLineProjectLogo";
 
@@ -78,6 +79,9 @@ export default function AddProjectForm({
   );
   const [availableDepartments, setAvailableDepartments] = React.useState([]);
   const [members, setMembers] = React.useState([]);
+  const [attachments, setAttachments] = React.useState(
+    template.attachments || []
+  );
   const [stages, setStages] = React.useState(template.stages || []);
   const [stagesColorSchema, setStagesSchemaColor] = React.useState(0);
   const [definedStagesColors, setDefinedStagesColors] = React.useState(
@@ -93,6 +97,18 @@ export default function AddProjectForm({
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
+      const uploadResponses = [];
+      for (const file of attachments) {
+        const formData = new FormData();
+        formData.append("attachment", file);
+
+        // Faça o upload para cada item, arrays não funcionam bem
+        const uploadResponse = await api.post(
+          "/uploads/singleAttachment",
+          formData
+        );
+        uploadResponses.push(uploadResponse.data.attachmentPath);
+      }
       const res = await api.post("/projects", {
         name,
         creator: { name: user.name, id: user._id },
@@ -110,6 +126,7 @@ export default function AddProjectForm({
         definedStagesColors,
         recurrent,
         templateName,
+        attachments: uploadResponses,
       });
       if (res.data) {
         toast.success("Projeto Adicionado!", {
@@ -120,19 +137,19 @@ export default function AddProjectForm({
         });
 
         if (configData.notifyWhenProjectIsCreated) {
-          const memberIds = members.map(member => member.id);
+          const memberIds = members.map((member) => member.id);
           socket.emit("whenProjectIsCreated", {
             sender: user.name,
             list: memberIds,
             date: dayjs(Date.now()).format("DD/MM/YYYY"),
-            projectName: name
+            projectName: name,
           });
         }
       }
       setOpenAdd(!openAdd);
       setRefreshData(!refreshData);
     } catch (err) {
-      console.log('err', err)
+      console.log("err", err);
       toast.error("Houve algum erro...", {
         closeOnClick: true,
         pauseOnHover: false,
@@ -183,6 +200,14 @@ export default function AddProjectForm({
     );
     setAvailableDepartments(filteredDepartments);
   }, [departments, selectedDepartments]);
+
+  const handleFileChange = (event) => {
+    setAttachments([...attachments, ...event.target.files]);
+  };
+
+  const removeFile = (indexToRemove) => {
+    setAttachments(attachments.filter((_, index) => index !== indexToRemove));
+  };
 
   return (
     <form onSubmit={handleAdd} style={{ marginBottom: 10 }}>
@@ -540,6 +565,66 @@ export default function AddProjectForm({
                     renderInput={(params) => <TextField {...params} />}
                   />
                 </LocalizationProvider>
+              </Grid>
+            )}
+            {mainDepartment && (
+              <Grid sx={{ mt: 4 }}>
+                <Grid container direction="row" alignItems="center">
+                  <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
+                    Anexar Arquivos
+                  </Typography>
+                  <input
+                    type="file"
+                    multiple
+                    id="fileInput"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+                  <label htmlFor="fileInput">
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      component="span"
+                      size="small"
+                      startIcon={<FileUploadIcon />}
+                      sx={{ ml: 1 }}
+                    >
+                      Enviar
+                    </Button>
+                  </label>
+                  <Grid item>
+                    <Grid container direction="row">
+                      {attachments.map((file, index) => (
+                        <Grid key={index} item sx={{ ml: 1 }}>
+                          <Grid
+                            container
+                            direction="row"
+                            alignItems="center"
+                            sx={{
+                              border: "1px solid darkgrey",
+                              borderRadius: 2,
+                            }}
+                          >
+                            <Typography
+                              sx={{ fontSize: 13, ml: 1, color: "#777" }}
+                            >
+                              {file.name}
+                            </Typography>
+
+                            <Button
+                              size="small"
+                              color="error"
+                              onClick={() => removeFile(index)}
+                              sx={{ mx: -1 }}
+                            >
+                              <DeleteIcon />
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Grid>
+                </Grid>
               </Grid>
             )}
           </>

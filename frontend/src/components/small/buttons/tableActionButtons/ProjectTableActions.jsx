@@ -14,10 +14,12 @@ import {
   Typography,
 } from "@mui/material";
 
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ChatIcon from "@mui/icons-material/Chat";
 import MenuIcon from "@mui/icons-material/Menu";
+
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 
 export default function ProjectsTableActions(props) {
@@ -85,6 +87,23 @@ export default function ProjectsTableActions(props) {
               sx={{ ml: -3 }}
             />
           </ListItemButton>
+
+          <ListItemButton
+            onClick={(item) => {
+              props.handleOpenAddAttachment(item), setAnchorEl(null);
+            }}
+          >
+            <ListItemIcon>
+              <AttachFileIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: 14 }}>Anexar Arquivo</Typography>
+              }
+              sx={{ ml: -3 }}
+            />
+          </ListItemButton>
+
           <ListItemButton
             onClick={(item) => handleConfirmDelete(item)}
             sx={{ color: "red" }}

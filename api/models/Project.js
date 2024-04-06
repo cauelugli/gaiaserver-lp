@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const projectSchema = new mongoose.Schema({
   attachments: {
-    type: Object,
+    type: Array,
   },
   createdAt: {
     type: String,

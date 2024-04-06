@@ -51,17 +51,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// DELETE PROJECT
-router.delete("/:id", async (req, res) => {
-  const projectId = req.params.id;
-  try {
-    const deletedProject = await Project.findByIdAndDelete(projectId);
-    res.status(200).json(deletedProject);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // UPDATE PROJECT
 router.put("/", async (req, res) => {
   try {
@@ -106,6 +95,22 @@ router.post("/addInteraction", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Error updating project", error: err });
+  }
+});
+
+// ADD PROJECT ATTACHMENTS
+router.put("/addAttachments", async (req, res) => {
+  const { jobId, attachments } = req.body;
+
+  try {
+    const project = await Project.findById(jobId);
+    project.attachments = [...project.attachments, ...attachments];
+    await project.save();
+
+    res.status(200).json({ message: "Attachments added successfully", project });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred", error: err });
   }
 });
 
@@ -179,6 +184,17 @@ router.post("/resolveTask", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Error resolving task", error: err });
+  }
+});
+
+// DELETE PROJECT
+router.delete("/:id", async (req, res) => {
+  const projectId = req.params.id;
+  try {
+    const deletedProject = await Project.findByIdAndDelete(projectId);
+    res.status(200).json(deletedProject);
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 

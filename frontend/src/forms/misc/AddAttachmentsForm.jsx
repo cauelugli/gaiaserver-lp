@@ -20,6 +20,7 @@ const AddAttachmentsForm = ({
   refreshData,
   setRefreshData,
   toast,
+  endpoint
 }) => {
   const [attachments, setAttachments] = React.useState([]);
 
@@ -39,7 +40,7 @@ const AddAttachmentsForm = ({
         uploadResponses.push(uploadResponse.data.attachmentPath);
       }
 
-      const res = await api.put(`/jobs/addAttachments`, {
+      const res = await api.put(`/${endpoint}/addAttachments`, {
         jobId: selectedJob._id,
         attachments: uploadResponses,
       });

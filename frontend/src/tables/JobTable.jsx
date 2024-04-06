@@ -1269,6 +1269,7 @@ export default function JobTable({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
+            endpoint="jobs"
           />
         </Dialog>
       )}
