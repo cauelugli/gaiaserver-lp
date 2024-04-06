@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 
 const storageDocs = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../uploads/docs"));
+    cb(null, path.join(__dirname, "../../uploads/attachments"));
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
@@ -48,7 +48,7 @@ router.post(
   uploadDocs.single("attachment"),
   (req, res) => {
     try {
-      const attachmentPath = req.file ? "/docs/" + req.file.filename : "";
+      const attachmentPath = req.file ? "/attachments/" + req.file.filename : "";
       return res.status(200).json({ attachmentPath });
     } catch (error) {
       console.error(error);

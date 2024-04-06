@@ -38,7 +38,7 @@ const recentActivityRoute = require("./routes/recentActivity");
 dotenv.config();
 app.use(cors());
 app.use(express.json());
-app.use("/docs", express.static(__dirname + "/uploads/docs"));
+app.use("/attachments", express.static(__dirname + "/uploads/attachments"));
 app.use("/images", express.static(__dirname + "/uploads/images"));
 app.use("/static", express.static("../uploads"));
 
