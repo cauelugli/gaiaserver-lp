@@ -30,12 +30,13 @@ import {
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import InteractionReactions from "../components/small/InteractionReactions";
+import JobTableActions from "../components/small/buttons/tableActionButtons/JobTableActions";
 
 import EditJobForm from "../forms/edit/EditJobForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
-import JobTableActions from "../components/small/buttons/tableActionButtons/JobTableActions";
 import AddJobInteractionForm from "../forms/misc/AddJobInteractionForm";
 
 const api = axios.create({
@@ -562,6 +563,63 @@ export default function JobTable({
                                     <Typography sx={{ fontSize: 13 }}>
                                       {job.status}
                                     </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                            <Table size="small" sx={{ mt: 1 }}>
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Anexos
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell align="left">
+                                    <Grid container direction="row">
+                                      {job.attachments.map((attachment) => (
+                                        <Grid key item sx={{ mr: 1 }}>
+                                          <Grid
+                                            container
+                                            direction="row"
+                                            alignItems="center"
+                                            sx={{
+                                              border: "1px solid darkgrey",
+                                              borderRadius: 2,
+                                            }}
+                                          >
+                                            <Typography
+                                              sx={{
+                                                fontSize: 13,
+                                                ml: 1,
+                                                color: "#777",
+                                              }}
+                                            >
+                                              {
+                                                attachment
+                                                  .split("/")
+                                                  .pop()
+                                                  .split(".")[0]
+                                              }
+                                            </Typography>
+
+                                            <Button
+                                              size="small"
+                                              // onClick={() => removeFile(index)}
+                                              sx={{ mx: -1 }}
+                                            >
+                                              <VisibilityIcon />
+                                            </Button>
+                                          </Grid>
+                                        </Grid>
+                                      ))}
+                                    </Grid>
                                   </TableCell>
                                 </TableRow>
                               </TableBody>
