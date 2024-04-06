@@ -372,7 +372,7 @@ router.put("/interaction/remove", async (req, res) => {
   try {
     const job = await Job.findById(jobId);
     const updatedInteractions = job.interactions.filter(
-      interaction => interaction._id.toString() !== interactionId
+      (interaction) => interaction._id.toString() !== interactionId
     );
 
     const updatedJob = await Job.findByIdAndUpdate(
@@ -387,7 +387,6 @@ router.put("/interaction/remove", async (req, res) => {
     res.status(500).send(err);
   }
 });
-
 
 // EDIT JOB
 router.put("/edit", async (req, res) => {
@@ -580,6 +579,22 @@ router.put("/edit", async (req, res) => {
   } catch (err) {
     console.log("err", err);
     res.status(500).json(err);
+  }
+});
+
+// ADD JOB ATTACHMENTS
+router.put("/addAttachments", async (req, res) => {
+  const { jobId, attachments } = req.body;
+
+  try {
+    const job = await Job.findById(jobId);
+    job.attachments = [...job.attachments, ...attachments];
+    await job.save();
+
+    res.status(200).json({ message: "Attachments added successfully", job });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred", error: err });
   }
 });
 

@@ -39,6 +39,7 @@ import EditJobForm from "../forms/edit/EditJobForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import AddJobInteractionForm from "../forms/misc/AddJobInteractionForm";
 import ViewDialog from "../components/small/ViewDialog";
+import AddAttachmentsForm from "../forms/misc/AddAttachmentsForm";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -60,6 +61,7 @@ export default function JobTable({
   const [userReactions, setUserReactions] = React.useState({});
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openAddInteraction, setOpenAddInteraction] = React.useState(false);
+  const [openAddAttachments, setOpenAddAttachments] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openDetailGeral, setOpenDetailGeral] = React.useState(true);
   const [openDetailDescrição, setOpenDetailDescrição] = React.useState(false);
@@ -487,6 +489,7 @@ export default function JobTable({
                         handleOpenEdit={handleOpenEdit}
                         handleOpenAddJobInteraction={setOpenAddInteraction}
                         handleConfirmDelete={handleConfirmDelete}
+                        handleOpenAddAttachment={setOpenAddAttachments}
                       />
                     </TableCell>
                   </TableRow>
@@ -1247,6 +1250,22 @@ export default function JobTable({
             openEditJob={openAddInteraction}
             selectedJob={selectedJob}
             setOpenEditJob={setOpenAddInteraction}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openAddAttachments && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddAttachments}
+          onClose={() => setOpenAddAttachments(!openAddAttachments)}
+        >
+          <AddAttachmentsForm
+            selectedJob={selectedJob}
+            setOpenAddAttachments={setOpenAddAttachments}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
