@@ -16,6 +16,11 @@ import {
   Typography,
 } from "@mui/material";
 
+import DeleteIcon from "@mui/icons-material/Delete";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+
+import DialogHeader from "../../components/small/DialogHeader";
+
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -31,6 +36,7 @@ const AddJobInteractionForm = ({
   fromSales,
 }) => {
   const [activity, setActivity] = React.useState("");
+  const [attachments, setAttachments] = React.useState([]);
   const [endpoint, setEndpoint] = React.useState(fromSales ? "sales" : "jobs");
 
   const handleAddInteraction = async (e) => {
@@ -44,6 +50,23 @@ const AddJobInteractionForm = ({
       date: dayjs().format("DD/MM/YYYY HH:mm"),
     };
     try {
+      const uploadResponses = [];
+      for (const file of attachments) {
+        const formData = new FormData();
+        formData.append("attachment", file);
+
+        const uploadResponse = await api.post(
+          "/uploads/singleAttachment",
+          formData
+        );
+        uploadResponses.push(uploadResponse.data.attachmentPath);
+      }
+
+      await api.put(`/${endpoint}/addAttachments`, {
+        jobId: selectedJob._id,
+        attachments: uploadResponses,
+      });
+
       const res = await api.put(`/${endpoint}/interaction`, requestBody);
       if (res.data) {
         toast.success("Interação Adicionada!", {
@@ -66,12 +89,18 @@ const AddJobInteractionForm = ({
     }
   };
 
+  const handleFileChange = (event) => {
+    setAttachments([...attachments, ...event.target.files]);
+  };
+
+  const removeFile = (indexToRemove) => {
+    setAttachments(attachments.filter((_, index) => index !== indexToRemove));
+  };
+
   return (
     <form onSubmit={handleAddInteraction}>
+      <DialogHeader title="Histórico do Job" femaleGender={false} />
       <Grid container>
-        <Typography sx={{ m: 3, fontSize: 18, fontWeight: "bold" }}>
-          Histórico do Job
-        </Typography>
         <Grid container direction="column" sx={{ mx: 3 }}>
           <Grid item>
             <Typography sx={{ mt: 3, mb: 1, fontSize: 18, fontWeight: "bold" }}>
@@ -142,6 +171,65 @@ const AddJobInteractionForm = ({
               onChange={(e) => setActivity(e.target.value)}
               sx={{ width: "100%", mx: "auto" }}
             />
+            <Grid sx={{ mt: 2 }}>
+              <Grid container direction="row" alignItems="center">
+                <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
+                  Anexar Arquivos
+                </Typography>
+                <input
+                  type="file"
+                  multiple
+                  id="fileInput"
+                  style={{ display: "none" }}
+                  onChange={handleFileChange}
+                />
+                <label htmlFor="fileInput">
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    component="span"
+                    size="small"
+                    startIcon={<FileUploadIcon />}
+                    sx={{ ml: 1 }}
+                  >
+                    Enviar
+                  </Button>
+                </label>
+                <Grid item>
+                  <Grid container direction="row">
+                    {attachments.map((file, index) => (
+                      <Grid key={index} item sx={{ ml: 1 }}>
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                          sx={{
+                            border: "1px solid darkgrey",
+                            borderRadius: 2,
+                          }}
+                        >
+                          <Typography
+                            sx={{ fontSize: 13, ml: 1, color: "#777" }}
+                          >
+                            {file.name}
+                          </Typography>
+
+                          <Button
+                            size="small"
+                            color="error"
+                            onClick={() => removeFile(index)}
+                            sx={{ mx: -1 }}
+                          >
+                            <DeleteIcon />
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+
             <Grid item>
               <Grid container direction="row" justifyContent="flex-end">
                 <Button
