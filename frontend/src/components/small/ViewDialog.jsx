@@ -22,12 +22,20 @@ const imageExtensions = [
   ".webp",
 ];
 
-const ViewDialog = ({ selectedItem, setOpenViewDialog }) => {
+const ViewDialog = ({
+  selectedItem,
+  setOpenViewDialog,
+  fromInteractionForm,
+}) => {
   const isImage = imageExtensions.some((extension) =>
-    selectedItem.endsWith(extension)
+    fromInteractionForm
+      ? selectedItem.name.endsWith(extension)
+      : selectedItem.endsWith(extension)
   );
 
-  const isPdf = selectedItem.endsWith(".pdf");
+  const isPdf = fromInteractionForm
+    ? selectedItem.name.endsWith(".pdf")
+    : selectedItem.endsWith(".pdf");
 
   return (
     <>
@@ -45,13 +53,17 @@ const ViewDialog = ({ selectedItem, setOpenViewDialog }) => {
         >
           {isImage && (
             <img
-              src={`http://localhost:3000/static/${selectedItem}`}
+              src={
+                fromInteractionForm
+                  ? URL.createObjectURL(selectedItem)
+                  : `http://localhost:3000/static/${selectedItem}`
+              }
               alt="Imagem"
               style={{
                 maxWidth: "100%",
                 maxHeight: "100%",
                 objectFit: "contain",
-              }} // Garante que a imagem seja redimensionada proporcionalmente
+              }}
             />
           )}
           {isPdf && (
@@ -60,7 +72,11 @@ const ViewDialog = ({ selectedItem, setOpenViewDialog }) => {
                 workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
               >
                 <Viewer
-                  fileUrl={`http://localhost:3000/static/${selectedItem}`}
+                  fileUrl={
+                    fromInteractionForm
+                      ? URL.createObjectURL(selectedItem)
+                      : `http://localhost:3000/static/${selectedItem}`
+                  }
                 />
               </Worker>
             </Box>
