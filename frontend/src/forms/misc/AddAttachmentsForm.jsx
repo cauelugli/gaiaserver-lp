@@ -3,7 +3,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
-import dayjs from "dayjs";
 
 import { Button, Divider, Grid, Typography } from "@mui/material";
 
