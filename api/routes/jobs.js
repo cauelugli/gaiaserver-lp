@@ -711,11 +711,27 @@ router.delete("/:id", async (req, res) => {
       if (fs.existsSync(pdfPath)) {
         fs.unlinkSync(pdfPath);
       } else {
-        console.log("NOT found PDF to delete");
+        ("");
       }
 
       await Quote.findByIdAndDelete(quoteToDelete._id);
     }
+
+    if (deletedRequest.attachments && deletedRequest.attachments.length > 0) {
+      deletedRequest.attachments.forEach((attachment) => {
+        const attachmentPath = path.join(
+          __dirname,
+          "../../uploads",
+          attachment
+        );
+        if (fs.existsSync(attachmentPath)) {
+          fs.unlinkSync(attachmentPath);
+        } else {
+          ("");
+        }
+      });
+    }
+
     res.status(200).json(deletedRequest);
   } catch (err) {
     res.status(500).json(err);
