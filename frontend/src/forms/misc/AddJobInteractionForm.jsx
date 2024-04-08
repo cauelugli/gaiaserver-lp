@@ -16,7 +16,6 @@ import {
   TableBody,
   TableCell,
   TableRow,
-  TextField,
   Typography,
 } from "@mui/material";
 
@@ -86,6 +85,7 @@ const AddJobInteractionForm = ({
       const requestBody = {
         jobId: selectedJob._id,
         activity,
+        attachments: uploadResponses,
         user,
         worker: selectedJob.worker,
         manager: selectedJob.manager,

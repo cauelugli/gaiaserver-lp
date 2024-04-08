@@ -34,6 +34,7 @@ jobSchema = new mongoose.Schema({
   interactions: [
     {
       activity: String,
+      attachments: Array,
       date: String,
       number: Number,
       reactions: {

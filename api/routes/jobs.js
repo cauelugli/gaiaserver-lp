@@ -347,6 +347,7 @@ router.put("/interaction", async (req, res) => {
             activity: req.body.activity,
             user: user.name,
             date: req.body.date,
+            attachments: req.body.attachments,
             reactions: {
               love: { quantity: 0, usersReacted: [] },
               like: { quantity: 0, usersReacted: [] },
