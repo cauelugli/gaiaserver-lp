@@ -27,10 +27,11 @@ import {
   Tooltip,
   Button,
   TextField,
+  Popover,
 } from "@mui/material";
 
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import InteractionReactions from "../components/small/InteractionReactions";
 import JobTableActions from "../components/small/buttons/tableActionButtons/JobTableActions";
@@ -76,6 +77,8 @@ export default function JobTable({
   const [openAddInteractionOnTable, setOpenAddInteractionOnTable] =
     React.useState(false);
   const [activity, setActivity] = React.useState("");
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openPopoverIndex, setOpenPopoverIndex] = React.useState(null);
 
   const handleConfirmDelete = (position) => {
     setSelectedItem(position);
@@ -306,8 +309,17 @@ export default function JobTable({
   const isImage = (filename) =>
     imageExtensions.some((extension) => filename.endsWith(extension));
 
-  // Função para verificar se o anexo é um PDF
   const isPdf = (filename) => filename.endsWith(".pdf");
+
+  const handlePopoverOpen = (index) => (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpenPopoverIndex(index);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+    setOpenPopoverIndex(null);
+  };
 
   return (
     <Box sx={{ minWidth: "1250px" }}>
@@ -604,84 +616,76 @@ export default function JobTable({
                                 <TableRow>
                                   <TableCell align="left">
                                     <Grid container direction="row">
-                                      {job.attachments.map((attachment) => (
-                                        <Grid
-                                          key={attachment}
-                                          item
-                                          sx={{ mr: 1 }}
-                                        >
-                                          <Grid
-                                            container
-                                            direction="column"
-                                            alignItems="center"
-                                            sx={{
-                                              border: "1px solid darkgrey",
-                                              borderRadius: 2,
-                                              padding: 1,
-                                            }}
-                                          >
-                                            {isPdf(attachment) ? (
-                                              <img
-                                                src={`http://localhost:3000/static/pdf.png`}
-                                                alt="PDF"
-                                                style={{
-                                                  width: "80px",
-                                                  height: "80px",
-                                                  marginBottom: "8px",
-                                                }}
-                                              />
-                                            ) : isImage(attachment) ? (
-                                              <img
-                                                src={`http://localhost:3000/static/${attachment}`}
-                                                alt="Pré-visualização"
-                                                style={{
-                                                  width: "80px",
-                                                  height: "80px",
-                                                  marginBottom: "8px",
-                                                }}
-                                              />
-                                            ) : (
-                                              <img
-                                                src={`http://localhost:3000/static/doc.png`}
-                                                alt="Other"
-                                                style={{
-                                                  width: "80px",
-                                                  height: "80px",
-                                                  marginBottom: "8px",
-                                                }}
-                                              />
-                                            )}
-                                            <Typography
+                                      {job.attachments.map(
+                                        (attachment, index) => (
+                                          <Grid key={index} item sx={{ mr: 1 }}>
+                                            <Grid
+                                              container
+                                              direction="column"
+                                              alignItems="center"
                                               sx={{
-                                                fontSize: 10,
-                                                color: "#777",
-                                                maxWidth: "75px",
-                                                whiteSpace: "nowrap",
-                                                overflow: "hidden",
-                                                textOverflow: "ellipsis",
+                                                cursor: "pointer",
+                                                border: "1px solid darkgrey",
+                                                borderRadius: 2,
+                                                padding: 1,
                                               }}
-                                            >
-                                              {
-                                                attachment
-                                                  .split("/")
-                                                  .pop()
-                                                  .split(".")[0]
-                                              }
-                                            </Typography>
-
-                                            <Button
-                                              size="small"
                                               onClick={() => {
                                                 setSelectedItem(attachment);
                                                 setOpenViewDialog(true);
                                               }}
-                                              sx={{ mx: -1 }}
                                             >
-                                              <VisibilityIcon />
-                                            </Button>
+                                              {isPdf(attachment) ? (
+                                                <img
+                                                  src={`http://localhost:3000/static/pdf.png`}
+                                                  alt="PDF"
+                                                  style={{
+                                                    width: "80px",
+                                                    height: "80px",
+                                                    marginBottom: "8px",
+                                                  }}
+                                                />
+                                              ) : isImage(attachment) ? (
+                                                <img
+                                                  src={`http://localhost:3000/static/${attachment}`}
+                                                  alt="Pré-visualização"
+                                                  style={{
+                                                    width: "80px",
+                                                    height: "80px",
+                                                    marginBottom: "8px",
+                                                  }}
+                                                />
+                                              ) : (
+                                                <img
+                                                  src={`http://localhost:3000/static/doc.png`}
+                                                  alt="Other"
+                                                  style={{
+                                                    width: "80px",
+                                                    height: "80px",
+                                                    marginBottom: "8px",
+                                                  }}
+                                                />
+                                              )}
+                                              <Typography
+                                                sx={{
+                                                  fontSize: 10,
+                                                  color: "#777",
+                                                  maxWidth: "75px",
+                                                  whiteSpace: "nowrap",
+                                                  overflow: "hidden",
+                                                  textOverflow: "ellipsis",
+                                                }}
+                                              >
+                                                {
+                                                  attachment
+                                                    .split("/")
+                                                    .pop()
+                                                    .split(".")[0]
+                                                }
+                                              </Typography>
+                                            </Grid>
                                           </Grid>
-                                        </Grid>
-                                      ))}
+                                        )
+                                      )}
                                     </Grid>
                                   </TableCell>
                                 </TableRow>
@@ -1006,6 +1010,13 @@ export default function JobTable({
                                     <Typography
                                       sx={{ fontSize: 13, color: "#777" }}
                                     >
+                                      Anexos
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
                                       Data
                                     </Typography>
                                   </TableCell>
@@ -1019,9 +1030,9 @@ export default function JobTable({
                                 </TableRow>
                               </TableHead>
                               <TableBody>
-                                {job.interactions.map((interaction) => (
+                                {job.interactions.map((interaction, index) => (
                                   <TableRow
-                                    key={interaction.number}
+                                    key={index}
                                     sx={{
                                       backgroundColor:
                                         interaction.number % 2 === 0
@@ -1038,6 +1049,114 @@ export default function JobTable({
                                       <Typography sx={{ fontSize: 13 }}>
                                         {interaction.activity}
                                       </Typography>
+                                    </TableCell>
+                                    <TableCell align="left">
+                                      {interaction.attachments.length !== 0 && (
+                                        <Grid>
+                                          <AttachFileIcon
+                                            sx={{
+                                              fontSize: 16,
+                                              color: "#777",
+                                              cursor: "pointer",
+                                            }}
+                                            onClick={handlePopoverOpen(index)}
+                                          />
+                                          {openPopoverIndex === index && (
+                                            <Popover
+                                              open={Boolean(anchorEl)}
+                                              anchorEl={anchorEl}
+                                              onClose={handlePopoverClose}
+                                              anchorOrigin={{
+                                                vertical: "bottom",
+                                                horizontal: "left",
+                                              }}
+                                            >
+                                              <Box
+                                                p={2}
+                                                sx={{
+                                                  width: "auto",
+                                                  maxWidth: 460,
+                                                  height: "auto",
+                                                  maxHeight: 280,
+                                                }}
+                                              >
+                                                <Typography
+                                                  variant="h6"
+                                                  sx={{ color: "#555" }}
+                                                >
+                                                  Anexos
+                                                </Typography>
+                                                <Grid container direction="row">
+                                                  {interaction.attachments.map(
+                                                    (
+                                                      attachment,
+                                                      attachmentIndex
+                                                    ) => (
+                                                      <Grid
+                                                        key={attachmentIndex}
+                                                        sx={{
+                                                          mr: 2,
+                                                          mb: 2,
+                                                          cursor: "pointer",
+                                                          border:
+                                                            "1px solid darkgrey",
+                                                          borderRadius: 2,
+                                                          padding: 1,
+                                                        }}
+                                                        onClick={() => {
+                                                          setSelectedItem(
+                                                            attachment
+                                                          );
+                                                          setOpenViewDialog(
+                                                            true
+                                                          );
+                                                        }}
+                                                      >
+                                                        {isPdf(attachment) ? (
+                                                          <img
+                                                            src={`http://localhost:3000/static/pdf.png`}
+                                                            alt="PDF"
+                                                            style={{
+                                                              width: "80px",
+                                                              height: "80px",
+                                                              marginBottom:
+                                                                "8px",
+                                                            }}
+                                                          />
+                                                        ) : isImage(
+                                                            attachment
+                                                          ) ? (
+                                                          <img
+                                                            src={`http://localhost:3000/static/${attachment}`}
+                                                            alt="Pré-visualização"
+                                                            style={{
+                                                              width: "80px",
+                                                              height: "80px",
+                                                              marginBottom:
+                                                                "8px",
+                                                            }}
+                                                          />
+                                                        ) : (
+                                                          <img
+                                                            src={`http://localhost:3000/static/doc.png`}
+                                                            alt="Other"
+                                                            style={{
+                                                              width: "80px",
+                                                              height: "80px",
+                                                              marginBottom:
+                                                                "8px",
+                                                            }}
+                                                          />
+                                                        )}
+                                                      </Grid>
+                                                    )
+                                                  )}
+                                                </Grid>
+                                              </Box>
+                                            </Popover>
+                                          )}
+                                        </Grid>
+                                      )}
                                     </TableCell>
                                     <TableCell align="left">
                                       <Typography sx={{ fontSize: 13 }}>
