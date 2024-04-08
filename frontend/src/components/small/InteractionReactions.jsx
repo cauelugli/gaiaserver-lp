@@ -47,6 +47,7 @@ const InteractionReactions = ({
   refreshData,
   setRefreshData,
   fromSales,
+  updateInteractions,
 }) => {
   const reactionsMap = {
     love: {
@@ -81,11 +82,14 @@ const InteractionReactions = ({
         userId: userId,
         reactionType,
       });
-      setUserReactions({
-        ...userReactions,
-        [job._id]: res.data.reactions,
-      });
-      setRefreshData(!refreshData);
+      if (res.data) {
+        setUserReactions({
+          ...userReactions,
+          [job._id]: res.data.reactions,
+        });
+        updateInteractions(res.data.interactions);
+        setRefreshData(!refreshData);
+      }
     } catch (err) {
       console.error("Erro ao atualizar reação:", err);
     }

@@ -232,6 +232,11 @@ export default function JobTable({
     }
   };
 
+  const addInteractionToJob = (updatedJob) => {
+    setSelectedJob(updatedJob);
+    setRefreshData(!refreshData);
+  };
+
   const handleAddInteractionFromTable = async (e) => {
     e.preventDefault();
     const requestBody = {
@@ -319,6 +324,13 @@ export default function JobTable({
   const handlePopoverClose = () => {
     setAnchorEl(null);
     setOpenPopoverIndex(null);
+  };
+
+  const updateSelectedJobInteractions = (updatedInteractions) => {
+    setSelectedJob((currentSelectedJob) => ({
+      ...currentSelectedJob,
+      interactions: updatedInteractions,
+    }));
   };
 
   return (
@@ -1186,6 +1198,9 @@ export default function JobTable({
                                               })
                                             }
                                             jobId={job._id}
+                                            updateInteractions={
+                                              updateSelectedJobInteractions
+                                            }
                                           />
                                         </Typography>
                                       )}
@@ -1372,6 +1387,8 @@ export default function JobTable({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
+            addInteractionToJob={addInteractionToJob}
+            updateSelectedJobInteractions={updateSelectedJobInteractions}
           />
         </Dialog>
       )}
