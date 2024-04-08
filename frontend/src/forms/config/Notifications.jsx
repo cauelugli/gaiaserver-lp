@@ -32,7 +32,7 @@ export default function Notifications({ onClose }) {
   const [roles, setRoles] = useState([]);
   const [selectedLists, setSelectedLists] = useState({});
   // IMPORTANT: THESE TITLES MUST BE IN ORDER WITH THE MODEL 'CONFIG' !
-  const title = ["Novo Usuário Criado"];
+  const title = ["Novo Usuário Criado", "Novo Job Criado", "Nova Venda Criada"];
 
   useEffect(() => {
     const fetchData = async () => {

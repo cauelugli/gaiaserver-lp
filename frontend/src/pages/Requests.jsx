@@ -44,7 +44,13 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Requests({ user, configTables, configAgenda }) {
+export default function Requests({
+  user,
+  configTables,
+  configAgenda,
+  configNotifications,
+  configNotificationsBooleans,
+}) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
@@ -260,6 +266,8 @@ export default function Requests({ user, configTables, configAgenda }) {
           <AddJobForm
             user={user}
             openAddJob={openAddJob}
+            configNotifications={configNotifications}
+            configNotificationsBooleans={configNotificationsBooleans}
             setOpenAddJob={setOpenAddJob}
             refreshData={refreshData}
             setRefreshData={setRefreshData}

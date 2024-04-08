@@ -84,6 +84,112 @@ const initSocket = (server) => {
       }
     });
 
+    socket.on("whenJobIsCreated", async (data) => {
+      try {
+        const usersToNotify = await Promise.all(
+          data.list.map(async (role) => {
+            if (role.name.startsWith("Gerente")) {
+              return await Manager.findOne({ "role.name": role.name });
+            } else {
+              return await User.findOne({ "role.name": role.name });
+            }
+          })
+        );
+
+        for (const user of usersToNotify) {
+          if (!user) {
+            continue;
+          }
+
+          const newNotification = {
+            id: Date.now(),
+            type: "Novo Job",
+            noteBody: `Novo Job ${data.title} criado por ${data.sender} em ${data.date}.`,
+            sender: data.sender,
+            status: "Não Lida",
+          };
+
+          let updatedUser;
+
+          if (user instanceof User) {
+            await User.updateOne(
+              { _id: user._id },
+              { $set: { [`notifications.${Date.now()}`]: newNotification } }
+            );
+            updatedUser = await User.findById(user._id);
+          } else if (user instanceof Manager) {
+            await Manager.updateOne(
+              { _id: user._id },
+              { $set: { [`notifications.${Date.now()}`]: newNotification } }
+            );
+            updatedUser = await Manager.findById(user._id);
+          }
+
+          const receiverSocketId = userSocketMap[user._id];
+          if (receiverSocketId) {
+            io.to(receiverSocketId).emit("notificationsUpdate", {
+              notifications: updatedUser.notifications,
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error processing whenJobIsCreated:", error);
+      }
+    });
+
+    socket.on("whenSaleIsCreated", async (data) => {
+      try {
+        const usersToNotify = await Promise.all(
+          data.list.map(async (role) => {
+            if (role.name.startsWith("Gerente")) {
+              return await Manager.findOne({ "role.name": role.name });
+            } else {
+              return await User.findOne({ "role.name": role.name });
+            }
+          })
+        );
+
+        for (const user of usersToNotify) {
+          if (!user) {
+            continue;
+          }
+
+          const newNotification = {
+            id: Date.now(),
+            type: "Nova Venda",
+            noteBody: `Nova Venda criada por ${data.sender} em ${data.date}.`,
+            sender: data.sender,
+            status: "Não Lida",
+          };
+
+          let updatedUser;
+
+          if (user instanceof User) {
+            await User.updateOne(
+              { _id: user._id },
+              { $set: { [`notifications.${Date.now()}`]: newNotification } }
+            );
+            updatedUser = await User.findById(user._id);
+          } else if (user instanceof Manager) {
+            await Manager.updateOne(
+              { _id: user._id },
+              { $set: { [`notifications.${Date.now()}`]: newNotification } }
+            );
+            updatedUser = await Manager.findById(user._id);
+          }
+
+          const receiverSocketId = userSocketMap[user._id];
+          if (receiverSocketId) {
+            io.to(receiverSocketId).emit("notificationsUpdate", {
+              notifications: updatedUser.notifications,
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error processing whenJobIsCreated:", error);
+      }
+    });
+
     socket.on("requestApproval", async (data) => {
       try {
         const receiverSocketId =

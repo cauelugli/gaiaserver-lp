@@ -44,12 +44,19 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Customers({ user, configTables, configAgenda }) {
+export default function Customers({
+  user,
+  configTables,
+  configAgenda,
+  configNotifications,
+  configNotificationsBooleans,
+}) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState(false);
+
   const [value, setValue] = React.useState(0);
   const [clients, setClients] = React.useState([]);
   const [customers, setCustomers] = React.useState([]);
@@ -204,6 +211,8 @@ export default function Customers({ user, configTables, configAgenda }) {
               <CustomerTable
                 user={user}
                 configCustomization={configCustomization}
+                configNotifications={configNotifications}
+                configNotificationsBooleans={configNotificationsBooleans}
                 configData={config}
                 configAgenda={configAgenda}
                 refreshData={refreshData}
@@ -238,6 +247,8 @@ export default function Customers({ user, configTables, configAgenda }) {
               <ClientTable
                 user={user}
                 configAgenda={configAgenda}
+                configNotifications={configNotifications}
+                configNotificationsBooleans={configNotificationsBooleans}
                 configCustomization={configCustomization}
                 configData={config}
                 refreshData={refreshData}

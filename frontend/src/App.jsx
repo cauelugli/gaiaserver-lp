@@ -75,6 +75,7 @@ function darkenColor(hex, factor) {
 
 export default function App() {
   const [configData, setConfigData] = useState([]);
+  const [configNotifications, setConfigNotifications] = useState([]);
   const [configNotificationsBooleans, setConfigNotificationsBooleans] =
     useState([]);
   const [configTables, setConfigTables] = useState(null);
@@ -135,6 +136,7 @@ export default function App() {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
+        const configNotifications = await api.get("/config/notifications");
         const configNotificationsBooleans = await api.get(
           "/config/notificationsBooleans"
         );
@@ -145,6 +147,7 @@ export default function App() {
         );
         const preferences = await api.get(`/userPreferences/${userData._id}`);
         setConfigData(config.data[0]);
+        setConfigNotifications(configNotifications.data);
         setConfigNotificationsBooleans(configNotificationsBooleans.data);
         setConfigTables(configTables.data);
         setConfigAgenda(configAgenda.data);
@@ -394,6 +397,8 @@ export default function App() {
                           user={userData}
                           configAgenda={configAgenda}
                           configTables={configTables}
+                          configNotifications={configNotifications}
+                          configNotificationsBooleans={configNotificationsBooleans}
                         />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -485,6 +490,8 @@ export default function App() {
                           user={userData}
                           configTables={configTables}
                           configAgenda={configAgenda}
+                          configNotifications={configNotifications}
+                          configNotificationsBooleans={configNotificationsBooleans}
                         />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -584,6 +591,7 @@ export default function App() {
             {...shortcutModalState.props}
             configData={configData}
             configCustomization={configData.customization}
+            configNotifications={configNotifications}
             configNotificationsBooleans={configNotificationsBooleans}
             user={userData}
             users={users}

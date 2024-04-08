@@ -21,6 +21,7 @@ const ShortcutModals = ({
   managers,
   departments,
   positions,
+  configNotifications,
   configNotificationsBooleans,
   configCustomization,
   ...props
@@ -43,24 +44,51 @@ const ShortcutModals = ({
         configCustomization={configCustomization}
       />
     ),
-    addJob: <AddJobForm {...props} setOpenAddJob={onClose} addFromShortcut />,
+    addJob: (
+      <AddJobForm
+        {...props}
+        setOpenAddJob={onClose}
+        configNotifications={configNotifications}
+        configNotificationsBooleans={configNotificationsBooleans}
+        addFromShortcut
+      />
+    ),
     addJobToCustomer: (
-      <AddJobForm {...props} setOpenAddJob={onClose} fromShortcut />
+      <AddJobForm
+        {...props}
+        setOpenAddJob={onClose}
+        configNotifications={configNotifications}
+        configNotificationsBooleans={configNotificationsBooleans}
+        fromShortcut
+      />
     ),
     addSale: (
-      <AddSaleForm {...props} setOpenAddSale={onClose} addFromShortcut />
+      <AddSaleForm
+        {...props}
+        setOpenAddSale={onClose}
+        configNotifications={configNotifications}
+        configNotificationsBooleans={configNotificationsBooleans}
+        addFromShortcut
+      />
     ),
     addSaleToCustomer: (
-      <AddSaleForm {...props} setOpenAddSale={onClose} fromShortcut />
+      <AddSaleForm
+        {...props}
+        setOpenAddSale={onClose}
+        configNotifications={configNotifications}
+        configNotificationsBooleans={configNotificationsBooleans}
+        fromShortcut
+      />
     ),
     addUser: (
       <AddUserForm
         {...props}
-        configNotificationsBooleans={configNotificationsBooleans}
         departments={departments}
         positions={positions}
         setOpenAdd={onClose}
         configCustomization={configCustomization}
+        configNotifications={configNotifications}
+        configNotificationsBooleans={configNotificationsBooleans}
         addFromShortcut
       />
     ),

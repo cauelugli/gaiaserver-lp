@@ -44,6 +44,8 @@ export default function CustomerTable({
   user,
   configData,
   configAgenda,
+  configNotifications,
+  configNotificationsBooleans,
   configCustomization,
   searchDepartment,
   refreshData,
@@ -351,6 +353,8 @@ export default function CustomerTable({
                         user={user}
                         customer={customer}
                         configAgenda={configAgenda}
+                        configNotifications={configNotifications}
+                        configNotificationsBooleans={configNotificationsBooleans}
                         setOpenEdit={setOpenEdit}
                         selectedItem={selectedCustomer}
                         refreshData={refreshData}

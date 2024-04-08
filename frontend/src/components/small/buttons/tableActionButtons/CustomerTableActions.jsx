@@ -164,6 +164,8 @@ export default function CustomerTableActions(props) {
           <AddJobForm
             user={props.user}
             configAgenda={props.configAgenda}
+            configNotifications={props.configNotifications}
+            configNotificationsBooleans={props.configNotificationsBooleans}
             openAddJob={openAddJob}
             setOpenAddJob={setOpenAddJob}
             refreshData={props.refreshData}

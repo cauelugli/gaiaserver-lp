@@ -59,7 +59,11 @@ const configSchema = new Schema({
     },
     showHello: {
       type: Object,
-      default: { isActive: true, helloInitialText: "hello", helloFinalText: "" },
+      default: {
+        isActive: true,
+        helloInitialText: "hello",
+        helloFinalText: "",
+      },
     },
   },
   departments: {
@@ -87,9 +91,23 @@ const configSchema = new Schema({
     whenUserIsCreated: {
       type: Array,
     },
+    whenJobIsCreated: {
+      type: Array,
+    },
+    whenSaleIsCreated: {
+      type: Array,
+    },
   },
   notificationsBooleans: {
     whenUserIsCreated: {
+      type: Boolean,
+      default: false,
+    },
+    whenJobIsCreated: {
+      type: Boolean,
+      default: false,
+    },
+    whenSaleIsCreated: {
       type: Boolean,
       default: false,
     },

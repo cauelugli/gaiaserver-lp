@@ -43,6 +43,8 @@ const api = axios.create({
 export default function ClientTable({
   user,
   configCustomization,
+  configNotifications,
+  configNotificationsBooleans,
   searchDepartment,
   configAgenda,
   refreshData,
@@ -302,6 +304,8 @@ export default function ClientTable({
                         user={user}
                         customer={client}
                         configAgenda={configAgenda}
+                        configNotifications={configNotifications}
+                        configNotificationsBooleans={configNotificationsBooleans}
                         setOpenEdit={setOpenEdit}
                         selectedItem={selectedClient}
                         refreshData={refreshData}
