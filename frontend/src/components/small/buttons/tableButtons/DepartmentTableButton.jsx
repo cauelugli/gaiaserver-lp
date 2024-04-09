@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 
 import {
@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 
 import LanIcon from "@mui/icons-material/Lan";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import GroupsIcon from "@mui/icons-material/Groups";
 
 export default function DepartmentTableButton({
@@ -24,7 +23,6 @@ export default function DepartmentTableButton({
   handleClickAddButton,
   handleCloseAddButton,
   setOpenAddDepartment,
-  setOpenAddPosition,
   setOpenAddGroup,
 }) {
   return (
@@ -65,12 +63,7 @@ export default function DepartmentTableButton({
             </ListItemIcon>
             <ListItemText>Departamento</ListItemText>
           </MenuItem>
-          <MenuItem onClick={() => setOpenAddPosition(true)}>
-            <ListItemIcon>
-              <AssignmentIndIcon />
-            </ListItemIcon>
-            <ListItemText>Cargo</ListItemText>
-          </MenuItem>
+          
           <MenuItem onClick={() => setOpenAddGroup(true)}>
             <ListItemIcon>
               <GroupsIcon />

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -15,9 +14,6 @@ import {
 } from "@mui/material";
 
 import DepartmentTable from "../tables/DepartmentTable";
-import PositionTable from "../tables/PositionTable";
-
-import AddPositionForm from "../forms/add/AddPositionForm";
 import AddDepartmentForm from "../forms/add/AddDepartmentForm";
 
 import TableFilters from "../components/TableFilters";
@@ -54,7 +50,6 @@ export default function Departments({ user, configTables }) {
   const [value, setValue] = React.useState(0);
 
   const [openAddDepartment, setOpenAddDepartment] = React.useState(false);
-  const [openAddPosition, setOpenAddPosition] = React.useState(false);
   const [openAddGroup, setOpenAddGroup] = React.useState(false);
 
   const [searchValue, setSearchValue] = React.useState("");
@@ -84,10 +79,6 @@ export default function Departments({ user, configTables }) {
         { value: "email", label: "E-mail" },
         { value: "manager.name", label: "Gerente" },
       ],
-    },
-    {
-      // POSITIONS TABLE
-      options: [{ value: "name", label: "Nome" }],
     },
     {
       // GROUP TABLE
@@ -194,7 +185,6 @@ export default function Departments({ user, configTables }) {
           handleClickAddButton={handleClickAddButton}
           handleCloseAddButton={handleCloseAddButton}
           setOpenAddDepartment={setOpenAddDepartment}
-          setOpenAddPosition={setOpenAddPosition}
           setOpenAddGroup={setOpenAddGroup}
           configCustomization={configCustomization}
         />
@@ -206,25 +196,21 @@ export default function Departments({ user, configTables }) {
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
           <Tab
-            label="Serviços"
+            label={<Typography sx={{ fontSize: 13 }}>Serviços</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
-            label="Vendas"
+            label={<Typography sx={{ fontSize: 13 }}>Vendas</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           {configTables.departmentInternal && (
             <Tab
-              label="Internos"
+              label={<Typography sx={{ fontSize: 13 }}>Internos</Typography>}
               sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
             />
           )}
           <Tab
-            label="Cargos"
-            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-          />
-          <Tab
-            label="Grupos"
+            label={<Typography sx={{ fontSize: 13 }}>Grupos</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <RefreshButton
@@ -334,40 +320,6 @@ export default function Departments({ user, configTables }) {
       )}
       <CustomTabPanel
         value={value}
-        index={configTables.departmentInternal ? 3 : 2}
-      >
-        {positions.length === 0 ? (
-          <NoDataText option="Cargos" />
-        ) : (
-          <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[3]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
-
-            <PositionTable
-              configData={config}
-              toast={toast}
-              searchValue={searchValue}
-              searchOption={searchOption}
-              positions={positions}
-              users={users}
-              openAdd={openAddPosition}
-              setOpenAdd={setOpenAddPosition}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-            />
-          </>
-        )}
-      </CustomTabPanel>
-      <CustomTabPanel
-        value={value}
         index={configTables.departmentInternal ? 4 : 3}
       >
         {groups.length === 0 ? (
@@ -416,24 +368,6 @@ export default function Departments({ user, configTables }) {
             users={users}
             managers={managers}
             setOpenAdd={setOpenAddDepartment}
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-            configCustomization={configCustomization}
-            toast={toast}
-          />
-        </Dialog>
-      )}
-      {openAddPosition && (
-        <Dialog
-          fullWidth
-          maxWidth="xs"
-          open={openAddPosition}
-          onClose={() => setOpenAddPosition(!openAddPosition)}
-        >
-          <AddPositionForm
-            user={user}
-            openAdd={openAddPosition}
-            setOpenAdd={setOpenAddPosition}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}

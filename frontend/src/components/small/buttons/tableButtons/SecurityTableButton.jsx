@@ -13,8 +13,9 @@ import {
   Grid,
 } from "@mui/material";
 
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 export default function SecurityTableButton({
   anchorEl,
@@ -22,6 +23,7 @@ export default function SecurityTableButton({
   handleClickAddButton,
   handleCloseAddButton,
   setOpenAddOperator,
+  setOpenAddPosition,
   setOpenAddRole,
   configCustomization,
 }) {
@@ -62,6 +64,12 @@ export default function SecurityTableButton({
               <ManageAccountsIcon />
             </ListItemIcon>
             <ListItemText>Operador</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={() => setOpenAddPosition(true)}>
+            <ListItemIcon>
+              <AssignmentIndIcon />
+            </ListItemIcon>
+            <ListItemText>Cargo</ListItemText>
           </MenuItem>
           <MenuItem onClick={() => setOpenAddRole(true)}>
             <ListItemIcon>

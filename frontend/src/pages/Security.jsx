@@ -15,9 +15,11 @@ import {
 } from "@mui/material";
 
 import OperatorTable from "../tables/OperatorTable";
+import PositionTable from "../tables/PositionTable";
 import RoleTable from "../tables/RoleTable";
 
 import AddOperatorForm from "../forms/add/AddOperatorForm";
+import AddPositionForm from "../forms/add/AddPositionForm";
 import AddRoleForm from "../forms/add/AddRoleForm";
 
 import TableFilters from "../components/TableFilters";
@@ -55,9 +57,11 @@ export default function Security({ user }) {
   const [users, setUsers] = React.useState([]);
   const [managers, setManagers] = React.useState([]);
   const [operators, setOperators] = React.useState([]);
+  const [positions, setPositions] = React.useState([]);
   const [roles, setRoles] = React.useState([]);
 
   const [openAddOperator, setOpenAddOperator] = React.useState(false);
+  const [openAddPosition, setOpenAddPosition] = React.useState(false);
   const [openAddRole, setOpenAddRole] = React.useState(false);
 
   const [searchOption, setSearchOption] = React.useState("name");
@@ -122,6 +126,7 @@ export default function Security({ user }) {
         const users = await api.get("/users");
         const managers = await api.get("/managers");
         const roles = await api.get("/roles");
+        const positions = await api.get("/positions");
         const usersData = users.data;
         const managersData = managers.data;
         const combinedData = [...usersData, ...managersData];
@@ -132,6 +137,7 @@ export default function Security({ user }) {
         setUsers(usersData);
         setManagers(managersData);
         setOperators(combinedData);
+        setPositions(positions.data);
         setRoles(roles.data);
         setIsLoading(false);
       } catch (error) {
@@ -173,6 +179,7 @@ export default function Security({ user }) {
           handleClickAddButton={handleClickAddButton}
           handleCloseAddButton={handleCloseAddButton}
           setOpenAddOperator={setOpenAddOperator}
+          setOpenAddPosition={setOpenAddPosition}
           setOpenAddRole={setOpenAddRole}
           configCustomization={configCustomization}
         />
@@ -185,6 +192,10 @@ export default function Security({ user }) {
         >
           <Tab
             label={<Typography sx={{ fontSize: 13 }}>Operadores</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
+          <Tab
+            label={<Typography sx={{ fontSize: 13 }}>Cargos</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <Tab
@@ -228,6 +239,37 @@ export default function Security({ user }) {
         )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
+        {positions.length === 0 ? (
+          <NoDataText option="Cargos" />
+        ) : (
+          <>
+            <TableFilters
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              searchOption={searchOption}
+              searchOptionList={searchOptionList[3]}
+              setSearchOption={setSearchOption}
+              searchOptionLabel={searchOptionLabel}
+              setSearchOptionLabel={setSearchOptionLabel}
+              handleSearchChange={handleSearchChange}
+            />
+
+            <PositionTable
+              configData={config}
+              toast={toast}
+              searchValue={searchValue}
+              searchOption={searchOption}
+              positions={positions}
+              users={users}
+              openAdd={openAddPosition}
+              setOpenAdd={setOpenAddPosition}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+            />
+          </>
+        )}
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
         {roles.length === 0 ? (
           <NoDataText option="Perfil de Acesso" />
         ) : (
@@ -270,6 +312,24 @@ export default function Security({ user }) {
             setOpenAdd={setOpenAddOperator}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openAddPosition && (
+        <Dialog
+          fullWidth
+          maxWidth="xs"
+          open={openAddPosition}
+          onClose={() => setOpenAddPosition(!openAddPosition)}
+        >
+          <AddPositionForm
+            user={user}
+            openAdd={openAddPosition}
+            setOpenAdd={setOpenAddPosition}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
             toast={toast}
           />
         </Dialog>
