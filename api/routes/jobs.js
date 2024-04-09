@@ -585,14 +585,40 @@ router.put("/edit", async (req, res) => {
 
 // ADD JOB ATTACHMENTS
 router.put("/addAttachments", async (req, res) => {
-  const { jobId, attachments } = req.body;
+  const { jobId, attachments, userName, date } = req.body;
 
   try {
     const job = await Job.findById(jobId);
-    job.attachments = [...job.attachments, ...attachments];
-    await job.save();
+    const interactionNumber = job.interactions.length + 1;
 
-    res.status(200).json({ message: "Attachments added successfully", job });
+    const updatedJob = await Job.findOneAndUpdate(
+      { _id: jobId },
+      {
+        $set: {
+          attachments: [...job.attachments, ...attachments],
+        },
+        $push: {
+          interactions: {
+            number: interactionNumber,
+            activity: `Colaborador ${userName} anexou ${attachments.length} arquivos ao Job`,
+            user: userName,
+            date: date,
+            attachments: attachments,
+            reactions: {
+              love: { quantity: 0, usersReacted: [] },
+              like: { quantity: 0, usersReacted: [] },
+              dislike: { quantity: 0, usersReacted: [] },
+              haha: { quantity: 0, usersReacted: [] },
+            },
+          },
+        },
+      },
+      { new: true }
+    );
+
+    res
+      .status(200)
+      .json({ message: "Attachments added successfully", job: updatedJob });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "An error occurred", error: err });

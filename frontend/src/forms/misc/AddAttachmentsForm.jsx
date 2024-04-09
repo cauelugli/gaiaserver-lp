@@ -8,18 +8,20 @@ import { Button, Divider, Grid, Typography } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
+import dayjs from "dayjs";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
 const AddAttachmentsForm = ({
+  userName,
   setOpenAddAttachments,
   selectedJob,
   refreshData,
   setRefreshData,
   toast,
-  endpoint
+  endpoint,
 }) => {
   const [attachments, setAttachments] = React.useState([]);
 
@@ -42,6 +44,8 @@ const AddAttachmentsForm = ({
       const res = await api.put(`/${endpoint}/addAttachments`, {
         jobId: selectedJob._id,
         attachments: uploadResponses,
+        userName: userName,
+        date: dayjs().format("DD/MM HH:mm")
       });
       if (res.data) {
         toast.success("Anexos Adicionados!", {

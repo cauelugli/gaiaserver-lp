@@ -1183,22 +1183,23 @@ export default function ProjectsTable({
           </Dialog>
         )}
         {openAddAttachments && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openAddAttachments}
-          onClose={() => setOpenAddAttachments(!openAddAttachments)}
-        >
-          <AddAttachmentsForm
-            selectedJob={selectedProject}
-            setOpenAddAttachments={setOpenAddAttachments}
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-            toast={toast}
-            endpoint="projects"
-          />
-        </Dialog>
-      )}
+          <Dialog
+            fullWidth
+            maxWidth="md"
+            open={openAddAttachments}
+            onClose={() => setOpenAddAttachments(!openAddAttachments)}
+          >
+            <AddAttachmentsForm
+              userName={user.name}
+              selectedJob={selectedProject}
+              setOpenAddAttachments={setOpenAddAttachments}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              toast={toast}
+              endpoint="projects"
+            />
+          </Dialog>
+        )}
         {openViewDialog && (
           <Dialog
             open={openViewDialog}
