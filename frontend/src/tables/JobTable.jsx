@@ -64,12 +64,10 @@ export default function JobTable({
   const [openAddInteraction, setOpenAddInteraction] = React.useState(false);
   const [openAddAttachments, setOpenAddAttachments] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
-  const [openDetailGeral, setOpenDetailGeral] = React.useState(true);
-  const [openDetailDescrição, setOpenDetailDescrição] = React.useState(false);
-  const [openDetailDepartamento, setOpenDetailDepartamento] =
+  const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
+  const [openDetailAttachments, setOpenDetailAttachments] =
     React.useState(false);
-  const [openDetailOrçamento, setOpenDetailOrçamento] = React.useState(false);
-  const [openDetailAtividades, setOpenDetailAtividades] = React.useState(false);
+  const [openDetailActivities, setOpenDetailActivities] = React.useState(false);
   const [selectedJob, setSelectedJob] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openViewDialog, setOpenViewDialog] = React.useState(false);
@@ -537,19 +535,17 @@ export default function JobTable({
                                 my: "auto",
                               }}
                             >
-                              Informações Gerais
+                              Informações
                             </Typography>
                             <IconButton
-                              onClick={() =>
-                                setOpenDetailGeral(!openDetailGeral)
-                              }
+                              onClick={() => setOpenDetailInfo(!openDetailInfo)}
                             >
                               <ExpandMoreIcon />
                             </IconButton>
                           </Grid>
 
                           <Collapse
-                            in={openDetailGeral}
+                            in={openDetailInfo}
                             timeout="auto"
                             unmountOnExit
                           >
@@ -613,6 +609,217 @@ export default function JobTable({
                               </TableBody>
                             </Table>
 
+                            <Table size="small" sx={{ mt: 2 }}>
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Sobre
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {job.description}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+
+                            <Table size="small" sx={{ mt: 2 }}>
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Nome do Departamento
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Gerente Responsável
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Colaborador Designado
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {job.department.name}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Grid container direction="row">
+                                      <Grid item>
+                                        <Avatar
+                                          alt="Imagem do Gerente"
+                                          src={
+                                            job.manager
+                                              ? managers.find(
+                                                  (manager) =>
+                                                    manager.name ===
+                                                    job.manager.name
+                                                )
+                                                ? `http://localhost:3000/static/${
+                                                    managers.find(
+                                                      (manager) =>
+                                                        manager.name ===
+                                                        job.manager.name
+                                                    ).image
+                                                  }`
+                                                : ""
+                                              : "-"
+                                          }
+                                          sx={{ width: 32, height: 32, mr: 1 }}
+                                        />
+                                      </Grid>
+                                      <Grid item>
+                                        <Typography
+                                          sx={{ mt: 0.75, fontSize: 13 }}
+                                        >
+                                          {job.manager ? job.manager.name : ""}
+                                        </Typography>
+                                      </Grid>
+                                    </Grid>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Grid container direction="row">
+                                      <Grid item>
+                                        <Avatar
+                                          alt="Imagem do Colaborador"
+                                          src={`http://localhost:3000/static/${job.worker.image}`}
+                                          sx={{ width: 32, height: 32, mr: 1 }}
+                                        />
+                                      </Grid>
+                                      <Grid item>
+                                        <Typography
+                                          sx={{ mt: 0.75, fontSize: 13 }}
+                                        >
+                                          {job.worker.name}
+                                        </Typography>
+                                      </Grid>
+                                    </Grid>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+
+                            <Table size="small" sx={{ mt: 2 }}>
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Nº do Orçamento
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Serviço
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Materiais
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Valor Total (serviço + materiais)
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell component="th" scope="row">
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {job.quoteNumber}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {job.service.name}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {job.materials.length > 0
+                                        ? job.materials.map((material) => (
+                                            <Typography
+                                              sx={{ fontSize: 13 }}
+                                              key={material.id}
+                                            >
+                                              x{material.quantity}{" "}
+                                              {material.name}
+                                            </Typography>
+                                          ))
+                                        : "Não há uso de Materiais"}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      R${job.price}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Collapse>
+                        </Box>
+
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
+                            >
+                              Anexos
+                            </Typography>
+                            <IconButton
+                              onClick={() =>
+                                setOpenDetailAttachments(!openDetailAttachments)
+                              }
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={
+                              openDetailAttachments &&
+                              selectedJob._id === job._id
+                            }
+                            timeout="auto"
+                            unmountOnExit
+                          >
                             {job.attachments.length !== 0 && (
                               <Table size="small" sx={{ mt: 1 }}>
                                 <TableHead>
@@ -722,279 +929,11 @@ export default function JobTable({
                                 my: "auto",
                               }}
                             >
-                              Descrição
-                            </Typography>
-                            <IconButton
-                              onClick={() =>
-                                setOpenDetailDescrição(!openDetailDescrição)
-                              }
-                            >
-                              <ExpandMoreIcon />
-                            </IconButton>
-                          </Grid>
-                          <Collapse
-                            in={
-                              openDetailDescrição && selectedJob._id === job._id
-                            }
-                            timeout="auto"
-                            unmountOnExit
-                          >
-                            <Table size="small">
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Sobre
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                <TableRow>
-                                  <TableCell align="left">
-                                    <Typography sx={{ fontSize: 13 }}>
-                                      {job.description}
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableBody>
-                            </Table>
-                          </Collapse>
-                        </Box>
-                        <Box sx={{ my: 4, px: 6 }}>
-                          <Grid container direction="row">
-                            <Typography
-                              variant="h6"
-                              sx={{
-                                fontSize: 18,
-                                fontWeight: "bold",
-                                my: "auto",
-                              }}
-                            >
-                              Departamento
-                            </Typography>
-                            <IconButton
-                              onClick={() =>
-                                setOpenDetailDepartamento(
-                                  !openDetailDepartamento
-                                )
-                              }
-                            >
-                              <ExpandMoreIcon />
-                            </IconButton>
-                          </Grid>
-                          <Collapse
-                            in={
-                              openDetailDepartamento &&
-                              selectedJob._id === job._id
-                            }
-                            timeout="auto"
-                            unmountOnExit
-                          >
-                            <Table size="small">
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell align="left">
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Nome do Departamento
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Gerente Responsável
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Colaborador Designado
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                <TableRow>
-                                  <TableCell align="left">
-                                    <Typography sx={{ fontSize: 13 }}>
-                                      {job.department.name}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Grid container direction="row">
-                                      <Grid item>
-                                        <Avatar
-                                          alt="Imagem do Gerente"
-                                          src={
-                                            job.manager
-                                              ? managers.find(
-                                                  (manager) =>
-                                                    manager.name ===
-                                                    job.manager.name
-                                                )
-                                                ? `http://localhost:3000/static/${
-                                                    managers.find(
-                                                      (manager) =>
-                                                        manager.name ===
-                                                        job.manager.name
-                                                    ).image
-                                                  }`
-                                                : ""
-                                              : "-"
-                                          }
-                                          sx={{ width: 32, height: 32, mr: 1 }}
-                                        />
-                                      </Grid>
-                                      <Grid item>
-                                        <Typography
-                                          sx={{ mt: 0.75, fontSize: 13 }}
-                                        >
-                                          {job.manager ? job.manager.name : ""}
-                                        </Typography>
-                                      </Grid>
-                                    </Grid>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Grid container direction="row">
-                                      <Grid item>
-                                        <Avatar
-                                          alt="Imagem do Colaborador"
-                                          src={`http://localhost:3000/static/${job.worker.image}`}
-                                          sx={{ width: 32, height: 32, mr: 1 }}
-                                        />
-                                      </Grid>
-                                      <Grid item>
-                                        <Typography
-                                          sx={{ mt: 0.75, fontSize: 13 }}
-                                        >
-                                          {job.worker.name}
-                                        </Typography>
-                                      </Grid>
-                                    </Grid>
-                                  </TableCell>
-                                </TableRow>
-                              </TableBody>
-                            </Table>
-                          </Collapse>
-                        </Box>
-                        <Box sx={{ my: 4, px: 6 }}>
-                          <Grid container direction="row">
-                            <Typography
-                              variant="h6"
-                              sx={{
-                                fontSize: 18,
-                                fontWeight: "bold",
-                                my: "auto",
-                              }}
-                            >
-                              Orçamento
-                            </Typography>
-                            <IconButton
-                              onClick={() =>
-                                setOpenDetailOrçamento(!openDetailOrçamento)
-                              }
-                            >
-                              <ExpandMoreIcon />
-                            </IconButton>
-                          </Grid>
-                          <Collapse
-                            in={
-                              openDetailOrçamento && selectedJob._id === job._id
-                            }
-                            timeout="auto"
-                            unmountOnExit
-                          >
-                            <Table size="small">
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Nº do Orçamento
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Serviço
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Materiais
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Valor Total (serviço + materiais)
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                <TableRow>
-                                  <TableCell component="th" scope="row">
-                                    <Typography sx={{ fontSize: 13 }}>
-                                      {job.quoteNumber}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography sx={{ fontSize: 13 }}>
-                                      {job.service.name}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography sx={{ fontSize: 13 }}>
-                                      {job.materials.length > 0
-                                        ? job.materials.map((material) => (
-                                            <Typography
-                                              sx={{ fontSize: 13 }}
-                                              key={material.id}
-                                            >
-                                              x{material.quantity}{" "}
-                                              {material.name}
-                                            </Typography>
-                                          ))
-                                        : "Não há uso de Materiais"}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography sx={{ fontSize: 13 }}>
-                                      R${job.price}
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableBody>
-                            </Table>
-                          </Collapse>
-                        </Box>
-                        <Box sx={{ my: 4, px: 6 }}>
-                          <Grid container direction="row">
-                            <Typography
-                              variant="h6"
-                              sx={{
-                                fontSize: 18,
-                                fontWeight: "bold",
-                                my: "auto",
-                              }}
-                            >
                               Atividades
                             </Typography>
                             <IconButton
                               onClick={() =>
-                                setOpenDetailAtividades(!openDetailAtividades)
+                                setOpenDetailActivities(!openDetailActivities)
                               }
                             >
                               <ExpandMoreIcon />
@@ -1002,7 +941,7 @@ export default function JobTable({
                           </Grid>
                           <Collapse
                             in={
-                              openDetailAtividades &&
+                              openDetailActivities &&
                               selectedJob._id === job._id
                             }
                             timeout="auto"
