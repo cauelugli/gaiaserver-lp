@@ -50,7 +50,7 @@ const api = axios.create({
 });
 
 const AddJobForm = ({
-  user,
+  userName,
   configAgenda,
   configNotifications,
   configNotificationsBooleans,
@@ -288,7 +288,7 @@ const AddJobForm = ({
         price: service.value + materialsCost,
         local,
         scheduledTo,
-        createdBy: user.name,
+        createdBy: userName,
         selectedSchedule: scheduleToWorker ? selectedSchedule : null,
         attachments: uploadResponses,
       });
@@ -303,13 +303,13 @@ const AddJobForm = ({
           }
         );
         await api.post("/recentActivity", {
-          activity: `Colaborador ${user.name} criou um Job para ${customer.name}`,
+          activity: `Colaborador ${userName} criou um Job para ${customer.name}`,
           createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),
         });
         socket.emit("recentActivityRefresh");
         if (configNotificationsBooleans.whenJobIsCreated) {
           socket.emit("whenJobIsCreated", {
-            sender: user.name,
+            sender: userName,
             title,
             list: configNotifications.whenJobIsCreated,
             date: dayjs(Date.now()).format("DD/MM/YYYY"),

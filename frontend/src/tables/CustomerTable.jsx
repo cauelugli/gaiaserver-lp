@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import * as React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -55,9 +54,8 @@ export default function CustomerTable({
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
-  const [openDetailGeral, setOpenDetailGeral] = React.useState(true);
-  const [openDetailContato, setOpenDetailContato] = React.useState(false);
-  // const [openDetailDominio, setOpenDetailDominio] = React.useState(false);
+  const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
+  const [openDetailContact, setOpenDetailContact] = React.useState(false);
   const [openDetailRequests, setOpenDetailRequests] = React.useState(false);
   const [selectedCustomer, setSelectedCustomer] = React.useState([]);
 
@@ -346,11 +344,10 @@ export default function CustomerTable({
                     </TableCell>
                     <TableCell
                       cursor="pointer"
-                      // align="left"
                       onClick={() => setSelectedCustomer(customer)}
                     >
                       <CustomerTableActions
-                        user={user}
+                        userName={user.name}
                         customer={customer}
                         configAgenda={configAgenda}
                         configNotifications={configNotifications}
@@ -382,18 +379,18 @@ export default function CustomerTable({
                                 my: "auto",
                               }}
                             >
-                              Informações Gerais
+                              Informações
                             </Typography>
                             <IconButton
                               onClick={() =>
-                                setOpenDetailGeral(!openDetailGeral)
+                                setOpenDetailInfo(!openDetailInfo)
                               }
                             >
                               <ExpandMoreIcon />
                             </IconButton>
                           </Grid>
                           <Collapse
-                            in={openDetailGeral}
+                            in={openDetailInfo}
                             timeout="auto"
                             unmountOnExit
                           >
@@ -484,14 +481,14 @@ export default function CustomerTable({
                             </Typography>
                             <IconButton
                               onClick={() =>
-                                setOpenDetailContato(!openDetailContato)
+                                setOpenDetailContact(!openDetailContact)
                               }
                             >
                               <ExpandMoreIcon />
                             </IconButton>
                           </Grid>
                           <Collapse
-                            in={openDetailContato}
+                            in={openDetailContact}
                             timeout="auto"
                             unmountOnExit
                           >

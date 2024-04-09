@@ -50,7 +50,9 @@ const socket = io("http://localhost:3000");
 
 export default function JobTable({
   config,
-  user,
+  userId,
+  userName,
+  userRole,
   searchValue,
   searchStatus,
   searchOption,
@@ -169,7 +171,7 @@ export default function JobTable({
         jobId: selectedJob.id || selectedJob._id,
         status: "Aprovado",
         manager: selectedJob.manager,
-        user: user.name,
+        userName,
         date: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
       };
       const res = await api.put("/jobs/managerApproval", requestBody);
@@ -196,7 +198,7 @@ export default function JobTable({
   const handleRequestApproval = async () => {
     try {
       const requestBody = {
-        user,
+        user: userName,
         jobId: selectedJob._id,
         job: selectedJob,
         worker: selectedJob.worker,
@@ -213,7 +215,7 @@ export default function JobTable({
           autoClose: 1200,
         });
         socket.emit("requestApproval", {
-          sender: user.name,
+          sender: userName,
           receiver: selectedJob.manager.name,
           job: selectedJob,
           date: dayjs(Date.now()).format("DD/MM/YYYY HH:mm"),
@@ -240,7 +242,7 @@ export default function JobTable({
     const requestBody = {
       jobId: selectedJob._id,
       activity,
-      user,
+      userName: userName,
       worker: selectedJob.worker,
       manager: selectedJob.manager,
       date: dayjs().format("DD/MM/YYYY HH:mm"),
@@ -504,7 +506,8 @@ export default function JobTable({
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}
                         config={config}
-                        user={user}
+                        userName={userName}
+                        userRole={userRole}
                         job={job}
                         handleManagerApproval={handleManagerApproval}
                         handleRequestApproval={handleRequestApproval}
@@ -1126,8 +1129,8 @@ export default function JobTable({
                                         "Job aprovado" && (
                                         <Typography sx={{ fontSize: 13 }}>
                                           <InteractionReactions
-                                            userId={user._id}
-                                            userName={user.name}
+                                            userId={userId}
+                                            userName={userName}
                                             manager={job.manager}
                                             refreshData={refreshData}
                                             setRefreshData={setRefreshData}
@@ -1308,7 +1311,6 @@ export default function JobTable({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditJobForm
-            user={user}
             openEditJob={openEdit}
             selectedJob={selectedJob}
             setOpenEditJob={setOpenEdit}
@@ -1326,7 +1328,8 @@ export default function JobTable({
           onClose={() => setOpenAddInteraction(!openAddInteraction)}
         >
           <AddJobInteractionForm
-            user={user}
+            userId={userId}
+            userName={userName}
             openEditJob={openAddInteraction}
             selectedJob={selectedJob}
             setOpenEditJob={setOpenAddInteraction}
@@ -1346,7 +1349,7 @@ export default function JobTable({
           onClose={() => setOpenAddAttachments(!openAddAttachments)}
         >
           <AddAttachmentsForm
-            userName={user.name}
+            userName={userName}
             selectedJob={selectedJob}
             setOpenAddAttachments={setOpenAddAttachments}
             refreshData={refreshData}

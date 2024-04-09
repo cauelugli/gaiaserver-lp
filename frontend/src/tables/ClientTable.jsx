@@ -301,7 +301,7 @@ export default function ClientTable({
                       onClick={() => setSelectedClient(client)}
                     >
                       <CustomerTableActions
-                        user={user}
+                        userName={user.name}
                         customer={client}
                         configAgenda={configAgenda}
                         configNotifications={configNotifications}

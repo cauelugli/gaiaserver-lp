@@ -162,7 +162,7 @@ export default function CustomerTableActions(props) {
           onClose={() => setOpenAddJob(!openAddJob)}
         >
           <AddJobForm
-            user={props.user}
+            userName={props.userName}
             configAgenda={props.configAgenda}
             configNotifications={props.configNotifications}
             configNotificationsBooleans={props.configNotificationsBooleans}

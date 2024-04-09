@@ -35,7 +35,8 @@ const api = axios.create({
 });
 
 const AddJobInteractionForm = ({
-  user,
+  userId,
+  userName,
   openEditJob,
   setOpenEditJob,
   selectedJob,
@@ -93,7 +94,7 @@ const AddJobInteractionForm = ({
         jobId: selectedJob._id,
         activity,
         attachments: uploadResponses,
-        user,
+        userName,
         worker: selectedJob.worker,
         manager: selectedJob.manager,
         date: dayjs().format("DD/MM/YYYY HH:mm"),
@@ -310,8 +311,8 @@ const AddJobInteractionForm = ({
                         {interaction.activity !== "Job aprovado" && (
                           <Typography sx={{ fontSize: 13 }}>
                             <InteractionReactions
-                              userId={user._id}
-                              userName={user.name}
+                              userId={userId}
+                              userName={userName}
                               manager={selectedJob.manager}
                               refreshData={refreshData}
                               setRefreshData={setRefreshData}

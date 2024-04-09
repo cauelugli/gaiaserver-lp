@@ -15,7 +15,7 @@ const api = axios.create({
 });
 
 const ResolveJobForm = ({
-  user,
+  userName,
   selectedItem,
   refreshData,
   setRefreshData,
@@ -29,7 +29,7 @@ const ResolveJobForm = ({
     try {
       const res = await api.put(`/jobs/resolve`, {
         jobId: selectedItem._id,
-        user: user.name,
+        userName,
         resolution,
       });
       if (res.data) {

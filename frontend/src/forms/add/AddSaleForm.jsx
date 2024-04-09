@@ -38,7 +38,7 @@ const api = axios.create({
 });
 
 const AddSaleForm = ({
-  user,
+  userName,
   selectedItem,
   setOpenAddSale,
   refreshData,
@@ -168,7 +168,7 @@ const AddSaleForm = ({
         deliveryReceiver,
         deliveryReceiverPhone,
         deliveryScheduledTo,
-        createdBy: user.name,
+        createdBy: userName,
         date: dayjs().format("DD/MM/YYYY"),
         fullDate: dayjs().format("DD/MM/YYYY HH:mm"),
       });
@@ -183,7 +183,7 @@ const AddSaleForm = ({
           }
         );
         await api.post("/recentActivity", {
-          activity: `Colaborador ${user.name} criou uma Venda de 
+          activity: `Colaborador ${userName} criou uma Venda de 
           ${materials
             .map((product) => `${product.quantity}x ${product.name}`)
             .join(", ")}

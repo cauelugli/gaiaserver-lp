@@ -987,7 +987,8 @@ export default function SaleTable({
           onClose={() => setOpenAddInteraction(!openAddInteraction)}
         >
           <AddJobInteractionForm
-            user={user}
+            userId={user._id}
+            userName={user.name}
             openEditJob={openAddInteraction}
             selectedJob={selectedSale}
             setOpenEditJob={setOpenAddInteraction}

@@ -92,7 +92,7 @@ export default function JobTableActions(props) {
             />
           </ListItemButton>
 
-          {props.user.role.name === "Gerente" &&
+          {props.userRole.name === "Gerente" &&
             props.job.status === "Aprovação Solicitada" && (
               <ListItemButton
                 disabled={props.job.status === "Concluido"}
@@ -112,7 +112,7 @@ export default function JobTableActions(props) {
 
           {props.job.status !== "Concluido" &&
             props.job.status !== "Aprovado" &&
-            props.user.role.name !== "Gerente" && (
+            props.userRole.name !== "Gerente" && (
               <ListItemButton
                 onClick={(item) => {props.handleRequestApproval(item), setAnchorEl(null);}}
                 disabled={
@@ -142,7 +142,7 @@ export default function JobTableActions(props) {
             )}
 
           {props.job.status === "Aprovado" &&
-            props.user.role.name !== "Gerente" && (
+            props.userRole.name !== "Gerente" && (
               <ListItemButton onClick={(item) => {handleConfirmResolve(item), setAnchorEl(null);}}>
                 <ListItemIcon>
                   <DoneOutlineIcon />
@@ -271,7 +271,7 @@ export default function JobTableActions(props) {
           onClose={() => setOpenResolve(!openResolve)}
         >
           <ResolveJobForm
-            user={props.user}
+            userName={props.userName}
             selectedItem={props.selectedItem}
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}

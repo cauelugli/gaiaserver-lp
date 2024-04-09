@@ -330,7 +330,7 @@ router.put("/managerApproval", async (req, res) => {
 router.put("/interaction", async (req, res) => {
   try {
     const jobId = req.body.jobId || req.body.job._id;
-    const user = req.body.user;
+    const userName = req.body.userName;
 
     const job = await Job.findById(jobId);
     if (!job) {
@@ -345,7 +345,7 @@ router.put("/interaction", async (req, res) => {
           interactions: {
             number: interactionNumber,
             activity: req.body.activity,
-            user: user.name,
+            user: userName,
             date: req.body.date,
             attachments: req.body.attachments,
             reactions: {
@@ -629,7 +629,7 @@ router.put("/addAttachments", async (req, res) => {
 router.put("/resolve", async (req, res) => {
   try {
     const jobId = req.body.jobId;
-    const user = req.body.user;
+    const userName = req.body.userName;
     const resolution = req.body.resolution;
 
     const updatedJob = await Job.findByIdAndUpdate(
@@ -637,7 +637,7 @@ router.put("/resolve", async (req, res) => {
       {
         status: "Concluido",
         resolution: resolution,
-        resolvedBy: user,
+        resolvedBy: userName,
         resolvedAt: new Date().toLocaleDateString("pt-BR").replace(/\//g, "-"),
       },
       { new: true }

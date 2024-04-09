@@ -213,7 +213,9 @@ export default function Requests({
 
               <JobTable
                 config={config}
-                user={user}
+                userId={user._id}
+                userName={user.name}
+                userRole={user.role}
                 searchValue={searchValue}
                 searchOption={searchOption}
                 jobs={jobs}
@@ -264,7 +266,7 @@ export default function Requests({
           onClose={() => setOpenAddJob(!openAddJob)}
         >
           <AddJobForm
-            user={user}
+            userName={user.name}
             openAddJob={openAddJob}
             configNotifications={configNotifications}
             configNotificationsBooleans={configNotificationsBooleans}
@@ -285,7 +287,7 @@ export default function Requests({
           onClose={() => setOpenAddSale(!openAddSale)}
         >
           <AddSaleForm
-            user={user}
+            userName={user.name}
             openAddSale={openAddSale}
             setOpenAddSale={setOpenAddSale}
             refreshData={refreshData}
