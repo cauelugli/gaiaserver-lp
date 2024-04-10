@@ -417,7 +417,7 @@ export default function App() {
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "departments") ? (
                         <Departments
-                          user={userData}
+                          userName={userData.name}
                           configTables={configTables}
                         />
                       ) : isAuthenticated(login, userData) ? (

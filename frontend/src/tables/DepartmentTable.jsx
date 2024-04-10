@@ -160,10 +160,10 @@ export default function DepartmentTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((user) => {
+              .filter((item) => {
                 const userProperty = searchOption
                   .split(".")
-                  .reduce((obj, key) => obj[key], user);
+                  .reduce((obj, key) => obj[key], item);
                 return (
                   userProperty &&
                   userProperty.toLowerCase().includes(searchValue.toLowerCase())
@@ -517,15 +517,15 @@ export default function DepartmentTable({
                             <Table size="small">
                               <TableBody>
                                 <Grid container diretion="row">
-                                  {department.members.map((user) => (
+                                  {department.members.map((member) => (
                                     <TableCell
-                                      key={user.id}
+                                      key={member.id}
                                       style={{ position: "relative" }}
                                     >
                                       <Chip
                                         sx={{ mx: 0 }}
                                         onMouseEnter={() =>
-                                          setHoveredMember(user)
+                                          setHoveredMember(member)
                                         }
                                         onMouseLeave={() =>
                                           setHoveredMember(null)
@@ -533,7 +533,7 @@ export default function DepartmentTable({
                                         avatar={
                                           <Avatar
                                             alt="Imagem do Colaborador"
-                                            src={`http://localhost:3000/static/${user.image}`}
+                                            src={`http://localhost:3000/static/${member.image}`}
                                             sx={{
                                               width: 32,
                                               height: 32,
@@ -547,14 +547,14 @@ export default function DepartmentTable({
                                               fontSize: "100%",
                                             }}
                                           >
-                                            {user.name}
+                                            {member.name}
                                           </Typography>
                                         }
                                       />
-                                      {hoveredMember === user && (
+                                      {hoveredMember === member && (
                                         <Paper
                                           onMouseEnter={() =>
-                                            setHoveredMember(user)
+                                            setHoveredMember(member)
                                           }
                                           onMouseLeave={() =>
                                             setHoveredMember(null)
@@ -580,14 +580,14 @@ export default function DepartmentTable({
                                           >
                                             <Grid item sx={{ mt: 1 }}>
                                               <Typography>
-                                                {user.name}
+                                                {member.name}
                                               </Typography>
                                             </Grid>
 
                                             <Grid item sx={{ my: 1 }}>
                                               <Avatar
                                                 alt="Imagem do Colaborador"
-                                                src={`http://localhost:3000/static/${user.image}`}
+                                                src={`http://localhost:3000/static/${member.image}`}
                                                 sx={{
                                                   width: 120,
                                                   height: 120,
@@ -601,14 +601,14 @@ export default function DepartmentTable({
                                                   fontWeight: "bold",
                                                 }}
                                               >
-                                                {user.position
-                                                  ? user.position.name.toUpperCase()
+                                                {member.position
+                                                  ? member.position.name.toUpperCase()
                                                   : "-"}
                                               </Typography>
                                             </Grid>
                                             <Grid item>
                                               <Typography sx={{ fontSize: 10 }}>
-                                                {user.email}
+                                                {member.email}
                                               </Typography>
                                             </Grid>
                                           </Grid>

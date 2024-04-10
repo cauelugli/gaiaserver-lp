@@ -41,7 +41,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Departments({ user, configTables }) {
+export default function Departments({ userName, configTables }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
@@ -383,7 +383,7 @@ export default function Departments({ user, configTables }) {
           onClose={() => setOpenAddGroup(!openAddGroup)}
         >
           <AddGroupForm
-            user={user}
+            userName={userName}
             users={allUsers}
             openAdd={openAddGroup}
             setOpenAdd={setOpenAddGroup}

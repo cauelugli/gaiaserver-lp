@@ -23,7 +23,7 @@ const api = axios.create({
 
 export default function AddGroupForm({
   openAdd,
-  user,
+  userName,
   users,
   setOpenAdd,
   refreshData,
@@ -46,7 +46,7 @@ export default function AddGroupForm({
       const res = await api.post("/groups", {
         name,
         members: membersToSend,
-        creator: user.name,
+        creator: userName,
       });
       if (res.data) {
         toast.success("Grupo Adicionado!", {
