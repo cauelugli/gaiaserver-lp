@@ -28,7 +28,9 @@ const api = axios.create({
 });
 
 export default function StockEntriesTable({
-  user,
+  userName,
+  userRole,
+  userDepartment,
   refreshData,
   setRefreshData,
   configData,
@@ -119,7 +121,7 @@ export default function StockEntriesTable({
       const res = await api.put("/stock/managerApproval", {
         entry,
         entryId: entry._id,
-        user,
+        userName,
         type: entry.type,
         status: status,
       });
@@ -149,7 +151,7 @@ export default function StockEntriesTable({
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
-              <TableRow sx={{  backgroundColor: "#eee" }}>
+              <TableRow sx={{ backgroundColor: "#eee" }}>
                 {tableHeaderRow.map((headCell) => (
                   <TableCell
                     align={headCell.label === "#" ? "" : "center"}
@@ -230,8 +232,8 @@ export default function StockEntriesTable({
                         >
                           <Typography sx={{ fontSize: 13, my: "auto" }}>
                             {entry.status === "Aprovação Solicitada" &&
-                            user.role.name === "Gerente" &&
-                            user.department.name ===
+                            userRole.name === "Gerente" &&
+                            userDepartment.name ===
                               configData.stockentriesDispatcherDepartment
                                 .name ? (
                               <Grid container direction="row">
@@ -271,7 +273,7 @@ export default function StockEntriesTable({
                           {entry.status === "Aberto" &&
                             configData.stockEntriesNeedApproval && (
                               <RequestApproval
-                                user={user}
+                                userName={userName}
                                 entry={entry}
                                 refreshData={refreshData}
                                 setRefreshData={setRefreshData}

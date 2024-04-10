@@ -44,7 +44,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Services({ user, configTables, configData }) {
+export default function Services({ configTables, configData }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);

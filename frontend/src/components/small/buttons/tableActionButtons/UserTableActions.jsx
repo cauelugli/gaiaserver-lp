@@ -98,12 +98,12 @@ export default function UserTableActions(props) {
           </ListItemButton>
           <ListItemButton onClick={(item) => handleConfirmActivate(item)}>
             <ListItemIcon>
-              {props.user.isActive ? <ArchiveIcon /> : <UpgradeIcon />}
+              {props.userIsActive ? <ArchiveIcon /> : <UpgradeIcon />}
             </ListItemIcon>
             <ListItemText
               primary={
                 <Typography sx={{ fontSize: 14 }}>
-                  {props.user.isActive ? "Arquivar" : "Reativar"} Colaborador
+                  {props.userIsActive ? "Arquivar" : "Reativar"} Colaborador
                 </Typography>
               }
               sx={{ ml: -3 }}

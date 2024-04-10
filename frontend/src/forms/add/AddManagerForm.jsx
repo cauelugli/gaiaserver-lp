@@ -39,7 +39,7 @@ const api = axios.create({
 });
 
 const AddManagerForm = ({
-  user,
+  userName,
   setOpenAdd,
   refreshData,
   setRefreshData,
@@ -107,7 +107,7 @@ const AddManagerForm = ({
 
         await api.post("/recentActivity", {
           activity: `Colaborador ${
-            user.name
+            userName
           } criou um Novo Gerente: "${name}" ${
             department && `para o departamento ${department.name}`
           }`,

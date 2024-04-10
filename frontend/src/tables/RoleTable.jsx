@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -7,24 +6,16 @@ import axios from "axios";
 
 import {
   Box,
-  Collapse,
   Dialog,
-  Grid,
-  IconButton,
   Paper,
   Table,
-  TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TablePagination,
   TableRow,
   TableSortLabel,
   Typography,
 } from "@mui/material";
-
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditRoleForm from "../forms/edit/EditRoleForm";
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
@@ -37,7 +28,6 @@ const api = axios.create({
 
 export default function RoleTable({
   refreshData,
-  configData,
   users,
   managers,
   setRefreshData,
@@ -47,13 +37,7 @@ export default function RoleTable({
   const [selectedRole, setSelectedRole] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
-
-  const handleConfirmDelete = (position) => {
-    setSelectedItem(position);
-    setOpenDialog(true);
-  };
 
   const [roles, setRoles] = React.useState([]);
 
@@ -71,11 +55,6 @@ export default function RoleTable({
 
   const handleOpenDetail = (role) => {
     setOpenDetail(!openDetail);
-    setSelectedRole(role);
-  };
-
-  const handleOpenEdit = (role) => {
-    setOpenEdit(!openEdit);
     setSelectedRole(role);
   };
 
@@ -176,8 +155,8 @@ export default function RoleTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((user) =>
-                user[searchOption]
+              .filter((item) =>
+                item[searchOption]
                   .toLowerCase()
                   .includes(searchValue.toLowerCase())
               )
@@ -248,7 +227,7 @@ export default function RoleTable({
         {openDialog && (
           <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
             <GenericDeleteForm
-              selectedItem={selectedItem}
+              selectedItem={selectedRole}
               openDialog={openDialog}
               setOpenDialog={setOpenDialog}
               refreshData={refreshData}
@@ -256,7 +235,7 @@ export default function RoleTable({
               toast={toast}
               endpoint="roles"
               successMessage={`${
-                selectedItem.name && selectedItem.name
+                selectedRole.name && selectedRole.name
               } Deletado com Sucesso`}
             />
           </Dialog>

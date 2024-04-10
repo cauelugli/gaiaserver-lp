@@ -16,7 +16,7 @@ const api = axios.create({
 const socket = io("http://localhost:3000");
 
 export default function RequestApproval({
-  user,
+  userName,
   entry,
   refreshData,
   setRefreshData,dispatcherManager
@@ -35,7 +35,7 @@ export default function RequestApproval({
           autoClose: 1200,
         });
         socket.emit("requestApproval", {
-          sender: user,
+          sender: userName,
           receiver: dispatcherManager,
           job: entry,
           type:"Entrada de Estoque",

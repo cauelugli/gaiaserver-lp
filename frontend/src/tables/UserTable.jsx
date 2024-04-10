@@ -297,7 +297,7 @@ export default function UserTable({
                         onClick={() => setSelectedUser(row)}
                       >
                         <UserTableActions
-                          user={row}
+                          userIsActive={row.isActive}
                           configData={configData}
                           setOpenEdit={setOpenEdit}
                           setOpenDetails={setOpenDetails}

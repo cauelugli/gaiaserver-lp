@@ -44,7 +44,7 @@ function CustomTabPanel(props) {
 }
 
 // eslint-disable-next-line no-unused-vars
-export default function Users({ user }) {
+export default function Users({ userName }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
@@ -268,7 +268,7 @@ export default function Users({ user }) {
           onClose={() => setOpenAddUser(!openAddUser)}
         >
           <AddUserForm
-            user={user}
+            userName={userName}
             configData={config}
             configCustomization={configCustomization}
             configNotifications={configNotifications}
@@ -291,7 +291,7 @@ export default function Users({ user }) {
           onClose={() => setOpenAddManager(!openAddManager)}
         >
           <AddManagerForm
-            user={user}
+            userName={userName}
             config={config}
             configCustomization={configCustomization}
             openAdd={openAddManager}

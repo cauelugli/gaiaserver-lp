@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
@@ -42,7 +41,8 @@ import AddJobInteractionForm from "../forms/misc/AddJobInteractionForm";
 import EditSaleForm from "../forms/edit/EditSaleForm";
 
 export default function SaleTable({
-  user,
+  userId,
+  userName,
   config,
   searchValue,
   searchStatus,
@@ -174,7 +174,7 @@ export default function SaleTable({
     const requestBody = {
       saleId: selectedSale._id,
       activity,
-      user,
+      userName,
       worker: selectedSale.worker,
       manager: selectedSale.manager,
       date: dayjs().format("DD/MM/YYYY HH:mm"),
@@ -265,7 +265,7 @@ export default function SaleTable({
             {sortedRows
               .filter((sale) => {
                 if (!sale) return false;
-                const userProperty = searchOption
+                const itemProperty = searchOption
                   .split(".")
                   .reduce((obj, key) => obj[key], sale);
                 const statusFilter =
@@ -274,10 +274,9 @@ export default function SaleTable({
                 const shouldApplyStatusFilter =
                   statusFilter || searchStatus === "&nbsp";
 
-                // Verifica se a condição para aplicar o filtro é atendida
                 const shouldShowSale =
-                  userProperty &&
-                  userProperty
+                  itemProperty &&
+                  itemProperty
                     .toLowerCase()
                     .includes(searchValue.toLowerCase()) &&
                   shouldApplyStatusFilter;
@@ -397,7 +396,7 @@ export default function SaleTable({
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}
                         config={config}
-                        user={user}
+                        userName={userName}
                         sale={sale}
                         handleOpenEdit={handleOpenEdit}
                         handleOpenAddJobInteraction={setOpenAddInteraction}
@@ -791,8 +790,8 @@ export default function SaleTable({
                                         "Job aprovado" && (
                                         <Typography sx={{ fontSize: 13 }}>
                                           <InteractionReactions
-                                            userId={user._id}
-                                            userName={user.name}
+                                            userId={userId}
+                                            userName={userName}
                                             manager={sale.manager}
                                             refreshData={refreshData}
                                             setRefreshData={setRefreshData}
@@ -987,8 +986,8 @@ export default function SaleTable({
           onClose={() => setOpenAddInteraction(!openAddInteraction)}
         >
           <AddJobInteractionForm
-            userId={user._id}
-            userName={user.name}
+            userId={userId}
+            userName={userName}
             openEditJob={openAddInteraction}
             selectedJob={selectedSale}
             setOpenEditJob={setOpenAddInteraction}

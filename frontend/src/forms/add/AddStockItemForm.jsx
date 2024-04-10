@@ -26,7 +26,7 @@ const api = axios.create({
 });
 
 export default function AddStockItemForm({
-  user,
+  userName,
   onClose,
   refreshData,
   setRefreshData,
@@ -51,7 +51,7 @@ export default function AddStockItemForm({
         buyValue,
         sellValue,
         image: imagePath,
-        createdBy: user.username,
+        createdBy: userName,
       });
       if (res.data) {
         toast.success("Material Adicionado!", {

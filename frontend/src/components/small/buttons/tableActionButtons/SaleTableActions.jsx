@@ -203,7 +203,7 @@ export default function SaleTableActions(props) {
           onClose={() => setOpenResolve(!openResolve)}
         >
           <ResolveSaleForm
-            user={props.user}
+            userName={props.userName}
             selectedItem={props.selectedItem}
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}

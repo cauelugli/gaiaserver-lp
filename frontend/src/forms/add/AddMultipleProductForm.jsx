@@ -27,7 +27,7 @@ const api = axios.create({
 });
 
 export default function AddMultipleProductForm({
-  user,
+  userName,
   onClose,
   refreshData,
   setRefreshData,
@@ -45,7 +45,7 @@ export default function AddMultipleProductForm({
       groupingType: "Unidade",
       buyValue: 0,
       sellValue: 0,
-      createdBy: user.username,
+      createdBy: userName,
     },
   ]);
 
@@ -92,7 +92,7 @@ export default function AddMultipleProductForm({
         groupingType: product.groupingType,
         buyValue: product.buyValue,
         sellValue: product.sellValue,
-        createdBy: user.username,
+        createdBy: userName,
       }));
 
       // Faça a chamada POST para adicionar os produtos

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,7 +6,6 @@ import axios from "axios";
 import {
   Box,
   CircularProgress,
-  Grid,
   Tab,
   Tabs,
   Typography,
@@ -37,7 +35,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Quotes({ user, configData }) {
+export default function Quotes({ configData }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);

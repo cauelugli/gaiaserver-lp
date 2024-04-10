@@ -47,7 +47,9 @@ const api = axios.create({
 const socket = io("http://localhost:3000");
 
 export default function AddProjectForm({
-  user,
+  userId,
+  userName,
+  userImage,
   configData,
   openAdd,
   setOpenAdd,
@@ -111,7 +113,7 @@ export default function AddProjectForm({
       }
       const res = await api.post("/projects", {
         name,
-        creator: { name: user.name, id: user._id },
+        creator: { name: userName, id: userId },
         type,
         customer,
         customerType,
@@ -139,7 +141,7 @@ export default function AddProjectForm({
         if (configData.notifyWhenProjectIsCreated) {
           const memberIds = members.map((member) => member.id);
           socket.emit("whenProjectIsCreated", {
-            sender: user.name,
+            sender: userName,
             list: memberIds,
             date: dayjs(Date.now()).format("DD/MM/YYYY"),
             projectName: name,
@@ -265,10 +267,10 @@ export default function AddProjectForm({
                 <Typography
                   sx={{ color: "#777", fontWeight: "bold", mx: 1, my: "auto" }}
                 >
-                  {user.name}
+                  {userName}
                 </Typography>
                 <Avatar
-                  src={`http://localhost:3000/static${user.image}`}
+                  src={`http://localhost:3000/static${userImage}`}
                   sx={{ width: 32, height: 32 }}
                 />
                 <FormControl sx={{ ml: 2, mt: -2 }}>

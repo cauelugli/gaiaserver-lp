@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -9,8 +8,6 @@ import {
   Avatar,
   Box,
   Dialog,
-  Grid,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -21,9 +18,6 @@ import {
   TableSortLabel,
   Typography,
 } from "@mui/material";
-
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditOperatorForm from "../forms/edit/EditOperatorForm";
 import DeleteOperatorForm from "../forms/delete/DeleteOperatorForm";
@@ -174,11 +168,11 @@ export default function OperatorTable({
               </TableRow>
               {sortedRows
                 .filter((row) => row.role && row.role.name !== "Admin")
-                .filter((user) => {
+                .filter((item) => {
                   const searchOptionValue =
                     searchOption === "role.name"
-                      ? user.role?.name
-                      : user[searchOption];
+                      ? item.role?.name
+                      : item[searchOption];
 
                   return (
                     searchOptionValue &&

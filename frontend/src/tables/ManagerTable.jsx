@@ -179,20 +179,20 @@ export default function ManagerTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((user) => {
+              .filter((item) => {
                 const searchOptionValue =
                   searchOption === "department.name"
-                    ? user.department?.name
-                    : user[searchOption];
+                    ? item.department?.name
+                    : item[searchOption];
 
                 const departmentFilter =
                   !searchDepartment ||
-                  user.department?.name === searchDepartment;
+                  item.department?.name === searchDepartment;
 
                 const shouldApplyDepartmentFilter =
                   departmentFilter || searchDepartment === "&nbsp;";
 
-                const shouldShowUser = showArchivedUsers || user.isActive;
+                const shouldShowUser = showArchivedUsers || item.isActive;
 
                 return (
                   searchOptionValue &&
@@ -264,7 +264,7 @@ export default function ManagerTable({
                     onClick={() => setSelectedManager(row)}
                   >
                     <ManagerTableActions
-                      user={row}
+                      userIsActive={row.isActive}
                       configData={configData}
                       setOpenEdit={setOpenEdit}
                       setOpenDetails={setOpenDetails}

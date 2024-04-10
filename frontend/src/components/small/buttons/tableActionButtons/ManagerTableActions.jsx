@@ -96,12 +96,12 @@ export default function ManagerTableActions(props) {
           </ListItemButton>
           <ListItemButton onClick={(item) => handleConfirmActivate(item)}>
             <ListItemIcon>
-              {props.user.isActive ? <ArchiveIcon /> : <UpgradeIcon />}
+              {props.userIsActive ? <ArchiveIcon /> : <UpgradeIcon />}
             </ListItemIcon>
             <ListItemText
               primary={
                 <Typography sx={{ fontSize: 14 }}>
-                  {props.user.isActive ? "Arquivar" : "Reativar"} Gerente
+                  {props.userIsActive ? "Arquivar" : "Reativar"} Gerente
                 </Typography>
               }
               sx={{ ml: -3 }}

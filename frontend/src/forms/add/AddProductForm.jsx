@@ -26,7 +26,7 @@ const api = axios.create({
 });
 
 export default function AddProductForm({
-  user,
+  userName,
   onClose,
   refreshData,
   setRefreshData,
@@ -61,7 +61,7 @@ export default function AddProductForm({
         groupingType,
         buyValue,
         sellValue,
-        createdBy: user.username,
+        createdBy: userName,
       });
 
       if (productResponse.data) {

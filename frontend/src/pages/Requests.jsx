@@ -45,7 +45,9 @@ function CustomTabPanel(props) {
 }
 
 export default function Requests({
-  user,
+  userId,
+  userName,
+  userRole,
   configTables,
   configAgenda,
   configNotifications,
@@ -213,9 +215,9 @@ export default function Requests({
 
               <JobTable
                 config={config}
-                userId={user._id}
-                userName={user.name}
-                userRole={user.role}
+                userId={userId}
+                userName={userName}
+                userRole={userRole}
                 searchValue={searchValue}
                 searchOption={searchOption}
                 jobs={jobs}
@@ -245,7 +247,8 @@ export default function Requests({
               />
 
               <SaleTable
-                user={user}
+                userId={userId}
+                userName={userName}
                 config={config}
                 searchValue={searchValue}
                 searchOption={searchOption}
@@ -266,7 +269,7 @@ export default function Requests({
           onClose={() => setOpenAddJob(!openAddJob)}
         >
           <AddJobForm
-            userName={user.name}
+            userName={userName}
             openAddJob={openAddJob}
             configNotifications={configNotifications}
             configNotificationsBooleans={configNotificationsBooleans}
@@ -287,7 +290,7 @@ export default function Requests({
           onClose={() => setOpenAddSale(!openAddSale)}
         >
           <AddSaleForm
-            userName={user.name}
+            userName={userName}
             openAddSale={openAddSale}
             setOpenAddSale={setOpenAddSale}
             refreshData={refreshData}

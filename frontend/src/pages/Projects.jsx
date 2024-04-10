@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -18,8 +17,6 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-
-import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
@@ -48,7 +45,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Projects({ user }) {
+export default function Projects({ userId, userName, userImage }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
@@ -192,7 +189,9 @@ export default function Projects({ user }) {
             />
 
             <ProjectsTable
-              user={user}
+              userId={userId}
+              userName={userName}
+              userImage={userImage}
               projects={projects}
               configData={configData}
               refreshData={refreshData}
@@ -222,7 +221,9 @@ export default function Projects({ user }) {
             configData={configData}
             configNotificationsBooleans={configNotificationsBooleans}
             openAdd={openAddProject}
-            user={user}
+            userId={userId}
+            userName={userName}
+            userImage={userImage}
             handleOpenConfirmDialog={handleOpenConfirmDialog}
             customers={customers}
             services={services}
@@ -258,7 +259,9 @@ export default function Projects({ user }) {
             <AddProjectForm
               configData={configData}
               openAdd={openAddProject}
-              user={user}
+              userId={userId}
+              userName={userName}
+              userImage={userImage}
               configNotificationsBooleans={configNotificationsBooleans}
               handleOpenConfirmDialog={handleOpenConfirmDialog}
               customers={customers}

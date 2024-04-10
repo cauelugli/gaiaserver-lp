@@ -56,7 +56,7 @@ router.put("/managerApproval", async (req, res) => {
         entry: req.body.entry,
         type: req.body.entry.type,
         status: "Aprovado",
-        user: req.body.user.name,
+        user: req.body.userName,
         department: req.body.user.department.name,
         items: req.body.entry.items,
         price: req.body.entry.quoteValue.toFixed(2),
@@ -73,7 +73,6 @@ router.put("/managerApproval", async (req, res) => {
 // CREATE STOCK ENTRY
 router.put("/", async (req, res) => {
   const itemList = req.body.itemList;
-  const user = req.body.createdBy;
   const status = req.body.status;
   const updatedStockItems = [];
 
@@ -102,7 +101,7 @@ router.put("/", async (req, res) => {
       const newStockEntry = new StockEntry({
         items: items,
         quoteValue: totalValue,
-        createdBy: user,
+        createdBy: req.body.userName,
         type: req.body.type,
         status: status,
       });
@@ -114,10 +113,10 @@ router.put("/", async (req, res) => {
         const newFinanceOutcome = new FinanceOutcome({
           entry: newStockEntry,
           status: "Aprovado",
-          user: req.body.user.name,
+          user: req.body.userName,
           type: `Entrada de Estoque - ${req.body.type}`,
-          department: req.body.user.department
-            ? req.body.user.department.name
+          department: req.body.userDepartment
+            ? req.body.userDepartment.name
             : "Sem Departamento",
           items: newStockEntry.items,
           price: newStockEntry.quoteValue.toFixed(2),
@@ -154,7 +153,7 @@ router.put("/", async (req, res) => {
       const newStockEntry = new StockEntry({
         items: items,
         quoteValue: totalValue,
-        createdBy: user,
+        createdBy: req.body.userName,
         type: req.body.type,
         status: status,
       });
@@ -166,10 +165,10 @@ router.put("/", async (req, res) => {
         const newFinanceOutcome = new FinanceOutcome({
           entry: newStockEntry,
           status: "Aprovado",
-          user: req.body.user.name,
+          user: req.body.userName,
           type: `Entrada de Estoque - ${req.body.type}`,
-          department: req.body.user.department
-            ? req.body.user.department.name
+          department: req.body.userDepartment
+            ? req.body.userDepartment.name
             : "Sem Departamento",
           items: newStockEntry.items,
           price: newStockEntry.quoteValue.toFixed(2),

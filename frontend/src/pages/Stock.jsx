@@ -47,7 +47,12 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Stock({ user, configTables }) {
+export default function Stock({
+  userName,
+  userRole,
+  userDepartment,
+  configTables,
+}) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
@@ -286,7 +291,9 @@ export default function Stock({ user, configTables }) {
               handleSearchChange={handleSearchChange}
             />
             <StockEntriesTable
-              user={user}
+              userName={userName}
+              userRole={userRole}
+              userDepartment={userDepartment}
               configData={config}
               searchValue={searchValue}
               searchOption={searchOption}
@@ -305,7 +312,7 @@ export default function Stock({ user, configTables }) {
           onClose={() => closeModal(0)}
         >
           <AddProductForm
-            user={user}
+            userName={userName}
             onClose={() => closeModal(0)}
             refreshData={refreshData}
             configCustomization={configCustomization}
@@ -323,7 +330,7 @@ export default function Stock({ user, configTables }) {
           onClose={() => closeModal(1)}
         >
           <AddMultipleProductForm
-            user={user}
+            userName={userName}
             onClose={() => closeModal(1)}
             refreshData={refreshData}
             configCustomization={configCustomization}
@@ -341,7 +348,7 @@ export default function Stock({ user, configTables }) {
           onClose={() => closeModal(2)}
         >
           <AddStockItemForm
-            user={user}
+            userName={userName}
             onClose={() => closeModal(2)}
             refreshData={refreshData}
             configCustomization={configCustomization}
@@ -359,7 +366,8 @@ export default function Stock({ user, configTables }) {
           onClose={() => closeModal(3)}
         >
           <AddStockProductForm
-            user={user}
+            userName={userName}
+            userDepartment={userDepartment}
             configData={config}
             configCustomization={configCustomization}
             products={products}
@@ -379,7 +387,7 @@ export default function Stock({ user, configTables }) {
           onClose={() => closeModal(4)}
         >
           <AddStockForm
-            user={user}
+            userName={userName}
             configData={config}
             stockItems={stockItems}
             onClose={() => closeModal(4)}

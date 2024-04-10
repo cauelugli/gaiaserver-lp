@@ -15,7 +15,7 @@ const api = axios.create({
 });
 
 const ResolveSaleForm = ({
-  user,
+  userName,
   selectedItem,
   refreshData,
   setRefreshData,
@@ -29,7 +29,7 @@ const ResolveSaleForm = ({
     try {
       const res = await api.put(`/sales/resolve`, {
         saleId: selectedItem._id,
-        user: user.name,
+        user: userName,
         commentary,
       });
       if (res.data) {

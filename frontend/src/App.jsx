@@ -362,7 +362,7 @@ export default function App() {
                     element={
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "users") ? (
-                        <Users user={userData} />
+                        <Users userName={userData.name} />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
                           Seu usuário não possui autorização à página.
@@ -378,7 +378,7 @@ export default function App() {
                     element={
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "security") ? (
-                        <Security user={userData} />
+                        <Security />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
                           Seu usuário não possui autorização à página.
@@ -455,7 +455,6 @@ export default function App() {
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "services") ? (
                         <Services
-                          user={userData}
                           configTables={configTables}
                           configData={configData}
                         />
@@ -473,7 +472,12 @@ export default function App() {
                     element={
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "stock") ? (
-                        <Stock user={userData} configTables={configTables} />
+                        <Stock
+                          userName={userData.name}
+                          userRole={userData.role}
+                          userDepartment={userData.department}
+                          configTables={configTables}
+                        />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
                           Seu usuário não possui autorização à página.
@@ -489,7 +493,9 @@ export default function App() {
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "requests") ? (
                         <Requests
-                          user={userData}
+                          userId={userData._id}
+                          userName={userData.name}
+                          userRole={userData.role}
                           configTables={configTables}
                           configAgenda={configAgenda}
                           configNotifications={configNotifications}
@@ -511,7 +517,12 @@ export default function App() {
                     element={
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "projects") ? (
-                        <Projects user={userData} configTables={configTables} />
+                        <Projects
+                          userId={userData._id}
+                          userName={userData.name}
+                          userImage={userData.image}
+                          configTables={configTables}
+                        />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
                           Seu usuário não possui autorização à página.
@@ -526,10 +537,7 @@ export default function App() {
                     element={
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "quotes") ? (
-                        <Quotes
-                          user={userData}
-                          configData={configData.quotes}
-                        />
+                        <Quotes configData={configData.quotes} />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
                           Seu usuário não possui autorização à página.

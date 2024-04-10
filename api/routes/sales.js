@@ -449,7 +449,7 @@ router.put("/activate/:id", async (req, res) => {
 router.put("/interaction", async (req, res) => {
   try {
     const saleId = req.body.saleId || req.body.sale._id;
-    const user = req.body.user;
+    const userName = req.body.userName;
 
     const sale = await Sale.findById(saleId);
     if (!sale) {
@@ -464,7 +464,7 @@ router.put("/interaction", async (req, res) => {
           interactions: {
             number: interactionNumber,
             activity: req.body.activity,
-            user: user.name,
+            user: userName,
             date: req.body.date,
             reactions: {
               love: { quantity: 0, usersReacted: [] },

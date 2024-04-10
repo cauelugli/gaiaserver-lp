@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+
 import * as React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -45,8 +46,7 @@ function CustomTabPanel(props) {
   );
 }
 
-// eslint-disable-next-line no-unused-vars
-export default function Security({ user }) {
+export default function Security() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [config, setConfig] = React.useState(false);
@@ -324,7 +324,6 @@ export default function Security({ user }) {
           onClose={() => setOpenAddPosition(!openAddPosition)}
         >
           <AddPositionForm
-            user={user}
             openAdd={openAddPosition}
             setOpenAdd={setOpenAddPosition}
             refreshData={refreshData}

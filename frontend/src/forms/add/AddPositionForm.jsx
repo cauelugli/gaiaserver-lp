@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -7,7 +6,6 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Grid,
   TextField,
   Typography,

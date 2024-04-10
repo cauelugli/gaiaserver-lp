@@ -134,13 +134,13 @@ export default function PositionTable({
                 ))}
               </TableRow>
               {sortedRows
-                .filter((user) => {
-                  const userProperty = searchOption
+                .filter((item) => {
+                  const itemProperty = searchOption
                     .split(".")
-                    .reduce((obj, key) => obj[key], user);
+                    .reduce((obj, key) => obj[key], item);
                   return (
-                    userProperty &&
-                    userProperty
+                    itemProperty &&
+                    itemProperty
                       .toLowerCase()
                       .includes(searchValue.toLowerCase())
                   );

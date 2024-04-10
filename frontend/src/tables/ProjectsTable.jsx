@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -49,7 +48,9 @@ const api = axios.create({
 const socket = io("http://localhost:3000");
 
 export default function ProjectsTable({
-  user,
+  userId,
+  userName,
+  userImage,
   searchValue,
   searchOption,
   projects,
@@ -57,7 +58,7 @@ export default function ProjectsTable({
   setRefreshData,
 }) {
   const [selectedProject, setSelectedProject] = React.useState("");
-  const [openEdit, setOpenEdit] = React.useState(false);
+  // const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openAddAttachments, setOpenAddAttachments] = React.useState(false);
   const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
@@ -166,7 +167,7 @@ export default function ProjectsTable({
         stageIndex: selectedStageIndex,
         taskIndex: selectedTaskIndex,
         interaction: newInteractionText,
-        user: { id: user._id, name: user.name },
+        user: { id: userId, name: userName },
         createdAt: dayjs().format("DD/MM/YYYY"),
       });
 
@@ -180,7 +181,7 @@ export default function ProjectsTable({
           selectedTaskIndex
         ].assignees.map((assignee) => assignee.id);
         socket.emit("notifyTaskAssignees", {
-          sender: user.name,
+          sender: userName,
           list: memberIds,
           date: dayjs(Date.now()).format("DD/MM/YYYY"),
           projectName: selectedProject.name,
@@ -200,7 +201,7 @@ export default function ProjectsTable({
         stageIndex: selectedStageIndex,
         taskIndex: selectedTaskIndex,
         resolution: resolutionText,
-        user: { id: user._id, name: user.name },
+        user: { id: userId, name: userName },
         createdAt: dayjs().format("DD/MM/YYYY"),
       });
 
@@ -215,7 +216,7 @@ export default function ProjectsTable({
           selectedTaskIndex
         ].assignees.map((assignee) => assignee.id);
         socket.emit("resolvedTask", {
-          sender: user.name,
+          sender: userName,
           list: memberIds,
           date: dayjs(Date.now()).format("DD/MM/YYYY"),
           projectName: selectedProject.name,
@@ -223,7 +224,7 @@ export default function ProjectsTable({
       } else if (response.status === 207) {
         const memberIds = response.data.members.map((member) => member.id);
         socket.emit("resolvedProject", {
-          sender: user.name,
+          sender: userName,
           list: memberIds,
           date: dayjs(Date.now()).format("DD/MM/YYYY"),
           projectName: selectedProject.name,
@@ -285,8 +286,8 @@ export default function ProjectsTable({
                 ))}
               </TableRow>
               {sortedRows
-                .filter((user) =>
-                  user[searchOption]
+                .filter((item) =>
+                  item[searchOption]
                     .toLowerCase()
                     .includes(searchValue.toLowerCase())
                 )
@@ -1032,7 +1033,7 @@ export default function ProjectsTable({
                                                   <Grid item>
                                                     <Avatar
                                                       alt="Imagem do Colaborador"
-                                                      src={`http://localhost:3000/static/${user.image}`}
+                                                      src={`http://localhost:3000/static/${userImage}`}
                                                       sx={{
                                                         mx: 2,
                                                         width: 36,
@@ -1083,7 +1084,7 @@ export default function ProjectsTable({
                                                   <Grid item>
                                                     <Avatar
                                                       alt="Imagem do Colaborador"
-                                                      src={`http://localhost:3000/static/${user.image}`}
+                                                      src={`http://localhost:3000/static/${userImage}`}
                                                       sx={{
                                                         mx: 2,
                                                         width: 36,
@@ -1190,7 +1191,7 @@ export default function ProjectsTable({
             onClose={() => setOpenAddAttachments(!openAddAttachments)}
           >
             <AddAttachmentsForm
-              userName={user.name}
+              userName={userName}
               selectedJob={selectedProject}
               setOpenAddAttachments={setOpenAddAttachments}
               refreshData={refreshData}

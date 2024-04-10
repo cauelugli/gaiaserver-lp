@@ -37,7 +37,7 @@ const api = axios.create({
 const socket = io("http://localhost:3000");
 
 const AddUserForm = ({
-  user,
+  userName,
   configCustomization,
   configNotifications,
   configNotificationsBooleans,
@@ -97,7 +97,7 @@ const AddUserForm = ({
 
         if (configNotificationsBooleans.whenUserIsCreated) {
           socket.emit("whenUserIsCreated", {
-            sender: user.name,
+            sender: userName,
             createdUser: name,
             list: configNotifications.whenUserIsCreated,
             date: dayjs(Date.now()).format("DD/MM/YYYY"),
@@ -106,7 +106,7 @@ const AddUserForm = ({
 
         await api.post("/recentActivity", {
           activity: `Colaborador ${
-            user.name
+            userName
           } criou um Novo Usuário: "${name}" ${
             position && `no cargo ${position.name}`
           } ${department && ` para o departamento ${department.name}`}`,

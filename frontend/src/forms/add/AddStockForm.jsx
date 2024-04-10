@@ -33,7 +33,7 @@ const api = axios.create({
 });
 
 export default function AddStockForm({
-  user,
+  userName,
   stockItems,
   onClose,
   refreshData,
@@ -62,7 +62,7 @@ export default function AddStockForm({
     try {
       const res = await api.put("/stock", {
         itemList,
-        createdBy: user.username,
+        createdBy: userName,
         type: "Estoque",
         status: configData.stockEntriesNeedApproval ? "Aberto" : "Aprovado",
       });
