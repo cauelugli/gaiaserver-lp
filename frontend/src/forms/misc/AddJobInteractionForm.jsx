@@ -52,6 +52,7 @@ const AddJobInteractionForm = ({
   const [attachments, setAttachments] = React.useState([]);
   const [endpoint, setEndpoint] = React.useState(fromSales ? "sales" : "jobs");
   const [openViewDialog, setOpenViewDialog] = React.useState(false);
+  const [openViewDialog2, setOpenViewDialog2] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openPopoverIndex, setOpenPopoverIndex] = React.useState(null);
@@ -73,31 +74,33 @@ const AddJobInteractionForm = ({
   const handleAddInteraction = async (e) => {
     e.preventDefault();
     try {
-      const uploadResponses = [];
-      for (const file of attachments) {
-        const formData = new FormData();
-        formData.append("attachment", file);
+      let uploadResponses = [];
+      if (attachments.length !== 0) {
+        for (const file of attachments) {
+          const formData = new FormData();
+          formData.append("attachment", file);
 
-        const uploadResponse = await api.post(
-          "/uploads/singleAttachment",
-          formData
-        );
-        uploadResponses.push(uploadResponse.data.attachmentPath);
+          const uploadResponse = await api.post(
+            "/uploads/singleAttachment",
+            formData
+          );
+          uploadResponses.push(uploadResponse.data.attachmentPath);
+        }
+
+        await api.put(`/${endpoint}/addAttachments`, {
+          jobId: selectedJob._id,
+          attachments: uploadResponses,
+          userName,
+          date: dayjs().format("DD/MM HH:mm"),
+        });
       }
-
-      await api.put(`/${endpoint}/addAttachments`, {
-        jobId: selectedJob._id,
-        attachments: uploadResponses,
-      });
 
       const requestBody = {
         jobId: selectedJob._id,
         activity,
         attachments: uploadResponses,
         userName,
-        worker: selectedJob.worker,
-        manager: selectedJob.manager,
-        date: dayjs().format("DD/MM/YYYY HH:mm"),
+        date: dayjs().format("DD/MM HH:mm"),
       };
 
       const res = await api.put(`/${endpoint}/interaction`, requestBody);
@@ -313,11 +316,10 @@ const AddJobInteractionForm = ({
                             <InteractionReactions
                               userId={userId}
                               userName={userName}
-                              manager={selectedJob.manager}
+                              itemId={selectedJob._id}
                               refreshData={refreshData}
                               setRefreshData={setRefreshData}
                               interaction={interaction}
-                              job={selectedJob}
                               number={interaction.number}
                               userReactions={
                                 userReactions[selectedJob._id] || []
@@ -328,10 +330,7 @@ const AddJobInteractionForm = ({
                                   [selectedJob._id]: reactions,
                                 })
                               }
-                              jobId={selectedJob._id}
-                              updateInteractions={
-                                updateSelectedJobInteractions
-                              }
+                              updateInteractions={updateSelectedJobInteractions}
                             />
                           </Typography>
                         )}
@@ -361,7 +360,6 @@ const AddJobInteractionForm = ({
                 <InputBase
                   sx={{ ml: 1, flex: 1 }}
                   placeholder="Atividade"
-                  inputProps={{ "aria-label": "search google maps" }}
                   value={activity}
                   onChange={(e) => setActivity(e.target.value)}
                 />
@@ -463,7 +461,7 @@ const AddJobInteractionForm = ({
                                   size="small"
                                   onClick={() => {
                                     setSelectedItem(attachment);
-                                    setOpenViewDialog(true);
+                                    setOpenViewDialog2(true);
                                   }}
                                 >
                                   <VisibilityIcon />
@@ -489,6 +487,7 @@ const AddJobInteractionForm = ({
                 <Grid container direction="row" justifyContent="flex-end">
                   <Button
                     type="submit"
+                    disabled={activity === ""}
                     variant="contained"
                     color="success"
                     sx={{ my: 2, mr: 2 }}
@@ -519,6 +518,21 @@ const AddJobInteractionForm = ({
           <ViewDialog
             selectedItem={selectedItem}
             setOpenViewDialog={setOpenViewDialog}
+          />
+        </Dialog>
+      )}
+      {openViewDialog2 && (
+        <Dialog
+          open={openViewDialog2}
+          onClose={() => setOpenViewDialog2(false)}
+          fullWidth
+          maxWidth="lg"
+        >
+          <ViewDialog
+            selectedItem={selectedItem.name}
+            setOpenViewDialog={setOpenViewDialog2}
+            createObjectURL
+            createObjectURLItem={selectedItem}
           />
         </Dialog>
       )}

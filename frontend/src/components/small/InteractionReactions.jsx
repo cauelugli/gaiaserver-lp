@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
@@ -41,12 +40,13 @@ const InteractionReactions = ({
   userName,
   userReactions,
   setUserReactions,
-  job,
+  itemId,
   number,
   interaction,
   refreshData,
   setRefreshData,
   fromSales,
+  fromProjects,
   updateInteractions,
 }) => {
   const reactionsMap = {
@@ -71,13 +71,15 @@ const InteractionReactions = ({
       color: "#ffdb58",
     },
   };
-  const [endpoint, setEndpoint] = React.useState(fromSales ? "sales" : "jobs");
+  // eslint-disable-next-line no-unused-vars
+  const [endpoint, setEndpoint] = React.useState(
+    fromSales ? "sales" : fromProjects ? "projects" : "jobs"
+  );
 
   const handleReactionClick = async (reactionType) => {
     try {
       const res = await api.put(`/${endpoint}/reaction`, {
-        jobId: job._id,
-        job,
+        itemId,
         number,
         userId: userId,
         reactionType,
@@ -85,7 +87,7 @@ const InteractionReactions = ({
       if (res.data) {
         setUserReactions({
           ...userReactions,
-          [job._id]: res.data.reactions,
+          [itemId]: res.data.reactions,
         });
         updateInteractions(res.data.interactions);
         setRefreshData(!refreshData);
@@ -95,13 +97,11 @@ const InteractionReactions = ({
     }
   };
 
-  const handleDeleteInteraction = async (interactionId, activity, userName) => {
+  const handleDeleteInteraction = async (interactionId) => {
     try {
       const res = await api.put(`/${endpoint}/interaction/remove`, {
-        jobId: job._id,
+        itemId,
         interactionId: interactionId,
-        activity: activity,
-        userName: userName,
       });
       if (res.data) {
         toast.success("Interação Removida", {

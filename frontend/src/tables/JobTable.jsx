@@ -26,11 +26,13 @@ import {
   IconButton,
   Tooltip,
   Button,
-  TextField,
   Popover,
+  InputBase,
 } from "@mui/material";
 
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import InteractionReactions from "../components/small/InteractionReactions";
@@ -73,10 +75,12 @@ export default function JobTable({
   const [selectedJob, setSelectedJob] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openViewDialog, setOpenViewDialog] = React.useState(false);
+  const [openViewDialog2, setOpenViewDialog2] = React.useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openAddInteractionOnTable, setOpenAddInteractionOnTable] =
     React.useState(false);
   const [activity, setActivity] = React.useState("");
+  const [attachments, setAttachments] = React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openPopoverIndex, setOpenPopoverIndex] = React.useState(null);
 
@@ -239,15 +243,36 @@ export default function JobTable({
 
   const handleAddInteractionFromTable = async (e) => {
     e.preventDefault();
-    const requestBody = {
-      jobId: selectedJob._id,
-      activity,
-      userName: userName,
-      worker: selectedJob.worker,
-      manager: selectedJob.manager,
-      date: dayjs().format("DD/MM/YYYY HH:mm"),
-    };
     try {
+      let uploadResponses = [];
+      if (attachments.length !== 0) {
+        for (const file of attachments) {
+          const formData = new FormData();
+          formData.append("attachment", file);
+
+          const uploadResponse = await api.post(
+            "/uploads/singleAttachment",
+            formData
+          );
+          uploadResponses.push(uploadResponse.data.attachmentPath);
+        }
+
+        await api.put(`/jobs/addAttachments`, {
+          jobId: selectedJob._id,
+          attachments: uploadResponses,
+          userName,
+          date: dayjs().format("DD/MM HH:mm"),
+        });
+      }
+
+      const requestBody = {
+        jobId: selectedJob._id,
+        activity,
+        attachments: uploadResponses,
+        userName,
+        date: dayjs().format("DD/MM HH:mm"),
+      };
+
       const res = await api.put("/jobs/interaction", requestBody);
       if (res.data) {
         toast.success("Interação Adicionada!", {
@@ -259,6 +284,7 @@ export default function JobTable({
       }
       setOpenAddInteractionOnTable(false);
       setActivity("");
+      setAttachments([]);
       setRefreshData(!refreshData);
     } catch (err) {
       toast.error("Houve algum erro...", {
@@ -331,6 +357,14 @@ export default function JobTable({
       ...currentSelectedJob,
       interactions: updatedInteractions,
     }));
+  };
+
+  const handleFileChange = (event) => {
+    setAttachments([...attachments, ...event.target.files]);
+  };
+
+  const removeFile = (indexToRemove) => {
+    setAttachments(attachments.filter((_, index) => index !== indexToRemove));
   };
 
   return (
@@ -859,6 +893,7 @@ export default function JobTable({
                                                 }}
                                                 onClick={() => {
                                                   setSelectedItem(attachment);
+                                                  // maybe
                                                   setOpenViewDialog(true);
                                                 }}
                                               >
@@ -1131,11 +1166,11 @@ export default function JobTable({
                                           <InteractionReactions
                                             userId={userId}
                                             userName={userName}
+                                            itemId={job._id}
                                             manager={job.manager}
                                             refreshData={refreshData}
                                             setRefreshData={setRefreshData}
                                             interaction={interaction}
-                                            job={job}
                                             number={interaction.number}
                                             userReactions={
                                               userReactions[job._id] || []
@@ -1159,52 +1194,201 @@ export default function JobTable({
                               </TableBody>
                             </Table>
                             {openAddInteractionOnTable ? (
-                              <Grid item>
-                                <Typography
-                                  sx={{
-                                    mb: 2,
-                                    mt: 4,
-                                    fontSize: 18,
-                                    fontWeight: "bold",
-                                  }}
-                                >
-                                  Nova Interação
-                                </Typography>
-                                <TextField
-                                  label="Atividade"
-                                  variant="outlined"
-                                  size="small"
-                                  value={activity}
-                                  onChange={(e) => setActivity(e.target.value)}
-                                  sx={{ width: "100%", mx: "auto" }}
-                                />
+                              <>
                                 <Grid item>
-                                  <Grid
-                                    container
-                                    direction="row"
-                                    justifyContent="flex-end"
+                                  <Typography
+                                    sx={{
+                                      mb: 2,
+                                      mt: 4,
+                                      fontSize: 18,
+                                      fontWeight: "bold",
+                                    }}
                                   >
-                                    <Button
-                                      variant="contained"
-                                      color="success"
-                                      sx={{ my: 2, mr: 2 }}
-                                      onClick={handleAddInteractionFromTable}
-                                    >
-                                      Adicionar
-                                    </Button>
-                                    <Button
-                                      variant="contained"
-                                      color="error"
-                                      onClick={() =>
-                                        setOpenAddInteractionOnTable(false)
+                                    Nova Interação
+                                  </Typography>
+                                  <Paper
+                                    elevation={1}
+                                    component="form"
+                                    sx={{
+                                      p: "2px 4px",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      mx: "15%",
+                                    }}
+                                  >
+                                    <InputBase
+                                      sx={{ ml: 1, flex: 1 }}
+                                      placeholder="Atividade"
+                                      value={activity}
+                                      onChange={(e) =>
+                                        setActivity(e.target.value)
                                       }
-                                      sx={{ my: 2 }}
+                                    />
+                                    <input
+                                      type="file"
+                                      multiple
+                                      id="fileInput"
+                                      style={{ display: "none" }}
+                                      onChange={handleFileChange}
+                                    />
+                                    <label htmlFor="fileInput">
+                                      <IconButton
+                                        component="span"
+                                        aria-label="upload picture"
+                                        sx={{ p: "10px" }}
+                                      >
+                                        <AttachFileIcon />
+                                      </IconButton>
+                                    </label>
+                                  </Paper>
+
+                                  {attachments.length !== 0 && (
+                                    <Paper
+                                      elevation={1}
+                                      component="form"
+                                      sx={{
+                                        p: "2px 4px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        mx: "15%",
+                                        mt: 2,
+                                      }}
                                     >
-                                      X
-                                    </Button>
+                                      <Grid item>
+                                        <Grid container direction="row">
+                                          {attachments.map(
+                                            (attachment, index) => (
+                                              <Grid
+                                                key={index}
+                                                item
+                                                sx={{ mr: 1 }}
+                                              >
+                                                <Grid
+                                                  container
+                                                  direction="column"
+                                                  alignItems="center"
+                                                  sx={{
+                                                    border:
+                                                      "1px solid darkgrey",
+                                                    borderRadius: 2,
+                                                    padding: 1,
+                                                  }}
+                                                >
+                                                  {isPdf(attachment.name) ? (
+                                                    <img
+                                                      src={`http://localhost:3000/static/pdf.png`}
+                                                      alt="PDF"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  ) : isImage(
+                                                      attachment.name
+                                                    ) ? (
+                                                    <img
+                                                      src={URL.createObjectURL(
+                                                        attachment
+                                                      )}
+                                                      alt="Pré-visualização"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  ) : (
+                                                    <img
+                                                      src={`http://localhost:3000/static/doc.png`}
+                                                      alt="Other"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  )}
+                                                  <Typography
+                                                    sx={{
+                                                      fontSize: 10,
+                                                      color: "#777",
+                                                      maxWidth: "75px",
+                                                      whiteSpace: "nowrap",
+                                                      overflow: "hidden",
+                                                      textOverflow: "ellipsis",
+                                                    }}
+                                                  >
+                                                    {attachment.name}
+                                                  </Typography>
+
+                                                  <Grid item>
+                                                    <Grid
+                                                      container
+                                                      direction="row"
+                                                      justifyContent="space-around"
+                                                    >
+                                                      <Button
+                                                        size="small"
+                                                        onClick={() => {
+                                                          setSelectedItem(
+                                                            attachment
+                                                          );
+                                                          setOpenViewDialog2(
+                                                            true
+                                                          );
+                                                        }}
+                                                      >
+                                                        <VisibilityIcon />
+                                                      </Button>
+                                                      <Button
+                                                        size="small"
+                                                        color="error"
+                                                        onClick={() =>
+                                                          removeFile(index)
+                                                        }
+                                                      >
+                                                        <DeleteIcon />
+                                                      </Button>
+                                                    </Grid>
+                                                  </Grid>
+                                                </Grid>
+                                              </Grid>
+                                            )
+                                          )}
+                                        </Grid>
+                                      </Grid>
+                                    </Paper>
+                                  )}
+                                  <Grid item>
+                                    <Grid
+                                      container
+                                      direction="row"
+                                      justifyContent="flex-end"
+                                    >
+                                      <Button
+                                        variant="contained"
+                                        disabled={activity === ""}
+                                        color="success"
+                                        sx={{ my: 2, mr: 2 }}
+                                        onClick={handleAddInteractionFromTable}
+                                      >
+                                        Adicionar
+                                      </Button>
+                                      <Button
+                                        variant="contained"
+                                        color="error"
+                                        onClick={() =>
+                                          setOpenAddInteractionOnTable(false)
+                                        }
+                                        sx={{ my: 2 }}
+                                      >
+                                        X
+                                      </Button>
+                                    </Grid>
                                   </Grid>
                                 </Grid>
-                              </Grid>
+                              </>
                             ) : (
                               <Grid sx={{ ml: "90%" }}>
                                 <Button
@@ -1385,6 +1569,21 @@ export default function JobTable({
           <ViewDialog
             selectedItem={selectedItem}
             setOpenViewDialog={setOpenViewDialog}
+          />
+        </Dialog>
+      )}
+      {openViewDialog2 && (
+        <Dialog
+          open={openViewDialog2}
+          onClose={() => setOpenViewDialog2(false)}
+          fullWidth
+          maxWidth="lg"
+        >
+          <ViewDialog
+            selectedItem={selectedItem.name}
+            setOpenViewDialog={setOpenViewDialog2}
+            createObjectURL
+            createObjectURLItem={selectedItem}
           />
         </Dialog>
       )}

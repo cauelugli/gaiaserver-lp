@@ -368,16 +368,16 @@ router.put("/interaction", async (req, res) => {
 
 // REMOVE JOB INTERACTION
 router.put("/interaction/remove", async (req, res) => {
-  const { jobId, interactionId } = req.body;
+  const { itemId, interactionId } = req.body;
 
   try {
-    const job = await Job.findById(jobId);
+    const job = await Job.findById(itemId);
     const updatedInteractions = job.interactions.filter(
       (interaction) => interaction._id.toString() !== interactionId
     );
 
     const updatedJob = await Job.findByIdAndUpdate(
-      jobId,
+      itemId,
       { $set: { interactions: updatedInteractions } },
       { new: true }
     );
@@ -600,7 +600,9 @@ router.put("/addAttachments", async (req, res) => {
         $push: {
           interactions: {
             number: interactionNumber,
-            activity: `Colaborador ${userName} anexou ${attachments.length} arquivos ao Job`,
+            activity: `Colaborador ${userName} anexou ${
+              attachments.length
+            } arquivo${attachments.length === 1 ? "" : "s"} ao Job`,
             user: userName,
             date: date,
             attachments: attachments,
@@ -673,10 +675,10 @@ router.put("/resolve", async (req, res) => {
 // REACT TO JOB INTERATION
 router.put("/reaction", async (req, res) => {
   try {
-    const jobId = req.body.jobId || req.body.job._id;
+    const itemId = req.body.itemId;
     const userId = req.body.userId;
 
-    const job = await Job.findById(jobId);
+    const job = await Job.findById(itemId);
 
     const reactionType = req.body.reactionType;
     const reactionField = `interactions.$.reactions.${reactionType}.quantity`;
@@ -691,7 +693,7 @@ router.put("/reaction", async (req, res) => {
 
     if (userAlreadyReacted) {
       const updatedJob = await Job.findOneAndUpdate(
-        { _id: jobId, "interactions.number": req.body.number },
+        { _id: itemId, "interactions.number": req.body.number },
         {
           $inc: { [reactionField]: -1 },
           $pull: { [usersReactedField]: userId },
@@ -702,7 +704,7 @@ router.put("/reaction", async (req, res) => {
       res.status(200).json(updatedJob);
     } else {
       const updatedJob = await Job.findOneAndUpdate(
-        { _id: jobId, "interactions.number": req.body.number },
+        { _id: itemId, "interactions.number": req.body.number },
         {
           $inc: { [reactionField]: 1 },
           $addToSet: { [usersReactedField]: userId },

@@ -22,7 +22,14 @@ const imageExtensions = [
   ".webp",
 ];
 
-const ViewDialog = ({ selectedItem, setOpenViewDialog }) => {
+const ViewDialog = ({
+  selectedItem,
+  setOpenViewDialog,
+  createObjectURL,
+  createObjectURLItem,
+}) => {
+  console.log("selectedItem", selectedItem);
+
   const isImage = imageExtensions.some((extension) =>
     selectedItem.endsWith(extension)
   );
@@ -45,7 +52,11 @@ const ViewDialog = ({ selectedItem, setOpenViewDialog }) => {
         >
           {isImage && (
             <img
-              src={`http://localhost:3000/static/${selectedItem}`}
+              src={
+                createObjectURL
+                  ? URL.createObjectURL(createObjectURLItem)
+                  : `http://localhost:3000/static/${selectedItem}`
+              }
               alt="Imagem"
               style={{
                 maxWidth: "100%",

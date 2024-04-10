@@ -792,22 +792,21 @@ export default function SaleTable({
                                           <InteractionReactions
                                             userId={userId}
                                             userName={userName}
-                                            manager={sale.manager}
-                                            refreshData={refreshData}
-                                            setRefreshData={setRefreshData}
-                                            interaction={interaction}
-                                            job={sale}
-                                            number={interaction.number}
                                             userReactions={
                                               userReactions[sale._id] || []
                                             }
+                                            itemId={sale._id}
+                                            // updateInteractions={updateInteractions}
+                                            refreshData={refreshData}
+                                            setRefreshData={setRefreshData}
+                                            interaction={interaction}
+                                            number={interaction.number}
                                             setUserReactions={(reactions) =>
                                               setUserReactions({
                                                 ...userReactions,
                                                 [sale._id]: reactions,
                                               })
                                             }
-                                            jobId={sale._id}
                                             fromSales
                                           />
                                         </Typography>
