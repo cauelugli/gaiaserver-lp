@@ -111,6 +111,7 @@ const InteractionReactions = ({
           autoClose: 1200,
         });
       }
+      updateInteractions(res.data.interactions);
       setRefreshData(!refreshData);
     } catch (err) {
       toast.error("Houve algum erro...", {
