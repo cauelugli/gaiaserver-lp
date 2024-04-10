@@ -394,11 +394,13 @@ export default function App() {
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "customers") ? (
                         <Customers
-                          user={userData}
+                          userName={userData.name}
                           configAgenda={configAgenda}
                           configTables={configTables}
                           configNotifications={configNotifications}
-                          configNotificationsBooleans={configNotificationsBooleans}
+                          configNotificationsBooleans={
+                            configNotificationsBooleans
+                          }
                         />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -491,7 +493,9 @@ export default function App() {
                           configTables={configTables}
                           configAgenda={configAgenda}
                           configNotifications={configNotifications}
-                          configNotificationsBooleans={configNotificationsBooleans}
+                          configNotificationsBooleans={
+                            configNotificationsBooleans
+                          }
                         />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>

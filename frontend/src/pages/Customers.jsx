@@ -45,7 +45,7 @@ function CustomTabPanel(props) {
 }
 
 export default function Customers({
-  user,
+  userName,
   configTables,
   configAgenda,
   configNotifications,
@@ -209,7 +209,7 @@ export default function Customers({
               />
 
               <CustomerTable
-                user={user}
+                userName={userName}
                 configCustomization={configCustomization}
                 configNotifications={configNotifications}
                 configNotificationsBooleans={configNotificationsBooleans}
@@ -245,7 +245,7 @@ export default function Customers({
               />
 
               <ClientTable
-                user={user}
+                userName={userName}
                 configAgenda={configAgenda}
                 configNotifications={configNotifications}
                 configNotificationsBooleans={configNotificationsBooleans}
@@ -260,7 +260,6 @@ export default function Customers({
           )}
         </CustomTabPanel>
       )}
-
       {openAddCustomer && (
         <Dialog
           fullWidth
@@ -297,7 +296,6 @@ export default function Customers({
           />
         </Dialog>
       )}
-
       {openImportContacts && (
         <Dialog
           fullWidth

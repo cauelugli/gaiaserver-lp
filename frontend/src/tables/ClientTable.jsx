@@ -41,7 +41,7 @@ const api = axios.create({
 });
 
 export default function ClientTable({
-  user,
+  userName,
   configCustomization,
   configNotifications,
   configNotificationsBooleans,
@@ -214,20 +214,20 @@ export default function ClientTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((user) => {
+              .filter((item) => {
                 const searchOptionValue =
                   searchOption === "department.name"
-                    ? user.department?.name
-                    : user[searchOption];
+                    ? item.department?.name
+                    : item[searchOption];
 
                 const departmentFilter =
                   !searchDepartment ||
-                  user.department?.name === searchDepartment;
+                  item.department?.name === searchDepartment;
 
                 const shouldApplyDepartmentFilter =
                   departmentFilter || searchDepartment === "&nbsp;";
 
-                const shouldShowUser = showArchivedClients || user.isActive;
+                const shouldShowItem = showArchivedClients || item.isActive;
 
                 return (
                   searchOptionValue &&
@@ -235,7 +235,7 @@ export default function ClientTable({
                     .toLowerCase()
                     .includes(searchValue.toLowerCase()) &&
                   shouldApplyDepartmentFilter &&
-                  shouldShowUser
+                  shouldShowItem
                 );
               })
               .map((client) => (
@@ -301,7 +301,7 @@ export default function ClientTable({
                       onClick={() => setSelectedClient(client)}
                     >
                       <CustomerTableActions
-                        userName={user.name}
+                        userName={userName}
                         customer={client}
                         configAgenda={configAgenda}
                         configNotifications={configNotifications}

@@ -183,7 +183,7 @@ export default function CustomerTableActions(props) {
           onClose={() => setOpenAddSale(!openAddSale)}
         >
           <AddSaleForm
-            user={props.user}
+            userName={props.userName}
             openAddSale={openAddSale}
             setOpenAddSale={setOpenAddSale}
             refreshData={props.refreshData}
