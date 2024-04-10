@@ -1,34 +1,17 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 
 import {
   Box,
-  CircularProgress,
-  Dialog,
-  FormControlLabel,
-  Grid,
-  InputAdornment,
-  Radio,
-  RadioGroup,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
 
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
-
 import DocumentTable from "../tables/DocumentTable";
 import ImageTable from "../tables/ImageTable";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -44,72 +27,12 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Files({ user }) {
-  const [isLoading, setIsLoading] = React.useState(true);
+export default function Files() {
   const [value, setValue] = React.useState(1);
-
-  const [searchValue, setSearchValue] = React.useState("");
-  const [searchOption, setSearchOption] = React.useState("name");
-
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-
-  const handleSearchOptionChange = (event) => {
-    setSearchOption(event.target.value);
-  };
-
-  const [services, setServices] = React.useState([]);
-  const [departments, setDepartments] = React.useState([]);
-  const [stockItems, setStockItems] = React.useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const services = await api.get("/services");
-        const departments = await api.get("/departments");
-        const stockItems = await api.get("/stockItems");
-        setServices(services.data.filter((service) => service.value > 0));
-        setDepartments(departments.data);
-        setStockItems(stockItems.data);
-        setIsLoading(false);
-      } catch (error) {
-        setIsLoading(false);
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  // const fetchData = async () => {
-  //   try {
-  //     const services = await api.get("/services");
-  //     const departments = await api.get("/departments");
-  //     const stockItems = await api.get("/stockItems");
-  //     setServices(services.data);
-  //     setDepartments(departments.data);
-  //     setStockItems(stockItems.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
-  if (isLoading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
 
   return (
     <Box>
