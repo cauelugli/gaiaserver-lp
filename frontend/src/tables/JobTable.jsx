@@ -204,9 +204,7 @@ export default function JobTable({
       const requestBody = {
         user: userName,
         jobId: selectedJob._id,
-        job: selectedJob,
-        worker: selectedJob.worker,
-        manager: selectedJob.manager,
+        jobManager: selectedJob.manager.name,
         date: dayjs().format("DD/MM/YYYY HH:mm"),
       };
       const res = await api.put("/jobs/requestApproval", requestBody);
