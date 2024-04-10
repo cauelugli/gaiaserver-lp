@@ -259,7 +259,7 @@ router.put("/activate/:id", async (req, res) => {
 // REQUEST APPROVAL JOB
 router.put("/requestApproval", async (req, res) => {
   try {
-    const jobId = req.body.jobId || req.body.job._id;
+    const jobId = req.body.jobId;
     const job = await Job.findById(jobId);
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
@@ -275,8 +275,8 @@ router.put("/requestApproval", async (req, res) => {
         $push: {
           interactions: {
             number: interactionNumber,
-            activity: `Aprovação solicitada a ${req.body.job.manager.name} para execução`,
-            user: req.body.user.name,
+            activity: `Aprovação solicitada a ${req.body.jobManager} para execução`,
+            user: req.body.user,
             date: req.body.date,
           },
         },
