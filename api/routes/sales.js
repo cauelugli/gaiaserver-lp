@@ -113,7 +113,7 @@ router.post("/", async (req, res) => {
     doc.pipe(fs.createWriteStream(pdfPath));
 
     doc.image("../uploads/logo.png", 5, 5, { width: 120 });
-    if (req.body.customer.image) {
+    if (req.body.customer.image && !req.body.customer.image.endsWith(".webp")) {
       doc.image(`../uploads/${req.body.customer.image}`, 450, 5, {
         width: 120,
       });
@@ -176,10 +176,17 @@ router.post("/", async (req, res) => {
     doc.moveDown();
 
     for (const material of savedQuote.materials) {
-      doc.image(`../uploads/${material.image}`, 15, doc.y, {
-        width: 32,
-        align: "left",
-      });
+      doc.image(
+        material.image.endsWith(".webp")
+          ? "../uploads/default_product.png"
+          : `../uploads/${material.image}`,
+        15,
+        doc.y,
+        {
+          width: 32,
+          align: "left",
+        }
+      );
 
       doc.text(
         `${material.name} x${material.quantity} R$${material.sellValue}`,
@@ -291,7 +298,7 @@ router.put("/", async (req, res) => {
     doc.pipe(fs.createWriteStream(pdfPath));
 
     doc.image("../uploads/logo.png", 5, 5, { width: 120 });
-    if (req.body.customer.image) {
+    if (req.body.customer.image && !req.body.customer.image.endsWith(".webp")) {
       doc.image(`../uploads/${req.body.customer.image}`, 450, 5, {
         width: 120,
       });
@@ -354,10 +361,17 @@ router.put("/", async (req, res) => {
     doc.moveDown();
 
     for (const material of savedQuote.materials) {
-      doc.image(`../uploads/${material.image}`, 15, doc.y, {
-        width: 32,
-        align: "left",
-      });
+      doc.image(
+        material.image.endsWith(".webp")
+          ? "../uploads/default_product.png"
+          : `../uploads/${material.image}`,
+        15,
+        doc.y,
+        {
+          width: 32,
+          align: "left",
+        }
+      );
 
       doc.text(
         `${material.name} x${material.quantity} R$${material.sellValue}`,
@@ -493,7 +507,7 @@ router.put("/interaction/remove", async (req, res) => {
     const sale = await Sale.findById(jobId);
 
     const updatedInteractions = sale.interactions.filter(
-      interaction => interaction._id.toString() !== interactionId
+      (interaction) => interaction._id.toString() !== interactionId
     );
 
     const updatedSale = await Sale.findByIdAndUpdate(
