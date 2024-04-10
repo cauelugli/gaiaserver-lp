@@ -123,7 +123,7 @@ const optionsFourItemsRow = [
   },
 ];
 
-const HomeBlock = ({ user, allowedLinks, configData }) => {
+const HomeBlock = ({ allowedLinks, configData }) => {
   const uniqueAllowedLinks = [...new Set(allowedLinks)];
 
   const allowedListMainblocks = uniqueAllowedLinks.filter((link) =>

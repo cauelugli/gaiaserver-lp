@@ -38,7 +38,7 @@ const ProjectSelect = (props) => {
     (project) =>
       project.name.toLowerCase().includes(searchValue.toLowerCase()) &&
       project.status !== "Concluido" &&
-      project.members.some((member) => member.id === props.user._id)
+      project.members.some((member) => member.id === props.userId)
   );
 
   return (

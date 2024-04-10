@@ -9,7 +9,9 @@ import HomeSideBar from "../components/HomeSideBar";
 import WelcomingMessage from "../components/small/WelcomingMessage";
 
 const Home = ({
-  user,
+  userId,
+  userName,
+  userGender,
   allowedLinks,
   configDashboard,
   onMount,
@@ -42,18 +44,18 @@ const Home = ({
 
   return (
     <>
-      <WelcomingMessage user={user} showMessage={showMessage} />
+      <WelcomingMessage
+        userName={userName}
+        userGender={userGender}
+        showMessage={showMessage}
+      />
       <Grid container direction="row">
         <Grid item md={9}>
-          <HomeBlock
-            allowedLinks={allowedLinks}
-            user={user}
-            configData={configData}
-          />
+          <HomeBlock allowedLinks={allowedLinks} configData={configData} />
         </Grid>
         <Grid item md={3}>
           <HomeSideBar
-            user={user}
+            userId={userId}
             handleShortcutClick={handleShortcutClick}
             allowedLinks={allowedLinks}
           />

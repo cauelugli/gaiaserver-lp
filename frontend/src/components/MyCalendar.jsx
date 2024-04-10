@@ -36,7 +36,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const MyCalendar = ({ user, config, selectedWorker }) => {
+const MyCalendar = ({ userId, config, selectedWorker }) => {
   const [events, setEvents] = React.useState([]);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -58,7 +58,7 @@ const MyCalendar = ({ user, config, selectedWorker }) => {
 
   const fetchData = async () => {
     try {
-      let url = `/agenda/${user._id}`;
+      let url = `/agenda/${userId}`;
       if (selectedWorker) {
         url = `/agenda/${selectedWorker._id}`;
       }
@@ -105,7 +105,7 @@ const MyCalendar = ({ user, config, selectedWorker }) => {
       api
         .post("/agenda/addAgendaEvent", {
           ...eventToAdd,
-          userId: selectedWorker ? selectedWorker._id : user._id,
+          userId: selectedWorker ? selectedWorker._id : userId,
         })
         .then(() => {
           fetchData();
@@ -137,7 +137,7 @@ const MyCalendar = ({ user, config, selectedWorker }) => {
 
   const handleDeleteEvent = () => {
     const payload = {
-      userId: selectedWorker ? selectedWorker._id : user._id,
+      userId: selectedWorker ? selectedWorker._id : userId,
       start: moment(selectedEvent.start).format("DD/MM/YYYY HH:mm"),
       end: moment(selectedEvent.end).format("DD/MM/YYYY HH:mm"),
     };
@@ -168,7 +168,7 @@ const MyCalendar = ({ user, config, selectedWorker }) => {
 
     api
       .put(`/agenda/resolveAgendaEvent`, {
-        userId: selectedWorker ? selectedWorker._id : user._id,
+        userId: selectedWorker ? selectedWorker._id : userId,
         start: startFormatted,
         end: endFormatted,
       })
@@ -334,7 +334,7 @@ const MyCalendar = ({ user, config, selectedWorker }) => {
           "DD/MM/YYYY HH:mm"
         )} até ${moment(newEvent.end).format("HH:mm")}`}
         open={open}
-        user={user}
+        userId={userId}
         handleClose={handleClose}
         title={title}
         setTitle={setTitle}

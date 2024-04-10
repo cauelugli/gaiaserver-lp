@@ -14,7 +14,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const UserShortcuts = ({ user, onShortcutClick, allowedLinks }) => {
+const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [userPreferences, setUserPreferences] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -22,7 +22,7 @@ const UserShortcuts = ({ user, onShortcutClick, allowedLinks }) => {
 
   const fetchData = async () => {
     try {
-      const preferences = await api.get(`/userPreferences/${user._id}`);
+      const preferences = await api.get(`/userPreferences/${userId}`);
       setUserPreferences(preferences.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -32,7 +32,7 @@ const UserShortcuts = ({ user, onShortcutClick, allowedLinks }) => {
 
   useEffect(() => {
     fetchData();
-  }, [user]);
+  }, [userId]);
 
   const reloadShortcuts = () => {
     setIsLoading(true);
@@ -52,7 +52,7 @@ const UserShortcuts = ({ user, onShortcutClick, allowedLinks }) => {
   const handleDeleteShortcut = async (shortcutName) => {
     try {
       await api.put("/userPreferences/deleteShortcut", {
-        userId: user._id,
+        userId: userId,
         shortcutName,
       });
       reloadShortcuts();
@@ -111,7 +111,7 @@ const UserShortcuts = ({ user, onShortcutClick, allowedLinks }) => {
           ))}
 
         <NewUserShortcut
-          user={user}
+          userId={userId}
           reloadShortcuts={reloadShortcuts}
           allowedLinks={allowedLinks}
         />

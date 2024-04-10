@@ -152,7 +152,7 @@ const options = [
   },
 ];
 
-export default function Config({ user }) {
+export default function Config() {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [hoveredIndex, setHoveredIndex] = useState(null);

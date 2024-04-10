@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import * as React from "react";
 
 import {
@@ -16,11 +15,11 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import MyCalendar from "../components/MyCalendar";
 import WorkerSelect from "../components/small/selects/WorkerSelect";
-import WelcomingMessage from "../components/small/WelcomingMessage";
 import SmartReports from "../components/SmartReports";
 
 const Dashboard = ({
-  user,
+  userId,
+  userUsername,
   users,
   requests,
   customers,
@@ -32,7 +31,7 @@ const Dashboard = ({
 
   const [worker, setWorker] = React.useState("");
   const [expanded, setExpanded] = React.useState(
-    user.username === "admin" ? false : true
+    userUsername === "admin" ? false : true
   );
 
   const [showAgenda, setShowAgenda] = React.useState(true);
@@ -66,7 +65,7 @@ const Dashboard = ({
         <>
           <Typography
             sx={{
-              opacity: user.username === "admin" && showAgenda ? 1 : 0,
+              opacity: userUsername === "admin" && showAgenda ? 1 : 0,
               fontSize: 12,
               textAlign: "right",
               cursor: "pointer",
@@ -80,7 +79,7 @@ const Dashboard = ({
           </Typography>
 
           <Accordion sx={{ m: 2 }} expanded={expanded}>
-            {user.username === "admin" ? (
+            {userUsername === "admin" ? (
               <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
                 <Grid
                   container
@@ -91,7 +90,7 @@ const Dashboard = ({
                   <Typography sx={{ fontSize: 22, fontWeight: "bold", mr: 2 }}>
                     Agenda
                   </Typography>
-                  {user.username === "admin" && (
+                  {userUsername === "admin" && (
                     <WorkerSelect setWorker={setWorker} needId />
                   )}
                 </Grid>
@@ -108,7 +107,7 @@ const Dashboard = ({
             )}
             <AccordionDetails>
               <MyCalendar
-                user={user}
+                userId={userId}
                 config={configAgenda}
                 selectedWorker={worker}
               />

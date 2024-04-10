@@ -26,7 +26,7 @@ import ProjectSelect from "../../components/small/selects/ProjectSelect";
 import GroupSelect from "../../components/small/selects/GroupSelect";
 
 const CalendarEventModal = ({
-  user,
+  userId,
   selectedDate,
   open,
   handleClose,
@@ -130,7 +130,7 @@ const CalendarEventModal = ({
 
           <Grid sx={{ mb: 3 }}>
             <WorkerSelect setWorker={setWorker} />
-            <ProjectSelect mx075 setProject={setProject} user={user} />
+            <ProjectSelect mx075 setProject={setProject} userId={userId} />
             <GroupSelect setGroup={setGroup} />
           </Grid>
         </Grid>

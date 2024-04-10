@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 
-const WelcomingMessage = ({ user, showMessage }) => {
+const WelcomingMessage = ({ userName, userGender, showMessage }) => {
   const [initialMessage, setInitialMessage] = useState("");
   const [finalMessage, setFinalMessage] = useState("");
   const [shouldRenderMessage, setShouldRenderMessage] = useState({});
@@ -19,7 +19,7 @@ const WelcomingMessage = ({ user, showMessage }) => {
           message = "Olá";
           break;
         case "welcome":
-          message = `Bem vind${user.gender === "f" ? "a" : "o"}`;
+          message = `Bem vind${userGender === "f" ? "a" : "o"}`;
           break;
         case "formal":
           if (currentHour < 12) {
@@ -43,7 +43,7 @@ const WelcomingMessage = ({ user, showMessage }) => {
 
     defineInitialMessage();
     setShouldRenderMessage(showMessage.isActive);
-  }, [shouldRenderMessage, showMessage, user.gender]);
+  }, [shouldRenderMessage, showMessage, userGender]);
 
   if (shouldRenderMessage) {
     if (shouldRenderMessage.isActive === "false") {
@@ -51,7 +51,7 @@ const WelcomingMessage = ({ user, showMessage }) => {
     } else if (shouldRenderMessage.isActive === "true") {
       return (
         <Typography sx={{ fontSize: 22, ml: 2, fontWeight: "bold" }}>
-          {initialMessage}, {user.name}. {finalMessage}
+          {initialMessage}, {userName}. {finalMessage}
         </Typography>
       );
     }

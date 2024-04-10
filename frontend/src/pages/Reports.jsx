@@ -38,7 +38,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Reports({ user, users, customers, requests }) {
+export default function Reports({ users, customers, requests }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {

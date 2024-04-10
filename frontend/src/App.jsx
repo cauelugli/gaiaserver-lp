@@ -311,7 +311,9 @@ export default function App() {
                     element={
                       isAuthenticated(login, userData) ? (
                         <Home
-                          user={userData}
+                          userId={userData._id}
+                          userName={userData.name}
+                          userGender={userData.gender}
                           handleShortcutClick={handleShortcutClick}
                           allowedLinks={allowedLinks}
                           configData={configData}
@@ -344,7 +346,8 @@ export default function App() {
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "dashboard") ? (
                         <Dashboard
-                          user={userData}
+                          userId={userData._id}
+                          userUsername={userData.username}
                           users={users}
                           requests={requests}
                           customers={customers}
@@ -435,7 +438,6 @@ export default function App() {
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "departments") ? (
                         <Reports
-                          user={userData}
                           users={users}
                           requests={requests}
                           customers={customers}
@@ -582,7 +584,7 @@ export default function App() {
                     element={
                       isAuthenticated(login, userData) &&
                       hasPermission(userData, configData, "config") ? (
-                        <Config user={userData} />
+                        <Config />
                       ) : isAuthenticated(login, userData) ? (
                         <Typography sx={{ m: 2, fontSize: 16 }}>
                           Seu usuário não possui autorização à página.

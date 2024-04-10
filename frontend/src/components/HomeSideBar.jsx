@@ -7,11 +7,11 @@ import { Grid } from "@mui/material";
 import UserShortcuts from "./small/UserShortcuts";
 import NewsBox from "./small/NewsBox";
 
-const HomeSideBar = ({ user, handleShortcutClick, allowedLinks }) => {
+const HomeSideBar = ({ userId, handleShortcutClick, allowedLinks }) => {
   return (
     <Grid sx={{ mx: 1 }}>
       <UserShortcuts
-        user={user}
+        userId={userId}
         onShortcutClick={handleShortcutClick}
         allowedLinks={allowedLinks}
       />

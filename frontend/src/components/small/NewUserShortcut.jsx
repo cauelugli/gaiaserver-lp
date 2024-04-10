@@ -14,7 +14,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const NewUserShortcut = ({ user, reloadShortcuts, allowedLinks }) => {
+const NewUserShortcut = ({ userId, reloadShortcuts, allowedLinks }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [newShortcutName, setNewShortcutName] = useState("");
   const [newShortcutAction, setNewShortcutAction] = useState("");
@@ -24,7 +24,7 @@ const NewUserShortcut = ({ user, reloadShortcuts, allowedLinks }) => {
     e.preventDefault();
     try {
       const res = await api.put("/userPreferences/addShortcut", {
-        userId: user._id,
+        userId: userId,
         newShortcutName,
         newShortcutAction,
         newShortcutSelectedItem,
