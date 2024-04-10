@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -17,7 +16,6 @@ const api = axios.create({
 });
 
 export default function ChallengeApproval({
-  user,
   selectedFinanceOutcome,
   entry,
   setOpen,
@@ -33,8 +31,6 @@ export default function ChallengeApproval({
       const res = await api.post("/finances/challengeApproval", {
         selectedFinanceOutcomeId: selectedFinanceOutcome._id,
         entryId: entry._id,
-        message,
-        user,
       });
       if (res.data) {
         toast.success("Contestação Enviada ao Gerente!", {
@@ -43,13 +39,6 @@ export default function ChallengeApproval({
           theme: "colored",
           autoClose: 1200,
         });
-        // const newNotification = {
-        //   noteBody: `Olá! O colaborador ${user.name} contestou uma aprovação de Entrada de Estoque 
-        //   com a seguinte mensagem: ${message}.`,
-        //   sender: user.name,
-        //   // receiver: "StockEntriesDispatcherDepartment",
-        //   status: "Não Lida",
-        // };
         setOpen(false);
         setRefreshData(!refreshData);
       }

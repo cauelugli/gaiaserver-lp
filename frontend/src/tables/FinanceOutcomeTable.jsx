@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import dayjs from "dayjs";
@@ -8,7 +7,6 @@ import {
   Checkbox,
   Dialog,
   Grid,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -21,14 +19,8 @@ import {
   Typography,
 } from "@mui/material";
 
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import PaymentsIcon from "@mui/icons-material/Payments";
-import ReportIcon from "@mui/icons-material/Report";
-
 import AddPaymentScheduleForm from "../forms/add/AddPaymentScheduleForm";
 import CashPaymentForm from "../forms/add/CashPaymentForm";
-import EditStatusForm from "../forms/edit/EditStatusForm";
 import AddParcelPaymentForm from "../forms/add/AddParcelPaymentForm";
 import ChallengeApproval from "../forms/misc/ChallengeApproval";
 import FinanceOutcomeTableActions from "../components/small/buttons/tableActionButtons/FinanceOutcomeTableActions";
@@ -36,7 +28,6 @@ import FinanceOutcomeTableActions from "../components/small/buttons/tableActionB
 export default function FinanceOutcomeTable({
   outcoming,
   toast,
-  user,
   searchValue,
   searchOption,
   refreshData,
@@ -207,12 +198,12 @@ export default function FinanceOutcomeTable({
               {sortedRows
                 .filter((outcome) => {
                   if (!outcome) return false;
-                  const userProperty = searchOption
+                  const itemProperty = searchOption
                     .split(".")
                     .reduce((obj, key) => obj[key], outcome);
                   const shouldShowoutcome =
-                    userProperty &&
-                    userProperty
+                    itemProperty &&
+                    itemProperty
                       .toLowerCase()
                       .includes(searchValue.toLowerCase());
 
@@ -550,7 +541,6 @@ export default function FinanceOutcomeTable({
             onClose={() => setOpenChallengeApproval(!openChallengeApproval)}
           >
             <ChallengeApproval
-              user={user}
               selectedFinanceOutcome={selectedFinanceoutcome}
               entry={selectedFinanceoutcome.entry}
               open={openChallengeApproval}

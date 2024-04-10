@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import dayjs from "dayjs";
@@ -10,7 +9,7 @@ import {
   Dialog,
   FormHelperText,
   Grid,
-  IconButton,
+  // IconButton,
   Paper,
   Table,
   TableBody,
@@ -24,14 +23,11 @@ import {
 } from "@mui/material";
 
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import CheckIcon from "@mui/icons-material/Check";
-import PaymentsIcon from "@mui/icons-material/Payments";
 
 import AddPaymentScheduleForm from "../forms/add/AddPaymentScheduleForm";
 import CashPaymentForm from "../forms/add/CashPaymentForm";
-import EditStatusForm from "../forms/edit/EditStatusForm";
+// import EditStatusForm from "../forms/edit/EditStatusForm";
 import AddParcelPaymentForm from "../forms/add/AddParcelPaymentForm";
 import FinanceIncomeTableActions from "../components/small/buttons/tableActionButtons/FinanceIncomeTableActions";
 
@@ -45,16 +41,15 @@ export default function FinanceIncomeTable({
   configCustomization,
   setRefreshData,
 }) {
+  // const [previousStatus, setPreviousStatus] = React.useState("");
+  // const [newStatus, setNewStatus] = React.useState("");
+  // const [openConfirmChangeStatus, setOpenConfirmChangeStatus] =
+  //   React.useState(false);
   const [selectedFinanceIncome, setSelectedFinanceIncome] = React.useState("");
-  const [previousStatus, setPreviousStatus] = React.useState("");
-  const [newStatus, setNewStatus] = React.useState("");
   const [hoveredIncome, setHoveredIncome] = React.useState(null);
   const [openSchedulePayment, setOpenSchedulePayment] = React.useState(false);
   const [openCashPayment, setOpenCashPayment] = React.useState(false);
   const [openAddParcelPayment, setOpenAddParcelPayment] = React.useState(false);
-
-  const [openConfirmChangeStatus, setOpenConfirmChangeStatus] =
-    React.useState(false);
 
   const handleOpenAddSchedulePayment = (income) => {
     setSelectedFinanceIncome(income);
@@ -208,17 +203,15 @@ export default function FinanceIncomeTable({
               {sortedRows
                 .filter((income) => {
                   if (!income) return false;
-                  const userProperty = searchOption
+                  const itemProperty = searchOption
                     .split(".")
                     .reduce((obj, key) => obj[key], income);
-                  // Verifica se a condição para aplicar o filtro é atendida
                   const shouldShowincome =
-                    userProperty &&
-                    userProperty
+                    itemProperty &&
+                    itemProperty
                       .toLowerCase()
                       .includes(searchValue.toLowerCase());
 
-                  // Se a opção para mostrar incomes concluídos estiver desmarcada, oculta os incomes concluídos
                   return (
                     shouldShowincome &&
                     (showCompletedIncomes || income.status !== "Pago")
@@ -477,7 +470,7 @@ export default function FinanceIncomeTable({
                             }
                           />
                         ) : (
-                          <Typography sx={{ fontSize: 13, color:"darkgrey" }}>
+                          <Typography sx={{ fontSize: 13, color: "darkgrey" }}>
                             Não há Ações
                           </Typography>
                         )}
@@ -559,7 +552,7 @@ export default function FinanceIncomeTable({
             />
           </Dialog>
         )}
-        {openConfirmChangeStatus && (
+        {/* {openConfirmChangeStatus && (
           <Dialog
             fullWidth
             maxWidth="sm"
@@ -579,7 +572,7 @@ export default function FinanceIncomeTable({
               toast={toast}
             />
           </Dialog>
-        )}
+        )} */}
       </Box>
     </>
   );
