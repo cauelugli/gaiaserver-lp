@@ -17,7 +17,9 @@ import {
   Dialog,
   Grid,
   IconButton,
+  InputBase,
   Paper,
+  Popover,
   Table,
   TableBody,
   TableCell,
@@ -32,6 +34,8 @@ import {
 } from "@mui/material";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
@@ -40,6 +44,7 @@ import ProjectTaskActions from "../components/small/buttons/ProjectTaskActions";
 import ProjectTableActions from "../components/small/buttons/tableActionButtons/ProjectTableActions";
 import ViewDialog from "../components/small/ViewDialog";
 import AddAttachmentsForm from "../forms/misc/AddAttachmentsForm";
+import InteractionReactions from "../components/small/InteractionReactions";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -57,6 +62,7 @@ export default function ProjectsTable({
   refreshData,
   setRefreshData,
 }) {
+  const [userReactions, setUserReactions] = React.useState({});
   const [selectedProject, setSelectedProject] = React.useState("");
   // const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -68,8 +74,12 @@ export default function ProjectsTable({
   const [isAddingInteraction, setIsAddingInteraction] = React.useState(false);
   const [isAddingResolution, setIsAddingResolution] = React.useState(false);
   const [openViewDialog, setOpenViewDialog] = React.useState(false);
+  const [openViewDialog2, setOpenViewDialog2] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openPopoverIndex, setOpenPopoverIndex] = React.useState(null);
 
   const [newInteractionText, setNewInteractionText] = React.useState("");
+  const [attachments, setAttachments] = React.useState([]);
   const [resolutionText, setResolutionText] = React.useState("");
   const [selectedStageIndex, setSelectedStageIndex] = React.useState(null);
   const [selectedTaskIndex, setSelectedTaskIndex] = React.useState(null);
@@ -162,22 +172,48 @@ export default function ProjectsTable({
 
   const handleAddInteraction = async () => {
     try {
-      const response = await api.post("/projects/addInteraction", {
+      const uploadResponses = [];
+      for (const file of attachments) {
+        const formData = new FormData();
+        formData.append("attachment", file);
+
+        const uploadResponse = await api.post(
+          "/uploads/singleAttachment",
+          formData
+        );
+        uploadResponses.push(uploadResponse.data.attachmentPath);
+      }
+
+      await api.put(`/projects/addAttachments`, {
+        jobId: selectedProject._id,
+        attachments: uploadResponses,
+        userName,
+        date: dayjs().format("DD/MM HH:mm"),
+      });
+
+      const res = await api.post("/projects/addInteraction", {
         projectId: selectedProject._id,
         stageIndex: selectedStageIndex,
         taskIndex: selectedTaskIndex,
         interaction: newInteractionText,
+        attachments: uploadResponses,
         user: { id: userId, name: userName },
         createdAt: dayjs().format("DD/MM/YYYY"),
       });
 
-      if (response.status === 200) {
+      if (res.data) {
+        toast.success("Interação Adicionada!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
         setNewInteractionText("");
         setSelectedTaskIndex(null);
         setSelectedStageIndex(null);
         setIsAddingInteraction(false);
         setRefreshData(!refreshData);
-        const memberIds = response.data.stages[selectedStageIndex].tasks[
+        const memberIds = res.data.stages[selectedStageIndex].tasks[
           selectedTaskIndex
         ].assignees.map((assignee) => assignee.id);
         socket.emit("notifyTaskAssignees", {
@@ -186,11 +222,15 @@ export default function ProjectsTable({
           date: dayjs(Date.now()).format("DD/MM/YYYY"),
           projectName: selectedProject.name,
         });
-      } else {
-        console.error("Erro ao adicionar interação:", response.status);
       }
     } catch (error) {
-      console.error("Erro ao adicionar interação:", error);
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+      console.log(error);
     }
   };
 
@@ -250,8 +290,32 @@ export default function ProjectsTable({
   const isImage = (filename) =>
     imageExtensions.some((extension) => filename.endsWith(extension));
 
-  // Função para verificar se o anexo é um PDF
   const isPdf = (filename) => filename.endsWith(".pdf");
+
+  const handleFileChange = (event) => {
+    setAttachments([...attachments, ...event.target.files]);
+  };
+
+  const removeFile = (indexToRemove) => {
+    setAttachments(attachments.filter((_, index) => index !== indexToRemove));
+  };
+
+  const handlePopoverOpen = (index) => (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpenPopoverIndex(index);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+    setOpenPopoverIndex(null);
+  };
+
+  const updateSelectedProjectInteractions = (updatedInteractions) => {
+    setSelectedProject((currentSelected) => ({
+      ...currentSelected,
+      interactions: updatedInteractions,
+    }));
+  };
 
   return (
     <>
@@ -464,107 +528,104 @@ export default function ProjectsTable({
                                   </TableRow>
                                 </TableBody>
                               </Table>
-                              <Table size="small" sx={{ mt: 1 }}>
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Anexos
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  <TableRow>
-                                    <TableCell align="left">
-                                      <Grid container direction="row">
-                                        {project.attachments.map(
-                                          (attachment) => (
-                                            <Grid
-                                              key={attachment}
-                                              item
-                                              sx={{ mr: 1 }}
-                                            >
+                              {project.attachments.length !== 0 && (
+                                <Table size="small" sx={{ mt: 1 }}>
+                                  <TableHead>
+                                    <TableRow>
+                                      <TableCell>
+                                        <Typography
+                                          sx={{ fontSize: 13, color: "#777" }}
+                                        >
+                                          Anexos
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableHead>
+                                  <TableBody>
+                                    <TableRow>
+                                      <TableCell align="left">
+                                        <Grid container direction="row">
+                                          {project.attachments.map(
+                                            (attachment, index) => (
                                               <Grid
-                                                container
-                                                direction="column"
-                                                alignItems="center"
-                                                sx={{
-                                                  border: "1px solid darkgrey",
-                                                  borderRadius: 2,
-                                                  padding: 1,
-                                                }}
+                                                key={index}
+                                                item
+                                                sx={{ mr: 1 }}
                                               >
-                                                {isPdf(attachment) ? (
-                                                  <img
-                                                    src={`http://localhost:3000/static/pdf.png`}
-                                                    alt="PDF"
-                                                    style={{
-                                                      width: "80px",
-                                                      height: "80px",
-                                                      marginBottom: "8px",
-                                                    }}
-                                                  />
-                                                ) : isImage(attachment) ? (
-                                                  <img
-                                                    src={`http://localhost:3000/static/${attachment}`}
-                                                    alt="Pré-visualização"
-                                                    style={{
-                                                      width: "80px",
-                                                      height: "80px",
-                                                      marginBottom: "8px",
-                                                    }}
-                                                  />
-                                                ) : (
-                                                  <img
-                                                    src={`http://localhost:3000/static/doc.png`}
-                                                    alt="Other"
-                                                    style={{
-                                                      width: "80px",
-                                                      height: "80px",
-                                                      marginBottom: "8px",
-                                                    }}
-                                                  />
-                                                )}
-                                                <Typography
+                                                <Grid
+                                                  container
+                                                  direction="column"
+                                                  alignItems="center"
                                                   sx={{
-                                                    fontSize: 10,
-                                                    color: "#777",
-                                                    maxWidth: "75px",
-                                                    whiteSpace: "nowrap",
-                                                    overflow: "hidden",
-                                                    textOverflow: "ellipsis",
+                                                    cursor: "pointer",
+                                                    border:
+                                                      "1px solid darkgrey",
+                                                    borderRadius: 2,
+                                                    padding: 1,
                                                   }}
-                                                >
-                                                  {
-                                                    attachment
-                                                      .split("/")
-                                                      .pop()
-                                                      .split(".")[0]
-                                                  }
-                                                </Typography>
-
-                                                <Button
-                                                  size="small"
                                                   onClick={() => {
                                                     setSelectedItem(attachment);
                                                     setOpenViewDialog(true);
                                                   }}
-                                                  sx={{ mx: -1 }}
                                                 >
-                                                  <VisibilityIcon />
-                                                </Button>
+                                                  {isPdf(attachment) ? (
+                                                    <img
+                                                      src={`http://localhost:3000/static/pdf.png`}
+                                                      alt="PDF"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  ) : isImage(attachment) ? (
+                                                    <img
+                                                      src={`http://localhost:3000/static/${attachment}`}
+                                                      alt="Pré-visualização"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  ) : (
+                                                    <img
+                                                      src={`http://localhost:3000/static/doc.png`}
+                                                      alt="Other"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  )}
+                                                  <Typography
+                                                    sx={{
+                                                      fontSize: 10,
+                                                      color: "#777",
+                                                      maxWidth: "75px",
+                                                      whiteSpace: "nowrap",
+                                                      overflow: "hidden",
+                                                      textOverflow: "ellipsis",
+                                                    }}
+                                                  >
+                                                    {
+                                                      attachment
+                                                        .split("/")
+                                                        .pop()
+                                                        .split(".")[0]
+                                                    }
+                                                  </Typography>
+                                                </Grid>
                                               </Grid>
-                                            </Grid>
-                                          )
-                                        )}
-                                      </Grid>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableBody>
-                              </Table>
+                                            )
+                                          )}
+                                        </Grid>
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
+                              )}
                             </Collapse>
                           </Box>
                           <Box sx={{ my: 4, px: 6 }}>
@@ -593,10 +654,12 @@ export default function ProjectsTable({
                               unmountOnExit
                             >
                               <Grid container direction="column">
-                                {project.stages.map((stage, index) => (
+                                {project.stages.map((stage, stageIndex) => (
                                   <Accordion
-                                    key={index}
-                                    onClick={() => setSelectedStageIndex(index)}
+                                    key={stageIndex}
+                                    onClick={() =>
+                                      setSelectedStageIndex(stageIndex)
+                                    }
                                     sx={{ mx: "10%", mb: 1 }}
                                   >
                                     <AccordionSummary
@@ -617,7 +680,7 @@ export default function ProjectsTable({
                                                 mr: 1,
                                                 backgroundColor:
                                                   project.definedStagesColors[
-                                                    index
+                                                    stageIndex
                                                   ],
                                               }}
                                             />
@@ -632,7 +695,7 @@ export default function ProjectsTable({
                                                 <Typography
                                                   sx={{ fontSize: 14 }}
                                                 >
-                                                  Etapa #{index + 1}
+                                                  Etapa #{stageIndex + 1}
                                                 </Typography>
                                               ) : (
                                                 <Typography
@@ -640,7 +703,7 @@ export default function ProjectsTable({
                                                 >
                                                   {stage.title}
                                                 </Typography>
-                                              )}{" "}
+                                              )}
                                             </Typography>
                                           </Grid>
                                         </Grid>
@@ -650,9 +713,9 @@ export default function ProjectsTable({
                                             fontSize: 14,
                                           }}
                                         >
-                                          {index > 0 &&
-                                          project.stages[index - 1].status ===
-                                            "Aberto" &&
+                                          {stageIndex > 0 &&
+                                          project.stages[stageIndex - 1]
+                                            .status === "Aberto" &&
                                           stage.status === "Aberto"
                                             ? "Aguardando"
                                             : stage.status}
@@ -681,16 +744,16 @@ export default function ProjectsTable({
                                       >
                                         Tarefas
                                       </Typography>
-                                      {stage.tasks.map((task, index) => (
+                                      {stage.tasks.map((task, taskIndex) => (
                                         <>
                                           <Accordion
-                                            key={index}
+                                            key={taskIndex}
                                             onClick={() =>
-                                              setSelectedTaskIndex(index)
+                                              setSelectedTaskIndex(taskIndex)
                                             }
                                             sx={{
                                               backgroundColor:
-                                                index % 2
+                                                taskIndex % 2
                                                   ? "lightgrey"
                                                   : "white",
                                             }}
@@ -698,19 +761,21 @@ export default function ProjectsTable({
                                             <AccordionSummary
                                               sx={{
                                                 backgroundColor:
-                                                  index % 2
+                                                  taskIndex % 2
                                                     ? "lightgrey"
                                                     : "white",
                                               }}
                                             >
                                               <Grid
-                                                key={index}
+                                                key={taskIndex}
                                                 container
                                                 direction="row"
                                                 alignItems="center"
                                                 justifyContent="flex-start"
                                               >
-                                                <Grid item>{index + 1}.</Grid>
+                                                <Grid item>
+                                                  {taskIndex + 1}.
+                                                </Grid>
                                                 <Grid
                                                   item
                                                   sx={{ width: "25%" }}
@@ -813,7 +878,27 @@ export default function ProjectsTable({
                                                               color: "#777",
                                                             }}
                                                           >
-                                                            #
+                                                            Colaborador
+                                                          </Typography>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                          <Typography
+                                                            sx={{
+                                                              fontSize: 13,
+                                                              color: "#777",
+                                                            }}
+                                                          >
+                                                            Atividade
+                                                          </Typography>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                          <Typography
+                                                            sx={{
+                                                              fontSize: 13,
+                                                              color: "#777",
+                                                            }}
+                                                          >
+                                                            Anexos
                                                           </Typography>
                                                         </TableCell>
                                                         <TableCell>
@@ -833,18 +918,7 @@ export default function ProjectsTable({
                                                               color: "#777",
                                                             }}
                                                           >
-                                                            Colaborador
-                                                          </Typography>
-                                                        </TableCell>
-
-                                                        <TableCell>
-                                                          <Typography
-                                                            sx={{
-                                                              fontSize: 13,
-                                                              color: "#777",
-                                                            }}
-                                                          >
-                                                            Atividade
+                                                            Reações
                                                           </Typography>
                                                         </TableCell>
                                                       </TableRow>
@@ -853,26 +927,21 @@ export default function ProjectsTable({
                                                       {task.interactions.map(
                                                         (
                                                           interaction,
-                                                          index
+                                                          interactionIndex
                                                         ) => (
                                                           <TableRow
-                                                            key={index}
+                                                            key={
+                                                              interactionIndex
+                                                            }
                                                             sx={{
                                                               backgroundColor:
-                                                                index % 2 === 0
+                                                                interaction.number %
+                                                                  2 ===
+                                                                0
                                                                   ? "#eee"
                                                                   : "white",
                                                             }}
                                                           >
-                                                            <TableCell>
-                                                              <Typography
-                                                                sx={{
-                                                                  fontSize: 13,
-                                                                }}
-                                                              >
-                                                                {index + 1}
-                                                              </Typography>
-                                                            </TableCell>
                                                             <TableCell align="left">
                                                               <Typography
                                                                 sx={{
@@ -880,17 +949,7 @@ export default function ProjectsTable({
                                                                 }}
                                                               >
                                                                 {
-                                                                  interaction.createdAt
-                                                                }
-                                                              </Typography>
-                                                            </TableCell>
-                                                            <TableCell align="left">
-                                                              <Typography
-                                                                sx={{
-                                                                  fontSize: 13,
-                                                                }}
-                                                              >
-                                                                {
+                                                                  // maybe
                                                                   interaction
                                                                     .user.name
                                                                 }
@@ -906,6 +965,225 @@ export default function ProjectsTable({
                                                                   interaction.interaction
                                                                 }
                                                               </Typography>
+                                                            </TableCell>
+                                                            <TableCell align="left">
+                                                              {/* here */}
+                                                              {interaction
+                                                                .attachments
+                                                                .length !==
+                                                                0 && (
+                                                                <Grid>
+                                                                  <AttachFileIcon
+                                                                    sx={{
+                                                                      fontSize: 16,
+                                                                      color:
+                                                                        "#777",
+                                                                      cursor:
+                                                                        "pointer",
+                                                                    }}
+                                                                    onClick={handlePopoverOpen(
+                                                                      interactionIndex
+                                                                    )}
+                                                                  />
+                                                                  {openPopoverIndex ===
+                                                                    interactionIndex && (
+                                                                    <Popover
+                                                                      open={Boolean(
+                                                                        anchorEl
+                                                                      )}
+                                                                      anchorEl={
+                                                                        anchorEl
+                                                                      }
+                                                                      onClose={
+                                                                        handlePopoverClose
+                                                                      }
+                                                                      anchorOrigin={{
+                                                                        vertical:
+                                                                          "bottom",
+                                                                        horizontal:
+                                                                          "left",
+                                                                      }}
+                                                                    >
+                                                                      <Box
+                                                                        p={2}
+                                                                        sx={{
+                                                                          width:
+                                                                            "auto",
+                                                                          maxWidth: 460,
+                                                                          height:
+                                                                            "auto",
+                                                                          maxHeight: 280,
+                                                                        }}
+                                                                      >
+                                                                        <Typography
+                                                                          variant="h6"
+                                                                          sx={{
+                                                                            color:
+                                                                              "#555",
+                                                                          }}
+                                                                        >
+                                                                          Anexos
+                                                                        </Typography>
+                                                                        <Grid
+                                                                          container
+                                                                          direction="row"
+                                                                        >
+                                                                          {interaction.attachments.map(
+                                                                            (
+                                                                              attachment,
+                                                                              attachmentIndex
+                                                                            ) => (
+                                                                              <Grid
+                                                                                key={
+                                                                                  attachmentIndex
+                                                                                }
+                                                                                sx={{
+                                                                                  mr: 2,
+                                                                                  mb: 2,
+                                                                                  cursor:
+                                                                                    "pointer",
+                                                                                  border:
+                                                                                    "1px solid darkgrey",
+                                                                                  borderRadius: 2,
+                                                                                  padding: 1,
+                                                                                }}
+                                                                                onClick={() => {
+                                                                                  setSelectedItem(
+                                                                                    attachment
+                                                                                  );
+                                                                                  setOpenViewDialog(
+                                                                                    true
+                                                                                  );
+                                                                                }}
+                                                                              >
+                                                                                {isPdf(
+                                                                                  attachment
+                                                                                ) ? (
+                                                                                  <img
+                                                                                    src={`http://localhost:3000/static/pdf.png`}
+                                                                                    alt="PDF"
+                                                                                    style={{
+                                                                                      width:
+                                                                                        "80px",
+                                                                                      height:
+                                                                                        "80px",
+                                                                                      marginBottom:
+                                                                                        "8px",
+                                                                                    }}
+                                                                                  />
+                                                                                ) : isImage(
+                                                                                    attachment
+                                                                                  ) ? (
+                                                                                  <img
+                                                                                    src={`http://localhost:3000/static/${attachment}`}
+                                                                                    alt="Pré-visualização"
+                                                                                    style={{
+                                                                                      width:
+                                                                                        "80px",
+                                                                                      height:
+                                                                                        "80px",
+                                                                                      marginBottom:
+                                                                                        "8px",
+                                                                                    }}
+                                                                                  />
+                                                                                ) : (
+                                                                                  <img
+                                                                                    src={`http://localhost:3000/static/doc.png`}
+                                                                                    alt="Other"
+                                                                                    style={{
+                                                                                      width:
+                                                                                        "80px",
+                                                                                      height:
+                                                                                        "80px",
+                                                                                      marginBottom:
+                                                                                        "8px",
+                                                                                    }}
+                                                                                  />
+                                                                                )}
+                                                                              </Grid>
+                                                                            )
+                                                                          )}
+                                                                        </Grid>
+                                                                      </Box>
+                                                                    </Popover>
+                                                                  )}
+                                                                </Grid>
+                                                              )}
+                                                            </TableCell>
+                                                            <TableCell align="left">
+                                                              <Typography
+                                                                sx={{
+                                                                  fontSize: 13,
+                                                                }}
+                                                              >
+                                                                {
+                                                                  interaction.createdAt
+                                                                }
+                                                              </Typography>
+                                                            </TableCell>
+                                                            <TableCell align="left">
+                                                              {interaction.activity !==
+                                                                "Job aprovado" && (
+                                                                <Typography
+                                                                  sx={{
+                                                                    fontSize: 13,
+                                                                  }}
+                                                                >
+                                                                  <InteractionReactions
+                                                                    fromProjects
+                                                                    userId={
+                                                                      userId
+                                                                    }
+                                                                    userName={
+                                                                      userName
+                                                                    }
+                                                                    refreshData={
+                                                                      refreshData
+                                                                    }
+                                                                    setRefreshData={
+                                                                      setRefreshData
+                                                                    }
+                                                                    interaction={
+                                                                      interaction
+                                                                    }
+                                                                    stageIndex={
+                                                                      stageIndex
+                                                                    }
+                                                                    taskIndex={
+                                                                      taskIndex
+                                                                    }
+                                                                    interactionIndex={
+                                                                      interactionIndex
+                                                                    }
+                                                                    number={
+                                                                      interaction.number
+                                                                    }
+                                                                    userReactions={
+                                                                      userReactions[
+                                                                        selectedProject
+                                                                          ._id
+                                                                      ] || []
+                                                                    }
+                                                                    setUserReactions={(
+                                                                      reactions
+                                                                    ) =>
+                                                                      setUserReactions(
+                                                                        {
+                                                                          ...userReactions,
+                                                                          [selectedProject._id]:
+                                                                            reactions,
+                                                                        }
+                                                                      )
+                                                                    }
+                                                                    itemId={
+                                                                      selectedProject._id
+                                                                    }
+                                                                    updateInteractions={
+                                                                      updateSelectedProjectInteractions
+                                                                    }
+                                                                  />
+                                                                </Typography>
+                                                              )}
                                                             </TableCell>
                                                           </TableRow>
                                                         )
@@ -1009,57 +1287,207 @@ export default function ProjectsTable({
                                               )}
                                             </AccordionDetails>
 
-                                            {isAddingInteraction && (
-                                              <>
-                                                <Typography
-                                                  sx={{
-                                                    m: 2,
-                                                    fontSize: 16,
-                                                    fontWeight: "bold",
-                                                  }}
-                                                >
-                                                  Nova Interação
-                                                </Typography>
-                                                <Grid
-                                                  container
-                                                  direction="row"
-                                                  alignItems="center"
-                                                  justifyContent="flex-start"
-                                                  sx={{
-                                                    m: 2,
-                                                    ml: 10,
-                                                  }}
-                                                >
-                                                  <Grid item>
-                                                    <Avatar
-                                                      alt="Imagem do Colaborador"
-                                                      src={`http://localhost:3000/static/${userImage}`}
-                                                      sx={{
-                                                        mx: 2,
-                                                        width: 36,
-                                                        height: 36,
-                                                      }}
-                                                    />
-                                                  </Grid>
-                                                  <Grid item>
-                                                    <TextField
-                                                      size="small"
+                                            {isAddingInteraction &&
+                                              selectedTaskIndex ===
+                                                taskIndex && (
+                                                <>
+                                                  <Typography
+                                                    sx={{
+                                                      m: 3,
+                                                      fontSize: 18,
+                                                      fontWeight: "bold",
+                                                    }}
+                                                  >
+                                                    Nova Interação
+                                                  </Typography>
+                                                  <Paper
+                                                    elevation={1}
+                                                    component="form"
+                                                    sx={{
+                                                      p: "2px 4px",
+                                                      display: "flex",
+                                                      alignItems: "center",
+                                                      mx: "15%",
+                                                    }}
+                                                  >
+                                                    <InputBase
+                                                      sx={{ ml: 1, flex: 1 }}
+                                                      placeholder="Atividade"
+                                                      value={newInteractionText}
                                                       onChange={(e) =>
                                                         setNewInteractionText(
                                                           e.target.value
                                                         )
                                                       }
-                                                      placeholder="Insira as informações aqui..."
-                                                      sx={{
-                                                        width: 750,
-                                                        backgroundColor:
-                                                          "white",
-                                                      }}
                                                     />
-                                                  </Grid>
-                                                </Grid>
-                                              </>
-                                            )}
+                                                    <input
+                                                      type="file"
+                                                      multiple
+                                                      id="fileInput"
+                                                      style={{
+                                                        display: "none",
+                                                      }}
+                                                      onChange={
+                                                        handleFileChange
+                                                      }
+                                                    />
+                                                    <label htmlFor="fileInput">
+                                                      <IconButton
+                                                        component="span"
+                                                        aria-label="upload picture"
+                                                        sx={{ p: "10px" }}
+                                                      >
+                                                        <AttachFileIcon />
+                                                      </IconButton>
+                                                    </label>
+                                                  </Paper>
+
+                                                  {attachments.length !== 0 && (
+                                                    <Paper
+                                                      elevation={1}
+                                                      component="form"
+                                                      sx={{
+                                                        p: "2px 4px",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        mx: "15%",
+                                                        mt: 2,
+                                                      }}
+                                                    >
+                                                      <Grid item>
+                                                        <Grid
+                                                          container
+                                                          direction="row"
+                                                        >
+                                                          {attachments.map(
+                                                            (
+                                                              attachment,
+                                                              index
+                                                            ) => (
+                                                              <Grid
+                                                                key={index}
+                                                                item
+                                                                sx={{ mr: 1 }}
+                                                              >
+                                                                <Grid
+                                                                  container
+                                                                  direction="column"
+                                                                  alignItems="center"
+                                                                  sx={{
+                                                                    border:
+                                                                      "1px solid darkgrey",
+                                                                    borderRadius: 2,
+                                                                    padding: 1,
+                                                                  }}
+                                                                >
+                                                                  {isPdf(
+                                                                    attachment.name
+                                                                  ) ? (
+                                                                    <img
+                                                                      src={`http://localhost:3000/static/pdf.png`}
+                                                                      alt="PDF"
+                                                                      style={{
+                                                                        width:
+                                                                          "80px",
+                                                                        height:
+                                                                          "80px",
+                                                                        marginBottom:
+                                                                          "8px",
+                                                                      }}
+                                                                    />
+                                                                  ) : isImage(
+                                                                      attachment.name
+                                                                    ) ? (
+                                                                    <img
+                                                                      src={URL.createObjectURL(
+                                                                        attachment
+                                                                      )}
+                                                                      alt="Pré-visualização"
+                                                                      style={{
+                                                                        width:
+                                                                          "80px",
+                                                                        height:
+                                                                          "80px",
+                                                                        marginBottom:
+                                                                          "8px",
+                                                                      }}
+                                                                    />
+                                                                  ) : (
+                                                                    <img
+                                                                      src={`http://localhost:3000/static/doc.png`}
+                                                                      alt="Other"
+                                                                      style={{
+                                                                        width:
+                                                                          "80px",
+                                                                        height:
+                                                                          "80px",
+                                                                        marginBottom:
+                                                                          "8px",
+                                                                      }}
+                                                                    />
+                                                                  )}
+                                                                  <Typography
+                                                                    sx={{
+                                                                      fontSize: 10,
+                                                                      color:
+                                                                        "#777",
+                                                                      maxWidth:
+                                                                        "75px",
+                                                                      whiteSpace:
+                                                                        "nowrap",
+                                                                      overflow:
+                                                                        "hidden",
+                                                                      textOverflow:
+                                                                        "ellipsis",
+                                                                    }}
+                                                                  >
+                                                                    {
+                                                                      attachment.name
+                                                                    }
+                                                                  </Typography>
+
+                                                                  <Grid item>
+                                                                    <Grid
+                                                                      container
+                                                                      direction="row"
+                                                                      justifyContent="space-around"
+                                                                    >
+                                                                      <Button
+                                                                        size="small"
+                                                                        onClick={() => {
+                                                                          setSelectedItem(
+                                                                            attachment
+                                                                          );
+                                                                          setOpenViewDialog2(
+                                                                            true
+                                                                          );
+                                                                        }}
+                                                                      >
+                                                                        <VisibilityIcon />
+                                                                      </Button>
+                                                                      <Button
+                                                                        size="small"
+                                                                        color="error"
+                                                                        onClick={() =>
+                                                                          removeFile(
+                                                                            index
+                                                                          )
+                                                                        }
+                                                                      >
+                                                                        <DeleteIcon />
+                                                                      </Button>
+                                                                    </Grid>
+                                                                  </Grid>
+                                                                </Grid>
+                                                              </Grid>
+                                                            )
+                                                          )}
+                                                        </Grid>
+                                                      </Grid>
+                                                    </Paper>
+                                                  )}
+                                                </>
+                                              )}
                                             {isAddingResolution && (
                                               <>
                                                 <Typography
@@ -1115,7 +1543,8 @@ export default function ProjectsTable({
                                               <AccordionActions>
                                                 <ProjectTaskActions
                                                   task={task}
-                                                  index={index}
+                                                  selectedTaskIndex={selectedTaskIndex}
+                                                  taskIndex={taskIndex}
                                                   isAddingInteraction={
                                                     isAddingInteraction
                                                   }
@@ -1211,6 +1640,21 @@ export default function ProjectsTable({
             <ViewDialog
               selectedItem={selectedItem}
               setOpenViewDialog={setOpenViewDialog}
+            />
+          </Dialog>
+        )}
+        {openViewDialog2 && (
+          <Dialog
+            open={openViewDialog2}
+            onClose={() => setOpenViewDialog2(false)}
+            fullWidth
+            maxWidth="lg"
+          >
+            <ViewDialog
+              setOpenViewDialog={setOpenViewDialog2}
+              selectedItem={selectedItem.name}
+              createObjectURLItem={selectedItem}
+              createObjectURL
             />
           </Dialog>
         )}

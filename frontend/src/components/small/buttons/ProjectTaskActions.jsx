@@ -9,8 +9,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
 
 export default function ProjectTaskActions({
-  // configData,
   task,
+  taskIndex,
+  selectedTaskIndex,
   handleAddInteraction,
   isAddingInteraction,
   setIsAddingInteraction,
@@ -20,7 +21,7 @@ export default function ProjectTaskActions({
 }) {
   return (
     <>
-      {isAddingInteraction ? (
+      {isAddingInteraction && selectedTaskIndex === taskIndex ? (
         <Grid container direction="row" justifyContent="flex-end">
           <Button
             cursor="pointer"

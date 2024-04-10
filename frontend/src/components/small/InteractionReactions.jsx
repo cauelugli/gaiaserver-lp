@@ -48,6 +48,9 @@ const InteractionReactions = ({
   fromSales,
   fromProjects,
   updateInteractions,
+  stageIndex,
+  taskIndex,
+  interactionIndex
 }) => {
   const reactionsMap = {
     love: {
@@ -80,8 +83,11 @@ const InteractionReactions = ({
     try {
       const res = await api.put(`/${endpoint}/reaction`, {
         itemId,
-        number,
         userId: userId,
+        number,
+        stageIndex,
+        taskIndex,
+        interactionIndex,
         reactionType,
       });
       if (res.data) {

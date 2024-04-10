@@ -69,8 +69,15 @@ router.put("/", async (req, res) => {
 
 // CREATE PROJECT INTERACTION
 router.post("/addInteraction", async (req, res) => {
-  const { projectId, stageIndex, taskIndex, interaction, user, createdAt } =
-    req.body;
+  const {
+    projectId,
+    stageIndex,
+    taskIndex,
+    interaction,
+    attachments,
+    user,
+    createdAt,
+  } = req.body;
 
   try {
     const updatedProject = await Project.findOneAndUpdate(
@@ -79,6 +86,13 @@ router.post("/addInteraction", async (req, res) => {
         $push: {
           [`stages.${stageIndex}.tasks.${taskIndex}.interactions`]: {
             interaction,
+            attachments,
+            reactions: {
+              love: { quantity: 0, usersReacted: [] },
+              like: { quantity: 0, usersReacted: [] },
+              dislike: { quantity: 0, usersReacted: [] },
+              haha: { quantity: 0, usersReacted: [] },
+            },
             user,
             createdAt,
           },
@@ -107,10 +121,65 @@ router.put("/addAttachments", async (req, res) => {
     project.attachments = [...project.attachments, ...attachments];
     await project.save();
 
-    res.status(200).json({ message: "Attachments added successfully", project });
+    res
+      .status(200)
+      .json({ message: "Attachments added successfully", project });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "An error occurred", error: err });
+  }
+});
+
+// REACT TO PROJECT INTERATION
+router.put("/reaction", async (req, res) => {
+  try {
+    const projectId = req.body.itemId;
+    const userId = req.body.userId;
+    const reactionType = req.body.reactionType;
+    const stageIndex = req.body.stageIndex;
+    const taskIndex = req.body.taskIndex;
+    const interactionIndex = req.body.interactionIndex;
+
+    const project = await Project.findById(projectId);
+
+    const reactionField = `stages.${stageIndex}.tasks.${taskIndex}.interactions.${interactionIndex}.reactions.${reactionType}.quantity`;
+    const usersReactedField = `stages.${stageIndex}.tasks.${taskIndex}.interactions.${interactionIndex}.reactions.${reactionType}.usersReacted`;
+
+    const userAlreadyReacted =
+      project.stages[stageIndex].tasks[taskIndex].interactions[
+        interactionIndex
+      ].reactions[reactionType].usersReacted.includes(userId);
+
+    if (userAlreadyReacted) {
+      const updatedProject = await Project.findOneAndUpdate(
+        {
+          _id: projectId,
+        },
+        {
+          $inc: { [reactionField]: -1 },
+          $pull: { [usersReactedField]: userId },
+        },
+        { new: true }
+      );
+
+      res.status(200).json(updatedProject);
+    } else {
+      const updatedProject = await Project.findOneAndUpdate(
+        {
+          _id: projectId,
+        },
+        {
+          $inc: { [reactionField]: 1 },
+          $addToSet: { [usersReactedField]: userId },
+        },
+        { new: true }
+      );
+
+      res.status(200).json(updatedProject);
+    }
+  } catch (err) {
+    console.log("err", err);
+    res.status(500).json(err);
   }
 });
 
