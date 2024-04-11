@@ -24,6 +24,7 @@ const AddAttachmentsForm = ({
   endpoint,
 }) => {
   const [attachments, setAttachments] = React.useState([]);
+  console.log("selectedJob", selectedJob._id);
 
   const handleAddAttachments = async (e) => {
     e.preventDefault();
@@ -32,8 +33,8 @@ const AddAttachmentsForm = ({
       for (const file of attachments) {
         const formData = new FormData();
         formData.append("attachment", file);
+        formData.append("itemId", selectedJob._id);
 
-        // Faça o upload para cada item, arrays não funcionam bem
         const uploadResponse = await api.post(
           "/uploads/singleAttachment",
           formData
@@ -43,9 +44,10 @@ const AddAttachmentsForm = ({
 
       const res = await api.put(`/${endpoint}/addAttachments`, {
         jobId: selectedJob._id,
+        itemId: selectedJob._id,
         attachments: uploadResponses,
         userName: userName,
-        date: dayjs().format("DD/MM HH:mm")
+        date: dayjs().format("DD/MM HH:mm"),
       });
       if (res.data) {
         toast.success("Anexos Adicionados!", {

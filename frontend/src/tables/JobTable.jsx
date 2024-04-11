@@ -275,6 +275,7 @@ export default function JobTable({
         for (const file of attachments) {
           const formData = new FormData();
           formData.append("attachment", file);
+          formData.append("itemId", selectedJob._id);
 
           const uploadResponse = await api.post(
             "/uploads/singleAttachment",
@@ -284,7 +285,7 @@ export default function JobTable({
         }
 
         await api.put(`/jobs/addAttachments`, {
-          jobId: selectedJob._id,
+          itemId: selectedJob._id,
           attachments: uploadResponses,
           userName,
           date: dayjs().format("DD/MM HH:mm"),
@@ -976,7 +977,7 @@ export default function JobTable({
                                                       attachment
                                                         .split("/")
                                                         .pop()
-                                                        .split(".")[0]
+                                                        .split(".")[1]
                                                     }
                                                   </Typography>
                                                 </Grid>

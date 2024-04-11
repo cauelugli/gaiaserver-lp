@@ -177,6 +177,7 @@ export default function ProjectsTable({
       for (const file of attachments) {
         const formData = new FormData();
         formData.append("attachment", file);
+        formData.append("itemId", selectedProject._id);
 
         const uploadResponse = await api.post(
           "/uploads/singleAttachment",
@@ -186,7 +187,7 @@ export default function ProjectsTable({
       }
 
       await api.put(`/projects/addAttachments`, {
-        jobId: selectedProject._id,
+        itemId: selectedProject._id,
         attachments: uploadResponses,
         userName,
         date: dayjs().format("DD/MM HH:mm"),
@@ -486,10 +487,14 @@ export default function ProjectsTable({
                           {project.status}
                         </Typography>
                       </TableCell>
-                      <TableCell cursor="pointer" align="center">
+                      <TableCell
+                        cursor="pointer"
+                        align="center"
+                        onClick={() => setSelectedProject(project)}
+                      >
                         <ProjectTableActions
-                          configCustomization={"configCustomization"}
                           selectedItem={project}
+                          configCustomization={"configCustomization"}
                           handleOpenAddAttachment={setOpenAddAttachments}
                           refreshData={refreshData}
                           setRefreshData={setRefreshData}
@@ -659,7 +664,7 @@ export default function ProjectsTable({
                                                         attachment
                                                           .split("/")
                                                           .pop()
-                                                          .split(".")[0]
+                                                          .split(".")[1]
                                                       }
                                                     </Typography>
                                                   </Grid>

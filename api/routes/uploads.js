@@ -47,17 +47,24 @@ router.post(
   "/singleAttachment",
   uploadDocs.single("attachment"),
   (req, res) => {
-    try {
-      const attachmentPath = req.file
-        ? "/attachments/" + req.file.filename
-        : "";
-      return res.status(200).json({ attachmentPath });
-    } catch (error) {
-      console.error(error);
-      return res
-        .status(500)
-        .json({ message: "Erro ao fazer o upload do arquivo." });
+    const itemId = req.body.itemId;
+    if (!req.file) {
+      return res.status(400).json({ message: "Nenhum arquivo enviado." });
     }
+
+    const attachmentsBasePath = path.join(
+      __dirname,
+      "../../uploads/attachments"
+    );
+    const newFilename = `${itemId}.${req.file.originalname}`;
+    const attachmentPath = path.join(attachmentsBasePath, newFilename);
+
+    fs.copyFileSync(req.file.path, attachmentPath);
+    fs.unlinkSync(req.file.path);
+
+    return res
+      .status(200)
+      .json({ attachmentPath: `/attachments/${newFilename}` });
   }
 );
 

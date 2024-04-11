@@ -116,10 +116,10 @@ router.post("/addInteraction", async (req, res) => {
 
 // ADD PROJECT ATTACHMENTS
 router.put("/addAttachments", async (req, res) => {
-  const { jobId, attachments } = req.body;
+  const { itemId, attachments } = req.body;
 
   try {
-    const project = await Project.findById(jobId);
+    const project = await Project.findById(itemId);
     project.attachments = [...project.attachments, ...attachments];
     await project.save();
 
@@ -288,12 +288,10 @@ router.put("/deleteAttachment", async (req, res) => {
       fs.unlinkSync(attachmentPath);
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Attachment deleted successfully",
-        project: updatedProject,
-      });
+    res.status(200).json({
+      message: "Attachment deleted successfully",
+      project: updatedProject,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "An error occurred", error: err });

@@ -585,14 +585,14 @@ router.put("/edit", async (req, res) => {
 
 // ADD JOB ATTACHMENTS
 router.put("/addAttachments", async (req, res) => {
-  const { jobId, attachments, userName, date } = req.body;
+  const { itemId, attachments, userName, date } = req.body;
 
   try {
-    const job = await Job.findById(jobId);
+    const job = await Job.findById(itemId);
     const interactionNumber = job.interactions.length + 1;
 
     const updatedJob = await Job.findOneAndUpdate(
-      { _id: jobId },
+      { _id: itemId },
       {
         $set: {
           attachments: [...job.attachments, ...attachments],

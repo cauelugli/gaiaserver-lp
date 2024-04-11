@@ -99,18 +99,6 @@ export default function AddProjectForm({
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const uploadResponses = [];
-      for (const file of attachments) {
-        const formData = new FormData();
-        formData.append("attachment", file);
-
-        // Faça o upload para cada item, arrays não funcionam bem
-        const uploadResponse = await api.post(
-          "/uploads/singleAttachment",
-          formData
-        );
-        uploadResponses.push(uploadResponse.data.attachmentPath);
-      }
       const res = await api.post("/projects", {
         name,
         creator: { name: userName, id: userId },
@@ -128,9 +116,29 @@ export default function AddProjectForm({
         definedStagesColors,
         recurrent,
         templateName,
-        attachments: uploadResponses,
       });
+
       if (res.data) {
+        const itemId = res.data.savedProject._id;
+        const uploadResponses = [];
+
+        for (const file of attachments) {
+          const formData = new FormData();
+          formData.append("attachment", file);
+          formData.append("itemId", itemId);
+
+          const uploadResponse = await api.post(
+            "/uploads/singleAttachment",
+            formData
+          );
+          uploadResponses.push(uploadResponse.data.attachmentPath);
+        }
+
+        await api.put(`/projects/addAttachments`, {
+          itemId: res.data.savedProject._id,
+          attachments: uploadResponses,
+        });
+
         toast.success("Projeto Adicionado!", {
           closeOnClick: true,
           pauseOnHover: false,
@@ -148,6 +156,7 @@ export default function AddProjectForm({
           });
         }
       }
+
       setOpenAdd(!openAdd);
       setRefreshData(!refreshData);
     } catch (err) {
