@@ -45,7 +45,12 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Projects({ userId, userName, userImage }) {
+export default function Projects({
+  userId,
+  userName,
+  userUsername,
+  userImage,
+}) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
@@ -191,6 +196,7 @@ export default function Projects({ userId, userName, userImage }) {
             <ProjectsTable
               userId={userId}
               userName={userName}
+              userUsername={userUsername}
               userImage={userImage}
               projects={projects}
               configData={configData}

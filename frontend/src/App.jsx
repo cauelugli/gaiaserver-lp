@@ -523,6 +523,7 @@ export default function App() {
                         <Projects
                           userId={userData._id}
                           userName={userData.name}
+                          userUsername={userData.username}
                           userImage={userData.image}
                           configTables={configTables}
                         />

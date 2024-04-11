@@ -55,6 +55,7 @@ const socket = io("http://localhost:3000");
 export default function ProjectsTable({
   userId,
   userName,
+  userUsername,
   userImage,
   searchValue,
   searchOption,
@@ -274,6 +275,33 @@ export default function ProjectsTable({
       }
     } catch (error) {
       console.error("Erro ao Resolver Tarefa:", error);
+    }
+  };
+
+  const handleDeleteAttachment = async (projectId, attachmentIndex) => {
+    try {
+      const response = await api.put("/projects/deleteAttachment", {
+        projectId,
+        attachmentIndex,
+      });
+
+      if (response.data) {
+        toast.success("Anexo deletado com sucesso!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+        setRefreshData(!refreshData);
+      }
+    } catch (err) {
+      toast.error("Erro ao deletar o anexo. Tente novamente.", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+      console.error(err);
     }
   };
 
@@ -554,68 +582,92 @@ export default function ProjectsTable({
                                               >
                                                 <Grid
                                                   container
-                                                  direction="column"
+                                                  dierction="column"
                                                   alignItems="center"
-                                                  sx={{
-                                                    cursor: "pointer",
-                                                    border:
-                                                      "1px solid darkgrey",
-                                                    borderRadius: 2,
-                                                    padding: 1,
-                                                  }}
-                                                  onClick={() => {
-                                                    setSelectedItem(attachment);
-                                                    setOpenViewDialog(true);
-                                                  }}
+                                                  justifyContent="center"
                                                 >
-                                                  {isPdf(attachment) ? (
-                                                    <img
-                                                      src={`http://localhost:3000/static/pdf.png`}
-                                                      alt="PDF"
-                                                      style={{
-                                                        width: "80px",
-                                                        height: "80px",
-                                                        marginBottom: "8px",
-                                                      }}
-                                                    />
-                                                  ) : isImage(attachment) ? (
-                                                    <img
-                                                      src={`http://localhost:3000/static/${attachment}`}
-                                                      alt="Pré-visualização"
-                                                      style={{
-                                                        width: "80px",
-                                                        height: "80px",
-                                                        marginBottom: "8px",
-                                                      }}
-                                                    />
-                                                  ) : (
-                                                    <img
-                                                      src={`http://localhost:3000/static/doc.png`}
-                                                      alt="Other"
-                                                      style={{
-                                                        width: "80px",
-                                                        height: "80px",
-                                                        marginBottom: "8px",
-                                                      }}
-                                                    />
-                                                  )}
-                                                  <Typography
+                                                  <Grid
+                                                    container
+                                                    direction="column"
+                                                    alignItems="center"
                                                     sx={{
-                                                      fontSize: 10,
-                                                      color: "#777",
-                                                      maxWidth: "75px",
-                                                      whiteSpace: "nowrap",
-                                                      overflow: "hidden",
-                                                      textOverflow: "ellipsis",
+                                                      cursor: "pointer",
+                                                      border:
+                                                        "1px solid darkgrey",
+                                                      borderRadius: 2,
+                                                      padding: 1,
+                                                    }}
+                                                    onClick={() => {
+                                                      setSelectedItem(
+                                                        attachment
+                                                      );
+                                                      setOpenViewDialog(true);
                                                     }}
                                                   >
-                                                    {
-                                                      attachment
-                                                        .split("/")
-                                                        .pop()
-                                                        .split(".")[0]
-                                                    }
-                                                  </Typography>
+                                                    {isPdf(attachment) ? (
+                                                      <img
+                                                        src={`http://localhost:3000/static/pdf.png`}
+                                                        alt="PDF"
+                                                        style={{
+                                                          width: "80px",
+                                                          height: "80px",
+                                                          marginBottom: "8px",
+                                                        }}
+                                                      />
+                                                    ) : isImage(attachment) ? (
+                                                      <img
+                                                        src={`http://localhost:3000/static/${attachment}`}
+                                                        alt="Arquivo Inexistente"
+                                                        style={{
+                                                          width: "80px",
+                                                          height: "80px",
+                                                          marginBottom: "8px",
+                                                        }}
+                                                      />
+                                                    ) : (
+                                                      <img
+                                                        src={`http://localhost:3000/static/doc.png`}
+                                                        alt="Other"
+                                                        style={{
+                                                          width: "80px",
+                                                          height: "80px",
+                                                          marginBottom: "8px",
+                                                        }}
+                                                      />
+                                                    )}
+                                                    <Typography
+                                                      sx={{
+                                                        fontSize: 10,
+                                                        color: "#777",
+                                                        maxWidth: "75px",
+                                                        whiteSpace: "nowrap",
+                                                        overflow: "hidden",
+                                                        textOverflow:
+                                                          "ellipsis",
+                                                      }}
+                                                    >
+                                                      {
+                                                        attachment
+                                                          .split("/")
+                                                          .pop()
+                                                          .split(".")[0]
+                                                      }
+                                                    </Typography>
+                                                  </Grid>
+                                                  {userUsername === "admin" && (
+                                                    <Button
+                                                      size="small"
+                                                      color="error"
+                                                      onClick={() =>
+                                                        handleDeleteAttachment(
+                                                          project._id,
+                                                          index
+                                                        )
+                                                      }
+                                                    >
+                                                      <DeleteIcon />
+                                                    </Button>
+                                                  )}
                                                 </Grid>
                                               </Grid>
                                             )
@@ -1543,7 +1595,9 @@ export default function ProjectsTable({
                                               <AccordionActions>
                                                 <ProjectTaskActions
                                                   task={task}
-                                                  selectedTaskIndex={selectedTaskIndex}
+                                                  selectedTaskIndex={
+                                                    selectedTaskIndex
+                                                  }
                                                   taskIndex={taskIndex}
                                                   isAddingInteraction={
                                                     isAddingInteraction

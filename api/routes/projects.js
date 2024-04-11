@@ -1,4 +1,6 @@
 const express = require("express");
+const fs = require("fs");
+const path = require("path");
 const router = express.Router();
 const Project = require("../models/Project");
 const ProjectTemplate = require("../models/ProjectTemplate");
@@ -253,6 +255,45 @@ router.post("/resolveTask", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Error resolving task", error: err });
+  }
+});
+
+// DELETE PROJECT ATTACHMENT
+router.put("/deleteAttachment", async (req, res) => {
+  const { projectId, attachmentIndex } = req.body;
+  try {
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    if (attachmentIndex < 0 || attachmentIndex >= project.attachments.length) {
+      return res.status(400).json({ message: "Invalid attachment index" });
+    }
+
+    const [removedAttachment] = project.attachments.splice(attachmentIndex, 1);
+
+    const updatedProject = await Project.findByIdAndUpdate(
+      projectId,
+      { attachments: project.attachments },
+      { new: true }
+    );
+
+    const attachmentPath = path.join(
+      __dirname,
+      "../../uploads",
+      removedAttachment
+    );
+    if (fs.existsSync(attachmentPath)) {
+      fs.unlinkSync(attachmentPath);
+    }
+
+    res
+      .status(200)
+      .json({ message: "Attachment deleted successfully", project: updatedProject });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred", error: err });
   }
 });
 
