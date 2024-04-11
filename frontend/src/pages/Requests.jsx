@@ -47,6 +47,7 @@ function CustomTabPanel(props) {
 export default function Requests({
   userId,
   userName,
+  userUsername,
   userRole,
   configTables,
   configAgenda,
@@ -217,6 +218,7 @@ export default function Requests({
                 config={config}
                 userId={userId}
                 userName={userName}
+                userUsername={userUsername}
                 userRole={userRole}
                 searchValue={searchValue}
                 searchOption={searchOption}

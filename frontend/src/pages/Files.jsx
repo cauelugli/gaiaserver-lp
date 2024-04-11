@@ -12,6 +12,7 @@ import {
 
 import DocumentTable from "../tables/DocumentTable";
 import ImageTable from "../tables/ImageTable";
+import AttachmentTable from "../tables/AttachmentTable";
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -53,6 +54,10 @@ export default function Files() {
             label={<Typography sx={{ fontSize: 13 }}>Imagens</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
+          <Tab
+            label={<Typography sx={{ fontSize: 13 }}>Anexos</Typography>}
+            sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -60,6 +65,9 @@ export default function Files() {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <ImageTable />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <AttachmentTable />
       </CustomTabPanel>
     </Box>
   );

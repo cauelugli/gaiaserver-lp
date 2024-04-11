@@ -1,7 +1,6 @@
 import * as React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Worker, Viewer } from "@react-pdf-viewer/core";
 
 import {
   Box,
@@ -17,7 +16,6 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import NoDataText from "../components/small/NoDataText";
 
@@ -25,8 +23,8 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function DocumentTable() {
-  const [files, setFiles] = React.useState([]);
+export default function AttachmentTable() {
+  const [attachments, setAttachments] = React.useState([]);
   const [totalSpaceOccupiedMB, setTotalSpaceOccupiedMB] = React.useState(0);
   const [confirmationDialogOpen, setConfirmationDialogOpen] =
     React.useState(false);
@@ -60,8 +58,8 @@ export default function DocumentTable() {
 
   const fetchFiles = async () => {
     try {
-      const response = await api.get("/uploads/listDocs");
-      setFiles(response.data.docs);
+      const response = await api.get("/uploads/listAttachments");
+      setAttachments(response.data.docs);
       setTotalSpaceOccupiedMB(response.data.totalSpaceMB);
     } catch (error) {
       console.error("Erro ao buscar a lista de arquivos:", error);
@@ -88,7 +86,7 @@ export default function DocumentTable() {
   const confirmDelete = async (filename) => {
     console.log("filename", filename);
     try {
-      const response = await api.delete(`/uploads/deleteFile/${filename}`);
+      const response = await api.delete(`/uploads/deleteAttachment/${filename}`);
       if (response.status === 200) {
         toast.error("Arquivo Deletado", {
           closeOnClick: true,
@@ -107,7 +105,7 @@ export default function DocumentTable() {
 
   const confirmDeleteMultiple = async (imagesToDelete) => {
     try {
-      const response = await api.post("/uploads/deleteMultipleFiles", {
+      const response = await api.post("/uploads/deleteMultipleAttachments", {
         files: imagesToDelete,
       });
 
@@ -128,22 +126,25 @@ export default function DocumentTable() {
     }
   };
 
-  const [viewDialogOpen, setViewDialogOpen] = React.useState(false);
-  const [pdfUrl, setPdfUrl] = React.useState("");
+  const imageExtensions = [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".bmp",
+    ".tiff",
+    ".webp",
+  ];
+  
+  const isImage = (filename) =>
+    imageExtensions.some((extension) => filename.endsWith(extension));
 
-  const openViewDialog = (file) => {
-    setPdfUrl(`http://localhost:3000/static/docs/${file.name}`);
-    setViewDialogOpen(true);
-  };
-
-  const closeViewDialog = () => {
-    setViewDialogOpen(false);
-  };
+  const isPdf = (filename) => filename.endsWith(".pdf");
 
   return (
     <>
-      {files.length === 0 ? (
-        <NoDataText option="Documentos" />
+      {attachments.length === 0 ? (
+        <NoDataText option="Anexos" />
       ) : (
         <>
           <Box sx={{ minWidth: "1250px" }}>
@@ -179,17 +180,40 @@ export default function DocumentTable() {
               </Grid>
             </Grid>
             <Grid container spacing={2}>
-              {files.map((file) => {
+              {attachments.map((file) => {
                 return (
                   <Grid key={file._id} item xs={2}>
-                    <img
-                      alt="Imagem do Documento"
-                      src={`http://localhost:3000/static/pdf.png`}
-                      style={{
-                        width: 100,
-                        height: 100,
-                      }}
-                    />
+                    {isPdf(file.name) ? (
+                      <img
+                        src={`http://localhost:3000/static/pdf.png`}
+                        alt="PDF"
+                        style={{
+                          width: "80px",
+                          height: "80px",
+                          marginBottom: "8px",
+                        }}
+                      />
+                    ) : isImage(file.name) ? (
+                      <img
+                        src={`http://localhost:3000/static/attachments/${file.name}`}
+                        alt="Pré-visualização"
+                        style={{
+                          width: "80px",
+                          height: "80px",
+                          marginBottom: "8px",
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src={`http://localhost:3000/static/doc.png`}
+                        alt="Other"
+                        style={{
+                          width: "80px",
+                          height: "80px",
+                          marginBottom: "8px",
+                        }}
+                      />
+                    )}
                     <Typography sx={{ fontSize: 10 }}>
                       {file.name} - {file.sizeKB}KB
                     </Typography>
@@ -198,12 +222,6 @@ export default function DocumentTable() {
                         checked={selectedImages.includes(file)}
                         onChange={() => handleCheckboxChange(file)}
                         sx={{ p: 0, m: 0 }}
-                      />
-                      <VisibilityIcon
-                        color="inherit"
-                        onClick={() => openViewDialog(file)}
-                        sx={{ mx: 1, py: 0 }}
-                        style={{ cursor: "pointer" }}
                       />
                       <DeleteIcon
                         color="error"
@@ -253,28 +271,6 @@ export default function DocumentTable() {
             color="secondary"
           >
             Confirmar
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog
-        open={viewDialogOpen}
-        onClose={closeViewDialog}
-        fullWidth
-        maxWidth="md"
-      >
-        <DialogTitle>Visualização do Orçamento</DialogTitle>
-        <DialogContent>
-          <Box style={{ height: "600px" }}>
-            <Worker
-              workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
-            >
-              <Viewer fileUrl={pdfUrl} />
-            </Worker>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeViewDialog} color="primary">
-            Fechar
           </Button>
         </DialogActions>
       </Dialog>
