@@ -48,7 +48,9 @@ router.post(
   uploadDocs.single("attachment"),
   (req, res) => {
     try {
-      const attachmentPath = req.file ? "/attachments/" + req.file.filename : "";
+      const attachmentPath = req.file
+        ? "/attachments/" + req.file.filename
+        : "";
       return res.status(200).json({ attachmentPath });
     } catch (error) {
       console.error(error);
@@ -164,12 +166,76 @@ router.get("/listDocs", async (req, res) => {
   });
 });
 
+// GET ALL ATTACHMENTS
+router.get("/listAttachments", async (req, res) => {
+  const directory = path.join(__dirname, "../../uploads/attachments");
+  fs.readdir(directory, async (err, docs) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Erro ao listar os documentos" });
+    }
+    try {
+      // const quotes = await Quote.find();
+      // inUse.push(...quotes.map((quote) => quote."image"));
+
+      let totalSpace = 0;
+
+      docs.forEach((doc) => {
+        const docPath = path.join(directory, doc);
+        const stats = fs.statSync(docPath);
+        totalSpace += stats.size;
+      });
+
+      const totalSpaceInMB = (totalSpace / (1024 * 1024)).toFixed(2);
+
+      const docsWithSizes = docs.map((doc) => {
+        const docPath = path.join(directory, doc);
+        const stats = fs.statSync(docPath);
+        const docSizeInKB = Math.round(stats.size / 1024);
+
+        return {
+          name: doc,
+          sizeKB: docSizeInKB,
+        };
+      });
+
+      return res.status(200).json({
+        docs: docsWithSizes,
+        totalSpaceMB: totalSpaceInMB,
+      });
+    } catch (error) {
+      console.error("Erro ao buscar documentos em uso:", error);
+      return res
+        .status(500)
+        .json({ message: "Erro ao buscar documentos em uso." });
+    }
+  });
+});
+
 // DELETE SINGLE FILE
 router.delete("/deleteFile/:filename", (req, res) => {
   const directory = path.join(
     __dirname,
     `../../uploads/${req.params.filename.endsWith(".pdf") ? "docs" : "images"}`
   );
+  const filePath = path.join(directory, req.params.filename);
+
+  if (fs.existsSync(filePath)) {
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Erro ao excluir o arquivo." });
+      }
+      return res.status(200).json({ message: "Arquivo excluído com sucesso." });
+    });
+  } else {
+    return res.status(404).json({ message: "Arquivo não encontrado." });
+  }
+});
+
+// DELETE SINGLE ATTACHMENT
+router.delete("/deleteAttachment/:filename", (req, res) => {
+  const directory = path.join(__dirname, `../../uploads/attachments`);
   const filePath = path.join(directory, req.params.filename);
 
   if (fs.existsSync(filePath)) {
@@ -194,6 +260,23 @@ router.post("/deleteMultipleFiles", (req, res) => {
       req.body.files[0].name.endsWith(".pdf") ? "docs" : "images"
     }`
   );
+  try {
+    files.forEach((file) => {
+      const filePath = path.join(directory, file.name);
+      fs.unlinkSync(filePath);
+    });
+
+    return res.status(200).json({ message: "Imagens excluídas com sucesso." });
+  } catch (error) {
+    console.error("Erro ao excluir as imagens:", error);
+    return res.status(500).json({ message: "Erro ao excluir as imagens." });
+  }
+});
+
+// DELETE MULTIPLE ATTACHMENTS
+router.post("/deleteMultipleAttachments", (req, res) => {
+  const { files } = req.body;
+  const directory = path.join(__dirname, `../../uploads/attachments`);
   try {
     files.forEach((file) => {
       const filePath = path.join(directory, file.name);

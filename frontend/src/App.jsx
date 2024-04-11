@@ -497,6 +497,7 @@ export default function App() {
                         <Requests
                           userId={userData._id}
                           userName={userData.name}
+                          userUsername={userData.username}
                           userRole={userData.role}
                           configTables={configTables}
                           configAgenda={configAgenda}
