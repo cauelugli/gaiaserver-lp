@@ -290,7 +290,10 @@ router.put("/deleteAttachment", async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Attachment deleted successfully", project: updatedProject });
+      .json({
+        message: "Attachment deleted successfully",
+        project: updatedProject,
+      });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "An error occurred", error: err });
@@ -302,6 +305,22 @@ router.delete("/:id", async (req, res) => {
   const projectId = req.params.id;
   try {
     const deletedProject = await Project.findByIdAndDelete(projectId);
+
+    if (deletedProject.attachments && deletedProject.attachments.length > 0) {
+      deletedProject.attachments.forEach((attachment) => {
+        const attachmentPath = path.join(
+          __dirname,
+          "../../uploads",
+          attachment
+        );
+        if (fs.existsSync(attachmentPath)) {
+          fs.unlinkSync(attachmentPath);
+        } else {
+          ("");
+        }
+      });
+    }
+
     res.status(200).json(deletedProject);
   } catch (err) {
     res.status(500).json(err);

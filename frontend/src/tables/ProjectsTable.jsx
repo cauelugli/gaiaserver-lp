@@ -253,6 +253,12 @@ export default function ProjectsTable({
       setRefreshData(!refreshData);
 
       if (response.status === 200) {
+        toast.success("Tarefa Resolvida!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
         const memberIds = response.data.stages[selectedStageIndex].tasks[
           selectedTaskIndex
         ].assignees.map((assignee) => assignee.id);
@@ -270,11 +276,14 @@ export default function ProjectsTable({
           date: dayjs(Date.now()).format("DD/MM/YYYY"),
           projectName: selectedProject.name,
         });
-      } else {
-        console.error("Erro ao Resolver Tarefa:", response.status);
       }
     } catch (error) {
-      console.error("Erro ao Resolver Tarefa:", error);
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
     }
   };
 
