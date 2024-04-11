@@ -298,6 +298,8 @@ const AddJobForm = ({
         await api.put(`/jobs/addAttachments`, {
           itemId: res.data.savedRequest._id,
           attachments: uploadResponses,
+          userName,
+          date: dayjs().format("DD/MM HH:mm"),
         });
         toast.success(
           `Solicitação Adicionada! Orçamento #${res.data.savedQuote.number}`,

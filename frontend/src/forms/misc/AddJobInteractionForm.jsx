@@ -79,6 +79,7 @@ const AddJobInteractionForm = ({
         for (const file of attachments) {
           const formData = new FormData();
           formData.append("attachment", file);
+          formData.append("itemId", selectedJob._id);
 
           const uploadResponse = await api.post(
             "/uploads/singleAttachment",
@@ -88,7 +89,7 @@ const AddJobInteractionForm = ({
         }
 
         await api.put(`/${endpoint}/addAttachments`, {
-          jobId: selectedJob._id,
+          itemId: selectedJob._id,
           attachments: uploadResponses,
           userName,
           date: dayjs().format("DD/MM HH:mm"),
@@ -211,7 +212,7 @@ const AddJobInteractionForm = ({
                         </Typography>
                       </TableCell>
                       <TableCell align="left">
-                        {interaction.attachments.length !== 0 && (
+                        {interaction.attachments && interaction.attachments.length !== 0 && (
                           <Grid>
                             <AttachFileIcon
                               sx={{
