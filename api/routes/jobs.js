@@ -720,6 +720,50 @@ router.put("/reaction", async (req, res) => {
   }
 });
 
+// PUT ROUTE TO DELETE A SPECIFIC ATTACHMENT BY INDEX
+router.put("/deleteAttachment", async (req, res) => {
+  const { jobId, attachmentIndex } = req.body;
+  try {
+    // Encontrar o job pelo ID
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    // Verificar se o índice do anexo é válido
+    if (attachmentIndex < 0 || attachmentIndex >= job.attachments.length) {
+      return res.status(400).json({ message: "Invalid attachment index" });
+    }
+
+    // Remover o anexo do array baseado no índice fornecido
+    const [removedAttachment] = job.attachments.splice(attachmentIndex, 1);
+
+    // Atualizar o job com a nova lista de anexos
+    const updatedJob = await Job.findByIdAndUpdate(
+      jobId,
+      { attachments: job.attachments },
+      { new: true }
+    );
+
+    // Remover fisicamente o arquivo do sistema de arquivos
+    const attachmentPath = path.join(
+      __dirname,
+      "../../uploads",
+      removedAttachment
+    );
+    if (fs.existsSync(attachmentPath)) {
+      fs.unlinkSync(attachmentPath);
+    }
+
+    res
+      .status(200)
+      .json({ message: "Attachment deleted successfully", job: updatedJob });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred", error: err });
+  }
+});
+
 // DELETE JOB
 router.delete("/:id", async (req, res) => {
   const requestId = req.params.id;
