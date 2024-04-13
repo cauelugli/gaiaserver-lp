@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -33,7 +32,6 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditClientForm from "../forms/edit/EditClientForm";
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import CustomerTableActions from "../components/small/buttons/tableActionButtons/CustomerTableActions";
 
 const api = axios.create({
@@ -42,7 +40,7 @@ const api = axios.create({
 
 export default function ClientTable({
   userName,
-  configCustomization,
+  // configCustomization,
   configNotifications,
   configNotificationsBooleans,
   searchDepartment,
@@ -58,8 +56,6 @@ export default function ClientTable({
   const [openDetailGeral, setOpenDetailGeral] = React.useState(true);
   const [openDetailEndereço, setOpenDetailEndereço] = React.useState(false);
   const [openDetailRequests, setOpenDetailRequests] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState("");
-  const [openDialog, setOpenDialog] = React.useState(false);
 
   const [clients, setClients] = React.useState([]);
 
@@ -629,22 +625,6 @@ export default function ClientTable({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
-          />
-        </Dialog>
-      )}
-      {openDialog && (
-        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-          <GenericDeleteForm
-            selectedItem={selectedItem}
-            openDialog={openDialog}
-            setOpenDialog={setOpenDialog}
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-            toast={toast}
-            endpoint="clients"
-            successMessage={`${
-              selectedItem.name && selectedItem.name
-            } Deletado com Sucesso`}
           />
         </Dialog>
       )}

@@ -18,7 +18,6 @@ import {
 } from "@mui/material";
 
 import EditRoleForm from "../forms/edit/EditRoleForm";
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import PositionMembers from "../components/small/PositionMembers";
 import RoleTableActions from "../components/small/buttons/tableActionButtons/RoleTableActions";
 
@@ -37,7 +36,6 @@ export default function RoleTable({
   const [selectedRole, setSelectedRole] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
-  const [openDialog, setOpenDialog] = React.useState(false);
 
   const [roles, setRoles] = React.useState([]);
 
@@ -221,22 +219,6 @@ export default function RoleTable({
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
-            />
-          </Dialog>
-        )}
-        {openDialog && (
-          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-            <GenericDeleteForm
-              selectedItem={selectedRole}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-              endpoint="roles"
-              successMessage={`${
-                selectedRole.name && selectedRole.name
-              } Deletado com Sucesso`}
             />
           </Dialog>
         )}

@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 
 import ArchiveIcon from "@mui/icons-material/Archive";
-import AttachFileIcon from '@mui/icons-material/AttachFile';
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CheckIcon from "@mui/icons-material/Check";
 import CommentIcon from "@mui/icons-material/Comment";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -96,7 +96,9 @@ export default function JobTableActions(props) {
             props.job.status === "Aprovação Solicitada" && (
               <ListItemButton
                 disabled={props.job.status === "Concluido"}
-                onClick={(item) => {props.handleManagerApproval(item), setAnchorEl(null);}}
+                onClick={(item) => {
+                  props.handleManagerApproval(item), setAnchorEl(null);
+                }}
               >
                 <ListItemIcon>
                   <CheckIcon />
@@ -114,7 +116,9 @@ export default function JobTableActions(props) {
             props.job.status !== "Aprovado" &&
             props.userRole.name !== "Gerente" && (
               <ListItemButton
-                onClick={(item) => {props.handleRequestApproval(item), setAnchorEl(null);}}
+                onClick={(item) => {
+                  props.handleRequestApproval(item), setAnchorEl(null);
+                }}
                 disabled={
                   !props.job.manager ||
                   props.job.status === "Aprovação Solicitada"
@@ -143,7 +147,11 @@ export default function JobTableActions(props) {
 
           {props.job.status === "Aprovado" &&
             props.userRole.name !== "Gerente" && (
-              <ListItemButton onClick={(item) => {handleConfirmResolve(item), setAnchorEl(null);}}>
+              <ListItemButton
+                onClick={(item) => {
+                  handleConfirmResolve(item), setAnchorEl(null);
+                }}
+              >
                 <ListItemIcon>
                   <DoneOutlineIcon />
                 </ListItemIcon>
@@ -158,7 +166,9 @@ export default function JobTableActions(props) {
 
           <ListItemButton
             disabled={props.job.status === "Concluido"}
-            onClick={(item) => {handleConfirmActivate(item), setAnchorEl(null);}}
+            onClick={(item) => {
+              handleConfirmActivate(item), setAnchorEl(null);
+            }}
           >
             <ListItemIcon>
               {props.job.status === "Arquivado" ? (
@@ -180,7 +190,9 @@ export default function JobTableActions(props) {
 
           <ListItemButton
             disabled={props.job.status === "Concluido"}
-            onClick={(item) => {props.handleOpenAddJobInteraction(item), setAnchorEl(null);}}
+            onClick={(item) => {
+              props.handleOpenAddJobInteraction(item), setAnchorEl(null);
+            }}
           >
             <ListItemIcon>
               <CommentIcon />
@@ -195,7 +207,9 @@ export default function JobTableActions(props) {
 
           <ListItemButton
             disabled={props.job.status === "Concluido"}
-            onClick={(item) => {props.handleOpenAddAttachment(item), setAnchorEl(null);}}
+            onClick={(item) => {
+              props.handleOpenAddAttachment(item), setAnchorEl(null);
+            }}
           >
             <ListItemIcon>
               <AttachFileIcon />
@@ -210,7 +224,9 @@ export default function JobTableActions(props) {
 
           <ListItemButton
             disabled={props.job.status === "Concluido"}
-            onClick={(item) => {handleConfirmDelete(item), setAnchorEl(null);}}
+            onClick={(item) => {
+              handleConfirmDelete(item), setAnchorEl(null);
+            }}
             sx={{ color: "red" }}
           >
             <ListItemIcon>
@@ -229,6 +245,7 @@ export default function JobTableActions(props) {
       {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
+            // here
             selectedItem={props.selectedItem}
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
@@ -239,6 +256,11 @@ export default function JobTableActions(props) {
             successMessage={`${
               props.selectedItem.title && props.selectedItem.title
             } Deletado com Sucesso`}
+            warning={props.selectedItem.attachments.length !== 0}
+            warningMessage={`${
+              props.selectedItem.attachments.length !== 0 &&
+              props.selectedItem.attachments.length
+            } arquivos serão excluidos DEFINITIVAMENTE`}
           />
         </Dialog>
       )}

@@ -171,6 +171,11 @@ export default function SaleTableActions(props) {
             successMessage={`Venda ${
               props.selectedItem.quoteNumber && props.selectedItem.quoteNumber
             } Deletada com Sucesso`}
+            warning={props.selectedItem.attachments.length !== 0}
+            warningMessage={`${
+              props.selectedItem.attachments.length !== 0 &&
+              props.selectedItem.attachments.length
+            } arquivos serão excluidos DEFINITIVAMENTE`}
           />
         </Dialog>
       )}

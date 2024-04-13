@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 
@@ -17,7 +16,6 @@ import {
 } from "@mui/material";
 
 import EditPositionForm from "../forms/edit/EditPositionForm";
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import PositionMembers from "../components/small/PositionMembers";
 import PositionTableActions from "../components/small/buttons/tableActionButtons/PositionTableActions";
 
@@ -33,8 +31,6 @@ export default function PositionTable({
 }) {
   const [selectedPosition, setSelectedPosition] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState("");
-  const [openDialog, setOpenDialog] = React.useState(false);
 
   const tableHeaderRow = [
     {
@@ -109,7 +105,7 @@ export default function PositionTable({
             <TableBody>
               <TableRow
                 sx={{
-                   backgroundColor: "#eee",
+                  backgroundColor: "#eee",
                 }}
               >
                 {tableHeaderRow.map((headCell) => (
@@ -210,22 +206,6 @@ export default function PositionTable({
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
-            />
-          </Dialog>
-        )}
-        {openDialog && (
-          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-            <GenericDeleteForm
-              selectedItem={selectedItem}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-              toast={toast}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              endpoint="positions"
-              successMessage={`${
-                selectedItem.name && selectedItem.name
-              } Deletado com Sucesso`}
             />
           </Dialog>
         )}

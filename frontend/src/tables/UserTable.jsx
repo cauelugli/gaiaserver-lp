@@ -201,12 +201,9 @@ export default function UserTable({
                   !searchDepartment ||
                   user.department?.name === searchDepartment;
 
-                // Verifica se a condição para aplicar o filtro é atendida
                 const shouldApplyDepartmentFilter =
                   departmentFilter || searchDepartment === "&nbsp;";
 
-                // Corrige a condição para filtrar por usuários ativos corretamente
-                // Mostra usuários ativos por padrão; quando showArchivedUsers está marcado, mostra todos
                 const shouldShowUser = showArchivedUsers || user.isActive;
 
                 return (

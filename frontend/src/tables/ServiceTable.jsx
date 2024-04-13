@@ -26,7 +26,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditServiceForm from "../forms/edit/EditServiceForm";
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import ServiceTableActions from "../components/small/buttons/tableActionButtons/ServiceTableActions";
 
 export default function ServiceTable({
@@ -44,13 +43,6 @@ export default function ServiceTable({
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
   const [openDetailMaterials, setOpenDetailMaterials] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState("");
-  const [openDialog, setOpenDialog] = React.useState(false);
-
-  const handleConfirmDelete = (position) => {
-    setSelectedItem(position);
-    setOpenDialog(true);
-  };
 
   const handleOpenDetail = (service) => {
     setOpenDetail(!openDetail);
@@ -501,7 +493,7 @@ export default function ServiceTable({
                               />
                               <DeleteIcon
                                 cursor="pointer"
-                                onClick={() => handleConfirmDelete(service)}
+                                // onClick={() => handleConfirmDelete(service)}
                                 sx={{ color: "#ff4444" }}
                               />
                             </Box>
@@ -544,22 +536,6 @@ export default function ServiceTable({
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
-            />
-          </Dialog>
-        )}
-        {openDialog && (
-          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-            <GenericDeleteForm
-              selectedItem={selectedItem}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-              toast={toast}
-              endpoint="services"
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              successMessage={`${
-                selectedItem.name && selectedItem.name
-              } Deletado com Sucesso`}
             />
           </Dialog>
         )}

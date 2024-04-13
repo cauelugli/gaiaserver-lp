@@ -24,7 +24,6 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditDepartmentForm from "../forms/edit/EditDepartmentForm";
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import DepartmentTableActions from "../components/small/buttons/tableActionButtons/DepartmentTableActions";
 import DepartmentMembers from "../components/small/DepartmentMembers";
 
@@ -47,7 +46,6 @@ export default function DepartmentTable({
   const [openDetailServices, setOpenDetailServices] = React.useState(false);
   const [selectedDepartment, setSelectedDepartment] = React.useState([]);
   const [hoveredMember, setHoveredMember] = React.useState(null);
-  const [openDialog, setOpenDialog] = React.useState(false);
 
   const handleOpenDetail = (customer) => {
     setOpenDetail(!openDetail);
@@ -715,22 +713,6 @@ export default function DepartmentTable({
             setRefreshData={setRefreshData}
             refreshData={refreshData}
             toast={toast}
-          />
-        </Dialog>
-      )}
-      {openDialog && (
-        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-          <GenericDeleteForm
-            selectedItem={selectedDepartment}
-            openDialog={openDialog}
-            setOpenDialog={setOpenDialog}
-            toast={toast}
-            setRefreshData={setRefreshData}
-            refreshData={refreshData}
-            endpoint="departments"
-            successMessage={`${
-              selectedDepartment.name && selectedDepartment.name
-            } Deletado com Sucesso`}
           />
         </Dialog>
       )}

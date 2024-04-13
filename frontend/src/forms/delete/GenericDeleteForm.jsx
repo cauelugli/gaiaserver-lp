@@ -2,7 +2,14 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
-import { Button, DialogContent, DialogTitle, Grid } from "@mui/material";
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Typography,
+} from "@mui/material";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -17,6 +24,8 @@ const GenericDeleteForm = ({
   toast,
   endpoint,
   successMessage,
+  warning,
+  warningMessage,
 }) => {
   const handleDelete = async () => {
     try {
@@ -43,35 +52,64 @@ const GenericDeleteForm = ({
   };
 
   return (
-    <>
-      <DialogTitle>{`Deletar ${
-        selectedItem.name || selectedItem.title || selectedItem.quoteNumber
-      } ?`}</DialogTitle>
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      sx={{ my: 2 }}
+    >
+      <DialogTitle>
+        <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
+          Deletar{" "}
+          {selectedItem.name || selectedItem.title || selectedItem.quoteNumber}?
+        </Typography>
+      </DialogTitle>
       <DialogContent>
         <Grid
           container
+          direction="column"
           justifyContent="center"
           alignItems="center"
-          sx={{ my: 4 }}
         >
-          <Button
-            variant="contained"
-            color="success"
-            onClick={handleDelete}
-            sx={{ mr: 2 }}
-          >
-            OK
-          </Button>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => setOpenDialog(!openDialog)}
-          >
-            X
-          </Button>
+          {warning && (
+            <Typography
+              sx={{
+                mt: 2,
+                mb: 1,
+                fontSize: 18,
+                fontWeight: "bold",
+                color: "darkred",
+              }}
+            >
+              AVISO
+            </Typography>
+          )}
+          {warning && (
+            <Typography sx={{ mb: 2, fontSize: 18, fontWeight: "bold" }}>
+              {warningMessage}
+            </Typography>
+          )}
         </Grid>
       </DialogContent>
-    </>
+      <DialogActions>
+        <Button
+          variant="contained"
+          color="success"
+          onClick={handleDelete}
+          sx={{ mr: 2 }}
+        >
+          OK
+        </Button>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => setOpenDialog(!openDialog)}
+        >
+          X
+        </Button>
+      </DialogActions>
+    </Grid>
   );
 };
 

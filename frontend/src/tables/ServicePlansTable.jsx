@@ -1,13 +1,11 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import {
   Box,
   Collapse,
-  Dialog,
   Grid,
   IconButton,
   Paper,
@@ -26,28 +24,20 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import EditServiceForm from "../forms/edit/EditServiceForm";
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
+// import EditServiceForm from "../forms/edit/EditServiceForm";
 
 export default function ServicePlansTable({
   searchValue,
   searchOption,
   servicePlans,
-  refreshData,
-  setRefreshData,
+  // refreshData,
+  // setRefreshData,
 }) {
   const [selectedService, setSelectedService] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
   const [openDetailServices, setOpenDetailServices] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState("");
-  const [openDialog, setOpenDialog] = React.useState(false);
-
-  const handleConfirmDelete = (position) => {
-    setSelectedItem(position);
-    setOpenDialog(true);
-  };
 
   const handleOpenDetail = (service) => {
     setOpenDetail(!openDetail);
@@ -321,7 +311,7 @@ export default function ServicePlansTable({
                               />
                               <DeleteIcon
                                 cursor="pointer"
-                                onClick={() => handleConfirmDelete(servicePlan)}
+                                // onClick={() => handleConfirmDelete(servicePlan)}
                                 sx={{ color: "#ff4444" }}
                               />
                             </Box>
@@ -365,22 +355,6 @@ export default function ServicePlansTable({
             />
           </Dialog>
         )} */}
-        {openDialog && (
-          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-            <GenericDeleteForm
-              selectedItem={selectedItem}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-              toast={toast}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              endpoint="servicePlans"
-              successMessage={`${
-                selectedItem.name && selectedItem.name
-              } Deletado com Sucesso`}
-            />
-          </Dialog>
-        )}
       </Box>
     </>
   );

@@ -38,7 +38,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import SaleTableActions from "../components/small/buttons/tableActionButtons/SaleTableActions";
 import InteractionReactions from "../components/small/InteractionReactions";
 import AddJobInteractionForm from "../forms/misc/AddJobInteractionForm";
@@ -70,18 +69,12 @@ export default function SaleTable({
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openViewDialog, setOpenViewDialog] = React.useState(false);
   const [openViewDialog2, setOpenViewDialog2] = React.useState(false);
-  const [openDialog, setOpenDialog] = React.useState(false);
   const [openAddInteraction, setOpenAddInteraction] = React.useState(false);
   const [openAddInteractionOnTable, setOpenAddInteractionOnTable] =
     React.useState(false);
   const [attachments, setAttachments] = React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openPopoverIndex, setOpenPopoverIndex] = React.useState(null);
-
-  const handleConfirmDelete = (sale) => {
-    setSelectedItem(sale);
-    setOpenDialog(true);
-  };
 
   const handleOpenDetail = (sale) => {
     setOpenDetail(!openDetail);
@@ -506,7 +499,6 @@ export default function SaleTable({
                         sale={sale}
                         handleOpenEdit={handleOpenEdit}
                         handleOpenAddSaleInteraction={setOpenAddInteraction}
-                        handleConfirmDelete={handleConfirmDelete}
                       />
                     </TableCell>
                   </TableRow>
@@ -1449,22 +1441,6 @@ export default function SaleTable({
             toast={toast}
             updateSelectedSaleInteractions={updateSelectedSaleInteractions}
             fromSales
-          />
-        </Dialog>
-      )}
-      {openDialog && (
-        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-          <GenericDeleteForm
-            selectedItem={selectedItem}
-            openDialog={openDialog}
-            setOpenDialog={setOpenDialog}
-            toast={toast}
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-            endpoint="sales"
-            successMessage={`Venda #${
-              selectedItem.quoteNumber && selectedItem.quoteNumber
-            } Deletado com Sucesso`}
           />
         </Dialog>
       )}

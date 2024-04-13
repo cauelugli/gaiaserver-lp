@@ -39,7 +39,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import ProjectTaskActions from "../components/small/buttons/ProjectTaskActions";
 import ProjectTableActions from "../components/small/buttons/tableActionButtons/ProjectTableActions";
 import ViewDialog from "../components/small/ViewDialog";
@@ -71,7 +70,6 @@ export default function ProjectsTable({
   const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
   const [openDetailStages, setOpenDetailStages] = React.useState(true);
   const [selectedItem, setSelectedItem] = React.useState("");
-  const [openDialog, setOpenDialog] = React.useState(false);
   const [isAddingInteraction, setIsAddingInteraction] = React.useState(false);
   const [isAddingResolution, setIsAddingResolution] = React.useState(false);
   const [openViewDialog, setOpenViewDialog] = React.useState(false);
@@ -1664,22 +1662,6 @@ export default function ProjectsTable({
             }}
           />
         </TableContainer>
-        {openDialog && (
-          <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-            <GenericDeleteForm
-              selectedItem={selectedItem}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-              toast={toast}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              endpoint="projects"
-              successMessage={`${
-                selectedItem.name && selectedItem.name
-              } Deletado com Sucesso`}
-            />
-          </Dialog>
-        )}
         {openAddAttachments && (
           <Dialog
             fullWidth

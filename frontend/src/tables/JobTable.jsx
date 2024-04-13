@@ -39,7 +39,6 @@ import InteractionReactions from "../components/small/InteractionReactions";
 import JobTableActions from "../components/small/buttons/tableActionButtons/JobTableActions";
 
 import EditJobForm from "../forms/edit/EditJobForm";
-import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
 import AddJobInteractionForm from "../forms/misc/AddJobInteractionForm";
 import ViewDialog from "../components/small/ViewDialog";
 import AddAttachmentsForm from "../forms/misc/AddAttachmentsForm";
@@ -77,18 +76,12 @@ export default function JobTable({
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openViewDialog, setOpenViewDialog] = React.useState(false);
   const [openViewDialog2, setOpenViewDialog2] = React.useState(false);
-  const [openDialog, setOpenDialog] = React.useState(false);
   const [openAddInteractionOnTable, setOpenAddInteractionOnTable] =
     React.useState(false);
   const [activity, setActivity] = React.useState("");
   const [attachments, setAttachments] = React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openPopoverIndex, setOpenPopoverIndex] = React.useState(null);
-
-  const handleConfirmDelete = (position) => {
-    setSelectedItem(position);
-    setOpenDialog(true);
-  };
 
   const handleOpenDetail = (job) => {
     setOpenDetail(!openDetail);
@@ -574,7 +567,6 @@ export default function JobTable({
                         handleRequestApproval={handleRequestApproval}
                         handleOpenEdit={handleOpenEdit}
                         handleOpenAddJobInteraction={setOpenAddInteraction}
-                        handleConfirmDelete={handleConfirmDelete}
                         handleOpenAddAttachment={setOpenAddAttachments}
                       />
                     </TableCell>
@@ -1590,22 +1582,6 @@ export default function JobTable({
             setRefreshData={setRefreshData}
             toast={toast}
             endpoint="jobs"
-          />
-        </Dialog>
-      )}
-      {openDialog && (
-        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-          <GenericDeleteForm
-            selectedItem={selectedItem}
-            openDialog={openDialog}
-            setOpenDialog={setOpenDialog}
-            toast={toast}
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-            endpoint="jobs"
-            successMessage={`${
-              selectedItem.title && selectedItem.title
-            } Deletado com Sucesso`}
           />
         </Dialog>
       )}

@@ -133,6 +133,11 @@ export default function ProjectsTableActions(props) {
             successMessage={`${
               selectedItem.name && selectedItem.name
             } Deletado com Sucesso`}
+            warning={props.selectedItem.attachments.length !== 0}
+            warningMessage={`${
+              props.selectedItem.attachments.length !== 0 &&
+              props.selectedItem.attachments.length
+            } arquivos serão excluidos DEFINITIVAMENTE`}
           />
         </Dialog>
       )}
