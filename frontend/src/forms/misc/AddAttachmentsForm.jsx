@@ -3,12 +3,15 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import dayjs from "dayjs";
 
-import { Button, Divider, Grid, Typography } from "@mui/material";
+import { Button, Dialog, Grid, Paper, Typography } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import dayjs from "dayjs";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+
+import ViewDialog from "../../components/small/ViewDialog";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -24,7 +27,8 @@ const AddAttachmentsForm = ({
   endpoint,
 }) => {
   const [attachments, setAttachments] = React.useState([]);
-  console.log("selectedJob", selectedJob._id);
+  const [selectedItem, setSelectedItem] = React.useState("");
+  const [openViewDialog, setOpenViewDialog] = React.useState(false);
 
   const handleAddAttachments = async (e) => {
     e.preventDefault();
@@ -78,22 +82,37 @@ const AddAttachmentsForm = ({
     setAttachments(attachments.filter((_, index) => index !== indexToRemove));
   };
 
-  return (
-    <form onSubmit={handleAddAttachments}>
-      <Grid container>
-        <Grid container direction="column" sx={{ mx: 3 }}>
-          <Grid item>
-            <Typography sx={{ mb: 2, mt: 4, fontSize: 18, fontWeight: "bold" }}>
-              Anexos
-            </Typography>
+  const imageExtensions = [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".bmp",
+    ".tiff",
+    ".webp",
+  ];
 
-            <Grid>
-              <Divider sx={{ my: 3, mr: 10 }} />
+  const isImage = (filename) =>
+    imageExtensions.some((extension) => filename.endsWith(extension));
+
+  const isPdf = (filename) => filename.endsWith(".pdf");
+
+  return (
+    <>
+      <form onSubmit={handleAddAttachments}>
+        <>
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Grid item>
               <Grid
                 container
                 direction="row"
                 alignItems="center"
-                sx={{ mb: 2 }}
+                sx={{ my: 3 }}
               >
                 <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
                   Anexar Arquivos
@@ -117,65 +136,151 @@ const AddAttachmentsForm = ({
                     Enviar
                   </Button>
                 </label>
-                <Grid item>
-                  <Grid container direction="row">
-                    {attachments.map((file, index) => (
-                      <Grid key={index} item sx={{ ml: 1 }}>
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                          sx={{
-                            border: "1px solid darkgrey",
-                            borderRadius: 2,
-                          }}
-                        >
-                          <Typography
-                            sx={{ fontSize: 13, ml: 1, color: "#777" }}
-                          >
-                            {file.name}
-                          </Typography>
-
-                          <Button
-                            size="small"
-                            color="error"
-                            onClick={() => removeFile(index)}
-                            sx={{ mx: -1 }}
-                          >
-                            <DeleteIcon />
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Grid>
               </Grid>
             </Grid>
 
             <Grid item>
-              <Grid container direction="row" justifyContent="flex-end">
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="success"
-                  sx={{ my: 2, mr: 2 }}
-                >
-                  Enviar
-                </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => setOpenAddAttachments(false)}
-                  sx={{ my: 2 }}
-                >
-                  X
-                </Button>
+              <Grid container direction="row">
+                {attachments.length !== 0 && (
+                  <Grid
+                    container
+                    direction="row"
+                    wrap="wrap"
+                    justifyContent="center"
+                    alignItems="center"
+                    rowSpacing={2}
+                  >
+                    {attachments.map((attachment, index) => (
+                      <Grid key={index} item sx={{ mr: 1 }}>
+                        <Grid
+                          container
+                          direction="column"
+                          alignItems="center"
+                          justifyContent="center"
+                          sx={{
+                            border: "1px solid darkgrey",
+                            borderRadius: 2,
+                            padding: 1,
+                          }}
+                        >
+                          {isPdf(attachment.name) ? (
+                            <img
+                              src={`http://localhost:3000/static/pdf.png`}
+                              alt="PDF"
+                              style={{
+                                width: "80px",
+                                height: "80px",
+                                marginBottom: "8px",
+                              }}
+                            />
+                          ) : isImage(attachment.name) ? (
+                            <img
+                              src={URL.createObjectURL(attachment)}
+                              alt="Pré-visualização"
+                              style={{
+                                width: "80px",
+                                height: "80px",
+                                marginBottom: "8px",
+                              }}
+                            />
+                          ) : (
+                            <img
+                              src={`http://localhost:3000/static/doc.png`}
+                              alt="Other"
+                              style={{
+                                width: "80px",
+                                height: "80px",
+                                marginBottom: "8px",
+                              }}
+                            />
+                          )}
+                          <Typography
+                            sx={{
+                              fontSize: 10,
+                              color: "#777",
+                              maxWidth: "75px",
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {attachment.name}
+                          </Typography>
+
+                          <Grid item>
+                            <Grid
+                              container
+                              direction="row"
+                              justifyContent="space-around"
+                            >
+                              <Button
+                                size="small"
+                                onClick={() => {
+                                  setSelectedItem(attachment);
+                                  setOpenViewDialog(true);
+                                }}
+                              >
+                                <VisibilityIcon />
+                              </Button>
+                              <Button
+                                size="small"
+                                color="error"
+                                onClick={() => removeFile(index)}
+                              >
+                                <DeleteIcon />
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    ))}
+                  </Grid>
+                )}
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-    </form>
+
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-end"
+            sx={{ pr: 2 }}
+          >
+            <Button
+              type="submit"
+              variant="contained"
+              color="success"
+              sx={{ my: 2, mr: 2 }}
+            >
+              Enviar
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => setOpenAddAttachments(false)}
+              sx={{ my: 2 }}
+            >
+              X
+            </Button>
+          </Grid>
+        </>
+      </form>
+      {openViewDialog && (
+        <Dialog
+          open={openViewDialog}
+          onClose={() => setOpenViewDialog(false)}
+          fullWidth
+          maxWidth="lg"
+        >
+          <ViewDialog
+            setOpenViewDialog={setOpenViewDialog}
+            selectedItem={selectedItem.name}
+            createObjectURLItem={selectedItem}
+            createObjectURL
+          />
+        </Dialog>
+      )}
+    </>
   );
 };
 
