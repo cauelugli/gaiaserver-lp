@@ -812,9 +812,10 @@ export default function ProjectsTable({
                                         <>
                                           <Accordion
                                             key={taskIndex}
-                                            onClick={() =>
-                                              setSelectedTaskIndex(taskIndex)
-                                            }
+                                            onClick={() => {
+                                              setSelectedTaskIndex(taskIndex);
+                                              setSelectedStageIndex(stageIndex);
+                                            }}
                                             sx={{
                                               backgroundColor:
                                                 taskIndex % 2
@@ -1352,8 +1353,9 @@ export default function ProjectsTable({
                                             </AccordionDetails>
 
                                             {isAddingInteraction &&
-                                              selectedTaskIndex ===
-                                                taskIndex && (
+                                              selectedTaskIndex === taskIndex &&
+                                              selectedStageIndex ===
+                                                stageIndex && (
                                                 <>
                                                   <Typography
                                                     sx={{
@@ -1603,35 +1605,38 @@ export default function ProjectsTable({
                                                 </Grid>
                                               </>
                                             )}
-                                            {task.status !== "Resolvido" && (
-                                              <AccordionActions>
-                                                <ProjectTaskActions
-                                                  task={task}
-                                                  selectedTaskIndex={
-                                                    selectedTaskIndex
-                                                  }
-                                                  taskIndex={taskIndex}
-                                                  isAddingInteraction={
-                                                    isAddingInteraction
-                                                  }
-                                                  setIsAddingInteraction={
-                                                    setIsAddingInteraction
-                                                  }
-                                                  handleAddInteraction={
-                                                    handleAddInteraction
-                                                  }
-                                                  isAddingResolution={
-                                                    isAddingResolution
-                                                  }
-                                                  setIsAddingResolution={
-                                                    setIsAddingResolution
-                                                  }
-                                                  handleResolveTask={
-                                                    handleResolveTask
-                                                  }
-                                                />
-                                              </AccordionActions>
-                                            )}
+                                            {task.status !== "Resolvido" &&
+                                              selectedTaskIndex === taskIndex &&
+                                              selectedStageIndex ===
+                                                stageIndex && (
+                                                <AccordionActions>
+                                                  <ProjectTaskActions
+                                                    task={task}
+                                                    selectedTaskIndex={
+                                                      selectedTaskIndex
+                                                    }
+                                                    taskIndex={taskIndex}
+                                                    isAddingInteraction={
+                                                      isAddingInteraction
+                                                    }
+                                                    setIsAddingInteraction={
+                                                      setIsAddingInteraction
+                                                    }
+                                                    handleAddInteraction={
+                                                      handleAddInteraction
+                                                    }
+                                                    isAddingResolution={
+                                                      isAddingResolution
+                                                    }
+                                                    setIsAddingResolution={
+                                                      setIsAddingResolution
+                                                    }
+                                                    handleResolveTask={
+                                                      handleResolveTask
+                                                    }
+                                                  />
+                                                </AccordionActions>
+                                              )}
                                           </Accordion>
                                         </>
                                       ))}
