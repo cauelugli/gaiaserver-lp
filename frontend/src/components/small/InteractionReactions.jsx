@@ -50,7 +50,7 @@ const InteractionReactions = ({
   updateInteractions,
   stageIndex,
   taskIndex,
-  interactionIndex
+  interactionIndex,
 }) => {
   const reactionsMap = {
     love: {
@@ -99,7 +99,12 @@ const InteractionReactions = ({
         setRefreshData(!refreshData);
       }
     } catch (err) {
-      console.error("Erro ao atualizar reação:", err);
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
     }
   };
 

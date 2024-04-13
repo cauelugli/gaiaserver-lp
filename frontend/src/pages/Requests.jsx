@@ -251,6 +251,7 @@ export default function Requests({
               <SaleTable
                 userId={userId}
                 userName={userName}
+                userUsername={userUsername}
                 config={config}
                 searchValue={searchValue}
                 searchOption={searchOption}

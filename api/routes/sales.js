@@ -462,13 +462,10 @@ router.put("/activate/:id", async (req, res) => {
 // ADD SALE INTERACTION
 router.put("/interaction", async (req, res) => {
   try {
-    const saleId = req.body.saleId || req.body.sale._id;
+    const saleId = req.body.jobId;
     const userName = req.body.userName;
 
     const sale = await Sale.findById(saleId);
-    if (!sale) {
-      return res.status(404).json({ message: "Sale not found" });
-    }
     const interactionNumber = sale.interactions.length + 1;
 
     const updatedSale = await Sale.findOneAndUpdate(
@@ -478,6 +475,7 @@ router.put("/interaction", async (req, res) => {
           interactions: {
             number: interactionNumber,
             activity: req.body.activity,
+            attachments: req.body.attachments,
             user: userName,
             date: req.body.date,
             reactions: {
@@ -498,20 +496,63 @@ router.put("/interaction", async (req, res) => {
   }
 });
 
-// REMOVE SALE INTERACTION
-router.put("/interaction/remove", async (req, res) => {
-  //it's jobId, but dont worry, it works.
-  const { jobId, interactionId } = req.body;
+// ADD SALE ATTACHMENTS
+router.put("/addAttachments", async (req, res) => {
+  const { itemId, attachments, userName, date } = req.body;
 
   try {
-    const sale = await Sale.findById(jobId);
+    const sale = await Sale.findById(itemId);
+    const interactionNumber = sale.interactions.length + 1;
+
+    const updatedSale = await Sale.findOneAndUpdate(
+      { _id: itemId },
+      {
+        $set: {
+          attachments: [...sale.attachments, ...attachments],
+        },
+        $push: {
+          interactions: {
+            number: interactionNumber,
+            activity: `Colaborador ${userName} anexou ${
+              attachments.length
+            } arquivo${attachments.length === 1 ? "" : "s"} à Venda`,
+            user: userName,
+            date: date,
+            attachments: attachments,
+            reactions: {
+              love: { quantity: 0, usersReacted: [] },
+              like: { quantity: 0, usersReacted: [] },
+              dislike: { quantity: 0, usersReacted: [] },
+              haha: { quantity: 0, usersReacted: [] },
+            },
+          },
+        },
+      },
+      { new: true }
+    );
+
+    res
+      .status(200)
+      .json({ message: "Attachments added successfully", sale: updatedSale });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred", error: err });
+  }
+});
+
+// REMOVE SALE INTERACTION
+router.put("/interaction/remove", async (req, res) => {
+  const { itemId, interactionId } = req.body;
+
+  try {
+    const sale = await Sale.findById(itemId);
 
     const updatedInteractions = sale.interactions.filter(
       (interaction) => interaction._id.toString() !== interactionId
     );
 
     const updatedSale = await Sale.findByIdAndUpdate(
-      jobId,
+      itemId,
       { $set: { interactions: updatedInteractions } },
       { new: true }
     );
@@ -568,6 +609,45 @@ router.put("/reaction", async (req, res) => {
   } catch (err) {
     console.log("err", err);
     res.status(500).json(err);
+  }
+});
+
+// DELETE SALE ATTACHMENT
+router.put("/deleteAttachment", async (req, res) => {
+  const { saleId, attachmentIndex } = req.body;
+  try {
+    const sale = await Sale.findById(saleId);
+    if (!sale) {
+      return res.status(404).json({ message: "Sale not found" });
+    }
+
+    if (attachmentIndex < 0 || attachmentIndex >= sale.attachments.length) {
+      return res.status(400).json({ message: "Invalid attachment index" });
+    }
+
+    const [removedAttachment] = sale.attachments.splice(attachmentIndex, 1);
+
+    const updatedSale = await Sale.findByIdAndUpdate(
+      saleId,
+      { attachments: sale.attachments },
+      { new: true }
+    );
+
+    const attachmentPath = path.join(
+      __dirname,
+      "../../uploads",
+      removedAttachment
+    );
+    if (fs.existsSync(attachmentPath)) {
+      fs.unlinkSync(attachmentPath);
+    }
+
+    res
+      .status(200)
+      .json({ message: "Attachment deleted successfully", sale: updatedSale });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred", error: err });
   }
 });
 

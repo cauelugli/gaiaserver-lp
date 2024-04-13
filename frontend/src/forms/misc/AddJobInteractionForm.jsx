@@ -46,6 +46,7 @@ const AddJobInteractionForm = ({
   fromSales,
   addInteractionToJob,
   updateSelectedJobInteractions,
+  updateSelectedSaleInteractions,
 }) => {
   const [userReactions, setUserReactions] = React.useState({});
   const [activity, setActivity] = React.useState("");
@@ -151,7 +152,7 @@ const AddJobInteractionForm = ({
       <form onSubmit={handleAddInteraction}>
         <DialogHeader
           special
-          specialTitle="Histórico do Job"
+          specialTitle={`Histórico ${fromSales ? "da Venda" : "do Job"}`}
           femaleGender={false}
         />
         <Grid container>
@@ -212,99 +213,100 @@ const AddJobInteractionForm = ({
                         </Typography>
                       </TableCell>
                       <TableCell align="left">
-                        {interaction.attachments && interaction.attachments.length !== 0 && (
-                          <Grid>
-                            <AttachFileIcon
-                              sx={{
-                                fontSize: 16,
-                                color: "#777",
-                                cursor: "pointer",
-                              }}
-                              onClick={handlePopoverOpen(index)}
-                            />
-                            {openPopoverIndex === index && (
-                              <Popover
-                                open={Boolean(anchorEl)}
-                                anchorEl={anchorEl}
-                                onClose={handlePopoverClose}
-                                anchorOrigin={{
-                                  vertical: "bottom",
-                                  horizontal: "left",
+                        {interaction.attachments &&
+                          interaction.attachments.length !== 0 && (
+                            <Grid>
+                              <AttachFileIcon
+                                sx={{
+                                  fontSize: 16,
+                                  color: "#777",
+                                  cursor: "pointer",
                                 }}
-                              >
-                                <Box
-                                  p={2}
-                                  sx={{
-                                    width: "auto",
-                                    maxWidth: 460,
-                                    height: "auto",
-                                    maxHeight: 280,
+                                onClick={handlePopoverOpen(index)}
+                              />
+                              {openPopoverIndex === index && (
+                                <Popover
+                                  open={Boolean(anchorEl)}
+                                  anchorEl={anchorEl}
+                                  onClose={handlePopoverClose}
+                                  anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "left",
                                   }}
                                 >
-                                  <Typography
-                                    variant="h6"
-                                    sx={{ color: "#555" }}
+                                  <Box
+                                    p={2}
+                                    sx={{
+                                      width: "auto",
+                                      maxWidth: 460,
+                                      height: "auto",
+                                      maxHeight: 280,
+                                    }}
                                   >
-                                    Anexos
-                                  </Typography>
-                                  <Grid container direction="row">
-                                    {interaction.attachments.map(
-                                      (attachment, attachmentIndex) => (
-                                        <Grid
-                                          key={attachmentIndex}
-                                          sx={{
-                                            mr: 2,
-                                            mb: 2,
-                                            cursor: "pointer",
-                                            border: "1px solid darkgrey",
-                                            borderRadius: 2,
-                                            padding: 1,
-                                          }}
-                                          onClick={() => {
-                                            setSelectedItem(attachment);
-                                            setOpenViewDialog(true);
-                                          }}
-                                        >
-                                          {isPdf(attachment) ? (
-                                            <img
-                                              src={`http://localhost:3000/static/pdf.png`}
-                                              alt="PDF"
-                                              style={{
-                                                width: "80px",
-                                                height: "80px",
-                                                marginBottom: "8px",
-                                              }}
-                                            />
-                                          ) : isImage(attachment) ? (
-                                            <img
-                                              src={`http://localhost:3000/static/${attachment}`}
-                                              alt="Pré-visualização"
-                                              style={{
-                                                width: "80px",
-                                                height: "80px",
-                                                marginBottom: "8px",
-                                              }}
-                                            />
-                                          ) : (
-                                            <img
-                                              src={`http://localhost:3000/static/doc.png`}
-                                              alt="Other"
-                                              style={{
-                                                width: "80px",
-                                                height: "80px",
-                                                marginBottom: "8px",
-                                              }}
-                                            />
-                                          )}
-                                        </Grid>
-                                      )
-                                    )}
-                                  </Grid>
-                                </Box>
-                              </Popover>
-                            )}
-                          </Grid>
-                        )}
+                                    <Typography
+                                      variant="h6"
+                                      sx={{ color: "#555" }}
+                                    >
+                                      Anexos
+                                    </Typography>
+                                    <Grid container direction="row">
+                                      {interaction.attachments.map(
+                                        (attachment, attachmentIndex) => (
+                                          <Grid
+                                            key={attachmentIndex}
+                                            sx={{
+                                              mr: 2,
+                                              mb: 2,
+                                              cursor: "pointer",
+                                              border: "1px solid darkgrey",
+                                              borderRadius: 2,
+                                              padding: 1,
+                                            }}
+                                            onClick={() => {
+                                              setSelectedItem(attachment);
+                                              setOpenViewDialog(true);
+                                            }}
+                                          >
+                                            {isPdf(attachment) ? (
+                                              <img
+                                                src={`http://localhost:3000/static/pdf.png`}
+                                                alt="PDF"
+                                                style={{
+                                                  width: "80px",
+                                                  height: "80px",
+                                                  marginBottom: "8px",
+                                                }}
+                                              />
+                                            ) : isImage(attachment) ? (
+                                              <img
+                                                src={`http://localhost:3000/static/${attachment}`}
+                                                alt="Pré-visualização"
+                                                style={{
+                                                  width: "80px",
+                                                  height: "80px",
+                                                  marginBottom: "8px",
+                                                }}
+                                              />
+                                            ) : (
+                                              <img
+                                                src={`http://localhost:3000/static/doc.png`}
+                                                alt="Other"
+                                                style={{
+                                                  width: "80px",
+                                                  height: "80px",
+                                                  marginBottom: "8px",
+                                                }}
+                                              />
+                                            )}
+                                          </Grid>
+                                        )
+                                      )}
+                                    </Grid>
+                                  </Box>
+                                </Popover>
+                              )}
+                            </Grid>
+                          )}
                       </TableCell>
                       <TableCell align="left">
                         <Typography sx={{ fontSize: 13 }}>
@@ -331,7 +333,12 @@ const AddJobInteractionForm = ({
                                   [selectedJob._id]: reactions,
                                 })
                               }
-                              updateInteractions={updateSelectedJobInteractions}
+                              updateInteractions={
+                                fromSales
+                                  ? updateSelectedSaleInteractions
+                                  : updateSelectedJobInteractions
+                              }
+                              fromSales
                             />
                           </Typography>
                         )}

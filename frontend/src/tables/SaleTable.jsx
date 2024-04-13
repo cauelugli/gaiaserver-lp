@@ -29,9 +29,13 @@ import {
   IconButton,
   Tooltip,
   Button,
-  TextField,
+  Popover,
+  InputBase,
 } from "@mui/material";
 
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import GenericDeleteForm from "../forms/delete/GenericDeleteForm";
@@ -39,10 +43,12 @@ import SaleTableActions from "../components/small/buttons/tableActionButtons/Sal
 import InteractionReactions from "../components/small/InteractionReactions";
 import AddJobInteractionForm from "../forms/misc/AddJobInteractionForm";
 import EditSaleForm from "../forms/edit/EditSaleForm";
+import ViewDialog from "../components/small/ViewDialog";
 
 export default function SaleTable({
   userId,
   userName,
+  userUsername,
   config,
   searchValue,
   searchStatus,
@@ -55,16 +61,22 @@ export default function SaleTable({
   const [activity, setActivity] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
-  const [openDetailDepartment, setOpenDetailDepartment] = React.useState(false);
-  const [openDetailQuote, setOpenDetailQuote] = React.useState(true);
-  const [openDetailRequester, setOpenDetailRequester] = React.useState(false);
+  const [openDetailInfo, setOpenDetailInfo] = React.useState(false);
+  const [openDetailItems, setOpenDetailItems] = React.useState(false);
+  const [openDetailAttachments, setOpenDetailAttachments] =
+    React.useState(false);
   const [openDetailActivities, setOpenDetailActivities] = React.useState(false);
   const [selectedSale, setSelectedSale] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState("");
+  const [openViewDialog, setOpenViewDialog] = React.useState(false);
+  const [openViewDialog2, setOpenViewDialog2] = React.useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openAddInteraction, setOpenAddInteraction] = React.useState(false);
   const [openAddInteractionOnTable, setOpenAddInteractionOnTable] =
     React.useState(false);
+  const [attachments, setAttachments] = React.useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openPopoverIndex, setOpenPopoverIndex] = React.useState(null);
 
   const handleConfirmDelete = (sale) => {
     setSelectedItem(sale);
@@ -79,6 +91,38 @@ export default function SaleTable({
   const handleOpenEdit = (sale) => {
     setSelectedSale(sale);
     setOpenEdit(!openEdit);
+  };
+
+  const handleDeleteAttachment = async (saleId, attachmentIndex) => {
+    try {
+      const response = await api.put("/sales/deleteAttachment", {
+        saleId,
+        attachmentIndex,
+      });
+
+      if (response.data) {
+        toast.success("Anexo deletado com sucesso!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+        setRefreshData(!refreshData);
+      }
+    } catch (err) {
+      toast.error("Erro ao deletar o anexo. Tente novamente.", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+      console.error(err);
+    }
+  };
+
+  const addInteractionToSale = (updatedSale) => {
+    setSelectedSale(updatedSale);
+    setRefreshData(!refreshData);
   };
 
   const tableHeaderRow = [
@@ -171,15 +215,37 @@ export default function SaleTable({
 
   const handleAddInteractionFromTable = async (e) => {
     e.preventDefault();
-    const requestBody = {
-      saleId: selectedSale._id,
-      activity,
-      userName,
-      worker: selectedSale.worker,
-      manager: selectedSale.manager,
-      date: dayjs().format("DD/MM/YYYY HH:mm"),
-    };
     try {
+      let uploadResponses = [];
+      if (attachments.length !== 0) {
+        for (const file of attachments) {
+          const formData = new FormData();
+          formData.append("attachment", file);
+          formData.append("itemId", selectedSale._id);
+
+          const uploadResponse = await api.post(
+            "/uploads/singleAttachment",
+            formData
+          );
+          uploadResponses.push(uploadResponse.data.attachmentPath);
+        }
+
+        await api.put(`/sales/addAttachments`, {
+          itemId: selectedSale._id,
+          attachments: uploadResponses,
+          userName,
+          date: dayjs().format("DD/MM HH:mm"),
+        });
+      }
+
+      const requestBody = {
+        saleId: selectedSale._id,
+        activity,
+        attachments: uploadResponses,
+        userName,
+        date: dayjs().format("DD/MM HH:mm"),
+      };
+
       const res = await api.put("/sales/interaction", requestBody);
       if (res.data) {
         toast.success("Interação Adicionada!", {
@@ -214,6 +280,46 @@ export default function SaleTable({
   const filteredValidCount = sortedRows.filter(
     (row) => row.status !== "Arquivado" && row.status !== "Concluido"
   ).length;
+
+  const imageExtensions = [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".bmp",
+    ".tiff",
+    ".webp",
+  ];
+
+  const isImage = (filename) =>
+    imageExtensions.some((extension) => filename.endsWith(extension));
+
+  const isPdf = (filename) => filename.endsWith(".pdf");
+
+  const handlePopoverOpen = (index) => (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpenPopoverIndex(index);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+    setOpenPopoverIndex(null);
+  };
+
+  const updateSelectedSaleInteractions = (updatedInteractions) => {
+    setSelectedSale((currentSelectedJob) => ({
+      ...currentSelectedJob,
+      interactions: updatedInteractions,
+    }));
+  };
+
+  const handleFileChange = (event) => {
+    setAttachments([...attachments, ...event.target.files]);
+  };
+
+  const removeFile = (indexToRemove) => {
+    setAttachments(attachments.filter((_, index) => index !== indexToRemove));
+  };
 
   return (
     <Box sx={{ minWidth: "1250px" }}>
@@ -399,7 +505,7 @@ export default function SaleTable({
                         userName={userName}
                         sale={sale}
                         handleOpenEdit={handleOpenEdit}
-                        handleOpenAddJobInteraction={setOpenAddInteraction}
+                        handleOpenAddSaleInteraction={setOpenAddInteraction}
                         handleConfirmDelete={handleConfirmDelete}
                       />
                     </TableCell>
@@ -424,18 +530,17 @@ export default function SaleTable({
                                 my: "auto",
                               }}
                             >
-                              Departamento
+                              Informações
                             </Typography>
                             <IconButton
-                              onClick={() =>
-                                setOpenDetailDepartment(!openDetailDepartment)
-                              }
+                              onClick={() => setOpenDetailInfo(!openDetailInfo)}
                             >
                               <ExpandMoreIcon />
                             </IconButton>
                           </Grid>
+
                           <Collapse
-                            in={openDetailDepartment}
+                            in={openDetailInfo}
                             timeout="auto"
                             unmountOnExit
                           >
@@ -444,23 +549,37 @@ export default function SaleTable({
                                 <TableRow>
                                   <TableCell align="left">
                                     <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
+                                      sx={{ fontSize: 13, color: "#777" }}
                                     >
-                                      Nome do Departamento
+                                      Cliente
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="left">
                                     <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Solicitante
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
                                     >
                                       Vendedor
                                     </Typography>
                                   </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Nº do Orçamento
+                                    </Typography>
+                                  </TableCell>
                                   <TableCell align="left">
                                     <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
+                                      sx={{ fontSize: 13, color: "#777" }}
                                     >
-                                      Criada em
+                                      Status
                                     </Typography>
                                   </TableCell>
                                 </TableRow>
@@ -468,8 +587,13 @@ export default function SaleTable({
                               <TableBody>
                                 <TableRow>
                                   <TableCell align="left">
-                                    <Typography>
-                                      {sale.department.name}
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {sale.customer.name}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {sale.requester}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="left">
@@ -485,16 +609,20 @@ export default function SaleTable({
                                         <Typography
                                           sx={{ mt: 0.75, fontSize: 13 }}
                                         >
-                                          {sale.seller.name}
+                                          {sale.seller.name} (
+                                          {sale.department.name})
                                         </Typography>
                                       </Grid>
                                     </Grid>
                                   </TableCell>
                                   <TableCell align="left">
-                                    <Typography>
-                                      {dayjs(sale.createdAt).format(
-                                        "DD/MM/YYYY"
-                                      )}
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {sale.quoteNumber}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {sale.status}
                                     </Typography>
                                   </TableCell>
                                 </TableRow>
@@ -502,6 +630,7 @@ export default function SaleTable({
                             </Table>
                           </Collapse>
                         </Box>
+
                         <Box sx={{ my: 4, px: 6 }}>
                           <Grid container direction="row">
                             <Typography
@@ -512,107 +641,92 @@ export default function SaleTable({
                                 my: "auto",
                               }}
                             >
-                              Orçamento
+                              Produtos
                             </Typography>
                             <IconButton
                               onClick={() =>
-                                setOpenDetailQuote(!openDetailQuote)
+                                setOpenDetailItems(!openDetailItems)
                               }
                             >
                               <ExpandMoreIcon />
                             </IconButton>
                           </Grid>
                           <Collapse
-                            in={openDetailQuote}
+                            in={
+                              openDetailItems && selectedSale._id === sale._id
+                            }
                             timeout="auto"
                             unmountOnExit
                           >
-                            <Table size="small">
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell>
-                                    <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
-                                    >
-                                      Nº do Orçamento
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
-                                    >
-                                      Produtos
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
-                                    >
-                                      Valor Total
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                <TableRow>
-                                  <TableCell component="th" scope="row">
-                                    <Typography>{sale.quoteNumber}</Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    {sale.items.length > 0
-                                      ? sale.items.map((item) => (
-                                          <Tooltip
+                            {sale.items.length !== 0 && (
+                              <Table size="small" sx={{ mt: 1 }}>
+                                <TableBody>
+                                  <TableRow>
+                                    <TableCell align="left">
+                                      <Grid container>
+                                        {sale.items.map((item) => (
+                                          <Grid
+                                            item
                                             key={item.id}
-                                            title={
-                                              <Typography sx={{ fontSize: 12 }}>
-                                                x{item.quantity} {item.name} =
+                                            sx={{
+                                              border: "1px solid darkgrey",
+                                              borderRadius: 2,
+                                              padding: 1,
+                                              mr: 1,
+                                            }}
+                                          >
+                                            <Grid
+                                              container
+                                              direction="column"
+                                              justifyContent="center"
+                                              alignItems="center"
+                                            >
+                                              <Avatar
+                                                alt="Imagem do Produto"
+                                                src={`http://localhost:3000/static/${item.image}`}
+                                                sx={{
+                                                  width: 54,
+                                                  height: 54,
+                                                  mb: 1,
+                                                }}
+                                              />
+                                              <Typography
+                                                sx={{
+                                                  fontSize: 13,
+                                                  color: "#555",
+                                                  my: "auto",
+                                                }}
+                                              >
+                                                {item.name} x{item.quantity} =
                                                 R$
                                                 {(
                                                   item.sellValue * item.quantity
                                                 ).toFixed(2)}
                                               </Typography>
-                                            }
-                                          >
-                                            <Grid
-                                              container
-                                              direction="row"
-                                              justifyContent="flex-start"
-                                              alignItems="flex-start"
-                                              sx={{ mt: 0.5 }}
-                                            >
-                                              <Typography
-                                                sx={{
-                                                  fontSize: 12,
-                                                  color: "#777",
-                                                  my: "auto",
-                                                }}
-                                              >
-                                                x{item.quantity} {item.name}
-                                              </Typography>
-                                              <Avatar
-                                                alt="Imagem do Produto"
-                                                src={`http://localhost:3000/static/${item.image}`}
-                                                sx={{
-                                                  width: 26,
-                                                  height: 26,
-                                                  ml: 1,
-                                                }}
-                                              />{" "}
                                             </Grid>
-                                          </Tooltip>
-                                        ))
-                                      : "Não há uso de Materiais"}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography>
-                                      R${sale.price.toFixed(2)}
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableBody>
-                            </Table>
+                                          </Grid>
+                                        ))}
+                                      </Grid>
+                                      <Typography
+                                        sx={{
+                                          mb: 1,
+                                          mt: 2,
+                                          fontSize: 18,
+                                          fontWeight: "bold",
+                                          color: "#333",
+                                        }}
+                                      >
+                                        Total ({sale.items.length} produtos) =
+                                        R${sale.price}
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableBody>
+                              </Table>
+                            )}
                           </Collapse>
                         </Box>
+
                         <Box sx={{ my: 4, px: 6 }}>
                           <Grid container direction="row">
                             <Typography
@@ -623,81 +737,148 @@ export default function SaleTable({
                                 my: "auto",
                               }}
                             >
-                              Solicitante
+                              Anexos
                             </Typography>
                             <IconButton
                               onClick={() =>
-                                setOpenDetailRequester(!openDetailRequester)
+                                setOpenDetailAttachments(!openDetailAttachments)
                               }
                             >
                               <ExpandMoreIcon />
                             </IconButton>
                           </Grid>
                           <Collapse
-                            in={openDetailRequester}
+                            in={
+                              openDetailAttachments &&
+                              selectedSale._id === sale._id
+                            }
                             timeout="auto"
                             unmountOnExit
                           >
-                            <Table size="small">
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell align="left">
-                                    <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
-                                    >
-                                      Nome do Solicitante
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
-                                    >
-                                      Contato de Entrega
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
-                                    >
-                                      Endereço de Entrega
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography
-                                      sx={{ fontSize: "14px", color: "#777" }}
-                                    >
-                                      Data da Entrega
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                <TableRow>
-                                  <TableCell align="left">
-                                    <Typography>{sale.requester}</Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography>
-                                      {sale.deliveryReceiverPhone}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography>
-                                      {sale.deliveryAddress}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <Typography>
-                                      {dayjs(sale.deliveryScheduledTo).format(
-                                        "DD/MM/YYYY"
-                                      )}
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableBody>
-                            </Table>
+                            {sale.attachments.length !== 0 && (
+                              <Table size="small" sx={{ mt: 1 }}>
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell>
+                                      <Typography
+                                        sx={{ fontSize: 13, color: "#777" }}
+                                      >
+                                        Anexos
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  <TableRow>
+                                    <TableCell align="left">
+                                      <Grid container direction="row">
+                                        {sale.attachments.map(
+                                          (attachment, index) => (
+                                            <Grid
+                                              key={index}
+                                              item
+                                              sx={{
+                                                mr: 1,
+                                              }}
+                                            >
+                                              <Grid
+                                                container
+                                                dierction="column"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                              >
+                                                <Grid
+                                                  container
+                                                  direction="column"
+                                                  alignItems="center"
+                                                  sx={{
+                                                    cursor: "pointer",
+                                                    border:
+                                                      "1px solid darkgrey",
+                                                    borderRadius: 2,
+                                                    padding: 1,
+                                                  }}
+                                                  onClick={() => {
+                                                    setSelectedItem(attachment);
+                                                    setOpenViewDialog(true);
+                                                  }}
+                                                >
+                                                  {isPdf(attachment) ? (
+                                                    <img
+                                                      src={`http://localhost:3000/static/pdf.png`}
+                                                      alt="PDF"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  ) : isImage(attachment) ? (
+                                                    <img
+                                                      src={`http://localhost:3000/static/${attachment}`}
+                                                      alt="Arquivo Inexistente"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  ) : (
+                                                    <img
+                                                      src={`http://localhost:3000/static/doc.png`}
+                                                      alt="Other"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  )}
+                                                  <Typography
+                                                    sx={{
+                                                      fontSize: 10,
+                                                      color: "#777",
+                                                      maxWidth: "75px",
+                                                      whiteSpace: "nowrap",
+                                                      overflow: "hidden",
+                                                      textOverflow: "ellipsis",
+                                                    }}
+                                                  >
+                                                    {
+                                                      attachment
+                                                        .split("/")
+                                                        .pop()
+                                                        .split(".")[1]
+                                                    }
+                                                  </Typography>
+                                                </Grid>
+                                                {userUsername === "admin" && (
+                                                  <Button
+                                                    size="small"
+                                                    color="error"
+                                                    onClick={() =>
+                                                      handleDeleteAttachment(
+                                                        sale._id,
+                                                        index
+                                                      )
+                                                    }
+                                                  >
+                                                    <DeleteIcon />
+                                                  </Button>
+                                                )}
+                                              </Grid>
+                                            </Grid>
+                                          )
+                                        )}
+                                      </Grid>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableBody>
+                              </Table>
+                            )}
                           </Collapse>
                         </Box>
+
                         <Box sx={{ my: 4, px: 6 }}>
                           <Grid container direction="row">
                             <Typography
@@ -747,6 +928,13 @@ export default function SaleTable({
                                     <Typography
                                       sx={{ fontSize: 13, color: "#777" }}
                                     >
+                                      Anexos
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
                                       Data
                                     </Typography>
                                   </TableCell>
@@ -760,9 +948,9 @@ export default function SaleTable({
                                 </TableRow>
                               </TableHead>
                               <TableBody>
-                                {sale.interactions.map((interaction) => (
+                                {sale.interactions.map((interaction, index) => (
                                   <TableRow
-                                    key={interaction.number}
+                                    key={index}
                                     sx={{
                                       backgroundColor:
                                         interaction.number % 2 === 0
@@ -781,6 +969,119 @@ export default function SaleTable({
                                       </Typography>
                                     </TableCell>
                                     <TableCell align="left">
+                                      {interaction.attachments &&
+                                        interaction.attachments.length !==
+                                          0 && (
+                                          <Grid>
+                                            <AttachFileIcon
+                                              sx={{
+                                                fontSize: 16,
+                                                color: "#777",
+                                                cursor: "pointer",
+                                              }}
+                                              onClick={handlePopoverOpen(index)}
+                                            />
+                                            {openPopoverIndex === index && (
+                                              <Popover
+                                                open={Boolean(anchorEl)}
+                                                anchorEl={anchorEl}
+                                                onClose={handlePopoverClose}
+                                                anchorOrigin={{
+                                                  vertical: "bottom",
+                                                  horizontal: "left",
+                                                }}
+                                              >
+                                                <Box
+                                                  p={2}
+                                                  sx={{
+                                                    width: "auto",
+                                                    maxWidth: 460,
+                                                    height: "auto",
+                                                    maxHeight: 280,
+                                                  }}
+                                                >
+                                                  <Typography
+                                                    variant="h6"
+                                                    sx={{ color: "#555" }}
+                                                  >
+                                                    Anexos
+                                                  </Typography>
+                                                  <Grid
+                                                    container
+                                                    direction="row"
+                                                  >
+                                                    {interaction.attachments.map(
+                                                      (
+                                                        attachment,
+                                                        attachmentIndex
+                                                      ) => (
+                                                        <Grid
+                                                          key={attachmentIndex}
+                                                          sx={{
+                                                            mr: 2,
+                                                            mb: 2,
+                                                            cursor: "pointer",
+                                                            border:
+                                                              "1px solid darkgrey",
+                                                            borderRadius: 2,
+                                                            padding: 1,
+                                                          }}
+                                                          onClick={() => {
+                                                            setSelectedItem(
+                                                              attachment
+                                                            );
+                                                            setOpenViewDialog(
+                                                              true
+                                                            );
+                                                          }}
+                                                        >
+                                                          {isPdf(attachment) ? (
+                                                            <img
+                                                              src={`http://localhost:3000/static/pdf.png`}
+                                                              alt="PDF"
+                                                              style={{
+                                                                width: "80px",
+                                                                height: "80px",
+                                                                marginBottom:
+                                                                  "8px",
+                                                              }}
+                                                            />
+                                                          ) : isImage(
+                                                              attachment
+                                                            ) ? (
+                                                            <img
+                                                              src={`http://localhost:3000/static/${attachment}`}
+                                                              alt="Arquivo Inexistente"
+                                                              style={{
+                                                                width: "80px",
+                                                                height: "80px",
+                                                                marginBottom:
+                                                                  "8px",
+                                                              }}
+                                                            />
+                                                          ) : (
+                                                            <img
+                                                              src={`http://localhost:3000/static/doc.png`}
+                                                              alt="Other"
+                                                              style={{
+                                                                width: "80px",
+                                                                height: "80px",
+                                                                marginBottom:
+                                                                  "8px",
+                                                              }}
+                                                            />
+                                                          )}
+                                                        </Grid>
+                                                      )
+                                                    )}
+                                                  </Grid>
+                                                </Box>
+                                              </Popover>
+                                            )}
+                                          </Grid>
+                                        )}
+                                    </TableCell>
+                                    <TableCell align="left">
                                       <Typography sx={{ fontSize: 13 }}>
                                         {interaction.date}
                                       </Typography>
@@ -792,20 +1093,23 @@ export default function SaleTable({
                                           <InteractionReactions
                                             userId={userId}
                                             userName={userName}
-                                            userReactions={
-                                              userReactions[sale._id] || []
-                                            }
                                             itemId={sale._id}
-                                            // updateInteractions={updateInteractions}
                                             refreshData={refreshData}
                                             setRefreshData={setRefreshData}
                                             interaction={interaction}
                                             number={interaction.number}
+                                            userReactions={
+                                              userReactions[sale._id] || []
+                                            }
                                             setUserReactions={(reactions) =>
                                               setUserReactions({
                                                 ...userReactions,
                                                 [sale._id]: reactions,
                                               })
+                                            }
+                                            jobId={sale._id}
+                                            updateInteractions={
+                                              updateSelectedSaleInteractions
                                             }
                                             fromSales
                                           />
@@ -817,52 +1121,201 @@ export default function SaleTable({
                               </TableBody>
                             </Table>
                             {openAddInteractionOnTable ? (
-                              <Grid item>
-                                <Typography
-                                  sx={{
-                                    mb: 2,
-                                    mt: 4,
-                                    fontSize: 18,
-                                    fontWeight: "bold",
-                                  }}
-                                >
-                                  Nova Interação
-                                </Typography>
-                                <TextField
-                                  label="Atividade"
-                                  variant="outlined"
-                                  size="small"
-                                  value={activity}
-                                  onChange={(e) => setActivity(e.target.value)}
-                                  sx={{ width: "100%", mx: "auto" }}
-                                />
+                              <>
                                 <Grid item>
-                                  <Grid
-                                    container
-                                    direction="row"
-                                    justifyContent="flex-end"
+                                  <Typography
+                                    sx={{
+                                      mb: 2,
+                                      mt: 4,
+                                      fontSize: 18,
+                                      fontWeight: "bold",
+                                    }}
                                   >
-                                    <Button
-                                      variant="contained"
-                                      color="success"
-                                      sx={{ my: 2, mr: 2 }}
-                                      onClick={handleAddInteractionFromTable}
-                                    >
-                                      Adicionar
-                                    </Button>
-                                    <Button
-                                      variant="contained"
-                                      color="error"
-                                      onClick={() =>
-                                        setOpenAddInteractionOnTable(false)
+                                    Nova Interação
+                                  </Typography>
+                                  <Paper
+                                    elevation={1}
+                                    component="form"
+                                    sx={{
+                                      p: "2px 4px",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      mx: "15%",
+                                    }}
+                                  >
+                                    <InputBase
+                                      sx={{ ml: 1, flex: 1 }}
+                                      placeholder="Atividade"
+                                      value={activity}
+                                      onChange={(e) =>
+                                        setActivity(e.target.value)
                                       }
-                                      sx={{ my: 2 }}
+                                    />
+                                    <input
+                                      type="file"
+                                      multiple
+                                      id="fileInput"
+                                      style={{ display: "none" }}
+                                      onChange={handleFileChange}
+                                    />
+                                    <label htmlFor="fileInput">
+                                      <IconButton
+                                        component="span"
+                                        aria-label="upload picture"
+                                        sx={{ p: "10px" }}
+                                      >
+                                        <AttachFileIcon />
+                                      </IconButton>
+                                    </label>
+                                  </Paper>
+
+                                  {attachments.length !== 0 && (
+                                    <Paper
+                                      elevation={1}
+                                      component="form"
+                                      sx={{
+                                        p: "2px 4px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        mx: "15%",
+                                        mt: 2,
+                                      }}
                                     >
-                                      X
-                                    </Button>
+                                      <Grid item>
+                                        <Grid container direction="row">
+                                          {attachments.map(
+                                            (attachment, index) => (
+                                              <Grid
+                                                key={index}
+                                                item
+                                                sx={{ mr: 1 }}
+                                              >
+                                                <Grid
+                                                  container
+                                                  direction="column"
+                                                  alignItems="center"
+                                                  sx={{
+                                                    border:
+                                                      "1px solid darkgrey",
+                                                    borderRadius: 2,
+                                                    padding: 1,
+                                                  }}
+                                                >
+                                                  {isPdf(attachment.name) ? (
+                                                    <img
+                                                      src={`http://localhost:3000/static/pdf.png`}
+                                                      alt="PDF"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  ) : isImage(
+                                                      attachment.name
+                                                    ) ? (
+                                                    <img
+                                                      src={URL.createObjectURL(
+                                                        attachment
+                                                      )}
+                                                      alt="Arquivo Inexistente"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  ) : (
+                                                    <img
+                                                      src={`http://localhost:3000/static/doc.png`}
+                                                      alt="Other"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  )}
+                                                  <Typography
+                                                    sx={{
+                                                      fontSize: 10,
+                                                      color: "#777",
+                                                      maxWidth: "75px",
+                                                      whiteSpace: "nowrap",
+                                                      overflow: "hidden",
+                                                      textOverflow: "ellipsis",
+                                                    }}
+                                                  >
+                                                    {attachment.name}
+                                                  </Typography>
+
+                                                  <Grid item>
+                                                    <Grid
+                                                      container
+                                                      direction="row"
+                                                      justifyContent="space-around"
+                                                    >
+                                                      <Button
+                                                        size="small"
+                                                        onClick={() => {
+                                                          setSelectedItem(
+                                                            attachment
+                                                          );
+                                                          setOpenViewDialog2(
+                                                            true
+                                                          );
+                                                        }}
+                                                      >
+                                                        <VisibilityIcon />
+                                                      </Button>
+                                                      <Button
+                                                        size="small"
+                                                        color="error"
+                                                        onClick={() =>
+                                                          removeFile(index)
+                                                        }
+                                                      >
+                                                        <DeleteIcon />
+                                                      </Button>
+                                                    </Grid>
+                                                  </Grid>
+                                                </Grid>
+                                              </Grid>
+                                            )
+                                          )}
+                                        </Grid>
+                                      </Grid>
+                                    </Paper>
+                                  )}
+                                  <Grid item>
+                                    <Grid
+                                      container
+                                      direction="row"
+                                      justifyContent="flex-end"
+                                    >
+                                      <Button
+                                        variant="contained"
+                                        disabled={activity === ""}
+                                        color="success"
+                                        sx={{ my: 2, mr: 2 }}
+                                        onClick={handleAddInteractionFromTable}
+                                      >
+                                        Adicionar
+                                      </Button>
+                                      <Button
+                                        variant="contained"
+                                        color="error"
+                                        onClick={() =>
+                                          setOpenAddInteractionOnTable(false)
+                                        }
+                                        sx={{ my: 2 }}
+                                      >
+                                        X
+                                      </Button>
+                                    </Grid>
                                   </Grid>
                                 </Grid>
-                              </Grid>
+                              </>
                             ) : (
                               <Grid sx={{ ml: "90%" }}>
                                 <Button
@@ -991,8 +1444,10 @@ export default function SaleTable({
             selectedJob={selectedSale}
             setOpenEditJob={setOpenAddInteraction}
             refreshData={refreshData}
+            addInteractionToJob={addInteractionToSale}
             setRefreshData={setRefreshData}
             toast={toast}
+            updateSelectedSaleInteractions={updateSelectedSaleInteractions}
             fromSales
           />
         </Dialog>
@@ -1010,6 +1465,34 @@ export default function SaleTable({
             successMessage={`Venda #${
               selectedItem.quoteNumber && selectedItem.quoteNumber
             } Deletado com Sucesso`}
+          />
+        </Dialog>
+      )}
+      {openViewDialog && (
+        <Dialog
+          open={openViewDialog}
+          onClose={() => setOpenViewDialog(false)}
+          fullWidth
+          maxWidth="lg"
+        >
+          <ViewDialog
+            selectedItem={selectedItem}
+            setOpenViewDialog={setOpenViewDialog}
+          />
+        </Dialog>
+      )}
+      {openViewDialog2 && (
+        <Dialog
+          open={openViewDialog2}
+          onClose={() => setOpenViewDialog2(false)}
+          fullWidth
+          maxWidth="lg"
+        >
+          <ViewDialog
+            selectedItem={selectedItem.name}
+            setOpenViewDialog={setOpenViewDialog2}
+            createObjectURL
+            createObjectURLItem={selectedItem}
           />
         </Dialog>
       )}

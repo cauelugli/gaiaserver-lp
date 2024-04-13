@@ -22,6 +22,8 @@ import {
 } from "@mui/material";
 
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -98,6 +100,7 @@ const AddSaleForm = ({
   const [materials, setMaterials] = React.useState([]);
   const [materialsCost, setMaterialsCost] = React.useState(0);
   const [deliveryScheduledTo, setDeliveryScheduledTo] = React.useState(dayjs());
+  const [attachedFiles, setAttachedFiles] = React.useState([]);
 
   const [departments, setDepartments] = React.useState([]);
   const [products, setProducts] = React.useState([]);
@@ -173,6 +176,28 @@ const AddSaleForm = ({
         fullDate: dayjs().format("DD/MM/YYYY HH:mm"),
       });
       if (res.data) {
+        const itemId = res.data.savedRequest._id;
+        const uploadResponses = [];
+
+        for (const file of attachedFiles) {
+          const formData = new FormData();
+          formData.append("attachment", file);
+          formData.append("itemId", itemId);
+
+          const uploadResponse = await api.post(
+            "/uploads/singleAttachment",
+            formData
+          );
+          uploadResponses.push(uploadResponse.data.attachmentPath);
+        }
+
+        await api.put(`/sales/addAttachments`, {
+          itemId: res.data.savedRequest._id,
+          attachments: uploadResponses,
+          userName,
+          date: dayjs().format("DD/MM HH:mm"),
+        });
+
         toast.success(
           `Venda Adicionada! Orçamento #${res.data.savedQuote.number}`,
           {
@@ -208,6 +233,16 @@ const AddSaleForm = ({
       });
       console.log(err);
     }
+  };
+
+  const handleFileChange = (event) => {
+    setAttachedFiles([...attachedFiles, ...event.target.files]);
+  };
+
+  const removeFile = (indexToRemove) => {
+    setAttachedFiles(
+      attachedFiles.filter((_, index) => index !== indexToRemove)
+    );
   };
 
   return (
@@ -461,6 +496,60 @@ const AddSaleForm = ({
         {productsDefined && (
           <>
             <Divider sx={{ my: 2 }} />
+            <Grid container direction="row" alignItems="center" sx={{ mb: 2 }}>
+              <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
+                Anexar Arquivos
+              </Typography>
+              <input
+                type="file"
+                multiple
+                id="fileInput"
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+              />
+              <label htmlFor="fileInput">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  component="span"
+                  size="small"
+                  startIcon={<FileUploadIcon />}
+                  sx={{ ml: 1 }}
+                >
+                  Enviar
+                </Button>
+              </label>
+              <Grid item>
+                <Grid container direction="row">
+                  {attachedFiles.map((file, index) => (
+                    <Grid key={index} item sx={{ ml: 1 }}>
+                      <Grid
+                        container
+                        direction="row"
+                        alignItems="center"
+                        sx={{
+                          border: "1px solid darkgrey",
+                          borderRadius: 2,
+                        }}
+                      >
+                        <Typography sx={{ fontSize: 13, ml: 1, color: "#777" }}>
+                          {file.name}
+                        </Typography>
+
+                        <Button
+                          size="small"
+                          color="error"
+                          onClick={() => removeFile(index)}
+                          sx={{ mx: -1 }}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
+            </Grid>
             <Grid container>
               <Typography sx={{ my: 2, fontSize: 18, fontWeight: "bold" }}>
                 Entrega

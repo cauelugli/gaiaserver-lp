@@ -104,16 +104,16 @@ export default function SaleTableActions(props) {
 
           <ListItemButton
             disabled={props.sale.status === "Concluido"}
-            onClick={(item) => props.handleOpenEdit(item)}
+            onClick={(item) => {
+              props.handleOpenAddSaleInteraction(item), setAnchorEl(null);
+            }}
           >
             <ListItemIcon>
               <CommentIcon />
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>
-                  Interações
-                </Typography>
+                <Typography sx={{ fontSize: 14 }}>Interações</Typography>
               }
               sx={{ ml: -3 }}
             />
