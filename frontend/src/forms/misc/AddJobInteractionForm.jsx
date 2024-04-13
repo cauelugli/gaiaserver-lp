@@ -338,7 +338,7 @@ const AddJobInteractionForm = ({
                                   ? updateSelectedSaleInteractions
                                   : updateSelectedJobInteractions
                               }
-                              fromSales
+                              fromSales={fromSales}
                             />
                           </Typography>
                         )}

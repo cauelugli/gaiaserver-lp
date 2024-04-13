@@ -462,7 +462,7 @@ router.put("/activate/:id", async (req, res) => {
 // ADD SALE INTERACTION
 router.put("/interaction", async (req, res) => {
   try {
-    const saleId = req.body.jobId;
+    const saleId = req.body.saleId || req.body.jobId;
     const userName = req.body.userName;
 
     const sale = await Sale.findById(saleId);
@@ -567,7 +567,7 @@ router.put("/interaction/remove", async (req, res) => {
 // REACT TO SALE INTERATION
 router.put("/reaction", async (req, res) => {
   try {
-    const saleId = req.body.jobId || req.body.job._id;
+    const saleId = req.body.itemId;
     const userId = req.body.userId;
 
     const sale = await Sale.findById(saleId);
@@ -675,6 +675,21 @@ router.delete("/:id", async (req, res) => {
       }
 
       await Quote.findByIdAndDelete(quoteToDelete._id);
+    }
+
+    if (deletedSale.attachments && deletedSale.attachments.length > 0) {
+      deletedSale.attachments.forEach((attachment) => {
+        const attachmentPath = path.join(
+          __dirname,
+          "../../uploads",
+          attachment
+        );
+        if (fs.existsSync(attachmentPath)) {
+          fs.unlinkSync(attachmentPath);
+        } else {
+          ("");
+        }
+      });
     }
 
     res.status(200).json(deletedSale);
