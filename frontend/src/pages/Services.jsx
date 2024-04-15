@@ -159,6 +159,7 @@ export default function Services({ configTables, configData }) {
           setOpenAddService={setOpenAddService}
           setOpenAddServicePlan={setOpenAddServicePlan}
           configCustomization={configCustomization}
+          configData={configData}
         />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
