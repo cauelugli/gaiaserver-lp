@@ -4,26 +4,21 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import {
+  Avatar,
   Box,
-  Collapse,
   Dialog,
   Grid,
-  IconButton,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TablePagination,
   TableRow,
   TableSortLabel,
+  Tooltip,
   Typography,
 } from "@mui/material";
-
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditServiceForm from "../forms/edit/EditServiceForm";
 import ServiceTableActions from "../components/small/buttons/tableActionButtons/ServiceTableActions";
@@ -40,19 +35,6 @@ export default function ServiceTable({
 }) {
   const [selectedService, setSelectedService] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [openDetail, setOpenDetail] = React.useState(false);
-  const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
-  const [openDetailMaterials, setOpenDetailMaterials] = React.useState(false);
-
-  const handleOpenDetail = (service) => {
-    setOpenDetail(!openDetail);
-    setSelectedService(service);
-  };
-
-  const handleOpenEdit = (service) => {
-    setOpenEdit(!openEdit);
-    setSelectedService(service);
-  };
 
   const tableHeaderRow = [
     {
@@ -62,6 +44,18 @@ export default function ServiceTable({
     {
       id: "department.name",
       label: "Departamento",
+    },
+    {
+      id: "materials",
+      label: "Materiais",
+    },
+    {
+      id: "executionTime",
+      label: "Duração",
+    },
+    {
+      id: "value",
+      label: "Valor",
     },
     {
       id: "actions",
@@ -152,356 +146,174 @@ export default function ServiceTable({
                 ))}
               </TableRow>
               {sortedRows
-                .filter((user) =>
-                  user[searchOption]
+                .filter((item) =>
+                  item[searchOption]
                     .toLowerCase()
                     .includes(searchValue.toLowerCase())
                 )
                 .map((service) => (
-                  <>
-                    <TableRow
-                      key={service._id}
-                      sx={{
-                        cursor: "pointer",
-                        backgroundColor:
-                          selectedService.name === service.name && openDetail
-                            ? "#eee"
-                            : "none",
-                        "&:hover": { backgroundColor: "#eee " },
-                      }}
-                    >
-                      <TableCell
-                        onClick={() => handleOpenDetail(service)}
-                        cursor="pointer"
-                      >
-                        <Grid container direction="row" alignItems="center">
-                          <Paper
-                            elevation={0}
-                            sx={{
-                              mb: 0.5,
-                              mr: 0.5,
-                              width: 12,
-                              height: 12,
-                              borderRadius: 50,
-                              backgroundColor: service.color,
-                            }}
-                          />
+                  <TableRow
+                    key={service._id}
+                    sx={{ "&:hover": { backgroundColor: "#eee " } }}
+                  >
+                    <TableCell>
+                      <Grid container direction="row" alignItems="center">
+                        <Paper
+                          elevation={0}
+                          sx={{
+                            mb: 0.5,
+                            mr: 0.5,
+                            width: 12,
+                            height: 12,
+                            borderRadius: 50,
+                            backgroundColor: service.color,
+                          }}
+                        />
+                        <Typography sx={{ fontSize: 13 }}>
+                          {service.name}
+                        </Typography>
+                      </Grid>
+                    </TableCell>
+
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {service.department ? (
+                          <Grid
+                            container
+                            direction="row"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            <Paper
+                              elevation={0}
+                              sx={{
+                                mb: 0.5,
+                                mr: 0.5,
+                                width: 12,
+                                height: 12,
+                                borderRadius: 50,
+                                backgroundColor: service.department.color,
+                              }}
+                            />
+                            <Typography sx={{ fontSize: 13 }}>
+                              {service.department
+                                ? service.department.name
+                                : "-"}
+                            </Typography>
+                          </Grid>
+                        ) : (
+                          "-"
+                        )}
+                      </Typography>
+                    </TableCell>
+
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {service.materials.length !== 0 ? (
+                          service.materials.map(
+                            (material) =>
+                              material.quantity > 0 && (
+                                <Grid
+                                  key={material.id}
+                                  container
+                                  direction="column"
+                                  alignItems="center"
+                                  justifyContent="center"
+                                  sx={{ my: -1 }}
+                                >
+                                  <Tooltip title={material.name}>
+                                    <Avatar
+                                      src={`http://localhost:3000/static/${material.image}`}
+                                      alt={material.name[0]}
+                                      style={{
+                                        width: 42,
+                                        height: 42,
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                  </Tooltip>
+
+                                  <Typography
+                                    sx={{
+                                      fontSize: 12,
+                                      color: "#555",
+                                      mt: 0.5,
+                                    }}
+                                  >
+                                    x{material.quantity}
+                                  </Typography>
+                                </Grid>
+                              )
+                          )
+                        ) : (
+                          <Typography sx={{ fontSize: 13 }}>Não há</Typography>
+                        )}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      {service.executionTime === 0.5 ? (
+                        <Tooltip title={"Atendimento único"}>
+                          <Typography sx={{ fontSize: 13 }}>30 min</Typography>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip
+                          title={
+                            <Grid container direction="column">
+                              {service.sessions.quantity} sessões de{" "}
+                              {service.sessions.time}h com intervalo de{" "}
+                              {service.sessions.interval} dias
+                            </Grid>
+                          }
+                        >
                           <Typography sx={{ fontSize: 13 }}>
-                            {service.name}
+                            {service.sessions.quantity * service.sessions.time}h
                           </Typography>
-                        </Grid>
-                      </TableCell>
-                      <TableCell
-                        onClick={() => handleOpenDetail(service)}
-                        cursor="pointer"
-                        align="center"
+                        </Tooltip>
+                      )}
+                    </TableCell>
+                    <TableCell align="center">
+                      <Tooltip
+                        title={
+                          <>
+                            {service.materialsCost ? (
+                              <Grid container direction="column">
+                                <Grid item>
+                                  R${service.materialsCost.toFixed(2)}{" "}
+                                  (Materiais)
+                                </Grid>
+                                <Grid item>
+                                  R${service.value.toFixed(2)} (Serviço)
+                                </Grid>
+                              </Grid>
+                            ) : (
+                              `R$${service.value.toFixed(2)} (Apenas Serviço)`
+                            )}
+                          </>
+                        }
                       >
                         <Typography sx={{ fontSize: 13 }}>
-                          {service.department ? (
-                            <Grid
-                              container
-                              direction="row"
-                              alignItems="center"
-                              justifyContent="center"
-                            >
-                              <Paper
-                                elevation={0}
-                                sx={{
-                                  mb: 0.5,
-                                  mr: 0.5,
-                                  width: 12,
-                                  height: 12,
-                                  borderRadius: 50,
-                                  backgroundColor: service.department.color,
-                                }}
-                              />
-                              <Typography sx={{ fontSize: 13 }}>
-                                {service.department
-                                  ? service.department.name
-                                  : "-"}
-                              </Typography>
-                            </Grid>
-                          ) : (
-                            "-"
-                          )}
+                          R$
+                          {service.materialsCost
+                            ? (service.materialsCost + service.value).toFixed(2)
+                            : service.value.toFixed(2)}
                         </Typography>
-                      </TableCell>
+                      </Tooltip>
+                    </TableCell>
 
-                      <TableCell
-                        cursor="pointer"
-                        align="center"
-                        onClick={() => setSelectedService(service)}
-                      >
-                        <ServiceTableActions
-                          configData={configData}
-                          setOpenEdit={setOpenEdit}
-                          selectedItem={selectedService}
-                          refreshData={refreshData}
-                          setRefreshData={setRefreshData}
-                        />
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                        style={{ paddingBottom: 0, paddingTop: 0 }}
-                        colSpan={6}
-                      >
-                        <Collapse
-                          in={
-                            openDetail && selectedService.name === service.name
-                          }
-                          timeout="auto"
-                          unmountOnExit
-                        >
-                          <Box sx={{ my: 4, px: 6 }}>
-                            <Grid container direction="row">
-                              <Typography
-                                variant="h6"
-                                sx={{
-                                  fontSize: 18,
-                                  fontWeight: "bold",
-                                  my: "auto",
-                                }}
-                              >
-                                Informações do Serviço
-                              </Typography>
-                              <IconButton
-                                onClick={() =>
-                                  setOpenDetailInfo(!openDetailInfo)
-                                }
-                              >
-                                <ExpandMoreIcon />
-                              </IconButton>
-                            </Grid>
-                            <Collapse
-                              in={openDetailInfo}
-                              timeout="auto"
-                              unmountOnExit
-                            >
-                              <Table size="small">
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Nome
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Departamento
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Valor do Serviço
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Tempo de Execução
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  <TableRow>
-                                    <TableCell>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {service.name}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {service.department
-                                          ? service.department.name
-                                          : "-"}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        R${service.value}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {service.executionTime === 0.5 &&
-                                          "30 min"}
-                                        {service.executionTime > 0.5 &&
-                                          `${service.executionTime}h`}
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableBody>
-                              </Table>
-                            </Collapse>
-                          </Box>
-                          <Box sx={{ my: 4, px: 6 }}>
-                            <Grid container direction="row">
-                              <Typography
-                                variant="h6"
-                                sx={{
-                                  fontSize: 18,
-                                  fontWeight: "bold",
-                                  my: "auto",
-                                }}
-                              >
-                                Materiais Necessários
-                              </Typography>
-                              <IconButton
-                                onClick={() =>
-                                  setOpenDetailMaterials(!openDetailMaterials)
-                                }
-                              >
-                                <ExpandMoreIcon />
-                              </IconButton>
-                            </Grid>
-                            <Collapse
-                              in={openDetailMaterials}
-                              timeout="auto"
-                              unmountOnExit
-                            >
-                              {service.materials.length > 0 ? (
-                                <>
-                                  <Table size="small">
-                                    <TableHead>
-                                      <TableRow>
-                                        <TableCell sx={{ width: "350px" }}>
-                                          <Typography
-                                            sx={{
-                                              fontSize: 13,
-                                              color: "#777",
-                                            }}
-                                          >
-                                            Nome do Item
-                                          </Typography>
-                                        </TableCell>
-                                        <TableCell sx={{ width: "350px" }}>
-                                          <Typography
-                                            sx={{
-                                              fontSize: 13,
-                                              color: "#777",
-                                            }}
-                                          >
-                                            Quantidade
-                                          </Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                          <Typography
-                                            sx={{
-                                              fontSize: 13,
-                                              color: "#777",
-                                            }}
-                                          >
-                                            Valor dos Itens
-                                          </Typography>
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                      {service.materials.map(
-                                        (material) =>
-                                          material.quantity > 0 && (
-                                            <TableRow key={material.id}>
-                                              <TableCell
-                                                sx={{ width: "350px" }}
-                                              >
-                                                <Typography
-                                                  sx={{ fontSize: 13 }}
-                                                >
-                                                  {material.name}
-                                                </Typography>
-                                              </TableCell>
-
-                                              <TableCell
-                                                sx={{ width: "350px" }}
-                                              >
-                                                <Typography
-                                                  sx={{ fontSize: 13 }}
-                                                >
-                                                  {material.quantity}
-                                                </Typography>
-                                              </TableCell>
-                                              <TableCell>
-                                                <Typography
-                                                  sx={{ fontSize: 13 }}
-                                                >
-                                                  R$
-                                                  {material.sellValue *
-                                                    material.quantity}
-                                                </Typography>
-                                              </TableCell>
-                                            </TableRow>
-                                          )
-                                      )}
-                                    </TableBody>
-                                  </Table>
-                                  <Box sx={{ ml: "760px", mr: -10 }}>
-                                    <TableRow>
-                                      <TableCell>
-                                        <Typography
-                                          sx={{
-                                            fontSize: 13,
-                                            color: "#777",
-                                            my: -1,
-                                            mb: -2,
-                                            mt: 2,
-                                          }}
-                                        >
-                                          Valor Total (serviço + itens)
-                                        </Typography>
-                                      </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell>
-                                        <Typography
-                                          sx={{
-                                            my: -1,
-                                            color: "#228B22",
-                                            fontSize: 13,
-                                          }}
-                                        >
-                                          R${" "}
-                                          {(
-                                            service.materialsCost +
-                                            service.value
-                                          ).toFixed(2)}
-                                        </Typography>
-                                      </TableCell>
-                                    </TableRow>
-                                  </Box>
-                                </>
-                              ) : (
-                                <Typography sx={{ mt: 1, fontSize: 13 }}>
-                                  Não há uso de Materiais
-                                </Typography>
-                              )}
-                            </Collapse>
-
-                            <Box sx={{ mt: 3, ml: "90%" }}>
-                              <ModeEditIcon
-                                cursor="pointer"
-                                onClick={() => handleOpenEdit(service)}
-                                sx={{ color: "grey", mr: 2 }}
-                              />
-                              <DeleteIcon
-                                cursor="pointer"
-                                // onClick={() => handleConfirmDelete(service)}
-                                sx={{ color: "#ff4444" }}
-                              />
-                            </Box>
-                          </Box>
-                        </Collapse>
-                      </TableCell>
-                    </TableRow>
-                  </>
+                    <TableCell
+                      cursor="pointer"
+                      align="center"
+                      onClick={() => setSelectedService(service)}
+                    >
+                      <ServiceTableActions
+                        configData={configData}
+                        setOpenEdit={setOpenEdit}
+                        selectedItem={selectedService}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                      />
+                    </TableCell>
+                  </TableRow>
                 ))
                 .slice(startIndex, endIndex)}
             </TableBody>

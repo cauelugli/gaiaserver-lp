@@ -72,18 +72,12 @@ router.put("/", async (req, res) => {
   }
 
   try {
-    const { serviceId, materials, previousMaterials } = req.body;
+    const { serviceId, materials } = req.body;
 
-    const validMaterials = materials.filter(
-      (material) => material.quantity > 0
-    );
-
-    const missingItems = previousMaterials.filter(
-      (previousItem) =>
-        !validMaterials.some(
-          (currentItem) => currentItem._id === previousItem._id
-        )
-    );
+    let validMaterials;
+    if (materials.length !== 0) {
+      validMaterials = materials.filter((material) => material.quantity > 0);
+    }
 
     const updatedService = await Service.findByIdAndUpdate(
       serviceId,
@@ -94,7 +88,8 @@ router.put("/", async (req, res) => {
         materials: validMaterials,
         materialsCost: req.body.materialsCost,
         executionTime: req.body.executionTime,
-        color:req.body.color
+        sessions: req.body.sessions,
+        color: req.body.color,
       },
       { new: true }
     );

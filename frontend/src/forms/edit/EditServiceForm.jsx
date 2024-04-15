@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import { SketchPicker } from "react-color";
@@ -41,21 +40,28 @@ export default function EditServiceForm({
   toast,
 }) {
   const previousData = selectedService;
+
   const [name, setName] = React.useState(selectedService.name);
   const [department, setDepartment] = React.useState(
     selectedService.department
   );
   const [value, setValue] = React.useState(selectedService.value);
-  const [previousMaterials, setPreviousMaterials] = React.useState(
-    selectedService.materials
-  );
+
   const [materials, setMaterials] = React.useState(selectedService.materials);
   const [materialsEditCost, setMaterialsEditCost] = React.useState(
     selectedService.materialsCost
   );
-  const [executionTime, setExecutionTime] = React.useState(
-    selectedService.executionTime
+
+  const [sessionsQuantity, setSessionsQuantity] = React.useState(
+    selectedService.sessions.quantity
   );
+  const [sessionsTime, setSessionsTime] = React.useState(
+    selectedService.sessions.time
+  );
+  const [sessionsInterval, setSessionsInterval] = React.useState(
+    selectedService.sessions.interval
+  );
+
   const [color, setColor] = React.useState(selectedService.color);
 
   const [showUsesMaterials, setUsesMaterials] = React.useState(
@@ -83,12 +89,16 @@ export default function EditServiceForm({
           color: department.color,
         },
         value,
-        previousMaterials,
-        materials,
-        materialsCost: materialsEditCost,
-        executionTime,
+        previousMaterials: previousData.materials,
+        materials: showUsesMaterials ? materials : [""],
+        materialsCost: showUsesMaterials ? materialsEditCost : null,
+        executionTime: sessionsQuantity * sessionsTime,
         color,
-        isSupport: value === 0 ? true : false,
+        sessions: {
+          quantity: sessionsQuantity,
+          time: sessionsTime,
+          interval: sessionsQuantity === 1 ? 0 : sessionsInterval,
+        },
       });
       if (res.data) {
         toast.success("Serviço Editado!", {
@@ -119,8 +129,6 @@ export default function EditServiceForm({
     }
   };
 
-  console.log("color",color)
-
   return (
     <form onSubmit={handleEdit}>
       <DialogTitle>Editando Serviço - {selectedService.name}</DialogTitle>
@@ -129,8 +137,8 @@ export default function EditServiceForm({
           container
           sx={{ mt: 2 }}
           direction="row"
-          justifyContent="flex-start"
           alignItems="center"
+          justifyContent="space-evenly"
         >
           <Grid item>
             <Typography>Nome</Typography>
@@ -212,69 +220,130 @@ export default function EditServiceForm({
               sx={{ width: 120 }}
             />
           </Grid>
-          <Grid item>
-            <Typography>Tempo de Execução</Typography>
-            <Select
-              value={executionTime}
-              size="small"
-              required
-              onChange={(e) => setExecutionTime(e.target.value)}
-              sx={{ width: 120 }}
-            >
-              <MenuItem value={0.5}>30 min</MenuItem>
-              <MenuItem value={1}>01:00h</MenuItem>
-              <MenuItem value={1.5}>01:30h</MenuItem>
-              <MenuItem value={2}>02:00h</MenuItem>
-              <MenuItem value={2.5}>02:30h</MenuItem>
-              <MenuItem value={3}>03:00h</MenuItem>
-              <MenuItem value={4}>+03:00h</MenuItem>
-            </Select>
-          </Grid>
           <Grid item sx={{ ml: 2, color: color }}>
-            {executionTime && (
-              <Grid container direction="column">
-                <Typography>Cor</Typography>
-                <Grid container direction="row">
-                  <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-                    <PaletteIcon />
-                  </IconButton>
-                  <Popover
-                    open={Boolean(anchorEl)}
-                    anchorEl={anchorEl}
-                    onClose={() => setAnchorEl(null)}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center",
+            <Grid container direction="column">
+              <Typography>Cor</Typography>
+              <Grid container direction="row">
+                <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+                  <PaletteIcon />
+                </IconButton>
+                <Popover
+                  open={Boolean(anchorEl)}
+                  anchorEl={anchorEl}
+                  onClose={() => setAnchorEl(null)}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                  }}
+                >
+                  <SketchPicker
+                    color={color}
+                    onChange={(color) => setColor(color.hex)}
+                    disableAlpha
+                  />
+                </Popover>
+                {color !== "ffffff" && (
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      ml: 1,
+                      mt: 1.25,
+                      width: 20,
+                      height: 20,
+                      borderRadius: 50,
+                      backgroundColor: color,
                     }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "center",
-                    }}
-                  >
-                    <SketchPicker
-                      color={color}
-                      onChange={(color) => setColor(color.hex)}
-                      disableAlpha
-                    />
-                  </Popover>
-                  {color !== "ffffff" && (
-                    <Paper
-                      elevation={0}
-                      sx={{
-                        ml: 1,
-                        mt: 1.25,
-                        width: 20,
-                        height: 20,
-                        borderRadius: 50,
-                        backgroundColor: color,
-                      }}
-                    />
-                  )}
-                </Grid>
+                  />
+                )}
               </Grid>
-            )}
+            </Grid>
           </Grid>
         </Grid>
+        <Grid
+          container
+          sx={{ mt: 4 }}
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
+            Sessões
+            <Typography sx={{ fontSize: 12, fontWeight: "default" }}>
+              Tempo de Execução Total:{" "}
+              {sessionsQuantity === 1 && sessionsTime === 0.5
+                ? "30 min"
+                : `${sessionsQuantity * sessionsTime}h`}
+            </Typography>
+          </Typography>
+          <Grid
+            sx={{ mt: 1 }}
+            container
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="flex-start"
+          >
+            <Grid item>
+              <Typography>Quantidade de Sessões</Typography>
+              <Select
+                value={sessionsQuantity}
+                size="small"
+                required
+                onChange={(e) => setSessionsQuantity(e.target.value)}
+                sx={{ width: 120 }}
+              >
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+                <MenuItem value={4}>4</MenuItem>
+                <MenuItem value={5}>5</MenuItem>
+              </Select>
+            </Grid>
+
+            <Grid item>
+              <Typography>Tempo de Execução</Typography>
+              <Select
+                value={sessionsTime}
+                size="small"
+                required
+                onChange={(e) => setSessionsTime(e.target.value)}
+                sx={{ width: 120 }}
+              >
+                <MenuItem value={0.5}>30 min</MenuItem>
+                <MenuItem value={1}>01:00h</MenuItem>
+                <MenuItem value={1.5}>01:30h</MenuItem>
+                <MenuItem value={2}>02:00h</MenuItem>
+                <MenuItem value={2.5}>02:30h</MenuItem>
+                <MenuItem value={3}>03:00h</MenuItem>
+                <MenuItem value={4}>+03:00h</MenuItem>
+              </Select>
+            </Grid>
+
+            <Grid item>
+              <Typography>Intervalo Mínimo entre Sessões</Typography>
+              <Select
+                value={sessionsInterval}
+                size="small"
+                disabled={sessionsQuantity === 1}
+                onChange={(e) => setSessionsInterval(e.target.value)}
+                sx={{ width: 120 }}
+              >
+                <MenuItem value={1}>1 dia</MenuItem>
+                <MenuItem value={2}>2 dias</MenuItem>
+                <MenuItem value={3}>3 dias</MenuItem>
+                <MenuItem value={4}>4 dias</MenuItem>
+                <MenuItem value={5}>5 dias</MenuItem>
+                <MenuItem value={6}>6 dias</MenuItem>
+                <MenuItem value={7}>7 dias</MenuItem>
+                <MenuItem value={0}>+7 dias</MenuItem>
+              </Select>
+            </Grid>
+          </Grid>
+        </Grid>
+
         <Grid
           container
           sx={{ mt: 2 }}
