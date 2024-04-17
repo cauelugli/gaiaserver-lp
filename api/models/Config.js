@@ -158,8 +158,9 @@ const configSchema = new Schema({
     },
   },
   services: {
-    canCreate: {
-      type: Array,
+    canBeDeleted: {
+      type: Boolean,
+      default: true,
     },
   },
   sidebar: {

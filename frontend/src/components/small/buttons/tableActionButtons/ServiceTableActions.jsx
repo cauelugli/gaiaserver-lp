@@ -72,7 +72,7 @@ export default function ServiceTableActions(props) {
           <ListItemButton
             onClick={(item) => handleConfirmDelete(item)}
             sx={{ color: "red" }}
-            // disabled={props.configData.servicesCanBeDeleted}
+            disabled={!props.configData.canBeDeleted}
           >
             <ListItemIcon>
               <DeleteIcon sx={{ color: "red" }} />

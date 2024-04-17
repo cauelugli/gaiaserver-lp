@@ -304,6 +304,23 @@ router.put("/finance", async (req, res) => {
   }
 });
 
+// SERVICES
+router.put("/services", async (req, res) => {
+  try {
+    const { canBeDeleted } = req.body;
+
+    const config = await Config.findOne();
+
+    config.services.canBeDeleted = canBeDeleted;
+
+    await config.save();
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // CUSTOMIZATION
 router.put("/customization", async (req, res) => {
   try {

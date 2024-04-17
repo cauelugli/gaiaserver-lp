@@ -306,7 +306,7 @@ export default function ServiceTable({
                       onClick={() => setSelectedService(service)}
                     >
                       <ServiceTableActions
-                        configData={configData}
+                        configData={configData.services}
                         setOpenEdit={setOpenEdit}
                         selectedItem={selectedService}
                         refreshData={refreshData}
