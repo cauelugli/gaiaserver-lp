@@ -55,9 +55,9 @@ export default function Stock({
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
-  const [config, setConfig] = React.useState(false);
-  const [value, setValue] = React.useState(0);
+  const [configStock, setConfigStock] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState([]);
+  const [value, setValue] = React.useState(0);
 
   const [stockItems, setStockItems] = React.useState([]);
   const [products, setProducts] = React.useState([]);
@@ -136,11 +136,9 @@ export default function Stock({
         const stockItems = await api.get("/stockItems");
         const products = await api.get("/products");
         const stockEntries = await api.get("/stock");
-        const config = await api.get("/config/stock");
-        const configCustomization = await api.get("/config");
-        setConfig(config.data);
-        setConfigCustomization(configCustomization.data[0].customization);
-
+        const config = await api.get("/config");
+        setConfigStock(config.data[0].stock);
+        setConfigCustomization(config.data[0].customization);
         setStockItems(stockItems.data);
         setProducts(products.data);
         setStock(stockEntries.data);
@@ -294,7 +292,7 @@ export default function Stock({
               userName={userName}
               userRole={userRole}
               userDepartment={userDepartment}
-              configData={config}
+              configData={configStock}
               searchValue={searchValue}
               searchOption={searchOption}
               refreshData={refreshData}
@@ -368,7 +366,7 @@ export default function Stock({
           <AddStockProductForm
             userName={userName}
             userDepartment={userDepartment}
-            configData={config}
+            configData={configStock}
             configCustomization={configCustomization}
             products={products}
             onClose={() => closeModal(3)}
@@ -388,7 +386,7 @@ export default function Stock({
         >
           <AddStockForm
             userName={userName}
-            configData={config}
+            configData={configStock}
             stockItems={stockItems}
             onClose={() => closeModal(4)}
             refreshData={refreshData}

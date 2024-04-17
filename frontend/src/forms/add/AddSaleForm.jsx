@@ -49,7 +49,12 @@ const AddSaleForm = ({
   fromShortcut,
   addFromShortcut,
 }) => {
-  const [config, setConfig] = React.useState([]);
+  const [configRequests, setConfigRequests] = React.useState([]);
+  const [configCustomization, setConfigCustomization] = React.useState([]);
+  const [departments, setDepartments] = React.useState([]);
+  const [products, setProducts] = React.useState([]);
+
+  
   let selectedCustomer = {};
   if (selectedItem || fromShortcut) {
     selectedCustomer = selectedItem;
@@ -102,23 +107,19 @@ const AddSaleForm = ({
   const [deliveryScheduledTo, setDeliveryScheduledTo] = React.useState(dayjs());
   const [attachedFiles, setAttachedFiles] = React.useState([]);
 
-  const [departments, setDepartments] = React.useState([]);
-  const [products, setProducts] = React.useState([]);
-  const [configCustomization, setConfigCustomization] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const departments = await api.get("/departments");
         const products = await api.get("/products");
-        const config = await api.get("/config/requests");
-        const configCustomization = await api.get("/config");
-        setConfig(config.data);
+        const config = await api.get("/config");
+        setConfigRequests(config.data[0].requests);
         setDepartments(
           departments.data.filter((department) => !department.isInternal)
         );
         setProducts(products.data);
-        setConfigCustomization(configCustomization.data[0].customization);
+        setConfigCustomization(config.data[0].customization);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -164,7 +165,7 @@ const AddSaleForm = ({
         },
         seller,
         manager: department.manager || "",
-        status: config.requestsNeedApproval ? "Aberto" : "Aprovado",
+        status: configRequests.requestsNeedApproval ? "Aberto" : "Aprovado",
         price: materialsCost.toFixed(2),
         items: materials,
         deliveryAddress,

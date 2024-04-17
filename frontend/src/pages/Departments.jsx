@@ -111,17 +111,15 @@ export default function Departments({ userName, configTables }) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const users = await api.get("/users");
-        const managers = await api.get("/managers");
+        const config = await api.get("/config");
         const departments = await api.get("/departments");
-        const positions = await api.get("/positions");
         const groups = await api.get("/groups");
-        const config = await api.get("/config/departments");
-        const configCustomization = await api.get("/config");
+        const managers = await api.get("/managers");
+        const positions = await api.get("/positions");
+        const users = await api.get("/users");
         const allUsersData = [...users.data, ...managers.data];
-
-        setConfig(config.data);
-        setConfigCustomization(configCustomization.data[0].customization);
+        setConfig(config.data[0].departments);
+        setConfigCustomization(config.data[0].customization);
         setUsers(users.data);
         setManagers(managers.data);
         setGroups(groups.data);

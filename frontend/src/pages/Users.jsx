@@ -47,7 +47,8 @@ function CustomTabPanel(props) {
 export default function Users({ userName }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
-  const [config, setConfig] = React.useState(false);
+  const [configUsers, setConfigUsers] = React.useState(false);
+  const [configManagers, setConfigManagers] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState(false);
   const [configNotifications, setConfigNotifications] = React.useState(false);
   const [configNotificationsBooleans, setConfigNotificationsBooleans] =
@@ -121,27 +122,20 @@ export default function Users({ userName }) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const users = await api.get("/users");
-        const managers = await api.get("/managers");
         const departments = await api.get("/departments");
+        const managers = await api.get("/managers");
         const positions = await api.get("/positions");
-        const usersData = users.data;
-        const managersData = managers.data;
-        const config = await api.get("/config/users");
-        const configCustomization = await api.get("/config");
-        const configNotifications = await api.get("/config/notifications");
-        const configNotificationsBooleans = await api.get(
-          "/config/notificationsBooleans"
-        );
-        setConfig(config.data);
-        setConfigCustomization(configCustomization.data[0].customization);
-        setConfigNotifications(configNotifications.data);
-        setConfigNotificationsBooleans(configNotificationsBooleans.data);
-        setUsers(usersData);
-        setManagers(managersData);
+        const users = await api.get("/users");
+        const config = await api.get("/config");
         setDepartments(departments.data);
-        setDepartments(departments.data);
+        setManagers(managers.data);
         setPositions(positions.data);
+        setUsers(users.data);
+        setConfigCustomization(config.data[0].customization);
+        setConfigManagers(config.data[0].managers);
+        setConfigNotifications(config.data[0].notifications);
+        setConfigNotificationsBooleans(config.data[0].notificationsBooleans);
+        setConfigUsers(config.data[0].users);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -227,7 +221,7 @@ export default function Users({ userName }) {
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               searchValue={searchValue}
-              configData={config}
+              configData={configUsers}
               // searchDepartment={searchDepartment}
               searchOption={searchOption}
             />
@@ -251,7 +245,7 @@ export default function Users({ userName }) {
             />
 
             <ManagerTable
-              configData={config}
+              configData={configManagers}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               searchValue={searchValue}
@@ -269,7 +263,6 @@ export default function Users({ userName }) {
         >
           <AddUserForm
             userName={userName}
-            configData={config}
             configCustomization={configCustomization}
             configNotifications={configNotifications}
             configNotificationsBooleans={configNotificationsBooleans}
@@ -292,7 +285,6 @@ export default function Users({ userName }) {
         >
           <AddManagerForm
             userName={userName}
-            config={config}
             configCustomization={configCustomization}
             openAdd={openAddManager}
             setOpenAdd={setOpenAddManager}

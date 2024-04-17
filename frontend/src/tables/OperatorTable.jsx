@@ -29,7 +29,6 @@ const api = axios.create({
 
 export default function OperatorTable({
   refreshData,
-  configData,
   roles,
   setRefreshData,
   searchValue,
@@ -217,7 +216,6 @@ export default function OperatorTable({
                       onClick={() => setSelectedOperator(row)}
                     >
                       <OperatorTableActions
-                        configData={configData}
                         setOpenEdit={setOpenEdit}
                         handleConfirmDelete={handleConfirmDelete}
                         selectedItem={selectedOperator}

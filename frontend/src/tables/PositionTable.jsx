@@ -20,7 +20,6 @@ import PositionMembers from "../components/small/PositionMembers";
 import PositionTableActions from "../components/small/buttons/tableActionButtons/PositionTableActions";
 
 export default function PositionTable({
-  configData,
   positions,
   users,
   toast,
@@ -165,7 +164,6 @@ export default function PositionTable({
                         onClick={() => setSelectedPosition(position)}
                       >
                         <PositionTableActions
-                          configData={configData}
                           setOpenEdit={setOpenEdit}
                           selectedItem={selectedPosition}
                           refreshData={refreshData}

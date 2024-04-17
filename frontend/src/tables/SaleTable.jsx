@@ -48,7 +48,6 @@ export default function SaleTable({
   userId,
   userName,
   userUsername,
-  config,
   searchValue,
   searchStatus,
   searchOption,
@@ -494,7 +493,6 @@ export default function SaleTable({
                         selectedItem={selectedSale}
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}
-                        config={config}
                         userName={userName}
                         sale={sale}
                         handleOpenEdit={handleOpenEdit}

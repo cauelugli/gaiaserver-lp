@@ -110,13 +110,12 @@ export default function Customers({
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const customers = await api.get("/customers");
         const clients = await api.get("/clients");
-        const config = await api.get("/config/customers");
-        const configCustomization = await api.get("/config");
-        setConfig(config.data);
-        setConfigCustomization(configCustomization.data[0].customization);
+        const config = await api.get("/config");
+        const customers = await api.get("/customers");
         setClients(clients.data);
+        setConfig(config.data[0].customers);
+        setConfigCustomization(config.data[0].customization);
         setCustomers(customers.data);
         setIsLoading(false);
       } catch (error) {

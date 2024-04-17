@@ -136,21 +136,15 @@ export default function App() {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        const configNotifications = await api.get("/config/notifications");
-        const configNotificationsBooleans = await api.get(
-          "/config/notificationsBooleans"
-        );
-        const configTables = await api.get("/config/tables");
-        const configAgenda = await api.get("/config/agenda");
         const notifications = await api.get(
           `/managers/notifications/${userData._id}`
         );
         const preferences = await api.get(`/userPreferences/${userData._id}`);
         setConfigData(config.data[0]);
-        setConfigNotifications(configNotifications.data);
-        setConfigNotificationsBooleans(configNotificationsBooleans.data);
-        setConfigTables(configTables.data);
-        setConfigAgenda(configAgenda.data);
+        setConfigNotifications(config.data[0].notifications);
+        setConfigNotificationsBooleans(config.data[0].notificationsBooleans);
+        setConfigTables(config.data[0].tables);
+        setConfigAgenda(config.data[0].agenda);
         setNotifications(notifications.data);
         setUserPreferences(preferences.data);
 

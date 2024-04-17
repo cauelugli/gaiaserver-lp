@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -57,7 +56,6 @@ export default function Requests({
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
-  const [config, setConfig] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
@@ -106,10 +104,8 @@ export default function Requests({
         const jobs = await api.get("/jobs");
         const sales = await api.get("/sales");
         const managers = await api.get("/managers");
-        const config = await api.get("/config/requests");
-        const configCustomization = await api.get("/config");
-        setConfig(config.data);
-        setConfigCustomization(configCustomization.data[0].customization);
+        const config = await api.get("/config");
+        setConfigCustomization(config.data[0].customization);
         setJobs(jobs.data);
         setSales(sales.data);
         setManagers(managers.data);
@@ -215,7 +211,6 @@ export default function Requests({
               />
 
               <JobTable
-                config={config}
                 userId={userId}
                 userName={userName}
                 userUsername={userUsername}
@@ -252,7 +247,6 @@ export default function Requests({
                 userId={userId}
                 userName={userName}
                 userUsername={userUsername}
-                config={config}
                 searchValue={searchValue}
                 searchOption={searchOption}
                 sales={sales}
@@ -279,7 +273,6 @@ export default function Requests({
             setOpenAddJob={setOpenAddJob}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
-            configCustomization={configCustomization}
             configAgenda={configAgenda}
             toast={toast}
           />
@@ -297,7 +290,6 @@ export default function Requests({
             openAddSale={openAddSale}
             setOpenAddSale={setOpenAddSale}
             refreshData={refreshData}
-            configCustomization={configCustomization}
             setRefreshData={setRefreshData}
             toast={toast}
           />

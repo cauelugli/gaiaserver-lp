@@ -14,22 +14,11 @@ router.post("/", async (req, res) => {
   }
 });
 
-//GET ALL CONFIGS
+// GET ALL CONFIGS
 router.get("/", async (req, res) => {
   try {
     const configs = await Config.find();
     res.status(200).json(configs);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// GET DASHBOARD CONFIGS
-router.get("/dashboard", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const dashboardConfig = config ? config.dashboard : null;
-    res.status(200).json(dashboardConfig);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -50,17 +39,6 @@ router.put("/dashboard", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// GET CUSTOMERS CONFIGS
-router.get("/customers", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const requestsConfig = config ? config.customers : null;
-    res.status(200).json(requestsConfig);
-  } catch (err) {
-    res.status(500).json(err);
   }
 });
 
@@ -87,17 +65,6 @@ router.put("/customers", async (req, res) => {
   }
 });
 
-// GET USERS CONFIGS
-router.get("/users", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const requestsConfig = config ? config.users : null;
-    res.status(200).json(requestsConfig);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // USERS
 router.put("/users", async (req, res) => {
   try {
@@ -116,17 +83,6 @@ router.put("/users", async (req, res) => {
   }
 });
 
-// GET REQUESTS CONFIGS
-router.get("/requests", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const requestsConfig = config ? config.requests : null;
-    res.status(200).json(requestsConfig);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // REQUESTS
 router.put("/requests", async (req, res) => {
   try {
@@ -142,17 +98,6 @@ router.put("/requests", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// GET STOCK CONFIGS
-router.get("/stock", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const requestsConfig = config ? config.stock : null;
-    res.status(200).json(requestsConfig);
-  } catch (err) {
-    res.status(500).json(err);
   }
 });
 
@@ -180,17 +125,6 @@ router.put("/stock", async (req, res) => {
   }
 });
 
-// GET QUOTES CONFIGS
-router.get("/quotes", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const requestsConfig = config ? config.quotes : null;
-    res.status(200).json(requestsConfig);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // QUOTES
 router.put("/quotes", async (req, res) => {
   try {
@@ -201,17 +135,6 @@ router.put("/quotes", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// GET PROJECTS CONFIGS
-router.get("/projects", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const projectsConfig = config ? config.projects : null;
-    res.status(200).json(projectsConfig);
-  } catch (err) {
-    res.status(500).json(err);
   }
 });
 
@@ -231,17 +154,6 @@ router.put("/projects", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// GET AGENDA CONFIGS
-router.get("/agenda", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const agendaConfig = config ? config.agenda : null;
-    res.status(200).json(agendaConfig);
-  } catch (err) {
-    res.status(500).json(err);
   }
 });
 
@@ -273,17 +185,6 @@ router.put("/agenda", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// GET FINANCE CONFIGS
-router.get("/finance", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const financeConfig = config ? config.finance : null;
-    res.status(200).json(financeConfig);
-  } catch (err) {
-    res.status(500).json(err);
   }
 });
 
@@ -341,17 +242,6 @@ router.put("/customization", async (req, res) => {
   }
 });
 
-// GET DEPARTMENTS CONFIGS
-router.get("/departments", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const requestsConfig = config ? config.departments : null;
-    res.status(200).json(requestsConfig);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // DEPARTMENTS
 router.put("/departments", async (req, res) => {
   try {
@@ -370,17 +260,6 @@ router.put("/departments", async (req, res) => {
   }
 });
 
-// GET SECURITY CONFIGS
-router.get("/security", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const requestsConfig = config ? config.security : null;
-    res.status(200).json(requestsConfig);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // SECURITY
 router.put("/security", async (req, res) => {
   try {
@@ -395,17 +274,6 @@ router.put("/security", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// GET SIDEBAR CONFIGS
-router.get("/sidebar", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const sidebarConfig = config ? config.sidebar : null;
-    res.status(200).json(sidebarConfig);
-  } catch (err) {
-    res.status(500).json(err);
   }
 });
 
@@ -434,28 +302,6 @@ router.put("/sidebar", async (req, res) => {
   }
 });
 
-// GET NOTIFICATIONS CONFIGS
-router.get("/notifications", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const sidebarConfig = config ? config.notifications : null;
-    res.status(200).json(sidebarConfig);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// GET NOTIFICATIONS BOOLEANS CONFIGS
-router.get("/notificationsBooleans", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const sidebarConfig = config ? config.notificationsBooleans : null;
-    res.status(200).json(sidebarConfig);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // NOTIFICATIONS
 router.put("/notifications", async (req, res) => {
   try {
@@ -479,17 +325,6 @@ router.put("/notifications", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// GET TABLES CONFIGS
-router.get("/tables", async (req, res) => {
-  try {
-    const config = await Config.findOne();
-    const sidebarConfig = config ? config.tables : null;
-    res.status(200).json(sidebarConfig);
-  } catch (err) {
-    res.status(500).json(err);
   }
 });
 

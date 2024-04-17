@@ -50,7 +50,6 @@ const api = axios.create({
 const socket = io("http://localhost:3000");
 
 export default function JobTable({
-  config,
   userId,
   userName,
   userUsername,
@@ -559,7 +558,6 @@ export default function JobTable({
                         selectedItem={selectedJob}
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}
-                        config={config}
                         userName={userName}
                         userRole={userRole}
                         job={job}

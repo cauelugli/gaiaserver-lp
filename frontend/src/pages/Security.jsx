@@ -49,7 +49,6 @@ function CustomTabPanel(props) {
 export default function Security() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
-  const [config, setConfig] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState(false);
   React.useState(false);
   const [value, setValue] = React.useState(0);
@@ -130,9 +129,7 @@ export default function Security() {
         const usersData = users.data;
         const managersData = managers.data;
         const combinedData = [...usersData, ...managersData];
-        const config = await api.get("/config/users");
         const configCustomization = await api.get("/config");
-        setConfig(config.data);
         setConfigCustomization(configCustomization.data[0].customization);
         setUsers(usersData);
         setManagers(managersData);
@@ -228,7 +225,6 @@ export default function Security() {
             />
 
             <OperatorTable
-              configData={config}
               roles={roles}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
@@ -255,7 +251,6 @@ export default function Security() {
             />
 
             <PositionTable
-              configData={config}
               toast={toast}
               searchValue={searchValue}
               searchOption={searchOption}
@@ -286,7 +281,6 @@ export default function Security() {
             />
 
             <RoleTable
-              configData={config}
               users={users}
               managers={managers}
               refreshData={refreshData}

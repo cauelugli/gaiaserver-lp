@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -62,7 +61,13 @@ const AddJobForm = ({
   fromShortcut,
   addFromShortcut,
 }) => {
-  const [config, setConfig] = React.useState([]);
+  const [configRequests, setConfigRequests] = React.useState([]);
+  const [configCustomization, setConfigCustomization] = React.useState([]);
+  const [departments, setDepartments] = React.useState([]);
+  const [services, setServices] = React.useState([]);
+  const [stockItems, setStockItems] = React.useState([]);
+
+
   let selectedCustomer = {};
   if (selectedItem || fromShortcut) {
     selectedCustomer = selectedItem;
@@ -112,26 +117,16 @@ const AddJobForm = ({
     setScheduleOptions(options);
   }, [scheduledTo, service, worker]);
 
-  const [customers, setCustomers] = React.useState([]);
-  const [clients, setClients] = React.useState([]);
-  const [departments, setDepartments] = React.useState([]);
-  const [services, setServices] = React.useState([]);
-  const [stockItems, setStockItems] = React.useState([]);
-  const [configCustomization, setConfigCustomization] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const customers = await api.get("/customers");
-        const clients = await api.get("/clients");
+        const config = await api.get("/config");
         const departments = await api.get("/departments");
         const services = await api.get("/services");
         const stockItems = await api.get("/stockItems");
-        const config = await api.get("/config/requests");
-        const configCustomization = await api.get("/config");
-        setConfig(config.data);
-        setCustomers(customers.data);
-        setClients(clients.data);
+        setConfigCustomization(config.data[0].customization);
+        setConfigRequests(config.data[0].requests);
         setDepartments(
           departments.data.filter(
             (department) => department.type === "Serviços"
@@ -139,7 +134,6 @@ const AddJobForm = ({
         );
         setServices(services.data);
         setStockItems(stockItems.data);
-        setConfigCustomization(configCustomization.data[0].customization);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -263,7 +257,7 @@ const AddJobForm = ({
         },
         worker,
         manager: department.manager || {},
-        status: config.requestsNeedApproval ? "Aberto" : "Aprovado",
+        status: configRequests.requestsNeedApproval ? "Aberto" : "Aprovado",
         service: {
           _id: service._id || service.id,
           name: service.name,
