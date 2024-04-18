@@ -288,7 +288,9 @@ const HomeBlock = ({ allowedLinks, configData }) => {
             </Grid>
 
             <Grid container>
-              <HomeRecentActivity />
+              <HomeRecentActivity
+                mainColor={configData.customization && configData.customization.mainColor}
+              />
             </Grid>
           </>
         </Grid>

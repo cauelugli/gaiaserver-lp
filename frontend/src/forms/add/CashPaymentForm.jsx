@@ -182,6 +182,7 @@ export default function CashPaymentForm({
                         onChange={(newValue) => setDate(newValue)}
                         value={date}
                         sx={{
+                          // o overwrite do Mui está aqui
                           "& .MuiInputBase-root": {
                             height: 40,
                             width: 150,
