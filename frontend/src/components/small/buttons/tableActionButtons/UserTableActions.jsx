@@ -155,7 +155,7 @@ export default function UserTableActions(props) {
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
             toast={toast}
-            endpoint="users/activate"
+            model="User"
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
             } ${

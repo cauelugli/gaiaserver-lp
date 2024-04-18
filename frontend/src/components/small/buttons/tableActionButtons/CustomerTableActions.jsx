@@ -205,9 +205,6 @@ export default function CustomerTableActions(props) {
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
             toast={toast}
-            endpoint={
-              props.selectedItem.cpf ? "clients/activate" : "customers/activate"
-            }
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
             } Arquivado com Sucesso`}
@@ -226,9 +223,7 @@ export default function CustomerTableActions(props) {
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
             toast={toast}
-            endpoint={
-              props.selectedItem.cpf ? "clients/activate" : "customers/activate"
-            }
+            model={props.selectedItem.cpf ? "Client" : "Customer"}
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
             } ${

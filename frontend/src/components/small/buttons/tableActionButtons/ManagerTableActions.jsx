@@ -151,7 +151,7 @@ export default function ManagerTableActions(props) {
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
             toast={toast}
-            endpoint="managers/activate"
+            model="Manager"
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
             } ${

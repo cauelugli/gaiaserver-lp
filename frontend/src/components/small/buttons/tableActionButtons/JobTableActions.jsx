@@ -276,7 +276,7 @@ export default function JobTableActions(props) {
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
             toast={toast}
-            endpoint="jobs/activate"
+            model="Job"
             successMessage={`${
               props.selectedItem.title && props.selectedItem.title
             } ${

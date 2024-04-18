@@ -59,23 +59,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// ACTIVATE/INACTIVATE MANAGER
-router.put("/activate/:id", async (req, res) => {
-  const managerId = req.params.id;
-  try {
-    const updatedManager = await Manager.findByIdAndUpdate(
-      managerId,
-      {
-        isActive: req.body.isActive,
-      },
-      { new: true }
-    );
-    res.status(200).json(updatedManager);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // DELETE MANAGER
 router.delete("/:id", async (req, res) => {
   const managerId = req.params.id;

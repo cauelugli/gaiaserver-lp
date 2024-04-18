@@ -10,6 +10,7 @@ const api = axios.create({
 
 const GenericActivateForm = ({
   selectedItem,
+  model,
   refreshData,
   setRefreshData,
   openDialog,
@@ -20,7 +21,8 @@ const GenericActivateForm = ({
 }) => {
   const handleIActivate = async () => {
     try {
-      const res = await api.put(`/${endpoint}/${selectedItem._id}`, {
+      const res = await api.put(`/activate/${selectedItem._id}`, {
+        model,
         isActive: selectedItem.isActive ? false : true,
         status: selectedItem.status === "Arquivado" ? "Aberto" : "Arquivado",
       });

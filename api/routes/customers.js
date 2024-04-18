@@ -33,23 +33,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// ACTIVATE/INACTIVATE CUSTOMER
-router.put("/activate/:id", async (req, res) => {
-  const customerId = req.params.id;
-  try {
-    const updatedCustomer = await Customer.findByIdAndUpdate(
-      customerId,
-      {
-        isActive: req.body.isActive,
-      },
-      { new: true }
-    );
-    res.status(200).json(updatedCustomer);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // DELETE CUSTOMER
 router.delete("/:id", async (req, res) => {
   const customerId = req.params.id;

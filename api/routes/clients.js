@@ -24,24 +24,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// ACTIVATE/INACTIVATE CLIENT
-router.put("/activate/:id", async (req, res) => {
-  const clientId = req.params.id;
-  try {
-    const updatedClient = await Client.findByIdAndUpdate(
-      clientId,
-      {
-        isActive: req.body.isActive,
-        status: req.body.status,
-      },
-      { new: true }
-    );
-    res.status(200).json(updatedClient);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // DELETE CLIENT
 router.delete("/:id", async (req, res) => {
   const clientId = req.params.id;

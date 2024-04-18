@@ -441,24 +441,6 @@ router.put("/resolve", async (req, res) => {
   }
 });
 
-// ACTIVATE/INACTIVATE SALE
-router.put("/activate/:id", async (req, res) => {
-  const saleId = req.params.id;
-  try {
-    const updatedSale = await Sale.findByIdAndUpdate(
-      saleId,
-      {
-        isActive: req.body.isActive,
-        status: req.body.status,
-      },
-      { new: true }
-    );
-    res.status(200).json(updatedSale);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // ADD SALE INTERACTION
 router.put("/interaction", async (req, res) => {
   try {

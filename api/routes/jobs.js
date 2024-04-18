@@ -238,24 +238,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// ACTIVATE/INACTIVATE JOB
-router.put("/activate/:id", async (req, res) => {
-  const jobId = req.params.id;
-  try {
-    const updatedJob = await Job.findByIdAndUpdate(
-      jobId,
-      {
-        isActive: req.body.isActive,
-        status: req.body.status,
-      },
-      { new: true }
-    );
-    res.status(200).json(updatedJob);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // REQUEST APPROVAL JOB
 router.put("/requestApproval", async (req, res) => {
   try {

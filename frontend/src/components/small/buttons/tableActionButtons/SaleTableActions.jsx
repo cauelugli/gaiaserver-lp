@@ -191,7 +191,7 @@ export default function SaleTableActions(props) {
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
             toast={toast}
-            endpoint="sales/activate"
+            model="Sale"
             successMessage={`Venda ${
               props.selectedItem.quoteNumber && props.selectedItem.quoteNumber
             } ${

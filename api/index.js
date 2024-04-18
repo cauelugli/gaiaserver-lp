@@ -9,6 +9,7 @@ const cors = require("cors");
 
 const newRoute = require("./routes/new");
 const authRoute = require("./routes/auth");
+const activateRoute = require("./routes/activate");
 const configRoute = require("./routes/config");
 const clientRoute = require("./routes/clients");
 const customerRoute = require("./routes/customers");
@@ -52,6 +53,7 @@ mongoose
 
 app.use("/api/new", newRoute);
 app.use("/api/login", authRoute);
+app.use("/api/activate", activateRoute);
 app.use("/api/config", configRoute);
 app.use("/api/clients", clientRoute);
 app.use("/api/customers", customerRoute);
