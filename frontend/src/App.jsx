@@ -307,6 +307,7 @@ export default function App() {
                         <Home
                           userId={userData._id}
                           userName={userData.name}
+                          userUsername={userData.username}
                           userGender={userData.gender}
                           handleShortcutClick={handleShortcutClick}
                           allowedLinks={allowedLinks}

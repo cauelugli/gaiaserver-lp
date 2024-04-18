@@ -11,6 +11,7 @@ import WelcomingMessage from "../components/small/WelcomingMessage";
 const Home = ({
   userId,
   userName,
+  userUsername,
   userGender,
   allowedLinks,
   configDashboard,
@@ -51,7 +52,11 @@ const Home = ({
       />
       <Grid container direction="row">
         <Grid item md={9}>
-          <HomeBlock allowedLinks={allowedLinks} configData={configData} />
+          <HomeBlock
+            userUsername={userUsername}
+            allowedLinks={allowedLinks}
+            configData={configData}
+          />
         </Grid>
         <Grid item md={3}>
           <HomeSideBar

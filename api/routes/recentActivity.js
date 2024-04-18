@@ -17,11 +17,28 @@ router.post("/", async (req, res) => {
   const newActivity = new RecentActivity(req.body);
   try {
     const savedActivity = await newActivity.save();
-    console.log()
+    console.log();
     res.status(200).json(savedActivity);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
+  }
+});
+
+// DELETE RECENT ACTIVITY LIST
+router.delete("/null", async (req, res) => {
+  try {
+    const deletedActivityList = await RecentActivity.deleteMany({});
+    res.status(200).json({
+      message: "All recent activities deleted successfully.",
+      deletedCount: deletedActivityList.deletedCount,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "Error while deleting recent activities",
+      error: err,
+    });
   }
 });
 

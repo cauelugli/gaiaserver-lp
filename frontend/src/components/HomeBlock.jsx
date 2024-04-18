@@ -123,7 +123,7 @@ const optionsFourItemsRow = [
   },
 ];
 
-const HomeBlock = ({ allowedLinks, configData }) => {
+const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
   const uniqueAllowedLinks = [...new Set(allowedLinks)];
 
   const allowedListMainblocks = uniqueAllowedLinks.filter((link) =>
@@ -289,7 +289,10 @@ const HomeBlock = ({ allowedLinks, configData }) => {
 
             <Grid container>
               <HomeRecentActivity
-                mainColor={configData.customization && configData.customization.mainColor}
+                userUsername={userUsername}
+                mainColor={
+                  configData.customization && configData.customization.mainColor
+                }
               />
             </Grid>
           </>
