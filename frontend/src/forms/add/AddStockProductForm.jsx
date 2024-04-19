@@ -132,11 +132,7 @@ export default function AddStockProductForm({
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
-              <TableRow
-                sx={{
-                  backgroundColor: "#eee",
-                }}
-              >
+              <TableRow>
                 <TableCell>
                   <Typography sx={{ fontSize: 12 }}></Typography>
                 </TableCell>

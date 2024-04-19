@@ -102,11 +102,7 @@ export default function PositionTable({
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
-              <TableRow
-                sx={{
-                  backgroundColor: "#eee",
-                }}
-              >
+              <TableRow>
                 {tableHeaderRow.map((headCell) => (
                   <TableCell
                     align={headCell.label === "Nome do Cargo" ? "" : "center"}

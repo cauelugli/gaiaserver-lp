@@ -119,11 +119,7 @@ export default function ServiceTable({
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
-              <TableRow
-                sx={{
-                  backgroundColor: "#eee",
-                }}
-              >
+              <TableRow>
                 {tableHeaderRow.map((headCell) => (
                   <TableCell
                     align={headCell.label === "Nome" ? "" : "center"}

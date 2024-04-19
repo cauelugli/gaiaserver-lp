@@ -160,11 +160,7 @@ export default function UserTable({
         </Box>
         <TableContainer component={Paper}>
           <Table>
-            <TableRow
-              sx={{
-                backgroundColor: "#eee",
-              }}
-            >
+            <TableRow>
               <TableCell padding="checkbox"></TableCell>
               {tableHeaderRow.map((headCell) => (
                 <TableCell
@@ -219,7 +215,7 @@ export default function UserTable({
               .map((row) => (
                 <React.Fragment key={row._id}>
                   {row.position.name && (
-                    <TableRow sx={{ "&:hover": { backgroundColor: "#eee " } }}>
+                    <TableRow>
                       <TableCell sx={{ py: 0 }}>
                         <Avatar
                           src={`http://localhost:3000/static/${row.image}`}

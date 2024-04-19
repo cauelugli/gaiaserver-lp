@@ -407,11 +407,7 @@ export default function JobTable({
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            <TableRow
-              sx={{
-                backgroundColor: "#eee",
-              }}
-            >
+            <TableRow>
               {tableHeaderRow.map((headCell) => (
                 <TableCell
                   align={headCell.label === "Título" ? "" : "center"}
@@ -460,17 +456,7 @@ export default function JobTable({
               })
               .map((job) => (
                 <>
-                  <TableRow
-                    key={job._id}
-                    sx={{
-                      cursor: "pointer",
-                      backgroundColor:
-                        selectedJob._id === job._id && openDetail
-                          ? "#eee"
-                          : "none",
-                      "&:hover": { backgroundColor: "#eee " },
-                    }}
-                  >
+                  <TableRow key={job._id} sx={{ cursor: "pointer" }}>
                     <TableCell
                       onClick={() => handleOpenDetail(job)}
                       cursor="pointer"

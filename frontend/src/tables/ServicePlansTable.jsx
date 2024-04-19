@@ -114,7 +114,7 @@ export default function ServicePlansTable({
             <TableBody>
               <TableRow
                 sx={{
-                   backgroundColor: "#eee",
+                  backgroundColor: "#eee",
                 }}
               >
                 {tableHeaderRow.map((headCell) => (
@@ -145,18 +145,7 @@ export default function ServicePlansTable({
                 )
                 .map((servicePlan) => (
                   <>
-                    <TableRow
-                      key={servicePlan._id}
-                      sx={{
-                        cursor: "pointer",
-                        backgroundColor:
-                          selectedService.name === servicePlan.name &&
-                          openDetail
-                            ? "#eee"
-                            : "none",
-                        "&:hover": { backgroundColor: "#eee " },
-                      }}
-                    >
+                    <TableRow key={servicePlan._id} sx={{ cursor: "pointer" }}>
                       <TableCell
                         onClick={() => handleOpenDetail(servicePlan)}
                         cursor="pointer"

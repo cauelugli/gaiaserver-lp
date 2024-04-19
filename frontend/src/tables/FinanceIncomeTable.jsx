@@ -174,11 +174,7 @@ export default function FinanceIncomeTable({
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
-              <TableRow
-                sx={{
-                  backgroundColor: "#eee",
-                }}
-              >
+              <TableRow>
                 {tableHeaderRow.map((headCell) => (
                   <TableCell
                     align={headCell.label === "Orçamento" ? "" : "center"}
@@ -219,12 +215,7 @@ export default function FinanceIncomeTable({
                 })
                 .map((income) => (
                   <>
-                    <TableRow
-                      key={income._id}
-                      sx={{
-                        "&:hover": { backgroundColor: "#eee " },
-                      }}
-                    >
+                    <TableRow key={income._id}>
                       <TableCell>
                         <Typography sx={{ fontSize: 13 }}>
                           {income.quote}

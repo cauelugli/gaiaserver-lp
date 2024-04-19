@@ -359,11 +359,7 @@ export default function ProjectsTable({
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
-              <TableRow
-                sx={{
-                  backgroundColor: "#eee",
-                }}
-              >
+              <TableRow>
                 {tableHeaderRow.map((headCell) => (
                   <TableCell
                     align={headCell.label === "Nome do Projeto" ? "" : "center"}
@@ -393,17 +389,7 @@ export default function ProjectsTable({
                 )
                 .map((project) => (
                   <>
-                    <TableRow
-                      key={project._id}
-                      sx={{
-                        cursor: "pointer",
-                        backgroundColor:
-                          selectedProject._id === project._id && openDetail
-                            ? "#eee"
-                            : "none",
-                        "&:hover": { backgroundColor: "#eee " },
-                      }}
-                    >
+                    <TableRow key={project._id} sx={{ cursor: "pointer" }}>
                       <TableCell
                         onClick={() => handleOpenDetail(project)}
                         cursor="pointer"
@@ -816,21 +802,8 @@ export default function ProjectsTable({
                                               setSelectedTaskIndex(taskIndex);
                                               setSelectedStageIndex(stageIndex);
                                             }}
-                                            sx={{
-                                              backgroundColor:
-                                                taskIndex % 2
-                                                  ? "lightgrey"
-                                                  : "white",
-                                            }}
                                           >
-                                            <AccordionSummary
-                                              sx={{
-                                                backgroundColor:
-                                                  taskIndex % 2
-                                                    ? "lightgrey"
-                                                    : "white",
-                                              }}
-                                            >
+                                            <AccordionSummary>
                                               <Grid
                                                 key={taskIndex}
                                                 container
@@ -917,7 +890,6 @@ export default function ProjectsTable({
                                                 m: 2,
                                                 border: "1px solid #bbb",
                                                 borderRadius: 1,
-                                                backgroundColor: "white",
                                               }}
                                             >
                                               <Typography
@@ -998,14 +970,6 @@ export default function ProjectsTable({
                                                             key={
                                                               interactionIndex
                                                             }
-                                                            sx={{
-                                                              backgroundColor:
-                                                                interaction.number %
-                                                                  2 ===
-                                                                0
-                                                                  ? "#eee"
-                                                                  : "white",
-                                                            }}
                                                           >
                                                             <TableCell align="left">
                                                               <Typography
@@ -1014,7 +978,6 @@ export default function ProjectsTable({
                                                                 }}
                                                               >
                                                                 {
-                                                                  // maybe
                                                                   interaction
                                                                     .user.name
                                                                 }

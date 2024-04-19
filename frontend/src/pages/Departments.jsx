@@ -108,6 +108,8 @@ export default function Departments({ userName, configTables }) {
   const [groups, setGroups] = React.useState([]);
   const [allUsers, setAllUsers] = React.useState([]);
 
+  console.log("groups in DEPT", groups);
+
   React.useEffect(() => {
     const fetchData = async () => {
       try {
@@ -318,7 +320,7 @@ export default function Departments({ userName, configTables }) {
       )}
       <CustomTabPanel
         value={value}
-        index={configTables.departmentInternal ? 4 : 3}
+        index={configTables.departmentInternal ? 3 : 2}
       >
         {groups.length === 0 ? (
           <NoDataText option="Grupos" />

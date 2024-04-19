@@ -169,11 +169,7 @@ export default function FinanceOutcomeTable({
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
-              <TableRow
-                sx={{
-                  backgroundColor: "#eee",
-                }}
-              >
+              <TableRow>
                 {tableHeaderRow.map((headCell) => (
                   <TableCell
                     align={headCell.label === "Tipo" ? "" : "center"}
@@ -213,12 +209,7 @@ export default function FinanceOutcomeTable({
                   );
                 })
                 .map((outcome) => (
-                  <TableRow
-                    key={outcome._id}
-                    sx={{
-                      "&:hover": { backgroundColor: "#eee " },
-                    }}
-                  >
+                  <TableRow key={outcome._id}>
                     <TableCell>
                       <Typography sx={{ fontSize: 13 }}>
                         {outcome.type === "job" ? "Job" : "Venda"}
@@ -455,8 +446,8 @@ export default function FinanceOutcomeTable({
                           handleChallengeApproval={handleChallengeApproval}
                         />
                       ) : (
-                        <Typography sx={{ fontSize: 13, color:"darkgrey" }}>
-                        Não há Ações
+                        <Typography sx={{ fontSize: 13, color: "darkgrey" }}>
+                          Não há Ações
                         </Typography>
                       )}
                     </TableCell>

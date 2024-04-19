@@ -165,12 +165,7 @@ export default function ProductsTable({
                   );
                 })
                 .map((product) => (
-                  <TableRow
-                    key={product._id}
-                    sx={{
-                      "&:hover": { backgroundColor: "#eee " },
-                    }}
-                  >
+                  <TableRow key={product._id}>
                     <TableCell sx={{ py: 0 }}>
                       <Avatar
                         src={`http://localhost:3000/static/${product.image}`}

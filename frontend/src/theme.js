@@ -8,6 +8,17 @@ export const lightTheme = createTheme({
       paper: "#fff",
     },
   },
+  components: {
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            backgroundColor: "#eee",
+          },
+        },
+      },
+    },
+  },
 });
 
 export const darkTheme = createTheme({
@@ -22,27 +33,39 @@ export const darkTheme = createTheme({
     MuiTypography: {
       styleOverrides: {
         root: {
-          color: "white", // Torna o texto branco para todos os Typography no tema escuro
+          color: "white",
         },
       },
     },
     MuiDialogTitle: {
       styleOverrides: {
         root: {
-          color: "white", // Torna o texto branco para todos os Typography no tema escuro
+          color: "white",
         },
       },
     },
+
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "none",
+          "&:hover": {
+            backgroundColor: "#313131",
+          },
+        },
+      },
+    },
+
     MuiTab: {
       styleOverrides: {
         root: {
-          color: "#aaa", // Cor para abas não selecionadas
+          color: "#aaa",
           "&.Mui-selected": {
-            color: "#fff", // Cor quando a aba está selecionada
+            color: "#fff",
           },
           "&:hover": {
             color: "#ddd",
-            backgroundColor: "#2e2e2e", // Um pouco mais claro que o fundo do componente Tabs
+            backgroundColor: "#2e2e2e",
           },
         },
       },

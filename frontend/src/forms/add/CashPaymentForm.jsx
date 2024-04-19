@@ -92,9 +92,9 @@ export default function CashPaymentForm({
         <Typography sx={{ m: 1, fontSize: 18, fontWeight: "bold" }}>
           Dados do Pagamento
         </Typography>
-        <Box sx={{ px: 1 }}>
-          <Table size="small">
-            <TableHead>
+        <Box sx={{ px: 1, backgroundColor: "red" }}>
+          <Table size="small" sx={{ backgroundColor: "yellow" }}>
+            <TableHead sx={{ backgroundColor: "pink" }}>
               <TableRow>
                 <TableCell>
                   <Typography sx={{ fontSize: 13, color: "#777" }}>
@@ -128,7 +128,7 @@ export default function CashPaymentForm({
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody sx={{ backgroundColor: "green" }}>
               <TableRow>
                 <TableCell>
                   R${selectedFinanceIncome.price.toFixed(2)}
@@ -169,14 +169,9 @@ export default function CashPaymentForm({
                   </Typography>
                 </TableCell>
 
-                <TableCell
-                  align="center"
-                >
+                <TableCell align="center">
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer
-                      components={["DatePicker"]}
-                      sx={{ py: 0 }}
-                    >
+                    <DemoContainer components={["DatePicker"]} sx={{ py: 0 }}>
                       <DatePicker
                         format="DD/MM/YYYY"
                         onChange={(newValue) => setDate(newValue)}

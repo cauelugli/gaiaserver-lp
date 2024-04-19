@@ -183,11 +183,7 @@ export default function ClientTable({
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            <TableRow
-              sx={{
-                backgroundColor: "#eee",
-              }}
-            >
+            <TableRow>
               <TableCell padding="checkbox"></TableCell>
               {tableHeaderRow.map((headCell) => (
                 <TableCell
@@ -236,17 +232,7 @@ export default function ClientTable({
               })
               .map((client) => (
                 <>
-                  <TableRow
-                    key={client._id}
-                    sx={{
-                      cursor: "pointer",
-                      backgroundColor:
-                        selectedClient === client.name && openDetail
-                          ? "#eee"
-                          : "none",
-                      "&:hover": { backgroundColor: "#eee " },
-                    }}
-                  >
+                  <TableRow key={client._id} sx={{ cursor: "pointer" }}>
                     <TableCell sx={{ py: 0 }}>
                       <Avatar
                         src={`http://localhost:3000/static/${client.image}`}
@@ -301,7 +287,9 @@ export default function ClientTable({
                         customer={client}
                         configAgenda={configAgenda}
                         configNotifications={configNotifications}
-                        configNotificationsBooleans={configNotificationsBooleans}
+                        configNotificationsBooleans={
+                          configNotificationsBooleans
+                        }
                         setOpenEdit={setOpenEdit}
                         selectedItem={selectedClient}
                         refreshData={refreshData}

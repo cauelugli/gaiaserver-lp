@@ -213,11 +213,7 @@ export default function CustomerTable({
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            <TableRow
-              sx={{
-                backgroundColor: "#eee",
-              }}
-            >
+            <TableRow>
               {tableHeaderRow.map((headCell) => (
                 <TableCell
                   align={headCell.label === "" ? "" : "left"}
@@ -266,17 +262,7 @@ export default function CustomerTable({
               })
               .map((customer) => (
                 <>
-                  <TableRow
-                    key={customer._id}
-                    sx={{
-                      cursor: "pointer",
-                      backgroundColor:
-                        selectedCustomer === customer.name && openDetail
-                          ? "#eee"
-                          : "none",
-                      "&:hover": { backgroundColor: "#eee " },
-                    }}
-                  >
+                  <TableRow key={customer._id} sx={{ cursor: "pointer" }}>
                     <TableCell
                       onClick={() => handleOpenDetail(customer)}
                       cursor="pointer"
@@ -351,7 +337,9 @@ export default function CustomerTable({
                         customer={customer}
                         configAgenda={configAgenda}
                         configNotifications={configNotifications}
-                        configNotificationsBooleans={configNotificationsBooleans}
+                        configNotificationsBooleans={
+                          configNotificationsBooleans
+                        }
                         setOpenEdit={setOpenEdit}
                         selectedItem={selectedCustomer}
                         refreshData={refreshData}
@@ -382,9 +370,7 @@ export default function CustomerTable({
                               Informações
                             </Typography>
                             <IconButton
-                              onClick={() =>
-                                setOpenDetailInfo(!openDetailInfo)
-                              }
+                              onClick={() => setOpenDetailInfo(!openDetailInfo)}
                             >
                               <ExpandMoreIcon />
                             </IconButton>

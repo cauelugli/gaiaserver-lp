@@ -36,6 +36,7 @@ export default function GroupTable({
   const [selectedGroup, setSelectedGroup] = React.useState("");
   const [openRename, setRename] = React.useState(false);
   const [openEditMembers, setOpenEditMembers] = React.useState(false);
+  console.log("groups", groups);
 
   const tableHeaderRow = [
     {
@@ -108,11 +109,7 @@ export default function GroupTable({
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
-              <TableRow
-                sx={{
-                  backgroundColor: "#eee",
-                }}
-              >
+              <TableRow>
                 {tableHeaderRow.map((headCell) => (
                   <TableCell
                     align={headCell.label === "Nome do Grupo" ? "" : "center"}

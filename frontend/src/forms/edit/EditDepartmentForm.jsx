@@ -35,7 +35,7 @@ const EditDepartmentForm = ({
   users,
   managers,
   setOpenEdit,
-  
+
   refreshData,
   setRefreshData,
 }) => {
@@ -228,12 +228,10 @@ const EditDepartmentForm = ({
                   control={<Radio />}
                   label="Serviços"
                 />
-                <Typography sx={{ fontSize: 10, color: "#777" }}>
+                <Typography sx={{ fontSize: 10 }}>
                   Prestadores de Serviços e Atendimentos
                 </Typography>
-                <Typography
-                  sx={{ fontSize: 10, fontWeight: "bold", color: "#777" }}
-                >
+                <Typography sx={{ fontSize: 10, fontWeight: "bold" }}>
                   Não realizam Vendas
                 </Typography>
               </Grid>
@@ -245,12 +243,8 @@ const EditDepartmentForm = ({
                   control={<Radio />}
                   label="Vendas"
                 />
-                <Typography sx={{ fontSize: 10, color: "#777" }}>
-                  Setor de Vendas
-                </Typography>
-                <Typography
-                  sx={{ fontSize: 10, fontWeight: "bold", color: "#777" }}
-                >
+                <Typography sx={{ fontSize: 10 }}>Setor de Vendas</Typography>
+                <Typography sx={{ fontSize: 10, fontWeight: "bold" }}>
                   Não realizam Serviços
                 </Typography>{" "}
               </Grid>
@@ -262,12 +256,10 @@ const EditDepartmentForm = ({
                   control={<Radio />}
                   label="Interno"
                 />
-                <Typography sx={{ fontSize: 10, color: "#777" }}>
+                <Typography sx={{ fontSize: 10 }}>
                   Administração da Empresa
                 </Typography>
-                <Typography
-                  sx={{ fontSize: 10, fontWeight: "bold", color: "#777" }}
-                >
+                <Typography sx={{ fontSize: 10, fontWeight: "bold" }}>
                   Não realizam Serviços nem Vendas
                 </Typography>{" "}
               </Grid>

@@ -190,11 +190,7 @@ export default function QuoteTable({
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
-            <TableRow
-              sx={{
-                backgroundColor: "#eee",
-              }}
-            >
+            <TableRow>
               {tableHeaderRow.map((headCell) => (
                 <TableCell
                   align={headCell.label === "#" ? "" : "center"}

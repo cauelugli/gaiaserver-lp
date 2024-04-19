@@ -150,12 +150,7 @@ export default function StockTable({
                 })
                 .map((stockItem) => (
                   <>
-                    <TableRow
-                      key={stockItem._id}
-                      sx={{
-                        "&:hover": { backgroundColor: "#eee " },
-                      }}
-                    >
+                    <TableRow key={stockItem._id}>
                       <TableCell sx={{ py: 0 }}>
                         <Avatar
                           src={`http://localhost:3000/static/${stockItem.image}`}

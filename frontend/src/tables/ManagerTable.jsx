@@ -151,11 +151,7 @@ export default function ManagerTable({
         </Box>
         <TableContainer component={Paper}>
           <Table>
-            <TableRow
-              sx={{
-                backgroundColor: "#eee",
-              }}
-            >
+            <TableRow>
               <TableCell padding="checkbox"></TableCell>
               {tableHeaderRow.map((headCell) => (
                 <TableCell

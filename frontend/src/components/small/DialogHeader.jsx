@@ -24,7 +24,7 @@ const DialogHeader = ({
         />
         <Typography
           textAlign="center"
-          sx={{ fontSize: 18, fontWeight: "bold", color: "#444" }}
+          sx={{ fontSize: 18, fontWeight: "bold" }}
         >
           {special ? specialTitle : femaleGender ? "Nova" : "Novo"}
           {plural && "s"} {title}
