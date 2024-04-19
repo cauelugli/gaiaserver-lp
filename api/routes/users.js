@@ -95,6 +95,10 @@ router.delete("/:id", async (req, res) => {
       { $pull: { members: { id: userId } } },
       { new: true }
     );
+    const deletedPreferences = await UserPreferences.findOneAndDelete({
+      userId: userId,
+    });
+
     if (deletedUser.position.name) {
       await Position.findOneAndUpdate(
         { _id: deletedUser.position._id },
@@ -107,7 +111,9 @@ router.delete("/:id", async (req, res) => {
       );
     }
 
-    res.status(200).json({ deletedUser, updatedDepartment });
+    res
+      .status(200)
+      .json({ deletedUser, deletedPreferences, updatedDepartment });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -361,11 +367,9 @@ router.put("/changePassFirstAccess", async (req, res) => {
 
     await user.save();
 
-    res
-      .status(200)
-      .json({
-        message: "Senha atualizada com sucesso e acesso inicial removido.",
-      });
+    res.status(200).json({
+      message: "Senha atualizada com sucesso e acesso inicial removido.",
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Erro interno do servidor" });

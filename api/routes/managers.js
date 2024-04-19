@@ -31,9 +31,10 @@ router.post("/", async (req, res) => {
   const newManager = new Manager(req.body);
   try {
     const savedManager = await newManager.save();
-    const newUserPreferences = new UserPreferences({ userId: savedManager._id });
+    const newUserPreferences = new UserPreferences({
+      userId: savedManager._id,
+    });
     await newUserPreferences.save();
-
 
     let updatedDepartment;
 
@@ -84,6 +85,10 @@ router.delete("/:id", async (req, res) => {
 
     const deletedManager = await Manager.findByIdAndDelete(managerId);
 
+    const deletedPreferences = await UserPreferences.findOneAndDelete({
+      userId: managerId,
+    });
+
     {
       deletedManager.department &&
         updatedDepartment ==
@@ -94,7 +99,9 @@ router.delete("/:id", async (req, res) => {
           ));
     }
 
-    res.status(200).json({ deletedManager, updatedDepartment });
+    res
+      .status(200)
+      .json({ deletedManager, deletedPreferences, updatedDepartment });
   } catch (err) {
     console.log("err", err);
     res.status(500).json(err);
@@ -244,18 +251,18 @@ router.put("/", async (req, res) => {
 });
 
 // GET MANAGER'S NOTIFICATIONS
-router.get('/notifications/:userId', async (req, res) => {
+router.get("/notifications/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
     let userNotifications;
-    userNotifications = await Manager.findById(userId).select('notifications');
+    userNotifications = await Manager.findById(userId).select("notifications");
     if (!userNotifications) {
-      userNotifications = await User.findById(userId).select('notifications');
+      userNotifications = await User.findById(userId).select("notifications");
     }
     res.json(userNotifications.notifications);
   } catch (error) {
-    console.error('Error fetching notifications:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error fetching notifications:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -271,7 +278,7 @@ router.put("/readNotification", async (req, res) => {
     }
 
     user.notifications[notificationId].status = "Lida";
-    user.markModified('notifications');
+    user.markModified("notifications");
     await user.save();
 
     return res.json({ success: true });
