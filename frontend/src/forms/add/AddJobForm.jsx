@@ -67,7 +67,6 @@ const AddJobForm = ({
   const [services, setServices] = React.useState([]);
   const [stockItems, setStockItems] = React.useState([]);
 
-
   let selectedCustomer = {};
   if (selectedItem || fromShortcut) {
     selectedCustomer = selectedItem;
@@ -116,7 +115,6 @@ const AddJobForm = ({
     const options = generateScheduleOptions();
     setScheduleOptions(options);
   }, [scheduledTo, service, worker]);
-
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -743,15 +741,17 @@ const AddJobForm = ({
                                         : "R$0.00"}
                                     </Typography>
                                   </Grid>
-                                  <Grid>
-                                    <Typography>
-                                      Materiais{" "}
-                                      {service
-                                        ? `R$ ${materialsCost.toFixed(2)}`
-                                        : "R$0.00"}
-                                    </Typography>
-                                  </Grid>
-                                  <Grid></Grid>
+                                  {materialsCost && (
+                                    <Grid>
+                                      <Typography>
+                                        Materiais{" "}
+                                        {service
+                                          ? `R$ ${materialsCost.toFixed(2)}`
+                                          : "R$0.00"}
+                                      </Typography>
+                                    </Grid>
+                                  )}
+                                  {/* <Grid></Grid> */}
                                 </Grid>
                               </TableCell>
                             </TableRow>

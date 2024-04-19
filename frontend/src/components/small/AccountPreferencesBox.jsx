@@ -63,7 +63,6 @@ const AccountPreferencesBox = ({ onUpdateDarkMode }) => {
             <Switch checked={checkedDarkMode} onChange={handleChangeDarkMode} />
           }
         />
-        <Typography>{checkedDarkMode ? "true" : "false"}</Typography>
         {/* <FormControlLabel
           labelPlacement="start"
           label="Modo Escuro"
