@@ -204,15 +204,15 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
                             }}
                           >
                             {option.icon}
-                            <Typography
-                              sx={{
+                            <span
+                              style={{
                                 fontSize: 18,
                                 fontWeight: "bold",
                                 fontFamily: "Verdana, sans-serif",
                               }}
                             >
                               {option.text}
-                            </Typography>
+                            </span>
                           </Grid>
                         </Paper>
                       </Link>
@@ -269,15 +269,15 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
                             }}
                           >
                             {option.icon}
-                            <Typography
-                              sx={{
+                            <span
+                              style={{
                                 fontSize: 16,
                                 fontWeight: "bold",
                                 fontFamily: "Verdana, sans-serif",
                               }}
                             >
                               {option.text}
-                            </Typography>
+                            </span>
                           </Grid>
                         </Paper>
                       </Link>
@@ -344,16 +344,16 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
                             }}
                           >
                             {option.icon}
-                            <Typography
-                              sx={{
-                                ml: 1,
+                            <span
+                              style={{
+                                marginLeft: 10,
                                 fontSize: 14,
                                 fontWeight: "bold",
                                 fontFamily: "Verdana, sans-serif",
                               }}
                             >
                               {option.text}
-                            </Typography>
+                            </span>
                           </Grid>
                         </Paper>
                       </Link>

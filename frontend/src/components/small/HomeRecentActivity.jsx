@@ -129,13 +129,10 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
               >
                 Atividade Recente
                 {userUsername === "admin" && recentActivities.length !== 0 && (
-                  <IconButton
-                    size="small"
-                    onClick={() => setOpenDialog(true)}
-                  >
+                  <IconButton size="small" onClick={() => setOpenDialog(true)}>
                     <DeleteIcon
                       sx={{
-                        color: "#777",
+                        color: "#555",
                         "&:hover": {
                           color: "red",
                         },
@@ -197,7 +194,7 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
                 <TextField
                   placeholder="Pesquise..."
                   size="small"
-                  sx={{ mx: 2, mt: 1, backgroundColor: "white" }}
+                  sx={{ mx: 2, mt: 1 }}
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   InputProps={{
@@ -232,7 +229,6 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
                       // o overwrite do Mui está aqui
                       "& .MuiInputBase-root": {
                         mt: 1,
-                        backgroundColor: "white",
                         height: 40,
                         width: 150,
                         mx: "auto",
@@ -249,7 +245,6 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
                     sx={{
                       "& .MuiInputBase-root": {
                         mt: 1,
-                        backgroundColor: "white",
                         height: 40,
                         width: 150,
                         mx: "auto",

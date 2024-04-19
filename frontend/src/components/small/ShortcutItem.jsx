@@ -45,6 +45,7 @@ const ShortcutItem = ({ shortcut, onShortcutClick, onDeleteShortcut }) => {
           fontSize: 12,
           fontFamily: "Verdana, sans-serif",
           mx: "auto",
+          color: "#777",
         }}
       >
         {shortcut.name.toUpperCase()}
@@ -57,6 +58,7 @@ const ShortcutItem = ({ shortcut, onShortcutClick, onDeleteShortcut }) => {
           borderRadius: 2,
           fontFamily: "Verdana, sans-serif",
           cursor: "pointer",
+          color: "#777",
           "&:hover": {
             backgroundColor: "#bbb",
           },
