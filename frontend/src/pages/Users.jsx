@@ -202,8 +202,8 @@ export default function Users({ userName }) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        {users.length === 0 ? (
-          <NoDataText option="Funcionários" />
+        {users.length === 1 ? (
+          <NoDataText option="Colaborardores" />
         ) : (
           <>
             <TableFilters
