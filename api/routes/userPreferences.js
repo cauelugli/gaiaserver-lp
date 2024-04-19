@@ -82,4 +82,22 @@ router.put("/deleteShortcut", async (req, res) => {
   }
 });
 
+// UPDATE DARK MODE
+router.put("/darkMode", async (req, res) => {
+  const { userId, darkMode } = req.body;
+
+  try {
+    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    userPreferences.darkMode = darkMode;
+    await userPreferences.save();
+
+    res
+      .status(200)
+      .json({ message: "Dark mode updated successfully", darkMode });
+  } catch (error) {
+    console.error("Error updating dark mode:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

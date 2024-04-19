@@ -98,6 +98,9 @@ export default function App() {
     props: {},
   });
   const [showSidebar, setShowSidebar] = useState(true);
+
+  const [refreshData, setRefreshData] = React.useState(false);
+
   console.log("App mounted control");
 
   const handleSidebarVisibility = (visibility) => {
@@ -147,6 +150,8 @@ export default function App() {
         setConfigAgenda(config.data[0].agenda);
         setNotifications(notifications.data);
         setUserPreferences(preferences.data);
+        sessionStorage.setItem("userPreferences", JSON.stringify(preferences.data));
+
 
         const resUsers = await api.get("/users");
         const resManagers = await api.get("/managers");
@@ -177,7 +182,7 @@ export default function App() {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   // clear up userData if located at login, might cause bug issues, reopen the browser and good
   useEffect(() => {
@@ -266,6 +271,19 @@ export default function App() {
     });
   };
 
+  // updating userPreferences on Account Page
+  const updateUserPreferences = (newPreferences) => {
+    setUserPreferences(newPreferences);
+  };
+  useEffect(() => {
+    const storedPreferences = sessionStorage.getItem("userPreferences");
+    if (storedPreferences) {
+      setUserPreferences(JSON.parse(storedPreferences));
+    }
+  }, []);
+  
+  
+
   return (
     <Grid sx={{ width: "auto", height: "auto", m: -1, mr: -2 }}>
       <Router>
@@ -329,7 +347,13 @@ export default function App() {
                     path="/account"
                     element={
                       isAuthenticated(login, userData) ? (
-                        <Account user={userData} />
+                        <Account
+                          user={userData}
+                          userPreferences={userPreferences}
+                          setUserPreferences={updateUserPreferences}
+                          refreshData={refreshData}
+                          setRefreshData={setRefreshData}
+                        />
                       ) : (
                         <Navigate to="/login" />
                       )

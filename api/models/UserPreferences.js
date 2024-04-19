@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const userPreferencesSchema = new mongoose.Schema({
+  darkMode: {
+    type: Boolean,
+    default: false,
+  },
   userId: {
     type: String,
     required: true,
