@@ -34,6 +34,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditCustomerForm from "../forms/edit/EditCustomerForm";
 import CustomerTableActions from "../components/small/buttons/tableActionButtons/CustomerTableActions";
+import ViewDialog from "../components/small/ViewDialog";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -53,6 +54,7 @@ export default function CustomerTable({
   searchOption,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
+  const [openViewDialog, setOpenViewDialog] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
   const [openDetailContact, setOpenDetailContact] = React.useState(false);
@@ -158,7 +160,7 @@ export default function CustomerTable({
   const [viewDialogOpen, setViewDialogOpen] = React.useState(false);
   const [pdfUrl, setPdfUrl] = React.useState("");
 
-  const openViewDialog = (file) => {
+  const openViewDialogPDF = (file) => {
     setPdfUrl(
       `http://localhost:3000/static/docs/orcamento-${file.type[0]}-${file.number}.pdf`
     );
@@ -280,11 +282,6 @@ export default function CustomerTable({
                           borderRadius: 1,
                           width: "auto",
                           margin: "auto",
-                          opacity:
-                            openDetail &&
-                            selectedCustomer.name === customer.name
-                              ? 0
-                              : 100,
                         }}
                       />
                     </TableCell>
@@ -708,14 +705,15 @@ export default function CustomerTable({
                                     <TableRow
                                       key={index}
                                       sx={{
-                                        backgroundColor:
-                                          index % 2 === 0 ? "#eee" : "white",
+                                        backgroundColor: "white",
                                       }}
                                     >
                                       <TableCell>
                                         <Button
                                           sx={{ color: "black" }}
-                                          onClick={() => openViewDialog(item)}
+                                          onClick={() =>
+                                            openViewDialogPDF(item)
+                                          }
                                         >
                                           <Typography sx={{ fontSize: 13 }}>
                                             {item.number}
@@ -738,13 +736,7 @@ export default function CustomerTable({
                                       </TableCell>
                                       <TableCell>
                                         <Typography sx={{ fontSize: 13 }}>
-                                          {new Date(
-                                            item.date
-                                          ).toLocaleDateString("pt-BR", {
-                                            day: "2-digit",
-                                            month: "2-digit",
-                                            year: "numeric",
-                                          })}
+                                          {item.date}
                                         </Typography>
                                       </TableCell>
                                       <TableCell>
@@ -756,6 +748,21 @@ export default function CustomerTable({
                                   ))}
                               </TableBody>
                             </Table>
+                            <Typography
+                              sx={{
+                                mt: 1,
+                                cursor: "pointer",
+                                fontSize: 13,
+                                color: "#555",
+                                textAlign: "right",
+                              }}
+                              onClick={() => {
+                                setSelectedCustomer(customer);
+                                setOpenViewDialog(true);
+                              }}
+                            >
+                              ver todos
+                            </Typography>
                           </Collapse>
                         </Box>
                       </Collapse>
@@ -782,6 +789,21 @@ export default function CustomerTable({
           }}
         />
       </TableContainer>
+      {openViewDialog && (
+        <Dialog
+          open={openViewDialog}
+          onClose={() => setOpenViewDialog(false)}
+          fullWidth
+          maxWidth="lg"
+        >
+          <ViewDialog
+            setOpenViewDialog={setOpenViewDialog}
+            selectedItem={selectedCustomer.recentRequests}
+            list
+            listTitle="do Cliente"
+          />
+        </Dialog>
+      )}
       {openEdit && (
         <Dialog
           fullWidth

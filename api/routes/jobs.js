@@ -63,7 +63,7 @@ router.post("/", async (req, res) => {
       number: savedQuote.number,
       title: savedQuote.title,
       type: "job",
-      date: savedQuote.createdAt,
+      date: dayjs(savedQuote.createdAt).format("DD/MM/YYYY HH:mm:ss"),
       requester: req.body.requester,
     };
 

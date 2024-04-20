@@ -33,6 +33,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EditClientForm from "../forms/edit/EditClientForm";
 import CustomerTableActions from "../components/small/buttons/tableActionButtons/CustomerTableActions";
+import ViewDialog from "../components/small/ViewDialog";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -52,6 +53,10 @@ export default function ClientTable({
 }) {
   const [selectedClient, setSelectedClient] = React.useState([]);
   const [openEdit, setOpenEdit] = React.useState(false);
+  const [openViewDialog, setOpenViewDialog] = React.useState(false);
+  const [viewDialogOpenPDF, setViewDialogOpenPDF] = React.useState(false);
+  const [pdfUrl, setPdfUrl] = React.useState("");
+
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openDetailGeral, setOpenDetailGeral] = React.useState(true);
   const [openDetailEndereço, setOpenDetailEndereço] = React.useState(false);
@@ -149,18 +154,16 @@ export default function ClientTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
-  const [viewDialogOpen, setViewDialogOpen] = React.useState(false);
-  const [pdfUrl, setPdfUrl] = React.useState("");
-
-  const openViewDialog = (file) => {
+  const openViewDialogPDF = (file) => {
     setPdfUrl(
       `http://localhost:3000/static/docs/orcamento-${file.type[0]}-${file.number}.pdf`
     );
-    setViewDialogOpen(true);
+    setViewDialogOpenPDF(true);
   };
 
-  const closeViewDialog = () => {
-    setViewDialogOpen(false);
+  const closeViewDialogPDF = () => {
+    setViewDialogOpenPDF(false);
+    setPdfUrl(null);
   };
 
   const [showArchivedClients, setShowArchivedClients] = React.useState(false);
@@ -526,14 +529,15 @@ export default function ClientTable({
                                     <TableRow
                                       key={index}
                                       sx={{
-                                        backgroundColor:
-                                          index % 2 === 0 ? "#eee" : "white",
+                                        backgroundColor: "white",
                                       }}
                                     >
                                       <TableCell>
                                         <Button
                                           sx={{ color: "black" }}
-                                          onClick={() => openViewDialog(item)}
+                                          onClick={() =>
+                                            openViewDialogPDF(item)
+                                          }
                                         >
                                           <Typography sx={{ fontSize: 13 }}>
                                             {item.number}
@@ -556,13 +560,7 @@ export default function ClientTable({
                                       </TableCell>
                                       <TableCell>
                                         <Typography sx={{ fontSize: 13 }}>
-                                          {new Date(
-                                            item.date
-                                          ).toLocaleDateString("pt-BR", {
-                                            day: "2-digit",
-                                            month: "2-digit",
-                                            year: "numeric",
-                                          })}
+                                          {item.date}
                                         </Typography>
                                       </TableCell>
                                       <TableCell>
@@ -574,6 +572,21 @@ export default function ClientTable({
                                   ))}
                               </TableBody>
                             </Table>
+                            <Typography
+                              sx={{
+                                mt: 1,
+                                cursor: "pointer",
+                                fontSize: 13,
+                                color: "#555",
+                                textAlign: "right",
+                              }}
+                              onClick={() => {
+                                setSelectedClient(client);
+                                setOpenViewDialog(true);
+                              }}
+                            >
+                              ver todos
+                            </Typography>
                           </Collapse>
                         </Box>
                       </Collapse>
@@ -599,6 +612,21 @@ export default function ClientTable({
           }}
         />
       </TableContainer>
+      {openViewDialog && (
+        <Dialog
+          open={openViewDialog}
+          onClose={() => setOpenViewDialog(false)}
+          fullWidth
+          maxWidth="lg"
+        >
+          <ViewDialog
+            setOpenViewDialog={setOpenViewDialog}
+            selectedItem={selectedClient.recentRequests}
+            list
+            listTitle="do Cliente"
+          />
+        </Dialog>
+      )}
       {openEdit && (
         <Dialog
           fullWidth
@@ -617,8 +645,8 @@ export default function ClientTable({
         </Dialog>
       )}
       <Dialog
-        open={viewDialogOpen}
-        onClose={closeViewDialog}
+        open={viewDialogOpenPDF}
+        onClose={closeViewDialogPDF}
         fullWidth
         maxWidth="md"
       >
@@ -633,7 +661,7 @@ export default function ClientTable({
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeViewDialog} color="primary">
+          <Button onClick={closeViewDialogPDF} color="primary">
             Fechar
           </Button>
         </DialogActions>
