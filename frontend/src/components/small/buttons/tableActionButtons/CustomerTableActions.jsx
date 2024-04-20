@@ -17,6 +17,7 @@ import {
 import ArchiveIcon from "@mui/icons-material/Archive";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EngineeringIcon from "@mui/icons-material/Engineering";
+import HistoryIcon from "@mui/icons-material/History";
 import MenuIcon from "@mui/icons-material/Menu";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import SellIcon from "@mui/icons-material/Sell";
@@ -88,6 +89,22 @@ export default function CustomerTableActions(props) {
             <ListItemText
               primary={
                 <Typography sx={{ fontSize: 14 }}>Nova Venda</Typography>
+              }
+              sx={{ ml: -3 }}
+            />
+          </ListItemButton>
+
+          <ListItemButton
+            onClick={() => {
+              props.setOpenViewDialog(true), setAnchorEl(null);
+            }}
+          >
+            <ListItemIcon>
+              <HistoryIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: 14 }}>Ver Histórico</Typography>
               }
               sx={{ ml: -3 }}
             />

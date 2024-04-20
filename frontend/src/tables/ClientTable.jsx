@@ -294,6 +294,7 @@ export default function ClientTable({
                           configNotificationsBooleans
                         }
                         setOpenEdit={setOpenEdit}
+                        setOpenViewDialog={setOpenViewDialog}
                         selectedItem={selectedClient}
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}

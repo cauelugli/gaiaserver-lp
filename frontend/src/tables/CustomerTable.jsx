@@ -338,6 +338,7 @@ export default function CustomerTable({
                           configNotificationsBooleans
                         }
                         setOpenEdit={setOpenEdit}
+                        setOpenViewDialog={setOpenViewDialog}
                         selectedItem={selectedCustomer}
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}
