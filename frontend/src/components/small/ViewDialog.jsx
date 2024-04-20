@@ -211,7 +211,6 @@ const ViewDialog = ({
                     color: "#777",
                     position: "sticky",
                     top: 0,
-                    backgroundColor: "#fff",
                     zIndex: 100,
                   }}
                 >
@@ -223,7 +222,6 @@ const ViewDialog = ({
                     color: "#777",
                     position: "sticky",
                     top: 0,
-                    backgroundColor: "#fff",
                     zIndex: 100,
                   }}
                 >
@@ -235,7 +233,6 @@ const ViewDialog = ({
                     color: "#777",
                     position: "sticky",
                     top: 0,
-                    backgroundColor: "#fff",
                     zIndex: 100,
                   }}
                 >
@@ -249,7 +246,6 @@ const ViewDialog = ({
                     color: "#777",
                     position: "sticky",
                     top: 0,
-                    backgroundColor: "#fff",
                     zIndex: 100,
                   }}
                 >
@@ -261,7 +257,6 @@ const ViewDialog = ({
                     color: "#777",
                     position: "sticky",
                     top: 0,
-                    backgroundColor: "#fff",
                     zIndex: 100,
                   }}
                 >
@@ -274,12 +269,7 @@ const ViewDialog = ({
                 .sort((a, b) => dayjs(b.date).unix() - dayjs(a.date).unix())
                 .reverse()
                 .map((item, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{
-                      backgroundColor: "white",
-                    }}
-                  >
+                  <TableRow key={index}>
                     <TableCell>
                       <Typography sx={{ fontSize: 13 }}>
                         {item.number}

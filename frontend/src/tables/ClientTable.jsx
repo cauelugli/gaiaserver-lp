@@ -527,12 +527,7 @@ export default function ClientTable({
                                 {client.recentRequests
                                   .slice(0, 5)
                                   .map((item, index) => (
-                                    <TableRow
-                                      key={index}
-                                      sx={{
-                                        backgroundColor: "white",
-                                      }}
-                                    >
+                                    <TableRow key={index}>
                                       <TableCell>
                                         <Button
                                           sx={{ color: "black" }}
