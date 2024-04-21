@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -23,7 +24,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function ImageTable() {
+export default function ImageTable({ topBar }) {
   const [files, setFiles] = React.useState([]);
   const [totalSpaceOccupiedMB, setTotalSpaceOccupiedMB] = React.useState(0);
   const [inUse, setInUse] = React.useState([]);
@@ -132,7 +133,7 @@ export default function ImageTable() {
         <NoDataText option="Arquivos de Imagem" />
       ) : (
         <>
-    <Box sx={{ minWidth: "1250px" }}>
+          <Box sx={{ width: topBar ? "105%" : "100%" }}>
             <Grid container direction="row" sx={{ py: 2 }}>
               <Typography sx={{ my: "auto" }}>
                 Tamanho em Disco: {totalSpaceOccupiedMB}MB

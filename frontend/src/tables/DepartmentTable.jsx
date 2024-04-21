@@ -37,6 +37,7 @@ export default function DepartmentTable({
   refreshData,
   setRefreshData,
   toast,
+  topBar,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -127,7 +128,7 @@ export default function DepartmentTable({
   const endIndex = startIndex + rowsPerPage;
 
   return (
-    <Box sx={{ minWidth: "1250px" }}>
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
@@ -706,22 +707,24 @@ export default function DepartmentTable({
                                   <TableRow>
                                     <TableCell>
                                       <Typography>
-                                        {department.positions.map((position) => (
-                                          <Chip
-                                            sx={{ mx: 1 }}
-                                            size="small"
-                                            key={position._id}
-                                            label={
-                                              <Typography
-                                                sx={{
-                                                  fontSize: "100%",
-                                                }}
-                                              >
-                                                {position.name}
-                                              </Typography>
-                                            }
-                                          />
-                                        ))}
+                                        {department.positions.map(
+                                          (position) => (
+                                            <Chip
+                                              sx={{ mx: 1 }}
+                                              size="small"
+                                              key={position._id}
+                                              label={
+                                                <Typography
+                                                  sx={{
+                                                    fontSize: "100%",
+                                                  }}
+                                                >
+                                                  {position.name}
+                                                </Typography>
+                                              }
+                                            />
+                                          )
+                                        )}
                                       </Typography>
                                     </TableCell>
                                   </TableRow>
@@ -730,7 +733,6 @@ export default function DepartmentTable({
                             </Collapse>
                           </Box>
                         )}
-                        
                       </Collapse>
                     </TableCell>
                   </TableRow>

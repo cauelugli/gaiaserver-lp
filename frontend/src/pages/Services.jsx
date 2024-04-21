@@ -44,7 +44,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Services({ configTables, configData }) {
+export default function Services({ configTables, configData, topBar }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
@@ -215,6 +215,7 @@ export default function Services({ configTables, configData }) {
               stockItems={stockItems}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
+              topBar={topBar}
             />
           </>
         )}
@@ -243,6 +244,7 @@ export default function Services({ configTables, configData }) {
                 stockItems={stockItems}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
+                topBar={topBar}
               />
             </>
           )}
@@ -273,6 +275,7 @@ export default function Services({ configTables, configData }) {
                 servicePlans={servicePlans}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
+                topBar={topBar}
               />
             </>
           )}

@@ -41,7 +41,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Departments({ userName, configTables }) {
+export default function Departments({ userName, configTables, topBar }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
@@ -246,6 +246,7 @@ export default function Departments({ userName, configTables }) {
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
+              topBar={topBar}
             />
           </>
         )}
@@ -278,6 +279,7 @@ export default function Departments({ userName, configTables }) {
               setOpenAdd={setOpenAddDepartment}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
+              topBar={topBar}
             />
           </>
         )}
@@ -311,6 +313,7 @@ export default function Departments({ userName, configTables }) {
                 setOpenAdd={setOpenAddDepartment}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
+                topBar={topBar}
               />
             </>
           )}
@@ -349,6 +352,7 @@ export default function Departments({ userName, configTables }) {
               setOpenAdd={setOpenAddGroup}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
+              topBar={topBar}
             />
           </>
         )}

@@ -52,6 +52,7 @@ export default function Requests({
   configAgenda,
   configNotifications,
   configNotificationsBooleans,
+  topBar,
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -221,6 +222,7 @@ export default function Requests({
                 managers={managers}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
+                topBar={topBar}
               />
             </>
           )}
@@ -253,6 +255,7 @@ export default function Requests({
                 managers={managers}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
+                topBar={topBar}
               />
             </>
           )}

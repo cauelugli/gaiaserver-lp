@@ -25,7 +25,6 @@ const api = axios.create({
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
-  
 
   return (
     <div role="tabpanel" hidden={value !== index}>
@@ -38,7 +37,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Reports({ users, customers, requests }) {
+export default function Reports({ users, customers, requests, topBar }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -67,7 +66,7 @@ export default function Reports({ users, customers, requests }) {
   }
 
   return (
-    <Box>
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
       <Grid
         container
         direction="row"

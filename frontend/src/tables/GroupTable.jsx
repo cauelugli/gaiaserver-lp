@@ -32,6 +32,7 @@ export default function GroupTable({
   searchOption,
   refreshData,
   setRefreshData,
+  topBar,
 }) {
   const [selectedGroup, setSelectedGroup] = React.useState("");
   const [openRename, setRename] = React.useState(false);
@@ -105,7 +106,7 @@ export default function GroupTable({
 
   return (
     <>
-      <Box sx={{ minWidth: "1250px" }}>
+      <Box sx={{ width: topBar ? "105%" : "100%" }}>
         <TableContainer component={Paper}>
           <Table>
             <TableBody>

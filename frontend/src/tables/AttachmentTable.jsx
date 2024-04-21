@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -23,7 +24,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function AttachmentTable() {
+export default function AttachmentTable({ topBar }) {
   const [attachments, setAttachments] = React.useState([]);
   const [totalSpaceOccupiedMB, setTotalSpaceOccupiedMB] = React.useState(0);
   const [confirmationDialogOpen, setConfirmationDialogOpen] =
@@ -86,7 +87,9 @@ export default function AttachmentTable() {
   const confirmDelete = async (filename) => {
     console.log("filename", filename);
     try {
-      const response = await api.delete(`/uploads/deleteAttachment/${filename}`);
+      const response = await api.delete(
+        `/uploads/deleteAttachment/${filename}`
+      );
       if (response.status === 200) {
         toast.error("Arquivo Deletado", {
           closeOnClick: true,
@@ -135,7 +138,7 @@ export default function AttachmentTable() {
     ".tiff",
     ".webp",
   ];
-  
+
   const isImage = (filename) =>
     imageExtensions.some((extension) => filename.endsWith(extension));
 
@@ -147,7 +150,7 @@ export default function AttachmentTable() {
         <NoDataText option="Anexos" />
       ) : (
         <>
-          <Box sx={{ minWidth: "1250px" }}>
+          <Box sx={{ width: topBar ? "105%" : "100%" }}>
             <Grid container direction="row" sx={{ py: 2 }}>
               <Typography sx={{ my: "auto" }}>
                 Tamanho em Disco: {totalSpaceOccupiedMB}MB

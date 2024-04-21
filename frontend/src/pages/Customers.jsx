@@ -46,6 +46,7 @@ function CustomTabPanel(props) {
 
 export default function Customers({
   userName,
+  topBar,
   configTables,
   configAgenda,
   configNotifications,
@@ -218,6 +219,7 @@ export default function Customers({
                 setRefreshData={setRefreshData}
                 searchValue={searchValue}
                 searchOption={searchOption}
+                topBar={topBar}
               />
             </>
           )}
@@ -254,6 +256,7 @@ export default function Customers({
                 setRefreshData={setRefreshData}
                 searchValue={searchValue}
                 searchOption={searchOption}
+                topBar={topBar}
               />
             </>
           )}

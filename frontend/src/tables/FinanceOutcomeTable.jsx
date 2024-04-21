@@ -33,6 +33,7 @@ export default function FinanceOutcomeTable({
   refreshData,
   setRefreshData,
   configCustomization,
+  topBar,
 }) {
   const [selectedFinanceoutcome, setSelectedFinanceoutcome] =
     React.useState("");
@@ -156,7 +157,7 @@ export default function FinanceOutcomeTable({
 
   return (
     <>
-      <Box sx={{ minWidth: "1250px" }}>
+      <Box sx={{ width: topBar ? "105%" : "100%" }}>
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
           <Checkbox
             checked={showCompletedOutcomes}

@@ -31,6 +31,7 @@ export default function ProductsTable({
   searchOption,
   refreshData,
   setRefreshData,
+  topBar,
 }) {
   const [selectedProduct, setSelectedProduct] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -124,148 +125,144 @@ export default function ProductsTable({
   const endIndex = startIndex + rowsPerPage;
 
   return (
-    <>
-      <Box sx={{ minWidth: "1250px" }}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableBody>
-              <TableRow sx={{ backgroundColor: "#eee" }}>
-                <TableCell padding="checkbox"></TableCell>
-                {tableHeaderRow.map((headCell) => (
-                  <TableCell
-                    align={headCell.label === "Nome" ? "" : "center"}
-                    sx={{
-                      fontSize: 13,
-                      fontWeight: "bold",
-                      pl: headCell.label === "Nome" ? "" : 5,
-                    }}
-                    key={headCell.id}
-                    sortDirection={orderBy === headCell.id ? order : false}
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            <TableRow sx={{ backgroundColor: "#eee" }}>
+              <TableCell padding="checkbox"></TableCell>
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "Nome" ? "" : "center"}
+                  sx={{
+                    fontSize: 13,
+                    fontWeight: "bold",
+                    pl: headCell.label === "Nome" ? "" : 5,
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
                   >
-                    <TableSortLabel
-                      active={orderBy === headCell.id}
-                      direction={orderBy === headCell.id ? order : "asc"}
-                      onClick={() => handleRequestSort(headCell.id)}
-                    >
-                      {headCell.label}
-                    </TableSortLabel>
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+            {sortedRows
+              .filter((item) => {
+                const itemProperty = searchOption
+                  .split(".")
+                  .reduce((obj, key) => obj[key], item);
+                return (
+                  itemProperty &&
+                  itemProperty.toLowerCase().includes(searchValue.toLowerCase())
+                );
+              })
+              .map((product) => (
+                <TableRow key={product._id}>
+                  <TableCell sx={{ py: 0 }}>
+                    <Avatar
+                      src={`http://localhost:3000/static/${product.image}`}
+                      alt={product.name[0]}
+                      style={{
+                        marginLeft: 10,
+                        width: 42,
+                        height: 42,
+                      }}
+                    />
                   </TableCell>
-                ))}
-              </TableRow>
-              {sortedRows
-                .filter((item) => {
-                  const itemProperty = searchOption
-                    .split(".")
-                    .reduce((obj, key) => obj[key], item);
-                  return (
-                    itemProperty &&
-                    itemProperty
-                      .toLowerCase()
-                      .includes(searchValue.toLowerCase())
-                  );
-                })
-                .map((product) => (
-                  <TableRow key={product._id}>
-                    <TableCell sx={{ py: 0 }}>
-                      <Avatar
-                        src={`http://localhost:3000/static/${product.image}`}
-                        alt={product.name[0]}
-                        style={{
-                          marginLeft: 10,
-                          width: 42,
-                          height: 42,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell align="left">
-                      <Typography sx={{ fontSize: 13 }}>
-                        {product.name}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        {product.brand}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        {product.type}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        {product.model}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        {product.size}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        {product.quantity}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        R${product.buyValue.toFixed(2)}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        R${product.sellValue.toFixed(2)}
-                      </Typography>
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      onClick={() => setSelectedProduct(product)}
-                    >
-                      <StockTableActions
-                        type="Produto"
-                        setOpenEdit={setOpenEdit}
-                        selectedItem={selectedProduct}
-                        refreshData={refreshData}
-                        setRefreshData={setRefreshData}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))
-                .slice(startIndex, endIndex)}
-            </TableBody>
-          </Table>
-          <TablePagination
-            component="div"
-            count={sortedRows.length}
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage={"por Página"}
-            labelDisplayedRows={({ from, to, count }) => {
-              return " " + from + " à " + to + " total " + count;
-            }}
-          />
-        </TableContainer>
+                  <TableCell align="left">
+                    <Typography sx={{ fontSize: 13 }}>
+                      {product.name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography sx={{ fontSize: 13 }}>
+                      {product.brand}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography sx={{ fontSize: 13 }}>
+                      {product.type}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography sx={{ fontSize: 13 }}>
+                      {product.model}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography sx={{ fontSize: 13 }}>
+                      {product.size}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography sx={{ fontSize: 13 }}>
+                      {product.quantity}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography sx={{ fontSize: 13 }}>
+                      R${product.buyValue.toFixed(2)}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography sx={{ fontSize: 13 }}>
+                      R${product.sellValue.toFixed(2)}
+                    </Typography>
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    onClick={() => setSelectedProduct(product)}
+                  >
+                    <StockTableActions
+                      type="Produto"
+                      setOpenEdit={setOpenEdit}
+                      selectedItem={selectedProduct}
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))
+              .slice(startIndex, endIndex)}
+          </TableBody>
+        </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
+      </TableContainer>
 
-        {openEdit && (
-          <Dialog
-            fullWidth
-            maxWidth="lg"
-            open={openEdit}
-            onClose={() => setOpenEdit(!openEdit)}
-          >
-            <EditProductForm
-              openEdit={openEdit}
-              selectedProduct={selectedProduct}
-              setOpenEdit={setOpenEdit}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
-      </Box>
-    </>
+      {openEdit && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditProductForm
+            openEdit={openEdit}
+            selectedProduct={selectedProduct}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+    </Box>
   );
 }

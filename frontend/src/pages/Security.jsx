@@ -46,7 +46,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Security() {
+export default function Security({ topBar }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState(false);
@@ -233,6 +233,7 @@ export default function Security() {
               setRefreshData={setRefreshData}
               searchValue={searchValue}
               searchOption={searchOption}
+              topBar={topBar}
             />
           </>
         )}
@@ -265,6 +266,7 @@ export default function Security() {
               setOpenAdd={setOpenAddPosition}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
+              topBar={topBar}
             />
           </>
         )}
@@ -292,6 +294,7 @@ export default function Security() {
               setRefreshData={setRefreshData}
               searchValue={searchValue}
               searchOption={searchOption}
+              topBar={topBar}
             />
           </>
         )}

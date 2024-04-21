@@ -30,6 +30,7 @@ export default function PositionTable({
   searchOption,
   refreshData,
   setRefreshData,
+  topBar,
 }) {
   const [selectedPosition, setSelectedPosition] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -104,140 +105,136 @@ export default function PositionTable({
   const endIndex = startIndex + rowsPerPage;
 
   return (
-    <>
-      <Box sx={{ minWidth: "1250px" }}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableBody>
-              <TableRow>
-                {tableHeaderRow.map((headCell) => (
-                  <TableCell
-                    align={
-                      headCell.label === "Nome do Cargo" ||
-                      headCell.label === "Departamento"
-                        ? ""
-                        : "center"
-                    }
-                    sx={{
-                      fontSize: 13,
-                      fontWeight: "bold",
-                      pl: headCell.label === "Nome do Cargo" ? "" : 5,
-                    }}
-                    key={headCell.id}
-                    sortDirection={orderBy === headCell.id ? order : false}
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            <TableRow>
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={
+                    headCell.label === "Nome do Cargo" ||
+                    headCell.label === "Departamento"
+                      ? ""
+                      : "center"
+                  }
+                  sx={{
+                    fontSize: 13,
+                    fontWeight: "bold",
+                    pl: headCell.label === "Nome do Cargo" ? "" : 5,
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
                   >
-                    <TableSortLabel
-                      active={orderBy === headCell.id}
-                      direction={orderBy === headCell.id ? order : "asc"}
-                      onClick={() => handleRequestSort(headCell.id)}
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+            {sortedRows
+              .filter((item) => {
+                const itemProperty = searchOption
+                  .split(".")
+                  .reduce((obj, key) => obj[key], item);
+                return (
+                  itemProperty &&
+                  itemProperty.toLowerCase().includes(searchValue.toLowerCase())
+                );
+              })
+              .map((position) => (
+                <>
+                  <TableRow
+                    key={position._id}
+                    sx={{ "&:hover": { backgroundColor: "#eee " } }}
+                  >
+                    <TableCell>
+                      <Typography sx={{ fontSize: 13 }}>
+                        {position.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      {position.department ? (
+                        <Grid container direction="row">
+                          <Paper
+                            elevation={0}
+                            sx={{
+                              mr: 1,
+                              width: 15,
+                              height: 15,
+                              borderRadius: 50,
+                              backgroundColor: position.department.color,
+                            }}
+                          />
+                          <Typography sx={{ fontSize: 13 }}>
+                            {position.department.name}
+                          </Typography>
+                        </Grid>
+                      ) : (
+                        ""
+                      )}
+                    </TableCell>
+                    <TableCell align="center">
+                      <PositionMembers
+                        members={position.members}
+                        users={users}
+                        managers={managers}
+                      />
+                    </TableCell>
+                    <TableCell
+                      cursor="pointer"
+                      align="center"
+                      onClick={() => setSelectedPosition(position)}
                     >
-                      {headCell.label}
-                    </TableSortLabel>
-                  </TableCell>
-                ))}
-              </TableRow>
-              {sortedRows
-                .filter((item) => {
-                  const itemProperty = searchOption
-                    .split(".")
-                    .reduce((obj, key) => obj[key], item);
-                  return (
-                    itemProperty &&
-                    itemProperty
-                      .toLowerCase()
-                      .includes(searchValue.toLowerCase())
-                  );
-                })
-                .map((position) => (
-                  <>
-                    <TableRow
-                      key={position._id}
-                      sx={{ "&:hover": { backgroundColor: "#eee " } }}
-                    >
-                      <TableCell>
-                        <Typography sx={{ fontSize: 13 }}>
-                          {position.name}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        {position.department ? (
-                          <Grid container direction="row">
-                            <Paper
-                              elevation={0}
-                              sx={{
-                                mr: 1,
-                                width: 15,
-                                height: 15,
-                                borderRadius: 50,
-                                backgroundColor: position.department.color,
-                              }}
-                            />
-                            <Typography sx={{ fontSize: 13 }}>
-                              {position.department.name}
-                            </Typography>
-                          </Grid>
-                        ) : (
-                          ""
-                        )}
-                      </TableCell>
-                      <TableCell align="center">
-                        <PositionMembers
-                          members={position.members}
-                          users={users}
-                          managers={managers}
-                        />
-                      </TableCell>
-                      <TableCell
-                        cursor="pointer"
-                        align="center"
-                        onClick={() => setSelectedPosition(position)}
-                      >
-                        <PositionTableActions
-                          setOpenEdit={setOpenEdit}
-                          selectedItem={selectedPosition}
-                          refreshData={refreshData}
-                          setRefreshData={setRefreshData}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  </>
-                ))
-                .slice(startIndex, endIndex)}
-            </TableBody>
-          </Table>
-          <TablePagination
-            component="div"
-            count={sortedRows.length}
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage={"por Página"}
-            labelDisplayedRows={({ from, to, count }) => {
-              return " " + from + " à " + to + " total " + count;
-            }}
+                      <PositionTableActions
+                        setOpenEdit={setOpenEdit}
+                        selectedItem={selectedPosition}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </>
+              ))
+              .slice(startIndex, endIndex)}
+          </TableBody>
+        </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
+      </TableContainer>
+      {openEdit && (
+        <Dialog
+          fullWidth
+          maxWidth="xs"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditPositionForm
+            openEdit={openEdit}
+            departments={departments}
+            selectedPosition={selectedPosition}
+            previousMaterials={selectedPosition.materials}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
           />
-        </TableContainer>
-        {openEdit && (
-          <Dialog
-            fullWidth
-            maxWidth="xs"
-            open={openEdit}
-            onClose={() => setOpenEdit(!openEdit)}
-          >
-            <EditPositionForm
-              openEdit={openEdit}
-              departments={departments}
-              selectedPosition={selectedPosition}
-              previousMaterials={selectedPosition.materials}
-              setOpenEdit={setOpenEdit}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
-      </Box>
-    </>
+        </Dialog>
+      )}
+    </Box>
   );
 }

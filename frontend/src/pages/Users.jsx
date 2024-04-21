@@ -43,8 +43,7 @@ function CustomTabPanel(props) {
   );
 }
 
-// eslint-disable-next-line no-unused-vars
-export default function Users({ userName }) {
+export default function Users({ userName, topBar }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [configUsers, setConfigUsers] = React.useState(false);
@@ -224,6 +223,7 @@ export default function Users({ userName }) {
               configData={configUsers}
               // searchDepartment={searchDepartment}
               searchOption={searchOption}
+              topBar={topBar}
             />
           </>
         )}
@@ -251,6 +251,7 @@ export default function Users({ userName }) {
               setRefreshData={setRefreshData}
               searchValue={searchValue}
               searchOption={searchOption}
+              topBar={topBar}
             />
           </>
         )}

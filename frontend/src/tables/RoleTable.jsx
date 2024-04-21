@@ -32,6 +32,7 @@ export default function RoleTable({
   setRefreshData,
   searchValue,
   searchOption,
+  topBar,
 }) {
   const [selectedRole, setSelectedRole] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -122,107 +123,105 @@ export default function RoleTable({
   const endIndex = startIndex + rowsPerPage;
 
   return (
-    <>
-      <Box sx={{ minWidth: "1250px" }}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableRow
-              sx={{
-                 backgroundColor: "#eee",
-              }}
-            >
-              {tableHeaderRow.map((headCell) => (
-                <TableCell
-                  align={headCell.label === "Nome" ? "" : "center"}
-                  sx={{
-                    fontSize: 13,
-                    fontWeight: "bold",
-                    pl: headCell.label === "Nome" ? "" : 5,
-                  }}
-                  key={headCell.id}
-                  sortDirection={orderBy === headCell.id ? order : false}
-                >
-                  <TableSortLabel
-                    active={orderBy === headCell.id}
-                    direction={orderBy === headCell.id ? order : "asc"}
-                    onClick={() => handleRequestSort(headCell.id)}
-                  >
-                    {headCell.label}
-                  </TableSortLabel>
-                </TableCell>
-              ))}
-            </TableRow>
-            {sortedRows
-              .filter((item) =>
-                item[searchOption]
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase())
-              )
-              .map((row) => (
-                <TableRow
-                  key={row._id}
-                  sx={{ "&:hover": { backgroundColor: "#eee " } }}
-                  onClick={() => handleOpenDetail(row)}
-                >
-                  <TableCell onClick={() => handleOpenDetail(row)}>
-                    <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
-                  </TableCell>
-
-                  <TableCell align="center">
-                    <PositionMembers
-                      members={row.members}
-                      users={users}
-                      managers={managers}
-                    />
-                  </TableCell>
-                  <TableCell
-                    cursor="pointer"
-                    align="center"
-                    onClick={() => setSelectedRole(row)}
-                  >
-                    <RoleTableActions
-                      setOpenEdit={setOpenEdit}
-                      selectedItem={selectedRole}
-                      refreshData={refreshData}
-                      setRefreshData={setRefreshData}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))
-              .slice(startIndex, endIndex)}
-          </Table>
-          <TablePagination
-            component="div"
-            count={sortedRows.length}
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage={"por Página"}
-            labelDisplayedRows={({ from, to, count }) => {
-              return " " + from + " à " + to + " total " + count;
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableRow
+            sx={{
+              backgroundColor: "#eee",
             }}
-          />
-        </TableContainer>
-
-        {openEdit && (
-          <Dialog
-            fullWidth
-            maxWidth="xs"
-            open={openEdit}
-            onClose={() => setOpenEdit(!openEdit)}
           >
-            <EditRoleForm
-              openEdit={openEdit}
-              selectedRole={selectedRole}
-              setOpenEdit={setOpenEdit}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
-      </Box>
-    </>
+            {tableHeaderRow.map((headCell) => (
+              <TableCell
+                align={headCell.label === "Nome" ? "" : "center"}
+                sx={{
+                  fontSize: 13,
+                  fontWeight: "bold",
+                  pl: headCell.label === "Nome" ? "" : 5,
+                }}
+                key={headCell.id}
+                sortDirection={orderBy === headCell.id ? order : false}
+              >
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : "asc"}
+                  onClick={() => handleRequestSort(headCell.id)}
+                >
+                  {headCell.label}
+                </TableSortLabel>
+              </TableCell>
+            ))}
+          </TableRow>
+          {sortedRows
+            .filter((item) =>
+              item[searchOption]
+                .toLowerCase()
+                .includes(searchValue.toLowerCase())
+            )
+            .map((row) => (
+              <TableRow
+                key={row._id}
+                sx={{ "&:hover": { backgroundColor: "#eee " } }}
+                onClick={() => handleOpenDetail(row)}
+              >
+                <TableCell onClick={() => handleOpenDetail(row)}>
+                  <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
+                </TableCell>
+
+                <TableCell align="center">
+                  <PositionMembers
+                    members={row.members}
+                    users={users}
+                    managers={managers}
+                  />
+                </TableCell>
+                <TableCell
+                  cursor="pointer"
+                  align="center"
+                  onClick={() => setSelectedRole(row)}
+                >
+                  <RoleTableActions
+                    setOpenEdit={setOpenEdit}
+                    selectedItem={selectedRole}
+                    refreshData={refreshData}
+                    setRefreshData={setRefreshData}
+                  />
+                </TableCell>
+              </TableRow>
+            ))
+            .slice(startIndex, endIndex)}
+        </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
+      </TableContainer>
+
+      {openEdit && (
+        <Dialog
+          fullWidth
+          maxWidth="xs"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditRoleForm
+            openEdit={openEdit}
+            selectedRole={selectedRole}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+    </Box>
   );
 }

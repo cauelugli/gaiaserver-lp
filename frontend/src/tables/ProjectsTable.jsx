@@ -61,6 +61,7 @@ export default function ProjectsTable({
   projects,
   refreshData,
   setRefreshData,
+  topBar,
 }) {
   const [userReactions, setUserReactions] = React.useState({});
   const [selectedProject, setSelectedProject] = React.useState("");
@@ -354,981 +355,992 @@ export default function ProjectsTable({
   };
 
   return (
-    <>
-      <Box sx={{ minWidth: "1250px" }}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableBody>
-              <TableRow>
-                {tableHeaderRow.map((headCell) => (
-                  <TableCell
-                    align={headCell.label === "Nome do Projeto" ? "" : "center"}
-                    sx={{
-                      fontSize: 13,
-                      fontWeight: "bold",
-                      pl: headCell.label === "Nome do Projeto" ? "" : 5,
-                    }}
-                    key={headCell.id}
-                    sortDirection={orderBy === headCell.id ? order : false}
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            <TableRow>
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "Nome do Projeto" ? "" : "center"}
+                  sx={{
+                    fontSize: 13,
+                    fontWeight: "bold",
+                    pl: headCell.label === "Nome do Projeto" ? "" : 5,
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
                   >
-                    <TableSortLabel
-                      active={orderBy === headCell.id}
-                      direction={orderBy === headCell.id ? order : "asc"}
-                      onClick={() => handleRequestSort(headCell.id)}
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+            {sortedRows
+              .filter((item) =>
+                item[searchOption]
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase())
+              )
+              .map((project) => (
+                <>
+                  <TableRow key={project._id} sx={{ cursor: "pointer" }}>
+                    <TableCell
+                      onClick={() => handleOpenDetail(project)}
+                      cursor="pointer"
                     >
-                      {headCell.label}
-                    </TableSortLabel>
-                  </TableCell>
-                ))}
-              </TableRow>
-              {sortedRows
-                .filter((item) =>
-                  item[searchOption]
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase())
-                )
-                .map((project) => (
-                  <>
-                    <TableRow key={project._id} sx={{ cursor: "pointer" }}>
-                      <TableCell
-                        onClick={() => handleOpenDetail(project)}
-                        cursor="pointer"
-                      >
-                        <Typography sx={{ fontSize: 13 }}>
-                          {project.name}
-                        </Typography>
-                      </TableCell>
+                      <Typography sx={{ fontSize: 13 }}>
+                        {project.name}
+                      </Typography>
+                    </TableCell>
 
-                      <TableCell
-                        onClick={() => handleOpenDetail(project)}
-                        cursor="pointer"
-                        align="center"
+                    <TableCell
+                      onClick={() => handleOpenDetail(project)}
+                      cursor="pointer"
+                      align="center"
+                    >
+                      <Typography sx={{ fontSize: 13 }}>
+                        {project.type}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(project)}
+                      cursor="pointer"
+                      align="center"
+                    >
+                      <Typography sx={{ fontSize: 13 }}>
+                        {project.customer.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(project)}
+                      cursor="pointer"
+                      align="center"
+                    >
+                      <Grid
+                        container
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="center"
                       >
-                        <Typography sx={{ fontSize: 13 }}>
-                          {project.type}
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        onClick={() => handleOpenDetail(project)}
-                        cursor="pointer"
-                        align="center"
-                      >
-                        <Typography sx={{ fontSize: 13 }}>
-                          {project.customer.name}
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        onClick={() => handleOpenDetail(project)}
-                        cursor="pointer"
-                        align="center"
-                      >
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          <Paper
-                            elevation={0}
-                            sx={{
-                              mr: 1,
-                              width: 13,
-                              height: 13,
-                              borderRadius: 100,
-                              backgroundColor:
-                                project.definedStagesColors[0] !== null
-                                  ? project.definedStagesColors[
-                                      project.currentStage
-                                    ]
-                                  : "black",
-                            }}
-                          />
-                          <Typography sx={{ fontSize: 13 }}>
-                            {project.stages.length > project.currentStage
-                              ? `${project.stages[project.currentStage].title}
-                                  (${project.currentStage + 1}/${
-                                  project.stages.length
-                                })`
-                              : "Resolvido"}
-                          </Typography>
-                        </Grid>
-                      </TableCell>
-                      <TableCell
-                        onClick={() => handleOpenDetail(project)}
-                        cursor="pointer"
-                        align="center"
-                      >
-                        <Typography sx={{ fontSize: 13 }}>
-                          {project.creator.name}
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        onClick={() => handleOpenDetail(project)}
-                        cursor="pointer"
-                        align="center"
-                      >
-                        <Typography sx={{ fontSize: 13 }}>
-                          {project.status}
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        cursor="pointer"
-                        align="center"
-                        onClick={() => setSelectedProject(project)}
-                      >
-                        <ProjectTableActions
-                          selectedItem={project}
-                          configCustomization={"configCustomization"}
-                          handleOpenAddAttachment={setOpenAddAttachments}
-                          refreshData={refreshData}
-                          setRefreshData={setRefreshData}
+                        <Paper
+                          elevation={0}
+                          sx={{
+                            mr: 1,
+                            width: 13,
+                            height: 13,
+                            borderRadius: 100,
+                            backgroundColor:
+                              project.definedStagesColors[0] !== null
+                                ? project.definedStagesColors[
+                                    project.currentStage
+                                  ]
+                                : "black",
+                          }}
                         />
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                        style={{ paddingBottom: 0, paddingTop: 0 }}
-                        colSpan={8}
+                        <Typography sx={{ fontSize: 13 }}>
+                          {project.stages.length > project.currentStage
+                            ? `${project.stages[project.currentStage].title}
+                                  (${project.currentStage + 1}/${
+                                project.stages.length
+                              })`
+                            : "Resolvido"}
+                        </Typography>
+                      </Grid>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(project)}
+                      cursor="pointer"
+                      align="center"
+                    >
+                      <Typography sx={{ fontSize: 13 }}>
+                        {project.creator.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      onClick={() => handleOpenDetail(project)}
+                      cursor="pointer"
+                      align="center"
+                    >
+                      <Typography sx={{ fontSize: 13 }}>
+                        {project.status}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      cursor="pointer"
+                      align="center"
+                      onClick={() => setSelectedProject(project)}
+                    >
+                      <ProjectTableActions
+                        selectedItem={project}
+                        configCustomization={"configCustomization"}
+                        handleOpenAddAttachment={setOpenAddAttachments}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                      />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell
+                      style={{ paddingBottom: 0, paddingTop: 0 }}
+                      colSpan={8}
+                    >
+                      <Collapse
+                        in={openDetail && selectedProject._id === project._id}
+                        timeout="auto"
+                        unmountOnExit
                       >
-                        <Collapse
-                          in={openDetail && selectedProject._id === project._id}
-                          timeout="auto"
-                          unmountOnExit
-                        >
-                          <Box sx={{ my: 4, px: 6 }}>
-                            <Grid container direction="row">
-                              <Typography
-                                variant="h6"
-                                sx={{
-                                  fontSize: 18,
-                                  fontWeight: "bold",
-                                  my: "auto",
-                                }}
-                              >
-                                Informações do Projeto
-                              </Typography>
-                              <IconButton
-                                onClick={() =>
-                                  setOpenDetailInfo(!openDetailInfo)
-                                }
-                              >
-                                <ExpandMoreIcon />
-                              </IconButton>
-                            </Grid>
-                            <Collapse
-                              in={openDetailInfo}
-                              timeout="auto"
-                              unmountOnExit
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
                             >
-                              <Table size="small">
+                              Informações do Projeto
+                            </Typography>
+                            <IconButton
+                              onClick={() => setOpenDetailInfo(!openDetailInfo)}
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={openDetailInfo}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell sx={{ width: "350px" }}>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Nome
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      ####
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell sx={{ width: "350px" }}>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {project.name}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      ####
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                            {project.attachments.length !== 0 && (
+                              <Table size="small" sx={{ mt: 1 }}>
                                 <TableHead>
                                   <TableRow>
-                                    <TableCell sx={{ width: "350px" }}>
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Nome
-                                      </Typography>
-                                    </TableCell>
                                     <TableCell>
                                       <Typography
                                         sx={{ fontSize: 13, color: "#777" }}
                                       >
-                                        ####
+                                        Anexos
                                       </Typography>
                                     </TableCell>
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
                                   <TableRow>
-                                    <TableCell sx={{ width: "350px" }}>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        {project.name}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography sx={{ fontSize: 13 }}>
-                                        ####
-                                      </Typography>
+                                    <TableCell align="left">
+                                      <Grid container direction="row">
+                                        {project.attachments.map(
+                                          (attachment, index) => (
+                                            <Grid
+                                              key={index}
+                                              item
+                                              sx={{ mr: 1 }}
+                                            >
+                                              <Grid
+                                                container
+                                                dierction="column"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                              >
+                                                <Grid
+                                                  container
+                                                  direction="column"
+                                                  alignItems="center"
+                                                  sx={{
+                                                    cursor: "pointer",
+                                                    border:
+                                                      "1px solid darkgrey",
+                                                    borderRadius: 2,
+                                                    padding: 1,
+                                                  }}
+                                                  onClick={() => {
+                                                    setSelectedItem(attachment);
+                                                    setOpenViewDialog(true);
+                                                  }}
+                                                >
+                                                  {isPdf(attachment) ? (
+                                                    <img
+                                                      src={`http://localhost:3000/static/pdf.png`}
+                                                      alt="PDF"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  ) : isImage(attachment) ? (
+                                                    <img
+                                                      src={`http://localhost:3000/static/${attachment}`}
+                                                      alt="Arquivo Inexistente"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  ) : (
+                                                    <img
+                                                      src={`http://localhost:3000/static/doc.png`}
+                                                      alt="Other"
+                                                      style={{
+                                                        width: "80px",
+                                                        height: "80px",
+                                                        marginBottom: "8px",
+                                                      }}
+                                                    />
+                                                  )}
+                                                  <Typography
+                                                    sx={{
+                                                      fontSize: 10,
+                                                      color: "#777",
+                                                      maxWidth: "75px",
+                                                      whiteSpace: "nowrap",
+                                                      overflow: "hidden",
+                                                      textOverflow: "ellipsis",
+                                                    }}
+                                                  >
+                                                    {
+                                                      attachment
+                                                        .split("/")
+                                                        .pop()
+                                                        .split(".")[1]
+                                                    }
+                                                  </Typography>
+                                                </Grid>
+                                                {userUsername === "admin" && (
+                                                  <Button
+                                                    size="small"
+                                                    color="error"
+                                                    onClick={() =>
+                                                      handleDeleteAttachment(
+                                                        project._id,
+                                                        index
+                                                      )
+                                                    }
+                                                  >
+                                                    <DeleteIcon />
+                                                  </Button>
+                                                )}
+                                              </Grid>
+                                            </Grid>
+                                          )
+                                        )}
+                                      </Grid>
                                     </TableCell>
                                   </TableRow>
                                 </TableBody>
                               </Table>
-                              {project.attachments.length !== 0 && (
-                                <Table size="small" sx={{ mt: 1 }}>
-                                  <TableHead>
-                                    <TableRow>
-                                      <TableCell>
-                                        <Typography
-                                          sx={{ fontSize: 13, color: "#777" }}
-                                        >
-                                          Anexos
-                                        </Typography>
-                                      </TableCell>
-                                    </TableRow>
-                                  </TableHead>
-                                  <TableBody>
-                                    <TableRow>
-                                      <TableCell align="left">
+                            )}
+                          </Collapse>
+                        </Box>
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
+                            >
+                              Etapas
+                            </Typography>
+                            <IconButton
+                              onClick={() =>
+                                setOpenDetailStages(!openDetailStages)
+                              }
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={openDetailStages}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Grid container direction="column">
+                              {project.stages.map((stage, stageIndex) => (
+                                <Accordion
+                                  key={stageIndex}
+                                  onClick={() =>
+                                    setSelectedStageIndex(stageIndex)
+                                  }
+                                  sx={{ mx: "10%", mb: 1 }}
+                                >
+                                  <AccordionSummary
+                                    expandIcon={<ArrowDropDownIcon />}
+                                  >
+                                    <Grid
+                                      container
+                                      direction="row"
+                                      justifyContent="space-between"
+                                    >
+                                      <Grid item sx={{ width: 200 }}>
                                         <Grid container direction="row">
-                                          {project.attachments.map(
-                                            (attachment, index) => (
-                                              <Grid
-                                                key={index}
-                                                item
-                                                sx={{ mr: 1 }}
-                                              >
-                                                <Grid
-                                                  container
-                                                  dierction="column"
-                                                  alignItems="center"
-                                                  justifyContent="center"
+                                          <Grid
+                                            sx={{
+                                              width: 24,
+                                              height: 24,
+                                              borderRadius: 100,
+                                              mr: 1,
+                                              backgroundColor:
+                                                project.definedStagesColors[
+                                                  stageIndex
+                                                ],
+                                            }}
+                                          />
+                                          <Typography
+                                            sx={{
+                                              fontSize: 16,
+                                              mt: 0.5,
+                                              fontWeight: "bold",
+                                            }}
+                                          >
+                                            {stage.title === "" ? (
+                                              <Typography sx={{ fontSize: 14 }}>
+                                                Etapa #{stageIndex + 1}
+                                              </Typography>
+                                            ) : (
+                                              <Typography sx={{ fontSize: 14 }}>
+                                                {stage.title}
+                                              </Typography>
+                                            )}
+                                          </Typography>
+                                        </Grid>
+                                      </Grid>
+
+                                      <Typography
+                                        sx={{
+                                          fontSize: 14,
+                                        }}
+                                      >
+                                        {stageIndex > 0 &&
+                                        project.stages[stageIndex - 1]
+                                          .status === "Aberto" &&
+                                        stage.status === "Aberto"
+                                          ? "Aguardando"
+                                          : stage.status}
+                                      </Typography>
+
+                                      <Typography
+                                        sx={{
+                                          fontSize: 14,
+                                          mr: 1,
+                                        }}
+                                      >
+                                        Prazo de Execução:{" "}
+                                        {dayjs(stage.dueTo).format(
+                                          "DD/MM/YYYY"
+                                        )}
+                                      </Typography>
+                                    </Grid>
+                                  </AccordionSummary>
+                                  <AccordionDetails>
+                                    <Typography
+                                      sx={{
+                                        fontSize: 16,
+                                        mx: 2,
+                                        fontWeight: "bold",
+                                      }}
+                                    >
+                                      Tarefas
+                                    </Typography>
+                                    {stage.tasks.map((task, taskIndex) => (
+                                      <>
+                                        <Accordion
+                                          key={taskIndex}
+                                          onClick={() => {
+                                            setSelectedTaskIndex(taskIndex);
+                                            setSelectedStageIndex(stageIndex);
+                                          }}
+                                        >
+                                          <AccordionSummary>
+                                            <Grid
+                                              key={taskIndex}
+                                              container
+                                              direction="row"
+                                              alignItems="center"
+                                              justifyContent="flex-start"
+                                            >
+                                              <Grid item>{taskIndex + 1}.</Grid>
+                                              <Grid item sx={{ width: "25%" }}>
+                                                <Typography
+                                                  sx={{ fontSize: 14 }}
                                                 >
-                                                  <Grid
-                                                    container
-                                                    direction="column"
-                                                    alignItems="center"
+                                                  Tarefa: {task.title}
+                                                </Typography>
+                                              </Grid>
+                                              <Grid item sx={{ width: "30%" }}>
+                                                <Grid container direction="row">
+                                                  <Typography
                                                     sx={{
-                                                      cursor: "pointer",
-                                                      border:
-                                                        "1px solid darkgrey",
-                                                      borderRadius: 2,
-                                                      padding: 1,
-                                                    }}
-                                                    onClick={() => {
-                                                      setSelectedItem(
-                                                        attachment
-                                                      );
-                                                      setOpenViewDialog(true);
+                                                      fontSize: 14,
+                                                      mr: 1,
                                                     }}
                                                   >
-                                                    {isPdf(attachment) ? (
-                                                      <img
-                                                        src={`http://localhost:3000/static/pdf.png`}
-                                                        alt="PDF"
-                                                        style={{
-                                                          width: "80px",
-                                                          height: "80px",
-                                                          marginBottom: "8px",
-                                                        }}
-                                                      />
-                                                    ) : isImage(attachment) ? (
-                                                      <img
-                                                        src={`http://localhost:3000/static/${attachment}`}
-                                                        alt="Arquivo Inexistente"
-                                                        style={{
-                                                          width: "80px",
-                                                          height: "80px",
-                                                          marginBottom: "8px",
-                                                        }}
-                                                      />
-                                                    ) : (
-                                                      <img
-                                                        src={`http://localhost:3000/static/doc.png`}
-                                                        alt="Other"
-                                                        style={{
-                                                          width: "80px",
-                                                          height: "80px",
-                                                          marginBottom: "8px",
-                                                        }}
-                                                      />
-                                                    )}
-                                                    <Typography
-                                                      sx={{
-                                                        fontSize: 10,
-                                                        color: "#777",
-                                                        maxWidth: "75px",
-                                                        whiteSpace: "nowrap",
-                                                        overflow: "hidden",
-                                                        textOverflow:
-                                                          "ellipsis",
-                                                      }}
-                                                    >
-                                                      {
-                                                        attachment
-                                                          .split("/")
-                                                          .pop()
-                                                          .split(".")[1]
-                                                      }
-                                                    </Typography>
-                                                  </Grid>
-                                                  {userUsername === "admin" && (
-                                                    <Button
-                                                      size="small"
-                                                      color="error"
-                                                      onClick={() =>
-                                                        handleDeleteAttachment(
-                                                          project._id,
-                                                          index
-                                                        )
-                                                      }
-                                                    >
-                                                      <DeleteIcon />
-                                                    </Button>
+                                                    Designados:
+                                                  </Typography>
+                                                  {task.assignees.map(
+                                                    (assignee) => (
+                                                      <Tooltip
+                                                        key
+                                                        title={
+                                                          <Typography>
+                                                            {assignee.name}
+                                                          </Typography>
+                                                        }
+                                                      >
+                                                        <Avatar
+                                                          alt="Imagem do Colaborador"
+                                                          src={`http://localhost:3000/static/${assignee.image}`}
+                                                          sx={{
+                                                            width: 22,
+                                                            height: 22,
+                                                          }}
+                                                        />
+                                                      </Tooltip>
+                                                    )
                                                   )}
                                                 </Grid>
                                               </Grid>
-                                            )
-                                          )}
-                                        </Grid>
-                                      </TableCell>
-                                    </TableRow>
-                                  </TableBody>
-                                </Table>
-                              )}
-                            </Collapse>
-                          </Box>
-                          <Box sx={{ my: 4, px: 6 }}>
-                            <Grid container direction="row">
-                              <Typography
-                                variant="h6"
-                                sx={{
-                                  fontSize: 18,
-                                  fontWeight: "bold",
-                                  my: "auto",
-                                }}
-                              >
-                                Etapas
-                              </Typography>
-                              <IconButton
-                                onClick={() =>
-                                  setOpenDetailStages(!openDetailStages)
-                                }
-                              >
-                                <ExpandMoreIcon />
-                              </IconButton>
-                            </Grid>
-                            <Collapse
-                              in={openDetailStages}
-                              timeout="auto"
-                              unmountOnExit
-                            >
-                              <Grid container direction="column">
-                                {project.stages.map((stage, stageIndex) => (
-                                  <Accordion
-                                    key={stageIndex}
-                                    onClick={() =>
-                                      setSelectedStageIndex(stageIndex)
-                                    }
-                                    sx={{ mx: "10%", mb: 1 }}
-                                  >
-                                    <AccordionSummary
-                                      expandIcon={<ArrowDropDownIcon />}
-                                    >
-                                      <Grid
-                                        container
-                                        direction="row"
-                                        justifyContent="space-between"
-                                      >
-                                        <Grid item sx={{ width: 200 }}>
-                                          <Grid container direction="row">
-                                            <Grid
-                                              sx={{
-                                                width: 24,
-                                                height: 24,
-                                                borderRadius: 100,
-                                                mr: 1,
-                                                backgroundColor:
-                                                  project.definedStagesColors[
-                                                    stageIndex
-                                                  ],
-                                              }}
-                                            />
+                                              <Grid item sx={{ width: "20%" }}>
+                                                <Typography
+                                                  sx={{ fontSize: 14 }}
+                                                >
+                                                  Status:{task.status}
+                                                </Typography>
+                                              </Grid>
+                                              <Grid item sx={{ width: "15%" }}>
+                                                <Typography
+                                                  sx={{ fontSize: 14 }}
+                                                >
+                                                  Prazo: {task.dueTo}
+                                                </Typography>
+                                              </Grid>
+                                            </Grid>
+                                          </AccordionSummary>
+                                          <AccordionDetails
+                                            sx={{
+                                              m: 2,
+                                              border: "1px solid #bbb",
+                                              borderRadius: 1,
+                                            }}
+                                          >
                                             <Typography
                                               sx={{
                                                 fontSize: 16,
-                                                mt: 0.5,
                                                 fontWeight: "bold",
                                               }}
                                             >
-                                              {stage.title === "" ? (
-                                                <Typography
-                                                  sx={{ fontSize: 14 }}
-                                                >
-                                                  Etapa #{stageIndex + 1}
-                                                </Typography>
-                                              ) : (
-                                                <Typography
-                                                  sx={{ fontSize: 14 }}
-                                                >
-                                                  {stage.title}
-                                                </Typography>
-                                              )}
+                                              Atividades
                                             </Typography>
-                                          </Grid>
-                                        </Grid>
-
-                                        <Typography
-                                          sx={{
-                                            fontSize: 14,
-                                          }}
-                                        >
-                                          {stageIndex > 0 &&
-                                          project.stages[stageIndex - 1]
-                                            .status === "Aberto" &&
-                                          stage.status === "Aberto"
-                                            ? "Aguardando"
-                                            : stage.status}
-                                        </Typography>
-
-                                        <Typography
-                                          sx={{
-                                            fontSize: 14,
-                                            mr: 1,
-                                          }}
-                                        >
-                                          Prazo de Execução:{" "}
-                                          {dayjs(stage.dueTo).format(
-                                            "DD/MM/YYYY"
-                                          )}
-                                        </Typography>
-                                      </Grid>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                      <Typography
-                                        sx={{
-                                          fontSize: 16,
-                                          mx: 2,
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        Tarefas
-                                      </Typography>
-                                      {stage.tasks.map((task, taskIndex) => (
-                                        <>
-                                          <Accordion
-                                            key={taskIndex}
-                                            onClick={() => {
-                                              setSelectedTaskIndex(taskIndex);
-                                              setSelectedStageIndex(stageIndex);
-                                            }}
-                                          >
-                                            <AccordionSummary>
-                                              <Grid
-                                                key={taskIndex}
-                                                container
-                                                direction="row"
-                                                alignItems="center"
-                                                justifyContent="flex-start"
-                                              >
-                                                <Grid item>
-                                                  {taskIndex + 1}.
-                                                </Grid>
-                                                <Grid
-                                                  item
-                                                  sx={{ width: "25%" }}
-                                                >
-                                                  <Typography
-                                                    sx={{ fontSize: 14 }}
-                                                  >
-                                                    Tarefa: {task.title}
-                                                  </Typography>
-                                                </Grid>
-                                                <Grid
-                                                  item
-                                                  sx={{ width: "30%" }}
-                                                >
-                                                  <Grid
-                                                    container
-                                                    direction="row"
-                                                  >
-                                                    <Typography
-                                                      sx={{
-                                                        fontSize: 14,
-                                                        mr: 1,
-                                                      }}
-                                                    >
-                                                      Designados:
-                                                    </Typography>
-                                                    {task.assignees.map(
-                                                      (assignee) => (
-                                                        <Tooltip
-                                                          key
-                                                          title={
-                                                            <Typography>
-                                                              {assignee.name}
-                                                            </Typography>
-                                                          }
+                                            <Grid sx={{ ml: 2 }}>
+                                              {task.interactions.length ===
+                                              0 ? (
+                                                "Não há Atividades na Tarefa"
+                                              ) : (
+                                                <Table size="small">
+                                                  <TableHead>
+                                                    <TableRow>
+                                                      <TableCell>
+                                                        <Typography
+                                                          sx={{
+                                                            fontSize: 13,
+                                                            color: "#777",
+                                                          }}
                                                         >
-                                                          <Avatar
-                                                            alt="Imagem do Colaborador"
-                                                            src={`http://localhost:3000/static/${assignee.image}`}
-                                                            sx={{
-                                                              width: 22,
-                                                              height: 22,
-                                                            }}
-                                                          />
-                                                        </Tooltip>
-                                                      )
-                                                    )}
-                                                  </Grid>
-                                                </Grid>
-                                                <Grid
-                                                  item
-                                                  sx={{ width: "20%" }}
-                                                >
-                                                  <Typography
-                                                    sx={{ fontSize: 14 }}
-                                                  >
-                                                    Status:{task.status}
-                                                  </Typography>
-                                                </Grid>
-                                                <Grid
-                                                  item
-                                                  sx={{ width: "15%" }}
-                                                >
-                                                  <Typography
-                                                    sx={{ fontSize: 14 }}
-                                                  >
-                                                    Prazo: {task.dueTo}
-                                                  </Typography>
-                                                </Grid>
-                                              </Grid>
-                                            </AccordionSummary>
-                                            <AccordionDetails
-                                              sx={{
-                                                m: 2,
-                                                border: "1px solid #bbb",
-                                                borderRadius: 1,
-                                              }}
-                                            >
-                                              <Typography
-                                                sx={{
-                                                  fontSize: 16,
-                                                  fontWeight: "bold",
-                                                }}
-                                              >
-                                                Atividades
-                                              </Typography>
-                                              <Grid sx={{ ml: 2 }}>
-                                                {task.interactions.length ===
-                                                0 ? (
-                                                  "Não há Atividades na Tarefa"
-                                                ) : (
-                                                  <Table size="small">
-                                                    <TableHead>
-                                                      <TableRow>
-                                                        <TableCell>
-                                                          <Typography
-                                                            sx={{
-                                                              fontSize: 13,
-                                                              color: "#777",
-                                                            }}
-                                                          >
-                                                            Colaborador
-                                                          </Typography>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                          <Typography
-                                                            sx={{
-                                                              fontSize: 13,
-                                                              color: "#777",
-                                                            }}
-                                                          >
-                                                            Atividade
-                                                          </Typography>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                          <Typography
-                                                            sx={{
-                                                              fontSize: 13,
-                                                              color: "#777",
-                                                            }}
-                                                          >
-                                                            Anexos
-                                                          </Typography>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                          <Typography
-                                                            sx={{
-                                                              fontSize: 13,
-                                                              color: "#777",
-                                                            }}
-                                                          >
-                                                            Data
-                                                          </Typography>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                          <Typography
-                                                            sx={{
-                                                              fontSize: 13,
-                                                              color: "#777",
-                                                            }}
-                                                          >
-                                                            Reações
-                                                          </Typography>
-                                                        </TableCell>
-                                                      </TableRow>
-                                                    </TableHead>
-                                                    <TableBody>
-                                                      {task.interactions.map(
-                                                        (
-                                                          interaction,
-                                                          interactionIndex
-                                                        ) => (
-                                                          <TableRow
-                                                            key={
-                                                              interactionIndex
-                                                            }
-                                                          >
-                                                            <TableCell align="left">
-                                                              <Typography
-                                                                sx={{
-                                                                  fontSize: 13,
-                                                                }}
-                                                              >
-                                                                {
-                                                                  interaction
-                                                                    .user.name
-                                                                }
-                                                              </Typography>
-                                                            </TableCell>
-                                                            <TableCell align="left">
-                                                              <Typography
-                                                                sx={{
-                                                                  fontSize: 13,
-                                                                }}
-                                                              >
-                                                                {
-                                                                  interaction.interaction
-                                                                }
-                                                              </Typography>
-                                                            </TableCell>
-                                                            <TableCell align="left">
-                                                              {/* here */}
-                                                              {interaction
-                                                                .attachments
-                                                                .length !==
-                                                                0 && (
-                                                                <Grid>
-                                                                  <AttachFileIcon
-                                                                    sx={{
-                                                                      fontSize: 16,
-                                                                      color:
-                                                                        "#777",
-                                                                      cursor:
-                                                                        "pointer",
-                                                                    }}
-                                                                    onClick={handlePopoverOpen(
-                                                                      interactionIndex
+                                                          Colaborador
+                                                        </Typography>
+                                                      </TableCell>
+                                                      <TableCell>
+                                                        <Typography
+                                                          sx={{
+                                                            fontSize: 13,
+                                                            color: "#777",
+                                                          }}
+                                                        >
+                                                          Atividade
+                                                        </Typography>
+                                                      </TableCell>
+                                                      <TableCell>
+                                                        <Typography
+                                                          sx={{
+                                                            fontSize: 13,
+                                                            color: "#777",
+                                                          }}
+                                                        >
+                                                          Anexos
+                                                        </Typography>
+                                                      </TableCell>
+                                                      <TableCell>
+                                                        <Typography
+                                                          sx={{
+                                                            fontSize: 13,
+                                                            color: "#777",
+                                                          }}
+                                                        >
+                                                          Data
+                                                        </Typography>
+                                                      </TableCell>
+                                                      <TableCell>
+                                                        <Typography
+                                                          sx={{
+                                                            fontSize: 13,
+                                                            color: "#777",
+                                                          }}
+                                                        >
+                                                          Reações
+                                                        </Typography>
+                                                      </TableCell>
+                                                    </TableRow>
+                                                  </TableHead>
+                                                  <TableBody>
+                                                    {task.interactions.map(
+                                                      (
+                                                        interaction,
+                                                        interactionIndex
+                                                      ) => (
+                                                        <TableRow
+                                                          key={interactionIndex}
+                                                        >
+                                                          <TableCell align="left">
+                                                            <Typography
+                                                              sx={{
+                                                                fontSize: 13,
+                                                              }}
+                                                            >
+                                                              {
+                                                                interaction.user
+                                                                  .name
+                                                              }
+                                                            </Typography>
+                                                          </TableCell>
+                                                          <TableCell align="left">
+                                                            <Typography
+                                                              sx={{
+                                                                fontSize: 13,
+                                                              }}
+                                                            >
+                                                              {
+                                                                interaction.interaction
+                                                              }
+                                                            </Typography>
+                                                          </TableCell>
+                                                          <TableCell align="left">
+                                                            {/* here */}
+                                                            {interaction
+                                                              .attachments
+                                                              .length !== 0 && (
+                                                              <Grid>
+                                                                <AttachFileIcon
+                                                                  sx={{
+                                                                    fontSize: 16,
+                                                                    color:
+                                                                      "#777",
+                                                                    cursor:
+                                                                      "pointer",
+                                                                  }}
+                                                                  onClick={handlePopoverOpen(
+                                                                    interactionIndex
+                                                                  )}
+                                                                />
+                                                                {openPopoverIndex ===
+                                                                  interactionIndex && (
+                                                                  <Popover
+                                                                    open={Boolean(
+                                                                      anchorEl
                                                                     )}
-                                                                  />
-                                                                  {openPopoverIndex ===
-                                                                    interactionIndex && (
-                                                                    <Popover
-                                                                      open={Boolean(
-                                                                        anchorEl
-                                                                      )}
-                                                                      anchorEl={
-                                                                        anchorEl
-                                                                      }
-                                                                      onClose={
-                                                                        handlePopoverClose
-                                                                      }
-                                                                      anchorOrigin={{
-                                                                        vertical:
-                                                                          "bottom",
-                                                                        horizontal:
-                                                                          "left",
+                                                                    anchorEl={
+                                                                      anchorEl
+                                                                    }
+                                                                    onClose={
+                                                                      handlePopoverClose
+                                                                    }
+                                                                    anchorOrigin={{
+                                                                      vertical:
+                                                                        "bottom",
+                                                                      horizontal:
+                                                                        "left",
+                                                                    }}
+                                                                  >
+                                                                    <Box
+                                                                      p={2}
+                                                                      sx={{
+                                                                        width:
+                                                                          "auto",
+                                                                        maxWidth: 460,
+                                                                        height:
+                                                                          "auto",
+                                                                        maxHeight: 280,
                                                                       }}
                                                                     >
-                                                                      <Box
-                                                                        p={2}
+                                                                      <Typography
+                                                                        variant="h6"
                                                                         sx={{
-                                                                          width:
-                                                                            "auto",
-                                                                          maxWidth: 460,
-                                                                          height:
-                                                                            "auto",
-                                                                          maxHeight: 280,
+                                                                          color:
+                                                                            "#555",
                                                                         }}
                                                                       >
-                                                                        <Typography
-                                                                          variant="h6"
-                                                                          sx={{
-                                                                            color:
-                                                                              "#555",
-                                                                          }}
-                                                                        >
-                                                                          Anexos
-                                                                        </Typography>
-                                                                        <Grid
-                                                                          container
-                                                                          direction="row"
-                                                                        >
-                                                                          {interaction.attachments.map(
-                                                                            (
-                                                                              attachment,
-                                                                              attachmentIndex
-                                                                            ) => (
-                                                                              <Grid
-                                                                                key={
-                                                                                  attachmentIndex
-                                                                                }
-                                                                                sx={{
-                                                                                  mr: 2,
-                                                                                  mb: 2,
-                                                                                  cursor:
-                                                                                    "pointer",
-                                                                                  border:
-                                                                                    "1px solid darkgrey",
-                                                                                  borderRadius: 2,
-                                                                                  padding: 1,
-                                                                                }}
-                                                                                onClick={() => {
-                                                                                  setSelectedItem(
-                                                                                    attachment
-                                                                                  );
-                                                                                  setOpenViewDialog(
-                                                                                    true
-                                                                                  );
-                                                                                }}
-                                                                              >
-                                                                                {isPdf(
+                                                                        Anexos
+                                                                      </Typography>
+                                                                      <Grid
+                                                                        container
+                                                                        direction="row"
+                                                                      >
+                                                                        {interaction.attachments.map(
+                                                                          (
+                                                                            attachment,
+                                                                            attachmentIndex
+                                                                          ) => (
+                                                                            <Grid
+                                                                              key={
+                                                                                attachmentIndex
+                                                                              }
+                                                                              sx={{
+                                                                                mr: 2,
+                                                                                mb: 2,
+                                                                                cursor:
+                                                                                  "pointer",
+                                                                                border:
+                                                                                  "1px solid darkgrey",
+                                                                                borderRadius: 2,
+                                                                                padding: 1,
+                                                                              }}
+                                                                              onClick={() => {
+                                                                                setSelectedItem(
+                                                                                  attachment
+                                                                                );
+                                                                                setOpenViewDialog(
+                                                                                  true
+                                                                                );
+                                                                              }}
+                                                                            >
+                                                                              {isPdf(
+                                                                                attachment
+                                                                              ) ? (
+                                                                                <img
+                                                                                  src={`http://localhost:3000/static/pdf.png`}
+                                                                                  alt="PDF"
+                                                                                  style={{
+                                                                                    width:
+                                                                                      "80px",
+                                                                                    height:
+                                                                                      "80px",
+                                                                                    marginBottom:
+                                                                                      "8px",
+                                                                                  }}
+                                                                                />
+                                                                              ) : isImage(
                                                                                   attachment
                                                                                 ) ? (
-                                                                                  <img
-                                                                                    src={`http://localhost:3000/static/pdf.png`}
-                                                                                    alt="PDF"
-                                                                                    style={{
-                                                                                      width:
-                                                                                        "80px",
-                                                                                      height:
-                                                                                        "80px",
-                                                                                      marginBottom:
-                                                                                        "8px",
-                                                                                    }}
-                                                                                  />
-                                                                                ) : isImage(
-                                                                                    attachment
-                                                                                  ) ? (
-                                                                                  <img
-                                                                                    src={`http://localhost:3000/static/${attachment}`}
-                                                                                    alt="Pré-visualização"
-                                                                                    style={{
-                                                                                      width:
-                                                                                        "80px",
-                                                                                      height:
-                                                                                        "80px",
-                                                                                      marginBottom:
-                                                                                        "8px",
-                                                                                    }}
-                                                                                  />
-                                                                                ) : (
-                                                                                  <img
-                                                                                    src={`http://localhost:3000/static/doc.png`}
-                                                                                    alt="Other"
-                                                                                    style={{
-                                                                                      width:
-                                                                                        "80px",
-                                                                                      height:
-                                                                                        "80px",
-                                                                                      marginBottom:
-                                                                                        "8px",
-                                                                                    }}
-                                                                                  />
-                                                                                )}
-                                                                              </Grid>
-                                                                            )
-                                                                          )}
-                                                                        </Grid>
-                                                                      </Box>
-                                                                    </Popover>
-                                                                  )}
-                                                                </Grid>
-                                                              )}
-                                                            </TableCell>
-                                                            <TableCell align="left">
+                                                                                <img
+                                                                                  src={`http://localhost:3000/static/${attachment}`}
+                                                                                  alt="Pré-visualização"
+                                                                                  style={{
+                                                                                    width:
+                                                                                      "80px",
+                                                                                    height:
+                                                                                      "80px",
+                                                                                    marginBottom:
+                                                                                      "8px",
+                                                                                  }}
+                                                                                />
+                                                                              ) : (
+                                                                                <img
+                                                                                  src={`http://localhost:3000/static/doc.png`}
+                                                                                  alt="Other"
+                                                                                  style={{
+                                                                                    width:
+                                                                                      "80px",
+                                                                                    height:
+                                                                                      "80px",
+                                                                                    marginBottom:
+                                                                                      "8px",
+                                                                                  }}
+                                                                                />
+                                                                              )}
+                                                                            </Grid>
+                                                                          )
+                                                                        )}
+                                                                      </Grid>
+                                                                    </Box>
+                                                                  </Popover>
+                                                                )}
+                                                              </Grid>
+                                                            )}
+                                                          </TableCell>
+                                                          <TableCell align="left">
+                                                            <Typography
+                                                              sx={{
+                                                                fontSize: 13,
+                                                              }}
+                                                            >
+                                                              {
+                                                                interaction.createdAt
+                                                              }
+                                                            </Typography>
+                                                          </TableCell>
+                                                          <TableCell align="left">
+                                                            {interaction.activity !==
+                                                              "Job aprovado" && (
                                                               <Typography
                                                                 sx={{
                                                                   fontSize: 13,
                                                                 }}
                                                               >
-                                                                {
-                                                                  interaction.createdAt
-                                                                }
+                                                                <InteractionReactions
+                                                                  fromProjects
+                                                                  userId={
+                                                                    userId
+                                                                  }
+                                                                  userName={
+                                                                    userName
+                                                                  }
+                                                                  refreshData={
+                                                                    refreshData
+                                                                  }
+                                                                  setRefreshData={
+                                                                    setRefreshData
+                                                                  }
+                                                                  interaction={
+                                                                    interaction
+                                                                  }
+                                                                  stageIndex={
+                                                                    stageIndex
+                                                                  }
+                                                                  taskIndex={
+                                                                    taskIndex
+                                                                  }
+                                                                  interactionIndex={
+                                                                    interactionIndex
+                                                                  }
+                                                                  number={
+                                                                    interaction.number
+                                                                  }
+                                                                  userReactions={
+                                                                    userReactions[
+                                                                      selectedProject
+                                                                        ._id
+                                                                    ] || []
+                                                                  }
+                                                                  setUserReactions={(
+                                                                    reactions
+                                                                  ) =>
+                                                                    setUserReactions(
+                                                                      {
+                                                                        ...userReactions,
+                                                                        [selectedProject._id]:
+                                                                          reactions,
+                                                                      }
+                                                                    )
+                                                                  }
+                                                                  itemId={
+                                                                    selectedProject._id
+                                                                  }
+                                                                  updateInteractions={
+                                                                    updateSelectedProjectInteractions
+                                                                  }
+                                                                />
                                                               </Typography>
-                                                            </TableCell>
-                                                            <TableCell align="left">
-                                                              {interaction.activity !==
-                                                                "Job aprovado" && (
-                                                                <Typography
-                                                                  sx={{
-                                                                    fontSize: 13,
-                                                                  }}
-                                                                >
-                                                                  <InteractionReactions
-                                                                    fromProjects
-                                                                    userId={
-                                                                      userId
-                                                                    }
-                                                                    userName={
-                                                                      userName
-                                                                    }
-                                                                    refreshData={
-                                                                      refreshData
-                                                                    }
-                                                                    setRefreshData={
-                                                                      setRefreshData
-                                                                    }
-                                                                    interaction={
-                                                                      interaction
-                                                                    }
-                                                                    stageIndex={
-                                                                      stageIndex
-                                                                    }
-                                                                    taskIndex={
-                                                                      taskIndex
-                                                                    }
-                                                                    interactionIndex={
-                                                                      interactionIndex
-                                                                    }
-                                                                    number={
-                                                                      interaction.number
-                                                                    }
-                                                                    userReactions={
-                                                                      userReactions[
-                                                                        selectedProject
-                                                                          ._id
-                                                                      ] || []
-                                                                    }
-                                                                    setUserReactions={(
-                                                                      reactions
-                                                                    ) =>
-                                                                      setUserReactions(
-                                                                        {
-                                                                          ...userReactions,
-                                                                          [selectedProject._id]:
-                                                                            reactions,
-                                                                        }
-                                                                      )
-                                                                    }
-                                                                    itemId={
-                                                                      selectedProject._id
-                                                                    }
-                                                                    updateInteractions={
-                                                                      updateSelectedProjectInteractions
-                                                                    }
-                                                                  />
-                                                                </Typography>
-                                                              )}
-                                                            </TableCell>
-                                                          </TableRow>
-                                                        )
-                                                      )}
-                                                    </TableBody>
-                                                  </Table>
-                                                )}
-                                              </Grid>
-
-                                              {task.status === "Resolvido" && (
-                                                <Grid sx={{ mt: 3 }}>
-                                                  <Typography
-                                                    sx={{
-                                                      fontSize: 16,
-                                                      fontWeight: "bold",
-                                                    }}
-                                                  >
-                                                    Resolução
-                                                  </Typography>
-                                                  <Table
-                                                    size="small"
-                                                    sx={{ ml: 2 }}
-                                                  >
-                                                    <TableHead>
-                                                      <TableRow>
-                                                        <TableCell>
-                                                          <Typography
-                                                            sx={{
-                                                              fontSize: 13,
-                                                              color: "#777",
-                                                            }}
-                                                          >
-                                                            Data
-                                                          </Typography>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                          <Typography
-                                                            sx={{
-                                                              fontSize: 13,
-                                                              color: "#777",
-                                                            }}
-                                                          >
-                                                            Colaborador
-                                                          </Typography>
-                                                        </TableCell>
-
-                                                        <TableCell>
-                                                          <Typography
-                                                            sx={{
-                                                              fontSize: 13,
-                                                              color: "#777",
-                                                            }}
-                                                          >
-                                                            Resolução
-                                                          </Typography>
-                                                        </TableCell>
-                                                      </TableRow>
-                                                    </TableHead>
-                                                    <TableBody>
-                                                      <TableRow>
-                                                        <TableCell>
-                                                          <Typography
-                                                            sx={{
-                                                              fontSize: 13,
-                                                            }}
-                                                          >
-                                                            {
-                                                              task.resolution[0]
-                                                                .createdAt
-                                                            }
-                                                          </Typography>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                          <Typography
-                                                            sx={{
-                                                              fontSize: 13,
-                                                            }}
-                                                          >
-                                                            {
-                                                              task.resolution[0]
-                                                                .user.name
-                                                            }
-                                                          </Typography>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                          <Typography
-                                                            sx={{
-                                                              fontSize: 13,
-                                                            }}
-                                                          >
-                                                            {
-                                                              task.resolution[0]
-                                                                .resolution
-                                                            }
-                                                          </Typography>
-                                                        </TableCell>
-                                                      </TableRow>
-                                                    </TableBody>
-                                                  </Table>
-                                                </Grid>
+                                                            )}
+                                                          </TableCell>
+                                                        </TableRow>
+                                                      )
+                                                    )}
+                                                  </TableBody>
+                                                </Table>
                                               )}
-                                            </AccordionDetails>
+                                            </Grid>
 
-                                            {isAddingInteraction &&
-                                              selectedTaskIndex === taskIndex &&
-                                              selectedStageIndex ===
-                                                stageIndex && (
-                                                <>
-                                                  <Typography
-                                                    sx={{
-                                                      m: 3,
-                                                      fontSize: 18,
-                                                      fontWeight: "bold",
+                                            {task.status === "Resolvido" && (
+                                              <Grid sx={{ mt: 3 }}>
+                                                <Typography
+                                                  sx={{
+                                                    fontSize: 16,
+                                                    fontWeight: "bold",
+                                                  }}
+                                                >
+                                                  Resolução
+                                                </Typography>
+                                                <Table
+                                                  size="small"
+                                                  sx={{ ml: 2 }}
+                                                >
+                                                  <TableHead>
+                                                    <TableRow>
+                                                      <TableCell>
+                                                        <Typography
+                                                          sx={{
+                                                            fontSize: 13,
+                                                            color: "#777",
+                                                          }}
+                                                        >
+                                                          Data
+                                                        </Typography>
+                                                      </TableCell>
+                                                      <TableCell>
+                                                        <Typography
+                                                          sx={{
+                                                            fontSize: 13,
+                                                            color: "#777",
+                                                          }}
+                                                        >
+                                                          Colaborador
+                                                        </Typography>
+                                                      </TableCell>
+
+                                                      <TableCell>
+                                                        <Typography
+                                                          sx={{
+                                                            fontSize: 13,
+                                                            color: "#777",
+                                                          }}
+                                                        >
+                                                          Resolução
+                                                        </Typography>
+                                                      </TableCell>
+                                                    </TableRow>
+                                                  </TableHead>
+                                                  <TableBody>
+                                                    <TableRow>
+                                                      <TableCell>
+                                                        <Typography
+                                                          sx={{
+                                                            fontSize: 13,
+                                                          }}
+                                                        >
+                                                          {
+                                                            task.resolution[0]
+                                                              .createdAt
+                                                          }
+                                                        </Typography>
+                                                      </TableCell>
+                                                      <TableCell>
+                                                        <Typography
+                                                          sx={{
+                                                            fontSize: 13,
+                                                          }}
+                                                        >
+                                                          {
+                                                            task.resolution[0]
+                                                              .user.name
+                                                          }
+                                                        </Typography>
+                                                      </TableCell>
+                                                      <TableCell>
+                                                        <Typography
+                                                          sx={{
+                                                            fontSize: 13,
+                                                          }}
+                                                        >
+                                                          {
+                                                            task.resolution[0]
+                                                              .resolution
+                                                          }
+                                                        </Typography>
+                                                      </TableCell>
+                                                    </TableRow>
+                                                  </TableBody>
+                                                </Table>
+                                              </Grid>
+                                            )}
+                                          </AccordionDetails>
+
+                                          {isAddingInteraction &&
+                                            selectedTaskIndex === taskIndex &&
+                                            selectedStageIndex ===
+                                              stageIndex && (
+                                              <>
+                                                <Typography
+                                                  sx={{
+                                                    m: 3,
+                                                    fontSize: 18,
+                                                    fontWeight: "bold",
+                                                  }}
+                                                >
+                                                  Nova Interação
+                                                </Typography>
+                                                <Paper
+                                                  elevation={1}
+                                                  component="form"
+                                                  sx={{
+                                                    p: "2px 4px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    mx: "15%",
+                                                  }}
+                                                >
+                                                  <InputBase
+                                                    sx={{ ml: 1, flex: 1 }}
+                                                    placeholder="Atividade"
+                                                    value={newInteractionText}
+                                                    onChange={(e) =>
+                                                      setNewInteractionText(
+                                                        e.target.value
+                                                      )
+                                                    }
+                                                  />
+                                                  <input
+                                                    type="file"
+                                                    multiple
+                                                    id="fileInput"
+                                                    style={{
+                                                      display: "none",
                                                     }}
-                                                  >
-                                                    Nova Interação
-                                                  </Typography>
+                                                    onChange={handleFileChange}
+                                                  />
+                                                  <label htmlFor="fileInput">
+                                                    <IconButton
+                                                      component="span"
+                                                      aria-label="upload picture"
+                                                      sx={{ p: "10px" }}
+                                                    >
+                                                      <AttachFileIcon />
+                                                    </IconButton>
+                                                  </label>
+                                                </Paper>
+
+                                                {attachments.length !== 0 && (
                                                   <Paper
                                                     elevation={1}
                                                     component="form"
@@ -1337,346 +1349,301 @@ export default function ProjectsTable({
                                                       display: "flex",
                                                       alignItems: "center",
                                                       mx: "15%",
+                                                      mt: 2,
                                                     }}
                                                   >
-                                                    <InputBase
-                                                      sx={{ ml: 1, flex: 1 }}
-                                                      placeholder="Atividade"
-                                                      value={newInteractionText}
-                                                      onChange={(e) =>
-                                                        setNewInteractionText(
-                                                          e.target.value
-                                                        )
-                                                      }
-                                                    />
-                                                    <input
-                                                      type="file"
-                                                      multiple
-                                                      id="fileInput"
-                                                      style={{
-                                                        display: "none",
-                                                      }}
-                                                      onChange={
-                                                        handleFileChange
-                                                      }
-                                                    />
-                                                    <label htmlFor="fileInput">
-                                                      <IconButton
-                                                        component="span"
-                                                        aria-label="upload picture"
-                                                        sx={{ p: "10px" }}
+                                                    <Grid item>
+                                                      <Grid
+                                                        container
+                                                        direction="row"
                                                       >
-                                                        <AttachFileIcon />
-                                                      </IconButton>
-                                                    </label>
-                                                  </Paper>
-
-                                                  {attachments.length !== 0 && (
-                                                    <Paper
-                                                      elevation={1}
-                                                      component="form"
-                                                      sx={{
-                                                        p: "2px 4px",
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        mx: "15%",
-                                                        mt: 2,
-                                                      }}
-                                                    >
-                                                      <Grid item>
-                                                        <Grid
-                                                          container
-                                                          direction="row"
-                                                        >
-                                                          {attachments.map(
-                                                            (
-                                                              attachment,
-                                                              index
-                                                            ) => (
+                                                        {attachments.map(
+                                                          (
+                                                            attachment,
+                                                            index
+                                                          ) => (
+                                                            <Grid
+                                                              key={index}
+                                                              item
+                                                              sx={{ mr: 1 }}
+                                                            >
                                                               <Grid
-                                                                key={index}
-                                                                item
-                                                                sx={{ mr: 1 }}
+                                                                container
+                                                                direction="column"
+                                                                alignItems="center"
+                                                                sx={{
+                                                                  border:
+                                                                    "1px solid darkgrey",
+                                                                  borderRadius: 2,
+                                                                  padding: 1,
+                                                                }}
                                                               >
-                                                                <Grid
-                                                                  container
-                                                                  direction="column"
-                                                                  alignItems="center"
-                                                                  sx={{
-                                                                    border:
-                                                                      "1px solid darkgrey",
-                                                                    borderRadius: 2,
-                                                                    padding: 1,
-                                                                  }}
-                                                                >
-                                                                  {isPdf(
+                                                                {isPdf(
+                                                                  attachment.name
+                                                                ) ? (
+                                                                  <img
+                                                                    src={`http://localhost:3000/static/pdf.png`}
+                                                                    alt="PDF"
+                                                                    style={{
+                                                                      width:
+                                                                        "80px",
+                                                                      height:
+                                                                        "80px",
+                                                                      marginBottom:
+                                                                        "8px",
+                                                                    }}
+                                                                  />
+                                                                ) : isImage(
                                                                     attachment.name
                                                                   ) ? (
-                                                                    <img
-                                                                      src={`http://localhost:3000/static/pdf.png`}
-                                                                      alt="PDF"
-                                                                      style={{
-                                                                        width:
-                                                                          "80px",
-                                                                        height:
-                                                                          "80px",
-                                                                        marginBottom:
-                                                                          "8px",
-                                                                      }}
-                                                                    />
-                                                                  ) : isImage(
-                                                                      attachment.name
-                                                                    ) ? (
-                                                                    <img
-                                                                      src={URL.createObjectURL(
-                                                                        attachment
-                                                                      )}
-                                                                      alt="Pré-visualização"
-                                                                      style={{
-                                                                        width:
-                                                                          "80px",
-                                                                        height:
-                                                                          "80px",
-                                                                        marginBottom:
-                                                                          "8px",
-                                                                      }}
-                                                                    />
-                                                                  ) : (
-                                                                    <img
-                                                                      src={`http://localhost:3000/static/doc.png`}
-                                                                      alt="Other"
-                                                                      style={{
-                                                                        width:
-                                                                          "80px",
-                                                                        height:
-                                                                          "80px",
-                                                                        marginBottom:
-                                                                          "8px",
-                                                                      }}
-                                                                    />
-                                                                  )}
-                                                                  <Typography
-                                                                    sx={{
-                                                                      fontSize: 10,
-                                                                      color:
-                                                                        "#777",
-                                                                      maxWidth:
-                                                                        "75px",
-                                                                      whiteSpace:
-                                                                        "nowrap",
-                                                                      overflow:
-                                                                        "hidden",
-                                                                      textOverflow:
-                                                                        "ellipsis",
+                                                                  <img
+                                                                    src={URL.createObjectURL(
+                                                                      attachment
+                                                                    )}
+                                                                    alt="Pré-visualização"
+                                                                    style={{
+                                                                      width:
+                                                                        "80px",
+                                                                      height:
+                                                                        "80px",
+                                                                      marginBottom:
+                                                                        "8px",
                                                                     }}
-                                                                  >
-                                                                    {
-                                                                      attachment.name
-                                                                    }
-                                                                  </Typography>
+                                                                  />
+                                                                ) : (
+                                                                  <img
+                                                                    src={`http://localhost:3000/static/doc.png`}
+                                                                    alt="Other"
+                                                                    style={{
+                                                                      width:
+                                                                        "80px",
+                                                                      height:
+                                                                        "80px",
+                                                                      marginBottom:
+                                                                        "8px",
+                                                                    }}
+                                                                  />
+                                                                )}
+                                                                <Typography
+                                                                  sx={{
+                                                                    fontSize: 10,
+                                                                    color:
+                                                                      "#777",
+                                                                    maxWidth:
+                                                                      "75px",
+                                                                    whiteSpace:
+                                                                      "nowrap",
+                                                                    overflow:
+                                                                      "hidden",
+                                                                    textOverflow:
+                                                                      "ellipsis",
+                                                                  }}
+                                                                >
+                                                                  {
+                                                                    attachment.name
+                                                                  }
+                                                                </Typography>
 
-                                                                  <Grid item>
-                                                                    <Grid
-                                                                      container
-                                                                      direction="row"
-                                                                      justifyContent="space-around"
+                                                                <Grid item>
+                                                                  <Grid
+                                                                    container
+                                                                    direction="row"
+                                                                    justifyContent="space-around"
+                                                                  >
+                                                                    <Button
+                                                                      size="small"
+                                                                      onClick={() => {
+                                                                        setSelectedItem(
+                                                                          attachment
+                                                                        );
+                                                                        setOpenViewDialog2(
+                                                                          true
+                                                                        );
+                                                                      }}
                                                                     >
-                                                                      <Button
-                                                                        size="small"
-                                                                        onClick={() => {
-                                                                          setSelectedItem(
-                                                                            attachment
-                                                                          );
-                                                                          setOpenViewDialog2(
-                                                                            true
-                                                                          );
-                                                                        }}
-                                                                      >
-                                                                        <VisibilityIcon />
-                                                                      </Button>
-                                                                      <Button
-                                                                        size="small"
-                                                                        color="error"
-                                                                        onClick={() =>
-                                                                          removeFile(
-                                                                            index
-                                                                          )
-                                                                        }
-                                                                      >
-                                                                        <DeleteIcon />
-                                                                      </Button>
-                                                                    </Grid>
+                                                                      <VisibilityIcon />
+                                                                    </Button>
+                                                                    <Button
+                                                                      size="small"
+                                                                      color="error"
+                                                                      onClick={() =>
+                                                                        removeFile(
+                                                                          index
+                                                                        )
+                                                                      }
+                                                                    >
+                                                                      <DeleteIcon />
+                                                                    </Button>
                                                                   </Grid>
                                                                 </Grid>
                                                               </Grid>
-                                                            )
-                                                          )}
-                                                        </Grid>
+                                                            </Grid>
+                                                          )
+                                                        )}
                                                       </Grid>
-                                                    </Paper>
-                                                  )}
-                                                </>
-                                              )}
-                                            {isAddingResolution && (
-                                              <>
-                                                <Typography
-                                                  sx={{
-                                                    m: 2,
-                                                    fontSize: 16,
-                                                    fontWeight: "bold",
-                                                  }}
-                                                >
-                                                  Resolver Tarefa
-                                                </Typography>
-                                                <Grid
-                                                  container
-                                                  direction="row"
-                                                  alignItems="center"
-                                                  justifyContent="flex-start"
-                                                  sx={{
-                                                    m: 2,
-                                                    ml: 10,
-                                                  }}
-                                                >
-                                                  <Grid item>
-                                                    <Avatar
-                                                      alt="Imagem do Colaborador"
-                                                      src={`http://localhost:3000/static/${userImage}`}
-                                                      sx={{
-                                                        mx: 2,
-                                                        width: 36,
-                                                        height: 36,
-                                                      }}
-                                                    />
-                                                  </Grid>
-                                                  <Grid item>
-                                                    <TextField
-                                                      size="small"
-                                                      onChange={(e) =>
-                                                        setResolutionText(
-                                                          e.target.value
-                                                        )
-                                                      }
-                                                      placeholder="Insira a resolução da tarefa..."
-                                                      sx={{
-                                                        width: 750,
-                                                        backgroundColor:
-                                                          "white",
-                                                      }}
-                                                    />
-                                                  </Grid>
-                                                </Grid>
+                                                    </Grid>
+                                                  </Paper>
+                                                )}
                                               </>
                                             )}
-                                            {task.status !== "Resolvido" &&
-                                              selectedTaskIndex === taskIndex &&
-                                              selectedStageIndex ===
-                                                stageIndex && (
-                                                <AccordionActions>
-                                                  <ProjectTaskActions
-                                                    task={task}
-                                                    selectedTaskIndex={
-                                                      selectedTaskIndex
-                                                    }
-                                                    taskIndex={taskIndex}
-                                                    isAddingInteraction={
-                                                      isAddingInteraction
-                                                    }
-                                                    setIsAddingInteraction={
-                                                      setIsAddingInteraction
-                                                    }
-                                                    handleAddInteraction={
-                                                      handleAddInteraction
-                                                    }
-                                                    isAddingResolution={
-                                                      isAddingResolution
-                                                    }
-                                                    setIsAddingResolution={
-                                                      setIsAddingResolution
-                                                    }
-                                                    handleResolveTask={
-                                                      handleResolveTask
-                                                    }
+                                          {isAddingResolution && (
+                                            <>
+                                              <Typography
+                                                sx={{
+                                                  m: 2,
+                                                  fontSize: 16,
+                                                  fontWeight: "bold",
+                                                }}
+                                              >
+                                                Resolver Tarefa
+                                              </Typography>
+                                              <Grid
+                                                container
+                                                direction="row"
+                                                alignItems="center"
+                                                justifyContent="flex-start"
+                                                sx={{
+                                                  m: 2,
+                                                  ml: 10,
+                                                }}
+                                              >
+                                                <Grid item>
+                                                  <Avatar
+                                                    alt="Imagem do Colaborador"
+                                                    src={`http://localhost:3000/static/${userImage}`}
+                                                    sx={{
+                                                      mx: 2,
+                                                      width: 36,
+                                                      height: 36,
+                                                    }}
                                                   />
-                                                </AccordionActions>
-                                              )}
-                                          </Accordion>
-                                        </>
-                                      ))}
-                                    </AccordionDetails>
-                                  </Accordion>
-                                ))}
-                              </Grid>
-                            </Collapse>
-                          </Box>
-                        </Collapse>
-                      </TableCell>
-                    </TableRow>
-                  </>
-                ))
-                .slice(startIndex, endIndex)}
-            </TableBody>
-          </Table>
-          <TablePagination
-            component="div"
-            count={sortedRows.length}
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage={"por Página"}
-            labelDisplayedRows={({ from, to, count }) => {
-              return " " + from + " à " + to + " total " + count;
-            }}
+                                                </Grid>
+                                                <Grid item>
+                                                  <TextField
+                                                    size="small"
+                                                    onChange={(e) =>
+                                                      setResolutionText(
+                                                        e.target.value
+                                                      )
+                                                    }
+                                                    placeholder="Insira a resolução da tarefa..."
+                                                    sx={{
+                                                      width: 750,
+                                                      backgroundColor: "white",
+                                                    }}
+                                                  />
+                                                </Grid>
+                                              </Grid>
+                                            </>
+                                          )}
+                                          {task.status !== "Resolvido" &&
+                                            selectedTaskIndex === taskIndex &&
+                                            selectedStageIndex ===
+                                              stageIndex && (
+                                              <AccordionActions>
+                                                <ProjectTaskActions
+                                                  task={task}
+                                                  selectedTaskIndex={
+                                                    selectedTaskIndex
+                                                  }
+                                                  taskIndex={taskIndex}
+                                                  isAddingInteraction={
+                                                    isAddingInteraction
+                                                  }
+                                                  setIsAddingInteraction={
+                                                    setIsAddingInteraction
+                                                  }
+                                                  handleAddInteraction={
+                                                    handleAddInteraction
+                                                  }
+                                                  isAddingResolution={
+                                                    isAddingResolution
+                                                  }
+                                                  setIsAddingResolution={
+                                                    setIsAddingResolution
+                                                  }
+                                                  handleResolveTask={
+                                                    handleResolveTask
+                                                  }
+                                                />
+                                              </AccordionActions>
+                                            )}
+                                        </Accordion>
+                                      </>
+                                    ))}
+                                  </AccordionDetails>
+                                </Accordion>
+                              ))}
+                            </Grid>
+                          </Collapse>
+                        </Box>
+                      </Collapse>
+                    </TableCell>
+                  </TableRow>
+                </>
+              ))
+              .slice(startIndex, endIndex)}
+          </TableBody>
+        </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
+      </TableContainer>
+      {openAddAttachments && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddAttachments}
+          onClose={() => setOpenAddAttachments(!openAddAttachments)}
+        >
+          <AddAttachmentsForm
+            userName={userName}
+            selectedJob={selectedProject}
+            setOpenAddAttachments={setOpenAddAttachments}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+            endpoint="projects"
           />
-        </TableContainer>
-        {openAddAttachments && (
-          <Dialog
-            fullWidth
-            maxWidth="md"
-            open={openAddAttachments}
-            onClose={() => setOpenAddAttachments(!openAddAttachments)}
-          >
-            <AddAttachmentsForm
-              userName={userName}
-              selectedJob={selectedProject}
-              setOpenAddAttachments={setOpenAddAttachments}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-              endpoint="projects"
-            />
-          </Dialog>
-        )}
-        {openViewDialog && (
-          <Dialog
-            open={openViewDialog}
-            onClose={() => setOpenViewDialog(false)}
-            fullWidth
-            maxWidth="lg"
-          >
-            <ViewDialog
-              selectedItem={selectedItem}
-              setOpenViewDialog={setOpenViewDialog}
-            />
-          </Dialog>
-        )}
-        {openViewDialog2 && (
-          <Dialog
-            open={openViewDialog2}
-            onClose={() => setOpenViewDialog2(false)}
-            fullWidth
-            maxWidth="lg"
-          >
-            <ViewDialog
-              setOpenViewDialog={setOpenViewDialog2}
-              selectedItem={selectedItem.name}
-              createObjectURLItem={selectedItem}
-              createObjectURL
-            />
-          </Dialog>
-        )}
-      </Box>
-    </>
+        </Dialog>
+      )}
+      {openViewDialog && (
+        <Dialog
+          open={openViewDialog}
+          onClose={() => setOpenViewDialog(false)}
+          fullWidth
+          maxWidth="lg"
+        >
+          <ViewDialog
+            selectedItem={selectedItem}
+            setOpenViewDialog={setOpenViewDialog}
+          />
+        </Dialog>
+      )}
+      {openViewDialog2 && (
+        <Dialog
+          open={openViewDialog2}
+          onClose={() => setOpenViewDialog2(false)}
+          fullWidth
+          maxWidth="lg"
+        >
+          <ViewDialog
+            setOpenViewDialog={setOpenViewDialog2}
+            selectedItem={selectedItem.name}
+            createObjectURLItem={selectedItem}
+            createObjectURL
+          />
+        </Dialog>
+      )}
+    </Box>
   );
 }

@@ -33,6 +33,7 @@ export default function OperatorTable({
   setRefreshData,
   searchValue,
   searchOption,
+  topBar,
 }) {
   const [selectedOperator, setSelectedOperator] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -132,145 +133,143 @@ export default function OperatorTable({
   const endIndex = startIndex + rowsPerPage;
 
   return (
-    <>
-      <Box sx={{ minWidth: "1250px" }}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableBody>
-              <TableRow>
-                <TableCell padding="checkbox"></TableCell>
-                {tableHeaderRow.map((headCell) => (
-                  <TableCell
-                    align={headCell.label === "Nome" ? "" : "center"}
-                    sx={{
-                      fontSize: 13,
-                      fontWeight: "bold",
-                      pl: headCell.label === "Nome" ? "" : 5,
-                    }}
-                    key={headCell.id}
-                    sortDirection={orderBy === headCell.id ? order : false}
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell padding="checkbox"></TableCell>
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "Nome" ? "" : "center"}
+                  sx={{
+                    fontSize: 13,
+                    fontWeight: "bold",
+                    pl: headCell.label === "Nome" ? "" : 5,
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
                   >
-                    <TableSortLabel
-                      active={orderBy === headCell.id}
-                      direction={orderBy === headCell.id ? order : "asc"}
-                      onClick={() => handleRequestSort(headCell.id)}
-                    >
-                      {headCell.label}
-                    </TableSortLabel>
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+            {sortedRows
+              .filter((row) => row.role && row.role.name !== "Admin")
+              .filter((item) => {
+                const searchOptionValue =
+                  searchOption === "role.name"
+                    ? item.role?.name
+                    : item[searchOption];
+
+                return (
+                  searchOptionValue &&
+                  searchOptionValue
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())
+                );
+              })
+              .map((row) => (
+                <TableRow
+                  key={row._id}
+                  sx={{ "&:hover": { backgroundColor: "#eee " } }}
+                >
+                  <TableCell sx={{ py: 0 }}>
+                    <Avatar
+                      src={`http://localhost:3000/static/${row.image}`}
+                      alt={row.name[0]}
+                      style={{
+                        marginLeft: 10,
+                        width: 42,
+                        height: 42,
+                      }}
+                    />
                   </TableCell>
-                ))}
-              </TableRow>
-              {sortedRows
-                .filter((row) => row.role && row.role.name !== "Admin")
-                .filter((item) => {
-                  const searchOptionValue =
-                    searchOption === "role.name"
-                      ? item.role?.name
-                      : item[searchOption];
+                  <TableCell>
+                    <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography sx={{ fontSize: 13 }}>
+                      {row.username}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography sx={{ fontSize: 13 }}>
+                      {row.role ? row.role.name : "-"}
+                    </Typography>
+                  </TableCell>
 
-                  return (
-                    searchOptionValue &&
-                    searchOptionValue
-                      .toLowerCase()
-                      .includes(searchValue.toLowerCase())
-                  );
-                })
-                .map((row) => (
-                  <TableRow
-                    key={row._id}
-                    sx={{ "&:hover": { backgroundColor: "#eee " } }}
+                  <TableCell
+                    cursor="pointer"
+                    align="center"
+                    onClick={() => setSelectedOperator(row)}
                   >
-                    <TableCell sx={{ py: 0 }}>
-                      <Avatar
-                        src={`http://localhost:3000/static/${row.image}`}
-                        alt={row.name[0]}
-                        style={{
-                          marginLeft: 10,
-                          width: 42,
-                          height: 42,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        {row.username}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        {row.role ? row.role.name : "-"}
-                      </Typography>
-                    </TableCell>
+                    <OperatorTableActions
+                      setOpenEdit={setOpenEdit}
+                      handleConfirmDelete={handleConfirmDelete}
+                      selectedItem={selectedOperator}
+                      refreshData={refreshData}
+                      setOption={setOption}
+                      setRefreshData={setRefreshData}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))
+              .slice(startIndex, endIndex)}
+          </TableBody>
+        </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
+      </TableContainer>
 
-                    <TableCell
-                      cursor="pointer"
-                      align="center"
-                      onClick={() => setSelectedOperator(row)}
-                    >
-                      <OperatorTableActions
-                        setOpenEdit={setOpenEdit}
-                        handleConfirmDelete={handleConfirmDelete}
-                        selectedItem={selectedOperator}
-                        refreshData={refreshData}
-                        setOption={setOption}
-                        setRefreshData={setRefreshData}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))
-                .slice(startIndex, endIndex)}
-            </TableBody>
-          </Table>
-          <TablePagination
-            component="div"
-            count={sortedRows.length}
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage={"por Página"}
-            labelDisplayedRows={({ from, to, count }) => {
-              return " " + from + " à " + to + " total " + count;
-            }}
+      {openEdit && (
+        <Dialog
+          fullWidth
+          maxWidth="sm"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditOperatorForm
+            option={option}
+            openEdit={openEdit}
+            roles={roles}
+            selectedOperator={selectedOperator}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
           />
-        </TableContainer>
+        </Dialog>
+      )}
 
-        {openEdit && (
-          <Dialog
-            fullWidth
-            maxWidth="sm"
-            open={openEdit}
-            onClose={() => setOpenEdit(!openEdit)}
-          >
-            <EditOperatorForm
-              option={option}
-              openEdit={openEdit}
-              roles={roles}
-              selectedOperator={selectedOperator}
-              setOpenEdit={setOpenEdit}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
-
-        {openDelete && (
-          <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
-            <DeleteOperatorForm
-              selectedOperator={selectedOperator}
-              openDelete={openDelete}
-              setOpenDelete={setOpenDelete}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
-      </Box>
-    </>
+      {openDelete && (
+        <Dialog open={openDelete} onClose={() => setOpenDelete(!openDelete)}>
+          <DeleteOperatorForm
+            selectedOperator={selectedOperator}
+            openDelete={openDelete}
+            setOpenDelete={setOpenDelete}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+    </Box>
   );
 }

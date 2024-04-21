@@ -31,6 +31,7 @@ export default function StockTable({
   searchOption,
   refreshData,
   setRefreshData,
+  topBar,
 }) {
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -108,131 +109,127 @@ export default function StockTable({
   const endIndex = startIndex + rowsPerPage;
 
   return (
-    <>
-      <Box sx={{ minWidth: "1250px" }}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableBody>
-              <TableRow sx={{ backgroundColor: "#eee" }}>
-                <TableCell padding="checkbox"></TableCell>
-                {tableHeaderRow.map((headCell) => (
-                  <TableCell
-                    align={headCell.label === "Nome" ? "" : "center"}
-                    sx={{
-                      fontSize: 13,
-                      fontWeight: "bold",
-                      pl: headCell.label === "Nome" ? "" : 5,
-                    }}
-                    key={headCell.id}
-                    sortDirection={orderBy === headCell.id ? order : false}
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            <TableRow sx={{ backgroundColor: "#eee" }}>
+              <TableCell padding="checkbox"></TableCell>
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "Nome" ? "" : "center"}
+                  sx={{
+                    fontSize: 13,
+                    fontWeight: "bold",
+                    pl: headCell.label === "Nome" ? "" : 5,
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
                   >
-                    <TableSortLabel
-                      active={orderBy === headCell.id}
-                      direction={orderBy === headCell.id ? order : "asc"}
-                      onClick={() => handleRequestSort(headCell.id)}
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+            {sortedRows
+              .filter((item) => {
+                const itemProperty = searchOption
+                  .split(".")
+                  .reduce((obj, key) => obj[key], item);
+                return (
+                  itemProperty &&
+                  itemProperty.toLowerCase().includes(searchValue.toLowerCase())
+                );
+              })
+              .map((stockItem) => (
+                <>
+                  <TableRow key={stockItem._id}>
+                    <TableCell sx={{ py: 0 }}>
+                      <Avatar
+                        src={`http://localhost:3000/static/${stockItem.image}`}
+                        alt={stockItem.name[0]}
+                        cursor="pointer"
+                        style={{
+                          marginLeft: 10,
+                          width: 42,
+                          height: 42,
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {stockItem.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        R${stockItem.buyValue}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        R${stockItem.sellValue}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {stockItem.quantity}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      onClick={() => setSelectedItem(stockItem)}
                     >
-                      {headCell.label}
-                    </TableSortLabel>
-                  </TableCell>
-                ))}
-              </TableRow>
-              {sortedRows
-                .filter((item) => {
-                  const itemProperty = searchOption
-                    .split(".")
-                    .reduce((obj, key) => obj[key], item);
-                  return (
-                    itemProperty &&
-                    itemProperty
-                      .toLowerCase()
-                      .includes(searchValue.toLowerCase())
-                  );
-                })
-                .map((stockItem) => (
-                  <>
-                    <TableRow key={stockItem._id}>
-                      <TableCell sx={{ py: 0 }}>
-                        <Avatar
-                          src={`http://localhost:3000/static/${stockItem.image}`}
-                          alt={stockItem.name[0]}
-                          cursor="pointer"
-                          style={{
-                            marginLeft: 10,
-                            width: 42,
-                            height: 42,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell align="left">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {stockItem.name}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          R${stockItem.buyValue}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          R${stockItem.sellValue}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {stockItem.quantity}
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        onClick={() => setSelectedItem(stockItem)}
-                      >
-                        <StockTableActions
-                          type="Material"
-                          setOpenEdit={setOpenEdit}
-                          selectedItem={selectedItem}
-                          refreshData={refreshData}
-                          setRefreshData={setRefreshData}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  </>
-                ))
-                .slice(startIndex, endIndex)}
-            </TableBody>
-          </Table>
-          <TablePagination
-            component="div"
-            count={sortedRows.length}
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage={"por Página"}
-            labelDisplayedRows={({ from, to, count }) => {
-              return " " + from + " à " + to + " total " + count;
-            }}
-          />
-        </TableContainer>
+                      <StockTableActions
+                        type="Material"
+                        setOpenEdit={setOpenEdit}
+                        selectedItem={selectedItem}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </>
+              ))
+              .slice(startIndex, endIndex)}
+          </TableBody>
+        </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
+      </TableContainer>
 
-        {openEdit && (
-          <Dialog
-            fullWidth
-            maxWidth="sm"
-            open={openEdit}
-            onClose={() => setOpenEdit(!openEdit)}
-          >
-            <EditStockItemForm
-              openEdit={openEdit}
-              selectedStockItem={selectedItem}
-              setOpenEdit={setOpenEdit}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
-      </Box>
-    </>
+      {openEdit && (
+        <Dialog
+          fullWidth
+          maxWidth="sm"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditStockItemForm
+            openEdit={openEdit}
+            selectedStockItem={selectedItem}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+    </Box>
   );
 }

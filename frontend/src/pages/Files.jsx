@@ -3,12 +3,7 @@
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 
-import {
-  Box,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
+import { Box, Tab, Tabs, Typography } from "@mui/material";
 
 import DocumentTable from "../tables/DocumentTable";
 import ImageTable from "../tables/ImageTable";
@@ -28,7 +23,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Files() {
+export default function Files({ topBar }) {
   const [value, setValue] = React.useState(1);
 
   const handleChange = (event, newValue) => {
@@ -61,13 +56,13 @@ export default function Files() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <DocumentTable />
+        <DocumentTable topBar={topBar}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <ImageTable />
+        <ImageTable topBar={topBar}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <AttachmentTable />
+        <AttachmentTable topBar={topBar}/>
       </CustomTabPanel>
     </Box>
   );

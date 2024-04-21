@@ -34,6 +34,7 @@ export default function StockEntriesTable({
   refreshData,
   setRefreshData,
   configData,
+  topBar,
 }) {
   const [stockEntries, setStockEntries] = React.useState([]);
 
@@ -146,170 +147,167 @@ export default function StockEntriesTable({
   };
 
   return (
-    <>
-      <Box sx={{ minWidth: "1250px" }}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableBody>
-              <TableRow sx={{ backgroundColor: "#eee" }}>
-                {tableHeaderRow.map((headCell) => (
-                  <TableCell
-                    align={headCell.label === "#" ? "" : "center"}
-                    sx={{
-                      fontSize: 13,
-                      fontWeight: "bold",
-                      pl: headCell.label === "#" ? "" : 5,
-                    }}
-                    key={headCell.id}
-                    sortDirection={orderBy === headCell.id ? order : false}
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            <TableRow sx={{ backgroundColor: "#eee" }}>
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "#" ? "" : "center"}
+                  sx={{
+                    fontSize: 13,
+                    fontWeight: "bold",
+                    pl: headCell.label === "#" ? "" : 5,
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
                   >
-                    <TableSortLabel
-                      active={orderBy === headCell.id}
-                      direction={orderBy === headCell.id ? order : "asc"}
-                      onClick={() => handleRequestSort(headCell.id)}
-                    >
-                      {headCell.label}
-                    </TableSortLabel>
-                  </TableCell>
-                ))}
-              </TableRow>
-              {sortedRows
-                .map((entry) => (
-                  <>
-                    <TableRow key={entry._id}>
-                      <TableCell align="left">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {entry.number}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="left">
-                        <Grid container direction="column">
-                          {entry.items.map((item) => (
-                            <Grid
-                              key={item._id}
-                              container
-                              direction="row"
-                              alignItems="center"
-                              justifyContent="flex-start"
-                            >
-                              <Grid item sx={{ m: 0.5 }}>
-                                <Avatar
-                                  src={`http://localhost:3000/static/${item.item.image}`}
-                                  alt={item.item.name[0]}
-                                  cursor="pointer"
-                                  sx={{
-                                    width: 26,
-                                    height: 26,
-                                  }}
-                                />
-                              </Grid>
-                              <Grid item>
-                                <Typography sx={{ fontSize: 13 }}>
-                                  {item.item.name} x{item.quantity} = R$
-                                  {(item.buyValue * item.quantity).toFixed(2)}
-                                </Typography>
-                              </Grid>
-                            </Grid>
-                          ))}
-                        </Grid>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          R${entry.quoteValue.toFixed(2)}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {entry.createdBy}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Grid
-                          container
-                          direction="row"
-                          alignContent="center"
-                          justifyContent="center"
-                        >
-                          <Typography sx={{ fontSize: 13, my: "auto" }}>
-                            {entry.status === "Aprovação Solicitada" &&
-                            userRole.name === "Gerente" &&
-                            userDepartment.name ===
-                              configData.stockentriesDispatcherDepartment
-                                .name ? (
-                              <Grid container direction="row">
-                                <Button
-                                  onClick={() =>
-                                    handleApproveReprove(entry, "Aprovado")
-                                  }
-                                  size="small"
-                                  variant="contained"
-                                  color="success"
-                                >
-                                  Aprovar
-                                </Button>
-                                <Button
-                                  onClick={() =>
-                                    handleApproveReprove(entry, "Reprovado")
-                                  }
-                                  size="small"
-                                  variant="contained"
-                                  color="error"
-                                  sx={{ ml: 1 }}
-                                >
-                                  Reprovar
-                                </Button>
-                              </Grid>
-                            ) : (
-                              <Typography
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+            {sortedRows
+              .map((entry) => (
+                <>
+                  <TableRow key={entry._id}>
+                    <TableCell align="left">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {entry.number}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Grid container direction="column">
+                        {entry.items.map((item) => (
+                          <Grid
+                            key={item._id}
+                            container
+                            direction="row"
+                            alignItems="center"
+                            justifyContent="flex-start"
+                          >
+                            <Grid item sx={{ m: 0.5 }}>
+                              <Avatar
+                                src={`http://localhost:3000/static/${item.item.image}`}
+                                alt={item.item.name[0]}
+                                cursor="pointer"
                                 sx={{
-                                  fontSize: 13,
-                                  color: entry.status === "Contestado" && "red",
+                                  width: 26,
+                                  height: 26,
                                 }}
-                              >
-                                {entry.status}
-                              </Typography>
-                            )}
-                          </Typography>
-                          {entry.status === "Aberto" &&
-                            configData.stockEntriesNeedApproval && (
-                              <RequestApproval
-                                userName={userName}
-                                entry={entry}
-                                refreshData={refreshData}
-                                setRefreshData={setRefreshData}
-                                dispatcherManager={
-                                  configData.stockentriesDispatcherDepartment
-                                    .manager
-                                }
                               />
-                            )}
-                        </Grid>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {dayjs(entry.createdAt).format("DD/MM/YYYY")}
+                            </Grid>
+                            <Grid item>
+                              <Typography sx={{ fontSize: 13 }}>
+                                {item.item.name} x{item.quantity} = R$
+                                {(item.buyValue * item.quantity).toFixed(2)}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        R${entry.quoteValue.toFixed(2)}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {entry.createdBy}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Grid
+                        container
+                        direction="row"
+                        alignContent="center"
+                        justifyContent="center"
+                      >
+                        <Typography sx={{ fontSize: 13, my: "auto" }}>
+                          {entry.status === "Aprovação Solicitada" &&
+                          userRole.name === "Gerente" &&
+                          userDepartment.name ===
+                            configData.stockentriesDispatcherDepartment.name ? (
+                            <Grid container direction="row">
+                              <Button
+                                onClick={() =>
+                                  handleApproveReprove(entry, "Aprovado")
+                                }
+                                size="small"
+                                variant="contained"
+                                color="success"
+                              >
+                                Aprovar
+                              </Button>
+                              <Button
+                                onClick={() =>
+                                  handleApproveReprove(entry, "Reprovado")
+                                }
+                                size="small"
+                                variant="contained"
+                                color="error"
+                                sx={{ ml: 1 }}
+                              >
+                                Reprovar
+                              </Button>
+                            </Grid>
+                          ) : (
+                            <Typography
+                              sx={{
+                                fontSize: 13,
+                                color: entry.status === "Contestado" && "red",
+                              }}
+                            >
+                              {entry.status}
+                            </Typography>
+                          )}
                         </Typography>
-                      </TableCell>
-                    </TableRow>
-                  </>
-                ))
-                .slice(startIndex, endIndex)}
-            </TableBody>
-          </Table>
-          <TablePagination
-            component="div"
-            count={sortedRows.length}
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage={"por Página"}
-            labelDisplayedRows={({ from, to, count }) => {
-              return " " + from + " à " + to + " total " + count;
-            }}
-          />
-        </TableContainer>
-      </Box>
-    </>
+                        {entry.status === "Aberto" &&
+                          configData.stockEntriesNeedApproval && (
+                            <RequestApproval
+                              userName={userName}
+                              entry={entry}
+                              refreshData={refreshData}
+                              setRefreshData={setRefreshData}
+                              dispatcherManager={
+                                configData.stockentriesDispatcherDepartment
+                                  .manager
+                              }
+                            />
+                          )}
+                      </Grid>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {dayjs(entry.createdAt).format("DD/MM/YYYY")}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                </>
+              ))
+              .slice(startIndex, endIndex)}
+          </TableBody>
+        </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
+      </TableContainer>
+    </Box>
   );
 }

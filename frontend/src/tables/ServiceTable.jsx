@@ -32,6 +32,7 @@ export default function ServiceTable({
   stockItems,
   refreshData,
   setRefreshData,
+  topBar,
 }) {
   const [selectedService, setSelectedService] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -114,240 +115,235 @@ export default function ServiceTable({
   const endIndex = startIndex + rowsPerPage;
 
   return (
-    <>
-      <Box sx={{ minWidth: "1250px" }}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableBody>
-              <TableRow>
-                {tableHeaderRow.map((headCell) => (
-                  <TableCell
-                    align={headCell.label === "Nome" ? "" : "center"}
-                    sx={{
-                      fontSize: 13,
-                      fontWeight: "bold",
-                      pl: headCell.label === "Nome" ? "" : 5,
-                    }}
-                    key={headCell.id}
-                    sortDirection={orderBy === headCell.id ? order : false}
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            <TableRow>
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "Nome" ? "" : "center"}
+                  sx={{
+                    fontSize: 13,
+                    fontWeight: "bold",
+                    pl: headCell.label === "Nome" ? "" : 5,
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
                   >
-                    <TableSortLabel
-                      active={orderBy === headCell.id}
-                      direction={orderBy === headCell.id ? order : "asc"}
-                      onClick={() => handleRequestSort(headCell.id)}
-                    >
-                      {headCell.label}
-                    </TableSortLabel>
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+            {sortedRows
+              .filter((item) =>
+                item[searchOption]
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase())
+              )
+              .map((service) => (
+                <TableRow
+                  key={service._id}
+                  sx={{ "&:hover": { backgroundColor: "#eee " } }}
+                >
+                  <TableCell>
+                    <Grid container direction="row" alignItems="center">
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          mb: 0.5,
+                          mr: 0.5,
+                          width: 12,
+                          height: 12,
+                          borderRadius: 50,
+                          backgroundColor: service.color,
+                        }}
+                      />
+                      <Typography sx={{ fontSize: 13 }}>
+                        {service.name}
+                      </Typography>
+                    </Grid>
                   </TableCell>
-                ))}
-              </TableRow>
-              {sortedRows
-                .filter((item) =>
-                  item[searchOption]
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase())
-                )
-                .map((service) => (
-                  <TableRow
-                    key={service._id}
-                    sx={{ "&:hover": { backgroundColor: "#eee " } }}
-                  >
-                    <TableCell>
-                      <Grid container direction="row" alignItems="center">
-                        <Paper
-                          elevation={0}
-                          sx={{
-                            mb: 0.5,
-                            mr: 0.5,
-                            width: 12,
-                            height: 12,
-                            borderRadius: 50,
-                            backgroundColor: service.color,
-                          }}
-                        />
-                        <Typography sx={{ fontSize: 13 }}>
-                          {service.name}
-                        </Typography>
-                      </Grid>
-                    </TableCell>
 
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        {service.department ? (
-                          <Grid
-                            container
-                            direction="row"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <Paper
-                              elevation={0}
-                              sx={{
-                                mb: 0.5,
-                                mr: 0.5,
-                                width: 12,
-                                height: 12,
-                                borderRadius: 50,
-                                backgroundColor: service.department.color,
-                              }}
-                            />
-                            <Typography sx={{ fontSize: 13 }}>
-                              {service.department
-                                ? service.department.name
-                                : "-"}
-                            </Typography>
-                          </Grid>
-                        ) : (
-                          "-"
-                        )}
-                      </Typography>
-                    </TableCell>
-
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
-                        {service.materials.length !== 0 ? (
-                          service.materials.map(
-                            (material) =>
-                              material.quantity > 0 && (
-                                <Grid
-                                  key={material.id}
-                                  container
-                                  direction="column"
-                                  alignItems="center"
-                                  justifyContent="center"
-                                  sx={{ my: -1 }}
-                                >
-                                  <Tooltip title={material.name}>
-                                    <Avatar
-                                      src={`http://localhost:3000/static/${material.image}`}
-                                      alt={material.name[0]}
-                                      style={{
-                                        width: 42,
-                                        height: 42,
-                                        cursor: "pointer",
-                                      }}
-                                    />
-                                  </Tooltip>
-
-                                  <Typography
-                                    sx={{
-                                      fontSize: 12,
-                                      color: "#555",
-                                      mt: 0.5,
-                                    }}
-                                  >
-                                    x{material.quantity}
-                                  </Typography>
-                                </Grid>
-                              )
-                          )
-                        ) : (
-                          <Typography sx={{ fontSize: 13 }}>Não há</Typography>
-                        )}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      {service.executionTime === 0.5 ? (
-                        <Tooltip title={"Atendimento único"}>
-                          <Typography sx={{ fontSize: 13 }}>30 min</Typography>
-                        </Tooltip>
-                      ) : (
-                        <Tooltip
-                          title={
-                            <Grid container direction="column">
-                              {service.sessions.quantity} sessões de{" "}
-                              {service.sessions.time}h com intervalo de{" "}
-                              {service.sessions.interval} dias
-                            </Grid>
-                          }
+                  <TableCell align="center">
+                    <Typography sx={{ fontSize: 13 }}>
+                      {service.department ? (
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                          justifyContent="center"
                         >
+                          <Paper
+                            elevation={0}
+                            sx={{
+                              mb: 0.5,
+                              mr: 0.5,
+                              width: 12,
+                              height: 12,
+                              borderRadius: 50,
+                              backgroundColor: service.department.color,
+                            }}
+                          />
                           <Typography sx={{ fontSize: 13 }}>
-                            {service.sessions.quantity * service.sessions.time}h
+                            {service.department ? service.department.name : "-"}
                           </Typography>
-                        </Tooltip>
+                        </Grid>
+                      ) : (
+                        "-"
                       )}
-                    </TableCell>
-                    <TableCell align="center">
+                    </Typography>
+                  </TableCell>
+
+                  <TableCell align="center">
+                    <Typography sx={{ fontSize: 13 }}>
+                      {service.materials.length !== 0 ? (
+                        service.materials.map(
+                          (material) =>
+                            material.quantity > 0 && (
+                              <Grid
+                                key={material.id}
+                                container
+                                direction="column"
+                                alignItems="center"
+                                justifyContent="center"
+                                sx={{ my: -1 }}
+                              >
+                                <Tooltip title={material.name}>
+                                  <Avatar
+                                    src={`http://localhost:3000/static/${material.image}`}
+                                    alt={material.name[0]}
+                                    style={{
+                                      width: 42,
+                                      height: 42,
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                </Tooltip>
+
+                                <Typography
+                                  sx={{
+                                    fontSize: 12,
+                                    color: "#555",
+                                    mt: 0.5,
+                                  }}
+                                >
+                                  x{material.quantity}
+                                </Typography>
+                              </Grid>
+                            )
+                        )
+                      ) : (
+                        <Typography sx={{ fontSize: 13 }}>Não há</Typography>
+                      )}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    {service.executionTime === 0.5 ? (
+                      <Tooltip title={"Atendimento único"}>
+                        <Typography sx={{ fontSize: 13 }}>30 min</Typography>
+                      </Tooltip>
+                    ) : (
                       <Tooltip
                         title={
-                          <>
-                            {service.materialsCost ? (
-                              <Grid container direction="column">
-                                <Grid item>
-                                  R${service.materialsCost.toFixed(2)}{" "}
-                                  (Materiais)
-                                </Grid>
-                                <Grid item>
-                                  R${service.value.toFixed(2)} (Serviço)
-                                </Grid>
-                              </Grid>
-                            ) : (
-                              `R$${service.value.toFixed(2)} (Apenas Serviço)`
-                            )}
-                          </>
+                          <Grid container direction="column">
+                            {service.sessions.quantity} sessões de{" "}
+                            {service.sessions.time}h com intervalo de{" "}
+                            {service.sessions.interval} dias
+                          </Grid>
                         }
                       >
                         <Typography sx={{ fontSize: 13 }}>
-                          R$
-                          {service.materialsCost
-                            ? (service.materialsCost + service.value).toFixed(2)
-                            : service.value.toFixed(2)}
+                          {service.sessions.quantity * service.sessions.time}h
                         </Typography>
                       </Tooltip>
-                    </TableCell>
-
-                    <TableCell
-                      cursor="pointer"
-                      align="center"
-                      onClick={() => setSelectedService(service)}
+                    )}
+                  </TableCell>
+                  <TableCell align="center">
+                    <Tooltip
+                      title={
+                        <>
+                          {service.materialsCost ? (
+                            <Grid container direction="column">
+                              <Grid item>
+                                R${service.materialsCost.toFixed(2)} (Materiais)
+                              </Grid>
+                              <Grid item>
+                                R${service.value.toFixed(2)} (Serviço)
+                              </Grid>
+                            </Grid>
+                          ) : (
+                            `R$${service.value.toFixed(2)} (Apenas Serviço)`
+                          )}
+                        </>
+                      }
                     >
-                      <ServiceTableActions
-                        configData={configData.services}
-                        setOpenEdit={setOpenEdit}
-                        selectedItem={selectedService}
-                        refreshData={refreshData}
-                        setRefreshData={setRefreshData}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))
-                .slice(startIndex, endIndex)}
-            </TableBody>
-          </Table>
-          <TablePagination
-            component="div"
-            count={sortedRows.length}
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage={"por Página"}
-            labelDisplayedRows={({ from, to, count }) => {
-              return " " + from + " à " + to + " total " + count;
-            }}
+                      <Typography sx={{ fontSize: 13 }}>
+                        R$
+                        {service.materialsCost
+                          ? (service.materialsCost + service.value).toFixed(2)
+                          : service.value.toFixed(2)}
+                      </Typography>
+                    </Tooltip>
+                  </TableCell>
+
+                  <TableCell
+                    cursor="pointer"
+                    align="center"
+                    onClick={() => setSelectedService(service)}
+                  >
+                    <ServiceTableActions
+                      configData={configData.services}
+                      setOpenEdit={setOpenEdit}
+                      selectedItem={selectedService}
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))
+              .slice(startIndex, endIndex)}
+          </TableBody>
+        </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
+      </TableContainer>
+      {openEdit && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditServiceForm
+            openEdit={openEdit}
+            selectedService={selectedService}
+            previousMaterials={selectedService.materials}
+            departments={departments}
+            stockItems={stockItems}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
           />
-        </TableContainer>
-        {openEdit && (
-          <Dialog
-            fullWidth
-            maxWidth="md"
-            open={openEdit}
-            onClose={() => setOpenEdit(!openEdit)}
-          >
-            <EditServiceForm
-              openEdit={openEdit}
-              selectedService={selectedService}
-              previousMaterials={selectedService.materials}
-              departments={departments}
-              stockItems={stockItems}
-              setOpenEdit={setOpenEdit}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
-      </Box>
-    </>
+        </Dialog>
+      )}
+    </Box>
   );
 }

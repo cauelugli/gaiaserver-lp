@@ -54,6 +54,7 @@ export default function SaleTable({
   sales,
   refreshData,
   setRefreshData,
+  topBar
 }) {
   const [userReactions, setUserReactions] = React.useState({});
   const [activity, setActivity] = React.useState("");
@@ -314,7 +315,7 @@ export default function SaleTable({
   };
 
   return (
-    <Box sx={{ minWidth: "1250px" }}>
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
         <Checkbox
           checked={showCompletedSales}

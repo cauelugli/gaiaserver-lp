@@ -52,6 +52,7 @@ export default function Stock({
   userRole,
   userDepartment,
   configTables,
+  topBar,
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
@@ -232,6 +233,7 @@ export default function Stock({
                 searchOption={searchOption}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
+                topBar={topBar}
               />
             </>
           )}
@@ -259,6 +261,7 @@ export default function Stock({
                 searchOption={searchOption}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
+                topBar={topBar}
               />
             </>
           )}
@@ -297,6 +300,7 @@ export default function Stock({
               searchOption={searchOption}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
+              topBar={topBar}
             />
           </>
         )}

@@ -50,6 +50,7 @@ export default function Projects({
   userName,
   userUsername,
   userImage,
+  topBar,
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -205,6 +206,7 @@ export default function Projects({
               toast={toast}
               searchValue={searchValue}
               searchOption={searchOption}
+              topBar={topBar}
             />
           </>
         )}

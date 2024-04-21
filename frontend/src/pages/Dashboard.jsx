@@ -26,6 +26,7 @@ const Dashboard = ({
   configDashboard,
   configAgenda,
   configCustomization,
+  topBar,
 }) => {
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -57,7 +58,7 @@ const Dashboard = ({
   }
 
   return (
-    <Grid>
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
       <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }}>
         Dashboard
       </Typography>
@@ -116,7 +117,7 @@ const Dashboard = ({
         </>
       )}
       <SmartReports requests={requests} customers={customers} users={users} />
-    </Grid>
+    </Box>
   );
 };
 

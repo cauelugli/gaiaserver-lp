@@ -48,7 +48,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Finance({ user }) {
+export default function Finance({ topBar }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
@@ -168,6 +168,7 @@ export default function Finance({ user }) {
               toast={toast}
               searchValue={searchValue}
               searchOption={searchOption}
+              topBar={topBar}
             />
           </>
         )}
@@ -192,13 +193,13 @@ export default function Finance({ user }) {
             <FinanceOutcomeTable
               outcoming={outcoming}
               configData={configData}
-              user={user}
               configCustomization={configCustomization}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               toast={toast}
               searchValue={searchValue}
               searchOption={searchOption}
+              topBar={topBar}
             />
           </>
         )}

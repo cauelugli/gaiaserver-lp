@@ -52,6 +52,7 @@ export default function CustomerTable({
   setRefreshData,
   searchValue,
   searchOption,
+  topBar,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openViewDialog, setOpenViewDialog] = React.useState(false);
@@ -202,7 +203,7 @@ export default function CustomerTable({
   ).length;
 
   return (
-    <Box sx={{ minWidth: "1250px" }}>
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
         <Checkbox
           checked={showArchivedCustomers}

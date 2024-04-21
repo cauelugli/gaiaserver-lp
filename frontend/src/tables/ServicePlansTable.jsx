@@ -30,6 +30,7 @@ export default function ServicePlansTable({
   searchValue,
   searchOption,
   servicePlans,
+  topBar,
   // refreshData,
   // setRefreshData,
 }) {
@@ -107,226 +108,223 @@ export default function ServicePlansTable({
   const endIndex = startIndex + rowsPerPage;
 
   return (
-    <>
-      <Box sx={{ minWidth: "1250px" }}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableBody>
-              <TableRow
-                sx={{
-                  backgroundColor: "#eee",
-                }}
-              >
-                {tableHeaderRow.map((headCell) => (
-                  <TableCell
-                    align={headCell.label === "Nome do Plano" ? "" : "center"}
-                    sx={{
-                      fontSize: 13,
-                      fontWeight: "bold",
-                    }}
-                    key={headCell.id}
-                    sortDirection={orderBy === headCell.id ? order : false}
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            <TableRow
+              sx={{
+                backgroundColor: "#eee",
+              }}
+            >
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "Nome do Plano" ? "" : "center"}
+                  sx={{
+                    fontSize: 13,
+                    fontWeight: "bold",
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
                   >
-                    <TableSortLabel
-                      active={orderBy === headCell.id}
-                      direction={orderBy === headCell.id ? order : "asc"}
-                      onClick={() => handleRequestSort(headCell.id)}
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+            {sortedRows
+              .filter((user) =>
+                user[searchOption]
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase())
+              )
+              .map((servicePlan) => (
+                <>
+                  <TableRow key={servicePlan._id} sx={{ cursor: "pointer" }}>
+                    <TableCell
+                      onClick={() => handleOpenDetail(servicePlan)}
+                      cursor="pointer"
                     >
-                      {headCell.label}
-                    </TableSortLabel>
-                  </TableCell>
-                ))}
-              </TableRow>
-              {sortedRows
-                .filter((user) =>
-                  user[searchOption]
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase())
-                )
-                .map((servicePlan) => (
-                  <>
-                    <TableRow key={servicePlan._id} sx={{ cursor: "pointer" }}>
-                      <TableCell
-                        onClick={() => handleOpenDetail(servicePlan)}
-                        cursor="pointer"
+                      <Typography sx={{ fontSize: 13 }}>
+                        {servicePlan.name}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell
+                      style={{ paddingBottom: 0, paddingTop: 0 }}
+                      colSpan={6}
+                    >
+                      <Collapse
+                        in={
+                          openDetail &&
+                          selectedService.name === servicePlan.name
+                        }
+                        timeout="auto"
+                        unmountOnExit
                       >
-                        <Typography sx={{ fontSize: 13 }}>
-                          {servicePlan.name}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                        style={{ paddingBottom: 0, paddingTop: 0 }}
-                        colSpan={6}
-                      >
-                        <Collapse
-                          in={
-                            openDetail &&
-                            selectedService.name === servicePlan.name
-                          }
-                          timeout="auto"
-                          unmountOnExit
-                        >
-                          <Box sx={{ my: 4, px: 6 }}>
-                            <Grid container direction="row">
-                              <Typography
-                                variant="h6"
-                                sx={{
-                                  fontSize: 18,
-                                  fontWeight: "bold",
-                                  my: "auto",
-                                }}
-                              >
-                                Informações do Serviço
-                              </Typography>
-                              <IconButton
-                                onClick={() =>
-                                  setOpenDetailInfo(!openDetailInfo)
-                                }
-                              >
-                                <ExpandMoreIcon />
-                              </IconButton>
-                            </Grid>
-                            <Collapse
-                              in={openDetailInfo}
-                              timeout="auto"
-                              unmountOnExit
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
                             >
-                              <Table size="small">
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell sx={{ width: "350px" }}>
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Nome
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Valor do Plano
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  <TableRow>
+                              Informações do Serviço
+                            </Typography>
+                            <IconButton
+                              onClick={() => setOpenDetailInfo(!openDetailInfo)}
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={openDetailInfo}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell sx={{ width: "350px" }}>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Nome
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Valor do Plano
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell sx={{ width: "350px" }}>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      {servicePlan.name}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 13 }}>
+                                      R${servicePlan.value}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Collapse>
+                        </Box>
+                        <Box sx={{ my: 4, px: 6 }}>
+                          <Grid container direction="row">
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                my: "auto",
+                              }}
+                            >
+                              Serviços Contemplados
+                            </Typography>
+                            <IconButton
+                              onClick={() =>
+                                setOpenDetailServices(!openDetailServices)
+                              }
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </Grid>
+                          <Collapse
+                            in={openDetailServices}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell sx={{ width: "350px" }}>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Serviço
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell sx={{ width: "350px" }}>
+                                    <Typography
+                                      sx={{ fontSize: 13, color: "#777" }}
+                                    >
+                                      Departamento
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                {servicePlan.services.map((service) => (
+                                  <TableRow key={service.id}>
                                     <TableCell sx={{ width: "350px" }}>
                                       <Typography sx={{ fontSize: 13 }}>
-                                        {servicePlan.name}
+                                        {service.name}
                                       </Typography>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell sx={{ width: "350px" }}>
                                       <Typography sx={{ fontSize: 13 }}>
-                                        R${servicePlan.value}
+                                        {service.department.name}
                                       </Typography>
                                     </TableCell>
                                   </TableRow>
-                                </TableBody>
-                              </Table>
-                            </Collapse>
-                          </Box>
-                          <Box sx={{ my: 4, px: 6 }}>
-                            <Grid container direction="row">
-                              <Typography
-                                variant="h6"
-                                sx={{
-                                  fontSize: 18,
-                                  fontWeight: "bold",
-                                  my: "auto",
-                                }}
-                              >
-                                Serviços Contemplados
-                              </Typography>
-                              <IconButton
-                                onClick={() =>
-                                  setOpenDetailServices(!openDetailServices)
-                                }
-                              >
-                                <ExpandMoreIcon />
-                              </IconButton>
-                            </Grid>
-                            <Collapse
-                              in={openDetailServices}
-                              timeout="auto"
-                              unmountOnExit
-                            >
-                              <Table size="small">
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell sx={{ width: "350px" }}>
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Serviço
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell sx={{ width: "350px" }}>
-                                      <Typography
-                                        sx={{ fontSize: 13, color: "#777" }}
-                                      >
-                                        Departamento
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  {servicePlan.services.map((service) => (
-                                    <TableRow key={service.id}>
-                                      <TableCell sx={{ width: "350px" }}>
-                                        <Typography sx={{ fontSize: 13 }}>
-                                          {service.name}
-                                        </Typography>
-                                      </TableCell>
-                                      <TableCell sx={{ width: "350px" }}>
-                                        <Typography sx={{ fontSize: 13 }}>
-                                          {service.department.name}
-                                        </Typography>
-                                      </TableCell>
-                                    </TableRow>
-                                  ))}
-                                </TableBody>
-                              </Table>
-                            </Collapse>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </Collapse>
 
-                            <Box sx={{ mt: 3, ml: "90%" }}>
-                              <ModeEditIcon
-                                cursor="pointer"
-                                onClick={() => handleOpenEdit(servicePlan)}
-                                sx={{ color: "grey", mr: 2 }}
-                              />
-                              <DeleteIcon
-                                cursor="pointer"
-                                // onClick={() => handleConfirmDelete(servicePlan)}
-                                sx={{ color: "#ff4444" }}
-                              />
-                            </Box>
+                          <Box sx={{ mt: 3, ml: "90%" }}>
+                            <ModeEditIcon
+                              cursor="pointer"
+                              onClick={() => handleOpenEdit(servicePlan)}
+                              sx={{ color: "grey", mr: 2 }}
+                            />
+                            <DeleteIcon
+                              cursor="pointer"
+                              // onClick={() => handleConfirmDelete(servicePlan)}
+                              sx={{ color: "#ff4444" }}
+                            />
                           </Box>
-                        </Collapse>
-                      </TableCell>
-                    </TableRow>
-                  </>
-                ))
-                .slice(startIndex, endIndex)}
-            </TableBody>
-          </Table>
-          <TablePagination
-            component="div"
-            count={sortedRows.length}
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage={"por Página"}
-            labelDisplayedRows={({ from, to, count }) => {
-              return " " + from + " à " + to + " total " + count;
-            }}
-          />
-        </TableContainer>
-        {/* {openEdit && (
+                        </Box>
+                      </Collapse>
+                    </TableCell>
+                  </TableRow>
+                </>
+              ))
+              .slice(startIndex, endIndex)}
+          </TableBody>
+        </Table>
+        <TablePagination
+          component="div"
+          count={sortedRows.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
+      </TableContainer>
+      {/* {openEdit && (
           <Dialog
             fullWidth
             maxWidth="md"
@@ -344,7 +342,6 @@ export default function ServicePlansTable({
             />
           </Dialog>
         )} */}
-      </Box>
-    </>
+    </Box>
   );
 }

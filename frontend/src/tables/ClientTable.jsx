@@ -50,6 +50,7 @@ export default function ClientTable({
   setRefreshData,
   searchOption,
   searchValue,
+  topBar,
 }) {
   const [selectedClient, setSelectedClient] = React.useState([]);
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -173,7 +174,7 @@ export default function ClientTable({
   ).length;
 
   return (
-    <Box sx={{ minWidth: "1250px" }}>
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
         <Checkbox
           checked={showArchivedClients}

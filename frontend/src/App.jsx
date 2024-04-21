@@ -386,6 +386,8 @@ export default function App() {
                             configAgenda={configAgenda}
                             configDashboard={configData.dashboard}
                             configCustomization={configData.customization}
+                            topBar={userPreferences.barPosition}
+
                           />
                         ) : (
                           <Navigate to="/login" />
@@ -397,7 +399,10 @@ export default function App() {
                       element={
                         isAuthenticated(login, userData) &&
                         hasPermission(userData, configData, "users") ? (
-                          <Users userName={userData.name} />
+                          <Users
+                            userName={userData.name}
+                            topBar={userPreferences.barPosition}
+                          />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
                             Seu usuário não possui autorização à página.
@@ -413,7 +418,7 @@ export default function App() {
                       element={
                         isAuthenticated(login, userData) &&
                         hasPermission(userData, configData, "security") ? (
-                          <Security />
+                          <Security topBar={userPreferences.barPosition} />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
                             Seu usuário não possui autorização à página.
@@ -436,6 +441,7 @@ export default function App() {
                             configNotificationsBooleans={
                               configNotificationsBooleans
                             }
+                            topBar={userPreferences.barPosition}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -454,6 +460,7 @@ export default function App() {
                           <Departments
                             userName={userData.name}
                             configTables={configTables}
+                            topBar={userPreferences.barPosition}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -473,6 +480,7 @@ export default function App() {
                             users={users}
                             requests={requests}
                             customers={customers}
+                            topBar={userPreferences.barPosition}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -491,6 +499,7 @@ export default function App() {
                           <Services
                             configTables={configTables}
                             configData={configData}
+                            topBar={userPreferences.barPosition}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -511,6 +520,7 @@ export default function App() {
                             userRole={userData.role}
                             userDepartment={userData.department}
                             configTables={configTables}
+                            topBar={userPreferences.barPosition}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -537,6 +547,7 @@ export default function App() {
                             configNotificationsBooleans={
                               configNotificationsBooleans
                             }
+                            topBar={userPreferences.barPosition}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -558,6 +569,7 @@ export default function App() {
                             userUsername={userData.username}
                             userImage={userData.image}
                             configTables={configTables}
+                            topBar={userPreferences.barPosition}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -573,7 +585,10 @@ export default function App() {
                       element={
                         isAuthenticated(login, userData) &&
                         hasPermission(userData, configData, "quotes") ? (
-                          <Quotes configData={configData.quotes} />
+                          <Quotes
+                            configData={configData.quotes}
+                            topBar={userPreferences.barPosition}
+                          />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
                             Seu usuário não possui autorização à página.
@@ -588,7 +603,7 @@ export default function App() {
                       element={
                         isAuthenticated(login, userData) &&
                         hasPermission(userData, configData, "files") ? (
-                          <Files />
+                          <Files topBar={userPreferences.barPosition} />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
                             Seu usuário não possui autorização à página.
@@ -603,7 +618,7 @@ export default function App() {
                       element={
                         isAuthenticated(login, userData) &&
                         hasPermission(userData, configData, "finance") ? (
-                          <Finance />
+                          <Finance topBar={userPreferences.barPosition} />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
                             Seu usuário não possui autorização à página.

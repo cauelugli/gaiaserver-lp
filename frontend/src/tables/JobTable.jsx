@@ -61,6 +61,7 @@ export default function JobTable({
   managers,
   refreshData,
   setRefreshData,
+  topBar,
 }) {
   const [userReactions, setUserReactions] = React.useState({});
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -387,7 +388,7 @@ export default function JobTable({
   };
 
   return (
-    <Box sx={{ minWidth: "1250px" }}>
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
         <Checkbox
           checked={showCompletedJobs}

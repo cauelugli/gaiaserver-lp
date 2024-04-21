@@ -40,6 +40,7 @@ export default function FinanceIncomeTable({
   refreshData,
   configCustomization,
   setRefreshData,
+  topBar,
 }) {
   // const [previousStatus, setPreviousStatus] = React.useState("");
   // const [newStatus, setNewStatus] = React.useState("");
@@ -161,7 +162,7 @@ export default function FinanceIncomeTable({
 
   return (
     <>
-      <Box sx={{ minWidth: "1250px" }}>
+      <Box sx={{ width: topBar ? "105%" : "100%" }}>
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
           <Checkbox
             checked={showCompletedIncomes}

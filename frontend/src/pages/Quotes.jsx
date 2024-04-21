@@ -3,13 +3,7 @@ import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import {
-  Box,
-  CircularProgress,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
+import { Box, CircularProgress, Tab, Tabs, Typography } from "@mui/material";
 
 import QuoteTable from "../tables/QuoteTable";
 
@@ -35,7 +29,7 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Quotes({ configData }) {
+export default function Quotes({ configData, topBar }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
@@ -158,6 +152,7 @@ export default function Quotes({ configData }) {
               searchValue={searchValue}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
+              topBar={topBar}
             />
           </>
         )}
@@ -185,6 +180,7 @@ export default function Quotes({ configData }) {
               searchValue={searchValue}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
+              topBar={topBar}
             />
           </>
         )}

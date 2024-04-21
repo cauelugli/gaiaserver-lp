@@ -33,6 +33,7 @@ const api = axios.create({
 
 export default function QuoteTable({
   // config,
+  topBar,
   type,
   searchValue,
   searchOption,
@@ -186,7 +187,7 @@ export default function QuoteTable({
   };
 
   return (
-    <Box sx={{ minWidth: "1250px" }}>
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
