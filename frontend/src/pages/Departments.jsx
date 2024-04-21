@@ -108,8 +108,6 @@ export default function Departments({ userName, configTables }) {
   const [groups, setGroups] = React.useState([]);
   const [allUsers, setAllUsers] = React.useState([]);
 
-  console.log("groups in DEPT", groups);
-
   React.useEffect(() => {
     const fetchData = async () => {
       try {
