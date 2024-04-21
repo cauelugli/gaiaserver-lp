@@ -37,10 +37,14 @@ export default function Account({
 }) {
   const [image, setImage] = React.useState("");
   const [darkMode, setDarkMode] = React.useState(userPreferences.darkMode);
+  const [barPosition, setBarPosition] = React.useState(
+    userPreferences.barPosition
+  );
 
   React.useEffect(() => {
     setDarkMode(userPreferences.darkMode);
-  }, [userPreferences.darkMode]);
+    setBarPosition(userPreferences.barPosition);
+  }, [userPreferences]);
 
   const handleChangeImage = async (e) => {
     e.preventDefault();
@@ -95,14 +99,43 @@ export default function Account({
           autoClose: 1200,
         });
         setRefreshData(!refreshData);
-        setUserPreferences(prev => ({ ...prev, darkMode: newDarkMode }));
-        sessionStorage.setItem("userPreferences", JSON.stringify(response.data));
-        // toast.info("Realize Logout para aplicar a Alteração.", {
-        //   closeOnClick: true,
-        //   pauseOnHover: false,
-        //   theme: "colored",
-        //   autoClose: 8000,
-        // });
+        setUserPreferences((prev) => ({ ...prev, darkMode: newDarkMode }));
+        sessionStorage.setItem(
+          "userPreferences",
+          JSON.stringify(response.data)
+        );
+      }
+    } catch (err) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+      console.log(err);
+    }
+  };
+
+  const handleUpdateBarPosition = async (newBarPosition) => {
+    try {
+      const response = await api.put("/userPreferences/barPosition", {
+        userId: user._id,
+        barPosition: newBarPosition,
+      });
+
+      if (response.data) {
+        toast.success("Posição da Barra Atualizada!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+        setRefreshData(!refreshData);
+        setUserPreferences((prev) => ({ ...prev, barPosition: newBarPosition }));
+        sessionStorage.setItem(
+          "userPreferences",
+          JSON.stringify(response.data)
+        );
       }
     } catch (err) {
       toast.error("Houve algum erro...", {
@@ -123,8 +156,8 @@ export default function Account({
       <>
         <Grid container sx={{ ml: 2 }}>
           <AccountPreferencesBox
-            userPreferences={{ ...userPreferences, darkMode }}
             onUpdateDarkMode={handleUpdateDarkMode}
+            onUpdateBarPosition={handleUpdateBarPosition}
           />
         </Grid>
         <Grid

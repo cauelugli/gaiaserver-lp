@@ -100,4 +100,23 @@ router.put("/darkMode", async (req, res) => {
   }
 });
 
+
+// UPDATE BAR POSITION
+router.put("/barPosition", async (req, res) => {
+  const { userId, barPosition } = req.body;
+
+  try {
+    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    userPreferences.barPosition = barPosition;
+    await userPreferences.save();
+
+    res
+      .status(200)
+      .json({ message: "Bar position updated successfully", barPosition });
+  } catch (error) {
+    console.error("Error updating dark mode:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

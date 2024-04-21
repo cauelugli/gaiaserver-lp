@@ -5,6 +5,10 @@ const userPreferencesSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  barPosition: {
+    type: Boolean,
+    default: false,
+  },
   userId: {
     type: String,
     required: true,

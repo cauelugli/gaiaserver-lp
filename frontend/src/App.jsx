@@ -307,9 +307,10 @@ export default function App() {
                 configData={configData}
                 notifications={notifications}
                 setNotifications={setNotifications}
+                barPosition={userPreferences.barPosition}
               />
             )}
-            {login && showSidebar && (
+            {login && showSidebar && !userPreferences.barPosition && (
               <Grid
                 item
                 sx={{

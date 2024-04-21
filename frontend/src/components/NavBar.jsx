@@ -3,10 +3,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 
 import UserButton from "./small/buttons/UserButton";
 import NotificationsButton from "./small/buttons/NotificationsButton";
+import TopBar from "./TopBar";
 
 export default function NavBar({
   user,
@@ -14,6 +15,7 @@ export default function NavBar({
   configData,
   notifications,
   setNotifications,
+  barPosition,
 }) {
   return (
     <>
@@ -25,34 +27,42 @@ export default function NavBar({
           justifyContent="space-between"
           sx={{ backgroundColor: configData.customization.mainColor }}
         >
-          <Grid item>
-            <Link
-              to={"/"}
-              style={{
-                textDecoration: "none",
-                color: "black",
-                position: "relative",
-                overflow: "hidden",
-                backgroundColor: configData.customization.mainColor,
-              }}
-            >
+          <Grid
+            item
+            sx={{
+              ml: 1,
+              maxWidth: "8%",
+              height: "auto",
+              cursor: "pointer",
+            }}
+          >
+            <Link to={"/"}>
               <img
                 src={`http://localhost:3000/static/${
                   configData && configData.customization
                     ? configData.customization.logo
                     : ""
                 }`}
-                alt="Logotipo da Empresa"
+                alt="logo"
                 style={{
-                  width: "20%",
-                  marginLeft: 30,
-                  marginTop: 2,
-                  marginBottom: 2,
-                  cursor: "pointer",
+                  width: "100%",
                 }}
               />
             </Link>
           </Grid>
+
+          {barPosition && (
+            <Grid
+              container
+              direction="row"
+              alignItems="center"
+              justifyContent="space-evenly"
+              sx={{ width: "auto" }}
+            >
+              <TopBar configData={configData} user={user} />
+            </Grid>
+          )}
+
           <Grid item sx={{ mr: 2 }}>
             <Grid container direction="row">
               <NotificationsButton

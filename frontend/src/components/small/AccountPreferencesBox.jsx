@@ -5,16 +5,26 @@ import React, { useEffect, useState } from "react";
 
 import { FormControlLabel, Grid, Switch, Typography } from "@mui/material";
 
-const AccountPreferencesBox = ({ onUpdateDarkMode }) => {
+const AccountPreferencesBox = ({ onUpdateDarkMode, onUpdateBarPosition }) => {
   const [checkedDarkMode, setCheckedDarkMode] = useState(
     JSON.parse(sessionStorage.getItem("userPreferences"))?.darkMode === true
+  );
+  const [checkedBarPosition, setCheckedBarPosition] = useState(
+    JSON.parse(sessionStorage.getItem("userPreferences"))?.barPosition === true
   );
 
   useEffect(() => {
     const preferences = JSON.parse(sessionStorage.getItem("userPreferences"));
+
     const darkModeStored = preferences?.darkMode === true;
+    const barPositionStored = preferences?.barPosition === true;
+
     if (checkedDarkMode !== darkModeStored) {
       setCheckedDarkMode(darkModeStored);
+    }
+
+    if (checkedBarPosition !== barPositionStored) {
+      setCheckedBarPosition(barPositionStored);
     }
   }, []);
 
@@ -32,6 +42,22 @@ const AccountPreferencesBox = ({ onUpdateDarkMode }) => {
     );
 
     onUpdateDarkMode(newDarkMode);
+  };
+
+  const handleChangeBarPosition = (event) => {
+    const newBarPosition = event.target.checked;
+    setCheckedBarPosition(newBarPosition);
+
+    const updatedPreferences = {
+      ...JSON.parse(sessionStorage.getItem("userPreferences")),
+      barPosition: newBarPosition,
+    };
+    sessionStorage.setItem(
+      "userPreferences",
+      JSON.stringify(updatedPreferences)
+    );
+
+    onUpdateBarPosition(newBarPosition);
   };
 
   return (
@@ -56,20 +82,30 @@ const AccountPreferencesBox = ({ onUpdateDarkMode }) => {
         justifyContent="center"
         rowSpacing={2}
       >
-        <FormControlLabel
-          labelPlacement="start"
-          label="Modo Escuro"
-          control={
-            <Switch checked={checkedDarkMode} onChange={handleChangeDarkMode} />
-          }
-        />
-        {/* <FormControlLabel
-          labelPlacement="start"
-          label="Modo Escuro"
-          control={
-            <Switch checked={checkedDarkMode} onChange={handleChangeDarkMode} />
-          }
-        /> */}
+        <Grid>
+          <FormControlLabel
+            labelPlacement="start"
+            label="Modo Escuro"
+            control={
+              <Switch
+                checked={checkedDarkMode}
+                onChange={handleChangeDarkMode}
+              />
+            }
+          />
+        </Grid>
+        <Grid>
+          <FormControlLabel
+            labelPlacement="start"
+            label={`Barra ${checkedBarPosition ? "Superior" : "Lateral"}`}
+            control={
+              <Switch
+                checked={checkedBarPosition}
+                onChange={handleChangeBarPosition}
+              />
+            }
+          />
+        </Grid>
       </Grid>
     </Grid>
   );
