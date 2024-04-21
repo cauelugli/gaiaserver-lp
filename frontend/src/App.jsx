@@ -366,6 +366,7 @@ export default function App() {
                             setUserPreferences={updateUserPreferences}
                             refreshData={refreshData}
                             setRefreshData={setRefreshData}
+                            topBar={userPreferences.barPosition}
                           />
                         ) : (
                           <Navigate to="/login" />

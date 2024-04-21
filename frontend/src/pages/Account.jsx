@@ -34,6 +34,7 @@ export default function Account({
   setUserPreferences,
   refreshData,
   setRefreshData,
+  topBar,
 }) {
   const [image, setImage] = React.useState("");
   const [darkMode, setDarkMode] = React.useState(userPreferences.darkMode);
@@ -131,7 +132,10 @@ export default function Account({
           autoClose: 1200,
         });
         setRefreshData(!refreshData);
-        setUserPreferences((prev) => ({ ...prev, barPosition: newBarPosition }));
+        setUserPreferences((prev) => ({
+          ...prev,
+          barPosition: newBarPosition,
+        }));
         sessionStorage.setItem(
           "userPreferences",
           JSON.stringify(response.data)
@@ -149,7 +153,7 @@ export default function Account({
   };
 
   return (
-    <>
+    <Box sx={{ width: topBar ? "105%" : "100%" }}>
       <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }}>
         Perfil
       </Typography>
@@ -353,6 +357,6 @@ export default function Account({
           </Box>
         </Grid>
       </>
-    </>
+    </Box>
   );
 }
