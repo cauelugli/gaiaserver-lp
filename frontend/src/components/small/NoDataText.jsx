@@ -11,7 +11,7 @@ const NoDataText = ({ option, femaleGender }) => {
       direction="row"
       alignItems="center"
       justifyContent="center"
-      sx={{ mt: 3 }}
+      sx={{ mt: 3, mb:"30vw" }}
     >
       <Typography sx={{ fontSize: 30, color: "#777" }}>
         Não há {option} Cadastrad{femaleGender?"a":"o"}s
