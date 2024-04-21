@@ -66,7 +66,7 @@ export default function Reports({ users, customers, requests, topBar }) {
   }
 
   return (
-    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+    <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <Grid
         container
         direction="row"

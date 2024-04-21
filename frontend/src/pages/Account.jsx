@@ -153,7 +153,7 @@ export default function Account({
   };
 
   return (
-    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+    <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }}>
         Perfil
       </Typography>

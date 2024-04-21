@@ -187,7 +187,7 @@ export default function QuoteTable({
   };
 
   return (
-    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+    <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>

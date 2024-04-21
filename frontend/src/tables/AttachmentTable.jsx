@@ -149,95 +149,93 @@ export default function AttachmentTable({ topBar }) {
       {attachments.length === 0 ? (
         <NoDataText option="Anexos" />
       ) : (
-        <>
-          <Box sx={{ width: topBar ? "105%" : "100%" }}>
-            <Grid container direction="row" sx={{ py: 2 }}>
-              <Typography sx={{ my: "auto" }}>
-                Tamanho em Disco: {totalSpaceOccupiedMB}MB
-              </Typography>
-              <Grid item sx={{ mt: -1 }}>
-                {selectedImages.length > 0 && (
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    startIcon={<ClearIcon sx={{ mt: -0.5, p: 0 }} />}
-                    onClick={() => setSelectedImages([])}
-                    sx={{ mx: 1 }}
-                  >
-                    Limpar Seleção
-                  </Button>
-                )}
-              </Grid>
-              <Grid item sx={{ mt: -1 }}>
-                {selectedImages.length > 0 && (
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="error"
-                    startIcon={<DeleteIcon sx={{ mt: -0.5 }} />}
-                    onClick={handleDeleteMultiple}
-                  >
-                    Excluir Selecionados
-                  </Button>
-                )}
-              </Grid>
+        <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
+          <Grid container direction="row" sx={{ py: 2 }}>
+            <Typography sx={{ my: "auto" }}>
+              Tamanho em Disco: {totalSpaceOccupiedMB}MB
+            </Typography>
+            <Grid item sx={{ mt: -1 }}>
+              {selectedImages.length > 0 && (
+                <Button
+                  size="small"
+                  variant="outlined"
+                  startIcon={<ClearIcon sx={{ mt: -0.5, p: 0 }} />}
+                  onClick={() => setSelectedImages([])}
+                  sx={{ mx: 1 }}
+                >
+                  Limpar Seleção
+                </Button>
+              )}
             </Grid>
-            <Grid container spacing={2}>
-              {attachments.map((file) => {
-                return (
-                  <Grid key={file._id} item xs={2}>
-                    {isPdf(file.name) ? (
-                      <img
-                        src={`http://localhost:3000/static/pdf.png`}
-                        alt="PDF"
-                        style={{
-                          width: "80px",
-                          height: "80px",
-                          marginBottom: "8px",
-                        }}
-                      />
-                    ) : isImage(file.name) ? (
-                      <img
-                        src={`http://localhost:3000/static/attachments/${file.name}`}
-                        alt="Pré-visualização"
-                        style={{
-                          width: "80px",
-                          height: "80px",
-                          marginBottom: "8px",
-                        }}
-                      />
-                    ) : (
-                      <img
-                        src={`http://localhost:3000/static/doc.png`}
-                        alt="Other"
-                        style={{
-                          width: "80px",
-                          height: "80px",
-                          marginBottom: "8px",
-                        }}
-                      />
-                    )}
-                    <Typography sx={{ fontSize: 10 }}>
-                      {file.name} - {file.sizeKB}KB
-                    </Typography>
-                    <Grid container direction="row" sx={{ ml: 2 }}>
-                      <Checkbox
-                        checked={selectedImages.includes(file)}
-                        onChange={() => handleCheckboxChange(file)}
-                        sx={{ p: 0, m: 0 }}
-                      />
-                      <DeleteIcon
-                        color="error"
-                        onClick={() => deleteFile(file)}
-                        style={{ cursor: "pointer" }}
-                      />
-                    </Grid>
+            <Grid item sx={{ mt: -1 }}>
+              {selectedImages.length > 0 && (
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="error"
+                  startIcon={<DeleteIcon sx={{ mt: -0.5 }} />}
+                  onClick={handleDeleteMultiple}
+                >
+                  Excluir Selecionados
+                </Button>
+              )}
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            {attachments.map((file) => {
+              return (
+                <Grid key={file._id} item xs={2}>
+                  {isPdf(file.name) ? (
+                    <img
+                      src={`http://localhost:3000/static/pdf.png`}
+                      alt="PDF"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        marginBottom: "8px",
+                      }}
+                    />
+                  ) : isImage(file.name) ? (
+                    <img
+                      src={`http://localhost:3000/static/attachments/${file.name}`}
+                      alt="Pré-visualização"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        marginBottom: "8px",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={`http://localhost:3000/static/doc.png`}
+                      alt="Other"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        marginBottom: "8px",
+                      }}
+                    />
+                  )}
+                  <Typography sx={{ fontSize: 10 }}>
+                    {file.name} - {file.sizeKB}KB
+                  </Typography>
+                  <Grid container direction="row" sx={{ ml: 2 }}>
+                    <Checkbox
+                      checked={selectedImages.includes(file)}
+                      onChange={() => handleCheckboxChange(file)}
+                      sx={{ p: 0, m: 0 }}
+                    />
+                    <DeleteIcon
+                      color="error"
+                      onClick={() => deleteFile(file)}
+                      style={{ cursor: "pointer" }}
+                    />
                   </Grid>
-                );
-              })}
-            </Grid>
-          </Box>
-        </>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Box>
       )}
 
       <Dialog open={confirmationDialogOpen} onClose={closeConfirmationDialog}>

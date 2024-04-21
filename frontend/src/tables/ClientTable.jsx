@@ -174,7 +174,7 @@ export default function ClientTable({
   ).length;
 
   return (
-    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+    <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
         <Checkbox
           checked={showArchivedClients}

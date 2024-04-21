@@ -147,7 +147,7 @@ export default function DocumentTable({ topBar }) {
         <NoDataText option="Documentos" />
       ) : (
         <>
-          <Box sx={{ width: topBar ? "105%" : "100%" }}>
+          <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
             <Grid container direction="row" sx={{ py: 2 }}>
               <Typography sx={{ my: "auto" }}>
                 Tamanho em Disco: {totalSpaceOccupiedMB}MB

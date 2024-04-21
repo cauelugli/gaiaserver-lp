@@ -105,7 +105,7 @@ export default function PositionTable({
   const endIndex = startIndex + rowsPerPage;
 
   return (
-    <Box sx={{ width: topBar ? "105%" : "100%" }}>
+    <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
