@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   Box,
   Dialog,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -20,8 +21,10 @@ import PositionMembers from "../components/small/PositionMembers";
 import PositionTableActions from "../components/small/buttons/tableActionButtons/PositionTableActions";
 
 export default function PositionTable({
+  departments,
   positions,
   users,
+  managers,
   toast,
   searchValue,
   searchOption,
@@ -35,6 +38,10 @@ export default function PositionTable({
     {
       id: "name",
       label: "Nome do Cargo",
+    },
+    {
+      id: "department.name",
+      label: "Departamento",
     },
     {
       id: "members",
@@ -105,7 +112,12 @@ export default function PositionTable({
               <TableRow>
                 {tableHeaderRow.map((headCell) => (
                   <TableCell
-                    align={headCell.label === "Nome do Cargo" ? "" : "center"}
+                    align={
+                      headCell.label === "Nome do Cargo" ||
+                      headCell.label === "Departamento"
+                        ? ""
+                        : "center"
+                    }
                     sx={{
                       fontSize: 13,
                       fontWeight: "bold",
@@ -147,11 +159,32 @@ export default function PositionTable({
                           {position.name}
                         </Typography>
                       </TableCell>
+                      <TableCell>
+                        {position.department ? (
+                          <Grid container direction="row">
+                            <Paper
+                              elevation={0}
+                              sx={{
+                                mr: 1,
+                                width: 15,
+                                height: 15,
+                                borderRadius: 50,
+                                backgroundColor: position.department.color,
+                              }}
+                            />
+                            <Typography sx={{ fontSize: 13 }}>
+                              {position.department.name}
+                            </Typography>
+                          </Grid>
+                        ) : (
+                          ""
+                        )}
+                      </TableCell>
                       <TableCell align="center">
                         <PositionMembers
                           members={position.members}
                           users={users}
-                          managers=""
+                          managers={managers}
                         />
                       </TableCell>
                       <TableCell
@@ -194,6 +227,7 @@ export default function PositionTable({
           >
             <EditPositionForm
               openEdit={openEdit}
+              departments={departments}
               selectedPosition={selectedPosition}
               previousMaterials={selectedPosition.materials}
               setOpenEdit={setOpenEdit}

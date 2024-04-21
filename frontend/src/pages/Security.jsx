@@ -57,6 +57,7 @@ export default function Security() {
   const [managers, setManagers] = React.useState([]);
   const [operators, setOperators] = React.useState([]);
   const [positions, setPositions] = React.useState([]);
+  const [departments, setDepartments] = React.useState([]);
   const [roles, setRoles] = React.useState([]);
 
   const [openAddOperator, setOpenAddOperator] = React.useState(false);
@@ -126,6 +127,7 @@ export default function Security() {
         const managers = await api.get("/managers");
         const roles = await api.get("/roles");
         const positions = await api.get("/positions");
+        const departments = await api.get("/departments");
         const usersData = users.data;
         const managersData = managers.data;
         const combinedData = [...usersData, ...managersData];
@@ -135,6 +137,7 @@ export default function Security() {
         setManagers(managersData);
         setOperators(combinedData);
         setPositions(positions.data);
+        setDepartments(departments.data);
         setRoles(roles.data);
         setIsLoading(false);
       } catch (error) {
@@ -252,10 +255,12 @@ export default function Security() {
 
             <PositionTable
               toast={toast}
+              departments={departments}
               searchValue={searchValue}
               searchOption={searchOption}
               positions={positions}
               users={users}
+              managers={managers}
               openAdd={openAddPosition}
               setOpenAdd={setOpenAddPosition}
               refreshData={refreshData}
@@ -318,6 +323,7 @@ export default function Security() {
           onClose={() => setOpenAddPosition(!openAddPosition)}
         >
           <AddPositionForm
+            departments={departments}
             openAdd={openAddPosition}
             setOpenAdd={setOpenAddPosition}
             refreshData={refreshData}

@@ -30,6 +30,7 @@ const api = axios.create({
 
 export default function ManagerTable({
   refreshData,
+  positions,
   configData,
   setRefreshData,
   searchValue,
@@ -66,6 +67,10 @@ export default function ManagerTable({
     {
       id: "phone",
       label: "Telefone",
+    },
+    {
+      id: "position.name",
+      label: "Cargo",
     },
     {
       id: "department.name",
@@ -226,6 +231,11 @@ export default function ManagerTable({
                   </TableCell>
                   <TableCell align="center">
                     <Typography sx={{ fontSize: 13 }}>
+                      {row.position ? row.position.name : "-"}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography sx={{ fontSize: 13 }}>
                       {row.department ? (
                         <Grid container direction="row" justifyContent="center">
                           <Paper
@@ -298,6 +308,7 @@ export default function ManagerTable({
           >
             <EditManagerForm
               openEdit={openEdit}
+              positions={positions}
               selectedManager={selectedManager}
               setOpenEdit={setOpenEdit}
               refreshData={refreshData}

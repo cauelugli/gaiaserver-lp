@@ -72,7 +72,7 @@ export default function UserTable({
       label: "Telefone",
     },
     {
-      id: "position",
+      id: "position.name",
       label: "Cargo",
     },
     {

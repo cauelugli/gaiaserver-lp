@@ -7,6 +7,9 @@ import {
   DialogActions,
   DialogContent,
   Grid,
+  MenuItem,
+  Paper,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -18,6 +21,7 @@ const api = axios.create({
 });
 
 export default function AddPositionForm({
+  departments,
   openAdd,
   setOpenAdd,
   refreshData,
@@ -26,12 +30,19 @@ export default function AddPositionForm({
   toast,
 }) {
   const [name, setName] = React.useState("");
+  const [department, setDepartment] = React.useState(null);
 
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
       const res = await api.post("/positions", {
         name,
+        department: {
+          _id: department._id,
+          name: department.name,
+          type: department.type,
+          color: department.color,
+        },
       });
       if (res.data) {
         toast.success("Cargo Adicionado!", {
@@ -64,7 +75,7 @@ export default function AddPositionForm({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogHeader title="Cargo" femaleGender={false} extraSmall/>
+      <DialogHeader title="Cargo" femaleGender={false} extraSmall />
       <DialogContent>
         <Grid
           container
@@ -83,9 +94,55 @@ export default function AddPositionForm({
               sx={{ width: 300 }}
             />
           </Grid>
+          <Grid item sx={{ mb: 2 }}>
+            <Typography>Departamento</Typography>
+            <Select
+              required
+              sx={{ width: 300 }}
+              onChange={(e) => setDepartment(e.target.value)}
+              value={department}
+              renderValue={(selected) => (
+                <Grid container direction="row">
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      mr: 1,
+                      mt: 0.5,
+                      width: 15,
+                      height: 15,
+                      borderRadius: 50,
+                      backgroundColor: selected.color,
+                    }}
+                  />
+                  <Typography>{selected.name}</Typography>
+                </Grid>
+              )}
+              size="small"
+            >
+              {departments
+                .map((item) => (
+                  <MenuItem value={item} key={item.id}>
+                    <Grid container direction="row">
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          mr: 1,
+                          mt: 0.5,
+                          width: 15,
+                          height: 15,
+                          borderRadius: 50,
+                          backgroundColor: item.color,
+                        }}
+                      />
+                      <Typography>{item.name}</Typography>
+                    </Grid>
+                  </MenuItem>
+                ))}
+            </Select>
+          </Grid>
         </Grid>
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization} extraSmall/>
+      <FormEndLineTenant configCustomization={configCustomization} extraSmall />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

@@ -5,6 +5,7 @@ const Manager = require("../models/Manager");
 const User = require("../models/User");
 const UserPreferences = require("../models/UserPreferences");
 const Department = require("../models/Department");
+const Position = require("../models/Position");
 
 // GET ALL MANAGERS
 router.get("/", async (req, res) => {
@@ -52,6 +53,18 @@ router.post("/", async (req, res) => {
       },
       { new: true }
     );
+
+    if (req.body.position.name) {
+      await Position.findOneAndUpdate(
+        { _id: req.body.position._id },
+        {
+          $addToSet: {
+            members: savedManager._id.toString(),
+          },
+        },
+        { upsert: true }
+      );
+    }
 
     res.status(200).json({ savedManager, updatedDepartment });
   } catch (err) {
@@ -133,6 +146,9 @@ router.put("/", async (req, res) => {
         phone: req.body.phone,
         image: req.body.image,
         department: req.body.department,
+        gender: req.body.gender,
+        birthdate: req.body.birthdate,
+        position: req.body.position,
       },
       { new: true }
     );
@@ -157,6 +173,42 @@ router.put("/", async (req, res) => {
           },
         },
         { new: true }
+      );
+    }
+
+    if (
+      req.body.previousData.position &&
+      req.body.previousData.position.name &&
+      req.body.previousData.position._id !== req.body.position._id
+    ) {
+      await Position.findOneAndUpdate(
+        { _id: req.body.position._id },
+        {
+          $addToSet: {
+            members: req.body.managerId.toString(),
+          },
+        },
+        { upsert: true }
+      );
+
+      await Position.findOneAndUpdate(
+        { _id: req.body.previousData.position._id },
+        {
+          $pull: {
+            members: req.body.managerId.toString(),
+          },
+        },
+        { upsert: true }
+      );
+    } else {
+      await Position.findOneAndUpdate(
+        { _id: req.body.position._id },
+        {
+          $addToSet: {
+            members: req.body.managerId.toString(),
+          },
+        },
+        { upsert: true }
       );
     }
 

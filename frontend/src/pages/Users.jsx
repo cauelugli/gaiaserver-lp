@@ -245,6 +245,7 @@ export default function Users({ userName }) {
             />
 
             <ManagerTable
+              positions={positions}
               configData={configManagers}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
@@ -284,6 +285,7 @@ export default function Users({ userName }) {
           onClose={() => setOpenAddManager(!openAddManager)}
         >
           <AddManagerForm
+            positions={positions}
             userName={userName}
             configCustomization={configCustomization}
             openAdd={openAddManager}

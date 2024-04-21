@@ -142,6 +142,7 @@ router.put("/", async (req, res) => {
 
   if (req.body.position.name) {
     if (
+      req.body.previousData.position &&
       req.body.previousData.position.name &&
       req.body.previousData.position._id !== position._id
     ) {
@@ -164,9 +165,7 @@ router.put("/", async (req, res) => {
         },
         { upsert: true }
       );
-    }
-
-    if (!req.body.previousData.position.name && req.body.position.name) {
+    } else {
       await Position.findOneAndUpdate(
         { _id: position._id },
         {

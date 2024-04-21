@@ -5,9 +5,13 @@ const positionSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  department: {
+    type: Object,
+    required: true,
+  },
   members: {
     type: Array,
-    default: []
+    default: [],
   },
   name: {
     type: String,

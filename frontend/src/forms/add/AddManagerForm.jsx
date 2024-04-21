@@ -40,6 +40,7 @@ const api = axios.create({
 
 const AddManagerForm = ({
   userName,
+  positions,
   setOpenAdd,
   refreshData,
   setRefreshData,
@@ -56,6 +57,7 @@ const AddManagerForm = ({
   const [gender, setGender] = React.useState("m");
   const [department, setDepartment] = React.useState("");
   const [image, setImage] = React.useState("");
+  const [position, setPosition] = React.useState(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -95,6 +97,7 @@ const AddManagerForm = ({
           email: department.email,
           color: department.color,
         },
+        position: position && { _id: position._id, name: position.name },
       });
 
       if (res.data) {
@@ -106,9 +109,7 @@ const AddManagerForm = ({
         });
 
         await api.post("/recentActivity", {
-          activity: `Colaborador ${
-            userName
-          } criou um Novo Gerente: "${name}" ${
+          activity: `Colaborador ${userName} criou um Novo Gerente: "${name}" ${
             department && `para o departamento ${department.name}`
           }`,
           createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),
@@ -298,7 +299,7 @@ const AddManagerForm = ({
                 container
                 sx={{ mt: 1 }}
                 direction="row"
-                justifyContent="space-around"
+                justifyContent="space-between"
               >
                 <Grid item>
                   <Typography>Email</Typography>
@@ -378,118 +379,27 @@ const AddManagerForm = ({
                       ))}
                   </Select>
                 </Grid>
+                <Grid item sx={{ opacity: department ? 1 : 0 }}>
+                  <Typography>Cargo</Typography>
+                  <Select
+                    onChange={(e) => setPosition(e.target.value)}
+                    renderValue={(selected) => selected.name}
+                    size="small"
+                    sx={{ minWidth: 250 }}
+                    value={position}
+                  >
+                    {positions.map((item) => (
+                      <MenuItem value={item} key={item.id}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
               </Grid>
             </Grid>
           )}
         </Grid>
       </DialogContent>
-
-      {/* <DialogContent>
-        <Grid container direction="row" justifyContent="space-around">
-          <Grid item>
-            <Grid
-              container
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <input
-                type="file"
-                accept="image/*"
-                id="fileInput"
-                style={{ display: "none" }}
-                onChange={(e) => {
-                  const selectedImage = e.target.files[0];
-                  setImage(selectedImage);
-                }}
-              />
-              <label htmlFor="fileInput">
-                <Avatar
-                  alt="Imagem do Usuário"
-                  value={image}
-                  sx={{ width: 100, height: 100, cursor: "pointer" }}
-                  onClick={handleImageClick}
-                >
-                  {image ? (
-                    <img
-                      src={URL.createObjectURL(image)}
-                      alt="Prévia da Imagem"
-                      style={{ width: "100%", height: "100%" }}
-                    />
-                  ) : null}
-                </Avatar>
-              </label>
-              {image && (
-                <FormHelperText>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    size="small"
-                    startIcon={<DeleteIcon />}
-                    onClick={() => setImage("")}
-                    sx={{ mt: 1 }}
-                  >
-                    Remover
-                  </Button>
-                </FormHelperText>
-              )}
-            </Grid>
-          </Grid>
-          <Grid item>
-            <Grid
-              container
-              sx={{ mt: 2 }}
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="center"
-            >
-              <Grid item>
-                <Typography>Nome</Typography>
-                <TextField
-                  size="small"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  sx={{ mr: 1, width: 200 }}
-                />
-              </Grid>
-              <Grid item>
-                <Typography>Email</Typography>
-                <TextField
-                  value={email}
-                  size="small"
-                  required
-                  onChange={(e) => setEmail(e.target.value)}
-                  sx={{ mr: 1, width: 185 }}
-                />
-              </Grid>
-              <Grid item sx={{ mr: 1 }}>
-                <Typography>Departamento</Typography>
-                
-              </Grid>
-              <Grid item>
-                <Typography>Telefone</Typography>
-                <IMaskInput
-                  style={{
-                    padding: "5%",
-                    marginRight: "4%",
-                    marginTop: "1%",
-                    borderColor: "#eee",
-                    borderRadius: 4,
-                  }}
-                  mask="(00) 00000-0000"
-                  definitions={{
-                    "#": /[1-9]/,
-                  }}
-                  onAccept={(value) => setPhone(value)}
-                  overwrite
-                  value={phone}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </DialogContent> */}
       <FormEndLineTenant configCustomization={configCustomization} />
 
       <DialogActions>

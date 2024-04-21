@@ -30,6 +30,10 @@ departmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  positions: {
+    type: Array,
+    default: []
+  },
   services: {
     type: Array,
   },

@@ -4,6 +4,7 @@ const Department = require("../models/Department");
 const User = require("../models/User");
 const Manager = require("../models/Manager");
 const Service = require("../models/Service");
+const Position = require("../models/Position");
 
 // GET ALL DEPARTMENT
 router.get("/", async (req, res) => {
@@ -129,6 +130,9 @@ router.delete("/:id", async (req, res) => {
     const deletedDepartment = await Department.findByIdAndDelete(departmentId);
     const updatedMembers = [];
     const updatedServices = [];
+    const updatedPositions = [];
+    let updatedManager;
+
     if (deletedDepartment.members.length !== 0) {
       for (const member of deletedDepartment.members) {
         const updatedMember = await User.updateOne(
@@ -140,6 +144,7 @@ router.delete("/:id", async (req, res) => {
         updatedMembers.push(updatedMember);
       }
     }
+
     if (deletedDepartment.services.length !== 0) {
       for (const service of deletedDepartment.services) {
         const updatedService = await Service.updateOne(
@@ -149,7 +154,19 @@ router.delete("/:id", async (req, res) => {
         updatedServices.push(updatedService);
       }
     }
-    let updatedManager;
+
+    if (deletedDepartment.positions.length !== 0) {
+      for (const position of deletedDepartment.positions) {
+        const updatedPosition = await Position.updateOne(
+          { _id: position._id || position.id },
+          {
+            department: {},
+          }
+        );
+        updatedPositions.push(updatedPosition);
+      }
+    }
+
     if (deletedDepartment.manager) {
       updatedManager = await Manager.findByIdAndUpdate(
         deletedDepartment.manager._id || deletedDepartment.manager.id,
@@ -163,6 +180,7 @@ router.delete("/:id", async (req, res) => {
       updatedMembers,
       updatedManager,
       updatedServices,
+      updatedPositions,
     });
   } catch (err) {
     console.log(err);
@@ -209,6 +227,7 @@ router.put("/", async (req, res) => {
     let updatedMembers = [];
     let removedMembers = [];
     let updatedServices = [];
+    let updatedPositions = [];
 
     const memberIds = req.body.updatedMembers.map(
       (member) => member._id || member.id
@@ -249,6 +268,27 @@ router.put("/", async (req, res) => {
           }
         );
         updatedServices.push(newAddedUpdatedService);
+      }
+    }
+
+    if (updatedDepartment.positions) {
+      const positionsIds = updatedDepartment.positions.map(
+        (position) => position._id || position.id
+      );
+
+      for (const positionsId of positionsIds) {
+        const updatedPosition = await Position.updateOne(
+          { _id: positionsId },
+          {
+            $set: {
+              "department._id": updatedDepartment._id,
+              "department.name": updatedDepartment.name,
+              "department.type": updatedDepartment.type,
+              "department.color": updatedDepartment.color,
+            },
+          }
+        );
+        updatedPositions.push(updatedPosition);
       }
     }
 

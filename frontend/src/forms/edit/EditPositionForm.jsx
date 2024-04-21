@@ -9,6 +9,9 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  MenuItem,
+  Paper,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -19,6 +22,7 @@ const api = axios.create({
 
 export default function EditPositionForm({
   selectedPosition,
+  departments,
   openEdit,
   setOpenEdit,
   refreshData,
@@ -26,6 +30,9 @@ export default function EditPositionForm({
   toast,
 }) {
   const [name, setName] = React.useState(selectedPosition.name);
+  const [department, setDepartment] = React.useState(
+    selectedPosition.department
+  );
   const previousData = selectedPosition;
 
   const handleEdit = async (e) => {
@@ -35,6 +42,12 @@ export default function EditPositionForm({
         positionId: selectedPosition._id,
         previousData,
         name,
+        department: {
+          _id: department._id,
+          name: department.name,
+          type: department.type,
+          color: department.color,
+        },
       });
       if (res.data) {
         toast.success("Cargo Editado!", {
@@ -85,6 +98,52 @@ export default function EditPositionForm({
               required
               sx={{ width: 300 }}
             />
+          </Grid>
+          <Grid item sx={{ mb: 2 }}>
+            <Typography>Departamento</Typography>
+            <Select
+              required
+              sx={{ width: 300 }}
+              onChange={(e) => setDepartment(e.target.value)}
+              value={department}
+              renderValue={(selected) => (
+                <Grid container direction="row">
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      mr: 1,
+                      mt: 0.5,
+                      width: 15,
+                      height: 15,
+                      borderRadius: 50,
+                      backgroundColor: selected.color,
+                    }}
+                  />
+                  <Typography>{selected.name}</Typography>
+                </Grid>
+              )}
+              size="small"
+            >
+              {departments
+                .map((item) => (
+                  <MenuItem value={item} key={item.id}>
+                    <Grid container direction="row">
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          mr: 1,
+                          mt: 0.5,
+                          width: 15,
+                          height: 15,
+                          borderRadius: 50,
+                          backgroundColor: item.color,
+                        }}
+                      />
+                      <Typography>{item.name}</Typography>
+                    </Grid>
+                  </MenuItem>
+                ))}
+            </Select>
           </Grid>
         </Grid>
       </DialogContent>

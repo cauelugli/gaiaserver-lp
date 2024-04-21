@@ -44,6 +44,7 @@ export default function DepartmentTable({
   const [openDetailManager, setOpenDetailManager] = React.useState(false);
   const [openDetailMembers, setOpenDetailMembers] = React.useState(false);
   const [openDetailServices, setOpenDetailServices] = React.useState(false);
+  const [openDetailPositions, setOpenDetailPositions] = React.useState(false);
   const [selectedDepartment, setSelectedDepartment] = React.useState([]);
   const [hoveredMember, setHoveredMember] = React.useState(null);
 
@@ -672,6 +673,64 @@ export default function DepartmentTable({
                             </Collapse>
                           </Box>
                         )}
+
+                        {department.positions.length > 0 && (
+                          <Box sx={{ my: 4, px: 6 }}>
+                            <Grid container direction="row">
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  fontSize: 18,
+                                  fontWeight: "bold",
+                                  my: "auto",
+                                }}
+                              >
+                                Cargos ({department.positions.length})
+                              </Typography>
+                              <IconButton
+                                onClick={() =>
+                                  setOpenDetailPositions(!openDetailPositions)
+                                }
+                              >
+                                <ExpandMoreIcon />
+                              </IconButton>
+                            </Grid>
+
+                            <Collapse
+                              in={openDetailPositions}
+                              timeout="auto"
+                              unmountOnExit
+                            >
+                              <Table size="small">
+                                <TableBody>
+                                  <TableRow>
+                                    <TableCell>
+                                      <Typography>
+                                        {department.positions.map((position) => (
+                                          <Chip
+                                            sx={{ mx: 1 }}
+                                            size="small"
+                                            key={position._id}
+                                            label={
+                                              <Typography
+                                                sx={{
+                                                  fontSize: "100%",
+                                                }}
+                                              >
+                                                {position.name}
+                                              </Typography>
+                                            }
+                                          />
+                                        ))}
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                </TableBody>
+                              </Table>
+                            </Collapse>
+                          </Box>
+                        )}
+                        
                       </Collapse>
                     </TableCell>
                   </TableRow>
