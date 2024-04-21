@@ -151,7 +151,7 @@ export default function StockEntriesTable({
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            <TableRow sx={{ backgroundColor: "#eee" }}>
+            <TableRow>
               {tableHeaderRow.map((headCell) => (
                 <TableCell
                   align={headCell.label === "#" ? "" : "center"}

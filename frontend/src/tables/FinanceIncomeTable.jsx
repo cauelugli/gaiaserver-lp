@@ -161,390 +161,385 @@ export default function FinanceIncomeTable({
   ).length;
 
   return (
-    <>
-      <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
-          <Checkbox
-            checked={showCompletedIncomes}
-            onChange={() => setshowCompletedIncomes(!showCompletedIncomes)}
-          />
-          <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
-            Mostrar Pagos
-          </Typography>
-        </Box>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableBody>
-              <TableRow>
-                {tableHeaderRow.map((headCell) => (
-                  <TableCell
-                    align={headCell.label === "Orçamento" ? "" : "center"}
-                    sx={{
-                      fontSize: 13,
-                      fontWeight: "bold",
-                      pl: headCell.label === "Orçamento" ? "" : 5,
-                    }}
-                    key={headCell.id}
-                    sortDirection={orderBy === headCell.id ? order : false}
+    <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
+        <Checkbox
+          checked={showCompletedIncomes}
+          onChange={() => setshowCompletedIncomes(!showCompletedIncomes)}
+        />
+        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
+          Mostrar Pagos
+        </Typography>
+      </Box>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            <TableRow>
+              {tableHeaderRow.map((headCell) => (
+                <TableCell
+                  align={headCell.label === "Orçamento" ? "" : "center"}
+                  sx={{
+                    fontSize: 13,
+                    fontWeight: "bold",
+                    pl: headCell.label === "Orçamento" ? "" : 5,
+                  }}
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => handleRequestSort(headCell.id)}
                   >
-                    <TableSortLabel
-                      active={orderBy === headCell.id}
-                      direction={orderBy === headCell.id ? order : "asc"}
-                      onClick={() => handleRequestSort(headCell.id)}
-                    >
-                      {headCell.label}
-                    </TableSortLabel>
-                  </TableCell>
-                ))}
-              </TableRow>
-              {sortedRows
-                .filter((income) => {
-                  if (!income) return false;
-                  const itemProperty = searchOption
-                    .split(".")
-                    .reduce((obj, key) => obj[key], income);
-                  const shouldShowincome =
-                    itemProperty &&
-                    itemProperty
-                      .toLowerCase()
-                      .includes(searchValue.toLowerCase());
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+            {sortedRows
+              .filter((income) => {
+                if (!income) return false;
+                const itemProperty = searchOption
+                  .split(".")
+                  .reduce((obj, key) => obj[key], income);
+                const shouldShowincome =
+                  itemProperty &&
+                  itemProperty
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase());
 
-                  return (
-                    shouldShowincome &&
-                    (showCompletedIncomes || income.status !== "Pago")
-                  );
-                })
-                .map((income) => (
-                  <>
-                    <TableRow key={income._id}>
-                      <TableCell>
-                        <Typography sx={{ fontSize: 13 }}>
-                          {income.quote}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {income.type === "job" ? "Job" : "Venda"}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography
-                          sx={{ fontSize: 13 }}
-                          onMouseEnter={() => setHoveredIncome(income)}
-                          onMouseLeave={() => setHoveredIncome(null)}
-                        >
-                          {income.payment && income.payment.cash ? (
-                            <Tooltip
-                              title={
-                                <Typography sx={{ fontSize: 12 }}>
-                                  Pago em {income.paidAt}
+                return (
+                  shouldShowincome &&
+                  (showCompletedIncomes || income.status !== "Pago")
+                );
+              })
+              .map((income) => (
+                <>
+                  <TableRow key={income._id}>
+                    <TableCell>
+                      <Typography sx={{ fontSize: 13 }}>
+                        {income.quote}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {income.type === "job" ? "Job" : "Venda"}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography
+                        sx={{ fontSize: 13 }}
+                        onMouseEnter={() => setHoveredIncome(income)}
+                        onMouseLeave={() => setHoveredIncome(null)}
+                      >
+                        {income.payment && income.payment.cash ? (
+                          <Tooltip
+                            title={
+                              <Typography sx={{ fontSize: 12 }}>
+                                Pago em {income.paidAt}
+                              </Typography>
+                            }
+                          >
+                            A vista | {income.payment.method}
+                          </Tooltip>
+                        ) : income.payment ? (
+                          income.payment.paymentOption +
+                          ` | ` +
+                          income.payment.paymentMethod
+                        ) : (
+                          "Não Realizado"
+                        )}
+                      </Typography>
+                      {income.payment &&
+                        income.payment.paymentOption === "Parcelado" &&
+                        hoveredIncome === income && (
+                          <Paper
+                            onMouseEnter={() => setHoveredIncome(income)}
+                            onMouseLeave={() => setHoveredIncome(null)}
+                            style={{
+                              position: "absolute",
+                              width: 420,
+                              height: "auto",
+                              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+                              bottom: "25%",
+                              left: "14%",
+                              zIndex: 999,
+                              border: "2px solid #444",
+                              borderRadius: 15,
+                            }}
+                          >
+                            <Grid
+                              container
+                              direction="row"
+                              alignItems="center"
+                              justifyContent="flex-start"
+                              sx={{ my: "2%", ml: "2%" }}
+                            >
+                              <Grid item>
+                                <Typography sx={{ fontSize: 13 }}>
+                                  <strong>Orçamento:</strong> {income.quote}
                                 </Typography>
-                              }
-                            >
-                              A vista | {income.payment.method}
-                            </Tooltip>
-                          ) : income.payment ? (
-                            income.payment.paymentOption +
-                            ` | ` +
-                            income.payment.paymentMethod
-                          ) : (
-                            "Não Realizado"
-                          )}
-                        </Typography>
-                        {income.payment &&
-                          income.payment.paymentOption === "Parcelado" &&
-                          hoveredIncome === income && (
-                            <Paper
-                              onMouseEnter={() => setHoveredIncome(income)}
-                              onMouseLeave={() => setHoveredIncome(null)}
-                              style={{
-                                position: "absolute",
-                                width: 420,
-                                height: "auto",
-                                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-                                bottom: "25%",
-                                left: "14%",
-                                zIndex: 999,
-                                border: "2px solid #444",
-                                borderRadius: 15,
-                              }}
-                            >
+                                <Typography sx={{ fontSize: 13, mt: 2 }}>
+                                  <strong>Método:</strong>{" "}
+                                  {income.payment.paymentMethod}
+                                </Typography>
+                                <Typography sx={{ fontSize: 13, mt: 2 }}>
+                                  <strong>Opção:</strong>{" "}
+                                  {income.payment.paymentOption}
+                                </Typography>
+                                <Typography sx={{ fontSize: 13, mt: 2 }}>
+                                  <strong>Valor:</strong> R$
+                                  {income.payment.finalPrice}
+                                </Typography>
+                                {income.payment.hasParcelMonthlyFee && (
+                                  <FormHelperText
+                                    sx={{ fontSize: 11, my: -0.5, ml: 2 }}
+                                  >
+                                    (Juros Mensais de{" "}
+                                    <strong>
+                                      {income.payment.parcelMonthlyFee}%
+                                    </strong>
+                                    )
+                                  </FormHelperText>
+                                )}
+                              </Grid>
                               <Grid
-                                container
-                                direction="row"
+                                item
+                                direction="column"
                                 alignItems="center"
-                                justifyContent="flex-start"
-                                sx={{ my: "2%", ml: "2%" }}
+                                justifyContent="center"
+                                sx={{ width: "55%" }}
                               >
-                                <Grid item>
-                                  <Typography sx={{ fontSize: 13 }}>
-                                    <strong>Orçamento:</strong> {income.quote}
-                                  </Typography>
-                                  <Typography sx={{ fontSize: 13, mt: 2 }}>
-                                    <strong>Método:</strong>{" "}
-                                    {income.payment.paymentMethod}
-                                  </Typography>
-                                  <Typography sx={{ fontSize: 13, mt: 2 }}>
-                                    <strong>Opção:</strong>{" "}
-                                    {income.payment.paymentOption}
-                                  </Typography>
-                                  <Typography sx={{ fontSize: 13, mt: 2 }}>
-                                    <strong>Valor:</strong> R$
-                                    {income.payment.finalPrice}
-                                  </Typography>
-                                  {income.payment.hasParcelMonthlyFee && (
-                                    <FormHelperText
-                                      sx={{ fontSize: 11, my: -0.5, ml: 2 }}
-                                    >
-                                      (Juros Mensais de{" "}
-                                      <strong>
-                                        {income.payment.parcelMonthlyFee}%
-                                      </strong>
-                                      )
-                                    </FormHelperText>
-                                  )}
-                                </Grid>
-                                <Grid
-                                  item
-                                  direction="column"
-                                  alignItems="center"
-                                  justifyContent="center"
-                                  sx={{ width: "55%" }}
+                                <Box
+                                  sx={{
+                                    mt: 1,
+                                    position: "relative",
+                                    display: "inline-flex",
+                                  }}
                                 >
+                                  <CircularProgress
+                                    variant="determinate"
+                                    size={80}
+                                    color={
+                                      income.status === "Pago"
+                                        ? "success"
+                                        : "primary"
+                                    }
+                                    value={(
+                                      (Object.values(
+                                        income.payment.paymentDates
+                                      )
+                                        .map((item) =>
+                                          item.status === "Pago" ? 1 : 0
+                                        )
+                                        .reduce((acc, curr) => acc + curr, 0) /
+                                        income.payment.parcelQuantity) *
+                                      100
+                                    ).toFixed(2)}
+                                  />
                                   <Box
                                     sx={{
-                                      mt: 1,
-                                      position: "relative",
-                                      display: "inline-flex",
+                                      top: 0,
+                                      left: 0,
+                                      bottom: 0,
+                                      right: 0,
+                                      position: "absolute",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
                                     }}
                                   >
-                                    <CircularProgress
-                                      variant="determinate"
-                                      size={80}
-                                      color={
-                                        income.status === "Pago"
-                                          ? "success"
-                                          : "primary"
-                                      }
-                                      value={(
-                                        (Object.values(
-                                          income.payment.paymentDates
-                                        )
-                                          .map((item) =>
-                                            item.status === "Pago" ? 1 : 0
-                                          )
-                                          .reduce(
-                                            (acc, curr) => acc + curr,
-                                            0
-                                          ) /
-                                          income.payment.parcelQuantity) *
-                                        100
-                                      ).toFixed(2)}
-                                    />
-                                    <Box
-                                      sx={{
-                                        top: 0,
-                                        left: 0,
-                                        bottom: 0,
-                                        right: 0,
-                                        position: "absolute",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                      }}
-                                    >
-                                      <Typography>
-                                        {Object.values(
-                                          income.payment.paymentDates
-                                        )
-                                          .map((item) =>
-                                            item.status === "Pago" ? 1 : 0
-                                          )
-                                          .reduce(
-                                            (acc, curr) => acc + curr,
-                                            0
-                                          )}{" "}
-                                        / {income.payment.parcelQuantity}
-                                      </Typography>
-                                    </Box>
-                                  </Box>
-                                  <Grid
-                                    container
-                                    direction="column"
-                                    spacing={0.5}
-                                    columns={2}
-                                  >
-                                    <Grid item xl={4}>
+                                    <Typography>
                                       {Object.values(
                                         income.payment.paymentDates
-                                      ).map((item, index) => (
-                                        <Typography
-                                          key={index}
-                                          sx={{
-                                            fontSize: 11,
-                                            color:
-                                              item.status === "Pago"
-                                                ? "darkgreen"
-                                                : "#777",
-                                          }}
-                                        >
-                                          R${item.parcelValue}
-                                          {" - "}
-                                          {item.date}{" "}
-                                          {item.status === "Pago" ? (
-                                            <CheckIcon sx={{ fontSize: 12 }} />
-                                          ) : (
-                                            <AccessTimeIcon
-                                              sx={{
-                                                fontSize: 12,
-                                                mb: -0.25,
-                                                ml: 0.5,
-                                              }}
-                                            />
-                                          )}
-                                        </Typography>
-                                      ))}
-                                    </Grid>
-                                    {income.status === "Pago" && (
+                                      )
+                                        .map((item) =>
+                                          item.status === "Pago" ? 1 : 0
+                                        )
+                                        .reduce(
+                                          (acc, curr) => acc + curr,
+                                          0
+                                        )}{" "}
+                                      / {income.payment.parcelQuantity}
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                                <Grid
+                                  container
+                                  direction="column"
+                                  spacing={0.5}
+                                  columns={2}
+                                >
+                                  <Grid item xl={4}>
+                                    {Object.values(
+                                      income.payment.paymentDates
+                                    ).map((item, index) => (
                                       <Typography
+                                        key={index}
                                         sx={{
-                                          my: 1,
-                                          fontSize: 12,
-                                          color: "#777",
+                                          fontSize: 11,
+                                          color:
+                                            item.status === "Pago"
+                                              ? "darkgreen"
+                                              : "#777",
                                         }}
                                       >
-                                        Pago em: {income.paidAt}
+                                        R${item.parcelValue}
+                                        {" - "}
+                                        {item.date}{" "}
+                                        {item.status === "Pago" ? (
+                                          <CheckIcon sx={{ fontSize: 12 }} />
+                                        ) : (
+                                          <AccessTimeIcon
+                                            sx={{
+                                              fontSize: 12,
+                                              mb: -0.25,
+                                              ml: 0.5,
+                                            }}
+                                          />
+                                        )}
                                       </Typography>
-                                    )}
+                                    ))}
                                   </Grid>
+                                  {income.status === "Pago" && (
+                                    <Typography
+                                      sx={{
+                                        my: 1,
+                                        fontSize: 12,
+                                        color: "#777",
+                                      }}
+                                    >
+                                      Pago em: {income.paidAt}
+                                    </Typography>
+                                  )}
                                 </Grid>
                               </Grid>
-                            </Paper>
-                          )}
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {income.department}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          R${income.price.toFixed(2)}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {!income.payment
-                            ? "Aguardando Agendamento"
-                            : income.status}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography sx={{ fontSize: 13 }}>
-                          {dayjs(income.createdAt).format("DD/MM/YYYY")}
-                        </Typography>
-                      </TableCell>
-
-                      <TableCell
-                        onClick={() => setSelectedFinanceIncome(income)}
-                        align="center"
-                      >
-                        {income.status !== "Pago" ? (
-                          <FinanceIncomeTableActions
-                            configData={configData}
-                            income={income}
-                            handleOpenAddSchedulePayment={
-                              handleOpenAddSchedulePayment
-                            }
-                            handleOpenAddCashPayment={handleOpenAddCashPayment}
-                            handleOpenAddParcelPayment={
-                              handleOpenAddParcelPayment
-                            }
-                          />
-                        ) : (
-                          <Typography sx={{ fontSize: 13, color: "darkgrey" }}>
-                            Não há Ações
-                          </Typography>
+                            </Grid>
+                          </Paper>
                         )}
-                      </TableCell>
-                    </TableRow>
-                  </>
-                ))
-                .slice(startIndex, endIndex)}
-            </TableBody>
-          </Table>
-          <TablePagination
-            component="div"
-            count={
-              filteredValidCount +
-              (showCompletedIncomes && filteredArchivedCount)
-            }
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage={"por Página"}
-            labelDisplayedRows={({ from, to, count }) => {
-              return " " + from + " à " + to + " total " + count;
-            }}
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {income.department}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        R${income.price.toFixed(2)}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {!income.payment
+                          ? "Aguardando Agendamento"
+                          : income.status}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography sx={{ fontSize: 13 }}>
+                        {dayjs(income.createdAt).format("DD/MM/YYYY")}
+                      </Typography>
+                    </TableCell>
+
+                    <TableCell
+                      onClick={() => setSelectedFinanceIncome(income)}
+                      align="center"
+                    >
+                      {income.status !== "Pago" ? (
+                        <FinanceIncomeTableActions
+                          configData={configData}
+                          income={income}
+                          handleOpenAddSchedulePayment={
+                            handleOpenAddSchedulePayment
+                          }
+                          handleOpenAddCashPayment={handleOpenAddCashPayment}
+                          handleOpenAddParcelPayment={
+                            handleOpenAddParcelPayment
+                          }
+                        />
+                      ) : (
+                        <Typography sx={{ fontSize: 13, color: "darkgrey" }}>
+                          Não há Ações
+                        </Typography>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                </>
+              ))
+              .slice(startIndex, endIndex)}
+          </TableBody>
+        </Table>
+        <TablePagination
+          component="div"
+          count={
+            filteredValidCount + (showCompletedIncomes && filteredArchivedCount)
+          }
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"por Página"}
+          labelDisplayedRows={({ from, to, count }) => {
+            return " " + from + " à " + to + " total " + count;
+          }}
+        />
+      </TableContainer>
+      {openAddParcelPayment && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openAddParcelPayment}
+          onClose={() => setOpenAddParcelPayment(!openAddParcelPayment)}
+        >
+          <AddParcelPaymentForm
+            selectedFinanceIncome={selectedFinanceIncome}
+            openEdit={openAddParcelPayment}
+            configCustomization={configCustomization}
+            setOpenEdit={setOpenAddParcelPayment}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
           />
-        </TableContainer>
-        {openAddParcelPayment && (
-          <Dialog
-            fullWidth
-            maxWidth="lg"
-            open={openAddParcelPayment}
-            onClose={() => setOpenAddParcelPayment(!openAddParcelPayment)}
-          >
-            <AddParcelPaymentForm
-              selectedFinanceIncome={selectedFinanceIncome}
-              openEdit={openAddParcelPayment}
-              configCustomization={configCustomization}
-              setOpenEdit={setOpenAddParcelPayment}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
-        {openCashPayment && (
-          <Dialog
-            fullWidth
-            maxWidth="md"
-            open={openCashPayment}
-            onClose={() => setOpenCashPayment(!openCashPayment)}
-          >
-            <CashPaymentForm
-              selectedFinanceIncome={selectedFinanceIncome}
-              openEdit={openCashPayment}
-              setOpenEdit={setOpenCashPayment}
-              configCustomization={configCustomization}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
-        {openSchedulePayment && (
-          <Dialog
-            fullWidth
-            maxWidth="lg"
-            open={openSchedulePayment}
-            onClose={() => setOpenSchedulePayment(!openSchedulePayment)}
-          >
-            <AddPaymentScheduleForm
-              openEdit={openSchedulePayment}
-              selectedFinanceIncome={selectedFinanceIncome}
-              previousMaterials={selectedFinanceIncome.materials}
-              setOpenEdit={setOpenSchedulePayment}
-              configCustomization={configCustomization}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-            />
-          </Dialog>
-        )}
-        {/* {openConfirmChangeStatus && (
+        </Dialog>
+      )}
+      {openCashPayment && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openCashPayment}
+          onClose={() => setOpenCashPayment(!openCashPayment)}
+        >
+          <CashPaymentForm
+            selectedFinanceIncome={selectedFinanceIncome}
+            openEdit={openCashPayment}
+            setOpenEdit={setOpenCashPayment}
+            configCustomization={configCustomization}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openSchedulePayment && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openSchedulePayment}
+          onClose={() => setOpenSchedulePayment(!openSchedulePayment)}
+        >
+          <AddPaymentScheduleForm
+            openEdit={openSchedulePayment}
+            selectedFinanceIncome={selectedFinanceIncome}
+            previousMaterials={selectedFinanceIncome.materials}
+            setOpenEdit={setOpenSchedulePayment}
+            configCustomization={configCustomization}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {/* {openConfirmChangeStatus && (
           <Dialog
             fullWidth
             maxWidth="sm"
@@ -565,7 +560,6 @@ export default function FinanceIncomeTable({
             />
           </Dialog>
         )} */}
-      </Box>
-    </>
+    </Box>
   );
 }

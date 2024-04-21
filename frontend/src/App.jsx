@@ -634,7 +634,7 @@ export default function App() {
                       element={
                         isAuthenticated(login, userData) &&
                         hasPermission(userData, configData, "config") ? (
-                          <Config />
+                          <Config topBar={userPreferences.barPosition}/>
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
                             Seu usuário não possui autorização à página.

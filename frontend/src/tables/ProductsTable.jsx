@@ -129,7 +129,7 @@ export default function ProductsTable({
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            <TableRow sx={{ backgroundColor: "#eee" }}>
+            <TableRow>
               <TableCell padding="checkbox"></TableCell>
               {tableHeaderRow.map((headCell) => (
                 <TableCell

@@ -126,11 +126,7 @@ export default function RoleTable({
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <TableContainer component={Paper}>
         <Table>
-          <TableRow
-            sx={{
-              backgroundColor: "#eee",
-            }}
-          >
+          <TableRow>
             {tableHeaderRow.map((headCell) => (
               <TableCell
                 align={headCell.label === "Nome" ? "" : "center"}
@@ -161,7 +157,6 @@ export default function RoleTable({
             .map((row) => (
               <TableRow
                 key={row._id}
-                sx={{ "&:hover": { backgroundColor: "#eee " } }}
                 onClick={() => handleOpenDetail(row)}
               >
                 <TableCell onClick={() => handleOpenDetail(row)}>

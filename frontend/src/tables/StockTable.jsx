@@ -113,7 +113,7 @@ export default function StockTable({
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            <TableRow sx={{ backgroundColor: "#eee" }}>
+            <TableRow>
               <TableCell padding="checkbox"></TableCell>
               {tableHeaderRow.map((headCell) => (
                 <TableCell
