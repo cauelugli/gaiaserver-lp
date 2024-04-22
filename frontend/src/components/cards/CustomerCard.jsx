@@ -15,16 +15,25 @@ export default function CustomerCard({ customer }) {
   return (
     <Card sx={{ width: 290 }}>
       <CardMedia
-        sx={{ height: 100 }}
+        sx={{
+          height: 100,
+          width: "100%",
+          objectFit: "contain",
+        }}
         image={`http://localhost:3000/static/${customer.image}`}
+        component="img"
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h6">
           {customer.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Something Something
+        <Typography gutterBottom variant="body1">
+          {customer.phone}
         </Typography>
+        <Typography variant="body2">
+          {customer.mainContactName} ({customer.mainContactPosition})
+        </Typography>
+        <Typography variant="body2">{customer.mainContactEmail}</Typography>
       </CardContent>
       <CardActions>
         <Button size="small">Share</Button>
