@@ -388,7 +388,6 @@ export default function App() {
                             configDashboard={configData.dashboard}
                             configCustomization={configData.customization}
                             topBar={userPreferences.barPosition}
-
                           />
                         ) : (
                           <Navigate to="/login" />
@@ -436,6 +435,9 @@ export default function App() {
                         hasPermission(userData, configData, "customers") ? (
                           <Customers
                             userName={userData.name}
+                            userId={userData._id}
+                            tableOrCardView={userPreferences.tableOrCardView}
+                            setUserPreferences={setUserPreferences}
                             configAgenda={configAgenda}
                             configTables={configTables}
                             configNotifications={configNotifications}
@@ -634,7 +636,7 @@ export default function App() {
                       element={
                         isAuthenticated(login, userData) &&
                         hasPermission(userData, configData, "config") ? (
-                          <Config topBar={userPreferences.barPosition}/>
+                          <Config topBar={userPreferences.barPosition} />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
                             Seu usuário não possui autorização à página.

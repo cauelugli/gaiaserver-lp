@@ -25,6 +25,8 @@ import RefreshButton from "../components/small/buttons/RefreshButton";
 import TableFilters from "../components/TableFilters";
 import ImportContacts from "../forms/misc/ImportContacts";
 import CustomerTableButton from "../components/small/buttons/tableButtons/CustomerTableButton";
+import TableOrCardSelector from "../components/small/TableOrCardSelector";
+import CustomerCard from "../components/cards/CustomerCard";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -46,6 +48,9 @@ function CustomTabPanel(props) {
 
 export default function Customers({
   userName,
+  userId,
+  tableOrCardView,
+  setUserPreferences,
   topBar,
   configTables,
   configAgenda,
@@ -189,42 +194,65 @@ export default function Customers({
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
           />
+          <Grid sx={{ my: "auto", ml: "auto" }}>
+            <TableOrCardSelector
+              userId={userId}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              tableOrCard={tableOrCardView}
+              setUserPreferences={setUserPreferences}
+            />
+          </Grid>
         </Tabs>
       </Box>
+
       {configTables.customerCustomer && (
         <CustomTabPanel value={value} index={0}>
           {customers.length === 0 ? (
             <NoDataText option="Clientes Empresa" />
           ) : (
             <>
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[0]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
+              {tableOrCardView && (
+                <TableFilters
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  searchOption={searchOption}
+                  searchOptionList={searchOptionList[0]}
+                  setSearchOption={setSearchOption}
+                  searchOptionLabel={searchOptionLabel}
+                  setSearchOptionLabel={setSearchOptionLabel}
+                  handleSearchChange={handleSearchChange}
+                />
+              )}
 
-              <CustomerTable
-                userName={userName}
-                configCustomization={configCustomization}
-                configNotifications={configNotifications}
-                configNotificationsBooleans={configNotificationsBooleans}
-                configData={config}
-                configAgenda={configAgenda}
-                refreshData={refreshData}
-                setRefreshData={setRefreshData}
-                searchValue={searchValue}
-                searchOption={searchOption}
-                topBar={topBar}
-              />
+              {tableOrCardView ? (
+                <CustomerTable
+                  userName={userName}
+                  configCustomization={configCustomization}
+                  configNotifications={configNotifications}
+                  configNotificationsBooleans={configNotificationsBooleans}
+                  configData={config}
+                  configAgenda={configAgenda}
+                  refreshData={refreshData}
+                  setRefreshData={setRefreshData}
+                  searchValue={searchValue}
+                  searchOption={searchOption}
+                  topBar={topBar}
+                />
+              ) : (
+                <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                  {customers.map((customer) => (
+                    <Grid key item md={3} lg={3} xl={2}>
+                      <CustomerCard key customer={customer} />
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
             </>
           )}
         </CustomTabPanel>
       )}
+
       {configTables.customerClient && (
         <CustomTabPanel
           value={value}
@@ -262,6 +290,7 @@ export default function Customers({
           )}
         </CustomTabPanel>
       )}
+
       {openAddCustomer && (
         <Dialog
           fullWidth

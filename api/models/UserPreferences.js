@@ -9,6 +9,10 @@ const userPreferencesSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  tableOrCardView: {
+    type: Boolean,
+    default: false,
+  },
   userId: {
     type: String,
     required: true,
