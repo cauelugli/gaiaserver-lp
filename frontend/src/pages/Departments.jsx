@@ -22,6 +22,8 @@ import NoDataText from "../components/small/NoDataText";
 import DepartmentTableButton from "../components/small/buttons/tableButtons/DepartmentTableButton";
 import GroupTable from "../tables/GroupTable";
 import AddGroupForm from "../forms/add/AddGroupForm";
+import TableOrCardSelector from "../components/small/TableOrCardSelector";
+import DepartmentCard from "../components/cards/DepartmentCard";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -41,7 +43,14 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Departments({ userName, configTables, topBar }) {
+export default function Departments({
+  userName,
+  userId,
+  topBar,
+  tableOrCardView,
+  setUserPreferences,
+  configTables,
+}) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
@@ -216,6 +225,15 @@ export default function Departments({ userName, configTables, topBar }) {
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
           />
+          <Grid sx={{ my: "auto", ml: "auto" }}>
+            <TableOrCardSelector
+              userId={userId}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              tableOrCard={tableOrCardView}
+              setUserPreferences={setUserPreferences}
+            />
+          </Grid>
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -223,31 +241,50 @@ export default function Departments({ userName, configTables, topBar }) {
           <NoDataText option="Departamentos de Serviços" />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[0]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
+            {tableOrCardView && (
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[0]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+            )}
 
-            <DepartmentTable
-              configData={config}
-              users={users}
-              managers={managers}
-              searchValue={searchValue}
-              searchOption={searchOption}
-              departments={serviceDepartments}
-              openAdd={openAddDepartment}
-              setOpenAdd={setOpenAddDepartment}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-              topBar={topBar}
-            />
+            {tableOrCardView ? (
+              <DepartmentTable
+                configData={config}
+                users={users}
+                managers={managers}
+                searchValue={searchValue}
+                searchOption={searchOption}
+                departments={serviceDepartments}
+                openAdd={openAddDepartment}
+                setOpenAdd={setOpenAddDepartment}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                toast={toast}
+                topBar={topBar}
+              />
+            ) : (
+              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                {serviceDepartments.map((department) => (
+                  <Grid key item md={3} lg={3} xl={2}>
+                    <DepartmentCard
+                      key
+                      department={department}
+                      users={allUsers.map((user) => ({
+                        _id: user._id,
+                        image: user.image,
+                      }))}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            )}
           </>
         )}
       </CustomTabPanel>
@@ -256,31 +293,50 @@ export default function Departments({ userName, configTables, topBar }) {
           <NoDataText option="Departamentos de Vendas" />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[1]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
-
-            <DepartmentTable
-              configData={config}
-              toast={toast}
-              users={users}
-              managers={managers}
-              searchValue={searchValue}
-              searchOption={searchOption}
-              departments={saleDepartments}
-              openAdd={openAddDepartment}
-              setOpenAdd={setOpenAddDepartment}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              topBar={topBar}
-            />
+            {" "}
+            {tableOrCardView && (
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[1]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+            )}
+            {tableOrCardView ? (
+              <DepartmentTable
+                configData={config}
+                toast={toast}
+                users={users}
+                managers={managers}
+                searchValue={searchValue}
+                searchOption={searchOption}
+                departments={saleDepartments}
+                openAdd={openAddDepartment}
+                setOpenAdd={setOpenAddDepartment}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                topBar={topBar}
+              />
+            ) : (
+              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                {saleDepartments.map((department) => (
+                  <Grid key item md={3} lg={3} xl={2}>
+                    <DepartmentCard
+                      key
+                      department={department}
+                      users={allUsers.map((user) => ({
+                        _id: user._id,
+                        image: user.image,
+                      }))}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            )}
           </>
         )}
       </CustomTabPanel>
@@ -290,31 +346,50 @@ export default function Departments({ userName, configTables, topBar }) {
             <NoDataText option="Departamentos Internos" />
           ) : (
             <>
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[2]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-
-              <DepartmentTable
-                configData={config}
-                toast={toast}
-                users={users}
-                managers={managers}
-                searchValue={searchValue}
-                searchOption={searchOption}
-                departments={internalDepartments}
-                openAdd={openAddDepartment}
-                setOpenAdd={setOpenAddDepartment}
-                refreshData={refreshData}
-                setRefreshData={setRefreshData}
-                topBar={topBar}
-              />
+              {" "}
+              {tableOrCardView && (
+                <TableFilters
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  searchOption={searchOption}
+                  searchOptionList={searchOptionList[2]}
+                  setSearchOption={setSearchOption}
+                  searchOptionLabel={searchOptionLabel}
+                  setSearchOptionLabel={setSearchOptionLabel}
+                  handleSearchChange={handleSearchChange}
+                />
+              )}
+              {tableOrCardView ? (
+                <DepartmentTable
+                  configData={config}
+                  toast={toast}
+                  users={users}
+                  managers={managers}
+                  searchValue={searchValue}
+                  searchOption={searchOption}
+                  departments={internalDepartments}
+                  openAdd={openAddDepartment}
+                  setOpenAdd={setOpenAddDepartment}
+                  refreshData={refreshData}
+                  setRefreshData={setRefreshData}
+                  topBar={topBar}
+                />
+              ) : (
+                <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                  {internalDepartments.map((department) => (
+                    <Grid key item md={3} lg={3} xl={2}>
+                      <DepartmentCard
+                        key
+                        department={department}
+                        users={allUsers.map((user) => ({
+                          _id: user._id,
+                          image: user.image,
+                        }))}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
             </>
           )}
         </CustomTabPanel>
@@ -327,33 +402,56 @@ export default function Departments({ userName, configTables, topBar }) {
           <NoDataText option="Grupos" />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[3]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
+            {tableOrCardView && (
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[3]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+            )}
 
-            <GroupTable
-              configData={config}
-              toast={toast}
-              searchValue={searchValue}
-              searchOption={searchOption}
-              positions={positions}
-              users={users}
-              allUsers={allUsers}
-              groups={groups}
-              managers={managers}
-              openAdd={openAddGroup}
-              setOpenAdd={setOpenAddGroup}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              topBar={topBar}
-            />
+            {tableOrCardView ? (
+              <GroupTable
+                configData={config}
+                toast={toast}
+                searchValue={searchValue}
+                searchOption={searchOption}
+                positions={positions}
+                users={users}
+                allUsers={allUsers.map((user) => ({
+                  _id: user._id,
+                  name: user.name,
+                  image: user.image,
+                }))}
+                groups={groups}
+                managers={managers}
+                openAdd={openAddGroup}
+                setOpenAdd={setOpenAddGroup}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                topBar={topBar}
+              />
+            ) : (
+              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                {groups.map((group) => (
+                  <Grid key item md={3} lg={3} xl={2}>
+                    <DepartmentCard
+                      key
+                      group={group}
+                      users={allUsers.map((user) => ({
+                        _id: user._id,
+                        image: user.image,
+                      }))}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            )}
           </>
         )}
       </CustomTabPanel>
