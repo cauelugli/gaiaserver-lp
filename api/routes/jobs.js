@@ -211,10 +211,16 @@ router.post("/", async (req, res) => {
 
     doc.moveDown();
 
-    doc.text(`Total de Materiais = R$${savedQuote.materialsCost.toFixed(2)}`, {
-      align: "right",
-    });
-    doc.moveDown(0.5);
+    {
+      savedQuote.materialsCost &&
+        doc.text(
+          `Total de Materiais = R$${savedQuote.materialsCost.toFixed(2)}`,
+          {
+            align: "right",
+          }
+        );
+      doc.moveDown(0.5);
+    }
 
     doc.text(`Valor do Serviço = R$${savedQuote.serviceValue.toFixed(2)}`, {
       align: "right",
