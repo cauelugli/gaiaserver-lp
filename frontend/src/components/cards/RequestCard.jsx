@@ -67,7 +67,12 @@ export default function RequestCard({ request, type }) {
               <Grid container direction="row" alignItems="center">
                 <>
                   {request.items.map((item) => (
-                    <Grid key={item.id} direction="column" alignItems="center">
+                    <Grid
+                      key
+                      direction="column"
+                      alignItems="center"
+                      sx={{ mr: 1 }}
+                    >
                       <Avatar
                         alt="Imagem do Produto"
                         src={`http://localhost:3000/static/${item.image}`}

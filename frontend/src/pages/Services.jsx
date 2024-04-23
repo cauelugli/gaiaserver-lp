@@ -25,6 +25,8 @@ import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 import ServicesTableButton from "../components/small/buttons/tableButtons/ServicesTableButton";
+import TableOrCardSelector from "../components/small/TableOrCardSelector";
+import ServiceCard from "../components/cards/ServiceCard";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -44,7 +46,14 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Services({ configTables, configData, topBar }) {
+export default function Services({
+  userId,
+  configTables,
+  configData,
+  topBar,
+  tableOrCardView,
+  setUserPreferences,
+}) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [value, setValue] = React.useState(0);
@@ -189,6 +198,15 @@ export default function Services({ configTables, configData, topBar }) {
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
           />
+          <Grid sx={{ my: "auto", ml: "auto" }}>
+            <TableOrCardSelector
+              userId={userId}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              tableOrCard={tableOrCardView}
+              setUserPreferences={setUserPreferences}
+            />
+          </Grid>
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -196,27 +214,40 @@ export default function Services({ configTables, configData, topBar }) {
           <NoDataText option="Serviços" />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[0]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
-            <ServiceTable
-              configData={configData}
-              searchOption={searchOption}
-              searchValue={searchValue}
-              services={services}
-              departments={departments}
-              stockItems={stockItems}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              topBar={topBar}
-            />
+            {tableOrCardView && (
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[0]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+            )}
+
+            {tableOrCardView ? (
+              <ServiceTable
+                configData={configData}
+                searchOption={searchOption}
+                searchValue={searchValue}
+                services={services}
+                departments={departments}
+                stockItems={stockItems}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                topBar={topBar}
+              />
+            ) : (
+              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                {services.map((service) => (
+                  <Grid key item md={3} lg={3} xl={2}>
+                    <ServiceCard key service={service} />
+                  </Grid>
+                ))}
+              </Grid>
+            )}
           </>
         )}
       </CustomTabPanel>
@@ -226,26 +257,39 @@ export default function Services({ configTables, configData, topBar }) {
             <NoDataText option="Serviços de Consultoria" />
           ) : (
             <>
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[1]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-              <ServiceTable
-                searchOption={searchOption}
-                searchValue={searchValue}
-                services={supports}
-                departments={departments}
-                stockItems={stockItems}
-                refreshData={refreshData}
-                setRefreshData={setRefreshData}
-                topBar={topBar}
-              />
+              {tableOrCardView && (
+                <TableFilters
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  searchOption={searchOption}
+                  searchOptionList={searchOptionList[1]}
+                  setSearchOption={setSearchOption}
+                  searchOptionLabel={searchOptionLabel}
+                  setSearchOptionLabel={setSearchOptionLabel}
+                  handleSearchChange={handleSearchChange}
+                />
+              )}
+
+              {tableOrCardView ? (
+                <ServiceTable
+                  searchOption={searchOption}
+                  searchValue={searchValue}
+                  services={supports}
+                  departments={departments}
+                  stockItems={stockItems}
+                  refreshData={refreshData}
+                  setRefreshData={setRefreshData}
+                  topBar={topBar}
+                />
+              ) : (
+                <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                  {supports.map((service) => (
+                    <Grid key item md={3} lg={3} xl={2}>
+                      <ServiceCard key service={service} />
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
             </>
           )}
         </CustomTabPanel>
@@ -259,24 +303,36 @@ export default function Services({ configTables, configData, topBar }) {
             <NoDataText option="Planos de Serviços" />
           ) : (
             <>
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[2]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-              <ServicePlansTable
-                searchOption={searchOption}
-                searchValue={searchValue}
-                servicePlans={servicePlans}
-                refreshData={refreshData}
-                setRefreshData={setRefreshData}
-                topBar={topBar}
-              />
+              {tableOrCardView && (
+                <TableFilters
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  searchOption={searchOption}
+                  searchOptionList={searchOptionList[2]}
+                  setSearchOption={setSearchOption}
+                  searchOptionLabel={searchOptionLabel}
+                  setSearchOptionLabel={setSearchOptionLabel}
+                  handleSearchChange={handleSearchChange}
+                />
+              )}
+              {tableOrCardView ? (
+                <ServicePlansTable
+                  searchOption={searchOption}
+                  searchValue={searchValue}
+                  servicePlans={servicePlans}
+                  refreshData={refreshData}
+                  setRefreshData={setRefreshData}
+                  topBar={topBar}
+                />
+              ) : (
+                <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                  {servicePlans.map((servicePlan) => (
+                    <Grid key item md={3} lg={3} xl={2}>
+                      <ServiceCard key servicePlan={servicePlan} />
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
             </>
           )}
         </CustomTabPanel>

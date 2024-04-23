@@ -148,10 +148,7 @@ export default function ServiceTable({
                   .includes(searchValue.toLowerCase())
               )
               .map((service) => (
-                <TableRow
-                  key={service._id}
-                  sx={{ "&:hover": { backgroundColor: "#eee " } }}
-                >
+                <TableRow key={service._id}>
                   <TableCell>
                     <Grid container direction="row" alignItems="center">
                       <Paper

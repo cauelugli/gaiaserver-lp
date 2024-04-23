@@ -16,25 +16,29 @@ import {
 } from "@mui/material";
 
 export default function DepartmentCard({ department, group, users }) {
-  console.log("users", users);
   return (
     <Card sx={{ width: 290, height: 300 }} elevation={3}>
       <CardContent>
         {/* title */}
         {department && (
           <>
-            <Grid container direction="row" alignItems="center" sx={{ my: 1 }}>
+            <Grid
+              container
+              direction="row"
+              alignItems="center"
+              sx={{ mb: 1 }}
+            >
               <Paper
                 elevation={0}
                 sx={{
-                  m: 1,
+                  mr: 1,
                   width: 18,
                   height: 18,
                   borderRadius: 50,
                   backgroundColor: department.color,
                 }}
               />
-              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              <Typography variant="h6" sx={{ fontWeight: "bold", mt: 0.5 }}>
                 {department.name}
               </Typography>
             </Grid>
