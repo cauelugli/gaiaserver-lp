@@ -600,8 +600,16 @@ export default function App() {
                         isAuthenticated(login, userData) &&
                         hasPermission(userData, configData, "quotes") ? (
                           <Quotes
+                            userId={userData._id}
                             configData={configData.quotes}
                             topBar={userPreferences.barPosition}
+                            setUserPreferences={setUserPreferences}
+                            tableOrCardView={userPreferences.tableOrCardView}
+                            users={users.map((user) => ({
+                              _id: user._id,
+                              image: user.image,
+                              name: user.name,
+                            }))}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>

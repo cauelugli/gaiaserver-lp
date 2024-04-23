@@ -3,13 +3,22 @@ import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import { Box, CircularProgress, Tab, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Grid,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 
 import QuoteTable from "../tables/QuoteTable";
 
 import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
+import TableOrCardSelector from "../components/small/TableOrCardSelector";
+import QuoteCard from "../components/cards/QuoteCard";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -29,7 +38,14 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Quotes({ configData, topBar }) {
+export default function Quotes({
+  userId,
+  configData,
+  topBar,
+  tableOrCardView,
+  setUserPreferences,
+  users,
+}) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
@@ -127,6 +143,15 @@ export default function Quotes({ configData, topBar }) {
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
           />
+          <Grid sx={{ my: "auto", ml: "auto" }}>
+            <TableOrCardSelector
+              userId={userId}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              tableOrCard={tableOrCardView}
+              setUserPreferences={setUserPreferences}
+            />
+          </Grid>
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -134,26 +159,40 @@ export default function Quotes({ configData, topBar }) {
           <NoDataText option="Orçamentos de Jobs" />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[0]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
-            <QuoteTable
-              quotes={quotes.filter((quote) => quote.type === "job")}
-              config={configData}
-              type={"job"}
-              searchOption={searchOption}
-              searchValue={searchValue}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              topBar={topBar}
-            />
+            {tableOrCardView && (
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[0]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+            )}
+            {tableOrCardView ? (
+              <QuoteTable
+                quotes={quotes.filter((quote) => quote.type === "job")}
+                config={configData}
+                type={"job"}
+                searchOption={searchOption}
+                searchValue={searchValue}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                topBar={topBar}
+              />
+            ) : (
+              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                {quotes
+                  .filter((q) => q.type === "job")
+                  .map((quote) => (
+                    <Grid key item md={3} lg={3} xl={2}>
+                      <QuoteCard key quote={quote} type="job" users={users} />
+                    </Grid>
+                  ))}
+              </Grid>
+            )}
           </>
         )}
       </CustomTabPanel>
@@ -162,26 +201,40 @@ export default function Quotes({ configData, topBar }) {
           <NoDataText option="Orçamentos de Vendas" />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[1]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
-            <QuoteTable
-              quotes={quotes.filter((quote) => quote.type === "sale")}
-              type={"sale"}
-              config={configData}
-              searchOption={searchOption}
-              searchValue={searchValue}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              topBar={topBar}
-            />
+            {tableOrCardView && (
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[1]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+            )}
+            {tableOrCardView ? (
+              <QuoteTable
+                quotes={quotes.filter((quote) => quote.type === "sale")}
+                type={"sale"}
+                config={configData}
+                searchOption={searchOption}
+                searchValue={searchValue}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                topBar={topBar}
+              />
+            ) : (
+              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                {quotes
+                  .filter((q) => q.type === "sale")
+                  .map((quote) => (
+                    <Grid key item md={3} lg={3} xl={2}>
+                      <QuoteCard key quote={quote} type="sale" users={users} />
+                    </Grid>
+                  ))}
+              </Grid>
+            )}
           </>
         )}
       </CustomTabPanel>
