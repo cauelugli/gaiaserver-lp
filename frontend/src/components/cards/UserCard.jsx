@@ -15,7 +15,7 @@ import {
 
 export default function UserCard({ user, type }) {
   return (
-    <Card sx={{ width: 290 }}>
+    <Card sx={{ width: 290 }} elevation={3}>
       <CardMedia
         sx={{
           height: 100,
