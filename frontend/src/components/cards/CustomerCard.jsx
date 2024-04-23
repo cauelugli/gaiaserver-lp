@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-export default function CustomerCard({ customer }) {
+export default function CustomerCard({ customer, type }) {
   return (
     <Card sx={{ width: 290 }}>
       <CardMedia
@@ -30,10 +30,18 @@ export default function CustomerCard({ customer }) {
         <Typography gutterBottom variant="body1">
           {customer.phone}
         </Typography>
-        <Typography variant="body2">
-          {customer.mainContactName} ({customer.mainContactPosition})
-        </Typography>
-        <Typography variant="body2">{customer.mainContactEmail}</Typography>
+        {type === "customer" ? (
+          <>
+            <Typography variant="body2">
+              {customer.mainContactName} ({customer.mainContactPosition})
+            </Typography>
+            <Typography variant="body2">{customer.mainContactEmail}</Typography>
+          </>
+        ) : (
+          <>
+            <Typography variant="body2">{customer.email}</Typography>
+          </>
+        )}
       </CardContent>
       <CardActions>
         <Button size="small">Share</Button>

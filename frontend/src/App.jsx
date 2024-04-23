@@ -550,7 +550,9 @@ export default function App() {
                             configNotificationsBooleans={
                               configNotificationsBooleans
                             }
+                            setUserPreferences={setUserPreferences}
                             topBar={userPreferences.barPosition}
+                            tableOrCardView={userPreferences.tableOrCardView}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>

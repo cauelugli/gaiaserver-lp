@@ -243,7 +243,7 @@ export default function Customers({
                 <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
                   {customers.map((customer) => (
                     <Grid key item md={3} lg={3} xl={2}>
-                      <CustomerCard key customer={customer} />
+                      <CustomerCard key customer={customer} type="customer" />
                     </Grid>
                   ))}
                 </Grid>
@@ -262,30 +262,42 @@ export default function Customers({
             <NoDataText option="Clientes Pessoa Física" />
           ) : (
             <>
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[1]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
+              {tableOrCardView && (
+                <TableFilters
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  searchOption={searchOption}
+                  searchOptionList={searchOptionList[1]}
+                  setSearchOption={setSearchOption}
+                  searchOptionLabel={searchOptionLabel}
+                  setSearchOptionLabel={setSearchOptionLabel}
+                  handleSearchChange={handleSearchChange}
+                />
+              )}
 
-              <ClientTable
-                userName={userName}
-                configAgenda={configAgenda}
-                configNotifications={configNotifications}
-                configNotificationsBooleans={configNotificationsBooleans}
-                configCustomization={configCustomization}
-                configData={config}
-                refreshData={refreshData}
-                setRefreshData={setRefreshData}
-                searchValue={searchValue}
-                searchOption={searchOption}
-                topBar={topBar}
-              />
+              {tableOrCardView ? (
+                <ClientTable
+                  userName={userName}
+                  configAgenda={configAgenda}
+                  configNotifications={configNotifications}
+                  configNotificationsBooleans={configNotificationsBooleans}
+                  configCustomization={configCustomization}
+                  configData={config}
+                  refreshData={refreshData}
+                  setRefreshData={setRefreshData}
+                  searchValue={searchValue}
+                  searchOption={searchOption}
+                  topBar={topBar}
+                />
+              ) : (
+                <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                  {clients.map((client) => (
+                    <Grid key item md={3} lg={3} xl={2}>
+                      <CustomerCard key customer={client} type="client" />
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
             </>
           )}
         </CustomTabPanel>

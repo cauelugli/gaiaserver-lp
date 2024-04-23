@@ -24,6 +24,8 @@ import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 import RequestTableButton from "../components/small/buttons/tableButtons/RequestTableButton";
+import TableOrCardSelector from "../components/small/TableOrCardSelector";
+import RequestCard from "../components/cards/RequestCard";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -53,6 +55,8 @@ export default function Requests({
   configNotifications,
   configNotificationsBooleans,
   topBar,
+  tableOrCardView,
+  setUserPreferences,
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -192,6 +196,15 @@ export default function Requests({
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
           />
+          <Grid sx={{ my: "auto", ml: "auto" }}>
+            <TableOrCardSelector
+              userId={userId}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              tableOrCard={tableOrCardView}
+              setUserPreferences={setUserPreferences}
+            />
+          </Grid>
         </Tabs>
       </Box>
       {configTables.requestJob && (
@@ -200,30 +213,42 @@ export default function Requests({
             <NoDataText option="Jobs" />
           ) : (
             <>
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[0]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
+              {tableOrCardView && (
+                <TableFilters
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  searchOption={searchOption}
+                  searchOptionList={searchOptionList[0]}
+                  setSearchOption={setSearchOption}
+                  searchOptionLabel={searchOptionLabel}
+                  setSearchOptionLabel={setSearchOptionLabel}
+                  handleSearchChange={handleSearchChange}
+                />
+              )}
 
-              <JobTable
-                userId={userId}
-                userName={userName}
-                userUsername={userUsername}
-                userRole={userRole}
-                searchValue={searchValue}
-                searchOption={searchOption}
-                jobs={jobs}
-                managers={managers}
-                refreshData={refreshData}
-                setRefreshData={setRefreshData}
-                topBar={topBar}
-              />
+              {tableOrCardView ? (
+                <JobTable
+                  userId={userId}
+                  userName={userName}
+                  userUsername={userUsername}
+                  userRole={userRole}
+                  searchValue={searchValue}
+                  searchOption={searchOption}
+                  jobs={jobs}
+                  managers={managers}
+                  refreshData={refreshData}
+                  setRefreshData={setRefreshData}
+                  topBar={topBar}
+                />
+              ) : (
+                <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                  {jobs.map((job) => (
+                    <Grid key item md={3} lg={3} xl={2}>
+                      <RequestCard key request={job} type="job" />
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
             </>
           )}
         </CustomTabPanel>
@@ -234,29 +259,40 @@ export default function Requests({
             <NoDataText option="Vendas" femaleGender={true} />
           ) : (
             <>
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[1]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-
-              <SaleTable
-                userId={userId}
-                userName={userName}
-                userUsername={userUsername}
-                searchValue={searchValue}
-                searchOption={searchOption}
-                sales={sales}
-                managers={managers}
-                refreshData={refreshData}
-                setRefreshData={setRefreshData}
-                topBar={topBar}
-              />
+              {tableOrCardView && (
+                <TableFilters
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  searchOption={searchOption}
+                  searchOptionList={searchOptionList[1]}
+                  setSearchOption={setSearchOption}
+                  searchOptionLabel={searchOptionLabel}
+                  setSearchOptionLabel={setSearchOptionLabel}
+                  handleSearchChange={handleSearchChange}
+                />
+              )}
+              {tableOrCardView ? (
+                <SaleTable
+                  userId={userId}
+                  userName={userName}
+                  userUsername={userUsername}
+                  searchValue={searchValue}
+                  searchOption={searchOption}
+                  sales={sales}
+                  managers={managers}
+                  refreshData={refreshData}
+                  setRefreshData={setRefreshData}
+                  topBar={topBar}
+                />
+              ) : (
+                <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                  {sales.map((sale) => (
+                    <Grid key item md={3} lg={3} xl={2}>
+                      <RequestCard key request={sale} type="sale" />
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
             </>
           )}
         </CustomTabPanel>
