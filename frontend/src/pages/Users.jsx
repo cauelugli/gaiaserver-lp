@@ -24,6 +24,8 @@ import TableFilters from "../components/TableFilters";
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import UserTableButton from "../components/small/buttons/tableButtons/UserTableButton";
+import TableOrCardSelector from "../components/small/TableOrCardSelector";
+import UserCard from "../components/cards/UserCard";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -43,7 +45,13 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Users({ userName, topBar }) {
+export default function Users({
+  userName,
+  userId,
+  topBar,
+  setUserPreferences,
+  tableOrCardView,
+}) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [configUsers, setConfigUsers] = React.useState(false);
@@ -198,6 +206,15 @@ export default function Users({ userName, topBar }) {
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
           />
+          <Grid sx={{ my: "auto", ml: "auto" }}>
+            <TableOrCardSelector
+              userId={userId}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              tableOrCard={tableOrCardView}
+              setUserPreferences={setUserPreferences}
+            />
+          </Grid>
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -205,26 +222,40 @@ export default function Users({ userName, topBar }) {
           <NoDataText option="Colaborardores" />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[0]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
+            {tableOrCardView && (
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[0]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+            )}
 
-            <UserTable
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              searchValue={searchValue}
-              configData={configUsers}
-              // searchDepartment={searchDepartment}
-              searchOption={searchOption}
-              topBar={topBar}
-            />
+            {tableOrCardView ? (
+              <UserTable
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                searchValue={searchValue}
+                configData={configUsers}
+                // searchDepartment={searchDepartment}
+                searchOption={searchOption}
+                topBar={topBar}
+              />
+            ) : (
+              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                {users
+                  .filter((user) => user.username !== "admin")
+                  .map((user) => (
+                    <Grid key item md={3} lg={3} xl={2}>
+                      <UserCard key user={user} type="user" />
+                    </Grid>
+                  ))}
+              </Grid>
+            )}
           </>
         )}
       </CustomTabPanel>
@@ -233,26 +264,38 @@ export default function Users({ userName, topBar }) {
           <NoDataText option="Gerentes" />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[1]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
+            {tableOrCardView && (
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[1]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+            )}
 
-            <ManagerTable
-              positions={positions}
-              configData={configManagers}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              searchValue={searchValue}
-              searchOption={searchOption}
-              topBar={topBar}
-            />
+            {tableOrCardView ? (
+              <ManagerTable
+                positions={positions}
+                configData={configManagers}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                searchValue={searchValue}
+                searchOption={searchOption}
+                topBar={topBar}
+              />
+            ) : (
+              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                {managers.map((manager) => (
+                  <Grid key item md={3} lg={3} xl={2}>
+                    <UserCard key user={manager} type="manager" />
+                  </Grid>
+                ))}
+              </Grid>
+            )}
           </>
         )}
       </CustomTabPanel>
