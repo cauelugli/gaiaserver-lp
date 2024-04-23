@@ -41,7 +41,7 @@ export default function QuoteCard({ users, quote, type }) {
                 >
                   {users.length > 0 && (
                     <Grid container direction="column">
-                      <Typography sx={{ fontSize: 13 }}>Designado</Typography>
+                      <Typography sx={{ fontSize: 13 }}>Colaborador</Typography>
                       <Tooltip
                         title={`${
                           users.find((user) => user.name === quote.user).name
