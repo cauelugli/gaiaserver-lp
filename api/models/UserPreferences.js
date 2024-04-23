@@ -13,6 +13,10 @@ const userPreferencesSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  cardSize: {
+    type: Number,
+    default: 3,
+  },
   userId: {
     type: String,
     required: true,

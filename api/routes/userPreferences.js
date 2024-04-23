@@ -136,4 +136,23 @@ router.put("/tableOrCardView", async (req, res) => {
   }
 });
 
+
+// UPDATE TABLE OR CARD VIEW
+router.put("/cardSize", async (req, res) => {
+  const { userId, cardSize } = req.body;
+
+  try {
+    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    userPreferences.cardSize = cardSize;
+    await userPreferences.save();
+
+    res
+      .status(200)
+      .json({ message: "Card Size updated successfully", cardSize });
+  } catch (error) {
+    console.error("Error updating tableCard view:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

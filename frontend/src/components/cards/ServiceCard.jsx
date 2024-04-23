@@ -16,7 +16,7 @@ import {
 
 export default function ServiceCard({ service, servicePlan }) {
   return (
-    <Card sx={{ width: 290, height: 300 }} elevation={3}>
+    <Card elevation={3}>
       <CardContent>
         <>
           {service && (

@@ -8,7 +8,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import AppsIcon from "@mui/icons-material/Apps";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 
@@ -18,6 +18,7 @@ const TableOrCardSelector = ({
   setRefreshData,
   tableOrCard,
   setUserPreferences,
+  cardSize,
 }) => {
   const [tableOrCardView, setTableOrCardView] = React.useState(tableOrCard);
 
@@ -49,13 +50,42 @@ const TableOrCardSelector = ({
           ...prev,
           tableOrCardView: newTableOrCardView,
         }));
-      } else {
-        toast.error("Não foi possível atualizar as preferências.", {
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-          autoClose: 1200,
-        });
+      }
+    } catch (err) {
+      toast.error("Houve algum erro na atualização das preferências.", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+      console.log(err);
+    }
+  };
+
+  const handleUpdateCardSize = async (newCardSize) => {
+    const existingPreferences =
+      JSON.parse(sessionStorage.getItem("userPreferences")) || {};
+    const updatedPreferences = {
+      ...existingPreferences,
+      cardSize: newCardSize,
+    };
+
+    try {
+      const response = await api.put("/userPreferences/cardSize", {
+        userId: userId,
+        cardSize: newCardSize,
+      });
+
+      if (response.data && response.data.cardSize !== undefined) {
+        sessionStorage.setItem(
+          "userPreferences",
+          JSON.stringify(updatedPreferences)
+        );
+        setRefreshData(!refreshData);
+        setUserPreferences((prev) => ({
+          ...prev,
+          cardSize: newCardSize,
+        }));
       }
     } catch (err) {
       toast.error("Houve algum erro na atualização das preferências.", {
@@ -70,6 +100,43 @@ const TableOrCardSelector = ({
 
   return (
     <Grid container direction="row">
+      <Grid item>
+        {!tableOrCardView && (
+          <Grid container direction="row" sx={{ mr: 3 }}>
+            {cardSize !== 12 && (
+              <Typography
+                sx={{
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  fontSize: 18,
+                  mr: 2,
+                }}
+                onClick={() => {
+                  const newSize = (cardSize || 0) + 1;
+                  handleUpdateCardSize(newSize);
+                }}
+              >
+                +
+              </Typography>
+            )}
+            {cardSize !== 2 && (
+              <Typography
+                sx={{
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  fontSize: 18,
+                }}
+                onClick={() => {
+                  const newSize = (cardSize || 0) - 1;
+                  handleUpdateCardSize(newSize);
+                }}
+              >
+                -
+              </Typography>
+            )}
+          </Grid>
+        )}
+      </Grid>
       <AppsIcon
         sx={{ mr: 2, cursor: "pointer" }}
         color={!tableOrCardView ? "primary" : "inherit"}

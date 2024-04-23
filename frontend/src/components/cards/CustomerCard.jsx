@@ -13,14 +13,18 @@ import {
 
 export default function CustomerCard({ customer, type }) {
   return (
-    <Card sx={{ width: 290 }} elevation={3}>
+    <Card elevation={3}>
       <CardMedia
         sx={{
           height: 100,
           width: "100%",
           objectFit: "contain",
         }}
-        image={`http://localhost:3000/static/${customer.image}`}
+        image={
+          customer.image
+            ? `http://localhost:3000/static/${customer.image}`
+            : `http://localhost:3000/static/images/default_userPicture.png`
+        }
         component="img"
       />
       <CardContent>

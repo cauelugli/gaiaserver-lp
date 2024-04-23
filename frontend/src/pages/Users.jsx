@@ -51,6 +51,7 @@ export default function Users({
   topBar,
   setUserPreferences,
   tableOrCardView,
+  cardSize,
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
@@ -213,6 +214,7 @@ export default function Users({
               setRefreshData={setRefreshData}
               tableOrCard={tableOrCardView}
               setUserPreferences={setUserPreferences}
+              cardSize={cardSize}
             />
           </Grid>
         </Tabs>
@@ -246,11 +248,16 @@ export default function Users({
                 topBar={topBar}
               />
             ) : (
-              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+              <Grid
+                sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                container
+                spacing={2}
+              >
+                {" "}
                 {users
                   .filter((user) => user.username !== "admin")
                   .map((user) => (
-                    <Grid key item md={3} lg={3} xl={2}>
+                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
                       <UserCard key user={user} type="user" />
                     </Grid>
                   ))}
@@ -288,9 +295,13 @@ export default function Users({
                 topBar={topBar}
               />
             ) : (
-              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+              <Grid
+                sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                container
+                spacing={2}
+              >
                 {managers.map((manager) => (
-                  <Grid key item md={3} lg={3} xl={2}>
+                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
                     <UserCard key user={manager} type="manager" />
                   </Grid>
                 ))}

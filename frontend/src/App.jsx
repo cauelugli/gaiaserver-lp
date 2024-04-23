@@ -405,6 +405,7 @@ export default function App() {
                             topBar={userPreferences.barPosition}
                             setUserPreferences={setUserPreferences}
                             tableOrCardView={userPreferences.tableOrCardView}
+                            cardSize={userPreferences.cardSize}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -440,6 +441,7 @@ export default function App() {
                             userName={userData.name}
                             userId={userData._id}
                             tableOrCardView={userPreferences.tableOrCardView}
+                            cardSize={userPreferences.cardSize}
                             setUserPreferences={setUserPreferences}
                             configAgenda={configAgenda}
                             configTables={configTables}
@@ -470,6 +472,7 @@ export default function App() {
                             topBar={userPreferences.barPosition}
                             setUserPreferences={setUserPreferences}
                             tableOrCardView={userPreferences.tableOrCardView}
+                            cardSize={userPreferences.cardSize}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -512,6 +515,7 @@ export default function App() {
                             topBar={userPreferences.barPosition}
                             setUserPreferences={setUserPreferences}
                             tableOrCardView={userPreferences.tableOrCardView}
+                            cardSize={userPreferences.cardSize}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -562,6 +566,7 @@ export default function App() {
                             setUserPreferences={setUserPreferences}
                             topBar={userPreferences.barPosition}
                             tableOrCardView={userPreferences.tableOrCardView}
+                            cardSize={userPreferences.cardSize}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -605,6 +610,7 @@ export default function App() {
                             topBar={userPreferences.barPosition}
                             setUserPreferences={setUserPreferences}
                             tableOrCardView={userPreferences.tableOrCardView}
+                            cardSize={userPreferences.cardSize}
                             users={users.map((user) => ({
                               _id: user._id,
                               image: user.image,

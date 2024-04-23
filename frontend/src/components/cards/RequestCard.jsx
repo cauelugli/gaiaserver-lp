@@ -16,7 +16,7 @@ import {
 
 export default function RequestCard({ request, type }) {
   return (
-    <Card sx={{ width: 290, height: 300 }} elevation={3}>
+    <Card sx={{ maxWidth: 290 }} elevation={3}>
       <CardContent>
         <Typography gutterBottom variant="h6" sx={{ fontWeight: "bold" }}>
           {type === "job" ? request.title : `Venda #${request.quoteNumber}`}

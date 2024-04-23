@@ -50,6 +50,7 @@ export default function Customers({
   userName,
   userId,
   tableOrCardView,
+  cardSize,
   setUserPreferences,
   topBar,
   configTables,
@@ -201,6 +202,7 @@ export default function Customers({
               setRefreshData={setRefreshData}
               tableOrCard={tableOrCardView}
               setUserPreferences={setUserPreferences}
+              cardSize={cardSize}
             />
           </Grid>
         </Tabs>
@@ -240,9 +242,13 @@ export default function Customers({
                   topBar={topBar}
                 />
               ) : (
-                <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                <Grid
+                  sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                  container
+                  spacing={2}
+                >
                   {customers.map((customer) => (
-                    <Grid key item md={3} lg={3} xl={2}>
+                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
                       <CustomerCard key customer={customer} type="customer" />
                     </Grid>
                   ))}
@@ -292,7 +298,7 @@ export default function Customers({
               ) : (
                 <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
                   {clients.map((client) => (
-                    <Grid key item md={3} lg={3} xl={2}>
+                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
                       <CustomerCard key customer={client} type="client" />
                     </Grid>
                   ))}

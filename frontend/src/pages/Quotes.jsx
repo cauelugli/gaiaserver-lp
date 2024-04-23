@@ -45,6 +45,7 @@ export default function Quotes({
   tableOrCardView,
   setUserPreferences,
   users,
+  cardSize,
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -150,6 +151,7 @@ export default function Quotes({
               setRefreshData={setRefreshData}
               tableOrCard={tableOrCardView}
               setUserPreferences={setUserPreferences}
+              cardSize={cardSize}
             />
           </Grid>
         </Tabs>
@@ -183,11 +185,15 @@ export default function Quotes({
                 topBar={topBar}
               />
             ) : (
-              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+              <Grid
+                sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                container
+                spacing={2}
+              >
                 {quotes
                   .filter((q) => q.type === "job")
                   .map((quote) => (
-                    <Grid key item md={3} lg={3} xl={2}>
+                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
                       <QuoteCard key quote={quote} type="job" users={users} />
                     </Grid>
                   ))}
@@ -225,11 +231,15 @@ export default function Quotes({
                 topBar={topBar}
               />
             ) : (
-              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+              <Grid
+                sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                container
+                spacing={2}
+              >
                 {quotes
                   .filter((q) => q.type === "sale")
                   .map((quote) => (
-                    <Grid key item md={3} lg={3} xl={2}>
+                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
                       <QuoteCard key quote={quote} type="sale" users={users} />
                     </Grid>
                   ))}

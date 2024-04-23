@@ -53,6 +53,7 @@ export default function Services({
   topBar,
   tableOrCardView,
   setUserPreferences,
+  cardSize,
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
@@ -205,6 +206,7 @@ export default function Services({
               setRefreshData={setRefreshData}
               tableOrCard={tableOrCardView}
               setUserPreferences={setUserPreferences}
+              cardSize={cardSize}
             />
           </Grid>
         </Tabs>
@@ -240,9 +242,13 @@ export default function Services({
                 topBar={topBar}
               />
             ) : (
-              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+              <Grid
+                sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                container
+                spacing={2}
+              >
                 {services.map((service) => (
-                  <Grid key item md={3} lg={3} xl={2}>
+                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
                     <ServiceCard key service={service} />
                   </Grid>
                 ))}
@@ -282,9 +288,13 @@ export default function Services({
                   topBar={topBar}
                 />
               ) : (
-                <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                <Grid
+                  sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                  container
+                  spacing={2}
+                >
                   {supports.map((service) => (
-                    <Grid key item md={3} lg={3} xl={2}>
+                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
                       <ServiceCard key service={service} />
                     </Grid>
                   ))}
@@ -325,9 +335,13 @@ export default function Services({
                   topBar={topBar}
                 />
               ) : (
-                <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                <Grid
+                  sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                  container
+                  spacing={2}
+                >
                   {servicePlans.map((servicePlan) => (
-                    <Grid key item md={3} lg={3} xl={2}>
+                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
                       <ServiceCard key servicePlan={servicePlan} />
                     </Grid>
                   ))}

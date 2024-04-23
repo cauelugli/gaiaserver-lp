@@ -50,6 +50,7 @@ export default function Departments({
   tableOrCardView,
   setUserPreferences,
   configTables,
+  cardSize,
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -232,6 +233,7 @@ export default function Departments({
               setRefreshData={setRefreshData}
               tableOrCard={tableOrCardView}
               setUserPreferences={setUserPreferences}
+              cardSize={cardSize}
             />
           </Grid>
         </Tabs>
@@ -270,9 +272,13 @@ export default function Departments({
                 topBar={topBar}
               />
             ) : (
-              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+              <Grid
+                sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                container
+                spacing={2}
+              >
                 {serviceDepartments.map((department) => (
-                  <Grid key item md={3} lg={3} xl={2}>
+                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
                     <DepartmentCard
                       key
                       department={department}
@@ -293,7 +299,6 @@ export default function Departments({
           <NoDataText option="Departamentos de Vendas" />
         ) : (
           <>
-            {" "}
             {tableOrCardView && (
               <TableFilters
                 searchValue={searchValue}
@@ -322,9 +327,13 @@ export default function Departments({
                 topBar={topBar}
               />
             ) : (
-              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+              <Grid
+                sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                container
+                spacing={2}
+              >
                 {saleDepartments.map((department) => (
-                  <Grid key item md={3} lg={3} xl={2}>
+                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
                     <DepartmentCard
                       key
                       department={department}
@@ -346,7 +355,6 @@ export default function Departments({
             <NoDataText option="Departamentos Internos" />
           ) : (
             <>
-              {" "}
               {tableOrCardView && (
                 <TableFilters
                   searchValue={searchValue}
@@ -375,9 +383,13 @@ export default function Departments({
                   topBar={topBar}
                 />
               ) : (
-                <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                <Grid
+                  sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                  container
+                  spacing={2}
+                >
                   {internalDepartments.map((department) => (
-                    <Grid key item md={3} lg={3} xl={2}>
+                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
                       <DepartmentCard
                         key
                         department={department}

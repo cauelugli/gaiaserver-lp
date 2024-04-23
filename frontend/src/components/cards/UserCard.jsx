@@ -15,14 +15,18 @@ import {
 
 export default function UserCard({ user, type }) {
   return (
-    <Card sx={{ width: 290 }} elevation={3}>
+    <Card sx={{ maxWidth: 290 }} elevation={3}>
       <CardMedia
         sx={{
           height: 100,
           width: "100%",
           objectFit: "contain",
         }}
-        image={`http://localhost:3000/static/${user.image}`}
+        image={
+          user.image
+            ? `http://localhost:3000/static/${user.image}`
+            : `http://localhost:3000/static/images/default_userPicture.png`
+        }
         component="img"
       />
       <CardContent>
@@ -45,9 +49,7 @@ export default function UserCard({ user, type }) {
               backgroundColor: user.department.color,
             }}
           />
-          <Typography variant="body2">
-            {user.department.name}
-          </Typography>
+          <Typography variant="body2">{user.department.name}</Typography>
         </Grid>
         <Typography variant="body2">{user.position.name}</Typography>
       </CardContent>

@@ -17,7 +17,7 @@ import {
 
 export default function DepartmentCard({ department, group, users }) {
   return (
-    <Card sx={{ width: 290, height: 300 }} elevation={3}>
+    <Card elevation={3}>
       <CardContent>
         {/* title */}
         {department && (

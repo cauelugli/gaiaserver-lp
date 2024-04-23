@@ -17,7 +17,7 @@ import {
 
 export default function QuoteCard({ users, quote, type }) {
   return (
-    <Card sx={{ width: 290, height: 300 }} elevation={3}>
+    <Card elevation={3}>
       <CardContent>
         <Grid container direction="column">
           <Grid item>
