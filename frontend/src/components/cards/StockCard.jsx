@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
-// import dayjs from "dayjs";
+import dayjs from "dayjs";
 
 import {
   Avatar,
@@ -10,15 +10,11 @@ import {
   CardActions,
   CardContent,
   Grid,
-  Paper,
   Tooltip,
   Typography,
 } from "@mui/material";
-import dayjs from "dayjs";
 
 export default function StockCard({ item, type }) {
-  console.log("item", item);
-
   return (
     <Card elevation={3}>
       <CardContent>

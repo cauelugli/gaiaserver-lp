@@ -593,6 +593,9 @@ export default function App() {
                             userImage={userData.image}
                             configTables={configTables}
                             topBar={userPreferences.barPosition}
+                            setUserPreferences={setUserPreferences}
+                            tableOrCardView={userPreferences.tableOrCardView}
+                            cardSize={userPreferences.cardSize}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>

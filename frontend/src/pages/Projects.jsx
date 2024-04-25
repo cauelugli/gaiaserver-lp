@@ -26,6 +26,8 @@ import AddProjectForm from "../forms/add/AddProjectForm";
 import ProjectsTable from "../tables/ProjectsTable";
 import ProjectsTableButton from "../components/small/buttons/tableButtons/ProjectsTableButton";
 import ProjectTemplates from "../forms/misc/ProjectTemplates";
+import TableOrCardSelector from "../components/small/TableOrCardSelector";
+import ProjectCard from "../components/cards/ProjectCard";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -51,6 +53,9 @@ export default function Projects({
   userUsername,
   userImage,
   topBar,
+  tableOrCardView,
+  setUserPreferences,
+  cardSize,
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -176,6 +181,16 @@ export default function Projects({
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
           />
+          <Grid sx={{ my: "auto", ml: "auto" }}>
+            <TableOrCardSelector
+              userId={userId}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              tableOrCard={tableOrCardView}
+              setUserPreferences={setUserPreferences}
+              cardSize={cardSize}
+            />
+          </Grid>
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -183,31 +198,47 @@ export default function Projects({
           <NoDataText option="Projetos" femaleGender={false} />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={"quote"}
-              searchOptionList={searchOptionList[0]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
+            {tableOrCardView && (
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={"quote"}
+                searchOptionList={searchOptionList[0]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+            )}
 
-            <ProjectsTable
-              userId={userId}
-              userName={userName}
-              userUsername={userUsername}
-              userImage={userImage}
-              projects={projects}
-              configData={configData}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-              searchValue={searchValue}
-              searchOption={searchOption}
-              topBar={topBar}
-            />
+            {tableOrCardView ? (
+              <ProjectsTable
+                userId={userId}
+                userName={userName}
+                userUsername={userUsername}
+                userImage={userImage}
+                projects={projects}
+                configData={configData}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                toast={toast}
+                searchValue={searchValue}
+                searchOption={searchOption}
+                topBar={topBar}
+              />
+            ) : (
+              <Grid
+                sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                container
+                spacing={2}
+              >
+                {projects.map((project) => (
+                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
+                    <ProjectCard key project={project} />
+                  </Grid>
+                ))}
+              </Grid>
+            )}
           </>
         )}
       </CustomTabPanel>
