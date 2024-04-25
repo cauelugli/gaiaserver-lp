@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { List, ListItemButton, Typography } from "@mui/material";
+import { Divider, List, ListItemButton, Typography } from "@mui/material";
 
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
@@ -90,7 +90,7 @@ const TopBar = ({ configData, user }) => {
         sx={{
           display: "flex",
           flexDirection: "row",
-          mb:1,
+          mb: 1,
           backgroundColor:
             configData && configData.customization
               ? configData.customization.mainColor
@@ -123,57 +123,61 @@ const TopBar = ({ configData, user }) => {
           </ListItemButton>
         </Link>
         {filteredOptions.map((option, index) => (
-          <Link
-            key={index}
-            to={option.link}
-            style={{
-              textDecoration: "none",
-              color: "black",
-              position: "relative",
-              backgroundColor:
-                configData && configData.customization
-                  ? configData.customization.mainColor
-                  : "white",
-            }}
-          >
-            <ListItemButton
-              selected={hoveredIndex === index}
-              disabled={option.disabled}
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={handleMouseLeave}
-              sx={{
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
+          <>
+            {option.label === "Acessos" && (
+              <Divider orientation="vertical" flexItem />
+            )}
+            <Link
+              key={index}
+              to={option.link}
+              style={{
+                textDecoration: "none",
+                color: "black",
                 position: "relative",
-                color:
-                  configData && configData.customization
-                    ? configData.customization.fontColor
-                    : "white",
                 backgroundColor:
                   configData && configData.customization
                     ? configData.customization.mainColor
                     : "white",
               }}
             >
-              {option.icon}
-              <Typography
+              <ListItemButton
+                selected={hoveredIndex === index}
+                disabled={option.disabled}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
                 sx={{
-                  position: "absolute",
-                  bottom: -20, // Posiciona o texto abaixo do botão
-                  width: "100%",
-                  textAlign: "center",
-                  fontSize: 13,
-                  opacity: hoveredIndex === index ? 1 : 0,
-                  transition: "opacity 0.3s ease-in-out",
-                  // backgroundColor: "rgba(255, 255, 255, 0.9)", // Fundo para melhor visibilidade
-                  padding: "2px 0", // Padding para distanciar o texto das bordas
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  position: "relative",
+                  color:
+                    configData && configData.customization
+                      ? configData.customization.fontColor
+                      : "white",
+                  backgroundColor:
+                    configData && configData.customization
+                      ? configData.customization.mainColor
+                      : "white",
                 }}
               >
-                {option.label}
-              </Typography>
-            </ListItemButton>
-          </Link>
+                {option.icon}
+                <Typography
+                  sx={{
+                    position: "absolute",
+                    bottom: -20,
+                    width: "100%",
+                    textAlign: "center",
+                    fontSize: 13,
+                    opacity: hoveredIndex === index ? 1 : 0,
+                    transition: "opacity 0.3s ease-in-out",
+                    padding: "2px 0",
+                  }}
+                >
+                  {option.label}
+                </Typography>
+              </ListItemButton>
+            </Link>
+          </>
         ))}
       </List>
     </>
