@@ -28,6 +28,7 @@ const api = axios.create({
 });
 
 export default function StockEntriesTable({
+  stockEntries,
   userName,
   userRole,
   userDepartment,
@@ -36,24 +37,7 @@ export default function StockEntriesTable({
   configData,
   topBar,
 }) {
-  const [stockEntries, setStockEntries] = React.useState([]);
-
-  console.log(
-    "configData",
-    configData.stockentriesDispatcherDepartment.manager
-  );
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const stockEntries = await api.get("/stock");
-        setStockEntries(stockEntries.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [refreshData]);
+  
 
   const tableHeaderRow = [
     {

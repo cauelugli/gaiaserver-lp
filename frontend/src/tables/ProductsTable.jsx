@@ -2,7 +2,6 @@
 import * as React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 
 import {
   Avatar,
@@ -22,11 +21,8 @@ import {
 import EditProductForm from "../forms/edit/EditProductForm";
 import StockTableActions from "../components/small/buttons/tableActionButtons/StockTableActions";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 export default function ProductsTable({
+  products,
   searchValue,
   searchOption,
   refreshData,
@@ -35,20 +31,6 @@ export default function ProductsTable({
 }) {
   const [selectedProduct, setSelectedProduct] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-
-  const [products, setProducts] = React.useState([]);
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const products = await api.get("/products");
-        setProducts(products.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [refreshData]);
 
   const tableHeaderRow = [
     {

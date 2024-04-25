@@ -28,6 +28,8 @@ import TableFilters from "../components/TableFilters";
 import StockTableButton from "../components/small/buttons/tableButtons/StockTableButton";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
+import TableOrCardSelector from "../components/small/TableOrCardSelector";
+import StockCard from "../components/cards/StockCard";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -48,11 +50,15 @@ function CustomTabPanel(props) {
 }
 
 export default function Stock({
+  userId,
   userName,
   userRole,
   userDepartment,
   configTables,
   topBar,
+  tableOrCardView,
+  setUserPreferences,
+  cardSize,
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
@@ -209,6 +215,16 @@ export default function Stock({
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
           />
+          <Grid sx={{ my: "auto", ml: "auto" }}>
+            <TableOrCardSelector
+              userId={userId}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              tableOrCard={tableOrCardView}
+              setUserPreferences={setUserPreferences}
+              cardSize={cardSize}
+            />
+          </Grid>
         </Tabs>
       </Box>
       {configTables.stockProduct && (
@@ -217,24 +233,40 @@ export default function Stock({
             <NoDataText option="Produtos" />
           ) : (
             <>
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[0]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-
-              <ProductsTable
-                searchValue={searchValue}
-                searchOption={searchOption}
-                refreshData={refreshData}
-                setRefreshData={setRefreshData}
-                topBar={topBar}
-              />
+              {tableOrCardView && (
+                <TableFilters
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  searchOption={searchOption}
+                  searchOptionList={searchOptionList[0]}
+                  setSearchOption={setSearchOption}
+                  searchOptionLabel={searchOptionLabel}
+                  setSearchOptionLabel={setSearchOptionLabel}
+                  handleSearchChange={handleSearchChange}
+                />
+              )}
+              {tableOrCardView ? (
+                <ProductsTable
+                  products={products}
+                  searchValue={searchValue}
+                  searchOption={searchOption}
+                  refreshData={refreshData}
+                  setRefreshData={setRefreshData}
+                  topBar={topBar}
+                />
+              ) : (
+                <Grid
+                  sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                  container
+                  spacing={2}
+                >
+                  {products.map((product) => (
+                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
+                      <StockCard key item={product} type="product" />
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
             </>
           )}
         </CustomTabPanel>
@@ -245,24 +277,40 @@ export default function Stock({
             <NoDataText option="Items de Estoque" />
           ) : (
             <>
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[1]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-              <StockTable
-                stockItems={stockItems}
-                searchValue={searchValue}
-                searchOption={searchOption}
-                refreshData={refreshData}
-                setRefreshData={setRefreshData}
-                topBar={topBar}
-              />
+              {tableOrCardView && (
+                <TableFilters
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  searchOption={searchOption}
+                  searchOptionList={searchOptionList[1]}
+                  setSearchOption={setSearchOption}
+                  searchOptionLabel={searchOptionLabel}
+                  setSearchOptionLabel={setSearchOptionLabel}
+                  handleSearchChange={handleSearchChange}
+                />
+              )}
+              {tableOrCardView ? (
+                <StockTable
+                  stockItems={stockItems}
+                  searchValue={searchValue}
+                  searchOption={searchOption}
+                  refreshData={refreshData}
+                  setRefreshData={setRefreshData}
+                  topBar={topBar}
+                />
+              ) : (
+                <Grid
+                  sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                  container
+                  spacing={2}
+                >
+                  {stockItems.map((item) => (
+                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
+                      <StockCard key item={item} type="material"/>
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
             </>
           )}
         </CustomTabPanel>
@@ -281,27 +329,44 @@ export default function Stock({
           <NoDataText option="Entradas de Estoque" femaleGender={true} />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[2]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
-            <StockEntriesTable
-              userName={userName}
-              userRole={userRole}
-              userDepartment={userDepartment}
-              configData={configStock}
-              searchValue={searchValue}
-              searchOption={searchOption}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              topBar={topBar}
-            />
+            {tableOrCardView && (
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[2]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+            )}
+            {tableOrCardView ? (
+              <StockEntriesTable
+                stockEntries={stock}
+                userName={userName}
+                userRole={userRole}
+                userDepartment={userDepartment}
+                configData={configStock}
+                searchValue={searchValue}
+                searchOption={searchOption}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                topBar={topBar}
+              />
+            ) : (
+              <Grid
+                sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                container
+                spacing={2}
+              >
+                {stock.map((item) => (
+                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
+                    <StockCard key item={item} type="entry"/>
+                  </Grid>
+                ))}
+              </Grid>
+            )}
           </>
         )}
       </CustomTabPanel>

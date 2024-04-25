@@ -532,11 +532,15 @@ export default function App() {
                         isAuthenticated(login, userData) &&
                         hasPermission(userData, configData, "stock") ? (
                           <Stock
+                            userId={userData._id}
                             userName={userData.name}
                             userRole={userData.role}
                             userDepartment={userData.department}
                             configTables={configTables}
                             topBar={userPreferences.barPosition}
+                            setUserPreferences={setUserPreferences}
+                            tableOrCardView={userPreferences.tableOrCardView}
+                            cardSize={userPreferences.cardSize}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
