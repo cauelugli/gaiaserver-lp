@@ -29,6 +29,8 @@ import RefreshButton from "../components/small/buttons/RefreshButton";
 import TableFilters from "../components/TableFilters";
 import FinanceIncomeTable from "../tables/FinanceIncomeTable";
 import FinanceOutcomeTable from "../tables/FinanceOutcomeTable";
+import TableOrCardSelector from "../components/small/TableOrCardSelector";
+import FinanceCard from "../components/cards/FinanceCard";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -48,7 +50,13 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Finance({ topBar }) {
+export default function Finance({
+  userId,
+  topBar,
+  setUserPreferences,
+  tableOrCardView,
+  cardSize,
+}) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
@@ -141,6 +149,16 @@ export default function Finance({ topBar }) {
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
           />
+          <Grid sx={{ my: "auto", ml: "auto" }}>
+            <TableOrCardSelector
+              userId={userId}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              tableOrCard={tableOrCardView}
+              setUserPreferences={setUserPreferences}
+              cardSize={cardSize}
+            />
+          </Grid>
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -148,28 +166,43 @@ export default function Finance({ topBar }) {
           <NoDataText option="Contas a Receber" femaleGender={true} />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={"quote"}
-              searchOptionList={searchOptionList[0]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
-
-            <FinanceIncomeTable
-              incoming={incoming}
-              configCustomization={configCustomization}
-              configData={configData}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-              searchValue={searchValue}
-              searchOption={searchOption}
-              topBar={topBar}
-            />
+            {tableOrCardView && (
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={"quote"}
+                searchOptionList={searchOptionList[0]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+            )}
+            {tableOrCardView ? (
+              <FinanceIncomeTable
+                incoming={incoming}
+                configCustomization={configCustomization}
+                configData={configData}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                toast={toast}
+                searchValue={searchValue}
+                searchOption={searchOption}
+                topBar={topBar}
+              />
+            ) : (
+              <Grid
+                sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                container
+                spacing={2}
+              >
+                {incoming.map((item) => (
+                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
+                    <FinanceCard key item={item} type="income" />
+                  </Grid>
+                ))}
+              </Grid>
+            )}
           </>
         )}
       </CustomTabPanel>
@@ -179,28 +212,44 @@ export default function Finance({ topBar }) {
           <NoDataText option="Contas a Pagar" femaleGender={true} />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[1]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
+            {tableOrCardView && (
+              <TableFilters
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchOption={searchOption}
+                searchOptionList={searchOptionList[1]}
+                setSearchOption={setSearchOption}
+                searchOptionLabel={searchOptionLabel}
+                setSearchOptionLabel={setSearchOptionLabel}
+                handleSearchChange={handleSearchChange}
+              />
+            )}
 
-            <FinanceOutcomeTable
-              outcoming={outcoming}
-              configData={configData}
-              configCustomization={configCustomization}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-              searchValue={searchValue}
-              searchOption={searchOption}
-              topBar={topBar}
-            />
+            {tableOrCardView ? (
+              <FinanceOutcomeTable
+                outcoming={outcoming}
+                configData={configData}
+                configCustomization={configCustomization}
+                refreshData={refreshData}
+                setRefreshData={setRefreshData}
+                toast={toast}
+                searchValue={searchValue}
+                searchOption={searchOption}
+                topBar={topBar}
+              />
+            ) : (
+              <Grid
+                sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                container
+                spacing={2}
+              >
+                {outcoming.map((item) => (
+                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
+                    <FinanceCard key item={item} type="outcome" />
+                  </Grid>
+                ))}
+              </Grid>
+            )}
           </>
         )}
       </CustomTabPanel>

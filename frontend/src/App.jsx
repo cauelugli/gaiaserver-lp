@@ -653,7 +653,13 @@ export default function App() {
                       element={
                         isAuthenticated(login, userData) &&
                         hasPermission(userData, configData, "finance") ? (
-                          <Finance topBar={userPreferences.barPosition} />
+                          <Finance
+                            userId={userData._id}
+                            topBar={userPreferences.barPosition}
+                            setUserPreferences={setUserPreferences}
+                            tableOrCardView={userPreferences.tableOrCardView}
+                            cardSize={userPreferences.cardSize}
+                          />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
                             Seu usuário não possui autorização à página.
