@@ -579,32 +579,36 @@ router.put("/addAttachments", async (req, res) => {
     const job = await Job.findById(itemId);
     const interactionNumber = job.interactions.length + 1;
 
-    const updatedJob = await Job.findOneAndUpdate(
-      { _id: itemId },
-      {
-        $set: {
-          attachments: [...job.attachments, ...attachments],
-        },
-        $push: {
-          interactions: {
-            number: interactionNumber,
-            activity: `Colaborador ${userName} anexou ${
-              attachments.length
-            } arquivo${attachments.length === 1 ? "" : "s"} ao Job`,
-            user: userName,
-            date: date,
-            attachments: attachments,
-            reactions: {
-              love: { quantity: 0, usersReacted: [] },
-              like: { quantity: 0, usersReacted: [] },
-              dislike: { quantity: 0, usersReacted: [] },
-              haha: { quantity: 0, usersReacted: [] },
+    let updatedJob;
+
+    if (attachments.length !== 0) {
+      updatedJob = await Job.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            attachments: [...job.attachments, ...attachments],
+          },
+          $push: {
+            interactions: {
+              number: interactionNumber,
+              activity: `Colaborador ${userName} anexou ${
+                attachments.length
+              } arquivo${attachments.length === 1 ? "" : "s"} ao Job`,
+              user: userName,
+              date: date,
+              attachments: attachments,
+              reactions: {
+                love: { quantity: 0, usersReacted: [] },
+                like: { quantity: 0, usersReacted: [] },
+                dislike: { quantity: 0, usersReacted: [] },
+                haha: { quantity: 0, usersReacted: [] },
+              },
             },
           },
         },
-      },
-      { new: true }
-    );
+        { new: true }
+      );
+    }
 
     res
       .status(200)

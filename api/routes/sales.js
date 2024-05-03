@@ -486,33 +486,35 @@ router.put("/addAttachments", async (req, res) => {
     const sale = await Sale.findById(itemId);
     const interactionNumber = sale.interactions.length + 1;
 
-    const updatedSale = await Sale.findOneAndUpdate(
-      { _id: itemId },
-      {
-        $set: {
-          attachments: [...sale.attachments, ...attachments],
-        },
-        $push: {
-          interactions: {
-            number: interactionNumber,
-            activity: `Colaborador ${userName} anexou ${
-              attachments.length
-            } arquivo${attachments.length === 1 ? "" : "s"} à Venda`,
-            user: userName,
-            date: date,
-            attachments: attachments,
-            reactions: {
-              love: { quantity: 0, usersReacted: [] },
-              like: { quantity: 0, usersReacted: [] },
-              dislike: { quantity: 0, usersReacted: [] },
-              haha: { quantity: 0, usersReacted: [] },
+    let updatedSale;
+    if (attachments.length !== 0) {
+      updatedSale = await Sale.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            attachments: [...sale.attachments, ...attachments],
+          },
+          $push: {
+            interactions: {
+              number: interactionNumber,
+              activity: `Colaborador ${userName} anexou ${
+                attachments.length
+              } arquivo${attachments.length === 1 ? "" : "s"} à Venda`,
+              user: userName,
+              date: date,
+              attachments: attachments,
+              reactions: {
+                love: { quantity: 0, usersReacted: [] },
+                like: { quantity: 0, usersReacted: [] },
+                dislike: { quantity: 0, usersReacted: [] },
+                haha: { quantity: 0, usersReacted: [] },
+              },
             },
           },
         },
-      },
-      { new: true }
-    );
-
+        { new: true }
+      );
+    }
     res
       .status(200)
       .json({ message: "Attachments added successfully", sale: updatedSale });
