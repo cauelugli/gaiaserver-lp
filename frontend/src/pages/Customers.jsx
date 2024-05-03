@@ -247,8 +247,14 @@ export default function Customers({
                   container
                   spacing={2}
                 >
-                  {customers.map((customer) => (
-                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
+                  {customers.map((customer, index) => (
+                    <Grid
+                      key={index}
+                      item
+                      md={cardSize}
+                      lg={cardSize}
+                      xl={cardSize}
+                    >
                       <CustomerCard key customer={customer} type="customer" />
                     </Grid>
                   ))}
@@ -297,8 +303,14 @@ export default function Customers({
                 />
               ) : (
                 <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
-                  {clients.map((client) => (
-                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
+                  {clients.map((client, index) => (
+                    <Grid
+                      key={index}
+                      item
+                      md={cardSize}
+                      lg={cardSize}
+                      xl={cardSize}
+                    >
                       <CustomerCard key customer={client} type="client" />
                     </Grid>
                   ))}

@@ -621,6 +621,7 @@ export default function ClientTable({
             selectedItem={selectedClient.recentRequests}
             list
             listTitle="do Cliente"
+            search
           />
         </Dialog>
       )}

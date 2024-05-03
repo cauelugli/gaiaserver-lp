@@ -50,6 +50,7 @@ const ViewDialog = ({
   createObjectURLItem,
   list,
   listTitle,
+  search,
 }) => {
   let isImage;
   let isPdf;
@@ -106,100 +107,102 @@ const ViewDialog = ({
         )}
       </DialogTitle>
 
-      <Grid
-        item
-        sx={{ width: "100%", mt: 1 }}
-        container
-        direction="row"
-        alignItems="center"
-        justifyContent="space-evenly"
-      >
-        <Grid>
-          <TextField
-            placeholder="Pesquise..."
-            size="small"
-            sx={{ mx: 2, mt: 1 }}
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-              endAdornment:
-                searchValue.length > 0 ? (
-                  <InputAdornment position="end">
-                    <ClearIcon
-                      cursor="pointer"
-                      sx={{ color: "#d21404" }}
-                      onClick={() => setSearchValue("")}
-                    />
+      {search && (
+        <Grid
+          item
+          sx={{ width: "100%", mt: 1 }}
+          container
+          direction="row"
+          alignItems="center"
+          justifyContent="space-evenly"
+        >
+          <Grid>
+            <TextField
+              placeholder="Pesquise..."
+              size="small"
+              sx={{ mx: 2, mt: 1 }}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
                   </InputAdornment>
-                ) : (
-                  ""
                 ),
-            }}
-          />
-        </Grid>
-        <Grid item>
-          <Grid container>
-            <Grid>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  format="DD/MM/YYYY"
-                  label={searchDateInitial ? null : "De"}
-                  value={searchDateInitial}
-                  onChange={(newValue) => {
-                    setSearchDateInitial(dayjs(newValue, "DD/MM/YYYY"));
-                  }}
-                  sx={{
-                    // o overwrite do Mui está aqui
-                    "& .MuiInputBase-root": {
-                      mt: 1,
-                      height: 40,
-                      width: 150,
-                    },
-                  }}
-                />
-              </LocalizationProvider>{" "}
-            </Grid>
+                endAdornment:
+                  searchValue.length > 0 ? (
+                    <InputAdornment position="end">
+                      <ClearIcon
+                        cursor="pointer"
+                        sx={{ color: "#d21404" }}
+                        onClick={() => setSearchValue("")}
+                      />
+                    </InputAdornment>
+                  ) : (
+                    ""
+                  ),
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <Grid container>
+              <Grid>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    format="DD/MM/YYYY"
+                    label={searchDateInitial ? null : "De"}
+                    value={searchDateInitial}
+                    onChange={(newValue) => {
+                      setSearchDateInitial(dayjs(newValue, "DD/MM/YYYY"));
+                    }}
+                    sx={{
+                      // o overwrite do Mui está aqui
+                      "& .MuiInputBase-root": {
+                        mt: 1,
+                        height: 40,
+                        width: 150,
+                      },
+                    }}
+                  />
+                </LocalizationProvider>{" "}
+              </Grid>
 
-            <Grid sx={{ mx: 2 }}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  format="DD/MM/YYYY"
-                  label={searchDateFinal ? null : "Até"}
-                  value={searchDateFinal}
-                  onChange={(newValue) => {
-                    setSearchDateFinal(dayjs(newValue, "DD/MM/YYYY"));
+              <Grid sx={{ mx: 2 }}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    format="DD/MM/YYYY"
+                    label={searchDateFinal ? null : "Até"}
+                    value={searchDateFinal}
+                    onChange={(newValue) => {
+                      setSearchDateFinal(dayjs(newValue, "DD/MM/YYYY"));
+                    }}
+                    sx={{
+                      "& .MuiInputBase-root": {
+                        mt: 1,
+                        height: 40,
+                        width: 150,
+                      },
+                    }}
+                  />
+                </LocalizationProvider>{" "}
+              </Grid>
+              <Grid>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  sx={{ mt: 1 }}
+                  onClick={() => {
+                    setSearchDateInitial(null);
+                    setSearchDateFinal(null);
                   }}
-                  sx={{
-                    "& .MuiInputBase-root": {
-                      mt: 1,
-                      height: 40,
-                      width: 150,
-                    },
-                  }}
-                />
-              </LocalizationProvider>{" "}
-            </Grid>
-            <Grid>
-              <Button
-                size="small"
-                variant="outlined"
-                sx={{ mt: 1 }}
-                onClick={() => {
-                  setSearchDateInitial(null);
-                  setSearchDateFinal(null);
-                }}
-              >
-                Limpar
-              </Button>{" "}
+                >
+                  Limpar
+                </Button>{" "}
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      )}
 
       <DialogContent style={{ height: "100%", width: list ? "95%" : "100%" }}>
         {list ? (

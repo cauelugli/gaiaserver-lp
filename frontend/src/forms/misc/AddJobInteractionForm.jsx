@@ -167,41 +167,25 @@ const AddJobInteractionForm = ({
                 <TableHead>
                   <TableRow>
                     <TableCell>
-                      <Typography sx={{ fontSize: 13, color: "#777" }}>
-                        Colaborador
-                      </Typography>
+                      <Typography sx={{ fontSize: 13 }}>Colaborador</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography sx={{ fontSize: 13, color: "#777" }}>
-                        Atividade
-                      </Typography>
+                      <Typography sx={{ fontSize: 13 }}>Atividade</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography sx={{ fontSize: 13, color: "#777" }}>
-                        Anexos
-                      </Typography>
+                      <Typography sx={{ fontSize: 13 }}>Anexos</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography sx={{ fontSize: 13, color: "#777" }}>
-                        Data
-                      </Typography>
+                      <Typography sx={{ fontSize: 13 }}>Data</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography sx={{ fontSize: 13, color: "#777" }}>
-                        Reações
-                      </Typography>
+                      <Typography sx={{ fontSize: 13 }}>Reações</Typography>
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {selectedJob.interactions.map((interaction, index) => (
-                    <TableRow
-                      key={index}
-                      sx={{
-                        backgroundColor:
-                          interaction.number % 2 === 0 ? "#eee" : "white",
-                      }}
-                    >
+                    <TableRow key={index}>
                       <TableCell align="left">
                         <Typography sx={{ fontSize: 13 }}>
                           {interaction.user}

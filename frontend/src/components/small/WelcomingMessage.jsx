@@ -31,7 +31,7 @@ const WelcomingMessage = ({ userName, userGender, showMessage }) => {
           }
           break;
         default:
-          message = ""; 
+          message = "";
           break;
       }
 
@@ -50,7 +50,7 @@ const WelcomingMessage = ({ userName, userGender, showMessage }) => {
       return null;
     } else if (shouldRenderMessage.isActive === "true") {
       return (
-        <Typography sx={{ fontSize: 22, ml: 2, fontWeight: "bold" }}>
+        <Typography sx={{ fontSize: 20, ml: 2, mb: 1, fontWeight: "bold" }}>
           {initialMessage}, {userName}. {finalMessage}
         </Typography>
       );

@@ -92,31 +92,9 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
     setFilteredActivities(filtered);
   }, [searchValue, searchDateInitial, searchDateFinal, recentActivities]);
 
-  const eventStyleGetter = () => {
-    const hexToRGB = (hex) => {
-      let r, g, b;
-      r = parseInt(hex[1] + hex[2], 16);
-      g = parseInt(hex[3] + hex[4], 16);
-      b = parseInt(hex[5] + hex[6], 16);
-      return [r, g, b];
-    };
-
-    const [r, g, b] = hexToRGB(mainColor);
-
-    let style = {
-      backgroundColor: `rgba(${r}, ${g}, ${b}, 0.2)`,
-    };
-
-    return {
-      style: style,
-    };
-  };
-
-  const eventStyle = eventStyleGetter().style;
-
   return (
     <>
-      <Grid sx={{ width: 700, px: 1 }}>
+      <Grid sx={{ width: 700 }}>
         <Grid item>
           <Grid container direction="row" justifyContent="space-between">
             <Grid item>
@@ -124,7 +102,6 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
                 sx={{
                   fontWeight: "bold",
                   fontSize: 18,
-                  ml: 0.5,
                 }}
               >
                 Atividade Recente
@@ -175,10 +152,10 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
           sx={{
             height: selectedHeight,
             width: "auto",
-            border: `1px solid ${mainColor}`,
-            borderRadius: 2,
+            // border: `1px solid ${mainColor}`,
+            // borderRadius: 2,
             overflow: "auto",
-            ...eventStyle,
+            // ...eventStyle,
           }}
         >
           <Grid container direction="column">
@@ -256,8 +233,8 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
             )}
             {filteredActivities.length !== 0 ? (
               filteredActivities.reverse().map((activity) => (
-                <Grid key={activity.id} item sx={{ mt: 1, px: 1 }}>
-                  <Typography sx={{ ml: 1, maxWidth: 650 }}>
+                <Grid key={activity.id} item sx={{ mt: 1 }}>
+                  <Typography sx={{ fontSize: 13, maxWidth: 650 }}>
                     <Typography sx={{ fontSize: 12, color: "grey" }}>
                       {activity.createdAt}
                     </Typography>

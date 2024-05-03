@@ -45,11 +45,6 @@ const Home = ({
 
   return (
     <>
-      <WelcomingMessage
-        userName={userName}
-        userGender={userGender}
-        showMessage={showMessage}
-      />
       <Grid container direction="row">
         <Grid item md={9}>
           <HomeBlock

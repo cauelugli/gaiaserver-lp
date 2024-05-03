@@ -352,6 +352,8 @@ const AddJobForm = ({
     );
   };
 
+  console.log("materialsCost", materialsCost);
+
   return (
     <form onSubmit={handleAdd}>
       <Grid sx={{ ml: 5 }}>
@@ -741,8 +743,9 @@ const AddJobForm = ({
                                         : "R$0.00"}
                                     </Typography>
                                   </Grid>
-                                  {materialsCost && (
+                                  {materialsCost !== 0 && (
                                     <Grid>
+                                      {/* here */}
                                       <Typography>
                                         Materiais{" "}
                                         {service
@@ -751,7 +754,6 @@ const AddJobForm = ({
                                       </Typography>
                                     </Grid>
                                   )}
-                                  {/* <Grid></Grid> */}
                                 </Grid>
                               </TableCell>
                             </TableRow>

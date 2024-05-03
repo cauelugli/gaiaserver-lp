@@ -52,43 +52,49 @@ const optionsMainblocks = [
 
 const optionsRightColumn = [
   {
-    icon: <CalendarMonthIcon sx={{ fontSize: 26 }} />,
+    icon: <CalendarMonthIcon sx={{ fontSize: 22 }} />,
     text: "Agenda",
     link: "/dashboard",
     permissionLabel: "dashboard",
   },
   {
-    icon: <BuildIcon sx={{ fontSize: 26 }} />,
+    icon: <BuildIcon sx={{ fontSize: 22 }} />,
     text: "Serviços",
     link: "/services",
     permissionLabel: "services",
   },
   {
-    icon: <RequestQuoteIcon sx={{ fontSize: 26 }} />,
+    icon: <RequestQuoteIcon sx={{ fontSize: 22 }} />,
     text: "Orçamentos",
     link: "/quotes",
     permissionLabel: "quotes",
   },
   {
-    icon: <WarehouseIcon sx={{ fontSize: 26 }} />,
+    icon: <WarehouseIcon sx={{ fontSize: 22 }} />,
     text: "Estoque",
     link: "/stock",
     permissionLabel: "stock",
   },
   {
-    icon: <InsertDriveFileIcon sx={{ fontSize: 26 }} />,
-    text: "Arquivos",
-    link: "/files",
-    permissionLabel: "files",
+    icon: <WarehouseIcon sx={{ fontSize: 22 }} />,
+    text: "Projetos",
+    link: "/projects",
+    permissionLabel: "projects",
   },
   {
-    icon: <AdminPanelSettingsIcon sx={{ fontSize: 26 }} />,
+    icon: <AdminPanelSettingsIcon sx={{ fontSize: 22 }} />,
     text: "Acessos",
     link: "/security",
     permissionLabel: "security",
   },
   {
-    icon: <SettingsIcon sx={{ fontSize: 26 }} />,
+    icon: <InsertDriveFileIcon sx={{ fontSize: 22 }} />,
+    text: "Arquivos",
+    link: "/files",
+    permissionLabel: "files",
+  },
+  {
+    icon: <SettingsIcon sx={{ fontSize: 22 }} />,
     text: "Configurações",
     link: "/config",
     permissionLabel: "config",
@@ -148,179 +154,186 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
 
   React.useEffect(() => {}, [configData]);
 
+  console.log("allowedListRightColumn.length", allowedListRightColumn.length);
+
   const [hoveredIndexMainblocks, setHoveredIndexMainblocks] = useState(null);
   const [hoveredIndexFourItemsRow, setHoveredIndexFourItemsRow] =
     useState(null);
   const [hoveredIndexRightColumn, setHoveredIndexRightColumn] = useState(null);
 
   return (
-    <Grid container direction="row" justifyContent="space-evenly">
+    <Grid
+      container
+      direction="row"
+      justifyContent={
+        allowedListRightColumn.length === 0 ? "center" : "space-evenly"
+      }
+    >
       <Grid item>
         <Grid container direction="column">
-          <>
-            <Grid
-              container
-              direction="row"
-              alignItems="center"
-              justifyContent="center"
-            >
-              {optionsMainblocks.map((option, index) => {
-                if (allowedListMainblocks.includes(option.permissionLabel)) {
-                  return (
-                    <Grid
-                      item
-                      key={index}
-                      sx={{ m: 2 }}
-                      md={allowedListMainblocks.length === 2 ? 12 : 5}
-                    >
-                      <Link to={option.link} style={{ textDecoration: "none" }}>
-                        <Paper
-                          onMouseEnter={() => setHoveredIndexMainblocks(index)}
-                          onMouseLeave={() => setHoveredIndexMainblocks(null)}
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+          >
+            {optionsMainblocks.map((option, index) => {
+              if (allowedListMainblocks.includes(option.permissionLabel)) {
+                return (
+                  <Grid
+                    item
+                    key={index}
+                    md={allowedListMainblocks.length === 2 ? 12 : 6}
+                  >
+                    <Link to={option.link} style={{ textDecoration: "none" }}>
+                      <Paper
+                        onMouseEnter={() => setHoveredIndexMainblocks(index)}
+                        onMouseLeave={() => setHoveredIndexMainblocks(null)}
+                        sx={{
+                          height: 130,
+                          width: "auto",
+                          transition: "background-color 0.3s, color 0.3s",
+                          backgroundColor:
+                            hoveredIndexMainblocks === index &&
+                            configData &&
+                            configData.customization
+                              ? configData.customization.mainColor
+                              : "white",
+                          color:
+                            hoveredIndexMainblocks === index ? "white" : "#777",
+                        }}
+                      >
+                        <Grid
+                          container
+                          direction="column"
+                          alignItems="center"
+                          justifyContent="center"
                           sx={{
-                            height: 130,
-                            width: "auto",
-                            transition: "background-color 0.3s, color 0.3s",
-                            backgroundColor:
-                              hoveredIndexMainblocks === index &&
-                              configData &&
-                              configData.customization
-                                ? configData.customization.mainColor
-                                : "white",
-                            color:
-                              hoveredIndexMainblocks === index
-                                ? "white"
-                                : "#777",
+                            height: "100%",
+                            cursor: "pointer",
                           }}
                         >
-                          <Grid
-                            container
-                            direction="column"
-                            alignItems="center"
-                            justifyContent="center"
-                            sx={{
-                              height: "100%",
-                              cursor: "pointer",
+                          {option.icon}
+                          <span
+                            style={{
+                              fontSize: 14,
+                              fontWeight: "bold",
+                              fontFamily: "Verdana, sans-serif",
                             }}
                           >
-                            {option.icon}
-                            <span
-                              style={{
-                                fontSize: 18,
-                                fontWeight: "bold",
-                                fontFamily: "Verdana, sans-serif",
-                              }}
-                            >
-                              {option.text}
-                            </span>
-                          </Grid>
-                        </Paper>
-                      </Link>
-                    </Grid>
-                  );
-                } else {
-                  return null;
-                }
-              })}
-            </Grid>
+                            {option.text}
+                          </span>
+                        </Grid>
+                      </Paper>
+                    </Link>
+                  </Grid>
+                );
+              } else {
+                return null;
+              }
+            })}
+          </Grid>
 
-            <Grid
-              container
-              direction="row"
-              sx={{ my: 2 }}
-              justifyContent="space-between"
-            >
-              {optionsFourItemsRow.map((option, index) => {
-                if (allowedListFourItemsRow.includes(option.permissionLabel)) {
-                  return (
-                    <Grid
-                      item
-                      sx={{ mx: 1 }}
-                      key={index}
-                      onMouseEnter={() => setHoveredIndexFourItemsRow(index)}
-                      onMouseLeave={() => setHoveredIndexFourItemsRow(null)}
-                    >
-                      <Link to={option.link} style={{ textDecoration: "none" }}>
-                        <Paper
+          <Grid
+            container
+            direction="row"
+            sx={{ my: 2 }}
+            justifyContent="space-between"
+          >
+            {optionsFourItemsRow.map((option, index) => {
+              if (allowedListFourItemsRow.includes(option.permissionLabel)) {
+                return (
+                  <Grid
+                    item
+                    key={index}
+                    onMouseEnter={() => setHoveredIndexFourItemsRow(index)}
+                    onMouseLeave={() => setHoveredIndexFourItemsRow(null)}
+                  >
+                    <Link to={option.link} style={{ textDecoration: "none" }}>
+                      <Paper
+                        sx={{
+                          width: 120,
+                          py: 1,
+                          px: 2,
+                          transition: "background-color 0.3s, color 0.3s",
+                          backgroundColor:
+                            hoveredIndexFourItemsRow === index
+                              ? "white"
+                              : configData && configData.customization
+                              ? configData.customization.mainColor
+                              : "white",
+                          color:
+                            hoveredIndexFourItemsRow === index
+                              ? "#777"
+                              : "white",
+                        }}
+                      >
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                          justifyContent="center"
                           sx={{
-                            width: 120,
-                            py: 1,
-                            px: 2,
-                            transition: "background-color 0.3s, color 0.3s",
-                            backgroundColor:
-                              hoveredIndexFourItemsRow === index
-                                ? "white"
-                                : configData && configData.customization
-                                ? configData.customization.mainColor
-                                : "white",
-                            color:
-                              hoveredIndexFourItemsRow === index
-                                ? "#777"
-                                : "white",
+                            cursor: "pointer",
                           }}
                         >
-                          <Grid
-                            container
-                            direction="row"
-                            alignItems="center"
-                            justifyContent="center"
-                            sx={{
-                              cursor: "pointer",
+                          {option.icon}
+                          <span
+                            style={{
+                              fontSize: 14,
+                              marginLeft: 5,
+                              fontWeight: "bold",
+                              fontFamily: "Verdana, sans-serif",
                             }}
                           >
-                            {option.icon}
-                            <span
-                              style={{
-                                fontSize: 16,
-                                fontWeight: "bold",
-                                fontFamily: "Verdana, sans-serif",
-                              }}
-                            >
-                              {option.text}
-                            </span>
-                          </Grid>
-                        </Paper>
-                      </Link>
-                    </Grid>
-                  );
-                }
-              })}
-            </Grid>
+                            {option.text}
+                          </span>
+                        </Grid>
+                      </Paper>
+                    </Link>
+                  </Grid>
+                );
+              }
+            })}
+          </Grid>
 
-            <Grid container>
-              <HomeRecentActivity
-                userUsername={userUsername}
-                mainColor={
-                  configData.customization && configData.customization.mainColor
-                }
-              />
-            </Grid>
-          </>
+          <Grid container>
+            <HomeRecentActivity
+              userUsername={userUsername}
+              mainColor={
+                configData.customization && configData.customization.mainColor
+              }
+            />
+          </Grid>
         </Grid>
       </Grid>
       <Grid item>
         <Grid container direction="column">
-          <Grid item xs={12} md={3} justifyContent="center" alignItems="center">
+          <Grid item justifyContent="center" alignItems="center">
             <Grid
               container
               direction="column"
               justifyContent="center"
               alignItems="center"
-              rowSpacing={4}
+              rowSpacing={2}
             >
               {optionsRightColumn.map((option, index) => {
                 if (allowedListRightColumn.includes(option.permissionLabel)) {
                   return (
-                    <Grid item key={index} xs={3}>
-                      <Link to={option.link} style={{ textDecoration: "none" }}>
+                    <Grid item key={index}>
+                      <Link
+                        to={option.link}
+                        style={{
+                          textDecoration: "none",
+                        }}
+                      >
                         <Paper
                           onMouseEnter={() => setHoveredIndexRightColumn(index)}
                           onMouseLeave={() => setHoveredIndexRightColumn(null)}
                           sx={{
-                            height: 20,
-                            width: 220,
-                            py: 2,
-                            mx: 1.5,
+                            width: 180,
+                            py: 1,
+                            mx: 1,
                             transition: "background-color 0.3s, color 0.3s",
                             backgroundColor:
                               hoveredIndexRightColumn === index
