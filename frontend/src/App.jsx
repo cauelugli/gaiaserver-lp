@@ -469,6 +469,7 @@ export default function App() {
                           <Departments
                             userId={userData._id}
                             userName={userData.name}
+                            configData={configData}
                             configTables={configTables}
                             topBar={userPreferences.barPosition}
                             setUserPreferences={setUserPreferences}

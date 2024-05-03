@@ -44,6 +44,7 @@ function CustomTabPanel(props) {
 }
 
 export default function Departments({
+  configData,
   userName,
   userId,
   topBar,
@@ -277,15 +278,24 @@ export default function Departments({
                 container
                 spacing={2}
               >
-                {serviceDepartments.map((department) => (
-                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
+                {serviceDepartments.map((department, index) => (
+                  <Grid
+                    key={index}
+                    item
+                    md={cardSize}
+                    lg={cardSize}
+                    xl={cardSize}
+                  >
                     <DepartmentCard
-                      key
                       department={department}
+                      configData={configData}
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
                       users={allUsers.map((user) => ({
                         _id: user._id,
                         image: user.image,
                       }))}
+                      managers={managers}
                     />
                   </Grid>
                 ))}
@@ -332,15 +342,24 @@ export default function Departments({
                 container
                 spacing={2}
               >
-                {saleDepartments.map((department) => (
-                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
+                {saleDepartments.map((department, index) => (
+                  <Grid
+                    item
+                    key={index}
+                    md={cardSize}
+                    lg={cardSize}
+                    xl={cardSize}
+                  >
                     <DepartmentCard
-                      key
                       department={department}
+                      configData={configData}
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
                       users={allUsers.map((user) => ({
                         _id: user._id,
                         image: user.image,
                       }))}
+                      managers={managers}
                     />
                   </Grid>
                 ))}
@@ -388,15 +407,24 @@ export default function Departments({
                   container
                   spacing={2}
                 >
-                  {internalDepartments.map((department) => (
-                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
+                  {internalDepartments.map((department, index) => (
+                    <Grid
+                      item
+                      key={index}
+                      md={cardSize}
+                      lg={cardSize}
+                      xl={cardSize}
+                    >
                       <DepartmentCard
-                        key
                         department={department}
+                        configData={configData}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
                         users={allUsers.map((user) => ({
                           _id: user._id,
                           image: user.image,
                         }))}
+                        managers={managers}
                       />
                     </Grid>
                   ))}
@@ -449,16 +477,30 @@ export default function Departments({
                 topBar={topBar}
               />
             ) : (
-              <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
-                {groups.map((group) => (
-                  <Grid key item md={3} lg={3} xl={2}>
+              <Grid
+                sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                container
+                rowSpacing={2}
+              >
+                {groups.map((group, index) => (
+                  <Grid
+                    item
+                    key={index}
+                    md={cardSize}
+                    lg={cardSize}
+                    xl={cardSize}
+                  >
                     <DepartmentCard
-                      key
                       group={group}
+                      configData={configData}
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
                       users={allUsers.map((user) => ({
                         _id: user._id,
                         image: user.image,
                       }))}
+                      managers={managers}
+                      allUsers={allUsers}
                     />
                   </Grid>
                 ))}

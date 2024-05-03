@@ -1,33 +1,47 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
-import dayjs from "dayjs";
+import { toast } from "react-toastify";
 
 import {
   Avatar,
-  Button,
   Card,
   CardActions,
   CardContent,
+  Dialog,
   Grid,
   Paper,
   Tooltip,
   Typography,
 } from "@mui/material";
 
-export default function DepartmentCard({ department, group, users }) {
+import DepartmentTableActions from "../small/buttons/tableActionButtons/DepartmentTableActions";
+import EditDepartmentForm from "../../forms/edit/EditDepartmentForm";
+import GroupTableActions from "../small/buttons/tableActionButtons/GroupTableActions";
+import EditGroupMembersForm from "../../forms/edit/EditGroupMembersForm";
+import EditGroupRenameForm from "../../forms/edit/EditGroupRenameForm";
+
+export default function DepartmentCard({
+  configData,
+  department,
+  group,
+  users,
+  managers,
+  refreshData,
+  setRefreshData,
+  allUsers
+}) {
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const [openRename, setRename] = React.useState(false);
+  const [openEditMembers, setOpenEditMembers] = React.useState(false);
+
   return (
     <Card elevation={3}>
       <CardContent>
         {/* title */}
         {department && (
           <>
-            <Grid
-              container
-              direction="row"
-              alignItems="center"
-              sx={{ mb: 1 }}
-            >
+            <Grid container direction="row" alignItems="center" sx={{ mb: 1 }}>
               <Paper
                 elevation={0}
                 sx={{
@@ -120,9 +134,82 @@ export default function DepartmentCard({ department, group, users }) {
         {/* content */}
       </CardContent>
       <CardActions sx={{ mt: -1 }}>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+        <Grid container justifyContent="center">
+          {department && (
+            <DepartmentTableActions
+              configData={configData.departments}
+              setOpenEdit={setOpenEdit}
+              selectedItem={department}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+            />
+          )}
+          {group && (
+            <GroupTableActions
+              configData={configData.groups}
+              setRename={setRename}
+              setOpenEditMembers={setOpenEditMembers}
+              selectedItem={group}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+            />
+          )}
+        </Grid>
       </CardActions>
+      {openEdit && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditDepartmentForm
+            openEdit={openEdit}
+            users={users}
+            managers={managers}
+            selectedDepartment={department}
+            setOpenEdit={setOpenEdit}
+            setRefreshData={setRefreshData}
+            refreshData={refreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openRename && (
+        <Dialog
+          fullWidth
+          maxWidth="xs"
+          open={openRename}
+          onClose={() => setRename(!openRename)}
+        >
+          <EditGroupRenameForm
+            setRename={setRename}
+            selectedGroup={group}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+
+      {openEditMembers && (
+        <Dialog
+          fullWidth
+          maxWidth="xs"
+          open={openEditMembers}
+          onClose={() => setOpenEditMembers(!openEditMembers)}
+        >
+          <EditGroupMembersForm
+            openEdit={openEditMembers}
+            users={allUsers}
+            selectedGroup={group}
+            setOpenEditMembers={setOpenEditMembers}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
     </Card>
   );
 }

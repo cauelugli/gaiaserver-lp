@@ -37,7 +37,6 @@ export default function GroupTable({
   const [selectedGroup, setSelectedGroup] = React.useState("");
   const [openRename, setRename] = React.useState(false);
   const [openEditMembers, setOpenEditMembers] = React.useState(false);
-  console.log("groups", groups);
 
   const tableHeaderRow = [
     {
