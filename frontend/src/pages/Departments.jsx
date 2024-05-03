@@ -176,7 +176,7 @@ export default function Departments({
   }
 
   return (
-    <Box>
+    <Box sx={{ minHeight: "50vw" }}>
       <Grid
         container
         direction="row"

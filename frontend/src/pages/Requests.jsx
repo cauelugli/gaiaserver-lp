@@ -153,7 +153,7 @@ export default function Requests({
   }
 
   return (
-    <Box>
+    <Box sx={{ minHeight: "50vw" }}>
       <Grid
         container
         direction="row"

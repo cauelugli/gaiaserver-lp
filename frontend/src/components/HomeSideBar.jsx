@@ -9,7 +9,7 @@ import NewsBox from "./small/NewsBox";
 
 const HomeSideBar = ({ userId, handleShortcutClick, allowedLinks }) => {
   return (
-    <Grid sx={{ mx: 1 }}>
+    <Grid>
       <UserShortcuts
         userId={userId}
         onShortcutClick={handleShortcutClick}

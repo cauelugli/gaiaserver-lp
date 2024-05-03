@@ -154,8 +154,6 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
 
   React.useEffect(() => {}, [configData]);
 
-  console.log("allowedListRightColumn.length", allowedListRightColumn.length);
-
   const [hoveredIndexMainblocks, setHoveredIndexMainblocks] = useState(null);
   const [hoveredIndexFourItemsRow, setHoveredIndexFourItemsRow] =
     useState(null);

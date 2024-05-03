@@ -45,7 +45,11 @@ const Home = ({
 
   return (
     <>
-      <Grid container direction="row">
+      <Grid
+        container
+        direction="row"
+        sx={{ width: "105%", minHeight: "50vw" }}
+      >
         <Grid item md={9}>
           <HomeBlock
             userUsername={userUsername}
