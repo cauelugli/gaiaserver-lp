@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import {
+  Avatar,
   Button,
   Card,
   CardActions,
@@ -16,18 +17,19 @@ import {
 export default function UserCard({ user, type }) {
   return (
     <Card sx={{ maxWidth: 290 }} elevation={3}>
-      <CardMedia
+      <Avatar
         sx={{
+          width: 100, 
           height: 100,
-          width: "100%",
-          objectFit: "contain",
+          margin: "auto",
+          mt: 2, 
         }}
-        image={
+        src={
           user.image
             ? `http://localhost:3000/static/${user.image}`
             : `http://localhost:3000/static/images/default_userPicture.png`
         }
-        component="img"
+        alt={user.name}
       />
       <CardContent>
         <Typography gutterBottom variant="h6">
