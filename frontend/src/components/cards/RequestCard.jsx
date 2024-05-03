@@ -1,20 +1,119 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import { io } from "socket.io-client";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
+const socket = io("http://localhost:3000");
 
 import {
   Avatar,
-  Button,
   Card,
   CardActions,
   CardContent,
+  Dialog,
   Grid,
   Paper,
   Typography,
 } from "@mui/material";
 
-export default function RequestCard({ request, type }) {
+import JobTableActions from "../small/buttons/tableActionButtons/JobTableActions";
+import SaleTableActions from "../small/buttons/tableActionButtons/SaleTableActions";
+import ViewDialog from "../small/ViewDialog";
+import AddAttachmentsForm from "../../forms/misc/AddAttachmentsForm";
+import AddJobInteractionForm from "../../forms/misc/AddJobInteractionForm";
+import EditJobForm from "../../forms/edit/EditJobForm";
+import EditSaleForm from "../../forms/edit/EditSaleForm";
+
+export default function RequestCard({
+  request,
+  type,
+  userId,
+  userName,
+  userRole,
+  refreshData,
+  setRefreshData,
+}) {
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const [openViewDialog, setOpenViewDialog] = React.useState(false);
+  const [openAddInteraction, setOpenAddInteraction] = React.useState(false);
+  const [openAddAttachments, setOpenAddAttachments] = React.useState(false);
+
+  const handleManagerApproval = async () => {
+    try {
+      const requestBody = {
+        jobId: request._id,
+        status: "Aprovado",
+        manager: request.manager,
+        userName,
+        date: dayjs().format("DD/MM/YYYY HH:mm"),
+      };
+      const res = await api.put("/jobs/managerApproval", requestBody);
+      if (res.data) {
+        toast.success("Job Aprovado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+        setRefreshData(!refreshData);
+      }
+    } catch (err) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+      console.error(err);
+    }
+  };
+
+  const handleRequestApproval = async () => {
+    try {
+      const requestBody = {
+        user: userName,
+        jobId: request._id,
+        jobManager: request.manager.name,
+        date: dayjs().format("DD/MM/YYYY HH:mm"),
+      };
+      const res = await api.put("/jobs/requestApproval", requestBody);
+
+      if (res.data) {
+        toast.success("Aprovação Solicitada!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+        socket.emit("requestApproval", {
+          sender: userName,
+          receiver: request.manager.name,
+          job: request,
+          date: dayjs(Date.now()).format("DD/MM/YYYY HH:mm"),
+        });
+        setRefreshData(!refreshData);
+      }
+    } catch (err) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+    }
+  };
+
+  const addInteractionToJob = () => {
+    setRefreshData(!refreshData);
+  };
+
   return (
     <Card sx={{ maxWidth: 290 }} elevation={3}>
       <CardContent>
@@ -109,9 +208,122 @@ export default function RequestCard({ request, type }) {
         )}
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+        <Grid container justifyContent="center">
+          {type === "job" ? (
+            <JobTableActions
+              fromCard
+              userName={userName}
+              userRole={userRole}
+              selectedItem={request}
+              job={request}
+              handleManagerApproval={handleManagerApproval}
+              handleRequestApproval={handleRequestApproval}
+              handleOpenEdit={() => setOpenEdit(!openEdit)}
+              handleOpenAddJobInteraction={setOpenAddInteraction}
+              handleOpenAddAttachment={setOpenAddAttachments}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+            />
+          ) : (
+            <SaleTableActions
+              fromCard
+              userName={userName}
+              selectedItem={request}
+              sale={request}
+              handleOpenEdit={() => setOpenEdit(!openEdit)}
+              handleOpenAddSaleInteraction={setOpenAddInteraction}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+            />
+          )}
+        </Grid>
       </CardActions>
+
+      {openEdit && type === "job" && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditJobForm
+            openEditJob={openEdit}
+            selectedJob={request}
+            setOpenEditJob={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openEdit && type === "sale" && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditSaleForm
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+            selectedSale={request}
+            setOpenAddSale={setOpenEdit}
+          />
+        </Dialog>
+      )}
+      {openAddInteraction && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openAddInteraction}
+          onClose={() => setOpenAddInteraction(!openAddInteraction)}
+        >
+          <AddJobInteractionForm
+            userId={userId}
+            fromSales={type === "sale" && true}
+            userName={userName}
+            openEditJob={openAddInteraction}
+            selectedJob={request}
+            setOpenEditJob={setOpenAddInteraction}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+            addInteractionToJob={addInteractionToJob}
+          />
+        </Dialog>
+      )}
+      {openAddAttachments && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddAttachments}
+          onClose={() => setOpenAddAttachments(!openAddAttachments)}
+        >
+          <AddAttachmentsForm
+            userName={userName}
+            selectedJob={request}
+            setOpenAddAttachments={setOpenAddAttachments}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+            endpoint="jobs"
+          />
+        </Dialog>
+      )}
+      {openViewDialog && (
+        <Dialog
+          open={openViewDialog}
+          onClose={() => setOpenViewDialog(false)}
+          fullWidth
+          maxWidth="lg"
+        >
+          <ViewDialog
+            selectedItem={request}
+            setOpenViewDialog={setOpenViewDialog}
+          />
+        </Dialog>
+      )}
     </Card>
   );
 }

@@ -54,7 +54,7 @@ export default function SaleTable({
   sales,
   refreshData,
   setRefreshData,
-  topBar
+  topBar,
 }) {
   const [userReactions, setUserReactions] = React.useState({});
   const [activity, setActivity] = React.useState("");
@@ -384,17 +384,7 @@ export default function SaleTable({
               })
               .map((sale) => (
                 <>
-                  <TableRow
-                    key={sale._id}
-                    sx={{
-                      cursor: "pointer",
-                      backgroundColor:
-                        selectedSale._id === sale._id && openDetail
-                          ? "#eee"
-                          : "none",
-                      "&:hover": { backgroundColor: "#ccc " },
-                    }}
-                  >
+                  <TableRow key={sale._id} sx={{ cursor: "pointer" }}>
                     <TableCell
                       onClick={() => handleOpenDetail(sale)}
                       cursor="pointer"
@@ -700,7 +690,6 @@ export default function SaleTable({
                                           mt: 2,
                                           fontSize: 18,
                                           fontWeight: "bold",
-                                          color: "#333",
                                         }}
                                       >
                                         Total ({sale.items.length} produtos) =
@@ -936,15 +925,7 @@ export default function SaleTable({
                               </TableHead>
                               <TableBody>
                                 {sale.interactions.map((interaction, index) => (
-                                  <TableRow
-                                    key={index}
-                                    sx={{
-                                      backgroundColor:
-                                        interaction.number % 2 === 0
-                                          ? "#eee"
-                                          : "white",
-                                    }}
-                                  >
+                                  <TableRow key={index}>
                                     <TableCell align="left">
                                       <Typography sx={{ fontSize: 13 }}>
                                         {interaction.user}

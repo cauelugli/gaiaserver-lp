@@ -248,9 +248,23 @@ export default function Requests({
                   container
                   spacing={2}
                 >
-                  {jobs.map((job) => (
-                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                      <RequestCard key request={job} type="job" />
+                  {jobs.map((job, index) => (
+                    <Grid
+                      key={index}
+                      item
+                      md={cardSize}
+                      lg={cardSize}
+                      xl={cardSize}
+                    >
+                      <RequestCard
+                        userId={userId}
+                        userName={userName}
+                        userRole={userRole}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                        request={job}
+                        type="job"
+                      />
                     </Grid>
                   ))}
                 </Grid>
@@ -296,9 +310,23 @@ export default function Requests({
                   container
                   spacing={2}
                 >
-                  {sales.map((sale) => (
-                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                      <RequestCard key request={sale} type="sale" />
+                  {sales.map((sale, index) => (
+                    <Grid
+                      key={index}
+                      item
+                      md={cardSize}
+                      lg={cardSize}
+                      xl={cardSize}
+                    >
+                      <RequestCard
+                        userId={userId}
+                        userName={userName}
+                        userRole={userRole}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                        request={sale}
+                        type="sale"
+                      />
                     </Grid>
                   ))}
                 </Grid>

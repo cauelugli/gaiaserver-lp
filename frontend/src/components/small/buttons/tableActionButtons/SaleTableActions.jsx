@@ -65,7 +65,7 @@ export default function SaleTableActions(props) {
         onClick={handleClick}
         sx={{ "&:hover": { borderColor: "#eee" } }}
       >
-        <MenuIcon sx={{ color: "#888" }} />
+        <MenuIcon sx={{ color: "#888", pr: props.fromCard ? 0 : 3 }} />
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <List sx={{ width: 210 }}>
