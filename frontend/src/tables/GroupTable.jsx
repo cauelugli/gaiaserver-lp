@@ -146,10 +146,7 @@ export default function GroupTable({
                 })
                 .map((group) => (
                   <>
-                    <TableRow
-                      key={group._id}
-                      sx={{ "&:hover": { backgroundColor: "#eee " } }}
-                    >
+                    <TableRow key={group._id}>
                       <TableCell>
                         <Typography sx={{ fontSize: 13 }}>
                           {group.name}
