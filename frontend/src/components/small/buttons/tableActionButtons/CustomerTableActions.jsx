@@ -59,7 +59,7 @@ export default function CustomerTableActions(props) {
   return (
     <div>
       <Button size="small" onClick={handleClick}>
-        <MenuIcon sx={{ color: "#888", mr: 3 }} />
+        <MenuIcon sx={{ color: "#888", pr: props.fromCard ? 0 : 3 }} />
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <List sx={{ width: 200 }}>

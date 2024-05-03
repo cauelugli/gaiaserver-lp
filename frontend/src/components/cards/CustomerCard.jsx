@@ -1,18 +1,38 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
+import { toast } from "react-toastify";
 
 import {
   Avatar,
-  Button,
   Card,
   CardActions,
   CardContent,
   CardMedia,
+  Dialog,
+  Grid,
   Typography,
 } from "@mui/material";
 
-export default function CustomerCard({ customer, type }) {
+import CustomerTableActions from "../small/buttons/tableActionButtons/CustomerTableActions";
+import ViewDialog from "../small/ViewDialog";
+import EditClientForm from "../../forms/edit/EditClientForm";
+import EditCustomerForm from "../../forms/edit/EditCustomerForm";
+
+export default function CustomerCard({
+  customer,
+  type,
+  userName,
+  configData,
+  configAgenda,
+  configNotifications,
+  configNotificationsBooleans,
+  refreshData,
+  setRefreshData,
+}) {
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const [openViewDialog, setOpenViewDialog] = React.useState(false);
+
   return (
     <Card elevation={3}>
       {type === "client" ? (
@@ -66,9 +86,73 @@ export default function CustomerCard({ customer, type }) {
         )}
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+        <Grid container justifyContent="center">
+          <CustomerTableActions
+            userName={userName}
+            customer={customer}
+            selectedItem={customer}
+            configAgenda={configAgenda}
+            configNotifications={configNotifications}
+            configNotificationsBooleans={configNotificationsBooleans}
+            setOpenEdit={setOpenEdit}
+            setOpenViewDialog={setOpenViewDialog}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            fromCard
+          />
+        </Grid>
       </CardActions>
+      {openViewDialog && (
+        <Dialog
+          open={openViewDialog}
+          onClose={() => setOpenViewDialog(false)}
+          fullWidth
+          maxWidth="lg"
+        >
+          <ViewDialog
+            setOpenViewDialog={setOpenViewDialog}
+            selectedItem={customer.recentRequests}
+            list
+            listTitle="do Cliente"
+            search
+          />
+        </Dialog>
+      )}
+      {openEdit && type === "client" && (
+        <Dialog
+          fullWidth
+          maxWidth="xs"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditClientForm
+            openEdit={openEdit}
+            selectedClient={customer}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openEdit && type === "customer" && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditCustomerForm
+            openEdit={openEdit}
+            config={configData}
+            selectedCustomer={customer}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
     </Card>
   );
 }

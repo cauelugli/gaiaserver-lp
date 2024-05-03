@@ -255,7 +255,19 @@ export default function Customers({
                       lg={cardSize}
                       xl={cardSize}
                     >
-                      <CustomerCard key customer={customer} type="customer" />
+                      <CustomerCard
+                        customer={customer}
+                        type="customer"
+                        userName={userName}
+                        configData={config}
+                        configAgenda={configAgenda}
+                        configNotifications={configNotifications}
+                        configNotificationsBooleans={
+                          configNotificationsBooleans
+                        }
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                      />
                     </Grid>
                   ))}
                 </Grid>
@@ -311,7 +323,18 @@ export default function Customers({
                       lg={cardSize}
                       xl={cardSize}
                     >
-                      <CustomerCard key customer={client} type="client" />
+                      <CustomerCard
+                        customer={client}
+                        type="client"
+                        userName={userName}
+                        configAgenda={configAgenda}
+                        configNotifications={configNotifications}
+                        configNotificationsBooleans={
+                          configNotificationsBooleans
+                        }
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                      />
                     </Grid>
                   ))}
                 </Grid>
