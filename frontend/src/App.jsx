@@ -400,6 +400,7 @@ export default function App() {
                         isAuthenticated(login, userData) &&
                         hasPermission(userData, configData, "users") ? (
                           <Users
+                            configData={configData}
                             userName={userData.name}
                             userId={userData._id}
                             topBar={userPreferences.barPosition}

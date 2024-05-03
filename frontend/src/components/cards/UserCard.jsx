@@ -1,28 +1,46 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
+import { toast } from "react-toastify";
 
 import {
   Avatar,
-  Button,
   Card,
   CardActions,
   CardContent,
-  CardMedia,
+  Dialog,
   Grid,
   Paper,
   Typography,
 } from "@mui/material";
 
-export default function UserCard({ user, type }) {
+import ManagerTableActions from "../small/buttons/tableActionButtons/ManagerTableActions";
+import UserTableActions from "../small/buttons/tableActionButtons/UserTableActions";
+
+import EditUserForm from "../../forms/edit/EditUserForm";
+import EditManagerForm from "../../forms/edit/EditManagerForm";
+import ViewUserDetails from "../../forms/misc/ViewUserDetails";
+
+export default function UserCard({
+  user,
+  departments,
+  positions,
+  type,
+  refreshData,
+  setRefreshData,
+  configData,
+}) {
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const [openDetails, setOpenDetails] = React.useState(false);
+
   return (
     <Card sx={{ maxWidth: 290 }} elevation={3}>
       <Avatar
         sx={{
-          width: 100, 
+          width: 100,
           height: 100,
           margin: "auto",
-          mt: 2, 
+          mt: 2,
         }}
         src={
           user.image
@@ -56,9 +74,82 @@ export default function UserCard({ user, type }) {
         <Typography variant="body2">{user.position.name}</Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+        <Grid container justifyContent="center">
+          {type === "user" ? (
+            <UserTableActions
+              fromCard
+              userIsActive={user.isActive}
+              configData={configData}
+              setOpenEdit={setOpenEdit}
+              setOpenDetails={setOpenDetails}
+              selectedItem={user}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+            />
+          ) : (
+            <ManagerTableActions
+              fromCard
+              userIsActive={user.isActive}
+              configData={configData}
+              setOpenEdit={setOpenEdit}
+              setOpenDetails={setOpenDetails}
+              selectedItem={user}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+            />
+          )}
+        </Grid>
       </CardActions>
+      {openEdit && type === "user" && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditUserForm
+            openEdit={openEdit}
+            selectedUser={user}
+            departments={departments}
+            positions={positions}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openEdit && type === "manager" && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditManagerForm
+            openEdit={openEdit}
+            positions={positions}
+            selectedManager={user}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openDetails && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openDetails}
+          onClose={() => setOpenDetails(!openDetails)}
+        >
+          <ViewUserDetails
+            selectedUser={user}
+            setOpenDetails={setOpenDetails}
+          />
+        </Dialog>
+      )}
     </Card>
   );
 }

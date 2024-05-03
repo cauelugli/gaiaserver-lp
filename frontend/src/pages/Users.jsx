@@ -46,6 +46,7 @@ function CustomTabPanel(props) {
 }
 
 export default function Users({
+  configData,
   userName,
   userId,
   topBar,
@@ -256,9 +257,23 @@ export default function Users({
                 {" "}
                 {users
                   .filter((user) => user.username !== "admin")
-                  .map((user) => (
-                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                      <UserCard key user={user} type="user" />
+                  .map((user, index) => (
+                    <Grid
+                      item
+                      key={index}
+                      md={cardSize}
+                      lg={cardSize}
+                      xl={cardSize}
+                    >
+                      <UserCard
+                        type="user"
+                        user={user}
+                        departments={departments}
+                        positions={positions}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                        configData={configData}
+                      />
                     </Grid>
                   ))}
               </Grid>
@@ -300,9 +315,23 @@ export default function Users({
                 container
                 spacing={2}
               >
-                {managers.map((manager) => (
-                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                    <UserCard key user={manager} type="manager" />
+                {managers.map((manager, index) => (
+                  <Grid
+                    item
+                    key={index}
+                    md={cardSize}
+                    lg={cardSize}
+                    xl={cardSize}
+                  >
+                    <UserCard
+                      type="manager"
+                      user={manager}
+                      departments={departments}
+                      positions={positions}
+                      configData={configData}
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
+                    />
                   </Grid>
                 ))}
               </Grid>
