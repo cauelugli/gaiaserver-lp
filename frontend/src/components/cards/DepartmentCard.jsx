@@ -191,7 +191,6 @@ export default function DepartmentCard({
           />
         </Dialog>
       )}
-
       {openEditMembers && (
         <Dialog
           fullWidth

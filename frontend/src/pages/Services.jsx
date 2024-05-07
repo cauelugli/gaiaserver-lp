@@ -247,9 +247,24 @@ export default function Services({
                 container
                 spacing={2}
               >
-                {services.map((service) => (
-                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                    <ServiceCard key service={service} />
+                {services.map((service, index) => (
+                  <Grid
+                    item
+                    key={index}
+                    md={cardSize}
+                    lg={cardSize}
+                    xl={cardSize}
+                  >
+                    <ServiceCard
+                      service={service}
+                      configData={configData.services}
+                      selectedItem={service}
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
+                      toast={toast}
+                      departments={departments}
+                      stockItems={stockItems}
+                    />
                   </Grid>
                 ))}
               </Grid>
@@ -293,9 +308,24 @@ export default function Services({
                   container
                   spacing={2}
                 >
-                  {supports.map((service) => (
-                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                      <ServiceCard key service={service} />
+                  {supports.map((service, index) => (
+                    <Grid
+                      item
+                      key={index}
+                      md={cardSize}
+                      lg={cardSize}
+                      xl={cardSize}
+                    >
+                      <ServiceCard
+                        service={service}
+                        configData={configData.services}
+                        selectedItem={service}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                        toast={toast}
+                        departments={departments}
+                        stockItems={stockItems}
+                      />
                     </Grid>
                   ))}
                 </Grid>
@@ -340,9 +370,24 @@ export default function Services({
                   container
                   spacing={2}
                 >
-                  {servicePlans.map((servicePlan) => (
-                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                      <ServiceCard key servicePlan={servicePlan} />
+                  {servicePlans.map((servicePlan, index) => (
+                    <Grid
+                      item
+                      key={index}
+                      md={cardSize}
+                      lg={cardSize}
+                      xl={cardSize}
+                    >
+                      <ServiceCard
+                        servicePlan={servicePlan}
+                        configData=""
+                        selectedItem={servicePlan}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                        toast={toast}
+                        departments={departments}
+                        stockItems={stockItems}
+                      />
                     </Grid>
                   ))}
                 </Grid>

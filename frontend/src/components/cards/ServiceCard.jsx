@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
-// import dayjs from "dayjs";
 
 import {
   Avatar,
@@ -9,12 +8,26 @@ import {
   Card,
   CardActions,
   CardContent,
+  Dialog,
   Grid,
   Paper,
   Typography,
 } from "@mui/material";
+import ServiceTableActions from "../small/buttons/tableActionButtons/ServiceTableActions";
+import EditServiceForm from "../../forms/edit/EditServiceForm";
 
-export default function ServiceCard({ service, servicePlan }) {
+export default function ServiceCard({
+  configData,
+  service,
+  servicePlan,
+  refreshData,
+  setRefreshData,
+  departments,
+  stockItems,
+  toast,
+}) {
+  const [openEdit, setOpenEdit] = React.useState(false);
+
   return (
     <Card elevation={3}>
       <CardContent>
@@ -117,10 +130,39 @@ export default function ServiceCard({ service, servicePlan }) {
           )}
         </>
       </CardContent>
-      <CardActions sx={{ mt: -1 }}>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
-      </CardActions>
+      {service && (
+        <CardActions sx={{ mt: -1 }}>
+          <Grid container justifyContent="center">
+            <ServiceTableActions
+              configData={configData}
+              setOpenEdit={setOpenEdit}
+              selectedItem={service}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+            />
+          </Grid>
+        </CardActions>
+      )}
+      {openEdit && service && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditServiceForm
+            openEdit={openEdit}
+            selectedService={service}
+            previousMaterials={service.materials}
+            departments={departments}
+            stockItems={stockItems}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
     </Card>
   );
 }
