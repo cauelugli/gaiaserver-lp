@@ -123,13 +123,15 @@ export default function StockCard({ item, type, refreshData, setRefreshData }) {
       </CardContent>
       {type !== "entry" && (
         <CardActions sx={{ mt: -1 }}>
-          <StockTableActions
-            type={type === "product" ? "Produto" : "Material"}
-            selectedItem={item}
-            setOpenEdit={setOpenEdit}
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-          />
+          <Grid container justifyContent="center">
+            <StockTableActions
+              type={type === "product" ? "Produto" : "Material"}
+              selectedItem={item}
+              setOpenEdit={setOpenEdit}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+            />
+          </Grid>
         </CardActions>
       )}
       {openEdit && type === "product" && (

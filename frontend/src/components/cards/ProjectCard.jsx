@@ -82,10 +82,7 @@ export default function ProjectCard({ project }) {
           </>
         </Grid>
       </CardContent>
-      <CardActions sx={{ mt: -1 }}>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
-      </CardActions>
+      {/* <CardActions sx={{ mt: -1 }} /> */}
     </Card>
   );
 }
