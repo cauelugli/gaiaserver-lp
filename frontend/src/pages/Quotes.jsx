@@ -192,9 +192,15 @@ export default function Quotes({
               >
                 {quotes
                   .filter((q) => q.type === "job")
-                  .map((quote) => (
-                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                      <QuoteCard key quote={quote} type="job" users={users} />
+                  .map((quote, index) => (
+                    <Grid
+                      item
+                      key={index}
+                      md={cardSize}
+                      lg={cardSize}
+                      xl={cardSize}
+                    >
+                      <QuoteCard quote={quote} type="job" users={users} />
                     </Grid>
                   ))}
               </Grid>
@@ -238,9 +244,15 @@ export default function Quotes({
               >
                 {quotes
                   .filter((q) => q.type === "sale")
-                  .map((quote) => (
-                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                      <QuoteCard key quote={quote} type="sale" users={users} />
+                  .map((quote, index) => (
+                    <Grid
+                      item
+                      key={index}
+                      md={cardSize}
+                      lg={cardSize}
+                      xl={cardSize}
+                    >
+                      <QuoteCard quote={quote} type="sale" users={users} />
                     </Grid>
                   ))}
               </Grid>

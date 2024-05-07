@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import axios from "axios";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 
 import {
@@ -27,12 +26,7 @@ import {
 
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 export default function QuoteTable({
-  // config,
   topBar,
   type,
   searchValue,
@@ -306,7 +300,6 @@ export default function QuoteTable({
                           <PictureAsPdfIcon
                             cursor="pointer"
                             onClick={() => openViewDialog(quote)}
-                            sx={{ color: "#444" }}
                           />
                         </IconButton>
                       </Grid>

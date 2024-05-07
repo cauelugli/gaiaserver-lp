@@ -5,17 +5,56 @@ import * as React from "react";
 
 import {
   Avatar,
+  Box,
   Button,
   Card,
   CardActions,
   CardContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
   Paper,
   Tooltip,
   Typography,
 } from "@mui/material";
 
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import { Viewer, Worker } from "@react-pdf-viewer/core";
+
 export default function QuoteCard({ users, quote, type }) {
+  const [viewDialogOpen, setViewDialogOpen] = React.useState(false);
+  const [pdfUrl, setPdfUrl] = React.useState("");
+
+  const openViewDialog = (file) => {
+    setPdfUrl(
+      `http://localhost:3000/static/docs/orcamento-${type[0]}-${file.number}${
+        file.version !== 0 ? `.${file.version}` : ""
+      }.pdf`
+    );
+    setViewDialogOpen(true);
+  };
+
+  const s = () => {
+    setViewDialogOpen(false);
+  };
+
+  const handlePrint = () => {
+    const printWindow = window.open(pdfUrl, "_blank");
+
+    if (printWindow) {
+      printWindow.onload = function () {
+        printWindow.print();
+        printWindow.onafterprint = function () {
+          printWindow.close();
+        };
+      };
+    } else {
+      console.error("Não foi possível abrir a janela de impressão.");
+    }
+  };
+
   return (
     <Card elevation={3}>
       <CardContent>
@@ -147,10 +186,48 @@ export default function QuoteCard({ users, quote, type }) {
           </Grid>
         </Grid>
       </CardContent>
-      <CardActions sx={{ mt: -3 }}>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+      <CardActions sx={{ mb: 1 }}>
+        <Grid container justifyContent="center">
+          <PictureAsPdfIcon
+            cursor="pointer"
+            onClick={() => openViewDialog(quote)}
+          />
+        </Grid>
       </CardActions>
+      <Dialog
+        open={viewDialogOpen}
+        onClose={() => setViewDialogOpen(false)}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>Visualização do Orçamento</DialogTitle>
+        <DialogContent sx={{ backgroundColor: "#ccc", width: "100%", pl: 6 }}>
+          <Box style={{ height: "auto" }}>
+            <Worker
+              workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+            >
+              <Viewer fileUrl={pdfUrl} />
+            </Worker>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ my: 1, mr: 2 }}>
+          <Button
+            onClick={handlePrint}
+            color="primary"
+            variant="contained"
+            size="small"
+          >
+            Imprimir | Download
+          </Button>
+          <Button
+            onClick={() => setViewDialogOpen(false)}
+            color="primary"
+            size="small"
+          >
+            Fechar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 }
