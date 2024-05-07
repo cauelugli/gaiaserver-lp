@@ -181,6 +181,10 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
                   <Grid
                     item
                     key={index}
+                    sx={{
+                      pr: index === 0 || index === 2 ? 1 : "",
+                      pb: index === 0 || index === 1 ? 1 : "",
+                    }}
                     md={allowedListMainblocks.length === 2 ? 12 : 6}
                   >
                     <Link to={option.link} style={{ textDecoration: "none" }}>
