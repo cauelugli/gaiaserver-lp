@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
+import { toast } from "react-toastify";
 import dayjs from "dayjs";
 
 import {
@@ -9,12 +10,19 @@ import {
   Card,
   CardActions,
   CardContent,
+  Dialog,
   Grid,
   Tooltip,
   Typography,
 } from "@mui/material";
 
-export default function StockCard({ item, type }) {
+import StockTableActions from "../small/buttons/tableActionButtons/StockTableActions";
+import EditStockItemForm from "../../forms/edit/EditStockItemForm";
+import EditProductForm from "../../forms/edit/EditProductForm";
+
+export default function StockCard({ item, type, refreshData, setRefreshData }) {
+  const [openEdit, setOpenEdit] = React.useState(false);
+
   return (
     <Card elevation={3}>
       <CardContent>
@@ -113,10 +121,51 @@ export default function StockCard({ item, type }) {
           )}
         </Grid>
       </CardContent>
-      <CardActions sx={{ mt: -1 }}>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
-      </CardActions>
+      {type !== "entry" && (
+        <CardActions sx={{ mt: -1 }}>
+          <StockTableActions
+            type={type === "product" ? "Produto" : "Material"}
+            selectedItem={item}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+          />
+        </CardActions>
+      )}
+      {openEdit && type === "product" && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditProductForm
+            openEdit={openEdit}
+            selectedProduct={item}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openEdit && type === "material" && (
+        <Dialog
+          fullWidth
+          maxWidth="sm"
+          open={openEdit}
+          onClose={() => setOpenEdit(!openEdit)}
+        >
+          <EditStockItemForm
+            openEdit={openEdit}
+            selectedStockItem={item}
+            setOpenEdit={setOpenEdit}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
     </Card>
   );
 }

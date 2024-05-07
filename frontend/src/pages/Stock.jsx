@@ -260,9 +260,20 @@ export default function Stock({
                   container
                   spacing={2}
                 >
-                  {products.map((product) => (
-                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                      <StockCard key item={product} type="product" />
+                  {products.map((product, index) => (
+                    <Grid
+                      item
+                      key={index}
+                      md={cardSize}
+                      lg={cardSize}
+                      xl={cardSize}
+                    >
+                      <StockCard
+                        item={product}
+                        type="product"
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                      />
                     </Grid>
                   ))}
                 </Grid>
@@ -304,9 +315,20 @@ export default function Stock({
                   container
                   spacing={2}
                 >
-                  {stockItems.map((item) => (
-                    <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                      <StockCard key item={item} type="material"/>
+                  {stockItems.map((item, index) => (
+                    <Grid
+                      item
+                      key={index}
+                      md={cardSize}
+                      lg={cardSize}
+                      xl={cardSize}
+                    >
+                      <StockCard
+                        item={item}
+                        type="material"
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                      />
                     </Grid>
                   ))}
                 </Grid>
@@ -360,9 +382,20 @@ export default function Stock({
                 container
                 spacing={2}
               >
-                {stock.map((item) => (
-                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                    <StockCard key item={item} type="entry"/>
+                {stock.map((item, index) => (
+                  <Grid
+                    item
+                    key={index}
+                    md={cardSize}
+                    lg={cardSize}
+                    xl={cardSize}
+                  >
+                    <StockCard
+                      item={item}
+                      type="entry"
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
+                    />
                   </Grid>
                 ))}
               </Grid>
