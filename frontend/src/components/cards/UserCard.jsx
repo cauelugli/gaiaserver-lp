@@ -69,9 +69,13 @@ export default function UserCard({
               backgroundColor: user.department.color,
             }}
           />
-          <Typography variant="body2">{user.department.name}</Typography>
+          <Typography variant="body2">
+            {user.department ? user.department.name : "-"}
+          </Typography>
         </Grid>
-        <Typography variant="body2">{user.position.name}</Typography>
+        <Typography variant="body2">
+          {user.position ? user.position.name : "-"}
+        </Typography>
       </CardContent>
       <CardActions>
         <Grid container justifyContent="center">

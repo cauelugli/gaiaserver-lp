@@ -22,7 +22,7 @@ const PositionMembers = ({ members, users, managers }) => {
     };
 
     fetchUserDetails();
-  }, [members, allUsers]);
+  }, [members]);
 
   const displayedMembers = members.slice(0, 3);
   const remainingMembersCount = members.length - displayedMembers.length;

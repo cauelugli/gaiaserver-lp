@@ -127,15 +127,15 @@ export default function RoleTable({
       <TableContainer component={Paper}>
         <Table>
           <TableRow>
-            {tableHeaderRow.map((headCell) => (
+            {tableHeaderRow.map((headCell, index) => (
               <TableCell
+                key={index}
                 align={headCell.label === "Nome" ? "" : "center"}
                 sx={{
                   fontSize: 13,
                   fontWeight: "bold",
                   pl: headCell.label === "Nome" ? "" : 5,
                 }}
-                key={headCell.id}
                 sortDirection={orderBy === headCell.id ? order : false}
               >
                 <TableSortLabel
@@ -154,11 +154,8 @@ export default function RoleTable({
                 .toLowerCase()
                 .includes(searchValue.toLowerCase())
             )
-            .map((row) => (
-              <TableRow
-                key={row._id}
-                onClick={() => handleOpenDetail(row)}
-              >
+            .map((row, index) => (
+              <TableRow key={index} onClick={() => handleOpenDetail(row)}>
                 <TableCell onClick={() => handleOpenDetail(row)}>
                   <Typography sx={{ fontSize: 13 }}>{row.name}</Typography>
                 </TableCell>
