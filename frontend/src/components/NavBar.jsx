@@ -31,7 +31,7 @@ export default function NavBar({
             item
             sx={{
               ml: 1,
-              maxWidth: "8%",
+              maxWidth: "10%",
               height: "auto",
               cursor: "pointer",
             }}

@@ -165,7 +165,6 @@ const TopBar = ({ configData, user }) => {
                   sx={{
                     position: "absolute",
                     bottom: -20,
-                    width: "100%",
                     textAlign: "center",
                     fontSize: 13,
                     opacity: hoveredIndex === index ? 1 : 0,
