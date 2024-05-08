@@ -33,7 +33,7 @@ const AddOperatorForm = ({
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [operator, setOperator] = React.useState("");
-  const [role, setRole] = React.useState("Colaborador");
+  const [role, setRole] = React.useState("");
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -114,8 +114,8 @@ const AddOperatorForm = ({
                   </Typography>
                 </MenuItem>
               ) : (
-                operators.map((item) => (
-                  <MenuItem value={item} key={item.id}>
+                operators.map((item, index) => (
+                  <MenuItem value={item} key={index}>
                     <Avatar
                       alt="Imagem do Colaborador"
                       src={`http://localhost:3000/static/${item.image}`}
@@ -136,8 +136,8 @@ const AddOperatorForm = ({
               size="small"
               sx={{ width: 245 }}
             >
-              {roles.map((item) => (
-                <MenuItem value={item} key={item.id}>
+              {roles.map((item, index) => (
+                <MenuItem value={item} key={index}>
                   {item.name}
                 </MenuItem>
               ))}

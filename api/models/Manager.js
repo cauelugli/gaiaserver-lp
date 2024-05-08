@@ -50,6 +50,7 @@ managerSchema = new mongoose.Schema({
   },
   password: {
     type: String,
+    default: "",
   },
   phone: {
     type: String,
@@ -64,6 +65,7 @@ managerSchema = new mongoose.Schema({
   },
   username: {
     type: String,
+    default: "",
   },
 });
 

@@ -139,15 +139,15 @@ export default function OperatorTable({
           <TableBody>
             <TableRow>
               <TableCell padding="checkbox"></TableCell>
-              {tableHeaderRow.map((headCell) => (
+              {tableHeaderRow.map((headCell, index) => (
                 <TableCell
+                  key={index}
                   align={headCell.label === "Nome" ? "" : "center"}
                   sx={{
                     fontSize: 13,
                     fontWeight: "bold",
                     pl: headCell.label === "Nome" ? "" : 5,
                   }}
-                  key={headCell.id}
                   sortDirection={orderBy === headCell.id ? order : false}
                 >
                   <TableSortLabel
@@ -175,11 +175,8 @@ export default function OperatorTable({
                     .includes(searchValue.toLowerCase())
                 );
               })
-              .map((row) => (
-                <TableRow
-                  key={row._id}
-                  sx={{ "&:hover": { backgroundColor: "#eee " } }}
-                >
+              .map((row, index) => (
+                <TableRow key={index}>
                   <TableCell sx={{ py: 0 }}>
                     <Avatar
                       src={`http://localhost:3000/static/${row.image}`}

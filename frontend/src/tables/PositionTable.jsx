@@ -110,8 +110,9 @@ export default function PositionTable({
         <Table>
           <TableBody>
             <TableRow>
-              {tableHeaderRow.map((headCell) => (
+              {tableHeaderRow.map((headCell, index) => (
                 <TableCell
+                  key={index}
                   align={
                     headCell.label === "Nome do Cargo" ||
                     headCell.label === "Departamento"
@@ -123,7 +124,6 @@ export default function PositionTable({
                     fontWeight: "bold",
                     pl: headCell.label === "Nome do Cargo" ? "" : 5,
                   }}
-                  key={headCell.id}
                   sortDirection={orderBy === headCell.id ? order : false}
                 >
                   <TableSortLabel
@@ -146,12 +146,9 @@ export default function PositionTable({
                   itemProperty.toLowerCase().includes(searchValue.toLowerCase())
                 );
               })
-              .map((position) => (
+              .map((position, index) => (
                 <>
-                  <TableRow
-                    key={position._id}
-                    sx={{ "&:hover": { backgroundColor: "#eee " } }}
-                  >
+                  <TableRow key={index}>
                     <TableCell>
                       <Typography sx={{ fontSize: 13 }}>
                         {position.name}
