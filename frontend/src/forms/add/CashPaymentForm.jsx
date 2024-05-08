@@ -92,43 +92,37 @@ export default function CashPaymentForm({
         <Typography sx={{ m: 1, fontSize: 18, fontWeight: "bold" }}>
           Dados do Pagamento
         </Typography>
-        <Box sx={{ px: 1, backgroundColor: "red" }}>
-          <Table size="small" sx={{ backgroundColor: "yellow" }}>
-            <TableHead sx={{ backgroundColor: "pink" }}>
+        <Box sx={{ px: 1 }}>
+          <Table size="small">
+            <TableHead>
               <TableRow>
                 <TableCell>
-                  <Typography sx={{ fontSize: 13, color: "#777" }}>
-                    Valor
-                  </Typography>
+                  <Typography sx={{ fontSize: 13 }}>Valor</Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 13, color: "#777" }}>
-                    Desconto?
-                  </Typography>
+                  <Typography sx={{ fontSize: 13 }}>Desconto?</Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 13, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13 }}>
                     Valor do Desconto
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 13, color: "#777" }}>
-                    Valor Final
-                  </Typography>
+                  <Typography sx={{ fontSize: 13 }}>Valor Final</Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 13, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13 }}>
                     Data de Pagamento
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: 13, color: "#777" }}>
+                  <Typography sx={{ fontSize: 13 }}>
                     Método de Pagamento
                   </Typography>
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody sx={{ backgroundColor: "green" }}>
+            <TableBody>
               <TableRow>
                 <TableCell>
                   R${selectedFinanceIncome.price.toFixed(2)}
@@ -157,7 +151,7 @@ export default function CashPaymentForm({
                 <TableCell align="center">
                   <Typography
                     sx={{ fontSize: 13 }}
-                    color={hasDiscount ? "darkgreen" : "#777"}
+                    color={hasDiscount ? "green" : "#777"}
                   >
                     R$
                     {hasDiscount

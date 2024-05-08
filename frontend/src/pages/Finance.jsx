@@ -196,9 +196,22 @@ export default function Finance({
                 container
                 spacing={2}
               >
-                {incoming.map((item) => (
-                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                    <FinanceCard key item={item} type="income" />
+                {incoming.map((item, index) => (
+                  <Grid
+                    item
+                    key={index}
+                    md={cardSize}
+                    lg={cardSize}
+                    xl={cardSize}
+                  >
+                    <FinanceCard
+                      item={item}
+                      type="income"
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
+                      configData={configData}
+                      configCustomization={configCustomization}
+                    />
                   </Grid>
                 ))}
               </Grid>
@@ -243,9 +256,22 @@ export default function Finance({
                 container
                 spacing={2}
               >
-                {outcoming.map((item) => (
-                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                    <FinanceCard key item={item} type="outcome" />
+                {outcoming.map((item, index) => (
+                  <Grid
+                    item
+                    key={index}
+                    md={cardSize}
+                    lg={cardSize}
+                    xl={cardSize}
+                  >
+                    <FinanceCard
+                      item={item}
+                      type="outcome"
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
+                      configData={configData}
+                      configCustomization={configCustomization}
+                    />
                   </Grid>
                 ))}
               </Grid>

@@ -165,16 +165,7 @@ export default function AddStockProductForm({
               </TableRow>
               {products.map((item) => (
                 <>
-                  <TableRow
-                    key={item._id}
-                    cursor="pointer"
-                    sx={{
-                      backgroundColor: item._id === selectedItemId && "#eee",
-                      "&:hover": {
-                        backgroundColor: "#eee",
-                      },
-                    }}
-                  >
+                  <TableRow key={item._id} cursor="pointer">
                     <TableCell>
                       <Checkbox
                         size="small"
@@ -333,9 +324,7 @@ export default function AddStockProductForm({
                 <li key={item._id}>
                   <Grid container direction="row">
                     <Grid item>
-                      <Typography sx={{ color: "#777", fontSize: 13 }}>
-                        Item:
-                      </Typography>
+                      <Typography sx={{ fontSize: 13 }}>Item:</Typography>
                     </Grid>
                     <Grid item sx={{ ml: 1 }}>
                       <Typography sx={{ fontSize: 13 }}>
@@ -344,9 +333,7 @@ export default function AddStockProductForm({
                       </Typography>
                     </Grid>
                     <Grid item sx={{ ml: 2 }}>
-                      <Typography sx={{ color: "#777", fontSize: 13 }}>
-                        Quantidade:
-                      </Typography>
+                      <Typography sx={{ fontSize: 13 }}>Quantidade:</Typography>
                     </Grid>
                     <Grid item sx={{ ml: 1 }}>
                       <Typography sx={{ fontSize: 13 }}>
@@ -354,7 +341,7 @@ export default function AddStockProductForm({
                       </Typography>
                     </Grid>
                     <Grid item sx={{ ml: 2 }}>
-                      <Typography sx={{ color: "#777", fontSize: 13 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         Valor por Unidade:
                       </Typography>
                     </Grid>
@@ -364,7 +351,7 @@ export default function AddStockProductForm({
                       </Typography>
                     </Grid>
                     <Grid item sx={{ ml: 2 }}>
-                      <Typography sx={{ color: "#777", fontSize: 13 }}>
+                      <Typography sx={{ fontSize: 13 }}>
                         Valor Total:
                       </Typography>
                     </Grid>

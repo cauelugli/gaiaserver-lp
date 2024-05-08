@@ -139,16 +139,7 @@ export default function AddStockForm({
               </TableRow>
               {stockItems.map((item) => (
                 <>
-                  <TableRow
-                    key={item._id}
-                    cursor="pointer"
-                    sx={{
-                      backgroundColor: item._id === selectedItemId && "#eee",
-                      "&:hover": {
-                        backgroundColor: "#eee",
-                      },
-                    }}
-                  >
+                  <TableRow key={item._id} cursor="pointer">
                     <TableCell>
                       <Checkbox
                         size="small"
@@ -281,13 +272,13 @@ export default function AddStockForm({
                 <li key={item._id}>
                   <Grid container direction="row">
                     <Grid item>
-                      <Typography sx={{ color: "#777" }}>Item:</Typography>
+                      <Typography>Item:</Typography>
                     </Grid>
                     <Grid item sx={{ ml: 1 }}>
                       <Typography>{item.name}</Typography>
                     </Grid>
                     <Grid item sx={{ ml: 2 }}>
-                      <Typography sx={{ color: "#777" }}>
+                      <Typography>
                         Quantidade:
                       </Typography>
                     </Grid>
@@ -295,7 +286,7 @@ export default function AddStockForm({
                       <Typography>+{item.selectedQuantity}</Typography>
                     </Grid>
                     <Grid item sx={{ ml: 2 }}>
-                      <Typography sx={{ color: "#777" }}>
+                      <Typography>
                         Valor por Unidade:
                       </Typography>
                     </Grid>
@@ -303,7 +294,7 @@ export default function AddStockForm({
                       <Typography>R$ {item.buyValue}</Typography>
                     </Grid>
                     <Grid item sx={{ ml: 2 }}>
-                      <Typography sx={{ color: "#777" }}>
+                      <Typography >
                         Valor Total:
                       </Typography>
                     </Grid>

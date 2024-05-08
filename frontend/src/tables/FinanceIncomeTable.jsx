@@ -42,10 +42,6 @@ export default function FinanceIncomeTable({
   setRefreshData,
   topBar,
 }) {
-  // const [previousStatus, setPreviousStatus] = React.useState("");
-  // const [newStatus, setNewStatus] = React.useState("");
-  // const [openConfirmChangeStatus, setOpenConfirmChangeStatus] =
-  //   React.useState(false);
   const [selectedFinanceIncome, setSelectedFinanceIncome] = React.useState("");
   const [hoveredIncome, setHoveredIncome] = React.useState(null);
   const [openSchedulePayment, setOpenSchedulePayment] = React.useState(false);
@@ -539,27 +535,6 @@ export default function FinanceIncomeTable({
           />
         </Dialog>
       )}
-      {/* {openConfirmChangeStatus && (
-          <Dialog
-            fullWidth
-            maxWidth="sm"
-            open={openConfirmChangeStatus}
-            onClose={() => setOpenConfirmChangeStatus(!openConfirmChangeStatus)}
-          >
-            <EditStatusForm
-              endpoint={"/finances/status"}
-              selectedItem={selectedFinanceIncome}
-              openEdit={openConfirmChangeStatus}
-              setOpenEdit={setOpenConfirmChangeStatus}
-              prevStatus={previousStatus}
-              configCustomization={configCustomization}
-              newData={newStatus}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              toast={toast}
-            />
-          </Dialog>
-        )} */}
     </Box>
   );
 }

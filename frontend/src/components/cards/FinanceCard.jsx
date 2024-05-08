@@ -1,21 +1,42 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
+import { toast } from "react-toastify";
 import dayjs from "dayjs";
 
 import {
   Avatar,
-  Button,
   Card,
   CardActions,
   CardContent,
+  Dialog,
   Grid,
   Tooltip,
   Typography,
 } from "@mui/material";
 
-export default function FinanceCard({ item, type }) {
-  console.log("item", item);
+import FinanceIncomeTableActions from "../small/buttons/tableActionButtons/FinanceIncomeTableActions";
+import FinanceOutcomeTableActions from "../small/buttons/tableActionButtons/FinanceOutcomeTableActions";
+import AddPaymentScheduleForm from "../../forms/add/AddPaymentScheduleForm";
+import AddParcelPaymentForm from "../../forms/add/AddParcelPaymentForm";
+import ChallengeApproval from "../../forms/misc/ChallengeApproval";
+import CashPaymentForm from "../../forms/add/CashPaymentForm";
+
+export default function FinanceCard({
+  item,
+  type,
+  index,
+  refreshData,
+  setRefreshData,
+  configData,
+  configCustomization,
+}) {
+  const [openSchedulePayment, setOpenSchedulePayment] = React.useState(false);
+  const [openCashPayment, setOpenCashPayment] = React.useState(false);
+  const [openAddParcelPayment, setOpenAddParcelPayment] = React.useState(false);
+  const [openChallengeApproval, setOpenChallengeApproval] =
+    React.useState(false);
+
   return (
     <Card elevation={3}>
       <CardContent>
@@ -30,7 +51,7 @@ export default function FinanceCard({ item, type }) {
             {type === "income" ? (
               <>
                 <Typography variant="body2" sx={{ fontSize: 13 }}>
-                  Tipo: {item.type}
+                  Tipo: {item.type === "job" ? "Job" : "Venda"}
                 </Typography>
                 {item.items.length !== 0 && (
                   <Grid sx={{ my: 2 }}>
@@ -104,10 +125,116 @@ export default function FinanceCard({ item, type }) {
           </Grid>
         </Grid>
       </CardContent>
-      <CardActions sx={{ mt: -3 }}>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
-      </CardActions>
+      {item.status !== "Pago" && (
+        <CardActions sx={{ mt: -3 }}>
+          <Grid container justifyContent="center">
+            {type === "income" ? (
+              <FinanceIncomeTableActions
+                configData={configData}
+                income={item}
+                handleOpenAddSchedulePayment={() =>
+                  setOpenSchedulePayment(!openSchedulePayment)
+                }
+                handleOpenAddCashPayment={() =>
+                  setOpenCashPayment(!openCashPayment)
+                }
+                handleOpenAddParcelPayment={() =>
+                  setOpenAddParcelPayment(!openAddParcelPayment)
+                }
+              />
+            ) : (
+              <FinanceOutcomeTableActions
+                outcome={item}
+                handleOpenAddSchedulePayment={() =>
+                  setOpenSchedulePayment(!openSchedulePayment)
+                }
+                handleOpenAddCashPayment={() =>
+                  setOpenCashPayment(!openCashPayment)
+                }
+                handleOpenAddParcelPayment={() =>
+                  setOpenAddParcelPayment(!openAddParcelPayment)
+                }
+                handleChallengeApproval={() =>
+                  setOpenChallengeApproval(!openChallengeApproval)
+                }
+              />
+            )}
+          </Grid>
+        </CardActions>
+      )}
+      {openAddParcelPayment && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openAddParcelPayment}
+          onClose={() => setOpenAddParcelPayment(!openAddParcelPayment)}
+        >
+          <AddParcelPaymentForm
+            selectedFinanceIncome={item}
+            openEdit={openAddParcelPayment}
+            configCustomization={configCustomization}
+            setOpenEdit={setOpenAddParcelPayment}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openCashPayment && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openCashPayment}
+          onClose={() => setOpenCashPayment(!openCashPayment)}
+        >
+          <CashPaymentForm
+            selectedFinanceIncome={item}
+            openEdit={openCashPayment}
+            setOpenEdit={setOpenCashPayment}
+            configCustomization={configCustomization}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openSchedulePayment && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openSchedulePayment}
+          onClose={() => setOpenSchedulePayment(!openSchedulePayment)}
+        >
+          <AddPaymentScheduleForm
+            openEdit={openSchedulePayment}
+            selectedFinanceIncome={item}
+            previousMaterials={item.materials}
+            setOpenEdit={setOpenSchedulePayment}
+            configCustomization={configCustomization}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+      {openChallengeApproval && type === "outcome" && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openChallengeApproval}
+          onClose={() => setOpenChallengeApproval(!openChallengeApproval)}
+        >
+          <ChallengeApproval
+            selectedFinanceOutcome={item}
+            entry={item.entry}
+            open={openChallengeApproval}
+            setOpen={setOpenChallengeApproval}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
     </Card>
   );
 }
