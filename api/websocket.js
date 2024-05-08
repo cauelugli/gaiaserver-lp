@@ -14,7 +14,6 @@ const initSocket = (server) => {
   const userSocketMap = {};
 
   io.on("connection", (socket) => {
-    // console.log(`Socket connected: ${socket.id}`);
     socket.on("userId", (userId) => {
       userSocketMap[userId] = socket.id;
     });
@@ -25,6 +24,10 @@ const initSocket = (server) => {
 
     socket.on("forceRefresh", () => {
       io.emit("forceRefresh");
+    });
+
+    socket.on("newDataRefreshButton", (page) => {
+      io.emit("newDataRefreshButton", page);
     });
 
     socket.on("recentActivityRefresh", () => {
