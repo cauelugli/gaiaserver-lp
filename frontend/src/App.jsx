@@ -91,7 +91,6 @@ export default function App() {
   const [departments, setDepartments] = useState([]);
   const [positions, setPositions] = useState([]);
   const [allowedLinks, setAllowedLinks] = useState([]);
-  const [userKey, setUserKey] = useState(0);
   const login = JSON.parse(sessionStorage.getItem("login"));
   const userData = JSON.parse(sessionStorage.getItem("userData"));
   const [shortcutModalState, setShortcutModalState] = useState({
@@ -189,28 +188,6 @@ export default function App() {
     fetchData();
   }, [refreshData]);
 
-  // this cleans up userData if located at login, might cause bug issues, reopen the browser and good
-  useEffect(() => {
-    if (window.location.pathname === "/login") {
-      sessionStorage.clear();
-    }
-  }, []);
-
-  // keeps userData as user navigates, kinda works as a context
-  useEffect(() => {
-    const handleUnload = () => {
-      if (login && userData) {
-        sessionStorage.setItem("keepData", "true");
-      }
-    };
-
-    window.addEventListener("beforeunload", handleUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleUnload);
-    };
-  }, [login, userData, userKey]);
-
   // displaying notifications
   useEffect(() => {
     const handleUnload = () => {
@@ -233,20 +210,6 @@ export default function App() {
     };
   }, [userData]);
 
-  // keeps userData as user navigates, kinda works as a context
-  useEffect(() => {
-    const keepData = sessionStorage.getItem("keepData");
-    if (keepData === "true") {
-      if (
-        !sessionStorage.getItem("login") &&
-        !sessionStorage.getItem("userData")
-      ) {
-        sessionStorage.setItem("login", JSON.stringify(true));
-        sessionStorage.setItem("userData", JSON.stringify(userData));
-      }
-    }
-  }, [userData]);
-
   // checks for user's permissions on app based on sidebar (permissions) config
   // defines 'allowedLinks' as an Array of string with permitted apps
   useEffect(() => {
@@ -261,6 +224,16 @@ export default function App() {
     });
     setAllowedLinks(newAllowedLinks);
   }, [configData]);
+
+  // setting userPreferences "in session", since they are being modified in backend, and fetched once,
+  // this useEffect grants the User Experience to see what he already changed,
+  // not needing to reload the App to see them
+  useEffect(() => {
+    const storedPreferences = sessionStorage.getItem("userPreferences");
+    if (storedPreferences) {
+      setUserPreferences(JSON.parse(storedPreferences));
+    }
+  }, []);
 
   // opening modal according to userShortcuts
   const handleShortcutClick = (shortcut) => {
@@ -280,12 +253,6 @@ export default function App() {
   const updateUserPreferences = (newPreferences) => {
     setUserPreferences(newPreferences);
   };
-  useEffect(() => {
-    const storedPreferences = sessionStorage.getItem("userPreferences");
-    if (storedPreferences) {
-      setUserPreferences(JSON.parse(storedPreferences));
-    }
-  }, []);
 
   return (
     <ThemeProvider theme={theme}>
