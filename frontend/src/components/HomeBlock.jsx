@@ -25,28 +25,53 @@ import HomeRecentActivity from "./small/HomeRecentActivity";
 
 const optionsMainblocks = [
   {
-    icon: <WorkIcon sx={{ fontSize: 60 }} />,
+    icon: <WorkIcon sx={{ fontSize: 52 }} />,
     text: "Clientes",
     link: "/customers",
     permissionLabel: "customers",
   },
   {
-    icon: <GradingIcon sx={{ fontSize: 60 }} />,
+    icon: <GradingIcon sx={{ fontSize: 52 }} />,
     text: "Solicitações",
     link: "/requests",
     permissionLabel: "requests",
   },
   {
-    icon: <GroupIcon sx={{ fontSize: 60 }} />,
+    icon: <GroupIcon sx={{ fontSize: 52 }} />,
     text: "Colaboradores",
     link: "/users",
     permissionLabel: "users",
   },
   {
-    icon: <LanIcon sx={{ fontSize: 60 }} />,
+    icon: <LanIcon sx={{ fontSize: 52 }} />,
     text: "Departamentos",
     link: "/departments",
     permissionLabel: "departments",
+  },
+  {
+    icon: <DashboardIcon sx={{ fontSize: 52 }} />,
+    text: "Dashboard",
+    link: "/dashboard",
+    permissionLabel: "dashboard",
+  },
+  {
+    icon: <RocketLaunchIcon sx={{ fontSize: 52 }} />,
+    text: "Projetos",
+    link: "/projects",
+    permissionLabel: "projects",
+  },
+
+  {
+    icon: <AssessmentIcon sx={{ fontSize: 52 }} />,
+    text: "Relatórios",
+    link: "/reports",
+    permissionLabel: "reports",
+  },
+  {
+    icon: <AttachMoneyIcon sx={{ fontSize: 52 }} />,
+    text: "Financeiro",
+    link: "/finance",
+    permissionLabel: "finance",
   },
 ];
 
@@ -101,39 +126,20 @@ const optionsRightColumn = [
   },
 ];
 
-const optionsFourItemsRow = [
-  {
-    icon: <DashboardIcon sx={{ fontSize: 20 }} />,
-    text: "Dashboard",
-    link: "/dashboard",
-    permissionLabel: "dashboard",
-  },
-  {
-    icon: <RocketLaunchIcon sx={{ fontSize: 20 }} />,
-    text: "Projetos",
-    link: "/projects",
-    permissionLabel: "projects",
-  },
-
-  {
-    icon: <AssessmentIcon sx={{ fontSize: 20 }} />,
-    text: "Relatórios",
-    link: "/reports",
-    permissionLabel: "reports",
-  },
-  {
-    icon: <AttachMoneyIcon sx={{ fontSize: 20 }} />,
-    text: "Financeiro",
-    link: "/finance",
-    permissionLabel: "finance",
-  },
-];
-
 const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
   const uniqueAllowedLinks = [...new Set(allowedLinks)];
 
   const allowedListMainblocks = uniqueAllowedLinks.filter((link) =>
-    ["customers", "users", "departments", "requests"].includes(link)
+    [
+      "customers",
+      "users",
+      "departments",
+      "requests",
+      "dashboard",
+      "projects",
+      "reports",
+      "finance",
+    ].includes(link)
   );
 
   const allowedListRightColumn = uniqueAllowedLinks.filter((link) =>
@@ -148,15 +154,9 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
     ].includes(link)
   );
 
-  const allowedListFourItemsRow = uniqueAllowedLinks.filter((link) =>
-    ["dashboard", "projects", "reports", "finance"].includes(link)
-  );
-
   React.useEffect(() => {}, [configData]);
 
   const [hoveredIndexMainblocks, setHoveredIndexMainblocks] = useState(null);
-  const [hoveredIndexFourItemsRow, setHoveredIndexFourItemsRow] =
-    useState(null);
   const [hoveredIndexRightColumn, setHoveredIndexRightColumn] = useState(null);
 
   return (
@@ -182,8 +182,8 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
                     item
                     key={index}
                     sx={{
-                      pr: index === 0 || index === 2 ? 1 : "",
-                      pb: index === 0 || index === 1 ? 1 : "",
+                      pr: index % 2 === 1 ? "" : 1,
+                      pb: 1,
                     }}
                     md={allowedListMainblocks.length === 2 ? 12 : 6}
                   >
@@ -192,7 +192,7 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
                         onMouseEnter={() => setHoveredIndexMainblocks(index)}
                         onMouseLeave={() => setHoveredIndexMainblocks(null)}
                         sx={{
-                          height: 130,
+                          height: 110,
                           width: "auto",
                           transition: "background-color 0.3s, color 0.3s",
                           backgroundColor:
@@ -236,69 +236,6 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
             })}
           </Grid>
 
-          <Grid
-            container
-            direction="row"
-            sx={{ my: 2 }}
-            justifyContent="space-between"
-          >
-            {optionsFourItemsRow.map((option, index) => {
-              if (allowedListFourItemsRow.includes(option.permissionLabel)) {
-                return (
-                  <Grid
-                    item
-                    key={index}
-                    onMouseEnter={() => setHoveredIndexFourItemsRow(index)}
-                    onMouseLeave={() => setHoveredIndexFourItemsRow(null)}
-                  >
-                    <Link to={option.link} style={{ textDecoration: "none" }}>
-                      <Paper
-                        sx={{
-                          width: 120,
-                          py: 1,
-                          px: 2,
-                          transition: "background-color 0.3s, color 0.3s",
-                          backgroundColor:
-                            hoveredIndexFourItemsRow === index
-                              ? "white"
-                              : configData && configData.customization
-                              ? configData.customization.mainColor
-                              : "white",
-                          color:
-                            hoveredIndexFourItemsRow === index
-                              ? "#777"
-                              : "white",
-                        }}
-                      >
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                          justifyContent="center"
-                          sx={{
-                            cursor: "pointer",
-                          }}
-                        >
-                          {option.icon}
-                          <span
-                            style={{
-                              fontSize: 14,
-                              marginLeft: 5,
-                              fontWeight: "bold",
-                              fontFamily: "Verdana, sans-serif",
-                            }}
-                          >
-                            {option.text}
-                          </span>
-                        </Grid>
-                      </Paper>
-                    </Link>
-                  </Grid>
-                );
-              }
-            })}
-          </Grid>
-
           <Grid container>
             <HomeRecentActivity
               userUsername={userUsername}
@@ -309,75 +246,63 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item>
-        <Grid container direction="column">
-          <Grid item justifyContent="center" alignItems="center">
-            <Grid
-              container
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-              rowSpacing={2}
-            >
-              {optionsRightColumn.map((option, index) => {
-                if (allowedListRightColumn.includes(option.permissionLabel)) {
-                  return (
-                    <Grid item key={index}>
-                      <Link
-                        to={option.link}
-                        style={{
-                          textDecoration: "none",
+      <Grid item sx={{ height: "auto" }}>
+        <Grid container direction="column" sx={{ height: "85%" }}>
+          {optionsRightColumn.map((option, index) => {
+            if (allowedListRightColumn.includes(option.permissionLabel)) {
+              return (
+                <Grid item key={index} sx={{ mb: "auto" }}>
+                  <Link
+                    to={option.link}
+                    style={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    <Paper
+                      onMouseEnter={() => setHoveredIndexRightColumn(index)}
+                      onMouseLeave={() => setHoveredIndexRightColumn(null)}
+                      sx={{
+                        width: 180,
+                        py: 2,
+                        mx: 1,
+                        transition: "background-color 0.3s, color 0.3s",
+                        backgroundColor:
+                          hoveredIndexRightColumn === index
+                            ? "white"
+                            : configData && configData.customization
+                            ? configData.customization.mainColor
+                            : "white",
+                        color:
+                          hoveredIndexRightColumn === index ? "#777" : "white",
+                      }}
+                    >
+                      <Grid
+                        container
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="center"
+                        sx={{
+                          cursor: "pointer",
                         }}
                       >
-                        <Paper
-                          onMouseEnter={() => setHoveredIndexRightColumn(index)}
-                          onMouseLeave={() => setHoveredIndexRightColumn(null)}
-                          sx={{
-                            width: 180,
-                            py: 1,
-                            mx: 1,
-                            transition: "background-color 0.3s, color 0.3s",
-                            backgroundColor:
-                              hoveredIndexRightColumn === index
-                                ? "white"
-                                : configData && configData.customization
-                                ? configData.customization.mainColor
-                                : "white",
-                            color:
-                              hoveredIndexRightColumn === index
-                                ? "#777"
-                                : "white",
+                        {option.icon}
+                        <span
+                          style={{
+                            marginLeft: 10,
+                            fontSize: 14,
+                            fontWeight: "bold",
+                            fontFamily: "Verdana, sans-serif",
                           }}
                         >
-                          <Grid
-                            container
-                            direction="row"
-                            alignItems="center"
-                            justifyContent="center"
-                            sx={{
-                              cursor: "pointer",
-                            }}
-                          >
-                            {option.icon}
-                            <span
-                              style={{
-                                marginLeft: 10,
-                                fontSize: 14,
-                                fontWeight: "bold",
-                                fontFamily: "Verdana, sans-serif",
-                              }}
-                            >
-                              {option.text}
-                            </span>
-                          </Grid>
-                        </Paper>
-                      </Link>
-                    </Grid>
-                  );
-                }
-              })}
-            </Grid>
-          </Grid>
+                          {option.text}
+                        </span>
+                      </Grid>
+                    </Paper>
+                  </Link>
+                </Grid>
+              );
+            }
+          })}
         </Grid>
       </Grid>
     </Grid>
