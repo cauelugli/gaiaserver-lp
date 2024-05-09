@@ -61,6 +61,7 @@ export default function Customers({
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
+  const [newDataRefreshButton, setNewDataRefreshButton] = React.useState(true);
   const [config, setConfig] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState(false);
 
@@ -75,6 +76,7 @@ export default function Customers({
   const [searchOption, setSearchOption] = React.useState("name");
   const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
   const [searchValue, setSearchValue] = React.useState("");
+
 
   const searchOptionList = [
     {
@@ -194,6 +196,9 @@ export default function Customers({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
+            userId={userId}
+            newDataRefreshButton={newDataRefreshButton}
+            setNewDataRefreshButton={setNewDataRefreshButton}
           />
           <Grid sx={{ my: "auto", ml: "auto" }}>
             <TableOrCardSelector
@@ -359,6 +364,7 @@ export default function Customers({
             configCustomization={configCustomization}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            userId={userId}
           />
         </Dialog>
       )}
@@ -370,6 +376,7 @@ export default function Customers({
           onClose={() => setOpenAddClient(!openAddClient)}
         >
           <AddClientForm
+            userId={userId}
             openAdd={openAddClient}
             setOpenAdd={setOpenAddClient}
             toast={toast}
@@ -393,6 +400,7 @@ export default function Customers({
             toast={toast}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            userId={userId}
           />
         </Dialog>
       )}

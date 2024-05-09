@@ -46,9 +46,10 @@ function CustomTabPanel(props) {
   );
 }
 
-export default function Security({ topBar }) {
+export default function Security({ topBar, userId }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
+  const [newDataRefreshButton, setNewDataRefreshButton] = React.useState(true);
   const [configCustomization, setConfigCustomization] = React.useState(false);
   React.useState(false);
   const [value, setValue] = React.useState(0);
@@ -208,6 +209,9 @@ export default function Security({ topBar }) {
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
+            userId={userId}
+            newDataRefreshButton={newDataRefreshButton}
+            setNewDataRefreshButton={setNewDataRefreshButton}
           />
         </Tabs>
       </Box>

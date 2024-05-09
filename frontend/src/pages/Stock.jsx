@@ -62,6 +62,7 @@ export default function Stock({
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
+  const [newDataRefreshButton, setNewDataRefreshButton] = React.useState(true);
   const [configStock, setConfigStock] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState([]);
   const [value, setValue] = React.useState(0);
@@ -214,6 +215,9 @@ export default function Stock({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
+            userId={userId}
+            newDataRefreshButton={newDataRefreshButton}
+            setNewDataRefreshButton={setNewDataRefreshButton}
           />
           <Grid sx={{ my: "auto", ml: "auto" }}>
             <TableOrCardSelector

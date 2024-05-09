@@ -26,8 +26,8 @@ const initSocket = (server) => {
       io.emit("forceRefresh");
     });
 
-    socket.on("newDataRefreshButton", (page) => {
-      io.emit("newDataRefreshButton", page);
+    socket.on("newDataRefreshButton", (data) => {
+      io.emit("newDataRefreshButton", data);
     });
 
     socket.on("recentActivityRefresh", () => {

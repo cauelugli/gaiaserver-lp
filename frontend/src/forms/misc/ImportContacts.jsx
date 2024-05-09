@@ -2,7 +2,9 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
 
+const socket = io("http://localhost:3000");
 
 import {
   Button,
@@ -37,6 +39,7 @@ const ImportContacts = ({
   toast,
   refreshData,
   setRefreshData,
+  userId,
 }) => {
   const [fileData, setFileData] = useState(null);
 
@@ -81,14 +84,17 @@ const ImportContacts = ({
         return;
       }
 
-      const response = await api.post("/customers/importContacts", {
+      await api.post("/customers/importContacts", {
         fileData,
       });
       setFileData(null);
       setRefreshData(!refreshData);
       setOpenAdd(!openAdd);
       toast.success("Dados enviados com sucesso!");
-      console.log(response.data);
+      socket.emit("newDataRefreshButton", {
+        page: "customers",
+        userId: userId,
+      });
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
       toast.error("Erro ao enviar dados. Por favor, tente novamente.");

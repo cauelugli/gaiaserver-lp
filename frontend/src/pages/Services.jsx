@@ -57,6 +57,7 @@ export default function Services({
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
+  const [newDataRefreshButton, setNewDataRefreshButton] = React.useState(true);
   const [value, setValue] = React.useState(0);
   const [configCustomization, setConfigCustomization] = React.useState(0);
 
@@ -198,6 +199,9 @@ export default function Services({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
+            userId={userId}
+            newDataRefreshButton={newDataRefreshButton}
+            setNewDataRefreshButton={setNewDataRefreshButton}
           />
           <Grid sx={{ my: "auto", ml: "auto" }}>
             <TableOrCardSelector

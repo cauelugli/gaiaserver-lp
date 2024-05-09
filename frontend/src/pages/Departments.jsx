@@ -56,12 +56,14 @@ export default function Departments({
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
+  const [newDataRefreshButton, setNewDataRefreshButton] = React.useState(true);
   const [config, setConfig] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
   const [openAddDepartment, setOpenAddDepartment] = React.useState(false);
   const [openAddGroup, setOpenAddGroup] = React.useState(false);
+  
 
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("name");
@@ -226,6 +228,9 @@ export default function Departments({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
+            userId={userId}
+            newDataRefreshButton={newDataRefreshButton}
+            setNewDataRefreshButton={setNewDataRefreshButton}
           />
           <Grid sx={{ my: "auto", ml: "auto" }}>
             <TableOrCardSelector

@@ -38,6 +38,7 @@ const api = axios.create({
 });
 
 const AddClientForm = ({
+  userId,
   setOpenAdd,
   fromShortcut,
   refreshData,
@@ -92,7 +93,10 @@ const AddClientForm = ({
           theme: "colored",
           autoClose: 1200,
         });
-        socket.emit("newDataRefreshButton", { page: "customers" });
+        socket.emit("newDataRefreshButton", {
+          page: "customers",
+          userId: userId,
+        });
       }
       setOpenAdd(false);
       if (!fromShortcut) {

@@ -390,7 +390,10 @@ export default function App() {
                       element={
                         isAuthenticated(login, userData) &&
                         hasPermission(userData, configData, "security") ? (
-                          <Security topBar={userPreferences.barPosition} />
+                          <Security
+                            topBar={userPreferences.barPosition}
+                            userId={userData._id}
+                          />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
                             Seu usuário não possui autorização à página.

@@ -50,6 +50,7 @@ export default function Quotes({
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
+  const [newDataRefreshButton, setNewDataRefreshButton] = React.useState(true);
   const [value, setValue] = React.useState(0);
 
   const [searchValue, setSearchValue] = React.useState("");
@@ -143,6 +144,9 @@ export default function Quotes({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
+            userId={userId}
+            newDataRefreshButton={newDataRefreshButton}
+            setNewDataRefreshButton={setNewDataRefreshButton}
           />
           <Grid sx={{ my: "auto", ml: "auto" }}>
             <TableOrCardSelector

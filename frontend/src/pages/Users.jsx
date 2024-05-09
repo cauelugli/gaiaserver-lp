@@ -56,6 +56,7 @@ export default function Users({
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
+  const [newDataRefreshButton, setNewDataRefreshButton] = React.useState(true);
   const [configUsers, setConfigUsers] = React.useState(false);
   const [configManagers, setConfigManagers] = React.useState(false);
   const [configCustomization, setConfigCustomization] = React.useState(false);
@@ -207,6 +208,9 @@ export default function Users({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
+            userId={userId}
+            newDataRefreshButton={newDataRefreshButton}
+            setNewDataRefreshButton={setNewDataRefreshButton}
           />
           <Grid sx={{ my: "auto", ml: "auto" }}>
             <TableOrCardSelector

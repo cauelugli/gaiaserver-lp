@@ -14,24 +14,27 @@ export default function RefreshButton({
   refreshData,
   setRefreshData,
   configCustomization,
+  newDataRefreshButton,
+  setNewDataRefreshButton,
+  userId,
 }) {
   const currentPath = window.location.pathname;
-  const [newDataRefreshButton, setNewDataRefreshButton] = React.useState(true);
 
-  // force refresh from websocket
   React.useEffect(() => {
-    socket.on("newDataRefreshButton", (page) => {
-      // Verifica se o final da URL corresponde à página 'page'
-      if (currentPath.endsWith(`/${page.page}`)) {
-        console.log("Atualizando dados, pois estamos na página correta");
+    const handleNewData = (data) => {
+      // Verifica se o final da URL corresponde à página recebida
+      // e se o userId recebido pelo WebSocket é diferente do userIdProp
+      if (currentPath.endsWith(`/${data.page}`) && data.userId !== userId) {
         setNewDataRefreshButton(false);
       }
-    });
+    };
+
+    socket.on("newDataRefreshButton", handleNewData);
 
     return () => {
-      socket.off("newDataRefreshButton");
+      socket.off("newDataRefreshButton", handleNewData);
     };
-  }, [currentPath]);
+  }, [currentPath, setNewDataRefreshButton, userId]);
 
   return (
     <Box
