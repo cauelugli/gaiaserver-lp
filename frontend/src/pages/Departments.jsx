@@ -491,7 +491,7 @@ export default function Departments({
               <Grid
                 sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
                 container
-                rowSpacing={2}
+                spacing={2}
               >
                 {groups.map((group, index) => (
                   <Grid

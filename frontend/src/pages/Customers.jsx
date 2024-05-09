@@ -321,7 +321,11 @@ export default function Customers({
                   topBar={topBar}
                 />
               ) : (
-                <Grid sx={{ mt: 0.5, width: "107%" }} container rowSpacing={2}>
+                <Grid
+                  sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                  container
+                  spacing={2}
+                >
                   {clients.map((client, index) => (
                     <Grid
                       key={index}
