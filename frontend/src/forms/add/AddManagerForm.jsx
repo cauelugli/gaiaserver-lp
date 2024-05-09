@@ -40,6 +40,7 @@ const api = axios.create({
 
 const AddManagerForm = ({
   userName,
+  userId,
   positions,
   setOpenAdd,
   refreshData,
@@ -106,6 +107,10 @@ const AddManagerForm = ({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "users",
+          userId: userId,
         });
 
         await api.post("/recentActivity", {

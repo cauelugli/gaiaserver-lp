@@ -38,6 +38,7 @@ const socket = io("http://localhost:3000");
 
 const AddUserForm = ({
   userName,
+  userId,
   configCustomization,
   configNotifications,
   configNotificationsBooleans,
@@ -94,6 +95,10 @@ const AddUserForm = ({
           theme: "colored",
           autoClose: 1200,
         });
+        socket.emit("newDataRefreshButton", {
+          page: "users",
+          userId: userId,
+        });
 
         if (configNotificationsBooleans.whenUserIsCreated) {
           socket.emit("whenUserIsCreated", {
@@ -105,9 +110,7 @@ const AddUserForm = ({
         }
 
         await api.post("/recentActivity", {
-          activity: `Colaborador ${
-            userName
-          } criou um Novo Usuário: "${name}" ${
+          activity: `Colaborador ${userName} criou um Novo Usuário: "${name}" ${
             position && `no cargo ${position.name}`
           } ${department && ` para o departamento ${department.name}`}`,
           createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),

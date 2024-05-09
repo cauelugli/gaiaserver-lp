@@ -244,6 +244,7 @@ export default function Users({
 
             {tableOrCardView ? (
               <UserTable
+                userId={userId}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
                 searchValue={searchValue}
@@ -270,6 +271,7 @@ export default function Users({
                       xl={cardSize}
                     >
                       <UserCard
+                        userId={userId}
                         type="user"
                         user={user}
                         departments={departments}
@@ -305,6 +307,7 @@ export default function Users({
 
             {tableOrCardView ? (
               <ManagerTable
+                userId={userId}
                 positions={positions}
                 configData={configManagers}
                 refreshData={refreshData}
@@ -328,6 +331,7 @@ export default function Users({
                     xl={cardSize}
                   >
                     <UserCard
+                      userId={userId}
                       type="manager"
                       user={manager}
                       departments={departments}
@@ -352,6 +356,7 @@ export default function Users({
         >
           <AddUserForm
             userName={userName}
+            userId={userId}
             configCustomization={configCustomization}
             configNotifications={configNotifications}
             configNotificationsBooleans={configNotificationsBooleans}
@@ -375,6 +380,7 @@ export default function Users({
           <AddManagerForm
             positions={positions}
             userName={userName}
+            userId={userId}
             configCustomization={configCustomization}
             openAdd={openAddManager}
             setOpenAdd={setOpenAddManager}

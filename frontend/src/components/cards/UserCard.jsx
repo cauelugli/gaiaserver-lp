@@ -29,6 +29,7 @@ export default function UserCard({
   refreshData,
   setRefreshData,
   configData,
+  userId,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetails, setOpenDetails] = React.useState(false);
@@ -82,6 +83,7 @@ export default function UserCard({
           {type === "user" ? (
             <UserTableActions
               fromCard
+              userId={userId}
               userIsActive={user.isActive}
               configData={configData}
               setOpenEdit={setOpenEdit}
@@ -93,6 +95,7 @@ export default function UserCard({
           ) : (
             <ManagerTableActions
               fromCard
+              userId={userId}
               userIsActive={user.isActive}
               configData={configData}
               setOpenEdit={setOpenEdit}
@@ -112,6 +115,7 @@ export default function UserCard({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditUserForm
+            userId={userId}
             openEdit={openEdit}
             selectedUser={user}
             departments={departments}
@@ -131,6 +135,7 @@ export default function UserCard({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditManagerForm
+            userId={userId}
             openEdit={openEdit}
             positions={positions}
             selectedManager={user}

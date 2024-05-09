@@ -126,6 +126,7 @@ export default function ManagerTableActions(props) {
       {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
+            userId={props.userId}
             selectedItem={props.selectedItem}
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
@@ -133,6 +134,8 @@ export default function ManagerTableActions(props) {
             setRefreshData={props.setRefreshData}
             toast={toast}
             endpoint="managers"
+            usePageNotEndpoint
+            page="users"
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
             } Deletado com Sucesso`}

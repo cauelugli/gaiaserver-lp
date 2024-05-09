@@ -35,6 +35,7 @@ export default function UserTable({
   searchOption,
   searchDepartment,
   topBar,
+  userId,
 }) {
   const [selectedUser, setSelectedUser] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -278,6 +279,7 @@ export default function UserTable({
                     onClick={() => setSelectedUser(row)}
                   >
                     <UserTableActions
+                      userId={userId}
                       userIsActive={row.isActive}
                       configData={configData}
                       setOpenEdit={setOpenEdit}
@@ -318,6 +320,7 @@ export default function UserTable({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditUserForm
+            userId={userId}
             openEdit={openEdit}
             selectedUser={selectedUser}
             departments={departments}

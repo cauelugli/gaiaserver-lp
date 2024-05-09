@@ -37,6 +37,7 @@ export default function ManagerTable({
   searchDepartment,
   searchOption,
   topBar,
+  userId,
 }) {
   const [selectedManager, setSelectedManager] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -204,10 +205,7 @@ export default function ManagerTable({
               );
             })
             .map((row) => (
-              <TableRow
-                key={row._id}
-                sx={{ "&:hover": { backgroundColor: "#eee" } }}
-              >
+              <TableRow key={row._id}>
                 <TableCell sx={{ py: 0 }}>
                   <Avatar
                     src={`http://localhost:3000/static/${row.image}`}
@@ -269,6 +267,7 @@ export default function ManagerTable({
                   onClick={() => setSelectedManager(row)}
                 >
                   <ManagerTableActions
+                    userId={userId}
                     userIsActive={row.isActive}
                     configData={configData}
                     setOpenEdit={setOpenEdit}
@@ -306,6 +305,7 @@ export default function ManagerTable({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditManagerForm
+            userId={userId}
             openEdit={openEdit}
             positions={positions}
             selectedManager={selectedManager}
