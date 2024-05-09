@@ -166,6 +166,8 @@ export default function CustomerTableActions(props) {
             setRefreshData={props.setRefreshData}
             toast={toast}
             endpoint={props.selectedItem.cpf ? "clients" : "customers"}
+            usePageNotEndpoint
+            page="customers"
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
             } Deletado com Sucesso`}

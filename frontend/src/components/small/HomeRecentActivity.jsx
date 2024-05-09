@@ -94,7 +94,7 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
 
   return (
     <>
-      <Grid sx={{ width: 700 }}>
+      <Grid sx={{ width: 700, mt:3 }}>
         <Grid item>
           <Grid container direction="row" justifyContent="space-between">
             <Grid item>
