@@ -161,6 +161,7 @@ export default function SaleTableActions(props) {
       {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
+            userId={props.userId}
             selectedItem={props.selectedItem}
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
@@ -168,6 +169,8 @@ export default function SaleTableActions(props) {
             setRefreshData={props.setRefreshData}
             toast={toast}
             endpoint="sales"
+            usePageNotEndpoint
+            page="requests"
             successMessage={`Venda ${
               props.selectedItem.quoteNumber && props.selectedItem.quoteNumber
             } Deletada com Sucesso`}
@@ -209,6 +212,7 @@ export default function SaleTableActions(props) {
         >
           <ResolveSaleForm
             userName={props.userName}
+            userId={props.userId}
             selectedItem={props.selectedItem}
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}

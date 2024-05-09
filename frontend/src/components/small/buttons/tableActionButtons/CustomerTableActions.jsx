@@ -158,6 +158,7 @@ export default function CustomerTableActions(props) {
       {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
+            userId={props.userId}
             selectedItem={props.selectedItem}
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
@@ -180,6 +181,7 @@ export default function CustomerTableActions(props) {
         >
           <AddJobForm
             userName={props.userName}
+            userId={props.userId}
             configAgenda={props.configAgenda}
             configNotifications={props.configNotifications}
             configNotificationsBooleans={props.configNotificationsBooleans}
@@ -201,6 +203,7 @@ export default function CustomerTableActions(props) {
         >
           <AddSaleForm
             userName={props.userName}
+            userId={props.userId}
             openAddSale={openAddSale}
             setOpenAddSale={setOpenAddSale}
             refreshData={props.refreshData}
@@ -217,24 +220,7 @@ export default function CustomerTableActions(props) {
         >
           <GenericActivateForm
             selectedItem={props.selectedItem}
-            openDialog={openActivate}
-            setOpenDialog={setOpenActivate}
-            refreshData={props.refreshData}
-            setRefreshData={props.setRefreshData}
-            toast={toast}
-            successMessage={`${
-              props.selectedItem.name && props.selectedItem.name
-            } Arquivado com Sucesso`}
-          />
-        </Dialog>
-      )}
-      {openActivate && (
-        <Dialog
-          open={openActivate}
-          onClose={() => setOpenActivate(!openActivate)}
-        >
-          <GenericActivateForm
-            selectedItem={props.selectedItem}
+            userId={props.userId}
             openDialog={openActivate}
             setOpenDialog={setOpenActivate}
             refreshData={props.refreshData}

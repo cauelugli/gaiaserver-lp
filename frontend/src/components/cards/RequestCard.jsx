@@ -213,6 +213,7 @@ export default function RequestCard({
             <JobTableActions
               fromCard
               userName={userName}
+              userId={userId}
               userRole={userRole}
               selectedItem={request}
               job={request}
@@ -228,6 +229,7 @@ export default function RequestCard({
             <SaleTableActions
               fromCard
               userName={userName}
+              userId={userId}
               selectedItem={request}
               sale={request}
               handleOpenEdit={() => setOpenEdit(!openEdit)}
@@ -247,6 +249,7 @@ export default function RequestCard({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditJobForm
+            userId={userId}
             openEditJob={openEdit}
             selectedJob={request}
             setOpenEditJob={setOpenEdit}
@@ -264,6 +267,7 @@ export default function RequestCard({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditSaleForm
+            userId={userId}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}

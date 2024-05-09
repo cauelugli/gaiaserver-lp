@@ -348,6 +348,7 @@ export default function Requests({
         >
           <AddJobForm
             userName={userName}
+            userId={userId}
             openAddJob={openAddJob}
             configNotifications={configNotifications}
             configNotificationsBooleans={configNotificationsBooleans}
@@ -368,6 +369,7 @@ export default function Requests({
         >
           <AddSaleForm
             userName={userName}
+            userId={userId}
             openAddSale={openAddSale}
             setOpenAddSale={setOpenAddSale}
             refreshData={refreshData}

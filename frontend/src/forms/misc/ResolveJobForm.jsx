@@ -2,6 +2,10 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
+
 import {
   Button,
   DialogContent,
@@ -16,6 +20,7 @@ const api = axios.create({
 
 const ResolveJobForm = ({
   userName,
+  userId,
   selectedItem,
   refreshData,
   setRefreshData,
@@ -38,6 +43,10 @@ const ResolveJobForm = ({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "requests",
+          userId: userId,
         });
       }
       setOpenDialog(false);

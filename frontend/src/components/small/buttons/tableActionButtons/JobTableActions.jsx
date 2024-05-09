@@ -245,6 +245,7 @@ export default function JobTableActions(props) {
       {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
+            userId={props.userId}
             selectedItem={props.selectedItem}
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
@@ -252,6 +253,8 @@ export default function JobTableActions(props) {
             setRefreshData={props.setRefreshData}
             toast={toast}
             endpoint="jobs"
+            usePageNotEndpoint
+            page="requests"
             successMessage={`${
               props.selectedItem.title && props.selectedItem.title
             } Deletado com Sucesso`}
@@ -293,6 +296,7 @@ export default function JobTableActions(props) {
         >
           <ResolveJobForm
             userName={props.userName}
+            userId={props.userId}
             selectedItem={props.selectedItem}
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}

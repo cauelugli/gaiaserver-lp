@@ -41,6 +41,7 @@ const api = axios.create({
 
 const AddSaleForm = ({
   userName,
+  userId,
   selectedItem,
   setOpenAddSale,
   refreshData,
@@ -54,7 +55,6 @@ const AddSaleForm = ({
   const [departments, setDepartments] = React.useState([]);
   const [products, setProducts] = React.useState([]);
 
-  
   let selectedCustomer = {};
   if (selectedItem || fromShortcut) {
     selectedCustomer = selectedItem;
@@ -106,7 +106,6 @@ const AddSaleForm = ({
   const [materialsCost, setMaterialsCost] = React.useState(0);
   const [deliveryScheduledTo, setDeliveryScheduledTo] = React.useState(dayjs());
   const [attachedFiles, setAttachedFiles] = React.useState([]);
-
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -218,6 +217,10 @@ const AddSaleForm = ({
           createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),
         });
         socket.emit("recentActivityRefresh");
+        socket.emit("newDataRefreshButton", {
+          page: "requests",
+          userId: userId,
+        });
       }
       setOpenAddSale(false);
       if (!fromShortcut) {

@@ -481,6 +481,7 @@ export default function SaleTable({
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}
                         userName={userName}
+                        userId={userId}
                         sale={sale}
                         handleOpenEdit={handleOpenEdit}
                         handleOpenAddSaleInteraction={setOpenAddInteraction}

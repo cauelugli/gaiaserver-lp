@@ -24,12 +24,14 @@ const ShortcutModals = ({
   configNotifications,
   configNotificationsBooleans,
   configCustomization,
+  user,
   ...props
 }) => {
   const ACTION_COMPONENTS = {
     addClient: (
       <AddClientForm
         {...props}
+        userId={user._id}
         setOpenAdd={onClose}
         fromShortcut
         extraSmall
@@ -39,6 +41,7 @@ const ShortcutModals = ({
     addCustomer: (
       <AddCustomerForm
         {...props}
+        userId={user._id}
         setOpenAdd={onClose}
         fromShortcut
         configCustomization={configCustomization}
@@ -47,6 +50,7 @@ const ShortcutModals = ({
     addJob: (
       <AddJobForm
         {...props}
+        userId={user._id}
         setOpenAddJob={onClose}
         configNotifications={configNotifications}
         configNotificationsBooleans={configNotificationsBooleans}
@@ -56,6 +60,7 @@ const ShortcutModals = ({
     addJobToCustomer: (
       <AddJobForm
         {...props}
+        userId={user._id}
         setOpenAddJob={onClose}
         configNotifications={configNotifications}
         configNotificationsBooleans={configNotificationsBooleans}
@@ -65,6 +70,7 @@ const ShortcutModals = ({
     addSale: (
       <AddSaleForm
         {...props}
+        userId={user._id}
         setOpenAddSale={onClose}
         configNotifications={configNotifications}
         configNotificationsBooleans={configNotificationsBooleans}
@@ -74,6 +80,7 @@ const ShortcutModals = ({
     addSaleToCustomer: (
       <AddSaleForm
         {...props}
+        userId={user._id}
         setOpenAddSale={onClose}
         configNotifications={configNotifications}
         configNotificationsBooleans={configNotificationsBooleans}
@@ -83,6 +90,7 @@ const ShortcutModals = ({
     addUser: (
       <AddUserForm
         {...props}
+        userId={user._id}
         departments={departments}
         positions={positions}
         setOpenAdd={onClose}
@@ -95,6 +103,7 @@ const ShortcutModals = ({
     addManager: (
       <AddManagerForm
         {...props}
+        userId={user._id}
         setOpenAdd={onClose}
         configCustomization={configCustomization}
         addFromShortcut
@@ -103,6 +112,7 @@ const ShortcutModals = ({
     addDepartment: (
       <AddDepartmentForm
         {...props}
+        userId={user._id}
         setOpenAdd={onClose}
         configData={configData}
         users={users}

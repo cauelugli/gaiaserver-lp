@@ -77,7 +77,6 @@ export default function Customers({
   const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
   const [searchValue, setSearchValue] = React.useState("");
 
-
   const searchOptionList = [
     {
       // CUSTOMER TABLE
@@ -235,6 +234,7 @@ export default function Customers({
               {tableOrCardView ? (
                 <CustomerTable
                   userName={userName}
+                  userId={userId}
                   configCustomization={configCustomization}
                   configNotifications={configNotifications}
                   configNotificationsBooleans={configNotificationsBooleans}
@@ -264,6 +264,7 @@ export default function Customers({
                         customer={customer}
                         type="customer"
                         userName={userName}
+                        userId={userId}
                         configData={config}
                         configAgenda={configAgenda}
                         configNotifications={configNotifications}
@@ -307,6 +308,7 @@ export default function Customers({
               {tableOrCardView ? (
                 <ClientTable
                   userName={userName}
+                  userId={userId}
                   configAgenda={configAgenda}
                   configNotifications={configNotifications}
                   configNotificationsBooleans={configNotificationsBooleans}
@@ -329,6 +331,7 @@ export default function Customers({
                       xl={cardSize}
                     >
                       <CustomerCard
+                        userId={userId}
                         customer={client}
                         type="client"
                         userName={userName}

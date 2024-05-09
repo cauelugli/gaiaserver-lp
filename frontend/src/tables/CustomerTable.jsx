@@ -42,6 +42,7 @@ const api = axios.create({
 
 export default function CustomerTable({
   userName,
+  userId,
   configData,
   configAgenda,
   configNotifications,
@@ -332,6 +333,7 @@ export default function CustomerTable({
                     >
                       <CustomerTableActions
                         userName={userName}
+                        userId={userId}
                         customer={customer}
                         configAgenda={configAgenda}
                         configNotifications={configNotifications}
@@ -817,6 +819,7 @@ export default function CustomerTable({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
+            userId={userId}
           />
         </Dialog>
       )}

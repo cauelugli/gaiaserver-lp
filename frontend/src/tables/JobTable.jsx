@@ -546,6 +546,7 @@ export default function JobTable({
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}
                         userName={userName}
+                        userId={userId}
                         userRole={userRole}
                         job={job}
                         handleManagerApproval={handleManagerApproval}

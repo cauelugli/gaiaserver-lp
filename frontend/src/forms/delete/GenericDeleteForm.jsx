@@ -2,6 +2,10 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
+
 import {
   Button,
   DialogActions,
@@ -16,6 +20,7 @@ const api = axios.create({
 });
 
 const GenericDeleteForm = ({
+  userId,
   selectedItem,
   refreshData,
   setRefreshData,
@@ -26,6 +31,8 @@ const GenericDeleteForm = ({
   successMessage,
   warning,
   warningMessage,
+  page,
+  usePageNotEndpoint,
 }) => {
   const handleDelete = async () => {
     try {
@@ -37,6 +44,13 @@ const GenericDeleteForm = ({
           theme: "colored",
           autoClose: 1200,
         });
+
+        if (userId) {
+          socket.emit("newDataRefreshButton", {
+            page: usePageNotEndpoint ? page : endpoint,
+            userId: userId,
+          });
+        }
       }
       setOpenDialog(false);
       setRefreshData(!refreshData);

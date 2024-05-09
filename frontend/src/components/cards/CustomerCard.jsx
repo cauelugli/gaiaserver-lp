@@ -20,6 +20,7 @@ import EditClientForm from "../../forms/edit/EditClientForm";
 import EditCustomerForm from "../../forms/edit/EditCustomerForm";
 
 export default function CustomerCard({
+  userId,
   customer,
   type,
   userName,
@@ -89,6 +90,7 @@ export default function CustomerCard({
         <Grid container justifyContent="center">
           <CustomerTableActions
             userName={userName}
+            userId={userId}
             customer={customer}
             selectedItem={customer}
             configAgenda={configAgenda}
@@ -132,6 +134,7 @@ export default function CustomerCard({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
+            userId={userId}
           />
         </Dialog>
       )}
@@ -150,6 +153,7 @@ export default function CustomerCard({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
+            userId={userId}
           />
         </Dialog>
       )}

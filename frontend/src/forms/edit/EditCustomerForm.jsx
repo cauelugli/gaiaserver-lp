@@ -2,6 +2,9 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Avatar,
@@ -37,6 +40,7 @@ const EditCustomerForm = ({
   setRefreshData,
   toast,
   config,
+  userId,
 }) => {
   const prevData = selectedCustomer;
   const [name, setName] = React.useState(selectedCustomer.name);
@@ -66,10 +70,7 @@ const EditCustomerForm = ({
       if (newImage) {
         const formData = new FormData();
         formData.append("image", newImage);
-        const uploadResponse = await api.post(
-          "/uploads/singleFile",
-          formData
-        );
+        const uploadResponse = await api.post("/uploads/singleFile", formData);
         updatedImagePath = uploadResponse.data.imagePath;
       }
 
@@ -96,6 +97,10 @@ const EditCustomerForm = ({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "customers",
+          userId: userId,
         });
       }
       setOpenEdit(!openEdit);

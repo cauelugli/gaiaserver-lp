@@ -50,6 +50,7 @@ const api = axios.create({
 
 const AddJobForm = ({
   userName,
+  userId,
   configAgenda,
   configNotifications,
   configNotificationsBooleans,
@@ -307,6 +308,10 @@ const AddJobForm = ({
           createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),
         });
         socket.emit("recentActivityRefresh");
+        socket.emit("newDataRefreshButton", {
+          page: "requests",
+          userId: userId,
+        });
         if (configNotificationsBooleans.whenJobIsCreated) {
           socket.emit("whenJobIsCreated", {
             sender: userName,
@@ -351,8 +356,6 @@ const AddJobForm = ({
       attachedFiles.filter((_, index) => index !== indexToRemove)
     );
   };
-
-  console.log("materialsCost", materialsCost);
 
   return (
     <form onSubmit={handleAdd}>
