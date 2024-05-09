@@ -28,6 +28,7 @@ import DepartmentTableActions from "../components/small/buttons/tableActionButto
 import DepartmentMembers from "../components/small/DepartmentMembers";
 
 export default function DepartmentTable({
+  userId,
   configData,
   searchValue,
   searchOption,
@@ -262,6 +263,7 @@ export default function DepartmentTable({
                       onClick={() => setSelectedDepartment(department)}
                     >
                       <DepartmentTableActions
+                        userId={userId}
                         configData={configData}
                         setOpenEdit={setOpenEdit}
                         selectedItem={selectedDepartment}
@@ -762,6 +764,7 @@ export default function DepartmentTable({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditDepartmentForm
+            userId={userId}
             openEdit={openEdit}
             users={users}
             managers={managers}

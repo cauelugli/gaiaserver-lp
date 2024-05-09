@@ -22,6 +22,7 @@ import EditGroupMembersForm from "../../forms/edit/EditGroupMembersForm";
 import EditGroupRenameForm from "../../forms/edit/EditGroupRenameForm";
 
 export default function DepartmentCard({
+  userId,
   configData,
   department,
   group,
@@ -29,7 +30,7 @@ export default function DepartmentCard({
   managers,
   refreshData,
   setRefreshData,
-  allUsers
+  allUsers,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openRename, setRename] = React.useState(false);
@@ -137,6 +138,7 @@ export default function DepartmentCard({
         <Grid container justifyContent="center">
           {department && (
             <DepartmentTableActions
+              userId={userId}
               configData={configData.departments}
               setOpenEdit={setOpenEdit}
               selectedItem={department}
@@ -146,6 +148,7 @@ export default function DepartmentCard({
           )}
           {group && (
             <GroupTableActions
+              userId={userId}
               configData={configData.groups}
               setRename={setRename}
               setOpenEditMembers={setOpenEditMembers}
@@ -164,6 +167,7 @@ export default function DepartmentCard({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditDepartmentForm
+            userId={userId}
             openEdit={openEdit}
             users={users}
             managers={managers}
@@ -183,6 +187,7 @@ export default function DepartmentCard({
           onClose={() => setRename(!openRename)}
         >
           <EditGroupRenameForm
+            userId={userId}
             setRename={setRename}
             selectedGroup={group}
             refreshData={refreshData}
@@ -199,6 +204,7 @@ export default function DepartmentCard({
           onClose={() => setOpenEditMembers(!openEditMembers)}
         >
           <EditGroupMembersForm
+            userId={userId}
             openEdit={openEditMembers}
             users={allUsers}
             selectedGroup={group}

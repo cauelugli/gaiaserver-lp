@@ -64,7 +64,9 @@ export default function DepartmentTableActions(props) {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>Editar Departameto</Typography>
+                <Typography sx={{ fontSize: 14 }}>
+                  Editar Departameto
+                </Typography>
               }
               sx={{ ml: -3 }}
             />
@@ -79,7 +81,9 @@ export default function DepartmentTableActions(props) {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>Deletar Departamento</Typography>
+                <Typography sx={{ fontSize: 14 }}>
+                  Deletar Departamento
+                </Typography>
               }
               sx={{ ml: -3 }}
             />
@@ -89,6 +93,7 @@ export default function DepartmentTableActions(props) {
       {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
+            userId={props.userId}
             selectedItem={props.selectedItem}
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}

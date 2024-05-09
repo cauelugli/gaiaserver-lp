@@ -63,7 +63,6 @@ export default function Departments({
 
   const [openAddDepartment, setOpenAddDepartment] = React.useState(false);
   const [openAddGroup, setOpenAddGroup] = React.useState(false);
-  
 
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("name");
@@ -264,6 +263,7 @@ export default function Departments({
 
             {tableOrCardView ? (
               <DepartmentTable
+                userId={userId}
                 configData={config}
                 users={users}
                 managers={managers}
@@ -292,6 +292,7 @@ export default function Departments({
                     xl={cardSize}
                   >
                     <DepartmentCard
+                      userId={userId}
                       department={department}
                       configData={configData}
                       refreshData={refreshData}
@@ -328,6 +329,7 @@ export default function Departments({
             )}
             {tableOrCardView ? (
               <DepartmentTable
+                userId={userId}
                 configData={config}
                 toast={toast}
                 users={users}
@@ -356,6 +358,7 @@ export default function Departments({
                     xl={cardSize}
                   >
                     <DepartmentCard
+                      userId={userId}
                       department={department}
                       configData={configData}
                       refreshData={refreshData}
@@ -393,6 +396,7 @@ export default function Departments({
               )}
               {tableOrCardView ? (
                 <DepartmentTable
+                  userId={userId}
                   configData={config}
                   toast={toast}
                   users={users}
@@ -421,6 +425,7 @@ export default function Departments({
                       xl={cardSize}
                     >
                       <DepartmentCard
+                        userId={userId}
                         department={department}
                         configData={configData}
                         refreshData={refreshData}
@@ -462,6 +467,7 @@ export default function Departments({
 
             {tableOrCardView ? (
               <GroupTable
+                userId={userId}
                 configData={config}
                 toast={toast}
                 searchValue={searchValue}
@@ -496,6 +502,7 @@ export default function Departments({
                     xl={cardSize}
                   >
                     <DepartmentCard
+                      userId={userId}
                       group={group}
                       configData={configData}
                       refreshData={refreshData}
@@ -522,6 +529,7 @@ export default function Departments({
           onClose={() => setOpenAddDepartment(!openAddDepartment)}
         >
           <AddDepartmentForm
+            userId={userId}
             configData={config}
             openAdd={openAddDepartment}
             users={users}
@@ -542,6 +550,7 @@ export default function Departments({
           onClose={() => setOpenAddGroup(!openAddGroup)}
         >
           <AddGroupForm
+            userId={userId}
             userName={userName}
             users={allUsers}
             openAdd={openAddGroup}

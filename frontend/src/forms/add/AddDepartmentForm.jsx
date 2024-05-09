@@ -1,6 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Button,
@@ -33,6 +36,7 @@ const api = axios.create({
 });
 
 const AddDepartmentForm = ({
+  userId,
   configData,
   users,
   managers,
@@ -88,6 +92,10 @@ const AddDepartmentForm = ({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "departments",
+          userId: userId,
         });
       }
       setOpenAdd(false);
@@ -213,9 +221,7 @@ const AddDepartmentForm = ({
                       <Typography sx={{ fontSize: 10 }}>
                         Prestadores de Serviços e Atendimentos
                       </Typography>
-                      <Typography
-                        sx={{ fontSize: 10, fontWeight: "bold" }}
-                      >
+                      <Typography sx={{ fontSize: 10, fontWeight: "bold" }}>
                         Não realizam Vendas
                       </Typography>
                     </Grid>
@@ -230,9 +236,7 @@ const AddDepartmentForm = ({
                       <Typography sx={{ fontSize: 10 }}>
                         Setor de Vendas
                       </Typography>
-                      <Typography
-                        sx={{ fontSize: 10, fontWeight: "bold" }}
-                      >
+                      <Typography sx={{ fontSize: 10, fontWeight: "bold" }}>
                         Não realizam Serviços
                       </Typography>{" "}
                     </Grid>
@@ -247,9 +251,7 @@ const AddDepartmentForm = ({
                       <Typography sx={{ fontSize: 10 }}>
                         Administração da Empresa
                       </Typography>
-                      <Typography
-                        sx={{ fontSize: 10, fontWeight: "bold" }}
-                      >
+                      <Typography sx={{ fontSize: 10, fontWeight: "bold" }}>
                         Não realizam Serviços nem Vendas
                       </Typography>{" "}
                     </Grid>

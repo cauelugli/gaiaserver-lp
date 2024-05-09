@@ -2,6 +2,9 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Button,
@@ -26,6 +29,7 @@ export default function EditGroupMembersForm({
   refreshData,
   setRefreshData,
   toast,
+  userId,
 }) {
   const [members, setMembers] = React.useState(selectedGroup.members);
 
@@ -51,6 +55,10 @@ export default function EditGroupMembersForm({
           theme: "colored",
           autoClose: 1200,
         });
+        socket.emit("newDataRefreshButton", {
+          page: "departments",
+          userId: userId,
+        });
       }
       setOpenEditMembers(false);
       setRefreshData(!refreshData);
@@ -75,9 +83,7 @@ export default function EditGroupMembersForm({
 
   return (
     <form onSubmit={handleEdit}>
-      <DialogTitle>
-        Membros do Grupo - {selectedGroup.name}
-      </DialogTitle>
+      <DialogTitle>Membros do Grupo - {selectedGroup.name}</DialogTitle>
       <DialogContent>
         <Grid
           container

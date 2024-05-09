@@ -22,6 +22,7 @@ import EditGroupRenameForm from "../forms/edit/EditGroupRenameForm";
 import EditGroupMembersForm from "../forms/edit/EditGroupMembersForm";
 
 export default function GroupTable({
+  userId,
   configData,
   groups,
   allUsers,
@@ -164,6 +165,7 @@ export default function GroupTable({
                         onClick={() => setSelectedGroup(group)}
                       >
                         <GroupTableActions
+                          userId={userId}
                           configData={configData}
                           setRename={setRename}
                           setOpenEditMembers={setOpenEditMembers}
@@ -199,6 +201,7 @@ export default function GroupTable({
             onClose={() => setRename(!openRename)}
           >
             <EditGroupRenameForm
+              userId={userId}
               setRename={setRename}
               selectedGroup={selectedGroup}
               refreshData={refreshData}
@@ -216,6 +219,7 @@ export default function GroupTable({
             onClose={() => setOpenEditMembers(!openEditMembers)}
           >
             <EditGroupMembersForm
+              userId={userId}
               openEdit={openEditMembers}
               users={allUsers}
               selectedGroup={selectedGroup}

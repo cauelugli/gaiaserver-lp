@@ -2,6 +2,9 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Button,
@@ -35,7 +38,7 @@ const EditDepartmentForm = ({
   users,
   managers,
   setOpenEdit,
-
+  userId,
   refreshData,
   setRefreshData,
 }) => {
@@ -100,6 +103,10 @@ const EditDepartmentForm = ({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "departments",
+          userId: userId,
         });
       }
       setOpenEdit(!openEdit);

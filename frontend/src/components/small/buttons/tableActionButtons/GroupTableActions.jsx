@@ -105,6 +105,7 @@ export default function GroupTableActions(props) {
       {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
+            userId={props.userId}
             selectedItem={props.selectedItem}
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
@@ -112,6 +113,8 @@ export default function GroupTableActions(props) {
             setRefreshData={props.setRefreshData}
             toast={toast}
             endpoint="groups"
+            usePageNotEndpoint
+            page="departments"
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
             } Deletado com Sucesso`}
