@@ -247,7 +247,11 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
         </Grid>
       </Grid>
       <Grid item sx={{ height: "auto" }}>
-        <Grid container direction="column" sx={{ height: "85%" }}>
+        <Grid
+          container
+          direction="column"
+          sx={{ height: "85%", maxHeight: 480 }}
+        >
           {optionsRightColumn.map((option, index) => {
             if (allowedListRightColumn.includes(option.permissionLabel)) {
               return (
