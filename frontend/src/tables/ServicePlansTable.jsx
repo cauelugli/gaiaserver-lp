@@ -20,10 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
 // import EditServiceForm from "../forms/edit/EditServiceForm";
 
 export default function ServicePlansTable({
@@ -35,7 +32,7 @@ export default function ServicePlansTable({
   // setRefreshData,
 }) {
   const [selectedService, setSelectedService] = React.useState("");
-  const [openEdit, setOpenEdit] = React.useState(false);
+  // const [openEdit, setOpenEdit] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [openDetailInfo, setOpenDetailInfo] = React.useState(true);
   const [openDetailServices, setOpenDetailServices] = React.useState(false);
@@ -45,10 +42,10 @@ export default function ServicePlansTable({
     setSelectedService(service);
   };
 
-  const handleOpenEdit = (service) => {
-    setOpenEdit(!openEdit);
-    setSelectedService(service);
-  };
+  // const handleOpenEdit = (service) => {
+  //   setOpenEdit(!openEdit);
+  //   setSelectedService(service);
+  // };
 
   const tableHeaderRow = [
     {
@@ -112,11 +109,7 @@ export default function ServicePlansTable({
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            <TableRow
-              sx={{
-                backgroundColor: "#eee",
-              }}
-            >
+            <TableRow>
               {tableHeaderRow.map((headCell) => (
                 <TableCell
                   align={headCell.label === "Nome do Plano" ? "" : "center"}
@@ -195,16 +188,12 @@ export default function ServicePlansTable({
                               <TableHead>
                                 <TableRow>
                                   <TableCell sx={{ width: "350px" }}>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
+                                    <Typography sx={{ fontSize: 13 }}>
                                       Nome
                                     </Typography>
                                   </TableCell>
                                   <TableCell>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
+                                    <Typography sx={{ fontSize: 13 }}>
                                       Valor do Plano
                                     </Typography>
                                   </TableCell>
@@ -256,16 +245,12 @@ export default function ServicePlansTable({
                               <TableHead>
                                 <TableRow>
                                   <TableCell sx={{ width: "350px" }}>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
+                                    <Typography sx={{ fontSize: 13 }}>
                                       Serviço
                                     </Typography>
                                   </TableCell>
                                   <TableCell sx={{ width: "350px" }}>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
+                                    <Typography sx={{ fontSize: 13 }}>
                                       Departamento
                                     </Typography>
                                   </TableCell>
@@ -289,19 +274,6 @@ export default function ServicePlansTable({
                               </TableBody>
                             </Table>
                           </Collapse>
-
-                          <Box sx={{ mt: 3, ml: "90%" }}>
-                            <ModeEditIcon
-                              cursor="pointer"
-                              onClick={() => handleOpenEdit(servicePlan)}
-                              sx={{ color: "grey", mr: 2 }}
-                            />
-                            <DeleteIcon
-                              cursor="pointer"
-                              // onClick={() => handleConfirmDelete(servicePlan)}
-                              sx={{ color: "#ff4444" }}
-                            />
-                          </Box>
                         </Box>
                       </Collapse>
                     </TableCell>
@@ -332,6 +304,7 @@ export default function ServicePlansTable({
             onClose={() => setOpenEdit(!openEdit)}
           >
             <EditServiceForm
+              userId={userId}
               openEdit={openEdit}
               selectedService={selectedService}
               previousMaterials={selectedService.materials}

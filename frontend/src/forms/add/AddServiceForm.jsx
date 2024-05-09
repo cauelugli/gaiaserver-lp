@@ -1,6 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Box,
@@ -39,6 +42,7 @@ export default function AddServiceForm({
   setRefreshData,
   configCustomization,
   toast,
+  userId,
 }) {
   const [name, setName] = React.useState("");
   const [department, setDepartment] = React.useState("");
@@ -81,6 +85,10 @@ export default function AddServiceForm({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "services",
+          userId: userId,
         });
       }
       setOpenAdd(!openAdd);

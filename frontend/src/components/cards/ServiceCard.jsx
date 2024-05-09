@@ -25,6 +25,7 @@ export default function ServiceCard({
   departments,
   stockItems,
   toast,
+  userId,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
 
@@ -134,6 +135,7 @@ export default function ServiceCard({
         <CardActions sx={{ mt: -1 }}>
           <Grid container justifyContent="center">
             <ServiceTableActions
+              userId={userId}
               configData={configData}
               setOpenEdit={setOpenEdit}
               selectedItem={service}
@@ -151,6 +153,7 @@ export default function ServiceCard({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditServiceForm
+            userId={userId}
             openEdit={openEdit}
             selectedService={service}
             previousMaterials={service.materials}

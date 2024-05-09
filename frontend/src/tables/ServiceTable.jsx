@@ -33,6 +33,7 @@ export default function ServiceTable({
   refreshData,
   setRefreshData,
   topBar,
+  userId,
 }) {
   const [selectedService, setSelectedService] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -296,6 +297,7 @@ export default function ServiceTable({
                     onClick={() => setSelectedService(service)}
                   >
                     <ServiceTableActions
+                      userId={userId}
                       configData={configData.services}
                       setOpenEdit={setOpenEdit}
                       selectedItem={selectedService}
@@ -329,6 +331,7 @@ export default function ServiceTable({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditServiceForm
+            userId={userId}
             openEdit={openEdit}
             selectedService={selectedService}
             previousMaterials={selectedService.materials}

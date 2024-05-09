@@ -2,6 +2,9 @@
 import React from "react";
 import { SketchPicker } from "react-color";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Box,
@@ -38,6 +41,7 @@ export default function EditServiceForm({
   refreshData,
   setRefreshData,
   toast,
+  userId,
 }) {
   const previousData = selectedService;
 
@@ -106,6 +110,10 @@ export default function EditServiceForm({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "services",
+          userId: userId,
         });
       }
       setOpenEdit(!openEdit);

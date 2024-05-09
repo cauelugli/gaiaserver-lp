@@ -1,7 +1,9 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Button,
@@ -27,6 +29,7 @@ export default function AddServicePlanForm({
   setRefreshData,
   configCustomization,
   toast,
+  userId,
 }) {
   const [name, setName] = React.useState("");
   const [services, setServices] = React.useState([]);
@@ -46,6 +49,10 @@ export default function AddServicePlanForm({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "services",
+          userId: userId,
         });
       }
       setOpenAdd(!openAdd);
@@ -91,7 +98,7 @@ export default function AddServicePlanForm({
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              sx={{ width: 350, mr:1 }}
+              sx={{ width: 350, mr: 1 }}
             />
           </Grid>
           <Grid item>
@@ -126,7 +133,7 @@ export default function AddServicePlanForm({
           </Grid>
         </Grid>
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization}/>
+      <FormEndLineTenant configCustomization={configCustomization} />
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK

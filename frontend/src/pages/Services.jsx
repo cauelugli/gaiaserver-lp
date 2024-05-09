@@ -235,6 +235,7 @@ export default function Services({
 
             {tableOrCardView ? (
               <ServiceTable
+                userId={userId}
                 configData={configData}
                 searchOption={searchOption}
                 searchValue={searchValue}
@@ -260,6 +261,7 @@ export default function Services({
                     xl={cardSize}
                   >
                     <ServiceCard
+                      userId={userId}
                       service={service}
                       configData={configData.services}
                       selectedItem={service}
@@ -297,6 +299,8 @@ export default function Services({
 
               {tableOrCardView ? (
                 <ServiceTable
+                  userId={userId}
+                  configData={configData}
                   searchOption={searchOption}
                   searchValue={searchValue}
                   services={supports}
@@ -321,6 +325,7 @@ export default function Services({
                       xl={cardSize}
                     >
                       <ServiceCard
+                        userId={userId}
                         service={service}
                         configData={configData.services}
                         selectedItem={service}
@@ -383,6 +388,7 @@ export default function Services({
                       xl={cardSize}
                     >
                       <ServiceCard
+                        userId={userId}
                         servicePlan={servicePlan}
                         configData=""
                         selectedItem={servicePlan}
@@ -408,6 +414,7 @@ export default function Services({
           onClose={() => setOpenAddService(!openAddService)}
         >
           <AddServiceForm
+            userId={userId}
             openAdd={openAddService}
             setOpenAdd={setOpenAddService}
             departments={departments}
@@ -427,6 +434,7 @@ export default function Services({
           onClose={() => setOpenAddServicePlan(!openAddServicePlan)}
         >
           <AddServicePlanForm
+            userId={userId}
             openAdd={openAddServicePlan}
             setOpenAdd={setOpenAddServicePlan}
             departments={departments}
