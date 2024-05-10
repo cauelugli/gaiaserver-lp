@@ -108,12 +108,15 @@ export default function StockTableActions(props) {
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
             selectedItem={props.selectedItem}
+            userId={props.userId}
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
             toast={toast}
             endpoint={props.type ==="Material"?"stockItems":"products"}
+            usePageNotEndpoint
+            page="stock"
             successMessage={`${
               props.selectedItem.name && props.selectedItem.name
             } Deletado com Sucesso`}

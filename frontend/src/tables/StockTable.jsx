@@ -28,6 +28,7 @@ export default function StockTable({
   refreshData,
   setRefreshData,
   topBar,
+  userId,
 }) {
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -168,6 +169,7 @@ export default function StockTable({
                       onClick={() => setSelectedItem(stockItem)}
                     >
                       <StockTableActions
+                        userId={userId}
                         type="Material"
                         setOpenEdit={setOpenEdit}
                         selectedItem={selectedItem}
@@ -203,6 +205,7 @@ export default function StockTable({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditStockItemForm
+            userId={userId}
             openEdit={openEdit}
             selectedStockItem={selectedItem}
             setOpenEdit={setOpenEdit}

@@ -1,7 +1,10 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Button,
@@ -31,9 +34,11 @@ export default function EditProductForm({
   refreshData,
   setRefreshData,
   toast,
+  userId,
 }) {
   const [name, setName] = React.useState(selectedProduct.name);
   const [brand, setBrand] = React.useState(selectedProduct.brand);
+  // eslint-disable-next-line no-unused-vars
   const [image, setImage] = React.useState(selectedProduct.image);
   const [newImage, setNewImage] = React.useState("");
   const [type, setType] = React.useState(selectedProduct.type);
@@ -45,27 +50,6 @@ export default function EditProductForm({
   const [buyValue, setBuyValue] = React.useState(selectedProduct.buyValue);
   const [sellValue, setSellValue] = React.useState(selectedProduct.sellValue);
 
-  const convertImageToBase64 = (imageFile) => {
-    return new Promise((resolve, reject) => {
-      if (!imageFile) {
-        reject("Nenhuma imagem selecionada.");
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        resolve(event.target.result);
-      };
-
-      reader.onerror = (error) => {
-        reject(error);
-      };
-
-      reader.readAsDataURL(imageFile);
-    });
-  };
-
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
@@ -74,10 +58,7 @@ export default function EditProductForm({
       if (newImage) {
         const formData = new FormData();
         formData.append("image", newImage);
-        const uploadResponse = await api.post(
-          "/uploads/singleFile",
-          formData
-        );
+        const uploadResponse = await api.post("/uploads/singleFile", formData);
         updatedImagePath = uploadResponse.data.imagePath;
       }
 
@@ -100,6 +81,10 @@ export default function EditProductForm({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "stock",
+          userId: userId,
         });
       }
 

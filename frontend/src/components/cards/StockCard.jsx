@@ -20,8 +20,16 @@ import StockTableActions from "../small/buttons/tableActionButtons/StockTableAct
 import EditStockItemForm from "../../forms/edit/EditStockItemForm";
 import EditProductForm from "../../forms/edit/EditProductForm";
 
-export default function StockCard({ item, type, refreshData, setRefreshData }) {
+export default function StockCard({
+  item,
+  type,
+  refreshData,
+  setRefreshData,
+  userId,
+}) {
   const [openEdit, setOpenEdit] = React.useState(false);
+
+  console.log("userId IN CARD", userId);
 
   return (
     <Card elevation={3}>
@@ -125,6 +133,7 @@ export default function StockCard({ item, type, refreshData, setRefreshData }) {
         <CardActions sx={{ mt: -1 }}>
           <Grid container justifyContent="center">
             <StockTableActions
+              userId={userId}
               type={type === "product" ? "Produto" : "Material"}
               selectedItem={item}
               setOpenEdit={setOpenEdit}
@@ -142,6 +151,7 @@ export default function StockCard({ item, type, refreshData, setRefreshData }) {
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditProductForm
+            userId={userId}
             openEdit={openEdit}
             selectedProduct={item}
             setOpenEdit={setOpenEdit}
@@ -159,6 +169,7 @@ export default function StockCard({ item, type, refreshData, setRefreshData }) {
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditStockItemForm
+            userId={userId}
             openEdit={openEdit}
             selectedStockItem={item}
             setOpenEdit={setOpenEdit}

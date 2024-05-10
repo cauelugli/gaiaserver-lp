@@ -28,6 +28,7 @@ export default function ProductsTable({
   refreshData,
   setRefreshData,
   topBar,
+  userId,
 }) {
   const [selectedProduct, setSelectedProduct] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -202,6 +203,7 @@ export default function ProductsTable({
                     onClick={() => setSelectedProduct(product)}
                   >
                     <StockTableActions
+                      userId={userId}
                       type="Produto"
                       setOpenEdit={setOpenEdit}
                       selectedItem={selectedProduct}
@@ -236,6 +238,7 @@ export default function ProductsTable({
           onClose={() => setOpenEdit(!openEdit)}
         >
           <EditProductForm
+            userId={userId}
             openEdit={openEdit}
             selectedProduct={selectedProduct}
             setOpenEdit={setOpenEdit}

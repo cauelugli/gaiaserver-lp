@@ -1,7 +1,10 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Button,
@@ -33,6 +36,7 @@ export default function AddMultipleProductForm({
   setRefreshData,
   configCustomization,
   toast,
+  userId
 }) {
   const [productList, setProductList] = React.useState([
     {
@@ -95,7 +99,6 @@ export default function AddMultipleProductForm({
         createdBy: userName,
       }));
 
-      // Faça a chamada POST para adicionar os produtos
       const res = await api.post("/products", {
         productList: productsData,
       });
@@ -106,6 +109,10 @@ export default function AddMultipleProductForm({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "stock",
+          userId: userId,
         });
       }
       onClose();

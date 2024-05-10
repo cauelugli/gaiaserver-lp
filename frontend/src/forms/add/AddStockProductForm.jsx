@@ -1,7 +1,10 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Avatar,
@@ -10,7 +13,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Grid,
   InputAdornment,
   Paper,
@@ -41,6 +43,7 @@ export default function AddStockProductForm({
   configData,
   configCustomization,
   toast,
+  userId,
 }) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
   const [itemList, setItemList] = React.useState([]);
@@ -82,6 +85,10 @@ export default function AddStockProductForm({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "stock",
+          userId: userId,
         });
       }
       onClose();

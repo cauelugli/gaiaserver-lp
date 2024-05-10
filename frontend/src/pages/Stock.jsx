@@ -251,6 +251,7 @@ export default function Stock({
               )}
               {tableOrCardView ? (
                 <ProductsTable
+                  userId={userId}
                   products={products}
                   searchValue={searchValue}
                   searchOption={searchOption}
@@ -273,6 +274,7 @@ export default function Stock({
                       xl={cardSize}
                     >
                       <StockCard
+                        userId={userId}
                         item={product}
                         type="product"
                         refreshData={refreshData}
@@ -306,6 +308,7 @@ export default function Stock({
               )}
               {tableOrCardView ? (
                 <StockTable
+                  userId={userId}
                   stockItems={stockItems}
                   searchValue={searchValue}
                   searchOption={searchOption}
@@ -328,6 +331,7 @@ export default function Stock({
                       xl={cardSize}
                     >
                       <StockCard
+                        userId={userId}
                         item={item}
                         type="material"
                         refreshData={refreshData}
@@ -395,6 +399,7 @@ export default function Stock({
                     xl={cardSize}
                   >
                     <StockCard
+                      userId={userId}
                       item={item}
                       type="entry"
                       refreshData={refreshData}
@@ -417,6 +422,7 @@ export default function Stock({
         >
           <AddProductForm
             userName={userName}
+            userId={userId}
             onClose={() => closeModal(0)}
             refreshData={refreshData}
             configCustomization={configCustomization}
@@ -435,6 +441,7 @@ export default function Stock({
         >
           <AddMultipleProductForm
             userName={userName}
+            userId={userId}
             onClose={() => closeModal(1)}
             refreshData={refreshData}
             configCustomization={configCustomization}
@@ -453,6 +460,7 @@ export default function Stock({
         >
           <AddStockItemForm
             userName={userName}
+            userId={userId}
             onClose={() => closeModal(2)}
             refreshData={refreshData}
             configCustomization={configCustomization}
@@ -471,6 +479,7 @@ export default function Stock({
         >
           <AddStockProductForm
             userName={userName}
+            userId={userId}
             userDepartment={userDepartment}
             configData={configStock}
             configCustomization={configCustomization}
@@ -492,6 +501,7 @@ export default function Stock({
         >
           <AddStockForm
             userName={userName}
+            userId={userId}
             configData={configStock}
             stockItems={stockItems}
             onClose={() => closeModal(4)}

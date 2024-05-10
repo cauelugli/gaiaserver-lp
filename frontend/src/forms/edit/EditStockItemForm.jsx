@@ -3,13 +3,16 @@
 import React from "react";
 import axios from "axios";
 
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
+
 import {
   Avatar,
   Button,
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormHelperText,
   Grid,
   InputAdornment,
   TextField,
@@ -30,6 +33,7 @@ export default function EditStockItemForm({
   refreshData,
   setRefreshData,
   toast,
+  userId
 }) {
   const [name, setName] = React.useState(selectedStockItem.name);
   const [buyValue, setBuyValue] = React.useState(selectedStockItem.buyValue);
@@ -64,6 +68,10 @@ export default function EditStockItemForm({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "stock",
+          userId: userId,
         });
       }
       setOpenEdit(!openEdit);
