@@ -123,6 +123,7 @@ export default function ProjectsTableActions(props) {
       {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
+            userId={props.userId}
             selectedItem={selectedItem}
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}

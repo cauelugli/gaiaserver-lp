@@ -146,6 +146,11 @@ export default function AddProjectForm({
           autoClose: 1200,
         });
 
+        socket.emit("newDataRefreshButton", {
+          page: "projects",
+          userId: userId,
+        });
+
         if (configData.notifyWhenProjectIsCreated) {
           const memberIds = members.map((member) => member.id);
           socket.emit("whenProjectIsCreated", {

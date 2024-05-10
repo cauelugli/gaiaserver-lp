@@ -478,6 +478,7 @@ export default function ProjectsTable({
                     >
                       <ProjectTableActions
                         selectedItem={project}
+                        userId={userId}
                         configCustomization={"configCustomization"}
                         handleOpenAddAttachment={setOpenAddAttachments}
                         refreshData={refreshData}
@@ -1607,6 +1608,7 @@ export default function ProjectsTable({
         >
           <AddAttachmentsForm
             userName={userName}
+            userId={userId}
             selectedJob={selectedProject}
             setOpenAddAttachments={setOpenAddAttachments}
             refreshData={refreshData}

@@ -236,9 +236,21 @@ export default function Projects({
                 container
                 spacing={2}
               >
-                {projects.map((project) => (
-                  <Grid key item md={cardSize} lg={cardSize} xl={cardSize}>
-                    <ProjectCard key project={project} />
+                {projects.map((project, index) => (
+                  <Grid
+                    item
+                    key={index}
+                    md={cardSize}
+                    lg={cardSize}
+                    xl={cardSize}
+                  >
+                    <ProjectCard
+                      project={project}
+                      userName={userName}
+                      userId={userId}
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
+                    />
                   </Grid>
                 ))}
               </Grid>

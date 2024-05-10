@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
+import { toast } from "react-toastify";
 
 import {
   Avatar,
@@ -8,13 +9,24 @@ import {
   Card,
   CardActions,
   CardContent,
+  Dialog,
   Grid,
   Paper,
   Tooltip,
   Typography,
 } from "@mui/material";
+import ProjectsTableActions from "../small/buttons/tableActionButtons/ProjectTableActions";
+import AddAttachmentsForm from "../../forms/misc/AddAttachmentsForm";
 
-export default function ProjectCard({ project }) {
+export default function ProjectCard({
+  project,
+  userName,
+  userId,
+  refreshData,
+  setRefreshData,
+}) {
+  const [openAddAttachments, setOpenAddAttachments] = React.useState(false);
+
   return (
     <Card elevation={3}>
       <CardContent>
@@ -82,7 +94,36 @@ export default function ProjectCard({ project }) {
           </>
         </Grid>
       </CardContent>
-      {/* <CardActions sx={{ mt: -1 }} /> */}
+      <CardActions sx={{ mt: -1 }}>
+        <Grid container justifyContent="center">
+          <ProjectsTableActions
+            selectedItem={project}
+            configCustomization={"configCustomization"}
+            handleOpenAddAttachment={setOpenAddAttachments}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+          />
+        </Grid>
+      </CardActions>
+      {openAddAttachments && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddAttachments}
+          onClose={() => setOpenAddAttachments(!openAddAttachments)}
+        >
+          <AddAttachmentsForm
+            userName={userName}
+            userId={userId}
+            selectedJob={project}
+            setOpenAddAttachments={setOpenAddAttachments}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+            endpoint="projects"
+          />
+        </Dialog>
+      )}
     </Card>
   );
 }

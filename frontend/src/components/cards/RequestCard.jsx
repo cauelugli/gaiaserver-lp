@@ -306,6 +306,7 @@ export default function RequestCard({
         >
           <AddAttachmentsForm
             userName={userName}
+            userId={userId}
             selectedJob={request}
             setOpenAddAttachments={setOpenAddAttachments}
             refreshData={refreshData}

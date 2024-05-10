@@ -4,8 +4,11 @@
 import React from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import { io } from "socket.io-client";
 
-import { Button, Dialog, Grid, Paper, Typography } from "@mui/material";
+const socket = io("http://localhost:3000");
+
+import { Button, Dialog, Grid, Typography } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
@@ -19,12 +22,15 @@ const api = axios.create({
 
 const AddAttachmentsForm = ({
   userName,
+  userId,
   setOpenAddAttachments,
   selectedJob,
   refreshData,
   setRefreshData,
   toast,
   endpoint,
+  usePageNotEndpoint,
+  page,
 }) => {
   const [attachments, setAttachments] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState("");
@@ -59,6 +65,10 @@ const AddAttachmentsForm = ({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: usePageNotEndpoint ? page : endpoint,
+          userId: userId,
         });
       }
       setOpenAddAttachments(false);

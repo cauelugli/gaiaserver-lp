@@ -1562,12 +1562,15 @@ export default function JobTable({
         >
           <AddAttachmentsForm
             userName={userName}
+            userId={userId}
             selectedJob={selectedJob}
             setOpenAddAttachments={setOpenAddAttachments}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
             endpoint="jobs"
+            usePageNotEndpoint
+            page="requests"
           />
         </Dialog>
       )}
