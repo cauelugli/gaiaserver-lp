@@ -60,7 +60,6 @@ router.put("/", async (req, res) => {
         status: req.body.status,
         quote: req.body.status,
         user: req.body.status,
-        department: req.body.status,
         items: req.body.status,
         price: req.body.status,
         commissioned: req.body.status,

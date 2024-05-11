@@ -34,6 +34,7 @@ export default function FinanceOutcomeTable({
   setRefreshData,
   configCustomization,
   topBar,
+  userId,
 }) {
   const [selectedFinanceoutcome, setSelectedFinanceoutcome] =
     React.useState("");
@@ -72,10 +73,6 @@ export default function FinanceOutcomeTable({
     {
       id: "payment",
       label: "Pagamento",
-    },
-    {
-      id: "department",
-      label: "Departamento",
     },
     {
       id: "price",
@@ -213,7 +210,7 @@ export default function FinanceOutcomeTable({
                   <TableRow key={outcome._id}>
                     <TableCell>
                       <Typography sx={{ fontSize: 13 }}>
-                        {outcome.type === "job" ? "Job" : "Venda"}
+                        {outcome.type ? outcome.type : "Não Informado"}
                       </Typography>
                     </TableCell>
                     <TableCell align="center">
@@ -411,11 +408,6 @@ export default function FinanceOutcomeTable({
                     </TableCell>
                     <TableCell align="center">
                       <Typography sx={{ fontSize: 13 }}>
-                        {outcome.department}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography sx={{ fontSize: 13 }}>
                         R${outcome.price.toFixed(2)}
                       </Typography>
                     </TableCell>
@@ -481,6 +473,7 @@ export default function FinanceOutcomeTable({
             onClose={() => setOpenAddParcelPayment(!openAddParcelPayment)}
           >
             <AddParcelPaymentForm
+              userId={userId}
               selectedFinanceIncome={selectedFinanceoutcome}
               setOpenEdit={setOpenAddParcelPayment}
               refreshData={refreshData}
@@ -498,6 +491,7 @@ export default function FinanceOutcomeTable({
             onClose={() => setOpenCashPayment(!openCashPayment)}
           >
             <CashPaymentForm
+              userId={userId}
               selectedFinanceIncome={selectedFinanceoutcome}
               setOpenEdit={setOpenCashPayment}
               refreshData={refreshData}
@@ -515,6 +509,7 @@ export default function FinanceOutcomeTable({
             onClose={() => setOpenSchedulePayment(!openSchedulePayment)}
           >
             <AddPaymentScheduleForm
+              userId={userId}
               selectedFinanceIncome={selectedFinanceoutcome}
               previousMaterials={selectedFinanceoutcome.materials}
               setOpenEdit={setOpenSchedulePayment}
@@ -533,6 +528,7 @@ export default function FinanceOutcomeTable({
             onClose={() => setOpenChallengeApproval(!openChallengeApproval)}
           >
             <ChallengeApproval
+              userId={userId}
               selectedFinanceOutcome={selectedFinanceoutcome}
               entry={selectedFinanceoutcome.entry}
               open={openChallengeApproval}

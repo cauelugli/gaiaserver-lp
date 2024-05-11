@@ -20,9 +20,6 @@ const financeOutcomeSchema = new mongoose.Schema({
   customerType: {
     type: String,
   },
-  department: {
-    type: String,
-  },
   entry: {
     type: Object,
   },

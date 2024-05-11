@@ -49,17 +49,12 @@ router.put("/managerApproval", async (req, res) => {
 
     let savedFinanceOutcome;
 
-    console.log("\nreq.body", req.body, "\n");
-
     if (req.body.status === "Aprovado") {
       const newFinanceOutcome = new FinanceOutcome({
         entry: req.body.entry,
         type: req.body.entry.type,
         status: "Aprovado",
         user: req.body.userName,
-        department: req.body.userDepartment
-          ? req.body.userDepartment.name
-          : "-",
         items: req.body.entry.items,
         price: req.body.entry.quoteValue.toFixed(2),
       });
@@ -116,9 +111,6 @@ router.put("/", async (req, res) => {
           status: "Aprovado",
           user: req.body.userName,
           type: `Entrada de Estoque - ${req.body.type}`,
-          department: req.body.userDepartment
-            ? req.body.userDepartment.name
-            : "Sem Departamento",
           items: newStockEntry.items,
           price: newStockEntry.quoteValue.toFixed(2),
         });
@@ -168,9 +160,6 @@ router.put("/", async (req, res) => {
           status: "Aprovado",
           user: req.body.userName,
           type: `Entrada de Estoque - ${req.body.type}`,
-          department: req.body.userDepartment
-            ? req.body.userDepartment.name
-            : "Sem Departamento",
           items: newStockEntry.items,
           price: newStockEntry.quoteValue.toFixed(2),
         });
