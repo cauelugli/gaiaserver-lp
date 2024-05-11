@@ -36,6 +36,12 @@ const options = [
   { label: "Financeiro", icon: <AttachMoneyIcon />, link: "/finance" },
   { label: "Relatórios", icon: <AssessmentIcon />, link: "/reports" },
   {
+    label: "Ajuda",
+    icon: <HelpCenterIcon />,
+    link: "/help",
+    disabled: true,
+  },
+  {
     label: "Acessos",
     icon: <AdminPanelSettingsIcon />,
     link: "/security",
@@ -43,12 +49,6 @@ const options = [
 
   { label: "Arquivos", icon: <InsertDriveFileIcon />, link: "/files" },
   { label: "Configurações", icon: <SettingsIcon />, link: "/config" },
-  {
-    label: "Help Center",
-    icon: <HelpCenterIcon />,
-    link: "/help",
-    disabled: true,
-  },
 ];
 
 const SideBar = ({ configData, user }) => {
@@ -85,9 +85,10 @@ const SideBar = ({ configData, user }) => {
   );
 
   return (
-    <>
+    <Grid sx={{ height: "98%" }}>
       <List
         sx={{
+          height: "100%",
           backgroundColor:
             configData && configData.customization
               ? configData.customization.mainColor
@@ -128,7 +129,6 @@ const SideBar = ({ configData, user }) => {
               color: "black",
               position: "relative",
               overflow: "hidden",
-
               backgroundColor:
                 configData && configData.customization
                   ? configData.customization.mainColor
@@ -202,7 +202,7 @@ const SideBar = ({ configData, user }) => {
                 }}
               />
             </ListItemButton>
-            {option.label === "Relatórios" && (
+            {option.label === "Ajuda" && user.username === "admin" && (
               <Divider
                 sx={{
                   my: 0.75,
@@ -213,46 +213,10 @@ const SideBar = ({ configData, user }) => {
                 }}
               />
             )}
-            {option.label === "Configurações" && (
-              <Grid
-                sx={{
-                  mt: 10,
-                  mb: 0.75,
-                  pb: 0.75,
-                  backgroundColor:
-                    configData && configData.customization
-                      ? configData.customization.mainColor
-                      : "white",
-                }}
-              />
-            )}
           </Link>
         ))}
-        <ListItemButton
-          sx={{
-            backgroundColor:
-              configData && configData.customization
-                ? configData.customization.mainColor
-                : "white",
-          }}
-        >
-          <img
-            src={`http://localhost:3000/static/logo_dog.png`}
-            alt="Logo do GS"
-            style={{
-              width: "65%",
-              cursor: "pointer",
-
-              backgroundColor:
-                configData && configData.customization
-                  ? configData.customization.mainColor
-                  : "white",
-            }}
-            onClick={() => alert("GS é um sonho feito com muito amor")}
-          />
-        </ListItemButton>
       </List>
-    </>
+    </Grid>
   );
 };
 
