@@ -3,6 +3,9 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Box,
@@ -20,6 +23,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+
 import { IMaskInput } from "react-imask";
 
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -38,6 +42,7 @@ export default function AddParcelPaymentForm({
   setRefreshData,
   configCustomization,
   toast,
+  userId,
 }) {
   const previousData = selectedFinanceIncome;
   const [paymentData, setPaymentData] = React.useState([]);
@@ -95,6 +100,10 @@ export default function AddParcelPaymentForm({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "finance",
+          userId: userId,
         });
       }
       setOpenEdit(false);

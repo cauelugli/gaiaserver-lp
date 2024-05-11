@@ -4,6 +4,9 @@
 import React from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Box,
@@ -42,6 +45,7 @@ export default function CashPaymentForm({
   configCustomization,
   setRefreshData,
   toast,
+  userId,
 }) {
   const previousData = selectedFinanceIncome;
   const [date, setDate] = React.useState(dayjs());
@@ -71,6 +75,11 @@ export default function CashPaymentForm({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+
+        socket.emit("newDataRefreshButton", {
+          page: "finance",
+          userId: userId,
         });
       }
       setOpenEdit(false);

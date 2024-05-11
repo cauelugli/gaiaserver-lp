@@ -185,6 +185,7 @@ export default function Finance({
             {tableOrCardView ? (
               <FinanceIncomeTable
                 incoming={incoming}
+                userId={userId}
                 configCustomization={configCustomization}
                 configData={configData}
                 refreshData={refreshData}
@@ -210,6 +211,7 @@ export default function Finance({
                   >
                     <FinanceCard
                       item={item}
+                      userId={userId}
                       type="income"
                       refreshData={refreshData}
                       setRefreshData={setRefreshData}
@@ -244,6 +246,7 @@ export default function Finance({
 
             {tableOrCardView ? (
               <FinanceOutcomeTable
+                userId={userId}
                 outcoming={outcoming}
                 configData={configData}
                 configCustomization={configCustomization}
@@ -270,6 +273,7 @@ export default function Finance({
                   >
                     <FinanceCard
                       item={item}
+                      userId={userId}
                       type="outcome"
                       refreshData={refreshData}
                       setRefreshData={setRefreshData}

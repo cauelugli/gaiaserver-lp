@@ -42,6 +42,27 @@ export default function FinanceOutcomeTableActions(props) {
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
         <List sx={{ width: 210 }}>
+          {props.outcome.status !== "Pago" &&
+            props.outcome.payment &&
+            !props.outcome.payment.paymentDates && (
+              <ListItemButton
+                onClick={() => {
+                  props.handleOpenAddCashPayment(props.outcome),
+                    setAnchorEl(null);
+                }}
+              >
+                <ListItemIcon>
+                  <AttachMoneyIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <Typography sx={{ fontSize: 14 }}>Pagar a Vista</Typography>
+                  }
+                  sx={{ ml: -3 }}
+                />
+              </ListItemButton>
+            )}
+            
           {!props.outcome.payment && props.outcome.status === "Aprovado" && (
             <>
               <ListItemButton
@@ -120,28 +141,6 @@ export default function FinanceOutcomeTableActions(props) {
                   primary={
                     <Typography sx={{ fontSize: 14 }}>
                       Receber Parcela
-                    </Typography>
-                  }
-                  sx={{ ml: -3 }}
-                />
-              </ListItemButton>
-            )}
-          {props.outcome.status !== "Pago" &&
-            props.outcome.payment &&
-            !props.outcome.payment.paymentDates && (
-              <ListItemButton
-                onClick={() => {
-                  props.handleOpenAddCashPayment(props.outcome),
-                    setAnchorEl(null);
-                }}
-              >
-                <ListItemIcon>
-                  <AttachMoneyIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary={
-                    <Typography sx={{ fontSize: 14 }}>
-                      Receber a Vista
                     </Typography>
                   }
                   sx={{ ml: -3 }}

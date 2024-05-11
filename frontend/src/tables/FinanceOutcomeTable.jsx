@@ -517,6 +517,7 @@ export default function FinanceOutcomeTable({
               setRefreshData={setRefreshData}
               toast={toast}
               configCustomization={configCustomization}
+              isOutcome
             />
           </Dialog>
         )}

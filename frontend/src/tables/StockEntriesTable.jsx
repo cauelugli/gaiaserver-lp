@@ -4,6 +4,9 @@ import * as React from "react";
 import axios from "axios";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Avatar,
@@ -36,9 +39,8 @@ export default function StockEntriesTable({
   setRefreshData,
   configData,
   topBar,
+  userId
 }) {
-  
-
   const tableHeaderRow = [
     {
       id: "number",
@@ -116,6 +118,10 @@ export default function StockEntriesTable({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "stock",
+          userId: userId,
         });
         setRefreshData(!refreshData);
       }

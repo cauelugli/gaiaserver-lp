@@ -25,7 +25,7 @@ import CashPaymentForm from "../../forms/add/CashPaymentForm";
 export default function FinanceCard({
   item,
   type,
-  index,
+  userId,
   refreshData,
   setRefreshData,
   configData,
@@ -170,6 +170,7 @@ export default function FinanceCard({
           onClose={() => setOpenAddParcelPayment(!openAddParcelPayment)}
         >
           <AddParcelPaymentForm
+            userId={userId}
             selectedFinanceIncome={item}
             openEdit={openAddParcelPayment}
             configCustomization={configCustomization}
@@ -188,6 +189,7 @@ export default function FinanceCard({
           onClose={() => setOpenCashPayment(!openCashPayment)}
         >
           <CashPaymentForm
+            userId={userId}
             selectedFinanceIncome={item}
             openEdit={openCashPayment}
             setOpenEdit={setOpenCashPayment}
@@ -206,6 +208,7 @@ export default function FinanceCard({
           onClose={() => setOpenSchedulePayment(!openSchedulePayment)}
         >
           <AddPaymentScheduleForm
+            userId={userId}
             openEdit={openSchedulePayment}
             selectedFinanceIncome={item}
             previousMaterials={item.materials}
@@ -225,6 +228,7 @@ export default function FinanceCard({
           onClose={() => setOpenChallengeApproval(!openChallengeApproval)}
         >
           <ChallengeApproval
+            userId={userId}
             selectedFinanceOutcome={item}
             entry={item.entry}
             open={openChallengeApproval}

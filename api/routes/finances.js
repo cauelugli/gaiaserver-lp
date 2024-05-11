@@ -93,6 +93,7 @@ router.put("/status", async (req, res) => {
 // UPDATE SCHEDULE PAYMENT DATE
 router.put("/schedulePayment", async (req, res) => {
   const paymentDates = req.body.paymentDates;
+  const isOutcome = req.body.isOutcome;
 
   try {
     let payment = {};
@@ -132,14 +133,25 @@ router.put("/schedulePayment", async (req, res) => {
       }
     }
 
-    const scheduledPayment = await FinanceIncome.findByIdAndUpdate(
-      req.body.id,
-      {
-        payment: payment,
-        status: "Agendado",
-      },
-      { new: true }
-    );
+    let scheduledPayment;
+
+    isOutcome
+      ? (scheduledPayment = await FinanceOutcome.findByIdAndUpdate(
+          req.body.id,
+          {
+            payment: payment,
+            status: "Agendado",
+          },
+          { new: true }
+        ))
+      : (scheduledPayment = await FinanceIncome.findByIdAndUpdate(
+          req.body.id,
+          {
+            payment: payment,
+            status: "Agendado",
+          },
+          { new: true }
+        ));
 
     res.status(200).json(scheduledPayment);
   } catch (err) {
@@ -153,10 +165,14 @@ router.put("/receivePayment/parcel", async (req, res) => {
   try {
     const { id, paymentData } = req.body;
     // Busque o financeIncome pelo ID
-    const financeIncome = await FinanceIncome.findById(id);
+    let financeIncome;
+    financeIncome = await FinanceIncome.findById(id);
 
     if (!financeIncome) {
-      return res.status(404).json({ error: "FinanceIncome não encontrado." });
+      financeIncome = await FinanceOutcome.findById(id);
+      if (!financeIncome) {
+        return res.status(404).json({ error: "FinanceIncome não encontrado." });
+      }
     }
 
     // Atualize as parcelas com as informações recebidas

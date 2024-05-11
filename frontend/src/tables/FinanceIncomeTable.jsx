@@ -41,6 +41,7 @@ export default function FinanceIncomeTable({
   configCustomization,
   setRefreshData,
   topBar,
+  userId,
 }) {
   const [selectedFinanceIncome, setSelectedFinanceIncome] = React.useState("");
   const [hoveredIncome, setHoveredIncome] = React.useState(null);
@@ -488,6 +489,7 @@ export default function FinanceIncomeTable({
           onClose={() => setOpenAddParcelPayment(!openAddParcelPayment)}
         >
           <AddParcelPaymentForm
+            userId={userId}
             selectedFinanceIncome={selectedFinanceIncome}
             openEdit={openAddParcelPayment}
             configCustomization={configCustomization}
@@ -506,6 +508,7 @@ export default function FinanceIncomeTable({
           onClose={() => setOpenCashPayment(!openCashPayment)}
         >
           <CashPaymentForm
+            userId={userId}
             selectedFinanceIncome={selectedFinanceIncome}
             openEdit={openCashPayment}
             setOpenEdit={setOpenCashPayment}
@@ -524,6 +527,7 @@ export default function FinanceIncomeTable({
           onClose={() => setOpenSchedulePayment(!openSchedulePayment)}
         >
           <AddPaymentScheduleForm
+            userId={userId}
             openEdit={openSchedulePayment}
             selectedFinanceIncome={selectedFinanceIncome}
             previousMaterials={selectedFinanceIncome.materials}

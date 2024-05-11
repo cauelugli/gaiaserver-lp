@@ -375,6 +375,7 @@ export default function Stock({
               <StockEntriesTable
                 stockEntries={stock}
                 userName={userName}
+                userId={userId}
                 userRole={userRole}
                 userDepartment={userDepartment}
                 configData={configStock}

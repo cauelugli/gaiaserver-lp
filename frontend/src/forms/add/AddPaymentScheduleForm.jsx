@@ -2,13 +2,16 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import dayjs from "dayjs";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 import {
   Box,
   Button,
   DialogActions,
   DialogContent,
-  DialogTitle,
   FormControlLabel,
   Grid,
   InputAdornment,
@@ -26,10 +29,10 @@ import {
   Typography,
 } from "@mui/material";
 
-import { IMaskInput } from "react-imask";
-import dayjs from "dayjs";
-
 import DeleteIcon from "@mui/icons-material/Delete";
+
+import { IMaskInput } from "react-imask";
+
 import DialogHeader from "../../components/small/DialogHeader";
 import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
@@ -44,6 +47,8 @@ export default function AddPaymentScheduleForm({
   setRefreshData,
   configCustomization,
   toast,
+  userId,
+  isOutcome,
 }) {
   const previousData = selectedFinanceIncome;
   const [paymentMethod, setPaymentMethod] = React.useState("");
@@ -81,6 +86,7 @@ export default function AddPaymentScheduleForm({
           : previousData.price.toFixed(2),
         cashPaymentDate,
         previousData,
+        isOutcome
       });
       if (res.data) {
         toast.success("Agendamento de Pagamento Adicionado!", {
@@ -88,6 +94,10 @@ export default function AddPaymentScheduleForm({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "finance",
+          userId: userId,
         });
       }
       setOpenEdit(false);
