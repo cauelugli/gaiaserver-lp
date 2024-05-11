@@ -57,7 +57,9 @@ router.put("/managerApproval", async (req, res) => {
         type: req.body.entry.type,
         status: "Aprovado",
         user: req.body.userName,
-        department: req.body.user.department.name,
+        department: req.body.userDepartment
+          ? req.body.userDepartment.name
+          : "-",
         items: req.body.entry.items,
         price: req.body.entry.quoteValue.toFixed(2),
       });
@@ -75,7 +77,6 @@ router.put("/", async (req, res) => {
   const itemList = req.body.itemList;
   const status = req.body.status;
   const updatedStockItems = [];
-
 
   if (req.body.type === "Estoque") {
     try {

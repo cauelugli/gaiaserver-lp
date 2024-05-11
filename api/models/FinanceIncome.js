@@ -15,7 +15,7 @@ const financeIncomeSchema = new mongoose.Schema({
     default: Date.now,
   },
   customer: {
-    type: String,
+    type: Object,
   },
   customerType: {
     type: String,
