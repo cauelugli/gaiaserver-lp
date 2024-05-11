@@ -44,7 +44,7 @@ export default function RefreshButton({
       sx={{ cursor: "pointer", mt: 0.5 }}
     >
       <Badge
-        color="primary"
+        color="success"
         variant="dot"
         sx={{ m: 0.5 }}
         // this is THE prop, make the magic happen here
