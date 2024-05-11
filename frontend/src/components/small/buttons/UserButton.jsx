@@ -49,7 +49,7 @@ export default function UserButton({ user }) {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <List sx={{ width: 180 }}>
+        <List sx={{ width: 130 }}>
           <Link
             to={"/account"}
             style={{
@@ -58,19 +58,19 @@ export default function UserButton({ user }) {
             }}
             onClick={() => setAnchorEl(null)}
           >
-            <ListItemButton sx={{ mb: -1, ml: 2 }}>
+            <ListItemButton>
               <ListItemIcon>
                 <PersonIcon />
               </ListItemIcon>
-              <ListItemText primary="Perfil" sx={{ ml: -2 }} />
+              <ListItemText primary="Perfil" sx={{ ml: -3 }} />
             </ListItemButton>
           </Link>
 
-          <ListItemButton sx={{ mb: -1, ml: 2 }} onClick={handleLogout}>
+          <ListItemButton onClick={handleLogout}>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
-            <ListItemText primary="Logout" sx={{ ml: -2 }} />
+            <ListItemText primary="Logout" sx={{ ml: -3 }} />
           </ListItemButton>
         </List>
       </Menu>
