@@ -51,6 +51,7 @@ const ShortcutModals = ({
       <AddJobForm
         {...props}
         userId={user._id}
+        userName={user.name}
         setOpenAddJob={onClose}
         configNotifications={configNotifications}
         configNotificationsBooleans={configNotificationsBooleans}
@@ -61,6 +62,7 @@ const ShortcutModals = ({
       <AddJobForm
         {...props}
         userId={user._id}
+        userName={user.name}
         setOpenAddJob={onClose}
         configNotifications={configNotifications}
         configNotificationsBooleans={configNotificationsBooleans}
@@ -71,6 +73,7 @@ const ShortcutModals = ({
       <AddSaleForm
         {...props}
         userId={user._id}
+        userName={user.name}
         setOpenAddSale={onClose}
         configNotifications={configNotifications}
         configNotificationsBooleans={configNotificationsBooleans}
@@ -81,6 +84,7 @@ const ShortcutModals = ({
       <AddSaleForm
         {...props}
         userId={user._id}
+        userName={user.name}
         setOpenAddSale={onClose}
         configNotifications={configNotifications}
         configNotificationsBooleans={configNotificationsBooleans}
