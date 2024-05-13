@@ -96,6 +96,7 @@ export default function RequestCard({
           sender: userName,
           receiver: request.manager.name,
           job: request,
+          type: "Estoque",
           date: dayjs(Date.now()).format("DD/MM/YYYY HH:mm"),
         });
         socket.emit("newDataRefreshButton", {

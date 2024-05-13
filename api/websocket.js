@@ -201,12 +201,12 @@ const initSocket = (server) => {
 
         const newNotification = {
           id: Date.now(),
-          type: "Aprovação",
-          noteBody: `Olá ${data.receiver}! ${
-            data.sender
-          } está solicitando aprovação para ${
-            data.type ? "Entrada de Estoque" : "o Job"
-          } "${!data.type && data.job.title}" em ${data.date}.`,
+          type: data.type,
+          date: data.date,
+          createdAt: data.date,
+          noteBody: `Olá ${data.receiver.name}! ${data.sender} 
+          está solicitando aprovação para ${data.type} 
+          em ${data.date}.`,
           sender: data.sender,
           status: "Não Lida",
         };

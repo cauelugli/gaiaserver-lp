@@ -39,7 +39,7 @@ export default function RequestApproval({
           sender: userName,
           receiver: dispatcherManager,
           job: entry,
-          type: "Entrada de Estoque",
+          type: "Estoque",
           date: dayjs(Date.now()).format("DD/MM/YYYY"),
         });
         setRefreshData(!refreshData);

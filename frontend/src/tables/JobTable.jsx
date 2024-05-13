@@ -245,6 +245,7 @@ export default function JobTable({
           sender: userName,
           receiver: selectedJob.manager.name,
           job: selectedJob,
+          type: "Job",
           date: dayjs(Date.now()).format("DD/MM/YYYY HH:mm"),
         });
         socket.emit("newDataRefreshButton", {
