@@ -108,6 +108,7 @@ const initSocket = (server) => {
             id: Date.now(),
             type: "Novo Job",
             noteBody: `Novo Job ${data.title} criado por ${data.sender} em ${data.date}.`,
+            createdAt: data.date,
             sender: data.sender,
             status: "Não Lida",
           };
