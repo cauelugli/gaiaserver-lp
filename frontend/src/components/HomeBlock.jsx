@@ -185,7 +185,7 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
                       pr: index % 2 === 1 ? "" : 1,
                       pb: 1,
                     }}
-                    md={allowedListMainblocks.length === 2 ? 12 : 6}
+                    md={allowedListMainblocks.length <= 4 ? 12 : 6}
                   >
                     <Link to={option.link} style={{ textDecoration: "none" }}>
                       <Paper
