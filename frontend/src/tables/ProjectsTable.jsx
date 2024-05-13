@@ -201,13 +201,16 @@ export default function ProjectsTable({
         user: { id: userId, name: userName },
         createdAt: dayjs().format("DD/MM/YYYY"),
       });
-
       if (res.data) {
         toast.success("Interação Adicionada!", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "projects",
+          userId: userId,
         });
         setNewInteractionText("");
         setSelectedTaskIndex(null);
@@ -259,6 +262,10 @@ export default function ProjectsTable({
           theme: "colored",
           autoClose: 1200,
         });
+        socket.emit("newDataRefreshButton", {
+          page: "projects",
+          userId: userId,
+        });
         const memberIds = response.data.stages[selectedStageIndex].tasks[
           selectedTaskIndex
         ].assignees.map((assignee) => assignee.id);
@@ -300,6 +307,10 @@ export default function ProjectsTable({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "projects",
+          userId: userId,
         });
         setRefreshData(!refreshData);
       }
