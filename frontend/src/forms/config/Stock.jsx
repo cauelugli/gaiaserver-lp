@@ -164,7 +164,7 @@ export default function Departments({ onClose }) {
                           sx={{ minWidth: "200px", mr: 1 }}
                         >
                           {departments.map((item) => (
-                            <MenuItem value={item} key={item.id}>
+                            <MenuItem value={item} key={item.id} disabled={!item.manager}>
                               <Grid container direction="row">
                                 <Paper
                                   elevation={0}
