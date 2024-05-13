@@ -207,6 +207,10 @@ export default function JobTable({
           theme: "colored",
           autoClose: 1200,
         });
+        socket.emit("newDataRefreshButton", {
+          page: "requests",
+          userId: userId,
+        });
         setRefreshData(!refreshData);
       }
     } catch (err) {
@@ -242,6 +246,10 @@ export default function JobTable({
           receiver: selectedJob.manager.name,
           job: selectedJob,
           date: dayjs(Date.now()).format("DD/MM/YYYY HH:mm"),
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "requests",
+          userId: userId,
         });
         setRefreshData(!refreshData);
       }
@@ -300,6 +308,10 @@ export default function JobTable({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "requests",
+          userId: userId,
         });
       }
       setOpenAddInteractionOnTable(false);

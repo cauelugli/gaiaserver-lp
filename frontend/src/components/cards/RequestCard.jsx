@@ -98,6 +98,10 @@ export default function RequestCard({
           job: request,
           date: dayjs(Date.now()).format("DD/MM/YYYY HH:mm"),
         });
+        socket.emit("newDataRefreshButton", {
+          page: "requests",
+          userId: userId,
+        });
         setRefreshData(!refreshData);
       }
     } catch (err) {
