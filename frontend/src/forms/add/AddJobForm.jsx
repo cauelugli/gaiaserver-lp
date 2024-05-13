@@ -805,7 +805,6 @@ const AddJobForm = ({
                           sx={{
                             mt: 2,
                             ml: 2,
-                            color: "green",
                             textAlign: "center",
                           }}
                         >
