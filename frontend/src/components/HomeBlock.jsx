@@ -194,6 +194,7 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
                         sx={{
                           height: 110,
                           width: "auto",
+                          maxWidth: 692,
                           transition: "background-color 0.3s, color 0.3s",
                           backgroundColor:
                             hoveredIndexMainblocks === index &&
