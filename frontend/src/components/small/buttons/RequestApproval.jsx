@@ -19,7 +19,8 @@ export default function RequestApproval({
   userName,
   entry,
   refreshData,
-  setRefreshData,dispatcherManager
+  setRefreshData,
+  dispatcherManager,
 }) {
   const handleRequestApproval = async (job) => {
     try {
@@ -38,7 +39,7 @@ export default function RequestApproval({
           sender: userName,
           receiver: dispatcherManager,
           job: entry,
-          type:"Entrada de Estoque",
+          type: "Entrada de Estoque",
           date: dayjs(Date.now()).format("DD/MM/YYYY"),
         });
         setRefreshData(!refreshData);
@@ -52,28 +53,56 @@ export default function RequestApproval({
       });
     }
   };
+
   return (
-    <Tooltip
-      title={
-        <Typography sx={{ fontSize: 12 }}>
-          Clique para solicitar a Aprovação do Gerente do departamento
-        </Typography>
-      }
-    >
-      <IconButton size="small" onClick={handleRequestApproval}>
-        <Typography
-          sx={{
-            color: "white",
-            fontWeight: "bold",
-            fontSize: 12,
-            px: 1,
-            ml: 0.5,
-            backgroundColor: "#32aacd",
-          }}
+    <>
+      {dispatcherManager ? (
+        <Tooltip
+          title={
+            <Typography sx={{ fontSize: 12 }}>
+              Clique para solicitar a Aprovação do Gerente do Departamento
+            </Typography>
+          }
         >
-          !
-        </Typography>
-      </IconButton>
-    </Tooltip>
+          <Typography
+            onClick={handleRequestApproval}
+            sx={{
+              color: "white",
+              fontWeight: "bold",
+              fontSize: 12,
+              px: 1,
+              ml: 0.5,
+              backgroundColor: "#888",
+              cursor: "pointer",
+            }}
+          >
+            !
+          </Typography>
+        </Tooltip>
+      ) : (
+        <Tooltip
+          title={
+            <Typography sx={{ fontSize: 12 }}>
+              Não há Gerente do Departamento. Defina um Gerente ao Departamento
+              para Solicitar Aprovação.
+            </Typography>
+          }
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontWeight: "bold",
+              fontSize: 12,
+              px: 1,
+              ml: 0.5,
+              backgroundColor: "#888",
+              cursor: "pointer",
+            }}
+          >
+            !
+          </Typography>
+        </Tooltip>
+      )}
+    </>
   );
 }
