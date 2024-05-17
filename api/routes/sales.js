@@ -23,7 +23,13 @@ router.get("/", async (req, res) => {
 
 // CREATE SALE
 router.post("/", async (req, res) => {
-  const newSale = new Sale(req.body);
+  const maxSale = await Sale.findOne().sort({ number: -1 });
+  const nextSaleNumber = maxSale ? parseInt(maxSale.number) + 1 : 1;
+  const saleNumber = parseInt(nextSaleNumber);
+
+  const saleData = { ...req.body, number: saleNumber };
+  const newSale = new Sale(saleData);
+
   if (newSale.items.length > 0) {
     for (const item of newSale.items) {
       const items = await Product.findById(item._id);
@@ -31,6 +37,7 @@ router.post("/", async (req, res) => {
       await items.save();
     }
   }
+
   try {
     const savedRequest = await newSale.save();
 
@@ -53,7 +60,7 @@ router.post("/", async (req, res) => {
     );
 
     const newQuote = new Quote({
-      number: savedRequest.quoteNumber,
+      number: saleNumber,
       title: "",
       description: "",
       customer: req.body.customer.name,
@@ -73,7 +80,7 @@ router.post("/", async (req, res) => {
     const savedQuote = await newQuote.save();
 
     const recentRequestData = {
-      number: savedQuote.number,
+      number: saleNumber,
       title: savedQuote.title,
       type: "sale",
       date: dayjs(savedQuote.createdAt).format("DD/MM/YYYY HH:mm:ss"),
@@ -107,7 +114,7 @@ router.post("/", async (req, res) => {
     const pdfPath = path.join(
       __dirname,
       "../../uploads/docs",
-      `orcamento-${savedQuote.type[0]}-${savedQuote.number}.pdf`
+      `orcamento-${savedQuote.type[0]}-${saleNumber}.pdf`
     );
 
     doc.pipe(fs.createWriteStream(pdfPath));
@@ -224,8 +231,7 @@ router.put("/", async (req, res) => {
   try {
     const saleId = req.body.saleId || req.body.sale._id;
     const saleToUpdate = await Sale.findById(saleId);
-
-    const quoteNumber = saleToUpdate.quoteNumber;
+    const quoteNumber = saleToUpdate.number;
     const quoteToDelete = await Quote.findOne({ number: quoteNumber });
 
     if (quoteToDelete) {
@@ -233,17 +239,22 @@ router.put("/", async (req, res) => {
       const pdfPath = path.join(
         __dirname,
         "../../uploads/docs",
-        `orcamento-s-${quoteToDelete.number}${
-          quoteToDelete.version !== 0 ? `.${quoteToDelete.version}` : ""
+        `orcamento-s-${quoteNumber}${
+          quoteToDelete.version && quoteToDelete.version !== 0
+            ? `.${quoteToDelete.version}`
+            : ""
         }.pdf`
       );
+
       if (fs.existsSync(pdfPath)) {
         fs.unlinkSync(pdfPath);
       } else {
-        console.log("NOT found PDF to delete");
+        console.log("\nNOT found PDF Path:", pdfPath, "\n");
       }
 
       await Quote.findByIdAndDelete(quoteToDelete._id);
+    } else {
+      console.log("\nquoteToDelete 404\n");
     }
 
     const updatedSale = await Sale.findByIdAndUpdate(
@@ -265,7 +276,7 @@ router.put("/", async (req, res) => {
     );
 
     const newQuote = new Quote({
-      number: updatedSale.quoteNumber,
+      number: updatedSale.number,
       title: "",
       description: "",
       customer: updatedSale.customer.name,
@@ -291,7 +302,7 @@ router.put("/", async (req, res) => {
       __dirname,
       "../../uploads/docs",
       `orcamento-${savedQuote.type[0]}-${
-        quoteToDelete.number
+        saleToUpdate.number
       }${`.${savedQuote.version}`}.pdf`
     );
 
@@ -417,7 +428,7 @@ router.put("/resolve", async (req, res) => {
     );
 
     const newIncome = new FinanceIncome({
-      quote: updatedSale.quoteNumber,
+      quote: updatedSale.number,
       customer: updatedSale.customer.name,
       department: updatedSale.department.name,
       user: updatedSale.seller.name,
@@ -641,15 +652,17 @@ router.delete("/:id", async (req, res) => {
   try {
     const deletedSale = await Sale.findByIdAndDelete(saleId);
 
-    const quoteNumber = deletedSale.quoteNumber;
+    const quoteNumber = deletedSale.number;
     const quoteToDelete = await Quote.findOne({ number: quoteNumber });
     if (quoteToDelete) {
       // Construa o caminho para o PDF e exclua o arquivo
       const pdfPath = path.join(
         __dirname,
         "../../uploads/docs",
-        `orcamento-s-${quoteToDelete.number}${
-          quoteToDelete.version !== 0 ? `.${quoteToDelete.version}` : ""
+        `orcamento-s-${quoteNumber}${
+          quoteToDelete.version && quoteToDelete.version !== 0
+            ? `.${quoteToDelete.version}`
+            : ""
         }.pdf`
       );
       if (fs.existsSync(pdfPath)) {
@@ -659,6 +672,8 @@ router.delete("/:id", async (req, res) => {
       }
 
       await Quote.findByIdAndDelete(quoteToDelete._id);
+    } else {
+      console.log("404 Quote to delete");
     }
 
     if (deletedSale.attachments && deletedSale.attachments.length > 0) {

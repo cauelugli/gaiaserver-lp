@@ -65,6 +65,9 @@ saleSchema = new mongoose.Schema({
   manager: {
     type: Object,
   },
+  number: {
+    type: Number,
+  },
   price: {
     type: Number,
     default: 0,

@@ -390,7 +390,7 @@ export default function SaleTable({
                       cursor="pointer"
                       align="left"
                     >
-                      {sale.quoteNumber}
+                      {sale.number}
                     </TableCell>
                     <TableCell
                       onClick={() => handleOpenDetail(sale)}
@@ -595,7 +595,7 @@ export default function SaleTable({
                                   </TableCell>
                                   <TableCell align="left">
                                     <Typography sx={{ fontSize: 13 }}>
-                                      {sale.quoteNumber}
+                                      {sale.number}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="left">

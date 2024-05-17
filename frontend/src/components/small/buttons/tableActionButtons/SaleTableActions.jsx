@@ -171,8 +171,8 @@ export default function SaleTableActions(props) {
             endpoint="sales"
             usePageNotEndpoint
             page="requests"
-            successMessage={`Venda ${
-              props.selectedItem.quoteNumber && props.selectedItem.quoteNumber
+            successMessage={`Venda #${
+              props.selectedItem.number && props.selectedItem.number
             } Deletada com Sucesso`}
             warning={props.selectedItem.attachments.length !== 0}
             warningMessage={`${

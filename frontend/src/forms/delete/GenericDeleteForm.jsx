@@ -76,7 +76,11 @@ const GenericDeleteForm = ({
       <DialogTitle>
         <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
           Deletar{" "}
-          {selectedItem.name || selectedItem.title || selectedItem.quoteNumber}?
+          {selectedItem.name ||
+            selectedItem.title ||
+            selectedItem.quoteNumber ||
+            selectedItem.number}
+          ?
         </Typography>
       </DialogTitle>
       <DialogContent>
