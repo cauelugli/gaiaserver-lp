@@ -2,6 +2,9 @@
 import * as React from "react";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
+
+const socket = io("http://localhost:5002");
+
 import dayjs from "dayjs";
 import axios from "axios";
 
@@ -48,8 +51,6 @@ import InteractionReactions from "../components/small/InteractionReactions";
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
-
-const socket = io("http://localhost:3000");
 
 export default function ProjectsTable({
   userId,

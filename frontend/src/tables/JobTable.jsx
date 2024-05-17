@@ -2,6 +2,9 @@
 import * as React from "react";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
+
+const socket = io("http://localhost:5002");
+
 import "react-toastify/dist/ReactToastify.css";
 import dayjs from "dayjs";
 import axios from "axios";
@@ -46,8 +49,6 @@ import AddAttachmentsForm from "../forms/misc/AddAttachmentsForm";
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
-
-const socket = io("http://localhost:3000");
 
 export default function JobTable({
   userId,
@@ -225,6 +226,7 @@ export default function JobTable({
   };
 
   const handleRequestApproval = async () => {
+    console.log("selectedJob.manager", selectedJob.manager);
     try {
       const requestBody = {
         user: userName,
@@ -244,6 +246,7 @@ export default function JobTable({
         socket.emit("requestApproval", {
           sender: userName,
           receiver: selectedJob.manager.name,
+          receiverId: selectedJob.manager.id,
           job: selectedJob,
           type: "Job",
           date: dayjs(Date.now()).format("DD/MM/YYYY HH:mm"),

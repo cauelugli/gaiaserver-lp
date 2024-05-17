@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Client = require("../models/Client");
-const Customer = require("../models/Customer");
-const Job = require("../models/Job");
-const Sale = require("../models/Sale");
-const User = require("../models/User");
-const Manager = require("../models/Manager");
+const Client = require("../../models/models/Client");
+const Customer = require("../../models/models/Customer");
+const Job = require("../../models/models/Job");
+const Sale = require("../../models/models/Sale");
+const User = require("../../models/models/User");
+const Manager = require("../../models/models/Manager");
 
 // MODELS MAPPING
 const models = {

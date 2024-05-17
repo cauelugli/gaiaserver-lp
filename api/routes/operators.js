@@ -1,9 +1,9 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const router = express.Router();
-const Role = require("../models/Role");
-const User = require("../models/User");
-const Manager = require("../models/Manager");
+const Role = require("../../models/models/Role");
+const User = require("../../models/models/User");
+const Manager = require("../../models/models/Manager");
 
 // UPDATE OPERATOR
 router.put("/", async (req, res) => {

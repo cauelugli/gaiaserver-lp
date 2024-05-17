@@ -24,7 +24,7 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import GenericDeleteForm from "../../forms/delete/GenericDeleteForm";
 
-const socket = io("http://localhost:3000");
+const socket = io("http://localhost:5002");
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

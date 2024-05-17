@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const Role = require("../models/Role");
-const User = require("../models/User");
-const Manager = require("../models/Manager");
+const Role = require("../../models/models/Role");
+const User = require("../../models/models/User");
+const Manager = require("../../models/models/Manager");
 
 // GET ALL ROLES
 router.get("/", async (req, res) => {

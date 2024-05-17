@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const QuickNote = require("../models/QuickNote");
+const QuickNote = require("../../models/models/QuickNote");
 
 // GET QUICKNOTES
 router.get("/", async (req, res) => {

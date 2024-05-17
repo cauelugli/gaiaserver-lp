@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const ServicePlan = require("../models/ServicePlan");
+const ServicePlan = require("../../models/models/ServicePlan");
 
 // GET ALL SERVICE PLANS
 router.get("/", async (req, res) => {

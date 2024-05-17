@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const StockItem = require("../models/StockItem");
+const StockItem = require("../../models/models/StockItem");
 
 // GET ALL STOCK ITEMS
 router.get("/", async (req, res) => {

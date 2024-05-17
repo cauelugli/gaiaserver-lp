@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const User = require("../models/User");
-const Manager = require("../models/Manager");
+const User = require("../../models/models/User");
+const Manager = require("../../models/models/Manager");
 
 router.post("/", async (req, res) => {
   const { username, password } = req.body;

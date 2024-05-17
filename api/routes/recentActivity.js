@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const RecentActivity = require("../models/RecentActivity");
+const RecentActivity = require("../../models/models/RecentActivity");
 
 // GET RECENT ACTIVITIES
 router.get("/", async (req, res) => {

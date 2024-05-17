@@ -10,7 +10,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const socket = io("http://localhost:3000");
+const socket = io("http://localhost:5002");
 
 import {
   Avatar,
@@ -95,6 +95,7 @@ export default function RequestCard({
         socket.emit("requestApproval", {
           sender: userName,
           receiver: request.manager.name,
+          receiverId: request.manager._id,
           job: request,
           type: "Estoque",
           date: dayjs(Date.now()).format("DD/MM/YYYY HH:mm"),

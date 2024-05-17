@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const User = require("../models/User");
-const UserPreferences = require("../models/UserPreferences");
+const User = require("../../models/models/User");
+const UserPreferences = require("../../models/models/UserPreferences");
 
 // CREATE ADMIN USER
 router.post("/", async (req, res) => {

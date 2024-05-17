@@ -1,7 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const http = require("http");
-const initSocket = require("./websocket");
 const app = express();
 const server = http.createServer(app);
 const mongoose = require("mongoose");
@@ -79,8 +78,6 @@ app.use("/api/agenda", agendaRoute);
 app.use("/api/groups", groupsRoute);
 app.use("/api/userPreferences", userPreferencesRoute);
 app.use("/api/recentActivity", recentActivityRoute);
-
-initSocket(server);
 
 server.listen(3000, () => {
   console.log("Backend is running.");

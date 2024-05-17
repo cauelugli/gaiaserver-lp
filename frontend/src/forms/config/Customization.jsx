@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { SketchPicker } from "react-color";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3000");
+const socket = io("http://localhost:5002");
 
 import {
   Accordion,

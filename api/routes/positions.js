@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const Position = require("../models/Position");
-const User = require("../models/User");
-const Manager = require("../models/Manager");
-const Department = require("../models/Department");
+const Position = require("../../models/models/Position");
+const User = require("../../models/models/User");
+const Manager = require("../../models/models/Manager");
+const Department = require("../../models/models/Department");
 
 // GET ALL POSITIONS
 router.get("/", async (req, res) => {

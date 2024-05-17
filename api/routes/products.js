@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const router = express.Router();
-const Product = require("../models/Product");
+const Product = require("../../models/models/Product");
 
 // GET ALL PRODUCTS
 router.get("/", async (req, res) => {

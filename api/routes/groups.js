@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const Group = require("../models/Group");
-const User = require("../models/User");
-const Manager = require("../models/Manager");
+const Group = require("../../models/models/Group");
+const User = require("../../models/models/User");
+const Manager = require("../../models/models/Manager");
 
 // GET GROUPS
 router.get("/", async (req, res) => {

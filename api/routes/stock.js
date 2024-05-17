@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const StockItem = require("../models/StockItem");
-const Product = require("../models/Product");
-const StockEntry = require("../models/StockEntry");
-const FinanceOutcome = require("../models/FinanceOutcome");
+const StockItem = require("../../models/models/StockItem");
+const Product = require("../../models/models/Product");
+const StockEntry = require("../../models/models/StockEntry");
+const FinanceOutcome = require("../../models/models/FinanceOutcome");
 
 // GET STOCK ENTRIES
 router.get("/", async (req, res) => {

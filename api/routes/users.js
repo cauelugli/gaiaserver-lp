@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const User = require("../models/User");
-const UserPreferences = require("../models/UserPreferences");
-const Manager = require("../models/Manager");
-const Department = require("../models/Department");
-const Position = require("../models/Position");
+const User = require("../../models/models/User");
+const UserPreferences = require("../../models/models/UserPreferences");
+const Manager = require("../../models/models/Manager");
+const Department = require("../../models/models/Department");
+const Position = require("../../models/models/Position");
 
 // GET ALL USERS
 router.get("/", async (req, res) => {

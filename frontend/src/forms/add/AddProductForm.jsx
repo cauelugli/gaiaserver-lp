@@ -4,7 +4,7 @@ import axios from "axios";
 
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3000");
+const socket = io("http://localhost:5002");
 
 import {
   Button,

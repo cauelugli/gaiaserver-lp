@@ -34,7 +34,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const socket = io("http://localhost:3000");
+const socket = io("http://localhost:5002");
 
 const AddUserForm = ({
   userName,

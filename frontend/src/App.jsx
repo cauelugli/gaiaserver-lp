@@ -12,7 +12,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { io } from "socket.io-client";
-const socket = io("http://localhost:3000");
+const socket = io("http://localhost:5002");
 
 import { Grid, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";

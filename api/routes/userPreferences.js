@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const UserPreferences = require("../models/UserPreferences");
+const UserPreferences = require("../../models/models/UserPreferences");
 
 // GET USER PREFERENCES
 router.get("/:userId", async (req, res) => {

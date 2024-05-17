@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Config = require("../models/Config");
-const Manager = require("../models/Manager");
-const User = require("../models/User");
-const UserPreferences = require("../models/UserPreferences");
-const Department = require("../models/Department");
-const Position = require("../models/Position");
+const Config = require("../../models/models/Config");
+const Manager = require("../../models/models/Manager");
+const User = require("../../models/models/User");
+const UserPreferences = require("../../models/models/UserPreferences");
+const Department = require("../../models/models/Department");
+const Position = require("../../models/models/Position");
 
 // GET ALL MANAGERS
 router.get("/", async (req, res) => {

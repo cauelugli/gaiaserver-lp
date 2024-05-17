@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Config = require("../models/Config");
+const Config = require("../../models/models/Config");
 
 // CREATE INITIAL CONFIG
 router.post("/", async (req, res) => {

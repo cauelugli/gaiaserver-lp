@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Agenda = require("../models/Agenda");
+const Agenda = require("../../models/models/Agenda");
 
 // GET USER'S AGENDA
 router.get("/:userId", async (req, res) => {

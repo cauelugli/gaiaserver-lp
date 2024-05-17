@@ -208,15 +208,15 @@ export default function QuoteTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((item) => {
-                const itemProperty = searchOption
-                  .split(".")
-                  .reduce((obj, key) => obj[key], item);
-                return (
-                  itemProperty &&
-                  itemProperty.toLowerCase().includes(searchValue.toLowerCase())
-                );
-              })
+              // .filter((item) => {
+              //   const itemProperty = searchOption
+              //     .split(".")
+              //     .reduce((obj, key) => obj[key], item);
+              //   return (
+              //     itemProperty &&
+              //     itemProperty.toLowerCase().includes(searchValue.toLowerCase())
+              //   );
+              // })
               .map((quote) => (
                 <>
                   <TableRow key={quote._id}>

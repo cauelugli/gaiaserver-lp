@@ -2,8 +2,8 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const router = express.Router();
-const Project = require("../models/Project");
-const ProjectTemplate = require("../models/ProjectTemplate");
+const Project = require("../../models/models/Project");
+const ProjectTemplate = require("../../models/models/ProjectTemplate");
 
 // GET ALL PROJECTS
 router.get("/", async (req, res) => {

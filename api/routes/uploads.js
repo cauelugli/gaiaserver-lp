@@ -3,10 +3,10 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const Product = require("../models/Product");
-const StockItem = require("../models/StockItem");
-const User = require("../models/User");
-const Manager = require("../models/Manager");
+const Product = require("../../models/models/Product");
+const StockItem = require("../../models/models/StockItem");
+const User = require("../../models/models/User");
+const Manager = require("../../models/models/Manager");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

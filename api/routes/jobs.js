@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const Customer = require("../models/Customer");
-const Client = require("../models/Client");
-const Job = require("../models/Job");
-const StockItem = require("../models/StockItem");
-const Quote = require("../models/Quote");
-const Manager = require("../models/Manager");
-const Agenda = require("../models/Agenda");
-const FinanceIncome = require("../models/FinanceIncome");
+const Customer = require("../../models/models/Customer");
+const Client = require("../../models/models/Client");
+const Job = require("../../models/models/Job");
+const StockItem = require("../../models/models/StockItem");
+const Quote = require("../../models/models/Quote");
+const Manager = require("../../models/models/Manager");
+const Agenda = require("../../models/models/Agenda");
+const FinanceIncome = require("../../models/models/FinanceIncome");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
@@ -26,7 +26,12 @@ router.get("/", async (req, res) => {
 
 // CREATE JOB
 router.post("/", async (req, res) => {
-  const newRequest = new Job(req.body);
+  const maxJob = await Job.findOne().sort({ number: -1 });
+  const nextJobNumber = maxJob ? parseInt(maxJob.number) + 1 : 1;
+
+  const jobData = { ...req.body, number: nextJobNumber };
+  const newRequest = new Job(jobData);
+
   if (newRequest.materials.length > 0) {
     for (const material of newRequest.materials) {
       const stockItem = await StockItem.findById(material._id);
@@ -37,8 +42,9 @@ router.post("/", async (req, res) => {
 
   try {
     const savedRequest = await newRequest.save();
+
     const newQuote = new Quote({
-      number: savedRequest.quoteNumber,
+      number: nextJobNumber,
       title: req.body.title,
       description: req.body.description,
       customer: req.body.customer,
@@ -119,7 +125,7 @@ router.post("/", async (req, res) => {
     const pdfPath = path.join(
       __dirname,
       "../../uploads/docs",
-      `orcamento-${savedQuote.type[0]}-${savedQuote.number}.pdf`
+      `orcamento-${savedQuote.type[0]}-${nextJobNumber}.pdf`
     );
 
     doc.pipe(fs.createWriteStream(pdfPath));
@@ -382,8 +388,7 @@ router.put("/edit", async (req, res) => {
   try {
     const jobId = req.body.jobId || req.body.job._id;
     const jobToUpdate = await Job.findById(jobId);
-    const quoteNumber = jobToUpdate.quoteNumber;
-    const quoteToDelete = await Quote.findOne({ number: quoteNumber });
+    const quoteToDelete = await Quote.findOne({ number: jobToUpdate.number });
 
     if (quoteToDelete) {
       // Construa o caminho para o PDF e exclua o arquivo
@@ -418,13 +423,13 @@ router.put("/edit", async (req, res) => {
         price: req.body.price,
         local: req.body.local,
         scheduledTo: req.body.scheduledTo,
-        number: jobToUpdate.quoteNumber,
+        number: jobToUpdate.number,
       },
       { new: true }
     );
 
     const newQuote = new Quote({
-      number: jobToUpdate.quoteNumber,
+      number: jobToUpdate.number,
       title: updatedJob.title,
       description: updatedJob.description,
       customer: updatedJob.customer,
@@ -442,7 +447,7 @@ router.put("/edit", async (req, res) => {
       value: updatedJob.price,
       materials: updatedJob.materials,
       materialsCost: updatedJob.materialsCost,
-      version: quoteToDelete.version + 1,
+      version: quoteToDelete.version || 0 + 1,
     });
     const savedQuote = await newQuote.save();
 
@@ -756,8 +761,9 @@ router.delete("/:id", async (req, res) => {
   const requestId = req.params.id;
   try {
     const deletedRequest = await Job.findByIdAndDelete(requestId);
-    const quoteNumber = deletedRequest.quoteNumber;
-    const quoteToDelete = await Quote.findOne({ number: quoteNumber });
+    const quoteToDelete = await Quote.findOne({
+      number: deletedRequest.number,
+    });
     if (quoteToDelete) {
       // Construa o caminho para o PDF e exclua o arquivo
       const pdfPath = path.join(
