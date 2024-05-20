@@ -124,7 +124,7 @@ export default function RequestCard({
     <Card sx={{ maxWidth: 290 }} elevation={3}>
       <CardContent>
         <Typography gutterBottom variant="h6" sx={{ fontWeight: "bold" }}>
-          {type === "job" ? request.title : `Venda #${request.quoteNumber}`}
+          {type === "job" ? request.title : `Venda #${request.number}`}
         </Typography>
         <Typography variant="body1">
           Cliente: {request.customer.name}
