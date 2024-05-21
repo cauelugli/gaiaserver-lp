@@ -58,7 +58,7 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
       const fetchData = async () => {
         try {
           const recentActivities = await api.get("/recentActivity");
-          setRecentActivities(recentActivities.data);
+          setRecentActivities(recentActivities.data.reverse());
         } catch (error) {
           console.error("Error fetching data:", error);
         }

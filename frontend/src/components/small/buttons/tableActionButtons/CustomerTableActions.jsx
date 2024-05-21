@@ -212,7 +212,8 @@ export default function CustomerTableActions(props) {
             setRefreshData={props.setRefreshData}
             selectedItem={props.selectedItem}
             toast={toast}
-          />
+            configNotifications={props.configNotifications}
+            configNotificationsBooleans={props.configNotificationsBooleans}          />
         </Dialog>
       )}
       {openActivate && (

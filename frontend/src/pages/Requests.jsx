@@ -375,6 +375,8 @@ export default function Requests({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
+            configNotifications={configNotifications}
+            configNotificationsBooleans={configNotificationsBooleans}
           />
         </Dialog>
       )}

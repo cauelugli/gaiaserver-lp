@@ -141,7 +141,7 @@ export default function NotificationsButton({
         sx={{ maxHeight: 400 }}
       >
         <List sx={{ mt: -2 }}>
-          {filteredNotifications.map((notification, index) => (
+          {filteredNotifications.reverse().map((notification, index) => (
             <Card elevation={0} key={index} sx={{ width: 220, m: 1 }}>
               <CardHeader
                 action={

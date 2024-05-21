@@ -73,6 +73,7 @@ const initSocket = (server) => {
             type: "Novo Usuário",
             noteBody: `Usuário ${data.createdUser} criado por ${data.sender} em ${data.date}.`,
             sender: data.sender,
+            createdAt: data.date,
             status: "Não Lida",
           };
 
@@ -104,91 +105,36 @@ const initSocket = (server) => {
       }
     });
 
+    // need to make, or use whenUserIsCreated
+    // socket.on("whenManagerIsCreated", async (data) => {}
+
     socket.on("whenJobIsCreated", async (data) => {
       try {
-        console.log("data.list", data.list);
-
         const usersToNotify = await Promise.all(
           data.list.flatMap(async (role) => {
-            // Suponha que Role é um modelo que pode ser consultado assim
-            console.log("\nrole._id", role._id, "\n");
             const roleDetails = await Role.findById(role._id);
 
             if (!roleDetails) {
-              console.log("Role not found for id:", role._id);
               return [];
             }
 
             return await Promise.all(
               roleDetails.members.map(async (userId) => {
-                // Tentativa de encontrar o usuário como 'User' ou 'Manager'
                 const user = await User.findById(userId);
-                if (user) {
-                  return user;
-                } else {
-                  const manager = await Manager.findById(userId);
-                  return manager;
-                }
+                return user ? user : await Manager.findById(userId);
               })
             );
           })
-        );
+        ).then((usersNested) => usersNested.flat());
 
-        console.log("usersToNotify", usersToNotify.flat());
-
-        usersToNotify.flat().forEach(async (user) => {
-          if (!user) {
-            return;
-          }
+        for (const user of usersToNotify) {
+          if (!user) continue;
 
           const newNotification = {
             id: Date.now(),
             type: "Novo Job",
             noteBody: `Novo Job ${data.title} criado por ${data.sender} em ${data.date}.`,
             createdAt: data.date,
-            sender: data.sender,
-            status: "Não Lida",
-          };
-
-          await user.updateOne(
-            { _id: user._id },
-            { $push: { notifications: newNotification } }
-          );
-
-          const updatedUser = await user.constructor.findById(user._id);
-          const receiverSocketId = userSocketMap[user._id];
-          if (receiverSocketId) {
-            io.to(receiverSocketId).emit("notificationsUpdate", {
-              notifications: updatedUser.notifications,
-            });
-          }
-        });
-      } catch (error) {
-        console.error("Error processing whenJobIsCreated:", error);
-      }
-    });
-
-    socket.on("whenSaleIsCreated", async (data) => {
-      try {
-        const usersToNotify = await Promise.all(
-          data.list.map(async (role) => {
-            if (role.name.startsWith("Gerente")) {
-              return await Manager.findOne({ "role.name": role.name });
-            } else {
-              return await User.findOne({ "role.name": role.name });
-            }
-          })
-        );
-
-        for (const user of usersToNotify) {
-          if (!user) {
-            continue;
-          }
-
-          const newNotification = {
-            id: Date.now(),
-            type: "Nova Venda",
-            noteBody: `Nova Venda criada por ${data.sender} em ${data.date}.`,
             sender: data.sender,
             status: "Não Lida",
           };
@@ -221,11 +167,68 @@ const initSocket = (server) => {
       }
     });
 
-    socket.on("requestApproval", async (data) => {
-      console.log("data.receiver", data.receiver);
-      console.log("data.receiverId", data.receiverId);
+    socket.on("whenSaleIsCreated", async (data) => {
       try {
-        const receiverSocketId = userSocketMap[receiverId];
+        const usersToNotify = await Promise.all(
+          data.list.flatMap(async (role) => {
+            const roleDetails = await Role.findById(role._id);
+
+            if (!roleDetails) {
+              return [];
+            }
+
+            return await Promise.all(
+              roleDetails.members.map(async (userId) => {
+                const user = await User.findById(userId);
+                return user ? user : await Manager.findById(userId);
+              })
+            );
+          })
+        ).then((usersNested) => usersNested.flat());
+
+        for (const user of usersToNotify) {
+          if (!user) continue;
+
+          const newNotification = {
+            id: Date.now(),
+            type: "Nova Venda",
+            noteBody: `Nova Venda criada por ${data.sender} em ${data.date}.`,
+            createdAt: data.date,
+            sender: data.sender,
+            status: "Não Lida",
+          };
+
+          let updatedUser;
+
+          if (user instanceof User) {
+            await User.updateOne(
+              { _id: user._id },
+              { $set: { [`notifications.${Date.now()}`]: newNotification } }
+            );
+            updatedUser = await User.findById(user._id);
+          } else if (user instanceof Manager) {
+            await Manager.updateOne(
+              { _id: user._id },
+              { $set: { [`notifications.${Date.now()}`]: newNotification } }
+            );
+            updatedUser = await Manager.findById(user._id);
+          }
+
+          const receiverSocketId = userSocketMap[user._id];
+          if (receiverSocketId) {
+            io.to(receiverSocketId).emit("notificationsUpdate", {
+              notifications: updatedUser.notifications,
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error processing whenSaleIsCreated:", error);
+      }
+    });
+
+    socket.on("requestApproval", async (data) => {
+      try {
+        const receiverSocketId = userSocketMap[data.receiverId];
 
         const newNotification = {
           id: Date.now(),
@@ -284,6 +287,7 @@ const initSocket = (server) => {
             noteBody: `Olá! Você foi incluido no projeto ${data.projectName} criado por ${data.sender} em ${data.date}.`,
             sender: data.sender,
             status: "Não Lida",
+            createdAt: data.date,
           };
 
           let updatedUser;
@@ -336,6 +340,7 @@ const initSocket = (server) => {
             type: "Nova Interação em Tarefa",
             noteBody: `Olá! Há um novo comentário de ${data.sender} em uma tarefa em que você é Designado, no projeto ${data.projectName}.`,
             sender: data.sender,
+            createdAt: data.date,
             status: "Não Lida",
           };
 
@@ -389,6 +394,7 @@ const initSocket = (server) => {
             type: "Tarefa Resolvida",
             noteBody: `Olá! O colaborador ${data.sender} resolveu uma tarefa em que você é Designado no projeto ${data.projectName}.`,
             sender: data.sender,
+            createdAt: data.date,
             status: "Não Lida",
           };
 
@@ -442,6 +448,7 @@ const initSocket = (server) => {
             type: "Projeto Concluído",
             noteBody: `Olá! O colaborador ${data.sender} resolveu a última tarefa no projeto ${data.projectName} em que você participa.`,
             sender: data.sender,
+            createdAt: data.date,
             status: "Não Lida",
           };
 

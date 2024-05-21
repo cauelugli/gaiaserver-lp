@@ -49,6 +49,8 @@ const AddSaleForm = ({
   toast,
   fromShortcut,
   addFromShortcut,
+  configNotificationsBooleans,
+  configNotifications
 }) => {
   const [configRequests, setConfigRequests] = React.useState([]);
   const [configCustomization, setConfigCustomization] = React.useState([]);
@@ -216,6 +218,13 @@ const AddSaleForm = ({
           para ${customer.name}. Total da Venda: R$${materialsCost.toFixed(2)}`,
           createdAt: dayjs().format("DD/MM/YYYY HH:mm:ss"),
         });
+        if (configNotificationsBooleans.whenSaleIsCreated) {
+          socket.emit("whenSaleIsCreated", {
+            sender: userName,
+            list: configNotifications.whenSaleIsCreated,
+            date: dayjs(Date.now()).format("DD/MM/YYYY"),
+          });
+        }
         socket.emit("recentActivityRefresh");
         socket.emit("newDataRefreshButton", {
           page: "requests",
