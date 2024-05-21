@@ -53,15 +53,23 @@ const initSocket = (server) => {
 
     socket.on("whenUserIsCreated", async (data) => {
       try {
+        // receives the Roles as a list, and returns the users separatedly in a variable
         const usersToNotify = await Promise.all(
-          data.list.map(async (role) => {
-            if (role.name.startsWith("Gerente")) {
-              return await Manager.findOne({ "role.name": role.name });
-            } else {
-              return await User.findOne({ "role.name": role.name });
+          data.list.flatMap(async (role) => {
+            const roleDetails = await Role.findById(role._id);
+
+            if (!roleDetails) {
+              return [];
             }
+
+            return await Promise.all(
+              roleDetails.members.map(async (userId) => {
+                const user = await User.findById(userId);
+                return user ? user : await Manager.findById(userId);
+              })
+            );
           })
-        );
+        ).then((usersNested) => usersNested.flat());
 
         for (const user of usersToNotify) {
           if (!user) {
