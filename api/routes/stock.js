@@ -69,8 +69,11 @@ router.put("/managerApproval", async (req, res) => {
 
 // CREATE STOCK ENTRY
 router.put("/", async (req, res) => {
+  console.log("\nreq.body", req.body, "\n");
   const itemList = req.body.itemList;
   const status = req.body.status;
+  const maxStockEntry = await StockEntry.findOne().sort({ number: -1 });
+
   const updatedStockItems = [];
 
   if (req.body.type === "Estoque") {
@@ -97,19 +100,23 @@ router.put("/", async (req, res) => {
       const newStockEntry = new StockEntry({
         items: items,
         quoteValue: totalValue,
-        createdBy: req.body.userName,
+        createdBy: req.body.createdBy,
         type: req.body.type,
         status: status,
+        number:
+          maxStockEntry && maxStockEntry.number ? maxStockEntry.number + 1 : 1,
       });
       await newStockEntry.save();
 
       let savedFinanceOutcome;
 
+      // remake this into a route
       if (status === "Aprovado") {
         const newFinanceOutcome = new FinanceOutcome({
           entry: newStockEntry,
           status: "Aprovado",
-          user: req.body.userName,
+          // number: maxStockEntry? maxStockEntry.number + 1 : 1,
+          user: req.body.createdBy,
           type: `Entrada de Estoque - ${req.body.type}`,
           items: newStockEntry.items,
           price: newStockEntry.quoteValue.toFixed(2),
@@ -146,9 +153,11 @@ router.put("/", async (req, res) => {
       const newStockEntry = new StockEntry({
         items: items,
         quoteValue: totalValue,
-        createdBy: req.body.userName,
+        createdBy: req.body.createdBy,
         type: req.body.type,
         status: status,
+        number:
+          maxStockEntry && maxStockEntry.number ? maxStockEntry.number + 1 : 1,
       });
       await newStockEntry.save();
 
@@ -158,7 +167,8 @@ router.put("/", async (req, res) => {
         const newFinanceOutcome = new FinanceOutcome({
           entry: newStockEntry,
           status: "Aprovado",
-          user: req.body.userName,
+          user: req.body.createdBy,
+          // number: maxStockEntry? maxStockEntry.number + 1 : 1,
           type: `Entrada de Estoque - ${req.body.type}`,
           items: newStockEntry.items,
           price: newStockEntry.quoteValue.toFixed(2),

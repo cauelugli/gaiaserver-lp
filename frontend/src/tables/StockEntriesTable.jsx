@@ -25,6 +25,7 @@ import {
 } from "@mui/material";
 
 import RequestApproval from "../components/small/buttons/RequestApproval";
+import StockEntriesTableActions from "../components/small/buttons/tableActionButtons/StockEntriesTableActions";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -39,8 +40,9 @@ export default function StockEntriesTable({
   setRefreshData,
   configData,
   topBar,
-  userId
+  userId,
 }) {
+  const [selectedItem, setSelectedItem] = React.useState("");
   const tableHeaderRow = [
     {
       id: "number",
@@ -52,7 +54,7 @@ export default function StockEntriesTable({
     },
     {
       id: "quoteValue",
-      label: "Valor dos Itens",
+      label: "Valor Total",
     },
     {
       id: "createdBy",
@@ -65,6 +67,10 @@ export default function StockEntriesTable({
     {
       id: "createdAt",
       label: "Adicionado em",
+    },
+    {
+      id: "actions",
+      label: "Ações",
     },
   ];
 
@@ -278,6 +284,17 @@ export default function StockEntriesTable({
                       <Typography sx={{ fontSize: 13 }}>
                         {dayjs(entry.createdAt).format("DD/MM/YYYY")}
                       </Typography>
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      onClick={() => setSelectedItem(entry)}
+                    >
+                      <StockEntriesTableActions
+                        // userId={userId}
+                        selectedItem={entry}
+                        refreshData={refreshData}
+                        setRefreshData={setRefreshData}
+                      />
                     </TableCell>
                   </TableRow>
                 </>

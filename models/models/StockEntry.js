@@ -12,6 +12,10 @@ const stockEntrySchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
+  number: {
+    type: Number,
+    required: true,
+  },
   quoteValue: {
     type: Number,
     required: true,
