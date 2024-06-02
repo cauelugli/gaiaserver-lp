@@ -63,7 +63,7 @@ export default function FinanceOutcomeTableActions(props) {
               </ListItemButton>
             )}
             
-          {!props.outcome.payment && props.outcome.status === "Aprovado" && (
+          {!props.outcome.payment && props.outcome.status === "Aberto" && (
             <>
               <ListItemButton
                 onClick={() => {

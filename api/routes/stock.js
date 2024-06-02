@@ -15,61 +15,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-// REQUEST STOCK ENTRY APPROVAL
-router.put("/requestApproval", async (req, res) => {
-  try {
-    const updatedEntry = await StockEntry.findByIdAndUpdate(
-      req.body.entryId,
-      {
-        $set: {
-          status: "Aprovação Solicitada",
-        },
-      },
-      { new: true }
-    );
-    res.status(200).json(updatedEntry);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
-// REQUEST MANAGER ENTRY APPROVAL
-router.put("/managerApproval", async (req, res) => {
-  try {
-    const updatedEntry = await StockEntry.findByIdAndUpdate(
-      req.body.entryId,
-      {
-        $set: {
-          status: req.body.status,
-        },
-      },
-      { new: true }
-    );
-
-    let savedFinanceOutcome;
-
-    if (req.body.status === "Aprovado") {
-      const newFinanceOutcome = new FinanceOutcome({
-        entry: req.body.entry,
-        type: req.body.entry.type,
-        status: "Aprovado",
-        user: req.body.userName,
-        items: req.body.entry.items,
-        price: req.body.entry.quoteValue.toFixed(2),
-      });
-      savedFinanceOutcome = await newFinanceOutcome.save();
-    }
-    res.status(200).json({ updatedEntry, savedFinanceOutcome });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
 // CREATE STOCK ENTRY
 router.put("/", async (req, res) => {
-  console.log("\nreq.body", req.body, "\n");
   const itemList = req.body.itemList;
   const status = req.body.status;
   const maxStockEntry = await StockEntry.findOne().sort({ number: -1 });
@@ -108,23 +55,7 @@ router.put("/", async (req, res) => {
       });
       await newStockEntry.save();
 
-      let savedFinanceOutcome;
-
-      // remake this into a route
-      if (status === "Aprovado") {
-        const newFinanceOutcome = new FinanceOutcome({
-          entry: newStockEntry,
-          status: "Aprovado",
-          // number: maxStockEntry? maxStockEntry.number + 1 : 1,
-          user: req.body.createdBy,
-          type: `Entrada de Estoque - ${req.body.type}`,
-          items: newStockEntry.items,
-          price: newStockEntry.quoteValue.toFixed(2),
-        });
-        savedFinanceOutcome = await newFinanceOutcome.save();
-      }
-
-      res.json({ newStockEntry, savedFinanceOutcome });
+      res.json(newStockEntry);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Erro ao atualizar os itens do estoque" });
@@ -161,28 +92,84 @@ router.put("/", async (req, res) => {
       });
       await newStockEntry.save();
 
-      let savedFinanceOutcome;
-
-      if (status === "Aprovado") {
-        const newFinanceOutcome = new FinanceOutcome({
-          entry: newStockEntry,
-          status: "Aprovado",
-          user: req.body.createdBy,
-          // number: maxStockEntry? maxStockEntry.number + 1 : 1,
-          type: `Entrada de Estoque - ${req.body.type}`,
-          items: newStockEntry.items,
-          price: newStockEntry.quoteValue.toFixed(2),
-        });
-        savedFinanceOutcome = await newFinanceOutcome.save();
-      }
-
-      res.json({ newStockEntry, savedFinanceOutcome });
+      res.json(newStockEntry);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Erro ao atualizar os itens do estoque" });
     }
   } else {
     res.status(404).json({ error: "Tipo de item não localizado" });
+  }
+});
+
+// REQUEST STOCK ENTRY APPROVAL
+router.put("/requestApproval", async (req, res) => {
+  try {
+    const updatedEntry = await StockEntry.findByIdAndUpdate(
+      req.body.entryId,
+      {
+        $set: {
+          status: "Aprovação Solicitada",
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedEntry);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// RESPONSE FROM MANAGER ENTRY APPROVAL
+router.put("/managerApproval", async (req, res) => {
+  try {
+    const updatedEntry = await StockEntry.findByIdAndUpdate(
+      req.body.entryId,
+      {
+        $set: {
+          status: req.body.status,
+        },
+      },
+      { new: true }
+    );
+
+    res.status(200).json(updatedEntry);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// SEND APPROVED ENTRY TO FINANCE OUTCOME
+router.put("/sendToFinance", async (req, res) => {
+  try {
+    const updatedEntry = await StockEntry.findByIdAndUpdate(
+      req.body.entry._id,
+      {
+        $set: {
+          status: "Enviado ao Financeiro",
+        },
+      },
+      { new: true }
+    );
+
+    let savedFinanceOutcome;
+    const newFinanceOutcome = new FinanceOutcome({
+      entry: req.body.entry,
+      status: "Aberto",
+      // number: maxStockEntry? maxStockEntry.number + 1 : 1,
+      user: req.body.entry.createdBy,
+      type: `Entrada de ${req.body.entry.type}`,
+      items: req.body.entry.items,
+      price: req.body.entry.quoteValue.toFixed(2),
+    });
+    savedFinanceOutcome = await newFinanceOutcome.save();
+
+    res.status(200).json({ updatedEntry, savedFinanceOutcome });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
   }
 });
 

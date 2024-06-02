@@ -27,12 +27,11 @@ router.get("/", async (req, res) => {
 // DASHBOARD
 router.put("/dashboard", async (req, res) => {
   try {
-    const { showAgenda, showHello } = req.body;
+    const { showAgenda } = req.body;
 
     const config = await Config.findOne();
 
     config.dashboard.showAgenda = showAgenda;
-    config.dashboard.showHello = showHello;
 
     await config.save();
     res.status(200).json(config);

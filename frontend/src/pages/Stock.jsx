@@ -55,6 +55,7 @@ export default function Stock({
   userRole,
   userDepartment,
   configTables,
+  configData,
   topBar,
   tableOrCardView,
   setUserPreferences,
@@ -401,6 +402,8 @@ export default function Stock({
                   >
                     <StockCard
                       userId={userId}
+                      userName={userName}
+                      configData={configData}
                       item={item}
                       type="entry"
                       refreshData={refreshData}

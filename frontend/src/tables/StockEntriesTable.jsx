@@ -24,7 +24,6 @@ import {
   Button,
 } from "@mui/material";
 
-import RequestApproval from "../components/small/buttons/RequestApproval";
 import StockEntriesTableActions from "../components/small/buttons/tableActionButtons/StockEntriesTableActions";
 
 const api = axios.create({
@@ -112,10 +111,7 @@ export default function StockEntriesTable({
   const handleApproveReprove = async (entry, status) => {
     try {
       const res = await api.put("/stock/managerApproval", {
-        entry,
         entryId: entry._id,
-        userName,
-        type: entry.type,
         status: status,
       });
       if (res.data) {
@@ -265,19 +261,6 @@ export default function StockEntriesTable({
                             </Typography>
                           )}
                         </Typography>
-                        {entry.status === "Aberto" &&
-                          configData.stockEntriesNeedApproval && (
-                            <RequestApproval
-                              userName={userName}
-                              entry={entry}
-                              refreshData={refreshData}
-                              setRefreshData={setRefreshData}
-                              dispatcherManager={
-                                configData.stockentriesDispatcherDepartment
-                                  .manager
-                              }
-                            />
-                          )}
                       </Grid>
                     </TableCell>
                     <TableCell align="center">
@@ -291,9 +274,13 @@ export default function StockEntriesTable({
                     >
                       <StockEntriesTableActions
                         // userId={userId}
+                        userName={userName}
                         selectedItem={entry}
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}
+                        dispatcherManager={
+                          configData.stockentriesDispatcherDepartment.manager
+                        }
                       />
                     </TableCell>
                   </TableRow>

@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 
 import {
   Avatar,
-  Button,
   Card,
   CardActions,
   CardContent,
@@ -19,17 +18,18 @@ import {
 import StockTableActions from "../small/buttons/tableActionButtons/StockTableActions";
 import EditStockItemForm from "../../forms/edit/EditStockItemForm";
 import EditProductForm from "../../forms/edit/EditProductForm";
+import StockEntriesTableActions from "../small/buttons/tableActionButtons/StockEntriesTableActions";
 
 export default function StockCard({
+  userId,
+  userName,
   item,
   type,
   refreshData,
   setRefreshData,
-  userId,
+  configData,
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
-
-  console.log("userId IN CARD", userId);
 
   return (
     <Card elevation={3}>
@@ -85,6 +85,19 @@ export default function StockCard({
               <Typography variant="body2" sx={{ mt: 1, fontSize: 13 }}>
                 Criado em: {dayjs(item.createdAt).format("DD/MM/YY")}
               </Typography>
+              <CardActions>
+                <Grid container justifyContent="center">
+                  <StockEntriesTableActions
+                    userName={userName}
+                    selectedItem={item}
+                    refreshData={refreshData}
+                    setRefreshData={setRefreshData}
+                    dispatcherManager={
+                      configData.stockentriesDispatcherDepartment.manager
+                    }
+                  />
+                </Grid>
+              </CardActions>
             </>
           ) : (
             <>

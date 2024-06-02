@@ -509,6 +509,7 @@ export default function App() {
                             userRole={userData.role}
                             userDepartment={userData.department}
                             configTables={configTables}
+                            configData={configData.stock}
                             topBar={userPreferences.barPosition}
                             setUserPreferences={setUserPreferences}
                             tableOrCardView={userPreferences.tableOrCardView}

@@ -541,13 +541,7 @@ export default function JobTable({
                       align="center"
                       sx={{ p: 0 }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: 13,
-                          color:
-                            (job.status === "Aprovado" && "#50C878") || "#777",
-                        }}
-                      >
+                      <Typography sx={{ fontSize: 13 }}>
                         {job.status}
                       </Typography>
                     </TableCell>
