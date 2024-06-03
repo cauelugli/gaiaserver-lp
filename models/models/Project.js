@@ -13,7 +13,7 @@ const projectSchema = new mongoose.Schema({
   },
   currentStage: {
     type: Number,
-    default: 0
+    default: 0,
   },
   customer: {
     type: Object,
@@ -35,9 +35,21 @@ const projectSchema = new mongoose.Schema({
   dueTo: {
     type: String,
   },
-  interactions: {
-    type: Array,
-  },
+  interactions: [
+    {
+      activity: String,
+      attachments: Array,
+      date: String,
+      number: Number,
+      reactions: {
+        dislike: { quantity: Number, usersReacted: [] },
+        haha: { quantity: Number, usersReacted: [] },
+        like: { quantity: Number, usersReacted: [] },
+        love: { quantity: Number, usersReacted: [] },
+      },
+      user: String,
+    },
+  ],
   mainDepartment: {
     type: Object,
   },
@@ -53,7 +65,7 @@ const projectSchema = new mongoose.Schema({
   },
   recurrent: {
     type: Boolean,
-    default: false
+    default: false,
   },
   stages: {
     type: Object,

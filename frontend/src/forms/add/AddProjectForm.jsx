@@ -119,7 +119,7 @@ export default function AddProjectForm({
       });
 
       if (res.data) {
-        const itemId = res.data.savedProject._id;
+        const itemId = res.data.updatedProject._id;
         const uploadResponses = [];
 
         for (const file of attachments) {
@@ -135,7 +135,7 @@ export default function AddProjectForm({
         }
 
         await api.put(`/projects/addAttachments`, {
-          itemId: res.data.savedProject._id,
+          itemId: res.data.updatedProject._id,
           attachments: uploadResponses,
         });
 

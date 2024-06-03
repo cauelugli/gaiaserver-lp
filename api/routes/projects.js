@@ -46,7 +46,21 @@ router.post("/", async (req, res) => {
   }
   try {
     const savedProject = await newProject.save();
-    res.status(200).json({ savedProject, savedProjectTemplate });
+    const updatedProject = await Project.findByIdAndUpdate(
+      savedProject._id,
+      {
+        $push: {
+          interactions: {
+            number: 1,
+            activity: `Projeto criado`,
+            user: req.body.creator.name,
+            date: req.body.createdAt,
+          },
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json({ updatedProject, savedProjectTemplate });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -69,7 +83,7 @@ router.put("/", async (req, res) => {
   }
 });
 
-// CREATE PROJECT INTERACTION
+// CREATE PROJECT'S TASK INTERACTION
 router.post("/addInteraction", async (req, res) => {
   const {
     projectId,
