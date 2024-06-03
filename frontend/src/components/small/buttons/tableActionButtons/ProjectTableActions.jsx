@@ -15,10 +15,11 @@ import {
 } from "@mui/material";
 
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ChatIcon from "@mui/icons-material/Chat";
+import CommentIcon from "@mui/icons-material/Comment";
+import DeleteIcon from "@mui/icons-material/Delete";
 import MenuIcon from "@mui/icons-material/Menu";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 
@@ -83,6 +84,22 @@ export default function ProjectsTableActions(props) {
             <ListItemText
               primary={
                 <Typography sx={{ fontSize: 14 }}>Editar Projeto</Typography>
+              }
+              sx={{ ml: -3 }}
+            />
+          </ListItemButton>
+
+          <ListItemButton
+            onClick={(item) => {
+              props.handleOpenAddProjectInteraction(item), setAnchorEl(null);
+            }}
+          >
+            <ListItemIcon>
+              <CommentIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: 14 }}>Atividades</Typography>
               }
               sx={{ ml: -3 }}
             />

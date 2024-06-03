@@ -168,7 +168,7 @@ const AddJobInteractionForm = ({
               <Typography
                 sx={{ mt: 3, mb: 1, fontSize: 18, fontWeight: "bold" }}
               >
-                Interações
+                Atividades
               </Typography>
               <Table size="small">
                 <TableHead>

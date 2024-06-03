@@ -199,7 +199,7 @@ export default function JobTableActions(props) {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>Interações</Typography>
+                <Typography sx={{ fontSize: 14 }}>Atividades</Typography>
               }
               sx={{ ml: -3 }}
             />
