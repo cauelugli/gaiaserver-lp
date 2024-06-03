@@ -27,7 +27,7 @@ import JobTableActions from "../small/buttons/tableActionButtons/JobTableActions
 import SaleTableActions from "../small/buttons/tableActionButtons/SaleTableActions";
 import ViewDialog from "../small/ViewDialog";
 import AddAttachmentsForm from "../../forms/misc/AddAttachmentsForm";
-import AddJobInteractionForm from "../../forms/misc/AddJobInteractionForm";
+import AddInteractionForm from "../../forms/misc/AddInteractionForm";
 import EditJobForm from "../../forms/edit/EditJobForm";
 import EditSaleForm from "../../forms/edit/EditSaleForm";
 
@@ -289,7 +289,7 @@ export default function RequestCard({
           open={openAddInteraction}
           onClose={() => setOpenAddInteraction(!openAddInteraction)}
         >
-          <AddJobInteractionForm
+          <AddInteractionForm
             userId={userId}
             fromSales={type === "sale" && true}
             userName={userName}

@@ -42,7 +42,7 @@ import InteractionReactions from "../components/small/InteractionReactions";
 import JobTableActions from "../components/small/buttons/tableActionButtons/JobTableActions";
 
 import EditJobForm from "../forms/edit/EditJobForm";
-import AddJobInteractionForm from "../forms/misc/AddJobInteractionForm";
+import AddInteractionForm from "../forms/misc/AddInteractionForm";
 import ViewDialog from "../components/small/ViewDialog";
 import AddAttachmentsForm from "../forms/misc/AddAttachmentsForm";
 
@@ -1549,7 +1549,7 @@ export default function JobTable({
           open={openAddInteraction}
           onClose={() => setOpenAddInteraction(!openAddInteraction)}
         >
-          <AddJobInteractionForm
+          <AddInteractionForm
             userId={userId}
             userName={userName}
             openEditJob={openAddInteraction}

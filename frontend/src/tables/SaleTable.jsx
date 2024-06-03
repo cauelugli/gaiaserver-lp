@@ -40,7 +40,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import SaleTableActions from "../components/small/buttons/tableActionButtons/SaleTableActions";
 import InteractionReactions from "../components/small/InteractionReactions";
-import AddJobInteractionForm from "../forms/misc/AddJobInteractionForm";
+import AddInteractionForm from "../forms/misc/AddInteractionForm";
 import EditSaleForm from "../forms/edit/EditSaleForm";
 import ViewDialog from "../components/small/ViewDialog";
 
@@ -1406,7 +1406,7 @@ export default function SaleTable({
           open={openAddInteraction}
           onClose={() => setOpenAddInteraction(!openAddInteraction)}
         >
-          <AddJobInteractionForm
+          <AddInteractionForm
             userId={userId}
             userName={userName}
             openEditJob={openAddInteraction}

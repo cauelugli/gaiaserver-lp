@@ -37,7 +37,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddJobInteractionForm = ({
+const AddInteractionForm = ({
   userId,
   userName,
   openEditJob,
@@ -539,4 +539,4 @@ const AddJobInteractionForm = ({
   );
 };
 
-export default AddJobInteractionForm;
+export default AddInteractionForm;
