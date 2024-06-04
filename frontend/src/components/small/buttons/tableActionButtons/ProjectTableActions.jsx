@@ -36,16 +36,6 @@ export default function ProjectsTableActions(props) {
     setSelectedItem(selectedItem);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const [openSubmenu, setOpenSubmenu] = useState(false);
-
-  const handleClickSubmenu = () => {
-    setOpenSubmenu(!openSubmenu);
-  };
-
   const handleConfirmDelete = () => {
     setOpenDialog(true);
     setAnchorEl(null);
@@ -57,34 +47,20 @@ export default function ProjectsTableActions(props) {
   };
 
   const updateSelectedProjectInteractions = (updatedInteractions) => {
-    setSelectedItem(
-      (currentSelectedProject) => (
-        {
-          ...currentSelectedProject,
-          interactions: updatedInteractions,
-        }
-      )
-    );
+    setSelectedItem((currentSelectedProject) => ({
+      ...currentSelectedProject,
+      interactions: updatedInteractions,
+    }));
   };
 
   return (
     <div>
-      <Button
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
-        size="small"
-        aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
-        sx={{
-          borderRadius: 3,
-          "&:hover": { borderColor: "#eee" },
-        }}
-      >
+      <Button size="small" onClick={handleClick} sx={{ borderRadius: 3 }}>
         <MenuIcon sx={{ color: "#888" }} />
       </Button>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+      <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
         <List sx={{ width: 200 }}>
-          <ListItemButton disabled onClick={handleClickSubmenu}>
+          <ListItemButton disabled>
             <ListItemIcon>
               <ChatIcon />
             </ListItemIcon>
@@ -95,7 +71,7 @@ export default function ProjectsTableActions(props) {
               sx={{ ml: -3 }}
             />
           </ListItemButton>
-          <ListItemButton onClick={handleClickSubmenu}>
+          <ListItemButton disabled>
             <ListItemIcon>
               <ModeEditIcon />
             </ListItemIcon>
@@ -196,7 +172,9 @@ export default function ProjectsTableActions(props) {
             setOpenEditJob={setOpenAddInteraction}
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
-            updateSelectedProjectInteractions={updateSelectedProjectInteractions}
+            updateSelectedProjectInteractions={
+              updateSelectedProjectInteractions
+            }
             toast={toast}
           />
         </Dialog>
