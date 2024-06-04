@@ -52,8 +52,8 @@ const AddInteractionForm = ({
   updateSelectedJobInteractions,
   updateSelectedSaleInteractions,
   updateSelectedProjectInteractions,
+  fromProjectsGeneral
 }) => {
-  console.log("refreshing AddInteractionForm")
   const [userReactions, setUserReactions] = React.useState({});
   const [activity, setActivity] = React.useState("");
   const [attachments, setAttachments] = React.useState([]);
@@ -331,6 +331,7 @@ const AddInteractionForm = ({
                                   [selectedJob._id]: reactions,
                                 })
                               }
+                              fromProjectsGeneral={fromProjectsGeneral}
                               updateInteractions={
                                 fromProjects
                                   ? updateSelectedProjectInteractions

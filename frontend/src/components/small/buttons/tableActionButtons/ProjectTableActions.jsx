@@ -56,6 +56,17 @@ export default function ProjectsTableActions(props) {
     props.setRefreshData(!props.refreshData);
   };
 
+  const updateSelectedProjectInteractions = (updatedInteractions) => {
+    setSelectedItem(
+      (currentSelectedProject) => (
+        {
+          ...currentSelectedProject,
+          interactions: updatedInteractions,
+        }
+      )
+    );
+  };
+
   return (
     <div>
       <Button
@@ -176,6 +187,7 @@ export default function ProjectsTableActions(props) {
         >
           <AddInteractionForm
             fromProjects
+            fromProjectsGeneral
             userId={props.userId}
             userName={props.userName}
             openEditJob={openAddInteraction}
@@ -184,7 +196,7 @@ export default function ProjectsTableActions(props) {
             setOpenEditJob={setOpenAddInteraction}
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
-            updateSelectedProjectInteractions={props.updateInteractions}
+            updateSelectedProjectInteractions={updateSelectedProjectInteractions}
             toast={toast}
           />
         </Dialog>

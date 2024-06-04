@@ -207,7 +207,55 @@ router.put("/addAttachments", async (req, res) => {
   }
 });
 
-// REACT TO PROJECT INTERATION
+// REACT TO PROJECT 'GENERAL' INTERACTION
+router.put("/reaction/general", async (req, res) => {
+  try {
+    const itemId = req.body.itemId;
+    const userId = req.body.userId;
+
+    const project = await Project.findById(itemId);
+
+    const reactionType = req.body.reactionType;
+    const reactionField = `interactions.$.reactions.${reactionType}.quantity`;
+    const usersReactedField = `interactions.$.reactions.${reactionType}.usersReacted`;
+
+    const userAlreadyReacted = project.interactions.some((interaction) => {
+      return (
+        interaction.number === req.body.number &&
+        interaction.reactions[reactionType].usersReacted.includes(userId)
+      );
+    });
+
+    if (userAlreadyReacted) {
+      const updatedProject = await Project.findOneAndUpdate(
+        { _id: itemId, "interactions.number": req.body.number },
+        {
+          $inc: { [reactionField]: -1 },
+          $pull: { [usersReactedField]: userId },
+        },
+        { new: true }
+      );
+
+      res.status(200).json(updatedProject);
+    } else {
+      const updatedProject = await Project.findOneAndUpdate(
+        { _id: itemId, "interactions.number": req.body.number },
+        {
+          $inc: { [reactionField]: 1 },
+          $addToSet: { [usersReactedField]: userId },
+        },
+        { new: true }
+      );
+
+      res.status(200).json(updatedProject);
+    }
+  } catch (err) {
+    console.log("err", err);
+    res.status(500).json(err);
+  }
+});
+
+// REACT TO PROJECT TASK
 router.put("/reaction", async (req, res) => {
   try {
     const projectId = req.body.itemId;

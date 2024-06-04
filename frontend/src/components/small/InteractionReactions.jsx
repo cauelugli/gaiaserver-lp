@@ -47,6 +47,7 @@ const InteractionReactions = ({
   setRefreshData,
   fromSales,
   fromProjects,
+  fromProjectsGeneral,
   updateInteractions,
   stageIndex,
   taskIndex,
@@ -79,16 +80,21 @@ const InteractionReactions = ({
     fromProjects ? "projects" : fromSales ? "sales" : "jobs"
   );
 
+  console.log("endpoint", endpoint);
+  console.log("fromProjectsGeneral", fromProjectsGeneral);
+
   const handleReactionClick = async (reactionType) => {
+    const finalEndpoint = fromProjectsGeneral
+      ? `/${endpoint}/reaction/general`
+      : `/${endpoint}/reaction`;
     try {
-      const res = await api.put(`/${endpoint}/reaction`, {
+      const res = await api.put(finalEndpoint, {
         itemId,
         userId: userId,
         number,
         stageIndex,
         taskIndex,
         interactionIndex,
-        interactionIndex2: fromProjects ? interaction.number - 1 : null,
         reactionType,
       });
 
