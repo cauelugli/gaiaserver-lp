@@ -22,10 +22,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
+import AddInteractionForm from "../../../../forms/misc/AddInteractionForm";
 
 export default function ProjectsTableActions(props) {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState(props.selectedItem);
+  const [openAddInteraction, setOpenAddInteraction] = React.useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -47,6 +49,11 @@ export default function ProjectsTableActions(props) {
   const handleConfirmDelete = () => {
     setOpenDialog(true);
     setAnchorEl(null);
+  };
+
+  const addInteractionToProject = (updatedProject) => {
+    setSelectedItem(updatedProject);
+    props.setRefreshData(!props.refreshData);
   };
 
   return (
@@ -91,7 +98,8 @@ export default function ProjectsTableActions(props) {
 
           <ListItemButton
             onClick={(item) => {
-              props.handleOpenAddProjectInteraction(item), setAnchorEl(null);
+              setOpenAddInteraction(true);
+              setAnchorEl(null);
             }}
           >
             <ListItemIcon>
@@ -156,6 +164,28 @@ export default function ProjectsTableActions(props) {
               props.selectedItem.attachments.length !== 0 &&
               props.selectedItem.attachments.length
             } arquivos serão excluidos DEFINITIVAMENTE`}
+          />
+        </Dialog>
+      )}
+      {openAddInteraction && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openAddInteraction}
+          onClose={() => setOpenAddInteraction(!openAddInteraction)}
+        >
+          <AddInteractionForm
+            fromProjects
+            userId={props.userId}
+            userName={props.userName}
+            openEditJob={openAddInteraction}
+            addInteraction={addInteractionToProject}
+            selectedJob={selectedItem}
+            setOpenEditJob={setOpenAddInteraction}
+            refreshData={props.refreshData}
+            setRefreshData={props.setRefreshData}
+            updateSelectedProjectInteractions={props.updateInteractions}
+            toast={toast}
           />
         </Dialog>
       )}

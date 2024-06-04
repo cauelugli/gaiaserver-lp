@@ -76,7 +76,7 @@ const InteractionReactions = ({
   };
   // eslint-disable-next-line no-unused-vars
   const [endpoint, setEndpoint] = React.useState(
-    fromSales ? "sales" : fromProjects ? "projects" : "jobs"
+    fromProjects ? "projects" : fromSales ? "sales" : "jobs"
   );
 
   const handleReactionClick = async (reactionType) => {
@@ -88,17 +88,21 @@ const InteractionReactions = ({
         stageIndex,
         taskIndex,
         interactionIndex,
+        interactionIndex2: fromProjects ? interaction.number - 1 : null,
         reactionType,
       });
+
       if (res.data) {
         setUserReactions({
           ...userReactions,
           [itemId]: res.data.reactions,
         });
         updateInteractions(res.data.interactions);
+        console.log("worked! there it goes: ", res.data.interactions, "\n");
         setRefreshData(!refreshData);
       }
     } catch (err) {
+      console.log("err", err);
       toast.error("Houve algum erro...", {
         closeOnClick: true,
         pauseOnHover: false,
@@ -122,6 +126,7 @@ const InteractionReactions = ({
           autoClose: 1200,
         });
       }
+      console.log("res.data.interactions", res.data.interactions);
       updateInteractions(res.data.interactions);
       setRefreshData(!refreshData);
     } catch (err) {

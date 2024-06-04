@@ -1558,7 +1558,7 @@ export default function JobTable({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
-            addInteractionToJob={addInteractionToJob}
+            addInteraction={addInteractionToJob}
             updateSelectedJobInteractions={updateSelectedJobInteractions}
           />
         </Dialog>

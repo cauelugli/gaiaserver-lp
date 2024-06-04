@@ -748,7 +748,6 @@ const AddJobForm = ({
                                   </Grid>
                                   {materialsCost !== 0 && (
                                     <Grid>
-                                      {/* here */}
                                       <Typography>
                                         Materiais{" "}
                                         {service

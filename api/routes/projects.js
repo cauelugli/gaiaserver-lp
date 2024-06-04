@@ -83,6 +83,67 @@ router.put("/", async (req, res) => {
   }
 });
 
+// ADD PROJECT INTERACTION
+router.put("/interaction", async (req, res) => {
+  try {
+    const projectId = req.body.saleId || req.body.jobId;
+    const userName = req.body.userName;
+
+    const project = await Project.findById(projectId);
+    const interactionNumber = project.interactions.length + 1;
+
+    const updatedProject = await Project.findOneAndUpdate(
+      { _id: projectId },
+      {
+        $push: {
+          interactions: {
+            number: interactionNumber,
+            activity: req.body.activity,
+            attachments: req.body.attachments,
+            user: userName,
+            date: req.body.date,
+            reactions: {
+              love: { quantity: 0, usersReacted: [] },
+              like: { quantity: 0, usersReacted: [] },
+              dislike: { quantity: 0, usersReacted: [] },
+              haha: { quantity: 0, usersReacted: [] },
+            },
+          },
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedProject);
+  } catch (err) {
+    console.log("err", err);
+    res.status(500).json(err);
+  }
+});
+
+// REMOVE PROJECT INTERACTION
+router.put("/interaction/remove", async (req, res) => {
+  const { itemId, interactionId } = req.body;
+
+  try {
+    const project = await Project.findById(itemId);
+
+    const updatedInteractions = project.interactions.filter(
+      (interaction) => interaction._id.toString() !== interactionId
+    );
+
+    const updatedProject = await Project.findByIdAndUpdate(
+      itemId,
+      { $set: { interactions: updatedInteractions } },
+      { new: true }
+    );
+
+    res.json(updatedProject);
+  } catch (err) {
+    console.error("Erro ao 'remover' interação:", err);
+    res.status(500).send(err);
+  }
+});
+
 // CREATE PROJECT'S TASK INTERACTION
 router.post("/addInteraction", async (req, res) => {
   const {

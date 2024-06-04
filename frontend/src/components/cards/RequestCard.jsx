@@ -299,7 +299,7 @@ export default function RequestCard({
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
-            addInteractionToJob={addInteractionToJob}
+            addInteraction={addInteractionToJob}
           />
         </Dialog>
       )}

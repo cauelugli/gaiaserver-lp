@@ -1413,7 +1413,7 @@ export default function SaleTable({
             selectedJob={selectedSale}
             setOpenEditJob={setOpenAddInteraction}
             refreshData={refreshData}
-            addInteractionToJob={addInteractionToSale}
+            addInteraction={addInteractionToSale}
             setRefreshData={setRefreshData}
             toast={toast}
             updateSelectedSaleInteractions={updateSelectedSaleInteractions}

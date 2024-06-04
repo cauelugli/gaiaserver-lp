@@ -360,10 +360,14 @@ export default function ProjectsTable({
   };
 
   const updateSelectedProjectInteractions = (updatedInteractions) => {
-    setSelectedProject((currentSelected) => ({
-      ...currentSelected,
-      interactions: updatedInteractions,
-    }));
+    setSelectedProject(
+      (currentSelectedProject) => (
+        {
+          ...currentSelectedProject,
+          interactions: updatedInteractions,
+        }
+      )
+    );
   };
 
   return (
@@ -491,10 +495,11 @@ export default function ProjectsTable({
                       <ProjectTableActions
                         selectedItem={project}
                         userId={userId}
-                        configCustomization={"configCustomization"}
+                        userName={userName}
                         handleOpenAddAttachment={setOpenAddAttachments}
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}
+                        updateInteractions={updateSelectedProjectInteractions}
                       />
                     </TableCell>
                   </TableRow>
@@ -1623,6 +1628,7 @@ export default function ProjectsTable({
             userId={userId}
             selectedJob={selectedProject}
             setOpenAddAttachments={setOpenAddAttachments}
+            updateSelectedSaleInteractions={updateSelectedProjectInteractions}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             toast={toast}
