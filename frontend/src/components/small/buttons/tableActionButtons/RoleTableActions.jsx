@@ -42,14 +42,7 @@ export default function RoleTableActions(props) {
 
   return (
     <div>
-      <Button
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
-        size="small"
-        aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
-        sx={{ "&:hover": { borderColor: "#eee" } }}
-      >
+      <Button size="small" onClick={handleClick}>
         <MenuIcon sx={{ color: "#888" }} />
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
