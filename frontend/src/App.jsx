@@ -540,6 +540,9 @@ export default function App() {
                             configNotificationsBooleans={
                               configNotificationsBooleans
                             }
+                            requestsApproverManagerId={
+                              configData.requests.requestsApproverManagerId
+                            }
                             setUserPreferences={setUserPreferences}
                             topBar={userPreferences.barPosition}
                             tableOrCardView={userPreferences.tableOrCardView}

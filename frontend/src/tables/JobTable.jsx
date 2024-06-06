@@ -63,6 +63,7 @@ export default function JobTable({
   refreshData,
   setRefreshData,
   topBar,
+  requestsApproverManagerId
 }) {
   const [userReactions, setUserReactions] = React.useState({});
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -553,6 +554,7 @@ export default function JobTable({
                     >
                       <JobTableActions
                         selectedItem={selectedJob}
+                        requestsApproverManagerId={requestsApproverManagerId}
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}
                         userName={userName}

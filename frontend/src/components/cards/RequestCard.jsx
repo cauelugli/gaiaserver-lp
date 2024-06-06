@@ -39,6 +39,7 @@ export default function RequestCard({
   userRole,
   refreshData,
   setRefreshData,
+  requestsApproverManagerId
 }) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openViewDialog, setOpenViewDialog] = React.useState(false);
@@ -219,6 +220,7 @@ export default function RequestCard({
             <JobTableActions
               fromCard
               userName={userName}
+              requestsApproverManagerId={requestsApproverManagerId}
               userId={userId}
               userRole={userRole}
               selectedItem={request}

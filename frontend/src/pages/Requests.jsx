@@ -58,6 +58,7 @@ export default function Requests({
   tableOrCardView,
   setUserPreferences,
   cardSize,
+  requestsApproverManagerId
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -235,6 +236,7 @@ export default function Requests({
               {tableOrCardView ? (
                 <JobTable
                   userId={userId}
+                  requestsApproverManagerId={requestsApproverManagerId}
                   userName={userName}
                   userUsername={userUsername}
                   userRole={userRole}
@@ -261,6 +263,7 @@ export default function Requests({
                       xl={cardSize}
                     >
                       <RequestCard
+                        requestsApproverManagerId={requestsApproverManagerId}
                         userId={userId}
                         userName={userName}
                         userRole={userRole}
@@ -323,6 +326,7 @@ export default function Requests({
                       xl={cardSize}
                     >
                       <RequestCard
+                        requestsApproverManagerId={requestsApproverManagerId}
                         userId={userId}
                         userName={userName}
                         userRole={userRole}
