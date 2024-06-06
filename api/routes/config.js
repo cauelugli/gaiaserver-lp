@@ -85,11 +85,16 @@ router.put("/users", async (req, res) => {
 // REQUESTS
 router.put("/requests", async (req, res) => {
   try {
-    const { requestsNeedApproval, requestsCanBeDeleted } = req.body;
+    const {
+      requestsNeedApproval,
+      requestsCanBeDeleted,
+      requestsApproverManagerId,
+    } = req.body;
 
     const config = await Config.findOne();
 
     config.requests.requestsNeedApproval = requestsNeedApproval;
+    config.requests.requestsApproverManagerId = requestsApproverManagerId;
     config.requests.canBeDeleted = requestsCanBeDeleted;
 
     await config.save();

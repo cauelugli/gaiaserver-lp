@@ -12,14 +12,17 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Avatar,
   Button,
   DialogActions,
   DialogContent,
   DialogTitle,
   FormControlLabel,
   Grid,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -32,16 +35,29 @@ const api = axios.create({
 
 export default function Requests({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
+  const [managers, setManagers] = React.useState([]);
   const [requestsNeedApproval, setRequestsNeedApproval] = React.useState(null);
+  const [requestsApproverManagerId, setRequestsApproverManagerId] =
+    React.useState(null);
   const [requestsCanBeDeleted, setRequestsCanBeDeleted] = React.useState(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const config = await api.get("/config");
-        setConfigData(config.data[0].requests);
-        setRequestsNeedApproval(config.data[0].requests.requestsNeedApproval);
-        setRequestsCanBeDeleted(config.data[0].requests.canBeDeleted);
+        const configResponse = await api.get("/config");
+        const managersResponse = await api.get("/managers");
+        const managersData = managersResponse.data;
+        const configData = configResponse.data[0].requests;
+
+        setManagers(managersData);
+        setConfigData(configData);
+        setRequestsNeedApproval(configData.requestsNeedApproval);
+        setRequestsCanBeDeleted(configData.canBeDeleted);
+
+        const approverManager = managersData.find(
+          (manager) => manager._id === configData.requestsApproverManagerId
+        );
+        setRequestsApproverManagerId(approverManager || null);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -54,6 +70,7 @@ export default function Requests({ onClose }) {
     try {
       const res = await api.put("/config/requests", {
         requestsNeedApproval,
+        requestsApproverManagerId: requestsApproverManagerId._id,
         requestsCanBeDeleted,
       });
 
@@ -158,6 +175,55 @@ export default function Requests({ onClose }) {
                       </RadioGroup>
                     </Grid>
                   </Grid>
+                  {requestsNeedApproval && (
+                    <Grid item sx={{ my: 1.5 }}>
+                      <Grid container direction="row">
+                        <Typography sx={{ my: "auto" }}>
+                          Gerente Aprovador{" "}
+                        </Typography>
+                        <Select
+                          sx={{ ml: 3, minWidth: 200 }}
+                          size="small"
+                          onChange={(e) => {
+                            setRequestsApproverManagerId(e.target.value);
+                          }}
+                          value={requestsApproverManagerId}
+                          displayEmpty
+                          required
+                          renderValue={(selected) => {
+                            if (selected.length === 0) {
+                              return (
+                                <Typography>Selecione o Gerente</Typography>
+                              );
+                            } else {
+                              return (
+                                <Grid container direction="row">
+                                  <Avatar
+                                    alt="Imagem"
+                                    src={`http://localhost:3000/static/${selected.image}`}
+                                    sx={{ width: 22, height: 22, mr: 1 }}
+                                  />
+                                  <Typography>{selected.name}</Typography>
+                                </Grid>
+                              );
+                            }
+                          }}
+                        >
+                          {managers.map((item) => (
+                            <MenuItem value={item} key={item.id}>
+                              <Avatar
+                                alt="Imagem do Colaborador"
+                                src={`http://localhost:3000/static/${item.image}`}
+                                sx={{ width: 22, height: 22, mr: 2 }}
+                              />
+                              {item.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </Grid>
+                    </Grid>
+                  )}
+
                   <Grid item sx={{ my: 1.5 }}>
                     <Grid container direction="row">
                       <Typography sx={{ my: "auto", mr: 1 }}>
