@@ -83,11 +83,6 @@ export default function JobTableActions(props) {
     setSubMenuAnchorEl(null);
   };
 
-  console.log(
-    "props.requestsApproverManagerId",
-    props.requestsApproverManagerId
-  );
-
   return (
     <div>
       <Button size="small" onClick={handleClick}>
