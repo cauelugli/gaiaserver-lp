@@ -11,31 +11,37 @@ import {
   ListItemIcon,
   ListItemText,
   Menu,
+  MenuItem,
   Typography,
 } from "@mui/material";
 
 import ArchiveIcon from "@mui/icons-material/Archive";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 import CheckIcon from "@mui/icons-material/Check";
 import CommentIcon from "@mui/icons-material/Comment";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import SettingsIcon from "@mui/icons-material/Settings";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 import GenericActivateForm from "../../../../forms/misc/GenericActivateForm";
 import ResolveJobForm from "../../../../forms/misc/ResolveJobForm";
+import ChangeStatusForm from "../../../../forms/misc/ChangeStatusForm";
 
 export default function JobTableActions(props) {
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openStatusDialog, setOpenStatusDialog] = React.useState(false);
   const [openActivate, setOpenActivate] = React.useState(false);
   const [openResolve, setOpenResolve] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState(props.selectedItem);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [subMenuAnchorEl, setSubMenuAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
+  const openSubMenu = Boolean(subMenuAnchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
     setSelectedItem(selectedItem);
@@ -50,6 +56,11 @@ export default function JobTableActions(props) {
     setAnchorEl(null);
   };
 
+  const handleStatusChange = () => {
+    setOpenStatusDialog(true);
+    setAnchorEl(null);
+  };
+
   const handleConfirmActivate = () => {
     setOpenActivate(true);
     setAnchorEl(null);
@@ -58,6 +69,14 @@ export default function JobTableActions(props) {
   const handleConfirmResolve = () => {
     setOpenResolve(true);
     setAnchorEl(null);
+  };
+
+  const handleSubMenuClick = (event) => {
+    setSubMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleSubMenuClose = () => {
+    setSubMenuAnchorEl(null);
   };
 
   return (
@@ -72,27 +91,24 @@ export default function JobTableActions(props) {
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <List sx={{ width: 210 }}>
           <ListItemButton
-            disabled={
-              props.job.status === "Concluido" ||
-              props.job.status === "Aprovação Solicitada" ||
-              props.job.status === "Aprovado"
-            }
+            disabled={props.job.status === "Concluido"}
             onClick={(item) => {
-              props.handleOpenEdit(item), setAnchorEl(null);
+              props.handleOpenAddJobInteraction(item), setAnchorEl(null);
             }}
           >
             <ListItemIcon>
-              <ModeEditIcon />
+              <CommentIcon />
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography sx={{ fontSize: 14 }}>Editar Job</Typography>
+                <Typography sx={{ fontSize: 14 }}>Atividades</Typography>
               }
               sx={{ ml: -3 }}
             />
           </ListItemButton>
 
-          {props.userRole.name === "Gerente" &&
+          {
+            // props.userRole.name === "Gerente" &&
             props.job.status === "Aprovação Solicitada" && (
               <ListItemButton
                 disabled={props.job.status === "Concluido"}
@@ -110,7 +126,27 @@ export default function JobTableActions(props) {
                   sx={{ ml: -3 }}
                 />
               </ListItemButton>
-            )}
+            )
+          }
+
+          {props.job.status === "Aprovado" && (
+            // props.userRole.name !== "Gerente" &&
+            <ListItemButton
+              onClick={(item) => {
+                handleConfirmResolve(item), setAnchorEl(null);
+              }}
+            >
+              <ListItemIcon>
+                <DoneOutlineIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  <Typography sx={{ fontSize: 14 }}>Resolver Job</Typography>
+                }
+                sx={{ ml: -3 }}
+              />
+            </ListItemButton>
+          )}
 
           {props.job.status !== "Concluido" &&
             props.job.status !== "Aprovado" &&
@@ -145,66 +181,6 @@ export default function JobTableActions(props) {
               </ListItemButton>
             )}
 
-          {props.job.status === "Aprovado" &&
-            props.userRole.name !== "Gerente" && (
-              <ListItemButton
-                onClick={(item) => {
-                  handleConfirmResolve(item), setAnchorEl(null);
-                }}
-              >
-                <ListItemIcon>
-                  <DoneOutlineIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary={
-                    <Typography sx={{ fontSize: 14 }}>Resolver Job</Typography>
-                  }
-                  sx={{ ml: -3 }}
-                />
-              </ListItemButton>
-            )}
-
-          <ListItemButton
-            disabled={props.job.status === "Concluido"}
-            onClick={(item) => {
-              handleConfirmActivate(item), setAnchorEl(null);
-            }}
-          >
-            <ListItemIcon>
-              {props.job.status === "Arquivado" ? (
-                <UpgradeIcon />
-              ) : (
-                <ArchiveIcon />
-              )}
-            </ListItemIcon>
-            <ListItemText
-              primary={
-                <Typography sx={{ fontSize: 14 }}>
-                  {props.job.status === "Arquivado" ? "Reativar" : "Arquivar"}{" "}
-                  Job
-                </Typography>
-              }
-              sx={{ ml: -3 }}
-            />
-          </ListItemButton>
-
-          <ListItemButton
-            disabled={props.job.status === "Concluido"}
-            onClick={(item) => {
-              props.handleOpenAddJobInteraction(item), setAnchorEl(null);
-            }}
-          >
-            <ListItemIcon>
-              <CommentIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary={
-                <Typography sx={{ fontSize: 14 }}>Atividades</Typography>
-              }
-              sx={{ ml: -3 }}
-            />
-          </ListItemButton>
-
           <ListItemButton
             disabled={props.job.status === "Concluido"}
             onClick={(item) => {
@@ -222,26 +198,93 @@ export default function JobTableActions(props) {
             />
           </ListItemButton>
 
-          <ListItemButton
-            disabled={props.job.status === "Concluido"}
-            onClick={(item) => {
-              handleConfirmDelete(item), setAnchorEl(null);
-            }}
-            sx={{ color: "red" }}
-          >
+          <ListItemButton onClick={handleSubMenuClick}>
             <ListItemIcon>
-              <DeleteIcon sx={{ color: "red" }} />
+              <SettingsIcon />
             </ListItemIcon>
             <ListItemText
-              primary={
-                <Typography sx={{ fontSize: 14 }}>Deletar Job</Typography>
-              }
+              primary={<Typography sx={{ fontSize: 14 }}>Opções</Typography>}
               sx={{ ml: -3 }}
             />
           </ListItemButton>
+
+          <Menu
+            anchorEl={subMenuAnchorEl}
+            open={openSubMenu}
+            onClose={handleSubMenuClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <List component="div" disablePadding>
+              <ListItemButton
+                onClick={() => {
+                  props.handleOpenEdit(props.selectedItem),
+                    setSubMenuAnchorEl(null);
+                }}
+              >
+                <ListItemIcon>
+                  <ModeEditIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <Typography sx={{ fontSize: 14 }}>Editar Job</Typography>
+                  }
+                  sx={{ ml: -3 }}
+                />
+              </ListItemButton>
+              <ListItemButton
+                onClick={() => {
+                  handleConfirmActivate(props.selectedItem),
+                    setSubMenuAnchorEl(null);
+                }}
+              >
+                <ListItemIcon>
+                  {props.job.status === "Arquivado" ? (
+                    <UpgradeIcon />
+                  ) : (
+                    <ArchiveIcon />
+                  )}
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <Typography sx={{ fontSize: 14 }}>
+                      {props.job.status === "Arquivado"
+                        ? "Reativar"
+                        : "Arquivar"}{" "}
+                      Job
+                    </Typography>
+                  }
+                  sx={{ ml: -3 }}
+                />
+              </ListItemButton>
+              <ListItemButton
+                onClick={() => {
+                  handleConfirmDelete(props.selectedItem),
+                    setSubMenuAnchorEl(null);
+                }}
+                sx={{ color: "red" }}
+              >
+                <ListItemIcon>
+                  <DeleteIcon sx={{ color: "red" }} />
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <Typography sx={{ fontSize: 14 }}>Deletar Job</Typography>
+                  }
+                  sx={{ ml: -3 }}
+                />
+              </ListItemButton>
+            </List>
+          </Menu>
         </List>
       </Menu>
-
+      
       {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
@@ -304,6 +347,31 @@ export default function JobTableActions(props) {
             setOpenDialog={setOpenResolve}
             toast={toast}
             successMessage="Job Resolvido"
+          />
+        </Dialog>
+      )}
+      {openStatusDialog && (
+        <Dialog
+          fullWidth
+          maxWidth="xs"
+          open={openStatusDialog}
+          onClose={() => setOpenStatusDialog(!openStatusDialog)}
+          slotProps={{
+            backdrop: {
+              sx: {
+                backgroundColor: "transparent",
+              },
+            },
+          }}
+        >
+          <ChangeStatusForm
+            selectedItem={props.job}
+            refreshData={props.refreshData}
+            setRefreshData={props.setRefreshData}
+            openDialog={openStatusDialog}
+            setOpenDialog={setOpenStatusDialog}
+            toast={toast}
+            endpoint="jobs"
           />
         </Dialog>
       )}
