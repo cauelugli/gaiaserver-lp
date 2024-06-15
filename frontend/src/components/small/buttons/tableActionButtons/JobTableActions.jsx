@@ -383,6 +383,7 @@ export default function JobTableActions(props) {
           }}
         >
           <ChangeStatusForm
+            userId={props.userId}
             selectedItem={props.job}
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}

@@ -243,7 +243,7 @@ const initSocket = (server) => {
           type: data.type,
           date: data.date,
           createdAt: data.date,
-          noteBody: `Olá ${data.receiver.name}! ${data.sender} 
+          noteBody: `Olá ${data.receiver}! ${data.sender} 
             está solicitando aprovação para ${data.type} 
             em ${data.date}.`,
           sender: data.sender,

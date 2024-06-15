@@ -2,6 +2,10 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import axios from "axios";
+
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5002");
+
 import {
   Button,
   DialogContent,
@@ -23,6 +27,7 @@ const ChangeStatusForm = ({
   setOpenDialog,
   toast,
   endpoint,
+  userId
 }) => {
   const [newStatus, setNewStatus] = React.useState("");
 
@@ -38,6 +43,10 @@ const ChangeStatusForm = ({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
+        });
+        socket.emit("newDataRefreshButton", {
+          page: "requests",
+          userId: userId,
         });
       }
       setOpenDialog(false);
