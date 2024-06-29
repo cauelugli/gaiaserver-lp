@@ -285,17 +285,10 @@ router.put("/security", async (req, res) => {
 router.put("/permissions", async (req, res) => {
   try {
     const payload = req.body;
-    const updatedPayload = {};
-    Object.keys(payload).forEach((key) => {
-      updatedPayload[key] = payload[key].map((item) => ({
-        _id: item._id,
-        name: item.name,
-      }));
-    });
 
     const config = await Config.findOneAndUpdate(
       {},
-      { permissions: updatedPayload },
+      { permissions: payload },
       { new: true }
     );
 

@@ -78,10 +78,8 @@ const SideBar = ({ configData, user }) => {
       return false;
     }
 
-    const allowedRoles = configData.sidebar[route];
-    return (
-      allowedRoles && allowedRoles.some((role) => role._id === user.role.id)
-    );
+    const allowedRoles = configData.permissions[route];
+    return allowedRoles && allowedRoles.some((id) => id === user.role.id);
   }
 
   const filteredOptions = options.filter((option) =>

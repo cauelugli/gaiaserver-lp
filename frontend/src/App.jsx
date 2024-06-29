@@ -56,7 +56,7 @@ function hasPermission(user, configData, routePath) {
 
   const allowedRoles = configData.permissions[routePath];
 
-  return allowedRoles && allowedRoles.some((role) => role._id === user.role.id);
+  return allowedRoles && allowedRoles.some((id) => id === user.role.id);
 }
 
 function darkenColor(hex, factor) {
@@ -215,11 +215,11 @@ export default function App() {
   // checks for user's permissions on app based on sidebar (permissions) config
   // defines 'allowedLinks' as an Array of string with permitted apps
   useEffect(() => {
-    if (!configData || !userData || !configData.sidebar) {
+    if (!configData || !userData || !configData.permissions) {
       return;
     }
     let newAllowedLinks = [];
-    Object.keys(configData.sidebar).forEach((routePath) => {
+    Object.keys(configData.permissions).forEach((routePath) => {
       if (hasPermission(userData, configData, routePath)) {
         newAllowedLinks.push(routePath);
       }
