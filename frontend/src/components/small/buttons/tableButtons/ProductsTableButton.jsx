@@ -13,7 +13,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import Inventory2Icon from "@mui/icons-material/Inventory2";
 import SellIcon from "@mui/icons-material/Sell";
 
 export default function BasicMenu(props) {
@@ -54,18 +53,12 @@ export default function BasicMenu(props) {
         </Grid>
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <List sx={{ width: 230 }}>
+        <List sx={{ width: 170 }}>
           <ListItemButton onClick={() => handleMenuItemClick(3)}>
             <ListItemIcon>
               <SellIcon />
             </ListItemIcon>
-            <ListItemText primary="Entrada de Produto" sx={{ ml: -2 }} />
-          </ListItemButton>
-          <ListItemButton onClick={() => handleMenuItemClick(4)}>
-            <ListItemIcon>
-              <Inventory2Icon />
-            </ListItemIcon>
-            <ListItemText primary="Entrada de Materiais" sx={{ ml: -2 }} />
+            <ListItemText primary="Produto" sx={{ ml: -2 }} />
           </ListItemButton>
         </List>
       </Menu>

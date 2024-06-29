@@ -1,31 +1,22 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 import {
   Box,
   CircularProgress,
-  Dialog,
   Grid,
   Tab,
   Tabs,
   Typography,
 } from "@mui/material";
 
-import AddStockItemForm from "../forms/add/AddStockItemForm";
-import AddStockProductForm from "../forms/add/AddStockProductForm";
-import AddStockForm from "../forms/add/AddStockForm";
-import AddProductForm from "../forms/add/AddProductForm";
-import AddMultipleProductForm from "../forms/add/AddMultipleProductForm";
-
-import StockTable from "../tables/StockTable";
 import StockEntriesTable from "../tables/StockEntriesTable";
-import ProductsTable from "../tables/ProductsTable";
 
 import TableFilters from "../components/TableFilters";
-import StockTableButton from "../components/small/buttons/tableButtons/StockTableButton";
+import MaterialsTableButton from "../components/small/buttons/tableButtons/MaterialsTableButton";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 import TableOrCardSelector from "../components/small/TableOrCardSelector";
@@ -54,7 +45,6 @@ export default function Materials({
   userName,
   userRole,
   userDepartment,
-  configTables,
   configData,
   topBar,
   tableOrCardView,
@@ -69,16 +59,6 @@ export default function Materials({
   const [value, setValue] = React.useState(0);
 
   const [stockItems, setStockItems] = React.useState([]);
-  const [products, setProducts] = React.useState([]);
-  const [stock, setStock] = React.useState([]);
-
-  const [openModals, setOpenModals] = React.useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
 
   const [searchValue, setSearchValue] = React.useState("");
   const [searchOption, setSearchOption] = React.useState("name");
@@ -127,30 +107,14 @@ export default function Materials({
     setSearchOptionLabel("Nome");
   };
 
-  const openModal = (modalIndex) => {
-    const updatedModals = [...openModals];
-    updatedModals[modalIndex] = true;
-    setOpenModals(updatedModals);
-  };
-
-  const closeModal = (modalIndex) => {
-    const updatedModals = [...openModals];
-    updatedModals[modalIndex] = false;
-    setOpenModals(updatedModals);
-  };
-
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const stockItems = await api.get("/stockItems");
-        const products = await api.get("/products");
-        const stockEntries = await api.get("/stock");
         const config = await api.get("/config");
         setConfigStock(config.data[0].stock);
         setConfigCustomization(config.data[0].customization);
         setStockItems(stockItems.data);
-        setProducts(products.data);
-        setStock(stockEntries.data);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -185,10 +149,7 @@ export default function Materials({
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           Materiais
         </Typography>
-        <StockTableButton
-          openModal={openModal}
-          configCustomization={configCustomization}
-        />
+        <MaterialsTableButton configCustomization={configCustomization} />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -196,20 +157,8 @@ export default function Materials({
           onChange={handleChange}
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
-          {configTables.stockProduct && (
-            <Tab
-              label={<Typography sx={{ fontSize: 13 }}>Produtos</Typography>}
-              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-            />
-          )}
-          {configTables.stockItems && (
-            <Tab
-              label={<Typography sx={{ fontSize: 13 }}>Materiais</Typography>}
-              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-            />
-          )}
           <Tab
-            label={<Typography sx={{ fontSize: 13 }}>Entradas</Typography>}
+            label={<Typography sx={{ fontSize: 13 }}>Materiais</Typography>}
             sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
           />
           <RefreshButton
@@ -232,132 +181,9 @@ export default function Materials({
           </Grid>
         </Tabs>
       </Box>
-      {configTables.stockProduct && (
-        <CustomTabPanel value={value} index={0}>
-          {products.length === 0 ? (
-            <NoDataText option="Produtos" />
-          ) : (
-            <>
-              {tableOrCardView && (
-                <TableFilters
-                  searchValue={searchValue}
-                  setSearchValue={setSearchValue}
-                  searchOption={searchOption}
-                  searchOptionList={searchOptionList[0]}
-                  setSearchOption={setSearchOption}
-                  searchOptionLabel={searchOptionLabel}
-                  setSearchOptionLabel={setSearchOptionLabel}
-                  handleSearchChange={handleSearchChange}
-                />
-              )}
-              {tableOrCardView ? (
-                <ProductsTable
-                  userId={userId}
-                  products={products}
-                  searchValue={searchValue}
-                  searchOption={searchOption}
-                  refreshData={refreshData}
-                  setRefreshData={setRefreshData}
-                  topBar={topBar}
-                />
-              ) : (
-                <Grid
-                  sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
-                  container
-                  spacing={2}
-                >
-                  {products.map((product, index) => (
-                    <Grid
-                      item
-                      key={index}
-                      md={cardSize}
-                      lg={cardSize}
-                      xl={cardSize}
-                    >
-                      <StockCard
-                        userId={userId}
-                        item={product}
-                        type="product"
-                        refreshData={refreshData}
-                        setRefreshData={setRefreshData}
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
-              )}
-            </>
-          )}
-        </CustomTabPanel>
-      )}
-      {configTables.stockItems && (
-        <CustomTabPanel value={value} index={configTables.stockProduct ? 1 : 0}>
-          {stockItems.length === 0 ? (
-            <NoDataText option="Items de Estoque" />
-          ) : (
-            <>
-              {tableOrCardView && (
-                <TableFilters
-                  searchValue={searchValue}
-                  setSearchValue={setSearchValue}
-                  searchOption={searchOption}
-                  searchOptionList={searchOptionList[1]}
-                  setSearchOption={setSearchOption}
-                  searchOptionLabel={searchOptionLabel}
-                  setSearchOptionLabel={setSearchOptionLabel}
-                  handleSearchChange={handleSearchChange}
-                />
-              )}
-              {tableOrCardView ? (
-                <StockTable
-                  userId={userId}
-                  stockItems={stockItems}
-                  searchValue={searchValue}
-                  searchOption={searchOption}
-                  refreshData={refreshData}
-                  setRefreshData={setRefreshData}
-                  topBar={topBar}
-                />
-              ) : (
-                <Grid
-                  sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
-                  container
-                  spacing={2}
-                >
-                  {stockItems.map((item, index) => (
-                    <Grid
-                      item
-                      key={index}
-                      md={cardSize}
-                      lg={cardSize}
-                      xl={cardSize}
-                    >
-                      <StockCard
-                        userId={userId}
-                        item={item}
-                        type="material"
-                        refreshData={refreshData}
-                        setRefreshData={setRefreshData}
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
-              )}
-            </>
-          )}
-        </CustomTabPanel>
-      )}
-      <CustomTabPanel
-        value={value}
-        index={
-          configTables.stockProduct && configTables.stockItems
-            ? 2
-            : !configTables.stockProduct && !configTables.stockItems
-            ? 0
-            : 1
-        }
-      >
-        {stock.length === 0 ? (
-          <NoDataText option="Entradas de Estoque" femaleGender={true} />
+      <CustomTabPanel value={value} index={0}>
+        {stockItems.length === 0 ? (
+          <NoDataText option="Materiais" />
         ) : (
           <>
             {tableOrCardView && (
@@ -374,7 +200,7 @@ export default function Materials({
             )}
             {tableOrCardView ? (
               <StockEntriesTable
-                stockEntries={stock}
+                // stockEntries={stock}
                 userName={userName}
                 userId={userId}
                 userRole={userRole}
@@ -392,7 +218,7 @@ export default function Materials({
                 container
                 spacing={2}
               >
-                {stock.map((item, index) => (
+                {stockItems.map((item, index) => (
                   <Grid
                     item
                     key={index}
@@ -416,106 +242,6 @@ export default function Materials({
           </>
         )}
       </CustomTabPanel>
-
-      {openModals[0] && (
-        <Dialog
-          fullWidth
-          maxWidth="lg"
-          open={openModals[0]}
-          onClose={() => closeModal(0)}
-        >
-          <AddProductForm
-            userName={userName}
-            userId={userId}
-            onClose={() => closeModal(0)}
-            refreshData={refreshData}
-            configCustomization={configCustomization}
-            setRefreshData={setRefreshData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
-
-      {openModals[1] && (
-        <Dialog
-          fullWidth
-          maxWidth="lg"
-          open={openModals[1]}
-          onClose={() => closeModal(1)}
-        >
-          <AddMultipleProductForm
-            userName={userName}
-            userId={userId}
-            onClose={() => closeModal(1)}
-            refreshData={refreshData}
-            configCustomization={configCustomization}
-            setRefreshData={setRefreshData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
-
-      {openModals[2] && (
-        <Dialog
-          fullWidth
-          maxWidth="sm"
-          open={openModals[2]}
-          onClose={() => closeModal(2)}
-        >
-          <AddStockItemForm
-            userName={userName}
-            userId={userId}
-            onClose={() => closeModal(2)}
-            refreshData={refreshData}
-            configCustomization={configCustomization}
-            setRefreshData={setRefreshData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
-
-      {openModals[3] && (
-        <Dialog
-          fullWidth
-          maxWidth="lg"
-          open={openModals[3]}
-          onClose={() => closeModal(3)}
-        >
-          <AddStockProductForm
-            userName={userName}
-            userId={userId}
-            userDepartment={userDepartment}
-            configData={configStock}
-            configCustomization={configCustomization}
-            products={products}
-            onClose={() => closeModal(3)}
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
-
-      {openModals[4] && (
-        <Dialog
-          fullWidth
-          maxWidth="lg"
-          open={openModals[4]}
-          onClose={() => closeModal(4)}
-        >
-          <AddStockForm
-            userName={userName}
-            userId={userId}
-            configData={configStock}
-            stockItems={stockItems}
-            onClose={() => closeModal(4)}
-            refreshData={refreshData}
-            configCustomization={configCustomization}
-            setRefreshData={setRefreshData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
     </Box>
   );
 }
