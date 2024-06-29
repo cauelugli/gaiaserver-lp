@@ -51,7 +51,7 @@ import FinanceModal from "../forms/config/Finance";
 import FilesModal from "../forms/config/Files";
 import CustomizationModal from "../forms/config/Customization";
 import SecurityModal from "../forms/config/Security";
-import SideBarModal from "../forms/config/SideBar";
+import PermissionsModal from "../forms/config/Permissions";
 import NotificationsModal from "../forms/config/Notifications";
 import TablesModal from "../forms/config/Tables";
 import ProjectsModal from "../forms/config/Projects";
@@ -132,7 +132,7 @@ const options = [
   {
     icon: <AdminPanelSettingsIcon sx={{ fontSize: 48 }} />,
     text: "Permissões",
-    modal: <SideBarModal />,
+    modal: <PermissionsModal />,
   },
 
   {
@@ -162,6 +162,7 @@ export default function Config({ topBar }) {
 
   const handleItemClick = (modal) => {
     setOpenModal(modal);
+    console.log("modal", modal);
     setChosenModal(modal.type.name);
   };
 
@@ -284,7 +285,11 @@ export default function Config({ topBar }) {
         onClose={handleCloseModal}
         fullWidth
         maxWidth={
-          chosenModal === "SideBar" || chosenModal === "Tables" ? "sm" : "md"
+          chosenModal === "Permissions"
+            ? "lg"
+            : chosenModal === "Tables"
+            ? "sm"
+            : "md"
         }
       >
         <DialogContent>

@@ -281,8 +281,8 @@ router.put("/security", async (req, res) => {
   }
 });
 
-// SIDEBAR
-router.put("/sidebar", async (req, res) => {
+// PERMISSIONS
+router.put("/permissions", async (req, res) => {
   try {
     const payload = req.body;
     const updatedPayload = {};
@@ -295,7 +295,7 @@ router.put("/sidebar", async (req, res) => {
 
     const config = await Config.findOneAndUpdate(
       {},
-      { sidebar: updatedPayload },
+      { permissions: updatedPayload },
       { new: true }
     );
 

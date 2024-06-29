@@ -51,10 +51,10 @@ function isAuthenticated(login, userData) {
 }
 
 function hasPermission(user, configData, routePath) {
-  if (!configData.sidebar) return false;
+  if (!configData.permissions) return false;
   if (user.role.name === "Admin") return true;
 
-  const allowedRoles = configData.sidebar[routePath];
+  const allowedRoles = configData.permissions[routePath];
 
   return allowedRoles && allowedRoles.some((role) => role._id === user.role.id);
 }

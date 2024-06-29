@@ -66,8 +66,8 @@ const TopBar = ({ configData, user }) => {
   };
 
   function hasPermission(user, configData, routePath) {
-    if (!configData.sidebar) return false;
     if (user.username === "admin") return true;
+    if (!configData.permissions) return false;
 
     const route = routePath === "/" ? "dashboard" : routePath.slice(1);
     if (route === "" || route === "help" || route === "account") {

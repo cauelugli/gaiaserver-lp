@@ -104,6 +104,59 @@ const configSchema = new Schema({
       default: false,
     },
   },
+  permissions: {
+    dashboard: {
+      type: Array,
+    },
+    customers: {
+      type: Array,
+    },
+    users: {
+      type: Array,
+    },
+    departments: {
+      type: Array,
+    },
+    requests: {
+      type: Array,
+    },
+    quotes: {
+      type: Array,
+    },
+    services: {
+      type: Array,
+    },
+    stock: {
+      type: Array,
+    },
+    finance: {
+      type: Array,
+    },
+    files: {
+      type: Array,
+    },
+    config: {
+      type: Array,
+    },
+    customization: {
+      type: Array,
+    },
+    security: {
+      type: Array,
+    },
+    reports: {
+      type: Array,
+    },
+    projects: {
+      type: Array,
+    },
+    products: {
+      type: Array,
+    },
+    materials: {
+      type: Array,
+    },
+  },
   projects: {
     canBeDeleted: {
       type: Boolean,
@@ -156,60 +209,6 @@ const configSchema = new Schema({
     canBeDeleted: {
       type: Boolean,
       default: true,
-    },
-  },
-  sidebar: {
-    dashboard: {
-      type: Array,
-    },
-    customers: {
-      type: Array,
-    },
-    users: {
-      type: Array,
-    },
-    departments: {
-      type: Array,
-    },
-    requests: {
-      type: Array,
-    },
-    quotes: {
-      type: Array,
-    },
-    services: {
-      type: Array,
-    },
-    stock: {
-      type: Array,
-    },
-
-    finance: {
-      type: Array,
-    },
-    files: {
-      type: Array,
-    },
-    config: {
-      type: Array,
-    },
-    customization: {
-      type: Array,
-    },
-    security: {
-      type: Array,
-    },
-    reports: {
-      type: Array,
-    },
-    projects: {
-      type: Array,
-    },
-    products: {
-      type: Array,
-    },
-    materials: {
-      type: Array,
     },
   },
   stock: {

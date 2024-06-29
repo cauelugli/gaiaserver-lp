@@ -17,59 +17,54 @@ import {
   Typography,
 } from "@mui/material";
 
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-
-import SideBarConfigTransferList from "../../components/small/SideBarConfigTransferList";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function SideBar({ onClose }) {
+export default function Permissions({ onClose }) {
   const [configData, setConfigData] = useState({});
   const [roles, setRoles] = useState([]);
   const [selectedLists, setSelectedLists] = useState({});
   // IMPORTANT: THESE TITLES MUST BE IN ORDER WITH THE MODEL 'CONFIG' !
-  const title = [
-    "Dashboard",
-    "Clientes",
-    "Usuários",
-    "Departamentos",
-    "Solicitações",
-    "Orçamentos",
-    "Serviços",
-    "Estoque",
-    "Financeiro",
-    "Arquivos",
-    "Configurações",
-    "Personalização",
-    "Segurança",
-    "Relatórios",
-    "Projetos",
-    "Produtos",
-    "Materiais",
-  ];
+  // const title = [
+  //   "Dashboard",
+  //   "Clientes",
+  //   "Usuários",
+  //   "Departamentos",
+  //   "Solicitações",
+  //   "Orçamentos",
+  //   "Serviços",
+  //   "Estoque",
+  //   "Financeiro",
+  //   "Arquivos",
+  //   "Configurações",
+  //   "Personalização",
+  //   "Segurança",
+  //   "Relatórios",
+  //   "Projetos",
+  //   "Produtos",
+  //   "Materiais",
+  // ];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
         const roles = await api.get("/roles");
-        setConfigData(config.data[0].sidebar);
+        setConfigData(config.data[0].permissions);
         setRoles(roles.data);
 
-        const initialState = {};
-        Object.keys(config.data[0].sidebar).forEach((key) => {
-          initialState[key] = {
-            selected: config.data[0].sidebar[key],
-            options: config.data[0].sidebar[key],
-            title: title[key],
-          };
-        });
+        // const initialState = {};
+        // Object.keys(config.data[0].sidebar).forEach((key) => {
+        //   initialState[key] = {
+        //     selected: config.data[0].sidebar[key],
+        //     options: config.data[0].sidebar[key],
+        //     title: title[key],
+        //   };
+        // });
 
-        setSelectedLists(initialState);
-        console.log("initialState", initialState);
+        // setSelectedLists(initialState);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -78,31 +73,22 @@ export default function SideBar({ onClose }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSelectedChange = (key, selected, options, title) => {
-    setSelectedLists((prevLists) => ({
-      ...prevLists,
-      [key]: {
-        selected,
-        options,
-        title,
-      },
-    }));
-    console.log("key", key);
-    console.log("selected", selected);
-    console.log("options", options);
-    console.log("title", title);
-  };
+  // const handleSelectedChange = (key, selected, options, title) => {
+  //   setSelectedLists((prevLists) => ({
+  //     ...prevLists,
+  //     [key]: {
+  //       selected,
+  //       options,
+  //       title,
+  //     },
+  //   }));
+  // };
 
-  const handleChangeSidebarConfig = async (e) => {
+  const handleChangePermissionsConfig = async (e) => {
     e.preventDefault();
     try {
       const payload = {};
-      Object.keys(selectedLists).forEach((key) => {
-        payload[key] = selectedLists[key].selected;
-      });
-
-      const res = await api.put("/config/sidebar", payload);
-      console.log("payload", payload);
+      const res = await api.put("/config/permissions", payload);
 
       if (res.data) {
         toast.success("Configuração Alterada!", {
@@ -126,7 +112,7 @@ export default function SideBar({ onClose }) {
   };
 
   return (
-    <form onSubmit={handleChangeSidebarConfig}>
+    <form onSubmit={handleChangePermissionsConfig}>
       <>
         <DialogTitle
           sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
@@ -158,40 +144,6 @@ export default function SideBar({ onClose }) {
           </Tooltip>
         </DialogTitle>
       </>
-
-      <Grid
-        container
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ mb: -2 }}
-      >
-        <Grid item sx={{ width: 200 }}>
-          <Typography sx={{ color: "white" }}>#</Typography>
-        </Grid>
-        <Grid item sx={{ width: 180, ml: 1 }}>
-          <Typography>
-            <VisibilityOffIcon sx={{ fontSize: 40, color: "#D00000" }} />
-          </Typography>
-        </Grid>
-        <Grid item sx={{ width: 160, ml: 0.5 }}>
-          <Typography>
-            <VisibilityIcon sx={{ fontSize: 40, color: "#417505" }} />
-          </Typography>
-        </Grid>
-      </Grid>
-      {Object.keys(configData).map((key, index) => (
-        <SideBarConfigTransferList
-          key={key}
-          title={title[index]}
-          options={roles}
-          selectedList={selectedLists[key].selected}
-          onSelectedChange={(selected, options) =>
-            handleSelectedChange(key, selected, options)
-          }
-        />
-      ))}
-
       <DialogActions>
         <Button type="submit" variant="contained" color="success">
           OK
