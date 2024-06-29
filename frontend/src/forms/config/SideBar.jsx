@@ -47,6 +47,8 @@ export default function SideBar({ onClose }) {
     "Segurança",
     "Relatórios",
     "Projetos",
+    "Produtos",
+    "Materiais",
   ];
 
   useEffect(() => {
@@ -67,6 +69,7 @@ export default function SideBar({ onClose }) {
         });
 
         setSelectedLists(initialState);
+        console.log("initialState", initialState);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -84,6 +87,10 @@ export default function SideBar({ onClose }) {
         title,
       },
     }));
+    console.log("key", key);
+    console.log("selected", selected);
+    console.log("options", options);
+    console.log("title", title);
   };
 
   const handleChangeSidebarConfig = async (e) => {
@@ -95,6 +102,7 @@ export default function SideBar({ onClose }) {
       });
 
       const res = await api.put("/config/sidebar", payload);
+      console.log("payload", payload);
 
       if (res.data) {
         toast.success("Configuração Alterada!", {
@@ -130,8 +138,8 @@ export default function SideBar({ onClose }) {
                 Nesta sessão escolha o os Perfis de Acesso que podem visualizar
                 os recursos do aplicativo. A coluna à esquerda mostra os
                 Recursos, a coluna central mostra os Perfis que não possuem
-                permissão, e a coluna da direita mostra os que possuem
-                permissão para visualizar os Recursos.
+                permissão, e a coluna da direita mostra os que possuem permissão
+                para visualizar os Recursos.
               </Typography>
             }
           >

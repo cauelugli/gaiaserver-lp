@@ -183,6 +183,7 @@ const configSchema = new Schema({
     stock: {
       type: Array,
     },
+
     finance: {
       type: Array,
     },
@@ -202,6 +203,12 @@ const configSchema = new Schema({
       type: Array,
     },
     projects: {
+      type: Array,
+    },
+    products: {
+      type: Array,
+    },
+    materials: {
       type: Array,
     },
   },

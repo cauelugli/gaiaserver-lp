@@ -30,6 +30,8 @@ import Files from "./pages/Files";
 import Finance from "./pages/Finance";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Materials from "./pages/Materials";
+import Products from "./pages/Products";
 import Projects from "./pages/Projects";
 import Quotes from "./pages/Quotes";
 import Reports from "./pages/Reports";
@@ -504,6 +506,60 @@ export default function App() {
                         isAuthenticated(login, userData) &&
                         hasPermission(userData, configData, "stock") ? (
                           <Stock
+                            userId={userData._id}
+                            userName={userData.name}
+                            userRole={userData.role}
+                            userDepartment={userData.department}
+                            configTables={configTables}
+                            configData={configData.stock}
+                            topBar={userPreferences.barPosition}
+                            setUserPreferences={setUserPreferences}
+                            tableOrCardView={userPreferences.tableOrCardView}
+                            cardSize={userPreferences.cardSize}
+                          />
+                        ) : isAuthenticated(login, userData) ? (
+                          <Typography sx={{ m: 2, fontSize: 16 }}>
+                            Seu usuário não possui autorização à página.
+                          </Typography>
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+
+                    <Route
+                      path="/products"
+                      element={
+                        isAuthenticated(login, userData) &&
+                        hasPermission(userData, configData, "products") ? (
+                          <Products
+                            userId={userData._id}
+                            userName={userData.name}
+                            userRole={userData.role}
+                            userDepartment={userData.department}
+                            configTables={configTables}
+                            configData={configData.stock}
+                            topBar={userPreferences.barPosition}
+                            setUserPreferences={setUserPreferences}
+                            tableOrCardView={userPreferences.tableOrCardView}
+                            cardSize={userPreferences.cardSize}
+                          />
+                        ) : isAuthenticated(login, userData) ? (
+                          <Typography sx={{ m: 2, fontSize: 16 }}>
+                            Seu usuário não possui autorização à página.
+                          </Typography>
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+
+                    <Route
+                      path="/materials"
+                      element={
+                        isAuthenticated(login, userData) &&
+                        hasPermission(userData, configData, "materials") ? (
+                          <Materials
                             userId={userData._id}
                             userName={userData.name}
                             userRole={userData.role}
