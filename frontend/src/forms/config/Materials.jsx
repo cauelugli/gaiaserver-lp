@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -7,6 +6,9 @@ import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5002");
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 import {
   Accordion,
@@ -33,27 +35,23 @@ import {
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 export default function Materials({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
   const [canBeDeleted, setCanBeDeleted] = React.useState(null);
-  const [notifyWhenProjectIsCreated, setNotifyWhenProjectIsCreated] =
+  const [notifyWhenMaterialIsCreated, setNotifyWhenMaterialIsCreated] =
     React.useState(null);
-  const [projectTypes, setProjectTypes] = React.useState([]);
+  const [materialTypes, setMaterialTypes] = React.useState([]);
   const [newType, setNewType] = React.useState("");
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data[0].projects);
-        setCanBeDeleted(config.data[0].projects.canBeDeleted);
-        setProjectTypes(config.data[0].projects.projectTypes);
-        setNotifyWhenProjectIsCreated(
-          config.data[0].projects.notifyWhenProjectIsCreated
+        setConfigData(config.data[0].materials);
+        setCanBeDeleted(config.data[0].materials.canBeDeleted);
+        setMaterialTypes(config.data[0].materials.materialTypes);
+        setNotifyWhenMaterialIsCreated(
+          config.data[0].materials.notifyWhenMaterialIsCreated
         );
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -67,8 +65,8 @@ export default function Materials({ onClose }) {
     try {
       const res = await api.put("/config/materials", {
         canBeDeleted,
-        projectTypes,
-        notifyWhenProjectIsCreated,
+        materialTypes,
+        notifyWhenMaterialIsCreated,
       });
 
       if (res.data) {
@@ -93,14 +91,14 @@ export default function Materials({ onClose }) {
   };
 
   const handleAddType = () => {
-    if (newType && !projectTypes.includes(newType)) {
-      setProjectTypes([...projectTypes, newType]);
+    if (newType && !materialTypes.includes(newType)) {
+      setMaterialTypes([...materialTypes, newType]);
       setNewType("");
     }
   };
 
   const handleRemoveType = (type) => {
-    setProjectTypes(projectTypes.filter((t) => t !== type));
+    setMaterialTypes(materialTypes.filter((t) => t !== type));
   };
 
   return (
@@ -123,12 +121,71 @@ export default function Materials({ onClose }) {
               <Accordion sx={{ width: "100%" }}>
                 <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Permissões
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid container direction="row">
+                    <Typography sx={{ my: "auto", mr: 1 }}>
+                      Materiais Podem ser Deletados
+                    </Typography>
+                    <Tooltip
+                      title={
+                        <Typography sx={{ fontSize: 12 }}>
+                          Se a opção marcada for "Sim", os Materiais poderão ser
+                          deletados DEFINITIVAMENTE. A opção padrão é "Não".
+                        </Typography>
+                      }
+                    >
+                      <Button
+                        size="small"
+                        sx={{
+                          backgroundColor: "white",
+                          color: "#32aacd",
+                          "&:hover": {
+                            backgroundColor: "white",
+                          },
+                        }}
+                      >
+                        ?
+                      </Button>
+                    </Tooltip>
+                    <RadioGroup
+                      row
+                      value={canBeDeleted}
+                      onChange={(e) => setCanBeDeleted(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value={Boolean(true)}
+                        control={
+                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                        }
+                      />
+                      <FormControlLabel
+                        value={Boolean(false)}
+                        control={
+                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                        }
+                      />
+                    </RadioGroup>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion sx={{ width: "100%", mt: 2 }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Tipos de Material
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <List sx={{ mx: "30%" }}>
-                    {projectTypes.map((type, index) => (
+                    {materialTypes.map((type, index) => (
                       <ListItem key={index} sx={{ pl: 0 }}>
                         <ListItemText primary={type} />
                         <ListItemSecondaryAction>
@@ -167,6 +224,71 @@ export default function Materials({ onClose }) {
                       </Button>
                     </Grid>
                   </Grid>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion sx={{ width: "100%", mt: 2 }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Notificações
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {" "}
+                  <AccordionDetails>
+                    <Grid container direction="row">
+                      <Typography sx={{ my: "auto", mr: 1 }}>
+                        Notificar ao Criar Material
+                      </Typography>
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Se a opção marcada for "Sim", os Administradores
+                            serão notificados quando um novo material
+                            for criado. A opção padrão é "Não".
+                          </Typography>
+                        }
+                      >
+                        <Button
+                          size="small"
+                          sx={{
+                            backgroundColor: "white",
+                            color: "#32aacd",
+                            "&:hover": {
+                              backgroundColor: "white",
+                            },
+                          }}
+                        >
+                          ?
+                        </Button>
+                      </Tooltip>
+                      <RadioGroup
+                        row
+                        value={notifyWhenMaterialIsCreated}
+                        onChange={(e) =>
+                          setNotifyWhenMaterialIsCreated(e.target.value)
+                        }
+                      >
+                        <FormControlLabel
+                          value={Boolean(true)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                          }
+                        />
+                        <FormControlLabel
+                          value={Boolean(false)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                          }
+                        />
+                      </RadioGroup>
+                    </Grid>
+                  </AccordionDetails>
                 </AccordionDetails>
               </Accordion>
             </Grid>

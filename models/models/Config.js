@@ -90,7 +90,7 @@ const configSchema = new Schema({
     },
     notifyWhenMaterialIsCreated: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   notifications: {
@@ -182,7 +182,7 @@ const configSchema = new Schema({
     },
     notifyWhenProductIsCreated: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   projects: {

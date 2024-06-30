@@ -19,13 +19,17 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
   Grid,
   IconButton,
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
+  Radio,
+  RadioGroup,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -34,19 +38,21 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Products({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
-  const [notifyWhenProjectIsCreated, setNotifyWhenProjectIsCreated] =
+  const [canBeDeleted, setCanBeDeleted] = React.useState(null);
+  const [notifyWhenProductIsCreated, setNotifyWhenProductIsCreated] =
     React.useState(null);
-  const [projectTypes, setProjectTypes] = React.useState([]);
+  const [productTypes, setProductTypes] = React.useState([]);
   const [newType, setNewType] = React.useState("");
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data[0].projects);
-        setProjectTypes(config.data[0].projects.projectTypes);
-        setNotifyWhenProjectIsCreated(
-          config.data[0].projects.notifyWhenProjectIsCreated
+        setConfigData(config.data[0].products);
+        setCanBeDeleted(config.data[0].products.canBeDeleted);
+        setProductTypes(config.data[0].products.productTypes);
+        setNotifyWhenProductIsCreated(
+          config.data[0].products.notifyWhenProductIsCreated
         );
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -59,8 +65,9 @@ export default function Products({ onClose }) {
     e.preventDefault();
     try {
       const res = await api.put("/config/products", {
-        projectTypes,
-        notifyWhenProjectIsCreated,
+        canBeDeleted,
+        productTypes,
+        notifyWhenProductIsCreated,
       });
 
       if (res.data) {
@@ -85,14 +92,14 @@ export default function Products({ onClose }) {
   };
 
   const handleAddType = () => {
-    if (newType && !projectTypes.includes(newType)) {
-      setProjectTypes([...projectTypes, newType]);
+    if (newType && !productTypes.includes(newType)) {
+      setProductTypes([...productTypes, newType]);
       setNewType("");
     }
   };
 
   const handleRemoveType = (type) => {
-    setProjectTypes(projectTypes.filter((t) => t !== type));
+    setProductTypes(productTypes.filter((t) => t !== type));
   };
 
   return (
@@ -115,12 +122,71 @@ export default function Products({ onClose }) {
               <Accordion sx={{ width: "100%" }}>
                 <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Permissões
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid container direction="row">
+                    <Typography sx={{ my: "auto", mr: 1 }}>
+                      Produtos Podem ser Deletados
+                    </Typography>
+                    <Tooltip
+                      title={
+                        <Typography sx={{ fontSize: 12 }}>
+                          Se a opção marcada for "Sim", os Produtos poderão ser
+                          deletados DEFINITIVAMENTE. A opção padrão é "Não".
+                        </Typography>
+                      }
+                    >
+                      <Button
+                        size="small"
+                        sx={{
+                          backgroundColor: "white",
+                          color: "#32aacd",
+                          "&:hover": {
+                            backgroundColor: "white",
+                          },
+                        }}
+                      >
+                        ?
+                      </Button>
+                    </Tooltip>
+                    <RadioGroup
+                      row
+                      value={canBeDeleted}
+                      onChange={(e) => setCanBeDeleted(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value={Boolean(true)}
+                        control={
+                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                        }
+                      />
+                      <FormControlLabel
+                        value={Boolean(false)}
+                        control={
+                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                        }
+                      />
+                    </RadioGroup>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion sx={{ width: "100%", mt: 2 }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Tipos de Produto
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <List sx={{ mx: "30%" }}>
-                    {projectTypes.map((type, index) => (
+                    {productTypes.map((type, index) => (
                       <ListItem key={index} sx={{ pl: 0 }}>
                         <ListItemText primary={type} />
                         <ListItemSecondaryAction>
@@ -159,6 +225,71 @@ export default function Products({ onClose }) {
                       </Button>
                     </Grid>
                   </Grid>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion sx={{ width: "100%", mt: 2 }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Notificações
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {" "}
+                  <AccordionDetails>
+                    <Grid container direction="row">
+                      <Typography sx={{ my: "auto", mr: 1 }}>
+                        Notificar ao Criar Produto
+                      </Typography>
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Se a opção marcada for "Sim", os Administradores
+                            serão notificados quando um novo produto
+                            for criado. A opção padrão é "Não".
+                          </Typography>
+                        }
+                      >
+                        <Button
+                          size="small"
+                          sx={{
+                            backgroundColor: "white",
+                            color: "#32aacd",
+                            "&:hover": {
+                              backgroundColor: "white",
+                            },
+                          }}
+                        >
+                          ?
+                        </Button>
+                      </Tooltip>
+                      <RadioGroup
+                        row
+                        value={notifyWhenProductIsCreated}
+                        onChange={(e) =>
+                          setNotifyWhenProductIsCreated(e.target.value)
+                        }
+                      >
+                        <FormControlLabel
+                          value={Boolean(true)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                          }
+                        />
+                        <FormControlLabel
+                          value={Boolean(false)}
+                          control={
+                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                          }
+                          label={
+                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                          }
+                        />
+                      </RadioGroup>
+                    </Grid>
+                  </AccordionDetails>
                 </AccordionDetails>
               </Accordion>
             </Grid>
