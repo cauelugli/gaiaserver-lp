@@ -30,32 +30,36 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import Inventory2Icon from "@mui/icons-material/Inventory2";
 import LanIcon from "@mui/icons-material/Lan";
 import LockIcon from "@mui/icons-material/Lock";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
+import SellIcon from "@mui/icons-material/Sell";
 import TableViewIcon from "@mui/icons-material/TableView";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
 
+import AgendaModal from "../forms/config/Agenda";
 import CustomersModal from "../forms/config/Customers";
+import CustomizationModal from "../forms/config/Customization";
 import DashboardModal from "../forms/config/Dashboard";
-import UsersModal from "../forms/config/Users";
 import DepartmentsModal from "../forms/config/Departments";
-import RequestsModal from "../forms/config/Requests";
+import FilesModal from "../forms/config/Files";
+import FinanceModal from "../forms/config/Finance";
+import MaterialsModal from "../forms/config/Materials";
+import NotificationsModal from "../forms/config/Notifications";
+import PermissionsModal from "../forms/config/Permissions";
+import ProductsModal from "../forms/config/Products";
+import ProjectsModal from "../forms/config/Projects";
 import QuotesModal from "../forms/config/Quotes";
+import RequestsModal from "../forms/config/Requests";
+import SecurityModal from "../forms/config/Security";
 import ServicesModal from "../forms/config/Services";
 import StockModal from "../forms/config/Stock";
-import FinanceModal from "../forms/config/Finance";
-import FilesModal from "../forms/config/Files";
-import CustomizationModal from "../forms/config/Customization";
-import SecurityModal from "../forms/config/Security";
-import PermissionsModal from "../forms/config/Permissions";
-import NotificationsModal from "../forms/config/Notifications";
 import TablesModal from "../forms/config/Tables";
-import ProjectsModal from "../forms/config/Projects";
-import AgendaModal from "../forms/config/Agenda";
+import UsersModal from "../forms/config/Users";
 
 const options = [
   {
@@ -103,7 +107,16 @@ const options = [
     text: "Estoque",
     modal: <StockModal />,
   },
-
+  {
+    icon: <SellIcon sx={{ fontSize: 48 }} />,
+    text: "Produtos",
+    modal: <ProductsModal />,
+  },
+  {
+    icon: <Inventory2Icon sx={{ fontSize: 48 }} />,
+    text: "Materiais",
+    modal: <MaterialsModal />,
+  },
   {
     icon: <AssessmentIcon sx={{ fontSize: 48 }} />,
     text: "Relatórios",

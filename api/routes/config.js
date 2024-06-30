@@ -299,6 +299,44 @@ router.put("/permissions", async (req, res) => {
   }
 });
 
+// PRODUCTS
+router.put("/products", async (req, res) => {
+  try {
+    const { canBeDeleted, productTypes, notifyWhenProductIsCreated } = req.body;
+
+    const config = await Config.findOne();
+
+    config.products.canBeDeleted = canBeDeleted;
+    config.products.productTypes = productTypes;
+    config.products.notifyWhenProductIsCreated = notifyWhenProductIsCreated;
+
+    await config.save();
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// MATERIALS
+router.put("/materials", async (req, res) => {
+  try {
+    const { canBeDeleted, materialTypes, notifyWhenMaterialIsCreated } = req.body;
+
+    const config = await Config.findOne();
+
+    config.materials.canBeDeleted = canBeDeleted;
+    config.materials.materialTypes = materialTypes;
+    config.materials.notifyWhenMaterialIsCreated = notifyWhenMaterialIsCreated;
+
+    await config.save();
+    res.status(200).json(config);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // NOTIFICATIONS
 router.put("/notifications", async (req, res) => {
   try {

@@ -79,6 +79,20 @@ const configSchema = new Schema({
       type: Array,
     },
   },
+  materials: {
+    canBeDeleted: {
+      type: Boolean,
+      default: true,
+    },
+    materialTypes: {
+      type: Array,
+      default: [],
+    },
+    notifyWhenMaterialIsCreated: {
+      type: Boolean,
+      default: true,
+    },
+  },
   notifications: {
     whenUserIsCreated: {
       type: Array,
@@ -155,6 +169,20 @@ const configSchema = new Schema({
     },
     materials: {
       type: Array,
+    },
+  },
+  products: {
+    canBeDeleted: {
+      type: Boolean,
+      default: true,
+    },
+    productTypes: {
+      type: Array,
+      default: [],
+    },
+    notifyWhenProductIsCreated: {
+      type: Boolean,
+      default: true,
     },
   },
   projects: {
