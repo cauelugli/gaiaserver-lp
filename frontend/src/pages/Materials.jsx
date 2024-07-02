@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 // import { toast } from "react-toastify";
@@ -15,7 +16,6 @@ import {
 
 import StockEntriesTable from "../tables/StockEntriesTable";
 
-import TableFilters from "../components/TableFilters";
 import MaterialsTableButton from "../components/small/buttons/tableButtons/MaterialsTableButton";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
@@ -54,67 +54,26 @@ export default function Materials({
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [newDataRefreshButton, setNewDataRefreshButton] = React.useState(true);
-  const [configStock, setConfigStock] = React.useState(false);
+  const [configMaterials, setConfigMaterials] = React.useState({});
   const [configCustomization, setConfigCustomization] = React.useState([]);
   const [value, setValue] = React.useState(0);
+  const [selectedTabLabel, setSelectedTabLabel] = React.useState("");
 
-  const [stockItems, setStockItems] = React.useState([]);
-
-  const [searchValue, setSearchValue] = React.useState("");
-  const [searchOption, setSearchOption] = React.useState("name");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
-  const searchOptionList = [
-    {
-      // PRODUCTS TABLE
-      options: [
-        { value: "nome", label: "Name" },
-        { value: "brand", label: "Marca" },
-        { value: "type", label: "Tipo" },
-        { value: "model", label: "Modelo" },
-        { value: "size", label: "Tamanho" },
-        { value: "buyValue", label: "Valor de Compra" },
-        { value: "sellValue", label: "Valor de Venda" },
-      ],
-    },
-    {
-      // STOCK ITEMS TABLE
-      options: [
-        { value: "nome", label: "Name" },
-        { value: "buyValue", label: "Valor de Compra" },
-        { value: "sellValue", label: "Valor de Venda" },
-      ],
-    },
-    {
-      // STOCK ENTRIES TABLE
-      options: [
-        { value: "number", label: "Número" },
-        { value: "items", label: "Itens" },
-        { value: "createdBy", label: "Criado por" },
-        { value: "quoteValue", label: "Valor" },
-        { value: "createdAt", label: "Criado em" },
-      ],
-    },
-  ];
-
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
+  const [materials, setMaterials] = React.useState([]);
 
   const handleChange = (event, newValue) => {
+    setSelectedTabLabel(event.target.textContent);
     setValue(newValue);
-    setSearchValue("");
-    setSearchOption("name");
-    setSearchOptionLabel("Nome");
   };
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const stockItems = await api.get("/stockItems");
+        // const materials = await api.get("/materials");
         const config = await api.get("/config");
-        setConfigStock(config.data[0].stock);
+        setConfigMaterials(config.data[0].materials);
         setConfigCustomization(config.data[0].customization);
-        setStockItems(stockItems.data);
+        // setMaterials(materials.data);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -123,6 +82,7 @@ export default function Materials({
     };
     fetchData();
   }, [refreshData]);
+
 
   if (isLoading) {
     return (
@@ -182,32 +142,17 @@ export default function Materials({
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        {stockItems.length === 0 ? (
-          <NoDataText option="Materiais" />
+        {materials.length === 0 ? (
+          <NoDataText option={selectedTabLabel} />
         ) : (
           <>
-            {tableOrCardView && (
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[2]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-            )}
             {tableOrCardView ? (
               <StockEntriesTable
-                // stockEntries={stock}
                 userName={userName}
                 userId={userId}
                 userRole={userRole}
                 userDepartment={userDepartment}
-                configData={configStock}
-                searchValue={searchValue}
-                searchOption={searchOption}
+                configData={configMaterials}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
                 topBar={topBar}
@@ -218,7 +163,7 @@ export default function Materials({
                 container
                 spacing={2}
               >
-                {stockItems.map((item, index) => (
+                {materials.map((item, index) => (
                   <Grid
                     item
                     key={index}
