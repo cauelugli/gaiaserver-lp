@@ -54,7 +54,7 @@ export default function AddProductForm({
   const [newStringOptionMinCharacter, setNewStringOptionMinCharacter] =
     React.useState(1);
   const [newStringOptionMaxCharacter, setNewStringOptionMaxCharacter] =
-    React.useState(120);
+    React.useState(80);
 
   const [newNumberOptionType, setNewNumberOptionType] =
     React.useState("integer");
@@ -137,7 +137,7 @@ export default function AddProductForm({
     setNewFieldName("");
     setNewFieldType("a");
     setNewStringOptionMinCharacter(1);
-    setNewStringOptionMaxCharacter(120);
+    setNewStringOptionMaxCharacter(80);
     setNewNumberOptionType("integer");
     setNewNumberOptionMinValue(0);
     setNewNumberOptionMaxValue(1);
@@ -188,6 +188,32 @@ export default function AddProductForm({
           </Grid>
 
           <Grid item sx={{ mt: 2 }}>
+            <Grid container direction="row">
+              {fields.map((field, index) => (
+                <Typography key={index}>
+                  {field.type === "string" ? (
+                    <TextField
+                      size="small"
+                      sx={{ mr: 1, width: 150 }}
+                      disabled
+                      label={`Campo ${index + 1}: Texto`}
+                      value={`${field.name}`}
+                    />
+                  ) : field.type === "number" ? (
+                    "Número - "
+                  ) : field.type === "options" ? (
+                    "Lista de Opções - "
+                  ) : (
+                    "Data - "
+                  )}
+                  {!field.name && "Lista de Opções"}{" "}
+                  {field.options && field.options.map((opt) => opt)}
+                </Typography>
+              ))}
+            </Grid>
+          </Grid>
+
+          <Grid item sx={{ mt: 2 }}>
             <Button
               variant="contained"
               size="small"
@@ -197,18 +223,6 @@ export default function AddProductForm({
               <Typography sx={{ fontSize: 11 }}>Adicionar Campo</Typography>
             </Button>
           </Grid>
-        </Grid>
-
-        <Grid item sx={{ mt: 2 }}>
-          {fields.map((field, index) => (
-            <Typography key={index}>
-              {field.type}{" - "}
-              {`Campo ${index + 1}: ${
-                field.name ? field.name : "Lista de Opções"
-              }`}{" "}
-              {field.options && field.options.map((opt) => opt)}
-            </Typography>
-          ))}
         </Grid>
 
         <Popover
