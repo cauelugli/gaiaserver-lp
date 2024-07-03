@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 import {
   Button,
@@ -11,30 +11,24 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
+  Dialog,
 } from "@mui/material";
 
-import SellIcon from "@mui/icons-material/Sell";
+import GradeIcon from "@mui/icons-material/Grade";
+import AddProductForm from "../../../../forms/add/AddProductForm";
 
 export default function BasicMenu(props) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const [openAddProduct, setOpenAddProduct] = React.useState(false);
+  const [selectedType, setSelectedType] = React.useState(null);
 
-  const handleMenuItemClick = (menuIndex) => {
-    handleClose();
-    props.openModal(menuIndex);
-  };
+  const open = Boolean(anchorEl);
 
   return (
     <div>
       <Button
         size="small"
-        onClick={handleClick}
+        onClick={(e) => setAnchorEl(e.currentTarget)}
         sx={{
           color: props.configCustomization.mainColor || "#32aacd",
           "&:hover": { borderColor: "#eee" },
@@ -52,16 +46,47 @@ export default function BasicMenu(props) {
           <Typography sx={{ fontSize: 16 }}>Novo</Typography>
         </Grid>
       </Button>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+      <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
         <List sx={{ width: 170 }}>
-          <ListItemButton onClick={() => handleMenuItemClick(3)}>
-            <ListItemIcon>
-              <SellIcon />
-            </ListItemIcon>
-            <ListItemText primary="Produto" sx={{ ml: -2 }} />
-          </ListItemButton>
+          {props.types.map((type, index) => (
+            <ListItemButton
+              key={index}
+              onClick={() => {
+                setSelectedType(type);
+                setAnchorEl(null);
+                setOpenAddProduct(true);
+              }}
+            >
+              <ListItemIcon>
+                <GradeIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary={<Typography sx={{ fontSize: 16 }}>{type}</Typography>}
+                sx={{ ml: -3 }}
+              />
+            </ListItemButton>
+          ))}
         </List>
       </Menu>
+      {openAddProduct && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddProduct}
+          onClose={() => setOpenAddProduct(!openAddProduct)}
+        >
+          <AddProductForm
+            userName={props.userName}
+            userId={props.userId}
+            onClose={() => setOpenAddProduct(!openAddProduct)}
+            refreshData={props.refreshData}
+            setRefreshData={props.setRefreshData}
+            configCustomization={props.configCustomization}
+            toast={toast}
+            type={selectedType}
+          />
+        </Dialog>
+      )}
     </div>
   );
 }

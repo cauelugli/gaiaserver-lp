@@ -107,7 +107,14 @@ export default function Products({
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           Produtos
         </Typography>
-        <ProductsTableButton configCustomization={configCustomization} />
+        <ProductsTableButton
+          userId={userId}
+          userName={userName}
+          configCustomization={configCustomization}
+          types={configProducts.productTypes}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
+        />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs

@@ -1,19 +1,27 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
-
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5002");
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 import {
   Button,
   DialogActions,
   DialogContent,
+  FormControlLabel,
   FormHelperText,
   Grid,
   InputAdornment,
   MenuItem,
+  Popover,
+  Radio,
+  RadioGroup,
   Select,
   TextField,
   Typography,
@@ -24,10 +32,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DialogHeader from "../../components/small/DialogHeader";
 import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 export default function AddProductForm({
   userName,
   onClose,
@@ -36,16 +40,31 @@ export default function AddProductForm({
   configCustomization,
   toast,
   userId,
+  type,
 }) {
+  const [selectedType, setSelectedType] = React.useState(type);
   const [name, setName] = React.useState("");
-  const [brand, setBrand] = React.useState("");
+  const [fields, setFields] = React.useState([]);
   const [image, setImage] = React.useState("");
-  const [type, setType] = React.useState("");
-  const [model, setModel] = React.useState("");
-  const [size, setSize] = React.useState("");
-  const [groupingType, setGroupingType] = React.useState("Unidade");
-  const [buyValue, setBuyValue] = React.useState(0);
-  const [sellValue, setSellValue] = React.useState(0);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [newFieldName, setNewFieldName] = React.useState("");
+  const [newFieldType, setNewFieldType] = React.useState("a");
+
+  const [newStringOptionMinCharacter, setNewStringOptionMinCharacter] =
+    React.useState(1);
+  const [newStringOptionMaxCharacter, setNewStringOptionMaxCharacter] =
+    React.useState(120);
+
+  const [newNumberOptionType, setNewNumberOptionType] =
+    React.useState("integer");
+  const [newNumberOptionMinValue, setNewNumberOptionMinValue] =
+    React.useState(0);
+  const [newNumberOptionMaxValue, setNewNumberOptionMaxValue] =
+    React.useState(1);
+
+  const [newOptions, setNewOptions] = React.useState([]);
+  const [newOptionItem, setNewOptionItem] = React.useState("");
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -57,14 +76,9 @@ export default function AddProductForm({
       const imagePath = uploadResponse.data.imagePath;
       const productResponse = await api.post("/products", {
         name,
-        brand,
+        fields,
+        type: selectedType,
         image: imagePath,
-        type,
-        model,
-        size,
-        groupingType,
-        buyValue,
-        sellValue,
         createdBy: userName,
       });
 
@@ -93,9 +107,56 @@ export default function AddProductForm({
     }
   };
 
+  const handleOpenPopover = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClosePopover = () => {
+    setAnchorEl(null);
+  };
+
+  const handleAddField = () => {
+    const newField = {
+      index: fields.length,
+      name: newFieldName,
+      type: newFieldType,
+    };
+
+    if (newFieldType === "string") {
+      newField.minCharacter = newStringOptionMinCharacter;
+      newField.maxCharacter = newStringOptionMaxCharacter;
+    } else if (newFieldType === "number") {
+      newField.numberType = newNumberOptionType;
+      newField.minValue = newNumberOptionMinValue;
+      newField.maxValue = newNumberOptionMaxValue;
+    } else if (newFieldType === "options") {
+      newField.options = newOptions;
+    }
+
+    setFields((prevFields) => [...prevFields, newField]);
+    setNewFieldName("");
+    setNewFieldType("a");
+    setNewStringOptionMinCharacter(1);
+    setNewStringOptionMaxCharacter(120);
+    setNewNumberOptionType("integer");
+    setNewNumberOptionMinValue(0);
+    setNewNumberOptionMaxValue(1);
+    setNewOptions([]);
+    setNewOptionItem("");
+    handleClosePopover();
+  };
+
+  const handleAddOptionItem = () => {
+    setNewOptions((prevOptions) => [...prevOptions, newOptionItem]);
+    setNewOptionItem("");
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
   return (
     <form onSubmit={handleAdd}>
-      <DialogHeader title="Produto" femaleGender={false} />
+      <DialogHeader title={selectedType} femaleGender={false} />
       <DialogContent>
         <Grid
           container
@@ -105,6 +166,17 @@ export default function AddProductForm({
           alignItems="center"
         >
           <Grid item>
+            <Typography sx={{ fontSize: 13 }}>Tipo</Typography>
+            <TextField
+              size="small"
+              value={selectedType}
+              disabled
+              variant="outlined"
+              sx={{ width: 120 }}
+            />
+          </Grid>
+
+          <Grid item sx={{ mx: 1 }}>
             <Typography sx={{ fontSize: 13 }}>Nome</Typography>
             <TextField
               size="small"
@@ -115,159 +187,201 @@ export default function AddProductForm({
             />
           </Grid>
 
-          <Grid item sx={{ ml: 1 }}>
-            <Typography sx={{ fontSize: 13 }}>Marca</Typography>
-            <TextField
+          <Grid item sx={{ mt: 2 }}>
+            <Button
+              variant="contained"
               size="small"
-              value={brand}
-              onChange={(e) => setBrand(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ width: 120 }}
-            />
-          </Grid>
-
-          <Grid item sx={{ ml: 1 }}>
-            <Typography sx={{ fontSize: 13 }}>Tipo</Typography>
-            <TextField
-              size="small"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ width: 120 }}
-            />
-          </Grid>
-
-          <Grid item sx={{ ml: 1 }}>
-            <Typography sx={{ fontSize: 13 }}>Tamanho</Typography>
-            <TextField
-              size="small"
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ width: 120 }}
-            />
-          </Grid>
-
-          <Grid item sx={{ mx: 1 }}>
-            <Typography sx={{ fontSize: 13 }}>Modelo</Typography>
-            <TextField
-              size="small"
-              value={model}
-              onChange={(e) => setModel(e.target.value)}
-              required
-              variant="outlined"
-              sx={{ width: 120 }}
-            />
-          </Grid>
-
-          <Grid item>
-            <Typography sx={{ fontSize: 13 }}>Agrupamento</Typography>
-            <Select
-              size="small"
-              value={groupingType}
-              onChange={(e) => setGroupingType(e.target.value)}
-              required
-              sx={{ width: 120 }}
+              onClick={handleOpenPopover}
+              sx={{ maxWidth: 80 }}
             >
-              <MenuItem value="Unidade">
-                <Typography>Unidade</Typography>
-              </MenuItem>
-              <MenuItem value="Caixa">
-                <Typography>Caixa</Typography>
-              </MenuItem>
-              <MenuItem value="Kit">
-                <Typography>Kit</Typography>
-              </MenuItem>
-            </Select>
-          </Grid>
-          <Grid item sx={{ mx: 1 }}>
-            <Typography sx={{ fontSize: 13 }}>Valor de Compra</Typography>
-            <TextField
-              type="number"
-              size="small"
-              value={buyValue}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start" sx={{ mr: 0 }}>
-                    R$
-                  </InputAdornment>
-                ),
-              }}
-              onChange={(e) => {
-                const inputValue = e.target.value;
-                if (inputValue >= 0) {
-                  setBuyValue(inputValue);
-                }
-              }}
-              required
-              variant="outlined"
-              sx={{ width: 120 }}
-            />
-          </Grid>
-
-          <Grid item sx={{ mt: sellValue > 0 && buyValue > 0 ? 2 : 0 }}>
-            <Typography sx={{ fontSize: 13 }}>Valor de Venda</Typography>
-            <TextField
-              type="number"
-              size="small"
-              value={sellValue}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start" sx={{ mr: 0 }}>
-                    R$
-                  </InputAdornment>
-                ),
-              }}
-              onChange={(e) => {
-                const inputValue = e.target.value;
-                if (inputValue >= 0) {
-                  setSellValue(inputValue);
-                }
-              }}
-              required
-              variant="outlined"
-              sx={{ width: 120 }}
-            />
-            {sellValue > 0 && buyValue > 0 && (
-              <Typography style={{ color: "green", fontSize: 11, mt: 1 }}>
-                {(((sellValue - buyValue) / buyValue) * 100).toFixed(2)}% por{" "}
-                {groupingType}
-              </Typography>
-            )}
-          </Grid>
-          <Grid item sx={{ mt: 2, ml: 1 }}>
-            <div>
-              <input
-                type="file"
-                accept="image/*"
-                id="fileInput"
-                style={{ display: "none" }}
-                onChange={(e) => {
-                  const selectedImage = e.target.files[0];
-                  setImage(selectedImage);
-                }}
-                required
-              />
-              <label htmlFor="fileInput">
-                <Grid
-                  sx={{
-                    borderRadius: 100,
-                    cursor: "pointer",
-                    px: 1.25,
-                    py: 1,
-                    backgroundColor: "#32aacd",
-                  }}
-                  disabled={image}
-                >
-                  <PhotoCameraIcon sx={{ color: "white", mt: 0.25 }} />
-                </Grid>
-              </label>
-            </div>
+              <Typography sx={{ fontSize: 11 }}>Adicionar Campo</Typography>
+            </Button>
           </Grid>
         </Grid>
+
+        <Grid item sx={{ mt: 2 }}>
+          {fields.map((field, index) => (
+            <Typography key={index}>
+              {field.type}{" - "}
+              {`Campo ${index + 1}: ${
+                field.name ? field.name : "Lista de Opções"
+              }`}{" "}
+              {field.options && field.options.map((opt) => opt)}
+            </Typography>
+          ))}
+        </Grid>
+
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClosePopover}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        >
+          <Grid container direction="column" sx={{ p: 2 }}>
+            <Typography>Novo Campo</Typography>
+            <Grid item>
+              <TextField
+                label="Nome do Campo"
+                value={newFieldName}
+                onChange={(e) => setNewFieldName(e.target.value)}
+                size="small"
+                sx={{ my: 2 }}
+              />
+            </Grid>
+            <Grid item>
+              <Select
+                value={newFieldType}
+                onChange={(e) => setNewFieldType(e.target.value)}
+                size="small"
+                sx={{ mb: 2, width: "100%" }}
+              >
+                <MenuItem disabled value="a">
+                  <Typography>Tipo do Campo</Typography>
+                </MenuItem>
+                <MenuItem value={"string"}>Texto</MenuItem>
+                <MenuItem value={"number"}>Número</MenuItem>
+                <MenuItem value={"options"}>Lista de Opções</MenuItem>
+                <MenuItem value={"date"}>Data</MenuItem>
+              </Select>
+            </Grid>
+            <Grid item>
+              {newFieldType === "string" && (
+                <Grid sx={{ my: 2, mx: 1 }}>
+                  <Typography>Caracteres</Typography>
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                  >
+                    <Grid item>
+                      <Typography sx={{ fontSize: 10 }}>Min</Typography>
+                      <TextField
+                        type="number"
+                        value={newStringOptionMinCharacter}
+                        onChange={(e) =>
+                          setNewStringOptionMinCharacter(e.target.value)
+                        }
+                        size="small"
+                        sx={{ maxWidth: 90 }}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Typography sx={{ fontSize: 10 }}>Max</Typography>
+                      <TextField
+                        type="number"
+                        value={newStringOptionMaxCharacter}
+                        onChange={(e) =>
+                          setNewStringOptionMaxCharacter(e.target.value)
+                        }
+                        size="small"
+                        sx={{ maxWidth: 90 }}
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+              )}
+            </Grid>
+            <Grid item>
+              {newFieldType === "number" && (
+                <>
+                  <Grid sx={{ mt: 2 }}>
+                    <Typography>Tipo de Número</Typography>
+                    <RadioGroup
+                      row
+                      value={newNumberOptionType}
+                      onChange={(e) => setNewNumberOptionType(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value="integer"
+                        control={
+                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: 13 }}>Inteiro</Typography>
+                        }
+                      />
+                      <FormControlLabel
+                        value="float"
+                        control={
+                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: 13 }}>Decimal</Typography>
+                        }
+                      />
+                    </RadioGroup>
+                  </Grid>
+                  <Grid sx={{ my: 2 }}>
+                    <Typography>Valores</Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                    >
+                      <Grid item>
+                        <Typography sx={{ fontSize: 10 }}>Min</Typography>
+                        <TextField
+                          type="number"
+                          value={newNumberOptionMinValue}
+                          onChange={(e) =>
+                            setNewNumberOptionMinValue(e.target.value)
+                          }
+                          size="small"
+                          sx={{ maxWidth: 90 }}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Typography sx={{ fontSize: 10 }}>Max</Typography>
+                        <TextField
+                          type="number"
+                          value={newNumberOptionMaxValue}
+                          onChange={(e) =>
+                            setNewNumberOptionMaxValue(e.target.value)
+                          }
+                          size="small"
+                          sx={{ maxWidth: 90 }}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </>
+              )}
+            </Grid>
+            <Grid item>
+              {newFieldType === "options" && (
+                <>
+                  <Typography>Itens da Lista</Typography>
+                  <Grid container alignItems="center" sx={{ my: 2 }}>
+                    <TextField
+                      value={newOptionItem}
+                      onChange={(e) => setNewOptionItem(e.target.value)}
+                      size="small"
+                      sx={{ mr: 1 }}
+                    />
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={handleAddOptionItem}
+                    >
+                      Adicionar Item
+                    </Button>
+                  </Grid>
+                  {newOptions.map((option, index) => (
+                    <Typography key={index}>{option}</Typography>
+                  ))}
+                </>
+              )}
+            </Grid>
+            <Grid item>{newFieldType === "date" && "É data"}</Grid>
+            <Button variant="contained" onClick={handleAddField}>
+              Adicionar
+            </Button>
+          </Grid>
+        </Popover>
 
         {image && (
           <Grid
