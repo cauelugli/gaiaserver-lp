@@ -12,6 +12,7 @@ const api = axios.create({
 
 import {
   Button,
+  Checkbox,
   DialogActions,
   DialogContent,
   FormControlLabel,
@@ -65,6 +66,12 @@ export default function AddProductForm({
 
   const [newOptions, setNewOptions] = React.useState([]);
   const [newOptionItem, setNewOptionItem] = React.useState("");
+  const [newOptionAllowMultiple, setNewOptionAllowMultiple] =
+    React.useState("");
+
+  const [newDateType, setNewDateType] = React.useState("simple");
+  const [newDateValue, setNewDateValue] = React.useState(1);
+  const [newDatePeriod, setNewDatePeriod] = React.useState("day");
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -131,6 +138,11 @@ export default function AddProductForm({
       newField.maxValue = newNumberOptionMaxValue;
     } else if (newFieldType === "options") {
       newField.options = newOptions;
+      newField.allowMultiple = newOptionAllowMultiple;
+    } else if (newFieldType === "date") {
+      newField.newDateType = newDateType;
+      newField.newDateValue = newDateValue;
+      newField.newDatePeriod = newDatePeriod;
     }
 
     setFields((prevFields) => [...prevFields, newField]);
@@ -143,12 +155,20 @@ export default function AddProductForm({
     setNewNumberOptionMaxValue(1);
     setNewOptions([]);
     setNewOptionItem("");
+    setNewOptionAllowMultiple("");
+    setNewDateType("simple");
+    setNewDateValue(1);
+    setNewDatePeriod("day");
     handleClosePopover();
   };
 
   const handleAddOptionItem = () => {
     setNewOptions((prevOptions) => [...prevOptions, newOptionItem]);
     setNewOptionItem("");
+  };
+
+  const handleRemoveLastOptionItem = () => {
+    setNewOptions((prevOptions) => prevOptions.slice(0, -1));
   };
 
   const open = Boolean(anchorEl);
@@ -159,8 +179,10 @@ export default function AddProductForm({
       <DialogHeader title={selectedType} femaleGender={false} />
       <DialogContent>
         <Grid
+          id="bigRow"
           container
-          sx={{ mt: 2 }}
+          spacing={1.5}
+          wrap="wrap"
           direction="row"
           justifyContent="flex-start"
           alignItems="center"
@@ -172,57 +194,108 @@ export default function AddProductForm({
               value={selectedType}
               disabled
               variant="outlined"
-              sx={{ width: 120 }}
+              sx={{ width: 150 }}
             />
           </Grid>
 
-          <Grid item sx={{ mx: 1 }}>
+          <Grid item>
             <Typography sx={{ fontSize: 13 }}>Nome</Typography>
             <TextField
               size="small"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              sx={{ width: 200 }}
+              sx={{ width: 150 }}
             />
           </Grid>
 
-          <Grid item sx={{ mt: 2 }}>
-            <Grid container direction="row">
-              {fields.map((field, index) => (
-                <Typography key={index}>
-                  {field.type === "string" ? (
+          {fields.map((field, index) => (
+            <Grid key={index} item>
+              <Typography>
+                {field.type === "string" ? (
+                  <Grid item>
+                    <Typography sx={{ fontSize: 13 }}>
+                      {`Campo ${index + 1}: Texto`}
+                    </Typography>
                     <TextField
                       size="small"
-                      sx={{ mr: 1, width: 150 }}
-                      disabled
-                      label={`Campo ${index + 1}: Texto`}
-                      value={`${field.name}`}
+                      sx={{ width: 150 }}
+                      value={field.name}
+                      InputProps={{
+                        readOnly: true,
+                      }}
                     />
-                  ) : field.type === "number" ? (
-                    "Número - "
-                  ) : field.type === "options" ? (
-                    "Lista de Opções - "
-                  ) : (
-                    "Data - "
-                  )}
-                  {!field.name && "Lista de Opções"}{" "}
-                  {field.options && field.options.map((opt) => opt)}
-                </Typography>
-              ))}
-            </Grid>
-          </Grid>
+                  </Grid>
+                ) : field.type === "number" ? (
+                  <Grid item>
+                    <Typography sx={{ fontSize: 13 }}>
+                      {`Campo ${index + 1}: Número`}
+                    </Typography>
+                    <TextField
+                      size="small"
+                      sx={{ width: 150 }}
+                      value={`${field.name} ${field.minValue} ~ ${field.maxValue}`}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
+                ) : field.type === "options" ? (
+                  <Grid item>
+                    <Typography sx={{ fontSize: 13 }}>{`Lista ${index + 1}: ${
+                      field.name
+                    } ${field.allowMultiple && "(Múltiplo)"}`}</Typography>
 
-          <Grid item sx={{ mt: 2 }}>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={handleOpenPopover}
-              sx={{ maxWidth: 80 }}
-            >
-              <Typography sx={{ fontSize: 11 }}>Adicionar Campo</Typography>
-            </Button>
-          </Grid>
+                    <Select size="small" sx={{width: 150 }}>
+                      {field.options.map((opt, index) => (
+                        <MenuItem key={index} value={opt}>
+                          {opt}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                ) : field.type === "date" ? (
+                  <Grid item>
+                    <Typography sx={{ fontSize: 13 }}>
+                      {`Campo ${index + 1}: Data`}
+                    </Typography>
+                    <TextField
+                      size="small"
+                      sx={{ width: 150 }}
+                      value={field.name}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
+                ) : field.type === "currency" ? (
+                  <Grid item>
+                    <Typography sx={{ fontSize: 13 }}>
+                      {`Campo ${index + 1}: Moeda (R$)`}
+                    </Typography>
+                    <TextField
+                      size="small"
+                      sx={{ width: 150 }}
+                      value={field.name}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
+                ) : (
+                  ""
+                )}
+              </Typography>
+            </Grid>
+          ))}
+          <Button
+            variant="contained"
+            size="small"
+            onClick={handleOpenPopover}
+            sx={{ maxWidth: 80, mt: 4, ml: 1 }}
+          >
+            <Typography sx={{ fontSize: 11 }}>Adicionar Campo</Typography>
+          </Button>
         </Grid>
 
         <Popover
@@ -258,6 +331,7 @@ export default function AddProductForm({
                 </MenuItem>
                 <MenuItem value={"string"}>Texto</MenuItem>
                 <MenuItem value={"number"}>Número</MenuItem>
+                <MenuItem value={"currency"}>Moeda (R$)</MenuItem>
                 <MenuItem value={"options"}>Lista de Opções</MenuItem>
                 <MenuItem value={"date"}>Data</MenuItem>
               </Select>
@@ -368,30 +442,129 @@ export default function AddProductForm({
             <Grid item>
               {newFieldType === "options" && (
                 <>
-                  <Typography>Itens da Lista</Typography>
-                  <Grid container alignItems="center" sx={{ my: 2 }}>
-                    <TextField
-                      value={newOptionItem}
-                      onChange={(e) => setNewOptionItem(e.target.value)}
-                      size="small"
-                      sx={{ mr: 1 }}
-                    />
-                    <Button
-                      variant="contained"
-                      size="small"
-                      onClick={handleAddOptionItem}
-                    >
-                      Adicionar Item
-                    </Button>
+                  <Grid sx={{ my: 1 }}>
+                    <Grid container direction="row" alignItems="center">
+                      <Typography>Permitir Múltiplos</Typography>
+                      <Checkbox
+                        size="small"
+                        checked={newOptionAllowMultiple}
+                        onChange={(e) =>
+                          setNewOptionAllowMultiple(e.target.checked)
+                        }
+                      />
+                    </Grid>
+                  </Grid>{" "}
+                  <Grid sx={{ mb: 2 }}>
+                    <Typography>Itens da Lista</Typography>
+                    <Grid container alignItems="center" sx={{ my: 2 }}>
+                      <TextField
+                        value={newOptionItem}
+                        onChange={(e) => setNewOptionItem(e.target.value)}
+                        size="small"
+                        placeholder="Nome do Item"
+                        sx={{ mr: 1, width: 170 }}
+                      />
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={handleAddOptionItem}
+                      >
+                        + Item
+                      </Button>
+                    </Grid>
+                    {newOptions.map((option, index) => (
+                      <Grid container alignItems="center" key={index}>
+                        <Typography sx={{ mr: 1 }}>
+                          Item {index + 1}: {option}
+                        </Typography>
+                        {index === newOptions.length - 1 && (
+                          <DeleteIcon
+                            onClick={handleRemoveLastOptionItem}
+                            style={{ cursor: "pointer" }}
+                          />
+                        )}
+                      </Grid>
+                    ))}
                   </Grid>
-                  {newOptions.map((option, index) => (
-                    <Typography key={index}>{option}</Typography>
-                  ))}
                 </>
               )}
             </Grid>
-            <Grid item>{newFieldType === "date" && "É data"}</Grid>
-            <Button variant="contained" onClick={handleAddField}>
+            <Grid item>{newFieldType === "currency" && ""}</Grid>
+            <Grid item>
+              {newFieldType === "date" && (
+                <>
+                  <Grid sx={{ mt: 2, mb: newDateType === "simple" ? 2 : 0 }}>
+                    <Typography>Tipo de Data</Typography>
+                    <RadioGroup
+                      row
+                      value={newDateType}
+                      onChange={(e) => setNewDateType(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value="simple"
+                        control={
+                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: 13 }}>Simples</Typography>
+                        }
+                      />
+                      <FormControlLabel
+                        value="range"
+                        control={
+                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: 13 }}>Período</Typography>
+                        }
+                      />
+                    </RadioGroup>
+                  </Grid>
+                  {newDateType === "range" && (
+                    <Grid sx={{ my: 2 }}>
+                      <Typography sx={{ mb: 1 }}>Data Composta</Typography>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                      >
+                        <Grid item>
+                          <Typography sx={{ fontSize: 10, ml: 1 }}>
+                            #
+                          </Typography>
+                          <TextField
+                            type="number"
+                            value={newDateValue}
+                            onChange={(e) => setNewDateValue(e.target.value)}
+                            size="small"
+                            sx={{ maxWidth: 70 }}
+                          />
+                        </Grid>
+                        <Grid item>
+                          <Typography sx={{ fontSize: 10 }}>Período</Typography>
+                          <Select
+                            size="small"
+                            sx={{ mr: 1, width: 130 }}
+                            value={newDatePeriod}
+                            onChange={(e) => setNewDatePeriod(e.target.value)}
+                          >
+                            <MenuItem value={"day"}>Dias</MenuItem>
+                            <MenuItem value={"week"}>Semanas</MenuItem>
+                            <MenuItem value={"month"}>Meses</MenuItem>
+                            <MenuItem value={"year"}>Anos</MenuItem>
+                          </Select>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  )}
+                </>
+              )}
+            </Grid>
+            <Button
+              variant="contained"
+              onClick={handleAddField}
+              disabled={!newFieldName || newFieldType === "a"}
+            >
               Adicionar
             </Button>
           </Grid>
