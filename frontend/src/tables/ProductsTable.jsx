@@ -110,7 +110,7 @@ export default function ProductsTable({
                 <TableRow key={product._id}>
                   <TableCell sx={{ py: 0 }}>
                     <Avatar
-                      src={`http://localhost:3000/static/${product.image}`}
+                      src={`http://localhost:3000/static/${product.images[0]}`}
                       alt={product.name[0]}
                       style={{
                         marginLeft: 10,

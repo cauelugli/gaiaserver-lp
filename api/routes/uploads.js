@@ -42,6 +42,21 @@ router.post("/singleFile", upload.single("image"), (req, res) => {
   }
 });
 
+// CREATE MULTIPLE (max 10) FILES
+router.post("/multipleFiles", upload.array("images", 10), (req, res) => {
+  try {
+    const imagePaths = req.files
+      ? req.files.map((file) => "/images/" + file.filename)
+      : [];
+    return res.status(200).json({ imagePaths });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Erro ao fazer o upload dos arquivos." });
+  }
+});
+
 // CREATE SINGLE ATTACHEMENT
 router.post(
   "/singleAttachment",

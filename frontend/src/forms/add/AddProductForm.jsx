@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -15,10 +14,11 @@ import {
   Checkbox,
   DialogActions,
   DialogContent,
+  Divider,
   FormControlLabel,
   FormHelperText,
   Grid,
-  InputAdornment,
+  ListItemIcon,
   MenuItem,
   Popover,
   Radio,
@@ -28,10 +28,15 @@ import {
   Typography,
 } from "@mui/material";
 
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import AbcIcon from "@mui/icons-material/Abc";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DialogHeader from "../../components/small/DialogHeader";
 import FormEndLineTenant from "../../components/small/FormEndLineTenant";
+import ListIcon from "@mui/icons-material/List";
+import NumbersIcon from "@mui/icons-material/Numbers";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 export default function AddProductForm({
   userName,
@@ -43,10 +48,11 @@ export default function AddProductForm({
   userId,
   type,
 }) {
+  // eslint-disable-next-line no-unused-vars
   const [selectedType, setSelectedType] = React.useState(type);
   const [name, setName] = React.useState("");
   const [fields, setFields] = React.useState([]);
-  const [image, setImage] = React.useState("");
+  const [images, setImages] = React.useState([]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [newFieldName, setNewFieldName] = React.useState("");
@@ -73,19 +79,28 @@ export default function AddProductForm({
   const [newDateValue, setNewDateValue] = React.useState(1);
   const [newDatePeriod, setNewDatePeriod] = React.useState("day");
 
+  const handleAddImage = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImages((prevImages) => [...prevImages, file]);
+    }
+  };
+
   const handleAdd = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("image", image);
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
 
     try {
-      const uploadResponse = await api.post("/uploads/singleFile", formData);
-      const imagePath = uploadResponse.data.imagePath;
+      const uploadResponse = await api.post("/uploads/multipleFiles", formData);
+      const imagePaths = uploadResponse.data.imagePaths;
       const productResponse = await api.post("/products", {
         name,
         fields,
         type: selectedType,
-        image: imagePath,
+        images: imagePaths,
         createdBy: userName,
       });
 
@@ -178,8 +193,11 @@ export default function AddProductForm({
     <form onSubmit={handleAdd}>
       <DialogHeader title={selectedType} femaleGender={false} />
       <DialogContent>
+        <Typography sx={{ fontSize: 16, fontWeight: "bold", mb: 1 }}>
+          Campos do Produto
+        </Typography>
         <Grid
-          id="bigRow"
+          id="fieldsRow"
           container
           spacing={1.5}
           wrap="wrap"
@@ -246,7 +264,7 @@ export default function AddProductForm({
                       field.name
                     } ${field.allowMultiple && "(Múltiplo)"}`}</Typography>
 
-                    <Select size="small" sx={{width: 150 }}>
+                    <Select size="small" sx={{ width: 150 }}>
                       {field.options.map((opt, index) => (
                         <MenuItem key={index} value={opt}>
                           {opt}
@@ -298,6 +316,80 @@ export default function AddProductForm({
           </Button>
         </Grid>
 
+        <Divider sx={{ m: 2 }} />
+
+        <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+          Imagens do Produto
+        </Typography>
+
+        <Grid
+          id="imagesRow"
+          container
+          spacing={1.5}
+          wrap="wrap"
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          {images.map((img, index) => (
+            <Grid item key={index} sx={{ mt: index === 0 && 2.5 }}>
+              <Grid container direction="column" alignItems="center">
+                <img
+                  src={URL.createObjectURL(img)}
+                  alt="Prévia da Imagem"
+                  style={{
+                    marginTop: 10,
+                    width: "80px",
+                    height: "80px",
+                  }}
+                />
+                <FormHelperText>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    size="small"
+                    startIcon={<DeleteIcon />}
+                    onClick={() =>
+                      setImages((prevImages) =>
+                        prevImages.filter((_, i) => i !== index)
+                      )
+                    }
+                  >
+                    Remover
+                  </Button>
+                </FormHelperText>
+                {index === 0 && (
+                  <FormHelperText sx={{ fontSize: 10 }}>
+                    Imagem Principal
+                  </FormHelperText>
+                )}
+              </Grid>
+            </Grid>
+          ))}
+          <Button
+            variant="contained"
+            color="inherit"
+            size="small"
+            disabled={images.length === 10}
+            onClick={() =>
+              document.getElementById("image-upload-input").click()
+            }
+            sx={{ maxWidth: 80, maxHeight: 100, mt: 2, ml: 1 }}
+          >
+            <Grid container direction="column" alignItems="center">
+              <PhotoCameraIcon />
+              <Typography sx={{ fontSize: 11 }}>Adicionar Imagem</Typography>
+            </Grid>
+          </Button>
+          <input
+            id="image-upload-input"
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleAddImage}
+          />
+        </Grid>
+
         <Popover
           id={id}
           open={open}
@@ -325,15 +417,56 @@ export default function AddProductForm({
                 onChange={(e) => setNewFieldType(e.target.value)}
                 size="small"
                 sx={{ mb: 2, width: "100%" }}
+                renderValue={(selected) => {
+                  switch (selected) {
+                    case "string":
+                      return "Texto";
+                    case "number":
+                      return "Número";
+                    case "currency":
+                      return "Moeda (R$)";
+                    case "options":
+                      return "Lista de Opções";
+                    case "date":
+                      return "Data";
+                    default:
+                      return "Tipo do Campo";
+                  }
+                }}
               >
                 <MenuItem disabled value="a">
                   <Typography>Tipo do Campo</Typography>
                 </MenuItem>
-                <MenuItem value={"string"}>Texto</MenuItem>
-                <MenuItem value={"number"}>Número</MenuItem>
-                <MenuItem value={"currency"}>Moeda (R$)</MenuItem>
-                <MenuItem value={"options"}>Lista de Opções</MenuItem>
-                <MenuItem value={"date"}>Data</MenuItem>
+                <MenuItem value={"string"}>
+                  <ListItemIcon>
+                    <AbcIcon />
+                  </ListItemIcon>
+                  Texto
+                </MenuItem>
+                <MenuItem value={"number"}>
+                  <ListItemIcon>
+                    <NumbersIcon />
+                  </ListItemIcon>
+                  Número
+                </MenuItem>
+                <MenuItem value={"currency"}>
+                  <ListItemIcon>
+                    <AttachMoneyIcon />
+                  </ListItemIcon>
+                  Moeda (R$)
+                </MenuItem>
+                <MenuItem value={"options"}>
+                  <ListItemIcon>
+                    <ListIcon />
+                  </ListItemIcon>
+                  Lista de Opções
+                </MenuItem>
+                <MenuItem value={"date"}>
+                  <ListItemIcon>
+                    <CalendarMonthIcon />
+                  </ListItemIcon>
+                  Data
+                </MenuItem>
               </Select>
             </Grid>
             <Grid item>
@@ -519,7 +652,7 @@ export default function AddProductForm({
                       />
                     </RadioGroup>
                   </Grid>
-                  {newDateType === "range" && (
+                  {newDateType === "range" ? (
                     <Grid sx={{ my: 2 }}>
                       <Typography sx={{ mb: 1 }}>Data Composta</Typography>
                       <Grid
@@ -555,11 +688,12 @@ export default function AddProductForm({
                         </Grid>
                       </Grid>
                     </Grid>
+                  ) : (
+                    ""
                   )}
                 </>
               )}
             </Grid>
-            {/* <Grid item>{newFieldType === "currency" && ""}</Grid> */}
             <Button
               variant="contained"
               onClick={handleAddField}
@@ -569,40 +703,6 @@ export default function AddProductForm({
             </Button>
           </Grid>
         </Popover>
-
-        {image && (
-          <Grid
-            container
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Grid item>
-              <img
-                src={URL.createObjectURL(image)}
-                alt="Prévia da Imagem"
-                style={{
-                  marginTop: 20,
-                  maxWidth: "200px",
-                  maxHeight: "200px",
-                }}
-              />
-            </Grid>
-            <Grid item>
-              <FormHelperText>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  size="small"
-                  startIcon={<DeleteIcon />}
-                  onClick={() => setImage("")}
-                >
-                  Remover
-                </Button>
-              </FormHelperText>
-            </Grid>
-          </Grid>
-        )}
       </DialogContent>
       <FormEndLineTenant configCustomization={configCustomization} />
       <DialogActions sx={{ mt: 2 }}>

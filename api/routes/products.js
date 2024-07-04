@@ -50,9 +50,11 @@ router.delete("/:id", async (req, res) => {
   const productId = req.params.id;
   try {
     const product = await Product.findById(productId);
-    const imagePath = product.image;
-    // Exclui o arquivo da pasta de uploads
-    fs.unlinkSync(path.join(__dirname, "../../uploads", imagePath));
+    const imagesPath = product.images;
+    for (const imagePath of imagesPath) {
+      // Exclui o arquivo da pasta de uploads
+      fs.unlinkSync(path.join(__dirname, "../../uploads", imagePath));
+    }
     const deletedProduct = await Product.findByIdAndDelete(productId);
     res.status(200).json(deletedProduct);
   } catch (err) {
