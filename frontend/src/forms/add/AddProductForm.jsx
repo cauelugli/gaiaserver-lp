@@ -489,7 +489,6 @@ export default function AddProductForm({
                 </>
               )}
             </Grid>
-            <Grid item>{newFieldType === "currency" && ""}</Grid>
             <Grid item>
               {newFieldType === "date" && (
                 <>
@@ -560,6 +559,7 @@ export default function AddProductForm({
                 </>
               )}
             </Grid>
+            {/* <Grid item>{newFieldType === "currency" && ""}</Grid> */}
             <Button
               variant="contained"
               onClick={handleAddField}

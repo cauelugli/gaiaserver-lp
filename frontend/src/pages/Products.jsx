@@ -13,8 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import StockEntriesTable from "../tables/StockEntriesTable";
-
+import ProductsTable from "../tables/ProductsTable";
 import ProductsTableButton from "../components/small/buttons/tableButtons/ProductsTableButton";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
@@ -155,8 +154,8 @@ export default function Products({
         ) : (
           <>
             {tableOrCardView ? (
-              <StockEntriesTable
-                stockEntries={products}
+              <ProductsTable
+                products={products}
                 userName={userName}
                 userId={userId}
                 userRole={userRole}

@@ -23,8 +23,6 @@ import StockTableActions from "../components/small/buttons/tableActionButtons/St
 
 export default function ProductsTable({
   products,
-  searchValue,
-  searchOption,
   refreshData,
   setRefreshData,
   topBar,
@@ -37,34 +35,6 @@ export default function ProductsTable({
     {
       id: "name",
       label: "Nome",
-    },
-    {
-      id: "brand",
-      label: "Marca",
-    },
-    {
-      id: "type",
-      label: "Tipo",
-    },
-    {
-      id: "model",
-      label: "Modelo",
-    },
-    {
-      id: "size",
-      label: "Tamanho",
-    },
-    {
-      id: "quantity",
-      label: "Estoque",
-    },
-    {
-      id: "buyValue",
-      label: "Valor de Compra",
-    },
-    {
-      id: "sellValue",
-      label: "Valor de Venda",
     },
     {
       id: "actions",
@@ -136,15 +106,6 @@ export default function ProductsTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((item) => {
-                const itemProperty = searchOption
-                  .split(".")
-                  .reduce((obj, key) => obj[key], item);
-                return (
-                  itemProperty &&
-                  itemProperty.toLowerCase().includes(searchValue.toLowerCase())
-                );
-              })
               .map((product) => (
                 <TableRow key={product._id}>
                   <TableCell sx={{ py: 0 }}>
@@ -161,41 +122,6 @@ export default function ProductsTable({
                   <TableCell align="left">
                     <Typography sx={{ fontSize: 13 }}>
                       {product.name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography sx={{ fontSize: 13 }}>
-                      {product.brand}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography sx={{ fontSize: 13 }}>
-                      {product.type}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography sx={{ fontSize: 13 }}>
-                      {product.model}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography sx={{ fontSize: 13 }}>
-                      {product.size}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography sx={{ fontSize: 13 }}>
-                      {product.quantity}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography sx={{ fontSize: 13 }}>
-                      R${product.buyValue.toFixed(2)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography sx={{ fontSize: 13 }}>
-                      R${product.sellValue.toFixed(2)}
                     </Typography>
                   </TableCell>
                   <TableCell

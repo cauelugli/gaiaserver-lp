@@ -1,8 +1,14 @@
 const { mongoose } = require("../db");
 
 const productSchema = new mongoose.Schema({
+  createdBy: {
+    type: String,
+  },
   fields: {
     type: Array,
+  },
+  image: {
+    type: String,
   },
   name: {
     type: String,
