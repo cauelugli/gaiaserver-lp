@@ -32,7 +32,7 @@ import {
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-import AddProductForm from "../add/AddProductForm";
+import AddBaseProductForm from "../add/AddBaseProductForm";
 
 export default function Products({
   onClose,
@@ -125,10 +125,6 @@ export default function Products({
                     <List>
                       {products.map((product, index) => (
                         <ListItem key={index}>
-                          <ListItemText
-                            primary={`Nome: ${product.name}`}
-                            sx={{ width: "5%" }}
-                          />
                           <ListItemText
                             primary={`Tipo: ${product.type}`}
                             sx={{ width: "5%" }}
@@ -310,7 +306,7 @@ export default function Products({
           open={openAddProduct}
           onClose={() => setOpenAddProduct(!openAddProduct)}
         >
-          <AddProductForm
+          <AddBaseProductForm
             userName={userName}
             userId={userId}
             onClose={() => setOpenAddProduct(!openAddProduct)}
