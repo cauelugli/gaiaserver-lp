@@ -34,7 +34,6 @@ import {
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SettingsIcon from "@mui/icons-material/Settings";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import AddBaseProductForm from "../add/AddBaseProductForm";
 
@@ -126,60 +125,136 @@ export default function Products({
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Table size="small">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>
-                            <Typography
-                              sx={{ fontSize: 14, fontWeight: "bold" }}
-                            >
-                              Tipo do Produto
-                            </Typography>
-                          </TableCell>
-                          <TableCell align="left">
-                            <Typography
-                              sx={{ fontSize: 14, fontWeight: "bold" }}
-                            >
-                              Campos
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography
-                              sx={{ fontSize: 14, fontWeight: "bold" }}
-                            >
-                              Produtos Criados
-                            </Typography>
-                          </TableCell>
-                          <TableCell align="right">
-                            <Typography
-                              sx={{ pr: 1.5, fontSize: 14, fontWeight: "bold" }}
-                            >
-                              Ações
-                            </Typography>
-                          </TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {products.map((product, index) => (
-                          <TableRow key={index}>
-                            <TableCell>
-                              <Typography>{product.type}</Typography>
-                            </TableCell>
-                            <TableCell align="left">
-                              <VisibilityIcon color="inherit" size="small" />
-                            </TableCell>
-                            <TableCell>
-                              <Typography>one day</Typography>
-                            </TableCell>
-                            <TableCell align="right">
-                              <Button color="inherit" size="small">
-                                <SettingsIcon />
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                    {products.map((product, index) => (
+                      <Accordion sx={{ width: "100%" }} key={index}>
+                        <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                          <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
+                            {product.type}
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Typography
+                            sx={{ fontSize: 14, my: 1, fontWeight: "bold" }}
+                          >
+                            Campos do Produto
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    #
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    Nome do Campo
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    Tipo do Campo
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    Propriedades
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {product.fields.map((field, index) => (
+                                <TableRow key={index}>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {field.index + 1}
+                                    </Typography>
+                                  </TableCell>
+
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {field.name}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {field.type === "string" && "Texto"}
+                                      {field.type === "number" && "Número"}
+                                      {field.type === "options" &&
+                                        "Lista de Opções"}
+                                      {field.type === "currency" &&
+                                        "Moeda (R$)"}
+                                      {field.type === "date" && "Data"}
+                                    </Typography>
+                                  </TableCell>
+
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {field.type === "string" &&
+                                        `Min ${field.minCharacter} Max ${field.maxCharacter} Caracteres`}
+                                      {field.type === "number" &&
+                                        `Tipo: ${
+                                          field.numberType === "integer"
+                                            ? "Inteiro"
+                                            : "Decimal"
+                                        }, Min ${field.minValue} Max ${
+                                          field.maxValue
+                                        }`}
+                                      {field.type === "options" && (
+                                        <Grid container direction="row">
+                                          <Typography
+                                            sx={{ mr: 1, fontSize: 12 }}
+                                          >
+                                            Opções:
+                                          </Typography>
+                                          {field.options.map(
+                                            (option, index) => (
+                                              <Typography
+                                                key={index}
+                                                sx={{ mr: 1, fontSize: 12 }}
+                                              >
+                                                {option}
+                                              </Typography>
+                                            )
+                                          )}
+                                        </Grid>
+                                      )}
+                                      {field.type === "currency" && "-"}
+                                      {field.type === "date" &&
+                                        `Tipo: ${
+                                          field.newDateType === "simple"
+                                            ? "Simples"
+                                            : "Período"
+                                        } ${
+                                          field.newDateType === "period"
+                                            ? `${field.newDateValue} ${field.newDatePeriod} `
+                                            : ""
+                                        }`}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </AccordionDetails>
+                        <Button
+                          color="inherit"
+                          sx={{ ml: "92%", pr: 1, pb: 1 }}
+                        >
+                          <SettingsIcon />
+                        </Button>
+                      </Accordion>
+                    ))}
+
                     <Grid
                       container
                       direction="row"
