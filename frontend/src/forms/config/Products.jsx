@@ -21,16 +21,20 @@ import {
   DialogTitle,
   FormControlLabel,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
   Radio,
   RadioGroup,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Tooltip,
   Typography,
 } from "@mui/material";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import SettingsIcon from "@mui/icons-material/Settings";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import AddBaseProductForm from "../add/AddBaseProductForm";
 
@@ -118,31 +122,70 @@ export default function Products({
                 <Accordion sx={{ width: "100%" }}>
                   <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
                     <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                      Tipos de Produto
+                      Produtos Base
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <List>
-                      {products.map((product, index) => (
-                        <ListItem key={index}>
-                          <ListItemText
-                            primary={`Tipo: ${product.type}`}
-                            sx={{ width: "5%" }}
-                          />
-                          <ListItemText
-                            primary={`Campos: ${product.fields.map(
-                              (field) => field.name
-                            )}`}
-                            sx={{ width: "5%" }}
-                          />
-                        </ListItem>
-                      ))}
-                    </List>
+                    <Table size="small">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>
+                            <Typography
+                              sx={{ fontSize: 14, fontWeight: "bold" }}
+                            >
+                              Tipo do Produto
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="left">
+                            <Typography
+                              sx={{ fontSize: 14, fontWeight: "bold" }}
+                            >
+                              Campos
+                            </Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography
+                              sx={{ fontSize: 14, fontWeight: "bold" }}
+                            >
+                              Produtos Criados
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Typography
+                              sx={{ pr: 1.5, fontSize: 14, fontWeight: "bold" }}
+                            >
+                              Ações
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {products.map((product, index) => (
+                          <TableRow key={index}>
+                            <TableCell>
+                              <Typography>{product.type}</Typography>
+                            </TableCell>
+                            <TableCell align="left">
+                              <VisibilityIcon color="inherit" size="small" />
+                            </TableCell>
+                            <TableCell>
+                              <Typography>one day</Typography>
+                            </TableCell>
+                            <TableCell align="right">
+                              <Button color="inherit" size="small">
+                                <SettingsIcon />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
                     <Grid
                       container
                       direction="row"
                       alignItems="center"
                       justifyContent="center"
+                      sx={{ mt: 2 }}
                     >
                       <Grid item>
                         <Button
