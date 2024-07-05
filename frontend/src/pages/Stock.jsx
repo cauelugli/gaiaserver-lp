@@ -17,7 +17,6 @@ import {
 import AddStockItemForm from "../forms/add/AddStockItemForm";
 import AddStockProductForm from "../forms/add/AddStockProductForm";
 import AddStockForm from "../forms/add/AddStockForm";
-import AddProductForm from "../forms/add/AddProductForm";
 import AddMultipleProductForm from "../forms/add/AddMultipleProductForm";
 
 import StockTable from "../tables/StockTable";
@@ -417,24 +416,15 @@ export default function Stock({
         )}
       </CustomTabPanel>
 
-      {openModals[0] && (
+      {/* {openModals[0] && (
         <Dialog
           fullWidth
           maxWidth="lg"
           open={openModals[0]}
           onClose={() => closeModal(0)}
         >
-          <AddProductForm
-            userName={userName}
-            userId={userId}
-            onClose={() => closeModal(0)}
-            refreshData={refreshData}
-            configCustomization={configCustomization}
-            setRefreshData={setRefreshData}
-            toast={toast}
-          />
         </Dialog>
-      )}
+      )} */}
 
       {openModals[1] && (
         <Dialog

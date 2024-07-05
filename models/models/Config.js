@@ -176,10 +176,6 @@ const configSchema = new Schema({
       type: Boolean,
       default: true,
     },
-    productTypes: {
-      type: Array,
-      default: [],
-    },
     notifyWhenProductIsCreated: {
       type: Boolean,
       default: false,

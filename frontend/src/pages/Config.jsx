@@ -61,111 +61,14 @@ import StockModal from "../forms/config/Stock";
 import TablesModal from "../forms/config/Tables";
 import UsersModal from "../forms/config/Users";
 
-const options = [
-  {
-    icon: <DashboardIcon sx={{ fontSize: 48 }} />,
-    text: "Dashboard",
-    modal: <DashboardModal />,
-  },
-  {
-    icon: <WorkIcon sx={{ fontSize: 48 }} />,
-    text: "Clientes",
-    modal: <CustomersModal />,
-  },
-  {
-    icon: <GroupIcon sx={{ fontSize: 48 }} />,
-    text: "Colaboradores",
-    modal: <UsersModal />,
-  },
-  {
-    icon: <LanIcon sx={{ fontSize: 48 }} />,
-    text: "Departamentos",
-    modal: <DepartmentsModal />,
-  },
-  {
-    icon: <GradingIcon sx={{ fontSize: 48 }} />,
-    text: "Solicitações",
-    modal: <RequestsModal />,
-  },
-  {
-    icon: <RocketLaunchIcon sx={{ fontSize: 48 }} />,
-    text: "Projetos",
-    modal: <ProjectsModal />,
-  },
-  {
-    icon: <RequestQuoteIcon sx={{ fontSize: 48 }} />,
-    text: "Orçamentos",
-    modal: <QuotesModal />,
-  },
-  {
-    icon: <BuildIcon sx={{ fontSize: 48 }} />,
-    text: "Serviços",
-    modal: <ServicesModal />,
-  },
-  {
-    icon: <WarehouseIcon sx={{ fontSize: 48 }} />,
-    text: "Estoque",
-    modal: <StockModal />,
-  },
-  {
-    icon: <SellIcon sx={{ fontSize: 48 }} />,
-    text: "Produtos",
-    modal: <ProductsModal />,
-  },
-  {
-    icon: <Inventory2Icon sx={{ fontSize: 48 }} />,
-    text: "Materiais",
-    modal: <MaterialsModal />,
-  },
-  {
-    icon: <AssessmentIcon sx={{ fontSize: 48 }} />,
-    text: "Relatórios",
-    modal: <RequestsModal />,
-  },
-  {
-    icon: <AttachMoneyIcon sx={{ fontSize: 48 }} />,
-    text: "Financeiro",
-    modal: <FinanceModal />,
-  },
-  {
-    icon: <InsertDriveFileIcon sx={{ fontSize: 48 }} />,
-    text: "Arquivos",
-    modal: <FilesModal />,
-  },
-  {
-    icon: <AutoFixNormalIcon sx={{ fontSize: 48 }} />,
-    text: "Personalização",
-    modal: <CustomizationModal />,
-  },
-  {
-    icon: <LockIcon sx={{ fontSize: 48 }} />,
-    text: "Segurança",
-    modal: <SecurityModal />,
-  },
-  {
-    icon: <AdminPanelSettingsIcon sx={{ fontSize: 48 }} />,
-    text: "Permissões",
-    modal: <PermissionsModal />,
-  },
-
-  {
-    icon: <NotificationsIcon sx={{ fontSize: 48 }} />,
-    text: "Notificações",
-    modal: <NotificationsModal />,
-  },
-  {
-    icon: <TableViewIcon sx={{ fontSize: 48 }} />,
-    text: "Tabelas",
-    modal: <TablesModal />,
-  },
-  {
-    icon: <CalendarMonthIcon sx={{ fontSize: 48 }} />,
-    text: "Agenda",
-    modal: <AgendaModal />,
-  },
-];
-
-export default function Config({ topBar }) {
+export default function Config({
+  topBar,
+  userId,
+  userName,
+  refreshData,
+  setRefreshData,
+  configCustomization,
+}) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -173,9 +76,122 @@ export default function Config({ topBar }) {
   const [configData, setConfigData] = useState([]);
   const [chosenModal, setChosenModal] = useState("");
 
+  const [products, setProducts] = useState([]);
+
+  const options = [
+    {
+      icon: <DashboardIcon sx={{ fontSize: 48 }} />,
+      text: "Dashboard",
+      modal: <DashboardModal />,
+    },
+    {
+      icon: <WorkIcon sx={{ fontSize: 48 }} />,
+      text: "Clientes",
+      modal: <CustomersModal />,
+    },
+    {
+      icon: <GroupIcon sx={{ fontSize: 48 }} />,
+      text: "Colaboradores",
+      modal: <UsersModal />,
+    },
+    {
+      icon: <LanIcon sx={{ fontSize: 48 }} />,
+      text: "Departamentos",
+      modal: <DepartmentsModal />,
+    },
+    {
+      icon: <GradingIcon sx={{ fontSize: 48 }} />,
+      text: "Solicitações",
+      modal: <RequestsModal />,
+    },
+    {
+      icon: <RocketLaunchIcon sx={{ fontSize: 48 }} />,
+      text: "Projetos",
+      modal: <ProjectsModal />,
+    },
+    {
+      icon: <RequestQuoteIcon sx={{ fontSize: 48 }} />,
+      text: "Orçamentos",
+      modal: <QuotesModal />,
+    },
+    {
+      icon: <BuildIcon sx={{ fontSize: 48 }} />,
+      text: "Serviços",
+      modal: <ServicesModal />,
+    },
+    {
+      icon: <WarehouseIcon sx={{ fontSize: 48 }} />,
+      text: "Estoque",
+      modal: <StockModal />,
+    },
+    {
+      icon: <SellIcon sx={{ fontSize: 48 }} />,
+      text: "Produtos",
+      modal: (
+        <ProductsModal
+          here
+          userName={userName}
+          userId={userId}
+          configCustomization={configCustomization}
+          products={products}
+        />
+      ),
+    },
+    {
+      icon: <Inventory2Icon sx={{ fontSize: 48 }} />,
+      text: "Materiais",
+      modal: <MaterialsModal />,
+    },
+    {
+      icon: <AssessmentIcon sx={{ fontSize: 48 }} />,
+      text: "Relatórios",
+      modal: <RequestsModal />,
+    },
+    {
+      icon: <AttachMoneyIcon sx={{ fontSize: 48 }} />,
+      text: "Financeiro",
+      modal: <FinanceModal />,
+    },
+    {
+      icon: <InsertDriveFileIcon sx={{ fontSize: 48 }} />,
+      text: "Arquivos",
+      modal: <FilesModal />,
+    },
+    {
+      icon: <AutoFixNormalIcon sx={{ fontSize: 48 }} />,
+      text: "Personalização",
+      modal: <CustomizationModal />,
+    },
+    {
+      icon: <LockIcon sx={{ fontSize: 48 }} />,
+      text: "Segurança",
+      modal: <SecurityModal />,
+    },
+    {
+      icon: <AdminPanelSettingsIcon sx={{ fontSize: 48 }} />,
+      text: "Permissões",
+      modal: <PermissionsModal />,
+    },
+
+    {
+      icon: <NotificationsIcon sx={{ fontSize: 48 }} />,
+      text: "Notificações",
+      modal: <NotificationsModal />,
+    },
+    {
+      icon: <TableViewIcon sx={{ fontSize: 48 }} />,
+      text: "Tabelas",
+      modal: <TablesModal />,
+    },
+    {
+      icon: <CalendarMonthIcon sx={{ fontSize: 48 }} />,
+      text: "Agenda",
+      modal: <AgendaModal />,
+    },
+  ];
+
   const handleItemClick = (modal) => {
     setOpenModal(modal);
-    console.log("modal", modal);
     setChosenModal(modal.type.name);
   };
 

@@ -302,12 +302,16 @@ router.put("/permissions", async (req, res) => {
 // PRODUCTS
 router.put("/products", async (req, res) => {
   try {
-    const { canBeDeleted, productTypes, notifyWhenProductIsCreated } = req.body;
+    const {
+      canBeDeleted,
+      // productTypes,
+      notifyWhenProductIsCreated,
+    } = req.body;
 
     const config = await Config.findOne();
 
     config.products.canBeDeleted = canBeDeleted;
-    config.products.productTypes = productTypes;
+    // config.products.productTypes = productTypes;
     config.products.notifyWhenProductIsCreated = notifyWhenProductIsCreated;
 
     await config.save();
@@ -321,7 +325,8 @@ router.put("/products", async (req, res) => {
 // MATERIALS
 router.put("/materials", async (req, res) => {
   try {
-    const { canBeDeleted, materialTypes, notifyWhenMaterialIsCreated } = req.body;
+    const { canBeDeleted, materialTypes, notifyWhenMaterialIsCreated } =
+      req.body;
 
     const config = await Config.findOne();
 

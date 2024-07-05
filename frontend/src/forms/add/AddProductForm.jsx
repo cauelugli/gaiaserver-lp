@@ -46,10 +46,8 @@ export default function AddProductForm({
   configCustomization,
   toast,
   userId,
-  type,
 }) {
-  // eslint-disable-next-line no-unused-vars
-  const [selectedType, setSelectedType] = React.useState(type);
+  const [type, setType] = React.useState("");
   const [name, setName] = React.useState("");
   const [fields, setFields] = React.useState([]);
   const [images, setImages] = React.useState([]);
@@ -97,9 +95,9 @@ export default function AddProductForm({
       const uploadResponse = await api.post("/uploads/multipleFiles", formData);
       const imagePaths = uploadResponse.data.imagePaths;
       const productResponse = await api.post("/products", {
+        type,
         name,
         fields,
-        type: selectedType,
         images: imagePaths,
         createdBy: userName,
       });
@@ -191,7 +189,7 @@ export default function AddProductForm({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogHeader title={selectedType} femaleGender={false} />
+      <DialogHeader title="Produto" femaleGender={false} />
       <DialogContent>
         <Typography sx={{ fontSize: 16, fontWeight: "bold", mb: 1 }}>
           Campos do Produto
@@ -209,8 +207,9 @@ export default function AddProductForm({
             <Typography sx={{ fontSize: 13 }}>Tipo</Typography>
             <TextField
               size="small"
-              value={selectedType}
-              disabled
+              value={type}
+              required
+              onChange={(e) => setType(e.target.value)}
               variant="outlined"
               sx={{ width: 150 }}
             />
@@ -374,7 +373,7 @@ export default function AddProductForm({
             onClick={() =>
               document.getElementById("image-upload-input").click()
             }
-            sx={{ maxWidth: 80, maxHeight: 100, mt: 2, ml: 1 }}
+            sx={{ width: 80, height: 100, mt: 2, ml: 1 }}
           >
             <Grid container direction="column" alignItems="center">
               <PhotoCameraIcon />
