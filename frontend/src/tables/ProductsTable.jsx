@@ -22,6 +22,7 @@ import EditProductForm from "../forms/edit/EditProductForm";
 import StockTableActions from "../components/small/buttons/tableActionButtons/StockTableActions";
 
 export default function ProductsTable({
+  baseProduct,
   products,
   refreshData,
   setRefreshData,
@@ -36,6 +37,10 @@ export default function ProductsTable({
       id: "name",
       label: "Nome",
     },
+    ...baseProduct.fields.map((field) => ({
+      id: field.name,
+      label: field.name,
+    })),
     {
       id: "actions",
       label: "Ações",
@@ -124,6 +129,13 @@ export default function ProductsTable({
                       {product.name}
                     </Typography>
                   </TableCell>
+                  {baseProduct.fields.map((field, index) => (
+                    <TableCell align="center" key={index}>
+                      <Typography sx={{ fontSize: 13 }}>
+                        {product.fields[index].value}
+                      </Typography>
+                    </TableCell>
+                  ))}
                   <TableCell
                     align="center"
                     onClick={() => setSelectedProduct(product)}

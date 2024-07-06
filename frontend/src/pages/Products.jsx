@@ -55,7 +55,6 @@ export default function Products({
   const [configProducts, setConfigProducts] = React.useState({});
   const [configCustomization, setConfigCustomization] = React.useState([]);
   const [value, setValue] = React.useState(0);
-  // const [selectedTabLabel, setSelectedTabLabel] = React.useState("");
 
   const [products, setProducts] = React.useState([]);
 
@@ -64,7 +63,6 @@ export default function Products({
   }, [products]);
 
   const handleChange = (event, newValue) => {
-    // setSelectedTabLabel(event.target.textContent);
     setValue(newValue);
   };
 
@@ -164,6 +162,11 @@ export default function Products({
                   products={products.filter(
                     (product) => product.type === type && product.name
                   )}
+                  baseProduct={
+                    products.filter(
+                      (product) => product.type === type && !product.name
+                    )[0]
+                  }
                   userName={userName}
                   userId={userId}
                   userRole={userRole}
