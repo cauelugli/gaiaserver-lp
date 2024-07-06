@@ -3,6 +3,7 @@ import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
+import dayjs from "dayjs";
 
 const socket = io("http://localhost:5002");
 
@@ -14,6 +15,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Avatar,
   Button,
   Dialog,
   DialogActions,
@@ -45,6 +47,7 @@ export default function Products({
 }) {
   const [configData, setConfigData] = React.useState([]);
   const [refreshData, setRefreshData] = React.useState(false);
+  const [baseProducts, setBaseProducts] = React.useState([]);
   const [products, setProducts] = React.useState([]);
   const [canBeDeleted, setCanBeDeleted] = React.useState(null);
   const [notifyWhenProductIsCreated, setNotifyWhenProductIsCreated] =
@@ -57,7 +60,8 @@ export default function Products({
       try {
         const config = await api.get("/config");
         const products = await api.get("/products");
-        setProducts(products.data.filter((product) => !product.name));
+        setBaseProducts(products.data.filter((product) => !product.name));
+        setProducts(products.data.filter((product) => product.name));
         setConfigData(config.data[0].products);
         setCanBeDeleted(config.data[0].products.canBeDeleted);
         setNotifyWhenProductIsCreated(
@@ -124,7 +128,7 @@ export default function Products({
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    {products.map((product, index) => (
+                    {baseProducts.map((product, index) => (
                       <Accordion sx={{ width: "100%" }} key={index}>
                         <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
                           <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
@@ -242,6 +246,100 @@ export default function Products({
                                   </TableCell>
                                 </TableRow>
                               ))}
+                            </TableBody>
+                          </Table>
+                          <Typography
+                            sx={{
+                              fontSize: 14,
+                              my: 1,
+                              mt: 3,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Produtos Criados (
+                            {
+                              products.filter(
+                                (prod) => product.type === prod.type
+                              ).length
+                            }
+                            )
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{
+                                      fontSize: 14,
+                                      fontWeight: "bold",
+                                      ml: 1,
+                                    }}
+                                  >
+                                    📷
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    Nome do Produto
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    Criador
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    Criado em
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {products
+                                .filter((prod) => product.type === prod.type)
+                                .map((prod, index) => (
+                                  <TableRow key={index}>
+                                    <TableCell>
+                                      <Avatar
+                                        src={`http://localhost:3000/static/${prod.images[0]}`}
+                                        alt={prod.name[0]}
+                                        style={{
+                                          width: 32,
+                                          height: 32,
+                                        }}
+                                      />
+                                    </TableCell>
+
+                                    <TableCell>
+                                      <Typography sx={{ fontSize: 12 }}>
+                                        {prod.name ? prod.name : "-"}
+                                      </Typography>
+                                    </TableCell>
+
+                                    <TableCell>
+                                      <Typography sx={{ fontSize: 12 }}>
+                                        {prod.createdBy ? prod.createdBy : "-"}
+                                      </Typography>
+                                    </TableCell>
+
+                                    <TableCell>
+                                      <Typography sx={{ fontSize: 12 }}>
+                                        {prod.createdAt
+                                          ? dayjs(prod.createdAt).format(
+                                              "DD/MM/YYYY HH:mm:ss"
+                                            )
+                                          : "-"}
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
                             </TableBody>
                           </Table>
                         </AccordionDetails>

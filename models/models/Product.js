@@ -1,6 +1,10 @@
 const { mongoose } = require("../db");
 
 const productSchema = new mongoose.Schema({
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
   createdBy: {
     type: String,
   },
