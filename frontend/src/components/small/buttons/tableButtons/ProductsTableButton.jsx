@@ -20,7 +20,7 @@ import AddProductForm from "../../../../forms/add/AddProductForm";
 export default function BasicMenu(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openAddProduct, setOpenAddProduct] = React.useState(false);
-  const [selectedType, setSelectedType] = React.useState(null);
+  const [selectedBaseProduct, setSelectedBaseProduct] = React.useState(null);
 
   const open = Boolean(anchorEl);
 
@@ -48,11 +48,11 @@ export default function BasicMenu(props) {
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
         <List sx={{ width: 170 }}>
-          {props.types.map((type, index) => (
+          {props.baseProducts.map((product, index) => (
             <ListItemButton
               key={index}
               onClick={() => {
-                setSelectedType(type);
+                setSelectedBaseProduct(product);
                 setAnchorEl(null);
                 setOpenAddProduct(true);
               }}
@@ -61,7 +61,7 @@ export default function BasicMenu(props) {
                 <GradeIcon />
               </ListItemIcon>
               <ListItemText
-                primary={<Typography sx={{ fontSize: 16 }}>{type}</Typography>}
+                primary={<Typography sx={{ fontSize: 16 }}>{product.type}</Typography>}
                 sx={{ ml: -3 }}
               />
             </ListItemButton>
@@ -83,7 +83,7 @@ export default function BasicMenu(props) {
             setRefreshData={props.setRefreshData}
             configCustomization={props.configCustomization}
             toast={toast}
-            type={selectedType}
+            baseProduct={selectedBaseProduct}
           />
         </Dialog>
       )}

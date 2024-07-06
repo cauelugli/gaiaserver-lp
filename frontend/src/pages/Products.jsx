@@ -113,6 +113,7 @@ export default function Products({
           types={configProducts.productTypes}
           refreshData={refreshData}
           setRefreshData={setRefreshData}
+          baseProducts={products.filter((product) => !product.name)}
         />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -121,13 +122,17 @@ export default function Products({
           onChange={handleChange}
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
-          {configProducts.productTypes.map((type, index) => (
-            <Tab
-              key={index}
-              label={<Typography sx={{ fontSize: 13 }}>{type}</Typography>}
-              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-            />
-          ))}
+          {products
+            .filter((product) => !product.name)
+            .map((product, index) => (
+              <Tab
+                key={index}
+                label={
+                  <Typography sx={{ fontSize: 13 }}>{product.type}</Typography>
+                }
+                sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+              />
+            ))}
           <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
@@ -155,7 +160,7 @@ export default function Products({
           <>
             {tableOrCardView ? (
               <ProductsTable
-                products={products}
+                products={products.filter((product) => product.name)}
                 userName={userName}
                 userId={userId}
                 userRole={userRole}
