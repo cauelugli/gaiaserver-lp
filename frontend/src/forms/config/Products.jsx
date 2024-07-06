@@ -42,7 +42,6 @@ export default function Products({
   userId,
   userName,
   configCustomization,
-  // products,
 }) {
   const [configData, setConfigData] = React.useState([]);
   const [refreshData, setRefreshData] = React.useState(false);
@@ -58,7 +57,7 @@ export default function Products({
       try {
         const config = await api.get("/config");
         const products = await api.get("/products");
-        setProducts(products.data);
+        setProducts(products.data.filter((product) => !product.name));
         setConfigData(config.data[0].products);
         setCanBeDeleted(config.data[0].products.canBeDeleted);
         setNotifyWhenProductIsCreated(

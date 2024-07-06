@@ -55,12 +55,16 @@ export default function Products({
   const [configProducts, setConfigProducts] = React.useState({});
   const [configCustomization, setConfigCustomization] = React.useState([]);
   const [value, setValue] = React.useState(0);
-  const [selectedTabLabel, setSelectedTabLabel] = React.useState("");
+  // const [selectedTabLabel, setSelectedTabLabel] = React.useState("");
 
   const [products, setProducts] = React.useState([]);
 
+  const productTypes = React.useMemo(() => {
+    return [...new Set(products.map((product) => product.type))];
+  }, [products]);
+
   const handleChange = (event, newValue) => {
-    setSelectedTabLabel(event.target.textContent);
+    // setSelectedTabLabel(event.target.textContent);
     setValue(newValue);
   };
 
@@ -122,17 +126,13 @@ export default function Products({
           onChange={handleChange}
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
-          {products
-            .filter((product) => !product.name)
-            .map((product, index) => (
-              <Tab
-                key={index}
-                label={
-                  <Typography sx={{ fontSize: 13 }}>{product.type}</Typography>
-                }
-                sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-              />
-            ))}
+          {productTypes.map((type, index) => (
+            <Tab
+              key={index}
+              label={<Typography sx={{ fontSize: 13 }}>{type}</Typography>}
+              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+            />
+          ))}
           <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
@@ -153,53 +153,59 @@ export default function Products({
           </Grid>
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={value}>
-        {products.length === 0 ? (
-          <NoDataText option={selectedTabLabel} />
-        ) : (
-          <>
-            {tableOrCardView ? (
-              <ProductsTable
-                products={products.filter((product) => product.name)}
-                userName={userName}
-                userId={userId}
-                userRole={userRole}
-                userDepartment={userDepartment}
-                configData={configProducts}
-                refreshData={refreshData}
-                setRefreshData={setRefreshData}
-                topBar={topBar}
-              />
-            ) : (
-              <Grid
-                sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
-                container
-                spacing={2}
-              >
-                {products.map((item, index) => (
-                  <Grid
-                    item
-                    key={index}
-                    md={cardSize}
-                    lg={cardSize}
-                    xl={cardSize}
-                  >
-                    <StockCard
-                      userId={userId}
-                      userName={userName}
-                      configData={configData}
-                      item={item}
-                      type="entry"
-                      refreshData={refreshData}
-                      setRefreshData={setRefreshData}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
-            )}
-          </>
-        )}
-      </CustomTabPanel>
+      {productTypes.map((type, index) => (
+        <CustomTabPanel key={index} value={value} index={index}>
+          {products.filter((product) => product.type === type).length === 1 ? (
+            <NoDataText option={type} />
+          ) : (
+            <>
+              {tableOrCardView ? (
+                <ProductsTable
+                  products={products.filter(
+                    (product) => product.type === type && product.name
+                  )}
+                  userName={userName}
+                  userId={userId}
+                  userRole={userRole}
+                  userDepartment={userDepartment}
+                  configData={configProducts}
+                  refreshData={refreshData}
+                  setRefreshData={setRefreshData}
+                  topBar={topBar}
+                />
+              ) : (
+                <Grid
+                  sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
+                  container
+                  spacing={2}
+                >
+                  {products
+                    .filter((product) => product.type === type)
+                    .map((item, index) => (
+                      <Grid
+                        item
+                        key={index}
+                        md={cardSize}
+                        lg={cardSize}
+                        xl={cardSize}
+                      >
+                        <StockCard
+                          userId={userId}
+                          userName={userName}
+                          configData={configData}
+                          item={item}
+                          type="entry"
+                          refreshData={refreshData}
+                          setRefreshData={setRefreshData}
+                        />
+                      </Grid>
+                    ))}
+                </Grid>
+              )}
+            </>
+          )}
+        </CustomTabPanel>
+      ))}
     </Box>
   );
 }
