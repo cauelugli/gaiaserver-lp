@@ -1,7 +1,11 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 import {
   Box,
@@ -16,7 +20,6 @@ import {
 import DepartmentTable from "../tables/DepartmentTable";
 import AddDepartmentForm from "../forms/add/AddDepartmentForm";
 
-import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 import DepartmentTableButton from "../components/small/buttons/tableButtons/DepartmentTableButton";
@@ -24,10 +27,6 @@ import GroupTable from "../tables/GroupTable";
 import AddGroupForm from "../forms/add/AddGroupForm";
 import TableOrCardSelector from "../components/small/TableOrCardSelector";
 import DepartmentCard from "../components/cards/DepartmentCard";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -63,44 +62,6 @@ export default function Departments({
 
   const [openAddDepartment, setOpenAddDepartment] = React.useState(false);
   const [openAddGroup, setOpenAddGroup] = React.useState(false);
-
-  const [searchValue, setSearchValue] = React.useState("");
-  const [searchOption, setSearchOption] = React.useState("name");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
-  const searchOptionList = [
-    {
-      // SERVICES DEPARTMENT TABLE
-      options: [
-        { value: "name", label: "Nome" },
-        { value: "email", label: "E-mail" },
-        { value: "manager.name", label: "Gerente" },
-      ],
-    },
-    {
-      // SALES DEPARTMENT TABLE
-      options: [
-        { value: "name", label: "Nome" },
-        { value: "email", label: "E-mail" },
-        { value: "manager.name", label: "Gerente" },
-      ],
-    },
-    {
-      // INTERNAL DEPARTMENT TABLE
-      options: [
-        { value: "name", label: "Nome" },
-        { value: "email", label: "E-mail" },
-        { value: "manager.name", label: "Gerente" },
-      ],
-    },
-    {
-      // GROUP TABLE
-      options: [{ value: "name", label: "Nome" }],
-    },
-  ];
-
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
@@ -159,9 +120,6 @@ export default function Departments({
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setSearchValue("");
-    setSearchOption("name");
-    setSearchOptionLabel("Nome");
   };
 
   if (isLoading) {
@@ -184,7 +142,7 @@ export default function Departments({
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
-        sx={{ m: 2 }}
+        sx={{ ml: 2 }}
       >
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           Departamentos
@@ -248,27 +206,12 @@ export default function Departments({
           <NoDataText option="Departamentos de Serviços" />
         ) : (
           <>
-            {tableOrCardView && (
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[0]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-            )}
-
             {tableOrCardView ? (
               <DepartmentTable
                 userId={userId}
                 configData={config}
                 users={users}
                 managers={managers}
-                searchValue={searchValue}
-                searchOption={searchOption}
                 departments={serviceDepartments}
                 openAdd={openAddDepartment}
                 setOpenAdd={setOpenAddDepartment}
@@ -315,18 +258,6 @@ export default function Departments({
           <NoDataText option="Departamentos de Vendas" />
         ) : (
           <>
-            {tableOrCardView && (
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[1]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-            )}
             {tableOrCardView ? (
               <DepartmentTable
                 userId={userId}
@@ -334,8 +265,6 @@ export default function Departments({
                 toast={toast}
                 users={users}
                 managers={managers}
-                searchValue={searchValue}
-                searchOption={searchOption}
                 departments={saleDepartments}
                 openAdd={openAddDepartment}
                 setOpenAdd={setOpenAddDepartment}
@@ -382,18 +311,6 @@ export default function Departments({
             <NoDataText option="Departamentos Internos" />
           ) : (
             <>
-              {tableOrCardView && (
-                <TableFilters
-                  searchValue={searchValue}
-                  setSearchValue={setSearchValue}
-                  searchOption={searchOption}
-                  searchOptionList={searchOptionList[2]}
-                  setSearchOption={setSearchOption}
-                  searchOptionLabel={searchOptionLabel}
-                  setSearchOptionLabel={setSearchOptionLabel}
-                  handleSearchChange={handleSearchChange}
-                />
-              )}
               {tableOrCardView ? (
                 <DepartmentTable
                   userId={userId}
@@ -401,8 +318,6 @@ export default function Departments({
                   toast={toast}
                   users={users}
                   managers={managers}
-                  searchValue={searchValue}
-                  searchOption={searchOption}
                   departments={internalDepartments}
                   openAdd={openAddDepartment}
                   setOpenAdd={setOpenAddDepartment}
@@ -452,26 +367,12 @@ export default function Departments({
           <NoDataText option="Grupos" />
         ) : (
           <>
-            {tableOrCardView && (
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[3]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-            )}
 
             {tableOrCardView ? (
               <GroupTable
                 userId={userId}
                 configData={config}
                 toast={toast}
-                searchValue={searchValue}
-                searchOption={searchOption}
                 positions={positions}
                 users={users}
                 allUsers={allUsers.map((user) => ({

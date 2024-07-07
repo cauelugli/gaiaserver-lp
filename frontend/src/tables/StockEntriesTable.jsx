@@ -1,12 +1,16 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import axios from "axios";
-import dayjs from "dayjs";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
+import axios from "axios";
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5002");
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 import {
   Avatar,
@@ -25,10 +29,6 @@ import {
 } from "@mui/material";
 
 import StockEntriesTableActions from "../components/small/buttons/tableActionButtons/StockEntriesTableActions";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 export default function StockEntriesTable({
   stockEntries,

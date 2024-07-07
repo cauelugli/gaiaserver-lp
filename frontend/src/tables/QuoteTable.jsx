@@ -29,8 +29,6 @@ import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 export default function QuoteTable({
   topBar,
   type,
-  searchValue,
-  searchOption,
   quotes,
 }) {
   let tableHeaderRow;
@@ -208,15 +206,6 @@ export default function QuoteTable({
               ))}
             </TableRow>
             {sortedRows
-              // .filter((item) => {
-              //   const itemProperty = searchOption
-              //     .split(".")
-              //     .reduce((obj, key) => obj[key], item);
-              //   return (
-              //     itemProperty &&
-              //     itemProperty.toLowerCase().includes(searchValue.toLowerCase())
-              //   );
-              // })
               .map((quote) => (
                 <>
                   <TableRow key={quote._id}>

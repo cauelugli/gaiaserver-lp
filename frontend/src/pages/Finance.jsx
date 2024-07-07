@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
@@ -7,29 +6,19 @@ import axios from "axios";
 
 import {
   Box,
-  Button,
   CircularProgress,
-  Dialog,
   Grid,
-  InputAdornment,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  MenuList,
-  Select,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
 
-import NoDataText from "../components/small/NoDataText";
-import RefreshButton from "../components/small/buttons/RefreshButton";
-import TableFilters from "../components/TableFilters";
 import FinanceIncomeTable from "../tables/FinanceIncomeTable";
 import FinanceOutcomeTable from "../tables/FinanceOutcomeTable";
+
 import TableOrCardSelector from "../components/small/TableOrCardSelector";
+import NoDataText from "../components/small/NoDataText";
+import RefreshButton from "../components/small/buttons/RefreshButton";
 import FinanceCard from "../components/cards/FinanceCard";
 
 const api = axios.create({
@@ -67,31 +56,8 @@ export default function Finance({
   const [incoming, setIncoming] = React.useState([]);
   const [outcoming, setOutcoming] = React.useState([]);
 
-  const [searchOption, setSearchOption] = React.useState("quote");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Orçamento");
-  const [searchValue, setSearchValue] = React.useState("");
-
-  const searchOptionList = [
-    {
-      // FINANCE INCOME TABLE
-      options: [{ value: "quote", label: "Orçamento" }],
-    },
-    {
-      // FINANCE OUTCOME TABLE
-      options: [{ value: "type", label: "Tipo" }],
-    },
-  ];
-
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setSearchValue("");
-    newValue === 0
-      ? (setSearchOption("quote"), setSearchOptionLabel("Orçamento"))
-      : (setSearchOption("type"), setSearchOptionLabel("Tipo"));
   };
 
   React.useEffect(() => {
@@ -128,7 +94,7 @@ export default function Finance({
 
   return (
     <Box sx={{ minHeight: "50vw" }}>
-      <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }}>
+      <Typography sx={{ fontSize: 25, ml: 2, fontWeight: "bold" }}>
         Financeiro
       </Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -170,18 +136,6 @@ export default function Finance({
           <NoDataText option="Contas a Receber" femaleGender={true} />
         ) : (
           <>
-            {tableOrCardView && (
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={"quote"}
-                searchOptionList={searchOptionList[0]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-            )}
             {tableOrCardView ? (
               <FinanceIncomeTable
                 incoming={incoming}
@@ -191,8 +145,6 @@ export default function Finance({
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
                 toast={toast}
-                searchValue={searchValue}
-                searchOption={searchOption}
                 topBar={topBar}
               />
             ) : (
@@ -231,19 +183,6 @@ export default function Finance({
           <NoDataText option="Contas a Pagar" femaleGender={true} />
         ) : (
           <>
-            {tableOrCardView && (
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[1]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-            )}
-
             {tableOrCardView ? (
               <FinanceOutcomeTable
                 userId={userId}
@@ -253,8 +192,6 @@ export default function Finance({
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
                 toast={toast}
-                searchValue={searchValue}
-                searchOption={searchOption}
                 topBar={topBar}
               />
             ) : (

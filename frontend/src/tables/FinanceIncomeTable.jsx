@@ -4,12 +4,10 @@ import dayjs from "dayjs";
 
 import {
   Box,
-  Checkbox,
   CircularProgress,
   Dialog,
   FormHelperText,
   Grid,
-  // IconButton,
   Paper,
   Table,
   TableBody,
@@ -27,7 +25,6 @@ import CheckIcon from "@mui/icons-material/Check";
 
 import AddPaymentScheduleForm from "../forms/add/AddPaymentScheduleForm";
 import CashPaymentForm from "../forms/add/CashPaymentForm";
-// import EditStatusForm from "../forms/edit/EditStatusForm";
 import AddParcelPaymentForm from "../forms/add/AddParcelPaymentForm";
 import FinanceIncomeTableActions from "../components/small/buttons/tableActionButtons/FinanceIncomeTableActions";
 
@@ -35,8 +32,6 @@ export default function FinanceIncomeTable({
   incoming,
   configData,
   toast,
-  searchValue,
-  searchOption,
   refreshData,
   configCustomization,
   setRefreshData,
@@ -149,25 +144,13 @@ export default function FinanceIncomeTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
-  const [showCompletedIncomes, setshowCompletedIncomes] = React.useState(false);
   const filteredValidCount = sortedRows.filter(
     (row) => row.status !== "Pago" && row.status !== "Aprovado"
-  ).length;
-  const filteredArchivedCount = sortedRows.filter(
-    (row) => row.status === "Pago"
   ).length;
 
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
-        <Checkbox
-          checked={showCompletedIncomes}
-          onChange={() => setshowCompletedIncomes(!showCompletedIncomes)}
-        />
-        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
-          Mostrar Pagos
-        </Typography>
-      </Box>
+      {/* <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}></Box> */}
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
@@ -194,22 +177,6 @@ export default function FinanceIncomeTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((income) => {
-                if (!income) return false;
-                const itemProperty = searchOption
-                  .split(".")
-                  .reduce((obj, key) => obj[key], income);
-                const shouldShowincome =
-                  itemProperty &&
-                  itemProperty
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase());
-
-                return (
-                  shouldShowincome &&
-                  (showCompletedIncomes || income.status !== "Pago")
-                );
-              })
               .map((income) => (
                 <>
                   <TableRow key={income._id}>
@@ -468,9 +435,7 @@ export default function FinanceIncomeTable({
         </Table>
         <TablePagination
           component="div"
-          count={
-            filteredValidCount + (showCompletedIncomes && filteredArchivedCount)
-          }
+          count={filteredValidCount}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

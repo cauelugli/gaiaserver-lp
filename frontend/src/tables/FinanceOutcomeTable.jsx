@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 
 import {
   Box,
-  Checkbox,
   Dialog,
   Grid,
   Paper,
@@ -23,13 +22,12 @@ import AddPaymentScheduleForm from "../forms/add/AddPaymentScheduleForm";
 import CashPaymentForm from "../forms/add/CashPaymentForm";
 import AddParcelPaymentForm from "../forms/add/AddParcelPaymentForm";
 import ChallengeApproval from "../forms/misc/ChallengeApproval";
+
 import FinanceOutcomeTableActions from "../components/small/buttons/tableActionButtons/FinanceOutcomeTableActions";
 
 export default function FinanceOutcomeTable({
   outcoming,
   toast,
-  searchValue,
-  searchOption,
   refreshData,
   setRefreshData,
   configCustomization,
@@ -142,28 +140,14 @@ export default function FinanceOutcomeTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
-  const [showCompletedOutcomes, setshowCompletedOutcomes] =
-    React.useState(false);
-
   const filteredValidCount = sortedRows.filter(
     (row) => row.status !== "Pago" && row.status !== "Aprovado"
-  ).length;
-  const filteredArchivedCount = sortedRows.filter(
-    (row) => row.status === "Pago"
   ).length;
 
   return (
     <>
       <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
-          <Checkbox
-            checked={showCompletedOutcomes}
-            onChange={() => setshowCompletedOutcomes(!showCompletedOutcomes)}
-          />
-          <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
-            Mostrar Pagos
-          </Typography>
-        </Box>
+        {/* <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}></Box> */}
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
@@ -190,22 +174,6 @@ export default function FinanceOutcomeTable({
                 ))}
               </TableRow>
               {sortedRows
-                .filter((outcome) => {
-                  if (!outcome) return false;
-                  const itemProperty = searchOption
-                    .split(".")
-                    .reduce((obj, key) => obj[key], outcome);
-                  const shouldShowoutcome =
-                    itemProperty &&
-                    itemProperty
-                      .toLowerCase()
-                      .includes(searchValue.toLowerCase());
-
-                  return (
-                    shouldShowoutcome &&
-                    (showCompletedOutcomes || outcome.status !== "Pago")
-                  );
-                })
                 .map((outcome) => (
                   <TableRow key={outcome._id}>
                     <TableCell>
@@ -451,10 +419,7 @@ export default function FinanceOutcomeTable({
           </Table>
           <TablePagination
             component="div"
-            count={
-              filteredValidCount +
-              (showCompletedOutcomes && filteredArchivedCount)
-            }
+            count={filteredValidCount}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}

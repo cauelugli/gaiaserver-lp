@@ -24,8 +24,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 // import EditServiceForm from "../forms/edit/EditServiceForm";
 
 export default function ServicePlansTable({
-  searchValue,
-  searchOption,
   servicePlans,
   topBar,
   // refreshData,
@@ -131,11 +129,6 @@ export default function ServicePlansTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((user) =>
-                user[searchOption]
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase())
-              )
               .map((servicePlan) => (
                 <>
                   <TableRow key={servicePlan._id} sx={{ cursor: "pointer" }}>

@@ -21,9 +21,7 @@ import AddMultipleProductForm from "../forms/add/AddMultipleProductForm";
 
 import StockTable from "../tables/StockTable";
 import StockEntriesTable from "../tables/StockEntriesTable";
-import ProductsTable from "../tables/ProductsTable";
 
-import TableFilters from "../components/TableFilters";
 import StockTableButton from "../components/small/buttons/tableButtons/StockTableButton";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
@@ -79,51 +77,8 @@ export default function Stock({
     false,
   ]);
 
-  const [searchValue, setSearchValue] = React.useState("");
-  const [searchOption, setSearchOption] = React.useState("name");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
-  const searchOptionList = [
-    {
-      // PRODUCTS TABLE
-      options: [
-        { value: "nome", label: "Name" },
-        { value: "brand", label: "Marca" },
-        { value: "type", label: "Tipo" },
-        { value: "model", label: "Modelo" },
-        { value: "size", label: "Tamanho" },
-        { value: "buyValue", label: "Valor de Compra" },
-        { value: "sellValue", label: "Valor de Venda" },
-      ],
-    },
-    {
-      // STOCK ITEMS TABLE
-      options: [
-        { value: "nome", label: "Name" },
-        { value: "buyValue", label: "Valor de Compra" },
-        { value: "sellValue", label: "Valor de Venda" },
-      ],
-    },
-    {
-      // STOCK ENTRIES TABLE
-      options: [
-        { value: "number", label: "Número" },
-        { value: "items", label: "Itens" },
-        { value: "createdBy", label: "Criado por" },
-        { value: "quoteValue", label: "Valor" },
-        { value: "createdAt", label: "Criado em" },
-      ],
-    },
-  ];
-
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setSearchValue("");
-    setSearchOption("name");
-    setSearchOptionLabel("Nome");
   };
 
   const openModal = (modalIndex) => {
@@ -179,7 +134,7 @@ export default function Stock({
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
-        sx={{ m: 2 }}
+        sx={{ ml: 2 }}
       >
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           Estoque
@@ -231,87 +186,17 @@ export default function Stock({
           </Grid>
         </Tabs>
       </Box>
-      {configTables.stockProduct && (
-        <CustomTabPanel value={value} index={0}>
-          {products.length === 0 ? (
-            <NoDataText option="Produtos" />
-          ) : (
-            <>
-              {tableOrCardView && (
-                <TableFilters
-                  searchValue={searchValue}
-                  setSearchValue={setSearchValue}
-                  searchOption={searchOption}
-                  searchOptionList={searchOptionList[0]}
-                  setSearchOption={setSearchOption}
-                  searchOptionLabel={searchOptionLabel}
-                  setSearchOptionLabel={setSearchOptionLabel}
-                  handleSearchChange={handleSearchChange}
-                />
-              )}
-              {tableOrCardView ? (
-                <ProductsTable
-                  userId={userId}
-                  products={products}
-                  searchValue={searchValue}
-                  searchOption={searchOption}
-                  refreshData={refreshData}
-                  setRefreshData={setRefreshData}
-                  topBar={topBar}
-                />
-              ) : (
-                <Grid
-                  sx={{ mt: 0.5, width: topBar ? "107%" : "100%" }}
-                  container
-                  spacing={2}
-                >
-                  {products.map((product, index) => (
-                    <Grid
-                      item
-                      key={index}
-                      md={cardSize}
-                      lg={cardSize}
-                      xl={cardSize}
-                    >
-                      <StockCard
-                        userId={userId}
-                        item={product}
-                        type="product"
-                        refreshData={refreshData}
-                        setRefreshData={setRefreshData}
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
-              )}
-            </>
-          )}
-        </CustomTabPanel>
-      )}
+      {/* {configTables.stockProduct && "here"} */}
       {configTables.stockItems && (
         <CustomTabPanel value={value} index={configTables.stockProduct ? 1 : 0}>
           {stockItems.length === 0 ? (
             <NoDataText option="Items de Estoque" />
           ) : (
             <>
-              {tableOrCardView && (
-                <TableFilters
-                  searchValue={searchValue}
-                  setSearchValue={setSearchValue}
-                  searchOption={searchOption}
-                  searchOptionList={searchOptionList[1]}
-                  setSearchOption={setSearchOption}
-                  searchOptionLabel={searchOptionLabel}
-                  setSearchOptionLabel={setSearchOptionLabel}
-                  handleSearchChange={handleSearchChange}
-                />
-              )}
               {tableOrCardView ? (
                 <StockTable
                   userId={userId}
                   stockItems={stockItems}
-                  searchValue={searchValue}
-                  searchOption={searchOption}
                   refreshData={refreshData}
                   setRefreshData={setRefreshData}
                   topBar={topBar}
@@ -359,18 +244,6 @@ export default function Stock({
           <NoDataText option="Entradas de Estoque" femaleGender={true} />
         ) : (
           <>
-            {tableOrCardView && (
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[2]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-            )}
             {tableOrCardView ? (
               <StockEntriesTable
                 stockEntries={stock}
@@ -379,8 +252,6 @@ export default function Stock({
                 userRole={userRole}
                 userDepartment={userDepartment}
                 configData={configStock}
-                searchValue={searchValue}
-                searchOption={searchOption}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
                 topBar={topBar}
@@ -415,16 +286,6 @@ export default function Stock({
           </>
         )}
       </CustomTabPanel>
-
-      {/* {openModals[0] && (
-        <Dialog
-          fullWidth
-          maxWidth="lg"
-          open={openModals[0]}
-          onClose={() => closeModal(0)}
-        >
-        </Dialog>
-      )} */}
 
       {openModals[1] && (
         <Dialog

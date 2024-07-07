@@ -27,7 +27,6 @@ import {
   DialogActions,
   Grid,
   IconButton,
-  Checkbox,
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -195,25 +194,11 @@ export default function CustomerTable({
 
   const eventStyle = eventStyleGetter().style;
 
-  const [showArchivedCustomers, setShowArchivedCustomers] =
-    React.useState(false);
-
   const filteredValidCount = sortedRows.filter((row) => row.isActive).length;
-  const filteredArchivedCount = sortedRows.filter(
-    (row) => !row.isActive
-  ).length;
 
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
-        <Checkbox
-          checked={showArchivedCustomers}
-          onChange={() => setShowArchivedCustomers(!showArchivedCustomers)}
-        />
-        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
-          Mostrar Arquivados
-        </Typography>
-      </Box>
+      {/* <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}></Box> */}
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
@@ -253,15 +238,12 @@ export default function CustomerTable({
                 const shouldApplyDepartmentFilter =
                   departmentFilter || searchDepartment === "&nbsp;";
 
-                const shouldShowItem = showArchivedCustomers || item.isActive;
-
                 return (
                   searchOptionValue &&
                   searchOptionValue
                     .toLowerCase()
                     .includes(searchValue.toLowerCase()) &&
-                  shouldApplyDepartmentFilter &&
-                  shouldShowItem
+                  shouldApplyDepartmentFilter
                 );
               })
               .map((customer) => (
@@ -528,69 +510,6 @@ export default function CustomerTable({
                           </Collapse>
                         </Box>
 
-                        {/* DOMAIN BOX, DOESNT MAKE SO MUCH SENSE RIGHT NOW... */}
-                        {/* <Box sx={{ my: 4, px: 6 }}>
-                          <Grid container direction="row">
-                            <Typography
-                              variant="h6"
-                              sx={{
-                                fontSize: 18,
-                                fontWeight: "bold",
-                                my: "auto",
-                              }}
-                            >
-                              Domínio
-                            </Typography>
-                            <IconButton
-                              onClick={() =>
-                                setOpenDetailDominio(!openDetailDominio)
-                              }
-                            >
-                              <ExpandMoreIcon />
-                            </IconButton>
-                          </Grid>
-                          <Collapse
-                            in={openDetailDominio}
-                            timeout="auto"
-                            unmountOnExit
-                          >
-                            <Table size="small">
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Website
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell>
-                                    <Typography
-                                      sx={{ fontSize: 13, color: "#777" }}
-                                    >
-                                      Domínio
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                <TableRow>
-                                  <TableCell>
-                                    <Typography sx={{ fontSize: 13 }}>
-                                      {customer.website}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell>
-                                    <Typography sx={{ fontSize: 13 }}>
-                                      {customer.domain}
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </TableBody>
-                            </Table>
-                          </Collapse>
-                        </Box> */}
-
                         <Box sx={{ my: 4, px: 6 }}>
                           <Grid container direction="row">
                             <Typography
@@ -774,10 +693,7 @@ export default function CustomerTable({
         </Table>
         <TablePagination
           component="div"
-          count={
-            filteredValidCount +
-            (showArchivedCustomers && filteredArchivedCount)
-          }
+          count={filteredValidCount}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

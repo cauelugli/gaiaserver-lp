@@ -260,11 +260,11 @@ export default function Config({
 
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-      <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }}>
+      <Typography sx={{ fontSize: 25, ml: 2, mb: 2, fontWeight: "bold" }}>
         Configurações
       </Typography>
       {configData ? (
-        <Grid container rowSpacing={3} columnSpacing={{ md: 1.8, lg: 1.8 }}>
+        <Grid container rowSpacing={3} columnSpacing={2}>
           {options.map((config, index) => (
             <Grid
               item

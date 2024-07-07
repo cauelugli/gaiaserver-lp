@@ -104,7 +104,7 @@ export default function Materials({
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
-        sx={{ m: 2 }}
+        sx={{ ml: 2 }}
       >
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           Materiais

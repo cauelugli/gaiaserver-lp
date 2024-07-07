@@ -17,14 +17,13 @@ import {
   TableSortLabel,
   Typography,
 } from "@mui/material";
-import StockTableActions from "../components/small/buttons/tableActionButtons/StockTableActions";
 
 import EditStockItemForm from "../forms/edit/EditStockItemForm";
 
+import StockTableActions from "../components/small/buttons/tableActionButtons/StockTableActions";
+
 export default function StockTable({
   stockItems,
-  searchValue,
-  searchOption,
   refreshData,
   setRefreshData,
   topBar,
@@ -120,15 +119,6 @@ export default function StockTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((item) => {
-                const itemProperty = searchOption
-                  .split(".")
-                  .reduce((obj, key) => obj[key], item);
-                return (
-                  itemProperty &&
-                  itemProperty.toLowerCase().includes(searchValue.toLowerCase())
-                );
-              })
               .map((stockItem) => (
                 <>
                   <TableRow key={stockItem._id}>

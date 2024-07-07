@@ -26,7 +26,6 @@ import {
   Grid,
   IconButton,
   Avatar,
-  Checkbox,
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -45,12 +44,9 @@ export default function ClientTable({
   // configCustomization,
   configNotifications,
   configNotificationsBooleans,
-  searchDepartment,
   configAgenda,
   refreshData,
   setRefreshData,
-  searchOption,
-  searchValue,
   topBar,
 }) {
   const [selectedClient, setSelectedClient] = React.useState([]);
@@ -168,23 +164,11 @@ export default function ClientTable({
     setPdfUrl(null);
   };
 
-  const [showArchivedClients, setShowArchivedClients] = React.useState(false);
   const filteredValidCount = sortedRows.filter((row) => row.isActive).length;
-  const filteredArchivedCount = sortedRows.filter(
-    (row) => !row.isActive
-  ).length;
 
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
-        <Checkbox
-          checked={showArchivedClients}
-          onChange={() => setShowArchivedClients(!showArchivedClients)}
-        />
-        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
-          Mostrar Arquivados
-        </Typography>
-      </Box>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}></Box>
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
@@ -211,30 +195,6 @@ export default function ClientTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((item) => {
-                const searchOptionValue =
-                  searchOption === "department.name"
-                    ? item.department?.name
-                    : item[searchOption];
-
-                const departmentFilter =
-                  !searchDepartment ||
-                  item.department?.name === searchDepartment;
-
-                const shouldApplyDepartmentFilter =
-                  departmentFilter || searchDepartment === "&nbsp;";
-
-                const shouldShowItem = showArchivedClients || item.isActive;
-
-                return (
-                  searchOptionValue &&
-                  searchOptionValue
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase()) &&
-                  shouldApplyDepartmentFilter &&
-                  shouldShowItem
-                );
-              })
               .map((client) => (
                 <>
                   <TableRow key={client._id} sx={{ cursor: "pointer" }}>
@@ -598,9 +558,7 @@ export default function ClientTable({
         </Table>
         <TablePagination
           component="div"
-          count={
-            filteredValidCount + (showArchivedClients && filteredArchivedCount)
-          }
+          count={filteredValidCount}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

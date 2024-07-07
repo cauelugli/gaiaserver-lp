@@ -30,8 +30,6 @@ import DepartmentMembers from "../components/small/DepartmentMembers";
 export default function DepartmentTable({
   userId,
   configData,
-  searchValue,
-  searchOption,
   departments,
   users,
   managers,
@@ -157,15 +155,6 @@ export default function DepartmentTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((item) => {
-                const userProperty = searchOption
-                  .split(".")
-                  .reduce((obj, key) => obj[key], item);
-                return (
-                  userProperty &&
-                  userProperty.toLowerCase().includes(searchValue.toLowerCase())
-                );
-              })
               .map((department) => (
                 <>
                   <TableRow key={department._id} sx={{ cursor: "pointer" }}>

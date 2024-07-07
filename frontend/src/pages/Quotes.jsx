@@ -3,6 +3,10 @@ import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 import {
   Box,
   CircularProgress,
@@ -14,15 +18,10 @@ import {
 
 import QuoteTable from "../tables/QuoteTable";
 
-import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 import TableOrCardSelector from "../components/small/TableOrCardSelector";
 import QuoteCard from "../components/cards/QuoteCard";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -53,43 +52,11 @@ export default function Quotes({
   const [newDataRefreshButton, setNewDataRefreshButton] = React.useState(true);
   const [value, setValue] = React.useState(0);
 
-  const [searchValue, setSearchValue] = React.useState("");
-  const [searchOption, setSearchOption] = React.useState("number");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Número");
-  const searchOptionList = [
-    {
-      // JOB QUOTES TABLE
-      options: [
-        { value: "number", label: "Número" },
-        { value: "service", label: "Serviço" },
-        { value: "customer", label: "Cliente" },
-        { value: "user", label: "Colaborador" },
-        { value: "department", label: "Departamento" },
-      ],
-    },
-    {
-      // SALE QUOTES TABLE
-      options: [
-        { value: "number", label: "Número" },
-        { value: "items", label: "Itens" },
-        { value: "customer", label: "Cliente" },
-        { value: "user", label: "Colaborador" },
-        { value: "department", label: "Departamento" },
-      ],
-    },
-  ];
-
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-
   const [quotes, setQuotes] = React.useState([]);
   const [configCustomization, setConfigCustomization] = React.useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setSearchOption("number");
-    setSearchValue("");
   };
 
   React.useEffect(() => {
@@ -123,7 +90,7 @@ export default function Quotes({
 
   return (
     <Box sx={{ minHeight: "50vw" }}>
-      <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }}>
+      <Typography sx={{ fontSize: 25, ml: 2, fontWeight: "bold" }}>
         Orçamentos
       </Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -165,25 +132,11 @@ export default function Quotes({
           <NoDataText option="Orçamentos de Jobs" />
         ) : (
           <>
-            {tableOrCardView && (
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[0]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-            )}
             {tableOrCardView ? (
               <QuoteTable
                 quotes={quotes.filter((quote) => quote.type === "job")}
                 config={configData}
                 type={"job"}
-                searchOption={searchOption}
-                searchValue={searchValue}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
                 topBar={topBar}
@@ -217,25 +170,11 @@ export default function Quotes({
           <NoDataText option="Orçamentos de Vendas" />
         ) : (
           <>
-            {tableOrCardView && (
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[1]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-            )}
             {tableOrCardView ? (
               <QuoteTable
                 quotes={quotes.filter((quote) => quote.type === "sale")}
                 type={"sale"}
                 config={configData}
-                searchOption={searchOption}
-                searchValue={searchValue}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
                 topBar={topBar}

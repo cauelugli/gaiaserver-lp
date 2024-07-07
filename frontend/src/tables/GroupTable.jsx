@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import * as React from "react";
 
@@ -29,8 +28,6 @@ export default function GroupTable({
   users,
   managers,
   toast,
-  searchValue,
-  searchOption,
   refreshData,
   setRefreshData,
   topBar,
@@ -133,17 +130,6 @@ export default function GroupTable({
                 ))}
               </TableRow>
               {sortedRows
-                .filter((item) => {
-                  const itemProperty = searchOption
-                    .split(".")
-                    .reduce((obj, key) => obj[key], item);
-                  return (
-                    itemProperty &&
-                    itemProperty
-                      .toLowerCase()
-                      .includes(searchValue.toLowerCase())
-                  );
-                })
                 .map((group) => (
                   <>
                     <TableRow key={group._id}>

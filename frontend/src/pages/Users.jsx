@@ -4,6 +4,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 import {
   Box,
   CircularProgress,
@@ -20,16 +24,11 @@ import ManagerTable from "../tables/ManagerTable";
 import AddUserForm from "../forms/add/AddUserForm";
 import AddManagerForm from "../forms/add/AddManagerForm";
 
-import TableFilters from "../components/TableFilters";
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import UserTableButton from "../components/small/buttons/tableButtons/UserTableButton";
 import TableOrCardSelector from "../components/small/TableOrCardSelector";
 import UserCard from "../components/cards/UserCard";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -73,46 +72,6 @@ export default function Users({
   const [openAddUser, setOpenAddUser] = React.useState(false);
   const [openAddManager, setOpenAddManager] = React.useState(false);
 
-  const [searchOption, setSearchOption] = React.useState("name");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
-  const [searchValue, setSearchValue] = React.useState("");
-  const searchOptionList = [
-    {
-      // USERS TABLE
-      options: [
-        { value: "name", label: "Nome" },
-        { value: "email", label: "E-mail" },
-        { value: "phone", label: "Telefone" },
-        { value: "department.name", label: "Departamento" },
-      ],
-    },
-    {
-      // MANAGERS TABLE
-      options: [
-        { value: "name", label: "Nome" },
-        { value: "email", label: "E-mail" },
-        { value: "phone", label: "Telefone" },
-        { value: "department.name", label: "Departamento" },
-      ],
-    },
-    {
-      // OPERATORS TABLE
-      options: [
-        { value: "name", label: "Nome" },
-        { value: "username", label: "Nome de Operador" },
-        { value: "role", label: "Perfil de Acesso" },
-      ],
-    },
-    {
-      // ROLES TABLE
-      options: [{ value: "name", label: "Nome" }],
-    },
-  ];
-
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
   const handleClickAddButton = (event) => {
@@ -124,9 +83,6 @@ export default function Users({
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setSearchValue("");
-    setSearchOption("name");
-    setSearchOptionLabel("Nome");
   };
 
   React.useEffect(() => {
@@ -175,7 +131,7 @@ export default function Users({
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
-        sx={{ m: 2 }}
+        sx={{ ml: 2 }}
       >
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           Colaboradores
@@ -229,28 +185,12 @@ export default function Users({
           <NoDataText option="Colaborardores" />
         ) : (
           <>
-            {tableOrCardView && (
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[0]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-            )}
-
             {tableOrCardView ? (
               <UserTable
                 userId={userId}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
-                searchValue={searchValue}
                 configData={configUsers}
-                // searchDepartment={searchDepartment}
-                searchOption={searchOption}
                 topBar={topBar}
               />
             ) : (
@@ -292,18 +232,6 @@ export default function Users({
           <NoDataText option="Gerentes" />
         ) : (
           <>
-            {tableOrCardView && (
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[1]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-            )}
 
             {tableOrCardView ? (
               <ManagerTable
@@ -312,8 +240,8 @@ export default function Users({
                 configData={configManagers}
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
-                searchValue={searchValue}
-                searchOption={searchOption}
+                searchValue={"searchValue"}
+                searchOption={"searchOption"}
                 topBar={topBar}
               />
             ) : (

@@ -1,41 +1,22 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
+// import axios from "axios";
+// const api = axios.create({
+//   baseURL: "http://localhost:3000/api",
+// });
 
 import {
   Box,
   CircularProgress,
   Grid,
-  Tab,
-  Tabs,
   Typography,
 } from "@mui/material";
 
-import TableFilters from "../components/TableFilters";
-import RefreshButton from "../components/small/buttons/RefreshButton";
-import NoDataText from "../components/small/NoDataText";
 import SmartReports from "../components/SmartReports";
 import QueryMaker from "../components/small/QueryMaker";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
-function CustomTabPanel(props) {
-  const { children, value, index } = props;
-
-  return (
-    <div role="tabpanel" hidden={value !== index}>
-      {value === index && (
-        <Box sx={{ p: 1 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
 
 export default function Reports({ users, customers, requests, topBar }) {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -72,7 +53,7 @@ export default function Reports({ users, customers, requests, topBar }) {
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
-        sx={{ m: 2 }}
+        sx={{ ml: 2 }}
       >
         <Typography sx={{ fontSize: 25, mr: 1, mb: 2, fontWeight: "bold" }}>
           Relatórios

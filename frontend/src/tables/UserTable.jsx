@@ -3,10 +3,13 @@ import * as React from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 import {
   Avatar,
   Box,
-  Checkbox,
   Dialog,
   Grid,
   Paper,
@@ -23,17 +26,10 @@ import EditUserForm from "../forms/edit/EditUserForm";
 import UserTableActions from "../components/small/buttons/tableActionButtons/UserTableActions";
 import ViewUserDetails from "../forms/misc/ViewUserDetails";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 export default function UserTable({
   refreshData,
   configData,
   setRefreshData,
-  searchValue,
-  searchOption,
-  searchDepartment,
   topBar,
   userId,
 }) {
@@ -141,24 +137,11 @@ export default function UserTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
-  const [showArchivedUsers, setShowArchivedUsers] = React.useState(false);
-
   const filteredValidCount = sortedRows.filter((row) => row.isActive).length;
-  const filteredArchivedCount = sortedRows.filter(
-    (row) => !row.isActive
-  ).length;
 
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
-        <Checkbox
-          checked={showArchivedUsers}
-          onChange={() => setShowArchivedUsers(!showArchivedUsers)}
-        />
-        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
-          Mostrar Arquivados
-        </Typography>
-      </Box>
+      {/* <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}></Box> */}
       <TableContainer component={Paper}>
         <Table>
           <TableRow>
@@ -185,33 +168,6 @@ export default function UserTable({
             ))}
           </TableRow>
           {sortedRows
-            .filter((user) => {
-              if (user.username === "admin") {
-                return false;
-              }
-              const searchOptionValue =
-                searchOption === "department.name"
-                  ? user.department?.name
-                  : user[searchOption];
-
-              const departmentFilter =
-                !searchDepartment || user.department?.name === searchDepartment;
-
-              const shouldApplyDepartmentFilter =
-                departmentFilter || searchDepartment === "&nbsp;";
-
-              const shouldShowUser = showArchivedUsers || user.isActive;
-
-              return (
-                searchOptionValue &&
-                searchOptionValue
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase()) &&
-                shouldApplyDepartmentFilter &&
-                shouldShowUser
-              );
-            })
-
             .map((row) => (
               <React.Fragment key={row._id}>
                 <TableRow>
@@ -296,9 +252,7 @@ export default function UserTable({
         </Table>
         <TablePagination
           component="div"
-          count={
-            filteredValidCount + (showArchivedUsers && filteredArchivedCount)
-          }
+          count={filteredValidCount}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

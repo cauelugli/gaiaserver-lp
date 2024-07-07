@@ -1,13 +1,17 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
+import axios from "axios";
 import { io } from "socket.io-client";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 const socket = io("http://localhost:5002");
 
 import "react-toastify/dist/ReactToastify.css";
-import dayjs from "dayjs";
-import axios from "axios";
 
 import {
   Dialog,
@@ -25,7 +29,6 @@ import {
   Avatar,
   TableSortLabel,
   TablePagination,
-  Checkbox,
   IconButton,
   Tooltip,
   Button,
@@ -38,32 +41,25 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import InteractionReactions from "../components/small/InteractionReactions";
-import JobTableActions from "../components/small/buttons/tableActionButtons/JobTableActions";
-
 import EditJobForm from "../forms/edit/EditJobForm";
 import AddInteractionForm from "../forms/misc/AddInteractionForm";
-import ViewDialog from "../components/small/ViewDialog";
 import AddAttachmentsForm from "../forms/misc/AddAttachmentsForm";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
+import InteractionReactions from "../components/small/InteractionReactions";
+import JobTableActions from "../components/small/buttons/tableActionButtons/JobTableActions";
+import ViewDialog from "../components/small/ViewDialog";
 
 export default function JobTable({
   userId,
   userName,
   userUsername,
   userRole,
-  searchValue,
-  searchStatus,
-  searchOption,
   jobs,
   managers,
   refreshData,
   setRefreshData,
   topBar,
-  requestsApproverManagerId
+  requestsApproverManagerId,
 }) {
   const [userReactions, setUserReactions] = React.useState({});
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -349,17 +345,6 @@ export default function JobTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
-  const [showCompletedJobs, setShowCompletedJobs] = React.useState(false);
-  const [showArchivedJobs, setShowArchivedJobs] = React.useState(false);
-
-  const filteredResolvedCount = sortedRows.filter(
-    (row) => row.status === "Concluido"
-  ).length;
-
-  const filteredArchivedCount = sortedRows.filter(
-    (row) => row.status === "Arquivado"
-  ).length;
-
   const filteredValidCount = sortedRows.filter(
     (row) => row.status !== "Arquivado" && row.status !== "Concluido"
   ).length;
@@ -406,22 +391,7 @@ export default function JobTable({
 
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
-        <Checkbox
-          checked={showCompletedJobs}
-          onChange={() => setShowCompletedJobs(!showCompletedJobs)}
-        />
-        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
-          Mostrar Concluídos
-        </Typography>
-        <Checkbox
-          checked={showArchivedJobs}
-          onChange={() => setShowArchivedJobs(!showArchivedJobs)}
-        />
-        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
-          Mostrar Arquivados
-        </Typography>
-      </Box>
+      {/* <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}></Box> */}
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
@@ -448,30 +418,6 @@ export default function JobTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((job) => {
-                if (!job) return false;
-                const userProperty = searchOption
-                  .split(".")
-                  .reduce((obj, key) => obj[key], job);
-                const statusFilter =
-                  !searchStatus || job.status === searchStatus;
-
-                const shouldApplyStatusFilter =
-                  statusFilter || searchStatus === "&nbsp";
-
-                const shouldShowJob =
-                  userProperty &&
-                  userProperty
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase()) &&
-                  shouldApplyStatusFilter;
-
-                return (
-                  shouldShowJob &&
-                  (showCompletedJobs || job.status !== "Concluido") &&
-                  (showArchivedJobs || job.status !== "Arquivado")
-                );
-              })
               .map((job) => (
                 <>
                   <TableRow key={job._id} sx={{ cursor: "pointer" }}>
@@ -1512,11 +1458,7 @@ export default function JobTable({
         </Table>
         <TablePagination
           component="div"
-          count={
-            filteredValidCount +
-            (showCompletedJobs && filteredResolvedCount) +
-            (showArchivedJobs && filteredArchivedCount)
-          }
+          count={filteredValidCount}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

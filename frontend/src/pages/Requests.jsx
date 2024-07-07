@@ -20,7 +20,6 @@ import SaleTable from "../tables/SaleTable";
 import AddJobForm from "../forms/add/AddJobForm";
 import AddSaleForm from "../forms/add/AddSaleForm";
 
-import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 import RequestTableButton from "../components/small/buttons/tableButtons/RequestTableButton";
@@ -58,7 +57,7 @@ export default function Requests({
   tableOrCardView,
   setUserPreferences,
   cardSize,
-  requestsApproverManagerId
+  requestsApproverManagerId,
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -69,35 +68,6 @@ export default function Requests({
 
   const [openAddJob, setOpenAddJob] = React.useState(false);
   const [openAddSale, setOpenAddSale] = React.useState(false);
-
-  const [searchValue, setSearchValue] = React.useState("");
-  const [searchOption, setSearchOption] = React.useState("requester");
-  const [searchOptionLabel, setSearchOptionLabel] =
-    React.useState("Solicitante");
-  const searchOptionList = [
-    {
-      // JOBS TABLE
-      options: [
-        { value: "requester", label: "Solicitante" },
-        { value: "createdBy", label: "Criado por" },
-        { value: "worker.name", label: "Designado" },
-        { value: "scheduledTo", label: "Data do Agendamento" },
-      ],
-    },
-    {
-      // SALES TABLE
-      options: [
-        { value: "requester", label: "Solicitante" },
-        { value: "createdBy", label: "Criado por" },
-        { value: "seller.name", label: "Vendedor" },
-        { value: "deliveryScheduledTo", label: "Data de Entrega" },
-      ],
-    },
-  ];
-
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
@@ -136,9 +106,6 @@ export default function Requests({
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setSearchValue("");
-    setSearchOption("requester");
-    setSearchOptionLabel("Solicitante");
   };
 
   if (isLoading) {
@@ -161,7 +128,7 @@ export default function Requests({
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
-        sx={{ m: 2 }}
+        sx={{ ml: 2 }}
       >
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           Solicitações
@@ -220,19 +187,6 @@ export default function Requests({
             <NoDataText option="Jobs" />
           ) : (
             <>
-              {tableOrCardView && (
-                <TableFilters
-                  searchValue={searchValue}
-                  setSearchValue={setSearchValue}
-                  searchOption={searchOption}
-                  searchOptionList={searchOptionList[0]}
-                  setSearchOption={setSearchOption}
-                  searchOptionLabel={searchOptionLabel}
-                  setSearchOptionLabel={setSearchOptionLabel}
-                  handleSearchChange={handleSearchChange}
-                />
-              )}
-
               {tableOrCardView ? (
                 <JobTable
                   userId={userId}
@@ -240,8 +194,8 @@ export default function Requests({
                   userName={userName}
                   userUsername={userUsername}
                   userRole={userRole}
-                  searchValue={searchValue}
-                  searchOption={searchOption}
+                  searchValue={"searchValue"}
+                  searchOption={"searchOption"}
                   jobs={jobs}
                   managers={managers}
                   refreshData={refreshData}
@@ -286,25 +240,13 @@ export default function Requests({
             <NoDataText option="Vendas" femaleGender={true} />
           ) : (
             <>
-              {tableOrCardView && (
-                <TableFilters
-                  searchValue={searchValue}
-                  setSearchValue={setSearchValue}
-                  searchOption={searchOption}
-                  searchOptionList={searchOptionList[1]}
-                  setSearchOption={setSearchOption}
-                  searchOptionLabel={searchOptionLabel}
-                  setSearchOptionLabel={setSearchOptionLabel}
-                  handleSearchChange={handleSearchChange}
-                />
-              )}
               {tableOrCardView ? (
                 <SaleTable
                   userId={userId}
                   userName={userName}
                   userUsername={userUsername}
-                  searchValue={searchValue}
-                  searchOption={searchOption}
+                  searchValue={"searchValue"}
+                  searchOption={"searchOption"}
                   sales={sales}
                   managers={managers}
                   refreshData={refreshData}

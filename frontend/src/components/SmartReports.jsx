@@ -615,7 +615,7 @@ const SmartReports = ({ requests, customers, users, fromPage }) => {
 
   return (
     <>
-      <Accordion sx={{ m: 2, mt: 4, mx: fromPage ? 2 : "30%" }}>
+      <Accordion sx={{ mx: fromPage ? 0 : "30%" }}>
         <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
           <Typography sx={{ fontSize: 22, fontWeight: "bold", mr: 2 }}>
             Relatórios {fromPage && "Básicos"}

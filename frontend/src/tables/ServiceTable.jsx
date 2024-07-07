@@ -25,8 +25,6 @@ import ServiceTableActions from "../components/small/buttons/tableActionButtons/
 
 export default function ServiceTable({
   configData,
-  searchValue,
-  searchOption,
   services,
   departments,
   stockItems,
@@ -143,11 +141,6 @@ export default function ServiceTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((item) =>
-                item[searchOption]
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase())
-              )
               .map((service) => (
                 <TableRow key={service._id}>
                   <TableCell>

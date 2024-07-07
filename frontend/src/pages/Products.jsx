@@ -4,6 +4,10 @@ import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 import {
   Box,
   CircularProgress,
@@ -19,10 +23,6 @@ import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 import TableOrCardSelector from "../components/small/TableOrCardSelector";
 import StockCard from "../components/cards/StockCard";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -103,7 +103,7 @@ export default function Products({
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
-        sx={{ m: 2 }}
+        sx={{ ml: 2 }}
       >
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           Produtos
@@ -165,7 +165,7 @@ export default function Products({
                   baseProduct={
                     products.filter(
                       (product) => product.type === type && !product.name
-                    )[0]
+                    )[index]
                   }
                   userName={userName}
                   userId={userId}

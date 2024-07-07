@@ -23,7 +23,6 @@ import AddOperatorForm from "../forms/add/AddOperatorForm";
 import AddPositionForm from "../forms/add/AddPositionForm";
 import AddRoleForm from "../forms/add/AddRoleForm";
 
-import TableFilters from "../components/TableFilters";
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import SecurityTableButton from "../components/small/buttons/tableButtons/SecurityTableButton";
@@ -65,46 +64,6 @@ export default function Security({ topBar, userId }) {
   const [openAddPosition, setOpenAddPosition] = React.useState(false);
   const [openAddRole, setOpenAddRole] = React.useState(false);
 
-  const [searchOption, setSearchOption] = React.useState("name");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
-  const [searchValue, setSearchValue] = React.useState("");
-  const searchOptionList = [
-    {
-      // USERS TABLE
-      options: [
-        { value: "name", label: "Nome" },
-        { value: "email", label: "E-mail" },
-        { value: "phone", label: "Telefone" },
-        { value: "department.name", label: "Departamento" },
-      ],
-    },
-    {
-      // MANAGERS TABLE
-      options: [
-        { value: "name", label: "Nome" },
-        { value: "email", label: "E-mail" },
-        { value: "phone", label: "Telefone" },
-        { value: "department.name", label: "Departamento" },
-      ],
-    },
-    {
-      // OPERATORS TABLE
-      options: [
-        { value: "name", label: "Nome" },
-        { value: "username", label: "Nome de Operador" },
-        { value: "role", label: "Perfil de Acesso" },
-      ],
-    },
-    {
-      // ROLES TABLE
-      options: [{ value: "name", label: "Nome" }],
-    },
-  ];
-
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
   const handleClickAddButton = (event) => {
@@ -116,9 +75,6 @@ export default function Security({ topBar, userId }) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setSearchValue("");
-    setSearchOption("name");
-    setSearchOptionLabel("Nome");
   };
 
   React.useEffect(() => {
@@ -169,7 +125,7 @@ export default function Security({ topBar, userId }) {
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
-        sx={{ m: 2 }}
+        sx={{ ml: 2 }}
       >
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           Segurança de Acessos
@@ -220,23 +176,10 @@ export default function Security({ topBar, userId }) {
           <NoDataText option="Operadores" />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[2]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
-
             <OperatorTable
               roles={roles}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
-              searchValue={searchValue}
-              searchOption={searchOption}
               topBar={topBar}
             />
           </>
@@ -247,22 +190,10 @@ export default function Security({ topBar, userId }) {
           <NoDataText option="Cargos" />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[3]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
 
             <PositionTable
               toast={toast}
               departments={departments}
-              searchValue={searchValue}
-              searchOption={searchOption}
               positions={positions}
               users={users}
               managers={managers}
@@ -280,24 +211,11 @@ export default function Security({ topBar, userId }) {
           <NoDataText option="Perfil de Acesso" />
         ) : (
           <>
-            <TableFilters
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              searchOption={searchOption}
-              searchOptionList={searchOptionList[3]}
-              setSearchOption={setSearchOption}
-              searchOptionLabel={searchOptionLabel}
-              setSearchOptionLabel={setSearchOptionLabel}
-              handleSearchChange={handleSearchChange}
-            />
-
             <RoleTable
               users={users}
               managers={managers}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
-              searchValue={searchValue}
-              searchOption={searchOption}
               topBar={topBar}
             />
           </>

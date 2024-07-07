@@ -57,8 +57,6 @@ export default function ProjectsTable({
   userName,
   userUsername,
   userImage,
-  searchValue,
-  searchOption,
   projects,
   refreshData,
   setRefreshData,
@@ -398,11 +396,6 @@ export default function ProjectsTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((item) =>
-                item[searchOption]
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase())
-              )
               .map((project) => (
                 <>
                   <TableRow key={project._id} sx={{ cursor: "pointer" }}>

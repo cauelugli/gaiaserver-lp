@@ -1,7 +1,11 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 import {
   Box,
@@ -20,15 +24,9 @@ import ClearIcon from "@mui/icons-material/Clear";
 
 import NoDataText from "../components/small/NoDataText";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 export default function ImageTable({ topBar }) {
   const [files, setFiles] = React.useState([]);
   const [totalSpaceOccupiedMB, setTotalSpaceOccupiedMB] = React.useState(0);
-  const [inUse, setInUse] = React.useState([]);
-  const [isInUse, setIsInUse] = React.useState(false);
   const [confirmationDialogOpen, setConfirmationDialogOpen] =
     React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState(null);
@@ -64,7 +62,6 @@ export default function ImageTable({ topBar }) {
       const response = await api.get("/uploads/listFiles");
       setFiles(response.data.files);
       setTotalSpaceOccupiedMB(response.data.totalSpaceMB);
-      setInUse(response.data.inUse);
     } catch (error) {
       console.error("Erro ao buscar a lista de arquivos:", error);
     }
@@ -75,11 +72,6 @@ export default function ImageTable({ topBar }) {
   }, []);
 
   const deleteFile = async (file) => {
-    const fileName = file.name;
-    const fileIsInUse = inUse.some((usedFileName) =>
-      usedFileName.endsWith(fileName)
-    );
-    setIsInUse(fileIsInUse);
     setSelectedFile(file.name);
     openConfirmationDialog();
   };
@@ -166,11 +158,6 @@ export default function ImageTable({ topBar }) {
           </Grid>
           <Grid container spacing={2}>
             {files.map((file) => {
-              const fileName = file.name; // Nome do arquivo
-              const isInUse = inUse.some((usedFileName) =>
-                usedFileName.endsWith(fileName)
-              );
-
               return (
                 <Grid key={file._id} item xs={2}>
                   <img
@@ -179,7 +166,6 @@ export default function ImageTable({ topBar }) {
                     style={{
                       width: 100,
                       height: 100,
-                      opacity: isInUse ? "1" : "0.5",
                     }}
                   />
                   <Typography sx={{ fontSize: 10 }}>
@@ -211,31 +197,15 @@ export default function ImageTable({ topBar }) {
       >
         <DialogTitle id="confirmation-dialog-title">Confirmação</DialogTitle>
         <DialogContent>
-          {isInUse ? (
-            <Grid container direction="column">
-              <Typography
-                sx={{ color: "red", mt: 1, mb: 3 }}
-                alignSelf="center"
-              >
-                ATENÇÃO: Este arquivo está em uso!
-              </Typography>
-              <Typography>
-                Tem certeza de que deseja excluir esta imagem?
-              </Typography>
-            </Grid>
-          ) : (
-            <Typography>
-              Tem certeza de que deseja excluir esta imagem?
-            </Typography>
-          )}
+          <Typography>
+            Tem certeza de que deseja excluir esta imagem?
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={closeConfirmationDialog} color="primary">
             Cancelar
           </Button>
-          <Button onClick={() => confirmDelete(selectedFile)}>
-            {isInUse ? "OK" : "Confirmar"}
-          </Button>
+          <Button onClick={() => confirmDelete(selectedFile)}>OK </Button>
         </DialogActions>
       </Dialog>
 

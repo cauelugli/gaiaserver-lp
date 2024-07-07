@@ -2,8 +2,8 @@
 import * as React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import dayjs from "dayjs";
+import "react-toastify/dist/ReactToastify.css";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -25,7 +25,6 @@ import {
   Avatar,
   TableSortLabel,
   TablePagination,
-  Checkbox,
   IconButton,
   Tooltip,
   Button,
@@ -203,9 +202,6 @@ export default function SaleTable({
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
-  const [showCompletedSales, setShowCompletedSales] = React.useState(false);
-  const [showArchivedSales, setShowArchivedSales] = React.useState(false);
-
   const handleAddInteractionFromTable = async (e) => {
     e.preventDefault();
     try {
@@ -262,14 +258,6 @@ export default function SaleTable({
     }
   };
 
-  const filteredResolvedCount = sortedRows.filter(
-    (row) => row.status === "Concluido"
-  ).length;
-
-  const filteredArchivedCount = sortedRows.filter(
-    (row) => row.status === "Arquivado"
-  ).length;
-
   const filteredValidCount = sortedRows.filter(
     (row) => row.status !== "Arquivado" && row.status !== "Concluido"
   ).length;
@@ -316,22 +304,7 @@ export default function SaleTable({
 
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
-        <Checkbox
-          checked={showCompletedSales}
-          onChange={() => setShowCompletedSales(!showCompletedSales)}
-        />
-        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
-          Mostrar Concluídas
-        </Typography>
-        <Checkbox
-          checked={showArchivedSales}
-          onChange={() => setShowArchivedSales(!showArchivedSales)}
-        />
-        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
-          Mostrar Arquivadas
-        </Typography>
-      </Box>
+      {/* <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}></Box> */}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: "100%" }}>
           <TableBody>
@@ -376,11 +349,7 @@ export default function SaleTable({
                     .includes(searchValue.toLowerCase()) &&
                   shouldApplyStatusFilter;
 
-                return (
-                  shouldShowSale &&
-                  (showCompletedSales || sale.status !== "Concluido") &&
-                  (showArchivedSales || sale.status !== "Arquivado")
-                );
+                return shouldShowSale;
               })
               .map((sale) => (
                 <>
@@ -1368,11 +1337,7 @@ export default function SaleTable({
         </Table>
         <TablePagination
           component="div"
-          count={
-            filteredValidCount +
-            (showCompletedSales && filteredResolvedCount) +
-            (showArchivedSales && filteredArchivedCount)
-          }
+          count={filteredValidCount}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

@@ -4,10 +4,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 import {
   Avatar,
   Box,
-  Checkbox,
   Dialog,
   Grid,
   Paper,
@@ -24,18 +27,11 @@ import EditManagerForm from "../forms/edit/EditManagerForm";
 import ManagerTableActions from "../components/small/buttons/tableActionButtons/ManagerTableActions";
 import ViewUserDetails from "../forms/misc/ViewUserDetails";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 export default function ManagerTable({
   refreshData,
   positions,
   configData,
   setRefreshData,
-  searchValue,
-  searchDepartment,
-  searchOption,
   topBar,
   userId,
 }) {
@@ -137,24 +133,11 @@ export default function ManagerTable({
 
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const [showArchivedUsers, setShowArchivedUsers] = React.useState(false);
-
   const filteredValidCount = sortedRows.filter((row) => row.isActive).length;
-  const filteredArchivedCount = sortedRows.filter(
-    (row) => !row.isActive
-  ).length;
 
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}>
-        <Checkbox
-          checked={showArchivedUsers}
-          onChange={() => setShowArchivedUsers(!showArchivedUsers)}
-        />
-        <Typography sx={{ fontSize: 13, mt: 1.5, ml: -1 }}>
-          Mostrar Arquivados
-        </Typography>
-      </Box>
+      {/* <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -5.5 }}></Box> */}
       <TableContainer component={Paper}>
         <Table>
           <TableRow>
@@ -181,29 +164,6 @@ export default function ManagerTable({
             ))}
           </TableRow>
           {sortedRows
-            .filter((item) => {
-              const searchOptionValue =
-                searchOption === "department.name"
-                  ? item.department?.name
-                  : item[searchOption];
-
-              const departmentFilter =
-                !searchDepartment || item.department?.name === searchDepartment;
-
-              const shouldApplyDepartmentFilter =
-                departmentFilter || searchDepartment === "&nbsp;";
-
-              const shouldShowUser = showArchivedUsers || item.isActive;
-
-              return (
-                searchOptionValue &&
-                searchOptionValue
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase()) &&
-                shouldApplyDepartmentFilter &&
-                shouldShowUser
-              );
-            })
             .map((row) => (
               <TableRow key={row._id}>
                 <TableCell sx={{ py: 0 }}>
@@ -283,9 +243,7 @@ export default function ManagerTable({
         </Table>
         <TablePagination
           component="div"
-          count={
-            filteredValidCount + (showArchivedUsers && filteredArchivedCount)
-          }
+          count={filteredValidCount}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

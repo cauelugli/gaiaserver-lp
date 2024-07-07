@@ -4,6 +4,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 import {
   Avatar,
   Box,
@@ -23,16 +27,10 @@ import EditOperatorForm from "../forms/edit/EditOperatorForm";
 import DeleteOperatorForm from "../forms/delete/DeleteOperatorForm";
 import OperatorTableActions from "../components/small/buttons/tableActionButtons/OperatorTableActions";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 export default function OperatorTable({
   refreshData,
   roles,
   setRefreshData,
-  searchValue,
-  searchOption,
   topBar,
 }) {
   const [selectedOperator, setSelectedOperator] = React.useState("");
@@ -162,19 +160,6 @@ export default function OperatorTable({
             </TableRow>
             {sortedRows
               .filter((row) => row.role && row.role.name !== "Admin")
-              .filter((item) => {
-                const searchOptionValue =
-                  searchOption === "role.name"
-                    ? item.role?.name
-                    : item[searchOption];
-
-                return (
-                  searchOptionValue &&
-                  searchOptionValue
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase())
-                );
-              })
               .map((row, index) => (
                 <TableRow key={index}>
                   <TableCell sx={{ py: 0 }}>

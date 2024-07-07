@@ -26,8 +26,6 @@ export default function PositionTable({
   users,
   managers,
   toast,
-  searchValue,
-  searchOption,
   refreshData,
   setRefreshData,
   topBar,
@@ -137,15 +135,6 @@ export default function PositionTable({
               ))}
             </TableRow>
             {sortedRows
-              .filter((item) => {
-                const itemProperty = searchOption
-                  .split(".")
-                  .reduce((obj, key) => obj[key], item);
-                return (
-                  itemProperty &&
-                  itemProperty.toLowerCase().includes(searchValue.toLowerCase())
-                );
-              })
               .map((position, index) => (
                 <>
                   <TableRow key={index}>

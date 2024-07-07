@@ -4,6 +4,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 import {
   Box,
   Button,
@@ -18,20 +22,16 @@ import {
   Typography,
 } from "@mui/material";
 
+import AddProjectForm from "../forms/add/AddProjectForm";
+import ProjectTemplates from "../forms/misc/ProjectTemplates";
+
+import ProjectsTable from "../tables/ProjectsTable";
+
 import NoDataText from "../components/small/NoDataText";
 import RefreshButton from "../components/small/buttons/RefreshButton";
-import TableFilters from "../components/TableFilters";
-
-import AddProjectForm from "../forms/add/AddProjectForm";
-import ProjectsTable from "../tables/ProjectsTable";
 import ProjectsTableButton from "../components/small/buttons/tableButtons/ProjectsTableButton";
-import ProjectTemplates from "../forms/misc/ProjectTemplates";
 import TableOrCardSelector from "../components/small/TableOrCardSelector";
 import ProjectCard from "../components/cards/ProjectCard";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -78,19 +78,8 @@ export default function Projects({
   const [openAddTemplate, setOpenAddTemplate] = React.useState(false);
   const [selectedTemplate, setSelectedTemplate] = React.useState(null);
 
-  const [searchOption, setSearchOption] = React.useState("name");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
-  const [searchValue, setSearchValue] = React.useState("");
-
-  const searchOptionList = [{ options: [{ value: "name", label: "Nome" }] }];
-
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setSearchValue("");
   };
 
   React.useEffect(() => {
@@ -156,7 +145,7 @@ export default function Projects({
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
-        sx={{ m: 2 }}
+        sx={{ ml: 2 }}
       >
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           Projetos
@@ -202,19 +191,6 @@ export default function Projects({
           <NoDataText option="Projetos" femaleGender={false} />
         ) : (
           <>
-            {tableOrCardView && (
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={"quote"}
-                searchOptionList={searchOptionList[0]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-            )}
-
             {tableOrCardView ? (
               <ProjectsTable
                 userId={userId}
@@ -226,8 +202,6 @@ export default function Projects({
                 refreshData={refreshData}
                 setRefreshData={setRefreshData}
                 toast={toast}
-                searchValue={searchValue}
-                searchOption={searchOption}
                 topBar={topBar}
               />
             ) : (

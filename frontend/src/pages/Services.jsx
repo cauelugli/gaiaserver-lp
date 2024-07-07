@@ -5,6 +5,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 import {
   Box,
   CircularProgress,
@@ -21,16 +25,11 @@ import ServicePlansTable from "../tables/ServicePlansTable";
 import AddServiceForm from "../forms/add/AddServiceForm";
 import AddServicePlanForm from "../forms/add/AddServicePlanForm";
 
-import TableFilters from "../components/TableFilters";
 import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 import ServicesTableButton from "../components/small/buttons/tableButtons/ServicesTableButton";
 import TableOrCardSelector from "../components/small/TableOrCardSelector";
 import ServiceCard from "../components/cards/ServiceCard";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -64,34 +63,6 @@ export default function Services({
   const [openAddService, setOpenAddService] = React.useState(false);
   const [openAddServicePlan, setOpenAddServicePlan] = React.useState(false);
 
-  const [searchValue, setSearchValue] = React.useState("");
-  const [searchOption, setSearchOption] = React.useState("name");
-  const [searchOptionLabel, setSearchOptionLabel] = React.useState("Nome");
-  const searchOptionList = [
-    {
-      // SERVICES TABLE
-      options: [
-        { value: "number", label: "Número" },
-        { value: "department.name", label: "Departamento" },
-      ],
-    },
-    {
-      // SUPPORTS TABLE
-      options: [
-        { value: "number", label: "Número" },
-        { value: "department.name", label: "Departamento" },
-      ],
-    },
-    {
-      // SERVICE PLANS TABLE
-      options: [{ value: "number", label: "Número" }],
-    },
-  ];
-
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openAddButton = Boolean(anchorEl);
   const handleClickAddButton = (event) => {
@@ -109,9 +80,6 @@ export default function Services({
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setSearchValue("");
-    setSearchOption("name");
-    setSearchOptionLabel("Nome");
   };
 
   React.useEffect(() => {
@@ -157,7 +125,7 @@ export default function Services({
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
-        sx={{ m: 2 }}
+        sx={{ ml: 2 }}
       >
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           Serviços
@@ -220,25 +188,10 @@ export default function Services({
           <NoDataText option="Serviços" />
         ) : (
           <>
-            {tableOrCardView && (
-              <TableFilters
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchOption={searchOption}
-                searchOptionList={searchOptionList[0]}
-                setSearchOption={setSearchOption}
-                searchOptionLabel={searchOptionLabel}
-                setSearchOptionLabel={setSearchOptionLabel}
-                handleSearchChange={handleSearchChange}
-              />
-            )}
-
             {tableOrCardView ? (
               <ServiceTable
                 userId={userId}
                 configData={configData}
-                searchOption={searchOption}
-                searchValue={searchValue}
                 services={services}
                 departments={departments}
                 stockItems={stockItems}
@@ -284,25 +237,10 @@ export default function Services({
             <NoDataText option="Serviços de Consultoria" />
           ) : (
             <>
-              {tableOrCardView && (
-                <TableFilters
-                  searchValue={searchValue}
-                  setSearchValue={setSearchValue}
-                  searchOption={searchOption}
-                  searchOptionList={searchOptionList[1]}
-                  setSearchOption={setSearchOption}
-                  searchOptionLabel={searchOptionLabel}
-                  setSearchOptionLabel={setSearchOptionLabel}
-                  handleSearchChange={handleSearchChange}
-                />
-              )}
-
               {tableOrCardView ? (
                 <ServiceTable
                   userId={userId}
                   configData={configData}
-                  searchOption={searchOption}
-                  searchValue={searchValue}
                   services={supports}
                   departments={departments}
                   stockItems={stockItems}
@@ -352,22 +290,8 @@ export default function Services({
             <NoDataText option="Planos de Serviços" />
           ) : (
             <>
-              {tableOrCardView && (
-                <TableFilters
-                  searchValue={searchValue}
-                  setSearchValue={setSearchValue}
-                  searchOption={searchOption}
-                  searchOptionList={searchOptionList[2]}
-                  setSearchOption={setSearchOption}
-                  searchOptionLabel={searchOptionLabel}
-                  setSearchOptionLabel={setSearchOptionLabel}
-                  handleSearchChange={handleSearchChange}
-                />
-              )}
               {tableOrCardView ? (
                 <ServicePlansTable
-                  searchOption={searchOption}
-                  searchValue={searchValue}
                   servicePlans={servicePlans}
                   refreshData={refreshData}
                   setRefreshData={setRefreshData}

@@ -4,6 +4,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 import {
   Box,
   Dialog,
@@ -21,17 +25,11 @@ import EditRoleForm from "../forms/edit/EditRoleForm";
 import PositionMembers from "../components/small/PositionMembers";
 import RoleTableActions from "../components/small/buttons/tableActionButtons/RoleTableActions";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 export default function RoleTable({
   refreshData,
   users,
   managers,
   setRefreshData,
-  searchValue,
-  searchOption,
   topBar,
 }) {
   const [selectedRole, setSelectedRole] = React.useState("");
@@ -149,11 +147,6 @@ export default function RoleTable({
             ))}
           </TableRow>
           {sortedRows
-            .filter((item) =>
-              item[searchOption]
-                .toLowerCase()
-                .includes(searchValue.toLowerCase())
-            )
             .map((row, index) => (
               <TableRow key={index} onClick={() => handleOpenDetail(row)}>
                 <TableCell onClick={() => handleOpenDetail(row)}>
