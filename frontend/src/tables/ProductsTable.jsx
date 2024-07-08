@@ -32,12 +32,14 @@ export default function ProductsTable({
   const [selectedProduct, setSelectedProduct] = React.useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
 
+  console.log("baseProduct on table", baseProduct);
+
   const tableHeaderRow = [
     {
       id: "name",
       label: "Nome",
     },
-    ...baseProduct.fields.map((field) => ({
+    ...baseProduct[0].fields.map((field) => ({
       id: field.name,
       label: field.name,
     })),
@@ -129,7 +131,7 @@ export default function ProductsTable({
                       {product.name}
                     </Typography>
                   </TableCell>
-                  {baseProduct.fields.map((field, index) => (
+                  {baseProduct[0].fields.map((field, index) => (
                     <TableCell align="center" key={index}>
                       <Typography sx={{ fontSize: 13 }}>
                         {product.fields[index].value}

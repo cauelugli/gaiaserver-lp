@@ -56,6 +56,7 @@ export default function Products({
   const [configCustomization, setConfigCustomization] = React.useState([]);
   const [value, setValue] = React.useState(0);
 
+  const [baseProducts, setBaseProducts] = React.useState([]);
   const [products, setProducts] = React.useState([]);
 
   const productTypes = React.useMemo(() => {
@@ -73,7 +74,8 @@ export default function Products({
         const config = await api.get("/config");
         setConfigProducts(config.data[0].products);
         setConfigCustomization(config.data[0].customization);
-        setProducts(products.data);
+        setBaseProducts(products.data.filter((product) => !product.name));
+        setProducts(products.data.filter((product) => product.name));
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -82,6 +84,8 @@ export default function Products({
     };
     fetchData();
   }, [refreshData]);
+
+  console.log("baseProducts", baseProducts);
 
   if (isLoading) {
     return (
@@ -115,7 +119,7 @@ export default function Products({
           types={configProducts.productTypes}
           refreshData={refreshData}
           setRefreshData={setRefreshData}
-          baseProducts={products.filter((product) => !product.name)}
+          baseProducts={baseProducts}
         />
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -153,20 +157,14 @@ export default function Products({
       </Box>
       {productTypes.map((type, index) => (
         <CustomTabPanel key={index} value={value} index={index}>
-          {products.filter((product) => product.type === type).length === 1 ? (
+          {products.filter((product) => product.type === type).length === 0 ? (
             <NoDataText option={type} />
           ) : (
             <>
               {tableOrCardView ? (
                 <ProductsTable
-                  products={products.filter(
-                    (product) => product.type === type && product.name
-                  )}
-                  baseProduct={
-                    products.filter(
-                      (product) => product.type === type && !product.name
-                    )[index]
-                  }
+                  products={products.filter((product) => product.type === type)}
+                  baseProduct={baseProducts.filter((product) => product.type === type)}
                   userName={userName}
                   userId={userId}
                   userRole={userRole}
