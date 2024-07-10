@@ -12,9 +12,7 @@ import * as React from "react";
 // });
 
 import {
-  // Avatar,
   Box,
-  // Grid,
   Paper,
   Table,
   TableSortLabel,
@@ -22,7 +20,6 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  // Typography,
   TablePagination,
   Button,
   Avatar,
@@ -68,7 +65,6 @@ export default function TableModel(props) {
 
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  
 
   // const handleApproveReprove = async (entry, status) => {
   //   try {
@@ -100,33 +96,70 @@ export default function TableModel(props) {
   //   }
   // };
 
-  console.log("props.tableColumns", props.tableColumns);
-
   return (
     <Box sx={{ width: props.topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <TableContainer component={Paper}>
         <Table size="small">
           <TableBody>
             <TableRow>
-              {props.tableColumns[props.itemIndex].map(
-                (headCell, cellIndex) => (
+              {props.page === "products" ? (
+                <>
+                  <TableCell align="left" id="image">
+                    📷
+                  </TableCell>
                   <TableCell
-                    key={cellIndex}
-                    align={cellIndex === 0 ? "" : "left"}
+                    align="left"
+                    id="name"
                     sx={{
                       fontSize: 13,
                       fontWeight: "bold",
                     }}
-                    sortDirection={orderBy === headCell.id ? order : false}
                   >
-                    <TableSortLabel
-                      active={orderBy === headCell.id}
-                      direction={orderBy === headCell.id ? order : "asc"}
-                      onClick={() => handleRequestSort(headCell.id)}
-                    >
-                      {headCell.label}
-                    </TableSortLabel>
+                    Nome
                   </TableCell>
+                  {props.baseProducts[props.itemIndex].fields.map(
+                    (headCell, cellIndex) => (
+                      <TableCell
+                        key={cellIndex}
+                        align={cellIndex === 0 ? "" : "left"}
+                        sx={{
+                          fontSize: 13,
+                          fontWeight: "bold",
+                        }}
+                        sortDirection={orderBy === headCell.id ? order : false}
+                      >
+                        <TableSortLabel
+                          active={orderBy === headCell.id}
+                          direction={orderBy === headCell.id ? order : "asc"}
+                          onClick={() => handleRequestSort(headCell)}
+                        >
+                          {headCell.name}
+                        </TableSortLabel>
+                      </TableCell>
+                    )
+                  )}
+                </>
+              ) : (
+                props.tableColumns[props.itemIndex].map(
+                  (headCell, cellIndex) => (
+                    <TableCell
+                      key={cellIndex}
+                      align={cellIndex === 0 ? "" : "left"}
+                      sx={{
+                        fontSize: 13,
+                        fontWeight: "bold",
+                      }}
+                      sortDirection={orderBy === headCell.id ? order : false}
+                    >
+                      <TableSortLabel
+                        active={orderBy === headCell.id}
+                        direction={orderBy === headCell.id ? order : "asc"}
+                        onClick={() => handleRequestSort(headCell.id)}
+                      >
+                        {headCell.label}
+                      </TableSortLabel>
+                    </TableCell>
+                  )
                 )
               )}
               <TableCell
@@ -139,45 +172,78 @@ export default function TableModel(props) {
                 Ações
               </TableCell>
             </TableRow>
-            {sortedRows.slice(startIndex, endIndex).map((row, rowIndex) => (
-              <TableRow key={rowIndex}>
-                {props.tableColumns[props.itemIndex].map(
-                  (column, columnIndex) => (
-                    <TableCell
-                      key={columnIndex}
-                      align={columnIndex === 0 ? "" : "left"}
-                    >
-                      {row[column.id] &&
-                      typeof row[column.id] === "string" &&
-                      row[column.id].startsWith("/images") ? (
+            {props.page === "products"
+              ? sortedRows
+                  .filter(
+                    (item) =>
+                      item.name &&
+                      item.type === props.baseProducts[props.itemIndex].type
+                  )
+                  .slice(startIndex, endIndex)
+                  .map((row, rowIndex) => (
+                    <TableRow key={rowIndex}>
+                      <TableCell align="left">
                         <Avatar
                           alt="Imagem do Produto"
-                          src={`http://localhost:3000/static${row[column.id]}`}
+                          src={`http://localhost:3000/static${row.images[0]}`}
                           sx={{ width: 34, height: 34 }}
                         />
-                      ) : Array.isArray(row[column.id]) ? (
-                        row[column.id].map((obj, index) => (
-                          <Tooltip key={index} title={obj.name}>
+                      </TableCell>
+                      <TableCell align="left">{row.name}</TableCell>
+                      {row.fields.map((field, fieldIndex) => (
+                        <TableCell key={fieldIndex}>{field.value}</TableCell>
+                      ))}
+
+                      <TableCell align="center">
+                        <Button onClick={() => console.log("row", row)}>
+                          GO
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+              : sortedRows.slice(startIndex, endIndex).map((row, rowIndex) => (
+                  <TableRow key={rowIndex}>
+                    {props.tableColumns[props.itemIndex].map(
+                      (column, columnIndex) => (
+                        <TableCell
+                          key={columnIndex}
+                          align={columnIndex === 0 ? "" : "left"}
+                        >
+                          {row[column.id] &&
+                          typeof row[column.id] === "string" &&
+                          row[column.id].startsWith("/images") ? (
                             <Avatar
                               alt="Imagem do Produto"
-                              src={`http://localhost:3000/static${obj.image}`}
-                              sx={{ width: 34, height: 34, mr: 0.5 }}
+                              src={`http://localhost:3000/static${
+                                row[column.id]
+                              }`}
+                              sx={{ width: 34, height: 34 }}
                             />
-                          </Tooltip>
-                        ))
-                      ) : typeof row[column.id] === "object" ? (
-                        row[column.id].name
-                      ) : (
-                        row[column.id]
-                      )}
+                          ) : Array.isArray(row[column.id]) ? (
+                            row[column.id].map((obj, index) => (
+                              <Tooltip key={index} title={obj.name}>
+                                <Avatar
+                                  alt="Imagem do Produto"
+                                  src={`http://localhost:3000/static${obj.image}`}
+                                  sx={{ width: 34, height: 34, mr: 0.5 }}
+                                />
+                              </Tooltip>
+                            ))
+                          ) : typeof row[column.id] === "object" ? (
+                            row[column.id].name
+                          ) : (
+                            row[column.id]
+                          )}
+                        </TableCell>
+                      )
+                    )}
+                    <TableCell align="center">
+                      <Button onClick={() => console.log("item", row)}>
+                        GO
+                      </Button>
                     </TableCell>
-                  )
-                )}
-                <TableCell align="center">
-                  <Button onClick={() => console.log("item", row)}>GO</Button>
-                </TableCell>
-              </TableRow>
-            ))}
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
         <TablePagination

@@ -384,7 +384,7 @@ const routeOptions = [
     page: "products",
     endpoints: ["/products"],
     label: "Produtos",
-    // tabs: ["Produtos", "Materiais", "Entradas"],
+    tabs: [],
   },
   {
     // TO-DO

@@ -49,49 +49,89 @@ export default function PageModel(props) {
   const [items, setItems] = React.useState([]);
 
   const handleChange = (noArgument, newValue) => {
+    // if condition to stop overlength tabs between pages bug
+    console.log("newValue", newValue);
     setValue(newValue);
   };
 
   React.useEffect(() => {
     const fetchData = async () => {
-      try {
-        const [itemsResponse, configResponse] = await Promise.all([
-          api.get(`${props.item.endpoints[value]}`),
-          api.get("/config"),
-        ]);
+      if (props.item.page === "products") {
+        try {
+          const [itemsResponse, configResponse] = await Promise.all([
+            api.get("/products"),
+            api.get("/config"),
+          ]);
 
-        if (Array.isArray(itemsResponse.data)) {
-          setItems(itemsResponse.data);
-        } else {
-          console.warn("Expected an array but got", itemsResponse.data);
+          if (Array.isArray(itemsResponse.data)) {
+            setItems(itemsResponse.data);
+          } else {
+            console.warn("Expected an array but got", itemsResponse.data);
+          }
+
+          if (
+            Array.isArray(configResponse.data) &&
+            configResponse.data[0]?.props
+          ) {
+            setConfigItem(configResponse.data[0].props.endpoint);
+          } else {
+            console.warn(
+              "Config data structure is not as expected",
+              configResponse.data
+            );
+          }
+
+          setIsLoading(false);
+        } catch (error) {
+          toast.error("Houve algum erro...", {
+            closeOnClick: true,
+            pauseOnHover: false,
+            theme: "colored",
+            autoClose: 1200,
+          });
+          console.error("Error fetching data:", error);
+          setIsLoading(false);
         }
+      } else {
+        try {
+          const [itemsResponse, configResponse] = await Promise.all([
+            api.get(`${props.item.endpoints[value]}`),
+            api.get("/config"),
+          ]);
 
-        if (
-          Array.isArray(configResponse.data) &&
-          configResponse.data[0]?.props
-        ) {
-          setConfigItem(configResponse.data[0].props.endpoint);
-        } else {
-          console.warn(
-            "Config data structure is not as expected",
-            configResponse.data
-          );
+          if (Array.isArray(itemsResponse.data)) {
+            setItems(itemsResponse.data);
+          } else {
+            console.warn("Expected an array but got", itemsResponse.data);
+          }
+
+          if (
+            Array.isArray(configResponse.data) &&
+            configResponse.data[0]?.props
+          ) {
+            setConfigItem(configResponse.data[0].props.endpoint);
+          } else {
+            console.warn(
+              "Config data structure is not as expected",
+              configResponse.data
+            );
+          }
+
+          setIsLoading(false);
+        } catch (error) {
+          toast.error("Houve algum erro...", {
+            closeOnClick: true,
+            pauseOnHover: false,
+            theme: "colored",
+            autoClose: 1200,
+          });
+          console.error("Error fetching data:", error);
+          setIsLoading(false);
         }
-
-        setIsLoading(false);
-      } catch (error) {
-        toast.error("Houve algum erro...", {
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-          autoClose: 1200,
-        });
-        console.error("Error fetching data:", error);
-        setIsLoading(false);
       }
     };
     fetchData();
-  }, [refreshData, props.item.endpoints, value]);
+  }, [refreshData, props.item, props.item.endpoints, value]);
 
   if (isLoading) {
     return (
@@ -126,13 +166,28 @@ export default function PageModel(props) {
           onChange={handleChange}
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
-          {props.item.tabs.map((tab, index) => (
-            <Tab
-              key={index}
-              label={<Typography sx={{ fontSize: 13 }}>{tab}</Typography>}
-              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-            />
-          ))}
+          {props.item.page === "products"
+            ? items
+                .filter((item) => !item.name)
+                .map((item, index) => (
+                  <Tab
+                    key={index}
+                    label={
+                      <Typography sx={{ fontSize: 13 }}>{item.type}</Typography>
+                    }
+                    sx={{
+                      color: "black",
+                      "&.Mui-selected": { color: "black" },
+                    }}
+                  />
+                ))
+            : props.item.tabs.map((tab, index) => (
+                <Tab
+                  key={index}
+                  label={<Typography sx={{ fontSize: 13 }}>{tab}</Typography>}
+                  sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+                />
+              ))}
           <RefreshButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}
@@ -153,57 +208,114 @@ export default function PageModel(props) {
           </Grid>
         </Tabs>
       </Box>
-      {props.item.tabs.map((tab, index) => (
-        <CustomTabPanel key={index} value={value} index={index}>
-          {items.length === 0 ? (
-            <NoDataText option={tab} />
-          ) : (
-            <>
-              {props.tableOrCardView ? (
-                <TableModel
-                  items={items}
-                  itemIndex={index}
-                  tableColumns={props.item.tableColumns}
-                  userName={props.userName}
-                  userId={props.userId}
-                  userRole={props.userRole}
-                  userDepartment={props.userDepartment}
-                  configData={configItem}
-                  refreshData={refreshData}
-                  setRefreshData={setRefreshData}
-                  topBar={props.topBar}
-                />
-              ) : (
-                <Grid
-                  sx={{ mt: 0.5, width: props.topBar ? "107%" : "100%" }}
-                  container
-                  spacing={2}
-                >
-                  {items.map((nothing, index) => (
-                    <Grid
-                      item
-                      key={index}
-                      md={props.cardSize}
-                      lg={props.cardSize}
-                      xl={props.cardSize}
-                    >
-                      <CardModel
-                        userId={props.userId}
+      {props.item.page === "products"
+        ? items
+            .filter((item) => item.name)
+            .map((item, index) => (
+              <CustomTabPanel key={index} value={value} index={index}>
+                {items.length === 0 ? (
+                  <NoDataText option={item} />
+                ) : (
+                  <>
+                    {props.tableOrCardView ? (
+                      <TableModel
+                        page={props.item.page}
+                        mappedItem={item}
+                        items={items}
+                        baseProducts={items.filter((item) => !item.name)}
+                        itemIndex={index}
+                        tableColumns={item.fields}
                         userName={props.userName}
-                        configData={props.configData}
-                        item={props.item}
-                        type={props.endpoint}
+                        userId={props.userId}
+                        userRole={props.userRole}
+                        userDepartment={props.userDepartment}
+                        configData={configItem}
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}
+                        topBar={props.topBar}
                       />
+                    ) : (
+                      <Grid
+                        sx={{ mt: 0.5, width: props.topBar ? "107%" : "100%" }}
+                        container
+                        spacing={2}
+                      >
+                        {items.map((nothing, index) => (
+                          <Grid
+                            item
+                            key={index}
+                            md={props.cardSize}
+                            lg={props.cardSize}
+                            xl={props.cardSize}
+                          >
+                            <CardModel
+                              userId={props.userId}
+                              userName={props.userName}
+                              configData={props.configData}
+                              item={props.item}
+                              type={props.endpoint}
+                              refreshData={refreshData}
+                              setRefreshData={setRefreshData}
+                            />
+                          </Grid>
+                        ))}
+                      </Grid>
+                    )}
+                  </>
+                )}
+              </CustomTabPanel>
+            ))
+        : props.item.tabs.map((tab, index) => (
+            <CustomTabPanel key={index} value={value} index={index}>
+              {items.length === 0 ? (
+                <NoDataText option={tab} />
+              ) : (
+                <>
+                  {props.tableOrCardView ? (
+                    <TableModel
+                      items={items}
+                      itemIndex={index}
+                      tableColumns={props.item.tableColumns}
+                      userName={props.userName}
+                      userId={props.userId}
+                      userRole={props.userRole}
+                      userDepartment={props.userDepartment}
+                      configData={configItem}
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
+                      topBar={props.topBar}
+                    />
+                  ) : (
+                    <Grid
+                      sx={{ mt: 0.5, width: props.topBar ? "107%" : "100%" }}
+                      container
+                      spacing={2}
+                    >
+                      {items.map((nothing, index) => (
+                        <Grid
+                          item
+                          key={index}
+                          md={props.cardSize}
+                          lg={props.cardSize}
+                          xl={props.cardSize}
+                        >
+                          <CardModel
+                            userId={props.userId}
+                            userName={props.userName}
+                            configData={props.configData}
+                            item={props.item}
+                            type={props.endpoint}
+                            refreshData={refreshData}
+                            setRefreshData={setRefreshData}
+                          />
+                        </Grid>
+                      ))}
                     </Grid>
-                  ))}
-                </Grid>
+                  )}
+                </>
               )}
-            </>
-          )}
-        </CustomTabPanel>
-      ))}
+            </CustomTabPanel>
+          ))}
     </Box>
   );
 }
