@@ -3,12 +3,10 @@ import React from "react";
 
 const routeOptions = [
   {
-    index: 0,
     page: "dashboard",
     label: "Dashboard",
   },
   {
-    index: 1,
     page: "customers",
     endpoints: ["/customers", "/clients"],
     label: "Clientes",
@@ -55,7 +53,6 @@ const routeOptions = [
     ],
   },
   {
-    index: 2,
     page: "requests",
     endpoints: ["/jobs", "/sales"],
     label: "Solicitações",
@@ -118,7 +115,6 @@ const routeOptions = [
     ],
   },
   {
-    index: 3,
     page: "users",
     endpoints: ["/users", "/managers"],
     label: "Colaboradores",
@@ -182,7 +178,6 @@ const routeOptions = [
     ],
   },
   {
-    index: 4,
     page: "departments",
     endpoints: ["/departments", "/groups"],
     label: "Departamentos",
@@ -225,7 +220,6 @@ const routeOptions = [
     ],
   },
   {
-    index: 5,
     page: "services",
     endpoints: ["/services", "/servicePlans"],
     label: "Serviços",
@@ -264,7 +258,6 @@ const routeOptions = [
     ],
   },
   {
-    index: 6,
     page: "quotes",
     endpoints: ["/quotes/jobs", "/quotes/sales"],
     label: "Orçamentos",
@@ -328,7 +321,6 @@ const routeOptions = [
   },
   {
     // TO-DO
-    index: 7,
     page: "stock",
     endpoints: ["/stock", "/stock", "/stock"],
     label: "Estoque",
@@ -380,7 +372,6 @@ const routeOptions = [
   },
   {
     // TO-DO
-    index: 8,
     page: "products",
     endpoints: ["/products"],
     label: "Produtos",
@@ -388,14 +379,12 @@ const routeOptions = [
   },
   {
     // TO-DO
-    index: 9,
     page: "materials",
     endpoints: ["/materials"],
     label: "Materiais",
     // tabs: ["Produtos", "Materiais", "Entradas"],
   },
   {
-    index: 10,
     page: "chat",
     endpoints: ["/chat"],
     label: "Chat",
@@ -403,7 +392,6 @@ const routeOptions = [
     tableColumns: [[""], [""]],
   },
   {
-    index: 11,
     page: "projects",
     endpoints: ["/projects"],
     label: "Projetos",
@@ -439,7 +427,6 @@ const routeOptions = [
     ],
   },
   {
-    index: 12,
     page: "finance",
     endpoints: ["/finances/income", "/finances/outcome"],
     label: "Financeiro",
@@ -500,14 +487,12 @@ const routeOptions = [
     ],
   },
   {
-    index: 13,
     page: "reports",
     label: "Relatórios",
     tabs: [],
     tableColumns: [],
   },
   {
-    index: 14,
     page: "security",
     endpoints: ["/operators", "/positions", "/roles"],
     label: "Segurança de Acessos",

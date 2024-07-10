@@ -48,13 +48,18 @@ export default function PageModel(props) {
 
   const [items, setItems] = React.useState([]);
 
+  const [currentPage, setCurrentPage] = React.useState(props.item.page);
+
   const handleChange = (noArgument, newValue) => {
-    // if condition to stop overlength tabs between pages bug
-    console.log("newValue", newValue);
     setValue(newValue);
   };
 
   React.useEffect(() => {
+    if (props.item.page !== currentPage) {
+      setValue(0);
+      setCurrentPage(props.item.page);
+    }
+
     const fetchData = async () => {
       if (props.item.page === "products") {
         try {
@@ -95,7 +100,13 @@ export default function PageModel(props) {
       } else {
         try {
           const [itemsResponse, configResponse] = await Promise.all([
-            api.get(`${props.item.endpoints[value]}`),
+            api.get(
+              `${
+                props.item.endpoints[
+                  props.item.page !== currentPage ? 0 : value
+                ]
+              }`
+            ),
             api.get("/config"),
           ]);
 
@@ -131,7 +142,7 @@ export default function PageModel(props) {
       }
     };
     fetchData();
-  }, [refreshData, props.item, props.item.endpoints, value]);
+  }, [refreshData, currentPage, props.item, props.item.endpoints, value]);
 
   if (isLoading) {
     return (
