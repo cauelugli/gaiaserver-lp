@@ -2,11 +2,21 @@ const express = require("express");
 const router = express.Router();
 const Quote = require("../../models/models/Quote");
 
-// GET QUOTES
-router.get("/", async (req, res) => {
+// GET JOB QUOTES
+router.get("/jobs", async (req, res) => {
   try {
     const quotes = await Quote.find();
-    res.status(200).json(quotes);
+    res.status(200).json(quotes.filter((quote) => quote.type === "job"));
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// GET SALE QUOTES
+router.get("/sales", async (req, res) => {
+  try {
+    const quotes = await Quote.find();
+    res.status(200).json(quotes.filter((quote) => quote.type === "sale"));
   } catch (err) {
     res.status(500).json(err);
   }

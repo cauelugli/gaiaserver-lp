@@ -5,6 +5,22 @@ const Role = require("../../models/models/Role");
 const User = require("../../models/models/User");
 const Manager = require("../../models/models/Manager");
 
+// GET ALL OPERATORS
+router.get("/", async (req, res) => {
+  try {
+    const users = await User.find();
+    const managers = await Manager.find();
+    const usersCombinedData = [
+      ...users.filter((user) => user.username),
+      ...managers.filter((user) => user.username),
+    ];
+
+    res.status(200).json(usersCombinedData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // UPDATE OPERATOR
 router.put("/", async (req, res) => {
   // defining type if User or Manager

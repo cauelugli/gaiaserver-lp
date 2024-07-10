@@ -21,26 +21,17 @@ import { lightTheme, darkTheme } from "./theme";
 import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
 
+import routeOptions from "./routesOptions";
+
 import Account from "./pages/Account";
 import Config from "./pages/Config";
-import Customers from "./pages/Customers";
 import Dashboard from "./pages/Dashboard";
-import Departments from "./pages/Departments";
 import Files from "./pages/Files";
-import Finance from "./pages/Finance";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Materials from "./pages/Materials";
-import Products from "./pages/Products";
-import Projects from "./pages/Projects";
-import Quotes from "./pages/Quotes";
-import Reports from "./pages/Reports";
-import Requests from "./pages/Requests";
-import Security from "./pages/Security";
-import Services from "./pages/Services";
-import Stock from "./pages/Stock";
+import PageModel from "./pages/PageModel";
+
 import ShortcutModals from "./components/ShortcutModals";
-import Users from "./pages/Users";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -59,23 +50,23 @@ function hasPermission(user, configData, routePath) {
   return allowedRoles && allowedRoles.some((id) => id === user.role.id);
 }
 
-function darkenColor(hex, factor) {
-  hex = hex.replace(/^#/, "");
-  const bigint = parseInt(hex, 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
+// function darkenColor(hex, factor) {
+//   hex = hex.replace(/^#/, "");
+//   const bigint = parseInt(hex, 16);
+//   const r = (bigint >> 16) & 255;
+//   const g = (bigint >> 8) & 255;
+//   const b = bigint & 255;
 
-  const newR = Math.max(0, Math.round(r - factor));
-  const newG = Math.max(0, Math.round(g - factor));
-  const newB = Math.max(0, Math.round(b - factor));
+//   const newR = Math.max(0, Math.round(r - factor));
+//   const newG = Math.max(0, Math.round(g - factor));
+//   const newB = Math.max(0, Math.round(b - factor));
 
-  const darkenedHex = `#${((newR << 16) | (newG << 8) | newB)
-    .toString(16)
-    .padStart(6, "0")}`;
+//   const darkenedHex = `#${((newR << 16) | (newG << 8) | newB)
+//     .toString(16)
+//     .padStart(6, "0")}`;
 
-  return darkenedHex;
-}
+//   return darkenedHex;
+// }
 
 export default function App() {
   const [configData, setConfigData] = useState([]);
@@ -364,344 +355,6 @@ export default function App() {
                       }
                     />
                     <Route
-                      path="/users"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "users") ? (
-                          <Users
-                            configData={configData}
-                            userName={userData.name}
-                            userId={userData._id}
-                            topBar={userPreferences.barPosition}
-                            setUserPreferences={setUserPreferences}
-                            tableOrCardView={userPreferences.tableOrCardView}
-                            cardSize={userPreferences.cardSize}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-
-                    <Route
-                      path="/security"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "security") ? (
-                          <Security
-                            topBar={userPreferences.barPosition}
-                            userId={userData._id}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/security" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/customers"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "customers") ? (
-                          <Customers
-                            userName={userData.name}
-                            userId={userData._id}
-                            tableOrCardView={userPreferences.tableOrCardView}
-                            cardSize={userPreferences.cardSize}
-                            setUserPreferences={setUserPreferences}
-                            configAgenda={configAgenda}
-                            configTables={configTables}
-                            configNotifications={configNotifications}
-                            configNotificationsBooleans={
-                              configNotificationsBooleans
-                            }
-                            topBar={userPreferences.barPosition}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/departments"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "departments") ? (
-                          <Departments
-                            userId={userData._id}
-                            userName={userData.name}
-                            configData={configData}
-                            configTables={configTables}
-                            topBar={userPreferences.barPosition}
-                            setUserPreferences={setUserPreferences}
-                            tableOrCardView={userPreferences.tableOrCardView}
-                            cardSize={userPreferences.cardSize}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/reports"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "departments") ? (
-                          <Reports
-                            users={users}
-                            requests={requests}
-                            customers={customers}
-                            topBar={userPreferences.barPosition}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/services"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "services") ? (
-                          <Services
-                            userId={userData._id}
-                            configTables={configTables}
-                            configData={configData}
-                            topBar={userPreferences.barPosition}
-                            setUserPreferences={setUserPreferences}
-                            tableOrCardView={userPreferences.tableOrCardView}
-                            cardSize={userPreferences.cardSize}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/stock"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "stock") ? (
-                          <Stock
-                            userId={userData._id}
-                            userName={userData.name}
-                            userRole={userData.role}
-                            userDepartment={userData.department}
-                            configTables={configTables}
-                            configData={configData.stock}
-                            topBar={userPreferences.barPosition}
-                            setUserPreferences={setUserPreferences}
-                            tableOrCardView={userPreferences.tableOrCardView}
-                            cardSize={userPreferences.cardSize}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-
-                    <Route
-                      path="/products"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "products") ? (
-                          <Products
-                            userId={userData._id}
-                            userName={userData.name}
-                            userRole={userData.role}
-                            userDepartment={userData.department}
-                            configTables={configTables}
-                            configData={configData.stock}
-                            topBar={userPreferences.barPosition}
-                            setUserPreferences={setUserPreferences}
-                            tableOrCardView={userPreferences.tableOrCardView}
-                            cardSize={userPreferences.cardSize}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-
-                    <Route
-                      path="/materials"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "materials") ? (
-                          <Materials
-                            userId={userData._id}
-                            userName={userData.name}
-                            userRole={userData.role}
-                            userDepartment={userData.department}
-                            configTables={configTables}
-                            configData={configData.stock}
-                            topBar={userPreferences.barPosition}
-                            setUserPreferences={setUserPreferences}
-                            tableOrCardView={userPreferences.tableOrCardView}
-                            cardSize={userPreferences.cardSize}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/requests"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "requests") ? (
-                          <Requests
-                            userId={userData._id}
-                            userName={userData.name}
-                            userUsername={userData.username}
-                            userRole={userData.role}
-                            configTables={configTables}
-                            configAgenda={configAgenda}
-                            configNotifications={configNotifications}
-                            configNotificationsBooleans={
-                              configNotificationsBooleans
-                            }
-                            requestsApproverManagerId={
-                              configData.requests.requestsApproverManagerId
-                            }
-                            setUserPreferences={setUserPreferences}
-                            topBar={userPreferences.barPosition}
-                            tableOrCardView={userPreferences.tableOrCardView}
-                            cardSize={userPreferences.cardSize}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/projects"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "projects") ? (
-                          <Projects
-                            userId={userData._id}
-                            userName={userData.name}
-                            userUsername={userData.username}
-                            userImage={userData.image}
-                            configTables={configTables}
-                            topBar={userPreferences.barPosition}
-                            setUserPreferences={setUserPreferences}
-                            tableOrCardView={userPreferences.tableOrCardView}
-                            cardSize={userPreferences.cardSize}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/quotes"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "quotes") ? (
-                          <Quotes
-                            userId={userData._id}
-                            configData={configData.quotes}
-                            topBar={userPreferences.barPosition}
-                            setUserPreferences={setUserPreferences}
-                            tableOrCardView={userPreferences.tableOrCardView}
-                            cardSize={userPreferences.cardSize}
-                            users={users.map((user) => ({
-                              _id: user._id,
-                              image: user.image,
-                              name: user.name,
-                            }))}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/files"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "files") ? (
-                          <Files topBar={userPreferences.barPosition} />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/finance"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "finance") ? (
-                          <Finance
-                            userId={userData._id}
-                            topBar={userPreferences.barPosition}
-                            setUserPreferences={setUserPreferences}
-                            tableOrCardView={userPreferences.tableOrCardView}
-                            cardSize={userPreferences.cardSize}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
                       path="/config"
                       element={
                         isAuthenticated(login, userData) &&
@@ -723,6 +376,60 @@ export default function App() {
                         )
                       }
                     />
+
+                    <Route
+                      path="/files"
+                      element={
+                        isAuthenticated(login, userData) &&
+                        hasPermission(userData, configData, "files") ? (
+                          <Files
+                            topBar={userPreferences.barPosition}
+                            userName={userData.name}
+                            userId={userData._id}
+                            refreshData={refreshData}
+                            setRefreshData={setRefreshData}
+                            configCustomization={configData.customization}
+                          />
+                        ) : isAuthenticated(login, userData) ? (
+                          <Typography sx={{ m: 2, fontSize: 16 }}>
+                            Seu usuário não possui autorização à página.
+                          </Typography>
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+
+                    {routeOptions.map((option, index) => (
+                      <Route
+                        key={index}
+                        path={`/${option.page}`}
+                        element={
+                          isAuthenticated(login, userData) &&
+                          hasPermission(userData, configData, option.page) ? (
+                            <PageModel
+                              item={option}
+                              userId={userData._id}
+                              userUsername={userData.username}
+                              users={users}
+                              requests={requests}
+                              customers={customers}
+                              setUserPreferences={setUserPreferences}
+                              configData={configData}
+                              userName={userData.name}
+                              topBar={userPreferences.barPosition}
+                              tableOrCardView={userPreferences.tableOrCardView}
+                              cardSize={userPreferences.cardSize}
+                              configAgenda={configAgenda}
+                              configDashboard={configData.dashboard}
+                              configCustomization={configData.customization}
+                            />
+                          ) : (
+                            <Navigate to="/login" />
+                          )
+                        }
+                      />
+                    ))}
                   </Routes>
                 </Grid>
               </Grid>
