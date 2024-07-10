@@ -17,16 +17,11 @@ import SellIcon from "@mui/icons-material/Sell";
 
 export default function PageButtonModel(props) {
   const [anchorEl, setAnchorEl] = useState(null);
+
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const handleMenuItemClick = (menuIndex) => {
-    handleClose();
+    setAnchorEl(null);
     props.openModal(menuIndex);
   };
 
@@ -34,7 +29,7 @@ export default function PageButtonModel(props) {
     <div>
       <Button
         size="small"
-        onClick={handleClick}
+        onClick={(event) => setAnchorEl(event.currentTarget)}
         sx={{
           color: props.configCustomization.mainColor || "#32aacd",
           "&:hover": { borderColor: "#eee" },
@@ -52,7 +47,7 @@ export default function PageButtonModel(props) {
           <Typography sx={{ fontSize: 16 }}>Novo</Typography>
         </Grid>
       </Button>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+      <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
         <List sx={{ width: 170 }}>
           <ListItemButton onClick={() => handleMenuItemClick(3)}>
             <ListItemIcon>
