@@ -10,12 +10,13 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import BuildIcon from "@mui/icons-material/Build";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import Inventory2Icon from "@mui/icons-material/Inventory2";
 import LanIcon from "@mui/icons-material/Lan";
+import SellIcon from "@mui/icons-material/Sell";
 import SettingsIcon from "@mui/icons-material/Settings";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
@@ -77,10 +78,16 @@ const optionsMainblocks = [
 
 const optionsRightColumn = [
   {
-    icon: <CalendarMonthIcon sx={{ fontSize: 22 }} />,
-    text: "Agenda",
-    link: "/dashboard",
-    permissionLabel: "dashboard",
+    icon: <SellIcon sx={{ fontSize: 22 }} />,
+    text: "Produtos",
+    link: "/products",
+    permissionLabel: "products",
+  },
+  {
+    icon: <Inventory2Icon sx={{ fontSize: 22 }} />,
+    text: "Materiais",
+    link: "/materials",
+    permissionLabel: "materials",
   },
   {
     icon: <BuildIcon sx={{ fontSize: 22 }} />,
@@ -144,7 +151,8 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
 
   const allowedListRightColumn = uniqueAllowedLinks.filter((link) =>
     [
-      "agenda",
+      "products",
+      "materials",
       "services",
       "quotes",
       "stock",
@@ -268,7 +276,7 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
                       onMouseLeave={() => setHoveredIndexRightColumn(null)}
                       sx={{
                         width: 180,
-                        py: 2,
+                        py: 1.5,
                         mx: 1,
                         transition: "background-color 0.3s, color 0.3s",
                         backgroundColor:
