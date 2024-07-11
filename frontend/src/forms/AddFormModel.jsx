@@ -9,20 +9,27 @@ const api = axios.create({
 });
 
 import {
+  Avatar,
   Box,
   Button,
   DialogActions,
   DialogContent,
+  FormHelperText,
   Grid,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
+
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import DialogHeader from "../components/small/DialogHeader";
 import FormEndLineTenant from "../components/small/FormEndLineTenant";
 
 export default function AddFormModel(props) {
   // const [name, setName] = React.useState("");
+  const [image, setImage] = React.useState("");
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -66,8 +73,9 @@ export default function AddFormModel(props) {
     (option) => option.label === props.selectedOptionLabel
   ).modal;
 
-  console.log("modalOptions", modalOptions);
-  // console.log("modalOptions.fields", modalOptions.fields);
+  const handleImageClick = () => {
+    document.getElementById("fileInput").click();
+  };
 
   return (
     <form onSubmit={handleAdd}>
@@ -79,9 +87,60 @@ export default function AddFormModel(props) {
       <DialogContent>
         {modalOptions.fieldsSections.map((section, sectionIndex) => (
           <Box key={sectionIndex} sx={{ mb: 3 }}>
-            <Typography sx={{ fontSize: 15, fontWeight: "bold" }}>
-              {section.label}
+            <Typography sx={{ fontSize: 16, fontWeight: "bold", mb: 0.5 }}>
+              {section.name !== "image" && section.label}
             </Typography>
+            {section.name === "image" && (
+              <Grid item>
+                <Grid
+                  container
+                  direction="column"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="fileInput"
+                    style={{ display: "none" }}
+                    onChange={(e) => {
+                      const selectedImage = e.target.files[0];
+                      setImage(selectedImage);
+                    }}
+                  />
+                  <label htmlFor="fileInput">
+                    <Avatar
+                      alt="Imagem do Usuário"
+                      value={image}
+                      sx={{ width: 80, height: 80, cursor: "pointer" }}
+                      onClick={handleImageClick}
+                    >
+                      {image ? (
+                        <img
+                          src={URL.createObjectURL(image)}
+                          alt="Prévia da Imagem"
+                          style={{ width: "100%", height: "100%" }}
+                        />
+                      ) : null}
+                    </Avatar>
+                  </label>
+                  {image && (
+                    <FormHelperText>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        size="small"
+                        startIcon={<DeleteIcon />}
+                        onClick={() => setImage("")}
+                        sx={{ mt: 1 }}
+                      >
+                        Remover
+                      </Button>
+                    </FormHelperText>
+                  )}
+                </Grid>
+              </Grid>
+            )}
             <Grid container direction="row">
               {modalOptions.fields
                 .filter(
@@ -90,14 +149,39 @@ export default function AddFormModel(props) {
                     modalOptions.fieldsSections[sectionIndex].name
                 )
                 .map((field, fieldIndex) => (
-                  <Grid key={fieldIndex} item>
-                    <Typography sx={{ fontSize: 12 }}>{field.label}</Typography>
+                  <Grid key={fieldIndex} item sx={{ mr: 1 }}>
+                    <Typography sx={{ fontSize: 14 }}>{field.label}</Typography>
                     {field.type === "string" && (
                       <TextField
                         // value={name}
                         // onChange={(e) => setName(e.target.value)}
-                        sx={{ maxWidth: 200 }}
-                        size={field.size}
+                        sx={{ width: 200 }}
+                        size="small"
+                        required={field.required}
+                      />
+                    )}
+
+                    {field.type === "select" && (
+                      <Select
+                        sx={{ width: 200 }}
+                        size="small"
+                        required={field.required}
+                        // value={firstOption}
+                        // onChange={(e) => handleSelectedFirstOption(e)}
+                      >
+                        {field.options.map((option, index) => (
+                          <MenuItem value={option} key={index}>
+                            {option}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    )}
+                    {field.type === "date" && (
+                      <TextField
+                        // value={name}
+                        // onChange={(e) => setName(e.target.value)}
+                        sx={{ width: 200 }}
+                        size="small"
                         required={field.required}
                       />
                     )}
