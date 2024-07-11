@@ -11,24 +11,32 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
+  Dialog,
 } from "@mui/material";
 
 import SellIcon from "@mui/icons-material/Sell";
 
+import AddFormModel from "../../../forms/AddFormModel";
+
 import pageButtonOptions from "../../../pageButtonOptions";
 
 export default function PageButtonModel(props) {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const open = Boolean(anchorEl);
-
   const currentPageOptions = pageButtonOptions.find(
     (option) => option.page === props.page
   ).pageButtonOptions;
 
-  const handleMenuItemClick = (menuIndex) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [openAdd, setOpenAdd] = React.useState(false);
+  const [selectedOption, setSelectedOption] = React.useState("");
+  const [selectedOptionMaxWidth, setSelectedOptionMaxWidth] = React.useState("xs");
+
+  const open = Boolean(anchorEl);
+
+  const handleMenuItemClick = (option) => {
+    setSelectedOption(option);
+    setSelectedOptionMaxWidth(option.modal.maxWidth);
     setAnchorEl(null);
-    props.openModal(menuIndex);
+    setOpenAdd(true);
   };
 
   return (
@@ -59,7 +67,7 @@ export default function PageButtonModel(props) {
             ? props.baseProducts.map((product, index) => (
                 <ListItemButton
                   key={index}
-                  onClick={() => handleMenuItemClick(product.name)}
+                  onClick={() => handleMenuItemClick(product)}
                 >
                   <ListItemIcon>
                     <SellIcon />
@@ -70,7 +78,7 @@ export default function PageButtonModel(props) {
             : currentPageOptions.map((option, index) => (
                 <ListItemButton
                   key={index}
-                  onClick={() => handleMenuItemClick(option.modal)}
+                  onClick={() => handleMenuItemClick(option)}
                 >
                   <ListItemIcon>{option.icon}</ListItemIcon>
                   <ListItemText primary={option.label} sx={{ ml: -2 }} />
@@ -78,6 +86,32 @@ export default function PageButtonModel(props) {
               ))}
         </List>
       </Menu>
+
+      {openAdd && (
+        <Dialog
+          fullWidth
+          maxWidth={selectedOptionMaxWidth}
+          open={openAdd}
+          onClose={() => setOpenAdd(!openAdd)}
+        >
+          <AddFormModel
+            buttonProps={props}
+            options={currentPageOptions}
+            selectedOptionLabel={selectedOption.label}
+            userName={props.userName}
+            userId={props.userId}
+            configAgenda={props.configAgenda}
+            configCustomization={props.configCustomization}
+            configNotifications={props.configNotifications}
+            configNotificationsBooleans={props.configNotificationsBooleans}
+            openAdd={openAdd}
+            setOpenAdd={setOpenAdd}
+            refreshData={props.refreshData}
+            setRefreshData={props.setRefreshData}
+            selectedItem={props.selectedItem}
+          />
+        </Dialog>
+      )}
     </div>
   );
 }
