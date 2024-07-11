@@ -12,6 +12,7 @@ import {
   Avatar,
   Box,
   Button,
+  Checkbox,
   DialogActions,
   DialogContent,
   FormHelperText,
@@ -160,6 +161,15 @@ export default function AddFormModel(props) {
                         required={field.required}
                       />
                     )}
+                    {field.type === "fullWidth" && (
+                      <TextField
+                        // value={name}
+                        // onChange={(e) => setName(e.target.value)}
+                        sx={{ width: "336%" }}
+                        size="small"
+                        required={field.required}
+                      />
+                    )}
 
                     {field.type === "select" && (
                       <Select
@@ -181,6 +191,42 @@ export default function AddFormModel(props) {
                         // value={name}
                         // onChange={(e) => setName(e.target.value)}
                         sx={{ width: 200 }}
+                        size="small"
+                        required={field.required}
+                      />
+                    )}
+                    {field.type === "dynamicData" && (
+                      <TextField
+                        // value={name}
+                        // onChange={(e) => setName(e.target.value)}
+                        sx={{ width: 200 }}
+                        size="small"
+                        required={field.required}
+                      />
+                    )}
+                    {field.type === "attachments" && (
+                      <TextField
+                        // value={name}
+                        // onChange={(e) => setName(e.target.value)}
+                        sx={{ width: "336%" }}
+                        size="small"
+                        required={field.required}
+                      />
+                    )}
+                    {field.type === "products" && (
+                      <TextField
+                        // value={name}
+                        // onChange={(e) => setName(e.target.value)}
+                        sx={{ width: "336%" }}
+                        size="small"
+                        required={field.required}
+                      />
+                    )}
+
+                    {field.type === "checkbox" && (
+                      <Checkbox
+                        // value={name}
+                        // onChange={(e) => setName(e.target.value)}
                         size="small"
                         required={field.required}
                       />
