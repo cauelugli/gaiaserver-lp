@@ -26,7 +26,7 @@ const pageButtonOptions = [
   {
     page: "customers",
     pageButtonOptions: [
-      { label: "Empresa", icon: <ApartmentIcon />, modal: "AddCustomere" },
+      { label: "Empresa", icon: <ApartmentIcon />, modal: "AddCustomer" },
       { label: "Pessoa Física", icon: <PersonIcon />, modal: "AddClient" },
       {
         label: "Importar Contatos",

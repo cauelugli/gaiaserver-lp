@@ -13,12 +13,16 @@ import {
   Typography,
 } from "@mui/material";
 
-import SellIcon from "@mui/icons-material/Sell";
+import pageButtonOptions from "../../../pageButtonOptions";
 
 export default function PageButtonModel(props) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
+
+  const currentPageOptions = pageButtonOptions.find(
+    (option) => option.page === props.page
+  ).pageButtonOptions;
 
   const handleMenuItemClick = (menuIndex) => {
     setAnchorEl(null);
@@ -48,13 +52,16 @@ export default function PageButtonModel(props) {
         </Grid>
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
-        <List sx={{ width: 170 }}>
-          <ListItemButton onClick={() => handleMenuItemClick(3)}>
-            <ListItemIcon>
-              <SellIcon />
-            </ListItemIcon>
-            <ListItemText primary="Material" sx={{ ml: -2 }} />
-          </ListItemButton>
+        <List sx={{ maxWidth: 220 }}>
+          {currentPageOptions.map((option, index) => (
+            <ListItemButton
+              key={index}
+              onClick={() => handleMenuItemClick(option.modal)}
+            >
+              <ListItemIcon>{option.icon}</ListItemIcon>
+              <ListItemText primary={option.label} sx={{ ml: -2 }} />
+            </ListItemButton>
+          ))}
         </List>
       </Menu>
     </div>
