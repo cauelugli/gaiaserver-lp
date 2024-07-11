@@ -169,10 +169,13 @@ export default function PageModel(props) {
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           {props.item.label}
         </Typography>
-        <PageButtonModel
-          configCustomization={props.configCustomization}
-          page={currentPage}
-        />
+        {currentPage !== "quotes" && (
+          <PageButtonModel
+            configCustomization={props.configCustomization}
+            baseProducts={items.filter((item) => !item.name)}
+            page={currentPage}
+          />
+        )}
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs

@@ -13,6 +13,8 @@ import {
   Typography,
 } from "@mui/material";
 
+import SellIcon from "@mui/icons-material/Sell";
+
 import pageButtonOptions from "../../../pageButtonOptions";
 
 export default function PageButtonModel(props) {
@@ -28,6 +30,8 @@ export default function PageButtonModel(props) {
     setAnchorEl(null);
     props.openModal(menuIndex);
   };
+
+  console.log("props.baseProducts", props.baseProducts);
 
   return (
     <div>
@@ -52,16 +56,28 @@ export default function PageButtonModel(props) {
         </Grid>
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
-        <List sx={{ maxWidth: 220 }}>
-          {currentPageOptions.map((option, index) => (
-            <ListItemButton
-              key={index}
-              onClick={() => handleMenuItemClick(option.modal)}
-            >
-              <ListItemIcon>{option.icon}</ListItemIcon>
-              <ListItemText primary={option.label} sx={{ ml: -2 }} />
-            </ListItemButton>
-          ))}
+        <List sx={{ minWidth: 150, maxWidth: 220 }}>
+          {props.page === "products"
+            ? props.baseProducts.map((product, index) => (
+                <ListItemButton
+                  key={index}
+                  onClick={() => handleMenuItemClick(product.name)}
+                >
+                  <ListItemIcon>
+                    <SellIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={product.type} sx={{ ml: -2 }} />
+                </ListItemButton>
+              ))
+            : currentPageOptions.map((option, index) => (
+                <ListItemButton
+                  key={index}
+                  onClick={() => handleMenuItemClick(option.modal)}
+                >
+                  <ListItemIcon>{option.icon}</ListItemIcon>
+                  <ListItemText primary={option.label} sx={{ ml: -2 }} />
+                </ListItemButton>
+              ))}
         </List>
       </Menu>
     </div>
