@@ -31,8 +31,6 @@ export default function PageButtonModel(props) {
     props.openModal(menuIndex);
   };
 
-  console.log("props.baseProducts", props.baseProducts);
-
   return (
     <div>
       <Button
