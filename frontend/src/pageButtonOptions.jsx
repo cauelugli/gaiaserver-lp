@@ -300,7 +300,7 @@ const pageButtonOptions = [
             },
             {
               fieldSection: "scheduling",
-              name: "scheduleToWorket",
+              name: "scheduleToWorker",
               label: "Agendar para Colaborador",
               type: "checkbox",
               required: true,
