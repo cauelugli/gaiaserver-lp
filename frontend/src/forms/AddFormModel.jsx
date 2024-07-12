@@ -17,6 +17,7 @@ import {
   DialogContent,
   FormHelperText,
   Grid,
+  InputAdornment,
   MenuItem,
   Select,
   TextField,
@@ -163,7 +164,7 @@ export default function AddFormModel(props) {
                         sx={{
                           width:
                             modalOptions.maxWidth === "xs"
-                              ? 165
+                              ? 190
                               : modalOptions.maxWidth === "sm"
                               ? 175
                               : modalOptions.maxWidth === "md"
@@ -172,6 +173,29 @@ export default function AddFormModel(props) {
                         }}
                         size="small"
                         required={field.required}
+                      />
+                    )}
+                    {field.type === "currency" && (
+                      <TextField
+                        // value={name}
+                        // onChange={(e) => setName(e.target.value)}
+                        sx={{
+                          width:
+                            modalOptions.maxWidth === "xs"
+                              ? 190
+                              : modalOptions.maxWidth === "sm"
+                              ? 175
+                              : modalOptions.maxWidth === "md"
+                              ? 200
+                              : 200,
+                        }}
+                        size="small"
+                        required={field.required}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">R$</InputAdornment>
+                          ),
+                        }}
                       />
                     )}
                     {field.type === "fullWidth" && (
@@ -183,19 +207,43 @@ export default function AddFormModel(props) {
                         required={field.required}
                       />
                     )}
-
                     {field.type === "select" && (
                       <Select
                         sx={{
                           width:
                             modalOptions.maxWidth === "xs"
-                              ? 165
+                              ? 190
                               : modalOptions.maxWidth === "sm"
                               ? 175
                               : modalOptions.maxWidth === "md"
                               ? 200
                               : 200,
                         }}
+                        size="small"
+                        required={field.required}
+                        // value={firstOption}
+                        // onChange={(e) => handleSelectedFirstOption(e)}
+                      >
+                        {field.options.map((option, index) => (
+                          <MenuItem value={option} key={index}>
+                            {option}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    )}
+                    {field.type === "multipleSelect" && (
+                      <Select
+                        sx={{
+                          width:
+                            modalOptions.maxWidth === "xs"
+                              ? 190
+                              : modalOptions.maxWidth === "sm"
+                              ? 175
+                              : modalOptions.maxWidth === "md"
+                              ? 200
+                              : 200,
+                        }}
+                        multiple
                         size="small"
                         required={field.required}
                         // value={firstOption}
@@ -215,7 +263,7 @@ export default function AddFormModel(props) {
                         sx={{
                           width:
                             modalOptions.maxWidth === "xs"
-                              ? 165
+                              ? 190
                               : modalOptions.maxWidth === "sm"
                               ? 175
                               : modalOptions.maxWidth === "md"
@@ -233,7 +281,7 @@ export default function AddFormModel(props) {
                         sx={{
                           width:
                             modalOptions.maxWidth === "xs"
-                              ? 165
+                              ? 190
                               : modalOptions.maxWidth === "sm"
                               ? 175
                               : modalOptions.maxWidth === "md"
@@ -262,7 +310,24 @@ export default function AddFormModel(props) {
                         required={field.required}
                       />
                     )}
-
+                    {field.type === "materials" && (
+                      <TextField
+                        // value={name}
+                        // onChange={(e) => setName(e.target.value)}
+                        sx={{ width: "336%" }}
+                        size="small"
+                        required={field.required}
+                      />
+                    )}
+                    {field.type === "members" && (
+                      <TextField
+                        // value={name}
+                        // onChange={(e) => setName(e.target.value)}
+                        sx={{ width: "336%" }}
+                        size="small"
+                        required={field.required}
+                      />
+                    )}
                     {field.type === "checkbox" && (
                       <Checkbox
                         // value={name}
