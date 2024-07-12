@@ -379,7 +379,8 @@ const pageButtonOptions = [
               fieldSection: "attachments",
               name: "attachments",
               label: "",
-              type: "attachments",
+              type: "list",
+              options: [],
               required: false,
             },
           ],
@@ -925,7 +926,7 @@ const pageButtonOptions = [
             {
               fieldSection: "items",
               name: "items",
-              label: "Itens",
+              label: "",
               type: "list",
               options: ["products", "materials"],
               required: true,
@@ -1158,10 +1159,6 @@ const pageButtonOptions = [
       { label: "Receita", icon: <ApartmentIcon />, modal: "AddFinanceIncome" },
       { label: "Despesa", icon: <ApartmentIcon />, modal: "AddFinanceOutcome" },
     ],
-  },
-  {
-    page: "reports",
-    pageButtonOptions: [],
   },
   {
     page: "security",

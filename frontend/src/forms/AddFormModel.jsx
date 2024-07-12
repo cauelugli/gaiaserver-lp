@@ -17,9 +17,6 @@ import {
   DialogContent,
   FormHelperText,
   Grid,
-  InputAdornment,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -28,6 +25,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import DialogHeader from "../components/small/DialogHeader";
 import FormEndLineTenant from "../components/small/FormEndLineTenant";
+import StringTableCell from "../components/small/tableCells/StringTableCell";
+import SelectTableCell from "../components/small/tableCells/SelectTableCell";
+import DateTableCell from "../components/small/tableCells/DateTableCell";
+import DynamicDataTableCell from "../components/small/tableCells/DynamicDataTableCell";
 
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
@@ -166,173 +167,100 @@ export default function AddFormModel(props) {
                   >
                     <Typography sx={{ fontSize: 14 }}>{field.label}</Typography>
                     {field.type === "string" && (
-                      <TextField
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                        sx={{
-                          width:
-                            modalOptions.maxWidth === "xs"
-                              ? 190
-                              : modalOptions.maxWidth === "sm"
-                              ? 175
-                              : modalOptions.maxWidth === "md"
-                              ? 200
-                              : 200,
-                        }}
-                        size="small"
+                      <StringTableCell
+                        fields={fields}
+                        field={field}
+                        handleChange={handleChange}
+                        modalOptions={modalOptions}
                         required={field.required}
                       />
                     )}
                     {field.type === "currency" && (
-                      <TextField
-                        type="number"
-                        value={fields[field.name] || 0}
-                        onChange={handleChange(field.name)}
-                        sx={{
-                          width:
-                            modalOptions.maxWidth === "xs"
-                              ? 190
-                              : modalOptions.maxWidth === "sm"
-                              ? 175
-                              : modalOptions.maxWidth === "md"
-                              ? 200
-                              : 200,
-                        }}
-                        size="small"
+                      <StringTableCell
+                        fields={fields}
+                        field={field}
+                        handleChange={handleChange}
+                        modalOptions={modalOptions}
                         required={field.required}
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">R$</InputAdornment>
-                          ),
-                        }}
+                        isCurrency
                       />
                     )}
                     {field.type === "password" && (
-                      <TextField
-                        type="password"
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                        sx={{
-                          width:
-                            modalOptions.maxWidth === "xs"
-                              ? 190
-                              : modalOptions.maxWidth === "sm"
-                              ? 175
-                              : modalOptions.maxWidth === "md"
-                              ? 200
-                              : 200,
-                        }}
-                        size="small"
+                      <StringTableCell
+                        fields={fields}
+                        field={field}
+                        handleChange={handleChange}
+                        modalOptions={modalOptions}
                         required={field.required}
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">R$</InputAdornment>
-                          ),
-                        }}
+                        isPassword
                       />
                     )}
                     {field.type === "fullWidth" && (
-                      <TextField
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                        sx={{ width: "336%" }}
-                        size="small"
+                      <StringTableCell
+                        fields={fields}
+                        field={field}
+                        handleChange={handleChange}
+                        modalOptions={modalOptions}
                         required={field.required}
+                        isFullWidth
                       />
                     )}
                     {field.type === "select" && (
-                      <Select
-                        sx={{
-                          width:
-                            modalOptions.maxWidth === "xs"
-                              ? 190
-                              : modalOptions.maxWidth === "sm"
-                              ? 175
-                              : modalOptions.maxWidth === "md"
-                              ? 200
-                              : 200,
-                        }}
-                        size="small"
+                      <SelectTableCell
+                        fields={fields}
+                        field={field}
+                        menuOptions={field.options}
+                        handleChange={handleChange}
+                        modalOptions={modalOptions}
                         required={field.required}
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                      >
-                        {field.options.map((option, index) => (
-                          <MenuItem value={option} key={index}>
-                            {option}
-                          </MenuItem>
-                        ))}
-                      </Select>
+                        isFullWidth
+                      />
                     )}
                     {field.type === "multipleSelect" && (
-                      <Select
-                        sx={{
-                          width:
-                            modalOptions.maxWidth === "xs"
-                              ? 190
-                              : modalOptions.maxWidth === "sm"
-                              ? 175
-                              : modalOptions.maxWidth === "md"
-                              ? 200
-                              : 200,
-                        }}
-                        multiple
-                        size="small"
+                      <SelectTableCell
+                        fields={fields}
+                        field={field}
+                        menuOptions={field.options}
+                        handleChange={handleChange}
+                        modalOptions={modalOptions}
                         required={field.required}
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                      >
-                        {field.options.map((option, index) => (
-                          <MenuItem value={option} key={index}>
-                            {option}
-                          </MenuItem>
-                        ))}
-                      </Select>
+                        multiple
+                      />
                     )}
                     {field.type === "date" && (
-                      <TextField
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                        sx={{
-                          width:
-                            modalOptions.maxWidth === "xs"
-                              ? 190
-                              : modalOptions.maxWidth === "sm"
-                              ? 175
-                              : modalOptions.maxWidth === "md"
-                              ? 200
-                              : 200,
-                        }}
-                        size="small"
+                      <DateTableCell
+                        fields={fields}
+                        field={field}
+                        handleChange={handleChange}
+                        modalOptions={modalOptions}
                         required={field.required}
                       />
                     )}
                     {field.type === "dynamicData" && (
-                      <TextField
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                        sx={{
-                          width:
-                            modalOptions.maxWidth === "xs"
-                              ? 190
-                              : modalOptions.maxWidth === "sm"
-                              ? 175
-                              : modalOptions.maxWidth === "md"
-                              ? 200
-                              : 200,
-                        }}
-                        size="small"
+                      <DynamicDataTableCell
+                        fields={fields}
+                        field={field}
+                        handleChange={handleChange}
+                        modalOptions={modalOptions}
                         required={field.required}
+                        multiple={field.multiple}
                       />
-                    )}
-                    {field.type === "attachments" && (
-                      <TextField
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                        sx={{ width: "336%" }}
-                        size="small"
-                        required={field.required}
-                      />
+                      // <TextField
+                      //   value={fields[field.name] || ""}
+                      //   onChange={handleChange(field.name)}
+                      //   sx={{
+                      //     width:
+                      //       modalOptions.maxWidth === "xs"
+                      //         ? 190
+                      //         : modalOptions.maxWidth === "sm"
+                      //         ? 175
+                      //         : modalOptions.maxWidth === "md"
+                      //         ? 200
+                      //         : 200,
+                      //   }}
+                      //   size="small"
+                      //   required={field.required}
+                      // />
                     )}
                     {field.type === "list" && (
                       <TextField
