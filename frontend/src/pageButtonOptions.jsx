@@ -371,8 +371,8 @@ const pageButtonOptions = [
               fieldSection: "products",
               name: "products",
               label: "",
-              type: "list",
-              options: ["products"],
+              type: "productList",
+              options: [],
               required: false,
             },
             {

@@ -29,16 +29,19 @@ import StringTableCell from "../components/small/tableCells/StringTableCell";
 import SelectTableCell from "../components/small/tableCells/SelectTableCell";
 import DateTableCell from "../components/small/tableCells/DateTableCell";
 import DynamicDataTableCell from "../components/small/tableCells/DynamicDataTableCell";
+import ProductsTableCell from "../components/small/tableCells/ProductsTableCell";
 
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
   const [image, setImage] = React.useState("");
+  const [selectedProducts, setSelectedProducts] = React.useState([]);
 
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
       const res = await api.post("/dynamicEndpoint", {
         fields,
+        selectedProducts,
       });
       if (res.data) {
         toast.success("Perfil de Acesso Adicionado!", {
@@ -87,9 +90,44 @@ export default function AddFormModel(props) {
     });
   };
 
+  const handleProductChange = (product, count) => {
+    setSelectedProducts((prev) => {
+      console.log("Previous State:", prev);
+      const existingProductIndex = prev.findIndex(
+        (p) => p.name === product.name
+      );
+
+      let newState;
+      if (existingProductIndex !== -1) {
+        if (count > 0) {
+          const updatedProducts = [...prev];
+          updatedProducts[existingProductIndex].count = count;
+          newState = updatedProducts;
+        } else {
+          newState = prev.filter((p) => p.name !== product.name);
+        }
+      } else {
+        if (count > 0) {
+          newState = [...prev, { ...product, count }];
+        } else {
+          newState = prev;
+        }
+      }
+
+      console.log("Updated State:", newState);
+      return newState;
+    });
+  };
+
   return (
     <form onSubmit={handleAdd}>
       <Button onClick={() => console.log("fields", fields)}>view fields</Button>
+      <Button
+        variant="contained"
+        onClick={() => console.log("selectedProducts", selectedProducts)}
+      >
+        view selectedProducts
+      </Button>
       <DialogHeader
         title={modalOptions.label}
         femaleGender={modalOptions.femaleGender}
@@ -163,7 +201,11 @@ export default function AddFormModel(props) {
                   <Grid
                     key={fieldIndex}
                     item
-                    sx={{ mr: 1, mb: fieldIndex === 0 ? 1 : 0 }}
+                    sx={{
+                      mr: 1,
+                      mb: fieldIndex === 0 ? 1 : 0,
+                      width: field.type === "productList" ? "100%" : "auto",
+                    }}
                   >
                     <Typography sx={{ fontSize: 14 }}>{field.label}</Typography>
                     {field.type === "string" && (
@@ -261,6 +303,15 @@ export default function AddFormModel(props) {
                       //   size="small"
                       //   required={field.required}
                       // />
+                    )}
+                    {field.type === "productList" && (
+                      <ProductsTableCell
+                        value={fields[field.name] || ""}
+                        onChange={handleChange(field.name)}
+                        size="small"
+                        required={field.required}
+                        handleProductChange={handleProductChange}
+                      />
                     )}
                     {field.type === "list" && (
                       <TextField
