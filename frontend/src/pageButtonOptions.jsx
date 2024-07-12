@@ -236,7 +236,8 @@ const pageButtonOptions = [
           name: "ImportContacts",
           label: "Importação de Clientes",
           femaleGender: true,
-          fields: [{ name: "", label: "", type: "" }],
+          type: "list",
+          options: ["importContacts"],
         },
       },
     ],
@@ -315,7 +316,8 @@ const pageButtonOptions = [
               fieldSection: "attachments",
               name: "attachments",
               label: "",
-              type: "attachments",
+              type: "list",
+              options: ["attachments"],
               required: false,
             },
           ],
@@ -369,7 +371,8 @@ const pageButtonOptions = [
               fieldSection: "products",
               name: "products",
               label: "",
-              type: "products",
+              type: "list",
+              options: ["products"],
               required: false,
             },
             {
@@ -690,6 +693,7 @@ const pageButtonOptions = [
               label: "Membros",
               type: "dynamicData",
               dynamicData: "users",
+              multiple: true,
               required: false,
             },
           ],
@@ -729,6 +733,7 @@ const pageButtonOptions = [
               label: "Membros",
               type: "dynamicData",
               dynamicData: "users",
+              multiple: true,
               required: false,
             },
           ],
@@ -803,7 +808,8 @@ const pageButtonOptions = [
               fieldSection: "materials",
               name: "materials",
               label: "",
-              type: "materials",
+              type: "list",
+              options: ["materials"],
               required: true,
             },
           ],
@@ -869,34 +875,179 @@ const pageButtonOptions = [
   },
   {
     page: "quotes",
-    pageButtonOptions: [
-      { label: "Empresa", icon: <ApartmentIcon />, modal: "" },
-      { label: "Empresa", icon: <ApartmentIcon />, modal: "" },
-      { label: "Empresa", icon: <ApartmentIcon />, modal: "" },
-    ],
+    pageButtonOptions: [""],
   },
   {
-    // TO-DO
     page: "stock",
     pageButtonOptions: [
       {
         label: "Entrada de Estoque",
         icon: <Inventory2Icon />,
-        modal: "AddStockEntry",
+        modal: {
+          name: "AddStockEntry",
+          label: "Entrada de Estoque",
+          femaleGender: false,
+          maxWidth: "md",
+          fieldsSections: [
+            { name: "mainInfo", label: "Informações Gerais" },
+            { name: "items", label: "Itens" },
+          ],
+          fields: [
+            {
+              fieldSection: "mainInfo",
+              name: "type",
+              label: "Produtos / Materiais",
+              type: "select",
+              options: ["Produtos", "Materiais"],
+              required: true,
+            },
+            {
+              fieldSection: "mainInfo",
+              name: "purchaseDate",
+              label: "Data da Compra",
+              type: "date",
+              required: true,
+            },
+            {
+              fieldSection: "mainInfo",
+              name: "deliveryDate",
+              label: "Data da Entrega",
+              type: "date",
+              required: true,
+            },
+            {
+              fieldSection: "mainInfo",
+              name: "stockDate",
+              label: "Data de Armazenamento",
+              type: "date",
+              required: true,
+            },
+            {
+              fieldSection: "items",
+              name: "items",
+              label: "Itens",
+              type: "list",
+              options: ["products", "materials"],
+              required: true,
+            },
+          ],
+        },
       },
     ],
   },
+  //review this
   {
-    // TO-DO
     page: "products",
     pageButtonOptions: [
-      { label: "Produto", icon: <SellIcon />, modal: "AddPRoduct" },
+      {
+        label: "Produto",
+        icon: <SellIcon />,
+        modal: {
+          name: "AddProduct",
+          label: "Produto",
+          femaleGender: false,
+          maxWidth: "md",
+          fieldsSections: [
+            { name: "mainInfo", label: "Informações Gerais" },
+            { name: "fields", label: "Informações do Produto" },
+          ],
+          fields: [
+            {
+              fieldSection: "mainInfo",
+              name: "type",
+              label: "Tipo de Produto",
+              type: "dynamicData",
+              options: ["baseProducts"],
+              required: true,
+            },
+            {
+              fieldSection: "mainInfo",
+              name: "name",
+              label: "Nome do Produto",
+              type: "string",
+              required: true,
+            },
+            {
+              fieldSection: "mainInfo",
+              name: "buyValue",
+              label: "Valor de Compra",
+              type: "currency",
+              required: true,
+            },
+            {
+              fieldSection: "mainInfo",
+              name: "sellValue",
+              label: "Valor de Venda",
+              type: "currency",
+              required: true,
+            },
+            {
+              fieldSection: "fields",
+              name: "fields",
+              label: "",
+              type: "fields",
+            },
+          ],
+        },
+      },
     ],
   },
+  //review this
   {
-    // TO-DO
     page: "materials",
-    pageButtonOptions: [{ label: "XXX", icon: <RecyclingIcon />, modal: "" }],
+    pageButtonOptions: [
+      {
+        label: "Material",
+        icon: <RecyclingIcon />,
+        modal: {
+          name: "AddMaterial",
+          label: "Material",
+          femaleGender: false,
+          maxWidth: "md",
+          fieldsSections: [
+            { name: "mainInfo", label: "Informações Gerais" },
+            { name: "fields", label: "Informações do Material" },
+          ],
+          fields: [
+            {
+              fieldSection: "mainInfo",
+              name: "type",
+              label: "Tipo de Material",
+              type: "dynamicData",
+              options: ["baseProducts"],
+              required: true,
+            },
+            {
+              fieldSection: "mainInfo",
+              name: "name",
+              label: "Nome do Material",
+              type: "string",
+              required: true,
+            },
+            {
+              fieldSection: "mainInfo",
+              name: "buyValue",
+              label: "Valor de Compra",
+              type: "currency",
+              required: true,
+            },
+            {
+              fieldSection: "mainInfo",
+              name: "sellValue",
+              label: "Valor de Venda",
+              type: "currency",
+              required: true,
+            },
+            {
+              fieldSection: "fields",
+              name: "fields",
+              label: "",
+              type: "fields",
+            },
+          ],
+        },
+      },
+    ],
   },
   {
     page: "chat",
@@ -904,17 +1055,103 @@ const pageButtonOptions = [
       { label: "Mensagem", icon: <ApartmentIcon />, modal: "AddChat" },
     ],
   },
+  //review this
   {
     page: "projects",
     pageButtonOptions: [
-      { label: "Projeto", icon: <RocketLaunchIcon />, modal: "AddProject" },
+      {
+        label: "Projeto",
+        icon: <RocketLaunchIcon />,
+        fieldsSections: [
+          { name: "mainInfo", label: "Informações Gerais" },
+          { name: "fields", label: "Informações do Material" },
+        ],
+        fields: [
+          {
+            fieldSection: "mainInfo",
+            name: "type",
+            label: "Tipo de Material",
+            type: "dynamicData",
+            options: ["baseProducts"],
+            required: true,
+          },
+          {
+            fieldSection: "mainInfo",
+            name: "name",
+            label: "Nome do Material",
+            type: "string",
+            required: true,
+          },
+          {
+            fieldSection: "mainInfo",
+            name: "buyValue",
+            label: "Valor de Compra",
+            type: "currency",
+            required: true,
+          },
+          {
+            fieldSection: "mainInfo",
+            name: "sellValue",
+            label: "Valor de Venda",
+            type: "currency",
+            required: true,
+          },
+          {
+            fieldSection: "fields",
+            name: "fields",
+            label: "",
+            type: "fields",
+          },
+        ],
+      },
       {
         label: "Projeto Recorrente",
         icon: <RecyclingIcon />,
-        modal: "AddRecurrentProject",
+        fieldsSections: [
+          { name: "mainInfo", label: "Informações Gerais" },
+          { name: "fields", label: "Informações do Material" },
+        ],
+        fields: [
+          {
+            fieldSection: "mainInfo",
+            name: "type",
+            label: "Tipo de Material",
+            type: "dynamicData",
+            options: ["baseProducts"],
+            required: true,
+          },
+          {
+            fieldSection: "mainInfo",
+            name: "name",
+            label: "Nome do Material",
+            type: "string",
+            required: true,
+          },
+          {
+            fieldSection: "mainInfo",
+            name: "buyValue",
+            label: "Valor de Compra",
+            type: "currency",
+            required: true,
+          },
+          {
+            fieldSection: "mainInfo",
+            name: "sellValue",
+            label: "Valor de Venda",
+            type: "currency",
+            required: true,
+          },
+          {
+            fieldSection: "fields",
+            name: "fields",
+            label: "",
+            type: "fields",
+          },
+        ],
       },
     ],
   },
+  //review this
   {
     page: "finance",
     pageButtonOptions: [
@@ -929,12 +1166,99 @@ const pageButtonOptions = [
   {
     page: "security",
     pageButtonOptions: [
-      { label: "Operador", icon: <ManageAccountsIcon />, modal: "AddOperator" },
-      { label: "Cargo", icon: <AssignmentIndIcon />, modal: "AddPosition" },
+      {
+        label: "Operador",
+        icon: <ManageAccountsIcon />,
+        modal: {
+          name: "AddOperator",
+          label: "Operador",
+          femaleGender: false,
+          maxWidth: "xs",
+          fieldsSections: [
+            { name: "mainInfo", label: "Informações Gerais" },
+            { name: "secondaryInfo", label: "Informações de Usuário" },
+          ],
+          fields: [
+            {
+              fieldSection: "mainInfo",
+              name: "user",
+              label: "Colaborador",
+              type: "dynamicData",
+              options: ["allUsers"],
+              required: true,
+            },
+            {
+              fieldSection: "mainInfo",
+              name: "username",
+              label: "Nome de Operador",
+              type: "string",
+              required: true,
+            },
+            {
+              fieldSection: "firstAccessPassword",
+              name: "role",
+              label: "Perfil de Acesso",
+              type: "dynamicData",
+              dynamicData: "roles",
+              required: true,
+            },
+            {
+              fieldSection: "mainInfo",
+              name: "firstAccessPassword",
+              label: "Senha de Acesso",
+              type: "password",
+              required: true,
+            },
+          ],
+        },
+      },
+      {
+        label: "Cargo",
+        icon: <AssignmentIndIcon />,
+        modal: {
+          name: "AddPosition",
+          label: "Cargo",
+          femaleGender: false,
+          maxWidth: "xs",
+          fieldsSections: [{ name: "mainInfo", label: "Informações Gerais" }],
+          fields: [
+            {
+              fieldSection: "mainInfo",
+              name: "name",
+              label: "Nome do Cargo",
+              type: "string",
+              required: true,
+            },
+            {
+              fieldSection: "mainInfo",
+              name: "department",
+              label: "Departamento",
+              type: "dynamicData",
+              dynamicData: "departments",
+              required: true,
+            },
+          ],
+        },
+      },
       {
         label: "Perfil de Acesso",
         icon: <AdminPanelSettingsIcon />,
-        modal: "AddRole",
+        modal: {
+          name: "AddRole",
+          label: "Perfil de Acesso",
+          femaleGender: false,
+          maxWidth: "xs",
+          fieldsSections: [{ name: "mainInfo", label: "Informações Gerais" }],
+          fields: [
+            {
+              fieldSection: "mainInfo",
+              name: "name",
+              label: "Nome do Perfil",
+              type: "string",
+              required: true,
+            },
+          ],
+        },
       },
     ],
   },

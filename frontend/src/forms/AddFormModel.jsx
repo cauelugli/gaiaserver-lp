@@ -198,6 +198,30 @@ export default function AddFormModel(props) {
                         }}
                       />
                     )}
+                    {field.type === "password" && (
+                      <TextField
+                        type="password"
+                        // value={name}
+                        // onChange={(e) => setName(e.target.value)}
+                        sx={{
+                          width:
+                            modalOptions.maxWidth === "xs"
+                              ? 190
+                              : modalOptions.maxWidth === "sm"
+                              ? 175
+                              : modalOptions.maxWidth === "md"
+                              ? 200
+                              : 200,
+                        }}
+                        size="small"
+                        required={field.required}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">R$</InputAdornment>
+                          ),
+                        }}
+                      />
+                    )}
                     {field.type === "fullWidth" && (
                       <TextField
                         // value={name}
@@ -292,6 +316,7 @@ export default function AddFormModel(props) {
                         required={field.required}
                       />
                     )}
+
                     {field.type === "attachments" && (
                       <TextField
                         // value={name}
@@ -301,25 +326,7 @@ export default function AddFormModel(props) {
                         required={field.required}
                       />
                     )}
-                    {field.type === "products" && (
-                      <TextField
-                        // value={name}
-                        // onChange={(e) => setName(e.target.value)}
-                        sx={{ width: "336%" }}
-                        size="small"
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "materials" && (
-                      <TextField
-                        // value={name}
-                        // onChange={(e) => setName(e.target.value)}
-                        sx={{ width: "336%" }}
-                        size="small"
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "members" && (
+                    {field.type === "list" && (
                       <TextField
                         // value={name}
                         // onChange={(e) => setName(e.target.value)}
