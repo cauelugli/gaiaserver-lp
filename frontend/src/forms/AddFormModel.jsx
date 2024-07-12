@@ -30,14 +30,14 @@ import DialogHeader from "../components/small/DialogHeader";
 import FormEndLineTenant from "../components/small/FormEndLineTenant";
 
 export default function AddFormModel(props) {
-  // const [name, setName] = React.useState("");
+  const [fields, setFields] = React.useState({});
   const [image, setImage] = React.useState("");
 
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/roles", {
-        name,
+      const res = await api.post("/dynamicEndpoint", {
+        fields,
       });
       if (res.data) {
         toast.success("Perfil de Acesso Adicionado!", {
@@ -79,8 +79,16 @@ export default function AddFormModel(props) {
     document.getElementById("fileInput").click();
   };
 
+  const handleChange = (fieldName) => (e) => {
+    setFields({
+      ...fields,
+      [fieldName]: e.target.value,
+    });
+  };
+
   return (
     <form onSubmit={handleAdd}>
+      <Button onClick={() => console.log("fields", fields)}>view fields</Button>
       <DialogHeader
         title={modalOptions.label}
         femaleGender={modalOptions.femaleGender}
@@ -159,8 +167,8 @@ export default function AddFormModel(props) {
                     <Typography sx={{ fontSize: 14 }}>{field.label}</Typography>
                     {field.type === "string" && (
                       <TextField
-                        // value={name}
-                        // onChange={(e) => setName(e.target.value)}
+                        value={fields[field.name] || ""}
+                        onChange={handleChange(field.name)}
                         sx={{
                           width:
                             modalOptions.maxWidth === "xs"
@@ -177,8 +185,9 @@ export default function AddFormModel(props) {
                     )}
                     {field.type === "currency" && (
                       <TextField
-                        // value={name}
-                        // onChange={(e) => setName(e.target.value)}
+                        type="number"
+                        value={fields[field.name] || 0}
+                        onChange={handleChange(field.name)}
                         sx={{
                           width:
                             modalOptions.maxWidth === "xs"
@@ -201,8 +210,8 @@ export default function AddFormModel(props) {
                     {field.type === "password" && (
                       <TextField
                         type="password"
-                        // value={name}
-                        // onChange={(e) => setName(e.target.value)}
+                        value={fields[field.name] || ""}
+                        onChange={handleChange(field.name)}
                         sx={{
                           width:
                             modalOptions.maxWidth === "xs"
@@ -224,8 +233,8 @@ export default function AddFormModel(props) {
                     )}
                     {field.type === "fullWidth" && (
                       <TextField
-                        // value={name}
-                        // onChange={(e) => setName(e.target.value)}
+                        value={fields[field.name] || ""}
+                        onChange={handleChange(field.name)}
                         sx={{ width: "336%" }}
                         size="small"
                         required={field.required}
@@ -245,8 +254,8 @@ export default function AddFormModel(props) {
                         }}
                         size="small"
                         required={field.required}
-                        // value={firstOption}
-                        // onChange={(e) => handleSelectedFirstOption(e)}
+                        value={fields[field.name] || ""}
+                        onChange={handleChange(field.name)}
                       >
                         {field.options.map((option, index) => (
                           <MenuItem value={option} key={index}>
@@ -270,8 +279,8 @@ export default function AddFormModel(props) {
                         multiple
                         size="small"
                         required={field.required}
-                        // value={firstOption}
-                        // onChange={(e) => handleSelectedFirstOption(e)}
+                        value={fields[field.name] || ""}
+                        onChange={handleChange(field.name)}
                       >
                         {field.options.map((option, index) => (
                           <MenuItem value={option} key={index}>
@@ -282,8 +291,8 @@ export default function AddFormModel(props) {
                     )}
                     {field.type === "date" && (
                       <TextField
-                        // value={name}
-                        // onChange={(e) => setName(e.target.value)}
+                        value={fields[field.name] || ""}
+                        onChange={handleChange(field.name)}
                         sx={{
                           width:
                             modalOptions.maxWidth === "xs"
@@ -300,8 +309,8 @@ export default function AddFormModel(props) {
                     )}
                     {field.type === "dynamicData" && (
                       <TextField
-                        // value={name}
-                        // onChange={(e) => setName(e.target.value)}
+                        value={fields[field.name] || ""}
+                        onChange={handleChange(field.name)}
                         sx={{
                           width:
                             modalOptions.maxWidth === "xs"
@@ -316,11 +325,10 @@ export default function AddFormModel(props) {
                         required={field.required}
                       />
                     )}
-
                     {field.type === "attachments" && (
                       <TextField
-                        // value={name}
-                        // onChange={(e) => setName(e.target.value)}
+                        value={fields[field.name] || ""}
+                        onChange={handleChange(field.name)}
                         sx={{ width: "336%" }}
                         size="small"
                         required={field.required}
@@ -328,8 +336,8 @@ export default function AddFormModel(props) {
                     )}
                     {field.type === "list" && (
                       <TextField
-                        // value={name}
-                        // onChange={(e) => setName(e.target.value)}
+                        value={fields[field.name] || ""}
+                        onChange={handleChange(field.name)}
                         sx={{ width: "336%" }}
                         size="small"
                         required={field.required}
@@ -337,8 +345,8 @@ export default function AddFormModel(props) {
                     )}
                     {field.type === "checkbox" && (
                       <Checkbox
-                        // value={name}
-                        // onChange={(e) => setName(e.target.value)}
+                        value={fields[field.name] || ""}
+                        onChange={handleChange(field.name)}
                         size="small"
                         required={field.required}
                       />
