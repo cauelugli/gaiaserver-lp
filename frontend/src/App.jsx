@@ -30,6 +30,7 @@ import Files from "./pages/Files";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import PageModel from "./pages/PageModel";
+import Reports from "./pages/Reports";
 
 import ShortcutModals from "./components/ShortcutModals";
 
@@ -346,6 +347,23 @@ export default function App() {
                             customers={customers}
                             configAgenda={configAgenda}
                             configDashboard={configData.dashboard}
+                            configCustomization={configData.customization}
+                            topBar={userPreferences.barPosition}
+                          />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+
+                    <Route
+                      path="/reports"
+                      element={
+                        isAuthenticated(login, userData) &&
+                        hasPermission(userData, configData, "reports") ? (
+                          <Reports
+                            userId={userData._id}
+                            userUsername={userData.username}
                             configCustomization={configData.customization}
                             topBar={userPreferences.barPosition}
                           />
