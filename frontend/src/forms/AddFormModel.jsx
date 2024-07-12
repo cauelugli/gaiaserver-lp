@@ -150,13 +150,26 @@ export default function AddFormModel(props) {
                     modalOptions.fieldsSections[sectionIndex].name
                 )
                 .map((field, fieldIndex) => (
-                  <Grid key={fieldIndex} item sx={{ mr: 1 }}>
+                  <Grid
+                    key={fieldIndex}
+                    item
+                    sx={{ mr: 1, mb: fieldIndex === 0 ? 1 : 0 }}
+                  >
                     <Typography sx={{ fontSize: 14 }}>{field.label}</Typography>
                     {field.type === "string" && (
                       <TextField
                         // value={name}
                         // onChange={(e) => setName(e.target.value)}
-                        sx={{ width: 200 }}
+                        sx={{
+                          width:
+                            modalOptions.maxWidth === "xs"
+                              ? 165
+                              : modalOptions.maxWidth === "sm"
+                              ? 175
+                              : modalOptions.maxWidth === "md"
+                              ? 200
+                              : 200,
+                        }}
                         size="small"
                         required={field.required}
                       />
@@ -173,7 +186,16 @@ export default function AddFormModel(props) {
 
                     {field.type === "select" && (
                       <Select
-                        sx={{ width: 200 }}
+                        sx={{
+                          width:
+                            modalOptions.maxWidth === "xs"
+                              ? 165
+                              : modalOptions.maxWidth === "sm"
+                              ? 175
+                              : modalOptions.maxWidth === "md"
+                              ? 200
+                              : 200,
+                        }}
                         size="small"
                         required={field.required}
                         // value={firstOption}
@@ -190,7 +212,16 @@ export default function AddFormModel(props) {
                       <TextField
                         // value={name}
                         // onChange={(e) => setName(e.target.value)}
-                        sx={{ width: 200 }}
+                        sx={{
+                          width:
+                            modalOptions.maxWidth === "xs"
+                              ? 165
+                              : modalOptions.maxWidth === "sm"
+                              ? 175
+                              : modalOptions.maxWidth === "md"
+                              ? 200
+                              : 200,
+                        }}
                         size="small"
                         required={field.required}
                       />
@@ -199,7 +230,16 @@ export default function AddFormModel(props) {
                       <TextField
                         // value={name}
                         // onChange={(e) => setName(e.target.value)}
-                        sx={{ width: 200 }}
+                        sx={{
+                          width:
+                            modalOptions.maxWidth === "xs"
+                              ? 165
+                              : modalOptions.maxWidth === "sm"
+                              ? 175
+                              : modalOptions.maxWidth === "md"
+                              ? 200
+                              : 200,
+                        }}
                         size="small"
                         required={field.required}
                       />
