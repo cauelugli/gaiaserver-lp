@@ -121,13 +121,6 @@ export default function AddFormModel(props) {
 
   return (
     <form onSubmit={handleAdd}>
-      <Button onClick={() => console.log("fields", fields)}>view fields</Button>
-      <Button
-        variant="contained"
-        onClick={() => console.log("selectedProducts", selectedProducts)}
-      >
-        view selectedProducts
-      </Button>
       <DialogHeader
         title={modalOptions.label}
         femaleGender={modalOptions.femaleGender}

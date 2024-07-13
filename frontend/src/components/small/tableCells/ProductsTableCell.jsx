@@ -31,10 +31,9 @@ const ProductsTableCell = (props) => {
       direction="row"
       alignItems="center"
       justifyContent="space-evenly"
-      sx={{ my: 2 }}
     >
       {options.map((option, index) => (
-        <Grid item key={index} sx={{ mx: 3 }}>
+        <Grid item key={index}>
           <BadgedIcon
             item={option}
             handleProductChange={props.handleProductChange}
