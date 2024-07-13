@@ -16,7 +16,15 @@ router.get("/", async (req, res) => {
 
 // CREATE PRODUCT
 router.post("/", async (req, res) => {
-  const newProduct = new Product(req.body);
+  const newProduct = new Product({
+    type: req.body.type,
+    name: req.body.name,
+    buyValue: parseFloat(req.body.buyValue),
+    sellValue: parseFloat(req.body.sellValue),
+    fields: req.body.fields,
+    images: req.body.images,
+    createdBy: req.body.createdBy,
+  });
   try {
     const savedProduct = await newProduct.save();
     res.status(200).json(savedProduct);

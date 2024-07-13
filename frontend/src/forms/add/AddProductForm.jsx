@@ -13,6 +13,7 @@ const api = axios.create({
 
 import {
   Button,
+  DialogActions,
   //   DialogActions,
   DialogContent,
   FormHelperText,
@@ -153,7 +154,7 @@ export default function AddProductForm({
           </Grid>
 
           <Grid item>
-            <Typography sx={{ fontSize: 13 }}>Valor de Compra</Typography>
+            <Typography sx={{ fontSize: 13 }}>Valor de Compra/Produção</Typography>
             <TextField
               value={buyValue}
               onChange={(e) => handleCurrencyValueChange(e, setBuyValue)}
@@ -349,7 +350,7 @@ export default function AddProductForm({
           />
         </Grid>
       </DialogContent>
-      {/* <DialogActions sx={{ mt: 2 }}>
+      <DialogActions sx={{ mt: 2 }}>
         <Button type="submit" variant="contained" color="success">
           OK
         </Button>
@@ -362,7 +363,7 @@ export default function AddProductForm({
         >
           X
         </Button>
-      </DialogActions> */}
+      </DialogActions>
     </form>
   );
 }

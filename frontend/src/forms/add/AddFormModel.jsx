@@ -442,18 +442,22 @@ export default function AddFormModel(props) {
         configCustomization={props.configCustomization}
         extraSmall
       />
-      <DialogActions>
-        <Button type="submit" variant="contained" color="success">
-          OK
-        </Button>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => props.setOpenAdd(!props.openAdd)}
-        >
-          X
-        </Button>
-      </DialogActions>
+      {props.fromProducts ? (
+        ""
+      ) : (
+        <DialogActions>
+          <Button type="submit" variant="contained" color="success">
+            OK
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => props.setOpenAdd(!props.openAdd)}
+          >
+            X
+          </Button>
+        </DialogActions>
+      )}
     </form>
   );
 }

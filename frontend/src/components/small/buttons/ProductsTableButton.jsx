@@ -16,7 +16,7 @@ import {
 
 import SellIcon from "@mui/icons-material/Sell";
 
-import AddFormModel from "../../../forms/add/AddFormModel";
+import AddProductForm from "../../../forms/add/AddProductForm";
 
 export default function ProductsTableButton(props) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -76,10 +76,10 @@ export default function ProductsTableButton(props) {
           open={openAdd}
           onClose={() => setOpenAdd(!openAdd)}
         >
-          <AddFormModel
+          <AddProductForm
             fromProducts
             buttonProps={props}
-            product={selectedProduct}
+            baseProduct={selectedProduct}
             userName={props.userName}
             userId={props.userId}
             configAgenda={props.configAgenda}
