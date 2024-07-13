@@ -24,6 +24,7 @@ import RefreshButton from "../components/small/buttons/RefreshButton";
 import NoDataText from "../components/small/NoDataText";
 import TableOrCardSelector from "../components/small/TableOrCardSelector";
 import CardModel from "../components/cards/CardModel";
+import ProductsTableButton from "../components/small/buttons/ProductsTableButton";
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -169,12 +170,18 @@ export default function PageModel(props) {
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           {props.item.label}
         </Typography>
-        {currentPage !== "quotes" && (
-          <PageButtonModel
+        {currentPage === "products" ? (
+          <ProductsTableButton
             configCustomization={props.configCustomization}
             baseProducts={items.filter((item) => !item.name)}
-            page={currentPage}
           />
+        ) : (
+          currentPage !== "quotes" && (
+            <PageButtonModel
+              configCustomization={props.configCustomization}
+              page={currentPage}
+            />
+          )
         )}
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

@@ -14,26 +14,19 @@ import {
   Dialog,
 } from "@mui/material";
 
+import SellIcon from "@mui/icons-material/Sell";
+
 import AddFormModel from "../../../forms/add/AddFormModel";
 
-import pageButtonOptions from "../../../pageButtonOptions";
-
-export default function PageButtonModel(props) {
-  const currentPageOptions = pageButtonOptions.find(
-    (option) => option.page === props.page
-  ).pageButtonOptions;
-
+export default function ProductsTableButton(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openAdd, setOpenAdd] = React.useState(false);
-  const [selectedOption, setSelectedOption] = React.useState("");
-  const [selectedOptionMaxWidth, setSelectedOptionMaxWidth] =
-    React.useState("xs");
+  const [selectedProduct, setSelectedProduct] = React.useState({});
 
   const open = Boolean(anchorEl);
 
-  const handleMenuItemClick = (option) => {
-    setSelectedOption(option);
-    setSelectedOptionMaxWidth(option.modal.maxWidth);
+  const handleMenuItemClick = (product) => {
+    setSelectedProduct(product);
     setAnchorEl(null);
     setOpenAdd(true);
   };
@@ -62,13 +55,15 @@ export default function PageButtonModel(props) {
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
         <List sx={{ minWidth: 150, maxWidth: 220 }}>
-          {currentPageOptions.map((option, index) => (
+          {props.baseProducts.map((product, index) => (
             <ListItemButton
               key={index}
-              onClick={() => handleMenuItemClick(option)}
+              onClick={() => handleMenuItemClick(product)}
             >
-              <ListItemIcon>{option.icon}</ListItemIcon>
-              <ListItemText primary={option.label} sx={{ ml: -2 }} />
+              <ListItemIcon>
+                <SellIcon />
+              </ListItemIcon>
+              <ListItemText primary={product.type} sx={{ ml: -2 }} />
             </ListItemButton>
           ))}
         </List>
@@ -77,14 +72,14 @@ export default function PageButtonModel(props) {
       {openAdd && (
         <Dialog
           fullWidth
-          maxWidth={selectedOptionMaxWidth}
+          maxWidth="lg"
           open={openAdd}
           onClose={() => setOpenAdd(!openAdd)}
         >
           <AddFormModel
+            fromProducts
             buttonProps={props}
-            options={currentPageOptions}
-            selectedOptionLabel={selectedOption.label}
+            product={selectedProduct}
             userName={props.userName}
             userId={props.userId}
             configAgenda={props.configAgenda}
