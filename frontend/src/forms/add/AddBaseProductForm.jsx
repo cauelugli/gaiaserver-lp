@@ -44,6 +44,7 @@ export default function AddBaseProductForm({
   toast,
   userId,
 }) {
+  const [name, setName] = React.useState("");
   const [type, setType] = React.useState("");
   const [fields, setFields] = React.useState([]);
 
@@ -77,6 +78,7 @@ export default function AddBaseProductForm({
 
     try {
       const productResponse = await api.post("/products", {
+        name,
         type,
         fields,
         createdBy: userName,
@@ -183,6 +185,17 @@ export default function AddBaseProductForm({
           justifyContent="flex-start"
           alignItems="center"
         >
+          <Grid item>
+            <Typography sx={{ fontSize: 13 }}>Nome</Typography>
+            <TextField
+              size="small"
+              value={name}
+              required
+              onChange={(e) => setName(e.target.value)}
+              variant="outlined"
+              sx={{ width: 150 }}
+            />
+          </Grid>
           <Grid item>
             <Typography sx={{ fontSize: 13 }}>Tipo</Typography>
             <TextField
