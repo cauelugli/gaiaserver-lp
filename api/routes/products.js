@@ -17,13 +17,13 @@ router.get("/", async (req, res) => {
 // CREATE PRODUCT
 router.post("/", async (req, res) => {
   const newProduct = new Product({
-    type: req.body.type,
-    name: req.body.name,
-    buyValue: parseFloat(req.body.buyValue),
-    sellValue: parseFloat(req.body.sellValue),
-    fields: req.body.fields,
-    images: req.body.images,
-    createdBy: req.body.createdBy,
+    type: req.body.type || null,
+    name: req.body.name || null,
+    buyValue: parseFloat(req.body.buyValue) || null,
+    sellValue: parseFloat(req.body.sellValue) || null,
+    fields: req.body.fields || null,
+    images: req.body.images || null,
+    createdBy: req.body.createdBy || null,
   });
   try {
     const savedProduct = await newProduct.save();

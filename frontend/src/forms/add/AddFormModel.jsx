@@ -26,7 +26,6 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
-
 import DialogHeader from "../../components/small/DialogHeader";
 import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 import DateTableCell from "../../components/small/tableCells/DateTableCell";
@@ -317,6 +316,7 @@ export default function AddFormModel(props) {
                           <Grid
                             sx={{
                               m: 2,
+                              mt: 4,
                               border: "1px solid #ccc",
                               borderRadius: 4,
                             }}
@@ -341,19 +341,19 @@ export default function AddFormModel(props) {
                                   <Typography
                                     sx={{ fontWeight: "bold", fontSize: 14 }}
                                   >
+                                    Valor por Item
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="right">
+                                  <Typography
+                                    sx={{ fontWeight: "bold", fontSize: 14 }}
+                                  >
                                     Total
                                   </Typography>
                                 </TableCell>
                               </TableRow>
                               {selectedProducts.map((product, index) => (
                                 <TableRow key={index} sx={{ mt: 3 }}>
-                                  <Button
-                                    onClick={() =>
-                                      console.log("product", product)
-                                    }
-                                  >
-                                    product
-                                  </Button>
                                   <TableCell>
                                     <Typography sx={{ fontSize: 14 }}>
                                       {product.name}
@@ -362,6 +362,11 @@ export default function AddFormModel(props) {
                                   <TableCell align="right">
                                     <Typography sx={{ fontSize: 14 }}>
                                       {product.count}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell align="right">
+                                    <Typography sx={{ fontSize: 14 }}>
+                                      R${product.sellValue.toFixed(2)}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="right">
