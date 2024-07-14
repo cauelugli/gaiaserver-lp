@@ -78,8 +78,6 @@ export default function App() {
   const [configAgenda, setConfigAgenda] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [userPreferences, setUserPreferences] = useState([]);
-  const [requests, setRequests] = useState([]);
-  const [customers, setCustomers] = useState([]);
   const [users, setUsers] = useState([]);
   const [managers, setManagers] = useState([]);
   const [departments, setDepartments] = useState([]);
@@ -159,23 +157,6 @@ export default function App() {
 
         const positions = await api.get("/positions");
         setPositions(positions.data);
-
-        const resJobs = await api.get("/jobs");
-        const resSales = await api.get("/sales");
-        const requestsCombinedData = [...resJobs.data, ...resSales.data];
-        setRequests(requestsCombinedData);
-
-        const resCustomers = await api.get("/get", {
-          params: { model: "Cliente Empresa" },
-        });
-        const resClients = await api.get("/get", {
-          params: { model: "Cliente Pessoa Física" },
-        });
-        const customersCombinedData = [
-          ...resCustomers.data,
-          ...resClients.data,
-        ];
-        setCustomers(customersCombinedData);
 
         const departments = await api.get("/departments");
         setDepartments(departments.data);
@@ -347,8 +328,6 @@ export default function App() {
                             userId={userData._id}
                             userUsername={userData.username}
                             users={users}
-                            requests={requests}
-                            customers={customers}
                             configAgenda={configAgenda}
                             configDashboard={configData.dashboard}
                             configCustomization={configData.customization}
@@ -434,8 +413,6 @@ export default function App() {
                               userId={userData._id}
                               userUsername={userData.username}
                               users={users}
-                              requests={requests}
-                              customers={customers}
                               setUserPreferences={setUserPreferences}
                               configData={configData}
                               userName={userData.name}

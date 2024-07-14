@@ -13,17 +13,6 @@ const fs = require("fs");
 const path = require("path");
 const dayjs = require("dayjs");
 
-// GET ALL JOBS
-router.get("/", async (req, res) => {
-  try {
-    const jobs = await Job.find();
-    res.status(200).json(jobs);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
 // CREATE JOB
 router.post("/", async (req, res) => {
   const maxJob = await Job.findOne().sort({ number: -1 });

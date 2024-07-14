@@ -5,18 +5,21 @@ const { defineModel } = require("../../controllers/functions/routeFunctions");
 // CREATE ITEM
 router.post("/", async (req, res) => {
   const { fields, name } = req.body;
-  // console.log("fields", fields);
+  console.log("\nreq.body", req.body, "\n");
+  // console.log("\nfields", fields, "\n");
 
   const Model = defineModel(req.body.model);
 
   if (!Model) {
+    console.log("\nmodel not found\n");
     return res.status(400).json({ error: "Tipo de cliente inválido" });
   }
 
-  const existingNameUser = await Model.findOne({ name });
-
-  if (existingNameUser) {
-    return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
+  if (Model === "Cliente Empresa" || Model === "Cliente Pessoa Física") {
+    const existingNameUser = await Model.findOne({ name });
+    if (existingNameUser) {
+      return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
+    }
   }
 
   const newItem = new Model(fields);

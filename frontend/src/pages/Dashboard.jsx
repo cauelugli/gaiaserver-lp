@@ -15,14 +15,14 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import MyCalendar from "../components/MyCalendar";
 import WorkerSelect from "../components/small/selects/WorkerSelect";
-import SmartReports from "../components/SmartReports";
+// import SmartReports from "../components/SmartReports";
 
 const Dashboard = ({
+  // users,
+  // requests,
+  // customers,
   userId,
   userUsername,
-  users,
-  requests,
-  customers,
   configDashboard,
   configAgenda,
   configCustomization,
@@ -116,7 +116,7 @@ const Dashboard = ({
           </Accordion>
         </>
       )}
-      <SmartReports requests={requests} customers={customers} users={users} />
+      {/* <SmartReports requests={requests} customers={customers} users={users} /> */}
     </Box>
   );
 };

@@ -8,8 +8,8 @@ const routeOptions = [
   },
   {
     page: "customers",
-    endpoints: ["/customers", "/clients"],
     label: "Clientes",
+    models: ["Customer", "Client"],
     tabs: ["Empresas", "Pessoa Física"],
     tableColumns: [
       // CUSTOMER TABLE
@@ -54,7 +54,7 @@ const routeOptions = [
   },
   {
     page: "requests",
-    endpoints: ["/jobs", "/sales"],
+    models: ["Job", "Sale"],
     label: "Solicitações",
     tabs: ["Jobs", "Vendas"],
     tableColumns: [
@@ -116,7 +116,7 @@ const routeOptions = [
   },
   {
     page: "users",
-    endpoints: ["/users", "/managers"],
+    models: ["User", "Manager"],
     label: "Colaboradores",
     tabs: ["Funcionários", "Gerentes"],
     tableColumns: [
@@ -179,7 +179,7 @@ const routeOptions = [
   },
   {
     page: "departments",
-    endpoints: ["/departments", "/groups"],
+    models: ["Departament", "Group"],
     label: "Departamentos",
     tabs: ["Serviços e Internos", "Grupos"],
     tableColumns: [
@@ -221,7 +221,7 @@ const routeOptions = [
   },
   {
     page: "services",
-    endpoints: ["/services", "/servicePlans"],
+    models: ["Service", "ServicePlan"],
     label: "Serviços",
     tabs: ["Setores", "Planos"],
     tableColumns: [
@@ -259,7 +259,7 @@ const routeOptions = [
   },
   {
     page: "quotes",
-    endpoints: ["/quotes/jobs", "/quotes/sales"],
+    models: ["QuoteJob", "QuoteSale"],
     label: "Orçamentos",
     tabs: ["Jobs", "Vendas"],
     tableColumns: [
@@ -322,8 +322,8 @@ const routeOptions = [
   {
     // TO-DO
     page: "stock",
-    endpoints: ["/stock", "/stock", "/stock"],
     label: "Estoque",
+    models: ["Product", "Material", "StockEntry"],
     tabs: ["Produtos", "Materiais", "Entradas"],
     // review this
     tableColumns: [
@@ -371,31 +371,30 @@ const routeOptions = [
     ],
   },
   {
-    // TO-DO
     page: "products",
-    endpoints: ["/products"],
     label: "Produtos",
+    models: ["BaseProduct", "CreatedProduct"],
     tabs: [],
   },
   {
     // TO-DO
     page: "materials",
-    endpoints: ["/materials"],
+    models: ["BaseMaterial", "CreatedMaterial"],
     label: "Materiais",
     tabs: [],
   },
   {
     page: "chat",
-    endpoints: ["/chat"],
     label: "Chat",
     tabs: ["Chats"],
+    models: ["Chat"],
     tableColumns: [[""], [""]],
   },
   {
     page: "projects",
-    endpoints: ["/projects"],
     label: "Projetos",
     tabs: ["Em Execução"],
+    models: ["BaseProjects", "CreatedProjetos"],
     // review this
     tableColumns: [
       [
@@ -428,9 +427,9 @@ const routeOptions = [
   },
   {
     page: "finance",
-    endpoints: ["/finances/income", "/finances/outcome"],
     label: "Financeiro",
     tabs: ["A Receber", "A Pagar"],
+    models: ["Income", "Outcome"],
     tableColumns: [
       [
         {
@@ -494,9 +493,9 @@ const routeOptions = [
   },
   {
     page: "security",
-    endpoints: ["/operators", "/positions", "/roles"],
     label: "Segurança de Acessos",
     tabs: ["Operadores", "Cargos", "Perfil de Acesso"],
+    models: ["Operator", "Position", "Role"],
     tableColumns: [
       [
         {

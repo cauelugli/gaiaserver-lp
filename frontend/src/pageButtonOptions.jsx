@@ -249,7 +249,7 @@ const pageButtonOptions = [
         label: "Job",
         icon: <EngineeringIcon />,
         modal: {
-          endpoint: "AddJob",
+          endpoint: "/add",
           label: "Job",
           femaleGender: false,
           maxWidth: "md",
@@ -303,7 +303,7 @@ const pageButtonOptions = [
               name: "scheduleToWorker",
               label: "Agendar para Colaborador",
               type: "checkbox",
-              required: true,
+              required: false,
             },
             {
               fieldSection: "description",
@@ -327,7 +327,7 @@ const pageButtonOptions = [
         label: "Venda",
         icon: <SellIcon />,
         modal: {
-          name: "AddSale",
+          name: "/add",
           label: "Venda",
           femaleGender: true,
           maxWidth: "md",

@@ -11,16 +11,6 @@ const dayjs = require("dayjs");
 const fs = require("fs");
 const path = require("path");
 
-// GET ALL SALES
-router.get("/", async (req, res) => {
-  try {
-    const sales = await Sale.find();
-    res.status(200).json(sales);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // CREATE SALE
 router.post("/", async (req, res) => {
   const maxSale = await Sale.findOne().sort({ number: -1 });

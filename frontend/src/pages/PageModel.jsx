@@ -101,13 +101,14 @@ export default function PageModel(props) {
       } else {
         try {
           const [itemsResponse, configResponse] = await Promise.all([
-            api.get(
-              `${
-                props.item.endpoints[
-                  props.item.page !== currentPage ? 0 : value
-                ]
-              }`
-            ),
+            api.get("/get", {
+              params: {
+                model:
+                  props.item.models[
+                    props.item.page !== currentPage ? 0 : value
+                  ],
+              },
+            }),
             api.get("/config"),
           ]);
 
@@ -143,7 +144,7 @@ export default function PageModel(props) {
       }
     };
     fetchData();
-  }, [refreshData, currentPage, props.item, props.item.endpoints, value]);
+  }, [refreshData, currentPage, props.item, value]);
 
   if (isLoading) {
     return (

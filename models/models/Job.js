@@ -16,13 +16,8 @@ jobSchema = new mongoose.Schema({
     type: Object,
     required: true,
   },
-  department: {
-    type: Object,
-    required: true,
-  },
   description: {
     type: String,
-    required: true,
   },
   isActive: {
     type: Boolean,
@@ -43,13 +38,6 @@ jobSchema = new mongoose.Schema({
       user: String,
     },
   ],
-  local: {
-    type: String,
-  },
-  manager: {
-    type: Object,
-    required: true,
-  },
   materials: {
     type: Array,
   },
@@ -61,11 +49,6 @@ jobSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true,
-  },
-  requester: {
-    type: String,
-    required: true,
   },
   resolution: {
     type: String,
@@ -78,7 +61,6 @@ jobSchema = new mongoose.Schema({
   },
   scheduledTo: {
     type: Date,
-    required: true,
   },
   selectedSchedule: {
     type: String,
@@ -96,7 +78,6 @@ jobSchema = new mongoose.Schema({
   },
   worker: {
     type: Object,
-    required: true,
   },
 });
 
