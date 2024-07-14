@@ -42,24 +42,25 @@ export default function AddFormModel(props) {
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/dynamicEndpoint", {
+      const res = await api.post(`${modalOptions.endpoint}`, {
         fields,
+        model: modalOptions.label,
         selectedProducts,
       });
       if (res.data) {
-        toast.success("X Adicionado!", {
+        toast.success(`${props.selectedOptionLabel} Adicionado!`, {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
         });
       }
-      props.setOpenAdd(!!props.openAdd);
+      props.setOpenAdd(!props.openAdd);
       !props.setRefreshData(!props.refreshData);
     } catch (err) {
       if (
-        (err.response && err.response.status === 422) ||
-        err.response.status === 420
+        (err && err.response && err.response.status === 422) ||
+        (err && err.response && err.response.status === 420)
       ) {
         toast.error(err.response.data.error, {
           closeOnClick: true,
@@ -68,6 +69,7 @@ export default function AddFormModel(props) {
           autoClose: 1200,
         });
       } else {
+        console.log("err", err);
         toast.error("Houve algum erro...", {
           closeOnClick: true,
           pauseOnHover: false,
@@ -119,6 +121,9 @@ export default function AddFormModel(props) {
       return newState;
     });
   };
+
+  console.log("modal endpoint", modalOptions.endpoint);
+  console.log("props.selectedOptionLabel", props.selectedOptionLabel);
 
   return (
     <form onSubmit={handleAdd}>
@@ -281,22 +286,6 @@ export default function AddFormModel(props) {
                         required={field.required}
                         multiple={field.multiple}
                       />
-                      // <TextField
-                      //   value={fields[field.name] || ""}
-                      //   onChange={handleChange(field.name)}
-                      //   sx={{
-                      //     width:
-                      //       modalOptions.maxWidth === "xs"
-                      //         ? 190
-                      //         : modalOptions.maxWidth === "sm"
-                      //         ? 175
-                      //         : modalOptions.maxWidth === "md"
-                      //         ? 200
-                      //         : 200,
-                      //   }}
-                      //   size="small"
-                      //   required={field.required}
-                      // />
                     )}
                     {field.type === "productList" && (
                       <Grid

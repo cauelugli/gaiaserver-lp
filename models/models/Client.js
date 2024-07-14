@@ -12,7 +12,7 @@ const clientSchema = new mongoose.Schema({
     required: true,
   },
   birthdate: {
-    type: Date,
+    type: String,
   },
   cpf: {
     type: String,

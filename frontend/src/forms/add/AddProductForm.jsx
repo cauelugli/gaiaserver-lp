@@ -30,8 +30,8 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 export default function AddProductForm({
   // userName,
-  // refreshData,
-  // setRefreshData,
+  refreshData,
+  setRefreshData,
   onClose,
   userId,
   baseProduct,
@@ -103,8 +103,8 @@ export default function AddProductForm({
           userId: userId,
         });
       }
-      //   onClose();
-      //   setRefreshData(!refreshData);
+      onClose();
+      setRefreshData(!refreshData);
     } catch (err) {
       toast.error("Houve algum erro...", {
         closeOnClick: true,
@@ -154,7 +154,9 @@ export default function AddProductForm({
           </Grid>
 
           <Grid item>
-            <Typography sx={{ fontSize: 13 }}>Valor de Compra/Produção</Typography>
+            <Typography sx={{ fontSize: 13 }}>
+              Valor de Compra/Produção
+            </Typography>
             <TextField
               value={buyValue}
               onChange={(e) => handleCurrencyValueChange(e, setBuyValue)}

@@ -173,11 +173,15 @@ export default function PageModel(props) {
         {currentPage === "products" ? (
           <ProductsTableButton
             configCustomization={props.configCustomization}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
             baseProducts={items.filter((item) => !item.name)}
           />
         ) : (
           currentPage !== "quotes" && (
             <PageButtonModel
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
               configCustomization={props.configCustomization}
               page={currentPage}
             />

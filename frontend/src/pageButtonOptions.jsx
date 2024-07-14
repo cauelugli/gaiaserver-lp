@@ -30,7 +30,7 @@ const pageButtonOptions = [
         label: "Empresa",
         icon: <ApartmentIcon />,
         modal: {
-          name: "AddCustomer",
+          endpoint: "/add",
           label: "Cliente Empresa",
           femaleGender: false,
           maxWidth: "md",
@@ -153,7 +153,7 @@ const pageButtonOptions = [
         label: "Pessoa Física",
         icon: <PersonIcon />,
         modal: {
-          name: "AddClient",
+          endpoint: "/add",
           label: "Cliente Pessoa Física",
           femaleGender: false,
           maxWidth: "md",
@@ -233,7 +233,7 @@ const pageButtonOptions = [
         label: "Importar Contatos",
         icon: <UploadFileIcon />,
         modal: {
-          name: "ImportContacts",
+          endpoint: "/importContacts",
           label: "Importação de Clientes",
           femaleGender: true,
           type: "list",
@@ -249,7 +249,7 @@ const pageButtonOptions = [
         label: "Job",
         icon: <EngineeringIcon />,
         modal: {
-          name: "AddJob",
+          endpoint: "AddJob",
           label: "Job",
           femaleGender: false,
           maxWidth: "md",
