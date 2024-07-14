@@ -32,8 +32,12 @@ const DynamicDataTableCell = (props) => {
         }
       } else if (props.field.dynamicData === "allCustomers") {
         try {
-          const resCustomers = await api.get("/customers");
-          const resClients = await api.get("/clients");
+          const resCustomers = await api.get("/get", {
+            params: { model: "Cliente Empresa" },
+          });
+          const resClients = await api.get("/get", {
+            params: { model: "Cliente Pessoa Física" },
+          });
           const customersCombinedData = [
             ...resCustomers.data,
             ...resClients.data,

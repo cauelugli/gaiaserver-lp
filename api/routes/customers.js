@@ -3,36 +3,6 @@ const router = express.Router();
 const Customer = require("../../models/models/Customer");
 const Client = require("../../models/models/Client");
 
-// GET ALL CUSTOMERS
-router.get("/", async (req, res) => {
-  try {
-    const customers = await Customer.find();
-    res.status(200).json(customers);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// CREATE CUSTOMER
-router.post("/", async (req, res) => {
-  const { name } = req.body;
-  const newCustomer = new Customer(req.body);
-  try {
-    const existingNameUser = await Customer.findOne({ name });
-    if (existingNameUser) {
-      if (!req.body.config.allowSameNameCustomer) {
-        return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
-      }
-    }
-
-    const savedCustomer = await newCustomer.save();
-    res.status(200).json(savedCustomer);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
 // DELETE CUSTOMER
 router.delete("/:id", async (req, res) => {
   const customerId = req.params.id;

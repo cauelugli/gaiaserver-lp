@@ -165,8 +165,12 @@ export default function App() {
         const requestsCombinedData = [...resJobs.data, ...resSales.data];
         setRequests(requestsCombinedData);
 
-        const resCustomers = await api.get("/customers");
-        const resClients = await api.get("/clients");
+        const resCustomers = await api.get("/get", {
+          params: { model: "Cliente Empresa" },
+        });
+        const resClients = await api.get("/get", {
+          params: { model: "Cliente Pessoa Física" },
+        });
         const customersCombinedData = [
           ...resCustomers.data,
           ...resClients.data,

@@ -1,5 +1,3 @@
-// routeFunctions.js
-
 const Customer = require("../../models/models/Customer");
 const Client = require("../../models/models/Client");
 

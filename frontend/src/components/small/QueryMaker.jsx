@@ -37,8 +37,12 @@ const QueryMaker = () => {
         setJobs(resJobs.data);
         setSales(resSales.data);
 
-        const resCustomers = await api.get("/customers");
-        const resClients = await api.get("/clients");
+        const resCustomers = await api.get("/get", {
+          params: { model: "Cliente Empresa" },
+        });
+        const resClients = await api.get("/get", {
+          params: { model: "Cliente Pessoa Física" },
+        });
         setCustomers(resCustomers.data);
         setClients(resClients.data);
 

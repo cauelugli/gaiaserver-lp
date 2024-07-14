@@ -1,12 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const Client = require("../../models/models/Client");
+const { defineModel } = require("../../controllers/functions/routeFunctions");
 
-// GET ALL ITEMS
+// GET ALL ITEMS BASED ON MODEL PARAMETER
 router.get("/", async (req, res) => {
+  const { model } = req.query;
+  const Model = defineModel(model);
+
+  if (!Model) {
+    return res.status(400).json({ error: "Invalid model specified" });
+  }
+
   try {
-    const clients = await Client.find();
-    res.status(200).json(clients);
+    const data = await Model.find();
+    res.status(200).json(data);
   } catch (err) {
     res.status(500).json(err);
   }

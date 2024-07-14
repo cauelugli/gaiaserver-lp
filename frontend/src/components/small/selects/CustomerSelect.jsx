@@ -25,8 +25,12 @@ const CustomerSelect = (props) => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const resCustomers = await api.get("/customers");
-        const resClients = await api.get("/clients");
+        const resCustomers = await api.get("/get", {
+          params: { model: "Cliente Empresa" },
+        });
+        const resClients = await api.get("/get", {
+          params: { model: "Cliente Pessoa Física" },
+        });
         const combinedData = [...resCustomers.data, ...resClients.data];
         setCustomers(
           props.customerType
