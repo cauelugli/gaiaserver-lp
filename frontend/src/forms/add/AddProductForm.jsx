@@ -29,10 +29,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 export default function AddProductForm({
-  userName,
+  // userName,
+  // refreshData,
+  // setRefreshData,
   onClose,
-  refreshData,
-  setRefreshData,
   userId,
   baseProduct,
 }) {
