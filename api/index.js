@@ -6,8 +6,10 @@ const server = http.createServer(app);
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const addRoute = require("./routes/add");
 const getRoute = require("./routes/get");
+const addRoute = require("./routes/add");
+const deleteRoute = require("./routes/delete");
+
 const newRoute = require("./routes/new");
 const authRoute = require("./routes/auth");
 const activateRoute = require("./routes/activate");
@@ -53,8 +55,10 @@ mongoose
   .then(console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 
-app.use("/api/add", addRoute);
 app.use("/api/get", getRoute);
+app.use("/api/add", addRoute);
+app.use("/api/delete", deleteRoute);
+
 app.use("/api/new", newRoute);
 app.use("/api/login", authRoute);
 app.use("/api/activate", activateRoute);
