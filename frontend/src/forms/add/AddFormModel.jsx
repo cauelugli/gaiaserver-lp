@@ -372,13 +372,35 @@ export default function AddFormModel(props) {
                                   <TableCell align="right">
                                     <Typography sx={{ fontSize: 14 }}>
                                       R$
-                                      {parseInt(
+                                      {(
                                         product.sellValue * product.count
                                       ).toFixed(2)}
                                     </Typography>
                                   </TableCell>
                                 </TableRow>
                               ))}
+                              {selectedProducts.length > 1 && (
+                                <TableRow sx={{ mt: 3 }}>
+                                  <TableCell id="ghost" />
+                                  <TableCell id="ghost" />
+                                  <TableCell id="ghost" />
+                                  <TableCell align="right">
+                                    <Typography
+                                      sx={{ fontSize: 16, fontWeight: "bold" }}
+                                    >
+                                      R$
+                                      {selectedProducts
+                                        .reduce(
+                                          (sum, product) =>
+                                            sum +
+                                            product.sellValue * product.count,
+                                          0
+                                        )
+                                        .toFixed(2)}{" "}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              )}
                             </Table>
                           </Grid>
                         )}
