@@ -179,7 +179,7 @@ const routeOptions = [
   },
   {
     page: "departments",
-    models: ["Departament", "Group"],
+    models: ["Department", "Group"],
     label: "Departamentos",
     tabs: ["Serviços e Internos", "Grupos"],
     tableColumns: [
@@ -259,7 +259,7 @@ const routeOptions = [
   },
   {
     page: "quotes",
-    models: ["QuoteJob", "QuoteSale"],
+    models: ["Quote", "Quote"],
     label: "Orçamentos",
     tabs: ["Jobs", "Vendas"],
     tableColumns: [
@@ -373,15 +373,16 @@ const routeOptions = [
   {
     page: "products",
     label: "Produtos",
-    models: ["BaseProduct", "CreatedProduct"],
+    models: ["Product"],
     tabs: [],
   },
   {
     // TO-DO
     page: "materials",
-    models: ["BaseMaterial", "CreatedMaterial"],
+    models: ["Material"],
     label: "Materiais",
     tabs: [],
+    tableColumns: [[""], [""]],
   },
   {
     page: "chat",
@@ -394,7 +395,7 @@ const routeOptions = [
     page: "projects",
     label: "Projetos",
     tabs: ["Em Execução"],
-    models: ["BaseProjects", "CreatedProjetos"],
+    models: ["Project"],
     // review this
     tableColumns: [
       [
@@ -429,7 +430,7 @@ const routeOptions = [
     page: "finance",
     label: "Financeiro",
     tabs: ["A Receber", "A Pagar"],
-    models: ["Income", "Outcome"],
+    models: ["FinanceIncome", "FinanceOutcome"],
     tableColumns: [
       [
         {

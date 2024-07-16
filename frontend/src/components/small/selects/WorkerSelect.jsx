@@ -26,8 +26,12 @@ const WorkerSelect = (props) => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const resUsers = await api.get("/users");
-        const resManagers = await api.get("/managers");
+        const resUsers = await api.get("/get", {
+          params: { model: "User" },
+        });
+        const resManagers = await api.get("/get", {
+          params: { model: "Manager" },
+        });
         const combinedData = [...resUsers.data, ...resManagers.data];
         setWorkers(combinedData);
       } catch (error) {

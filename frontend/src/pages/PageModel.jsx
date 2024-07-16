@@ -248,7 +248,7 @@ export default function PageModel(props) {
                   <>
                     {props.tableOrCardView ? (
                       <TableModel
-                        page={props.item.page}
+                        page="products"
                         mappedItem={item}
                         items={items}
                         baseProducts={items.filter((item) => !item.name)}
@@ -302,9 +302,11 @@ export default function PageModel(props) {
                 <>
                   {props.tableOrCardView ? (
                     <TableModel
+                      page={props.item.page}
                       items={items}
                       itemIndex={index}
                       tableColumns={props.item.tableColumns}
+                      tabIndex={value}
                       userName={props.userName}
                       userId={props.userId}
                       userRole={props.userRole}

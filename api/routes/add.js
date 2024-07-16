@@ -5,8 +5,7 @@ const { defineModel } = require("../../controllers/functions/routeFunctions");
 // CREATE ITEM
 router.post("/", async (req, res) => {
   const { fields, name } = req.body;
-  console.log("\nreq.body", req.body, "\n");
-  // console.log("\nfields", fields, "\n");
+  // console.log("\nreq.body", req.body, "\n");
 
   const Model = defineModel(req.body.model);
 

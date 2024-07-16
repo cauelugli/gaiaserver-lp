@@ -26,11 +26,7 @@ import {
   Tooltip,
 } from "@mui/material";
 
-// import StockEntriesTableActions from "../components/small/buttons/tableActionButtons/StockEntriesTableActions";
-
 export default function TableModel(props) {
-  // const [selectedItem, setSelectedItem] = React.useState("");
-
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("number");
 
@@ -205,49 +201,58 @@ export default function TableModel(props) {
                       </TableCell>
                     </TableRow>
                   ))
-              : sortedRows.slice(startIndex, endIndex).map((row, rowIndex) => (
-                  <TableRow key={rowIndex}>
-                    {props.tableColumns[props.itemIndex].map(
-                      (column, columnIndex) => (
-                        <TableCell
-                          key={columnIndex}
-                          align={columnIndex === 0 ? "" : "left"}
-                        >
-                          {row[column.id] &&
-                          typeof row[column.id] === "string" &&
-                          row[column.id].startsWith("/images") ? (
-                            <Avatar
-                              alt="Imagem do Produto"
-                              src={`http://localhost:3000/static${
-                                row[column.id]
-                              }`}
-                              sx={{ width: 34, height: 34 }}
-                            />
-                          ) : Array.isArray(row[column.id]) ? (
-                            row[column.id].map((obj, index) => (
-                              <Tooltip key={index} title={obj.name}>
-                                <Avatar
-                                  alt="Imagem do Produto"
-                                  src={`http://localhost:3000/static${obj.image}`}
-                                  sx={{ width: 34, height: 34, mr: 0.5 }}
-                                />
-                              </Tooltip>
-                            ))
-                          ) : typeof row[column.id] === "object" ? (
-                            row[column.id].name
-                          ) : (
-                            row[column.id]
-                          )}
-                        </TableCell>
-                      )
-                    )}
-                    <TableCell align="center">
-                      <Button onClick={() => console.log("item", row)}>
-                        GO
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+              : sortedRows
+                  .filter((row) => {
+                    if (props.page === "quotes") {
+                      if (props.tabIndex === 0) return row.type === "job";
+                      if (props.tabIndex === 1) return row.type === "sale";
+                    }
+                    return true;
+                  })
+                  .slice(startIndex, endIndex)
+                  .map((row, rowIndex) => (
+                    <TableRow key={rowIndex}>
+                      {props.tableColumns[props.itemIndex].map(
+                        (column, columnIndex) => (
+                          <TableCell
+                            key={columnIndex}
+                            align={columnIndex === 0 ? "" : "left"}
+                          >
+                            {row[column.id] &&
+                            typeof row[column.id] === "string" &&
+                            row[column.id].startsWith("/images") ? (
+                              <Avatar
+                                alt="Imagem do Produto"
+                                src={`http://localhost:3000/static${
+                                  row[column.id]
+                                }`}
+                                sx={{ width: 34, height: 34 }}
+                              />
+                            ) : Array.isArray(row[column.id]) ? (
+                              row[column.id].map((obj, index) => (
+                                <Tooltip key={index} title={obj.name}>
+                                  <Avatar
+                                    alt="Imagem do Produto"
+                                    src={`http://localhost:3000/static${obj.image}`}
+                                    sx={{ width: 34, height: 34, mr: 0.5 }}
+                                  />
+                                </Tooltip>
+                              ))
+                            ) : typeof row[column.id] === "object" ? (
+                              row[column.id].name
+                            ) : (
+                              row[column.id]
+                            )}
+                          </TableCell>
+                        )
+                      )}
+                      <TableCell align="center">
+                        <Button onClick={() => console.log("item", row)}>
+                          GO
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
           </TableBody>
         </Table>
         <TablePagination

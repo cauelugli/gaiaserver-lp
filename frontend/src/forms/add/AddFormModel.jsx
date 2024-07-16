@@ -39,47 +39,6 @@ export default function AddFormModel(props) {
   const [image, setImage] = React.useState("");
   const [selectedProducts, setSelectedProducts] = React.useState([]);
 
-  const handleAdd = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await api.post(`${modalOptions.endpoint}`, {
-        fields,
-        model: modalOptions.label,
-        selectedProducts,
-      });
-      if (res.data) {
-        toast.success(`${props.selectedOptionLabel} Adicionado!`, {
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-          autoClose: 1200,
-        });
-      }
-      props.setOpenAdd(!props.openAdd);
-      !props.setRefreshData(!props.refreshData);
-    } catch (err) {
-      if (
-        (err && err.response && err.response.status === 422) ||
-        (err && err.response && err.response.status === 420)
-      ) {
-        toast.error(err.response.data.error, {
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-          autoClose: 1200,
-        });
-      } else {
-        console.log("err", err);
-        toast.error("Houve algum erro...", {
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-          autoClose: 1200,
-        });
-      }
-    }
-  };
-
   const modalOptions = props.options.find(
     (option) => option.label === props.selectedOptionLabel
   ).modal;
@@ -122,8 +81,46 @@ export default function AddFormModel(props) {
     });
   };
 
-  console.log("modal endpoint", modalOptions.endpoint);
-  console.log("props.selectedOptionLabel", props.selectedOptionLabel);
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await api.post(`${modalOptions.endpoint}`, {
+        fields,
+        model: modalOptions.model,
+        selectedProducts,
+      });
+      if (res.data) {
+        toast.success(`${props.selectedOptionLabel} Adicionado!`, {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
+      props.setOpenAdd(!props.openAdd);
+      !props.setRefreshData(!props.refreshData);
+    } catch (err) {
+      if (
+        (err && err.response && err.response.status === 422) ||
+        (err && err.response && err.response.status === 420)
+      ) {
+        toast.error(err.response.data.error, {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      } else {
+        console.log("err", err);
+        toast.error("Houve algum erro...", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
+    }
+  };
 
   return (
     <form onSubmit={handleAdd}>

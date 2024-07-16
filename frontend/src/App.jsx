@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
@@ -51,37 +50,10 @@ function hasPermission(user, configData, routePath) {
   return allowedRoles && allowedRoles.some((id) => id === user.role.id);
 }
 
-// function darkenColor(hex, factor) {
-//   hex = hex.replace(/^#/, "");
-//   const bigint = parseInt(hex, 16);
-//   const r = (bigint >> 16) & 255;
-//   const g = (bigint >> 8) & 255;
-//   const b = bigint & 255;
-
-//   const newR = Math.max(0, Math.round(r - factor));
-//   const newG = Math.max(0, Math.round(g - factor));
-//   const newB = Math.max(0, Math.round(b - factor));
-
-//   const darkenedHex = `#${((newR << 16) | (newG << 8) | newB)
-//     .toString(16)
-//     .padStart(6, "0")}`;
-
-//   return darkenedHex;
-// }
-
 export default function App() {
   const [configData, setConfigData] = useState([]);
-  const [configNotifications, setConfigNotifications] = useState([]);
-  const [configNotificationsBooleans, setConfigNotificationsBooleans] =
-    useState([]);
-  const [configTables, setConfigTables] = useState(null);
-  const [configAgenda, setConfigAgenda] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [userPreferences, setUserPreferences] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [managers, setManagers] = useState([]);
-  const [departments, setDepartments] = useState([]);
-  const [positions, setPositions] = useState([]);
   const [allowedLinks, setAllowedLinks] = useState([]);
   const login = JSON.parse(sessionStorage.getItem("login"));
   const userData = JSON.parse(sessionStorage.getItem("userData"));
@@ -138,28 +110,12 @@ export default function App() {
         );
         const preferences = await api.get(`/userPreferences/${userData._id}`);
         setConfigData(config.data[0]);
-        setConfigNotifications(config.data[0].notifications);
-        setConfigNotificationsBooleans(config.data[0].notificationsBooleans);
-        setConfigTables(config.data[0].tables);
-        setConfigAgenda(config.data[0].agenda);
         setNotifications(notifications.data);
         setUserPreferences(preferences.data);
         sessionStorage.setItem(
           "userPreferences",
           JSON.stringify(preferences.data)
         );
-
-        const resUsers = await api.get("/users");
-        const resManagers = await api.get("/managers");
-        const usersCombinedData = [...resUsers.data, ...resManagers.data];
-        setUsers(usersCombinedData);
-        setManagers(resManagers.data);
-
-        const positions = await api.get("/positions");
-        setPositions(positions.data);
-
-        const departments = await api.get("/departments");
-        setDepartments(departments.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -327,8 +283,7 @@ export default function App() {
                           <Dashboard
                             userId={userData._id}
                             userUsername={userData.username}
-                            users={users}
-                            configAgenda={configAgenda}
+                            configAgenda={configData.agenda}
                             configDashboard={configData.dashboard}
                             configCustomization={configData.customization}
                             topBar={userPreferences.barPosition}
@@ -412,14 +367,13 @@ export default function App() {
                               item={option}
                               userId={userData._id}
                               userUsername={userData.username}
-                              users={users}
                               setUserPreferences={setUserPreferences}
                               configData={configData}
                               userName={userData.name}
                               topBar={userPreferences.barPosition}
                               tableOrCardView={userPreferences.tableOrCardView}
                               cardSize={userPreferences.cardSize}
-                              configAgenda={configAgenda}
+                              configAgenda={configData.agenda}
                               configDashboard={configData.dashboard}
                               configCustomization={configData.customization}
                             />
@@ -440,20 +394,15 @@ export default function App() {
               {...shortcutModalState.props}
               configData={configData}
               configCustomization={configData.customization}
-              configNotifications={configNotifications}
-              configNotificationsBooleans={configNotificationsBooleans}
+              configNotifications={configData.notifications}
+              configNotificationsBooleans={configData.notificationsBooleans}
               user={userData}
-              users={users}
-              positions={positions}
-              managers={managers}
-              departments={departments}
               toast={toast}
               action={shortcutModalState.action}
               fullWidth={shortcutModalState.fullWidth}
               maxWidth={shortcutModalState.maxWidth}
               selectedItem={shortcutModalState.selectedItem}
-              // section={shortcutModalState.section}
-              configAgenda={configAgenda}
+              configAgenda={configData.agenda}
               onClose={() => setShortcutModalState({ show: false })}
             />
           )}

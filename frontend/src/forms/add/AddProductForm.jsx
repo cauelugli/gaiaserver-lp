@@ -29,7 +29,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 export default function AddProductForm({
-  // userName,
+  userName,
   refreshData,
   setRefreshData,
   onClose,
@@ -87,8 +87,7 @@ export default function AddProductForm({
           value: field.value,
         })),
         images: imagePaths,
-        createdBy: "userName",
-        // createdBy: userName,
+        createdBy: userName,
       });
 
       if (productResponse.data) {

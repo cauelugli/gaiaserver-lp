@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
@@ -147,6 +147,7 @@ const pageButtonOptions = [
               required: false,
             },
           ],
+          model: "Customer",
         },
       },
       {
@@ -227,6 +228,7 @@ const pageButtonOptions = [
               required: true,
             },
           ],
+          model: "Client",
         },
       },
       {
@@ -238,6 +240,7 @@ const pageButtonOptions = [
           femaleGender: true,
           type: "list",
           options: ["importContacts"],
+          model: "DOESNT EXIST YET",
         },
       },
     ],
@@ -321,13 +324,14 @@ const pageButtonOptions = [
               required: false,
             },
           ],
+          model: "Job",
         },
       },
       {
         label: "Venda",
         icon: <SellIcon />,
         modal: {
-          name: "/add",
+          endpoint: "/add",
           label: "Venda",
           femaleGender: true,
           maxWidth: "md",
@@ -384,6 +388,7 @@ const pageButtonOptions = [
               required: false,
             },
           ],
+          model: "Sale",
         },
       },
     ],
@@ -510,6 +515,7 @@ const pageButtonOptions = [
               required: false,
             },
           ],
+          model: "User",
         },
       },
       {
@@ -631,6 +637,7 @@ const pageButtonOptions = [
               required: false,
             },
           ],
+          model: "Manager",
         },
       },
     ],
@@ -698,6 +705,7 @@ const pageButtonOptions = [
               required: false,
             },
           ],
+          model: "Department",
         },
       },
       {
@@ -738,6 +746,7 @@ const pageButtonOptions = [
               required: false,
             },
           ],
+          model: "Group",
         },
       },
     ],
@@ -814,6 +823,7 @@ const pageButtonOptions = [
               required: true,
             },
           ],
+          model: "Service",
         },
       },
       {
@@ -870,6 +880,7 @@ const pageButtonOptions = [
               required: true,
             },
           ],
+          model: "ServicePlan",
         },
       },
     ],
@@ -936,7 +947,6 @@ const pageButtonOptions = [
       },
     ],
   },
-  //review this
   {
     page: "products",
     pageButtonOptions: [
@@ -989,6 +999,7 @@ const pageButtonOptions = [
               type: "fields",
             },
           ],
+          model: "Product",
         },
       },
     ],
@@ -1046,6 +1057,7 @@ const pageButtonOptions = [
               type: "fields",
             },
           ],
+          model: "Material",
         },
       },
     ],
@@ -1104,6 +1116,7 @@ const pageButtonOptions = [
             type: "fields",
           },
         ],
+        model: "Project",
       },
       {
         label: "Projeto Recorrente",
@@ -1149,6 +1162,7 @@ const pageButtonOptions = [
             type: "fields",
           },
         ],
+        model: "Project",
       },
     ],
   },
@@ -1207,6 +1221,7 @@ const pageButtonOptions = [
               required: true,
             },
           ],
+          model: "Operator",
         },
       },
       {
@@ -1235,6 +1250,7 @@ const pageButtonOptions = [
               required: true,
             },
           ],
+          model: "Position",
         },
       },
       {
@@ -1255,6 +1271,7 @@ const pageButtonOptions = [
               required: true,
             },
           ],
+          model: "Role",
         },
       },
     ],

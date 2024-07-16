@@ -45,7 +45,9 @@ export default function Requests({ onClose }) {
     const fetchData = async () => {
       try {
         const configResponse = await api.get("/config");
-        const managersResponse = await api.get("/managers");
+        const managersResponse = await api.get("/get", {
+          params: { model: "Manager" },
+        });
         const managersData = managersResponse.data;
         const configData = configResponse.data[0].requests;
 

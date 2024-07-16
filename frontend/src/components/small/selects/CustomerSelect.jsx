@@ -26,10 +26,10 @@ const CustomerSelect = (props) => {
     const fetchData = async () => {
       try {
         const resCustomers = await api.get("/get", {
-          params: { model: "Cliente Empresa" },
+          params: { model: "Customer" },
         });
         const resClients = await api.get("/get", {
-          params: { model: "Cliente Pessoa Física" },
+          params: { model: "Client" },
         });
         const combinedData = [...resCustomers.data, ...resClients.data];
         setCustomers(
