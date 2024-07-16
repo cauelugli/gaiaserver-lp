@@ -114,7 +114,7 @@ router.put("/resolveAgendaEvent", async (req, res) => {
   }
 });
 
-// EDIT (REMOVE) EVENT FROM USER'S AGENDA
+// REMOVE EVENT FROM USER'S AGENDA
 router.put("/deleteAgendaEvent", async (req, res) => {
   const { userId, start, end } = req.body;
   try {

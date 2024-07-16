@@ -5,7 +5,7 @@ const Service = require("../../models/models/Service");
 const Position = require("../../models/models/Position");
 const Manager = require("../../models/models/Manager");
 
-// DELETE DEPARTMENT
+// DELETE ROUTE
 router.delete("/:id", async (req, res) => {
   const departmentId = req.params.id;
 

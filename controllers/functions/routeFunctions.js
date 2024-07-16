@@ -1,6 +1,6 @@
 const models = {
-  Customer: require("../../models/models/Customer"),
   Client: require("../../models/models/Client"),
+  Customer: require("../../models/models/Customer"),
   Department: require("../../models/models/Department"),
   FinanceIncome: require("../../models/models/FinanceIncome"),
   FinanceOutcome: require("../../models/models/FinanceOutcome"),

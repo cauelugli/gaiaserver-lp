@@ -88,6 +88,13 @@ export default function AddFormModel(props) {
         fields,
         model: modalOptions.model,
         selectedProducts,
+        price:
+          selectedProducts
+            .reduce(
+              (sum, product) => sum + product.sellValue * product.count,
+              0
+            )
+            .toFixed(2) || 0,
       });
       if (res.data) {
         toast.success(`${props.selectedOptionLabel} Adicionado!`, {

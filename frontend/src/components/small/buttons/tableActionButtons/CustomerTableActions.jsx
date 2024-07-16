@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { toast } from "react-toastify";
@@ -25,13 +24,9 @@ import UpgradeIcon from "@mui/icons-material/Upgrade";
 
 import GenericDeleteForm from "../../../../forms/delete/GenericDeleteForm";
 import GenericActivateForm from "../../../../forms/misc/GenericActivateForm";
-import AddJobForm from "../../../../forms/add/AddJobForm";
-import AddSaleForm from "../../../../forms/add/AddSaleForm";
 
 export default function CustomerTableActions(props) {
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [openAddJob, setOpenAddJob] = React.useState(false);
-  const [openAddSale, setOpenAddSale] = React.useState(false);
   const [openActivate, setOpenActivate] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState(props.selectedItem);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -64,9 +59,7 @@ export default function CustomerTableActions(props) {
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <List sx={{ width: 200 }}>
           <ListItemButton
-            onClick={() => {
-              setOpenAddJob(true), setAnchorEl(null);
-            }}
+            onClick={() => setAnchorEl(null)}
             disabled={!props.selectedItem.isActive}
           >
             <ListItemIcon>
@@ -78,9 +71,7 @@ export default function CustomerTableActions(props) {
             />
           </ListItemButton>
           <ListItemButton
-            onClick={() => {
-              setOpenAddSale(true), setAnchorEl(null);
-            }}
+            onClick={() => setAnchorEl(null)}
             disabled={!props.selectedItem.isActive}
           >
             <ListItemIcon>
@@ -172,48 +163,6 @@ export default function CustomerTableActions(props) {
               props.selectedItem.name && props.selectedItem.name
             } Deletado com Sucesso`}
           />
-        </Dialog>
-      )}
-      {openAddJob && (
-        <Dialog
-          fullWidth
-          maxWidth="lg"
-          open={openAddJob}
-          onClose={() => setOpenAddJob(!openAddJob)}
-        >
-          <AddJobForm
-            userName={props.userName}
-            userId={props.userId}
-            configAgenda={props.configAgenda}
-            configNotifications={props.configNotifications}
-            configNotificationsBooleans={props.configNotificationsBooleans}
-            openAddJob={openAddJob}
-            setOpenAddJob={setOpenAddJob}
-            refreshData={props.refreshData}
-            setRefreshData={props.setRefreshData}
-            selectedItem={props.selectedItem}
-            toast={toast}
-          />
-        </Dialog>
-      )}
-      {openAddSale && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openAddSale}
-          onClose={() => setOpenAddSale(!openAddSale)}
-        >
-          <AddSaleForm
-            userName={props.userName}
-            userId={props.userId}
-            openAddSale={openAddSale}
-            setOpenAddSale={setOpenAddSale}
-            refreshData={props.refreshData}
-            setRefreshData={props.setRefreshData}
-            selectedItem={props.selectedItem}
-            toast={toast}
-            configNotifications={props.configNotifications}
-            configNotificationsBooleans={props.configNotificationsBooleans}          />
         </Dialog>
       )}
       {openActivate && (

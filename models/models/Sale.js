@@ -24,7 +24,6 @@ saleSchema = new mongoose.Schema({
   },
   deliveryAddress: {
     type: String,
-    required: true,
   },
   deliveryReceiver: {
     type: String,
@@ -34,11 +33,6 @@ saleSchema = new mongoose.Schema({
   },
   deliveryScheduledTo: {
     type: String,
-    required: true,
-  },
-  department: {
-    type: Object,
-    required: true,
   },
   isActive: {
     type: Boolean,
@@ -71,10 +65,6 @@ saleSchema = new mongoose.Schema({
   price: {
     type: Number,
     default: 0,
-    required: true,
-  },
-  requester: {
-    type: String,
     required: true,
   },
   resolvedAt: {

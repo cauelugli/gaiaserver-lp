@@ -4,26 +4,6 @@ const FinanceIncome = require("../../models/models/FinanceIncome");
 const FinanceOutcome = require("../../models/models/FinanceOutcome");
 const StockEntry = require("../../models/models/StockEntry");
 
-// GET ALL FINANCE INCOMES
-router.get("/income", async (req, res) => {
-  try {
-    const incomes = await FinanceIncome.find();
-    res.status(200).json(incomes);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// GET ALL FINANCES OUTCOMES
-router.get("/outcome", async (req, res) => {
-  try {
-    const outcomes = await FinanceOutcome.find();
-    res.status(200).json(outcomes);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // UPDATE INCOME
 router.put("/", async (req, res) => {
   try {

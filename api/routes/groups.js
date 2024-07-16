@@ -4,16 +4,6 @@ const Group = require("../../models/models/Group");
 const User = require("../../models/models/User");
 const Manager = require("../../models/models/Manager");
 
-// GET GROUPS
-router.get("/", async (req, res) => {
-  try {
-    const groups = await Group.find();
-    res.status(200).json(groups);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // CREATE GROUP
 router.post("/", async (req, res) => {
   const newGroup = new Group(req.body);

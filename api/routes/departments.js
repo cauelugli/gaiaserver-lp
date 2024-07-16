@@ -6,16 +6,6 @@ const Manager = require("../../models/models/Manager");
 const Service = require("../../models/models/Service");
 const Position = require("../../models/models/Position");
 
-// GET ALL DEPARTMENT
-router.get("/", async (req, res) => {
-  try {
-    const departments = await Department.find();
-    res.status(200).json(departments);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 // CREATE DEPARTMENT
 router.post("/", async (req, res) => {
   const { name, email } = req.body;

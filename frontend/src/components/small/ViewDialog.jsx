@@ -297,7 +297,7 @@ const ViewDialog = ({
                     </TableCell>
                     <TableCell align="left">
                       <Typography sx={{ fontSize: 13 }}>
-                        {item.requester}
+                        {item.customer.name}
                       </Typography>
                     </TableCell>
                   </TableRow>
