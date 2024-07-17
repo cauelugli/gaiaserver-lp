@@ -4,7 +4,7 @@ const { defineModel } = require("../../controllers/functions/routeFunctions");
 
 // CREATE ITEM
 router.post("/", async (req, res) => {
-  const { fields, name } = req.body;
+  const { fields, name, image } = req.body;
 
   const Model = defineModel(req.body.model);
 
@@ -19,6 +19,9 @@ router.post("/", async (req, res) => {
       return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
     }
   }
+
+  // verify cases
+  fields.image = image;
 
   const newItem = new Model(fields);
 

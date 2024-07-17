@@ -83,9 +83,15 @@ export default function AddFormModel(props) {
 
   const handleAdd = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("image", image);
+
     try {
+      const uploadResponse = await api.post("/uploads/singleFile", formData);
+      const imagePath = uploadResponse.data.imagePath;
       const res = await api.post(`${modalOptions.endpoint}`, {
         fields,
+        image: imagePath,
         model: modalOptions.model,
         selectedProducts,
         price:

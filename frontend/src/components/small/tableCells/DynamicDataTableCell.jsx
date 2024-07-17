@@ -26,11 +26,7 @@ const DynamicDataTableCell = (props) => {
           const resUsers = await api.get("/get", {
             params: { model: "User" },
           });
-          const resManagers = await api.get("/get", {
-            params: { model: "Manager" },
-          });
-          const usersCombinedData = [...resUsers.data, ...resManagers.data];
-          setOptions(usersCombinedData);
+          setOptions(resUsers.data);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -76,10 +72,7 @@ const DynamicDataTableCell = (props) => {
           ))}
         </div>
       );
-    } else if (
-      props.field.dynamicData === "users" ||
-      props.field.dynamicData === "managers"
-    ) {
+    } else if (props.field.dynamicData === "users") {
       if (!selected) {
         return <Typography>Colaborador</Typography>;
       } else {
@@ -124,8 +117,7 @@ const DynamicDataTableCell = (props) => {
       multiple={props.multiple}
       renderValue={renderValue}
     >
-      {props.field.dynamicData === "users" ||
-      props.field.dynamicData === "managers"
+      {props.field.dynamicData === "users"
         ? options.map((option, index) => (
             <MenuItem value={option} key={index}>
               <Grid container direction="row" alignItems="center">

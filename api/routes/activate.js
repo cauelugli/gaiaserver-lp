@@ -5,7 +5,6 @@ const Customer = require("../../models/models/Customer");
 const Job = require("../../models/models/Job");
 const Sale = require("../../models/models/Sale");
 const User = require("../../models/models/User");
-const Manager = require("../../models/models/Manager");
 
 // MODELS MAPPING
 const models = {
@@ -14,7 +13,6 @@ const models = {
   Job: Job,
   Sale: Sale,
   User: User,
-  Manager: Manager,
 };
 
 // ACTIVATE/INACTIVATE ITEM

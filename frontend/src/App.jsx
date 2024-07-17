@@ -106,7 +106,8 @@ export default function App() {
       try {
         const config = await api.get("/config");
         const notifications = await api.get(
-          `/managers/notifications/${userData._id}`
+          // some endpoint...
+          "/404"
         );
         const preferences = await api.get(`/userPreferences/${userData._id}`);
         setConfigData(config.data[0]);

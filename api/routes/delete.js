@@ -3,7 +3,7 @@ const router = express.Router();
 const Department = require("../../models/models/Department");
 const Service = require("../../models/models/Service");
 const Position = require("../../models/models/Position");
-const Manager = require("../../models/models/Manager");
+const User = require("../../models/models/User");
 
 // DELETE ROUTE
 router.delete("/:id", async (req, res) => {
@@ -51,7 +51,7 @@ router.delete("/:id", async (req, res) => {
     }
 
     if (deletedDepartment.manager) {
-      updatedManager = await Manager.findByIdAndUpdate(
+      updatedManager = await User.findByIdAndUpdate(
         deletedDepartment.manager._id || deletedDepartment.manager.id,
         {
           department: {},

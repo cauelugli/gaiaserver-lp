@@ -3,7 +3,6 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../../models/models/User");
 const UserPreferences = require("../../models/models/UserPreferences");
-const Manager = require("../../models/models/Manager");
 const Department = require("../../models/models/Department");
 const Position = require("../../models/models/Position");
 
@@ -124,10 +123,8 @@ router.put("/", async (req, res) => {
   const { name, email, option, isManager } = req.body;
   const position = { _id: req.body.position._id, name: req.body.position.name };
 
-  const userModel = isManager ? Manager : User;
-
-  const existingName = await userModel.findOne({ name });
-  const existingEmail = await userModel.findOne({ email });
+  const existingName = await User.findOne({ name });
+  const existingEmail = await User.findOne({ email });
 
   if (existingName) {
     if (existingName.name !== req.body.previousData.name) {
@@ -373,9 +370,6 @@ router.put("/changePassFirstAccess", async (req, res) => {
   let user;
 
   user = await User.findById(userId);
-  if (!user) {
-    user = await Manager.findById(userId);
-  }
 
   if (!user) {
     return res.status(404).json({ error: "Usuário não encontrado" });

@@ -65,10 +65,6 @@ const routeOptions = [
           label: "Título",
         },
         {
-          id: "requester",
-          label: "Solicitante",
-        },
-        {
           id: "customer",
           label: "Cliente",
         },
@@ -96,12 +92,12 @@ const routeOptions = [
           label: "#",
         },
         {
-          id: "requester",
-          label: "Solicitante",
-        },
-        {
           id: "seller",
           label: "Vendedor",
+        },
+        {
+          id: "items",
+          label: "Itens",
         },
         {
           id: "createdBy",
@@ -116,7 +112,7 @@ const routeOptions = [
   },
   {
     page: "users",
-    models: ["User", "Manager"],
+    models: ["User", "User"],
     label: "Colaboradores",
     tabs: ["Funcionários", "Gerentes"],
     tableColumns: [

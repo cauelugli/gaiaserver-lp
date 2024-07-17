@@ -67,12 +67,11 @@ router.put("/customers", async (req, res) => {
 // USERS
 router.put("/users", async (req, res) => {
   try {
-    const { usersCanBeDeleted, managersCanBeDeleted } = req.body;
+    const { usersCanBeDeleted } = req.body;
 
     const config = await Config.findOne();
 
     config.users.usersCanBeDeleted = usersCanBeDeleted;
-    config.users.managersCanBeDeleted = managersCanBeDeleted;
 
     await config.save();
     res.status(200).json(config);
@@ -88,13 +87,11 @@ router.put("/requests", async (req, res) => {
     const {
       requestsNeedApproval,
       requestsCanBeDeleted,
-      requestsApproverManagerId,
     } = req.body;
 
     const config = await Config.findOne();
 
     config.requests.requestsNeedApproval = requestsNeedApproval;
-    config.requests.requestsApproverManagerId = requestsApproverManagerId;
     config.requests.canBeDeleted = requestsCanBeDeleted;
 
     await config.save();

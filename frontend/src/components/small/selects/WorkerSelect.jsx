@@ -29,11 +29,7 @@ const WorkerSelect = (props) => {
         const resUsers = await api.get("/get", {
           params: { model: "User" },
         });
-        const resManagers = await api.get("/get", {
-          params: { model: "Manager" },
-        });
-        const combinedData = [...resUsers.data, ...resManagers.data];
-        setWorkers(combinedData);
+        setWorkers(resUsers.data.filter((user) => user.username === "admin"));
       } catch (error) {
         console.error("Error fetching data:", error);
       }

@@ -32,9 +32,7 @@ const api = axios.create({
 export default function ViewUserDetails(props) {
   return (
     <>
-      <DialogTitle>
-        Detalhes do {props.manager ? "Gerente" : "Colaborador"}
-      </DialogTitle>
+      <DialogTitle>Detalhes do Colaborador</DialogTitle>
       <DialogContent>
         <Grid
           container
@@ -183,7 +181,6 @@ export default function ViewUserDetails(props) {
                       <Typography>
                         {props.selectedUser.position &&
                           props.selectedUser.position.name}
-                        {props.manager && "Gerente"}
                       </Typography>
                     </TableCell>
                     <TableCell align="center" sx={{ width: 300 }}>

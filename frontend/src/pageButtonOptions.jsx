@@ -400,7 +400,7 @@ const pageButtonOptions = [
         label: "Colaborador",
         icon: <PersonIcon />,
         modal: {
-          name: "AddUser",
+          endpoint: "/add",
           label: "Colaborador",
           femaleGender: false,
           maxWidth: "md",
@@ -522,7 +522,7 @@ const pageButtonOptions = [
         label: "Gerente",
         icon: <Person4Icon />,
         modal: {
-          name: "AddUser",
+          endpoint: "/add",
           label: "Gerente",
           femaleGender: false,
           maxWidth: "md",
@@ -637,7 +637,7 @@ const pageButtonOptions = [
               required: false,
             },
           ],
-          model: "Manager",
+          model: "User",
         },
       },
     ],
@@ -649,7 +649,7 @@ const pageButtonOptions = [
         label: "Departamento",
         icon: <LanIcon />,
         modal: {
-          name: "AddDepartment",
+          endpoint: "/add",
           label: "Departamento",
           femaleGender: false,
           maxWidth: "md",

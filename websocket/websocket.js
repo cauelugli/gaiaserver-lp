@@ -1,5 +1,4 @@
 const { Server } = require("socket.io");
-const Manager = require("../models/models/Manager");
 const Role = require("../models/models/Role");
 const User = require("../models/models/User");
 const dotenv = require("dotenv");
@@ -65,7 +64,7 @@ const initSocket = (server) => {
             return await Promise.all(
               roleDetails.members.map(async (userId) => {
                 const user = await User.findById(userId);
-                return user ? user : await Manager.findById(userId);
+                return user;
               })
             );
           })
@@ -93,12 +92,6 @@ const initSocket = (server) => {
               { $set: { [`notifications.${Date.now()}`]: newNotification } }
             );
             updatedUser = await User.findById(user._id);
-          } else if (user instanceof Manager) {
-            await Manager.updateOne(
-              { _id: user._id },
-              { $set: { [`notifications.${Date.now()}`]: newNotification } }
-            );
-            updatedUser = await Manager.findById(user._id);
           }
 
           const receiverSocketId = userSocketMap[user._id];
@@ -129,7 +122,7 @@ const initSocket = (server) => {
             return await Promise.all(
               roleDetails.members.map(async (userId) => {
                 const user = await User.findById(userId);
-                return user ? user : await Manager.findById(userId);
+                return user;
               })
             );
           })
@@ -155,14 +148,7 @@ const initSocket = (server) => {
               { $set: { [`notifications.${Date.now()}`]: newNotification } }
             );
             updatedUser = await User.findById(user._id);
-          } else if (user instanceof Manager) {
-            await Manager.updateOne(
-              { _id: user._id },
-              { $set: { [`notifications.${Date.now()}`]: newNotification } }
-            );
-            updatedUser = await Manager.findById(user._id);
           }
-
           const receiverSocketId = userSocketMap[user._id];
           if (receiverSocketId) {
             io.to(receiverSocketId).emit("notificationsUpdate", {
@@ -188,7 +174,7 @@ const initSocket = (server) => {
             return await Promise.all(
               roleDetails.members.map(async (userId) => {
                 const user = await User.findById(userId);
-                return user ? user : await Manager.findById(userId);
+                return user;
               })
             );
           })
@@ -214,12 +200,6 @@ const initSocket = (server) => {
               { $set: { [`notifications.${Date.now()}`]: newNotification } }
             );
             updatedUser = await User.findById(user._id);
-          } else if (user instanceof Manager) {
-            await Manager.updateOne(
-              { _id: user._id },
-              { $set: { [`notifications.${Date.now()}`]: newNotification } }
-            );
-            updatedUser = await Manager.findById(user._id);
           }
 
           const receiverSocketId = userSocketMap[user._id];
@@ -252,14 +232,14 @@ const initSocket = (server) => {
 
         // Sempre salve a notificação
         try {
-          await Manager.findByIdAndUpdate(data.receiverId, {
+          await User.findByIdAndUpdate(data.receiverId, {
             $set: { [`notifications.${Date.now()}`]: newNotification },
           });
         } catch (error) {
-          console.log("\n\nerro ao salvar manager", error, "\n");
+          console.log("\n\nerro ao salvar gerente", error, "\n");
         }
 
-        const updatedReceiver = await Manager.findById(data.receiverId);
+        const updatedReceiver = await User.findById(data.receiverId);
 
         if (receiverSocketId) {
           // Emita o evento apenas para o socket do receptor específico
@@ -277,9 +257,6 @@ const initSocket = (server) => {
         const usersToNotify = await Promise.all(
           data.list.map(async (userId) => {
             let user = await User.findById(userId);
-            if (!user) {
-              user = await Manager.findById(userId);
-            }
             return user;
           })
         );
@@ -306,12 +283,6 @@ const initSocket = (server) => {
               { $set: { [`notifications.${Date.now()}`]: newNotification } }
             );
             updatedUser = await User.findById(user._id);
-          } else if (user instanceof Manager) {
-            await Manager.updateOne(
-              { _id: user._id },
-              { $set: { [`notifications.${Date.now()}`]: newNotification } }
-            );
-            updatedUser = await Manager.findById(user._id);
           }
 
           const receiverSocketId = userSocketMap[user._id];
@@ -331,9 +302,6 @@ const initSocket = (server) => {
         const usersToNotify = await Promise.all(
           data.list.map(async (userId) => {
             let user = await User.findById(userId);
-            if (!user) {
-              user = await Manager.findById(userId);
-            }
             return user;
           })
         );
@@ -360,12 +328,6 @@ const initSocket = (server) => {
               { $set: { [`notifications.${Date.now()}`]: newNotification } }
             );
             updatedUser = await User.findById(user._id);
-          } else if (user instanceof Manager) {
-            await Manager.updateOne(
-              { _id: user._id },
-              { $set: { [`notifications.${Date.now()}`]: newNotification } }
-            );
-            updatedUser = await Manager.findById(user._id);
           }
 
           const receiverSocketId = userSocketMap[user._id];
@@ -385,9 +347,6 @@ const initSocket = (server) => {
         const usersToNotify = await Promise.all(
           data.list.map(async (userId) => {
             let user = await User.findById(userId);
-            if (!user) {
-              user = await Manager.findById(userId);
-            }
             return user;
           })
         );
@@ -414,12 +373,6 @@ const initSocket = (server) => {
               { $set: { [`notifications.${Date.now()}`]: newNotification } }
             );
             updatedUser = await User.findById(user._id);
-          } else if (user instanceof Manager) {
-            await Manager.updateOne(
-              { _id: user._id },
-              { $set: { [`notifications.${Date.now()}`]: newNotification } }
-            );
-            updatedUser = await Manager.findById(user._id);
           }
 
           const receiverSocketId = userSocketMap[user._id];
@@ -439,9 +392,6 @@ const initSocket = (server) => {
         const usersToNotify = await Promise.all(
           data.list.map(async (userId) => {
             let user = await User.findById(userId);
-            if (!user) {
-              user = await Manager.findById(userId);
-            }
             return user;
           })
         );
@@ -468,12 +418,6 @@ const initSocket = (server) => {
               { $set: { [`notifications.${Date.now()}`]: newNotification } }
             );
             updatedUser = await User.findById(user._id);
-          } else if (user instanceof Manager) {
-            await Manager.updateOne(
-              { _id: user._id },
-              { $set: { [`notifications.${Date.now()}`]: newNotification } }
-            );
-            updatedUser = await Manager.findById(user._id);
           }
 
           const receiverSocketId = userSocketMap[user._id];

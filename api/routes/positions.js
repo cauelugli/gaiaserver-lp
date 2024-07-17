@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Position = require("../../models/models/Position");
 const User = require("../../models/models/User");
-const Manager = require("../../models/models/Manager");
 const Department = require("../../models/models/Department");
 
 // GET ALL POSITIONS
@@ -60,12 +59,6 @@ router.delete("/:id", async (req, res) => {
     for (const user of usersToUpdate) {
       user.position = {};
       await user.save();
-    }
-
-    const managersToUpdate = await Manager.find({ "position._id": positionId });
-    for (const manager of managersToUpdate) {
-      manager.position = {};
-      await manager.save();
     }
 
     const updatedDepartment = await Department.findOneAndUpdate(
@@ -154,16 +147,6 @@ router.put("/", async (req, res) => {
     for (const user of usersToUpdate) {
       await User.findByIdAndUpdate(
         user._id,
-        { $set: { "position.name": updatedPosition.name } },
-        { new: true }
-      );
-    }
-
-    const managersToUpdate = await Manager.find({ "position._id": positionId });
-
-    for (const manager of managersToUpdate) {
-      await Manager.findByIdAndUpdate(
-        manager._id,
         { $set: { "position.name": updatedPosition.name } },
         { new: true }
       );

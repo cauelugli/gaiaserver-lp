@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const Config = require("../../models/models/Config");
-const Manager = require("../../models/models/Manager");
 const Role = require("../../models/models/Role");
 const User = require("../../models/models/User");
 
@@ -50,11 +49,6 @@ router.delete("/:id", async (req, res) => {
       user.role = { id: null, name: "-" };
       await user.save();
     }
-    const managersToUpdate = await Manager.find({ "role.id": roleId });
-    for (const manager of managersToUpdate) {
-      manager.role = { id: null, name: "-" };
-      await manager.save();
-    }
 
     const config = await Config.findOne();
     if (config && config.sidebar) {
@@ -100,11 +94,6 @@ router.put("/", async (req, res) => {
     for (const user of usersToUpdate) {
       user.role = { id: roleId, name: name };
       await user.save();
-    }
-    const managersToUpdate = await Manager.find({ "role.id": roleId });
-    for (const manager of managersToUpdate) {
-      manager.role = { id: roleId, name: name };
-      await manager.save();
     }
 
     const config = await Config.findOne(); 

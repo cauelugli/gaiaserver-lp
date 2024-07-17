@@ -14,11 +14,9 @@ import {
   Typography,
 } from "@mui/material";
 
-import ManagerTableActions from "../small/buttons/tableActionButtons/ManagerTableActions";
 import UserTableActions from "../small/buttons/tableActionButtons/UserTableActions";
 
 import EditUserForm from "../../forms/edit/EditUserForm";
-import EditManagerForm from "../../forms/edit/EditManagerForm";
 import ViewUserDetails from "../../forms/misc/ViewUserDetails";
 
 export default function UserCard({
@@ -80,31 +78,17 @@ export default function UserCard({
       </CardContent>
       <CardActions>
         <Grid container justifyContent="center">
-          {type === "user" ? (
-            <UserTableActions
-              fromCard
-              userId={userId}
-              userIsActive={user.isActive}
-              configData={configData}
-              setOpenEdit={setOpenEdit}
-              setOpenDetails={setOpenDetails}
-              selectedItem={user}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-            />
-          ) : (
-            <ManagerTableActions
-              fromCard
-              userId={userId}
-              userIsActive={user.isActive}
-              configData={configData}
-              setOpenEdit={setOpenEdit}
-              setOpenDetails={setOpenDetails}
-              selectedItem={user}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-            />
-          )}
+          <UserTableActions
+            fromCard
+            userId={userId}
+            userIsActive={user.isActive}
+            configData={configData}
+            setOpenEdit={setOpenEdit}
+            setOpenDetails={setOpenDetails}
+            selectedItem={user}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+          />
         </Grid>
       </CardActions>
       {openEdit && type === "user" && (
@@ -120,25 +104,6 @@ export default function UserCard({
             selectedUser={user}
             departments={departments}
             positions={positions}
-            setOpenEdit={setOpenEdit}
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
-      {openEdit && type === "manager" && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={openEdit}
-          onClose={() => setOpenEdit(!openEdit)}
-        >
-          <EditManagerForm
-            userId={userId}
-            openEdit={openEdit}
-            positions={positions}
-            selectedManager={user}
             setOpenEdit={setOpenEdit}
             refreshData={refreshData}
             setRefreshData={setRefreshData}

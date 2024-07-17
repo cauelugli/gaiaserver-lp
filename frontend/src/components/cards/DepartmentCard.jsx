@@ -27,7 +27,6 @@ export default function DepartmentCard({
   department,
   group,
   users,
-  managers,
   refreshData,
   setRefreshData,
   allUsers,
@@ -170,7 +169,6 @@ export default function DepartmentCard({
             userId={userId}
             openEdit={openEdit}
             users={users}
-            managers={managers}
             selectedDepartment={department}
             setOpenEdit={setOpenEdit}
             setRefreshData={setRefreshData}

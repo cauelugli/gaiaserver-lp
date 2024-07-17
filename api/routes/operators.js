@@ -3,19 +3,16 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const Role = require("../../models/models/Role");
 const User = require("../../models/models/User");
-const Manager = require("../../models/models/Manager");
 
 // GET ALL OPERATORS
 router.get("/", async (req, res) => {
   try {
     const users = await User.find();
-    const managers = await Manager.find();
-    const usersCombinedData = [
-      ...users.filter((user) => user.username),
-      ...managers.filter((user) => user.username),
+    const usersFilteredData = [
+      users.data.filter((user) => user.username),
     ];
 
-    res.status(200).json(usersCombinedData);
+    res.status(200).json(usersFilteredData);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -23,13 +20,9 @@ router.get("/", async (req, res) => {
 
 // UPDATE OPERATOR
 router.put("/", async (req, res) => {
-  // defining type if User or Manager
-  let type;
-  req.body.operator.isManager ? (type = Manager) : (type = User);
-
   const { username } = req.body;
 
-  const userExists = await type.findOne({ username });
+  const userExists = await User.findOne({ username });
 
   if (!req.body.option === "delete") {
     if (userExists) {

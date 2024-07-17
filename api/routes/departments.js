@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Department = require("../../models/models/Department");
 const User = require("../../models/models/User");
-const Manager = require("../../models/models/Manager");
 const Service = require("../../models/models/Service");
 const Position = require("../../models/models/Position");
 
@@ -93,7 +92,7 @@ router.post("/", async (req, res) => {
         updatedMembers.push(updatedMember);
       }
 
-      await Manager.findOneAndUpdate(
+      await User.findOneAndUpdate(
         { _id: req.body.manager._id },
         {
           $set: {
@@ -158,7 +157,7 @@ router.delete("/:id", async (req, res) => {
     }
 
     if (deletedDepartment.manager) {
-      updatedManager = await Manager.findByIdAndUpdate(
+      updatedManager = await User.findByIdAndUpdate(
         deletedDepartment.manager._id || deletedDepartment.manager.id,
         {
           department: {},

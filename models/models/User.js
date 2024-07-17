@@ -36,6 +36,10 @@ userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  isManager: {
+    type: Boolean,
+    default: false,
+  },
   name: {
     type: String,
     required: true,

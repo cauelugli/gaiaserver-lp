@@ -46,9 +46,11 @@ export default function Requests({ onClose }) {
       try {
         const configResponse = await api.get("/config");
         const managersResponse = await api.get("/get", {
-          params: { model: "Manager" },
+          params: { model: "User" },
         });
-        const managersData = managersResponse.data;
+        const managersData = managersResponse.data.filter(
+          (user) => !user.isManager
+        );
         const configData = configResponse.data[0].requests;
 
         setManagers(managersData);

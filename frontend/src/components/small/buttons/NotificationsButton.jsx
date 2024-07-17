@@ -63,13 +63,6 @@ export default function NotificationsButton({
 
   socket.emit("userId", user._id);
 
-  let adjustEndpoint;
-  if (user.isManager) {
-    adjustEndpoint = "managers";
-  } else {
-    adjustEndpoint = "users";
-  }
-
   useEffect(() => {
     const handleNotificationsUpdate = (data) => {
       setNotifications(data.notifications);
@@ -82,7 +75,7 @@ export default function NotificationsButton({
 
   const handleMarkAsRead = async (notificationId) => {
     try {
-      await api.put(`/${adjustEndpoint}/readNotification`, {
+      await api.put(`/users/readNotification`, {
         userId: user._id,
         notificationId,
       });
@@ -95,7 +88,7 @@ export default function NotificationsButton({
 
   const handleMarkAllAsRead = async () => {
     try {
-      await api.put(`/${adjustEndpoint}/markAllAsRead`, { userId: user._id });
+      await api.put(`/users/markAllAsRead`, { userId: user._id });
       fetchNotifications();
     } catch (error) {
       console.error("Error marking all notifications as read:", error);
@@ -104,9 +97,7 @@ export default function NotificationsButton({
 
   const fetchNotifications = async () => {
     try {
-      const response = await api.get(
-        `/${adjustEndpoint}/notifications/${user._id}`
-      );
+      const response = await api.get(`/users/notifications/${user._id}`);
       setNotifications(response.data);
     } catch (error) {
       console.error("Error fetching notifications:", error);

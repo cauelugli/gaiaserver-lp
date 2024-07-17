@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Group = require("../../models/models/Group");
 const User = require("../../models/models/User");
-const Manager = require("../../models/models/Manager");
 
 // CREATE GROUP
 router.post("/", async (req, res) => {
@@ -12,14 +11,7 @@ router.post("/", async (req, res) => {
     const savedGroup = await newGroup.save();
 
     for (const member of req.body.members) {
-      let type;
-      if ("position" in member) {
-        type = User;
-      } else {
-        type = Manager;
-      }
-
-      const updatedMember = await type.updateOne(
+      const updatedMember = await User.updateOne(
         { _id: member._id },
         {
           $push: {
@@ -53,14 +45,7 @@ router.put("/rename", async (req, res) => {
     );
 
     for (const member of updatedGroup.members) {
-      let type;
-      if ("position" in member) {
-        type = User;
-      } else {
-        type = Manager;
-      }
-
-      const updatedMember = await type.updateOne(
+      const updatedMember = await User.updateOne(
         { _id: member._id, "groups.id": req.body.groupId },
         { $set: { "groups.$.name": req.body.name } }
       );
@@ -88,15 +73,13 @@ router.put("/editMembers", async (req, res) => {
     );
 
     for (const newMember of newMembers) {
-      let type = newMember.position ? User : Manager;
-      await type.findByIdAndUpdate(newMember._id, {
+      await User.findByIdAndUpdate(newMember._id, {
         $push: { groups: { id: groupId, name: req.body.name } },
       });
     }
 
     for (const formerMember of formerMembers) {
-      let type = formerMember.position ? User : Manager;
-      await type.findByIdAndUpdate(formerMember._id, {
+      await User.findByIdAndUpdate(formerMember._id, {
         $pull: { groups: { id: groupId } },
       });
     }
@@ -126,14 +109,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const deletedGroup = await Group.findByIdAndDelete(groupId);
     for (const member of deletedGroup.members) {
-      let type;
-      if ("position" in member) {
-        type = User;
-      } else {
-        type = Manager;
-      }
-
-      const updatedMember = await type.updateOne(
+      const updatedMember = await User.updateOne(
         { _id: member._id },
         {
           $pull: {
