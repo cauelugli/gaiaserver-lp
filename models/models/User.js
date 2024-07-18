@@ -6,7 +6,7 @@ userSchema = new mongoose.Schema({
     default: [],
   },
   birthdate: {
-    type: Date,
+    type: String,
   },
   createdAt: {
     type: Date,
@@ -38,7 +38,6 @@ userSchema = new mongoose.Schema({
   },
   isManager: {
     type: Boolean,
-    default: false,
   },
   name: {
     type: String,
@@ -51,7 +50,10 @@ userSchema = new mongoose.Schema({
   password: {
     type: String,
   },
-  phone: {
+  phone1: {
+    type: String,
+  },
+  phone2: {
     type: String,
   },
   position: {
