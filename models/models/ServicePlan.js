@@ -9,12 +9,12 @@ const servicePlanSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  services: {
-    type: Object,
+  price: {
+    type: Number,
     required: true,
   },
-  value: {
-    type: Number,
+  services: {
+    type: Object,
     required: true,
   },
 });

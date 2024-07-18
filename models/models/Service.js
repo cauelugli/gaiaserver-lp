@@ -26,13 +26,12 @@ const serviceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  sessions: {
-    type: Object,
-    default: { quantity: Number, time: Number, interval: Number },
-  },
-  value: {
+  price: {
     type: Number,
     required: true,
+  },
+  sessions: {
+    type: String,
   },
 });
 

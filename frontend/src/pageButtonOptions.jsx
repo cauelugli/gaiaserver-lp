@@ -751,6 +751,7 @@ const pageButtonOptions = [
         label: "Serviço",
         icon: <BuildIcon />,
         modal: {
+          endpoint: "/add",
           name: "AddService",
           label: "Serviço",
           femaleGender: false,
@@ -823,6 +824,7 @@ const pageButtonOptions = [
         label: "Plano de Serviços",
         icon: <HubIcon />,
         modal: {
+          endpoint: "/add",
           name: "AddServicePlan",
           label: "Plano de Serviço",
           femaleGender: false,
