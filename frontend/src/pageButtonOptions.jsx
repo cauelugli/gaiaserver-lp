@@ -59,7 +59,7 @@ const pageButtonOptions = [
               fieldSection: "mainInfo",
               name: "cnpj",
               label: "CNPJ",
-              type: "string",
+              type: "idDoc",
               required: true,
             },
             {
@@ -181,7 +181,7 @@ const pageButtonOptions = [
               fieldSection: "mainInfo",
               name: "cpf",
               label: "CPF",
-              type: "string",
+              type: "idDoc",
               required: true,
             },
             {
@@ -429,7 +429,7 @@ const pageButtonOptions = [
               fieldSection: "mainInfo",
               name: "cpf",
               label: "CPF",
-              type: "string",
+              type: "idDoc",
               required: true,
             },
             {
@@ -551,7 +551,7 @@ const pageButtonOptions = [
               fieldSection: "mainInfo",
               name: "cpf",
               label: "CPF",
-              type: "string",
+              type: "idDoc",
               required: true,
             },
             {

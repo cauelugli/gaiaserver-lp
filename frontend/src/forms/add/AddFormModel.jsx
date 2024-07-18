@@ -33,6 +33,7 @@ import DynamicDataTableCell from "../../components/small/tableCells/DynamicDataT
 import ProductsTableCell from "../../components/small/tableCells/ProductsTableCell";
 import SelectTableCell from "../../components/small/tableCells/SelectTableCell";
 import StringTableCell from "../../components/small/tableCells/StringTableCell";
+import IdDocTableCell from "../../components/small/tableCells/IdDocTableCell";
 
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
@@ -220,6 +221,15 @@ export default function AddFormModel(props) {
                     <Typography sx={{ fontSize: 14 }}>{field.label}</Typography>
                     {field.type === "string" && (
                       <StringTableCell
+                        fields={fields}
+                        field={field}
+                        handleChange={handleChange}
+                        modalOptions={modalOptions}
+                        required={field.required}
+                      />
+                    )}
+                    {field.type === "idDoc" && (
+                      <IdDocTableCell
                         fields={fields}
                         field={field}
                         handleChange={handleChange}
