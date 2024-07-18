@@ -209,11 +209,12 @@ router.put("/finance", async (req, res) => {
 // SERVICES
 router.put("/services", async (req, res) => {
   try {
-    const { canBeDeleted } = req.body;
+    const { canBeDeleted, serviceTypes } = req.body;
 
     const config = await Config.findOne();
 
     config.services.canBeDeleted = canBeDeleted;
+    config.services.serviceTypes = serviceTypes;
 
     await config.save();
     res.status(200).json(config);

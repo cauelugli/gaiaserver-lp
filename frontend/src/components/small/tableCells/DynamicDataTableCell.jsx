@@ -21,38 +21,36 @@ const DynamicDataTableCell = (props) => {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      if (props.field.dynamicData === "allUsers") {
-        try {
-          const resUsers = await api.get("/get", {
-            params: { model: "User" },
-          });
-          setOptions(resUsers.data);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      } else if (props.field.dynamicData === "allCustomers") {
-        try {
+      try {
+        let data = [];
+        if (props.field.dynamicData === "allUsers") {
+          const resUsers = await api.get("/get", { params: { model: "User" } });
+          data = resUsers.data;
+        } else if (props.field.dynamicData === "allCustomers") {
           const resCustomers = await api.get("/get", {
             params: { model: "Customer" },
           });
           const resClients = await api.get("/get", {
             params: { model: "Client" },
           });
-          const customersCombinedData = [
-            ...resCustomers.data,
-            ...resClients.data,
-          ];
-          setOptions(customersCombinedData);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      } else {
-        try {
+          data = [...resCustomers.data, ...resClients.data];
+        } else if (props.field.dynamicData === "serviceTypes") {
+          const resConfig = await api.get("/getConfig", {
+            params: { item: "services", parameter: "serviceTypes" },
+          });
+          data = resConfig.data;
+        } else if (props.field.dynamicData === "departments") {
+          const resDepartments = await api.get("/get", {
+            params: { model: "Department" },
+          });
+          data = resDepartments.data;
+        } else {
           const response = await api.get(`/${props.field.dynamicData}`);
-          setOptions(response.data);
-        } catch (error) {
-          console.error("Error fetching data:", error);
+          data = response.data;
         }
+        setOptions(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
     };
     fetchData();

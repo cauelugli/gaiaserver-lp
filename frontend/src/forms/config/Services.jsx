@@ -18,13 +18,20 @@ import {
   DialogTitle,
   FormControlLabel,
   Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
   Radio,
   RadioGroup,
+  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -32,13 +39,16 @@ const api = axios.create({
 
 export default function Services({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
+  const [serviceTypes, setServiceTypes] = React.useState(null);
   const [servicesCanBeDeleted, setServicesCanBeDeleted] = React.useState(null);
+  const [newType, setNewType] = React.useState("");
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
         setConfigData(config.data[0].services);
+        setServiceTypes(config.data[0].services.serviceTypes);
         setServicesCanBeDeleted(config.data[0].services.canBeDeleted);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -47,11 +57,12 @@ export default function Services({ onClose }) {
     fetchData();
   }, []);
 
-  const handleChangeRequestConfig = async (e) => {
+  const handleChangeServicesConfig = async (e) => {
     e.preventDefault();
     try {
       const res = await api.put("/config/services", {
         canBeDeleted: servicesCanBeDeleted,
+        serviceTypes: serviceTypes,
       });
 
       if (res.data) {
@@ -75,8 +86,19 @@ export default function Services({ onClose }) {
     }
   };
 
+  const handleAddType = () => {
+    if (newType && !serviceTypes.includes(newType)) {
+      setServiceTypes([...serviceTypes, newType]);
+      setNewType("");
+    }
+  };
+
+  const handleRemoveType = (type) => {
+    setServiceTypes(serviceTypes.filter((t) => t !== type));
+  };
+
   return (
-    <form onSubmit={handleChangeRequestConfig}>
+    <form onSubmit={handleChangeServicesConfig}>
       <DialogTitle
         sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
       >
@@ -93,6 +115,55 @@ export default function Services({ onClose }) {
               alignItems="flex-start"
             >
               <Accordion sx={{ width: "100%" }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Tipos de Serviço
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List sx={{ mx: "30%" }}>
+                    {serviceTypes.map((type, index) => (
+                      <ListItem key={index} sx={{ pl: 0 }}>
+                        <ListItemText primary={type} />
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge="end"
+                            onClick={() => handleRemoveType(type)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ))}
+                  </List>
+                  <Grid
+                    container
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Grid item>
+                      <TextField
+                        variant="outlined"
+                        label="Adicionar novo tipo"
+                        value={newType}
+                        onChange={(e) => setNewType(e.target.value)}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleAddType}
+                        sx={{ ml: 1 }}
+                      >
+                        Adicionar
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion sx={{ width: "100%", mt: 2 }}>
                 <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Permissões

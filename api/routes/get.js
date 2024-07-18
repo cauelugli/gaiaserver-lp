@@ -8,6 +8,7 @@ router.get("/", async (req, res) => {
   const Model = defineModel(model);
 
   if (!Model) {
+    console.log("\nmodel not found\n")
     return res.status(400).json({ error: "Invalid model specified" });
   }
 

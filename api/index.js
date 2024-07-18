@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const getRoute = require("./routes/get");
+const getConfigRoute = require("./routes/getConfig");
 const addRoute = require("./routes/add");
 const deleteRoute = require("./routes/delete");
 
@@ -55,6 +56,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/api/get", getRoute);
+app.use("/api/getConfig", getConfigRoute);
 app.use("/api/add", addRoute);
 app.use("/api/delete", deleteRoute);
 
