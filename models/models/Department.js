@@ -14,11 +14,9 @@ departmentSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
-    required: true,
   },
   manager: {
     type: Object,
@@ -28,7 +26,6 @@ departmentSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    required: true,
   },
   positions: {
     type: Array,

@@ -234,6 +234,10 @@ const configSchema = new Schema({
       type: Boolean,
       default: true,
     },
+    serviceTypes: {
+      type: Array,
+      default: [],
+    },
   },
   stock: {
     stockentriesDispatcherDepartment: {

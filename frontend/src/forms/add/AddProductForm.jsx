@@ -28,6 +28,8 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
+import { handleCurrencyValueChange } from "../../../../controllers/handlers/handlers";
+
 export default function AddProductForm({
   userName,
   refreshData,
@@ -55,16 +57,6 @@ export default function AddProductForm({
     if (file) {
       setImages((prevImages) => [...prevImages, file]);
     }
-  };
-
-  const handleCurrencyValueChange = (e, setValue) => {
-    let inputValue = e.target.value.replace(/\D/g, ""); // Remove tudo que não é dígito
-    inputValue = inputValue.replace(/^0+/, ""); // Remove zeros à esquerda
-    if (inputValue.length < 3) {
-      inputValue = inputValue.padStart(3, "0"); // Adiciona zeros à esquerda se necessário
-    }
-    const formattedValue = `${inputValue.slice(0, -2)}.${inputValue.slice(-2)}`; // Insere o ponto decimal
-    setValue(formattedValue);
   };
 
   const handleAddProduct = async (e) => {

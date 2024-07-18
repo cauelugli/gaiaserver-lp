@@ -712,6 +712,7 @@ const pageButtonOptions = [
         label: "Grupo",
         icon: <GroupsIcon />,
         modal: {
+          endpoint: "/add",
           name: "AddGroup",
           label: "Grupo",
           femaleGender: false,
@@ -727,14 +728,6 @@ const pageButtonOptions = [
               label: "Nome",
               type: "string",
               required: true,
-            },
-            {
-              fieldSection: "mainInfo",
-              name: "type",
-              label: "Tipo de Grupo",
-              type: "select",
-              required: true,
-              options: ["Serviços", "Vendas", "Interno"],
             },
             {
               fieldSection: "peopleInfo",

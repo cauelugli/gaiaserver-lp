@@ -1,38 +1,14 @@
-import React from "react";
-
-const handlers = () => {
-  return (
-    // const handleApproveReprove = async (entry, status) => {
-    //   try {
-    //     const res = await api.put("/stock/managerApproval", {
-    //       entryId: entry._id,
-    //       status: status,
-    //     });
-    //     if (res.data) {
-    //       toast.success("Solicitação Respondida!", {
-    //         closeOnClick: true,
-    //         pauseOnHover: false,
-    //         theme: "colored",
-    //         autoClose: 1200,
-    //       });
-    //       socket.emit("newDataRefreshButton", {
-    //         page: props.item.page,
-    //         userId: props.userId,
-    //       });
-    //       props.setRefreshData(!props.refreshData);
-    //     }
-    //   } catch (err) {
-    //     console.log("err", err);
-    //     toast.error("Houve algum erro...", {
-    //       closeOnClick: true,
-    //       pauseOnHover: false,
-    //       theme: "colored",
-    //       autoClose: 1200,
-    //     });
-    //   }
-    // };
-    <div>handlers</div>
-  );
+export const handleCurrencyValueChange = (e, setValue) => {
+  let inputValue = e.target.value.replace(/\D/g, "");
+  inputValue = inputValue.replace(/^0+/, "");
+  if (inputValue.length < 3) {
+    inputValue = inputValue.padStart(3, "0");
+  }
+  const formattedValue = `${inputValue.slice(0, -2)}.${inputValue.slice(-2)}`;
+  setValue(formattedValue);
 };
 
-export default handlers;
+export const dummyFunction = () => {
+  // Função de exemplo
+  console.log("Esta é uma função dummy.");
+};

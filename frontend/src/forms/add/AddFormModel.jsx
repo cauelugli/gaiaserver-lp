@@ -35,6 +35,8 @@ import SelectTableCell from "../../components/small/tableCells/SelectTableCell";
 import StringTableCell from "../../components/small/tableCells/StringTableCell";
 import IdDocTableCell from "../../components/small/tableCells/IdDocTableCell";
 
+import CurrencyTableCell from "../../components/small/tableCells/CurrencyTableCell";
+
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
   const [image, setImage] = React.useState("");
@@ -238,13 +240,12 @@ export default function AddFormModel(props) {
                       />
                     )}
                     {field.type === "currency" && (
-                      <StringTableCell
+                      <CurrencyTableCell
                         fields={fields}
                         field={field}
-                        handleChange={handleChange}
+                        setFields={setFields}
                         modalOptions={modalOptions}
                         required={field.required}
-                        isCurrency
                       />
                     )}
                     {field.type === "password" && (
