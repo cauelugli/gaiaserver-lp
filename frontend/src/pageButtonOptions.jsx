@@ -787,7 +787,7 @@ const pageButtonOptions = [
             },
             {
               fieldSection: "serviceInfo",
-              name: "executiontime",
+              name: "executionTime",
               label: "Tempo de Execução",
               type: "select",
               options: ["30 min", "1h", "1:30h", "2h", "2:30h", "3h ou mais"],

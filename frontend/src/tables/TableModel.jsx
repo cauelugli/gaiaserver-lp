@@ -209,6 +209,8 @@ export default function TableModel(props) {
                               ))
                             ) : typeof row[column.id] === "object" ? (
                               row[column.id].name
+                            ) : typeof row[column.id] === "number" ? (
+                              `R$${row[column.id]}`
                             ) : (
                               row[column.id]
                             )}

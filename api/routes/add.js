@@ -10,7 +10,7 @@ router.post("/", async (req, res) => {
 
   if (!Model) {
     console.log("\nmodel not found\n");
-    return res.status(400).json({ error: "Tipo de cliente inválido" });
+    return res.status(400).json({ error: "Modelo inválido" });
   }
 
   if (Model === "Cliente Empresa" || Model === "Cliente Pessoa Física") {

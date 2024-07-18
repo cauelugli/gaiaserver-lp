@@ -228,6 +228,10 @@ const routeOptions = [
           label: "Nome",
         },
         {
+          id: "type",
+          label: "Tipo de Serviço",
+        },
+        {
           id: "department",
           label: "Departamento",
         },
@@ -240,7 +244,7 @@ const routeOptions = [
           label: "Duração",
         },
         {
-          id: "value",
+          id: "price",
           label: "Valor",
         },
       ],
@@ -249,6 +253,14 @@ const routeOptions = [
         {
           id: "name",
           label: "Nome do Plano",
+        },
+        {
+          id: "services",
+          label: "Serviços",
+        },
+        {
+          id: "price",
+          label: "Valor",
         },
       ],
     ],

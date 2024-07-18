@@ -14,7 +14,7 @@ const serviceSchema = new mongoose.Schema({
     required: true,
   },
   executionTime: {
-    type: Number,
+    type: String,
   },
   materials: {
     type: Array,
@@ -32,6 +32,9 @@ const serviceSchema = new mongoose.Schema({
   },
   sessions: {
     type: String,
+  },
+  type: {
+    type: Object,
   },
 });
 
