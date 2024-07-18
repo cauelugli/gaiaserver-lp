@@ -11,6 +11,7 @@ const getConfigRoute = require("./routes/getConfig");
 const addRoute = require("./routes/add");
 const deleteRoute = require("./routes/delete");
 
+const adminRoute = require("./routes/admin");
 const newRoute = require("./routes/new");
 const authRoute = require("./routes/auth");
 const activateRoute = require("./routes/activate");
@@ -60,6 +61,7 @@ app.use("/api/getConfig", getConfigRoute);
 app.use("/api/add", addRoute);
 app.use("/api/delete", deleteRoute);
 
+app.use("/api/admin", adminRoute);
 app.use("/api/new", newRoute);
 app.use("/api/login", authRoute);
 app.use("/api/activate", activateRoute);

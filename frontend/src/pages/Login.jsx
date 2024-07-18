@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -20,7 +20,6 @@ const Login = () => {
 
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("1234");
-  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [isFirstAccess, setIsFirstAccess] = useState(false);
   const [isFirstAccessUserId, setIsFirstAccessUserId] = useState(null);
@@ -90,12 +89,10 @@ const Login = () => {
     try {
       setLoading(true);
       const res = await api.post("/new", {
-        username,
         password,
-        email,
       });
       if (res.data) {
-        toast.success("Usuário Criado!", {
+        toast.success("Usuário Admin Criado!", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
@@ -292,14 +289,6 @@ const Login = () => {
                         autoComplete="current-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                      />
-                      <TextField
-                        size="small"
-                        required
-                        label="E-mail"
-                        variant="standard"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
                       />
                       <Button
                         type="submit"

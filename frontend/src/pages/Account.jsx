@@ -55,10 +55,17 @@ export default function Account({
     try {
       const uploadResponse = await api.post("/uploads/singleFile", formData);
       const imagePath = uploadResponse.data.imagePath;
-      const res = await api.put("/users/changeProfilePicture", {
-        userId: user._id,
-        image: imagePath,
-      });
+      let res;
+      if (user.username === "admin") {
+        res = await api.put("/admin/changeProfilePicture", {
+          image: imagePath,
+        });
+      } else {
+        res = await api.put("/users/changeProfilePicture", {
+          userId: user._id,
+          image: imagePath,
+        });
+      }
 
       if (res.data) {
         toast.success("Imagem Alterada Adicionado!", {
