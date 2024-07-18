@@ -4,7 +4,7 @@ const { defineModel } = require("../../controllers/functions/routeFunctions");
 
 // CREATE ITEM
 router.post("/", async (req, res) => {
-  const { fields, name, image } = req.body;
+  const { fields, name, image, isManager } = req.body;
 
   const Model = defineModel(req.body.model);
 
@@ -22,6 +22,7 @@ router.post("/", async (req, res) => {
 
   // verify cases
   fields.image = image;
+  fields.isManager = isManager;
 
   const newItem = new Model(fields);
 

@@ -132,7 +132,7 @@ const routeOptions = [
           label: "E-mail",
         },
         {
-          id: "phone",
+          id: "phone1",
           label: "Telefone",
         },
         {
@@ -159,7 +159,7 @@ const routeOptions = [
           label: "E-mail",
         },
         {
-          id: "phone",
+          id: "phone1",
           label: "Telefone",
         },
         {

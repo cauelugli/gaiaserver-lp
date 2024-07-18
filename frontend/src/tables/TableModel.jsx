@@ -1,15 +1,5 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
-// import { toast } from "react-toastify";
-// import dayjs from "dayjs";
-// import axios from "axios";
-// import { io } from "socket.io-client";
-
-// const socket = io("http://localhost:5002");
-
-// const api = axios.create({
-//   baseURL: "http://localhost:3000/api",
-// });
 
 import {
   Box,
@@ -62,35 +52,14 @@ export default function TableModel(props) {
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
-  // const handleApproveReprove = async (entry, status) => {
-  //   try {
-  //     const res = await api.put("/stock/managerApproval", {
-  //       entryId: entry._id,
-  //       status: status,
-  //     });
-  //     if (res.data) {
-  //       toast.success("Solicitação Respondida!", {
-  //         closeOnClick: true,
-  //         pauseOnHover: false,
-  //         theme: "colored",
-  //         autoClose: 1200,
-  //       });
-  //       socket.emit("newDataRefreshButton", {
-  //         page: props.item.page,
-  //         userId: props.userId,
-  //       });
-  //       props.setRefreshData(!props.refreshData);
-  //     }
-  //   } catch (err) {
-  //     console.log("err", err);
-  //     toast.error("Houve algum erro...", {
-  //       closeOnClick: true,
-  //       pauseOnHover: false,
-  //       theme: "colored",
-  //       autoClose: 1200,
-  //     });
-  //   }
-  // };
+  const filteredRows = React.useMemo(() => {
+    if (props.page === "users" && props.tabIndex === 0) {
+      return sortedRows.filter((row) => !row.isManager);
+    } else if (props.page === "users" && props.tabIndex === 1) {
+      return sortedRows.filter((row) => row.isManager);
+    }
+    return sortedRows;
+  }, [sortedRows, props.page, props.tabIndex]);
 
   return (
     <Box sx={{ width: props.topBar ? "105%" : "100%", minHeight: "50vw" }}>
@@ -173,7 +142,7 @@ export default function TableModel(props) {
             </TableRow>
             {props.page === "products"
               ? props.baseProducts.length > 0 &&
-                sortedRows
+                filteredRows
                   .filter(
                     (item) =>
                       item.name &&
@@ -201,7 +170,7 @@ export default function TableModel(props) {
                       </TableCell>
                     </TableRow>
                   ))
-              : sortedRows
+              : filteredRows
                   .filter((row) => {
                     if (props.page === "quotes") {
                       if (props.tabIndex === 0) return row.type === "job";
@@ -257,7 +226,7 @@ export default function TableModel(props) {
         </Table>
         <TablePagination
           component="div"
-          count={sortedRows.length}
+          count={filteredRows.length}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

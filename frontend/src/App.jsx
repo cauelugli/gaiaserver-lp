@@ -105,13 +105,12 @@ export default function App() {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        const notifications = await api.get(
-          // some endpoint...
-          "/404"
-        );
+        // const notifications = await api.get(
+        //   // some endpoint...
+        // );
         const preferences = await api.get(`/userPreferences/${userData._id}`);
         setConfigData(config.data[0]);
-        setNotifications(notifications.data);
+        // setNotifications(notifications.data);
         setUserPreferences(preferences.data);
         sessionStorage.setItem(
           "userPreferences",

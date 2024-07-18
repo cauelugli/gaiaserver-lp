@@ -94,6 +94,7 @@ export default function AddFormModel(props) {
         image: imagePath,
         model: modalOptions.model,
         selectedProducts,
+        isManager: modalOptions.label === "Gerente",
         price:
           selectedProducts
             .reduce(
