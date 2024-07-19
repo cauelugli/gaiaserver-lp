@@ -82,7 +82,7 @@ const pageButtonOptions = [
               fieldSection: "mainContact",
               name: "mainContactPhone",
               label: "Telefone",
-              type: "string",
+              type: "phone",
               required: true,
             },
             {
@@ -193,7 +193,7 @@ const pageButtonOptions = [
             },
             {
               fieldSection: "mainInfo",
-              name: "phone",
+              name: "cellphone",
               label: "Telefone",
               type: "phone",
               required: true,
@@ -222,9 +222,9 @@ const pageButtonOptions = [
             },
             {
               fieldSection: "secondaryInfo",
-              name: "addressDelivery",
-              label: "Endereço de Entrega",
-              type: "string",
+              name: "phone",
+              label: "Telefone Fixo",
+              type: "phone",
               required: true,
             },
           ],
@@ -652,7 +652,7 @@ const pageButtonOptions = [
           endpoint: "/add",
           label: "Departamento",
           femaleGender: false,
-          maxWidth: "custom",
+          maxWidth: "custom950px",
           fieldsSections: [
             { name: "mainInfo", label: "Informações Gerais" },
             { name: "peopleInfo", label: "Pessoas" },
@@ -720,12 +720,11 @@ const pageButtonOptions = [
         icon: <GroupsIcon />,
         modal: {
           endpoint: "/add",
-          name: "AddGroup",
           label: "Grupo",
           femaleGender: false,
-          maxWidth: "xs",
+          maxWidth: "custom350px",
           fieldsSections: [
-            { name: "mainInfo", label: "Informações Gerais" },
+            { name: "mainInfo", label: "Informações" },
             { name: "peopleInfo", label: "Pessoas" },
           ],
           fields: [
@@ -759,7 +758,6 @@ const pageButtonOptions = [
         icon: <BuildIcon />,
         modal: {
           endpoint: "/add",
-          name: "AddService",
           label: "Serviço",
           femaleGender: false,
           maxWidth: "sm",
@@ -1183,7 +1181,7 @@ const pageButtonOptions = [
         label: "Operador",
         icon: <ManageAccountsIcon />,
         modal: {
-          name: "AddOperator",
+          endpoint: "/add",
           label: "Operador",
           femaleGender: false,
           maxWidth: "xs",
@@ -1230,7 +1228,7 @@ const pageButtonOptions = [
         label: "Cargo",
         icon: <AssignmentIndIcon />,
         modal: {
-          name: "AddPosition",
+          endpoint: "/add",
           label: "Cargo",
           femaleGender: false,
           maxWidth: "xs",
@@ -1259,7 +1257,7 @@ const pageButtonOptions = [
         label: "Perfil de Acesso",
         icon: <AdminPanelSettingsIcon />,
         modal: {
-          name: "AddRole",
+          endpoint: "/add",
           label: "Perfil de Acesso",
           femaleGender: false,
           maxWidth: "xs",

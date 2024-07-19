@@ -73,12 +73,12 @@ const pageOptions = [
           label: "Cliente",
         },
         {
-          id: "createdBy",
-          label: "Criado por",
-        },
-        {
           id: "worker",
           label: "Designado",
+        },
+        {
+          id: "price",
+          label: "Valor",
         },
         {
           id: "scheduledTo",
@@ -96,6 +96,10 @@ const pageOptions = [
           label: "#",
         },
         {
+          id: "customer",
+          label: "Cliente",
+        },
+        {
           id: "seller",
           label: "Vendedor",
         },
@@ -106,10 +110,6 @@ const pageOptions = [
         {
           id: "price",
           label: "Valor Total",
-        },
-        {
-          id: "createdBy",
-          label: "Criado por",
         },
         {
           id: "deliveryScheduledTo",

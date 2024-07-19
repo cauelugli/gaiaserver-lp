@@ -99,12 +99,16 @@ export default function AddFormModel(props) {
         createdBy: props.userName || "Admin",
         isManager: modalOptions.label === "Gerente",
         price:
-          selectedProducts
-            .reduce(
-              (sum, product) => sum + product.sellValue * product.count,
-              0
-            )
-            .toFixed(2) || 0,
+          modalOptions.label === "Venda"
+            ? selectedProducts
+                .reduce(
+                  (sum, product) => sum + product.sellValue * product.count,
+                  0
+                )
+                .toFixed(2) || 0
+            : modalOptions.label === "Job"
+            ? fields.service.price
+            : fields.price,
       });
       if (res.data) {
         toast.success(`${props.selectedOptionLabel} Adicionado!`, {
@@ -149,7 +153,7 @@ export default function AddFormModel(props) {
       <DialogContent>
         {modalOptions.fieldsSections.map((section, sectionIndex) => (
           <Box key={sectionIndex} sx={{ mb: 1 }}>
-            <Typography sx={{ fontSize: 16, fontWeight: "bold", mb: 0.5 }}>
+            <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
               {section.name !== "image" && section.label}
             </Typography>
             {section.name === "image" && (

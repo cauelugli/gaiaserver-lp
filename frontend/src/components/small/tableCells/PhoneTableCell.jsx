@@ -8,7 +8,10 @@ const PhoneTableCell = (props) => {
   return (
     <InputMask
       mask={
-        props.field.name === "cellphone" ? "(99) 99999-9999" : "(99) 9999-9999"
+        props.field.name === "cellphone" ||
+        props.field.name === "mainContactPhone"
+          ? "(99) 99999-9999"
+          : "(99) 9999-9999"
       }
       value={props.fields[props.field.name] || ""}
       onChange={props.handleChange(props.field.name)}

@@ -78,15 +78,17 @@ export default function PageButtonModel(props) {
         <Dialog
           fullWidth
           maxWidth={
-            selectedOptionMaxWidth === "custom" ? false : selectedOptionMaxWidth
+            selectedOptionMaxWidth.startsWith("custom")
+              ? false
+              : selectedOptionMaxWidth
           }
           open={openAdd}
           onClose={() => setOpenAdd(!openAdd)}
           sx={
-            selectedOptionMaxWidth === "custom"
+            selectedOptionMaxWidth.startsWith("custom")
               ? {
                   "& .MuiDialog-paper": {
-                    width: "950px",
+                    width: `${selectedOptionMaxWidth.match(/\d+/)[0]}px`,
                     maxWidth: "none",
                     display: "flex",
                     alignItems: "center",

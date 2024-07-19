@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
   if (!Model) {
     console.log("\nmodel not found\n");
     return res.status(400).json({ error: "Modelo inválido" });
-  }
+  } 
 
   if (Model === "Cliente Empresa" || Model === "Cliente Pessoa Física") {
     const existingNameUser = await Model.findOne({ name });
@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
   fields.isManager = isManager;
   fields.createdBy = createdBy;
   fields.products = selectedProducts;
-  fields.price = price;
+  fields.price = parseFloat(price);
 
   const newItem = new Model(fields);
 

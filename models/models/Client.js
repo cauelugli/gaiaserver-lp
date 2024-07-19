@@ -14,6 +14,10 @@ const clientSchema = new mongoose.Schema({
   birthdate: {
     type: String,
   },
+  cellphone: {
+    type: String,
+    required: true,
+  },
   cpf: {
     type: String,
     required: true,
@@ -43,7 +47,6 @@ const clientSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    required: true,
   },
   recentRequests: {
     type: Array,
