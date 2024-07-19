@@ -188,7 +188,7 @@ const pageOptions = [
     page: "departments",
     models: ["Department", "Group"],
     label: "Departamentos",
-    tabs: ["Serviços e Internos", "Grupos"],
+    tabs: ["Departamentos", "Grupos"],
     tableColumns: [
       // SERVICE SALES AND INTERNAL DEPARTMENTS TABLE
       [
@@ -201,10 +201,7 @@ const pageOptions = [
           id: "name",
           label: "Nome",
         },
-        {
-          id: "email",
-          label: "E-mail",
-        },
+
         {
           id: "members",
           label: "Colaboradores",
@@ -214,8 +211,12 @@ const pageOptions = [
           label: "Gerente",
         },
         {
-          id: "type",
-          label: "Tipo de Departamento",
+          id: "email",
+          label: "E-mail",
+        },
+        {
+          id: "phone",
+          label: "Telefone",
         },
       ],
       // GROUPS TABLE
