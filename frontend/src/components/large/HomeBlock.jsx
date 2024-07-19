@@ -22,7 +22,7 @@ import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
-import HomeRecentActivity from "./small/HomeRecentActivity";
+import HomeRecentActivity from "../small/HomeRecentActivity";
 
 const optionsMainblocks = [
   {

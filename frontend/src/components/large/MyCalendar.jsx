@@ -22,9 +22,9 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import CalendarEventModal from "../forms/misc/CalendarEventModal";
-import AgendaActions from "./small/buttons/AgendaActions";
-import CalendarEvents from "./small/CalendarEvents";
+import CalendarEventModal from "../../forms/misc/CalendarEventModal";
+import AgendaActions from "../small/buttons/AgendaActions";
+import CalendarEvents from "../small/CalendarEvents";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

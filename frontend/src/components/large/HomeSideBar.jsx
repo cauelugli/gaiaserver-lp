@@ -4,8 +4,8 @@ import React from "react";
 
 import { Grid } from "@mui/material";
 
-import UserShortcuts from "./small/UserShortcuts";
-import NewsBox from "./small/NewsBox";
+import UserShortcuts from "../small/UserShortcuts";
+import NewsBox from "../small/NewsBox";
 
 const HomeSideBar = ({ userId, handleShortcutClick, allowedLinks }) => {
   return (

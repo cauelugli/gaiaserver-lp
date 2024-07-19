@@ -17,8 +17,8 @@ import { Grid, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "./theme";
 
-import NavBar from "./components/NavBar";
-import SideBar from "./components/SideBar";
+import NavBar from "./components/large/NavBar";
+import SideBar from "./components/large/SideBar";
 
 import pageOptions from "./options/pageOptions";
 
@@ -31,7 +31,7 @@ import Login from "./pages/Login";
 import PageModel from "./pages/PageModel";
 import Reports from "./pages/Reports";
 
-import ShortcutModals from "./components/ShortcutModals";
+import ShortcutModals from "./components/large/ShortcutModals";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

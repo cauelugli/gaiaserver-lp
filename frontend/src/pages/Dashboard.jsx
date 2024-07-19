@@ -13,9 +13,9 @@ import {
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-import MyCalendar from "../components/MyCalendar";
+import MyCalendar from "../components/large/MyCalendar";
+// import SmartReports from "../components/large/SmartReports";
 import WorkerSelect from "../components/small/selects/WorkerSelect";
-// import SmartReports from "../components/SmartReports";
 
 const Dashboard = ({
   // users,

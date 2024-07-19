@@ -1,34 +1,20 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import * as React from "react";
 
 import { Grid } from "@mui/material";
 
-import HomeBlock from "../components/HomeBlock";
-import HomeSideBar from "../components/HomeSideBar";
-import WelcomingMessage from "../components/small/WelcomingMessage";
+import HomeBlock from "../components/large/HomeBlock";
+import HomeSideBar from "../components/large/HomeSideBar";
 
 const Home = ({
   userId,
-  userName,
   userUsername,
-  userGender,
   allowedLinks,
-  configDashboard,
   onMount,
   onUnmount,
   configData,
   handleShortcutClick,
 }) => {
-  const [showMessage, setShowMessage] = React.useState(true);
-
-  React.useEffect(() => {
-    if (configDashboard) {
-      setShowMessage((prevState) => ({
-        ...prevState,
-      }));
-    }
-  }, [configDashboard]);
 
   React.useEffect(() => {
     if (onMount) {

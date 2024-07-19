@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 
 import { Grid, Typography } from "@mui/material";
 
-import UserButton from "./small/buttons/UserButton";
-import NotificationsButton from "./small/buttons/NotificationsButton";
-import TopBar from "./TopBar";
+import UserButton from "../small/buttons/UserButton";
+import NotificationsButton from "../small/buttons/NotificationsButton";
+import TopBar from "../large/TopBar";
 
 export default function NavBar({
   user,
