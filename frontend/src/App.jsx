@@ -20,7 +20,7 @@ import { lightTheme, darkTheme } from "./theme";
 import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
 
-import routeOptions from "./routesOptions";
+import pageOptions from "./options/pageOptions";
 
 import Account from "./pages/Account";
 import Config from "./pages/Config";
@@ -356,7 +356,7 @@ export default function App() {
                       }
                     />
 
-                    {routeOptions.map((option, index) => (
+                    {pageOptions.map((option, index) => (
                       <Route
                         key={index}
                         path={`/${option.page}`}

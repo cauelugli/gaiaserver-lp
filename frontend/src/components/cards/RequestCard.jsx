@@ -182,7 +182,7 @@ export default function RequestCard({
                       <Avatar
                         alt="Imagem do Produto"
                         src={`http://localhost:3000/static/${item.image}`}
-                        sx={{ width: 34, height: 34, mx: "auto" }}
+                        sx={{ width: 30, height: 30, mx: "auto" }}
                       />
                       <Typography sx={{ fontSize: 11 }}>
                         x{item.quantity} {item.name}

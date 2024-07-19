@@ -4,11 +4,12 @@ import React from "react";
 import InputMask from "react-input-mask";
 import { TextField } from "@mui/material";
 
-const IdDocTableCell = (props) => {
+const PhoneTableCell = (props) => {
+  console.log("name", props.field.name);
   return (
     <InputMask
       mask={
-        props.field.label === "CPF" ? "999.999.999-99" : "99.999.999/9999-99"
+        props.field.name === "cellphone" ? "(99) 99999-9999" : "(99) 9999-9999"
       }
       value={props.fields[props.field.name] || ""}
       onChange={props.handleChange(props.field.name)}
@@ -34,4 +35,4 @@ const IdDocTableCell = (props) => {
   );
 };
 
-export default IdDocTableCell;
+export default PhoneTableCell;

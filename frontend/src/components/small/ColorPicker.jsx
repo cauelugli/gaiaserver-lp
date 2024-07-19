@@ -1,58 +1,40 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from "react";
-
+// eslint-disable-next-line no-unused-vars
+import React, { useState } from "react";
 import { Popover, Typography } from "@mui/material";
-
 import { CirclePicker } from "react-color";
+import colors from '../../options/colorList';
 
-const ColorPicker = ({
-  handleClickColor,
-  color,
-  colorAnchorEl,
-  handleCloseColor,
-  handleChangeColor,
-}) => {
-  const colors = [
-    "#ff0000",
-    "#ff3300",
-    "#ff6600",
-    "#ff6600",
-    "#ff9900",
-    "#ffcc00",
-    "#ffcc00",
-    "#ffff00",
-    "#ffff66",
-    "#66ff00",
-    "#99ff00",
-    "#ccff00",
-    "#00ccff",
-    "#0066ff",
-    "#0000ff",
-    "#6600ff",
-    "#9900ff",
-    "#cc00ff",
-    "#cc00cc",
-    "#cc66ff",
-    "#9900cc",
-    "#888",
-    "#aaa",
-    "#bbb",
-  ];
+const ColorPicker = ({ fields, field, handleChange, required }) => {
+  const [color, setColor] = useState(fields[field.name] || "#fff");
+  const [colorAnchorEl, setColorAnchorEl] = useState(null);
+
+  const handleClickColor = (event) => {
+    setColorAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseColor = () => {
+    setColorAnchorEl(null);
+  };
+
+  const handleChangeColor = (color) => {
+    setColor(color.hex);
+    handleChange(field.name)({ target: { value: color.hex } });
+  };
 
   return (
     <>
       <div onClick={handleClickColor}>
         <div
           style={{
-            width: "50px",
-            height: "50px",
+            width: "38px",
+            height: "38px",
             border: "2px solid lightgrey",
             borderRadius: "30%",
             backgroundColor: color,
             cursor: "pointer",
           }}
-        ></div>
+        />
       </div>
       <Popover
         open={Boolean(colorAnchorEl)}
@@ -76,6 +58,9 @@ const ColorPicker = ({
           }}
         />
       </Popover>
+      {required && !color && (
+        <Typography color="error">Este campo é obrigatório</Typography>
+      )}
     </>
   );
 };

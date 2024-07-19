@@ -16,7 +16,7 @@ import {
 
 import AddFormModel from "../../../forms/add/AddFormModel";
 
-import pageButtonOptions from "../../../pageButtonOptions";
+import pageButtonOptions from "../../../options/pageButtonOptions";
 
 export default function PageButtonModel(props) {
   const currentPageOptions = pageButtonOptions.find(
@@ -77,9 +77,25 @@ export default function PageButtonModel(props) {
       {openAdd && (
         <Dialog
           fullWidth
-          maxWidth={selectedOptionMaxWidth}
+          maxWidth={
+            selectedOptionMaxWidth === "custom" ? false : selectedOptionMaxWidth
+          }
           open={openAdd}
           onClose={() => setOpenAdd(!openAdd)}
+          sx={
+            selectedOptionMaxWidth === "custom"
+              ? {
+                  "& .MuiDialog-paper": {
+                    width: "950px",
+                    maxWidth: "none",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "auto",
+                  },
+                }
+              : {}
+          }
         >
           <AddFormModel
             buttonProps={props}

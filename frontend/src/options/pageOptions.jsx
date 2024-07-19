@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
-const routeOptions = [
+const pageOptions = [
   {
     page: "dashboard",
     label: "Dashboard",
@@ -61,6 +61,10 @@ const routeOptions = [
       // JOB TABLE
       [
         {
+          id: "number",
+          label: "#",
+        },
+        {
           id: "title",
           label: "Título",
         },
@@ -96,12 +100,20 @@ const routeOptions = [
           label: "Vendedor",
         },
         {
-          id: "items",
+          id: "products",
           label: "Itens",
+        },
+        {
+          id: "price",
+          label: "Valor Total",
         },
         {
           id: "createdBy",
           label: "Criado por",
+        },
+        {
+          id: "deliveryScheduledTo",
+          label: "Entregar em",
         },
         {
           id: "status",
@@ -116,7 +128,6 @@ const routeOptions = [
     label: "Colaboradores",
     tabs: ["Funcionários", "Gerentes"],
     tableColumns: [
-      //NOTE: Even though these lists are equal, they must exist so a future mapping won't throw an error
       // USER TABLE
       [
         {
@@ -132,7 +143,7 @@ const routeOptions = [
           label: "E-mail",
         },
         {
-          id: "phone1",
+          id: "cellphone",
           label: "Telefone",
         },
         {
@@ -159,7 +170,7 @@ const routeOptions = [
           label: "E-mail",
         },
         {
-          id: "phone1",
+          id: "cellphone",
           label: "Telefone",
         },
         {
@@ -181,6 +192,11 @@ const routeOptions = [
     tableColumns: [
       // SERVICE SALES AND INTERNAL DEPARTMENTS TABLE
       [
+        {
+          id: "color",
+          // colorIcon
+          label: "🎨",
+        },
         {
           id: "name",
           label: "Nome",
@@ -238,10 +254,6 @@ const routeOptions = [
         {
           id: "materials",
           label: "Materiais",
-        },
-        {
-          id: "executionTime",
-          label: "Duração",
         },
         {
           id: "price",
@@ -548,4 +560,4 @@ const routeOptions = [
   },
 ];
 
-export default routeOptions;
+export default pageOptions;

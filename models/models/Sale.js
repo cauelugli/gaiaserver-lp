@@ -53,9 +53,6 @@ saleSchema = new mongoose.Schema({
       user: String,
     },
   ],
-  items: {
-    type: Object,
-  },
   manager: {
     type: Object,
   },
@@ -64,8 +61,9 @@ saleSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    default: 0,
-    required: true,
+  },
+  products: {
+    type: Array,
   },
   resolvedAt: {
     type: String,
@@ -79,6 +77,7 @@ saleSchema = new mongoose.Schema({
   },
   status: {
     type: String,
+    default: "Aberto",
   },
 });
 

@@ -52,7 +52,7 @@ const pageButtonOptions = [
               fieldSection: "mainInfo",
               name: "phone",
               label: "Telefone",
-              type: "string",
+              type: "phone",
               required: true,
             },
             {
@@ -195,7 +195,7 @@ const pageButtonOptions = [
               fieldSection: "mainInfo",
               name: "phone",
               label: "Telefone",
-              type: "string",
+              type: "phone",
               required: true,
             },
             {
@@ -296,7 +296,7 @@ const pageButtonOptions = [
             },
             {
               fieldSection: "scheduling",
-              name: "scheduleDate",
+              name: "scheduledTo",
               label: "Data de Atendimento",
               type: "date",
               required: true,
@@ -359,7 +359,7 @@ const pageButtonOptions = [
             },
             {
               fieldSection: "mainInfo",
-              name: "deliveryDate",
+              name: "deliveryScheduledTo",
               label: "Data de Entrega",
               type: "date",
               required: true,
@@ -457,16 +457,16 @@ const pageButtonOptions = [
             },
             {
               fieldSection: "mainInfo",
-              name: "phone1",
-              label: "Telefone 1",
-              type: "string",
+              name: "cellphone",
+              label: "Celular",
+              type: "phone",
               required: false,
             },
             {
               fieldSection: "mainInfo",
-              name: "phone2",
-              label: "Telefone 2",
-              type: "string",
+              name: "phone",
+              label: "Telefone Fixo",
+              type: "phone",
               required: false,
             },
             {
@@ -579,16 +579,16 @@ const pageButtonOptions = [
             },
             {
               fieldSection: "mainInfo",
-              name: "phone1",
-              label: "Telefone 1",
-              type: "string",
+              name: "cellphone",
+              label: "Celular",
+              type: "phone",
               required: false,
             },
             {
               fieldSection: "mainInfo",
-              name: "phone2",
-              label: "Telefone 2",
-              type: "string",
+              name: "phone",
+              label: "Telefone Fixo",
+              type: "phone",
               required: false,
             },
             {
@@ -652,7 +652,7 @@ const pageButtonOptions = [
           endpoint: "/add",
           label: "Departamento",
           femaleGender: false,
-          maxWidth: "md",
+          maxWidth: "custom",
           fieldsSections: [
             { name: "mainInfo", label: "Informações Gerais" },
             { name: "peopleInfo", label: "Pessoas" },
@@ -677,7 +677,7 @@ const pageButtonOptions = [
               fieldSection: "mainInfo",
               name: "phone",
               label: "Telefone",
-              type: "string",
+              type: "phone",
               required: true,
             },
             {
@@ -685,6 +685,13 @@ const pageButtonOptions = [
               name: "email",
               label: "E-mail",
               type: "string",
+              required: false,
+            },
+            {
+              fieldSection: "mainInfo",
+              name: "color",
+              label: "Cor",
+              type: "color",
               required: false,
             },
             {

@@ -36,6 +36,8 @@ import StringTableCell from "../../components/small/tableCells/StringTableCell";
 import IdDocTableCell from "../../components/small/tableCells/IdDocTableCell";
 
 import CurrencyTableCell from "../../components/small/tableCells/CurrencyTableCell";
+import ColorPicker from "../../components/small/ColorPicker";
+import PhoneTableCell from "../../components/small/tableCells/PhoneTableCell";
 
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
@@ -97,6 +99,7 @@ export default function AddFormModel(props) {
         image: imagePath,
         model: modalOptions.model,
         selectedProducts,
+        createdBy: props.userName || "Admin",
         isManager: modalOptions.label === "Gerente",
         price:
           selectedProducts
@@ -232,6 +235,15 @@ export default function AddFormModel(props) {
                     )}
                     {field.type === "idDoc" && (
                       <IdDocTableCell
+                        fields={fields}
+                        field={field}
+                        handleChange={handleChange}
+                        modalOptions={modalOptions}
+                        required={field.required}
+                      />
+                    )}
+                    {field.type === "phone" && (
+                      <PhoneTableCell
                         fields={fields}
                         field={field}
                         handleChange={handleChange}
@@ -431,6 +443,15 @@ export default function AddFormModel(props) {
                         value={fields[field.name] || ""}
                         onChange={handleChange(field.name)}
                         size="small"
+                        required={field.required}
+                      />
+                    )}
+                    {field.type === "color" && (
+                      <ColorPicker
+                        fields={fields}
+                        field={field}
+                        handleChange={handleChange}
+                        modalOptions={modalOptions}
                         required={field.required}
                       />
                     )}

@@ -60,7 +60,7 @@ jobSchema = new mongoose.Schema({
     type: String,
   },
   scheduledTo: {
-    type: Date,
+    type: String,
   },
   selectedSchedule: {
     type: String,
@@ -71,6 +71,7 @@ jobSchema = new mongoose.Schema({
   },
   status: {
     type: String,
+    default: "Aberto",
   },
   title: {
     type: String,

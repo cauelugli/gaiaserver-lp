@@ -4,7 +4,8 @@ const { defineModel } = require("../../controllers/functions/routeFunctions");
 
 // CREATE ITEM
 router.post("/", async (req, res) => {
-  const { fields, name, image, isManager } = req.body;
+  const { fields, name, image, isManager, createdBy, selectedProducts, price } =
+    req.body;
 
   const Model = defineModel(req.body.model);
 
@@ -23,6 +24,9 @@ router.post("/", async (req, res) => {
   // verify cases
   fields.image = image;
   fields.isManager = isManager;
+  fields.createdBy = createdBy;
+  fields.products = selectedProducts;
+  fields.price = price;
 
   const newItem = new Model(fields);
 

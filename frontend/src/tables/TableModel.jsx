@@ -14,6 +14,8 @@ import {
   Button,
   Avatar,
   Tooltip,
+  Grid,
+  Typography,
 } from "@mui/material";
 
 export default function TableModel(props) {
@@ -155,7 +157,7 @@ export default function TableModel(props) {
                         <Avatar
                           alt="Imagem do Produto"
                           src={`http://localhost:3000/static${row.images[0]}`}
-                          sx={{ width: 34, height: 34 }}
+                          sx={{ width: 30, height: 30 }}
                         />
                       </TableCell>
                       <TableCell align="left">{row.name}</TableCell>
@@ -195,28 +197,74 @@ export default function TableModel(props) {
                                 src={`http://localhost:3000/static${
                                   row[column.id]
                                 }`}
-                                sx={{ width: 34, height: 34 }}
+                                sx={{ width: 30, height: 30 }}
                               />
                             ) : Array.isArray(row[column.id]) ? (
-                              row[column.id].map((obj, index) => (
-                                <Tooltip key={index} title={obj.name}>
-                                  <Avatar
-                                    alt="Imagem do Produto"
-                                    src={`http://localhost:3000/static${obj.image}`}
-                                    sx={{ width: 34, height: 34, mr: 0.5 }}
-                                  />
-                                </Tooltip>
-                              ))
+                              <Grid
+                                container
+                                direction="row"
+                                alignItems="center"
+                              >
+                                {row[column.id].map((obj, index) => (
+                                  <Grid item key={index} sx={{ mr: 1 }}>
+                                    <Tooltip title={obj.name}>
+                                      <Grid
+                                        container
+                                        direction="column"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                      >
+                                        <Grid item>
+                                          <Avatar
+                                            alt="Imagem do Produto"
+                                            src={
+                                              props.page === "requests"
+                                                ? `http://localhost:3000/static${obj.images[0]}`
+                                                : `http://localhost:3000/static${obj.image}`
+                                            }
+                                            sx={{
+                                              width: 30,
+                                              height: 30,
+                                              mr: 0.5,
+                                            }}
+                                          />
+                                        </Grid>
+                                        {props.page === "requests" && (
+                                          <Grid item>
+                                            <Typography sx={{ fontSize: 10 }}>
+                                              (x{obj.count})
+                                            </Typography>
+                                          </Grid>
+                                        )}
+                                      </Grid>
+                                    </Tooltip>
+                                  </Grid>
+                                ))}
+                              </Grid>
                             ) : typeof row[column.id] === "object" ? (
                               row[column.id].name
                             ) : typeof row[column.id] === "number" ? (
                               `R$${row[column.id]}`
+                            ) : typeof row[column.id] === "string" &&
+                              row[column.id].startsWith("#") ? (
+                              <Paper
+                                elevation={0}
+                                sx={{
+                                  mr: 1,
+                                  width: 16,
+                                  height: 16,
+                                  borderRadius: 50,
+                                  border: "0.5px solid white",
+                                  backgroundColor: row[column.id],
+                                }}
+                              />
                             ) : (
                               row[column.id]
                             )}
                           </TableCell>
                         )
                       )}
+
                       <TableCell align="center">
                         <Button onClick={() => console.log("item", row)}>
                           GO
