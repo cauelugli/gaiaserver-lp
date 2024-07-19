@@ -50,10 +50,10 @@ userSchema = new mongoose.Schema({
   password: {
     type: String,
   },
-  phone1: {
+  cellphone: {
     type: String,
   },
-  phone2: {
+  phone: {
     type: String,
   },
   position: {

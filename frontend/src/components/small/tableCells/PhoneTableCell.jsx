@@ -5,7 +5,6 @@ import InputMask from "react-input-mask";
 import { TextField } from "@mui/material";
 
 const PhoneTableCell = (props) => {
-  console.log("name", props.field.name);
   return (
     <InputMask
       mask={

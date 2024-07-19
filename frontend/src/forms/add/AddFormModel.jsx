@@ -148,7 +148,7 @@ export default function AddFormModel(props) {
       />
       <DialogContent>
         {modalOptions.fieldsSections.map((section, sectionIndex) => (
-          <Box key={sectionIndex} sx={{ mb: 3 }}>
+          <Box key={sectionIndex} sx={{ mb: 1 }}>
             <Typography sx={{ fontSize: 16, fontWeight: "bold", mb: 0.5 }}>
               {section.name !== "image" && section.label}
             </Typography>
