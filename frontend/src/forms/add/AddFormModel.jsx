@@ -9,13 +9,11 @@ const api = axios.create({
 });
 
 import {
-  Avatar,
   Box,
   Button,
   Checkbox,
   DialogActions,
   DialogContent,
-  FormHelperText,
   Grid,
   Table,
   TableCell,
@@ -23,8 +21,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-
-import DeleteIcon from "@mui/icons-material/Delete";
 
 import DialogHeader from "../../components/small/DialogHeader";
 import FormEndLineTenant from "../../components/small/FormEndLineTenant";
@@ -38,6 +34,7 @@ import IdDocTableCell from "../../components/small/tableCells/IdDocTableCell";
 import CurrencyTableCell from "../../components/small/tableCells/CurrencyTableCell";
 import ColorPicker from "../../components/small/ColorPicker";
 import PhoneTableCell from "../../components/small/tableCells/PhoneTableCell";
+import ImageTableCell from "../../components/small/tableCells/ImageTableCell";
 
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
@@ -156,55 +153,15 @@ export default function AddFormModel(props) {
               {section.name !== "image" && section.label}
             </Typography>
             {section.name === "image" && (
-              <Grid item>
-                <Grid
-                  container
-                  direction="column"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <input
-                    type="file"
-                    accept="image/*"
-                    id="fileInput"
-                    style={{ display: "none" }}
-                    onChange={(e) => {
-                      const selectedImage = e.target.files[0];
-                      setImage(selectedImage);
-                    }}
-                  />
-                  <label htmlFor="fileInput">
-                    <Avatar
-                      alt="Imagem do Usuário"
-                      value={image}
-                      sx={{ width: 80, height: 80, cursor: "pointer" }}
-                      onClick={handleImageClick}
-                    >
-                      {image ? (
-                        <img
-                          src={URL.createObjectURL(image)}
-                          alt="Prévia da Imagem"
-                          style={{ width: "100%", height: "100%" }}
-                        />
-                      ) : null}
-                    </Avatar>
-                  </label>
-                  {image && (
-                    <FormHelperText>
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        size="small"
-                        startIcon={<DeleteIcon />}
-                        onClick={() => setImage("")}
-                        sx={{ mt: 1 }}
-                      >
-                        Remover
-                      </Button>
-                    </FormHelperText>
-                  )}
-                </Grid>
-              </Grid>
+              <ImageTableCell
+                image={image}
+                onImageChange={(e) => {
+                  const selectedImage = e.target.files[0];
+                  setImage(selectedImage);
+                }}
+                onImageRemove={() => setImage("")}
+                onImageClick={handleImageClick}
+              />
             )}
             <Grid container direction="row">
               {modalOptions.fields
