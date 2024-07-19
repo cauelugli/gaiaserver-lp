@@ -35,11 +35,13 @@ import CurrencyTableCell from "../../components/small/tableCells/CurrencyTableCe
 import ColorPicker from "../../components/small/ColorPicker";
 import PhoneTableCell from "../../components/small/tableCells/PhoneTableCell";
 import ImageTableCell from "../../components/small/tableCells/ImageTableCell";
+import ServicesTableCell from "../../components/small/tableCells/ServicesTableCell";
 
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
   const [image, setImage] = React.useState("");
   const [selectedProducts, setSelectedProducts] = React.useState([]);
+  const [selectedServices, setSelectedServices] = React.useState([]);
 
   const modalOptions = props.options.find(
     (option) => option.label === props.selectedOptionLabel
@@ -83,6 +85,33 @@ export default function AddFormModel(props) {
     });
   };
 
+  const handleServiceChange = (service, count) => {
+    setSelectedServices((prev) => {
+      const existingServiceIndex = prev.findIndex(
+        (s) => s.name === service.name
+      );
+
+      let newState;
+      if (existingServiceIndex !== -1) {
+        if (count > 0) {
+          const updatedServices = [...prev];
+          updatedServices[existingServiceIndex].count = count;
+          newState = updatedServices;
+        } else {
+          newState = prev.filter((p) => p.name !== service.name);
+        }
+      } else {
+        if (count > 0) {
+          newState = [...prev, { ...service, count }];
+        } else {
+          newState = prev;
+        }
+      }
+
+      return newState;
+    });
+  };
+
   const handleAdd = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -96,6 +125,7 @@ export default function AddFormModel(props) {
         image: imagePath,
         model: modalOptions.model,
         selectedProducts,
+        selectedServices,
         createdBy: props.userName || "Admin",
         isManager: modalOptions.label === "Gerente",
         price:
@@ -388,6 +418,23 @@ export default function AddFormModel(props) {
                             </Table>
                           </Grid>
                         )}
+                      </Grid>
+                    )}
+                    {field.type === "servicesList" && (
+                      <Grid
+                        ontainer
+                        direction="column"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <ServicesTableCell
+                          value={fields[field.name] || ""}
+                          onChange={handleChange(field.name)}
+                          size="small"
+                          required={field.required}
+                          handleServiceChange={handleServiceChange}
+                          selectedServices={selectedServices}
+                        />
                       </Grid>
                     )}
                     {field.type === "list" && (

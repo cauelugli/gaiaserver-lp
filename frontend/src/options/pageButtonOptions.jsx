@@ -830,13 +830,12 @@ const pageButtonOptions = [
         icon: <HubIcon />,
         modal: {
           endpoint: "/add",
-          name: "AddServicePlan",
           label: "Plano de Serviço",
           femaleGender: false,
-          maxWidth: "xs",
+          maxWidth: "sm",
           fieldsSections: [
             { name: "mainInfo", label: "Informações Gerais" },
-            { name: "servicePlanInfo", label: "Informações do Plano" },
+            { name: "servicesList", label: "Serviços" },
           ],
           fields: [
             {
@@ -848,22 +847,6 @@ const pageButtonOptions = [
             },
             {
               fieldSection: "mainInfo",
-              name: "services",
-              label: "Serviços",
-              type: "dynamicData",
-              dynamicData: "services",
-              multiple: true,
-              required: true,
-            },
-            {
-              fieldSection: "servicePlanInfo",
-              name: "price",
-              label: "Valor do Plano",
-              type: "currency",
-              required: true,
-            },
-            {
-              fieldSection: "servicePlanInfo",
               name: "period",
               label: "Período de Vigência",
               type: "select",
@@ -878,6 +861,14 @@ const pageButtonOptions = [
                 "Outro",
               ],
               required: true,
+            },
+            {
+              fieldSection: "servicesList",
+              name: "services",
+              label: "",
+              type: "servicesList",
+              options: [],
+              required: false,
             },
           ],
           model: "ServicePlan",
