@@ -863,6 +863,13 @@ const pageButtonOptions = [
               required: true,
             },
             {
+              fieldSection: "mainInfo",
+              name: "renewDay",
+              label: "Dia de Renovação",
+              type: "string",
+              required: true,
+            },
+            {
               fieldSection: "servicesList",
               name: "services",
               label: "",

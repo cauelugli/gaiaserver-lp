@@ -13,6 +13,13 @@ const servicePlanSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  priceDifference: {
+    type: Object,
+  },
+  renewDay: {
+    type: String,
+    required: true,
+  },
   services: {
     type: Object,
     required: true,
