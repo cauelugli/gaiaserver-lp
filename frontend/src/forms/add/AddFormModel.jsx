@@ -42,6 +42,7 @@ export default function AddFormModel(props) {
   const [image, setImage] = React.useState("");
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
+  const [priceDifference, setPriceDifference] = React.useState({});
 
   const modalOptions = props.options.find(
     (option) => option.label === props.selectedOptionLabel
@@ -434,6 +435,8 @@ export default function AddFormModel(props) {
                           required={field.required}
                           handleServiceChange={handleServiceChange}
                           selectedServices={selectedServices}
+                          priceDifference={priceDifference}
+                          setPriceDifference={setPriceDifference}
                         />
                       </Grid>
                     )}
