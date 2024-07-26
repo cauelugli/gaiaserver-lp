@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const StockItem = require("../../models/models/StockItem");
 const Product = require("../../models/models/Product");
 const StockEntry = require("../../models/models/StockEntry");
 const FinanceOutcome = require("../../models/models/FinanceOutcome");

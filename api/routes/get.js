@@ -8,14 +8,22 @@ router.get("/", async (req, res) => {
   const Model = defineModel(model);
 
   if (!Model) {
-    console.log("\nmodel not found\n")
-    return res.status(400).json({ error: "Invalid model specified" });
+    console.log(`\nmodel ${model} not found\n`);
+    return res.status(404).json({ error: "Model not found" });
   }
 
   try {
-    const data = await Model.find();
+    let data = await Model.find();
+
+    if (model === "ProductCreated") {
+      data = data.filter((item) => item.name);
+    } else if (model === "MaterialCreated") {
+      data = data.filter((item) => item.isMaterial);
+    }
+
     res.status(200).json(data);
   } catch (err) {
+    console.log("\nerr", err, "\n");
     res.status(500).json(err);
   }
 });

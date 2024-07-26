@@ -17,11 +17,19 @@ const productSchema = new mongoose.Schema({
   images: {
     type: Array,
   },
+  isMaterial: {
+    type: Boolean,
+    default: false,
+  },
   name: {
     type: String,
   },
   sellValue: {
     type: Number,
+  },
+  stockQuantity: {
+    type: Number,
+    default: 0,
   },
   type: {
     type: String,

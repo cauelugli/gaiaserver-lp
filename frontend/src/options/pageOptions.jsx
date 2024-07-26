@@ -349,18 +349,32 @@ const pageOptions = [
     ],
   },
   {
-    // TO-DO
     page: "stock",
     label: "Estoque",
-    models: ["Product", "Material", "StockEntry"],
+    models: ["ProductCreated", "MaterialCreated", "StockEntry"],
     tabs: ["Produtos", "Materiais", "Entradas"],
-    // review this
     tableColumns: [
       // STOCK PRODUCTS TABLE
       [
         {
-          id: "number",
-          label: "#",
+          id: "image",
+          label: "📷",
+        },
+        {
+          id: "name",
+          label: "Nome",
+        },
+        {
+          id: "stockQuantity",
+          label: "Quantidade em Estoque",
+        },
+        {
+          id: "buyValue",
+          label: "Valor de Compra / Produção",
+        },
+        {
+          id: "sellValue",
+          label: "Valor de Venda",
         },
       ],
       // STOCK MATERIALS TABLE

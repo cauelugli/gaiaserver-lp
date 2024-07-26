@@ -3,7 +3,6 @@ const router = express.Router();
 const Customer = require("../../models/models/Customer");
 const Client = require("../../models/models/Client");
 const Job = require("../../models/models/Job");
-const StockItem = require("../../models/models/StockItem");
 const Quote = require("../../models/models/Quote");
 const User = require("../../models/models/User");
 const Agenda = require("../../models/models/Agenda");
