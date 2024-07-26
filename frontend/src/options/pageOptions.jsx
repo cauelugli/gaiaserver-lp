@@ -268,6 +268,13 @@ const pageOptions = [
           label: "Nome do Plano",
         },
         {
+          id: "period",
+          label: "Período de Vigência",
+        },{
+          id: "renewDay",
+          label: "Dia de Renovação",
+        },
+        {
           id: "services",
           label: "Serviços",
         },

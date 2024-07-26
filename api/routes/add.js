@@ -12,10 +12,8 @@ router.post("/", async (req, res) => {
     label,
     name,
     selectedProducts,
-    selectedServices,
     services,
     price,
-    priceDifference,
   } = req.body;
 
   const Model = defineModel(req.body.model);
@@ -39,12 +37,14 @@ router.post("/", async (req, res) => {
   fields.isManager = isManager;
   fields.createdBy = createdBy;
   fields.products = selectedProducts;
-  fields.services = services;
   fields.price =
-    label === "Plano de Serviços"
-      ? parseFloat(req.body.finalPrice === 0 ? req.body.price : req.body.finalPrice)
-      : parseFloat(price);
+  label === "Plano de Serviços"
+  ? parseFloat(req.body.finalPrice === 0 ? req.body.price : req.body.finalPrice)
+  : parseFloat(price);
+  
+  fields.services = services;
 
+  
   const newItem = new Model(fields);
 
   try {

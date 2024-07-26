@@ -9,6 +9,10 @@ const servicePlanSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  period: {
+    type: String,
+    required: true,
+  },
   price: {
     type: Number,
     required: true,

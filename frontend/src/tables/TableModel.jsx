@@ -18,6 +18,8 @@ import {
   Typography,
 } from "@mui/material";
 
+import BuildIcon from "@mui/icons-material/Build";
+
 export default function TableModel(props) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("number");
@@ -215,19 +217,23 @@ export default function TableModel(props) {
                                         justifyContent="center"
                                       >
                                         <Grid item>
-                                          <Avatar
-                                            alt="Imagem do Produto"
-                                            src={
-                                              props.page === "requests"
-                                                ? `http://localhost:3000/static${obj.images[0]}`
-                                                : `http://localhost:3000/static${obj.image}`
-                                            }
-                                            sx={{
-                                              width: 30,
-                                              height: 30,
-                                              mr: 0.5,
-                                            }}
-                                          />
+                                          {obj.materials ? (
+                                            <BuildIcon />
+                                          ) : (
+                                            <Avatar
+                                              alt="Imagem do Produto"
+                                              src={
+                                                props.page === "requests"
+                                                  ? `http://localhost:3000/static${obj.images[0]}`
+                                                  : `http://localhost:3000/static${obj.image}`
+                                              }
+                                              sx={{
+                                                width: 30,
+                                                height: 30,
+                                                mr: 0.5,
+                                              }}
+                                            />
+                                          )}
                                         </Grid>
                                         {props.page === "requests" && (
                                           <Grid item>
@@ -244,7 +250,7 @@ export default function TableModel(props) {
                             ) : typeof row[column.id] === "object" ? (
                               row[column.id].name
                             ) : typeof row[column.id] === "number" ? (
-                              `R$${row[column.id]}`
+                              `R$${row[column.id].toFixed(2)}`
                             ) : typeof row[column.id] === "string" &&
                               row[column.id].startsWith("#") ? (
                               <Paper
