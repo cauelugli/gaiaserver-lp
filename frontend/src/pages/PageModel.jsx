@@ -178,15 +178,15 @@ export default function PageModel(props) {
             setRefreshData={setRefreshData}
             baseProducts={items.filter((item) => !item.name)}
           />
+        ) : currentPage !== "quotes" && currentPage !== "finance" ? (
+          <PageButtonModel
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            configCustomization={props.configCustomization}
+            page={currentPage}
+          />
         ) : (
-          currentPage !== "quotes" || currentPage !== "finance" && (
-            <PageButtonModel
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              configCustomization={props.configCustomization}
-              page={currentPage}
-            />
-          )
+          ""
         )}
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
