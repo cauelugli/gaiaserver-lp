@@ -19,10 +19,6 @@ export function calculatePriceDifferences(priceDifference, initialSum) {
     }
   });
 
-  console.log("initialSum on child", initialSum);
-  console.log("sumOfAllIncreases on child", sumOfAllIncreases);
-  console.log("sumOfAllDiscounts on child", sumOfAllDiscounts);
-
   const finalSum = initialSum + sumOfAllIncreases - sumOfAllDiscounts;
 
   return {

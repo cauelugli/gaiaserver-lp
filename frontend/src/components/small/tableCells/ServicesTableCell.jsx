@@ -2,7 +2,14 @@
 import React from "react";
 import axios from "axios";
 
-import { Grid, Table, TableCell, TableRow, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Table,
+  TableCell,
+  TableRow,
+  Typography,
+} from "@mui/material";
 
 import PriceDifferenceTable from "../PriceDifferenceTable";
 
@@ -13,7 +20,7 @@ const api = axios.create({
 const ServicesTableCell = (props) => {
   const [options, setOptions] = React.useState([]);
   const [openAddDifference, setOpenAddDifference] = React.useState(false);
-  const [sum, setSum] = React.useState(0); // Adicionar estado para sum
+  const [sum, setSum] = React.useState(0);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +40,7 @@ const ServicesTableCell = (props) => {
     const newSum = props.selectedServices
       .reduce((sum, service) => sum + service.price * service.count, 0)
       .toFixed(2);
-    setSum(newSum); // Atualizar sum sempre que selectedServices mudar
+    setSum(newSum);
   }, [props.selectedServices]);
 
   const getCount = (serviceName) => {
@@ -42,7 +49,7 @@ const ServicesTableCell = (props) => {
   };
 
   return (
-    <>
+    <Box>
       <Grid
         sx={{
           border: "1px solid #ccc",
@@ -52,22 +59,24 @@ const ServicesTableCell = (props) => {
         <Table size="small">
           <TableRow>
             <TableCell>
-              <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
+              <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
                 Nome do Serviço
               </Typography>
             </TableCell>
             <TableCell align="right">
-              <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
+              <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
                 Quantidade
               </Typography>
             </TableCell>
             <TableCell align="right">
-              <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
+              <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
                 Valor do Serviço
               </Typography>
             </TableCell>
+            <TableCell id="ghost" />
+            <TableCell id="ghost" />
             <TableCell align="right">
-              <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
+              <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
                 Total por Serviço
               </Typography>
             </TableCell>
@@ -75,7 +84,7 @@ const ServicesTableCell = (props) => {
           {options.map((option, index) => (
             <TableRow key={index} sx={{ mt: 3 }}>
               <TableCell>
-                <Typography sx={{ fontSize: 12 }}>{option.name}</Typography>
+                <Typography sx={{ fontSize: 13 }}>{option.name}</Typography>
               </TableCell>
               <TableCell align="right">
                 <Grid
@@ -95,7 +104,7 @@ const ServicesTableCell = (props) => {
                   >
                     -
                   </Typography>
-                  <Typography sx={{ fontSize: 12 }}>
+                  <Typography sx={{ fontSize: 13 }}>
                     {getCount(option.name)}
                   </Typography>
                   <Typography
@@ -112,23 +121,27 @@ const ServicesTableCell = (props) => {
                 </Grid>
               </TableCell>
               <TableCell align="right">
-                <Typography sx={{ fontSize: 12 }}>
+                <Typography sx={{ fontSize: 13 }}>
                   R${option.price.toFixed(2)}
                 </Typography>
               </TableCell>
+              <TableCell id="ghost" />
+              <TableCell id="ghost" />
               <TableCell align="right">
-                <Typography sx={{ fontSize: 12 }}>
+                <Typography sx={{ fontSize: 13 }}>
                   R${(option.price * getCount(option.name)).toFixed(2)}
                 </Typography>
               </TableCell>
             </TableRow>
           ))}
 
-          {!openAddDifference && (
+          {!props.priceDifference[0] && (
             <TableRow>
               <TableCell sx={{ mt: 2, pt: 2 }}>
                 <Typography sx={{ fontSize: 16 }}>Total do Plano</Typography>
               </TableCell>
+              <TableCell id="ghost" />
+              <TableCell id="ghost" />
               <TableCell id="ghost" />
               <TableCell id="ghost" />
               <TableCell align="right" sx={{ mt: 2, pt: 2 }}>
@@ -142,10 +155,12 @@ const ServicesTableCell = (props) => {
       </Grid>
       <Grid container direction="row" justifyContent="flex-end">
         <Typography
-          sx={{ fontSize: 10, mt: 1, cursor: "pointer" }}
+          sx={{ fontSize: 10, my: 0.5, cursor: "pointer" }}
           onClick={() => setOpenAddDifference(!openAddDifference)}
         >
-          {openAddDifference ? "fechar tabela" : "alterar valores"}
+          {openAddDifference
+            ? "fechar tabela de alterações"
+            : "alterar valores"}
         </Typography>
       </Grid>
       {openAddDifference && (
@@ -154,9 +169,11 @@ const ServicesTableCell = (props) => {
           priceDifference={props.priceDifference}
           setPriceDifference={props.setPriceDifference}
           sum={parseFloat(sum)}
+          setFinalPrice={props.setFinalPrice}
+          setOkToDispatch={props.setOkToDispatch}
         />
       )}
-    </>
+    </Box>
   );
 };
 

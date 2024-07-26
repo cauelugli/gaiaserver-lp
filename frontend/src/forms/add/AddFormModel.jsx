@@ -43,6 +43,12 @@ export default function AddFormModel(props) {
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
+  const [finalPrice, setFinalPrice] = React.useState(0);
+  // eslint-disable-next-line no-unused-vars
+  const [okToDispatch, setOkToDispatch] = React.useState(false);
+
+  // updating value from child modifications
+  React.useEffect(() => {}, [priceDifference]);
 
   const modalOptions = props.options.find(
     (option) => option.label === props.selectedOptionLabel
@@ -123,10 +129,11 @@ export default function AddFormModel(props) {
       const imagePath = uploadResponse.data.imagePath;
       const res = await api.post(`${modalOptions.endpoint}`, {
         fields,
+        label: modalOptions.label,
         image: imagePath,
         model: modalOptions.model,
         selectedProducts,
-        selectedServices,
+        services: selectedServices,
         createdBy: props.userName || "Admin",
         isManager: modalOptions.label === "Gerente",
         price:
@@ -139,7 +146,15 @@ export default function AddFormModel(props) {
                 .toFixed(2) || 0
             : modalOptions.label === "Job"
             ? fields.service.price
+            : modalOptions.label === "Plano de Serviços"
+            ? selectedServices
+                .reduce(
+                  (sum, service) => sum + service.price * service.count,
+                  0
+                )
+                .toFixed(2) || 0
             : fields.price,
+        finalPrice,
       });
       if (res.data) {
         toast.success(`${props.selectedOptionLabel} Adicionado!`, {
@@ -207,10 +222,10 @@ export default function AddFormModel(props) {
                 )
                 .map((field, fieldIndex) => (
                   <Grid
-                    key={fieldIndex}
                     item
+                    key={fieldIndex}
                     sx={{
-                      mr: 1,
+                      mr: field.type === "servicesList" ? 0 : 1,
                       mb: fieldIndex === 0 ? 1 : 0,
                       width: field.type === "productList" ? "100%" : "auto",
                     }}
@@ -315,7 +330,6 @@ export default function AddFormModel(props) {
                     )}
                     {field.type === "productList" && (
                       <Grid
-                        ontainer
                         direction="column"
                         alignItems="center"
                         justifyContent="center"
@@ -422,23 +436,18 @@ export default function AddFormModel(props) {
                       </Grid>
                     )}
                     {field.type === "servicesList" && (
-                      <Grid
-                        ontainer
-                        direction="column"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <ServicesTableCell
-                          value={fields[field.name] || ""}
-                          onChange={handleChange(field.name)}
-                          size="small"
-                          required={field.required}
-                          handleServiceChange={handleServiceChange}
-                          selectedServices={selectedServices}
-                          priceDifference={priceDifference}
-                          setPriceDifference={setPriceDifference}
-                        />
-                      </Grid>
+                      <ServicesTableCell
+                        value={fields[field.name] || ""}
+                        onChange={handleChange(field.name)}
+                        size="small"
+                        required={field.required}
+                        handleServiceChange={handleServiceChange}
+                        selectedServices={selectedServices}
+                        priceDifference={priceDifference}
+                        setPriceDifference={setPriceDifference}
+                        setFinalPrice={setFinalPrice}
+                        setOkToDispatch={setOkToDispatch}
+                      />
                     )}
                     {field.type === "list" && (
                       <TextField
@@ -477,9 +486,19 @@ export default function AddFormModel(props) {
         extraSmall
       />
       <DialogActions>
-        <Button type="submit" variant="contained" color="success">
+        <Button
+          type="submit"
+          variant="contained"
+          color="success"
+          disabled={
+            modalOptions.label === "Plano de Serviços" &&
+            (selectedServices.length === 0 ||
+              (Object.keys(priceDifference).length !== 0 && !okToDispatch))
+          }
+        >
           OK
         </Button>
+
         <Button
           variant="contained"
           color="error"

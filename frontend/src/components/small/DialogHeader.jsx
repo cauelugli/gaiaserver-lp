@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { DialogTitle, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
+
+import { DialogTitle, Divider, Grid, Typography } from "@mui/material";
 
 const DialogHeader = ({
   title,

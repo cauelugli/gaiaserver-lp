@@ -4,15 +4,26 @@ const { defineModel } = require("../../controllers/functions/routeFunctions");
 
 // CREATE ITEM
 router.post("/", async (req, res) => {
-  const { fields, name, image, isManager, createdBy, selectedProducts, price } =
-    req.body;
+  const {
+    createdBy,
+    fields,
+    image,
+    isManager,
+    label,
+    name,
+    selectedProducts,
+    selectedServices,
+    services,
+    price,
+    priceDifference,
+  } = req.body;
 
   const Model = defineModel(req.body.model);
 
   if (!Model) {
     console.log("\nmodel not found\n");
     return res.status(400).json({ error: "Modelo inválido" });
-  } 
+  }
 
   if (Model === "Cliente Empresa" || Model === "Cliente Pessoa Física") {
     const existingNameUser = await Model.findOne({ name });
@@ -21,12 +32,18 @@ router.post("/", async (req, res) => {
     }
   }
 
+  console.log("\nreq.body", req.body, "\n");
+
   // verify cases
   fields.image = image;
   fields.isManager = isManager;
   fields.createdBy = createdBy;
   fields.products = selectedProducts;
-  fields.price = parseFloat(price);
+  fields.services = services;
+  fields.price =
+    label === "Plano de Serviços"
+      ? parseFloat(req.body.finalPrice === 0 ? req.body.price : req.body.finalPrice)
+      : parseFloat(price);
 
   const newItem = new Model(fields);
 

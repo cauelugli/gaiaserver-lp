@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import {
+  Button,
   Grid,
   InputAdornment,
   Table,
@@ -21,10 +22,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { calculatePriceDifferences } from "../../../../controllers/functions/overallFunctions";
 
 const PriceDifferenceTable = (props) => {
-  useEffect(() => {
-    console.log("Sum changed:", props.sum);
-    // Aqui você pode recalcular os valores ou realizar outras ações baseadas em sum
-  }, [props.sum]);
+  const [confirmButton, setConfirmButton] = React.useState(false);
+
+  useEffect(() => {}, [props.sum]);
 
   const [newItem, setNewItem] = useState({
     index: null,
@@ -58,22 +58,31 @@ const PriceDifferenceTable = (props) => {
   };
 
   const handleAddItem = () => {
-    const newIndex = Object.keys(props.priceDifference).length;
-    props.setPriceDifference((prevItems) => ({
-      ...prevItems,
-      [newIndex]: {
-        ...newItem,
-        index: newIndex,
-        itemValue: parseFloat(newItem.itemValue),
-      },
-    }));
-    setNewItem({
-      index: null,
-      plusOrLess: "+",
-      body: "",
-      type: "$",
-      itemValue: "",
-    });
+    const hasErrors = {
+      body: newItem.body === "",
+      itemValue: newItem.itemValue === "",
+    };
+
+    setErrors(hasErrors);
+
+    if (!hasErrors.body && !hasErrors.itemValue) {
+      const newIndex = Object.keys(props.priceDifference).length;
+      props.setPriceDifference((prevItems) => ({
+        ...prevItems,
+        [newIndex]: {
+          ...newItem,
+          index: newIndex,
+          itemValue: parseFloat(newItem.itemValue),
+        },
+      }));
+      setNewItem({
+        index: null,
+        plusOrLess: "+",
+        body: "",
+        type: "$",
+        itemValue: "",
+      });
+    }
   };
 
   const handleDeleteItem = (index) => {
@@ -84,37 +93,57 @@ const PriceDifferenceTable = (props) => {
     });
   };
 
+  const handleConfirmDifference = () => {
+    props.setFinalPrice(finalSum.toFixed(2));
+    props.setOkToDispatch(true);
+    setConfirmButton(true);
+  };
+
+  const handleCancelDifference = () => {
+    props.setFinalPrice(finalSum.toFixed(2));
+    props.setOkToDispatch(false);
+    setConfirmButton(false);
+  };
+
+  const [errors, setErrors] = useState({
+    body: false,
+    itemValue: false,
+  });
+
   const { sumOfAllIncreases, sumOfAllDiscounts, finalSum } =
     calculatePriceDifferences(props.priceDifference, props.sum);
 
   return (
     <>
+      <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+        Alterações
+      </Typography>
       <Grid
         container
         direction="column"
         justifyContent="flex-end"
         alignItems="flex-end"
-        sx={{ m: 1, border: "1px solid #ccc", borderRadius: 1, width: "100%" }}
+        sx={{ border: "1px solid #ccc", borderRadius: 1 }}
       >
         <Table size="small">
-          <TableRow>
+          <TableRow id="header">
             <TableCell>
-              <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
+              <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
                 + | -
               </Typography>
             </TableCell>
             <TableCell>
-              <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
+              <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
                 Discriminação
               </Typography>
             </TableCell>
             <TableCell>
-              <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
+              <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
                 Tipo
               </Typography>
             </TableCell>
             <TableCell align="right">
-              <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
+              <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
                 Valor
               </Typography>
             </TableCell>
@@ -125,20 +154,20 @@ const PriceDifferenceTable = (props) => {
           {Object.keys(props.priceDifference).map((key) => {
             const item = props.priceDifference[key];
             return (
-              <TableRow key={item.index}>
+              <TableRow key={item.index} id="item">
                 <TableCell>
-                  <Typography sx={{ fontSize: 12 }}>
+                  <Typography sx={{ fontSize: 13 }}>
                     {item.plusOrLess}
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography sx={{ fontSize: 12 }}>{item.body}</Typography>
+                  <Typography sx={{ fontSize: 13 }}>{item.body}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography sx={{ fontSize: 12 }}>{item.type}</Typography>
+                  <Typography sx={{ fontSize: 13 }}>{item.type}</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography sx={{ fontSize: 12 }}>
+                  <Typography sx={{ fontSize: 13 }}>
                     {item.itemValue}
                   </Typography>
                 </TableCell>
@@ -163,30 +192,52 @@ const PriceDifferenceTable = (props) => {
                   size="small"
                   sx={{
                     backgroundColor:
-                      newItem.plusOrLess === "+" ? "success.main" : "inherit",
-                    color: newItem.plusOrLess === "+" ? "white" : "inherit",
+                      newItem.plusOrLess === "+" ? "green" : undefined,
+                    "&.Mui-selected": {
+                      backgroundColor: "green",
+                      "&:hover": {
+                        backgroundColor: "green",
+                      },
+                    },
                     "&:hover": {
-                      backgroundColor:
-                        newItem.plusOrLess === "+" ? "success.dark" : "inherit",
+                      backgroundColor: "#90ee90",
                     },
                   }}
                 >
-                  <Typography sx={{ fontSize: 12 }}>+</Typography>
+                  <Typography
+                    sx={{
+                      fontSize: 13,
+                      color: newItem.plusOrLess === "+" && "white",
+                    }}
+                  >
+                    +
+                  </Typography>
                 </ToggleButton>
                 <ToggleButton
                   value="-"
                   size="small"
                   sx={{
                     backgroundColor:
-                      newItem.plusOrLess === "-" ? "error.main" : "inherit",
-                    color: newItem.plusOrLess === "-" ? "white" : "inherit",
+                      newItem.plusOrLess === "-" ? "red" : undefined,
+                    "&.Mui-selected": {
+                      backgroundColor: "red",
+                      "&:hover": {
+                        backgroundColor: "red",
+                      },
+                    },
                     "&:hover": {
-                      backgroundColor:
-                        newItem.plusOrLess === "-" ? "error.dark" : "inherit",
+                      backgroundColor: "#ffcccb",
                     },
                   }}
                 >
-                  <Typography sx={{ fontSize: 12 }}>-</Typography>
+                  <Typography
+                    sx={{
+                      fontSize: 13,
+                      color: newItem.plusOrLess === "-" && "white",
+                    }}
+                  >
+                    -
+                  </Typography>
                 </ToggleButton>
               </ToggleButtonGroup>
             </TableCell>
@@ -197,6 +248,8 @@ const PriceDifferenceTable = (props) => {
                 onChange={handleChangeBody}
                 size="small"
                 sx={{ width: "100%" }}
+                error={errors.body}
+                helperText={errors.body ? "Campo obrigatório" : ""}
               />
             </TableCell>
             <TableCell>
@@ -206,10 +259,10 @@ const PriceDifferenceTable = (props) => {
                 onChange={handleChangeType}
               >
                 <ToggleButton value="$" size="small">
-                  <Typography sx={{ fontSize: 12 }}>R$</Typography>
+                  <Typography sx={{ fontSize: 13 }}>R$</Typography>
                 </ToggleButton>
                 <ToggleButton value="%" size="small">
-                  <Typography sx={{ fontSize: 12 }}>%</Typography>
+                  <Typography sx={{ fontSize: 13 }}>%</Typography>
                 </ToggleButton>
               </ToggleButtonGroup>
             </TableCell>
@@ -222,15 +275,17 @@ const PriceDifferenceTable = (props) => {
                 InputProps={{
                   startAdornment: newItem.type === "$" && (
                     <InputAdornment position="start">
-                      <Typography sx={{ fontSize: 12 }}>R$</Typography>
+                      <Typography sx={{ fontSize: 13 }}>R$</Typography>
                     </InputAdornment>
                   ),
                   endAdornment: newItem.type === "%" && (
                     <InputAdornment position="end">
-                      <Typography sx={{ fontSize: 12 }}>%</Typography>
+                      <Typography sx={{ fontSize: 13 }}>%</Typography>
                     </InputAdornment>
                   ),
                 }}
+                error={errors.itemValue}
+                helperText={errors.itemValue ? "Campo obrigatório" : ""}
               />
             </TableCell>
             <TableCell align="right">
@@ -244,53 +299,81 @@ const PriceDifferenceTable = (props) => {
       </Grid>
       {props.openAddDifference &&
         Object.keys(props.priceDifference).length !== 0 && (
-          <Grid
-            container
-            direction="column"
-            sx={{
-              m: 2,
-              border: "1px solid #ccc",
-              borderRadius: 1,
-              width: "100%",
-            }}
-          >
-            <Grid item sx={{ m: 1, mx: 2 }}>
-              <Grid container direction="row" justifyContent="space-between">
-                <Typography sx={{ fontSize: 14 }}>Valor Inicial</Typography>
-                <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
-                  R${props.sum ? props.sum : 0.0}
-                </Typography>
+          <>
+            <Typography sx={{ mt: 2, fontSize: 16, fontWeight: "bold" }}>
+              Acréscimos e Descontos
+            </Typography>
+            <Grid
+              container
+              direction="column"
+              sx={{
+                border: "1px solid #ccc",
+                borderRadius: 1,
+              }}
+            >
+              <Grid item sx={{ m: 1, mx: 2 }}>
+                <Grid container direction="row" justifyContent="space-between">
+                  <Typography sx={{ fontSize: 16 }}>
+                    Valor dos Serviços
+                  </Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    R${props.sum ? props.sum : 0.0}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid item sx={{ m: 1, mx: 2 }}>
+                <Grid container direction="row" justifyContent="space-between">
+                  <Typography sx={{ fontSize: 16, color: "green" }}>
+                    Acréscimos
+                  </Typography>
+                  <Typography sx={{ fontSize: 16, color: "green" }}>
+                    + R${sumOfAllIncreases.toFixed(2)}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid item sx={{ m: 1, mx: 2 }}>
+                <Grid container direction="row" justifyContent="space-between">
+                  <Typography sx={{ fontSize: 16, color: "red" }}>
+                    Descontos
+                  </Typography>
+                  <Typography sx={{ fontSize: 16, color: "red" }}>
+                    - R${sumOfAllDiscounts.toFixed(2)}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid item sx={{ m: 1, mx: 2 }}>
+                <Grid container direction="row" justifyContent="space-between">
+                  <Typography sx={{ fontSize: 16 }}>Valor Final</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    R${finalSum.toFixed(2)}
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
-            <Grid item sx={{ m: 1, mx: 2 }}>
-              <Grid container direction="row" justifyContent="space-between">
-                <Typography sx={{ fontSize: 14, color: "green" }}>
-                  Acréscimos
-                </Typography>
-                <Typography sx={{ fontSize: 14, color: "green" }}>
-                  + R${sumOfAllIncreases.toFixed(2)}
-                </Typography>
-              </Grid>
+            <Grid container direction="row" justifyContent="flex-end">
+              {confirmButton ? (
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="inherit"
+                  onClick={handleCancelDifference}
+                  sx={{ mt: 1 }}
+                >
+                  Editar Acréscimos
+                </Button>
+              ) : (
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="success"
+                  onClick={handleConfirmDifference}
+                  sx={{ mt: 1 }}
+                >
+                  Aceitar Acréscimos
+                </Button>
+              )}
             </Grid>
-            <Grid item sx={{ m: 1, mx: 2 }}>
-              <Grid container direction="row" justifyContent="space-between">
-                <Typography sx={{ fontSize: 14, color: "red" }}>
-                  Descontos
-                </Typography>
-                <Typography sx={{ fontSize: 14, color: "red" }}>
-                  - R${sumOfAllDiscounts.toFixed(2)}
-                </Typography>
-              </Grid>
-            </Grid>
-            <Grid item sx={{ m: 1, mx: 2 }}>
-              <Grid container direction="row" justifyContent="space-between">
-                <Typography sx={{ fontSize: 14 }}>Valor Final</Typography>
-                <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
-                  R${finalSum.toFixed(2)}
-                </Typography>
-              </Grid>
-            </Grid>
-          </Grid>
+          </>
         )}
     </>
   );

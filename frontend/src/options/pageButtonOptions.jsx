@@ -830,9 +830,9 @@ const pageButtonOptions = [
         icon: <HubIcon />,
         modal: {
           endpoint: "/add",
-          label: "Plano de Serviço",
+          label: "Plano de Serviços",
           femaleGender: false,
-          maxWidth: "sm",
+          maxWidth: "custom700px",
           fieldsSections: [
             { name: "mainInfo", label: "Informações Gerais" },
             { name: "servicesList", label: "Serviços" },
