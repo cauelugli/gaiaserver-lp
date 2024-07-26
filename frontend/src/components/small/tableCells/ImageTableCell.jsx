@@ -31,7 +31,7 @@ const ImageTableCell = ({
         <label htmlFor="fileInput" disabled={image}>
           <Badge
             anchorOrigin={{
-              vertical: "top",
+              vertical: "bottom",
               horizontal: "right",
             }}
             badgeContent={

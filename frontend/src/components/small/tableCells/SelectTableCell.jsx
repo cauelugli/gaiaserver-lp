@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import { MenuItem, Select } from "@mui/material";
+import { MenuItem, Select, Typography } from "@mui/material";
 
 const SelectTableCell = (props) => {
   return (
@@ -22,6 +22,15 @@ const SelectTableCell = (props) => {
       size="small"
       required={props.field.required}
       multiple={props.multiple}
+      renderValue={(selected) =>
+        selected ? (
+          <Typography sx={{ fontSize: 12, mt: 0.5 }}>
+            {selected.name || selected}
+          </Typography>
+        ) : (
+          "Selecione"
+        )
+      }
     >
       {props.menuOptions.map((option, index) => (
         <MenuItem value={option} key={index}>

@@ -42,12 +42,12 @@ const pageOptions = [
           label: "Nome",
         },
         {
-          id: "email",
-          label: "E-mail",
+          id: "cellphone",
+          label: "Telefone",
         },
         {
-          id: "phone",
-          label: "Telefone",
+          id: "email",
+          label: "E-mail",
         },
       ],
     ],
@@ -270,7 +270,8 @@ const pageOptions = [
         {
           id: "period",
           label: "Período de Vigência",
-        },{
+        },
+        {
           id: "renewDay",
           label: "Dia de Renovação",
         },

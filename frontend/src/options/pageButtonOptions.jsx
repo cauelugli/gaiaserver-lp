@@ -97,7 +97,7 @@ const pageButtonOptions = [
               name: "mainContactPosition",
               label: "Posição",
               type: "select",
-              options: ["Propietário", "Sócio", "Gerente", "Colaborador"],
+              options: ["Proprietário", "Sócio", "Gerente", "Colaborador"],
               required: false,
             },
             {
@@ -225,7 +225,7 @@ const pageButtonOptions = [
               name: "phone",
               label: "Telefone Fixo",
               type: "phone",
-              required: true,
+              required: false,
             },
           ],
           model: "Client",
@@ -291,7 +291,7 @@ const pageButtonOptions = [
               name: "worker",
               label: "Colaborador Designado",
               type: "dynamicData",
-              dynamicData: "users",
+              dynamicData: "workers",
               required: true,
             },
             {
@@ -354,7 +354,7 @@ const pageButtonOptions = [
               name: "seller",
               label: "Vendedor",
               type: "dynamicData",
-              dynamicData: "users",
+              dynamicData: "workers",
               required: true,
             },
             {
@@ -1162,14 +1162,6 @@ const pageButtonOptions = [
         ],
         model: "Project",
       },
-    ],
-  },
-  //review this
-  {
-    page: "finance",
-    pageButtonOptions: [
-      { label: "Receita", icon: <ApartmentIcon />, modal: "AddFinanceIncome" },
-      { label: "Despesa", icon: <ApartmentIcon />, modal: "AddFinanceOutcome" },
     ],
   },
   {

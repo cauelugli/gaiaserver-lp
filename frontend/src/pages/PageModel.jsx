@@ -179,7 +179,7 @@ export default function PageModel(props) {
             baseProducts={items.filter((item) => !item.name)}
           />
         ) : (
-          currentPage !== "quotes" && (
+          currentPage !== "quotes" || currentPage !== "finance" && (
             <PageButtonModel
               refreshData={refreshData}
               setRefreshData={setRefreshData}

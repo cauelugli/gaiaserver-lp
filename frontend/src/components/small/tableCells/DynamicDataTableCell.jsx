@@ -23,9 +23,12 @@ const DynamicDataTableCell = (props) => {
     const fetchData = async () => {
       try {
         let data = [];
-        if (props.field.dynamicData === "allUsers") {
+        if (props.field.dynamicData === "users") {
           const resUsers = await api.get("/get", { params: { model: "User" } });
           data = resUsers.data;
+        } else if (props.field.dynamicData === "workers") {
+          const resUsers = await api.get("/get", { params: { model: "User" } });
+          data = resUsers.data.filter((user) => !user.isManager);
         } else if (props.field.dynamicData === "allCustomers") {
           const resCustomers = await api.get("/get", {
             params: { model: "Customer" },
@@ -70,18 +73,28 @@ const DynamicDataTableCell = (props) => {
           ))}
         </div>
       );
-    } else if (props.field.dynamicData === "users") {
+    } else if (
+      props.field.dynamicData === "users" ||
+      props.field.dynamicData === "workers" ||
+      props.field.dynamicData === "allCustomers"
+    ) {
       if (!selected) {
-        return <Typography>Colaborador</Typography>;
+        return (
+          <Typography>
+            {props.field.dynamicData === "allCustomers"
+              ? "Cliente"
+              : "Colaborador"}
+          </Typography>
+        );
       } else {
         return (
           <Grid container direction="row" alignItems="center">
             <Avatar
-              alt="Imagem do Cliente"
+              alt="Imagem"
               src={`http://localhost:3000/static/${selected.image}`}
               sx={{ width: 24, height: 24, marginRight: 2 }}
             />
-            <Typography>{selected.name}</Typography>
+            <Typography sx={{ fontSize: 12 }}>{selected.name}</Typography>
           </Grid>
         );
       }
@@ -89,7 +102,11 @@ const DynamicDataTableCell = (props) => {
       if (!selected) {
         return <Typography />;
       } else {
-        return <Typography>{selected.name || selected}</Typography>;
+        return (
+          <Typography sx={{ fontSize: 12, mt: 0.5 }}>
+            {selected.name || selected}
+          </Typography>
+        );
       }
     }
   };
@@ -115,12 +132,14 @@ const DynamicDataTableCell = (props) => {
       multiple={props.multiple}
       renderValue={renderValue}
     >
-      {props.field.dynamicData === "users"
+      {props.field.dynamicData === "users" ||
+      props.field.dynamicData === "workers" ||
+      props.field.dynamicData === "allCustomers"
         ? options.map((option, index) => (
             <MenuItem value={option} key={index}>
               <Grid container direction="row" alignItems="center">
                 <Avatar
-                  alt="Imagem do Cliente"
+                  alt="Imagem"
                   src={`http://localhost:3000/static/${option.image}`}
                   sx={{ width: 24, height: 24, marginRight: 2 }}
                 />
