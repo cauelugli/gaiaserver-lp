@@ -191,9 +191,11 @@ export default function TableModel(props) {
                             key={columnIndex}
                             align={columnIndex === 0 ? "" : "left"}
                           >
-                            {row[column.id] &&
-                            typeof row[column.id] === "string" &&
-                            row[column.id].startsWith("/images") ? (
+                            {row[column.id] === null ? (
+                              ""
+                            ) : row[column.id] &&
+                              typeof row[column.id] === "string" &&
+                              row[column.id].startsWith("/images") ? (
                               <Avatar
                                 alt="Imagem do Produto"
                                 src={`http://localhost:3000/static${
