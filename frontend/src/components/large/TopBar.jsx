@@ -25,7 +25,7 @@ import Inventory2Icon from "@mui/icons-material/Inventory2";
 import WorkIcon from "@mui/icons-material/Work";
 
 const options = [
-  { label: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" },
+  { label: "Dashboard", icon: <DashboardIcon />, link: "/", disabled: true },
   { label: "Clientes", icon: <WorkIcon />, link: "/customers" },
   { label: "Solicitações", icon: <GradingIcon />, link: "/requests" },
   { label: "Colaboradores", icon: <GroupIcon />, link: "/users" },
@@ -69,7 +69,7 @@ const TopBar = ({ configData, user }) => {
     if (user.username === "admin") return true;
     if (!configData.permissions) return false;
 
-    const route = routePath === "/" ? "dashboard" : routePath.slice(1);
+    const route = routePath.slice(1);
     if (route === "" || route === "help" || route === "account") {
       return true;
     }
