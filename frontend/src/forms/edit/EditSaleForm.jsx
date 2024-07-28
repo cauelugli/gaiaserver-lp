@@ -131,7 +131,9 @@ const EditSaleForm = ({
     const fetchData = async () => {
       try {
         const departments = await api.get("/departments");
-        const products = await api.get("/products");
+        const products = await api.get("/get", {
+          params: { model: "Products" },
+        });
         const configCustomization = await api.get("/config");
         setDepartments(
           departments.data.filter((department) => !department.isInternal)

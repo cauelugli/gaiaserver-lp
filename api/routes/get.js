@@ -14,13 +14,6 @@ router.get("/", async (req, res) => {
 
   try {
     let data = await Model.find();
-
-    if (model === "ProductCreated") {
-      data = data.filter((item) => item.name);
-    } else if (model === "MaterialCreated") {
-      data = data.filter((item) => item.isMaterial);
-    }
-
     res.status(200).json(data);
   } catch (err) {
     console.log("\nerr", err, "\n");

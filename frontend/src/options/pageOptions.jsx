@@ -351,7 +351,7 @@ const pageOptions = [
   {
     page: "stock",
     label: "Estoque",
-    models: ["ProductCreated", "MaterialCreated", "StockEntry"],
+    models: ["Product", "Product", "StockEntry"],
     tabs: ["Produtos", "Materiais", "Entradas"],
     tableColumns: [
       // STOCK PRODUCTS TABLE

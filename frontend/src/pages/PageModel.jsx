@@ -62,86 +62,58 @@ export default function PageModel(props) {
     }
 
     const fetchData = async () => {
-      if (props.item.page === "products") {
-        try {
-          const [itemsResponse, configResponse] = await Promise.all([
-            api.get("/products"),
-            api.get("/config"),
-          ]);
+      try {
+        const [itemsResponse, configResponse] = await Promise.all([
+          api.get("/get", {
+            params: {
+              model:
+                props.item.page === "products" ||
+                props.item.page === "materials"
+                  ? "Product"
+                  : props.item.models[
+                      props.item.page !== currentPage ? 0 : value
+                    ],
+            },
+          }),
 
-          if (Array.isArray(itemsResponse.data)) {
-            setItems(itemsResponse.data);
-          } else {
-            console.warn("Expected an array but got", itemsResponse.data);
-          }
+          api.get("/config"),
+        ]);
 
-          if (
-            Array.isArray(configResponse.data) &&
-            configResponse.data[0]?.props
-          ) {
-            setConfigItem(configResponse.data[0].props.endpoint);
-          } else {
-            console.warn(
-              "Config data structure is not as expected",
-              configResponse.data
-            );
-          }
-
-          setIsLoading(false);
-        } catch (error) {
-          toast.error("Houve algum erro...", {
-            closeOnClick: true,
-            pauseOnHover: false,
-            theme: "colored",
-            autoClose: 1200,
-          });
-          console.error("Error fetching data:", error);
-          setIsLoading(false);
+        if (Array.isArray(itemsResponse.data)) {
+          setItems(
+            props.item.page === "stock"
+              ? itemsResponse.data.filter((item) => item.name)
+              : itemsResponse.data
+          );
+        } else {
+          console.warn("Expected an array but got", itemsResponse.data);
         }
-      } else {
-        try {
-          const [itemsResponse, configResponse] = await Promise.all([
-            api.get("/get", {
-              params: {
-                model:
-                  props.item.models[
-                    props.item.page !== currentPage ? 0 : value
-                  ],
-              },
-            }),
-            api.get("/config"),
-          ]);
+        console.log("props.item.page", props.item.page);
 
-          if (Array.isArray(itemsResponse.data)) {
-            setItems(itemsResponse.data);
-          } else {
-            console.warn("Expected an array but got", itemsResponse.data);
-          }
-
-          if (
-            Array.isArray(configResponse.data) &&
-            configResponse.data[0]?.props
-          ) {
-            setConfigItem(configResponse.data[0].props.endpoint);
-          } else {
-            console.warn(
-              "Config data structure is not as expected",
-              configResponse.data
-            );
-          }
-
-          setIsLoading(false);
-        } catch (error) {
-          toast.error("Houve algum erro...", {
-            closeOnClick: true,
-            pauseOnHover: false,
-            theme: "colored",
-            autoClose: 1200,
-          });
-          console.error("Error fetching data:", error);
-          setIsLoading(false);
+        if (
+          Array.isArray(configResponse.data) &&
+          configResponse.data[0]?.props
+        ) {
+          setConfigItem(configResponse.data[0].props.endpoint);
+        } else {
+          console.warn(
+            "Config data structure is not as expected",
+            configResponse.data
+          );
         }
+
+        setIsLoading(false);
+      } catch (error) {
+        toast.error("Houve algum erro...", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+        console.error("Error fetching data:", error);
+        setIsLoading(false);
       }
+      // }
     };
     fetchData();
   }, [refreshData, currentPage, props.item, value]);

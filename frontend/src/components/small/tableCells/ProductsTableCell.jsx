@@ -16,7 +16,9 @@ const ProductsTableCell = (props) => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/products");
+        const response = await api.get("/get", {
+          params: { model: "Products" },
+        });
         setOptions(response.data.filter((item) => item.name));
       } catch (error) {
         console.error("Error fetching data:", error);

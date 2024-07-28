@@ -6,37 +6,18 @@ const server = http.createServer(app);
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const getRoute = require("./routes/get");
-const getConfigRoute = require("./routes/getConfig");
 const addRoute = require("./routes/add");
 const deleteRoute = require("./routes/delete");
+const getRoute = require("./routes/get");
+const getConfigRoute = require("./routes/getConfig");
 
+const actionsRoute = require("./routes/actions");
 const adminRoute = require("./routes/admin");
-const newRoute = require("./routes/new");
-const authRoute = require("./routes/auth");
-const activateRoute = require("./routes/activate");
-const configRoute = require("./routes/config");
-const financeRoute = require("./routes/finances");
-const departmentRoute = require("./routes/departments");
-const serviceRoutes = require("./routes/services");
-const servicePlanRoutes = require("./routes/servicePlans");
-const positionRoutes = require("./routes/positions");
-const productRoutes = require("./routes/products");
-const projectsRoutes = require("./routes/projects");
-const roleRoutes = require("./routes/roles");
-const stockRoutes = require("./routes/stock");
-const jobRoutes = require("./routes/jobs");
-const saleRoutes = require("./routes/sales");
-const userRoute = require("./routes/users");
-const operatorsRoute = require("./routes/operators");
-const requestsRoute = require("./routes/requests");
-const quickNotesRoute = require("./routes/quicknotes");
-const quoteRoute = require("./routes/quotes");
-const uploadsRoute = require("./routes/uploads");
 const agendaRoute = require("./routes/agenda");
-const groupsRoute = require("./routes/groups");
+const authRoute = require("./routes/auth");
+const configRoute = require("./routes/config");
+const uploadsRoute = require("./routes/uploads");
 const userPreferencesRoute = require("./routes/userPreferences");
-const recentActivityRoute = require("./routes/recentActivity");
 
 dotenv.config();
 app.use(cors());
@@ -53,37 +34,18 @@ mongoose
   .then(console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 
-app.use("/api/get", getRoute);
-app.use("/api/getConfig", getConfigRoute);
+app.use("/api/actions", actionsRoute);
 app.use("/api/add", addRoute);
 app.use("/api/delete", deleteRoute);
-
+app.use("/api/get", getRoute);
 app.use("/api/admin", adminRoute);
-app.use("/api/new", newRoute);
+app.use("/api/getConfig", getConfigRoute);
 app.use("/api/login", authRoute);
-app.use("/api/activate", activateRoute);
 app.use("/api/config", configRoute);
-app.use("/api/finances", financeRoute);
-app.use("/api/departments", departmentRoute);
-app.use("/api/services", serviceRoutes);
-app.use("/api/servicePlans", servicePlanRoutes);
-app.use("/api/jobs", jobRoutes);
-app.use("/api/requests", requestsRoute);
-app.use("/api/sales", saleRoutes);
-app.use("/api/positions", positionRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/projects", projectsRoutes);
-app.use("/api/roles", roleRoutes);
-app.use("/api/stock", stockRoutes);
-app.use("/api/users", userRoute);
-app.use("/api/operators", operatorsRoute);
-app.use("/api/quicknotes", quickNotesRoute);
-app.use("/api/quotes", quoteRoute);
+
 app.use("/api/uploads", uploadsRoute);
 app.use("/api/agenda", agendaRoute);
-app.use("/api/groups", groupsRoute);
 app.use("/api/userPreferences", userPreferencesRoute);
-app.use("/api/recentActivity", recentActivityRoute);
 
 server.listen(3000, () => {
   console.log("Backend is running.");

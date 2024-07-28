@@ -59,7 +59,9 @@ export default function Products({
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        const products = await api.get("/products");
+        const products = await api.get("/get", {
+          params: { model: "Product" },
+        });
         setBaseProducts(products.data.filter((product) => !product.name));
         setProducts(products.data.filter((product) => product.name));
         setConfigData(config.data[0].products);

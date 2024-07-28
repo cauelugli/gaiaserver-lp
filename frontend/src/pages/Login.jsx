@@ -88,7 +88,7 @@ const Login = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await api.post("/new", {
+      const res = await api.post("/admin/createAdminUser", {
         password,
       });
       if (res.data) {
