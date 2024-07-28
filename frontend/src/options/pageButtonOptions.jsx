@@ -7,6 +7,7 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import BuildIcon from "@mui/icons-material/Build";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import GroupsIcon from "@mui/icons-material/Groups";
+import HardwareIcon from "@mui/icons-material/Hardware";
 import HubIcon from "@mui/icons-material/Hub";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import LanIcon from "@mui/icons-material/Lan";
@@ -1008,7 +1009,7 @@ const pageButtonOptions = [
     pageButtonOptions: [
       {
         label: "Material",
-        icon: <RecyclingIcon />,
+        icon: <HardwareIcon />,
         modal: {
           name: "AddMaterial",
           label: "Material",
@@ -1070,43 +1071,7 @@ const pageButtonOptions = [
           { name: "mainInfo", label: "Informações Gerais" },
           { name: "fields", label: "Informações do Material" },
         ],
-        fields: [
-          {
-            fieldSection: "mainInfo",
-            name: "type",
-            label: "Tipo de Material",
-            type: "dynamicData",
-            options: ["baseProducts"],
-            required: true,
-          },
-          {
-            fieldSection: "mainInfo",
-            name: "name",
-            label: "Nome do Material",
-            type: "string",
-            required: true,
-          },
-          {
-            fieldSection: "mainInfo",
-            name: "buyValue",
-            label: "Valor de Compra",
-            type: "currency",
-            required: true,
-          },
-          {
-            fieldSection: "mainInfo",
-            name: "sellValue",
-            label: "Valor de Venda",
-            type: "currency",
-            required: true,
-          },
-          {
-            fieldSection: "fields",
-            name: "fields",
-            label: "",
-            type: "fields",
-          },
-        ],
+        fields: [],
         model: "Project",
       },
       {

@@ -37,6 +37,7 @@ export default function AddProductForm({
   onClose,
   userId,
   baseProduct,
+  isMaterial,
 }) {
   const [name, setName] = React.useState("");
   const [buyValue, setBuyValue] = React.useState("");
@@ -80,17 +81,18 @@ export default function AddProductForm({
         })),
         images: imagePaths,
         createdBy: userName,
+        isMaterial: isMaterial,
       });
 
       if (productResponse.data) {
-        toast.success("Produto Adicionado!", {
+        toast.success(`${isMaterial ? "Material" : "Produto"} Adicionado!`, {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
         });
         socket.emit("newDataRefreshButton", {
-          page: "products",
+          page: isMaterial ? "materials" : "products",
           userId: userId,
         });
       }
@@ -111,7 +113,7 @@ export default function AddProductForm({
     <form onSubmit={handleAddProduct}>
       <DialogContent>
         <Typography sx={{ fontSize: 16, fontWeight: "bold", mb: 1 }}>
-          Campos do Produto
+          Campos do {isMaterial ? "Material" : "Produto"}
         </Typography>
         <Grid
           id="fieldsRow"
@@ -160,35 +162,41 @@ export default function AddProductForm({
               sx={{ width: 150 }}
             />
           </Grid>
-          <Grid item>
-            <Typography sx={{ fontSize: 13 }}>Valor de Venda</Typography>
-            <TextField
-              value={sellValue}
-              onChange={(e) => handleCurrencyValueChange(e, setSellValue)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">R$</InputAdornment>
-                ),
-              }}
-              size="small"
-              sx={{ width: 150 }}
-            />
-          </Grid>
-          <Grid item>
-            <Typography sx={{ fontSize: 13 }}>
-              Lucro por Item Vendido
-            </Typography>
-            <TextField
-              size="small"
-              value={
-                buyValue > 0
-                  ? (((sellValue - buyValue) / buyValue) * 100).toFixed(2) + "%"
-                  : "N/A"
-              }
-              readOnly
-              sx={{ width: 150 }}
-            />
-          </Grid>
+          {!isMaterial && (
+            <>
+              <Grid item>
+                <Typography sx={{ fontSize: 13 }}>Valor de Venda</Typography>
+                <TextField
+                  value={sellValue}
+                  onChange={(e) => handleCurrencyValueChange(e, setSellValue)}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">R$</InputAdornment>
+                    ),
+                  }}
+                  size="small"
+                  sx={{ width: 150 }}
+                />
+              </Grid>
+
+              <Grid item>
+                <Typography sx={{ fontSize: 13 }}>
+                  Lucro por Item Vendido
+                </Typography>
+                <TextField
+                  size="small"
+                  value={
+                    buyValue > 0
+                      ? (((sellValue - buyValue) / buyValue) * 100).toFixed(2) +
+                        "%"
+                      : "N/A"
+                  }
+                  readOnly
+                  sx={{ width: 150 }}
+                />
+              </Grid>
+            </>
+          )}
 
           {baseProduct.fields.map((field, index) => (
             <Grid item key={index}>
@@ -272,7 +280,7 @@ export default function AddProductForm({
         </Grid>
 
         <Typography sx={{ fontSize: 16, fontWeight: "bold", mt: 4 }}>
-          Imagens do Produto
+          Imagens do {isMaterial ? "Material" : "Produto"}
         </Typography>
 
         <Grid

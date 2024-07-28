@@ -41,7 +41,7 @@ import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import SettingsIcon from "@mui/icons-material/Settings";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import SellIcon from "@mui/icons-material/Sell";
-import Inventory2Icon from "@mui/icons-material/Inventory2";
+import HardwareIcon from "@mui/icons-material/Hardware";
 import WorkIcon from "@mui/icons-material/Work";
 
 export default function Permissions({ onClose }) {
@@ -97,7 +97,7 @@ export default function Permissions({ onClose }) {
     {
       tooltip: "Materiais",
       label: "materials",
-      icon: <Inventory2Icon fontSize="inherit" />,
+      icon: <HardwareIcon fontSize="inherit" />,
     },
     {
       tooltip: "Projetos",

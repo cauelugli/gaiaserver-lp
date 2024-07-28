@@ -71,7 +71,7 @@ export default function TableModel(props) {
         <Table size="small">
           <TableBody>
             <TableRow>
-              {props.page === "products" ? (
+              {props.page === "products" || props.page === "materials" ? (
                 <>
                   <TableCell align="left" id="image">
                     📷
@@ -86,8 +86,8 @@ export default function TableModel(props) {
                   >
                     Nome
                   </TableCell>
-                  {props.baseProducts.length > 0 &&
-                    props.baseProducts[props.itemIndex].fields.map(
+                  {props.items.length > 0 &&
+                    props.items[props.itemIndex].fields.map(
                       (headCell, cellIndex) => (
                         <TableCell
                           key={cellIndex}
@@ -144,13 +144,13 @@ export default function TableModel(props) {
                 Ações
               </TableCell>
             </TableRow>
-            {props.page === "products"
-              ? props.baseProducts.length > 0 &&
+            {props.page === "products" || props.page === "materials"
+              ? props.items.length > 0 &&
                 filteredRows
                   .filter(
                     (item) =>
                       item.name &&
-                      item.type === props.baseProducts[props.itemIndex].type
+                      item.type === props.items[props.itemIndex].type
                   )
                   .slice(startIndex, endIndex)
                   .map((row, rowIndex) => (

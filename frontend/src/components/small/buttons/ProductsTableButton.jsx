@@ -94,6 +94,8 @@ export default function ProductsTableButton(props) {
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
             selectedItem={props.selectedItem}
+            onClose={() => setOpenAdd(!openAdd)}
+            isMaterial={props.isMaterial}
           />
         </Dialog>
       )}

@@ -18,6 +18,7 @@ const authRoute = require("./routes/auth");
 const configRoute = require("./routes/config");
 const uploadsRoute = require("./routes/uploads");
 const userPreferencesRoute = require("./routes/userPreferences");
+const productsRoute = require("./routes/products");
 
 dotenv.config();
 app.use(cors());
@@ -42,6 +43,7 @@ app.use("/api/admin", adminRoute);
 app.use("/api/getConfig", getConfigRoute);
 app.use("/api/login", authRoute);
 app.use("/api/config", configRoute);
+app.use("/api/products", productsRoute);
 
 app.use("/api/uploads", uploadsRoute);
 app.use("/api/agenda", agendaRoute);

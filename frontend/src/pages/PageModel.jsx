@@ -48,6 +48,7 @@ export default function PageModel(props) {
   const [value, setValue] = React.useState(0);
 
   const [items, setItems] = React.useState([]);
+  const [baseItems, setBaseItems] = React.useState([]);
 
   const [currentPage, setCurrentPage] = React.useState(props.item.page);
 
@@ -88,7 +89,27 @@ export default function PageModel(props) {
         } else {
           console.warn("Expected an array but got", itemsResponse.data);
         }
-        console.log("props.item.page", props.item.page);
+
+        if (props.item.page === "products" || props.item.page === "materials") {
+          setItems(
+            itemsResponse.data.filter(
+              (item) =>
+                item.name &&
+                (props.item.page === "products"
+                  ? !item.isMaterial
+                  : item.isMaterial)
+            )
+          );
+          setBaseItems(
+            itemsResponse.data.filter(
+              (item) =>
+                !item.name &&
+                (props.item.page === "products"
+                  ? !item.isMaterial
+                  : item.isMaterial)
+            )
+          );
+        }
 
         if (
           Array.isArray(configResponse.data) &&
@@ -113,7 +134,6 @@ export default function PageModel(props) {
         console.error("Error fetching data:", error);
         setIsLoading(false);
       }
-      // }
     };
     fetchData();
   }, [refreshData, currentPage, props.item, value]);
@@ -143,23 +163,36 @@ export default function PageModel(props) {
         <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
           {props.item.label}
         </Typography>
-        {currentPage === "products" ? (
+        {currentPage === "products" && (
           <ProductsTableButton
             configCustomization={props.configCustomization}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
-            baseProducts={items.filter((item) => !item.name)}
+            baseProducts={baseItems}
           />
-        ) : currentPage !== "quotes" && currentPage !== "finance" ? (
-          <PageButtonModel
+        )}
+
+        {currentPage === "materials" && (
+          <ProductsTableButton
+            configCustomization={props.configCustomization}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
-            configCustomization={props.configCustomization}
-            page={currentPage}
+            baseMaterials={baseItems}
+            isMaterial
           />
-        ) : (
-          ""
         )}
+
+        {currentPage !== "quotes" &&
+          currentPage !== "finance" &&
+          currentPage !== "materials" &&
+          currentPage !== "products" && (
+            <PageButtonModel
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              configCustomization={props.configCustomization}
+              page={currentPage}
+            />
+          )}
       </Grid>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -167,21 +200,19 @@ export default function PageModel(props) {
           onChange={handleChange}
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
-          {props.item.page === "products"
-            ? items
-                .filter((item) => !item.name)
-                .map((item, index) => (
-                  <Tab
-                    key={index}
-                    label={
-                      <Typography sx={{ fontSize: 13 }}>{item.type}</Typography>
-                    }
-                    sx={{
-                      color: "black",
-                      "&.Mui-selected": { color: "black" },
-                    }}
-                  />
-                ))
+          {props.item.page === "products" || props.item.page === "materials"
+            ? baseItems.map((item, index) => (
+                <Tab
+                  key={index}
+                  label={
+                    <Typography sx={{ fontSize: 13 }}>{item.type}</Typography>
+                  }
+                  sx={{
+                    color: "black",
+                    "&.Mui-selected": { color: "black" },
+                  }}
+                />
+              ))
             : props.item.tabs.map((tab, index) => (
                 <Tab
                   key={index}
@@ -209,7 +240,66 @@ export default function PageModel(props) {
           </Grid>
         </Tabs>
       </Box>
-      {props.item.page === "products"
+      {props.item.page === "products" || props.item.page === "materials"
+        ? items.map((item, index) => (
+            <CustomTabPanel key={index} value={value} index={index}>
+              {items.length === 0 ? (
+                <NoDataText option={item} />
+              ) : (
+                <>
+                  {props.tableOrCardView ? (
+                    <TableModel
+                      page={
+                        props.item.page === "products"
+                          ? "products"
+                          : "materials"
+                      }
+                      mappedItem={item}
+                      items={items}
+                      // baseProducts={items.filter((item) => !item.name)}
+                      itemIndex={index}
+                      tableColumns={item.fields}
+                      userName={props.userName}
+                      userId={props.userId}
+                      userRole={props.userRole}
+                      userDepartment={props.userDepartment}
+                      configData={configItem}
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
+                      topBar={props.topBar}
+                    />
+                  ) : (
+                    <Grid
+                      sx={{ mt: 0.5, width: props.topBar ? "107%" : "100%" }}
+                      container
+                      spacing={2}
+                    >
+                      {items.map((nothing, index) => (
+                        <Grid
+                          item
+                          key={index}
+                          md={props.cardSize}
+                          lg={props.cardSize}
+                          xl={props.cardSize}
+                        >
+                          <CardModel
+                            userId={props.userId}
+                            userName={props.userName}
+                            configData={props.configData}
+                            item={props.item}
+                            type={props.endpoint}
+                            refreshData={refreshData}
+                            setRefreshData={setRefreshData}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  )}
+                </>
+              )}
+            </CustomTabPanel>
+          ))
+        : props.item.page === "materials"
         ? items
             .filter((item) => item.name)
             .map((item, index) => (

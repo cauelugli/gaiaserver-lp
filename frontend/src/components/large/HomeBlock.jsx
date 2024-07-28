@@ -14,7 +14,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import Inventory2Icon from "@mui/icons-material/Inventory2";
+import HardwareIcon from "@mui/icons-material/Hardware";
 import LanIcon from "@mui/icons-material/Lan";
 import SellIcon from "@mui/icons-material/Sell";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -22,6 +22,7 @@ import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
+
 import HomeRecentActivity from "../small/HomeRecentActivity";
 
 const optionsMainblocks = [
@@ -84,7 +85,7 @@ const optionsRightColumn = [
     permissionLabel: "products",
   },
   {
-    icon: <Inventory2Icon sx={{ fontSize: 22 }} />,
+    icon: <HardwareIcon sx={{ fontSize: 22 }} />,
     text: "Materiais",
     link: "/materials",
     permissionLabel: "materials",

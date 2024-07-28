@@ -12,6 +12,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
+import HardwareIcon from "@mui/icons-material/Hardware";
 import HelpCenterIcon from "@mui/icons-material/HelpCenter";
 import HomeIcon from "@mui/icons-material/Home";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
@@ -21,7 +22,6 @@ import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SellIcon from "@mui/icons-material/Sell";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
-import Inventory2Icon from "@mui/icons-material/Inventory2";
 import WorkIcon from "@mui/icons-material/Work";
 
 const options = [
@@ -33,7 +33,7 @@ const options = [
   { label: "Serviços", icon: <BuildIcon />, link: "/services" },
   { label: "Orçamentos", icon: <RequestQuoteIcon />, link: "/quotes" },
   { label: "Produtos", icon: <SellIcon />, link: "/products" },
-  { label: "Materiais", icon: <Inventory2Icon />, link: "/materials" },
+  { label: "Materiais", icon: <HardwareIcon />, link: "/materials" },
   { label: "Estoque", icon: <WarehouseIcon />, link: "/stock" },
   { label: "Chat", icon: <ChatIcon />, link: "/", disabled: true },
   { label: "Projetos", icon: <RocketLaunchIcon />, link: "/projects" },

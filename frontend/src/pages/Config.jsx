@@ -1,9 +1,12 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 import {
   Grid,
@@ -16,10 +19,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
@@ -30,7 +29,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import Inventory2Icon from "@mui/icons-material/Inventory2";
+import HardwareIcon from "@mui/icons-material/Hardware";
 import LanIcon from "@mui/icons-material/Lan";
 import LockIcon from "@mui/icons-material/Lock";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -65,18 +64,13 @@ export default function Config({
   topBar,
   userId,
   userName,
-  refreshData,
-  setRefreshData,
   configCustomization,
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
-
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [openModal, setOpenModal] = useState(null);
   const [configData, setConfigData] = useState([]);
   const [chosenModal, setChosenModal] = useState("");
-
-  const [products, setProducts] = useState([]);
 
   const options = [
     {
@@ -129,18 +123,22 @@ export default function Config({
       text: "Produtos",
       modal: (
         <ProductsModal
-          here
           userName={userName}
           userId={userId}
           configCustomization={configCustomization}
-          products={products}
         />
       ),
     },
     {
-      icon: <Inventory2Icon sx={{ fontSize: 48 }} />,
+      icon: <HardwareIcon sx={{ fontSize: 48 }} />,
       text: "Materiais",
-      modal: <MaterialsModal />,
+      modal: (
+        <MaterialsModal
+          userName={userName}
+          userId={userId}
+          configCustomization={configCustomization}
+        />
+      ),
     },
     {
       icon: <AssessmentIcon sx={{ fontSize: 48 }} />,
@@ -193,10 +191,6 @@ export default function Config({
   const handleItemClick = (modal) => {
     setOpenModal(modal);
     setChosenModal(modal.type.name);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(null);
   };
 
   React.useEffect(() => {
@@ -311,7 +305,7 @@ export default function Config({
 
       <Dialog
         open={!!openModal}
-        onClose={handleCloseModal}
+        onClose={() => setOpenModal(null)}
         fullWidth
         maxWidth={
           chosenModal === "Permissions"
@@ -328,7 +322,7 @@ export default function Config({
             })}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseModal}>Fechar</Button>
+          <Button onClick={() => setOpenModal(null)}>Fechar</Button>
         </DialogActions>
       </Dialog>
     </Box>

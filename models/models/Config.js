@@ -84,10 +84,6 @@ const configSchema = new Schema({
       type: Boolean,
       default: true,
     },
-    materialTypes: {
-      type: Array,
-      default: [],
-    },
     notifyWhenMaterialIsCreated: {
       type: Boolean,
       default: false,

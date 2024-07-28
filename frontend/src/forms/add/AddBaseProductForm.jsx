@@ -43,6 +43,7 @@ export default function AddBaseProductForm({
   configCustomization,
   toast,
   userId,
+  isMaterial,
 }) {
   const [type, setType] = React.useState("");
   const [fields, setFields] = React.useState([]);
@@ -74,12 +75,12 @@ export default function AddBaseProductForm({
 
   const handleAdd = async (e) => {
     e.preventDefault();
-
     try {
       const productResponse = await api.post("/products", {
         type,
         fields,
         createdBy: userName,
+        isMaterial: isMaterial
       });
 
       if (productResponse.data) {
@@ -105,14 +106,6 @@ export default function AddBaseProductForm({
       });
       console.log(err);
     }
-  };
-
-  const handleOpenPopover = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClosePopover = () => {
-    setAnchorEl(null);
   };
 
   const handleAddField = () => {
@@ -152,7 +145,7 @@ export default function AddBaseProductForm({
     setNewDateType("simple");
     setNewDateValue(1);
     setNewDatePeriod("day");
-    handleClosePopover();
+    setAnchorEl(null);
   };
 
   const handleAddOptionItem = () => {
@@ -160,19 +153,19 @@ export default function AddBaseProductForm({
     setNewOptionItem("");
   };
 
-  const handleRemoveLastOptionItem = () => {
-    setNewOptions((prevOptions) => prevOptions.slice(0, -1));
-  };
-
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogHeader title="Produto" femaleGender={false} />
+      <DialogHeader
+        title={isMaterial ? "Material" : "Produto"}
+        femaleGender={false}
+        extraSmall
+      />
       <DialogContent>
         <Typography sx={{ fontSize: 16, fontWeight: "bold", mb: 1 }}>
-          Campos do Produto
+          Campos do {isMaterial ? "Material" : "Produto"}
         </Typography>
         <Grid
           id="fieldsRow"
@@ -277,7 +270,7 @@ export default function AddBaseProductForm({
           <Button
             variant="contained"
             size="small"
-            onClick={handleOpenPopover}
+            onClick={(event) => setAnchorEl(event.currentTarget)}
             sx={{ maxWidth: 80, mt: 4, ml: 1 }}
           >
             <Typography sx={{ fontSize: 11 }}>Adicionar Campo</Typography>
@@ -288,7 +281,7 @@ export default function AddBaseProductForm({
           id={id}
           open={open}
           anchorEl={anchorEl}
-          onClose={handleClosePopover}
+          onClose={() => setAnchorEl(null)}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "left",
@@ -506,7 +499,11 @@ export default function AddBaseProductForm({
                         </Typography>
                         {index === newOptions.length - 1 && (
                           <DeleteIcon
-                            onClick={handleRemoveLastOptionItem}
+                            onClick={() =>
+                              setNewOptions((prevOptions) =>
+                                prevOptions.slice(0, -1)
+                              )
+                            }
                             style={{ cursor: "pointer" }}
                           />
                         )}

@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 
@@ -14,42 +15,67 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Avatar,
   Button,
+  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   FormControlLabel,
   Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
   Radio,
   RadioGroup,
-  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Tooltip,
   Typography,
 } from "@mui/material";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import DeleteIcon from "@mui/icons-material/Delete";
+import SettingsIcon from "@mui/icons-material/Settings";
 
-export default function Materials({ onClose }) {
+import AddBaseProductForm from "../add/AddBaseProductForm";
+
+export default function Materials({
+  onClose,
+  userId,
+  userName,
+  configCustomization,
+}) {
   const [configData, setConfigData] = React.useState([]);
+  const [refreshData, setRefreshData] = React.useState(false);
+  const [baseMaterials, setBaseMaterials] = React.useState([]);
+  const [materials, setMaterials] = React.useState([]);
+
   const [canBeDeleted, setCanBeDeleted] = React.useState(null);
   const [notifyWhenMaterialIsCreated, setNotifyWhenMaterialIsCreated] =
     React.useState(null);
-  const [materialTypes, setMaterialTypes] = React.useState([]);
-  const [newType, setNewType] = React.useState("");
+
+  const [openAddMaterial, setOpenAddMaterial] = React.useState(false);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
+        const materials = await api.get("/get", {
+          params: { model: "Product" },
+          // remember: a Material is a Product with 'isMaterial===true'
+        });
+        setBaseMaterials(
+          materials.data.filter(
+            (material) => !material.name && material.isMaterial
+          )
+        );
+        setMaterials(
+          materials.data.filter(
+            (material) => material.name && material.isMaterial
+          )
+        );
         setConfigData(config.data[0].materials);
         setCanBeDeleted(config.data[0].materials.canBeDeleted);
-        setMaterialTypes(config.data[0].materials.materialTypes);
         setNotifyWhenMaterialIsCreated(
           config.data[0].materials.notifyWhenMaterialIsCreated
         );
@@ -58,14 +84,13 @@ export default function Materials({ onClose }) {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   const handleChangeMaterialsConfig = async (e) => {
     e.preventDefault();
     try {
       const res = await api.put("/config/materials", {
         canBeDeleted,
-        materialTypes,
         notifyWhenMaterialIsCreated,
       });
 
@@ -90,162 +115,296 @@ export default function Materials({ onClose }) {
     }
   };
 
-  const handleAddType = () => {
-    if (newType && !materialTypes.includes(newType)) {
-      setMaterialTypes([...materialTypes, newType]);
-      setNewType("");
-    }
-  };
-
-  const handleRemoveType = (type) => {
-    setMaterialTypes(materialTypes.filter((t) => t !== type));
-  };
-
   return (
-    <form onSubmit={handleChangeMaterialsConfig}>
-      <DialogTitle
-        sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
-      >
-        Configurações de Materiais
-      </DialogTitle>
-      {configData.length !== 0 && (
-        <>
-          <DialogContent>
-            <Grid
-              container
-              sx={{ mt: 2 }}
-              direction="column"
-              justifyContent="center"
-              alignItems="flex-start"
-            >
-              <Accordion sx={{ width: "100%" }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Tipos de Material
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <List sx={{ mx: "30%" }}>
-                    {materialTypes.map((type, index) => (
-                      <ListItem key={index} sx={{ pl: 0 }}>
-                        <ListItemText primary={type} />
-                        <ListItemSecondaryAction>
-                          <IconButton
-                            edge="end"
-                            onClick={() => handleRemoveType(type)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    ))}
-                  </List>
-                  <Grid
-                    container
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <Grid item>
-                      <TextField
-                        variant="outlined"
-                        label="Adicionar novo tipo"
-                        value={newType}
-                        onChange={(e) => setNewType(e.target.value)}
-                      />
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleAddType}
-                        sx={{ ml: 1 }}
-                      >
-                        Adicionar
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </AccordionDetails>
-              </Accordion>
-              <Accordion sx={{ width: "100%", mt: 2 }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Permissões
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Grid container direction="row">
-                    <Typography sx={{ my: "auto", mr: 1 }}>
-                      Materiais Podem ser Deletados
+    <>
+      <form onSubmit={handleChangeMaterialsConfig}>
+        <DialogTitle
+          sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
+        >
+          Configurações de Materiais
+        </DialogTitle>
+        {configData.length !== 0 && (
+          <>
+            <DialogContent>
+              <Grid
+                container
+                sx={{ mt: 2 }}
+                direction="column"
+                justifyContent="center"
+                alignItems="flex-start"
+              >
+                <Accordion sx={{ width: "100%" }}>
+                  <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                    <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                      Materiais Base
                     </Typography>
-                    <Tooltip
-                      title={
-                        <Typography sx={{ fontSize: 12 }}>
-                          Se a opção marcada for "Sim", os Materiais poderão ser
-                          deletados DEFINITIVAMENTE. A opção padrão é "Não".
-                        </Typography>
-                      }
-                    >
-                      <Button
-                        size="small"
-                        sx={{
-                          backgroundColor: "white",
-                          color: "#32aacd",
-                          "&:hover": {
-                            backgroundColor: "white",
-                          },
-                        }}
-                      >
-                        ?
-                      </Button>
-                    </Tooltip>
-                    <RadioGroup
-                      row
-                      value={canBeDeleted}
-                      onChange={(e) => setCanBeDeleted(e.target.value)}
-                    >
-                      <FormControlLabel
-                        value={Boolean(true)}
-                        control={
-                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                        }
-                        label={
-                          <Typography sx={{ fontSize: 13 }}>Sim</Typography>
-                        }
-                      />
-                      <FormControlLabel
-                        value={Boolean(false)}
-                        control={
-                          <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                        }
-                        label={
-                          <Typography sx={{ fontSize: 13 }}>Não</Typography>
-                        }
-                      />
-                    </RadioGroup>
-                  </Grid>
-                </AccordionDetails>
-              </Accordion>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {baseMaterials.map((material, index) => (
+                      <Accordion sx={{ width: "100%" }} key={index}>
+                        <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                          <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
+                            {material.type}
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Typography
+                            sx={{ fontSize: 14, my: 1, fontWeight: "bold" }}
+                          >
+                            Campos do Material
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    #
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    Nome do Campo
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    Tipo do Campo
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    Propriedades
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {material.fields.map((field, index) => (
+                                <TableRow key={index}>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {field.index + 1}
+                                    </Typography>
+                                  </TableCell>
 
-              <Accordion sx={{ width: "100%", mt: 2 }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Notificações
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  {" "}
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {field.name}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {field.type === "string" && "Texto"}
+                                      {field.type === "number" && "Número"}
+                                      {field.type === "options" &&
+                                        "Lista de Opções"}
+                                      {field.type === "currency" &&
+                                        "Moeda (R$)"}
+                                      {field.type === "date" && "Data"}
+                                    </Typography>
+                                  </TableCell>
+
+                                  <TableCell>
+                                    <Typography sx={{ fontSize: 12 }}>
+                                      {field.type === "string" &&
+                                        `Min ${field.minCharacter} Max ${field.maxCharacter} Caracteres`}
+                                      {field.type === "number" &&
+                                        `Tipo: ${
+                                          field.numberType === "integer"
+                                            ? "Inteiro"
+                                            : "Decimal"
+                                        }, Min ${field.minValue} Max ${
+                                          field.maxValue
+                                        }`}
+                                      {field.type === "options" && (
+                                        <Grid container direction="row">
+                                          <Typography
+                                            sx={{ mr: 1, fontSize: 12 }}
+                                          >
+                                            Opções:
+                                          </Typography>
+                                          {field.options.map(
+                                            (option, index) => (
+                                              <Typography
+                                                key={index}
+                                                sx={{ mr: 1, fontSize: 12 }}
+                                              >
+                                                {option}
+                                              </Typography>
+                                            )
+                                          )}
+                                        </Grid>
+                                      )}
+                                      {field.type === "currency" && "-"}
+                                      {field.type === "date" &&
+                                        `Tipo: ${
+                                          field.newDateType === "simple"
+                                            ? "Simples"
+                                            : "Período"
+                                        } ${
+                                          field.newDateType === "period"
+                                            ? `${field.newDateValue} ${field.newDatePeriod} `
+                                            : ""
+                                        }`}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                          <Typography
+                            sx={{
+                              fontSize: 14,
+                              my: 1,
+                              mt: 3,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Materiais Criados (
+                            {
+                              materials.filter(
+                                (material) => material.type === material.type
+                              ).length
+                            }
+                            )
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{
+                                      fontSize: 14,
+                                      fontWeight: "bold",
+                                      ml: 1,
+                                    }}
+                                  >
+                                    📷
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    Nome do Material
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    Criador
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontSize: 14, fontWeight: "bold" }}
+                                  >
+                                    Criado em
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {materials
+                                .filter(
+                                  (material) => material.type === material.type
+                                )
+                                .map((material, index) => (
+                                  <TableRow key={index}>
+                                    <TableCell>
+                                      <Avatar
+                                        src={`http://localhost:3000/static/${material.images[0]}`}
+                                        alt={material.name[0]}
+                                        style={{
+                                          width: 32,
+                                          height: 32,
+                                        }}
+                                      />
+                                    </TableCell>
+
+                                    <TableCell>
+                                      <Typography sx={{ fontSize: 12 }}>
+                                        {material.name ? material.name : "-"}
+                                      </Typography>
+                                    </TableCell>
+
+                                    <TableCell>
+                                      <Typography sx={{ fontSize: 12 }}>
+                                        {material.createdBy
+                                          ? material.createdBy
+                                          : "-"}
+                                      </Typography>
+                                    </TableCell>
+
+                                    <TableCell>
+                                      <Typography sx={{ fontSize: 12 }}>
+                                        {material.createdAt
+                                          ? dayjs(material.createdAt).format(
+                                              "DD/MM/YYYY HH:mm:ss"
+                                            )
+                                          : "-"}
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                            </TableBody>
+                          </Table>
+                        </AccordionDetails>
+                        <Button
+                          color="inherit"
+                          sx={{ ml: "92%", pr: 1, pb: 1 }}
+                        >
+                          <SettingsIcon />
+                        </Button>
+                      </Accordion>
+                    ))}
+
+                    <Grid
+                      container
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="center"
+                      sx={{ mt: 2 }}
+                    >
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => setOpenAddMaterial(true)}
+                          sx={{ ml: 1 }}
+                        >
+                          Novo Material
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </AccordionDetails>
+                </Accordion>
+                <Accordion sx={{ width: "100%", mt: 2 }}>
+                  <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                    <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                      Permissões
+                    </Typography>
+                  </AccordionSummary>
                   <AccordionDetails>
                     <Grid container direction="row">
                       <Typography sx={{ my: "auto", mr: 1 }}>
-                        Notificar ao Criar Material
+                        Materiais Podem ser Deletados
                       </Typography>
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
-                            Se a opção marcada for "Sim", os Administradores
-                            serão notificados quando um novo material for
-                            criado. A opção padrão é "Não".
+                            Se a opção marcada for "Sim", os Materiais poderão
+                            ser deletados DEFINITIVAMENTE. A opção padrão é
+                            "Não".
                           </Typography>
                         }
                       >
@@ -264,10 +423,8 @@ export default function Materials({ onClose }) {
                       </Tooltip>
                       <RadioGroup
                         row
-                        value={notifyWhenMaterialIsCreated}
-                        onChange={(e) =>
-                          setNotifyWhenMaterialIsCreated(e.target.value)
-                        }
+                        value={canBeDeleted}
+                        onChange={(e) => setCanBeDeleted(e.target.value)}
                       >
                         <FormControlLabel
                           value={Boolean(true)}
@@ -290,17 +447,108 @@ export default function Materials({ onClose }) {
                       </RadioGroup>
                     </Grid>
                   </AccordionDetails>
-                </AccordionDetails>
-              </Accordion>
-            </Grid>
-          </DialogContent>
-          <DialogActions>
-            <Button type="submit" variant="contained" color="success">
-              OK
-            </Button>
-          </DialogActions>
-        </>
+                </Accordion>
+
+                <Accordion sx={{ width: "100%", mt: 2 }}>
+                  <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                    <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                      Notificações
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {" "}
+                    <AccordionDetails>
+                      <Grid container direction="row">
+                        <Typography sx={{ my: "auto", mr: 1 }}>
+                          Notificar ao Criar Material
+                        </Typography>
+                        <Tooltip
+                          title={
+                            <Typography sx={{ fontSize: 12 }}>
+                              Se a opção marcada for "Sim", os Administradores
+                              serão notificados quando um novo material for
+                              criado. A opção padrão é "Não".
+                            </Typography>
+                          }
+                        >
+                          <Button
+                            size="small"
+                            sx={{
+                              backgroundColor: "white",
+                              color: "#32aacd",
+                              "&:hover": {
+                                backgroundColor: "white",
+                              },
+                            }}
+                          >
+                            ?
+                          </Button>
+                        </Tooltip>
+                        <RadioGroup
+                          row
+                          value={notifyWhenMaterialIsCreated}
+                          onChange={(e) =>
+                            setNotifyWhenMaterialIsCreated(e.target.value)
+                          }
+                        >
+                          <FormControlLabel
+                            value={Boolean(true)}
+                            control={
+                              <Radio
+                                size="small"
+                                sx={{ mt: -0.25, mr: -0.5 }}
+                              />
+                            }
+                            label={
+                              <Typography sx={{ fontSize: 13 }}>Sim</Typography>
+                            }
+                          />
+                          <FormControlLabel
+                            value={Boolean(false)}
+                            control={
+                              <Radio
+                                size="small"
+                                sx={{ mt: -0.25, mr: -0.5 }}
+                              />
+                            }
+                            label={
+                              <Typography sx={{ fontSize: 13 }}>Não</Typography>
+                            }
+                          />
+                        </RadioGroup>
+                      </Grid>
+                    </AccordionDetails>
+                  </AccordionDetails>
+                </Accordion>
+              </Grid>
+            </DialogContent>
+            <DialogActions>
+              <Button type="submit" variant="contained" color="success">
+                OK
+              </Button>
+            </DialogActions>
+          </>
+        )}
+      </form>
+      {openAddMaterial && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={openAddMaterial}
+          onClose={() => setOpenAddMaterial(!openAddMaterial)}
+        >
+          <AddBaseProductForm
+            userName={userName}
+            userId={userId}
+            onClose={() => setOpenAddMaterial(!openAddMaterial)}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            configCustomization={configCustomization}
+            toast={toast}
+            isMaterial
+          />
+        </Dialog>
       )}
-    </form>
+    </>
   );
 }
