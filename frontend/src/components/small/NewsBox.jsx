@@ -14,7 +14,7 @@ const NewsBox = () => {
         borderRadius:2
       }}
     >
-      <Typography sx={{ m: 2 }}>Notícias e Publicações</Typography>
+      <Typography sx={{ m: 2 }}>Avisos e Notícias</Typography>
     </Grid>
   );
 };

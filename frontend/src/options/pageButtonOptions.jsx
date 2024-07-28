@@ -1042,13 +1042,6 @@ const pageButtonOptions = [
               required: true,
             },
             {
-              fieldSection: "mainInfo",
-              name: "sellValue",
-              label: "Valor de Venda",
-              type: "currency",
-              required: true,
-            },
-            {
               fieldSection: "fields",
               name: "fields",
               label: "",

@@ -14,6 +14,7 @@ import {
   Dialog,
 } from "@mui/material";
 
+import HardwareIcon from "@mui/icons-material/Hardware";
 import SellIcon from "@mui/icons-material/Sell";
 
 import AddProductForm from "../../../forms/add/AddProductForm";
@@ -55,17 +56,19 @@ export default function ProductsTableButton(props) {
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
         <List sx={{ minWidth: 150, maxWidth: 220 }}>
-          {props.baseProducts.map((product, index) => (
-            <ListItemButton
-              key={index}
-              onClick={() => handleMenuItemClick(product)}
-            >
-              <ListItemIcon>
-                <SellIcon />
-              </ListItemIcon>
-              <ListItemText primary={product.type} sx={{ ml: -2 }} />
-            </ListItemButton>
-          ))}
+          {(props.isMaterial ? props.baseMaterials : props.baseProducts).map(
+            (product, index) => (
+              <ListItemButton
+                key={index}
+                onClick={() => handleMenuItemClick(product)}
+              >
+                <ListItemIcon>
+                  {props.isMaterial ? <HardwareIcon /> : <SellIcon />}
+                </ListItemIcon>
+                <ListItemText primary={product.type} sx={{ ml: -2 }} />
+              </ListItemButton>
+            )
+          )}
         </List>
       </Menu>
 

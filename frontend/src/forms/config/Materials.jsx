@@ -121,6 +121,55 @@ export default function Materials({ onClose }) {
               <Accordion sx={{ width: "100%" }}>
                 <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Tipos de Material
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List sx={{ mx: "30%" }}>
+                    {materialTypes.map((type, index) => (
+                      <ListItem key={index} sx={{ pl: 0 }}>
+                        <ListItemText primary={type} />
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge="end"
+                            onClick={() => handleRemoveType(type)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ))}
+                  </List>
+                  <Grid
+                    container
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Grid item>
+                      <TextField
+                        variant="outlined"
+                        label="Adicionar novo tipo"
+                        value={newType}
+                        onChange={(e) => setNewType(e.target.value)}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleAddType}
+                        sx={{ ml: 1 }}
+                      >
+                        Adicionar
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion sx={{ width: "100%", mt: 2 }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Permissões
                   </Typography>
                 </AccordionSummary>
@@ -177,55 +226,7 @@ export default function Materials({ onClose }) {
                   </Grid>
                 </AccordionDetails>
               </Accordion>
-              <Accordion sx={{ width: "100%", mt: 2 }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Tipos de Material
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <List sx={{ mx: "30%" }}>
-                    {materialTypes.map((type, index) => (
-                      <ListItem key={index} sx={{ pl: 0 }}>
-                        <ListItemText primary={type} />
-                        <ListItemSecondaryAction>
-                          <IconButton
-                            edge="end"
-                            onClick={() => handleRemoveType(type)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    ))}
-                  </List>
-                  <Grid
-                    container
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <Grid item>
-                      <TextField
-                        variant="outlined"
-                        label="Adicionar novo tipo"
-                        value={newType}
-                        onChange={(e) => setNewType(e.target.value)}
-                      />
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleAddType}
-                        sx={{ ml: 1 }}
-                      >
-                        Adicionar
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </AccordionDetails>
-              </Accordion>
+
               <Accordion sx={{ width: "100%", mt: 2 }}>
                 <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
@@ -243,8 +244,8 @@ export default function Materials({ onClose }) {
                         title={
                           <Typography sx={{ fontSize: 12 }}>
                             Se a opção marcada for "Sim", os Administradores
-                            serão notificados quando um novo material
-                            for criado. A opção padrão é "Não".
+                            serão notificados quando um novo material for
+                            criado. A opção padrão é "Não".
                           </Typography>
                         }
                       >
