@@ -192,6 +192,7 @@ export default function AddFormModel(props) {
   return (
     <form onSubmit={handleAdd}>
       <DialogHeader
+        palette={props.palette}
         title={modalOptions.label}
         femaleGender={modalOptions.femaleGender}
         extraSmall

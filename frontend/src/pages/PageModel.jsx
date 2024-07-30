@@ -187,6 +187,7 @@ export default function PageModel(props) {
           currentPage !== "materials" &&
           currentPage !== "products" && (
             <PageButtonModel
+              palette={props.palette}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               configCustomization={props.configCustomization}
@@ -256,7 +257,6 @@ export default function PageModel(props) {
                       }
                       mappedItem={item}
                       items={items}
-                      // baseProducts={items.filter((item) => !item.name)}
                       itemIndex={index}
                       tableColumns={item.fields}
                       userName={props.userName}

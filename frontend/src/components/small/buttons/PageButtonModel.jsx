@@ -100,6 +100,7 @@ export default function PageButtonModel(props) {
           }
         >
           <AddFormModel
+            palette={props.palette}
             buttonProps={props}
             options={currentPageOptions}
             selectedOptionLabel={selectedOption.label}

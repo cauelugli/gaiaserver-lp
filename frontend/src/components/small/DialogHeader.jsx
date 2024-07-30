@@ -11,6 +11,7 @@ const DialogHeader = ({
   special,
   specialTitle,
   extraSmall,
+  palette,
 }) => {
   return (
     <DialogTitle
@@ -18,7 +19,7 @@ const DialogHeader = ({
         position: "sticky",
         top: 0,
         zIndex: 1,
-        backgroundColor: "white",
+        backgroundColor: palette === "dark" ? "#606060" : "white",
       }}
     >
       <Grid container direction="row" justifyContent="center">

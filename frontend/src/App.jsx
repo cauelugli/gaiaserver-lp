@@ -365,11 +365,12 @@ export default function App() {
                           hasPermission(userData, configData, option.page) ? (
                             <PageModel
                               item={option}
+                              palette={theme.palette.mode}
                               userId={userData._id}
                               userUsername={userData.username}
+                              userName={userData.name}
                               setUserPreferences={setUserPreferences}
                               configData={configData}
-                              userName={userData.name}
                               topBar={userPreferences.barPosition}
                               tableOrCardView={userPreferences.tableOrCardView}
                               cardSize={userPreferences.cardSize}
