@@ -30,8 +30,6 @@ router.post("/", async (req, res) => {
     }
   }
 
-  console.log("\nreq.body", req.body, "\n");
-
   // verify cases
   fields.image = image;
   fields.isManager = isManager;
@@ -43,7 +41,6 @@ router.post("/", async (req, res) => {
   : parseFloat(price);
   
   fields.services = services;
-
   
   const newItem = new Model(fields);
 

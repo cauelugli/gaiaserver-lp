@@ -13,7 +13,14 @@ const DialogHeader = ({
   extraSmall,
 }) => {
   return (
-    <DialogTitle sx={{ mb: -1 }}>
+    <DialogTitle
+      sx={{
+        position: "sticky",
+        top: 0,
+        zIndex: 1,
+        backgroundColor: "white",
+      }}
+    >
       <Grid container direction="row" justifyContent="center">
         <Divider
           sx={{

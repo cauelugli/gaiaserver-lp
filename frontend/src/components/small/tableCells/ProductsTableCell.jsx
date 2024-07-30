@@ -17,7 +17,7 @@ const ProductsTableCell = (props) => {
     const fetchData = async () => {
       try {
         const response = await api.get("/get", {
-          params: { model: "Products" },
+          params: { model: "Product" },
         });
         setOptions(response.data.filter((item) => item.name));
       } catch (error) {

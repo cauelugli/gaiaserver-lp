@@ -761,7 +761,7 @@ const pageButtonOptions = [
           endpoint: "/add",
           label: "Serviço",
           femaleGender: false,
-          maxWidth: "sm",
+          maxWidth: "custom700px",
           fieldsSections: [
             { name: "mainInfo", label: "Informações Gerais" },
             { name: "serviceInfo", label: "Informações do Serviço" },
@@ -818,7 +818,7 @@ const pageButtonOptions = [
               fieldSection: "materials",
               name: "materials",
               label: "",
-              type: "list",
+              type: "materialList",
               options: ["materials"],
               required: true,
             },
