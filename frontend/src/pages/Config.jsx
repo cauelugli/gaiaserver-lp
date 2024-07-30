@@ -17,6 +17,8 @@ import {
   Button,
   Box,
   CircularProgress,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
 
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
@@ -72,62 +74,56 @@ export default function Config({
   const [configData, setConfigData] = useState([]);
   const [chosenModal, setChosenModal] = useState("");
 
+  const [showAdvancedConfig, setShowAdvancedConfig] = useState(false);
+
   const options = [
     {
-      icon: <DashboardIcon sx={{ fontSize: 48 }} />,
-      text: "Dashboard",
-      modal: <DashboardModal />,
+      icon: <CalendarMonthIcon sx={{ fontSize: 48 }} />,
+      text: "Agenda",
+      modal: <AgendaModal />,
+      isBasic: false,
+    },
+    {
+      icon: <InsertDriveFileIcon sx={{ fontSize: 48 }} />,
+      text: "Arquivos",
+      modal: <FilesModal />,
+      isBasic: false,
     },
     {
       icon: <WorkIcon sx={{ fontSize: 48 }} />,
       text: "Clientes",
       modal: <CustomersModal />,
+      isBasic: true,
     },
     {
       icon: <GroupIcon sx={{ fontSize: 48 }} />,
       text: "Colaboradores",
       modal: <UsersModal />,
+      isBasic: true,
+    },
+    {
+      icon: <DashboardIcon sx={{ fontSize: 48 }} />,
+      text: "Dashboard",
+      modal: <DashboardModal />,
+      isBasic: false,
     },
     {
       icon: <LanIcon sx={{ fontSize: 48 }} />,
       text: "Departamentos",
       modal: <DepartmentsModal />,
-    },
-    {
-      icon: <GradingIcon sx={{ fontSize: 48 }} />,
-      text: "Solicitações",
-      modal: <RequestsModal />,
-    },
-    {
-      icon: <RocketLaunchIcon sx={{ fontSize: 48 }} />,
-      text: "Projetos",
-      modal: <ProjectsModal />,
-    },
-    {
-      icon: <RequestQuoteIcon sx={{ fontSize: 48 }} />,
-      text: "Orçamentos",
-      modal: <QuotesModal />,
-    },
-    {
-      icon: <BuildIcon sx={{ fontSize: 48 }} />,
-      text: "Serviços",
-      modal: <ServicesModal />,
+      isBasic: true,
     },
     {
       icon: <WarehouseIcon sx={{ fontSize: 48 }} />,
       text: "Estoque",
       modal: <StockModal />,
+      isBasic: true,
     },
     {
-      icon: <SellIcon sx={{ fontSize: 48 }} />,
-      text: "Produtos",
-      modal: (
-        <ProductsModal
-          userName={userName}
-          userId={userId}
-          configCustomization={configCustomization}
-        />
-      ),
+      icon: <AttachMoneyIcon sx={{ fontSize: 48 }} />,
+      text: "Financeiro",
+      modal: <FinanceModal />,
+      isBasic: false,
     },
     {
       icon: <HardwareIcon sx={{ fontSize: 48 }} />,
@@ -139,52 +135,79 @@ export default function Config({
           configCustomization={configCustomization}
         />
       ),
+      isBasic: true,
     },
     {
-      icon: <AssessmentIcon sx={{ fontSize: 48 }} />,
-      text: "Relatórios",
-      modal: <RequestsModal />,
+      icon: <NotificationsIcon sx={{ fontSize: 48 }} />,
+      text: "Notificações",
+      modal: <NotificationsModal />,
+      isBasic: false,
     },
     {
-      icon: <AttachMoneyIcon sx={{ fontSize: 48 }} />,
-      text: "Financeiro",
-      modal: <FinanceModal />,
-    },
-    {
-      icon: <InsertDriveFileIcon sx={{ fontSize: 48 }} />,
-      text: "Arquivos",
-      modal: <FilesModal />,
-    },
-    {
-      icon: <AutoFixNormalIcon sx={{ fontSize: 48 }} />,
-      text: "Personalização",
-      modal: <CustomizationModal />,
-    },
-    {
-      icon: <LockIcon sx={{ fontSize: 48 }} />,
-      text: "Segurança",
-      modal: <SecurityModal />,
+      icon: <RequestQuoteIcon sx={{ fontSize: 48 }} />,
+      text: "Orçamentos",
+      modal: <QuotesModal />,
+      isBasic: true,
     },
     {
       icon: <AdminPanelSettingsIcon sx={{ fontSize: 48 }} />,
       text: "Permissões",
       modal: <PermissionsModal />,
+      isBasic: false,
     },
-
     {
-      icon: <NotificationsIcon sx={{ fontSize: 48 }} />,
-      text: "Notificações",
-      modal: <NotificationsModal />,
+      icon: <AutoFixNormalIcon sx={{ fontSize: 48 }} />,
+      text: "Personalização",
+      modal: <CustomizationModal />,
+      isBasic: false,
+    },
+    {
+      icon: <SellIcon sx={{ fontSize: 48 }} />,
+      text: "Produtos",
+      modal: (
+        <ProductsModal
+          userName={userName}
+          userId={userId}
+          configCustomization={configCustomization}
+        />
+      ),
+      isBasic: true,
+    },
+    {
+      icon: <RocketLaunchIcon sx={{ fontSize: 48 }} />,
+      text: "Projetos",
+      modal: <ProjectsModal />,
+      isBasic: true,
+    },
+    {
+      icon: <AssessmentIcon sx={{ fontSize: 48 }} />,
+      text: "Relatórios",
+      modal: <RequestsModal />,
+      isBasic: false,
+    },
+    {
+      icon: <LockIcon sx={{ fontSize: 48 }} />,
+      text: "Segurança",
+      modal: <SecurityModal />,
+      isBasic: false,
+    },
+    {
+      icon: <BuildIcon sx={{ fontSize: 48 }} />,
+      text: "Serviços",
+      modal: <ServicesModal />,
+      isBasic: true,
+    },
+    {
+      icon: <GradingIcon sx={{ fontSize: 48 }} />,
+      text: "Solicitações",
+      modal: <RequestsModal />,
+      isBasic: true,
     },
     {
       icon: <TableViewIcon sx={{ fontSize: 48 }} />,
       text: "Tabelas",
       modal: <TablesModal />,
-    },
-    {
-      icon: <CalendarMonthIcon sx={{ fontSize: 48 }} />,
-      text: "Agenda",
-      modal: <AgendaModal />,
+      isBasic: false,
     },
   ];
 
@@ -254,40 +277,63 @@ export default function Config({
 
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-      <Typography sx={{ fontSize: 25, ml: 2, mb: 2, fontWeight: "bold" }}>
-        Configurações
-      </Typography>
+      <Grid container direction="row" sx={{ mb: 2 }}>
+        <Typography sx={{ fontSize: 25, ml: 2, mr: 1, fontWeight: "bold" }}>
+          Configurações
+        </Typography>
+        <FormControlLabel
+          value={showAdvancedConfig}
+          control={
+            <Switch
+              checked={showAdvancedConfig}
+              onChange={(e) => setShowAdvancedConfig(e.target.checked)}
+            />
+          }
+          label={showAdvancedConfig ? "Avançadas" : "Básicas"}
+          labelPlacement="start"
+          sx={{ mb: 2 }}
+        />
+      </Grid>
       {configData ? (
-        <Grid container rowSpacing={3} columnSpacing={2}>
-          {options.map((config, index) => (
-            <Grid
-              item
-              key={index}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              onClick={() => handleItemClick(config.modal)}
-            >
+        <Grid
+          container
+          rowSpacing={3}
+          columnSpacing={2}
+          justifyContent="center"
+        >
+          {options
+            .filter((config) => showAdvancedConfig || config.isBasic)
+            .map((config, index) => (
               <Grid
-                container
-                direction="column"
-                alignItems="center"
-                justifyContent="center"
-                sx={{
-                  width: 150,
-                  p: "20px",
-                  border: "1px solid #ccc",
-                  borderRadius: 2,
-                  transition: "background-color 0.3s, color 0.3s",
-                  backgroundColor: hoveredIndex === index ? "#777" : "initial",
-                  color: hoveredIndex === index ? "white" : "#777",
-                  cursor: "pointer",
-                }}
+                item
+                key={index}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                onClick={() => handleItemClick(config.modal)}
               >
-                {config.icon}
-                <Typography sx={{ mt: 1 }}>{config.text}</Typography>
+                <Grid
+                  container
+                  direction="column"
+                  alignItems="center"
+                  justifyContent="center"
+                  sx={{
+                    width: showAdvancedConfig ? 150 : 220,
+                    // p: "20px",
+                    p: showAdvancedConfig ? "15px" : "20px",
+                    border: "1px solid #ccc",
+                    borderRadius: 2,
+                    transition: "background-color 0.3s, color 0.3s",
+                    backgroundColor:
+                      hoveredIndex === index ? "#777" : "initial",
+                    color: hoveredIndex === index ? "white" : "#777",
+                    cursor: "pointer",
+                  }}
+                >
+                  {config.icon}
+                  <Typography sx={{ mt: 1 }}>{config.text}</Typography>
+                </Grid>
               </Grid>
-            </Grid>
-          ))}
+            ))}
         </Grid>
       ) : (
         <>
