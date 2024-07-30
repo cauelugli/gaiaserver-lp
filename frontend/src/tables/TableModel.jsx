@@ -86,30 +86,37 @@ export default function TableModel(props) {
                   >
                     Nome
                   </TableCell>
-                  {props.items.length > 0 &&
-                    props.items[props.itemIndex].fields.map(
-                      (headCell, cellIndex) => (
-                        <TableCell
-                          key={cellIndex}
-                          align={cellIndex === 0 ? "" : "left"}
-                          sx={{
-                            fontSize: 13,
-                            fontWeight: "bold",
-                          }}
-                          sortDirection={
-                            orderBy === headCell.id ? order : false
-                          }
-                        >
-                          <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : "asc"}
-                            onClick={() => handleRequestSort(headCell)}
+                  {props &&
+                  props.items &&
+                  props.items.length > 0 &&
+                  props.items[props.itemIndex] &&
+                  props.items[props.itemIndex].fields
+                    ? props.items[props.itemIndex].fields.map(
+                        (headCell, cellIndex) => (
+                          <TableCell
+                            key={cellIndex}
+                            align={cellIndex === 0 ? "" : "left"}
+                            sx={{
+                              fontSize: 13,
+                              fontWeight: "bold",
+                            }}
+                            sortDirection={
+                              orderBy === headCell.id ? order : false
+                            }
                           >
-                            {headCell.name}
-                          </TableSortLabel>
-                        </TableCell>
+                            <TableSortLabel
+                              active={orderBy === headCell.id}
+                              direction={
+                                orderBy === headCell.id ? order : "asc"
+                              }
+                              onClick={() => handleRequestSort(headCell)}
+                            >
+                              {headCell.name}
+                            </TableSortLabel>
+                          </TableCell>
+                        )
                       )
-                    )}
+                    : ""}
                 </>
               ) : (
                 props.tableColumns[props.itemIndex].map(
@@ -158,7 +165,9 @@ export default function TableModel(props) {
                       <TableCell align="left">
                         <Avatar
                           alt="Imagem do Produto"
-                          src={`http://localhost:3000/static${row.images[0]}`}
+                          src={`http://localhost:3000/static${
+                            row.images[0] || undefined
+                          }`}
                           sx={{ width: 30, height: 30 }}
                         />
                       </TableCell>
