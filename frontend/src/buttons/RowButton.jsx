@@ -110,15 +110,11 @@ const RowButton = ({ item, page, tabIndex }) => {
           </div>
         ))}
       </Menu>
+
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
-        <DialogTitle>Menu Item Selected</DialogTitle>
-        <DialogContent>{dialogContent}</DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Close
-          </Button>
-        </DialogActions>
+        
       </Dialog>
+      
     </>
   );
 };

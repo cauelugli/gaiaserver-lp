@@ -13,26 +13,26 @@ const rowButtonOptions = [
     models: ["Customer", "Customer"],
     menus: {
       0: [
-        { label: "Editar", action: "edit", icon: <ModeEditIcon /> },
+        { label: "Editar", action: "editCustomer", icon: <ModeEditIcon /> },
         { label: "Deletar", action: "delete", icon: <DeleteIcon /> },
         {
           label: "Novo",
           icon: <AddIcon />,
           submenu: [
-            { label: "Job", action: "addJob", icon: <EngineeringIcon /> },
-            { label: "Venda", action: "addSale", icon: <SellIcon /> },
+            { label: "Job", action: "addJobToCustomer", icon: <EngineeringIcon /> },
+            { label: "Venda", action: "addSaleToCustomer", icon: <SellIcon /> },
           ],
         },
       ],
       1: [
-        { label: "Editar", action: "edit", icon: <ModeEditIcon /> },
+        { label: "Editar", action: "editClient", icon: <ModeEditIcon /> },
         { label: "Deletar", action: "delete", icon: <DeleteIcon /> },
         {
           label: "Novo",
           icon: <AddIcon />,
           submenu: [
-            { label: "Job", action: "addJob", icon: <EngineeringIcon /> },
-            { label: "Venda", action: "addSale", icon: <SellIcon /> },
+            { label: "Job", action: "addJobToClient", icon: <EngineeringIcon /> },
+            { label: "Venda", action: "addSaleToClient", icon: <SellIcon /> },
           ],
         },
       ],
