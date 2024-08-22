@@ -46,8 +46,6 @@ const InteractionReactions = ({
   refreshData,
   setRefreshData,
   fromSales,
-  fromProjects,
-  fromProjectsGeneral,
   updateInteractions,
   stageIndex,
   taskIndex,
@@ -76,17 +74,12 @@ const InteractionReactions = ({
     },
   };
   // eslint-disable-next-line no-unused-vars
-  const [endpoint, setEndpoint] = React.useState(
-    fromProjects ? "projects" : fromSales ? "sales" : "jobs"
-  );
+  const [endpoint, setEndpoint] = React.useState(fromSales ? "sales" : "jobs");
 
   console.log("endpoint", endpoint);
-  console.log("fromProjectsGeneral", fromProjectsGeneral);
 
   const handleReactionClick = async (reactionType) => {
-    const finalEndpoint = fromProjectsGeneral
-      ? `/${endpoint}/reaction/general`
-      : `/${endpoint}/reaction`;
+    const finalEndpoint = `/${endpoint}/reaction`;
     try {
       const res = await api.put(finalEndpoint, {
         itemId,

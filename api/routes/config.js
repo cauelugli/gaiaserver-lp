@@ -137,23 +137,23 @@ router.put("/quotes", async (req, res) => {
 });
 
 // PROJECTS
-router.put("/projects", async (req, res) => {
-  try {
-    const { canBeDeleted, projectTypes, notifyWhenProjectIsCreated } = req.body;
+// router.put("/projects", async (req, res) => {
+//   try {
+//     const { canBeDeleted, projectTypes, notifyWhenProjectIsCreated } = req.body;
 
-    const config = await Config.findOne();
+//     const config = await Config.findOne();
 
-    config.projects.canBeDeleted = canBeDeleted;
-    config.projects.projectTypes = projectTypes;
-    config.projects.notifyWhenProjectIsCreated = notifyWhenProjectIsCreated;
+//     config.projects.canBeDeleted = canBeDeleted;
+//     config.projects.projectTypes = projectTypes;
+//     config.projects.notifyWhenProjectIsCreated = notifyWhenProjectIsCreated;
 
-    await config.save();
-    res.status(200).json(config);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+//     await config.save();
+//     res.status(200).json(config);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
 
 // AGENDA
 router.put("/agenda", async (req, res) => {

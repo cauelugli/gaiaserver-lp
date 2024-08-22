@@ -435,41 +435,6 @@ const pageOptions = [
     tableColumns: [[""], [""]],
   },
   {
-    page: "projects",
-    label: "Projetos",
-    tabs: ["Em Execução"],
-    models: ["Project"],
-    // review this
-    tableColumns: [
-      [
-        {
-          id: "name",
-          label: "Nome do Projeto",
-        },
-        {
-          id: "type",
-          label: "Tipo",
-        },
-        {
-          id: "customer",
-          label: "Cliente",
-        },
-        {
-          id: "stage",
-          label: "Fase Atual",
-        },
-        {
-          id: "creator",
-          label: "Criador",
-        },
-        {
-          id: "status",
-          label: "Status",
-        },
-      ],
-    ],
-  },
-  {
     page: "finance",
     label: "Financeiro",
     tabs: ["A Receber", "A Pagar"],

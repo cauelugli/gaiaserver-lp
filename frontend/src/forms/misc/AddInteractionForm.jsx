@@ -47,19 +47,14 @@ const AddInteractionForm = ({
   setRefreshData,
   toast,
   fromSales,
-  fromProjects,
   addInteraction,
   updateSelectedJobInteractions,
   updateSelectedSaleInteractions,
-  updateSelectedProjectInteractions,
-  fromProjectsGeneral
 }) => {
   const [userReactions, setUserReactions] = React.useState({});
   const [activity, setActivity] = React.useState("");
   const [attachments, setAttachments] = React.useState([]);
-  const [endpoint, setEndpoint] = React.useState(
-    fromProjects ? "projects" : fromSales ? "sales" : "jobs"
-  );
+  const [endpoint, setEndpoint] = React.useState(fromSales ? "sales" : "jobs");
   const [openViewDialog, setOpenViewDialog] = React.useState(false);
   const [openViewDialog2, setOpenViewDialog2] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState("");
@@ -164,9 +159,7 @@ const AddInteractionForm = ({
       <form onSubmit={handleAddInteraction}>
         <DialogHeader
           special
-          specialTitle={`Histórico ${
-            fromProjects ? "do Projeto" : fromSales ? "da Venda" : "do Job"
-          }`}
+          specialTitle={`Histórico ${fromSales ? "da Venda" : "do Job"}`}
           femaleGender={false}
         />
         <Grid container>
@@ -331,16 +324,12 @@ const AddInteractionForm = ({
                                   [selectedJob._id]: reactions,
                                 })
                               }
-                              fromProjectsGeneral={fromProjectsGeneral}
                               updateInteractions={
-                                fromProjects
-                                  ? updateSelectedProjectInteractions
-                                  : fromSales
+                                fromSales
                                   ? updateSelectedSaleInteractions
                                   : updateSelectedJobInteractions
                               }
                               fromSales={fromSales}
-                              fromProjects={fromProjects}
                             />
                           </Typography>
                         )}

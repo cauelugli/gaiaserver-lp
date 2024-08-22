@@ -49,27 +49,6 @@ const Members = ({ users, value, onChange, option }) => {
           renderInput={(params) => <TextField {...params} />}
         />
       )}
-      {option === "projectDepartments" && (
-        <FormControl sx={{ m: 2 }}>
-          <FormLabel>
-            <Typography sx={{ fontSize: 13, color: "#777" }}>
-              Departamentos Secundários
-            </Typography>
-          </FormLabel>
-          <Autocomplete
-            sx={{ width: 300 }}
-            multiple
-            size="small"
-            options={filteredUsers}
-            value={value}
-            onChange={(event, newValue) => {
-              onChange(newValue);
-            }}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </FormControl>
-      )}
       {option === "group" && (
         <Autocomplete
           multiple

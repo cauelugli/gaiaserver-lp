@@ -36,7 +36,6 @@ import LanIcon from "@mui/icons-material/Lan";
 import LockIcon from "@mui/icons-material/Lock";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
-import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import SellIcon from "@mui/icons-material/Sell";
 import TableViewIcon from "@mui/icons-material/TableView";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
@@ -53,7 +52,6 @@ import MaterialsModal from "../forms/config/Materials";
 import NotificationsModal from "../forms/config/Notifications";
 import PermissionsModal from "../forms/config/Permissions";
 import ProductsModal from "../forms/config/Products";
-import ProjectsModal from "../forms/config/Projects";
 import QuotesModal from "../forms/config/Quotes";
 import RequestsModal from "../forms/config/Requests";
 import SecurityModal from "../forms/config/Security";
@@ -171,12 +169,6 @@ export default function Config({
           configCustomization={configCustomization}
         />
       ),
-      isBasic: true,
-    },
-    {
-      icon: <RocketLaunchIcon sx={{ fontSize: 48 }} />,
-      text: "Projetos",
-      modal: <ProjectsModal />,
       isBasic: true,
     },
     {

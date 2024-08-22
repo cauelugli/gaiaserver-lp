@@ -44,7 +44,6 @@ const MyCalendar = ({ userId, config, selectedWorker }) => {
   const [customer, setCustomer] = useState({});
   const [service, setService] = useState({});
   const [worker, setWorker] = useState("");
-  const [project, setProject] = useState("");
   const [group, setGroup] = useState("");
   const [newEvent, setNewEvent] = useState({});
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -99,7 +98,6 @@ const MyCalendar = ({ userId, config, selectedWorker }) => {
         customer,
         service,
         worker,
-        project,
         group,
       };
       api
@@ -129,7 +127,6 @@ const MyCalendar = ({ userId, config, selectedWorker }) => {
       setTitle("");
       setType("");
       setCustomer({});
-      setProject("");
       setWorker("");
       setGroup("");
     }
@@ -232,9 +229,6 @@ const MyCalendar = ({ userId, config, selectedWorker }) => {
         )}
         {event.service && event.service.name && (
           <Typography gutterBottom>Serviço: {event.service.name}</Typography>
-        )}
-        {event.project && event.project.name && (
-          <Typography gutterBottom>Projeto: {event.group.name}</Typography>
         )}
         {event.group && event.group.name && (
           <Typography gutterBottom>Grupo: {event.group.name}</Typography>
@@ -345,7 +339,6 @@ const MyCalendar = ({ userId, config, selectedWorker }) => {
         setCustomer={setCustomer}
         setWorker={setWorker}
         setGroup={setGroup}
-        setProject={setProject}
         handleAddEvent={handleAddEvent}
       />
       {selectedEvent && (

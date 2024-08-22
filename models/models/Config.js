@@ -157,9 +157,6 @@ const configSchema = new Schema({
     reports: {
       type: Array,
     },
-    projects: {
-      type: Array,
-    },
     products: {
       type: Array,
     },
@@ -175,20 +172,6 @@ const configSchema = new Schema({
     notifyWhenProductIsCreated: {
       type: Boolean,
       default: false,
-    },
-  },
-  projects: {
-    canBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
-    projectTypes: {
-      type: Array,
-      default: ["Melhorias", "Expansão"],
-    },
-    notifyWhenProjectIsCreated: {
-      type: Boolean,
-      default: true,
     },
   },
   quotes: {

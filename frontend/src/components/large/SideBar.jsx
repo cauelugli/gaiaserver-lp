@@ -17,7 +17,6 @@ import HomeIcon from "@mui/icons-material/Home";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import LanIcon from "@mui/icons-material/Lan";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
-import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import SettingsIcon from "@mui/icons-material/Settings";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import SellIcon from "@mui/icons-material/Sell";
@@ -35,7 +34,6 @@ const options = [
   { label: "Materiais", icon: <WarehouseIcon />, link: "/materials" },
   { label: "Estoque", icon: <WarehouseIcon />, link: "/stock" },
   { label: "Chat", icon: <ChatIcon />, link: "/", disabled: true },
-  { label: "Projetos", icon: <RocketLaunchIcon />, link: "/projects" },
   { label: "Financeiro", icon: <AttachMoneyIcon />, link: "/finance" },
   { label: "Relatórios", icon: <AssessmentIcon />, link: "/reports" },
   {

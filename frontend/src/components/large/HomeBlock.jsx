@@ -57,13 +57,6 @@ const optionsMainblocks = [
     permissionLabel: "dashboard",
   },
   {
-    icon: <RocketLaunchIcon sx={{ fontSize: 52 }} />,
-    text: "Projetos",
-    link: "/projects",
-    permissionLabel: "projects",
-  },
-
-  {
     icon: <AssessmentIcon sx={{ fontSize: 52 }} />,
     text: "Relatórios",
     link: "/reports",
@@ -109,12 +102,6 @@ const optionsRightColumn = [
     permissionLabel: "stock",
   },
   {
-    icon: <WarehouseIcon sx={{ fontSize: 22 }} />,
-    text: "Projetos",
-    link: "/projects",
-    permissionLabel: "projects",
-  },
-  {
     icon: <AdminPanelSettingsIcon sx={{ fontSize: 22 }} />,
     text: "Acessos",
     link: "/security",
@@ -144,7 +131,6 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
       "departments",
       "requests",
       "dashboard",
-      "projects",
       "reports",
       "finance",
     ].includes(link)

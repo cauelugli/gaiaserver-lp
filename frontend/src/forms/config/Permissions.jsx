@@ -100,11 +100,6 @@ export default function Permissions({ onClose }) {
       icon: <HardwareIcon fontSize="inherit" />,
     },
     {
-      tooltip: "Projetos",
-      label: "projects",
-      icon: <RocketLaunchIcon fontSize="inherit" />,
-    },
-    {
       tooltip: "Financeiro",
       label: "finance",
       icon: <AttachMoneyIcon fontSize="inherit" />,

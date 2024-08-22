@@ -26,8 +26,7 @@ export default function MaterialList({
   materialsEditCost,
   materialsAddJobCost,
   setMaterialsFinalCost,
-  option,
-  handleClose,
+  // option,
   productsDefined,
 }) {
   const [selectedItemId, setSelectedItemId] = React.useState(null);
@@ -37,7 +36,6 @@ export default function MaterialList({
     materialsEditCost || materialsAddJobCost || 0
   );
   const [searchValue, setSearchValue] = React.useState("");
-  const hasCloseButton = option === "project" ? true : false;
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -298,17 +296,6 @@ export default function MaterialList({
             Total: R${materialsCost.toFixed(2)}
           </Typography>
         </FormHelperText>
-        {hasCloseButton && (
-          <Button
-            variant="contained"
-            color="success"
-            onClick={handleClose}
-            sx={{ ml: "85%" }}
-            size="small"
-          >
-            OK
-          </Button>
-        )}
       </Grid>
     </Grid>
   );

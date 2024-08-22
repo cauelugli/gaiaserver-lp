@@ -34,7 +34,6 @@ router.post("/addAgendaEvent", async (req, res) => {
     customer,
     service,
     worker,
-    project,
     group,
   } = req.body;
   try {
@@ -43,7 +42,7 @@ router.post("/addAgendaEvent", async (req, res) => {
     if (!agenda) {
       const newAgenda = new Agenda({
         events: {
-          [userId]: [{ title, start, end, status, worker, project, group }],
+          [userId]: [{ title, start, end, status, worker, group }],
         },
       });
       const savedAgenda = await newAgenda.save();
@@ -59,7 +58,6 @@ router.post("/addAgendaEvent", async (req, res) => {
         customer,
         service,
         worker,
-        project,
         group,
       });
 

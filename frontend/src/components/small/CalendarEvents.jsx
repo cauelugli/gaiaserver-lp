@@ -36,12 +36,6 @@ const CalendarEvents = ({ event }) => {
         </Typography>
       )}
 
-      {event.project && (
-        <Typography sx={{ fontSize: 13, color: "black", mt: 0.5 }}>
-          <strong>Projeto:</strong> {event.project.name}
-        </Typography>
-      )}
-
       {event.group && event.group.name && (
         <Typography sx={{ fontSize: 13, color: "black", mt: 0.5 }}>
           <strong>Grupo:</strong> {event.group.name}

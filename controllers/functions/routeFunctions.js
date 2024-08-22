@@ -9,7 +9,7 @@ const models = {
   Operator: require("../../models/models/User"),
   Position: require("../../models/models/Position"),
   Product: require("../../models/models/Product"),
-  Project: require("../../models/models/Project"),
+  // Project: require("../../models/models/Project"),
   Quote: require("../../models/models/Quote"),
   RecentActivity: require("../../models/models/RecentActivity"),
   Role: require("../../models/models/Role"),

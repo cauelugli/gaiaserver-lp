@@ -14,8 +14,6 @@ import LanIcon from "@mui/icons-material/Lan";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import PersonIcon from "@mui/icons-material/Person";
 import Person4Icon from "@mui/icons-material/Person4";
-import RecyclingIcon from "@mui/icons-material/Recycling";
-import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import SellIcon from "@mui/icons-material/Sell";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 
@@ -1058,68 +1056,6 @@ const pageButtonOptions = [
     page: "chat",
     pageButtonOptions: [
       { label: "Mensagem", icon: <ApartmentIcon />, modal: "AddChat" },
-    ],
-  },
-  //review this
-  {
-    page: "projects",
-    pageButtonOptions: [
-      {
-        label: "Projeto",
-        icon: <RocketLaunchIcon />,
-        fieldsSections: [
-          { name: "mainInfo", label: "Informações Gerais" },
-          { name: "fields", label: "Informações do Material" },
-        ],
-        fields: [],
-        model: "Project",
-      },
-      {
-        label: "Projeto Recorrente",
-        icon: <RecyclingIcon />,
-        fieldsSections: [
-          { name: "mainInfo", label: "Informações Gerais" },
-          { name: "fields", label: "Informações do Material" },
-        ],
-        fields: [
-          {
-            fieldSection: "mainInfo",
-            name: "type",
-            label: "Tipo de Material",
-            type: "dynamicData",
-            options: ["baseProducts"],
-            required: true,
-          },
-          {
-            fieldSection: "mainInfo",
-            name: "name",
-            label: "Nome do Material",
-            type: "string",
-            required: true,
-          },
-          {
-            fieldSection: "mainInfo",
-            name: "buyValue",
-            label: "Valor de Compra",
-            type: "currency",
-            required: true,
-          },
-          {
-            fieldSection: "mainInfo",
-            name: "sellValue",
-            label: "Valor de Venda",
-            type: "currency",
-            required: true,
-          },
-          {
-            fieldSection: "fields",
-            name: "fields",
-            label: "",
-            type: "fields",
-          },
-        ],
-        model: "Project",
-      },
     ],
   },
   {
