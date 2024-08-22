@@ -13,26 +13,70 @@ const rowButtonOptions = [
     models: ["Customer", "Customer"],
     menus: {
       0: [
-        { label: "Editar", action: "editCustomer", icon: <ModeEditIcon /> },
-        { label: "Deletar", action: "delete", icon: <DeleteIcon /> },
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "Customer",
+          icon: <ModeEditIcon />,
+        },
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Customer",
+          icon: <DeleteIcon />,
+        },
         {
           label: "Novo",
           icon: <AddIcon />,
           submenu: [
-            { label: "Job", action: "addJobToCustomer", icon: <EngineeringIcon /> },
-            { label: "Venda", action: "addSaleToCustomer", icon: <SellIcon /> },
+            {
+              label: "Job",
+              action: "add",
+              modal: "Job",
+              targeted: true,
+              icon: <EngineeringIcon />,
+            },
+            {
+              label: "Venda",
+              action: "add",
+              modal: "Sale",
+              targeted: true,
+              icon: <SellIcon />,
+            },
           ],
         },
       ],
       1: [
-        { label: "Editar", action: "editClient", icon: <ModeEditIcon /> },
-        { label: "Deletar", action: "delete", icon: <DeleteIcon /> },
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "Client",
+          icon: <ModeEditIcon />,
+        },
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Client",
+          icon: <DeleteIcon />,
+        },
         {
           label: "Novo",
           icon: <AddIcon />,
           submenu: [
-            { label: "Job", action: "addJobToClient", icon: <EngineeringIcon /> },
-            { label: "Venda", action: "addSaleToClient", icon: <SellIcon /> },
+            {
+              label: "Job",
+              action: "add",
+              modal: "Client",
+              targeted: true,
+              icon: <EngineeringIcon />,
+            },
+            {
+              label: "Venda",
+              action: "addSaleToClient",
+              modal: "Client",
+              targeted: true,
+              icon: <SellIcon />,
+            },
           ],
         },
       ],

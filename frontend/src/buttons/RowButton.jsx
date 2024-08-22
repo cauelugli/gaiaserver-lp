@@ -9,55 +9,37 @@ import {
   ListItemIcon,
   ListItemText,
   Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
 
 import rowButtonOptions from "../options/rowButtonOptions";
+import { modals } from "../options/modals";
+import EditFormModel from "../forms/edit/EditFormModel";
 
-const RowButton = ({ item, page, tabIndex }) => {
+const RowButton = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [submenuAnchorEl, setSubmenuAnchorEl] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogContent, setDialogContent] = useState("");
+  const [selectedModal, setSelectedModal] = useState({});
 
-  const currentOption = rowButtonOptions.find((option) => option.page === page);
-  const menuItems = currentOption?.menus[tabIndex] || [];
-  const model = currentOption?.models[tabIndex] || "";
+  const currentOption = rowButtonOptions.find(
+    (option) => option.page === props.page
+  );
+  const menuItems = currentOption?.menus[props.tabIndex] || [];
 
   const handleMenuItemClick = (menuItem) => {
-    if (!menuItem.submenu) {
-      setDialogContent(
-        `Item: ${item._id}, Action: ${menuItem.action}, Model: ${model}`
-      );
-      setDialogOpen(true);
-      setAnchorEl(null);
-    }
-  };
-
-  const handleSubmenuClick = (event, menuItem) => {
-    setSubmenuAnchorEl(event.currentTarget);
-  };
-
-  const handleSubmenuItemClick = (subItem) => {
-    setDialogContent(
-      `Item: ${item._id}, Action: ${subItem.action}, Model: ${model}`
-    );
+    setSelectedModal(modals[menuItem.modal]);
     setDialogOpen(true);
-    handleSubmenuClose();
     setAnchorEl(null);
-  };
-
-  const handleSubmenuClose = () => {
     setSubmenuAnchorEl(null);
   };
 
-  const handleCloseDialog = () => {
-    setDialogOpen(false);
+  // selectedModal.endpoint &&
+  //   console.log("selectedModal", selectedModal, "item", item);
+
+  const handleSubmenuClick = (event, menuItem) => {
+    setSubmenuAnchorEl(event.currentTarget);
   };
 
   return (
@@ -84,13 +66,13 @@ const RowButton = ({ item, page, tabIndex }) => {
                 <Menu
                   anchorEl={submenuAnchorEl}
                   open={Boolean(submenuAnchorEl)}
-                  onClose={handleSubmenuClose}
+                  onClose={() => setSubmenuAnchorEl(null)}
                 >
                   {menuItem.submenu.map((subItem, subIndex) => (
                     <MenuItem
                       sx={{ minWidth: 150 }}
                       key={subIndex}
-                      onClick={() => handleSubmenuItemClick(subItem)}
+                      onClick={() => handleMenuItemClick(subItem)}
                     >
                       <ListItemIcon>{subItem.icon}</ListItemIcon>
                       <ListItemText>{subItem.label}</ListItemText>
@@ -111,10 +93,50 @@ const RowButton = ({ item, page, tabIndex }) => {
         ))}
       </Menu>
 
-      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
-        
-      </Dialog>
-      
+      {dialogOpen && (
+        <Dialog
+          fullWidth
+          maxWidth={
+            selectedModal.maxWidth.startsWith("custom")
+              ? false
+              : selectedModal.maxWidth
+          }
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+          sx={
+            selectedModal.maxWidth.startsWith("custom")
+              ? {
+                  "& .MuiDialog-paper": {
+                    width: `${selectedModal.maxWidth.match(/\d+/)[0]}px`,
+                    maxWidth: "none",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "auto",
+                  },
+                }
+              : {}
+          }
+        >
+          <EditFormModel
+            palette={props.palette}
+            buttonProps={props}
+            options={selectedModal}
+            selectedOptionLabel={"selectedOption.label"}
+            userName={props.userName}
+            userId={props.userId}
+            configAgenda={props.configAgenda}
+            configCustomization={props.configCustomization}
+            configNotifications={props.configNotifications}
+            configNotificationsBooleans={props.configNotificationsBooleans}
+            openAdd={dialogOpen}
+            setOpenAdd={setDialogOpen}
+            refreshData={props.refreshData}
+            setRefreshData={props.setRefreshData}
+            selectedItem={props.item}
+          />
+        </Dialog>
+      )}
     </>
   );
 };

@@ -267,6 +267,7 @@ export default function PageModel(props) {
                       refreshData={refreshData}
                       setRefreshData={setRefreshData}
                       topBar={props.topBar}
+                      configCustomization={props.configCustomization}
                     />
                   ) : (
                     <Grid
@@ -324,6 +325,7 @@ export default function PageModel(props) {
                         refreshData={refreshData}
                         setRefreshData={setRefreshData}
                         topBar={props.topBar}
+                        configCustomization={props.configCustomization}
                       />
                     ) : (
                       <Grid
@@ -377,6 +379,7 @@ export default function PageModel(props) {
                       refreshData={refreshData}
                       setRefreshData={setRefreshData}
                       topBar={props.topBar}
+                      configCustomization={props.configCustomization}
                     />
                   ) : (
                     <Grid

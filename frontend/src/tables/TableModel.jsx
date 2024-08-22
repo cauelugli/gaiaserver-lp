@@ -182,6 +182,9 @@ export default function TableModel(props) {
                           item={row}
                           page={props.page}
                           tabIndex={props.tabIndex}
+                          refreshData={props.refreshData}
+                          setRefreshData={props.setRefreshData}
+                          configCustomization={props.configCustomization}
                         />
                       </TableCell>
                     </TableRow>
@@ -290,6 +293,9 @@ export default function TableModel(props) {
                           item={row}
                           page={props.page}
                           tabIndex={props.tabIndex}
+                          refreshData={props.refreshData}
+                          setRefreshData={props.setRefreshData}
+                          configCustomization={props.configCustomization}
                         />
                       </TableCell>
                     </TableRow>
