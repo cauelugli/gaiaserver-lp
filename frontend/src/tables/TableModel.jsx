@@ -11,7 +11,6 @@ import {
   TableContainer,
   TableRow,
   TablePagination,
-  Button,
   Avatar,
   Tooltip,
   Grid,
@@ -19,6 +18,7 @@ import {
 } from "@mui/material";
 
 import BuildIcon from "@mui/icons-material/Build";
+import RowButton from "../buttons/RowButton";
 
 export default function TableModel(props) {
   const [order, setOrder] = React.useState("asc");
@@ -178,9 +178,11 @@ export default function TableModel(props) {
                         ))}
 
                       <TableCell align="center">
-                        <Button onClick={() => console.log("row", row)}>
-                          GO
-                        </Button>
+                        <RowButton
+                          item={row}
+                          page={props.page}
+                          tabIndex={props.tabIndex}
+                        />
                       </TableCell>
                     </TableRow>
                   ))
@@ -284,9 +286,11 @@ export default function TableModel(props) {
                       )}
 
                       <TableCell align="center">
-                        <Button onClick={() => console.log("item", row)}>
-                          GO
-                        </Button>
+                        <RowButton
+                          item={row}
+                          page={props.page}
+                          tabIndex={props.tabIndex}
+                        />
                       </TableCell>
                     </TableRow>
                   ))}
