@@ -4,9 +4,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Grid,
+  Typography,
+  IconButton,
+  Collapse,
+} from "@mui/material";
 
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SwitchAccessShortcutIcon from "@mui/icons-material/SwitchAccessShortcut";
+
 import NewUserShortcut from "./NewUserShortcut";
 import ShortcutItem from "./ShortcutItem";
 
@@ -19,6 +29,7 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
   const [userPreferences, setUserPreferences] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedShortcut, setSelectedShortcut] = React.useState("");
+  const [open, setOpen] = React.useState(false); // State to manage dropdown open/close
 
   const fetchData = async () => {
     try {
@@ -65,8 +76,9 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
   return (
     <Grid
       sx={{
-        height:
-          shortcuts.filter((shortcut) => shortcut.isActive).length * 50 + 120,
+        height: open
+          ? shortcuts.filter((shortcut) => shortcut.isActive).length * 50 + 120
+          : 45,
         width: "auto",
         backgroundColor: "#eee",
         border: "1px solid #ddd",
@@ -78,14 +90,14 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
         <Grid
           container
           direction="row"
+          justifyContent="space-around"
           alignItems="center"
-          justifyContent="center"
         >
+          <Grid item id="ghost" />
           <Typography
             sx={{
-              py: 1,
-              mt: 2,
               ml: 3,
+              mt: -1,
               fontSize: 18,
               fontWeight: "bold",
               color: "#555",
@@ -94,27 +106,31 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
           >
             Atalhos
           </Typography>
-          <SwitchAccessShortcutIcon sx={{ fontSize: 24, color: "#555" }} />
+
+          <IconButton onClick={() => setOpen(!open)} sx={{ mb: 1 }}>
+            {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          </IconButton>
         </Grid>
       </Grid>
 
       <Grid item sx={{ m: 2 }}>
-        {shortcuts
-          .filter((shortcut) => shortcut.isActive)
-          .map((shortcut, index) => (
-            <ShortcutItem
-              key={index}
-              shortcut={shortcut}
-              onShortcutClick={onShortcutClick}
-              onDeleteShortcut={handleDeleteShortcut}
-            />
-          ))}
-
-        <NewUserShortcut
-          userId={userId}
-          reloadShortcuts={reloadShortcuts}
-          allowedLinks={allowedLinks}
-        />
+        <Collapse in={open}>
+          {shortcuts
+            .filter((shortcut) => shortcut.isActive)
+            .map((shortcut, index) => (
+              <ShortcutItem
+                key={index}
+                shortcut={shortcut}
+                onShortcutClick={onShortcutClick}
+                onDeleteShortcut={handleDeleteShortcut}
+              />
+            ))}
+          <NewUserShortcut
+            userId={userId}
+            reloadShortcuts={reloadShortcuts}
+            allowedLinks={allowedLinks}
+          />
+        </Collapse>
       </Grid>
     </Grid>
   );
