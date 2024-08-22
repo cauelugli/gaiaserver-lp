@@ -28,8 +28,8 @@ const StringTableCell = (props) => {
           startAdornment: <InputAdornment position="start">R$</InputAdornment>,
         }),
         style: {
-          fontSize: 12,
-          padding: "3px 3px",
+          fontSize: 13,
+          padding: "2px 2px",
         },
       }}
     />

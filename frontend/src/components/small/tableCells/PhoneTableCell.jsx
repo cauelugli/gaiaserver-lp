@@ -33,8 +33,8 @@ const PhoneTableCell = (props) => {
           required={props.field.required}
           InputProps={{
             style: {
-              fontSize: 12,
-              padding: "3px 3px",
+              fontSize: 13,
+              padding: "2px 2px",
             },
           }}
         />

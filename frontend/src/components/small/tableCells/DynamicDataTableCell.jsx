@@ -99,7 +99,7 @@ const DynamicDataTableCell = (props) => {
               src={`http://localhost:3000/static/${selected.image}`}
               sx={{ width: 24, height: 24, marginRight: 2 }}
             />
-            <Typography sx={{ fontSize: 12 }}>{selected.name}</Typography>
+            <Typography sx={{ fontSize: 13 }}>{selected.name}</Typography>
           </Grid>
         );
       }
@@ -108,7 +108,7 @@ const DynamicDataTableCell = (props) => {
         return <Typography />;
       } else {
         return (
-          <Typography sx={{ fontSize: 12, mt: 0.5 }}>
+          <Typography sx={{ fontSize: 13, mt: 0.5 }}>
             {selected.name || selected}
           </Typography>
         );

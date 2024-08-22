@@ -24,7 +24,7 @@ const SelectTableCell = (props) => {
       multiple={props.multiple}
       renderValue={(selected) =>
         selected ? (
-          <Typography sx={{ fontSize: 12, mt: 0.5 }}>
+          <Typography sx={{ fontSize: 13, mt: 0.5 }}>
             {selected.name || selected}
           </Typography>
         ) : (

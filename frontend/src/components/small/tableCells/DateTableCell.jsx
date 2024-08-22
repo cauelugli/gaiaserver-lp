@@ -26,6 +26,12 @@ const DateTableCell = (props) => {
           }}
           size="small"
           required={props.field.required}
+          InputProps={{
+            style: {
+              fontSize: 13,
+              padding: "2px 2px",
+            },
+          }}
         />
       )}
     </InputMask>
