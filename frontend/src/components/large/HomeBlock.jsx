@@ -51,17 +51,24 @@ const optionsMainblocks = [
     permissionLabel: "departments",
   },
   {
-    icon: <DashboardIcon sx={{ fontSize: 52 }} />,
-    text: "Dashboard",
-    link: "/dashboard",
-    permissionLabel: "dashboard",
+    icon: <SellIcon sx={{ fontSize: 52 }} />,
+    text: "Produtos",
+    link: "/products",
+    permissionLabel: "products",
   },
   {
-    icon: <AssessmentIcon sx={{ fontSize: 52 }} />,
-    text: "Relatórios",
-    link: "/reports",
-    permissionLabel: "reports",
+    icon: <HardwareIcon sx={{ fontSize: 52 }} />,
+    text: "Materiais",
+    link: "/materials",
+    permissionLabel: "materials",
   },
+  {
+    icon: <BuildIcon sx={{ fontSize: 52 }} />,
+    text: "Serviços",
+    link: "/services",
+    permissionLabel: "services",
+  },
+
   {
     icon: <AttachMoneyIcon sx={{ fontSize: 52 }} />,
     text: "Financeiro",
@@ -72,22 +79,16 @@ const optionsMainblocks = [
 
 const optionsRightColumn = [
   {
-    icon: <SellIcon sx={{ fontSize: 22 }} />,
-    text: "Produtos",
-    link: "/products",
-    permissionLabel: "products",
+    icon: <DashboardIcon sx={{ fontSize: 22 }} />,
+    text: "Dashboard",
+    link: "/dashboard",
+    permissionLabel: "dashboard",
   },
   {
-    icon: <HardwareIcon sx={{ fontSize: 22 }} />,
-    text: "Materiais",
-    link: "/materials",
-    permissionLabel: "materials",
-  },
-  {
-    icon: <BuildIcon sx={{ fontSize: 22 }} />,
-    text: "Serviços",
-    link: "/services",
-    permissionLabel: "services",
+    icon: <AssessmentIcon sx={{ fontSize: 22 }} />,
+    text: "Relatórios",
+    link: "/reports",
+    permissionLabel: "reports",
   },
   {
     icon: <RequestQuoteIcon sx={{ fontSize: 22 }} />,
@@ -130,21 +131,22 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
       "users",
       "departments",
       "requests",
-      "dashboard",
-      "reports",
+      "products",
+      "materials",
+      "services",
       "finance",
     ].includes(link)
   );
 
   const allowedListRightColumn = uniqueAllowedLinks.filter((link) =>
     [
-      "products",
-      "materials",
-      "services",
       "quotes",
       "stock",
       "files",
       "security",
+      "dashboard",
+      "reports",
+
       "config",
     ].includes(link)
   );
