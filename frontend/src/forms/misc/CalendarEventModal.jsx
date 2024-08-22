@@ -20,7 +20,6 @@ import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import CustomerSelect from "../../components/small/selects/CustomerSelect";
-import ServiceSelect from "../../components/small/selects/ServiceSelect";
 import WorkerSelect from "../../components/small/selects/WorkerSelect";
 import GroupSelect from "../../components/small/selects/GroupSelect";
 
@@ -123,7 +122,6 @@ const CalendarEventModal = ({
                 ))}
             </Select>
             <CustomerSelect mx075 setCustomer={setCustomer} />
-            <ServiceSelect setService={setService} />
           </Grid>
 
           <Grid sx={{ mb: 3 }}>
