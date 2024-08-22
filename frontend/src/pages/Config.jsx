@@ -121,7 +121,7 @@ export default function Config({
       icon: <AttachMoneyIcon sx={{ fontSize: 48 }} />,
       text: "Financeiro",
       modal: <FinanceModal />,
-      isBasic: false,
+      isBasic: true,
     },
     {
       icon: <HardwareIcon sx={{ fontSize: 48 }} />,
