@@ -166,15 +166,16 @@ export default function TableModel(props) {
                         <Avatar
                           alt="Imagem do Produto"
                           src={`http://localhost:3000/static${
-                            row.images[0] || undefined
+                            row.images ? row.images[0] : undefined
                           }`}
                           sx={{ width: 30, height: 30 }}
                         />
                       </TableCell>
                       <TableCell align="left">{row.name}</TableCell>
-                      {row.fields.map((field, fieldIndex) => (
-                        <TableCell key={fieldIndex}>{field.value}</TableCell>
-                      ))}
+                      {row.fields &&
+                        row.fields.map((field, fieldIndex) => (
+                          <TableCell key={fieldIndex}>{field.value}</TableCell>
+                        ))}
 
                       <TableCell align="center">
                         <Button onClick={() => console.log("row", row)}>
