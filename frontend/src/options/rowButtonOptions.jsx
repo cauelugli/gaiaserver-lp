@@ -1,33 +1,37 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 
-import MenuIcon from "@mui/icons-material/Menu";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EngineeringIcon from "@mui/icons-material/Engineering";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import SellIcon from "@mui/icons-material/Sell";
 
 const rowButtonOptions = [
   {
     page: "customers",
     menus: {
       0: [
-        { label: "Editar", action: "edit", icon: <MenuIcon /> },
-        { label: "Deletar", action: "delete", icon: <MenuIcon /> },
+        { label: "Editar", action: "edit", icon: <ModeEditIcon /> },
+        { label: "Deletar", action: "delete", icon: <DeleteIcon /> },
         {
-          label: "Mais Opções",
-          icon: <MenuIcon />,
+          label: "Novo",
+          icon: <AddIcon />,
           submenu: [
-            { label: "Duplicar", action: "duplicate", icon: <MenuIcon /> },
-            { label: "Imprimir", action: "print", icon: <MenuIcon /> },
+            { label: "Job", action: "addJob", icon: <EngineeringIcon /> },
+            { label: "Venda", action: "addSale", icon: <SellIcon /> },
           ],
         },
       ],
       1: [
-        { label: "Visualizar", action: "view", icon: <MenuIcon /> },
-        { label: "Enviar Email", action: "email", icon: <MenuIcon /> },
+        { label: "Editar", action: "view", icon: <ModeEditIcon /> },
+        { label: "Enviar Email", action: "email", icon: <DeleteIcon /> },
         {
-          label: "Ações Avançadas",
-          icon: <MenuIcon />,
+          label: "Novo",
+          icon: <AddIcon />,
           submenu: [
-            { label: "Arquivar", action: "archive", icon: <MenuIcon /> },
-            { label: "Compartilhar", action: "share", icon: <MenuIcon /> },
+            { label: "Job", action: "addJob", icon: <EngineeringIcon /> },
+            { label: "Venda", action: "addSale", icon: <SellIcon /> },
           ],
         },
       ],

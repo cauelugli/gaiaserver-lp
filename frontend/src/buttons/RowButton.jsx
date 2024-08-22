@@ -49,7 +49,10 @@ const RowButton = ({ item, page, tabIndex }) => {
           <div key={index}>
             {menuItem.submenu ? (
               <>
-                <MenuItem onClick={(e) => handleSubmenuClick(e, menuItem)}>
+                <MenuItem
+                  onClick={(e) => handleSubmenuClick(e, menuItem)}
+                  sx={{ minWidth: 150 }}
+                >
                   <ListItemIcon>{menuItem.icon}</ListItemIcon>
                   <ListItemText>{menuItem.label}</ListItemText>
                 </MenuItem>
@@ -60,6 +63,7 @@ const RowButton = ({ item, page, tabIndex }) => {
                 >
                   {menuItem.submenu.map((subItem, subIndex) => (
                     <MenuItem
+                      sx={{ minWidth: 150 }}
                       key={subIndex}
                       onClick={() => {
                         console.log("Selected action:", subItem.action);
@@ -74,7 +78,10 @@ const RowButton = ({ item, page, tabIndex }) => {
                 </Menu>
               </>
             ) : (
-              <MenuItem onClick={() => handleMenuItemClick(menuItem)}>
+              <MenuItem
+                onClick={() => handleMenuItemClick(menuItem)}
+                sx={{ minWidth: 150 }}
+              >
                 <ListItemIcon>{menuItem.icon}</ListItemIcon>
                 <ListItemText>{menuItem.label}</ListItemText>
               </MenuItem>
