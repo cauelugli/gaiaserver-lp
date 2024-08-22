@@ -10,6 +10,7 @@ import SellIcon from "@mui/icons-material/Sell";
 const rowButtonOptions = [
   {
     page: "customers",
+    models: ["Customer", "Customer"],
     menus: {
       0: [
         { label: "Editar", action: "edit", icon: <ModeEditIcon /> },
@@ -24,8 +25,8 @@ const rowButtonOptions = [
         },
       ],
       1: [
-        { label: "Editar", action: "view", icon: <ModeEditIcon /> },
-        { label: "Enviar Email", action: "email", icon: <DeleteIcon /> },
+        { label: "Editar", action: "edit", icon: <ModeEditIcon /> },
+        { label: "Deletar", action: "delete", icon: <DeleteIcon /> },
         {
           label: "Novo",
           icon: <AddIcon />,
