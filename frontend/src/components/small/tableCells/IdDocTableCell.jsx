@@ -28,6 +28,12 @@ const IdDocTableCell = (props) => {
           }}
           size="small"
           required={props.field.required}
+          InputProps={{
+            style: {
+              fontSize: 12,
+              padding: "3px 3px",
+            },
+          }}
         />
       )}
     </InputMask>

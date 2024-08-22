@@ -23,11 +23,15 @@ const StringTableCell = (props) => {
       }}
       size="small"
       required={props.field.required}
-      InputProps={
-        props.isCurrency && {
+      InputProps={{
+        ...(props.isCurrency && {
           startAdornment: <InputAdornment position="start">R$</InputAdornment>,
-        }
-      }
+        }),
+        style: {
+          fontSize: 12,
+          padding: "3px 3px",
+        },
+      }}
     />
   );
 };
