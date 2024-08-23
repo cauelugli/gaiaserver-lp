@@ -9,9 +9,9 @@ const NewsBox = () => {
       sx={{
         height: 250,
         width: "auto",
-        backgroundColor: "rgba(44,147,147, 0.9)",
-        border: "1px solid #2c9393",
-        borderRadius:2
+        backgroundColor: "#cecece",
+        border: "1px solid #eee",
+        borderRadius: 4
       }}
     >
       <Typography sx={{ m: 2 }}>Avisos e Notícias</Typography>

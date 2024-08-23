@@ -83,7 +83,7 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
         backgroundColor: "#eee",
         border: "1px solid #ddd",
         borderRadius: 4,
-        mb: 1,
+        mt: 1,
       }}
     >
       <Grid item>
