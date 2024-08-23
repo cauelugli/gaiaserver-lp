@@ -12,6 +12,7 @@ const DialogHeader = ({
   specialTitle,
   extraSmall,
   palette,
+  isEditing,
 }) => {
   return (
     <DialogTitle
@@ -35,7 +36,11 @@ const DialogHeader = ({
           textAlign="center"
           sx={{ fontSize: 20, fontWeight: "bold" }}
         >
-          {special ? specialTitle : femaleGender ? "Nova" : "Novo"}
+          {special
+            ? specialTitle
+            : femaleGender
+            ? `${isEditing ? "Editando" : "Nova"}`
+            : `${isEditing ? "Editando" : "Novo"}`}
           {plural && "s"} {title}
         </Typography>
         <Divider
