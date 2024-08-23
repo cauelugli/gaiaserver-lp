@@ -23,7 +23,6 @@ import {
 } from "@mui/material";
 
 import DialogHeader from "../../components/small/DialogHeader";
-import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 import DateTableCell from "../../components/small/tableCells/DateTableCell";
 import DynamicDataTableCell from "../../components/small/tableCells/DynamicDataTableCell";
 import ProductsTableCell from "../../components/small/tableCells/ProductsTableCell";
@@ -513,10 +512,6 @@ export default function AddFormModel(props) {
           </Box>
         ))}
       </DialogContent>
-      <FormEndLineTenant
-        configCustomization={props.configCustomization}
-        extraSmall
-      />
       <DialogActions>
         <Button
           type="submit"

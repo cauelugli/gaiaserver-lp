@@ -10,6 +10,7 @@ const ImageTableCell = ({
   onImageChange,
   onImageRemove,
   onImageClick,
+  isEdition,
 }) => {
   return (
     <Grid item>
@@ -51,7 +52,7 @@ const ImageTableCell = ({
             >
               {image ? (
                 <img
-                  src={URL.createObjectURL(image)}
+                  src={isEdition ? image : URL.createObjectURL(image)}
                   alt="Prévia da Imagem"
                   style={{ width: "100%", height: "100%" }}
                 />

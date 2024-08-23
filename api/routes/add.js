@@ -23,6 +23,7 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "Modelo inválido" });
   }
 
+  // same name already registered verification
   if (Model === "Cliente Empresa" || Model === "Cliente Pessoa Física") {
     const existingNameUser = await Model.findOne({ name });
     if (existingNameUser) {
@@ -36,12 +37,14 @@ router.post("/", async (req, res) => {
   fields.createdBy = createdBy;
   fields.products = selectedProducts;
   fields.price =
-  label === "Plano de Serviços"
-  ? parseFloat(req.body.finalPrice === 0 ? req.body.price : req.body.finalPrice)
-  : parseFloat(price);
-  
+    label === "Plano de Serviços"
+      ? parseFloat(
+          req.body.finalPrice === 0 ? req.body.price : req.body.finalPrice
+        )
+      : parseFloat(price);
+
   fields.services = services;
-  
+
   const newItem = new Model(fields);
 
   try {

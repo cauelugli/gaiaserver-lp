@@ -23,7 +23,6 @@ import {
 } from "@mui/material";
 
 import DialogHeader from "../../components/small/DialogHeader";
-import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 import DateTableCell from "../../components/small/tableCells/DateTableCell";
 import DynamicDataTableCell from "../../components/small/tableCells/DynamicDataTableCell";
 import ProductsTableCell from "../../components/small/tableCells/ProductsTableCell";
@@ -38,8 +37,12 @@ import ImageTableCell from "../../components/small/tableCells/ImageTableCell";
 import ServicesTableCell from "../../components/small/tableCells/ServicesTableCell";
 
 export default function EditFormModel(props) {
-  const [fields, setFields] = React.useState({});
-  const [image, setImage] = React.useState("");
+  const [fields, setFields] = React.useState(props.options.fields);
+  const [image, setImage] = React.useState(
+    props.target.image
+      ? `http://localhost:3000/static/${props.target.image}`
+      : ""
+  );
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
@@ -50,10 +53,36 @@ export default function EditFormModel(props) {
   // updating value from child modifications
   React.useEffect(() => {}, [priceDifference]);
 
+  React.useEffect(() => {
+    // Initializing form with target data
+    const initializeFields = () => {
+      const initialFields = {};
+      props.options.fields.forEach((field) => {
+        initialFields[field.name] = props.target[field.name] || "";
+      });
+      setFields(initialFields);
+    };
+
+    initializeFields();
+  }, [props.options.fields, props.target]);
+
   const modalOptions = props.options;
 
   const handleImageClick = () => {
     document.getElementById("fileInput").click();
+  };
+
+  const handleImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    if (selectedImage) {
+      setImage(URL.createObjectURL(selectedImage)); // Exibe a imagem carregada temporariamente
+    } else {
+      console.error("No file selected or invalid file type");
+    }
+  };
+
+  const handleImageRemove = () => {
+    setImage(""); // Remove a imagem
   };
 
   const handleChange = (fieldName) => (e) => {
@@ -117,7 +146,7 @@ export default function EditFormModel(props) {
     });
   };
 
-  const handleAdd = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("image", image);
@@ -188,12 +217,13 @@ export default function EditFormModel(props) {
   };
 
   return (
-    <form onSubmit={handleAdd}>
+    <form onSubmit={handleEdit}>
       <DialogHeader
         palette={props.palette}
         title={modalOptions.label}
         femaleGender={modalOptions.femaleGender}
         extraSmall
+        isEditing
       />
       <DialogContent>
         {modalOptions.fieldsSections.map((section, sectionIndex) => (
@@ -204,12 +234,10 @@ export default function EditFormModel(props) {
             {section.name === "image" && (
               <ImageTableCell
                 image={image}
-                onImageChange={(e) => {
-                  const selectedImage = e.target.files[0];
-                  setImage(selectedImage);
-                }}
-                onImageRemove={() => setImage("")}
+                onImageChange={handleImageChange}
+                onImageRemove={handleImageRemove}
                 onImageClick={handleImageClick}
+                isEdition={props.target.image}
               />
             )}
             <Grid container direction="row">
@@ -511,10 +539,6 @@ export default function EditFormModel(props) {
           </Box>
         ))}
       </DialogContent>
-      <FormEndLineTenant
-        configCustomization={props.configCustomization}
-        extraSmall
-      />
       <DialogActions>
         <Button
           type="submit"

@@ -30,17 +30,16 @@ import AbcIcon from "@mui/icons-material/Abc";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import DeleteIcon from "@mui/icons-material/Delete";
-import DialogHeader from "../../components/small/DialogHeader";
-import FormEndLineTenant from "../../components/small/FormEndLineTenant";
 import ListIcon from "@mui/icons-material/List";
 import NumbersIcon from "@mui/icons-material/Numbers";
+
+import DialogHeader from "../../components/small/DialogHeader";
 
 export default function AddBaseProductForm({
   userName,
   onClose,
   refreshData,
   setRefreshData,
-  configCustomization,
   toast,
   userId,
   isMaterial,
@@ -595,7 +594,6 @@ export default function AddBaseProductForm({
           </Grid>
         </Popover>
       </DialogContent>
-      <FormEndLineTenant configCustomization={configCustomization} />
       <DialogActions sx={{ mt: 2 }}>
         <Button type="submit" variant="contained" color="success">
           OK

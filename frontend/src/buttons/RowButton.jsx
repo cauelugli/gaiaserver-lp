@@ -122,18 +122,15 @@ const RowButton = (props) => {
             palette={props.palette}
             buttonProps={props}
             options={selectedModal}
-            selectedOptionLabel={"selectedOption.label"}
             userName={props.userName}
             userId={props.userId}
             configAgenda={props.configAgenda}
             configCustomization={props.configCustomization}
-            configNotifications={props.configNotifications}
-            configNotificationsBooleans={props.configNotificationsBooleans}
             openAdd={dialogOpen}
             setOpenAdd={setDialogOpen}
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
-            selectedItem={props.item}
+            target={props.item}
           />
         </Dialog>
       )}

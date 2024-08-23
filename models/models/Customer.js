@@ -9,6 +9,9 @@ const customerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  companyType: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -30,6 +33,9 @@ const customerSchema = new mongoose.Schema({
     type: String,
   },
   mainContactName: {
+    type: String,
+  },
+  mainContactPhone: {
     type: String,
   },
   mainContactPosition: {
