@@ -182,7 +182,7 @@ export default function EditFormModel(props) {
           autoClose: 1200,
         });
       }
-      props.setOpenAdd(!props.openAdd);
+      props.setOpenDialog(!props.openDialog);
       !props.setRefreshData(!props.refreshData);
     } catch (err) {
       if (
@@ -549,7 +549,7 @@ export default function EditFormModel(props) {
         <Button
           variant="contained"
           color="error"
-          onClick={() => props.setOpenAdd(!props.openAdd)}
+          onClick={() => props.setOpenDialog(!props.openDialog)}
         >
           X
         </Button>

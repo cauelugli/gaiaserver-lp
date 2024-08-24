@@ -28,17 +28,16 @@ const rowButtonOptions = [
         {
           label: "Novo",
           icon: <AddIcon />,
+          action: "add",
           submenu: [
             {
               label: "Job",
-              action: "add",
               modal: "Job",
               targeted: true,
               icon: <EngineeringIcon />,
             },
             {
               label: "Venda",
-              action: "add",
               modal: "Sale",
               targeted: true,
               icon: <SellIcon />,
@@ -62,17 +61,16 @@ const rowButtonOptions = [
         {
           label: "Novo",
           icon: <AddIcon />,
+          action: "add",
           submenu: [
             {
               label: "Job",
-              action: "add",
               modal: "Client",
               targeted: true,
               icon: <EngineeringIcon />,
             },
             {
               label: "Venda",
-              action: "addSaleToClient",
               modal: "Client",
               targeted: true,
               icon: <SellIcon />,

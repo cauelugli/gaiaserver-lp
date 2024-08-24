@@ -3,8 +3,12 @@
 import React from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
+import { toast } from "react-toastify";
 
 const socket = io("http://localhost:5002");
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 import {
   Button,
@@ -15,30 +19,21 @@ import {
   Typography,
 } from "@mui/material";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
-const GenericDeleteForm = ({
+const DeleteFormModel = ({
   userId,
   selectedItem,
+  model,
   refreshData,
   setRefreshData,
   openDialog,
   setOpenDialog,
-  toast,
-  endpoint,
-  successMessage,
-  warning,
-  warningMessage,
   page,
-  usePageNotEndpoint,
 }) => {
   const handleDelete = async () => {
     try {
-      const res = await api.delete(`/${endpoint}/${selectedItem._id}`);
+      const res = await api.delete(`/delete/${model}/${selectedItem._id}`);
       if (res.data) {
-        toast.success(successMessage, {
+        toast.success(`${selectedItem.name} Deletado!`, {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
@@ -47,7 +42,7 @@ const GenericDeleteForm = ({
 
         if (userId) {
           socket.emit("newDataRefreshButton", {
-            page: usePageNotEndpoint ? page : endpoint,
+            page,
             userId: userId,
           });
         }
@@ -90,24 +85,20 @@ const GenericDeleteForm = ({
           justifyContent="center"
           alignItems="center"
         >
-          {warning && (
-            <Typography
-              sx={{
-                mt: 2,
-                mb: 1,
-                fontSize: 18,
-                fontWeight: "bold",
-                color: "darkred",
-              }}
-            >
-              AVISO
-            </Typography>
-          )}
-          {warning && (
-            <Typography sx={{ mb: 2, fontSize: 18, fontWeight: "bold" }}>
-              {warningMessage}
-            </Typography>
-          )}
+          <Typography
+            sx={{
+              mt: 2,
+              mb: 1,
+              fontSize: 18,
+              fontWeight: "bold",
+              color: "darkred",
+            }}
+          >
+            AVISO
+          </Typography>
+          <Typography sx={{ mb: 2, fontSize: 18, fontWeight: "bold" }}>
+            Esta ação é IRREVERSÍVEL!
+          </Typography>
         </Grid>
       </DialogContent>
       <DialogActions>
@@ -131,4 +122,4 @@ const GenericDeleteForm = ({
   );
 };
 
-export default GenericDeleteForm;
+export default DeleteFormModel;

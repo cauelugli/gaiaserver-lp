@@ -13,30 +13,31 @@ import {
 
 import MenuIcon from "@mui/icons-material/Menu";
 
-import rowButtonOptions from "../options/rowButtonOptions";
-import { modals } from "../options/modals";
 import EditFormModel from "../forms/edit/EditFormModel";
+
+import { modals } from "../options/modals";
+import rowButtonOptions from "../options/rowButtonOptions";
+import DeleteFormModel from "../forms/delete/DeleteFormModel";
 
 const RowButton = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [submenuAnchorEl, setSubmenuAnchorEl] = useState(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [selectedModal, setSelectedModal] = useState({});
+  const [selectedAction, setSelectedAction] = useState("");
 
   const currentOption = rowButtonOptions.find(
     (option) => option.page === props.page
   );
   const menuItems = currentOption?.menus[props.tabIndex] || [];
 
-  const handleMenuItemClick = (menuItem) => {
+  const handleMenuItemClick = (menuItem, index) => {
     setSelectedModal(modals[menuItem.modal]);
-    setDialogOpen(true);
+    setOpenDialog(true);
     setAnchorEl(null);
     setSubmenuAnchorEl(null);
+    setSelectedAction(currentOption?.menus[props.tabIndex][index].action);
   };
-
-  // selectedModal.endpoint &&
-  //   console.log("selectedModal", selectedModal, "item", item);
 
   const handleSubmenuClick = (event, menuItem) => {
     setSubmenuAnchorEl(event.currentTarget);
@@ -72,7 +73,7 @@ const RowButton = (props) => {
                     <MenuItem
                       sx={{ minWidth: 150 }}
                       key={subIndex}
-                      onClick={() => handleMenuItemClick(subItem)}
+                      onClick={() => handleMenuItemClick(subItem, index)}
                     >
                       <ListItemIcon>{subItem.icon}</ListItemIcon>
                       <ListItemText>{subItem.label}</ListItemText>
@@ -82,7 +83,7 @@ const RowButton = (props) => {
               </>
             ) : (
               <MenuItem
-                onClick={() => handleMenuItemClick(menuItem)}
+                onClick={() => handleMenuItemClick(menuItem, index)}
                 sx={{ minWidth: 150 }}
               >
                 <ListItemIcon>{menuItem.icon}</ListItemIcon>
@@ -93,7 +94,7 @@ const RowButton = (props) => {
         ))}
       </Menu>
 
-      {dialogOpen && (
+      {openDialog && (
         <Dialog
           fullWidth
           maxWidth={
@@ -101,8 +102,8 @@ const RowButton = (props) => {
               ? false
               : selectedModal.maxWidth
           }
-          open={dialogOpen}
-          onClose={() => setDialogOpen(false)}
+          open={openDialog}
+          onClose={() => setOpenDialog(false)}
           sx={
             selectedModal.maxWidth.startsWith("custom")
               ? {
@@ -118,20 +119,37 @@ const RowButton = (props) => {
               : {}
           }
         >
-          <EditFormModel
-            palette={props.palette}
-            buttonProps={props}
-            options={selectedModal}
-            userName={props.userName}
-            userId={props.userId}
-            configAgenda={props.configAgenda}
-            configCustomization={props.configCustomization}
-            openAdd={dialogOpen}
-            setOpenAdd={setDialogOpen}
-            refreshData={props.refreshData}
-            setRefreshData={props.setRefreshData}
-            target={props.item}
-          />
+          {selectedAction === "edit" ? (
+            <EditFormModel
+              palette={props.palette}
+              buttonProps={props}
+              options={selectedModal}
+              userName={props.userName}
+              userId={props.userId}
+              configAgenda={props.configAgenda}
+              configCustomization={props.configCustomization}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+              refreshData={props.refreshData}
+              setRefreshData={props.setRefreshData}
+              target={props.item}
+            />
+          ) : selectedAction === "add" ? (
+            "add targeted"
+          ) : selectedAction === "delete" ? (
+            <DeleteFormModel
+              userId={props.userId}
+              selectedItem={props.item}
+              model={selectedModal.model}
+              refreshData={props.refreshData}
+              setRefreshData={props.setRefreshData}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+              page={currentOption.page}
+            />
+          ) : (
+            ""
+          )}
         </Dialog>
       )}
     </>
