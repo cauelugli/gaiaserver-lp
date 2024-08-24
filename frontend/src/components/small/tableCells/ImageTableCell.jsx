@@ -10,8 +10,9 @@ const ImageTableCell = ({
   onImageChange,
   onImageRemove,
   onImageClick,
-  isEdition,
 }) => {
+  const imageSrc = image instanceof File ? URL.createObjectURL(image) : image;
+
   return (
     <Grid item>
       <Grid
@@ -27,7 +28,6 @@ const ImageTableCell = ({
           id="fileInput"
           style={{ display: "none" }}
           onChange={onImageChange}
-          disabled={image}
         />
         <label htmlFor="fileInput" disabled={image}>
           <Badge
@@ -52,7 +52,7 @@ const ImageTableCell = ({
             >
               {image ? (
                 <img
-                  src={isEdition ? image : URL.createObjectURL(image)}
+                  src={imageSrc}
                   alt="Prévia da Imagem"
                   style={{ width: "100%", height: "100%" }}
                 />

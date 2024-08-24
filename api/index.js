@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const addRoute = require("./routes/add");
+const editRoute = require("./routes/edit");
 const deleteRoute = require("./routes/delete");
 const getRoute = require("./routes/get");
 const getConfigRoute = require("./routes/getConfig");
@@ -37,6 +38,7 @@ mongoose
 
 app.use("/api/actions", actionsRoute);
 app.use("/api/add", addRoute);
+app.use("/api/edit", editRoute);
 app.use("/api/delete", deleteRoute);
 app.use("/api/get", getRoute);
 app.use("/api/admin", adminRoute);

@@ -47,14 +47,13 @@ export default function EditFormModel(props) {
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
   const [finalPrice, setFinalPrice] = React.useState(0);
-  // eslint-disable-next-line no-unused-vars
   const [okToDispatch, setOkToDispatch] = React.useState(false);
 
   // updating value from child modifications
   React.useEffect(() => {}, [priceDifference]);
 
+  // Initializing form with target data
   React.useEffect(() => {
-    // Initializing form with target data
     const initializeFields = () => {
       const initialFields = {};
       props.options.fields.forEach((field) => {
@@ -72,17 +71,8 @@ export default function EditFormModel(props) {
     document.getElementById("fileInput").click();
   };
 
-  const handleImageChange = (e) => {
-    const selectedImage = e.target.files[0];
-    if (selectedImage) {
-      setImage(URL.createObjectURL(selectedImage)); // Exibe a imagem carregada temporariamente
-    } else {
-      console.error("No file selected or invalid file type");
-    }
-  };
-
   const handleImageRemove = () => {
-    setImage(""); // Remove a imagem
+    setImage("");
   };
 
   const handleChange = (fieldName) => (e) => {
@@ -154,10 +144,11 @@ export default function EditFormModel(props) {
     try {
       const uploadResponse = await api.post("/uploads/singleFile", formData);
       const imagePath = uploadResponse.data.imagePath;
-      const res = await api.post(`${modalOptions.endpoint}`, {
+      const res = await api.put("/edit", {
+        prevData: props.target,
         fields,
         label: modalOptions.label,
-        image: imagePath,
+        image: imagePath ? imagePath : props.target.image,
         model: modalOptions.model,
         selectedProducts,
         services: selectedServices,
@@ -234,10 +225,12 @@ export default function EditFormModel(props) {
             {section.name === "image" && (
               <ImageTableCell
                 image={image}
-                onImageChange={handleImageChange}
+                onImageChange={(e) => {
+                  const selectedImage = e.target.files[0];
+                  setImage(selectedImage);
+                }}
                 onImageRemove={handleImageRemove}
                 onImageClick={handleImageClick}
-                isEdition={props.target.image}
               />
             )}
             <Grid container direction="row">
