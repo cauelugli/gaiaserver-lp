@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -8,7 +8,7 @@ import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
 import {
-  Dialog,
+  // Dialog,
   Grid,
   IconButton,
   InputAdornment,
@@ -22,7 +22,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import GenericDeleteForm from "../../forms/delete/GenericDeleteForm";
+// import GenericDeleteForm from "../../forms/delete/GenericDeleteForm";
 
 const socket = io("http://localhost:5002");
 
@@ -38,8 +38,8 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
   const [searchDateInitial, setSearchDateInitial] = React.useState(null);
   const [searchDateFinal, setSearchDateFinal] = React.useState(null);
 
-  const [openDialog, setOpenDialog] = React.useState(false);
-  const [refreshData, setRefreshData] = React.useState(false);
+  // const [openDialog, setOpenDialog] = React.useState(false);
+  // const [refreshData, setRefreshData] = React.useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,7 +51,7 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
       }
     };
     fetchData();
-  }, [refreshData]);
+  }, []);
 
   useEffect(() => {
     socket.on("recentActivityRefresh", () => {
@@ -106,7 +106,9 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
               >
                 Atividade Recente
                 {userUsername === "admin" && recentActivities.length !== 0 && (
-                  <IconButton size="small" onClick={() => setOpenDialog(true)}>
+                  <IconButton size="small" 
+                  // onClick={() => setOpenDialog(true)}
+                  >
                     <DeleteIcon
                       sx={{
                         color: "#555",
@@ -253,7 +255,7 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
           </Grid>
         </Grid>
       </Grid>
-      {openDialog && (
+      {/* {openDialog && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
           <GenericDeleteForm
             selectedItem={{ _id: null, name: "Atividades Recentes" }}
@@ -268,7 +270,7 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
             warningMessage="Esta ação é IRREVERSÍVEL!"
           />
         </Dialog>
-      )}
+      )} */}
     </>
   );
 };

@@ -15,10 +15,8 @@ import {
   Typography,
 } from "@mui/material";
 
-import StockTableActions from "../small/buttons/tableActionButtons/StockTableActions";
 import EditStockItemForm from "../../forms/edit/EditStockItemForm";
 import EditProductForm from "../../forms/edit/EditProductForm";
-import StockEntriesTableActions from "../small/buttons/tableActionButtons/StockEntriesTableActions";
 
 export default function CardModel({
   userId,
@@ -85,19 +83,6 @@ export default function CardModel({
               <Typography variant="body2" sx={{ mt: 1, fontSize: 13 }}>
                 Criado em: {dayjs(item.createdAt).format("DD/MM/YY")}
               </Typography>
-              <CardActions>
-                <Grid container justifyContent="center">
-                  <StockEntriesTableActions
-                    userName={userName}
-                    selectedItem={item}
-                    refreshData={refreshData}
-                    setRefreshData={setRefreshData}
-                    dispatcherManager={
-                      configData.stockentriesDispatcherDepartment.manager
-                    }
-                  />
-                </Grid>
-              </CardActions>
             </>
           ) : (
             <>
@@ -142,20 +127,6 @@ export default function CardModel({
           )}
         </Grid>
       </CardContent>
-      {type !== "entry" && (
-        <CardActions sx={{ mt: -1 }}>
-          <Grid container justifyContent="center">
-            <StockTableActions
-              userId={userId}
-              type={type === "product" ? "Produto" : "Material"}
-              selectedItem={item}
-              setOpenEdit={setOpenEdit}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-            />
-          </Grid>
-        </CardActions>
-      )}
       {openEdit && type === "product" && (
         <Dialog
           fullWidth
