@@ -22,19 +22,19 @@ import {
   Typography,
 } from "@mui/material";
 
-import DialogHeader from "../../components/small/DialogHeader";
-import DateTableCell from "../../components/small/tableCells/DateTableCell";
-import DynamicDataTableCell from "../../components/small/tableCells/DynamicDataTableCell";
-import ProductsTableCell from "../../components/small/tableCells/ProductsTableCell";
-import SelectTableCell from "../../components/small/tableCells/SelectTableCell";
-import StringTableCell from "../../components/small/tableCells/StringTableCell";
-import IdDocTableCell from "../../components/small/tableCells/IdDocTableCell";
+import DateTableCell from "../../components/tableCells/DateTableCell";
+import DynamicDataTableCell from "../../components/tableCells/DynamicDataTableCell";
+import ProductsTableCell from "../../components/tableCells/ProductsTableCell";
+import SelectTableCell from "../../components/tableCells/SelectTableCell";
+import StringTableCell from "../../components/tableCells/StringTableCell";
+import IdDocTableCell from "../../components/tableCells/IdDocTableCell";
+import CurrencyTableCell from "../../components/tableCells/CurrencyTableCell";
+import PhoneTableCell from "../../components/tableCells/PhoneTableCell";
+import ImageTableCell from "../../components/tableCells/ImageTableCell";
+import ServicesTableCell from "../../components/tableCells/ServicesTableCell";
 
-import CurrencyTableCell from "../../components/small/tableCells/CurrencyTableCell";
+import DialogHeader from "../../components/small/DialogHeader";
 import ColorPicker from "../../components/small/ColorPicker";
-import PhoneTableCell from "../../components/small/tableCells/PhoneTableCell";
-import ImageTableCell from "../../components/small/tableCells/ImageTableCell";
-import ServicesTableCell from "../../components/small/tableCells/ServicesTableCell";
 
 export default function EditFormModel(props) {
   const [fields, setFields] = React.useState(props.options.fields);

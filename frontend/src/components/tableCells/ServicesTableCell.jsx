@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import PriceDifferenceTable from "../PriceDifferenceTable";
+import PriceDifferenceTable from "../small/PriceDifferenceTable";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

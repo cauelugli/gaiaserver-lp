@@ -8,7 +8,7 @@ const api = axios.create({
 
 import { Grid } from "@mui/material";
 
-import BadgedIcon from "../BadgedIcon";
+import BadgedIcon from "../small/BadgedIcon";
 
 const ProductsTableCell = (props) => {
   const [options, setOptions] = React.useState([]);
