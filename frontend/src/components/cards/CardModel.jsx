@@ -15,9 +15,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import EditStockItemForm from "../../forms/edit/EditStockItemForm";
-import EditProductForm from "../../forms/edit/EditProductForm";
-
 export default function CardModel({
   userId,
   userName,
@@ -127,42 +124,6 @@ export default function CardModel({
           )}
         </Grid>
       </CardContent>
-      {openEdit && type === "product" && (
-        <Dialog
-          fullWidth
-          maxWidth="lg"
-          open={openEdit}
-          onClose={() => setOpenEdit(!openEdit)}
-        >
-          <EditProductForm
-            userId={userId}
-            openEdit={openEdit}
-            selectedProduct={item}
-            setOpenEdit={setOpenEdit}
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
-      {openEdit && type === "material" && (
-        <Dialog
-          fullWidth
-          maxWidth="sm"
-          open={openEdit}
-          onClose={() => setOpenEdit(!openEdit)}
-        >
-          <EditStockItemForm
-            userId={userId}
-            openEdit={openEdit}
-            selectedStockItem={item}
-            setOpenEdit={setOpenEdit}
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-            toast={toast}
-          />
-        </Dialog>
-      )}
     </Card>
   );
 }

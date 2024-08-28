@@ -175,7 +175,7 @@ export default function EditFormModel(props) {
         finalPrice,
       });
       if (res.data) {
-        toast.success(`${props.selectedOptionLabel} Editado!`, {
+        toast.success(`${modalOptions.label} Editado!`, {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
