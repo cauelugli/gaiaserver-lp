@@ -45,6 +45,7 @@ export default function EditFormModel(props) {
   );
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
+  const [departments, setDepartments] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
   const [finalPrice, setFinalPrice] = React.useState(0);
   const [okToDispatch, setOkToDispatch] = React.useState(false);
@@ -52,18 +53,50 @@ export default function EditFormModel(props) {
   // updating value from child modifications
   React.useEffect(() => {}, [priceDifference]);
 
+  React.useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const response = await api.get("/get", {
+          params: { model: "Department" },
+        });
+        setDepartments(response.data); // Atualiza o estado com a resposta da API
+      } catch (error) {
+        console.error("Erro ao buscar departamentos:", error);
+        toast.error("Erro ao buscar departamentos. Tente novamente.", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
+    };
+
+    fetchDepartments();
+  }, []);
+
   // Initializing form with target data
   React.useEffect(() => {
     const initializeFields = () => {
       const initialFields = {};
       props.options.fields.forEach((field) => {
-        initialFields[field.name] = props.target[field.name] || "";
+        const fieldValue = props.target[field.name] || "";
+
+        // Verifica se o campo é do tipo 'department'
+        if (field.name === "department" && typeof fieldValue === "string") {
+          // Encontra o departamento correspondente pelo _id
+          const department = departments.find((dep) => dep._id === fieldValue);
+          initialFields[field.name] = department ? department.name : "";
+        } 
+        // this is gonna scale, surely there will be a function in the future
+        else {
+          initialFields[field.name] = fieldValue;
+        }
       });
       setFields(initialFields);
     };
 
     initializeFields();
-  }, [props.options.fields, props.target]);
+  }, [props.options.fields, props.target, departments]);
 
   const modalOptions = props.options;
 
@@ -153,7 +186,7 @@ export default function EditFormModel(props) {
         selectedProducts,
         services: selectedServices,
         createdBy: props.userName || "Admin",
-        isManager: modalOptions.label === "Gerente",
+        isManager: modalOptions.label === "Colaborador" && props.tabIndex === 1,
         price:
           modalOptions.label === "Venda"
             ? selectedProducts

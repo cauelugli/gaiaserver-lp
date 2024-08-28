@@ -133,6 +133,8 @@ const RowButton = (props) => {
               refreshData={props.refreshData}
               setRefreshData={props.setRefreshData}
               target={props.item}
+              currentOption={currentOption}
+              tabIndex={props.tabIndex}
             />
           ) : selectedAction === "add" ? (
             "add targeted"

@@ -4,6 +4,7 @@ const { defineModel } = require("../../controllers/functions/routeFunctions");
 
 // CREATE ITEM
 router.put("/", async (req, res) => {
+  // console.log("\nreq.body", req.body, "\n");
   const {
     fields,
     image,

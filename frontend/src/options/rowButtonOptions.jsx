@@ -80,6 +80,40 @@ const rowButtonOptions = [
       ],
     },
   },
+  {
+    page: "users",
+    models: ["User", "User"],
+    menus: {
+      0: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "User",
+          icon: <ModeEditIcon />,
+        },
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "User",
+          icon: <DeleteIcon />,
+        },
+      ],
+      1: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "User",
+          icon: <ModeEditIcon />,
+        },
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "User",
+          icon: <DeleteIcon />,
+        },
+      ],
+    },
+  },
 ];
 
 export default rowButtonOptions;
