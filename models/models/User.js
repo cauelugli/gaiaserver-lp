@@ -5,7 +5,16 @@ userSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  address: {
+    type: String,
+  },
   birthdate: {
+    type: String,
+  },
+  cellphone: {
+    type: String,
+  },
+  cpf: {
     type: String,
   },
   createdAt: {
@@ -13,7 +22,7 @@ userSchema = new mongoose.Schema({
     default: Date.now,
   },
   department: {
-    type: Object,
+    type: String,
   },
   email: {
     type: String,
@@ -50,9 +59,6 @@ userSchema = new mongoose.Schema({
   password: {
     type: String,
   },
-  cellphone: {
-    type: String,
-  },
   phone: {
     type: String,
   },
@@ -65,6 +71,19 @@ userSchema = new mongoose.Schema({
     default: {},
   },
   username: {
+    type: String,
+  },
+  // social media 
+  facebook: {
+    type: String,
+  },
+  instagram: {
+    type: String,
+  },
+  linkedin: {
+    type: String,
+  },
+  x: {
     type: String,
   },
 });
