@@ -14,14 +14,16 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 
 import EditFormModel from "../forms/edit/EditFormModel";
-
 import { modals } from "../options/modals";
 import rowButtonOptions from "../options/rowButtonOptions";
 import DeleteFormModel from "../forms/delete/DeleteFormModel";
+import SmallFormModel from "../forms/edit/SmallFormModel";
 
 const RowButton = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [submenuAnchorEl, setSubmenuAnchorEl] = useState(null);
+  const [smallmenuAnchorEl, setSmallmenuAnchorEl] = useState(null);
+  const [smallmenuOptions, setSmallmenuAOptions] = useState({});
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedModal, setSelectedModal] = useState({});
   const [selectedAction, setSelectedAction] = useState("");
@@ -32,15 +34,29 @@ const RowButton = (props) => {
   const menuItems = currentOption?.menus[props.tabIndex] || [];
 
   const handleMenuItemClick = (menuItem, index) => {
-    setSelectedModal(modals[menuItem.modal]);
-    setOpenDialog(true);
-    setAnchorEl(null);
-    setSubmenuAnchorEl(null);
-    setSelectedAction(currentOption?.menus[props.tabIndex][index].action);
+    if (menuItem.modal === "small") {
+      setSmallmenuAOptions(menuItem);
+      setSmallmenuAnchorEl(submenuAnchorEl);
+    } else {
+      setSelectedModal(modals[menuItem.modal]);
+      setOpenDialog(true);
+      closeAllMenus();
+      setSelectedAction(currentOption?.menus[props.tabIndex][index].action);
+    }
   };
 
   const handleSubmenuClick = (event, menuItem) => {
     setSubmenuAnchorEl(event.currentTarget);
+  };
+
+  const handleSmallmenuClick = (event) => {
+    setSmallmenuAnchorEl(event.currentTarget);
+  };
+
+  const closeAllMenus = () => {
+    setAnchorEl(null);
+    setSubmenuAnchorEl(null);
+    setSmallmenuAnchorEl(null);
   };
 
   return (
@@ -58,12 +74,17 @@ const RowButton = (props) => {
             {menuItem.submenu ? (
               <>
                 <MenuItem
-                  onClick={(e) => handleSubmenuClick(e, menuItem)}
+                  onClick={(e) =>
+                    menuItem.modal === "small"
+                      ? handleSmallmenuClick(e)
+                      : handleSubmenuClick(e, menuItem)
+                  }
                   sx={{ minWidth: 150 }}
                 >
                   <ListItemIcon>{menuItem.icon}</ListItemIcon>
                   <ListItemText>{menuItem.label}</ListItemText>
                 </MenuItem>
+
                 <Menu
                   anchorEl={submenuAnchorEl}
                   open={Boolean(submenuAnchorEl)}
@@ -76,9 +97,24 @@ const RowButton = (props) => {
                       onClick={() => handleMenuItemClick(subItem, index)}
                     >
                       <ListItemIcon>{subItem.icon}</ListItemIcon>
-                      <ListItemText>{subItem.label}</ListItemText>
+                      <ListItemText>
+                        {subItem.targetLabel || subItem.label}
+                      </ListItemText>
                     </MenuItem>
                   ))}
+                </Menu>
+
+                <Menu
+                  anchorEl={smallmenuAnchorEl}
+                  open={Boolean(smallmenuAnchorEl)}
+                  onClose={() => setSmallmenuAnchorEl(null)}
+                >
+                  <SmallFormModel
+                    source={props.item}
+                    menuItem={menuItem.submenu}
+                    smallmenuOptions={smallmenuOptions}
+                    setSmallmenuAnchorEl={setSmallmenuAnchorEl}
+                  />
                 </Menu>
               </>
             ) : (

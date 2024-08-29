@@ -2,10 +2,13 @@
 import React from "react";
 
 import AddIcon from "@mui/icons-material/Add";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EngineeringIcon from "@mui/icons-material/Engineering";
+import LanIcon from "@mui/icons-material/Lan";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import SellIcon from "@mui/icons-material/Sell";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const rowButtonOptions = [
   {
@@ -97,6 +100,27 @@ const rowButtonOptions = [
           modal: "User",
           icon: <DeleteIcon />,
         },
+        {
+          label: "Alterar",
+          icon: <SettingsIcon />,
+          action: "dynamicChange",
+          submenu: [
+            {
+              modal: "small",
+              sourceModel: "User",
+              targetModel: "Department",
+              targetLabel: "Departamento",
+              icon: <LanIcon />,
+            },
+            {
+              modal: "small",
+              sourceModel: "User",
+              targetModel: "Position",
+              targetLabel: "Posição",
+              icon: <AssignmentIndIcon />,
+            },
+          ],
+        },
       ],
       1: [
         {
@@ -110,6 +134,23 @@ const rowButtonOptions = [
           action: "delete",
           modal: "User",
           icon: <DeleteIcon />,
+        },
+        {
+          label: "Alterar",
+          icon: <SettingsIcon />,
+          action: "dynamicChange",
+          submenu: [
+            {
+              label: "Departamento",
+              modal: "small",
+              icon: <LanIcon />,
+            },
+            {
+              label: "Cargo",
+              modal: "small",
+              icon: <AssignmentIndIcon />,
+            },
+          ],
         },
       ],
     },
