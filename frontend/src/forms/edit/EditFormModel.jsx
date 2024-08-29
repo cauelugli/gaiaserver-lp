@@ -46,6 +46,7 @@ export default function EditFormModel(props) {
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
+  const [positions, setPositions] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
   const [finalPrice, setFinalPrice] = React.useState(0);
   const [okToDispatch, setOkToDispatch] = React.useState(false);
@@ -56,10 +57,14 @@ export default function EditFormModel(props) {
   React.useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await api.get("/get", {
+        const departments = await api.get("/get", {
           params: { model: "Department" },
         });
-        setDepartments(response.data); // Atualiza o estado com a resposta da API
+        const positions = await api.get("/get", {
+          params: { model: "Position" },
+        });
+        setDepartments(departments.data);
+        setPositions(positions.data);
       } catch (error) {
         console.error("Erro ao buscar departamentos:", error);
         toast.error("Erro ao buscar departamentos. Tente novamente.", {
@@ -86,7 +91,11 @@ export default function EditFormModel(props) {
           // Encontra o departamento correspondente pelo _id
           const department = departments.find((dep) => dep._id === fieldValue);
           initialFields[field.name] = department ? department.name : "";
-        } 
+        } else if (field.name === "position" && typeof fieldValue === "string") {
+          // Encontra o cargo correspondente pelo _id
+          const position = positions.find((pos) => pos._id === fieldValue);
+          initialFields[field.name] = position ? position.name : "";
+        }
         // this is gonna scale, surely there will be a function in the future
         else {
           initialFields[field.name] = fieldValue;
@@ -96,7 +105,7 @@ export default function EditFormModel(props) {
     };
 
     initializeFields();
-  }, [props.options.fields, props.target, departments]);
+  }, [props.options.fields, props.target, departments, positions]);
 
   const modalOptions = props.options;
 

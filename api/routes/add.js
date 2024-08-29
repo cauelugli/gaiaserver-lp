@@ -34,6 +34,7 @@ router.post("/", async (req, res) => {
 
   // verify cases
   fields.department = req.body.fields.department._id;
+  fields.position = req.body.fields.position._id;
   fields.image = image;
   fields.isManager = isManager;
   fields.createdBy = createdBy;

@@ -29,6 +29,9 @@ const DynamicDataTableCell = (props) => {
         } else if (props.field.dynamicData === "workers") {
           const resUsers = await api.get("/get", { params: { model: "User" } });
           data = resUsers.data.filter((user) => !user.isManager);
+        } else if (props.field.dynamicData === "positions") {
+          const resUsers = await api.get("/get", { params: { model: "Position" } });
+          data = resUsers.data.filter((user) => !user.isManager);
         } else if (props.field.dynamicData === "allCustomers") {
           const resCustomers = await api.get("/get", {
             params: { model: "Customer" },
