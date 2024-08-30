@@ -68,19 +68,26 @@ const SmallFormModel = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      style={{ backgroundColor: `${props.configCustomization.mainColor}B3` }}
+    >
       <Grid
-        sx={{ width: 250, height: 250, p: 2 }}
+        sx={{ width: 250, height: 240, px: 2, mt: -1 }}
         container
         direction="column"
         alignItems="center"
       >
-        <Typography> Alterando {options.targetLabel}</Typography>
+        <Typography sx={{ color: "white", fontWeight: "bold", pt: 1 }}>
+          Alterando {options.targetLabel}
+        </Typography>
         <Grid item>
-          <Typography sx={{ fontSize: 12, mt: 2 }}>Atual</Typography>
+          <Typography sx={{ fontSize: 12, mt: 2, color: "white" }}>
+            Atual
+          </Typography>
           <TextField
             size="small"
-            sx={{ width: 200 }}
+            sx={{ width: 200, backgroundColor: "white" }}
             InputProps={{
               readOnly: true,
             }}
@@ -89,10 +96,12 @@ const SmallFormModel = (props) => {
           />
         </Grid>
         <Grid item>
-          <Typography sx={{ fontSize: 12, mt: 2 }}>Novo</Typography>
+          <Typography sx={{ fontSize: 12, mt: 2, color: "white" }}>
+            Novo
+          </Typography>
           <Select
             size="small"
-            sx={{ width: 200 }}
+            sx={{ width: 200, backgroundColor: "white" }}
             value={selectedOption}
             onChange={(e) => setSelectedOption(e.target.value)}
           >
@@ -109,12 +118,17 @@ const SmallFormModel = (props) => {
         direction="row"
         alignItems="center"
         justifyContent="center"
-        sx={{ my: 1 }}
+        sx={{ mb: -1, pb: 2 }}
       >
-        <Button type="submit" variant="contained" sx={{ mr: 1 }}>
+        <Button
+          type="submit"
+          color="success"
+          variant="contained"
+          sx={{ mr: 1 }}
+        >
           OK
         </Button>
-        <Button variant="outlined" onClick={handleCancel}>
+        <Button variant="contained" color="error" onClick={handleCancel}>
           Cancelar
         </Button>
       </Grid>

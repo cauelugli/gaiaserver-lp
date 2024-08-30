@@ -114,6 +114,7 @@ const RowButton = (props) => {
                     menuItem={menuItem.submenu}
                     smallmenuOptions={smallmenuOptions}
                     setSmallmenuAnchorEl={setSmallmenuAnchorEl}
+                    configCustomization={props.configCustomization}
                   />
                 </Menu>
               </>
