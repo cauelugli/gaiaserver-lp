@@ -63,12 +63,10 @@ userSchema = new mongoose.Schema({
     type: String,
   },
   position: {
-    type: Object,
-    default: {},
+    type: String,
   },
   role: {
-    type: Object,
-    default: {},
+    type: String,
   },
   username: {
     type: String,
