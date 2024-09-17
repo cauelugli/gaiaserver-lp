@@ -1,101 +1,74 @@
 /* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 
-import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-
-import { Avatar, Grid, Paper, Typography } from "@mui/material";
+import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
 
 export default function BadgedIcon(props) {
-  const [count, setCount] = React.useState(0);
-
-  const handleIncrement = () => {
-    const newCount = count + 1;
-    setCount(newCount);
-    props.handleProductChange(props.item, newCount);
-  };
-
-  const handleDecrement = () => {
-    const newCount = count - 1;
-    setCount(newCount);
-    props.handleProductChange(props.item, newCount);
+  const handleChangeItem = () => {
+    props.handleProductChange(props.item);
   };
 
   return (
-    <Paper elevation={3}>
+    <Paper
+      elevation={3}
+      sx={{
+        width: 150,
+        "&:hover": {
+          backgroundColor: "#ccc",
+        },
+      }}
+    >
       <Grid
-        sx={{
-          px: 4,
-          py: 3,
-          "&:hover": {
-            backgroundColor: "#ccc",
-          },
-        }}
+        container
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
       >
-        <div
-          style={{
-            position: "relative",
-            display: "inline-block",
-          }}
-        >
-          <Grid item>
-            <Avatar
-              alt="Imagem do Colaborador"
-              src={`http://localhost:3000/static/${props.item.images[0]}`}
-              sx={{ width: 64, height: 64 }}
-            />
-          </Grid>
-          <Grid item sx={{ mt: 3 }}>
-            <Grid container direction="row" justifyContent="space-around">
-              <Badge
-                badgeContent={
-                  <IconButton
-                    size="small"
-                    onClick={handleDecrement}
-                    aria-label="decrease"
-                    disabled={count === 0}
-                  >
-                    <RemoveIcon fontSize="inherit" />
-                  </IconButton>
-                }
-                overlap="circular"
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-              />
-              <Badge
-                badgeContent={
-                  <Typography
-                    sx={{ fontWeight: "bold", fontSize: 16, color: "#333" }}
-                  >
-                    {count}
-                  </Typography>
-                }
-                overlap="circular"
-              />
-              <Badge
-                badgeContent={
-                  <IconButton
-                    size="small"
-                    onClick={handleIncrement}
-                    aria-label="increase"
-                  >
-                    <AddIcon fontSize="inherit" />
-                  </IconButton>
-                }
-                overlap="circular"
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-              />
-            </Grid>
-          </Grid>
-        </div>
-      </Grid>{" "}
+        <Grid item>
+          <Typography sx={{ fontSize: 12, my: 0.5 }}>
+            {props.item.name}
+          </Typography>
+        </Grid>
+
+        <Grid item>
+          <Avatar
+            alt="Imagem do Item"
+            src={`http://localhost:3000/static/${props.item.images[0]}`}
+            sx={{ width: 64, height: 64 }}
+          />
+        </Grid>
+        <Grid item>
+          <Typography sx={{ fontSize: 12, my: 0.5, fontWeight: "bold" }}>
+            {props.item.type}
+          </Typography>
+        </Grid>
+        <Grid item sx={{ m: 1 }}>
+          <Button
+            size="small"
+            variant="contained"
+            sx={{
+              backgroundColor: props.isInList ? "#cc3b3b" : "#647a1b",
+              "&:hover": {
+                backgroundColor: props.isInList ? "#cc3b3b" : "#647a1b",
+              },
+            }}
+            onClick={handleChangeItem}
+          >
+            <Typography
+              sx={{
+                fontSize: 12,
+                color: "white",
+                fontWeight: "bold",
+                mx: 2,
+                mt: 0.25,
+              }}
+            >
+              {props.isInList ? "REMOVER" : "ADICIONAR"}
+            </Typography>
+          </Button>
+        </Grid>
+      </Grid>
     </Paper>
   );
 }

@@ -6,12 +6,30 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-import { Grid } from "@mui/material";
+import {
+  FormControlLabel,
+  Grid,
+  InputAdornment,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
+
+import ClearIcon from "@mui/icons-material/Clear";
+import SearchIcon from "@mui/icons-material/Search";
 
 import BadgedIcon from "../small/BadgedIcon";
 
 const ProductsTableCell = (props) => {
-  const [options, setOptions] = React.useState([]);
+  const [baseProducts, setBaseProducts] = React.useState([]);
+  const [products, setProducts] = React.useState([]);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [searchType, setSearchType] = React.useState("name");
+  const [selectedSearchType, setSelectedSearchType] =
+    React.useState("Selecione");
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +37,12 @@ const ProductsTableCell = (props) => {
         const response = await api.get("/get", {
           params: { model: "Product" },
         });
-        setOptions(response.data.filter((item) => item.name));
+        setBaseProducts(
+          response.data.filter((item) => !item.name && !item.isMaterial)
+        );
+        setProducts(
+          response.data.filter((item) => item.name && !item.isMaterial)
+        );
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -27,22 +50,110 @@ const ProductsTableCell = (props) => {
     fetchData();
   }, []);
 
+  const uniqueTypes = Array.from(
+    new Set(baseProducts.map((option) => option.type))
+  );
+
+  const filteredOptions = products.filter((option) => {
+    if (searchType === "name") {
+      return option.name.toLowerCase().includes(searchValue.toLowerCase());
+    } else if (searchType === "type") {
+      return option.type.toLowerCase() === selectedSearchType.toLowerCase();
+    }
+    return true;
+  });
+
+  const isProductInList = (productId) => {
+    return props.selectedProducts.some((p) => p._id === productId);
+  };
+
   return (
-    <Grid
-      container
-      direction="row"
-      alignItems="center"
-      justifyContent="space-evenly"
-    >
-      {options.map((option, index) => (
-        <Grid item key={index}>
-          <BadgedIcon
-            item={option}
-            handleProductChange={props.handleProductChange}
+    <>
+      <Grid container direction="row" sx={{ mb: 1 }}>
+        {searchType === "name" ? (
+          <TextField
+            placeholder="Pesquise..."
+            size="small"
+            sx={{ my: 1, width: 300 }}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+              endAdornment:
+                searchValue.length > 0 ? (
+                  <InputAdornment position="end">
+                    <ClearIcon
+                      cursor="pointer"
+                      sx={{ color: "#d21404" }}
+                      onClick={() => setSearchValue("")}
+                    />
+                  </InputAdornment>
+                ) : (
+                  ""
+                ),
+            }}
           />
-        </Grid>
-      ))}
-    </Grid>
+        ) : (
+          <Select
+            value={selectedSearchType}
+            onChange={(e) => setSelectedSearchType(e.target.value)}
+            sx={{ my: 1, width: 250 }}
+            size="small"
+            renderValue={(selected) =>
+              selected ? (
+                <Typography>{selected}</Typography>
+              ) : (
+                selectedSearchType
+              )
+            }
+          >
+            {uniqueTypes.map((type, index) => (
+              <MenuItem value={type} key={index}>
+                {type}
+              </MenuItem>
+            ))}
+          </Select>
+        )}
+
+        <RadioGroup
+          row
+          value={searchType}
+          onChange={(e) => setSearchType(e.target.value)}
+          sx={{ ml: 2 }}
+        >
+          <FormControlLabel value="name" control={<Radio />} label="Nome" />
+          <FormControlLabel value="type" control={<Radio />} label="Tipo" />
+        </RadioGroup>
+      </Grid>
+
+      <Grid
+        container
+        direction="row"
+        alignItems="center"
+        justifyContent="space-evenly"
+      >
+        {filteredOptions.length === 0 ? (
+          <Typography sx={{ my: 4, fontSize: 20, fontColor: "darkgrey" }}>
+            Nenhum Produto Encontrado
+          </Typography>
+        ) : (
+          filteredOptions.map((option) => (
+            <Grid item key={option._id}>
+              <BadgedIcon
+                item={option}
+                handleProductChange={props.handleProductChange}
+                value={props.value}
+                isInList={isProductInList(option._id)}
+              />
+            </Grid>
+          ))
+        )}
+      </Grid>
+    </>
   );
 };
 

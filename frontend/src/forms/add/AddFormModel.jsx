@@ -35,6 +35,7 @@ import ColorPicker from "../../components/small/ColorPicker";
 import PhoneTableCell from "../../components/tableCells/PhoneTableCell";
 import ImageTableCell from "../../components/tableCells/ImageTableCell";
 import ServicesTableCell from "../../components/tableCells/ServicesTableCell";
+import ProductsDisplayTableCell from "../../components/tableCells/ProductsDisplayTableCell";
 
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
@@ -64,27 +65,19 @@ export default function AddFormModel(props) {
     });
   };
 
-  const handleProductChange = (product, count) => {
+  const handleProductChange = (product) => {
     setSelectedProducts((prev) => {
-      const existingProductIndex = prev.findIndex(
-        (p) => p.name === product.name
+      const existingProductIndex = prev?.findIndex(
+        (p) => p._id === product._id
       );
 
       let newState;
       if (existingProductIndex !== -1) {
-        if (count > 0) {
-          const updatedProducts = [...prev];
-          updatedProducts[existingProductIndex].count = count;
-          newState = updatedProducts;
-        } else {
-          newState = prev.filter((p) => p.name !== product.name);
-        }
+        // Se o produto já está na lista, remove-o
+        newState = prev.filter((p) => p._id !== product._id);
       } else {
-        if (count > 0) {
-          newState = [...prev, { ...product, count }];
-        } else {
-          newState = prev;
-        }
+        // Se o produto não está na lista, adiciona com count inicial de 1
+        newState = [...prev, { ...product, count: 1 }];
       }
 
       return newState;
@@ -332,140 +325,160 @@ export default function AddFormModel(props) {
                         multiple={field.multiple}
                       />
                     )}
-                    {field.type === "productList" ||
-                      (field.type === "materialList" && (
-                        <Grid
-                          direction="column"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          <ProductsTableCell
-                            value={fields[field.name] || ""}
-                            onChange={handleChange(field.name)}
-                            size="small"
-                            required={field.required}
-                            handleProductChange={handleProductChange}
+                    {field.type === "productList" && (
+                      <Grid
+                        direction="column"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <ProductsTableCell
+                          selectedProducts={selectedProducts}
+                          value={fields[field.name] || ""}
+                          onChange={handleChange(field.name)}
+                          size="small"
+                          required={field.required}
+                          handleProductChange={handleProductChange}
+                        />
+                        {selectedProducts?.length !== 0 && (
+                          <ProductsDisplayTableCell
+                            selectedProducts={selectedProducts}
+                            setSelectedProducts={setSelectedProducts}
+                            fieldType={field.type}
                           />
-                          {selectedProducts.length !== 0 && (
-                            <Grid
-                              sx={{
-                                m: 2,
-                                mt: 4,
-                                border: "1px solid #ccc",
-                                borderRadius: 4,
-                              }}
-                            >
-                              <Table size="small">
-                                <TableRow>
+                        )}
+                      </Grid>
+                    )}
+                    {field.type === "materialList" && (
+                      <Grid
+                        direction="column"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <ProductsTableCell
+                          value={fields[field.name] || ""}
+                          onChange={handleChange(field.name)}
+                          size="small"
+                          required={field.required}
+                          handleProductChange={handleProductChange}
+                        />
+                        {selectedProducts.length !== 0 && (
+                          <Grid
+                            sx={{
+                              m: 2,
+                              mt: 4,
+                              border: "1px solid #ccc",
+                              borderRadius: 4,
+                            }}
+                          >
+                            <Table size="small">
+                              <TableRow>
+                                <TableCell>
+                                  <Typography
+                                    sx={{ fontWeight: "bold", fontSize: 14 }}
+                                  >
+                                    Nome
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="right">
+                                  <Typography
+                                    sx={{ fontWeight: "bold", fontSize: 14 }}
+                                  >
+                                    Quantidade
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="right">
+                                  <Typography
+                                    sx={{ fontWeight: "bold", fontSize: 14 }}
+                                  >
+                                    Valor por Item
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="right">
+                                  <Typography
+                                    sx={{ fontWeight: "bold", fontSize: 14 }}
+                                  >
+                                    Total
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                              {selectedProducts.map((product, index) => (
+                                <TableRow key={index} sx={{ mt: 3 }}>
                                   <TableCell>
-                                    <Typography
-                                      sx={{ fontWeight: "bold", fontSize: 14 }}
-                                    >
-                                      Nome
+                                    <Typography sx={{ fontSize: 14 }}>
+                                      {product.name}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="right">
-                                    <Typography
-                                      sx={{ fontWeight: "bold", fontSize: 14 }}
-                                    >
-                                      Quantidade
+                                    <Typography sx={{ fontSize: 14 }}>
+                                      {product.count}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="right">
-                                    <Typography
-                                      sx={{ fontWeight: "bold", fontSize: 14 }}
-                                    >
-                                      Valor por Item
+                                    <Typography sx={{ fontSize: 14 }}>
+                                      R$
+                                      {field.type === "productList"
+                                        ? product.sellValue
+                                        : product.buyValue.toFixed(2)}
                                     </Typography>
                                   </TableCell>
                                   <TableCell align="right">
-                                    <Typography
-                                      sx={{ fontWeight: "bold", fontSize: 14 }}
-                                    >
-                                      Total
+                                    <Typography sx={{ fontSize: 14 }}>
+                                      R$
+                                      {(field.type === "productList"
+                                        ? product.sellValue * product.count
+                                        : product.buyValue * product.count
+                                      ).toFixed(2)}
                                     </Typography>
                                   </TableCell>
                                 </TableRow>
-                                {selectedProducts.map((product, index) => (
-                                  <TableRow key={index} sx={{ mt: 3 }}>
-                                    <TableCell>
-                                      <Typography sx={{ fontSize: 14 }}>
-                                        {product.name}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="right">
-                                      <Typography sx={{ fontSize: 14 }}>
-                                        {product.count}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="right">
-                                      <Typography sx={{ fontSize: 14 }}>
-                                        R$
-                                        {field.type === "productList"
-                                          ? product.sellValue
-                                          : product.buyValue.toFixed(2)}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell align="right">
-                                      <Typography sx={{ fontSize: 14 }}>
-                                        R$
-                                        {(field.type === "productList"
-                                          ? product.sellValue * product.count
-                                          : product.buyValue * product.count
-                                        ).toFixed(2)}
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                ))}
-                                {selectedProducts.length > 1 && (
-                                  <TableRow sx={{ mt: 3 }}>
-                                    <TableCell id="ghost" />
-                                    <TableCell id="ghost" />
-                                    <TableCell id="ghost" />
-                                    <TableCell align="right">
-                                      <Typography
-                                        sx={{
-                                          fontSize: 16,
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        R$
-                                        {field.type === "productList"
-                                          ? selectedProducts
-                                              .reduce(
-                                                (sum, product) =>
-                                                  sum +
-                                                  product.sellValue *
-                                                    product.count,
-                                                0
-                                              )
-                                              .toFixed(2)
-                                          : 0.0}
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>
-                                )}
-                                {field.type === "materialList" && (
-                                  <Grid sx={{ mx: 2, my: 1, width: "180%" }}>
-                                    <Typography sx={{ fontWeight: "bold" }}>
-                                      Observação:
-                                    </Typography>{" "}
-                                    <Typography sx={{ fontSize: 12 }}>
-                                      Durante o cadastro do Serviço, os valor
-                                      dos materiais{" "}
-                                      <strong>não é acrescido.</strong> É
-                                      possível selecionar a opção de cobrar ou
-                                      não pelos materiais{" "}
-                                      <strong>na criação de um novo Job</strong>
-                                      .
+                              ))}
+                              {selectedProducts.length > 1 && (
+                                <TableRow sx={{ mt: 3 }}>
+                                  <TableCell id="ghost" />
+                                  <TableCell id="ghost" />
+                                  <TableCell id="ghost" />
+                                  <TableCell align="right">
+                                    <Typography
+                                      sx={{
+                                        fontSize: 16,
+                                        fontWeight: "bold",
+                                      }}
+                                    >
+                                      R$
+                                      {field.type === "productList"
+                                        ? selectedProducts
+                                            .reduce(
+                                              (sum, product) =>
+                                                sum +
+                                                product.sellValue *
+                                                  product.count,
+                                              0
+                                            )
+                                            .toFixed(2)
+                                        : 0.0}
                                     </Typography>
-                                  </Grid>
-                                )}
-                              </Table>
-                            </Grid>
-                          )}
-                        </Grid>
-                      ))}
+                                  </TableCell>
+                                </TableRow>
+                              )}
+                              {field.type === "materialList" && (
+                                <Grid sx={{ mx: 2, my: 1, width: "180%" }}>
+                                  <Typography sx={{ fontWeight: "bold" }}>
+                                    Observação:
+                                  </Typography>{" "}
+                                  <Typography sx={{ fontSize: 12 }}>
+                                    Durante o cadastro do Serviço, os valor dos
+                                    materiais <strong>não é acrescido.</strong>{" "}
+                                    É possível selecionar a opção de cobrar ou
+                                    não pelos materiais{" "}
+                                    <strong>na criação de um novo Job</strong>.
+                                  </Typography>
+                                </Grid>
+                              )}
+                            </Table>
+                          </Grid>
+                        )}
+                      </Grid>
+                    )}
                     {field.type === "servicesList" && (
                       <ServicesTableCell
                         value={fields[field.name] || ""}
