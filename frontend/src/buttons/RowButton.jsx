@@ -115,6 +115,10 @@ const RowButton = (props) => {
                     smallmenuOptions={smallmenuOptions}
                     setSmallmenuAnchorEl={setSmallmenuAnchorEl}
                     configCustomization={props.configCustomization}
+                    // setOpenDialog={setOpenDialog}
+                    closeAllMenus={closeAllMenus}
+                    refreshData={props.refreshData}
+                    setRefreshData={props.setRefreshData}
                   />
                 </Menu>
               </>

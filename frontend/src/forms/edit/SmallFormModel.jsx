@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 const api = axios.create({
@@ -37,13 +38,11 @@ const SmallFormModel = (props) => {
   }, [options.targetModel]);
 
   // Encontra o nome do departamento atual do usuário
-  const currentDepartmentId =
+  const currentItemId =
     source[
       options.targetModel.charAt(0).toLowerCase() + options.targetModel.slice(1)
     ];
-  const currentDepartment = fetchedOptions.find(
-    (dept) => dept._id === currentDepartmentId
-  );
+  const currentItem = fetchedOptions.find((item) => item._id === currentItemId);
 
   // Função de submit para simular a chamada à API
   const handleSubmit = async (event) => {
@@ -51,14 +50,34 @@ const SmallFormModel = (props) => {
 
     // Dados a serem enviados
     const updatedData = {
-      userId: source._id,
-      newDepartmentId: selectedOption,
+      sourceId: source._id,
+      sourceModel: options.sourceModel,
+      targetAttribute:
+        options.targetModel.charAt(0).toLowerCase() +
+        options.targetModel.slice(1),
+      newAttributeValue: selectedOption,
     };
 
     try {
-      console.log("Simulating API call with data:", updatedData);
+      const res = await api.put("/editSmall", updatedData);
+      if (res.data) {
+        toast.success(`Editado com Sucesso!`, {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
+      props.closeAllMenus();
+      props.setRefreshData(!props.refreshData);
     } catch (error) {
-      console.error("Error updating department:", error);
+      console.log("error", error)
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
     }
   };
 
@@ -92,7 +111,7 @@ const SmallFormModel = (props) => {
               readOnly: true,
             }}
             // Exibe o nome do departamento atual
-            value={currentDepartment ? currentDepartment.name : "Desconhecido"}
+            value={currentItem ? currentItem.name : "Desconhecido"}
           />
         </Grid>
         <Grid item>
