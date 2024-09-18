@@ -141,13 +141,17 @@ const rowButtonOptions = [
           action: "dynamicChange",
           submenu: [
             {
-              label: "Departamento",
               modal: "small",
+              sourceModel: "User",
+              targetModel: "Department",
+              targetLabel: "Departamento",
               icon: <LanIcon />,
             },
             {
-              label: "Cargo",
               modal: "small",
+              sourceModel: "User",
+              targetModel: "Position",
+              targetLabel: "Posição",
               icon: <AssignmentIndIcon />,
             },
           ],
