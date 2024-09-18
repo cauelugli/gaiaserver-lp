@@ -115,9 +115,11 @@ const PriceDifferenceTable = (props) => {
 
   return (
     <>
-      <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-        Alterações
-      </Typography>
+      {props.showTitle !== 0 && (
+        <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+          Alterações
+        </Typography>
+      )}
       <Grid
         container
         direction="column"
@@ -172,10 +174,14 @@ const PriceDifferenceTable = (props) => {
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <DeleteIcon
-                    sx={{ fontSize: 14, cursor: "pointer" }}
-                    onClick={() => handleDeleteItem(item.index)}
-                  />
+                  {props.okToDispatch ? (
+                    ""
+                  ) : (
+                    <DeleteIcon
+                      sx={{ fontSize: 14, cursor: "pointer" }}
+                      onClick={() => handleDeleteItem(item.index)}
+                    />
+                  )}
                 </TableCell>
               </TableRow>
             );
@@ -289,10 +295,14 @@ const PriceDifferenceTable = (props) => {
               />
             </TableCell>
             <TableCell align="right">
-              <AddIcon
-                sx={{ fontSize: 14, cursor: "pointer" }}
-                onClick={handleAddItem}
-              />
+              {props.okToDispatch ? (
+                ""
+              ) : (
+                <AddIcon
+                  sx={{ fontSize: 14, cursor: "pointer" }}
+                  onClick={handleAddItem}
+                />
+              )}
             </TableCell>
           </TableRow>
         </Table>
@@ -314,7 +324,7 @@ const PriceDifferenceTable = (props) => {
               <Grid item sx={{ m: 1, mx: 2 }}>
                 <Grid container direction="row" justifyContent="space-between">
                   <Typography sx={{ fontSize: 16 }}>
-                    Valor dos Serviços
+                    Valor dos Itens
                   </Typography>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     R${props.sum ? props.sum : 0.0}

@@ -1,4 +1,3 @@
-
 export function calculatePriceDifferences(priceDifference, initialSum) {
   let sumOfAllIncreases = 0;
   let sumOfAllDiscounts = 0;
@@ -26,6 +25,45 @@ export function calculatePriceDifferences(priceDifference, initialSum) {
     sumOfAllDiscounts,
     finalSum,
   };
+}
+
+export function isButtonDisabled(
+  modalOptions,
+  okToDispatch,
+  selectedServices,
+  selectedProducts,
+  priceDifference
+) {
+  if (okToDispatch) return false;
+  else {
+    switch (modalOptions.label) {
+      case "Plano de Serviços":
+        return (
+          !okToDispatch ||
+          selectedServices.length === 0 ||
+          (Object.keys(priceDifference).length !== 0 && !okToDispatch)
+        );
+
+      case "Job":
+        return false;
+      case "Colaborador":
+        return false;
+      case "Gerente":
+        return false;
+      case "Cargo":
+        return false;
+
+      case "Venda":
+        return (
+          !okToDispatch ||
+          selectedProducts.length === 0 ||
+          (Object.keys(priceDifference).length !== 0 && !okToDispatch)
+        );
+
+      default:
+        return true;
+    }
+  }
 }
 
 // export function darkenColor(hex, factor) {

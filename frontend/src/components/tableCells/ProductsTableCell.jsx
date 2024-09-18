@@ -22,6 +22,8 @@ import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 
 import BadgedIcon from "../small/BadgedIcon";
+import PriceDifferenceTable from "../small/PriceDifferenceTable";
+import ProductsDisplayTableCell from "../tableCells/ProductsDisplayTableCell";
 
 const ProductsTableCell = (props) => {
   const [baseProducts, setBaseProducts] = React.useState([]);
@@ -30,6 +32,8 @@ const ProductsTableCell = (props) => {
   const [searchType, setSearchType] = React.useState("name");
   const [selectedSearchType, setSelectedSearchType] =
     React.useState("Selecione");
+  const [sum, setSum] = React.useState(0);
+  const [isChangingQuote, setIsChangeingQuote] = React.useState(false);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -50,6 +54,13 @@ const ProductsTableCell = (props) => {
     fetchData();
   }, []);
 
+  React.useEffect(() => {
+    const newSum = props.selectedProducts
+      .reduce((sum, product) => sum + product.sellValue * product.count, 0)
+      .toFixed(2);
+    setSum(newSum);
+  }, [props.selectedProducts]);
+
   const uniqueTypes = Array.from(
     new Set(baseProducts.map((option) => option.type))
   );
@@ -64,7 +75,7 @@ const ProductsTableCell = (props) => {
   });
 
   const isProductInList = (productId) => {
-    return props.selectedProducts.some((p) => p._id === productId);
+    return props.selectedProducts?.some((p) => p._id === productId);
   };
 
   return (
@@ -153,6 +164,66 @@ const ProductsTableCell = (props) => {
           ))
         )}
       </Grid>
+      {props.selectedProducts?.length !== 0 && (
+        <>
+          <ProductsDisplayTableCell
+            selectedProducts={props.selectedProducts}
+            setSelectedProducts={props.setSelectedProducts}
+            fieldType={props.fieldType}
+          />
+          <Grid container direction="row" justifyContent="space-between">
+            <Grid>
+              <Typography
+                onClick={() => {
+                  setIsChangeingQuote(!isChangingQuote),
+                    props.okToDispatch
+                      ? props.setOkToDispatch(!props.okToDispatch)
+                      : "";
+                }}
+                sx={{
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+              >
+                {isChangingQuote
+                  ? "Cancelar Alteração de Orçamento"
+                  : "Alterar Orçamento"}
+              </Typography>{" "}
+            </Grid>
+            <Grid>
+              <Typography
+                onClick={() => props.setOkToDispatch(!props.okToDispatch)}
+                sx={{
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+              >
+                {isChangingQuote
+                  ? ""
+                  : props.okToDispatch
+                  ? ""
+                  : "Confirmar Orçamento"}
+              </Typography>
+            </Grid>
+          </Grid>
+          {isChangingQuote ? (
+            <PriceDifferenceTable
+              openAddDifference={isChangingQuote}
+              priceDifference={props.priceDifference}
+              setPriceDifference={props.setPriceDifference}
+              sum={parseFloat(sum)}
+              setFinalPrice={props.setFinalPrice}
+              okToDispatch={props.okToDispatch}
+              setOkToDispatch={props.setOkToDispatch}
+              showTitle={0}
+            />
+          ) : (
+            ""
+          )}
+        </>
+      )}
     </>
   );
 };

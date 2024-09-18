@@ -35,7 +35,8 @@ import ColorPicker from "../../components/small/ColorPicker";
 import PhoneTableCell from "../../components/tableCells/PhoneTableCell";
 import ImageTableCell from "../../components/tableCells/ImageTableCell";
 import ServicesTableCell from "../../components/tableCells/ServicesTableCell";
-import ProductsDisplayTableCell from "../../components/tableCells/ProductsDisplayTableCell";
+
+import { isButtonDisabled } from "../../../../controllers/functions/overallFunctions";
 
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
@@ -44,7 +45,6 @@ export default function AddFormModel(props) {
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
   const [finalPrice, setFinalPrice] = React.useState(0);
-  // eslint-disable-next-line no-unused-vars
   const [okToDispatch, setOkToDispatch] = React.useState(false);
 
   // updating value from child modifications
@@ -180,6 +180,30 @@ export default function AddFormModel(props) {
       }
     }
   };
+
+  // const isButtonDisabled = () => {
+  //   if (okToDispatch) return false;
+  //   else {
+  //     switch (modalOptions.label) {
+  //       case "Plano de Serviços":
+  //         return (
+  //           !okToDispatch ||
+  //           selectedServices.length === 0 ||
+  //           (Object.keys(priceDifference).length !== 0 && !okToDispatch)
+  //         );
+
+  //       case "Venda":
+  //         return (
+  //           !okToDispatch ||
+  //           selectedProducts.length === 0 ||
+  //           (Object.keys(priceDifference).length !== 0 && !okToDispatch)
+  //         );
+
+  //       default:
+  //         return true;
+  //     }
+  //   }
+  // };
 
   return (
     <form onSubmit={handleAdd}>
@@ -333,19 +357,20 @@ export default function AddFormModel(props) {
                       >
                         <ProductsTableCell
                           selectedProducts={selectedProducts}
+                          handleProductChange={handleProductChange}
+                          setSelectedProducts={setSelectedProducts}
                           value={fields[field.name] || ""}
                           onChange={handleChange(field.name)}
                           size="small"
                           required={field.required}
-                          handleProductChange={handleProductChange}
+                          fieldType={field.type}
+                          finalPrice={finalPrice}
+                          setFinalPrice={setFinalPrice}
+                          priceDifference={priceDifference}
+                          setPriceDifference={setPriceDifference}
+                          okToDispatch={okToDispatch}
+                          setOkToDispatch={setOkToDispatch}
                         />
-                        {selectedProducts?.length !== 0 && (
-                          <ProductsDisplayTableCell
-                            selectedProducts={selectedProducts}
-                            setSelectedProducts={setSelectedProducts}
-                            fieldType={field.type}
-                          />
-                        )}
                       </Grid>
                     )}
                     {field.type === "materialList" && (
@@ -530,11 +555,13 @@ export default function AddFormModel(props) {
           type="submit"
           variant="contained"
           color="success"
-          disabled={
-            modalOptions.label === "Plano de Serviços" &&
-            (selectedServices.length === 0 ||
-              (Object.keys(priceDifference).length !== 0 && !okToDispatch))
-          }
+          disabled={isButtonDisabled(
+            modalOptions,
+            okToDispatch,
+            selectedServices,
+            selectedProducts,
+            priceDifference
+          )}
         >
           OK
         </Button>

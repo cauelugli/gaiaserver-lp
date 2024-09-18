@@ -31,6 +31,7 @@ const ProductsDisplayTableCell = (props) => {
     props.setSelectedProducts(updatedProducts);
   };
 
+  
   return (
     <Grid
       sx={{
