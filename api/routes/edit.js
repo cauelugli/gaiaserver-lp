@@ -33,8 +33,8 @@ router.put("/", async (req, res) => {
 
   // verify cases
   fields.image = image;
-  fields.department = req.body.fields.department._id;
-  fields.position = req.body.fields.position._id;
+  fields.department = req.body.fields.department?._id | "";
+  fields.position = req.body.fields.position?._id || "";
   fields.role = req.body.fields.role?._id || "";
   fields.isManager = isManager;
   fields.products = selectedProducts;
