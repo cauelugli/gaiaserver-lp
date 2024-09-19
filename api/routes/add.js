@@ -33,6 +33,7 @@ router.post("/", async (req, res) => {
   }
 
   // verify cases
+  fields.attachments = req.body.attachments || [];
   fields.department = req.body.fields.department?._id || "";
   fields.position = req.body.fields.position?._id || "";
   fields.role = req.body.fields.role?._id || "";

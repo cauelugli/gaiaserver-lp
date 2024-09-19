@@ -18,23 +18,24 @@ import {
   Table,
   TableCell,
   TableRow,
-  TextField,
   Typography,
 } from "@mui/material";
 
 import DialogHeader from "../../components/small/DialogHeader";
+import ColorPicker from "../../components/small/ColorPicker";
+
+import AttachmentsTableCell from "../../components/tableCells/AttachmentsTableCell";
+import CurrencyTableCell from "../../components/tableCells/CurrencyTableCell";
 import DateTableCell from "../../components/tableCells/DateTableCell";
 import DynamicDataTableCell from "../../components/tableCells/DynamicDataTableCell";
+import IdDocTableCell from "../../components/tableCells/IdDocTableCell";
+import ImageTableCell from "../../components/tableCells/ImageTableCell";
+import PhoneTableCell from "../../components/tableCells/PhoneTableCell";
 import ProductsTableCell from "../../components/tableCells/ProductsTableCell";
 import SelectTableCell from "../../components/tableCells/SelectTableCell";
-import StringTableCell from "../../components/tableCells/StringTableCell";
-import IdDocTableCell from "../../components/tableCells/IdDocTableCell";
-
-import CurrencyTableCell from "../../components/tableCells/CurrencyTableCell";
-import ColorPicker from "../../components/small/ColorPicker";
-import PhoneTableCell from "../../components/tableCells/PhoneTableCell";
-import ImageTableCell from "../../components/tableCells/ImageTableCell";
 import ServicesTableCell from "../../components/tableCells/ServicesTableCell";
+import StringTableCell from "../../components/tableCells/StringTableCell";
+
 
 import { isButtonDisabled } from "../../../../controllers/functions/overallFunctions";
 
@@ -45,6 +46,7 @@ export default function AddFormModel(props) {
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
   const [finalPrice, setFinalPrice] = React.useState(0);
+  const [attachments, setAttachments] = React.useState([]);
   const [okToDispatch, setOkToDispatch] = React.useState(false);
 
   // updating value from child modifications
@@ -56,6 +58,14 @@ export default function AddFormModel(props) {
 
   const handleImageClick = () => {
     document.getElementById("fileInput").click();
+  };
+
+  const handleFileUpload = (files) => {
+    setAttachments((prev) => [...prev, ...files]);
+  };
+
+  const handleFileRemove = (index) => {
+    setAttachments((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleChange = (fieldName) => (e) => {
@@ -115,6 +125,17 @@ export default function AddFormModel(props) {
     e.preventDefault();
     const formData = new FormData();
     formData.append("image", image);
+    const uploadResponses = [];
+    for (const file of attachments) {
+      const formData = new FormData();
+      formData.append("attachment", file);
+
+      const uploadResponse = await api.post(
+        "/uploads/singleAttachment",
+        formData
+      );
+      uploadResponses.push(uploadResponse.data.attachmentPath);
+    }
 
     try {
       const uploadResponse = await api.post("/uploads/singleFile", formData);
@@ -147,6 +168,7 @@ export default function AddFormModel(props) {
                 .toFixed(2) || 0
             : fields.price,
         finalPrice,
+        attachments: uploadResponses,
       });
       if (res.data) {
         toast.success(`${props.selectedOptionLabel} Adicionado!`, {
@@ -180,30 +202,6 @@ export default function AddFormModel(props) {
       }
     }
   };
-
-  // const isButtonDisabled = () => {
-  //   if (okToDispatch) return false;
-  //   else {
-  //     switch (modalOptions.label) {
-  //       case "Plano de Serviços":
-  //         return (
-  //           !okToDispatch ||
-  //           selectedServices.length === 0 ||
-  //           (Object.keys(priceDifference).length !== 0 && !okToDispatch)
-  //         );
-
-  //       case "Venda":
-  //         return (
-  //           !okToDispatch ||
-  //           selectedProducts.length === 0 ||
-  //           (Object.keys(priceDifference).length !== 0 && !okToDispatch)
-  //         );
-
-  //       default:
-  //         return true;
-  //     }
-  //   }
-  // };
 
   return (
     <form onSubmit={handleAdd}>
@@ -347,6 +345,7 @@ export default function AddFormModel(props) {
                         modalOptions={modalOptions}
                         required={field.required}
                         multiple={field.multiple}
+                        //need 'target' for cases like changing department for Managers
                       />
                     )}
                     {field.type === "productList" && (
@@ -518,13 +517,11 @@ export default function AddFormModel(props) {
                         setOkToDispatch={setOkToDispatch}
                       />
                     )}
-                    {field.type === "list" && (
-                      <TextField
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                        sx={{ width: "336%" }}
-                        size="small"
-                        required={field.required}
+                    {field.type === "attachments" && (
+                      <AttachmentsTableCell
+                        attachments={attachments}
+                        onUpload={handleFileUpload}
+                        onRemove={handleFileRemove}
                       />
                     )}
                     {field.type === "checkbox" && (
