@@ -12,6 +12,7 @@ const editSmallRoute = require("./routes/editSmall");
 const deleteRoute = require("./routes/delete");
 const getRoute = require("./routes/get");
 const getConfigRoute = require("./routes/getConfig");
+const idIndexListRoute = require("./routes/idIndexList");
 
 const actionsRoute = require("./routes/actions");
 const adminRoute = require("./routes/admin");
@@ -43,6 +44,7 @@ app.use("/api/edit", editRoute);
 app.use("/api/editSmall", editSmallRoute);
 app.use("/api/delete", deleteRoute);
 app.use("/api/get", getRoute);
+app.use("/api/idIndexList", idIndexListRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/getConfig", getConfigRoute);
 app.use("/api/login", authRoute);

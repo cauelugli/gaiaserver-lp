@@ -1,5 +1,10 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 import {
   Box,
@@ -12,17 +17,28 @@ import {
   TableRow,
   TablePagination,
   Avatar,
-  Tooltip,
-  Grid,
-  Typography,
 } from "@mui/material";
 
-import BuildIcon from "@mui/icons-material/Build";
 import RowButton from "../buttons/RowButton";
 
+import DataTableCell from "../components/tableCells/DataTableCell";
+
 export default function TableModel(props) {
+  const [idIndexList, setIdIndexList] = React.useState([]);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("number");
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const ids = await api.get("/idIndexList");
+        setIdIndexList(ids.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [props.items]);
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -86,11 +102,7 @@ export default function TableModel(props) {
                   >
                     Nome
                   </TableCell>
-                  {props &&
-                  props.items &&
-                  props.items.length > 0 &&
-                  props.items[props.itemIndex] &&
-                  props.items[props.itemIndex].fields
+                  {props.items[props.itemIndex]?.fields
                     ? props.items[props.itemIndex].fields.map(
                         (headCell, cellIndex) => (
                           <TableCell
@@ -154,11 +166,6 @@ export default function TableModel(props) {
             {props.page === "products" || props.page === "materials"
               ? props.items.length > 0 &&
                 filteredRows
-                  .filter(
-                    (item) =>
-                      item.name &&
-                      item.type === props.items[props.itemIndex].type
-                  )
                   .slice(startIndex, endIndex)
                   .map((row, rowIndex) => (
                     <TableRow key={rowIndex}>
@@ -172,11 +179,9 @@ export default function TableModel(props) {
                         />
                       </TableCell>
                       <TableCell align="left">{row.name}</TableCell>
-                      {row.fields &&
-                        row.fields.map((field, fieldIndex) => (
-                          <TableCell key={fieldIndex}>{field.value}</TableCell>
-                        ))}
-
+                      {row.fields?.map((field, fieldIndex) => (
+                        <TableCell key={fieldIndex}>{field.value}</TableCell>
+                      ))}
                       <TableCell align="center">
                         <RowButton
                           item={row}
@@ -206,84 +211,10 @@ export default function TableModel(props) {
                             key={columnIndex}
                             align={columnIndex === 0 ? "" : "left"}
                           >
-                            {row[column.id] === null ? (
-                              ""
-                            ) : row[column.id] &&
-                              typeof row[column.id] === "string" &&
-                              row[column.id].startsWith("/images") ? (
-                              <Avatar
-                                alt="Imagem do Produto"
-                                src={`http://localhost:3000/static${
-                                  row[column.id]
-                                }`}
-                                sx={{ width: 30, height: 30 }}
-                              />
-                            ) : Array.isArray(row[column.id]) ? (
-                              <Grid
-                                container
-                                direction="row"
-                                alignItems="center"
-                              >
-                                {row[column.id].map((obj, index) => (
-                                  <Grid item key={index} sx={{ mr: 1 }}>
-                                    <Tooltip title={obj.name}>
-                                      <Grid
-                                        container
-                                        direction="column"
-                                        alignItems="center"
-                                        justifyContent="center"
-                                      >
-                                        <Grid item>
-                                          {obj.materials ? (
-                                            <BuildIcon />
-                                          ) : (
-                                            <Avatar
-                                              alt="Imagem do Produto"
-                                              src={
-                                                props.page === "requests"
-                                                  ? `http://localhost:3000/static${obj.images[0]}`
-                                                  : `http://localhost:3000/static${obj.image}`
-                                              }
-                                              sx={{
-                                                width: 30,
-                                                height: 30,
-                                                mr: 0.5,
-                                              }}
-                                            />
-                                          )}
-                                        </Grid>
-                                        {props.page === "requests" && (
-                                          <Grid item>
-                                            <Typography sx={{ fontSize: 10 }}>
-                                              (x{obj.count})
-                                            </Typography>
-                                          </Grid>
-                                        )}
-                                      </Grid>
-                                    </Tooltip>
-                                  </Grid>
-                                ))}
-                              </Grid>
-                            ) : typeof row[column.id] === "object" ? (
-                              row[column.id].name
-                            ) : typeof row[column.id] === "number" ? (
-                              `R$${row[column.id].toFixed(2)}`
-                            ) : typeof row[column.id] === "string" &&
-                              row[column.id].startsWith("#") ? (
-                              <Paper
-                                elevation={0}
-                                sx={{
-                                  mr: 1,
-                                  width: 16,
-                                  height: 16,
-                                  borderRadius: 50,
-                                  border: "0.5px solid white",
-                                  backgroundColor: row[column.id],
-                                }}
-                              />
-                            ) : (
-                              row[column.id]
-                            )}
+                            <DataTableCell
+                              item={row[column.id]}
+                              idIndexList={idIndexList}
+                            />
                           </TableCell>
                         )
                       )}
