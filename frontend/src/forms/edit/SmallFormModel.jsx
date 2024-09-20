@@ -24,18 +24,22 @@ const SmallFormModel = (props) => {
   const [selectedOption, setSelectedOption] = React.useState("");
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resModel = await api.get("/get", {
-          params: { model: options.targetModel },
-        });
-        setFetchedOptions(resModel.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [options.targetModel]);
+    if (options.targetModel === "Static") {
+      setFetchedOptions(options.staticList);
+    } else {
+      const fetchData = async () => {
+        try {
+          const resModel = await api.get("/get", {
+            params: { model: options.targetModel },
+          });
+          setFetchedOptions(resModel.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchData();
+    }
+  }, [options.targetModel, options.staticAttribute, options.staticList]);
 
   // Encontra o nome do departamento atual do usuário
   const currentItemId =
@@ -44,17 +48,16 @@ const SmallFormModel = (props) => {
     ];
   const currentItem = fetchedOptions.find((item) => item._id === currentItemId);
 
-  // Função de submit para simular a chamada à API
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Dados a serem enviados
     const updatedData = {
       sourceId: source._id,
       sourceModel: options.sourceModel,
       targetAttribute:
-        options.targetModel.charAt(0).toLowerCase() +
-        options.targetModel.slice(1),
+        options.targetModel === "Static"
+          ? options.staticAttribute
+          : options.targetModel.charAt(0).toLowerCase() +
+            options.targetModel.slice(1),
       newAttributeValue: selectedOption,
     };
 
@@ -71,7 +74,7 @@ const SmallFormModel = (props) => {
       props.closeAllMenus();
       props.setRefreshData(!props.refreshData);
     } catch (error) {
-      console.log("error", error)
+      console.log("error", error);
       toast.error("Houve algum erro...", {
         closeOnClick: true,
         pauseOnHover: false,
@@ -110,8 +113,13 @@ const SmallFormModel = (props) => {
             InputProps={{
               readOnly: true,
             }}
-            // Exibe o nome do departamento atual
-            value={currentItem ? currentItem.name : "Desconhecido"}
+            value={
+              currentItem
+                ? currentItem.name
+                : options.targetModel === "Static"
+                ? source[options.staticAttribute]
+                : "Desconhecido"
+            }
           />
         </Grid>
         <Grid item>
@@ -124,11 +132,17 @@ const SmallFormModel = (props) => {
             value={selectedOption}
             onChange={(e) => setSelectedOption(e.target.value)}
           >
-            {fetchedOptions.map((option) => (
-              <MenuItem key={option._id} value={option._id}>
-                {option.name}
-              </MenuItem>
-            ))}
+            {options.targetModel === "Static"
+              ? fetchedOptions.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))
+              : fetchedOptions.map((option) => (
+                  <MenuItem key={option._id} value={option._id}>
+                    {option.name}
+                  </MenuItem>
+                ))}
           </Select>
         </Grid>
       </Grid>

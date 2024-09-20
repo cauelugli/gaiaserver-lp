@@ -9,6 +9,8 @@ import LanIcon from "@mui/icons-material/Lan";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import SellIcon from "@mui/icons-material/Sell";
 import SettingsIcon from "@mui/icons-material/Settings";
+import TimelapseIcon from "@mui/icons-material/Timelapse";
+import { status } from "./staticListOptions";
 
 const rowButtonOptions = [
   {
@@ -153,6 +155,72 @@ const rowButtonOptions = [
               targetModel: "Position",
               targetLabel: "Posição",
               icon: <AssignmentIndIcon />,
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    page: "requests",
+    models: ["Job", "Sale"],
+    menus: {
+      0: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "Job",
+          icon: <ModeEditIcon />,
+        },
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Job",
+          icon: <DeleteIcon />,
+        },
+        {
+          label: "Alterar",
+          icon: <SettingsIcon />,
+          action: "dynamicChange",
+          submenu: [
+            {
+              modal: "small",
+              sourceModel: "Job",
+              targetModel: "Static",
+              targetLabel: "Status",
+              icon: <TimelapseIcon />,
+              staticAttribute: "status",
+              staticList: status,
+            },
+          ],
+        },
+      ],
+      1: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "Sale",
+          icon: <ModeEditIcon />,
+        },
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Sale",
+          icon: <DeleteIcon />,
+        },
+        {
+          label: "Alterar",
+          icon: <SettingsIcon />,
+          action: "dynamicChange",
+          submenu: [
+            {
+              modal: "small",
+              sourceModel: "Sale",
+              targetModel: "Static",
+              targetLabel: "Status",
+              icon: <TimelapseIcon />,
+              staticAttribute: "status",
+              staticList: status,
             },
           ],
         },

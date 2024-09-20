@@ -57,7 +57,6 @@ export default function PageModel(props) {
   };
 
   React.useEffect(() => {
-    console.log("looping page")
     if (props.item.page !== currentPage) {
       setValue(0);
       setCurrentPage(props.item.page);
