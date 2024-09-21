@@ -3,6 +3,7 @@ import React from "react";
 
 import AddIcon from "@mui/icons-material/Add";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import LanIcon from "@mui/icons-material/Lan";
@@ -167,6 +168,12 @@ const rowButtonOptions = [
     menus: {
       0: [
         {
+          label: "Resolver",
+          action: "resolve",
+          modal: "Job",
+          icon: <CheckIcon />,
+        },
+        {
           label: "Editar",
           action: "edit",
           modal: "Job",
@@ -196,6 +203,12 @@ const rowButtonOptions = [
         },
       ],
       1: [
+        {
+          label: "Resolver",
+          action: "resolve",
+          modal: "Sale",
+          icon: <CheckIcon />,
+        },
         {
           label: "Editar",
           action: "edit",

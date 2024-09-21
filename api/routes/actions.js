@@ -1,40 +1,37 @@
 const express = require("express");
 const router = express.Router();
-const Client = require("../../models/models/Client");
-const Customer = require("../../models/models/Customer");
-const Job = require("../../models/models/Job");
-const Sale = require("../../models/models/Sale");
-const User = require("../../models/models/User");
+const { defineModel } = require("../../controllers/functions/routeFunctions");
+const dayjs = require("dayjs");
 
-// MODELS MAPPING
-const models = {
-  Client: Client,
-  Customer: Customer,
-  Job: Job,
-  Sale: Sale,
-  User: User,
-};
+// RESOLVE ITEM
+router.put("/resolve", async (req, res) => {
+  const { model, id, resolvedBy, resolvedAt } = req.body;
+  const Model = defineModel(model);
 
-// ACTIVATE/INACTIVATE ITEM
-router.put("/:id", async (req, res) => {
-  const itemId = req.params.id;
-  const modelName = req.body.model;
-
-  const model = models[modelName];
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
 
   try {
-    const updatedItem = await model.findByIdAndUpdate(
-      itemId,
+    const updatedItem = await Model.findByIdAndUpdate(
+      id,
       {
-        isActive: req.body.isActive,
-        status: req.body.status,
+        status: "Resolvido",
+        resolvedBy,
+        resolvedAt: resolvedAt || dayjs().format("DD/MM/YYYY HH:mm"),
       },
       { new: true }
     );
-    res.status(200).json(updatedItem);
+
+    if (!updatedItem) {
+      return res.status(404).json({ error: "Item não encontrado" });
+    }
+
+    res.status(200).json("Item resolvido com sucesso");
   } catch (err) {
-    console.log("err", err);
-    res.status(500).json({ error: "Erro ao atualizar o item", details: err });
+    console.log(err);
+    res.status(500).json({ error: "Erro ao resolver o item" });
   }
 });
 

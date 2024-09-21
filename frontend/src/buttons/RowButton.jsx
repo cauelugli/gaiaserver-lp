@@ -18,6 +18,7 @@ import { modals } from "../options/modals";
 import rowButtonOptions from "../options/rowButtonOptions";
 import DeleteFormModel from "../forms/delete/DeleteFormModel";
 import SmallFormModel from "../forms/edit/SmallFormModel";
+import ResolveForm from "../forms/misc/ResolveForm";
 
 const RowButton = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -179,6 +180,23 @@ const RowButton = (props) => {
             />
           ) : selectedAction === "add" ? (
             "add targeted"
+          ) : selectedAction === "resolve" ? (
+            <ResolveForm
+              userId={props.userId}
+              selectedItemId={props.item._id || props.item.id}
+              selectedItemName={
+                props.item.name ||
+                props.item.title ||
+                props.item.number ||
+                props.item.quoteNumber
+              }
+              model={selectedModal.model}
+              refreshData={props.refreshData}
+              setRefreshData={props.setRefreshData}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+              page={currentOption.page}
+            />
           ) : selectedAction === "delete" ? (
             <DeleteFormModel
               userId={props.userId}
