@@ -4,6 +4,7 @@ const {
   defineModel,
   departmentUpdates,
 } = require("../../controllers/functions/routeFunctions");
+const { addRoutines } = require("../../controllers/functions/addRoutines");
 
 // CREATE ITEM
 router.post("/", async (req, res) => {
@@ -59,11 +60,13 @@ router.post("/", async (req, res) => {
   const newItem = new Model(fields);
 
   try {
+    const savedItem = await newItem.save();
+
     if (req.body.model === "Department") {
-      departmentUpdates(newItem._id.toString(), fields.manager, fields.members);
+      departmentUpdates(savedItem._id.toString(), fields.manager, fields.members);
     }
 
-    const savedItem = await newItem.save();
+    await addRoutines(req.body.model, savedItem);
     res.status(200).json(savedItem);
   } catch (err) {
     console.log(err);

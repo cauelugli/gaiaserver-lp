@@ -54,7 +54,7 @@ saleSchema = new mongoose.Schema({
     },
   ],
   manager: {
-    type: Object,
+    type: String,
   },
   number: {
     type: Number,

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { defineModel } = require("../../controllers/functions/routeFunctions");
+const { deleteRoutines } = require("../../controllers/functions/deleteRoutines");
 
 // DELETE ITEM
 router.delete("/:model/:id", async (req, res) => {
@@ -14,6 +15,7 @@ router.delete("/:model/:id", async (req, res) => {
 
   try {
     await Model.findByIdAndDelete(id);
+    deleteRoutines(model, id)
     res.status(200).json("Item deletado com sucesso");
   } catch (err) {
     console.log(err);

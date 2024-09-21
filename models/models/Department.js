@@ -19,7 +19,7 @@ departmentSchema = new mongoose.Schema({
     type: String,
   },
   manager: {
-    type: Object,
+    type: String,
   },
   members: {
     type: Array,
