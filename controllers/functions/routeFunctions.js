@@ -1,3 +1,4 @@
+const Department = require("../../models/models/Department");
 const User = require("../../models/models/User");
 const models = {
   Client: require("../../models/models/Client"),
@@ -25,12 +26,70 @@ function defineModel(model) {
   return models[model] || null;
 }
 
+const userSwapDepartments = async (userId, newDepartmentId) => {
+  try {
+    const user = await User.findById(userId);
+    if (user) {
+      const oldDepartmentId = user.department;
+
+      if (user.isManager) {
+        user.department = newDepartmentId;
+        await user.save();
+
+        if (oldDepartmentId) {
+          const oldDepartment = await Department.findById(oldDepartmentId);
+
+          if (oldDepartment) {
+            oldDepartment.manager = "";
+            await oldDepartment.save();
+          }
+        }
+
+        const newDepartment = await Department.findById(newDepartmentId);
+        if (newDepartment) {
+          newDepartment.manager = user._id.toString();
+          await newDepartment.save();
+        }
+      } else {
+        user.department = newDepartmentId;
+        await user.save();
+
+        if (oldDepartmentId) {
+          const oldDepartment = await Department.findById(oldDepartmentId);
+
+          if (oldDepartment) {
+            oldDepartment.members = oldDepartment.members.filter(
+              (memberId) => memberId.toString() !== userId.toString()
+            );
+            await oldDepartment.save();
+          }
+        }
+
+        const newDepartment = await Department.findById(newDepartmentId);
+
+        if (newDepartment) {
+          if (!newDepartment.members.includes(userId)) {
+            newDepartment.members.push(userId);
+          }
+          await newDepartment.save();
+        }
+      }
+    } else {
+      throw new Error("Usuário não encontrado.");
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 const departmentUpdates = async (departmentId, managerId, members) => {
   try {
-    const manager = await User.findById(managerId);
-    if (manager) {
-      manager.department = departmentId;
-      await manager.save();
+    if (managerId) {
+      const manager = await User.findById(managerId);
+      if (manager) {
+        manager.department = departmentId;
+        await manager.save();
+      }
     }
 
     await Promise.all(
@@ -47,9 +106,8 @@ const departmentUpdates = async (departmentId, managerId, members) => {
       })
     );
   } catch (error) {
-    console.log("Erro na função departmentUpdates:", error);
     throw error;
   }
 };
 
-module.exports = { defineModel, departmentUpdates };
+module.exports = { defineModel, departmentUpdates, userSwapDepartments };

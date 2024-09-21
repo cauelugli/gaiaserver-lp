@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { defineModel } = require("../../controllers/functions/routeFunctions");
+const {
+  defineModel,
+  userSwapDepartments,
+} = require("../../controllers/functions/routeFunctions");
 
 // EDIT SMALL ITEM
 router.put("/", async (req, res) => {
@@ -9,6 +12,10 @@ router.put("/", async (req, res) => {
   if (!Model) {
     console.log("\nmodel not found\n");
     return res.status(400).json({ error: "Modelo inválido" });
+  }
+
+  if (req.body.targetAttribute === "department") {
+    userSwapDepartments(req.body.sourceId, req.body.newAttributeValue);
   }
 
   try {

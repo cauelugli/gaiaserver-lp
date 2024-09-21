@@ -29,8 +29,6 @@ const ResolveForm = ({
   setOpenDialog,
   page,
 }) => {
-  console.log("userId", userId);
-
   const handleResolve = async () => {
     try {
       const resolvedAt = dayjs().format("DD/MM/YYYY HH:mm");
