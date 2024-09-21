@@ -184,6 +184,7 @@ export default function TableModel(props) {
                       ))}
                       <TableCell align="center">
                         <RowButton
+                          userId={props.userId}
                           item={row}
                           page={props.page}
                           tabIndex={props.tabIndex}
@@ -221,6 +222,7 @@ export default function TableModel(props) {
 
                       <TableCell align="center">
                         <RowButton
+                          userId={props.userId}
                           item={row}
                           page={props.page}
                           tabIndex={props.tabIndex}
