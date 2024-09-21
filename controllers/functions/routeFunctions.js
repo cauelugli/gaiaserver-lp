@@ -1,3 +1,4 @@
+const User = require("../../models/models/User");
 const models = {
   Client: require("../../models/models/Client"),
   Customer: require("../../models/models/Customer"),
@@ -24,4 +25,31 @@ function defineModel(model) {
   return models[model] || null;
 }
 
-module.exports = { defineModel };
+const departmentUpdates = async (departmentId, managerId, members) => {
+  try {
+    const manager = await User.findById(managerId);
+    if (manager) {
+      manager.department = departmentId;
+      await manager.save();
+    }
+
+    await Promise.all(
+      members.map(async (memberId) => {
+        try {
+          const user = await User.findById(memberId);
+          if (user) {
+            user.department = departmentId;
+            await user.save();
+          }
+        } catch (error) {
+          console.log(`Erro ao atualizar o usuário ${memberId}:`, error);
+        }
+      })
+    );
+  } catch (error) {
+    console.log("Erro na função departmentUpdates:", error);
+    throw error;
+  }
+};
+
+module.exports = { defineModel, departmentUpdates };

@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Department = require("../../models/models/Department");
 const Position = require("../../models/models/Position");
+const User = require("../../models/models/User");
 
 // GET ID INDEX LIST
 router.get("/", async (req, res) => {
-  const modelList = [Department, Position];
+  const modelList = [Department, Position, User];
 
   try {
     let data = [];

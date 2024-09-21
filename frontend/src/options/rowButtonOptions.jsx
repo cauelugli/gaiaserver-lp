@@ -6,8 +6,10 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EngineeringIcon from "@mui/icons-material/Engineering";
+import GroupIcon from "@mui/icons-material/Group";
 import LanIcon from "@mui/icons-material/Lan";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import Person4Icon from "@mui/icons-material/Person4";
 import SellIcon from "@mui/icons-material/Sell";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
@@ -234,6 +236,78 @@ const rowButtonOptions = [
               icon: <TimelapseIcon />,
               staticAttribute: "status",
               staticList: status,
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    page: "departments",
+    models: ["Department", "Group"],
+    menus: {
+      0: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "Department",
+          icon: <ModeEditIcon />,
+        },
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Department",
+          icon: <DeleteIcon />,
+        },
+        {
+          label: "Alterar",
+          icon: <SettingsIcon />,
+          action: "dynamicChange",
+          submenu: [
+            {
+              modal: "small",
+              sourceModel: "Department",
+              targetModel: "User",
+              targetLabel: "Membros",
+              targetFlag: "members",
+              icon: <GroupIcon />,
+            },
+            {
+              modal: "small",
+              sourceModel: "Department",
+              targetModel: "User",
+              targetLabel: "Gerência",
+              targetFlag: "manager",
+              icon: <Person4Icon />,
+            },
+          ],
+        },
+      ],
+      1: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "Group",
+          icon: <ModeEditIcon />,
+        },
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Group",
+          icon: <DeleteIcon />,
+        },
+        {
+          label: "Alterar",
+          icon: <SettingsIcon />,
+          action: "dynamicChange",
+          submenu: [
+            {
+              modal: "small",
+              sourceModel: "Department",
+              targetModel: "User",
+              targetLabel: "Membros",
+              targetFlag: "members",
+              icon: <GroupIcon />,
             },
           ],
         },

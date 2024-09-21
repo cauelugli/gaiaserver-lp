@@ -634,7 +634,7 @@ export const modals = {
         name: "members",
         label: "Membros",
         type: "dynamicData",
-        dynamicData: "users",
+        dynamicData: "members",
         multiple: true,
         required: false,
       },

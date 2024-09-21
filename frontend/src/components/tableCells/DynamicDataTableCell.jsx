@@ -15,6 +15,7 @@ import {
   Typography,
   Chip,
 } from "@mui/material";
+import { checkAvailability } from "../../../../controllers/functions/overallFunctions";
 
 const DynamicDataTableCell = (props) => {
   const [options, setOptions] = React.useState([]);
@@ -23,14 +24,23 @@ const DynamicDataTableCell = (props) => {
     const fetchData = async () => {
       try {
         let data = [];
+        // this is stupid...
         if (props.field.dynamicData === "users") {
           const resUsers = await api.get("/get", { params: { model: "User" } });
           data = resUsers.data;
+        } else if (props.field.dynamicData === "managers") {
+          const resUsers = await api.get("/get", { params: { model: "User" } });
+          data = resUsers.data.filter((user) => user.isManager);
+        } else if (props.field.dynamicData === "members") {
+          const resUsers = await api.get("/get", { params: { model: "User" } });
+          data = resUsers.data.filter((user) => !user.isManager);
         } else if (props.field.dynamicData === "workers") {
           const resUsers = await api.get("/get", { params: { model: "User" } });
           data = resUsers.data.filter((user) => !user.isManager);
         } else if (props.field.dynamicData === "positions") {
-          const resUsers = await api.get("/get", { params: { model: "Position" } });
+          const resUsers = await api.get("/get", {
+            params: { model: "Position" },
+          });
           data = resUsers.data.filter((user) => !user.isManager);
         } else if (props.field.dynamicData === "allCustomers") {
           const resCustomers = await api.get("/get", {
@@ -83,6 +93,8 @@ const DynamicDataTableCell = (props) => {
       );
     } else if (
       props.field.dynamicData === "users" ||
+      props.field.dynamicData === "members" ||
+      props.field.dynamicData === "managers" ||
       props.field.dynamicData === "workers" ||
       props.field.dynamicData === "allCustomers"
     ) {
@@ -141,10 +153,16 @@ const DynamicDataTableCell = (props) => {
       renderValue={renderValue}
     >
       {props.field.dynamicData === "users" ||
+      props.field.dynamicData === "members" ||
+      props.field.dynamicData === "managers" ||
       props.field.dynamicData === "workers" ||
       props.field.dynamicData === "allCustomers"
         ? options.map((option, index) => (
-            <MenuItem value={option} key={index}>
+            <MenuItem
+              value={option}
+              key={index}
+              disabled={checkAvailability(props.field.dynamicData, option)}
+            >
               <Grid container direction="row" alignItems="center">
                 <Avatar
                   alt="Imagem"

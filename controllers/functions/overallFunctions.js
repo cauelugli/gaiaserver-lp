@@ -52,6 +52,10 @@ export function isButtonDisabled(
         return false;
       case "Cargo":
         return false;
+      case "Departamento":
+        return false;
+      case "Grupo":
+        return false;
 
       case "Venda":
         return (
@@ -65,7 +69,14 @@ export function isButtonDisabled(
     }
   }
 }
-
+export function checkAvailability(dynamicData, option) {
+  if (dynamicData === "members" || dynamicData === "managers") {
+    if (option.department && typeof option.department === "string") {
+      return true;
+    }
+  }
+  return false;
+}
 // export function darkenColor(hex, factor) {
 //   hex = hex.replace(/^#/, "");
 //   const bigint = parseInt(hex, 16);
