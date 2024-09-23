@@ -64,7 +64,11 @@ router.post("/", async (req, res) => {
     const savedItem = await newItem.save();
 
     if (req.body.model === "Department") {
-      departmentUpdates(savedItem._id.toString(), fields.manager, fields.members);
+      departmentUpdates(
+        savedItem._id.toString(),
+        fields.manager,
+        fields.members
+      );
     }
 
     await addRoutines(req.body.model, savedItem);

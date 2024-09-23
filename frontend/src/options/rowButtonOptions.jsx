@@ -331,6 +331,20 @@ const rowButtonOptions = [
           modal: "Service",
           icon: <DeleteIcon />,
         },
+        {
+          label: "Alterar",
+          icon: <SettingsIcon />,
+          action: "dynamicChange",
+          submenu: [
+            {
+              modal: "small",
+              sourceModel: "Service",
+              targetModel: "Department",
+              targetLabel: "Departamento",
+              icon: <LanIcon />,
+            },
+          ],
+        },
       ],
       1: [
         {
@@ -344,6 +358,20 @@ const rowButtonOptions = [
           action: "delete",
           modal: "ServicePlan",
           icon: <DeleteIcon />,
+        },
+        {
+          label: "Alterar",
+          icon: <SettingsIcon />,
+          action: "dynamicChange",
+          submenu: [
+            {
+              modal: "small",
+              sourceModel: "ServicePlan",
+              targetModel: "Department",
+              targetLabel: "Departamento",
+              icon: <LanIcon />,
+            },
+          ],
         },
       ],
     },

@@ -1,4 +1,5 @@
 const Department = require("../../models/models/Department");
+const Service = require("../../models/models/Service");
 const User = require("../../models/models/User");
 const models = {
   Client: require("../../models/models/Client"),
@@ -26,56 +27,76 @@ function defineModel(model) {
   return models[model] || null;
 }
 
-const userSwapDepartments = async (userId, newDepartmentId) => {
+const swapDepartments = async (sourceItemId, sourceModel, newDepartmentId) => {
   try {
-    const user = await User.findById(userId);
-    if (user) {
-      const oldDepartmentId = user.department;
+    if (sourceModel === "User") {
+      const sourceItem = await User.findById(sourceItemId);
+      if (sourceItem) {
+        const oldDepartmentId = sourceItem.department;
 
-      if (user.isManager) {
-        user.department = newDepartmentId;
-        await user.save();
+        if (sourceItem.isManager) {
+          sourceItem.department = newDepartmentId;
+          await sourceItem.save();
 
-        if (oldDepartmentId) {
-          const oldDepartment = await Department.findById(oldDepartmentId);
+          if (oldDepartmentId) {
+            const oldDepartment = await Department.findById(oldDepartmentId);
 
-          if (oldDepartment) {
-            oldDepartment.manager = "";
-            await oldDepartment.save();
+            if (oldDepartment) {
+              oldDepartment.manager = "";
+              await oldDepartment.save();
+            }
           }
-        }
 
-        const newDepartment = await Department.findById(newDepartmentId);
-        if (newDepartment) {
-          newDepartment.manager = user._id.toString();
-          await newDepartment.save();
-        }
-      } else {
-        user.department = newDepartmentId;
-        await user.save();
-
-        if (oldDepartmentId) {
-          const oldDepartment = await Department.findById(oldDepartmentId);
-
-          if (oldDepartment) {
-            oldDepartment.members = oldDepartment.members.filter(
-              (memberId) => memberId.toString() !== userId.toString()
-            );
-            await oldDepartment.save();
+          const newDepartment = await Department.findById(newDepartmentId);
+          if (newDepartment) {
+            newDepartment.manager = sourceItem._id.toString();
+            await newDepartment.save();
           }
-        }
+        } else {
+          sourceItem.department = newDepartmentId;
+          await sourceItem.save();
 
-        const newDepartment = await Department.findById(newDepartmentId);
+          if (oldDepartmentId) {
+            const oldDepartment = await Department.findById(oldDepartmentId);
 
-        if (newDepartment) {
-          if (!newDepartment.members.includes(userId)) {
-            newDepartment.members.push(userId);
+            if (oldDepartment) {
+              oldDepartment.members = oldDepartment.members.filter(
+                (memberId) => memberId.toString() !== sourceItemId.toString()
+              );
+              await oldDepartment.save();
+            }
           }
-          await newDepartment.save();
+
+          const newDepartment = await Department.findById(newDepartmentId);
+
+          if (newDepartment) {
+            if (!newDepartment.members.includes(sourceItemId)) {
+              newDepartment.members.push(sourceItemId);
+            }
+            await newDepartment.save();
+          }
         }
       }
-    } else {
-      throw new Error("Usuário não encontrado.");
+    }
+    if (sourceModel === "Service") {
+      const sourceItem = await Service.findById(sourceItemId);
+      if (sourceItem) {
+        const oldDepartment = await Department.findById(sourceItem.department);
+        if (oldDepartment) {
+          if (oldDepartment.services.includes(sourceItemId)) {
+            oldDepartment.services.pull(sourceItemId);
+            await oldDepartment.save();
+          }
+        }
+
+        const newDepartment = await Department.findById(newDepartmentId);
+        if (newDepartment) {
+          if (!newDepartment.services.includes(sourceItemId)) {
+            newDepartment.services.push(sourceItemId);
+            await newDepartment.save();
+          }
+        }
+      }
     }
   } catch (error) {
     throw error;
@@ -110,4 +131,4 @@ const departmentUpdates = async (departmentId, managerId, members) => {
   }
 };
 
-module.exports = { defineModel, departmentUpdates, userSwapDepartments };
+module.exports = { defineModel, swapDepartments, departmentUpdates };
