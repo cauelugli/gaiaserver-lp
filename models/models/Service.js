@@ -19,9 +19,6 @@ const serviceSchema = new mongoose.Schema({
   materials: {
     type: Array,
   },
-  materialsCost: {
-    type: Number,
-  },
   name: {
     type: String,
     required: true,

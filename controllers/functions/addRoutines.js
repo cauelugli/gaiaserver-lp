@@ -57,6 +57,13 @@ async function addRoutines(model, source) {
           );
         }
         break;
+      case "Service":
+        if (department) {
+          await Department.findByIdAndUpdate(department, {
+            $set: { services: source._id.toString() },
+          });
+        }
+        break;
 
       default:
         break;

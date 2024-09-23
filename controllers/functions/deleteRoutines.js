@@ -1,7 +1,8 @@
 const Department = require("../../models/models/Department");
+const Group = require("../../models/models/Group");
 const Position = require("../../models/models/Position");
 const Role = require("../../models/models/Role");
-const Group = require("../../models/models/Group");
+const Service = require("../../models/models/Service");
 const User = require("../../models/models/User");
 
 async function deleteRoutines(model, sourceId) {
@@ -46,7 +47,7 @@ async function deleteRoutines(model, sourceId) {
         const department = await Department.findById(sourceId);
         if (!department) return;
 
-        const { members, manager } = department;
+        const { members, manager, services } = department;
 
         if (manager) {
           await User.findByIdAndUpdate(manager, {
@@ -61,6 +62,28 @@ async function deleteRoutines(model, sourceId) {
             )
           );
         }
+
+        if (services && services.length > 0) {
+          await Promise.all(
+            services.map((serviceId) =>
+              Service.findByIdAndUpdate(serviceId, { $set: { department: "" } })
+            )
+          );
+        }
+        break;
+
+      case "Service":
+        const service = await Service.findById(sourceId);
+        if (!service) return;
+
+        const { department: serviceDepartment } = service;
+
+        if (serviceDepartment) {
+          await Department.findByIdAndUpdate(serviceDepartment, {
+            $pull: { services: sourceId },
+          });
+        }
+
         break;
 
       default:

@@ -15,9 +15,6 @@ import {
   DialogActions,
   DialogContent,
   Grid,
-  Table,
-  TableCell,
-  TableRow,
   Typography,
 } from "@mui/material";
 
@@ -35,7 +32,6 @@ import ProductsTableCell from "../../components/tableCells/ProductsTableCell";
 import SelectTableCell from "../../components/tableCells/SelectTableCell";
 import ServicesTableCell from "../../components/tableCells/ServicesTableCell";
 import StringTableCell from "../../components/tableCells/StringTableCell";
-
 
 import { isButtonDisabled } from "../../../../controllers/functions/overallFunctions";
 
@@ -379,128 +375,22 @@ export default function AddFormModel(props) {
                         justifyContent="center"
                       >
                         <ProductsTableCell
+                          selectedProducts={selectedProducts}
+                          handleProductChange={handleProductChange}
+                          setSelectedProducts={setSelectedProducts}
                           value={fields[field.name] || ""}
                           onChange={handleChange(field.name)}
                           size="small"
                           required={field.required}
-                          handleProductChange={handleProductChange}
+                          fieldType={field.type}
+                          finalPrice={finalPrice}
+                          setFinalPrice={setFinalPrice}
+                          priceDifference={priceDifference}
+                          setPriceDifference={setPriceDifference}
+                          okToDispatch={okToDispatch}
+                          setOkToDispatch={setOkToDispatch}
+                          servicePrice={fields["price"]}
                         />
-                        {selectedProducts.length !== 0 && (
-                          <Grid
-                            sx={{
-                              m: 2,
-                              mt: 4,
-                              border: "1px solid #ccc",
-                              borderRadius: 4,
-                            }}
-                          >
-                            <Table size="small">
-                              <TableRow>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontWeight: "bold", fontSize: 14 }}
-                                  >
-                                    Nome
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="right">
-                                  <Typography
-                                    sx={{ fontWeight: "bold", fontSize: 14 }}
-                                  >
-                                    Quantidade
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="right">
-                                  <Typography
-                                    sx={{ fontWeight: "bold", fontSize: 14 }}
-                                  >
-                                    Valor por Item
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="right">
-                                  <Typography
-                                    sx={{ fontWeight: "bold", fontSize: 14 }}
-                                  >
-                                    Total
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                              {selectedProducts.map((product, index) => (
-                                <TableRow key={index} sx={{ mt: 3 }}>
-                                  <TableCell>
-                                    <Typography sx={{ fontSize: 14 }}>
-                                      {product.name}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="right">
-                                    <Typography sx={{ fontSize: 14 }}>
-                                      {product.count}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="right">
-                                    <Typography sx={{ fontSize: 14 }}>
-                                      R$
-                                      {field.type === "productList"
-                                        ? product.sellValue
-                                        : product.buyValue.toFixed(2)}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="right">
-                                    <Typography sx={{ fontSize: 14 }}>
-                                      R$
-                                      {(field.type === "productList"
-                                        ? product.sellValue * product.count
-                                        : product.buyValue * product.count
-                                      ).toFixed(2)}
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              ))}
-                              {selectedProducts.length > 1 && (
-                                <TableRow sx={{ mt: 3 }}>
-                                  <TableCell id="ghost" />
-                                  <TableCell id="ghost" />
-                                  <TableCell id="ghost" />
-                                  <TableCell align="right">
-                                    <Typography
-                                      sx={{
-                                        fontSize: 16,
-                                        fontWeight: "bold",
-                                      }}
-                                    >
-                                      R$
-                                      {field.type === "productList"
-                                        ? selectedProducts
-                                            .reduce(
-                                              (sum, product) =>
-                                                sum +
-                                                product.sellValue *
-                                                  product.count,
-                                              0
-                                            )
-                                            .toFixed(2)
-                                        : 0.0}
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              )}
-                              {field.type === "materialList" && (
-                                <Grid sx={{ mx: 2, my: 1, width: "180%" }}>
-                                  <Typography sx={{ fontWeight: "bold" }}>
-                                    Observação:
-                                  </Typography>{" "}
-                                  <Typography sx={{ fontSize: 12 }}>
-                                    Durante o cadastro do Serviço, os valor dos
-                                    materiais <strong>não é acrescido.</strong>{" "}
-                                    É possível selecionar a opção de cobrar ou
-                                    não pelos materiais{" "}
-                                    <strong>na criação de um novo Job</strong>.
-                                  </Typography>
-                                </Grid>
-                              )}
-                            </Table>
-                          </Grid>
-                        )}
                       </Grid>
                     )}
                     {field.type === "servicesList" && (

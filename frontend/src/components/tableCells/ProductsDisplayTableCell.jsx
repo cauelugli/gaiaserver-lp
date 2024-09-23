@@ -2,13 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
-import {
-  Grid,
-  Table,
-  TableCell,
-  TableRow,
-  Typography,
-} from "@mui/material";
+import { Grid, Table, TableCell, TableRow, Typography } from "@mui/material";
 
 const ProductsDisplayTableCell = (props) => {
   const handleIncrement = (productId) => {
@@ -18,7 +12,7 @@ const ProductsDisplayTableCell = (props) => {
       }
       return product;
     });
-    props.setSelectedProducts(updatedProducts); 
+    props.setSelectedProducts(updatedProducts);
   };
 
   const handleDecrement = (productId) => {
@@ -31,7 +25,6 @@ const ProductsDisplayTableCell = (props) => {
     props.setSelectedProducts(updatedProducts);
   };
 
-  
   return (
     <Grid
       sx={{
@@ -53,7 +46,7 @@ const ProductsDisplayTableCell = (props) => {
               Quantidade
             </Typography>
           </TableCell>
-          <TableCell align="right">
+          <TableCell align="right" sx={{ width: 200 }}>
             <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
               Valor por Item
             </Typography>
@@ -91,17 +84,17 @@ const ProductsDisplayTableCell = (props) => {
             <TableCell align="right">
               <Typography sx={{ fontSize: 14 }}>
                 R$
-                {props.fieldType === "productList"
-                  ? product.sellValue
-                  : product.buyValue.toFixed(2)}
+                {props.fieldType === "materialList"
+                  ? product.buyValue
+                  : product.sellValue.toFixed(2)}
               </Typography>
             </TableCell>
             <TableCell align="right">
               <Typography sx={{ fontSize: 14 }}>
                 R$
-                {(props.fieldType === "productList"
-                  ? product.sellValue * product.count
-                  : product.buyValue * product.count
+                {(props.fieldType === "materialList"
+                  ? product.buyValue * product.count
+                  : product.sellValue * product.count
                 ).toFixed(2)}
               </Typography>
             </TableCell>
@@ -120,26 +113,75 @@ const ProductsDisplayTableCell = (props) => {
                 }}
               >
                 R$
-                {props.fieldType === "productList"
+                {props.fieldType === "materialList"
                   ? props.selectedProducts
+                      .reduce(
+                        (sum, product) =>
+                          sum + product.buyValue * product.count,
+                        0
+                      )
+                      .toFixed(2)
+                  : props.selectedProducts
                       .reduce(
                         (sum, product) =>
                           sum + product.sellValue * product.count,
                         0
                       )
-                      .toFixed(2)
-                  : 0.0}
+                      .toFixed(2)}
               </Typography>
             </TableCell>
           </TableRow>
         )}
         {props.fieldType === "materialList" && (
+          <>
+            <TableRow sx={{ mt: 0.5 }}>
+              <TableCell id="ghost" />
+              <TableCell id="ghost" />
+              <TableCell id="ghost" />
+              <TableCell align="right" sx={{ width: 200 }}>
+                <Typography
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    color: "darkgreen",
+                  }}
+                >
+                  Serviço - R${props.servicePrice}
+                </Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow sx={{ mt: 0.5 }}>
+              <TableCell id="ghost" />
+              <TableCell id="ghost" />
+              <TableCell id="ghost" />
+              <TableCell align="right" sx={{ width: 200 }}>
+                <Typography
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Total R$
+                  {props.selectedProducts
+                    .reduce(
+                      (sum, product) => sum + product.buyValue * product.count,
+                      Number(props.servicePrice)
+                    )
+                    .toFixed(2)}
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </>
+        )}
+        {props.fieldType === "materialList" && (
           <Grid sx={{ mx: 2, my: 1, width: "180%" }}>
             <Typography sx={{ fontWeight: "bold" }}>Observação:</Typography>{" "}
-            <Typography sx={{ fontSize: 12 }}>
+            <Typography sx={{ fontSize: 12, my: 1 }}>
               Durante o cadastro do Serviço, os valor dos materiais{" "}
-              <strong>não é acrescido.</strong> É possível selecionar a opção de
-              cobrar ou não pelos materiais{" "}
+              <strong>não é acrescido.</strong>
+            </Typography>
+            <Typography sx={{ fontSize: 12 }}>
+              É possível selecionar a opção de cobrar ou não pelos materiais{" "}
               <strong>na criação de um novo Job</strong>.
             </Typography>
           </Grid>

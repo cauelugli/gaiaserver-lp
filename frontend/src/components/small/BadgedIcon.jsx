@@ -47,12 +47,8 @@ export default function BadgedIcon(props) {
           <Button
             size="small"
             variant="contained"
-            sx={{
-              backgroundColor: props.isInList ? "#cc3b3b" : "#647a1b",
-              "&:hover": {
-                backgroundColor: props.isInList ? "#cc3b3b" : "#647a1b",
-              },
-            }}
+            color={props.isInList ? "error" : "success"}
+            sx={{ "&:hover": { color: props.isInList ? "error" : "success" } }}
             onClick={handleChangeItem}
           >
             <Typography

@@ -42,24 +42,40 @@ const ProductsTableCell = (props) => {
           params: { model: "Product" },
         });
         setBaseProducts(
-          response.data.filter((item) => !item.name && !item.isMaterial)
+          response.data.filter((item) =>
+            !item.name && props.fieldType === "materialList"
+              ? item.isMaterial
+              : !item.isMaterial
+          )
         );
         setProducts(
-          response.data.filter((item) => item.name && !item.isMaterial)
+          response.data.filter((item) =>
+            item.name && props.fieldType === "materialList"
+              ? item.isMaterial
+              : !item.isMaterial
+          )
         );
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, []);
+  }, [props.fieldType]);
 
   React.useEffect(() => {
-    const newSum = props.selectedProducts
-      .reduce((sum, product) => sum + product.sellValue * product.count, 0)
-      .toFixed(2);
+    let newSum;
+    props.fieldType === "materialList"
+      ? (newSum = props.selectedProducts
+          .reduce(
+            (sum, product) => sum + product.buyValue * product.count,
+            Number(props.servicePrice)
+          )
+          .toFixed(2))
+      : (newSum = props.selectedProducts
+          .reduce((sum, product) => sum + product.sellValue * product.count, 0)
+          .toFixed(2));
     setSum(newSum);
-  }, [props.selectedProducts]);
+  }, [props.selectedProducts, props.fieldType, props.servicePrice]);
 
   const uniqueTypes = Array.from(
     new Set(baseProducts.map((option) => option.type))
@@ -67,9 +83,9 @@ const ProductsTableCell = (props) => {
 
   const filteredOptions = products.filter((option) => {
     if (searchType === "name") {
-      return option.name.toLowerCase().includes(searchValue.toLowerCase());
+      return option.name?.toLowerCase().includes(searchValue.toLowerCase());
     } else if (searchType === "type") {
-      return option.type.toLowerCase() === selectedSearchType.toLowerCase();
+      return option.type?.toLowerCase() === selectedSearchType.toLowerCase();
     }
     return true;
   });
@@ -170,7 +186,9 @@ const ProductsTableCell = (props) => {
             selectedProducts={props.selectedProducts}
             setSelectedProducts={props.setSelectedProducts}
             fieldType={props.fieldType}
+            servicePrice={props.servicePrice}
           />
+          {/* component this */}
           <Grid container direction="row" justifyContent="space-between">
             <Grid>
               <Typography
@@ -208,6 +226,7 @@ const ProductsTableCell = (props) => {
               </Typography>
             </Grid>
           </Grid>
+          {/* component this */}
           {isChangingQuote ? (
             <PriceDifferenceTable
               openAddDifference={isChangingQuote}
@@ -218,6 +237,8 @@ const ProductsTableCell = (props) => {
               okToDispatch={props.okToDispatch}
               setOkToDispatch={props.setOkToDispatch}
               showTitle={0}
+              fieldType={props.fieldType}
+              servicePrice={props.servicePrice}
             />
           ) : (
             ""

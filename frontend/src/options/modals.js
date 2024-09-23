@@ -674,7 +674,7 @@ export const modals = {
     endpoint: "/add",
     label: "Serviço",
     femaleGender: false,
-    maxWidth: "custom700px",
+    maxWidth: "md",
     fieldsSections: [
       { name: "mainInfo", label: "Informações Gerais" },
       { name: "serviceInfo", label: "Informações do Serviço" },

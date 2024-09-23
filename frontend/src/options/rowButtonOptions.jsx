@@ -314,6 +314,40 @@ const rowButtonOptions = [
       ],
     },
   },
+  {
+    page: "services",
+    models: ["Service", "ServicePlan"],
+    menus: {
+      0: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "Service",
+          icon: <ModeEditIcon />,
+        },
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Service",
+          icon: <DeleteIcon />,
+        },
+      ],
+      1: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "ServicePlan",
+          icon: <ModeEditIcon />,
+        },
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "ServicePlan",
+          icon: <DeleteIcon />,
+        },
+      ],
+    },
+  },
 ];
 
 export default rowButtonOptions;
