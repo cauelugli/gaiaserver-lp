@@ -13,19 +13,33 @@ async function deleteRoutines(model, sourceId) {
 
         const { department, position, role, groups } = user;
 
-        await Department.findByIdAndUpdate(department, {
-          $pull: { members: sourceId },
-        });
-        await Position.findByIdAndUpdate(position, {
-          $pull: { members: sourceId },
-        });
-        await Role.findByIdAndUpdate(role, { $pull: { members: sourceId } });
+        if (department) {
+          const updateField = user.isManager ? "manager" : "members";
 
-        await Promise.all(
-          groups.map((groupId) =>
-            Group.findByIdAndUpdate(groupId, { $pull: { members: sourceId } })
-          )
-        );
+          updateField === "manager"
+            ? await Department.findByIdAndUpdate(department, {
+                $set: { manager: "" },
+              })
+            : await Department.findByIdAndUpdate(department, {
+                $pull: { members: user._id.toString() },
+              });
+        }
+
+        if (position) {
+          await Position.findByIdAndUpdate(position, {
+            $pull: { members: sourceId },
+          });
+        }
+        if (role) {
+          await Role.findByIdAndUpdate(role, { $pull: { members: sourceId } });
+        }
+        if (groups && groups.length > 0) {
+          await Promise.all(
+            groups.map((groupId) =>
+              Group.findByIdAndUpdate(groupId, { $pull: { members: sourceId } })
+            )
+          );
+        }
         break;
 
       default:

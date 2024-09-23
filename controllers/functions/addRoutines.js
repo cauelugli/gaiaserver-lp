@@ -43,11 +43,10 @@ async function addRoutines(model, source) {
         break;
 
       default:
-        console.log(`Nenhuma rotina definida para o modelo: ${model}`);
         break;
     }
   } catch (err) {
-    console.error(`Erro na rotina de adição para o modelo ${model}:`, err);
+    console.error(`Erro na rotina de adição`, err);
   }
 }
 
