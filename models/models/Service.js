@@ -10,7 +10,7 @@ const serviceSchema = new mongoose.Schema({
     default: Date.now,
   },
   department: {
-    type: Object,
+    type: String,
     required: true,
   },
   executionTime: {

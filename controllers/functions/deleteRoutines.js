@@ -11,16 +11,16 @@ async function deleteRoutines(model, sourceId) {
         const user = await User.findById(sourceId);
         if (!user) return;
 
-        const { department, position, role, groups } = user;
+        const { department: userDepartment, position, role, groups } = user;
 
-        if (department) {
+        if (userDepartment) {
           const updateField = user.isManager ? "manager" : "members";
 
           updateField === "manager"
-            ? await Department.findByIdAndUpdate(department, {
+            ? await Department.findByIdAndUpdate(userDepartment, {
                 $set: { manager: "" },
               })
-            : await Department.findByIdAndUpdate(department, {
+            : await Department.findByIdAndUpdate(userDepartment, {
                 $pull: { members: user._id.toString() },
               });
         }
@@ -37,6 +37,27 @@ async function deleteRoutines(model, sourceId) {
           await Promise.all(
             groups.map((groupId) =>
               Group.findByIdAndUpdate(groupId, { $pull: { members: sourceId } })
+            )
+          );
+        }
+        break;
+
+      case "Department":
+        const department = await Department.findById(sourceId);
+        if (!department) return;
+
+        const { members, manager } = department;
+
+        if (manager) {
+          await User.findByIdAndUpdate(manager, {
+            $set: { department: "" },
+          });
+        }
+
+        if (members && members.length > 0) {
+          await Promise.all(
+            members.map((memberId) =>
+              User.findByIdAndUpdate(memberId, { $set: { department: "" } })
             )
           );
         }

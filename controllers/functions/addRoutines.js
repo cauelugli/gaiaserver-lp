@@ -6,10 +6,9 @@ const User = require("../../models/models/User");
 
 async function addRoutines(model, source) {
   try {
+    const { department, position, role, members, manager } = source;
     switch (model) {
       case "User":
-        const { department, position, role } = source;
-
         if (department) {
           const updateField = source.isManager ? "manager" : "members";
           await Department.findByIdAndUpdate(department, {
@@ -41,12 +40,29 @@ async function addRoutines(model, source) {
         //   );
         // }
         break;
+      case "Department":
+        if (manager) {
+          await User.findByIdAndUpdate(manager, {
+            $set: { department: source._id.toString() },
+          });
+        }
+
+        if (members && members.length > 0) {
+          await Promise.all(
+            members.map((memberId) =>
+              User.findByIdAndUpdate(memberId, {
+                $set: { department: source._id.toString() },
+              })
+            )
+          );
+        }
+        break;
 
       default:
         break;
     }
   } catch (err) {
-    console.error(`Erro na rotina de adição`, err);
+    console.error(`Erro na rotina de adição em ${model}`, err);
   }
 }
 
