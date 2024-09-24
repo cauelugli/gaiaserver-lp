@@ -10,34 +10,38 @@ function ProductsTable(props) {
   return (
     <>
       {props.items.length > 0 &&
-        props.filteredRows.slice(props.startIndex, props.endIndex).map((row, rowIndex) => (
-          <TableRow key={rowIndex}>
-            <TableCell align="left">
-              <Avatar
-                alt="Imagem do Produto"
-                src={`http://localhost:3000/static${
-                  row.images ? row.images[0] : undefined
-                }`}
-                sx={{ width: 30, height: 30 }}
-              />
-            </TableCell>
-            <TableCell align="left">{row.name}</TableCell>
-            {row.fields?.map((field, fieldIndex) => (
-              <TableCell key={fieldIndex}>{field.value}</TableCell>
-            ))}
-            <TableCell align="center">
-              <RowButton
-                userId={props.userId}
-                item={row}
-                page={props.page}
-                tabIndex={props.tabIndex}
-                refreshData={props.refreshData}
-                setRefreshData={props.setRefreshData}
-                configCustomization={props.configCustomization}
-              />
-            </TableCell>
-          </TableRow>
-        ))}
+        props.filteredRows
+          .slice(props.startIndex, props.endIndex)
+          .map((row, rowIndex) => (
+            <TableRow key={rowIndex}>
+              <TableCell align="left">
+                <Avatar
+                  alt="Imagem do Produto"
+                  src={`http://localhost:3000/static${
+                    row.images ? row.images[0] : undefined
+                  }`}
+                  sx={{ width: 30, height: 30 }}
+                />
+              </TableCell>
+              <TableCell align="left">{row.name}</TableCell>
+              <TableCell align="left">R${row.buyValue?.toFixed(2)}</TableCell>
+              <TableCell align="left">R${row.sellValue?.toFixed(2)}</TableCell>
+              {row.fields?.map((field, fieldIndex) => (
+                <TableCell key={fieldIndex}>{field.value}</TableCell>
+              ))}
+              <TableCell align="center">
+                <RowButton
+                  userId={props.userId}
+                  item={row}
+                  page={props.page}
+                  tabIndex={props.tabIndex}
+                  refreshData={props.refreshData}
+                  setRefreshData={props.setRefreshData}
+                  configCustomization={props.configCustomization}
+                />
+              </TableCell>
+            </TableRow>
+          ))}
     </>
   );
 }

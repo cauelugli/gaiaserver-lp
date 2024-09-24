@@ -16,7 +16,21 @@ function ProductsTableHeader(props) {
       >
         Nome
       </TableCell>
-      {props.itemSample &&
+      <TableCell
+        align="left"
+        id="buyValue"
+        sx={{ fontSize: 13, fontWeight: "bold", width: 120 }}
+      >
+        Valor de Compra
+      </TableCell>
+      <TableCell
+        align="left"
+        id="sellValue"
+        sx={{ fontSize: 13, fontWeight: "bold" }}
+      >
+        Valor de Venda
+      </TableCell>
+      {props.itemSample.fields &&
         props.itemSample.fields.map((headCell, cellIndex) => (
           <TableCell
             key={cellIndex}
@@ -33,7 +47,6 @@ function ProductsTableHeader(props) {
             </TableSortLabel>
           </TableCell>
         ))}
-
       <TableCell align="center" sx={{ fontSize: 13, fontWeight: "bold" }}>
         Ações
       </TableCell>
