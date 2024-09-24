@@ -87,6 +87,8 @@ const swapDepartments = async (sourceItemId, sourceModel, newDepartmentId) => {
             oldDepartment.services.pull(sourceItemId);
             await oldDepartment.save();
           }
+        } else {
+          ""
         }
 
         const newDepartment = await Department.findById(newDepartmentId);

@@ -1,27 +1,25 @@
 /* eslint-disable react/prop-types */
-import * as React from "react";
+import React from "react";
 import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 import {
   Box,
   Paper,
   Table,
-  TableSortLabel,
   TableBody,
-  TableCell,
   TableContainer,
-  TableRow,
   TablePagination,
-  Avatar,
+  TableRow,
+  TableCell,
+  TableSortLabel,
 } from "@mui/material";
 
-import RowButton from "../buttons/RowButton";
+import ProductsTable from "../../src/tables/ProductsTable";
+import StandardTable from "../../src/tables/StardardTable";
 
-import DataTableCell from "../components/tableCells/DataTableCell";
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 export default function TableModel(props) {
   const [idIndexList, setIdIndexList] = React.useState([]);
@@ -95,40 +93,31 @@ export default function TableModel(props) {
                   <TableCell
                     align="left"
                     id="name"
-                    sx={{
-                      fontSize: 13,
-                      fontWeight: "bold",
-                    }}
+                    sx={{ fontSize: 13, fontWeight: "bold" }}
                   >
                     Nome
                   </TableCell>
-                  {props.items[props.itemIndex]?.fields
-                    ? props.items[props.itemIndex].fields.map(
-                        (headCell, cellIndex) => (
-                          <TableCell
-                            key={cellIndex}
-                            align={cellIndex === 0 ? "" : "left"}
-                            sx={{
-                              fontSize: 13,
-                              fontWeight: "bold",
-                            }}
-                            sortDirection={
-                              orderBy === headCell.id ? order : false
-                            }
+                  {props.items[props.itemIndex]?.fields &&
+                    props.items[props.itemIndex].fields.map(
+                      (headCell, cellIndex) => (
+                        <TableCell
+                          key={cellIndex}
+                          align={cellIndex === 0 ? "" : "left"}
+                          sx={{ fontSize: 13, fontWeight: "bold" }}
+                          sortDirection={
+                            orderBy === headCell.id ? order : false
+                          }
+                        >
+                          <TableSortLabel
+                            active={orderBy === headCell.id}
+                            direction={orderBy === headCell.id ? order : "asc"}
+                            onClick={() => handleRequestSort(headCell)}
                           >
-                            <TableSortLabel
-                              active={orderBy === headCell.id}
-                              direction={
-                                orderBy === headCell.id ? order : "asc"
-                              }
-                              onClick={() => handleRequestSort(headCell)}
-                            >
-                              {headCell.name}
-                            </TableSortLabel>
-                          </TableCell>
-                        )
+                            {headCell.name}
+                          </TableSortLabel>
+                        </TableCell>
                       )
-                    : ""}
+                    )}
                 </>
               ) : (
                 props.tableColumns[props.itemIndex].map(
@@ -136,10 +125,7 @@ export default function TableModel(props) {
                     <TableCell
                       key={cellIndex}
                       align={cellIndex === 0 ? "" : "left"}
-                      sx={{
-                        fontSize: 13,
-                        fontWeight: "bold",
-                      }}
+                      sx={{ fontSize: 13, fontWeight: "bold" }}
                       sortDirection={orderBy === headCell.id ? order : false}
                     >
                       <TableSortLabel
@@ -155,84 +141,40 @@ export default function TableModel(props) {
               )}
               <TableCell
                 align="center"
-                sx={{
-                  fontSize: 13,
-                  fontWeight: "bold",
-                }}
+                sx={{ fontSize: 13, fontWeight: "bold" }}
               >
                 Ações
               </TableCell>
             </TableRow>
-            {props.page === "products" || props.page === "materials"
-              ? props.items.length > 0 &&
-                filteredRows
-                  .slice(startIndex, endIndex)
-                  .map((row, rowIndex) => (
-                    <TableRow key={rowIndex}>
-                      <TableCell align="left">
-                        <Avatar
-                          alt="Imagem do Produto"
-                          src={`http://localhost:3000/static${
-                            row.images ? row.images[0] : undefined
-                          }`}
-                          sx={{ width: 30, height: 30 }}
-                        />
-                      </TableCell>
-                      <TableCell align="left">{row.name}</TableCell>
-                      {row.fields?.map((field, fieldIndex) => (
-                        <TableCell key={fieldIndex}>{field.value}</TableCell>
-                      ))}
-                      <TableCell align="center">
-                        <RowButton
-                          userId={props.userId}
-                          item={row}
-                          page={props.page}
-                          tabIndex={props.tabIndex}
-                          refreshData={props.refreshData}
-                          setRefreshData={props.setRefreshData}
-                          configCustomization={props.configCustomization}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))
-              : filteredRows
-                  .filter((row) => {
-                    if (props.page === "quotes") {
-                      if (props.tabIndex === 0) return row.type === "job";
-                      if (props.tabIndex === 1) return row.type === "sale";
-                    }
-                    return true;
-                  })
-                  .slice(startIndex, endIndex)
-                  .map((row, rowIndex) => (
-                    <TableRow key={rowIndex}>
-                      {props.tableColumns[props.itemIndex].map(
-                        (column, columnIndex) => (
-                          <TableCell
-                            key={columnIndex}
-                            align={columnIndex === 0 ? "" : "left"}
-                          >
-                            <DataTableCell
-                              item={row[column.id]}
-                              idIndexList={idIndexList}
-                            />
-                          </TableCell>
-                        )
-                      )}
-
-                      <TableCell align="center">
-                        <RowButton
-                          userId={props.userId}
-                          item={row}
-                          page={props.page}
-                          tabIndex={props.tabIndex}
-                          refreshData={props.refreshData}
-                          setRefreshData={props.setRefreshData}
-                          configCustomization={props.configCustomization}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))}
+            {props.page === "products" || props.page === "materials" ? (
+              <ProductsTable
+                items={props.items}
+                filteredRows={filteredRows}
+                startIndex={startIndex}
+                endIndex={endIndex}
+                page={props.page}
+                userId={props.userId}
+                tabIndex={props.tabIndex}
+                refreshData={props.refreshData}
+                setRefreshData={props.setRefreshData}
+                configCustomization={props.configCustomization}
+              />
+            ) : (
+              <StandardTable
+                filteredRows={filteredRows}
+                startIndex={startIndex}
+                endIndex={endIndex}
+                tableColumns={props.tableColumns}
+                itemIndex={props.itemIndex}
+                idIndexList={idIndexList}
+                page={props.page}
+                tabIndex={props.tabIndex}
+                userId={props.userId}
+                refreshData={props.refreshData}
+                setRefreshData={props.setRefreshData}
+                configCustomization={props.configCustomization}
+              />
+            )}
           </TableBody>
         </Table>
         <TablePagination
@@ -243,9 +185,9 @@ export default function TableModel(props) {
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           labelRowsPerPage={"por Página"}
-          labelDisplayedRows={({ from, to, count }) => {
-            return " " + from + " à " + to + " total " + count;
-          }}
+          labelDisplayedRows={({ from, to, count }) =>
+            `${from}-${to} de ${count}`
+          }
         />
       </TableContainer>
     </Box>
