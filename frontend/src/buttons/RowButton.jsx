@@ -116,7 +116,6 @@ const RowButton = (props) => {
                     smallmenuOptions={smallmenuOptions}
                     setSmallmenuAnchorEl={setSmallmenuAnchorEl}
                     configCustomization={props.configCustomization}
-                    // setOpenDialog={setOpenDialog}
                     closeAllMenus={closeAllMenus}
                     refreshData={props.refreshData}
                     setRefreshData={props.setRefreshData}
@@ -127,6 +126,10 @@ const RowButton = (props) => {
               <MenuItem
                 onClick={() => handleMenuItemClick(menuItem, index)}
                 sx={{ minWidth: 150 }}
+                disabled={
+                  menuItem.label === "Resolver" &&
+                  props.item.status === "Resolvido"
+                }
               >
                 <ListItemIcon>{menuItem.icon}</ListItemIcon>
                 <ListItemText>{menuItem.label}</ListItemText>
