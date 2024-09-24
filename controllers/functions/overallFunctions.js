@@ -69,6 +69,7 @@ export function isButtonDisabled(
     }
   }
 }
+
 export function checkAvailability(dynamicData, option) {
   if (dynamicData === "members" || dynamicData === "managers") {
     if (option.department && typeof option.department === "string") {
@@ -77,6 +78,29 @@ export function checkAvailability(dynamicData, option) {
   }
   return false;
 }
+
+export function isArray(data) {
+  return Array.isArray(data) ? data : [];
+}
+
+export function getDataForPage(itemsResponse, page) {
+  const filters = {
+    products: (item) => item.name && !item.isMaterial,
+    materials: (item) => item.name && item.isMaterial,
+    stock: (item) => item.name,
+  };
+
+  const filterFunc = filters[page] || (() => true); // Função padrão que retorna true (não filtra)
+
+  const filteredItems = isArray(itemsResponse.data).filter(filterFunc);
+  const baseItems = isArray(itemsResponse.data).filter(
+    (item) =>
+      !item.name && (page === "products" ? !item.isMaterial : item.isMaterial)
+  );
+
+  return { filteredItems, baseItems };
+}
+
 // export function darkenColor(hex, factor) {
 //   hex = hex.replace(/^#/, "");
 //   const bigint = parseInt(hex, 16);

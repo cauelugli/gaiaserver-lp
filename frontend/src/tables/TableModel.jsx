@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
-
 import {
   Box,
   Paper,
@@ -9,11 +8,10 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
-  TableRow,
-  TableCell,
-  TableSortLabel,
 } from "@mui/material";
 
+import TableHeader from "../../src/tables/TableHeader";
+import ProductsTableHeader from "../../src/tables/ProductsTableHeader";
 import ProductsTable from "../../src/tables/ProductsTable";
 import StandardTable from "../../src/tables/StardardTable";
 
@@ -83,69 +81,24 @@ export default function TableModel(props) {
     <Box sx={{ width: props.topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <TableContainer component={Paper}>
         <Table size="small">
+          {props.page === "products" || props.page === "materials" ? (
+            <ProductsTableHeader
+              itemSample={props.items[0]}
+              order={order}
+              orderBy={orderBy}
+              handleRequestSort={handleRequestSort}
+            />
+          ) : (
+            <TableHeader
+              itemIndex={props.itemIndex}
+              tableColumns={props.tableColumns}
+              order={order}
+              orderBy={orderBy}
+              handleRequestSort={handleRequestSort}
+            />
+          )}
+
           <TableBody>
-            <TableRow>
-              {props.page === "products" || props.page === "materials" ? (
-                <>
-                  <TableCell align="left" id="image">
-                    📷
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    id="name"
-                    sx={{ fontSize: 13, fontWeight: "bold" }}
-                  >
-                    Nome
-                  </TableCell>
-                  {props.items[props.itemIndex]?.fields &&
-                    props.items[props.itemIndex].fields.map(
-                      (headCell, cellIndex) => (
-                        <TableCell
-                          key={cellIndex}
-                          align={cellIndex === 0 ? "" : "left"}
-                          sx={{ fontSize: 13, fontWeight: "bold" }}
-                          sortDirection={
-                            orderBy === headCell.id ? order : false
-                          }
-                        >
-                          <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : "asc"}
-                            onClick={() => handleRequestSort(headCell)}
-                          >
-                            {headCell.name}
-                          </TableSortLabel>
-                        </TableCell>
-                      )
-                    )}
-                </>
-              ) : (
-                props.tableColumns[props.itemIndex].map(
-                  (headCell, cellIndex) => (
-                    <TableCell
-                      key={cellIndex}
-                      align={cellIndex === 0 ? "" : "left"}
-                      sx={{ fontSize: 13, fontWeight: "bold" }}
-                      sortDirection={orderBy === headCell.id ? order : false}
-                    >
-                      <TableSortLabel
-                        active={orderBy === headCell.id}
-                        direction={orderBy === headCell.id ? order : "asc"}
-                        onClick={() => handleRequestSort(headCell.id)}
-                      >
-                        {headCell.label}
-                      </TableSortLabel>
-                    </TableCell>
-                  )
-                )
-              )}
-              <TableCell
-                align="center"
-                sx={{ fontSize: 13, fontWeight: "bold" }}
-              >
-                Ações
-              </TableCell>
-            </TableRow>
             {props.page === "products" || props.page === "materials" ? (
               <ProductsTable
                 items={props.items}

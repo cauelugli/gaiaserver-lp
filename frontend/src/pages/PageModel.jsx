@@ -26,6 +26,11 @@ import TableOrCardSelector from "../components/small/TableOrCardSelector";
 import CardModel from "../components/cards/CardModel";
 import ProductsTableButton from "../components/small/buttons/ProductsTableButton";
 
+import {
+  getDataForPage,
+  isArray,
+} from "../../../controllers/functions/overallFunctions";
+
 function CustomTabPanel(props) {
   const { children, value, index } = props;
 
@@ -80,48 +85,16 @@ export default function PageModel(props) {
           api.get("/config"),
         ]);
 
-        if (Array.isArray(itemsResponse.data)) {
-          setItems(
-            props.item.page === "stock"
-              ? itemsResponse.data.filter((item) => item.name)
-              : itemsResponse.data
-          );
-        } else {
-          console.warn("Expected an array but got", itemsResponse.data);
-        }
+        const { filteredItems, baseItems } = getDataForPage(
+          itemsResponse,
+          props.item.page
+        );
 
-        if (props.item.page === "products" || props.item.page === "materials") {
-          setItems(
-            itemsResponse.data.filter(
-              (item) =>
-                item.name &&
-                (props.item.page === "products"
-                  ? !item.isMaterial
-                  : item.isMaterial)
-            )
-          );
-          setBaseItems(
-            itemsResponse.data.filter(
-              (item) =>
-                !item.name &&
-                (props.item.page === "products"
-                  ? !item.isMaterial
-                  : item.isMaterial)
-            )
-          );
-        }
+        setItems(filteredItems);
+        setBaseItems(baseItems);
 
-        if (
-          Array.isArray(configResponse.data) &&
-          configResponse.data[0]?.props
-        ) {
-          setConfigItem(configResponse.data[0].props.endpoint);
-        } else {
-          console.warn(
-            "Config data structure is not as expected",
-            configResponse.data
-          );
-        }
+        const configData = isArray(configResponse.data);
+        setConfigItem(configData[0]?.props?.endpoint || null);
 
         setIsLoading(false);
       } catch (error) {
@@ -135,6 +108,7 @@ export default function PageModel(props) {
         setIsLoading(false);
       }
     };
+
     fetchData();
   }, [refreshData, currentPage, props.item, value]);
 
@@ -241,177 +215,178 @@ export default function PageModel(props) {
           </Grid>
         </Tabs>
       </Box>
-      {props.item.page === "products" || props.item.page === "materials"
-        ? items.map((item, index) => (
-            <CustomTabPanel key={index} value={value} index={index}>
-              {items.length === 0 ? (
-                <NoDataText option={item} />
-              ) : (
-                <>
-                  {props.tableOrCardView ? (
-                    <TableModel
-                      page={
-                        props.item.page === "products"
-                          ? "products"
-                          : "materials"
-                      }
-                      mappedItem={item}
-                      items={items}
-                      itemIndex={index}
-                      tableColumns={item.fields}
-                      userName={props.userName}
-                      userId={props.userId}
-                      userRole={props.userRole}
-                      userDepartment={props.userDepartment}
-                      configData={configItem}
-                      refreshData={refreshData}
-                      setRefreshData={setRefreshData}
-                      topBar={props.topBar}
-                      configCustomization={props.configCustomization}
-                    />
-                  ) : (
-                    <Grid
-                      sx={{ mt: 0.5, width: props.topBar ? "107%" : "100%" }}
-                      container
-                      spacing={2}
-                    >
-                      {items.map((nothing, index) => (
-                        <Grid
-                          item
-                          key={index}
-                          md={props.cardSize}
-                          lg={props.cardSize}
-                          xl={props.cardSize}
-                        >
-                          <CardModel
-                            userId={props.userId}
-                            userName={props.userName}
-                            configData={props.configData}
-                            item={props.item}
-                            type={props.endpoint}
-                            refreshData={refreshData}
-                            setRefreshData={setRefreshData}
-                          />
-                        </Grid>
-                      ))}
-                    </Grid>
-                  )}
-                </>
-              )}
-            </CustomTabPanel>
-          ))
-        : props.item.page === "materials"
-        ? items
-            .filter((item) => item.name)
-            .map((item, index) => (
-              <CustomTabPanel key={index} value={value} index={index}>
-                {items.length === 0 ? (
-                  <NoDataText option={item} />
-                ) : (
-                  <>
-                    {props.tableOrCardView ? (
-                      <TableModel
-                        page="products"
-                        mappedItem={item}
-                        items={items}
-                        baseProducts={items.filter((item) => !item.name)}
-                        itemIndex={index}
-                        tableColumns={item.fields}
-                        userName={props.userName}
-                        userId={props.userId}
-                        userRole={props.userRole}
-                        userDepartment={props.userDepartment}
-                        configData={configItem}
-                        refreshData={refreshData}
-                        setRefreshData={setRefreshData}
-                        topBar={props.topBar}
-                        configCustomization={props.configCustomization}
-                      />
-                    ) : (
-                      <Grid
-                        sx={{ mt: 0.5, width: props.topBar ? "107%" : "100%" }}
-                        container
-                        spacing={2}
-                      >
-                        {items.map((nothing, index) => (
-                          <Grid
-                            item
-                            key={index}
-                            md={props.cardSize}
-                            lg={props.cardSize}
-                            xl={props.cardSize}
-                          >
-                            <CardModel
-                              userId={props.userId}
-                              userName={props.userName}
-                              configData={props.configData}
-                              item={props.item}
-                              type={props.endpoint}
-                              refreshData={refreshData}
-                              setRefreshData={setRefreshData}
-                            />
-                          </Grid>
-                        ))}
-                      </Grid>
+      {props.item.page === "products" &&
+        items.map((item, index) => (
+          <CustomTabPanel key={index} value={value} index={index}>
+            {items.length === 0 ? (
+              <NoDataText option={item} />
+            ) : (
+              <>
+                {props.tableOrCardView ? (
+                  <TableModel
+                    page={props.item.page}
+                    mappedItem={item}
+                    items={items.filter(
+                      (item) => item.type === baseItems[value]?.type
                     )}
-                  </>
+                    itemIndex={index}
+                    tableColumns={item.fields}
+                    userName={props.userName}
+                    userId={props.userId}
+                    userRole={props.userRole}
+                    userDepartment={props.userDepartment}
+                    configData={configItem}
+                    refreshData={refreshData}
+                    setRefreshData={setRefreshData}
+                    topBar={props.topBar}
+                    configCustomization={props.configCustomization}
+                  />
+                ) : (
+                  <Grid
+                    sx={{ mt: 0.5, width: props.topBar ? "107%" : "100%" }}
+                    container
+                    spacing={2}
+                  >
+                    {items.map((nothing, index) => (
+                      <Grid
+                        item
+                        key={index}
+                        md={props.cardSize}
+                        lg={props.cardSize}
+                        xl={props.cardSize}
+                      >
+                        <CardModel
+                          userId={props.userId}
+                          userName={props.userName}
+                          configData={props.configData}
+                          item={props.item}
+                          type={props.endpoint}
+                          refreshData={refreshData}
+                          setRefreshData={setRefreshData}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
                 )}
-              </CustomTabPanel>
-            ))
-        : props.item.tabs.map((tab, index) => (
-            <CustomTabPanel key={index} value={value} index={index}>
-              {items.length === 0 ? (
-                <NoDataText option={tab} />
-              ) : (
-                <>
-                  {props.tableOrCardView ? (
-                    <TableModel
-                      page={props.item.page}
-                      items={items}
-                      itemIndex={index}
-                      tableColumns={props.item.tableColumns}
-                      tabIndex={value}
-                      userName={props.userName}
-                      userId={props.userId}
-                      userRole={props.userRole}
-                      userDepartment={props.userDepartment}
-                      configData={configItem}
-                      refreshData={refreshData}
-                      setRefreshData={setRefreshData}
-                      topBar={props.topBar}
-                      configCustomization={props.configCustomization}
-                    />
-                  ) : (
-                    <Grid
-                      sx={{ mt: 0.5, width: props.topBar ? "107%" : "100%" }}
-                      container
-                      spacing={2}
-                    >
-                      {items.map((nothing, index) => (
-                        <Grid
-                          item
-                          key={index}
-                          md={props.cardSize}
-                          lg={props.cardSize}
-                          xl={props.cardSize}
-                        >
-                          <CardModel
-                            userId={props.userId}
-                            userName={props.userName}
-                            configData={props.configData}
-                            item={props.item}
-                            type={props.endpoint}
-                            refreshData={refreshData}
-                            setRefreshData={setRefreshData}
-                          />
-                        </Grid>
-                      ))}
-                    </Grid>
-                  )}
-                </>
-              )}
-            </CustomTabPanel>
-          ))}
+              </>
+            )}
+          </CustomTabPanel>
+        ))}
+      {props.item.page === "materials" &&
+        items.map((item, index) => (
+          <CustomTabPanel key={index} value={value} index={index}>
+            {items.length === 0 ? (
+              <NoDataText option={item} />
+            ) : (
+              <>
+                {props.tableOrCardView ? (
+                  <TableModel
+                    page={props.item.page}
+                    mappedItem={item}
+                    // maybe here
+                    items={items.filter(
+                      (item) => item.type === baseItems[value]?.type
+                    )}
+                    baseProducts={items.filter((item) => !item.name)}
+                    itemIndex={index}
+                    tableColumns={item.fields}
+                    userName={props.userName}
+                    userId={props.userId}
+                    userRole={props.userRole}
+                    userDepartment={props.userDepartment}
+                    configData={configItem}
+                    refreshData={refreshData}
+                    setRefreshData={setRefreshData}
+                    topBar={props.topBar}
+                    configCustomization={props.configCustomization}
+                  />
+                ) : (
+                  <Grid
+                    sx={{ mt: 0.5, width: props.topBar ? "107%" : "100%" }}
+                    container
+                    spacing={2}
+                  >
+                    {items.map((nothing, index) => (
+                      <Grid
+                        item
+                        key={index}
+                        md={props.cardSize}
+                        lg={props.cardSize}
+                        xl={props.cardSize}
+                      >
+                        <CardModel
+                          userId={props.userId}
+                          userName={props.userName}
+                          configData={props.configData}
+                          item={props.item}
+                          type={props.endpoint}
+                          refreshData={refreshData}
+                          setRefreshData={setRefreshData}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                )}
+              </>
+            )}
+          </CustomTabPanel>
+        ))}
+      {props.item.page !== "products" &&
+        props.item.page !== "materials" &&
+        props.item.tabs.map((tab, index) => (
+          <CustomTabPanel key={index} value={value} index={index}>
+            {items.length === 0 ? (
+              <NoDataText option={tab} />
+            ) : (
+              <>
+                {props.tableOrCardView ? (
+                  <TableModel
+                    page={props.item.page}
+                    items={items}
+                    itemIndex={index}
+                    tableColumns={props.item.tableColumns}
+                    tabIndex={value}
+                    userName={props.userName}
+                    userId={props.userId}
+                    userRole={props.userRole}
+                    userDepartment={props.userDepartment}
+                    configData={configItem}
+                    refreshData={refreshData}
+                    setRefreshData={setRefreshData}
+                    topBar={props.topBar}
+                    configCustomization={props.configCustomization}
+                  />
+                ) : (
+                  <Grid
+                    sx={{ mt: 0.5, width: props.topBar ? "107%" : "100%" }}
+                    container
+                    spacing={2}
+                  >
+                    {items.map((nothing, index) => (
+                      <Grid
+                        item
+                        key={index}
+                        md={props.cardSize}
+                        lg={props.cardSize}
+                        xl={props.cardSize}
+                      >
+                        <CardModel
+                          userId={props.userId}
+                          userName={props.userName}
+                          configData={props.configData}
+                          item={props.item}
+                          type={props.endpoint}
+                          refreshData={refreshData}
+                          setRefreshData={setRefreshData}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                )}
+              </>
+            )}
+          </CustomTabPanel>
+        ))}
     </Box>
   );
 }

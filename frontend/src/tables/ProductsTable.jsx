@@ -6,22 +6,11 @@ import { TableRow, TableCell, Avatar } from "@mui/material";
 
 import RowButton from "../buttons/RowButton";
 
-function ProductsTable({
-  items,
-  filteredRows,
-  startIndex,
-  endIndex,
-  page,
-  userId,
-  tabIndex,
-  refreshData,
-  setRefreshData,
-  configCustomization,
-}) {
+function ProductsTable(props) {
   return (
     <>
-      {items.length > 0 &&
-        filteredRows.slice(startIndex, endIndex).map((row, rowIndex) => (
+      {props.items.length > 0 &&
+        props.filteredRows.slice(props.startIndex, props.endIndex).map((row, rowIndex) => (
           <TableRow key={rowIndex}>
             <TableCell align="left">
               <Avatar
@@ -38,13 +27,13 @@ function ProductsTable({
             ))}
             <TableCell align="center">
               <RowButton
-                userId={userId}
+                userId={props.userId}
                 item={row}
-                page={page}
-                tabIndex={tabIndex}
-                refreshData={refreshData}
-                setRefreshData={setRefreshData}
-                configCustomization={configCustomization}
+                page={props.page}
+                tabIndex={props.tabIndex}
+                refreshData={props.refreshData}
+                setRefreshData={props.setRefreshData}
+                configCustomization={props.configCustomization}
               />
             </TableCell>
           </TableRow>
