@@ -40,7 +40,7 @@ const DataTableCell = ({ item, idIndexList }) => {
                   justifyContent="center"
                 >
                   <Grid item>
-                    {obj.materials ? (
+                    {obj.products ? (
                       <BuildIcon />
                     ) : (
                       <Avatar

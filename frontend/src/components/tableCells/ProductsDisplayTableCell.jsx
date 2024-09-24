@@ -84,18 +84,13 @@ const ProductsDisplayTableCell = (props) => {
             <TableCell align="right">
               <Typography sx={{ fontSize: 14 }}>
                 R$
-                {props.fieldType === "materialList"
-                  ? product.buyValue
-                  : product.sellValue.toFixed(2)}
+                {product.sellValue?.toFixed(2)}
               </Typography>
             </TableCell>
             <TableCell align="right">
               <Typography sx={{ fontSize: 14 }}>
                 R$
-                {(props.fieldType === "materialList"
-                  ? product.buyValue * product.count
-                  : product.sellValue * product.count
-                ).toFixed(2)}
+                {product.sellValue && product.sellValue * product.count.toFixed(2)}
               </Typography>
             </TableCell>
           </TableRow>
@@ -113,7 +108,7 @@ const ProductsDisplayTableCell = (props) => {
                 }}
               >
                 R$
-                {props.fieldType === "materialList"
+                {props.fieldType === "productList"
                   ? props.selectedProducts
                       .reduce(
                         (sum, product) =>
@@ -132,7 +127,7 @@ const ProductsDisplayTableCell = (props) => {
             </TableCell>
           </TableRow>
         )}
-        {props.fieldType === "materialList" && (
+        {props.fieldType === "productList" && (
           <>
             <TableRow sx={{ mt: 0.5 }}>
               <TableCell id="ghost" />
@@ -173,7 +168,7 @@ const ProductsDisplayTableCell = (props) => {
             </TableRow>
           </>
         )}
-        {props.fieldType === "materialList" && (
+        {props.fieldType === "productList" && (
           <Grid sx={{ mx: 2, my: 1, width: "180%" }}>
             <Typography sx={{ fontWeight: "bold" }}>Observação:</Typography>{" "}
             <Typography sx={{ fontSize: 12, my: 1 }}>

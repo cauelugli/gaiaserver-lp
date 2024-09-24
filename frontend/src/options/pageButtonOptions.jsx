@@ -7,7 +7,6 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import BuildIcon from "@mui/icons-material/Build";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import GroupsIcon from "@mui/icons-material/Groups";
-import HardwareIcon from "@mui/icons-material/Hardware";
 import HubIcon from "@mui/icons-material/Hub";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import LanIcon from "@mui/icons-material/Lan";
@@ -124,16 +123,6 @@ const pageButtonOptions = [
         label: "Produto",
         icon: <SellIcon />,
         modal: modals["Product"],
-      },
-    ],
-  },
-  {
-    page: "materials",
-    pageButtonOptions: [
-      {
-        label: "Material",
-        icon: <HardwareIcon />,
-        modal: modals["Material"],
       },
     ],
   },

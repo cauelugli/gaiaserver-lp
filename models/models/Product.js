@@ -17,10 +17,6 @@ const productSchema = new mongoose.Schema({
   images: {
     type: Array,
   },
-  isMaterial: {
-    type: Boolean,
-    default: false,
-  },
   name: {
     type: String,
   },

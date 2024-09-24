@@ -81,7 +81,7 @@ export default function TableModel(props) {
     <Box sx={{ width: props.topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <TableContainer component={Paper}>
         <Table size="small">
-          {props.page === "products" || props.page === "materials" ? (
+          {props.page === "products" ? (
             <ProductsTableHeader
               itemSample={props.items[0]}
               order={order}
@@ -99,7 +99,7 @@ export default function TableModel(props) {
           )}
 
           <TableBody>
-            {props.page === "products" || props.page === "materials" ? (
+            {props.page === "products" ? (
               <ProductsTable
                 items={props.items}
                 filteredRows={filteredRows}

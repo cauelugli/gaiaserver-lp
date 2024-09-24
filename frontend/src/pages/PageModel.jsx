@@ -73,8 +73,7 @@ export default function PageModel(props) {
           api.get("/get", {
             params: {
               model:
-                props.item.page === "products" ||
-                props.item.page === "materials"
+                props.item.page === "products"
                   ? "Product"
                   : props.item.models[
                       props.item.page !== currentPage ? 0 : value
@@ -146,19 +145,8 @@ export default function PageModel(props) {
           />
         )}
 
-        {currentPage === "materials" && (
-          <ProductsTableButton
-            configCustomization={props.configCustomization}
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-            baseMaterials={baseItems}
-            isMaterial
-          />
-        )}
-
         {currentPage !== "quotes" &&
           currentPage !== "finance" &&
-          currentPage !== "materials" &&
           currentPage !== "products" && (
             <PageButtonModel
               palette={props.palette}
@@ -175,7 +163,7 @@ export default function PageModel(props) {
           onChange={handleChange}
           TabIndicatorProps={{ style: { backgroundColor: "black" } }}
         >
-          {props.item.page === "products" || props.item.page === "materials"
+          {props.item.page === "products"
             ? baseItems.map((item, index) => (
                 <Tab
                   key={index}
@@ -272,67 +260,7 @@ export default function PageModel(props) {
             )}
           </CustomTabPanel>
         ))}
-      {props.item.page === "materials" &&
-        items.map((item, index) => (
-          <CustomTabPanel key={index} value={value} index={index}>
-            {items.length === 0 ? (
-              <NoDataText option={item} />
-            ) : (
-              <>
-                {props.tableOrCardView ? (
-                  <TableModel
-                    page={props.item.page}
-                    mappedItem={item}
-                    // maybe here
-                    items={items.filter(
-                      (item) => item.type === baseItems[value]?.type
-                    )}
-                    baseProducts={items.filter((item) => !item.name)}
-                    itemIndex={index}
-                    tableColumns={item.fields}
-                    userName={props.userName}
-                    userId={props.userId}
-                    userRole={props.userRole}
-                    userDepartment={props.userDepartment}
-                    configData={configItem}
-                    refreshData={refreshData}
-                    setRefreshData={setRefreshData}
-                    topBar={props.topBar}
-                    configCustomization={props.configCustomization}
-                  />
-                ) : (
-                  <Grid
-                    sx={{ mt: 0.5, width: props.topBar ? "107%" : "100%" }}
-                    container
-                    spacing={2}
-                  >
-                    {items.map((nothing, index) => (
-                      <Grid
-                        item
-                        key={index}
-                        md={props.cardSize}
-                        lg={props.cardSize}
-                        xl={props.cardSize}
-                      >
-                        <CardModel
-                          userId={props.userId}
-                          userName={props.userName}
-                          configData={props.configData}
-                          item={props.item}
-                          type={props.endpoint}
-                          refreshData={refreshData}
-                          setRefreshData={setRefreshData}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
-                )}
-              </>
-            )}
-          </CustomTabPanel>
-        ))}
       {props.item.page !== "products" &&
-        props.item.page !== "materials" &&
         props.item.tabs.map((tab, index) => (
           <CustomTabPanel key={index} value={value} index={index}>
             {items.length === 0 ? (

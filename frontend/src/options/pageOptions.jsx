@@ -253,8 +253,8 @@ const pageOptions = [
           label: "Departamento",
         },
         {
-          id: "materials",
-          label: "Materiais",
+          id: "products",
+          label: "Produtos",
         },
         {
           id: "price",
@@ -326,7 +326,7 @@ const pageOptions = [
           label: "#",
         },
         {
-          id: "materials",
+          id: "products",
           label: "Itens",
         },
         {
@@ -351,10 +351,10 @@ const pageOptions = [
   {
     page: "stock",
     label: "Estoque",
-    models: ["Product", "Product", "StockEntry"],
-    tabs: ["Produtos", "Materiais", "Entradas"],
+    models: ["Product", "StockEntry"],
+    tabs: ["Produtos", "Entradas"],
     tableColumns: [
-      // STOCK PRODUCTS TABLE
+      // STOCK PRODUCTS
       [
         {
           id: "image",
@@ -375,13 +375,6 @@ const pageOptions = [
         {
           id: "sellValue",
           label: "Valor de Venda",
-        },
-      ],
-      // STOCK MATERIALS TABLE
-      [
-        {
-          id: "number",
-          label: "#",
         },
       ],
       // STOCK ENTRIES TABLE
@@ -418,14 +411,6 @@ const pageOptions = [
     label: "Produtos",
     models: ["Product"],
     tabs: [],
-  },
-  {
-    // TO-DO
-    page: "materials",
-    models: ["Material"],
-    label: "Materiais",
-    tabs: [],
-    tableColumns: [[""], [""]],
   },
   {
     page: "chat",

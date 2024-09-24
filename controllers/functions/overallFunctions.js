@@ -85,18 +85,14 @@ export function isArray(data) {
 
 export function getDataForPage(itemsResponse, page) {
   const filters = {
-    products: (item) => item.name && !item.isMaterial,
-    materials: (item) => item.name && item.isMaterial,
+    products: (item) => item.name,
     stock: (item) => item.name,
   };
 
-  const filterFunc = filters[page] || (() => true); // Função padrão que retorna true (não filtra)
+  const filterFunc = filters[page] || (() => true);
 
   const filteredItems = isArray(itemsResponse.data).filter(filterFunc);
-  const baseItems = isArray(itemsResponse.data).filter(
-    (item) =>
-      !item.name && (page === "products" ? !item.isMaterial : item.isMaterial)
-  );
+  const baseItems = isArray(itemsResponse.data).filter((item) => !item.name);
 
   return { filteredItems, baseItems };
 }

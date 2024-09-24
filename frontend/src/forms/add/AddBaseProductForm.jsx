@@ -42,7 +42,6 @@ export default function AddBaseProductForm({
   setRefreshData,
   toast,
   userId,
-  isMaterial,
 }) {
   const [type, setType] = React.useState("");
   const [fields, setFields] = React.useState([]);
@@ -79,7 +78,6 @@ export default function AddBaseProductForm({
         type,
         fields,
         createdBy: userName,
-        isMaterial: isMaterial
       });
 
       if (productResponse.data) {
@@ -157,14 +155,10 @@ export default function AddBaseProductForm({
 
   return (
     <form onSubmit={handleAdd}>
-      <DialogHeader
-        title={isMaterial ? "Material" : "Produto"}
-        femaleGender={false}
-        extraSmall
-      />
+      <DialogHeader title="Produto" femaleGender={false} extraSmall />
       <DialogContent>
         <Typography sx={{ fontSize: 16, fontWeight: "bold", mb: 1 }}>
-          Campos do {isMaterial ? "Material" : "Produto"}
+          Campos do Produto
         </Typography>
         <Grid
           id="fieldsRow"

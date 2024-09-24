@@ -41,20 +41,8 @@ const ProductsTableCell = (props) => {
         const response = await api.get("/get", {
           params: { model: "Product" },
         });
-        setBaseProducts(
-          response.data.filter((item) =>
-            !item.name && props.fieldType === "materialList"
-              ? item.isMaterial
-              : !item.isMaterial
-          )
-        );
-        setProducts(
-          response.data.filter((item) =>
-            item.name && props.fieldType === "materialList"
-              ? item.isMaterial
-              : !item.isMaterial
-          )
-        );
+        setBaseProducts(response.data.filter((item) => !item.name));
+        setProducts(response.data.filter((item) => item.name));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -64,16 +52,13 @@ const ProductsTableCell = (props) => {
 
   React.useEffect(() => {
     let newSum;
-    props.fieldType === "materialList"
-      ? (newSum = props.selectedProducts
-          .reduce(
-            (sum, product) => sum + product.buyValue * product.count,
-            Number(props.servicePrice)
-          )
-          .toFixed(2))
-      : (newSum = props.selectedProducts
-          .reduce((sum, product) => sum + product.sellValue * product.count, 0)
-          .toFixed(2));
+    newSum = props.selectedProducts
+      .reduce(
+        (sum, product) => sum + product.buyValue * product.count,
+        Number(props.servicePrice)
+      )
+      .toFixed(2);
+
     setSum(newSum);
   }, [props.selectedProducts, props.fieldType, props.servicePrice]);
 

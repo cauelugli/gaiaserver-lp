@@ -324,7 +324,7 @@ const PriceDifferenceTable = (props) => {
               <Grid item sx={{ m: 1, mx: 2 }}>
                 <Grid container direction="row" justifyContent="space-between">
                   <Typography sx={{ fontSize: 16 }}>
-                    {props.fieldType === "materialList"
+                    {props.fieldType === "productList"
                       ? "Serviço + Itens"
                       : "Valor dos Itens"}
                   </Typography>

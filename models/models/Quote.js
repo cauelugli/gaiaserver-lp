@@ -23,11 +23,8 @@ const quoteSchema = new mongoose.Schema({
   manager: {
     type: String,
   },
-  materials: {
+  products: {
     type: Array,
-  },
-  materialsCost: {
-    type: Number,
   },
   number: {
     type: Number,

@@ -31,7 +31,6 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import HardwareIcon from "@mui/icons-material/Hardware";
 import LanIcon from "@mui/icons-material/Lan";
 import LockIcon from "@mui/icons-material/Lock";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -48,7 +47,6 @@ import DashboardModal from "../forms/config/Dashboard";
 import DepartmentsModal from "../forms/config/Departments";
 import FilesModal from "../forms/config/Files";
 import FinanceModal from "../forms/config/Finance";
-import MaterialsModal from "../forms/config/Materials";
 import NotificationsModal from "../forms/config/Notifications";
 import PermissionsModal from "../forms/config/Permissions";
 import ProductsModal from "../forms/config/Products";
@@ -114,25 +112,15 @@ export default function Config({
     {
       icon: <WarehouseIcon sx={{ fontSize: 48 }} />,
       text: "Estoque",
-      modal: <StockModal />,
+      modal: <StockModal userName={userName}
+      userId={userId}
+      configCustomization={configCustomization}/>,
       isBasic: true,
     },
     {
       icon: <AttachMoneyIcon sx={{ fontSize: 48 }} />,
       text: "Financeiro",
       modal: <FinanceModal />,
-      isBasic: true,
-    },
-    {
-      icon: <HardwareIcon sx={{ fontSize: 48 }} />,
-      text: "Materiais",
-      modal: (
-        <MaterialsModal
-          userName={userName}
-          userId={userId}
-          configCustomization={configCustomization}
-        />
-      ),
       isBasic: true,
     },
     {

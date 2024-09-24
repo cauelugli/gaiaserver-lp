@@ -62,14 +62,8 @@ export default function Products({
         const products = await api.get("/get", {
           params: { model: "Product" },
         });
-        setBaseProducts(
-          products.data.filter(
-            (product) => !product.name && !product.isMaterial
-          )
-        );
-        setProducts(
-          products.data.filter((product) => product.name && !product.isMaterial)
-        );
+        setBaseProducts(products.data.filter((product) => !product.name));
+        setProducts(products.data.filter((product) => product.name));
         setConfigData(config.data[0].products);
         setCanBeDeleted(config.data[0].products.canBeDeleted);
         setNotifyWhenProductIsCreated(

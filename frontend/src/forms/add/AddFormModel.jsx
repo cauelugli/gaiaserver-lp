@@ -238,11 +238,7 @@ export default function AddFormModel(props) {
                     sx={{
                       mr: field.type === "servicesList" ? 0 : 1,
                       mb: fieldIndex === 0 ? 1 : 0,
-                      width:
-                        field.type === "productList" ||
-                        field.type === "materialList"
-                          ? "100%"
-                          : "auto",
+                      width: field.type === "productList" ? "100%" : "auto",
                     }}
                   >
                     <Typography sx={{ fontSize: 14 }}>{field.label}</Typography>
@@ -345,30 +341,6 @@ export default function AddFormModel(props) {
                       />
                     )}
                     {field.type === "productList" && (
-                      <Grid
-                        direction="column"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <ProductsTableCell
-                          selectedProducts={selectedProducts}
-                          handleProductChange={handleProductChange}
-                          setSelectedProducts={setSelectedProducts}
-                          value={fields[field.name] || ""}
-                          onChange={handleChange(field.name)}
-                          size="small"
-                          required={field.required}
-                          fieldType={field.type}
-                          finalPrice={finalPrice}
-                          setFinalPrice={setFinalPrice}
-                          priceDifference={priceDifference}
-                          setPriceDifference={setPriceDifference}
-                          okToDispatch={okToDispatch}
-                          setOkToDispatch={setOkToDispatch}
-                        />
-                      </Grid>
-                    )}
-                    {field.type === "materialList" && (
                       <Grid
                         direction="column"
                         alignItems="center"

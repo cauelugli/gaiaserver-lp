@@ -56,10 +56,10 @@ const optionsMainblocks = [
     permissionLabel: "products",
   },
   {
-    icon: <HardwareIcon sx={{ fontSize: 52 }} />,
-    text: "Materiais",
-    link: "/materials",
-    permissionLabel: "materials",
+    icon: <WarehouseIcon sx={{ fontSize: 52 }} />,
+    text: "Estoque",
+    link: "/stock",
+    permissionLabel: "stock",
   },
   {
     icon: <BuildIcon sx={{ fontSize: 52 }} />,
@@ -96,12 +96,6 @@ const optionsRightColumn = [
     permissionLabel: "quotes",
   },
   {
-    icon: <WarehouseIcon sx={{ fontSize: 22 }} />,
-    text: "Estoque",
-    link: "/stock",
-    permissionLabel: "stock",
-  },
-  {
     icon: <AdminPanelSettingsIcon sx={{ fontSize: 22 }} />,
     text: "Acessos",
     link: "/security",
@@ -131,7 +125,7 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
       "departments",
       "requests",
       "products",
-      "materials",
+      "stock",
       "services",
       "finance",
     ].includes(link)
@@ -140,7 +134,6 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
   const allowedListRightColumn = uniqueAllowedLinks.filter((link) =>
     [
       "quotes",
-      "stock",
       "files",
       "security",
       "dashboard",

@@ -38,11 +38,8 @@ jobSchema = new mongoose.Schema({
       user: String,
     },
   ],
-  materials: {
+  products: {
     type: Array,
-  },
-  materialsCost: {
-    type: Number,
   },
   number: {
     type: Number,

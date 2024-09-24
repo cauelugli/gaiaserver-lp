@@ -48,7 +48,6 @@ router.post("/", async (req, res) => {
   fields.isManager = isManager;
   fields.createdBy = createdBy;
   fields.products = selectedProducts;
-  fields.materials = selectedProducts;
   fields.price =
     label === "Plano de Serviços"
       ? parseFloat(

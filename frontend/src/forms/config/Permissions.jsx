@@ -37,11 +37,9 @@ import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import LanIcon from "@mui/icons-material/Lan";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
-import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import SettingsIcon from "@mui/icons-material/Settings";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import SellIcon from "@mui/icons-material/Sell";
-import HardwareIcon from "@mui/icons-material/Hardware";
 import WorkIcon from "@mui/icons-material/Work";
 
 export default function Permissions({ onClose }) {
@@ -93,11 +91,6 @@ export default function Permissions({ onClose }) {
       tooltip: "Produtos",
       label: "products",
       icon: <SellIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Materiais",
-      label: "materials",
-      icon: <HardwareIcon fontSize="inherit" />,
     },
     {
       tooltip: "Financeiro",

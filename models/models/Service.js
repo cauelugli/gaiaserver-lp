@@ -16,7 +16,7 @@ const serviceSchema = new mongoose.Schema({
   executionTime: {
     type: String,
   },
-  materials: {
+  products: {
     type: Array,
   },
   name: {

@@ -678,7 +678,7 @@ export const modals = {
     fieldsSections: [
       { name: "mainInfo", label: "Informações Gerais" },
       { name: "serviceInfo", label: "Informações do Serviço" },
-      { name: "materials", label: "Materiais Utilizados" },
+      { name: "products", label: "Produtos Utilizados" },
     ],
     fields: [
       {
@@ -728,11 +728,11 @@ export const modals = {
         required: true,
       },
       {
-        fieldSection: "materials",
-        name: "materials",
+        fieldSection: "products",
+        name: "products",
         label: "",
-        type: "materialList",
-        options: ["materials"],
+        type: "productList",
+        options: ["products"],
         required: true,
       },
     ],
@@ -803,9 +803,9 @@ export const modals = {
       {
         fieldSection: "mainInfo",
         name: "type",
-        label: "Produtos / Materiais",
+        label: "Produtos",
         type: "select",
-        options: ["Produtos", "Materiais"],
+        options: ["Produtos"],
         required: true,
       },
       {
@@ -834,7 +834,7 @@ export const modals = {
         name: "items",
         label: "",
         type: "list",
-        options: ["products", "materials"],
+        options: ["products"],
         required: true,
       },
     ],
@@ -886,47 +886,6 @@ export const modals = {
       },
     ],
     model: "Product",
-  },
-  Material: {
-    name: "AddMaterial",
-    label: "Material",
-    femaleGender: false,
-    maxWidth: "md",
-    fieldsSections: [
-      { name: "mainInfo", label: "Informações Gerais" },
-      { name: "fields", label: "Informações do Material" },
-    ],
-    fields: [
-      {
-        fieldSection: "mainInfo",
-        name: "type",
-        label: "Tipo de Material",
-        type: "dynamicData",
-        options: ["baseProducts"],
-        required: true,
-      },
-      {
-        fieldSection: "mainInfo",
-        name: "name",
-        label: "Nome do Material",
-        type: "string",
-        required: true,
-      },
-      {
-        fieldSection: "mainInfo",
-        name: "buyValue",
-        label: "Valor de Compra",
-        type: "currency",
-        required: true,
-      },
-      {
-        fieldSection: "fields",
-        name: "fields",
-        label: "",
-        type: "fields",
-      },
-    ],
-    model: "Material",
   },
   Operator: {
     endpoint: "/add",

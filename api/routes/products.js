@@ -24,7 +24,6 @@ router.post("/", async (req, res) => {
     fields: req.body.fields || null,
     images: req.body.images || null,
     createdBy: req.body.createdBy || null,
-    isMaterial: req.body.isMaterial || null,
   });
   try {
     const savedProduct = await newProduct.save();
