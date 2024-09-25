@@ -19,6 +19,8 @@ import rowButtonOptions from "../options/rowButtonOptions";
 import DeleteFormModel from "../forms/delete/DeleteFormModel";
 import SmallFormModel from "../forms/edit/SmallFormModel";
 import ResolveForm from "../forms/misc/ResolveForm";
+import { checkAvailability } from "../../../controllers/functions/overallFunctions";
+import RequestApprovalForm from "../forms/misc/RequestApprovalForm";
 
 const RowButton = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -127,8 +129,11 @@ const RowButton = (props) => {
                 onClick={() => handleMenuItemClick(menuItem, index)}
                 sx={{ minWidth: 150 }}
                 disabled={
-                  menuItem.label === "Resolver" &&
-                  props.item.status === "Resolvido"
+                  menuItem.label === "Resolver"
+                    ? checkAvailability("resolvableRequest", props.item.status)
+                    : menuItem.label === "Solicitar Aprovação"
+                    ? checkAvailability("approvableRequest", props.item.status)
+                    : false
                 }
               >
                 <ListItemIcon>{menuItem.icon}</ListItemIcon>
@@ -149,6 +154,11 @@ const RowButton = (props) => {
           }
           open={openDialog}
           onClose={() => setOpenDialog(false)}
+          slotProps={{
+            backdrop: {
+              style: { backgroundColor: "transparent" },
+            },
+          }}
           sx={
             selectedModal.maxWidth.startsWith("custom")
               ? {
@@ -193,6 +203,18 @@ const RowButton = (props) => {
                 props.item.number ||
                 props.item.quoteNumber
               }
+              model={selectedModal.model}
+              refreshData={props.refreshData}
+              setRefreshData={props.setRefreshData}
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+              page={currentOption.page}
+            />
+          ) : selectedAction === "requestApproval" ? (
+            <RequestApprovalForm
+              userId={props.userId}
+              selectedItemId={props.item._id || props.item.id}
+              selectedItemName={props.item.title || props.item.number}
               model={selectedModal.model}
               refreshData={props.refreshData}
               setRefreshData={props.setRefreshData}

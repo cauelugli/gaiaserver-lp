@@ -76,6 +76,24 @@ export function checkAvailability(dynamicData, option) {
       return true;
     }
   }
+  if (dynamicData === "resolvableRequest") {
+    if (
+      option === "Aberto" ||
+      option === "Aprovação Solicitada" ||
+      option === "Resolvido"
+    ) {
+      return true;
+    }
+  }
+  if (dynamicData === "approvableRequest") {
+    if (
+      option === "Aprovado" ||
+      option === "Aprovação Solicitada" ||
+      option === "Resolvido"
+    ) {
+      return true;
+    }
+  }
   return false;
 }
 
