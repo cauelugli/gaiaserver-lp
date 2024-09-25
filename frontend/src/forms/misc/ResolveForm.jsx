@@ -38,6 +38,7 @@ const ResolveForm = ({
         id: selectedItemId,
         resolvedBy: userId,
         resolvedAt,
+        usesWebsocket: true,
       });
 
       if (res.data) {
