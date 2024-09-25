@@ -73,4 +73,8 @@ async function addRoutines(model, source) {
   }
 }
 
-module.exports = { addRoutines };
+async function createQuote(model, source) {
+  "";
+}
+
+module.exports = { addRoutines, createQuote };
