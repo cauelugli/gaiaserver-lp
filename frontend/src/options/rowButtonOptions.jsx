@@ -6,6 +6,7 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EngineeringIcon from "@mui/icons-material/Engineering";
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 import GroupIcon from "@mui/icons-material/Group";
 import LanIcon from "@mui/icons-material/Lan";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
@@ -170,6 +171,12 @@ const rowButtonOptions = [
     menus: {
       0: [
         {
+          label: "Solicitar Aprovação",
+          action: "requestApproval",
+          modal: "Job",
+          icon: <FactCheckIcon />,
+        },
+        {
           label: "Resolver",
           action: "resolve",
           modal: "Job",
@@ -205,6 +212,12 @@ const rowButtonOptions = [
         },
       ],
       1: [
+        {
+          label: "Solicitar Aprovação",
+          action: "requestApproval",
+          modal: "Sale",
+          icon: <FactCheckIcon />,
+        },
         {
           label: "Resolver",
           action: "resolve",
