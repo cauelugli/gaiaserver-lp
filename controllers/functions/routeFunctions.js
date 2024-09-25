@@ -105,32 +105,4 @@ const swapDepartments = async (sourceItemId, sourceModel, newDepartmentId) => {
   }
 };
 
-const departmentUpdates = async (departmentId, managerId, members) => {
-  try {
-    if (managerId) {
-      const manager = await User.findById(managerId);
-      if (manager) {
-        manager.department = departmentId;
-        await manager.save();
-      }
-    }
-
-    await Promise.all(
-      members.map(async (memberId) => {
-        try {
-          const user = await User.findById(memberId);
-          if (user) {
-            user.department = departmentId;
-            await user.save();
-          }
-        } catch (error) {
-          console.log(`Erro ao atualizar o usuário ${memberId}:`, error);
-        }
-      })
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
-module.exports = { defineModel, swapDepartments, departmentUpdates };
+module.exports = { defineModel, swapDepartments };

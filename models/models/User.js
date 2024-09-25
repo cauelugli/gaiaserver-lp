@@ -33,6 +33,7 @@ userSchema = new mongoose.Schema({
   },
   groups: {
     type: Array,
+    default: []
   },
   image: {
     type: String,

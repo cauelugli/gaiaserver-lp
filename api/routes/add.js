@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const {
-  defineModel,
-  departmentUpdates,
-} = require("../../controllers/functions/routeFunctions");
+const { defineModel } = require("../../controllers/functions/routeFunctions");
 const { addRoutines } = require("../../controllers/functions/addRoutines");
+const {
+  insertMembership,
+} = require("../../controllers/functions/updateRoutines");
 
 // CREATE ITEM
 router.post("/", async (req, res) => {
@@ -62,10 +62,10 @@ router.post("/", async (req, res) => {
   try {
     const savedItem = await newItem.save();
 
-    if (req.body.model === "Department") {
-      departmentUpdates(
+    if (req.body.model === "Department" || req.body.model === "Group") {
+      insertMembership(
         savedItem._id.toString(),
-        fields.manager,
+        req.body.model,
         fields.members
       );
     }

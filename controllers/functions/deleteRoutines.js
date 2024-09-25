@@ -86,6 +86,21 @@ async function deleteRoutines(model, sourceId) {
 
         break;
 
+      case "Group":
+        const group = await Group.findById(sourceId);
+        if (!group) return;
+
+        const { members: groupMembers } = group;
+
+        if (groupMembers && groupMembers.length > 0) {
+          await Promise.all(
+            groupMembers.map((memberId) =>
+              User.findByIdAndUpdate(memberId, { $pull: { groups: sourceId } })
+            )
+          );
+        }
+        break;
+
       default:
         break;
     }
