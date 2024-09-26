@@ -28,21 +28,21 @@ const DynamicDataTableCell = (props) => {
         if (props.field.dynamicData === "users") {
           const resUsers = await api.get("/get", { params: { model: "User" } });
           data = resUsers.data;
-        } else if (props.field.dynamicData === "managers") {
-          const resUsers = await api.get("/get", { params: { model: "User" } });
-          data = resUsers.data.filter((user) => user.isManager);
-        } else if (props.field.dynamicData === "members") {
-          const resUsers = await api.get("/get", { params: { model: "User" } });
-          data = resUsers.data.filter((user) => !user.isManager);
-        } else if (props.field.dynamicData === "workers") {
-          const resUsers = await api.get("/get", { params: { model: "User" } });
-          data = resUsers.data.filter((user) => !user.isManager);
-        } else if (props.field.dynamicData === "positions") {
-          const resUsers = await api.get("/get", {
+        } 
+        
+        else if (props.field.dynamicData === "workers" || props.field.dynamicData === "members") {
+          const resWorkers = await api.get("/get", { params: { model: "User" } });
+          data = resWorkers.data.filter((user) => !user.isManager);
+        } 
+        
+        else if (props.field.dynamicData === "positions") {
+          const resPositions = await api.get("/get", {
             params: { model: "Position" },
           });
-          data = resUsers.data.filter((user) => !user.isManager);
-        } else if (props.field.dynamicData === "allCustomers") {
+          data = resPositions.data;
+        } 
+        
+        else if (props.field.dynamicData === "allCustomers") {
           const resCustomers = await api.get("/get", {
             params: { model: "Customer" },
           });
@@ -50,22 +50,30 @@ const DynamicDataTableCell = (props) => {
             params: { model: "Client" },
           });
           data = [...resCustomers.data, ...resClients.data];
-        } else if (props.field.dynamicData === "serviceTypes") {
-          const resConfig = await api.get("/getConfig", {
+        } 
+        
+        else if (props.field.dynamicData === "serviceTypes") {
+          const resServiceTypes = await api.get("/getConfig", {
             params: { item: "services", parameter: "serviceTypes" },
           });
-          data = resConfig.data;
-        } else if (props.field.dynamicData === "departments") {
+          data = resServiceTypes.data;
+        } 
+        
+        else if (props.field.dynamicData === "departments") {
           const resDepartments = await api.get("/get", {
             params: { model: "Department" },
           });
           data = resDepartments.data;
-        } else if (props.field.dynamicData === "services") {
+        } 
+        
+        else if (props.field.dynamicData === "services") {
           const resServices = await api.get("/get", {
             params: { model: "Service" },
           });
           data = resServices.data;
-        } else {
+        } 
+        
+        else {
           const response = await api.get(`/${props.field.dynamicData}`);
           data = response.data;
         }
@@ -94,7 +102,6 @@ const DynamicDataTableCell = (props) => {
     } else if (
       props.field.dynamicData === "users" ||
       props.field.dynamicData === "members" ||
-      props.field.dynamicData === "managers" ||
       props.field.dynamicData === "workers" ||
       props.field.dynamicData === "allCustomers"
     ) {
@@ -131,6 +138,7 @@ const DynamicDataTableCell = (props) => {
     }
   };
 
+  
   return (
     <Select
       value={props.fields[props.field.name] || (props.multiple ? [] : "")}

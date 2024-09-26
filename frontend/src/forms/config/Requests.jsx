@@ -7,37 +7,34 @@ import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5002");
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Avatar,
   Button,
   DialogActions,
   DialogContent,
   DialogTitle,
   FormControlLabel,
   Grid,
-  MenuItem,
   Radio,
   RadioGroup,
-  Select,
   Tooltip,
   Typography,
 } from "@mui/material";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
+import ManagerSelectTableCell from "../../components/tableCells/ManagerSelectTableCell";
 
 export default function Requests({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
-  const [managers, setManagers] = React.useState([]);
   const [requestsNeedApproval, setRequestsNeedApproval] = React.useState(null);
-  const [requestsApproverManagerId, setRequestsApproverManagerId] =
+  const [requestsApproverManager, setRequestsApproverManager] =
     React.useState(null);
   const [requestsCanBeDeleted, setRequestsCanBeDeleted] = React.useState(null);
 
@@ -49,19 +46,18 @@ export default function Requests({ onClose }) {
           params: { model: "User" },
         });
         const managersData = managersResponse.data.filter(
-          (user) => !user.isManager
+          (user) => user.isManager
         );
         const configData = configResponse.data[0].requests;
 
-        setManagers(managersData);
         setConfigData(configData);
         setRequestsNeedApproval(configData.requestsNeedApproval);
         setRequestsCanBeDeleted(configData.canBeDeleted);
 
         const approverManager = managersData.find(
-          (manager) => manager._id === configData.requestsApproverManagerId
+          (manager) => manager._id === configData.requestsApproverManager
         );
-        setRequestsApproverManagerId(approverManager || null);
+        setRequestsApproverManager(approverManager || null);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -74,7 +70,7 @@ export default function Requests({ onClose }) {
     try {
       const res = await api.put("/config/requests", {
         requestsNeedApproval,
-        requestsApproverManagerId: requestsApproverManagerId._id,
+        requestsApproverManager: requestsApproverManager._id,
         requestsCanBeDeleted,
       });
 
@@ -124,10 +120,12 @@ export default function Requests({ onClose }) {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto" }}>
-                        Solicitações Precisam de Aprovação do Gerente
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
@@ -138,18 +136,9 @@ export default function Requests({ onClose }) {
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto" }}>
+                          Solicitações Precisam de Aprovação do Gerente
+                        </Typography>
                       </Tooltip>
                       <RadioGroup
                         row
@@ -179,60 +168,41 @@ export default function Requests({ onClose }) {
                       </RadioGroup>
                     </Grid>
                   </Grid>
-                  {requestsNeedApproval && (
-                    <Grid item sx={{ my: 1.5 }}>
-                      <Grid container direction="row">
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Selecione o Gerente que será responsável pela
+                            Aprovação das Requisições solicitadas.
+                          </Typography>
+                        }
+                      >
                         <Typography sx={{ my: "auto" }}>
-                          Gerente Aprovador{" "}
+                          Gerente Aprovador
                         </Typography>
-                        <Select
-                          sx={{ ml: 3, minWidth: 200 }}
-                          size="small"
-                          onChange={(e) => {
-                            setRequestsApproverManagerId(e.target.value);
-                          }}
-                          value={requestsApproverManagerId}
-                          displayEmpty
-                          required
-                          renderValue={(selected) => {
-                            if (selected.length === 0) {
-                              return (
-                                <Typography>Selecione o Gerente</Typography>
-                              );
-                            } else {
-                              return (
-                                <Grid container direction="row">
-                                  <Avatar
-                                    alt="Imagem"
-                                    src={`http://localhost:3000/static/${selected.image}`}
-                                    sx={{ width: 22, height: 22, mr: 1 }}
-                                  />
-                                  <Typography>{selected.name}</Typography>
-                                </Grid>
-                              );
-                            }
-                          }}
-                        >
-                          {managers.map((item) => (
-                            <MenuItem value={item} key={item.id}>
-                              <Avatar
-                                alt="Imagem do Colaborador"
-                                src={`http://localhost:3000/static/${item.image}`}
-                                sx={{ width: 22, height: 22, mr: 2 }}
-                              />
-                              {item.name}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </Grid>
+                      </Tooltip>
+                      <ManagerSelectTableCell
+                        fromConfig
+                        setRequestsApproverManager={setRequestsApproverManager}
+                        requestsApproverManager={requestsApproverManager}
+                        field={{ dynamicData: "managers", required: false }}
+                      />
                     </Grid>
-                  )}
+                  </Grid>
 
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto", mr: 1 }}>
-                        Solicitações Podem ser Deletadas
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
@@ -242,18 +212,9 @@ export default function Requests({ onClose }) {
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 1 }}>
+                          Solicitações Podem ser Deletadas
+                        </Typography>
                       </Tooltip>
                       <RadioGroup
                         row

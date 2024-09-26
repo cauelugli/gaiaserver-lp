@@ -34,6 +34,7 @@ import ServicesTableCell from "../../components/tableCells/ServicesTableCell";
 import StringTableCell from "../../components/tableCells/StringTableCell";
 
 import { isButtonDisabled } from "../../../../controllers/functions/overallFunctions";
+import ManagerSelectTableCell from "../../components/tableCells/ManagerSelectTableCell";
 
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
@@ -242,6 +243,7 @@ export default function AddFormModel(props) {
                     }}
                   >
                     <Typography sx={{ fontSize: 14 }}>{field.label}</Typography>
+                    {/* this is stupid... */}
                     {field.type === "string" && (
                       <StringTableCell
                         fields={fields}
@@ -338,6 +340,16 @@ export default function AddFormModel(props) {
                         required={field.required}
                         multiple={field.multiple}
                         //need 'target' for cases like changing department for Managers
+                      />
+                    )}
+                    {field.type === "managerSelect" && (
+                      <ManagerSelectTableCell
+                        fields={fields}
+                        field={field}
+                        handleChange={handleChange}
+                        modalOptions={modalOptions}
+                        required={field.required}
+                        multiple={field.multiple}
                       />
                     )}
                     {field.type === "productList" && (

@@ -94,6 +94,11 @@ export function checkAvailability(dynamicData, option) {
       return true;
     }
   }
+  if (dynamicData === "manager") {
+    if (option.department && typeof option.department === "string") {
+      return true;
+    }
+  }
   return false;
 }
 

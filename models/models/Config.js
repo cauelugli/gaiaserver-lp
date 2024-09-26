@@ -178,7 +178,7 @@ const configSchema = new Schema({
       type: Boolean,
       default: true,
     },
-    requestsApproverManagerId: {
+    requestsApproverManager: {
       type: String,
     },
     canBeDeleted: {

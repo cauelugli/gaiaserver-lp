@@ -625,7 +625,7 @@ export const modals = {
         fieldSection: "peopleInfo",
         name: "manager",
         label: "Gerente",
-        type: "dynamicData",
+        type: "managerSelect",
         dynamicData: "managers",
         required: false,
       },
