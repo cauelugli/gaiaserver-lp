@@ -35,6 +35,7 @@ import ServicesTableCell from "../../components/tableCells/ServicesTableCell";
 
 import DialogHeader from "../../components/small/DialogHeader";
 import ColorPicker from "../../components/small/ColorPicker";
+import ManagerSelectTableCell from "../../components/tableCells/ManagerSelectTableCell";
 
 export default function EditFormModel(props) {
   const [fields, setFields] = React.useState(props.options.fields);
@@ -47,6 +48,7 @@ export default function EditFormModel(props) {
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
   const [positions, setPositions] = React.useState([]);
+  const [managers, setManagers] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
   const [finalPrice, setFinalPrice] = React.useState(0);
   const [okToDispatch, setOkToDispatch] = React.useState(false);
@@ -63,8 +65,12 @@ export default function EditFormModel(props) {
         const positions = await api.get("/get", {
           params: { model: "Position" },
         });
+        const managers = await api.get("/get", {
+          params: { model: "User" },
+        });
         setDepartments(departments.data);
         setPositions(positions.data);
+        setManagers(managers.data.filter((user) => user.isManager));
       } catch (error) {
         console.error("Erro ao buscar departamentos:", error);
         toast.error("Erro ao buscar departamentos. Tente novamente.", {
@@ -86,18 +92,20 @@ export default function EditFormModel(props) {
       props.options.fields.forEach((field) => {
         const fieldValue = props.target[field.name] || "";
 
-        // Verifica se o campo é do tipo 'department'
         if (field.name === "department" && typeof fieldValue === "string") {
-          // Encontra o departamento correspondente pelo _id
           const department = departments.find((dep) => dep._id === fieldValue);
           initialFields[field.name] = department ? department.name : "";
         } else if (
           field.name === "position" &&
           typeof fieldValue === "string"
         ) {
-          // Encontra o cargo correspondente pelo _id
           const position = positions.find((pos) => pos._id === fieldValue);
           initialFields[field.name] = position ? position.name : "";
+        } else if (field.name === "manager" && typeof fieldValue === "string") {
+          const manager = managers.find(
+            (manager) => manager._id === fieldValue
+          );
+          initialFields[field.name] = manager ? manager : "";
         }
         // this is gonna scale, surely there will be a function in the future
         else {
@@ -108,7 +116,7 @@ export default function EditFormModel(props) {
     };
 
     initializeFields();
-  }, [props.options.fields, props.target, departments, positions]);
+  }, [props.options.fields, props.target, departments, positions, managers]);
 
   const modalOptions = props.options;
 
@@ -385,6 +393,17 @@ export default function EditFormModel(props) {
                     )}
                     {field.type === "dynamicData" && (
                       <DynamicDataTableCell
+                        fields={fields}
+                        field={field}
+                        handleChange={handleChange}
+                        modalOptions={modalOptions}
+                        required={field.required}
+                        multiple={field.multiple}
+                      />
+                    )}
+                    {field.type === "managerSelect" && (
+                      <ManagerSelectTableCell
+                        oldManager={fields["manager"]}
                         fields={fields}
                         field={field}
                         handleChange={handleChange}
