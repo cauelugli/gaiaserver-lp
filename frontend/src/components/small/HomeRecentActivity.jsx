@@ -41,17 +41,17 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
   // const [openDialog, setOpenDialog] = React.useState(false);
   // const [refreshData, setRefreshData] = React.useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const recentActivities = await api.get("/recentActivity");
-        setRecentActivities(recentActivities.data.reverse());
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const recentActivities = await api.get("/recentActivity");
+  //       setRecentActivities(recentActivities.data.reverse());
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   useEffect(() => {
     socket.on("recentActivityRefresh", () => {

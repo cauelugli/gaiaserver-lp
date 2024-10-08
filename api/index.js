@@ -47,6 +47,7 @@ app.use("/api/get", getRoute);
 app.use("/api/idIndexList", idIndexListRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/getConfig", getConfigRoute);
+app.use("/api/auth", authRoute);
 app.use("/api/login", authRoute);
 app.use("/api/config", configRoute);
 app.use("/api/products", productsRoute);

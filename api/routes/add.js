@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
+const User = require("../../models/models/User");
 const { defineModel } = require("../../controllers/functions/routeFunctions");
 const { addRoutines } = require("../../controllers/functions/addRoutines");
 const {
@@ -33,6 +35,36 @@ router.post("/", async (req, res) => {
     const existingNameUser = await Model.findOne({ name });
     if (existingNameUser) {
       return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
+    }
+  }
+
+  if (req.body.model === "Operator") {
+    console.log(
+      "req.body.fields firstAccessPassword",
+      req.body.fields["firstAccessPassword"]
+    );
+    const salt = await bcrypt.genSalt(10);
+    const hashedPass = await bcrypt.hash(
+      req.body.fields["firstAccessPassword"],
+      salt
+    );
+    try {
+      const updatedItem = await User.findByIdAndUpdate(
+        req.body.fields["user"]._id,
+        {
+          $set: {
+            username: req.body.fields["username"],
+            password: hashedPass,
+            role: req.body.fields["role"]._id,
+          },
+        },
+        { new: true }
+      );
+
+      return res.status(200).json(updatedItem);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json(err);
     }
   }
 

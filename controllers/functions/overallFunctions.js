@@ -46,6 +46,8 @@ export function isButtonDisabled(
 
       case "Job":
         return false;
+      case "Operador":
+        return false;
       case "Colaborador":
         return false;
       case "Gerente":
@@ -55,6 +57,8 @@ export function isButtonDisabled(
       case "Departamento":
         return false;
       case "Grupo":
+        return false;
+      case "Perfil de Acesso":
         return false;
 
       case "Venda":
@@ -96,6 +100,16 @@ export function checkAvailability(dynamicData, option) {
   }
   if (dynamicData === "manager") {
     if (option.department && typeof option.department === "string") {
+      return true;
+    }
+  }
+  if (dynamicData === "creatableUsername") {
+    if (option) {
+      return true;
+    }
+  }
+  if (dynamicData === "removableUsername") {
+    if (!option) {
       return true;
     }
   }

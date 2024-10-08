@@ -6,7 +6,7 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EngineeringIcon from "@mui/icons-material/Engineering";
-import FactCheckIcon from '@mui/icons-material/FactCheck';
+import FactCheckIcon from "@mui/icons-material/FactCheck";
 import GroupIcon from "@mui/icons-material/Group";
 import LanIcon from "@mui/icons-material/Lan";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
@@ -324,6 +324,96 @@ const rowButtonOptions = [
             },
           ],
         },
+      ],
+    },
+  },
+  {
+    page: "security",
+    models: ["Operator", "Position", "Role"],
+    menus: {
+      0: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "Operator",
+          icon: <ModeEditIcon />,
+        },
+        {
+          label: "Remover",
+          action: "delete",
+          modal: "Operator",
+          icon: <DeleteIcon />,
+        },
+        // {
+        //   label: "Alterar",
+        //   icon: <SettingsIcon />,
+        //   action: "dynamicChange",
+        //   submenu: [
+        //     {
+        //       modal: "small",
+        //       sourceModel: "Service",
+        //       targetModel: "Department",
+        //       targetLabel: "Departamento",
+        //       icon: <LanIcon />,
+        //     },
+        //   ],
+        // },
+      ],
+      1: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "Position",
+          icon: <ModeEditIcon />,
+        },
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Position",
+          icon: <DeleteIcon />,
+        },
+        // {
+        //   label: "Alterar",
+        //   icon: <SettingsIcon />,
+        //   action: "dynamicChange",
+        //   submenu: [
+        //     {
+        //       modal: "small",
+        //       sourceModel: "Service",
+        //       targetModel: "Department",
+        //       targetLabel: "Departamento",
+        //       icon: <LanIcon />,
+        //     },
+        //   ],
+        // },
+      ],
+      2: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "Role",
+          icon: <ModeEditIcon />,
+        },
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Role",
+          icon: <DeleteIcon />,
+        },
+        // {
+        //   label: "Alterar",
+        //   icon: <SettingsIcon />,
+        //   action: "dynamicChange",
+        //   submenu: [
+        //     {
+        //       modal: "small",
+        //       sourceModel: "Service",
+        //       targetModel: "Department",
+        //       targetLabel: "Departamento",
+        //       icon: <LanIcon />,
+        //     },
+        //   ],
+        // },
       ],
     },
   },

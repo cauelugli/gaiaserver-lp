@@ -118,13 +118,13 @@ const Login = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await api.put("/users/changePassFirstAccess", {
+      const res = await api.put("/auth/changePassFirstAccess", {
         userId: isFirstAccessUserId,
         password: newPassword,
       });
       if (res.data) {
         toast.success(
-          "Senha atualizada com sucesso! Reinicie o navegador e acesse o sistema.",
+          "Senha atualizada com sucesso! Você já pode acessar o sistema.",
           {
             closeOnClick: true,
             pauseOnHover: false,

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const Admin = require("../../models/models/Admin");
+const UserPreferences = require("../../models/models/UserPreferences");
 const User = require("../../models/models/User");
 
 router.post("/", async (req, res) => {
@@ -25,6 +26,36 @@ router.post("/", async (req, res) => {
   } catch (error) {
     console.log("error", error);
     res.status(500).send("Erro de autenticação");
+  }
+});
+
+router.put("/changePassFirstAccess", async (req, res) => {
+  const userId = req.body.userId;
+  let user;
+
+  user = await User.findById(userId);
+
+  if (!user) {
+    return res.status(404).json({ error: "Usuário não encontrado" });
+  }
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPass = await bcrypt.hash(req.body.password, salt);
+
+    user.password = hashedPass;
+    user.isFirstAccess = false;
+    const newUserPreferences = new UserPreferences({ userId: req.body.userId });
+    await newUserPreferences.save();
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Senha atualizada com sucesso e acesso inicial removido.",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
 

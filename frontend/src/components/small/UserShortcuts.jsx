@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -15,7 +14,6 @@ import {
 
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import SwitchAccessShortcutIcon from "@mui/icons-material/SwitchAccessShortcut";
 
 import NewUserShortcut from "./NewUserShortcut";
 import ShortcutItem from "./ShortcutItem";
@@ -27,9 +25,9 @@ const api = axios.create({
 const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [userPreferences, setUserPreferences] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedShortcut, setSelectedShortcut] = React.useState("");
-  const [open, setOpen] = React.useState(false); // State to manage dropdown open/close
+  const [open, setOpen] = React.useState(false);
 
   const fetchData = async () => {
     try {
@@ -58,7 +56,7 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
     );
   }
 
-  const shortcuts = userPreferences.userShortcuts || [];
+  const shortcuts = userPreferences?.userShortcuts || [];
 
   const handleDeleteShortcut = async (shortcutName) => {
     try {

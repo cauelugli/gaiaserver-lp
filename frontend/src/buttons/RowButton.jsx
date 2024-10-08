@@ -133,6 +133,16 @@ const RowButton = (props) => {
                     ? checkAvailability("resolvableRequest", props.item.status)
                     : menuItem.label === "Solicitar Aprovação"
                     ? checkAvailability("approvableRequest", props.item.status)
+                    : menuItem.label === "Criar" // username
+                    ? checkAvailability(
+                        "creatableUsername",
+                        props.item.username
+                      )
+                    : menuItem.label === "Remover" // username
+                    ? checkAvailability(
+                        "removableUsername",
+                        props.item.username
+                      )
                     : false
                 }
               >
@@ -174,6 +184,7 @@ const RowButton = (props) => {
               : {}
           }
         >
+          {/* this is stupid... */}
           {selectedAction === "edit" ? (
             <EditFormModel
               palette={props.palette}
