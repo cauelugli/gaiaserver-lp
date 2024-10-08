@@ -105,7 +105,7 @@ export const configModalOptions = (userName, userId, configCustomization) => [
     icon: React.createElement(AdminPanelSettingsIcon, { sx: { fontSize: 48 } }),
     text: "Permissões",
     modal: React.createElement(PermissionsModal),
-    isBasic: false,
+    isBasic: true,
   },
   {
     icon: React.createElement(AutoFixNormalIcon, { sx: { fontSize: 48 } }),

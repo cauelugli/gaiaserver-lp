@@ -47,7 +47,7 @@ function hasPermission(user, configData, routePath) {
 
   const allowedRoles = configData.permissions[routePath];
 
-  return allowedRoles && allowedRoles.some((id) => id === user.role.id);
+  return allowedRoles && allowedRoles.some((id) => id === user.role);
 }
 
 export default function App() {

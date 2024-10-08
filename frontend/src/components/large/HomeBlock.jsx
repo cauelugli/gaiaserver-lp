@@ -14,7 +14,6 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
 import GroupIcon from "@mui/icons-material/Group";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import HardwareIcon from "@mui/icons-material/Hardware";
 import LanIcon from "@mui/icons-material/Lan";
 import SellIcon from "@mui/icons-material/Sell";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -132,15 +131,9 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
   );
 
   const allowedListRightColumn = uniqueAllowedLinks.filter((link) =>
-    [
-      "quotes",
-      "files",
-      "security",
-      "dashboard",
-      "reports",
-
-      "config",
-    ].includes(link)
+    ["quotes", "files", "security", "dashboard", "reports", "config"].includes(
+      link
+    )
   );
 
   React.useEffect(() => {}, [configData]);

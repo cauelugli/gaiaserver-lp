@@ -123,7 +123,9 @@ export default function Permissions({ onClose }) {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        const roles = await api.get("/roles");
+        const roles = await api.get("/get", {
+          params: { model: "Role" },
+        });
         setConfigData(config.data[0].permissions);
         setRoles(roles.data);
       } catch (error) {
@@ -179,34 +181,20 @@ export default function Permissions({ onClose }) {
 
   return (
     <form onSubmit={handleChangePermissionsConfig}>
-      <>
+      <Tooltip
+        title={
+          <Typography sx={{ fontSize: 12 }}>
+            Nesta sessão escolha o os Perfis de Acesso que podem visualizar os
+            recursos do aplicativo.
+          </Typography>
+        }
+      >
         <DialogTitle
           sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
         >
-          Permissões de Perfis{" "}
-          <Tooltip
-            title={
-              <Typography sx={{ fontSize: 12 }}>
-                Nesta sessão escolha o os Perfis de Acesso que podem visualizar
-                os recursos do aplicativo.
-              </Typography>
-            }
-          >
-            <Button
-              size="small"
-              sx={{
-                backgroundColor: "white",
-                color: "#32aacd",
-                "&:hover": {
-                  backgroundColor: "white",
-                },
-              }}
-            >
-              ?
-            </Button>
-          </Tooltip>
+          Permissões de Perfis
         </DialogTitle>
-      </>
+      </Tooltip>
       <Table size="small">
         <TableHead>
           <TableRow>
