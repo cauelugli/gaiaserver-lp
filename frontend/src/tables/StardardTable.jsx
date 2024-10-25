@@ -30,7 +30,7 @@ function StandardTable({
               key={columnIndex}
               align={columnIndex === 0 ? "" : "left"}
             >
-              <DataTableCell item={row[column.id]} idIndexList={idIndexList} />
+              <DataTableCell item={row[column.id]} idIndexList={idIndexList} column={column} />
             </TableCell>
           ))}
           <TableCell align="center">

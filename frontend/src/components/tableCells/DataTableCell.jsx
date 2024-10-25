@@ -2,16 +2,15 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import { Avatar, Grid, Paper, Tooltip, Typography } from "@mui/material";
+import { Avatar, Button, Grid, Paper, Tooltip } from "@mui/material";
 
 import BuildIcon from "@mui/icons-material/Build";
 
-// Função para verificar se a string é um id
 function isId(str) {
   return /^[a-f0-9]{24}$/i.test(str);
 }
 
-const DataTableCell = ({ item, idIndexList }) => {
+const DataTableCell = ({ item, idIndexList, column }) => {
   // Função para encontrar o nome correspondente ao id
   const getNameById = (id) => {
     const found = idIndexList.find((obj) => obj.id === id);
@@ -66,7 +65,7 @@ const DataTableCell = ({ item, idIndexList }) => {
       ) : typeof item === "object" ? (
         item.name
       ) : typeof item === "number" ? (
-        `R$${item.toFixed(2)}`
+        <>{column.label === "Valor" ? `R$${item.toFixed(2)}` : item}</>
       ) : typeof item === "string" && item.startsWith("#") ? (
         <Paper
           elevation={0}
