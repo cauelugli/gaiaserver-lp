@@ -3,7 +3,10 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../../models/models/User");
 const { defineModel } = require("../../controllers/functions/routeFunctions");
-const { addRoutines } = require("../../controllers/functions/addRoutines");
+const {
+  addRoutines,
+  addCounter,
+} = require("../../controllers/functions/addRoutines");
 const {
   insertMembership,
 } = require("../../controllers/functions/updateRoutines");
@@ -95,14 +98,17 @@ router.post("/", async (req, res) => {
     const savedItem = await newItem.save();
 
     if (req.body.model === "Department" || req.body.model === "Group") {
-      insertMembership(
+      await insertMembership(
         savedItem._id.toString(),
         req.body.model,
         fields.members
       );
+    } else if (req.body.model === "Job" || req.body.model === "Sale") {
+      await addCounter(savedItem._id.toString(), req.body.model);
+    } else {
+      await addRoutines(req.body.model, savedItem);
     }
 
-    await addRoutines(req.body.model, savedItem);
     res.status(200).json(savedItem);
   } catch (err) {
     console.log(err);

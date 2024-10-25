@@ -1,8 +1,9 @@
 const Department = require("../../models/models/Department");
 const Position = require("../../models/models/Position");
 const Role = require("../../models/models/Role");
-const Group = require("../../models/models/Group");
+const Counters = require("../../models/models/Counters");
 const User = require("../../models/models/User");
+const Job = require("../../models/models/Job");
 
 async function addRoutines(model, source) {
   try {
@@ -73,8 +74,40 @@ async function addRoutines(model, source) {
   }
 }
 
+async function addCounter(sourceId, model) {
+  try {
+    let counter = await Counters.findOne();
+    if (!counter) {
+      counter = new Counters({
+        job: model === "Job" ? 1 : 0,
+        sale: model === "Sale" ? 1 : 0,
+      });
+    }
+    let newNumber;
+
+    switch (model) {
+      case "Job":
+        newNumber = counter.job + 1;
+        counter.job = newNumber;
+        await Job.findByIdAndUpdate(sourceId, { $set: { number: newNumber } });
+        break;
+      case "Sale":
+        newNumber = counter.sale + 1;
+        counter.sale = newNumber;
+        await Sale.findByIdAndUpdate(sourceId, { $set: { number: newNumber } });
+        break;
+      default:
+        throw new Error(`Modelo não suportado: ${model}`);
+    }
+
+    await counter.save();
+  } catch (err) {
+    console.error(`Erro na rotina de adição em ${model}:`, err);
+  }
+}
+
 async function createQuote(model, source) {
   "";
 }
 
-module.exports = { addRoutines, createQuote };
+module.exports = { addRoutines, createQuote, addCounter };
