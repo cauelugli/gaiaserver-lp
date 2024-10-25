@@ -10,7 +10,7 @@ import { Badge, Box, Typography } from "@mui/material";
 
 import RefreshIcon from "@mui/icons-material/Refresh";
 
-export default function RefreshButton({
+export default function RefreshDataButton({
   refreshData,
   setRefreshData,
   configCustomization,
