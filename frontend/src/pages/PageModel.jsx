@@ -31,6 +31,8 @@ import {
   isArray,
 } from "../../../controllers/functions/overallFunctions";
 
+import TableFiltersBar from "../components/large/TableFiltersBar";
+
 function CustomTabPanel(props) {
   const { children, value, index } = props;
 
@@ -55,6 +57,8 @@ export default function PageModel(props) {
   const [items, setItems] = React.useState([]);
   const [baseItems, setBaseItems] = React.useState([]);
 
+  const [tableFilters, setTableFilters] = React.useState({});
+
   const [currentPage, setCurrentPage] = React.useState(props.item.page);
 
   const handleChange = (noArgument, newValue) => {
@@ -64,6 +68,7 @@ export default function PageModel(props) {
   React.useEffect(() => {
     if (props.item.page !== currentPage) {
       setValue(0);
+      setTableFilters({});
       setCurrentPage(props.item.page);
     }
 
@@ -157,7 +162,7 @@ export default function PageModel(props) {
             />
           )}
       </Grid>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Grid sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -191,6 +196,14 @@ export default function PageModel(props) {
             newDataRefreshButton={newDataRefreshButton}
             setNewDataRefreshButton={setNewDataRefreshButton}
           />
+          {props.item.tableColumns[0] && (
+            <TableFiltersBar
+              tableFilters={tableFilters}
+              setTableFilters={setTableFilters}
+              tableColumns={props.item.tableColumns[0]}
+              mainColor={props.configCustomization.mainColor}
+            />
+          )}
           <Grid sx={{ my: "auto", ml: "auto" }}>
             <TableOrCardSelector
               userId={props.userId}
@@ -202,7 +215,7 @@ export default function PageModel(props) {
             />
           </Grid>
         </Tabs>
-      </Box>
+      </Grid>
       {props.item.page === "products" &&
         items.map((item, index) => (
           <CustomTabPanel key={index} value={value} index={index}>

@@ -99,7 +99,7 @@ const TableOrCardSelector = ({
   };
 
   return (
-    <Grid container direction="row">
+    <Grid container direction="row" sx={{ width: tableOrCardView ? 100 : 120 }}>
       <Grid item>
         {!tableOrCardView && (
           <Grid container direction="row" sx={{ mr: 3 }}>
@@ -137,16 +137,20 @@ const TableOrCardSelector = ({
           </Grid>
         )}
       </Grid>
-      <AppsIcon
-        sx={{ mr: 2, cursor: "pointer" }}
-        color={!tableOrCardView ? "primary" : "inherit"}
-        onClick={() => handleUpdateTableOrCardView(false)}
-      />
-      <TableRowsIcon
-        sx={{ cursor: "pointer" }}
-        color={tableOrCardView ? "primary" : "inherit"}
-        onClick={() => handleUpdateTableOrCardView(true)}
-      />
+      <Grid>
+        <AppsIcon
+          sx={{ mr: 1, cursor: "pointer" }}
+          color={!tableOrCardView ? "primary" : "inherit"}
+          onClick={() => handleUpdateTableOrCardView(false)}
+        />
+      </Grid>
+      <Grid>
+        <TableRowsIcon
+          sx={{ cursor: "pointer" }}
+          color={tableOrCardView ? "primary" : "inherit"}
+          onClick={() => handleUpdateTableOrCardView(true)}
+        />
+      </Grid>
     </Grid>
   );
 };
