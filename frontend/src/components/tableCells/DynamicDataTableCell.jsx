@@ -19,17 +19,20 @@ import { checkAvailability } from "../../../../controllers/functions/overallFunc
 
 const DynamicDataTableCell = (props) => {
   const [options, setOptions] = React.useState([]);
+  console.log("dynamicData", props.fields.dynamicData);
+  console.log("data", props.fields.data);
 
   React.useEffect(() => {
     const fetchData = async () => {
+      // this is stupid...
       try {
         let data = [];
-        // this is stupid...
         if (props.field.dynamicData === "users") {
           const resUsers = await api.get("/get", { params: { model: "User" } });
           data = resUsers.data;
         } else if (
           props.field.dynamicData === "workers" ||
+          props.fields.data === "worker" ||
           props.field.dynamicData === "members"
         ) {
           const resWorkers = await api.get("/get", {
@@ -46,7 +49,10 @@ const DynamicDataTableCell = (props) => {
             params: { model: "User" },
           });
           data = resPositions.data.filter((user) => !user.username);
-        } else if (props.field.dynamicData === "allCustomers") {
+        } else if (
+          props.field.dynamicData === "allCustomers" ||
+          props.fields.data === "customer"
+        ) {
           const resCustomers = await api.get("/get", {
             params: { model: "Customer" },
           });
@@ -84,7 +90,7 @@ const DynamicDataTableCell = (props) => {
       }
     };
     fetchData();
-  }, [props.field.dynamicData]);
+  }, [props.field.dynamicData, props.fields.data]);
 
   const renderValue = (selected) => {
     if (props.multiple) {

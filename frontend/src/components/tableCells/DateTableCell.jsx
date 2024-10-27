@@ -16,7 +16,9 @@ const DateTableCell = (props) => {
           {...inputProps}
           sx={{
             width:
-              props.modalOptions.maxWidth === "xs"
+              props.modalOptions.maxWidth === "xxs"
+                ? 100
+                : props.modalOptions.maxWidth === "xs"
                 ? 190
                 : props.modalOptions.maxWidth === "sm"
                 ? 175

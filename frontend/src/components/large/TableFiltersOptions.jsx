@@ -1,16 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
-import {
-  Grid,
-  Chip,
-  Typography,
-  Paper,
-  TextField,
-  Popper,
-} from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
-import CancelIcon from "@mui/icons-material/Cancel";
+import { Grid, Chip, Paper, TextField, Popper } from "@mui/material";
+import TableFilterDialog from "./TableFilterDialog";
 
 function TableFiltersBar({
   tableColumns,
@@ -48,13 +40,47 @@ function TableFiltersBar({
     (column) => !(column.id in tableFilters && tableFilters[column.id])
   );
 
+  const mappedDataTypes = {
+    buyValue: { type: "number", data: "currency" },
+    cellphone: { type: "phone", data: "cellphone" },
+    createdAt: { type: "date", data: "simple" },
+
+    customer: { type: "dynamic", data: "customer", model: "Customer" },
+
+    department: { type: "dynamic", data: "department", model: "Department" },
+    email: { type: "string", data: "simple" },
+    mainContactName: { type: "string", data: "simple" },
+    manager: { type: "dynamic", data: "manager", model: "User" },
+    members: { type: "dynamic", data: "members", model: "User" },
+    name: { type: "string", data: "simple" },
+    number: { type: "number", data: "index" },
+    // payment: { type: "dynamic", data: "payment" },
+    phone: { type: "phone", data: "phone" },
+    position: { type: "dynamic", data: "position", model: "Position" },
+    price: { type: "number", data: "currency" },
+    products: { type: "dynamic", data: "products", model: "Product" },
+    quote: { type: "dynamic", data: "quote", model: "Quote" },
+    role: { type: "dynamic", data: "role", model: "Role" },
+    scheduledTo: { type: "date", data: "simple" },
+    sellValue: { type: "number", data: "currency" },
+    service: { type: "dynamic", data: "service", model: "Service" },
+    status: { type: "dynamic", data: "status", model: "Config" },
+    stockQuantity: { type: "number", data: "stockQuantity" },
+    title: { type: "string", data: "simple" },
+    // type: { type: "string", data: "serviceType" },
+    user: { type: "dynamic", data: "user", model: "User" },
+    username: { type: "dynamic", data: "username", model: "User" },
+    value: { type: "number", data: "currency" },
+    worker: { type: "dynamic", data: "worker", model: "User" },
+  };
+
   return (
     <Grid
       container
       spacing={1}
       alignItems="center"
       justifyContent="flex-start"
-      sx={{ width:"auto" }}
+      sx={{ width: "auto" }}
     >
       {availableColumns.map(
         (column, index) =>
@@ -78,42 +104,14 @@ function TableFiltersBar({
                 placement="bottom-start"
                 disablePortal={false}
               >
-                <Paper
-                  elevation={3}
-                  sx={{
-                    p: 2,
-                    mt: 1,
-                    minWidth: 200,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 1,
-                  }}
-                >
-                  <TextField
-                    label={`${column.label}`}
-                    value={filterValue}
-                    onChange={(e) => setFilterValue(e.target.value)}
-                    size="small"
-                    variant="outlined"
-                  />
-                  <Grid
-                    container
-                    spacing={1}
-                    justifyContent="flex-end"
-                    sx={{ mt: 1 }}
-                  >
-                    <CheckIcon
-                      onClick={handleApplyFilter}
-                      color="success"
-                      sx={{ cursor: "pointer", mr: 2 }}
-                    />
-                    <CancelIcon
-                      onClick={handleClose}
-                      color="error"
-                      sx={{ cursor: "pointer" }}
-                    />
-                  </Grid>
-                </Paper>
+                <TableFilterDialog
+                  columnLabel={column.label}
+                  filterValue={filterValue}
+                  setFilterValue={setFilterValue}
+                  handleApplyFilter={handleApplyFilter}
+                  handleClose={handleClose}
+                  dialogData={mappedDataTypes[column.id]}
+                />
               </Popper>
             </Grid>
           )

@@ -8,6 +8,7 @@ const PhoneTableCell = (props) => {
   return (
     <InputMask
       mask={
+        props.isCellphone ||
         props.field.name === "cellphone" ||
         props.field.name === "mainContactPhone"
           ? "(99) 99999-9999"
