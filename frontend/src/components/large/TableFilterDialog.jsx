@@ -44,8 +44,6 @@ const TableFilterDialog = (props) => {
     }
   };
 
-  console.log("props.dialogData", props.dialogData);
-
   const renderInputField = () => {
     switch (props.dialogData.type) {
       case "string":
