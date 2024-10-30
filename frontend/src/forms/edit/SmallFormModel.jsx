@@ -142,7 +142,11 @@ const SmallFormModel = (props) => {
           >
             {options.targetModel === "Static"
               ? fetchedOptions.map((option) => (
-                  <MenuItem key={option} value={option}>
+                  <MenuItem
+                    key={option}
+                    value={option}
+                    disabled={option === source[options.staticAttribute]}
+                  >
                     {option}
                   </MenuItem>
                 ))
