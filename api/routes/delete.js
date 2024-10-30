@@ -18,6 +18,7 @@ router.delete("/:model/:id", async (req, res) => {
     return res.status(400).json({ error: "Modelo inválido" });
   }
 
+  // you don't 'delete' an operator, you reset User's data to blank
   if (model === "Operator") {
     await User.findByIdAndUpdate(
       id,
