@@ -188,6 +188,10 @@ const configSchema = new Schema({
     canCreate: {
       type: Array,
     },
+    requestStatuses: {
+      type: Array,
+      default: ["Aberto", "Resolvido"],
+    },
   },
   security: {
     passwordComplexity: {

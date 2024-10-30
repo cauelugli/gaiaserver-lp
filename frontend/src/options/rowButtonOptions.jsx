@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 /* eslint-disable no-unused-vars */
 import React from "react";
 
@@ -14,7 +15,23 @@ import Person4Icon from "@mui/icons-material/Person4";
 import SellIcon from "@mui/icons-material/Sell";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
-import { status } from "./staticListOptions";
+
+const fetchStatuses = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("http://localhost:3000/api/config");
+      const data = await response.json();
+      const configData = data[0].requests;
+      const sortedStatuses = configData.requestStatuses.sort((a, b) =>
+        a.localeCompare(b)
+      );
+      resolve(sortedStatuses);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      reject(error);
+    }
+  });
+};
 
 const rowButtonOptions = [
   {
@@ -206,7 +223,7 @@ const rowButtonOptions = [
               targetLabel: "Status",
               icon: <TimelapseIcon />,
               staticAttribute: "status",
-              staticList: status,
+              staticList: fetchStatuses,
             },
           ],
         },
@@ -248,7 +265,7 @@ const rowButtonOptions = [
               targetLabel: "Status",
               icon: <TimelapseIcon />,
               staticAttribute: "status",
-              staticList: status,
+              staticList: fetchStatuses,
             },
           ],
         },

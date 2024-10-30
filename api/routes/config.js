@@ -88,6 +88,7 @@ router.put("/requests", async (req, res) => {
       requestsNeedApproval,
       requestsCanBeDeleted,
       requestsApproverManager,
+      statuses
     } = req.body;
 
     const config = await Config.findOne();
@@ -95,6 +96,7 @@ router.put("/requests", async (req, res) => {
     config.requests.requestsNeedApproval = requestsNeedApproval;
     config.requests.canBeDeleted = requestsCanBeDeleted;
     config.requests.requestsApproverManager = requestsApproverManager;
+    config.requests.requestStatuses = statuses;
 
     await config.save();
     res.status(200).json(config);

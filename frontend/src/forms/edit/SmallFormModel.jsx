@@ -25,7 +25,15 @@ const SmallFormModel = (props) => {
 
   React.useEffect(() => {
     if (options.targetModel === "Static") {
-      setFetchedOptions(options.staticList);
+      // Chama fetchStatuses e define fetchedOptions com os dados retornados
+      options
+        .staticList()
+        .then((statuses) => {
+          setFetchedOptions(statuses);
+        })
+        .catch((error) => {
+          console.error("Error fetching static statuses:", error);
+        });
     } else {
       const fetchData = async () => {
         try {
@@ -39,7 +47,7 @@ const SmallFormModel = (props) => {
       };
       fetchData();
     }
-  }, [options.targetModel, options.staticAttribute, options.staticList]);
+  }, [options]);
 
   // Encontra o nome do departamento atual do usuário
   const currentItemId =

@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -21,13 +20,21 @@ import {
   DialogTitle,
   FormControlLabel,
   Grid,
+  IconButton,
   Radio,
   RadioGroup,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import ManagerSelectTableCell from "../../components/tableCells/ManagerSelectTableCell";
 
@@ -37,6 +44,10 @@ export default function Requests({ onClose }) {
   const [requestsApproverManager, setRequestsApproverManager] =
     React.useState(null);
   const [requestsCanBeDeleted, setRequestsCanBeDeleted] = React.useState(null);
+  const [statuses, setStatuses] = React.useState([]);
+
+  const [showNewStatus, setShowNewStatus] = React.useState(false);
+  const [newStatus, setNewStatus] = React.useState("");
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +64,9 @@ export default function Requests({ onClose }) {
         setConfigData(configData);
         setRequestsNeedApproval(configData.requestsNeedApproval);
         setRequestsCanBeDeleted(configData.canBeDeleted);
+        setStatuses(
+          configData.requestStatuses.sort((a, b) => a.localeCompare(b))
+        );
 
         const approverManager = managersData.find(
           (manager) => manager._id === configData.requestsApproverManager
@@ -72,6 +86,7 @@ export default function Requests({ onClose }) {
         requestsNeedApproval,
         requestsApproverManager: requestsApproverManager._id,
         requestsCanBeDeleted,
+        statuses,
       });
 
       if (res.data) {
@@ -93,6 +108,10 @@ export default function Requests({ onClose }) {
         autoClose: 1200,
       });
     }
+  };
+
+  const handleRemoveStatus = (status) => {
+    setStatuses((prevStatuses) => prevStatuses.filter((s) => s !== status));
   };
 
   return (
@@ -242,6 +261,104 @@ export default function Requests({ onClose }) {
                           }
                         />
                       </RadioGroup>
+                    </Grid>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion sx={{ width: "100%", mt: 2 }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Status
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid container direction="column" alignItems="center">
+                      <Table size="small">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Nome</TableCell>
+                            <TableCell>Ações</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {statuses.length === 0 ? (
+                            <TableRow>
+                              <TableCell colSpan={3}>
+                                Nenhum status disponível
+                              </TableCell>
+                            </TableRow>
+                          ) : (
+                            statuses.map((status, index) => (
+                              <TableRow key={index}>
+                                <TableCell>{status}</TableCell>
+                                <TableCell>
+                                  <IconButton
+                                    color="secondary"
+                                    onClick={() => handleRemoveStatus(status)}
+                                    disabled={
+                                      status === "Aberto" ||
+                                      status === "Resolvido"
+                                    }
+                                  >
+                                    <DeleteIcon
+                                      sx={{
+                                        color:
+                                          status === "Aberto" ||
+                                          status === "Resolvido"
+                                            ? "darkgrey"
+                                            : "red",
+                                      }}
+                                    />
+                                  </IconButton>
+                                </TableCell>
+                              </TableRow>
+                            ))
+                          )}
+                        </TableBody>
+                      </Table>
+                    </Grid>
+                    <Grid container direction="column" alignItems="center">
+                      {showNewStatus && (
+                        <Grid sx={{ mt: 2 }}>
+                          <TextField
+                            sx={{ mr: 2 }}
+                            label="Nome do Novo Status"
+                            value={newStatus}
+                            onChange={(e) => setNewStatus(e.target.value)}
+                          />
+                        </Grid>
+                      )}
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          onClick={() => setShowNewStatus((prev) => !prev)}
+                          color={showNewStatus ? "error" : "inherit"}
+                          sx={{ my: 2, mr: 2 }}
+                        >
+                          {showNewStatus ? "Cancelar" : "+ NOVO STATUS"}
+                        </Button>
+                        {showNewStatus && (
+                          <Button
+                            variant={
+                              newStatus === "" ? "outlined" : "contained"
+                            }
+                            onClick={() => {
+                              setStatuses((prevStatuses) =>
+                                [...prevStatuses, newStatus].sort((a, b) =>
+                                  a.localeCompare(b)
+                                )
+                              );
+                              setNewStatus("");
+                              setShowNewStatus(false);
+                            }}
+                            color={newStatus === "" ? "inherit" : "success"}
+                            disabled={newStatus === ""}
+                          >
+                            Adicionar Status
+                          </Button>
+                        )}
+                      </Grid>
                     </Grid>
                   </Grid>
                 </AccordionDetails>
