@@ -97,6 +97,12 @@ const SmallFormModel = (props) => {
     props.setSmallmenuAnchorEl(null);
   };
 
+  const inputValue = currentItem
+    ? currentItem.name
+    : options.targetModel === "Static"
+    ? source[options.staticAttribute] || ""
+    : "Desconhecido";
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -117,17 +123,11 @@ const SmallFormModel = (props) => {
           </Typography>
           <TextField
             size="small"
-            sx={{ width: 200, backgroundColor: "white" }}
+            sx={{ width: 200 }}
             InputProps={{
               readOnly: true,
             }}
-            value={
-              currentItem
-                ? currentItem.name
-                : options.targetModel === "Static"
-                ? source[options.staticAttribute]
-                : "Desconhecido"
-            }
+            value={inputValue}
           />
         </Grid>
         <Grid item>
@@ -136,7 +136,7 @@ const SmallFormModel = (props) => {
           </Typography>
           <Select
             size="small"
-            sx={{ width: 200, backgroundColor: "white" }}
+            sx={{ width: 200 }}
             value={selectedOption}
             onChange={(e) => setSelectedOption(e.target.value)}
           >
