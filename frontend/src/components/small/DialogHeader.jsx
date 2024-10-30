@@ -20,7 +20,6 @@ const DialogHeader = ({
         position: "sticky",
         top: 0,
         zIndex: 1,
-        backgroundColor: palette === "dark" ? "#606060" : "white",
       }}
     >
       <Grid container direction="row" justifyContent="center">
