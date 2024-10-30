@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-
 import {
   IconButton,
   Menu,
@@ -10,9 +9,7 @@ import {
   ListItemText,
   Dialog,
 } from "@mui/material";
-
 import MenuIcon from "@mui/icons-material/Menu";
-
 import EditFormModel from "../forms/edit/EditFormModel";
 import { modals } from "../options/modals";
 import rowButtonOptions from "../options/rowButtonOptions";
@@ -48,19 +45,95 @@ const RowButton = (props) => {
     }
   };
 
-  const handleSubmenuClick = (event, menuItem) => {
-    setSubmenuAnchorEl(event.currentTarget);
-  };
-
-  const handleSmallmenuClick = (event) => {
-    setSmallmenuAnchorEl(event.currentTarget);
-  };
-
   const closeAllMenus = () => {
     setAnchorEl(null);
     setSubmenuAnchorEl(null);
     setSmallmenuAnchorEl(null);
   };
+
+  let formComponent;
+
+  switch (selectedAction) {
+    case "edit":
+      formComponent = (
+        <EditFormModel
+          palette={props.palette}
+          buttonProps={props}
+          options={selectedModal}
+          userName={props.userName}
+          userId={props.userId}
+          configAgenda={props.configAgenda}
+          configCustomization={props.configCustomization}
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+          refreshData={props.refreshData}
+          setRefreshData={props.setRefreshData}
+          target={props.item}
+          currentOption={currentOption}
+          tabIndex={props.tabIndex}
+        />
+      );
+      break;
+
+    case "add":
+      formComponent = "add targeted";
+      break;
+
+    case "resolve":
+      formComponent = (
+        <ResolveForm
+          userId={props.userId}
+          selectedItemId={props.item._id || props.item.id}
+          selectedItemName={
+            props.item.name ||
+            props.item.title ||
+            props.item.number ||
+            props.item.quoteNumber
+          }
+          model={selectedModal.model}
+          refreshData={props.refreshData}
+          setRefreshData={props.setRefreshData}
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+          page={currentOption.page}
+        />
+      );
+      break;
+
+    case "requestApproval":
+      formComponent = (
+        <RequestApprovalForm
+          userId={props.userId}
+          selectedItemId={props.item._id || props.item.id}
+          selectedItemName={props.item.title || props.item.number}
+          model={selectedModal.model}
+          refreshData={props.refreshData}
+          setRefreshData={props.setRefreshData}
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+          page={currentOption.page}
+        />
+      );
+      break;
+
+    case "delete":
+      formComponent = (
+        <DeleteFormModel
+          userId={props.userId}
+          selectedItem={props.item}
+          model={selectedModal.model}
+          refreshData={props.refreshData}
+          setRefreshData={props.setRefreshData}
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+          page={currentOption.page}
+        />
+      );
+      break;
+
+    default:
+      "";
+  }
 
   return (
     <>
@@ -79,8 +152,8 @@ const RowButton = (props) => {
                 <MenuItem
                   onClick={(e) =>
                     menuItem.modal === "small"
-                      ? handleSmallmenuClick(e)
-                      : handleSubmenuClick(e, menuItem)
+                      ? setSmallmenuAnchorEl(e.currentTarget)
+                      : setSubmenuAnchorEl(e.currentTarget)
                   }
                   sx={{ minWidth: 150 }}
                 >
@@ -184,69 +257,7 @@ const RowButton = (props) => {
               : {}
           }
         >
-          {/* this is stupid... */}
-          {selectedAction === "edit" ? (
-            <EditFormModel
-              palette={props.palette}
-              buttonProps={props}
-              options={selectedModal}
-              userName={props.userName}
-              userId={props.userId}
-              configAgenda={props.configAgenda}
-              configCustomization={props.configCustomization}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-              refreshData={props.refreshData}
-              setRefreshData={props.setRefreshData}
-              target={props.item}
-              currentOption={currentOption}
-              tabIndex={props.tabIndex}
-            />
-          ) : selectedAction === "add" ? (
-            "add targeted"
-          ) : selectedAction === "resolve" ? (
-            <ResolveForm
-              userId={props.userId}
-              selectedItemId={props.item._id || props.item.id}
-              selectedItemName={
-                props.item.name ||
-                props.item.title ||
-                props.item.number ||
-                props.item.quoteNumber
-              }
-              model={selectedModal.model}
-              refreshData={props.refreshData}
-              setRefreshData={props.setRefreshData}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-              page={currentOption.page}
-            />
-          ) : selectedAction === "requestApproval" ? (
-            <RequestApprovalForm
-              userId={props.userId}
-              selectedItemId={props.item._id || props.item.id}
-              selectedItemName={props.item.title || props.item.number}
-              model={selectedModal.model}
-              refreshData={props.refreshData}
-              setRefreshData={props.setRefreshData}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-              page={currentOption.page}
-            />
-          ) : selectedAction === "delete" ? (
-            <DeleteFormModel
-              userId={props.userId}
-              selectedItem={props.item}
-              model={selectedModal.model}
-              refreshData={props.refreshData}
-              setRefreshData={props.setRefreshData}
-              openDialog={openDialog}
-              setOpenDialog={setOpenDialog}
-              page={currentOption.page}
-            />
-          ) : (
-            ""
-          )}
+          {formComponent}
         </Dialog>
       )}
     </>
