@@ -2,10 +2,12 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import { InputAdornment, TextField } from "@mui/material";
+import { InputAdornment, InputLabel, TextField } from "@mui/material";
 
 const StringTableCell = (props) => {
   return (
+    <>
+    <InputLabel>{props.field.label}</InputLabel>
     <TextField
       type={props.isPassword ? "password" : props.isNumber ? "number" : "text"}
       value={props.fields[props.field.name] || ""}
@@ -33,6 +35,8 @@ const StringTableCell = (props) => {
         },
       }}
     />
+
+    </>
   );
 };
 

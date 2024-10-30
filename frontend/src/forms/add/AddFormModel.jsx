@@ -11,7 +11,7 @@ const api = axios.create({
 import {
   Box,
   Button,
-  Checkbox,
+  // Checkbox,
   DialogActions,
   DialogContent,
   Grid,
@@ -19,22 +19,10 @@ import {
 } from "@mui/material";
 
 import DialogHeader from "../../components/small/DialogHeader";
-import ColorPicker from "../../components/small/ColorPicker";
-
-import AttachmentsTableCell from "../../components/tableCells/AttachmentsTableCell";
-import CurrencyTableCell from "../../components/tableCells/CurrencyTableCell";
-import DateTableCell from "../../components/tableCells/DateTableCell";
-import DynamicDataTableCell from "../../components/tableCells/DynamicDataTableCell";
-import IdDocTableCell from "../../components/tableCells/IdDocTableCell";
 import ImageTableCell from "../../components/tableCells/ImageTableCell";
-import PhoneTableCell from "../../components/tableCells/PhoneTableCell";
-import ProductsTableCell from "../../components/tableCells/ProductsTableCell";
-import SelectTableCell from "../../components/tableCells/SelectTableCell";
-import ServicesTableCell from "../../components/tableCells/ServicesTableCell";
-import StringTableCell from "../../components/tableCells/StringTableCell";
 
 import { isButtonDisabled } from "../../../../controllers/functions/overallFunctions";
-import ManagerSelectTableCell from "../../components/tableCells/ManagerSelectTableCell";
+import { renderField } from "../../options/formFieldOptions";
 
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
@@ -200,6 +188,20 @@ export default function AddFormModel(props) {
     }
   };
 
+  const handlers = {
+    setFields,
+    handleProductChange,
+    handleServiceChange,
+    handleFileUpload,
+    handleFileRemove,
+    finalPrice,
+    setFinalPrice,
+    priceDifference,
+    setPriceDifference,
+    setOkToDispatch,
+    attachments,
+  };
+
   return (
     <form onSubmit={handleAdd}>
       <DialogHeader
@@ -242,178 +244,15 @@ export default function AddFormModel(props) {
                       width: field.type === "productList" ? "100%" : "auto",
                     }}
                   >
-                    <Typography sx={{ fontSize: 14 }}>{field.label}</Typography>
-                    {/* this is stupid... */}
-                    {field.type === "string" && (
-                      <StringTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "idDoc" && (
-                      <IdDocTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "phone" && (
-                      <PhoneTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "currency" && (
-                      <CurrencyTableCell
-                        fields={fields}
-                        field={field}
-                        setFields={setFields}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "password" && (
-                      <StringTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                        isPassword
-                      />
-                    )}
-                    {field.type === "fullWidth" && (
-                      <StringTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                        isFullWidth
-                      />
-                    )}
-                    {field.type === "select" && (
-                      <SelectTableCell
-                        fields={fields}
-                        field={field}
-                        menuOptions={field.options}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                        isFullWidth
-                      />
-                    )}
-                    {field.type === "multipleSelect" && (
-                      <SelectTableCell
-                        fields={fields}
-                        field={field}
-                        menuOptions={field.options}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                        multiple
-                      />
-                    )}
-                    {field.type === "date" && (
-                      <DateTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "dynamicData" && (
-                      <DynamicDataTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                        multiple={field.multiple}
-                        //need 'target' for cases like changing department for Managers
-                      />
-                    )}
-                    {field.type === "managerSelect" && (
-                      <ManagerSelectTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                        multiple={field.multiple}
-                      />
-                    )}
-                    {field.type === "productList" && (
-                      <Grid
-                        direction="column"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <ProductsTableCell
-                          selectedProducts={selectedProducts}
-                          handleProductChange={handleProductChange}
-                          setSelectedProducts={setSelectedProducts}
-                          value={fields[field.name] || ""}
-                          onChange={handleChange(field.name)}
-                          size="small"
-                          required={field.required}
-                          fieldType={field.type}
-                          finalPrice={finalPrice}
-                          setFinalPrice={setFinalPrice}
-                          priceDifference={priceDifference}
-                          setPriceDifference={setPriceDifference}
-                          okToDispatch={okToDispatch}
-                          setOkToDispatch={setOkToDispatch}
-                          servicePrice={fields["price"]}
-                        />
-                      </Grid>
-                    )}
-                    {field.type === "servicesList" && (
-                      <ServicesTableCell
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                        size="small"
-                        required={field.required}
-                        handleServiceChange={handleServiceChange}
-                        selectedServices={selectedServices}
-                        priceDifference={priceDifference}
-                        setPriceDifference={setPriceDifference}
-                        setFinalPrice={setFinalPrice}
-                        setOkToDispatch={setOkToDispatch}
-                      />
-                    )}
-                    {field.type === "attachments" && (
-                      <AttachmentsTableCell
-                        attachments={attachments}
-                        onUpload={handleFileUpload}
-                        onRemove={handleFileRemove}
-                      />
-                    )}
-                    {field.type === "checkbox" && (
-                      <Checkbox
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                        size="small"
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "color" && (
-                      <ColorPicker
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                      />
+                    {renderField(
+                      field,
+                      fields,
+                      handleChange,
+                      modalOptions,
+                      handlers,
+                      okToDispatch,
+                      selectedProducts,
+                      selectedServices
                     )}
                   </Grid>
                 ))}

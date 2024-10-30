@@ -6,6 +6,7 @@ import {
   Avatar,
   Grid,
   IconButton,
+  InputLabel,
   MenuItem,
   Select,
   Typography,
@@ -90,6 +91,7 @@ const ManagerSelectTableCell = (props) => {
 
   return (
     <Grid>
+      <InputLabel>{props.field.label}</InputLabel>
       <Select
         value={
           props.fromConfig

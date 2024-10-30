@@ -14,13 +14,13 @@ import {
   Select,
   Typography,
   Chip,
+  FormControlLabel,
+  InputLabel,
 } from "@mui/material";
 import { checkAvailability } from "../../../../controllers/functions/overallFunctions";
 
 const DynamicDataTableCell = (props) => {
   const [options, setOptions] = React.useState([]);
-  console.log("dynamicData", props.fields.dynamicData);
-  console.log("data", props.fields.data);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -106,21 +106,9 @@ const DynamicDataTableCell = (props) => {
           ))}
         </div>
       );
-    } else if (
-      props.field.dynamicData === "users" ||
-      props.field.dynamicData === "members" ||
-      props.field.dynamicData === "username" ||
-      props.field.dynamicData === "workers" ||
-      props.field.dynamicData === "allCustomers"
-    ) {
+    } else {
       if (!selected) {
-        return (
-          <Typography>
-            {props.field.dynamicData === "allCustomers"
-              ? "Cliente"
-              : "Colaborador"}
-          </Typography>
-        );
+        return <Typography>{props.field.label}</Typography>;
       } else {
         return (
           <Grid container direction="row" alignItems="center">
@@ -133,67 +121,60 @@ const DynamicDataTableCell = (props) => {
           </Grid>
         );
       }
-    } else {
-      if (!selected) {
-        return <Typography />;
-      } else {
-        return (
-          <Typography sx={{ fontSize: 13, mt: 0.5 }}>
-            {selected.name || selected}
-          </Typography>
-        );
-      }
     }
   };
 
   return (
-    <Select
-      value={props.fields[props.field.name] || (props.multiple ? [] : "")}
-      onChange={props.handleChange(props.field.name)}
-      sx={{
-        width: props.multiple
-          ? "100%"
-          : props.modalOptions.maxWidth === "xs"
-          ? 190
-          : props.modalOptions.maxWidth === "sm"
-          ? 175
-          : props.modalOptions.maxWidth === "md"
-          ? 200
-          : 200,
-        minWidth: 175,
-      }}
-      size="small"
-      required={props.field.required}
-      multiple={props.multiple}
-      renderValue={renderValue}
-    >
-      {props.field.dynamicData === "users" ||
-      props.field.dynamicData === "members" ||
-      props.field.dynamicData === "managers" ||
-      props.field.dynamicData === "workers" ||
-      props.field.dynamicData === "allCustomers"
-        ? options.map((option, index) => (
-            <MenuItem
-              value={option}
-              key={index}
-              disabled={checkAvailability(props.field.dynamicData, option)}
-            >
-              <Grid container direction="row" alignItems="center">
-                <Avatar
-                  alt="Imagem"
-                  src={`http://localhost:3000/static/${option.image}`}
-                  sx={{ width: 24, height: 24, marginRight: 2 }}
-                />
-                <Typography>{option.name}</Typography>
-              </Grid>
-            </MenuItem>
-          ))
-        : options.map((option, index) => (
-            <MenuItem value={option} key={index}>
-              {option.name || option}
-            </MenuItem>
-          ))}
-    </Select>
+    <>
+      <InputLabel>{props.field.label}</InputLabel>
+      <Select
+        value={props.fields[props.field.name] || (props.multiple ? [] : "")}
+        onChange={props.handleChange(props.field.name)}
+        sx={{
+          width: props.multiple
+            ? "100%"
+            : props.modalOptions.maxWidth === "xs"
+            ? 190
+            : props.modalOptions.maxWidth === "sm"
+            ? 175
+            : props.modalOptions.maxWidth === "md"
+            ? 200
+            : 200,
+          minWidth: 175,
+        }}
+        size="small"
+        required={props.field.required}
+        multiple={props.multiple}
+        renderValue={renderValue}
+      >
+        {props.field.dynamicData === "users" ||
+        props.field.dynamicData === "members" ||
+        props.field.dynamicData === "managers" ||
+        props.field.dynamicData === "workers" ||
+        props.field.dynamicData === "allCustomers"
+          ? options.map((option, index) => (
+              <MenuItem
+                value={option}
+                key={index}
+                disabled={checkAvailability(props.field.dynamicData, option)}
+              >
+                <Grid container direction="row" alignItems="center">
+                  <Avatar
+                    alt="Imagem"
+                    src={`http://localhost:3000/static/${option.image}`}
+                    sx={{ width: 24, height: 24, marginRight: 2 }}
+                  />
+                  <Typography>{option.name}</Typography>
+                </Grid>
+              </MenuItem>
+            ))
+          : options.map((option, index) => (
+              <MenuItem value={option} key={index}>
+                {option.name || option}
+              </MenuItem>
+            ))}
+      </Select>
+    </>
   );
 };
 

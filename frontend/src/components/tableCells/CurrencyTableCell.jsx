@@ -2,9 +2,9 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import { InputAdornment, TextField } from "@mui/material";
+import { InputAdornment, InputLabel, TextField } from "@mui/material";
 
-import { handleCurrencyValueChange } from "../../../../controllers/handlers/handlers"
+import { handleCurrencyValueChange } from "../../../../controllers/handlers/handlers";
 
 const CurrencyTableCell = (props) => {
   const handleChange = (e) => {
@@ -17,24 +17,28 @@ const CurrencyTableCell = (props) => {
   };
 
   return (
-    <TextField
-      size="small"
-      value={props.fields[props.field.name] || ""}
-      onChange={handleChange}
-      InputProps={{
-        startAdornment: <InputAdornment position="start">R$</InputAdornment>,
-      }}
-      sx={{
-        width: props.modalOptions.maxWidth === "xs"
-          ? 190
-          : props.modalOptions.maxWidth === "sm"
-          ? 175
-          : props.modalOptions.maxWidth === "md"
-          ? 200
-          : 200,
-      }}
-      required={props.field.required}
-    />
+    <>
+      <InputLabel>{props.field.label}</InputLabel>
+      <TextField
+        size="small"
+        value={props.fields[props.field.name] || ""}
+        onChange={handleChange}
+        InputProps={{
+          startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+        }}
+        sx={{
+          width:
+            props.modalOptions.maxWidth === "xs"
+              ? 190
+              : props.modalOptions.maxWidth === "sm"
+              ? 175
+              : props.modalOptions.maxWidth === "md"
+              ? 200
+              : 200,
+        }}
+        required={props.field.required}
+      />
+    </>
   );
 };
 

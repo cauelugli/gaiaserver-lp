@@ -156,7 +156,6 @@ export default function Customization({ onClose }) {
                 <AccordionDetails>
                   <Grid item sx={{ my: 1.5 }}>
                     <Grid container direction="row">
-                      <Typography sx={{ my: "auto" }}>Cor Principal</Typography>
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
@@ -166,18 +165,9 @@ export default function Customization({ onClose }) {
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto" }}>
+                          Cor Principal
+                        </Typography>
                       </Tooltip>
                       <TextField
                         variant="outlined"
@@ -221,7 +211,6 @@ export default function Customization({ onClose }) {
                   </Grid>
                   <Grid item sx={{ my: 1.5 }}>
                     <Grid container direction="row">
-                      <Typography sx={{ my: "auto" }}>Cor da Fonte</Typography>
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
@@ -232,18 +221,9 @@ export default function Customization({ onClose }) {
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto" }}>
+                          Cor da Fonte
+                        </Typography>
                       </Tooltip>
                       <TextField
                         variant="outlined"
