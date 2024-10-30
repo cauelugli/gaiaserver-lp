@@ -196,13 +196,31 @@ export default function PageModel(props) {
             newDataRefreshButton={newDataRefreshButton}
             setNewDataRefreshButton={setNewDataRefreshButton}
           />
-          {props.item.tableColumns[0] && (
+          {props.item.page === "products" ? (
             <TableFiltersBar
               tableFilters={tableFilters}
               setTableFilters={setTableFilters}
-              tableColumns={props.item.tableColumns[0]}
+              tableColumns={[
+                { id: "fakeCut", label: "fakeCut", dialogData: "" },
+                { id: "name", label: "Nome", dialogData: "" },
+                { id: "buyValue", label: "Valor de Compra", dialogData: "" },
+                { id: "sellValue", label: "Valor de Venda", dialogData: "" },
+              ]}
               mainColor={props.configCustomization.mainColor}
+              isFromProducts
+              extraColumnFields={
+                baseItems[value] ? baseItems[value].fields : []
+              }
             />
+          ) : (
+            props.item.tableColumns[0] && (
+              <TableFiltersBar
+                tableFilters={tableFilters}
+                setTableFilters={setTableFilters}
+                tableColumns={props.item.tableColumns[0]}
+                mainColor={props.configCustomization.mainColor}
+              />
+            )
           )}
           <Grid sx={{ my: "auto", ml: "auto" }}>
             <TableOrCardSelector

@@ -83,7 +83,7 @@ export default function TableModel(props) {
         <Table size="small">
           {props.page === "products" ? (
             <ProductsTableHeader
-              itemSample={props.items[0]}
+              itemSample={props.items ? props.items[0] : null}
               order={order}
               orderBy={orderBy}
               handleRequestSort={handleRequestSort}
