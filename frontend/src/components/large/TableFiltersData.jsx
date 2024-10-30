@@ -25,7 +25,7 @@ function TableFilteredDataBar({ tableFilters, setTableFilters, tableColumns }) {
             variant="contained"
             size="small"
             sx={{
-              background: "lightgrey",
+              background: "grey",
             }}
             onDelete={() => {
               setTableFilters((prevFilters) => {
