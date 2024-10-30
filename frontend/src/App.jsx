@@ -192,6 +192,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Grid
+        className="baseGrid"
         sx={{
           width: "auto",
           height: "auto",

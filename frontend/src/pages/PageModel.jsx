@@ -201,10 +201,10 @@ export default function PageModel(props) {
               tableFilters={tableFilters}
               setTableFilters={setTableFilters}
               tableColumns={[
-                { id: "fakeCut", label: "fakeCut", dialogData: "" },
-                { id: "name", label: "Nome", dialogData: "" },
-                { id: "buyValue", label: "Valor de Compra", dialogData: "" },
-                { id: "sellValue", label: "Valor de Venda", dialogData: "" },
+                { id: "fakeCut", label: "fakeCut" },
+                { id: "name", label: "Nome" },
+                { id: "buyValue", label: "Valor de Compra" },
+                { id: "sellValue", label: "Valor de Venda" },
               ]}
               mainColor={props.configCustomization.mainColor}
               isFromProducts

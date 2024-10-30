@@ -4,11 +4,23 @@ export const lightTheme = createTheme({
   palette: {
     mode: "light",
     background: {
-      default: "#fff",
-      paper: "#fff",
+      default: "#f8f8ff",
+      paper: "#f8f8ff",
     },
   },
   components: {
+    MuiGrid: {
+      styleOverrides: {
+        root: {
+          "&.baseGrid": {
+            backgroundColor: "#f8f8ff",
+            "&:hover": {
+              backgroundColor: "none",
+            },
+          },
+        },
+      },
+    },
     MuiTableRow: {
       styleOverrides: {
         root: {
@@ -25,11 +37,23 @@ export const darkTheme = createTheme({
   palette: {
     mode: "dark",
     background: {
-      default: "#121212",
-      paper: "#424242",
+      default: "#1D1D1D",
+      paper: "#1D1D1D",
     },
   },
   components: {
+    MuiGrid: {
+      styleOverrides: {
+        root: {
+          "&.baseGrid": {
+            backgroundColor: "#1D1D1D",
+            "&:hover": {
+              backgroundColor: "none",
+            },
+          },
+        },
+      },
+    },
     MuiTypography: {
       styleOverrides: {
         root: {
@@ -44,18 +68,16 @@ export const darkTheme = createTheme({
         },
       },
     },
-
     MuiTableRow: {
       styleOverrides: {
         root: {
           backgroundColor: "none",
           "&:hover": {
-            backgroundColor: "#313131",
+            backgroundColor: "none",
           },
         },
       },
     },
-
     MuiTab: {
       styleOverrides: {
         root: {
