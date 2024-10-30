@@ -88,7 +88,7 @@ router.put("/requests", async (req, res) => {
       requestsNeedApproval,
       requestsCanBeDeleted,
       requestsApproverManager,
-      statuses
+      statuses,
     } = req.body;
 
     const config = await Config.findOne();
@@ -303,7 +303,7 @@ router.put("/products", async (req, res) => {
 // NOTIFICATIONS
 router.put("/notifications", async (req, res) => {
   try {
-    const { notifications, notificationsBooleans } = req.body;
+    const { notifications } = req.body;
 
     const updatedNotifications = {};
     Object.keys(notifications).forEach((key) => {
@@ -315,7 +315,7 @@ router.put("/notifications", async (req, res) => {
 
     const config = await Config.findOneAndUpdate(
       {},
-      { notifications: updatedNotifications, notificationsBooleans },
+      { notifications: updatedNotifications },
       { new: true }
     );
 

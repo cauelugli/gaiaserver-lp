@@ -10,7 +10,6 @@ const ShortcutModals = ({
   maxWidth,
   configData,
   configNotifications,
-  configNotificationsBooleans,
   configCustomization,
   user,
   ...props

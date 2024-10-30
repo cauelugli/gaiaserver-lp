@@ -88,7 +88,6 @@ function TableFiltersBar({
             <Grid item key={index} sx={{ cursor: "pointer" }}>
               <Chip
                 label={column.label}
-                size="small"
                 variant="contained"
                 onClick={(event) => handleOpenFilter(event, column)}
                 sx={{

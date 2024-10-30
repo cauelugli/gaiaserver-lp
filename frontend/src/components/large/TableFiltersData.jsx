@@ -23,7 +23,6 @@ function TableFilteredDataBar({ tableFilters, setTableFilters, tableColumns }) {
           <Chip
             label={`${getLabelByKey(key)}: ${value}`}
             variant="contained"
-            size="small"
             sx={{
               background: "grey",
             }}

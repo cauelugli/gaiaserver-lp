@@ -1,12 +1,11 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import * as React from "react";
 
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5002");
 
-import { Badge, Box, Typography } from "@mui/material";
+import { Badge,  Grid, Typography } from "@mui/material";
 
 import RefreshIcon from "@mui/icons-material/Refresh";
 
@@ -37,11 +36,26 @@ export default function RefreshDataButton({
   }, [currentPath, setNewDataRefreshButton, userId]);
 
   return (
-    <Box
+    <Grid
+      container
+      direction="row"
+      alignItems="center"
+      justifyContent="center"
       onClick={() => {
         setRefreshData(!refreshData), setNewDataRefreshButton(true);
       }}
-      sx={{ cursor: "pointer", mt: 0.5 }}
+      sx={{
+        cursor: "pointer",
+        width: 110,
+        m: 0.75,
+        mx: 2,
+        border: `0.5px solid ${
+          configCustomization.mainColor
+            ? configCustomization.mainColor
+            : "#32aacd"
+        }`,
+        borderRadius: 3,
+      }}
     >
       <Badge
         color="success"
@@ -67,8 +81,8 @@ export default function RefreshDataButton({
           }}
         >
           ATUALIZAR
-        </Typography>
+        </Typography>{" "}
       </Badge>
-    </Box>
+    </Grid>
   );
 }

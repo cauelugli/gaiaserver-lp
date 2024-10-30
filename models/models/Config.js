@@ -80,6 +80,9 @@ const configSchema = new Schema({
     },
   },
   notifications: {
+    whenCustomerIsCreated: {
+      type: Array,
+    },
     whenUserIsCreated: {
       type: Array,
     },
@@ -88,20 +91,6 @@ const configSchema = new Schema({
     },
     whenSaleIsCreated: {
       type: Array,
-    },
-  },
-  notificationsBooleans: {
-    whenUserIsCreated: {
-      type: Boolean,
-      default: false,
-    },
-    whenJobIsCreated: {
-      type: Boolean,
-      default: false,
-    },
-    whenSaleIsCreated: {
-      type: Boolean,
-      default: false,
     },
   },
   permissions: {

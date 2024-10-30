@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -13,7 +13,6 @@ import {
   DialogActions,
   DialogTitle,
   Grid,
-  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -40,7 +39,6 @@ export default function Notifications({ onClose }) {
         const config = await api.get("/config");
         const roles = await api.get("/roles");
         setConfigData(config.data[0].notifications);
-        setBooleans(config.data[0].notificationsBooleans);
         setRoles(roles.data);
 
         const initialState = {};
@@ -82,20 +80,10 @@ export default function Notifications({ onClose }) {
   const handleChangeNotificationsConfig = async (e) => {
     e.preventDefault();
     try {
-      const payload = {
-        notifications: {},
-        notificationsBooleans: booleans,
-      };
+      const payload = { notifications: {} };
 
       Object.keys(selectedLists).forEach((key) => {
         payload.notifications[key] = selectedLists[key].selected;
-      });
-
-      // Remova chaves não booleanas do objeto notificationsBooleans
-      Object.keys(payload.notificationsBooleans).forEach((key) => {
-        if (typeof payload.notificationsBooleans[key] !== "boolean") {
-          delete payload.notificationsBooleans[key];
-        }
       });
 
       const res = await api.put("/config/notifications", payload);

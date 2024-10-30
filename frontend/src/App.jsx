@@ -397,7 +397,6 @@ export default function App() {
               configData={configData}
               configCustomization={configData.customization}
               configNotifications={configData.notifications}
-              configNotificationsBooleans={configData.notificationsBooleans}
               user={userData}
               toast={toast}
               action={shortcutModalState.action}
