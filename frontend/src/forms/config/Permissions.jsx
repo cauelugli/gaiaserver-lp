@@ -17,7 +17,7 @@ import {
   Checkbox,
   DialogActions,
   DialogTitle,
-  IconButton,
+  Grid,
   Table,
   TableBody,
   TableCell,
@@ -27,97 +27,12 @@ import {
   Typography,
 } from "@mui/material";
 
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import AssessmentIcon from "@mui/icons-material/Assessment";
-import BuildIcon from "@mui/icons-material/Build";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import GradingIcon from "@mui/icons-material/Grading";
-import GroupIcon from "@mui/icons-material/Group";
-import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import LanIcon from "@mui/icons-material/Lan";
-import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
-import SettingsIcon from "@mui/icons-material/Settings";
-import WarehouseIcon from "@mui/icons-material/Warehouse";
-import SellIcon from "@mui/icons-material/Sell";
-import WorkIcon from "@mui/icons-material/Work";
+import { permissionOptions } from "../../options/configOptions";
+
 
 export default function Permissions({ onClose }) {
   const [configData, setConfigData] = useState({});
   const [roles, setRoles] = useState([]);
-
-  const options = [
-    {
-      tooltip: "Dashboard",
-      label: "dashboard",
-      icon: <DashboardIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Clientes",
-      label: "customers",
-      icon: <WorkIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Solicitações",
-      label: "requests",
-      icon: <GradingIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Colaboradorees",
-      label: "users",
-      icon: <GroupIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Departamentos",
-      label: "departments",
-      icon: <LanIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Serviços",
-      label: "services",
-      icon: <BuildIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Orçamentos",
-      label: "quotes",
-      icon: <RequestQuoteIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Estoque",
-      label: "stock",
-      icon: <WarehouseIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Produtos",
-      label: "products",
-      icon: <SellIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Financeiro",
-      label: "finance",
-      icon: <AttachMoneyIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Relatórios",
-      label: "reports",
-      icon: <AssessmentIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Acessos",
-      label: "security",
-      icon: <AdminPanelSettingsIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Arquivos",
-      label: "files",
-      icon: <InsertDriveFileIcon fontSize="inherit" />,
-    },
-    {
-      tooltip: "Configurações",
-      label: "config",
-      icon: <SettingsIcon fontSize="inherit" />,
-    },
-  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -203,13 +118,17 @@ export default function Permissions({ onClose }) {
                 Perfil
               </Typography>
             </TableCell>
-            {options.map((item, index) => (
-              <TableCell key={index} sx={{ maxWidth: 2 }}>
-                <Tooltip title={item.tooltip}>
-                  <IconButton sx={{ cursor: "auto", ml: 1 }} size="small">
-                    {item.icon}
-                  </IconButton>
-                </Tooltip>
+            {permissionOptions.map((item, index) => (
+              <TableCell key={index}>
+                <Grid
+                  container
+                  direction="column"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  {item.icon}
+                  <Typography sx={{ fontSize: 9 }}>{item.tooltip}</Typography>
+                </Grid>
               </TableCell>
             ))}
           </TableRow>
@@ -217,8 +136,8 @@ export default function Permissions({ onClose }) {
         <TableBody>
           <TableRow>
             <TableCell>Admin</TableCell>
-            {options.map((item, index) => (
-              <TableCell key={index} sx={{ maxWidth: 2 }}>
+            {permissionOptions.map((item, index) => (
+              <TableCell key={index}>
                 <Checkbox size="small" disabled checked />
               </TableCell>
             ))}
@@ -226,7 +145,7 @@ export default function Permissions({ onClose }) {
           {roles.map((role, roleIndex) => (
             <TableRow key={roleIndex}>
               <TableCell>{role.name}</TableCell>
-              {options.map((option, optionIndex) => (
+              {permissionOptions.map((option, optionIndex) => (
                 <TableCell key={optionIndex} sx={{ maxWidth: 2 }}>
                   <Checkbox
                     size="small"
