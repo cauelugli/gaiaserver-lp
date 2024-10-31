@@ -85,6 +85,7 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
                 sx={{ mr: 3, color: "#333" }}
                 api={api}
                 socket={socket}
+                mainColor={configData.customization.mainColor}
                 user={user}
                 notifications={notifications}
                 setNotifications={setNotifications}

@@ -3,11 +3,100 @@ const router = express.Router();
 const { defineModel } = require("../../controllers/functions/routeFunctions");
 const dayjs = require("dayjs");
 
-// 'usesWebsocket' is not in use so far, lets make websocket work on the backend with only one call from the frontend
+// USER - MARK SINGLE NOTIFICATION AS READ
+router.put("/markNotificationAsRead", async (req, res) => {
+  const { userId, notificationCreatedAt } = req.body;
+  const Model = defineModel("User");
 
-// RESOLVE ITEM
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
+
+  try {
+    const updatedUser = await Model.findOneAndUpdate(
+      { _id: userId, "notifications.createdAt": notificationCreatedAt },
+      {
+        $set: { "notifications.$.read": true },
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "Notificação não encontrada" });
+    }
+
+    res.status(200).json("OK");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Erro ao atualizar notificação" });
+  }
+});
+
+// USER - DELETE SINGLE NOTIFICATION
+router.put("/deleteNotification", async (req, res) => {
+  // in the future, as a company, we will send this somewhere, instead of deleting
+  const { userId, notificationCreatedAt } = req.body;
+  const Model = defineModel("User");
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
+
+  try {
+    const updatedUser = await Model.findOneAndUpdate(
+      { _id: userId },
+      {
+        $pull: { notifications: { createdAt: notificationCreatedAt } },
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "Notificação não encontrada" });
+    }
+
+    res.status(200).json("OK");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Erro ao atualizar notificação" });
+  }
+});
+
+// USER - MARK ALL NOTIFICATIONS AS READ
+router.put("/markAllAsRead", async (req, res) => {
+  const { userId } = req.body;
+  const Model = defineModel("User");
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
+
+  try {
+    const updatedUser = await Model.findByIdAndUpdate(
+      userId,
+      {
+        $set: { "notifications.$[].read": true },
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "Notificação não encontrada" });
+    }
+
+    res.status(200).json("OK");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Erro ao atualizar notificação" });
+  }
+});
+
+// REQUEST - RESOLVE ITEM
 router.put("/resolve", async (req, res) => {
-  const { model, id, resolvedBy, resolvedAt, usesWebsocket } = req.body;
+  const { model, id, resolvedBy, resolvedAt } = req.body;
   const Model = defineModel(model);
 
   if (!Model) {
@@ -37,9 +126,9 @@ router.put("/resolve", async (req, res) => {
   }
 });
 
-// REQUEST APPROVAL
+// REQUEST - REQUEST APPROVAL
 router.put("/requestApproval", async (req, res) => {
-  const { model, id, requestedBy, requestedAt, usesWebsocket } = req.body;
+  const { model, id, requestedBy, requestedAt } = req.body;
   const Model = defineModel(model);
 
   if (!Model) {

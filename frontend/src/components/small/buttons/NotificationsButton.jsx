@@ -1,14 +1,10 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import dayjs from "dayjs";
 
 import {
   Menu,
   List,
-  ListItemButton,
-  ListItemText,
   IconButton,
   CardActions,
   CardContent,
@@ -24,25 +20,25 @@ import {
 } from "@mui/material";
 
 import CheckIcon from "@mui/icons-material/Check";
+import DeleteIcon from "@mui/icons-material/Delete";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 export default function NotificationsButton({
   user,
   socket,
+  mainColor,
   notifications,
   setNotifications,
+  api,
+  fetchData,
 }) {
   const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
   const [showOnlyRead, setShowOnlyRead] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
-  const [selectedNotificationId, setSelectedNotificationId] =
+  const [selectedNotificationCreatedAt, setSelectedNotificationCreatedAt] =
     React.useState("");
 
   const handleOpenNotifications = (e) => {
@@ -73,40 +69,60 @@ export default function NotificationsButton({
     };
   }, [socket, setNotifications]);
 
-  const handleMarkAsRead = async (notificationId) => {
+  const handleMarkAsRead = async (notificationCreatedAt) => {
     try {
-      await api.put(`/users/readNotification`, {
+      const res = await api.put(`/actions/markNotificationAsRead/`, {
         userId: user._id,
-        notificationId,
+        notificationCreatedAt: notificationCreatedAt,
       });
 
-      fetchNotifications();
-    } catch (error) {
-      console.error("Error marking notification as read:", error);
+      if (res.data) {
+        fetchData();
+        if (user._id) {
+          socket.emit("newDataRefreshButton", {
+            // this is wrong, fix later
+            page: "props.page",
+            userId: user._id,
+          });
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDeleteNotification = async (notificationCreatedAt) => {
+    try {
+      const res = await api.put(`/actions/deleteNotification/`, {
+        userId: user._id,
+        notificationCreatedAt: notificationCreatedAt,
+      });
+
+      if (res.data) {
+        fetchData();
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const handleMarkAllAsRead = async () => {
     try {
-      await api.put(`/users/markAllAsRead`, { userId: user._id });
-      fetchNotifications();
-    } catch (error) {
-      console.error("Error marking all notifications as read:", error);
+      const res = await api.put(`/actions/markAllAsRead/`, {
+        userId: user._id,
+      });
+
+      if (res.data) {
+        fetchData();
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
-  const fetchNotifications = async () => {
-    try {
-      const response = await api.get(`/users/notifications/${user._id}`);
-      setNotifications(response.data);
-    } catch (error) {
-      console.error("Error fetching notifications:", error);
-    }
-  };
-
-  const filteredNotifications = showOnlyRead
-    ? Object.values(notifications)
-    : Object.values(notifications).filter((note) => note.status === "Não Lida");
+  const filteredNotifications = !showOnlyRead
+    ? Object.values(notifications).filter((note) => note.read === false)
+    : Object.values(notifications);
 
   return (
     <>
@@ -129,112 +145,157 @@ export default function NotificationsButton({
         anchorEl={notificationsAnchorEl}
         open={Boolean(notificationsAnchorEl)}
         onClose={handleCloseNotifications}
-        sx={{ maxHeight: 400 }}
+        sx={{ height: 330 }}
       >
-        <List sx={{ mt: -2 }}>
-          {filteredNotifications.reverse().map((notification, index) => (
-            <Card elevation={0} key={index} sx={{ width: 220, m: 1 }}>
-              <CardHeader
-                action={
-                  <IconButton
-                    onClick={() => {
-                      setExpanded(!expanded);
-                      setSelectedNotificationId(notification.id);
-                    }}
-                    aria-expanded={expanded}
-                  >
-                    {expanded && selectedNotificationId === notification.id ? (
-                      <ExpandLessIcon />
-                    ) : (
-                      <ExpandMoreIcon />
-                    )}
-                  </IconButton>
-                }
-                title={
-                  <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
-                    {notification.sender}{" "}
-                    {notification.status === "Lida" && `- Lida`}
-                  </Typography>
-                }
-                subheader={
-                  <Typography sx={{ fontSize: 12, color: "#888" }}>
-                    {notification.type}
-                    {" - "}
-                    {notification.createdAt}
-                  </Typography>
-                }
-              />
-
-              <Collapse
-                in={expanded && selectedNotificationId === notification.id}
-                timeout="auto"
-                unmountOnExit
+        <Grid sx={{ width: 260, mt: -2 }}>
+          <List>
+            {filteredNotifications.reverse().map((notification, index) => (
+              <Card
+                elevation={0}
+                key={index}
+                sx={{
+                  m: 1,
+                  backgroundColor:
+                    notification.read === true
+                      ? `${mainColor}80`
+                      : `${mainColor}B3`,
+                }}
               >
-                <CardContent sx={{ mt: -3 }}>
-                  <Typography sx={{ fontSize: 13 }}>
-                    {notification.noteBody}
-                  </Typography>
-                </CardContent>
-                {notification.status !== "Lida" && (
+                <CardHeader
+                  action={
+                    <IconButton
+                      onClick={() => {
+                        setExpanded(!expanded);
+                        setSelectedNotificationCreatedAt(
+                          notification.createdAt
+                        );
+                      }}
+                      aria-expanded={expanded}
+                    >
+                      {expanded &&
+                      selectedNotificationCreatedAt ===
+                        notification.createdAt ? (
+                        <ExpandLessIcon />
+                      ) : (
+                        <ExpandMoreIcon />
+                      )}
+                    </IconButton>
+                  }
+                  title={
+                    <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
+                      {notification.title}
+                      {notification.read === true && (
+                        <DoneAllIcon
+                          sx={{ ml: 0.5, fontSize: 11, color: "blue" }}
+                        />
+                      )}
+                    </Typography>
+                  }
+                  subheader={
+                    <Typography sx={{ fontSize: 10 }}>
+                      {dayjs(notification.createdAt).format(
+                        "DD/MM/YYYY HH:mm:ss"
+                      )}
+                    </Typography>
+                  }
+                />
+
+                <Collapse
+                  in={
+                    expanded &&
+                    selectedNotificationCreatedAt === notification.createdAt
+                  }
+                  timeout="auto"
+                  unmountOnExit
+                >
+                  <CardContent sx={{ mt: -4 }}>
+                    <Typography sx={{ fontSize: 13 }}>
+                      {notification.body}
+                    </Typography>
+                  </CardContent>
                   <CardActions disableSpacing>
-                    <Tooltip title={"Marcar como Lida"}>
+                    {notification.read === true ? (
                       <IconButton
                         sx={{ ml: "auto" }}
-                        onClick={() => handleMarkAsRead(notification.id)}
+                        onClick={() =>
+                          handleDeleteNotification(notification.createdAt)
+                        }
                       >
-                        <CheckIcon />
+                        <DeleteIcon />
                       </IconButton>
-                    </Tooltip>
+                    ) : (
+                      <Tooltip title={"Marcar como Lida"}>
+                        <IconButton
+                          sx={{ ml: "auto" }}
+                          onClick={() =>
+                            handleMarkAsRead(notification.createdAt)
+                          }
+                        >
+                          <CheckIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                   </CardActions>
-                )}
-              </Collapse>
-            </Card>
-          ))}
-          {Object.values(notifications).filter(
-            (note) => note.status === "Não Lida"
-          ).length === 0 &&
-            !showOnlyRead && (
-              <Typography sx={{ m: 3 }}>Sem Novas Notificações</Typography>
+                </Collapse>
+              </Card>
+            ))}
+          </List>
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ mb: 5 }}
+          >
+            {Object.values(notifications).filter((note) => !note.read)
+              .length === 0 && (
+              <Typography alignSelf="center" sx={{ fontSize: 14, my: 4 }}>
+                {showOnlyRead
+                  ? "Nenhuma Notificação Encontrada"
+                  : " Sem Novas Notificações"}
+              </Typography>
             )}
-        </List>
-        <Grid
-          sx={{ px: 2 }}
-          container
-          justifyContent={
-            Object.values(notifications).filter(
-              (note) => note.status === "Não Lida"
-            ).length === 0
-              ? "flex-end"
-              : "space-between"
-          }
-        >
-          {Object.values(notifications).filter(
-            (note) => note.status === "Não Lida"
-          ).length !== 0 && (
-            <Tooltip title="Marcar Todas como Lidas">
-              <IconButton onClick={handleMarkAllAsRead}>
-                <DoneAllIcon
-                  sx={{
-                    "&:hover": {
-                      color: "darkgreen",
-                    },
-                  }}
-                />
-              </IconButton>
-            </Tooltip>
-          )}
+          </Grid>
 
-          <FormControlLabel
-            control={
-              <Switch
-                size="small"
-                checked={showOnlyRead}
-                onChange={() => setShowOnlyRead(!showOnlyRead)}
-              />
+          <Grid
+            sx={{ px: 2, mt: -5 }}
+            container
+            justifyContent={
+              Object.values(notifications).filter((note) => !note.read)
+                .length === 0
+                ? "flex-end"
+                : "space-between"
             }
-            label={<Typography sx={{ fontSize: 10 }}>Mostrar Todas</Typography>}
-            labelPlacement="start"
-          />
+          >
+            {Object.values(notifications).filter((note) => !note.read)
+              .length !== 0 && (
+              <Tooltip title="Marcar Todas como Lidas">
+                <IconButton onClick={handleMarkAllAsRead}>
+                  <DoneAllIcon
+                    sx={{
+                      "&:hover": {
+                        color: "darkgreen",
+                      },
+                    }}
+                  />
+                </IconButton>
+              </Tooltip>
+            )}
+
+            <FormControlLabel
+              control={
+                <Switch
+                  size="small"
+                  checked={showOnlyRead}
+                  onChange={() => setShowOnlyRead(!showOnlyRead)}
+                />
+              }
+              label={
+                <Typography sx={{ fontSize: 10 }}>Mostrar Lidas</Typography>
+              }
+              labelPlacement="start"
+            />
+          </Grid>
         </Grid>
       </Menu>
     </>
