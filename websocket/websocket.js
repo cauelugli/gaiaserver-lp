@@ -57,7 +57,7 @@ const initSocket = (server) => {
 
             user.notifications.push({
               read: false,
-              title: `Novo ${data.label} Adicionado`,
+              title: `Novo ${data.label} Criado`,
               body: notificationBody,
               createdAt: new Date().toISOString(),
             });
