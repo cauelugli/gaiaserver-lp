@@ -1,92 +1,94 @@
-/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5002");
-
-import {
-  Button,
-  DialogActions,
-  DialogTitle,
-  Grid,
-  Typography,
-} from "@mui/material";
-
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-
-import NotificationsConfigTransferList from "../../components/small/NotificationsConfigTransferList";
-
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function Notifications({ onClose }) {
-  const [configData, setConfigData] = useState({});
-  const [booleans, setBooleans] = useState({});
-  const [roles, setRoles] = useState([]);
-  const [selectedLists, setSelectedLists] = useState({});
-  // IMPORTANT: THESE TITLES MUST BE IN ORDER WITH THE MODEL 'CONFIG' !
-  const title = ["Novo Usuário Criado", "Novo Job Criado", "Nova Venda Criada"];
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Button,
+  Checkbox,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 
-  useEffect(() => {
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+
+export default function Notifications({ onClose }) {
+  const [configData, setConfigData] = React.useState([]);
+  const [roles, setRoles] = React.useState([]);
+  const [whenUserIsCreated, setWhenUserIsCreated] = React.useState([]);
+  const [whenUserIsEdited, setWhenUserIsEdited] = React.useState([]);
+  const [whenUserIsRemoved, setWhenUserIsRemoved] = React.useState([]);
+
+  React.useEffect(() => {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        const roles = await api.get("/roles");
-        setConfigData(config.data[0].notifications);
-        setRoles(roles.data);
-
-        const initialState = {};
-        Object.keys(config.data[0].notifications).forEach((key) => {
-          initialState[key] = {
-            selected: config.data[0].notifications[key],
-            options: config.data[0].notifications[key],
-            title: title[key],
-          };
+        const roles = await api.get("/get", {
+          params: { model: "Role" },
         });
+        const configData = config.data[0].notifications;
 
-        setSelectedLists(initialState);
+        setConfigData(configData);
+        setRoles(roles.data);
+        setWhenUserIsCreated(configData.whenUserIsCreated || []);
+        setWhenUserIsEdited(configData.whenUserIsEdited || []);
+        setWhenUserIsRemoved(configData.whenUserIsRemoved || []);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSelectedChange = (key, selected, options, title) => {
-    setSelectedLists((prevLists) => ({
-      ...prevLists,
-      [key]: {
-        selected,
-        options,
-        title,
-      },
-    }));
-  };
+  const handleCheckboxChange = (roleId, type) => {
+    const updateList = (list, setList) => {
+      setList(
+        list.includes(roleId)
+          ? list.filter((id) => id !== roleId)
+          : [...list, roleId]
+      );
+    };
 
-  const handleSwitchChange = (key, state) => {
-    setBooleans((prevBooleans) => ({
-      ...prevBooleans,
-      [key]: state,
-    }));
+    switch (type) {
+      case "created":
+        updateList(whenUserIsCreated, setWhenUserIsCreated);
+        break;
+      case "edited":
+        updateList(whenUserIsEdited, setWhenUserIsEdited);
+        break;
+      case "removed":
+        updateList(whenUserIsRemoved, setWhenUserIsRemoved);
+        break;
+      default:
+        break;
+    }
   };
 
   const handleChangeNotificationsConfig = async (e) => {
     e.preventDefault();
     try {
-      const payload = { notifications: {} };
-
-      Object.keys(selectedLists).forEach((key) => {
-        payload.notifications[key] = selectedLists[key].selected;
+      const res = await api.put("/config/notifications", {
+        whenUserIsCreated,
+        whenUserIsEdited,
+        whenUserIsRemoved,
       });
-
-      const res = await api.put("/config/notifications", payload);
 
       if (res.data) {
         toast.success("Configuração Alterada!", {
@@ -116,39 +118,95 @@ export default function Notifications({ onClose }) {
       >
         Configurações de Notificações
       </DialogTitle>
-
-      <Grid container direction="row" sx={{ mb: -2 }}>
-        <Grid item sx={{ ml: 45 }}>
-          <Typography>
-            <VisibilityOffIcon sx={{ fontSize: 40, color: "#D00000" }} />
-          </Typography>
-        </Grid>
-        <Grid item sx={{ ml: 33 }}>
-          <Typography>
-            <VisibilityIcon sx={{ fontSize: 40, color: "#417505" }} />
-          </Typography>
-        </Grid>
-      </Grid>
-      {Object.keys(configData).map((key, index) => (
-        <NotificationsConfigTransferList
-          key={key}
-          title={title[index]}
-          options={roles}
-          booleans={booleans[key]}
-          selectedList={selectedLists[key].selected || []}
-          onSelectedChange={(selected, options) =>
-            handleSelectedChange(key, selected, options)
-          }
-          switchState={booleans[key]}
-          onSwitchChange={(state) => handleSwitchChange(key, state)}
-        />
-      ))}
-
-      <DialogActions>
-        <Button type="submit" variant="contained" color="success">
-          OK
-        </Button>
-      </DialogActions>
+      {configData.length !== 0 && (
+        <>
+          <DialogContent>
+            <Grid
+              container
+              sx={{ mt: 2 }}
+              direction="column"
+              justifyContent="center"
+              alignItems="flex-start"
+            >
+              <Accordion sx={{ width: "100%", mt: 2 }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Colaboradores
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid container direction="column" alignItems="center">
+                      <Table size="small">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell sx={{ width: 200 }}>Perfil</TableCell>
+                            <TableCell sx={{ width: 200 }}>Criado</TableCell>
+                            <TableCell sx={{ width: 200 }}>Editado</TableCell>
+                            <TableCell sx={{ width: 200 }}>
+                              Deletado/Arquivado
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {roles.length === 0 ? (
+                            <TableRow>
+                              <TableCell colSpan={4}>
+                                Nenhum perfil disponível
+                              </TableCell>
+                            </TableRow>
+                          ) : (
+                            roles.map((role, index) => (
+                              <TableRow key={index}>
+                                <TableCell>{role.name}</TableCell>
+                                <TableCell>
+                                  <Checkbox
+                                    checked={whenUserIsCreated.includes(
+                                      role._id
+                                    )}
+                                    onChange={() =>
+                                      handleCheckboxChange(role._id, "created")
+                                    }
+                                  />
+                                </TableCell>
+                                <TableCell>
+                                  <Checkbox
+                                    checked={whenUserIsEdited.includes(
+                                      role._id
+                                    )}
+                                    onChange={() =>
+                                      handleCheckboxChange(role._id, "edited")
+                                    }
+                                  />
+                                </TableCell>
+                                <TableCell>
+                                  <Checkbox
+                                    checked={whenUserIsRemoved.includes(
+                                      role._id
+                                    )}
+                                    onChange={() =>
+                                      handleCheckboxChange(role._id, "removed")
+                                    }
+                                  />
+                                </TableCell>
+                              </TableRow>
+                            ))
+                          )}
+                        </TableBody>
+                      </Table>
+                    </Grid>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button type="submit" variant="contained" color="success">
+              OK
+            </Button>
+          </DialogActions>
+        </>
+      )}
     </form>
   );
 }

@@ -303,19 +303,17 @@ router.put("/products", async (req, res) => {
 // NOTIFICATIONS
 router.put("/notifications", async (req, res) => {
   try {
-    const { notifications } = req.body;
+    const { whenUserIsCreated, whenUserIsEdited, whenUserIsRemoved } = req.body;
 
-    const updatedNotifications = {};
-    Object.keys(notifications).forEach((key) => {
-      updatedNotifications[key] = notifications[key].map((item) => ({
-        _id: item._id,
-        name: item.name,
-      }));
-    });
+    const updatedNotifications = {
+      whenUserIsCreated,
+      whenUserIsEdited,
+      whenUserIsRemoved,
+    };
 
     const config = await Config.findOneAndUpdate(
       {},
-      { notifications: updatedNotifications },
+      { "notifications": updatedNotifications },
       { new: true }
     );
 
@@ -325,6 +323,7 @@ router.put("/notifications", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 // TABLES
 router.put("/tables", async (req, res) => {

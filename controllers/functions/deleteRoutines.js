@@ -1,3 +1,4 @@
+const Config = require("../../models/models/Config");
 const Department = require("../../models/models/Department");
 const Group = require("../../models/models/Group");
 const Position = require("../../models/models/Position");
@@ -99,6 +100,22 @@ async function deleteRoutines(model, sourceId) {
             )
           );
         }
+        break;
+
+      case "Role":
+        const roleNotifications = await Role.findById(sourceId);
+        if (!roleNotifications) return;
+
+        await Config.findOneAndUpdate(
+          {},
+          {
+            $pull: {
+              "notifications.whenUserIsCreated": sourceId,
+              "notifications.whenUserIsEdited": sourceId,
+              "notifications.whenUserIsRemoved": sourceId,
+            },
+          }
+        );
         break;
 
       default:

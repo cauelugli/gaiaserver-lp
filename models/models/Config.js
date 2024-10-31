@@ -80,10 +80,16 @@ const configSchema = new Schema({
     },
   },
   notifications: {
-    whenCustomerIsCreated: {
+    whenUserIsCreated: {
       type: Array,
     },
-    whenUserIsCreated: {
+    whenUserIsEdited: {
+      type: Array,
+    },
+    whenUserIsRemoved: {
+      type: Array,
+    },
+    whenCustomerIsCreated: {
       type: Array,
     },
     whenJobIsCreated: {
