@@ -69,7 +69,7 @@ const initSocket = (server) => {
         }
       }
 
-      io.emit("newNotification");
+      io.emit("newNotification", data);
     });
 
     socket.on("disconnect", () => {

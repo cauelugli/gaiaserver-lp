@@ -33,6 +33,21 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
     }
   };
 
+  React.useEffect(() => {
+    const handleNewNotification = (notificationData) => {
+      // doesn't apply to 'self' emitter user
+      if (notificationData && user._id !== notificationData.emitterId) {
+        fetchData();
+      } 
+    };
+
+    socket.on("newNotification", handleNewNotification);
+
+    return () => {
+      socket.off("newNotification", handleNewNotification);
+    };
+  });
+
   return (
     <>
       {configData && configData.customization && (
