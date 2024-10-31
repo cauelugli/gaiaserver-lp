@@ -54,8 +54,8 @@ userSchema = new mongoose.Schema({
     required: true,
   },
   notifications: {
-    type: Object,
-    default: { 0: "" },
+    type: Array,
+    default: [],
   },
   password: {
     type: String,

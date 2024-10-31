@@ -52,7 +52,6 @@ function hasPermission(user, configData, routePath) {
 
 export default function App() {
   const [configData, setConfigData] = useState([]);
-  const [notifications, setNotifications] = useState([]);
   const [userPreferences, setUserPreferences] = useState([]);
   const [allowedLinks, setAllowedLinks] = useState([]);
   const login = JSON.parse(sessionStorage.getItem("login"));
@@ -105,12 +104,8 @@ export default function App() {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        // const notifications = await api.get(
-        //   // some endpoint...
-        // );
         const preferences = await api.get(`/userPreferences/${userData._id}`);
         setConfigData(config.data[0]);
-        // setNotifications(notifications.data);
         setUserPreferences(preferences.data);
         sessionStorage.setItem(
           "userPreferences",
@@ -205,11 +200,10 @@ export default function App() {
           <Grid container>
             {login && (
               <NavBar
+                api={api}
                 socket={socket}
                 user={userData}
                 configData={configData}
-                notifications={notifications}
-                setNotifications={setNotifications}
                 barPosition={userPreferences.barPosition}
               />
             )}

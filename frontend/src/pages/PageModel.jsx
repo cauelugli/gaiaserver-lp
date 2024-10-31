@@ -159,6 +159,7 @@ export default function PageModel(props) {
               setRefreshData={setRefreshData}
               configCustomization={props.configCustomization}
               page={currentPage}
+              userId={props.userId}
             />
           )}
       </Grid>

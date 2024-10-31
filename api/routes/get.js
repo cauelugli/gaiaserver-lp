@@ -21,4 +21,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET USER'S NOTIFICATIONS
+router.get("/notifications/:userId", async (req, res) => {
+  const { userId } = req.params;
+  const Model = defineModel("User");
+
+  try {
+    // Encontra o usuário e retorna apenas a lista de notificações
+    const user = await Model.findById(userId, "notifications");
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json(user.notifications);
+  } catch (err) {
+    console.log("\nerr", err, "\n");
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

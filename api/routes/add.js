@@ -7,9 +7,14 @@ const {
   addRoutines,
   addCounter,
 } = require("../../controllers/functions/addRoutines");
+
 const {
   insertMembership,
 } = require("../../controllers/functions/updateRoutines");
+
+const {
+  notificationRoutines,
+} = require("../../controllers/functions/notificationRoutines");
 
 // CREATE ITEM
 router.post("/", async (req, res) => {
@@ -108,6 +113,8 @@ router.post("/", async (req, res) => {
     } else {
       await addRoutines(req.body.model, savedItem);
     }
+
+    await notificationRoutines(req.body.model, savedItem, "add", req.body.sourceId);
 
     res.status(200).json(savedItem);
   } catch (err) {

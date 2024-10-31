@@ -9,14 +9,30 @@ import UserButton from "../small/buttons/UserButton";
 import NotificationsButton from "../small/buttons/NotificationsButton";
 import TopBar from "../large/TopBar";
 
-export default function NavBar({
-  user,
-  socket,
-  configData,
-  notifications,
-  setNotifications,
-  barPosition,
-}) {
+export default function NavBar({ user, api, socket, configData, barPosition }) {
+  const [notifications, setNotifications] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const notifications = await api.get(`/get/notifications/${user._id}`);
+        setNotifications(notifications.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [api, user._id]);
+
+  const fetchData = async () => {
+    try {
+      const notifications = await api.get(`/get/notifications/${user._id}`);
+      setNotifications(notifications.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   return (
     <>
       {configData && configData.customization && (
@@ -66,11 +82,13 @@ export default function NavBar({
           <Grid item sx={{ mr: 2 }}>
             <Grid container direction="row">
               <NotificationsButton
+                sx={{ mr: 3, color: "#333" }}
+                api={api}
                 socket={socket}
                 user={user}
                 notifications={notifications}
                 setNotifications={setNotifications}
-                sx={{ mr: 3, color: "#333" }}
+                fetchData={fetchData}
               />
               <UserButton user={user} />
             </Grid>
