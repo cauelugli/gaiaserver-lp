@@ -105,17 +105,17 @@ async function deleteRoutines(model, sourceId) {
       case "Role":
         const roleNotifications = await Role.findById(sourceId);
         if (!roleNotifications) return;
-
-        await Config.findOneAndUpdate(
-          {},
-          {
-            $pull: {
-              "notifications.whenUserIsCreated": sourceId,
-              "notifications.whenUserIsEdited": sourceId,
-              "notifications.whenUserIsDeleted": sourceId,
-            },
-          }
-        );
+        //fix this
+        // await Config.findOneAndUpdate(
+        //   {},
+        //   {
+        //     $pull: {
+        //       "notifications.whenUserIsCreated": sourceId,
+        //       "notifications.whenUserIsEdited": sourceId,
+        //       "notifications.whenUserIsDeleted": sourceId,
+        //     },
+        //   }
+        // );
         break;
 
       default:
