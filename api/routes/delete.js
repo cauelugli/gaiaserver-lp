@@ -7,10 +7,13 @@ const { defineModel } = require("../../controllers/functions/routeFunctions");
 const {
   deleteRoutines,
 } = require("../../controllers/functions/deleteRoutines");
+const {
+  notificationRoutines,
+} = require("../../controllers/functions/notificationRoutines");
 
 // DELETE ITEM
-router.delete("/:model/:id", async (req, res) => {
-  const { model, id } = req.params;
+router.delete("/:sourceId/:model/:id", async (req, res) => {
+  const { sourceId, model, id } = req.params;
   const Model = defineModel(model);
 
   if (!Model) {
@@ -29,8 +32,9 @@ router.delete("/:model/:id", async (req, res) => {
   }
 
   try {
+    const deletedItem = await Model.findByIdAndDelete(id);
     await deleteRoutines(model, id);
-    await Model.findByIdAndDelete(id);
+    await notificationRoutines(model, deletedItem.name, "delete", sourceId);
     res.status(200).json("Item deletado com sucesso");
   } catch (err) {
     console.log(err);

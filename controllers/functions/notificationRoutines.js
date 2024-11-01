@@ -6,32 +6,50 @@ const socket = io("http://localhost:5002");
 
 async function notificationRoutines(model, target, method, sourceId) {
   try {
+    const config = await Config.findOne();
+
+    const position = target.position
+      ? await Position.findById(target.position)
+      : null;
+
+    const department = target.department
+      ? await Department.findById(target.department)
+      : null;
+
+    const userName = target.name;
+    const emitterId = sourceId;
     switch (model) {
       case "User":
-        const config = await Config.findOne();
+        switch (method) {
+          case "add":
+            socket.emit("addRoutine", {
+              userName,
+              position: position ? position.name : "",
+              department: department ? department.name : "",
+              emitterId,
+              receivers: config.notifications.whenUserIsCreated,
+              label: "Colaborador",
+            });
+            break;
 
-        const position = target.position
-          ? await Position.findById(target.position)
-          : null;
-
-        const department = target.department
-          ? await Department.findById(target.department)
-          : null;
-
-        const userName = target.name;
-        const wsEvent = method === "add" ? "addRoutine" : "";
-        const emitterId = sourceId;
-        const receivers = config.notifications.whenUserIsCreated;
-
-        if (wsEvent) {
-          socket.emit(wsEvent, {
-            userName,
-            position: position ? position.name : "",
-            department: department ? department.name : "",
-            emitterId,
-            receivers,
-            label: "Colaborador",
-          });
+          case "edit":
+            socket.emit("editRoutine", {
+              userName,
+              emitterId,
+              receivers: config.notifications.whenUserIsEdited,
+              label: "Colaborador",
+            });
+            break;
+          case "delete":
+            socket.emit("deleteRoutine", {
+              userName: target,
+              emitterId,
+              receivers: config.notifications.whenUserIsRemoved,
+              label: "Colaborador",
+            });
+            break;
+          default:
+            break;
         }
 
         break;

@@ -144,7 +144,7 @@ export default function Notifications({ onClose }) {
                             <TableCell sx={{ width: 200 }}>Criado</TableCell>
                             <TableCell sx={{ width: 200 }}>Editado</TableCell>
                             <TableCell sx={{ width: 200 }}>
-                              Deletado/Arquivado
+                              Deletado
                             </TableCell>
                           </TableRow>
                         </TableHead>

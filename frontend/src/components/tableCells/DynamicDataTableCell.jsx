@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -14,7 +13,6 @@ import {
   Select,
   Typography,
   Chip,
-  FormControlLabel,
   InputLabel,
 } from "@mui/material";
 import { checkAvailability } from "../../../../controllers/functions/overallFunctions";
@@ -111,14 +109,22 @@ const DynamicDataTableCell = (props) => {
         return <Typography>{props.field.label}</Typography>;
       } else {
         return (
-          <Grid container direction="row" alignItems="center">
-            <Avatar
-              alt="Imagem"
-              src={`http://localhost:3000/static/${selected.image}`}
-              sx={{ width: 24, height: 24, marginRight: 2 }}
-            />
-            <Typography sx={{ fontSize: 13 }}>{selected.name}</Typography>
-          </Grid>
+          <>
+            {props.field.hasAvatar ? (
+              <Grid container direction="row" alignItems="center">
+                <Avatar
+                  alt="Imagem"
+                  src={`http://localhost:3000/static/${selected.image}`}
+                  sx={{ width: 24, height: 24, marginRight: 2 }}
+                />
+                <Typography sx={{ fontSize: 13 }}>{selected.name}</Typography>
+              </Grid>
+            ) : (
+              <Typography sx={{ fontSize: 13 }}>
+                {selected.name || selected}
+              </Typography>
+            )}
+          </>
         );
       }
     }

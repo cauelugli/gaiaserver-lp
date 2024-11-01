@@ -230,6 +230,7 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "allCustomers",
         required: true,
+        hasAvatar: true,
       },
       {
         fieldSection: "mainInfo",
@@ -238,6 +239,7 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "services",
         required: true,
+        hasAvatar: false,
       },
       {
         fieldSection: "mainInfo",
@@ -246,6 +248,7 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "workers",
         required: true,
+        hasAvatar: true,
       },
       {
         fieldSection: "scheduling",
@@ -297,6 +300,7 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "allCustomers",
         required: true,
+        hasAvatar: true,
       },
       {
         fieldSection: "mainInfo",
@@ -305,6 +309,7 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "workers",
         required: true,
+        hasAvatar: true,
       },
       {
         fieldSection: "mainInfo",
@@ -416,6 +421,7 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "departments",
         required: false,
+        hasAvatar: false,
       },
 
       {
@@ -425,6 +431,7 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "positions",
         required: false,
+        hasAvatar: false,
       },
       {
         fieldSection: "socialMedia",
@@ -534,6 +541,7 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "departments",
         required: false,
+        hasAvatar: false,
       },
 
       {
@@ -543,6 +551,7 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "positions",
         required: false,
+        hasAvatar: false,
       },
       {
         fieldSection: "socialMedia",
@@ -637,6 +646,7 @@ export const modals = {
         dynamicData: "members",
         multiple: true,
         required: false,
+        hasAvatar: true,
       },
     ],
     model: "Department",
@@ -666,6 +676,7 @@ export const modals = {
         dynamicData: "users",
         multiple: true,
         required: false,
+        hasAvatar: true,
       },
     ],
     model: "Group",
@@ -695,6 +706,7 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "serviceTypes",
         required: true,
+        hasAvatar: false,
       },
       {
         fieldSection: "mainInfo",
@@ -703,6 +715,7 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "departments",
         required: true,
+        hasAvatar: false,
       },
       {
         fieldSection: "serviceInfo",
@@ -856,6 +869,7 @@ export const modals = {
         type: "dynamicData",
         options: ["baseProducts"],
         required: true,
+        hasAvatar: false,
       },
       {
         fieldSection: "mainInfo",
@@ -899,8 +913,11 @@ export const modals = {
         name: "user",
         label: "Colaborador",
         type: "dynamicData",
+        //this may be wrong...
         dynamicData: "username",
+        //this may be wrong...
         required: true,
+        hasAvatar: true,
       },
       {
         fieldSection: "mainInfo",
@@ -923,6 +940,7 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "roles",
         required: true,
+        hasAvatar: false,
       },
     ],
     model: "Operator",
@@ -948,6 +966,7 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "departments",
         required: true,
+        hasAvatar: false,
       },
     ],
     model: "Position",

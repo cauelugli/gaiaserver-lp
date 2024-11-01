@@ -31,7 +31,7 @@ const DeleteFormModel = ({
 }) => {
   const handleDelete = async () => {
     try {
-      const res = await api.delete(`/delete/${model}/${selectedItem._id}`);
+      const res = await api.delete(`/delete/${userId}/${model}/${selectedItem._id}`);
       if (res.data) {
         toast.success(`${selectedItem.name} Deletado!`, {
           closeOnClick: true,

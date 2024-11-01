@@ -1,8 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { defineModel } = require("../../controllers/functions/routeFunctions");
 
-// CREATE ITEM
+const { defineModel } = require("../../controllers/functions/routeFunctions");
+const {
+  notificationRoutines,
+} = require("../../controllers/functions/notificationRoutines");
+
+// EDIT ITEM
 router.put("/", async (req, res) => {
   // console.log("\nreq.body", req.body, "\n");
   const {
@@ -31,10 +35,31 @@ router.put("/", async (req, res) => {
     }
   }
 
+  // Busca pelo nome para obter o ID (provavelmente nao foi alterado o campo no frontend)
+  if (typeof req.body.fields.department === "string") {
+    const department = await defineModel("Department").findOne({
+      name: req.body.fields.department,
+    });
+    if (department) {
+      fields.department = department._id.toString();
+    }
+  } else {
+    fields.department = req.body.fields.department?._id || "";
+  }
+
+  if (typeof req.body.fields.position === "string") {
+    const position = await defineModel("Position").findOne({
+      name: req.body.fields.position,
+    });
+    if (position) {
+      fields.position = position._id.toString();
+    }
+  } else {
+    fields.position = req.body.fields.position?._id || "";
+  }
+
   // verify cases
   fields.image = image;
-  fields.department = req.body.fields.department?._id | "";
-  fields.position = req.body.fields.position?._id || "";
   fields.role = req.body.fields.role?._id || "";
   fields.isManager = isManager;
   fields.products = selectedProducts;
@@ -54,6 +79,12 @@ router.put("/", async (req, res) => {
       { new: true }
     );
 
+    await notificationRoutines(
+      req.body.model,
+      updatedItem,
+      "edit",
+      req.body.sourceId
+    );
     res.status(200).json(updatedItem);
   } catch (err) {
     console.log(err);
