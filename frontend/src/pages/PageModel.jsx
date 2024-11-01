@@ -136,9 +136,9 @@ export default function PageModel(props) {
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
-        sx={{ ml: 2 }}
+        sx={{ ml: 1, mt: 1, mb:2 }}
       >
-        <Typography sx={{ fontSize: 25, mr: 1, fontWeight: "bold" }}>
+        <Typography sx={{ fontSize: 30, mr: 2, fontWeight: "bold" }}>
           {props.item.label}
         </Typography>
         {currentPage === "products" && (
@@ -182,7 +182,11 @@ export default function PageModel(props) {
                   }
                   sx={{
                     color: "black",
-                    "&.Mui-selected": { color: "black" },
+                    "&.Mui-selected": {
+                      color: "black",
+                      backgroundColor: `${props.configCustomization.mainColor}42`,
+                      borderRadius: "15px 15px 0 0",
+                    },
                   }}
                 />
               ))

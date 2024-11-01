@@ -52,12 +52,28 @@ export default function PageButtonModel(props) {
           container
           direction="row"
           alignItems="center"
-          justifyContent="center"
+          justifyContent="flex-start"
+          sx={{
+            position: "relative",
+            "&:hover .hover-text": {
+              opacity: 1, 
+              marginLeft: "4px",
+            },
+          }}
         >
           <Typography variant="h6" sx={{ mb: 0.5, mr: 0.5 }}>
             +
           </Typography>
-          <Typography sx={{ fontSize: 16 }}>Novo</Typography>
+          <Typography
+            className="hover-text"
+            sx={{
+              fontSize: 16,
+              opacity: 0,
+              transition: "opacity 0.3s, margin-left 0.3s",
+            }}
+          >
+            Novo
+          </Typography>
         </Grid>
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
