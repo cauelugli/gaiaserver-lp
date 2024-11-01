@@ -4,7 +4,13 @@ const Position = require("../../models/models/Position");
 const io = require("../../api/node_modules/socket.io-client");
 const socket = io("http://localhost:5002");
 
-async function notificationRoutines(model, target, method, sourceId) {
+async function notificationRoutines(
+  model,
+  target,
+  method,
+  sourceId,
+  notificationList
+) {
   try {
     const config = await Config.findOne();
 
@@ -16,42 +22,20 @@ async function notificationRoutines(model, target, method, sourceId) {
       ? await Department.findById(target.department)
       : null;
 
-    const userName = target.name;
-    const emitterId = sourceId;
+    const userName = target.name ? target.name : target;
     switch (model) {
       case "User":
-        switch (method) {
-          case "add":
-            socket.emit("addRoutine", {
-              userName,
-              position: position ? position.name : "",
-              department: department ? department.name : "",
-              emitterId,
-              receivers: config.notifications.whenUserIsCreated,
-              label: "Colaborador",
-            });
-            break;
-
-          case "edit":
-            socket.emit("editRoutine", {
-              userName,
-              emitterId,
-              receivers: config.notifications.whenUserIsEdited,
-              label: "Colaborador",
-            });
-            break;
-          case "delete":
-            socket.emit("deleteRoutine", {
-              userName: target,
-              emitterId,
-              receivers: config.notifications.whenUserIsRemoved,
-              label: "Colaborador",
-            });
-            break;
-          default:
-            break;
-        }
-
+        socket.emit("notificationToList", {
+          userName,
+          method,
+          item: {
+            position: position?.name || "",
+            department: department?.name || "",
+          },
+          sourceId,
+          receivers: config.notifications[notificationList],
+          label: "Colaborador",
+        });
         break;
 
       default:

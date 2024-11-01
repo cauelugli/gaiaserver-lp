@@ -303,12 +303,12 @@ router.put("/products", async (req, res) => {
 // NOTIFICATIONS
 router.put("/notifications", async (req, res) => {
   try {
-    const { whenUserIsCreated, whenUserIsEdited, whenUserIsRemoved } = req.body;
+    const { whenUserIsCreated, whenUserIsEdited, whenUserIsDeleted } = req.body;
 
     const updatedNotifications = {
       whenUserIsCreated,
       whenUserIsEdited,
-      whenUserIsRemoved,
+      whenUserIsDeleted,
     };
 
     const config = await Config.findOneAndUpdate(

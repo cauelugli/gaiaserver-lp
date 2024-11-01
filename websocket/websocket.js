@@ -40,7 +40,7 @@ const initSocket = (server) => {
       io.emit("forceRefresh");
     });
 
-    socket.on("addRoutine", async (data) => {
+    socket.on("notificationToList", async (data) => {
       for (const roleId of data.receivers) {
         try {
           const users = await User.find({
@@ -48,16 +48,38 @@ const initSocket = (server) => {
             // !emitterId
             _id: { $ne: data.emitterId },
           });
+
+          let parsedBodyMainString;
+          let parsedTitleString;
+
+          switch (data.method) {
+            case "add":
+              parsedBodyMainString = `Um novo ${data.label} foi criado: "${data.userName}".`;
+              parsedTitleString = `Novo ${data.label} Criado`;
+              break;
+            case "edit":
+              parsedBodyMainString = `Um ${data.label} foi editado: "${data.userName}".`;
+              parsedTitleString = `${data.label} Editado`;
+              break;
+            case "delete":
+              parsedBodyMainString = `O ${data.label} "${data.userName}" foi deletado.`;
+              parsedTitleString = `${data.label} Deletado`;
+              break;
+            default:
+              break;
+          }
 
           for (const user of users) {
             const notificationBody =
-              `Olá! Um novo ${data.label} foi criado: "${data.userName}".` +
-              (data.department ? ` No departamento ${data.department}.` : "") +
-              (data.position ? ` No cargo ${data.position}.` : "");
+              parsedBodyMainString +
+              (data.item.department
+                ? ` Departamento: ${data.item.department}.`
+                : "") +
+              (data.item.position ? ` Cargo: ${data.item.position}.` : "");
 
             user.notifications.push({
               read: false,
-              title: `Novo ${data.label} Criado`,
+              title: parsedTitleString,
               body: notificationBody,
               createdAt: new Date().toISOString(),
             });
@@ -71,65 +93,7 @@ const initSocket = (server) => {
 
       io.emit("newNotification", data);
     });
-
-    socket.on("editRoutine", async (data) => {
-      for (const roleId of data.receivers) {
-        try {
-          const users = await User.find({
-            role: roleId,
-            // !emitterId
-            _id: { $ne: data.emitterId },
-          });
-
-          for (const user of users) {
-            const notificationBody = `Olá! Um ${data.label} foi editado: "${data.userName}".`;
-
-            user.notifications.push({
-              read: false,
-              title: `${data.label} Editado`,
-              body: notificationBody,
-              createdAt: new Date().toISOString(),
-            });
-
-            await user.save();
-          }
-        } catch (err) {
-          console.error("Erro ao adicionar notificação", err);
-        }
-      }
-
-      io.emit("newNotification", data);
-    });
-
-    socket.on("deleteRoutine", async (data) => {
-      for (const roleId of data.receivers) {
-        try {
-          const users = await User.find({
-            role: roleId,
-            // !emitterId
-            _id: { $ne: data.emitterId },
-          });
-
-          for (const user of users) {
-            const notificationBody = `Olá! O ${data.label} "${data.userName}" foi deletado.`;
-
-            user.notifications.push({
-              read: false,
-              title: `${data.label} Deletado`,
-              body: notificationBody,
-              createdAt: new Date().toISOString(),
-            });
-
-            await user.save();
-          }
-        } catch (err) {
-          console.error("Erro ao adicionar notificação", err);
-        }
-      }
-
-      io.emit("newNotification", data);
-    });
-
+    
     socket.on("disconnect", () => {
       // console.log("User disconnected");
     });

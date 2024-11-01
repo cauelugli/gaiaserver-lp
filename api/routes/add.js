@@ -114,7 +114,13 @@ router.post("/", async (req, res) => {
       await addRoutines(req.body.model, savedItem);
     }
 
-    await notificationRoutines(req.body.model, savedItem, "add", req.body.sourceId);
+    await notificationRoutines(
+      req.body.model,
+      savedItem,
+      "add",
+      req.body.sourceId,
+      `when${req.body.model}IsCreated`
+    );
 
     res.status(200).json(savedItem);
   } catch (err) {

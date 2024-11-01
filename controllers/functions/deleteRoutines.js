@@ -112,7 +112,7 @@ async function deleteRoutines(model, sourceId) {
             $pull: {
               "notifications.whenUserIsCreated": sourceId,
               "notifications.whenUserIsEdited": sourceId,
-              "notifications.whenUserIsRemoved": sourceId,
+              "notifications.whenUserIsDeleted": sourceId,
             },
           }
         );

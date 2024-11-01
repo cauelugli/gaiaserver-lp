@@ -34,7 +34,14 @@ router.delete("/:sourceId/:model/:id", async (req, res) => {
   try {
     const deletedItem = await Model.findByIdAndDelete(id);
     await deleteRoutines(model, id);
-    await notificationRoutines(model, deletedItem.name, "delete", sourceId);
+
+    await notificationRoutines(
+      model,
+      deletedItem.name,
+      "delete",
+      sourceId,
+      `when${model}IsDeleted`
+    );
     res.status(200).json("Item deletado com sucesso");
   } catch (err) {
     console.log(err);

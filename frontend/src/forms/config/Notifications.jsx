@@ -34,7 +34,7 @@ export default function Notifications({ onClose }) {
   const [roles, setRoles] = React.useState([]);
   const [whenUserIsCreated, setWhenUserIsCreated] = React.useState([]);
   const [whenUserIsEdited, setWhenUserIsEdited] = React.useState([]);
-  const [whenUserIsRemoved, setWhenUserIsRemoved] = React.useState([]);
+  const [whenUserIsDeleted, setWhenUserIsDeleted] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +49,7 @@ export default function Notifications({ onClose }) {
         setRoles(roles.data);
         setWhenUserIsCreated(configData.whenUserIsCreated || []);
         setWhenUserIsEdited(configData.whenUserIsEdited || []);
-        setWhenUserIsRemoved(configData.whenUserIsRemoved || []);
+        setWhenUserIsDeleted(configData.whenUserIsDeleted || []);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -73,8 +73,8 @@ export default function Notifications({ onClose }) {
       case "edited":
         updateList(whenUserIsEdited, setWhenUserIsEdited);
         break;
-      case "removed":
-        updateList(whenUserIsRemoved, setWhenUserIsRemoved);
+      case "deleted":
+        updateList(whenUserIsDeleted, setWhenUserIsDeleted);
         break;
       default:
         break;
@@ -87,7 +87,7 @@ export default function Notifications({ onClose }) {
       const res = await api.put("/config/notifications", {
         whenUserIsCreated,
         whenUserIsEdited,
-        whenUserIsRemoved,
+        whenUserIsDeleted,
       });
 
       if (res.data) {
@@ -181,11 +181,11 @@ export default function Notifications({ onClose }) {
                                 </TableCell>
                                 <TableCell>
                                   <Checkbox
-                                    checked={whenUserIsRemoved.includes(
+                                    checked={whenUserIsDeleted.includes(
                                       role._id
                                     )}
                                     onChange={() =>
-                                      handleCheckboxChange(role._id, "removed")
+                                      handleCheckboxChange(role._id, "deleted")
                                     }
                                   />
                                 </TableCell>

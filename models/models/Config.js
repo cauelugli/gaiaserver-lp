@@ -86,7 +86,7 @@ const configSchema = new Schema({
     whenUserIsEdited: {
       type: Array,
     },
-    whenUserIsRemoved: {
+    whenUserIsDeleted: {
       type: Array,
     },
     whenCustomerIsCreated: {

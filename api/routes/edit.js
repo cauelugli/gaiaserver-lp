@@ -83,7 +83,8 @@ router.put("/", async (req, res) => {
       req.body.model,
       updatedItem,
       "edit",
-      req.body.sourceId
+      req.body.sourceId,
+      `when${req.body.model}IsEdited`
     );
     res.status(200).json(updatedItem);
   } catch (err) {
