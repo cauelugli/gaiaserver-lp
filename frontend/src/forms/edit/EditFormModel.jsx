@@ -304,7 +304,6 @@ export default function EditFormModel(props) {
                       width: field.type === "productList" ? "100%" : "auto",
                     }}
                   >
-                    <Typography sx={{ fontSize: 14 }}>{field.label}</Typography>
                     {field.type === "string" && (
                       <StringTableCell
                         fields={fields}
