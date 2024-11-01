@@ -46,6 +46,10 @@ export function isButtonDisabled(
 
       case "Job":
         return false;
+      case "Cliente Empresa":
+        return false;
+      case "Cliente Pessoa Física":
+        return false;
       case "Operador":
         return false;
       case "Colaborador":

@@ -37,6 +37,16 @@ async function notificationRoutines(
           label: "Colaborador",
         });
         break;
+      case "Customer":
+        socket.emit("notificationToList", {
+          userName,
+          method,
+          item: {},
+          sourceId,
+          receivers: config.notifications[notificationList],
+          label: "Cliente",
+        });
+        break;
 
       default:
         break;
