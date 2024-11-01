@@ -119,7 +119,7 @@ router.post("/", async (req, res) => {
       savedItem,
       "add",
       req.body.sourceId,
-      `when${req.body.model}IsCreated`
+      `${req.body.model.toLowerCase()}IsCreated`
     );
 
     res.status(200).json(savedItem);

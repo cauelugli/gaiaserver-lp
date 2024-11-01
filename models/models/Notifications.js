@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const notificationSchema = new Schema({
   user: {
-    undefinedserIsCreated: {
+    userIsCreated: {
       type: Array,
       default: [],
     },

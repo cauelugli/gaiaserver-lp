@@ -40,7 +40,7 @@ router.delete("/:sourceId/:model/:id", async (req, res) => {
       deletedItem.name,
       "delete",
       sourceId,
-      `when${model}IsDeleted`
+      `${model.toLowerCase()}IsDeleted`
     );
     res.status(200).json("Item deletado com sucesso");
   } catch (err) {

@@ -1,4 +1,4 @@
-const Config = require("../../models/models/Config");
+const Notifications = require("../../models/models/Notifications");
 const Department = require("../../models/models/Department");
 const Position = require("../../models/models/Position");
 const io = require("../../api/node_modules/socket.io-client");
@@ -12,7 +12,7 @@ async function notificationRoutines(
   notificationList
 ) {
   try {
-    const config = await Config.findOne();
+    const config = await Notifications.findOne({});
 
     const position = target.position
       ? await Position.findById(target.position)
@@ -23,6 +23,7 @@ async function notificationRoutines(
       : null;
 
     const userName = target.name ? target.name : target;
+
     switch (model) {
       case "User":
         socket.emit("notificationToList", {
@@ -33,7 +34,7 @@ async function notificationRoutines(
             department: department?.name || "",
           },
           sourceId,
-          receivers: config.notifications[notificationList],
+          receivers: config[model.toLowerCase()][notificationList],
           label: "Colaborador",
         });
         break;
@@ -43,7 +44,7 @@ async function notificationRoutines(
           method,
           item: {},
           sourceId,
-          receivers: config.notifications[notificationList],
+          receivers: config[model.toLowerCase()][notificationList],
           label: "Cliente",
         });
         break;
