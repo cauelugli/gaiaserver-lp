@@ -1,13 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const Config = require("../../models/models/Config");
+const Notifications = require("../../models/models/Notifications");
 
 // CREATE INITIAL CONFIG
 router.post("/", async (req, res) => {
   const newConfig = new Config();
+  const newNotifications = new Notifications();
   try {
     const createdConfig = await newConfig.save();
-    res.status(200).json(createdConfig);
+    const createdNotifications = await newNotifications.save();
+    res.status(200).json({ createdConfig, createdNotifications });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
