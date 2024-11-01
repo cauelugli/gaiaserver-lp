@@ -300,40 +300,6 @@ router.put("/products", async (req, res) => {
   }
 });
 
-// NOTIFICATIONS
-router.put("/notifications", async (req, res) => {
-  try {
-    const {
-      whenUserIsCreated,
-      whenUserIsEdited,
-      whenUserIsDeleted,
-      whenCustomerIsCreated,
-      whenCustomerIsEdited,
-      whenCustomerIsDeleted,
-    } = req.body;
-
-    const updatedNotifications = {
-      whenUserIsCreated,
-      whenUserIsEdited,
-      whenUserIsDeleted,
-      whenCustomerIsCreated,
-      whenCustomerIsEdited,
-      whenCustomerIsDeleted,
-    };
-
-    const config = await Config.findOneAndUpdate(
-      {},
-      { notifications: updatedNotifications },
-      { new: true }
-    );
-
-    res.status(200).json(config);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
 // TABLES
 router.put("/tables", async (req, res) => {
   try {

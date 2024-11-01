@@ -2,6 +2,13 @@ const express = require("express");
 const router = express.Router();
 const { defineModel } = require("../../controllers/functions/routeFunctions");
 
+// console.log("\n don't try this at home \n");
+// if (model === "Unexisting_Model_in_Database") {
+//   const newItem = new Model();
+//   const savedItem = await newItem.save();
+//   console.log("savedItem", savedItem);
+// }
+
 // GET ALL ITEMS BASED ON MODEL PARAMETER
 router.get("/", async (req, res) => {
   const { model } = req.query;

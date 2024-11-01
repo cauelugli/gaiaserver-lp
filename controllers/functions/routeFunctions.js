@@ -1,6 +1,7 @@
 const Department = require("../../models/models/Department");
 const Service = require("../../models/models/Service");
 const User = require("../../models/models/User");
+
 const models = {
   Client: require("../../models/models/Client"),
   Customer: require("../../models/models/Customer"),
@@ -9,10 +10,10 @@ const models = {
   FinanceOutcome: require("../../models/models/FinanceOutcome"),
   Group: require("../../models/models/Group"),
   Job: require("../../models/models/Job"),
+  Notifications: require("../../models/models/Notifications"),
   Operator: require("../../models/models/User"),
   Position: require("../../models/models/Position"),
   Product: require("../../models/models/Product"),
-  // Project: require("../../models/models/Project"),
   Quote: require("../../models/models/Quote"),
   RecentActivity: require("../../models/models/RecentActivity"),
   Role: require("../../models/models/Role"),

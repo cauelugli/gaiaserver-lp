@@ -79,35 +79,6 @@ const configSchema = new Schema({
       type: Array,
     },
   },
-  notifications: {
-    // USER
-    whenUserIsCreated: {
-      type: Array,
-    },
-    whenUserIsEdited: {
-      type: Array,
-    },
-    whenUserIsDeleted: {
-      type: Array,
-    },
-    // CUSTOMER
-    whenCustomerIsCreated: {
-      type: Array,
-    },
-    whenCustomerIsEdited: {
-      type: Array,
-    },
-    whenCustomerIsDeleted: {
-      type: Array,
-    },
-    // REQUESTS
-    whenJobIsCreated: {
-      type: Array,
-    },
-    whenSaleIsCreated: {
-      type: Array,
-    },
-  },
   permissions: {
     dashboard: {
       type: Array,

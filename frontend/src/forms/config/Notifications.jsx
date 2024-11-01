@@ -3,12 +3,6 @@ import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
-
-const socket = io("http://localhost:5002");
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 import {
   Accordion,
   AccordionDetails,
@@ -26,39 +20,35 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
+const socket = io("http://localhost:5002");
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
 export default function Notifications({ onClose }) {
-  const [configData, setConfigData] = React.useState([]);
+  const [configData, setConfigData] = React.useState(null);
   const [roles, setRoles] = React.useState([]);
-  // USER
-  const [whenUserIsCreated, setWhenUserIsCreated] = React.useState([]);
-  const [whenUserIsEdited, setWhenUserIsEdited] = React.useState([]);
-  const [whenUserIsDeleted, setWhenUserIsDeleted] = React.useState([]);
-  // CUSTOMER
-  const [whenCustomerIsCreated, setWhenCustomerIsCreated] = React.useState([]);
-  const [whenCustomerIsEdited, setWhenCustomerIsEdited] = React.useState([]);
-  const [whenCustomerIsDeleted, setWhenCustomerIsDeleted] = React.useState([]);
+
+  const labels = {
+    customer: "Clientes",
+    requests: "Solicitações",
+    user: "Colaborador",
+  };
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const config = await api.get("/config");
-        const roles = await api.get("/get", {
+        const notificationConfig = await api.get("/get", {
+          params: { model: "Notifications" },
+        });
+        setConfigData(notificationConfig.data[0]);
+
+        const rolesResponse = await api.get("/get", {
           params: { model: "Role" },
         });
-        const configData = config.data[0].notifications;
-        setConfigData(configData);
-        setRoles(roles.data);
-        // USER
-        setWhenUserIsCreated(configData.whenUserIsCreated || []);
-        setWhenUserIsEdited(configData.whenUserIsEdited || []);
-        setWhenUserIsDeleted(configData.whenUserIsDeleted || []);
-        // CUSTOMER
-        setWhenCustomerIsCreated(configData.whenCustomerIsCreated || []);
-        setWhenCustomerIsEdited(configData.whenCustomerIsEdited || []);
-        setWhenCustomerIsDeleted(configData.whenCustomerIsDeleted || []);
+        setRoles(rolesResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -66,40 +56,25 @@ export default function Notifications({ onClose }) {
     fetchData();
   }, []);
 
-  const statesMap = {
-    User: {
-      created: [whenUserIsCreated, setWhenUserIsCreated],
-      edited: [whenUserIsEdited, setWhenUserIsEdited],
-      deleted: [whenUserIsDeleted, setWhenUserIsDeleted],
-    },
-    Customer: {
-      created: [whenCustomerIsCreated, setWhenCustomerIsCreated],
-      edited: [whenCustomerIsEdited, setWhenCustomerIsEdited],
-      deleted: [whenCustomerIsDeleted, setWhenCustomerIsDeleted],
-    },
-  };
+  const handleCheckboxChange = (roleId, category, type) => {
+    const updatedList = configData[category]?.[type] || [];
+    const newList = updatedList.includes(roleId)
+      ? updatedList.filter((id) => id !== roleId)
+      : [...updatedList, roleId];
 
-  const handleCheckboxChange = (roleId, model, type) => {
-    const [list, setList] = statesMap[model][type];
-    setList(
-      list.includes(roleId)
-        ? list.filter((id) => id !== roleId)
-        : [...list, roleId]
-    );
+    setConfigData((prevConfig) => ({
+      ...prevConfig,
+      [category]: {
+        ...prevConfig[category],
+        [type]: newList,
+      },
+    }));
   };
 
   const handleChangeNotificationsConfig = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.put("/config/notifications", {
-        whenUserIsCreated,
-        whenUserIsEdited,
-        whenUserIsDeleted,
-        whenCustomerIsCreated,
-        whenCustomerIsEdited,
-        whenCustomerIsDeleted,
-      });
-
+      const res = await api.put("/notifications", configData);
       if (res.data) {
         toast.success("Configuração Alterada!", {
           closeOnClick: true,
@@ -128,7 +103,7 @@ export default function Notifications({ onClose }) {
       >
         Configurações de Notificações
       </DialogTitle>
-      {configData.length !== 0 && (
+      {configData && (
         <>
           <DialogContent>
             <Grid
@@ -138,166 +113,98 @@ export default function Notifications({ onClose }) {
               justifyContent="center"
               alignItems="flex-start"
             >
-              <Accordion sx={{ width: "100%" }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Colaboradores
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="column" alignItems="center">
-                      <Table size="small">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell sx={{ width: 200 }}>Perfil</TableCell>
-                            <TableCell sx={{ width: 200 }}>Criado</TableCell>
-                            <TableCell sx={{ width: 200 }}>Editado</TableCell>
-                            <TableCell sx={{ width: 200 }}>Deletado</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {roles.length === 0 ? (
-                            <TableRow>
-                              <TableCell colSpan={4}>
-                                Nenhum perfil disponível
-                              </TableCell>
-                            </TableRow>
-                          ) : (
-                            roles.map((role, index) => (
-                              <TableRow key={index}>
-                                <TableCell>{role.name}</TableCell>
-                                <TableCell>
-                                  <Checkbox
-                                    checked={whenUserIsCreated.includes(
-                                      role._id
-                                    )}
-                                    onChange={() =>
-                                      handleCheckboxChange(
-                                        role._id,
-                                        "User",
-                                        "created"
-                                      )
-                                    }
-                                  />
+              {Object.keys(configData)
+                .filter((category) => labels[category])
+                .map((category) => (
+                  <Accordion key={category} sx={{ width: "100%", mt: 2 }}>
+                    <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                      <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                        {labels[category]}
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Grid item sx={{ my: 1.5 }}>
+                        <Grid container direction="column" alignItems="center">
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell sx={{ width: 200 }}>
+                                  Perfil
                                 </TableCell>
-                                <TableCell>
-                                  <Checkbox
-                                    checked={whenUserIsEdited.includes(
-                                      role._id
-                                    )}
-                                    onChange={() =>
-                                      handleCheckboxChange(
-                                        role._id,
-                                        "User",
-                                        "edited"
-                                      )
-                                    }
-                                  />
+                                <TableCell sx={{ width: 200 }}>
+                                  Criado
                                 </TableCell>
-                                <TableCell>
-                                  <Checkbox
-                                    checked={whenUserIsDeleted.includes(
-                                      role._id
-                                    )}
-                                    onChange={() =>
-                                      handleCheckboxChange(
-                                        role._id,
-                                        "User",
-                                        "deleted"
-                                      )
-                                    }
-                                  />
+                                <TableCell sx={{ width: 200 }}>
+                                  Editado
+                                </TableCell>
+                                <TableCell sx={{ width: 200 }}>
+                                  Deletado
                                 </TableCell>
                               </TableRow>
-                            ))
-                          )}
-                        </TableBody>
-                      </Table>
-                    </Grid>
-                  </Grid>
-                </AccordionDetails>
-              </Accordion>
-              <Accordion sx={{ width: "100%", mt: 2 }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Clientes
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="column" alignItems="center">
-                      <Table size="small">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell sx={{ width: 200 }}>Perfil</TableCell>
-                            <TableCell sx={{ width: 200 }}>Criado</TableCell>
-                            <TableCell sx={{ width: 200 }}>Editado</TableCell>
-                            <TableCell sx={{ width: 200 }}>Deletado</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {roles.length === 0 ? (
-                            <TableRow>
-                              <TableCell colSpan={4}>
-                                Nenhum perfil disponível
-                              </TableCell>
-                            </TableRow>
-                          ) : (
-                            roles.map((role, index) => (
-                              <TableRow key={index}>
-                                <TableCell>{role.name}</TableCell>
-                                <TableCell>
-                                  <Checkbox
-                                    checked={whenCustomerIsCreated.includes(
-                                      role._id
-                                    )}
-                                    onChange={() =>
-                                      handleCheckboxChange(
-                                        role._id,
-                                        "Customer",
-                                        "created"
-                                      )
-                                    }
-                                  />
-                                </TableCell>
-                                <TableCell>
-                                  <Checkbox
-                                    checked={whenCustomerIsEdited.includes(
-                                      role._id
-                                    )}
-                                    onChange={() =>
-                                      handleCheckboxChange(
-                                        role._id,
-                                        "Customer",
-                                        "edited"
-                                      )
-                                    }
-                                  />
-                                </TableCell>
-                                <TableCell>
-                                  <Checkbox
-                                    checked={whenCustomerIsDeleted.includes(
-                                      role._id
-                                    )}
-                                    onChange={() =>
-                                      handleCheckboxChange(
-                                        role._id,
-                                        "Customer",
-                                        "deleted"
-                                      )
-                                    }
-                                  />
-                                </TableCell>
-                              </TableRow>
-                            ))
-                          )}
-                        </TableBody>
-                      </Table>
-                    </Grid>
-                  </Grid>
-                </AccordionDetails>
-              </Accordion>
+                            </TableHead>
+                            <TableBody>
+                              {roles.length === 0 ? (
+                                <TableRow>
+                                  <TableCell colSpan={4}>
+                                    Nenhum perfil disponível
+                                  </TableCell>
+                                </TableRow>
+                              ) : (
+                                roles.map((role) => (
+                                  <TableRow key={role._id}>
+                                    <TableCell>{role.name}</TableCell>
+                                    <TableCell>
+                                      <Checkbox
+                                        checked={configData[category]?.[
+                                          `${category}IsCreated`
+                                        ]?.includes(role._id)}
+                                        onChange={() =>
+                                          handleCheckboxChange(
+                                            role._id,
+                                            category,
+                                            `${category}IsCreated`
+                                          )
+                                        }
+                                      />
+                                    </TableCell>
+                                    <TableCell>
+                                      <Checkbox
+                                        checked={configData[category]?.[
+                                          `${category}IsEdited`
+                                        ]?.includes(role._id)}
+                                        onChange={() =>
+                                          handleCheckboxChange(
+                                            role._id,
+                                            category,
+                                            `${category}IsEdited`
+                                          )
+                                        }
+                                      />
+                                    </TableCell>
+                                    <TableCell>
+                                      <Checkbox
+                                        checked={configData[category]?.[
+                                          `${category}IsDeleted`
+                                        ]?.includes(role._id)}
+                                        onChange={() =>
+                                          handleCheckboxChange(
+                                            role._id,
+                                            category,
+                                            `${category}IsDeleted`
+                                          )
+                                        }
+                                      />
+                                    </TableCell>
+                                  </TableRow>
+                                ))
+                              )}
+                            </TableBody>
+                          </Table>
+                        </Grid>
+                      </Grid>
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
             </Grid>
           </DialogContent>
           <DialogActions>
