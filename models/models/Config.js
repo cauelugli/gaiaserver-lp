@@ -80,6 +80,7 @@ const configSchema = new Schema({
     },
   },
   notifications: {
+    // USER
     whenUserIsCreated: {
       type: Array,
     },
@@ -89,9 +90,17 @@ const configSchema = new Schema({
     whenUserIsDeleted: {
       type: Array,
     },
+    // CUSTOMER
     whenCustomerIsCreated: {
       type: Array,
     },
+    whenCustomerIsEdited: {
+      type: Array,
+    },
+    whenCustomerIsDeleted: {
+      type: Array,
+    },
+    // REQUESTS
     whenJobIsCreated: {
       type: Array,
     },

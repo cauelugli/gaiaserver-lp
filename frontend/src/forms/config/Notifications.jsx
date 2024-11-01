@@ -32,9 +32,14 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 export default function Notifications({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
   const [roles, setRoles] = React.useState([]);
+  // USER
   const [whenUserIsCreated, setWhenUserIsCreated] = React.useState([]);
   const [whenUserIsEdited, setWhenUserIsEdited] = React.useState([]);
   const [whenUserIsDeleted, setWhenUserIsDeleted] = React.useState([]);
+  // CUSTOMER
+  const [whenCustomerIsCreated, setWhenCustomerIsCreated] = React.useState([]);
+  const [whenCustomerIsEdited, setWhenCustomerIsEdited] = React.useState([]);
+  const [whenCustomerIsDeleted, setWhenCustomerIsDeleted] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -44,12 +49,16 @@ export default function Notifications({ onClose }) {
           params: { model: "Role" },
         });
         const configData = config.data[0].notifications;
-
         setConfigData(configData);
         setRoles(roles.data);
+        // USER
         setWhenUserIsCreated(configData.whenUserIsCreated || []);
         setWhenUserIsEdited(configData.whenUserIsEdited || []);
         setWhenUserIsDeleted(configData.whenUserIsDeleted || []);
+        // CUSTOMER
+        setWhenCustomerIsCreated(configData.whenCustomerIsCreated || []);
+        setWhenCustomerIsEdited(configData.whenCustomerIsEdited || []);
+        setWhenCustomerIsDeleted(configData.whenCustomerIsDeleted || []);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -57,28 +66,26 @@ export default function Notifications({ onClose }) {
     fetchData();
   }, []);
 
-  const handleCheckboxChange = (roleId, type) => {
-    const updateList = (list, setList) => {
-      setList(
-        list.includes(roleId)
-          ? list.filter((id) => id !== roleId)
-          : [...list, roleId]
-      );
-    };
+  const statesMap = {
+    User: {
+      created: [whenUserIsCreated, setWhenUserIsCreated],
+      edited: [whenUserIsEdited, setWhenUserIsEdited],
+      deleted: [whenUserIsDeleted, setWhenUserIsDeleted],
+    },
+    Customer: {
+      created: [whenCustomerIsCreated, setWhenCustomerIsCreated],
+      edited: [whenCustomerIsEdited, setWhenCustomerIsEdited],
+      deleted: [whenCustomerIsDeleted, setWhenCustomerIsDeleted],
+    },
+  };
 
-    switch (type) {
-      case "created":
-        updateList(whenUserIsCreated, setWhenUserIsCreated);
-        break;
-      case "edited":
-        updateList(whenUserIsEdited, setWhenUserIsEdited);
-        break;
-      case "deleted":
-        updateList(whenUserIsDeleted, setWhenUserIsDeleted);
-        break;
-      default:
-        break;
-    }
+  const handleCheckboxChange = (roleId, model, type) => {
+    const [list, setList] = statesMap[model][type];
+    setList(
+      list.includes(roleId)
+        ? list.filter((id) => id !== roleId)
+        : [...list, roleId]
+    );
   };
 
   const handleChangeNotificationsConfig = async (e) => {
@@ -88,6 +95,9 @@ export default function Notifications({ onClose }) {
         whenUserIsCreated,
         whenUserIsEdited,
         whenUserIsDeleted,
+        whenCustomerIsCreated,
+        whenCustomerIsEdited,
+        whenCustomerIsDeleted,
       });
 
       if (res.data) {
@@ -128,7 +138,7 @@ export default function Notifications({ onClose }) {
               justifyContent="center"
               alignItems="flex-start"
             >
-              <Accordion sx={{ width: "100%", mt: 2 }}>
+              <Accordion sx={{ width: "100%" }}>
                 <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Colaboradores
@@ -143,9 +153,7 @@ export default function Notifications({ onClose }) {
                             <TableCell sx={{ width: 200 }}>Perfil</TableCell>
                             <TableCell sx={{ width: 200 }}>Criado</TableCell>
                             <TableCell sx={{ width: 200 }}>Editado</TableCell>
-                            <TableCell sx={{ width: 200 }}>
-                              Deletado
-                            </TableCell>
+                            <TableCell sx={{ width: 200 }}>Deletado</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
@@ -165,7 +173,11 @@ export default function Notifications({ onClose }) {
                                       role._id
                                     )}
                                     onChange={() =>
-                                      handleCheckboxChange(role._id, "created")
+                                      handleCheckboxChange(
+                                        role._id,
+                                        "User",
+                                        "created"
+                                      )
                                     }
                                   />
                                 </TableCell>
@@ -175,7 +187,11 @@ export default function Notifications({ onClose }) {
                                       role._id
                                     )}
                                     onChange={() =>
-                                      handleCheckboxChange(role._id, "edited")
+                                      handleCheckboxChange(
+                                        role._id,
+                                        "User",
+                                        "edited"
+                                      )
                                     }
                                   />
                                 </TableCell>
@@ -185,7 +201,91 @@ export default function Notifications({ onClose }) {
                                       role._id
                                     )}
                                     onChange={() =>
-                                      handleCheckboxChange(role._id, "deleted")
+                                      handleCheckboxChange(
+                                        role._id,
+                                        "User",
+                                        "deleted"
+                                      )
+                                    }
+                                  />
+                                </TableCell>
+                              </TableRow>
+                            ))
+                          )}
+                        </TableBody>
+                      </Table>
+                    </Grid>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion sx={{ width: "100%", mt: 2 }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                    Clientes
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid container direction="column" alignItems="center">
+                      <Table size="small">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell sx={{ width: 200 }}>Perfil</TableCell>
+                            <TableCell sx={{ width: 200 }}>Criado</TableCell>
+                            <TableCell sx={{ width: 200 }}>Editado</TableCell>
+                            <TableCell sx={{ width: 200 }}>Deletado</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {roles.length === 0 ? (
+                            <TableRow>
+                              <TableCell colSpan={4}>
+                                Nenhum perfil disponível
+                              </TableCell>
+                            </TableRow>
+                          ) : (
+                            roles.map((role, index) => (
+                              <TableRow key={index}>
+                                <TableCell>{role.name}</TableCell>
+                                <TableCell>
+                                  <Checkbox
+                                    checked={whenCustomerIsCreated.includes(
+                                      role._id
+                                    )}
+                                    onChange={() =>
+                                      handleCheckboxChange(
+                                        role._id,
+                                        "Customer",
+                                        "created"
+                                      )
+                                    }
+                                  />
+                                </TableCell>
+                                <TableCell>
+                                  <Checkbox
+                                    checked={whenCustomerIsEdited.includes(
+                                      role._id
+                                    )}
+                                    onChange={() =>
+                                      handleCheckboxChange(
+                                        role._id,
+                                        "Customer",
+                                        "edited"
+                                      )
+                                    }
+                                  />
+                                </TableCell>
+                                <TableCell>
+                                  <Checkbox
+                                    checked={whenCustomerIsDeleted.includes(
+                                      role._id
+                                    )}
+                                    onChange={() =>
+                                      handleCheckboxChange(
+                                        role._id,
+                                        "Customer",
+                                        "deleted"
+                                      )
                                     }
                                   />
                                 </TableCell>
