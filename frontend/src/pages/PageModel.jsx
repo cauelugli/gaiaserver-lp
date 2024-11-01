@@ -167,7 +167,11 @@ export default function PageModel(props) {
         <Tabs
           value={value}
           onChange={handleChange}
-          TabIndicatorProps={{ style: { backgroundColor: "black" } }}
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: props.configCustomization.mainColor,
+            },
+          }}
         >
           {props.item.page === "products"
             ? baseItems.map((item, index) => (
@@ -186,7 +190,14 @@ export default function PageModel(props) {
                 <Tab
                   key={index}
                   label={<Typography sx={{ fontSize: 13 }}>{tab}</Typography>}
-                  sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
+                  sx={{
+                    color: "black",
+                    "&.Mui-selected": {
+                      color: "black",
+                      backgroundColor: `${props.configCustomization.mainColor}42`,
+                      borderRadius: "15px 15px 0 0",
+                    },
+                  }}
                 />
               ))}
           <RefreshDataButton
