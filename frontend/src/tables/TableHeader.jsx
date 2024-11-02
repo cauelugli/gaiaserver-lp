@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { TableRow, TableCell, TableSortLabel } from "@mui/material";
+import { TableRow, TableCell, TableSortLabel, Checkbox } from "@mui/material";
 
 function TableHeader(props) {
   return (
@@ -25,6 +25,11 @@ function TableHeader(props) {
       <TableCell align="center" sx={{ fontSize: 13, fontWeight: "bold" }}>
         Ações
       </TableCell>
+      {props.multiple && (
+        <TableCell align="center" id="multiple" sx={{ p: 0, m: 0 }}>
+          <Checkbox size="small" checked={true} disabled />
+        </TableCell>
+      )}
     </TableRow>
   );
 }

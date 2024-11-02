@@ -58,6 +58,7 @@ export default function PageModel(props) {
   const [baseItems, setBaseItems] = React.useState([]);
 
   const [tableFilters, setTableFilters] = React.useState({});
+  const [multiple, setMultiple] = React.useState(false);
 
   const [currentPage, setCurrentPage] = React.useState(props.item.page);
 
@@ -70,6 +71,7 @@ export default function PageModel(props) {
       setValue(0);
       setTableFilters({});
       setCurrentPage(props.item.page);
+      setMultiple(false)
     }
 
     const fetchData = async () => {
@@ -247,6 +249,8 @@ export default function PageModel(props) {
               setUserPreferences={props.setUserPreferences}
               cardSize={props.cardSize}
               mainColor={props.configCustomization.mainColor}
+              multiple={multiple}
+              setMultiple={setMultiple}
             />
           </Grid>
         </Tabs>
@@ -276,6 +280,7 @@ export default function PageModel(props) {
                     setRefreshData={setRefreshData}
                     topBar={props.topBar}
                     configCustomization={props.configCustomization}
+                    multiple={multiple}
                   />
                 ) : (
                   <Grid
@@ -331,6 +336,7 @@ export default function PageModel(props) {
                     setRefreshData={setRefreshData}
                     topBar={props.topBar}
                     configCustomization={props.configCustomization}
+                    multiple={multiple}
                   />
                 ) : (
                   <Grid

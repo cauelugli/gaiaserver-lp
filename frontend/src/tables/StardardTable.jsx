@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 
-import { TableRow, TableCell } from "@mui/material";
+import { TableRow, TableCell, Checkbox } from "@mui/material";
 
 import RowButton from "../buttons/RowButton";
 import DataTableCell from "../components/tableCells/DataTableCell";
@@ -20,6 +20,7 @@ function StandardTable({
   refreshData,
   setRefreshData,
   configCustomization,
+  multiple,
 }) {
   return (
     <>
@@ -30,7 +31,11 @@ function StandardTable({
               key={columnIndex}
               align={columnIndex === 0 ? "" : "left"}
             >
-              <DataTableCell item={row[column.id]} idIndexList={idIndexList} column={column} />
+              <DataTableCell
+                item={row[column.id]}
+                idIndexList={idIndexList}
+                column={column}
+              />
             </TableCell>
           ))}
           <TableCell align="center">
@@ -44,6 +49,11 @@ function StandardTable({
               configCustomization={configCustomization}
             />
           </TableCell>
+          {multiple && (
+            <TableCell align="center" id="multiple" sx={{ p: 0, m: 0 }}>
+              <Checkbox size="small" />
+            </TableCell>
+          )}
         </TableRow>
       ))}
     </>

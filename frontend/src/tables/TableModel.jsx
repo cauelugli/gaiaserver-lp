@@ -87,6 +87,7 @@ export default function TableModel(props) {
               order={order}
               orderBy={orderBy}
               handleRequestSort={handleRequestSort}
+              multiple={props.multiple}
             />
           ) : (
             <TableHeader
@@ -95,6 +96,7 @@ export default function TableModel(props) {
               order={order}
               orderBy={orderBy}
               handleRequestSort={handleRequestSort}
+              multiple={props.multiple}
             />
           )}
 
@@ -111,6 +113,7 @@ export default function TableModel(props) {
                 refreshData={props.refreshData}
                 setRefreshData={props.setRefreshData}
                 configCustomization={props.configCustomization}
+                multiple={props.multiple}
               />
             ) : (
               <StandardTable
@@ -126,6 +129,7 @@ export default function TableModel(props) {
                 refreshData={props.refreshData}
                 setRefreshData={props.setRefreshData}
                 configCustomization={props.configCustomization}
+                multiple={props.multiple}
               />
             )}
           </TableBody>

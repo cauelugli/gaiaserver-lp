@@ -9,8 +9,10 @@ const api = axios.create({
 });
 
 import { Grid, Typography } from "@mui/material";
+
 import AppsIcon from "@mui/icons-material/Apps";
 import TableRowsIcon from "@mui/icons-material/TableRows";
+import MultipleSelectorButton from "./buttons/MultipleSelectorButton";
 
 const TableOrCardSelector = ({
   userId,
@@ -20,8 +22,11 @@ const TableOrCardSelector = ({
   setUserPreferences,
   cardSize,
   mainColor,
+  multiple,
+  setMultiple
 }) => {
   const [tableOrCardView, setTableOrCardView] = React.useState(tableOrCard);
+  
 
   React.useEffect(() => {
     setTableOrCardView(tableOrCard);
@@ -106,6 +111,12 @@ const TableOrCardSelector = ({
       justifyContent="flex-end"
       alignItems="flex-end"
     >
+      <MultipleSelectorButton
+        mainColor={mainColor}
+        multiple={multiple}
+        setMultiple={setMultiple}
+      />
+
       <Grid item>
         {!tableOrCardView && (
           <Grid container direction="row" sx={{ mr: 3 }}>

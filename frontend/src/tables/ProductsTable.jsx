@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 
-import { TableRow, TableCell, Avatar } from "@mui/material";
+import { TableRow, TableCell, Avatar, Checkbox } from "@mui/material";
 
 import RowButton from "../buttons/RowButton";
 
@@ -40,6 +40,11 @@ function ProductsTable(props) {
                   configCustomization={props.configCustomization}
                 />
               </TableCell>
+              {props.multiple && (
+                <TableCell align="center" id="multiple" sx={{ p: 0, m: 0 }}>
+                  <Checkbox size="small" />
+                </TableCell>
+              )}
             </TableRow>
           ))}
     </>
