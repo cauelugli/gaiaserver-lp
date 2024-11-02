@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5002");
 
-import { Badge,  Grid, Typography } from "@mui/material";
+import { Badge, Grid } from "@mui/material";
 
 import RefreshIcon from "@mui/icons-material/Refresh";
 
@@ -21,8 +21,6 @@ export default function RefreshDataButton({
 
   React.useEffect(() => {
     const handleNewData = (data) => {
-      // Verifica se o final da URL corresponde à página recebida
-      // e se o userId recebido pelo WebSocket é diferente do userIdProp
       if (currentPath.endsWith(`/${data.page}`) && data.userId !== userId) {
         setNewDataRefreshButton(false);
       }
@@ -46,9 +44,9 @@ export default function RefreshDataButton({
       }}
       sx={{
         cursor: "pointer",
-        width: 110,
+        width: 50,
         m: 0.75,
-        mx: 2,
+        mx: 1.5,
         border: `0.5px solid ${
           configCustomization.mainColor
             ? configCustomization.mainColor
@@ -71,17 +69,6 @@ export default function RefreshDataButton({
               : "#32aacd",
           }}
         />
-        <Typography
-          sx={{
-            fontSize: 12,
-            m: 0.5,
-            color: configCustomization.mainColor
-              ? configCustomization.mainColor
-              : "#32aacd",
-          }}
-        >
-          ATUALIZAR
-        </Typography>{" "}
       </Badge>
     </Grid>
   );

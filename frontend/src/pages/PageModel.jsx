@@ -246,6 +246,7 @@ export default function PageModel(props) {
               tableOrCard={props.tableOrCardView}
               setUserPreferences={props.setUserPreferences}
               cardSize={props.cardSize}
+              mainColor={props.configCustomization.mainColor}
             />
           </Grid>
         </Tabs>

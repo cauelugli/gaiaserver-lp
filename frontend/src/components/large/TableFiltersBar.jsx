@@ -17,7 +17,6 @@ const TableFiltersBar = (props) => {
         <FilterAltOffIcon
           sx={{
             my: "auto",
-            ml: 2,
             mr: 3,
             color: "lightgrey",
             cursor: "pointer",
@@ -29,7 +28,6 @@ const TableFiltersBar = (props) => {
         <FilterAltIcon
           sx={{
             my: "auto",
-            ml: 2,
             mr: 3,
             color: "darkgrey",
             cursor: "pointer",

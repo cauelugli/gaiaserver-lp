@@ -19,6 +19,7 @@ const TableOrCardSelector = ({
   tableOrCard,
   setUserPreferences,
   cardSize,
+  mainColor,
 }) => {
   const [tableOrCardView, setTableOrCardView] = React.useState(tableOrCard);
 
@@ -99,7 +100,12 @@ const TableOrCardSelector = ({
   };
 
   return (
-    <Grid container direction="row" sx={{ width: tableOrCardView ? 100 : 120 }}>
+    <Grid
+      container
+      direction="row"
+      justifyContent="flex-end"
+      alignItems="flex-end"
+    >
       <Grid item>
         {!tableOrCardView && (
           <Grid container direction="row" sx={{ mr: 3 }}>
@@ -139,15 +145,20 @@ const TableOrCardSelector = ({
       </Grid>
       <Grid>
         <AppsIcon
-          sx={{ mr: 1, cursor: "pointer" }}
-          color={!tableOrCardView ? "primary" : "inherit"}
+          sx={{
+            mr: 1,
+            cursor: "pointer",
+            color: !tableOrCardView ? mainColor : "gray",
+          }}
           onClick={() => handleUpdateTableOrCardView(false)}
         />
       </Grid>
       <Grid>
         <TableRowsIcon
-          sx={{ cursor: "pointer" }}
-          color={tableOrCardView ? "primary" : "inherit"}
+          sx={{
+            cursor: "pointer",
+            color: tableOrCardView ? mainColor : "gray",
+          }}
           onClick={() => handleUpdateTableOrCardView(true)}
         />
       </Grid>
