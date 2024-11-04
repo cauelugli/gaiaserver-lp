@@ -1,20 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import ApartmentIcon from "@mui/icons-material/Apartment";
-import BuildIcon from "@mui/icons-material/Build";
-import EngineeringIcon from "@mui/icons-material/Engineering";
-import GroupsIcon from "@mui/icons-material/Groups";
-import HubIcon from "@mui/icons-material/Hub";
-import Inventory2Icon from "@mui/icons-material/Inventory2";
-import LanIcon from "@mui/icons-material/Lan";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import PersonIcon from "@mui/icons-material/Person";
-import Person4Icon from "@mui/icons-material/Person4";
-import SellIcon from "@mui/icons-material/Sell";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
+import { icons } from "../icons";
+
 import { modals } from "./modals";
 
 const pageButtonOptions = [
@@ -27,17 +15,17 @@ const pageButtonOptions = [
     pageButtonOptions: [
       {
         label: "Empresa",
-        icon: <ApartmentIcon />,
+        icon: <icons.ApartmentIcon />,
         modal: modals["Customer"],
       },
       {
         label: "Pessoa Física",
-        icon: <PersonIcon />,
+        icon: <icons.PersonIcon />,
         modal: modals["Client"],
       },
       {
         label: "Importar Contatos",
-        icon: <UploadFileIcon />,
+        icon: <icons.UploadFileIcon />,
         modal: modals["ImportCustomers"],
       },
     ],
@@ -47,12 +35,12 @@ const pageButtonOptions = [
     pageButtonOptions: [
       {
         label: "Job",
-        icon: <EngineeringIcon />,
+        icon: <icons.EngineeringIcon />,
         modal: modals["Job"],
       },
       {
         label: "Venda",
-        icon: <SellIcon />,
+        icon: <icons.SellIcon />,
         modal: modals["Sale"],
       },
     ],
@@ -62,12 +50,12 @@ const pageButtonOptions = [
     pageButtonOptions: [
       {
         label: "Colaborador",
-        icon: <PersonIcon />,
+        icon: <icons.PersonIcon />,
         modal: modals["User"],
       },
       {
         label: "Gerente",
-        icon: <Person4Icon />,
+        icon: <icons.Person4Icon />,
         modal: modals["Manager"],
       },
     ],
@@ -77,12 +65,12 @@ const pageButtonOptions = [
     pageButtonOptions: [
       {
         label: "Departamento",
-        icon: <LanIcon />,
+        icon: <icons.LanIcon />,
         modal: modals["Department"],
       },
       {
         label: "Grupo",
-        icon: <GroupsIcon />,
+        icon: <icons.GroupsIcon />,
         modal: modals["Group"],
       },
     ],
@@ -92,12 +80,12 @@ const pageButtonOptions = [
     pageButtonOptions: [
       {
         label: "Serviço",
-        icon: <BuildIcon />,
+        icon: <icons.BuildIcon />,
         modal: modals["Service"],
       },
       {
         label: "Plano de Serviços",
-        icon: <HubIcon />,
+        icon: <icons.HubIcon />,
         modal: modals["ServicePlan"],
       },
     ],
@@ -111,7 +99,7 @@ const pageButtonOptions = [
     pageButtonOptions: [
       {
         label: "Entrada de Estoque",
-        icon: <Inventory2Icon />,
+        icon: <icons.Inventory2Icon />,
         modal: modals["StockEntry"],
       },
     ],
@@ -121,7 +109,7 @@ const pageButtonOptions = [
     pageButtonOptions: [
       {
         label: "Produto",
-        icon: <SellIcon />,
+        icon: <icons.SellIcon />,
         modal: modals["Product"],
       },
     ],
@@ -129,7 +117,7 @@ const pageButtonOptions = [
   {
     page: "chat",
     pageButtonOptions: [
-      { label: "Mensagem", icon: <ApartmentIcon />, modal: "oneday" },
+      { label: "Mensagem", icon: <icons.ApartmentIcon />, modal: "oneday" },
     ],
   },
   {
@@ -137,17 +125,17 @@ const pageButtonOptions = [
     pageButtonOptions: [
       {
         label: "Operador",
-        icon: <ManageAccountsIcon />,
+        icon: <icons.ManageAccountsIcon />,
         modal: modals["Operator"],
       },
       {
         label: "Cargo",
-        icon: <AssignmentIndIcon />,
+        icon: <icons.AssignmentIndIcon />,
         modal: modals["Position"],
       },
       {
         label: "Perfil de Acesso",
-        icon: <AdminPanelSettingsIcon />,
+        icon: <icons.AdminPanelSettingsIcon />,
         modal: modals["Role"],
       },
     ],

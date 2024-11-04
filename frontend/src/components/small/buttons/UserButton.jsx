@@ -1,8 +1,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import axios from "axios";
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 import { toast } from "react-toastify";
 
 import {
@@ -16,12 +19,7 @@ import {
   IconButton,
 } from "@mui/material";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
-import PersonIcon from "@mui/icons-material/Person";
-import LogoutIcon from "@mui/icons-material/Logout";
+import { icons } from "../../../icons";
 
 export default function UserButton({ user }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -60,7 +58,7 @@ export default function UserButton({ user }) {
           >
             <ListItemButton>
               <ListItemIcon>
-                <PersonIcon />
+                <icons.PersonIcon />
               </ListItemIcon>
               <ListItemText primary="Perfil" sx={{ ml: -3 }} />
             </ListItemButton>
@@ -68,7 +66,7 @@ export default function UserButton({ user }) {
 
           <ListItemButton onClick={handleLogout}>
             <ListItemIcon>
-              <LogoutIcon />
+              <icons.LogoutIcon />
             </ListItemIcon>
             <ListItemText primary="Logout" sx={{ ml: -3 }} />
           </ListItemButton>

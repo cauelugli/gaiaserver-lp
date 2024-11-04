@@ -26,12 +26,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import AbcIcon from "@mui/icons-material/Abc";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ListIcon from "@mui/icons-material/List";
-import NumbersIcon from "@mui/icons-material/Numbers";
+import { icons } from "../../icons";
 
 import DialogHeader from "../../components/small/DialogHeader";
 
@@ -319,31 +314,31 @@ export default function AddBaseProductForm({
                 </MenuItem>
                 <MenuItem value={"string"}>
                   <ListItemIcon>
-                    <AbcIcon />
+                    <icons.AbcIcon />
                   </ListItemIcon>
                   Texto
                 </MenuItem>
                 <MenuItem value={"number"}>
                   <ListItemIcon>
-                    <NumbersIcon />
+                    <icons.NumbersIcon />
                   </ListItemIcon>
                   Número
                 </MenuItem>
                 <MenuItem value={"currency"}>
                   <ListItemIcon>
-                    <AttachMoneyIcon />
+                    <icons.AttachMoneyIcon />
                   </ListItemIcon>
                   Moeda (R$)
                 </MenuItem>
                 <MenuItem value={"options"}>
                   <ListItemIcon>
-                    <ListIcon />
+                    <icons.ListIcon />
                   </ListItemIcon>
                   Lista de Opções
                 </MenuItem>
                 <MenuItem value={"date"}>
                   <ListItemIcon>
-                    <CalendarMonthIcon />
+                    <icons.CalendarMonthIcon />
                   </ListItemIcon>
                   Data
                 </MenuItem>
@@ -491,7 +486,7 @@ export default function AddBaseProductForm({
                           Item {index + 1}: {option}
                         </Typography>
                         {index === newOptions.length - 1 && (
-                          <DeleteIcon
+                          <icons.DeleteIcon
                             onClick={() =>
                               setNewOptions((prevOptions) =>
                                 prevOptions.slice(0, -1)

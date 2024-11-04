@@ -6,69 +6,56 @@ import { Link } from "react-router-dom";
 
 import { Grid, Paper } from "@mui/material";
 
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import AssessmentIcon from "@mui/icons-material/Assessment";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import BuildIcon from "@mui/icons-material/Build";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import GradingIcon from "@mui/icons-material/Grading";
-import GroupIcon from "@mui/icons-material/Group";
-import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import LanIcon from "@mui/icons-material/Lan";
-import SellIcon from "@mui/icons-material/Sell";
-import SettingsIcon from "@mui/icons-material/Settings";
-import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
-import WarehouseIcon from "@mui/icons-material/Warehouse";
-import WorkIcon from "@mui/icons-material/Work";
+import { icons } from '../../icons'
 
 import HomeRecentActivity from "../small/HomeRecentActivity";
 
 const optionsMainblocks = [
   {
-    icon: <WorkIcon sx={{ fontSize: 52 }} />,
+    icon: <icons.WorkIcon sx={{ fontSize: 52 }} />,
     text: "Clientes",
     link: "/customers",
     permissionLabel: "customers",
   },
   {
-    icon: <GradingIcon sx={{ fontSize: 52 }} />,
+    icon: <icons.GradingIcon sx={{ fontSize: 52 }} />,
     text: "Solicitações",
     link: "/requests",
     permissionLabel: "requests",
   },
   {
-    icon: <GroupIcon sx={{ fontSize: 52 }} />,
+    icon: <icons.GroupIcon sx={{ fontSize: 52 }} />,
     text: "Colaboradores",
     link: "/users",
     permissionLabel: "users",
   },
   {
-    icon: <LanIcon sx={{ fontSize: 52 }} />,
+    icon: <icons.LanIcon sx={{ fontSize: 52 }} />,
     text: "Departamentos",
     link: "/departments",
     permissionLabel: "departments",
   },
   {
-    icon: <SellIcon sx={{ fontSize: 52 }} />,
+    icon: <icons.SellIcon sx={{ fontSize: 52 }} />,
     text: "Produtos",
     link: "/products",
     permissionLabel: "products",
   },
   {
-    icon: <WarehouseIcon sx={{ fontSize: 52 }} />,
+    icon: <icons.WarehouseIcon sx={{ fontSize: 52 }} />,
     text: "Estoque",
     link: "/stock",
     permissionLabel: "stock",
   },
   {
-    icon: <BuildIcon sx={{ fontSize: 52 }} />,
+    icon: <icons.BuildIcon sx={{ fontSize: 52 }} />,
     text: "Serviços",
     link: "/services",
     permissionLabel: "services",
   },
 
   {
-    icon: <AttachMoneyIcon sx={{ fontSize: 52 }} />,
+    icon: <icons.AttachMoneyIcon sx={{ fontSize: 52 }} />,
     text: "Financeiro",
     link: "/finance",
     permissionLabel: "finance",
@@ -77,37 +64,37 @@ const optionsMainblocks = [
 
 const optionsRightColumn = [
   {
-    icon: <DashboardIcon sx={{ fontSize: 22 }} />,
+    icon: <icons.DashboardIcon sx={{ fontSize: 22 }} />,
     text: "Dashboard",
     link: "/dashboard",
     permissionLabel: "dashboard",
   },
   {
-    icon: <AssessmentIcon sx={{ fontSize: 22 }} />,
+    icon: <icons.AssessmentIcon sx={{ fontSize: 22 }} />,
     text: "Relatórios",
     link: "/reports",
     permissionLabel: "reports",
   },
   {
-    icon: <RequestQuoteIcon sx={{ fontSize: 22 }} />,
+    icon: <icons.RequestQuoteIcon sx={{ fontSize: 22 }} />,
     text: "Orçamentos",
     link: "/quotes",
     permissionLabel: "quotes",
   },
   {
-    icon: <AdminPanelSettingsIcon sx={{ fontSize: 22 }} />,
+    icon: <icons.AdminPanelSettingsIcon sx={{ fontSize: 22 }} />,
     text: "Acessos",
     link: "/security",
     permissionLabel: "security",
   },
   {
-    icon: <InsertDriveFileIcon sx={{ fontSize: 22 }} />,
+    icon: <icons.InsertDriveFileIcon sx={{ fontSize: 22 }} />,
     text: "Arquivos",
     link: "/files",
     permissionLabel: "files",
   },
   {
-    icon: <SettingsIcon sx={{ fontSize: 22 }} />,
+    icon: <icons.SettingsIcon sx={{ fontSize: 22 }} />,
     text: "Configurações",
     link: "/config",
     permissionLabel: "config",

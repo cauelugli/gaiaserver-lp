@@ -30,8 +30,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { icons } from "../../icons";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -115,7 +114,7 @@ export default function Services({ onClose }) {
               alignItems="flex-start"
             >
               <Accordion sx={{ width: "100%" }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Tipos de Serviço
                   </Typography>
@@ -130,7 +129,7 @@ export default function Services({ onClose }) {
                             edge="end"
                             onClick={() => handleRemoveType(type)}
                           >
-                            <DeleteIcon />
+                            <icons.DeleteIcon />
                           </IconButton>
                         </ListItemSecondaryAction>
                       </ListItem>
@@ -164,7 +163,7 @@ export default function Services({ onClose }) {
                 </AccordionDetails>
               </Accordion>
               <Accordion sx={{ width: "100%", mt: 2 }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Permissões
                   </Typography>

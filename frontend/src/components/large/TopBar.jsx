@@ -4,48 +4,32 @@ import { Link } from "react-router-dom";
 
 import { Divider, List, ListItemButton, Typography } from "@mui/material";
 
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import AssessmentIcon from "@mui/icons-material/Assessment";
-import BuildIcon from "@mui/icons-material/Build";
-import ChatIcon from "@mui/icons-material/Chat";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import GradingIcon from "@mui/icons-material/Grading";
-import GroupIcon from "@mui/icons-material/Group";
-import HelpCenterIcon from "@mui/icons-material/HelpCenter";
-import HomeIcon from "@mui/icons-material/Home";
-import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import LanIcon from "@mui/icons-material/Lan";
-import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
-import SettingsIcon from "@mui/icons-material/Settings";
-import SellIcon from "@mui/icons-material/Sell";
-import WarehouseIcon from "@mui/icons-material/Warehouse";
-import WorkIcon from "@mui/icons-material/Work";
+import { icons } from "../../icons";
 
 const options = [
-  { label: "Dashboard", icon: <DashboardIcon />, link: "/", disabled: true },
-  { label: "Clientes", icon: <WorkIcon />, link: "/customers" },
-  { label: "Solicitações", icon: <GradingIcon />, link: "/requests" },
-  { label: "Colaboradores", icon: <GroupIcon />, link: "/users" },
-  { label: "Departamentos", icon: <LanIcon />, link: "/departments" },
-  { label: "Serviços", icon: <BuildIcon />, link: "/services" },
-  { label: "Orçamentos", icon: <RequestQuoteIcon />, link: "/quotes" },
-  { label: "Produtos", icon: <SellIcon />, link: "/products" },
-  { label: "Estoque", icon: <WarehouseIcon />, link: "/stock" },
-  { label: "Chat", icon: <ChatIcon />, link: "/", disabled: true },
-  { label: "Financeiro", icon: <AttachMoneyIcon />, link: "/finance" },
-  { label: "Relatórios", icon: <AssessmentIcon />, link: "/reports" },
+  { label: "Dashboard", icon: <icons.DashboardIcon />, link: "/", disabled: true },
+  { label: "Clientes", icon: <icons.WorkIcon />, link: "/customers" },
+  { label: "Solicitações", icon: <icons.GradingIcon />, link: "/requests" },
+  { label: "Colaboradores", icon: <icons.GroupIcon />, link: "/users" },
+  { label: "Departamentos", icon: <icons.LanIcon />, link: "/departments" },
+  { label: "Serviços", icon: <icons.BuildIcon />, link: "/services" },
+  { label: "Orçamentos", icon: <icons.RequestQuoteIcon />, link: "/quotes" },
+  { label: "Produtos", icon: <icons.SellIcon />, link: "/products" },
+  { label: "Estoque", icon: <icons.WarehouseIcon />, link: "/stock" },
+  { label: "Chat", icon: <icons.ChatIcon />, link: "/", disabled: true },
+  { label: "Financeiro", icon: <icons.AttachMoneyIcon />, link: "/finance" },
+  { label: "Relatórios", icon: <icons.AssessmentIcon />, link: "/reports" },
   {
     label: "Acessos",
-    icon: <AdminPanelSettingsIcon />,
+    icon: <icons.AdminPanelSettingsIcon />,
     link: "/security",
   },
 
-  { label: "Arquivos", icon: <InsertDriveFileIcon />, link: "/files" },
-  { label: "Configurações", icon: <SettingsIcon />, link: "/config" },
+  { label: "Arquivos", icon: <icons.InsertDriveFileIcon />, link: "/files" },
+  { label: "Configurações", icon: <icons.SettingsIcon />, link: "/config" },
   {
     label: "Help Center",
-    icon: <HelpCenterIcon />,
+    icon: <icons.HelpCenterIcon />,
     link: "/help",
     disabled: true,
   },
@@ -93,7 +77,6 @@ const TopBar = ({ configData, user }) => {
             configData && configData.customization
               ? configData.customization.mainColor
               : "white",
-          // overflow: "visible",
         }}
       >
         <Link to="/">
@@ -105,7 +88,7 @@ const TopBar = ({ configData, user }) => {
                   : "white",
             }}
           >
-            <HomeIcon
+            <icons.HomeIcon
               sx={{
                 color:
                   configData && configData.customization

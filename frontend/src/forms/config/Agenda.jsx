@@ -1,8 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 
@@ -27,20 +29,12 @@ import {
   Radio,
   RadioGroup,
   TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
 
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ColorLensIcon from "@mui/icons-material/ColorLens";
-import PaletteIcon from "@mui/icons-material/Palette";
+import { icons } from "../../icons";
 
 import { SketchPicker } from "react-color";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 export default function Agenda({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
@@ -133,7 +127,7 @@ export default function Agenda({ onClose }) {
               alignItems="flex-start"
             >
               <Accordion sx={{ width: "100%" }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Preferências
                   </Typography>
@@ -175,7 +169,7 @@ export default function Agenda({ onClose }) {
                 </AccordionDetails>
               </Accordion>
               <Accordion sx={{ width: "100%", mt: 2 }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Horário da Agenda
                   </Typography>
@@ -218,7 +212,7 @@ export default function Agenda({ onClose }) {
                 </AccordionDetails>
               </Accordion>
               <Accordion sx={{ width: "100%", mt: 2 }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Tipos de Eventos
                   </Typography>
@@ -263,7 +257,7 @@ export default function Agenda({ onClose }) {
                                   edge="end"
                                   onClick={(e) => setAnchorEl2(e.currentTarget)}
                                 >
-                                  <PaletteIcon />
+                                  <icons.PaletteIcon />
                                 </IconButton>
                                 {newJobEventTypeColor && (
                                   <>
@@ -322,7 +316,7 @@ export default function Agenda({ onClose }) {
                                 edge="end"
                                 onClick={() => handleRemoveType(type)}
                               >
-                                <DeleteIcon />
+                                <icons.DeleteIcon />
                               </IconButton>
                             )}
                           </Grid>
@@ -356,7 +350,7 @@ export default function Agenda({ onClose }) {
                       sx={{ ml: 2 }}
                       onClick={(e) => setAnchorEl(e.currentTarget)}
                     >
-                      <ColorLensIcon sx={{ fontSize: 28 }} />
+                      <icons.ColorLensIcon sx={{ fontSize: 28 }} />
                     </IconButton>
                     <Popover
                       open={Boolean(anchorEl)}

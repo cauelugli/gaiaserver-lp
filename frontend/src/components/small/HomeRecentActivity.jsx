@@ -8,7 +8,6 @@ import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
 import {
-  // Dialog,
   Grid,
   IconButton,
   InputAdornment,
@@ -16,13 +15,10 @@ import {
   Typography,
 } from "@mui/material";
 
-import ClearIcon from "@mui/icons-material/Clear";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SearchIcon from "@mui/icons-material/Search";
+import { icons } from "../../icons";
 
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import GenericDeleteForm from "../../forms/delete/GenericDeleteForm";
 
 const socket = io("http://localhost:5002");
 
@@ -37,21 +33,6 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
   const [searchValue, setSearchValue] = React.useState("");
   const [searchDateInitial, setSearchDateInitial] = React.useState(null);
   const [searchDateFinal, setSearchDateFinal] = React.useState(null);
-
-  // const [openDialog, setOpenDialog] = React.useState(false);
-  // const [refreshData, setRefreshData] = React.useState(false);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const recentActivities = await api.get("/recentActivity");
-  //       setRecentActivities(recentActivities.data.reverse());
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
 
   useEffect(() => {
     socket.on("recentActivityRefresh", () => {
@@ -109,7 +90,7 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
                   <IconButton size="small" 
                   // onClick={() => setOpenDialog(true)}
                   >
-                    <DeleteIcon
+                    <icons.DeleteIcon
                       sx={{
                         color: "#555",
                         "&:hover": {
@@ -179,13 +160,13 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <SearchIcon />
+                        <icons.SearchIcon />
                       </InputAdornment>
                     ),
                     endAdornment:
                       searchValue.length > 0 ? (
                         <InputAdornment position="end">
-                          <ClearIcon
+                          <icons.ClearIcon
                             cursor="pointer"
                             sx={{ color: "#d21404" }}
                             onClick={() => setSearchValue("")}
@@ -255,22 +236,6 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
           </Grid>
         </Grid>
       </Grid>
-      {/* {openDialog && (
-        <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-          <GenericDeleteForm
-            selectedItem={{ _id: null, name: "Atividades Recentes" }}
-            openDialog={openDialog}
-            setOpenDialog={setOpenDialog}
-            refreshData={refreshData}
-            setRefreshData={setRefreshData}
-            toast={toast}
-            endpoint="recentActivity"
-            successMessage="Atividades Deletadas!"
-            warning={Boolean(true)}
-            warningMessage="Esta ação é IRREVERSÍVEL!"
-          />
-        </Dialog>
-      )} */}
     </>
   );
 };

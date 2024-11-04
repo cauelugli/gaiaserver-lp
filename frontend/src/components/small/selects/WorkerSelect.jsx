@@ -13,7 +13,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+
+import { icons } from "../../../icons";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -75,7 +76,7 @@ const WorkerSelect = (props) => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon />
+                <icons.SearchIcon />
               </InputAdornment>
             ),
           }}

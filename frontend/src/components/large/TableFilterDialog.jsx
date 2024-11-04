@@ -2,9 +2,11 @@
 /* eslint-disable no-unused-vars */
 // eslint-disable-next-line no-unused-vars
 import React from "react";
+
 import { Grid, Paper, TextField } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
-import CancelIcon from "@mui/icons-material/Cancel";
+
+import { icons } from "../../icons";
+
 import PhoneTableCell from "../tableCells/PhoneTableCell";
 import DateTableCell from "../tableCells/DateTableCell";
 import DynamicDataTableCell from "../tableCells/DynamicDataTableCell";
@@ -154,12 +156,12 @@ const TableFilterDialog = (props) => {
     >
       {renderInputField()}
       <Grid container spacing={1} justifyContent="flex-end" sx={{ mt: 1 }}>
-        <CheckIcon
+        <icons.CheckIcon
           onClick={props.handleApplyFilter}
           color="success"
           sx={{ cursor: "pointer", mr: 2 }}
         />
-        <CancelIcon
+        <icons.CancelIcon
           onClick={props.handleClose}
           color="error"
           sx={{ cursor: "pointer" }}

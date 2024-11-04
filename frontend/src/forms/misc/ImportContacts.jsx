@@ -24,10 +24,7 @@ import {
   MenuItem,
 } from "@mui/material";
 
-// import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
-import DeleteIcon from "@mui/icons-material/Delete";
-import DownloadIcon from "@mui/icons-material/Download";
+import { icons } from "../../icons";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -190,7 +187,7 @@ const ImportContacts = ({
             <Button
               variant="contained"
               color="success"
-              startIcon={<DownloadIcon />}
+              startIcon={<icons.DownloadIcon />}
             >
               <a
                 href={`http://localhost:3000/static/exemplo.csv`}
@@ -215,7 +212,7 @@ const ImportContacts = ({
             size="small"
             variant="contained"
             color="error"
-            startIcon={<DeleteIcon />}
+            startIcon={<icons.DeleteIcon />}
             onClick={handleDelete}
           >
             Deletar Arquivo
@@ -234,7 +231,7 @@ const ImportContacts = ({
                 variant="contained"
                 component="span"
                 size="small"
-                startIcon={<UploadFileIcon />}
+                startIcon={<icons.UploadFileIcon />}
                 sx={{ my: 2 }}
               >
                 Enviar Arquivo

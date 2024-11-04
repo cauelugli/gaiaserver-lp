@@ -10,10 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import GroupIcon from "@mui/icons-material/Group";
-import GradingIcon from "@mui/icons-material/Grading";
-import LanIcon from "@mui/icons-material/Lan";
-import WorkIcon from "@mui/icons-material/Work";
+import { icons } from "../../icons";
 
 import CustomerSelect from "./selects/CustomerSelect";
 
@@ -25,16 +22,16 @@ const NewUserShortcutOptions = ({
 }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const sections = [
-    { name: "Clientes", icon: <WorkIcon sx={{ fontSize: 14, mb: 0.5 }} /> },
+    { name: "Clientes", icon: <icons.WorkIcon sx={{ fontSize: 14, mb: 0.5 }} /> },
     {
       name: "Solicitações",
-      icon: <GradingIcon sx={{ fontSize: 14, mb: 0.5 }} />,
+      icon: <icons.GradingIcon sx={{ fontSize: 14, mb: 0.5 }} />,
     },
     {
       name: "Colaboradores",
-      icon: <GroupIcon sx={{ fontSize: 14, mb: 0.5 }} />,
+      icon: <icons.GroupIcon sx={{ fontSize: 14, mb: 0.5 }} />,
     },
-    { name: "Departamentos", icon: <LanIcon sx={{ fontSize: 14, mb: 0.5 }} /> },
+    { name: "Departamentos", icon: <icons.LanIcon sx={{ fontSize: 14, mb: 0.5 }} /> },
   ];
 
   let options = [

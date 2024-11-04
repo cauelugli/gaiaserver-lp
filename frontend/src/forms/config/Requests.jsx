@@ -33,8 +33,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { icons } from "../../icons";
 
 import ManagerSelectTableCell from "../../components/tableCells/ManagerSelectTableCell";
 
@@ -132,7 +131,7 @@ export default function Requests({ onClose }) {
               alignItems="flex-start"
             >
               <Accordion sx={{ width: "100%" }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Permissões
                   </Typography>
@@ -266,7 +265,7 @@ export default function Requests({ onClose }) {
                 </AccordionDetails>
               </Accordion>
               <Accordion sx={{ width: "100%", mt: 2 }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Status
                   </Typography>
@@ -301,7 +300,7 @@ export default function Requests({ onClose }) {
                                       status === "Resolvido"
                                     }
                                   >
-                                    <DeleteIcon
+                                    <icons.DeleteIcon
                                       sx={{
                                         color:
                                           status === "Aberto" ||

@@ -20,7 +20,7 @@ import {
   Slide,
 } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import { icons } from "../../icons";
 
 import CalendarEventModal from "../../forms/misc/CalendarEventModal";
 import AgendaActions from "../small/buttons/AgendaActions";
@@ -148,7 +148,7 @@ const MyCalendar = ({ userId, config, selectedWorker }) => {
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         });
       })
       .catch((error) => {

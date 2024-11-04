@@ -18,8 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import ClearIcon from "@mui/icons-material/Clear";
-import SearchIcon from "@mui/icons-material/Search";
+import { icons } from "../../icons";
 
 import BadgedIcon from "../small/BadgedIcon";
 import PriceDifferenceTable from "../small/PriceDifferenceTable";
@@ -92,13 +91,13 @@ const ProductsTableCell = (props) => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon />
+                  <icons.SearchIcon />
                 </InputAdornment>
               ),
               endAdornment:
                 searchValue.length > 0 ? (
                   <InputAdornment position="end">
-                    <ClearIcon
+                    <icons.ClearIcon
                       cursor="pointer"
                       sx={{ color: "#d21404" }}
                       onClick={() => setSearchValue("")}

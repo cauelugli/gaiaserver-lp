@@ -12,8 +12,7 @@ import {
   Collapse,
 } from "@mui/material";
 
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { icons } from "../../icons";
 
 import NewUserShortcut from "./NewUserShortcut";
 import ShortcutItem from "./ShortcutItem";
@@ -106,7 +105,7 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
           </Typography>
 
           <IconButton onClick={() => setOpen(!open)} sx={{ mb: 1 }}>
-            {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            {open ? <icons.ExpandLessIcon /> : <icons.ExpandMoreIcon />}
           </IconButton>
         </Grid>
       </Grid>

@@ -2,19 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 
-import AddIcon from "@mui/icons-material/Add";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import CheckIcon from "@mui/icons-material/Check";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EngineeringIcon from "@mui/icons-material/Engineering";
-import FactCheckIcon from "@mui/icons-material/FactCheck";
-import GroupIcon from "@mui/icons-material/Group";
-import LanIcon from "@mui/icons-material/Lan";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import Person4Icon from "@mui/icons-material/Person4";
-import SellIcon from "@mui/icons-material/Sell";
-import SettingsIcon from "@mui/icons-material/Settings";
-import TimelapseIcon from "@mui/icons-material/Timelapse";
+import { icons } from "../icons";
 
 const fetchStatuses = () => {
   return new Promise(async (resolve, reject) => {
@@ -43,30 +31,30 @@ const rowButtonOptions = [
           label: "Editar",
           action: "edit",
           modal: "Customer",
-          icon: <ModeEditIcon />,
+          icon: <icons.ModeEditIcon />,
         },
         {
           label: "Deletar",
           action: "delete",
           modal: "Customer",
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         },
         {
           label: "Novo",
-          icon: <AddIcon />,
+          icon: <icons.AddIcon />,
           action: "add",
           submenu: [
             {
               label: "Job",
               modal: "Job",
               targeted: true,
-              icon: <EngineeringIcon />,
+              icon: <icons.EngineeringIcon />,
             },
             {
               label: "Venda",
               modal: "Sale",
               targeted: true,
-              icon: <SellIcon />,
+              icon: <icons.SellIcon />,
             },
           ],
         },
@@ -76,30 +64,30 @@ const rowButtonOptions = [
           label: "Editar",
           action: "edit",
           modal: "Client",
-          icon: <ModeEditIcon />,
+          icon: <icons.ModeEditIcon />,
         },
         {
           label: "Deletar",
           action: "delete",
           modal: "Client",
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         },
         {
           label: "Novo",
-          icon: <AddIcon />,
+          icon: <icons.AddIcon />,
           action: "add",
           submenu: [
             {
               label: "Job",
               modal: "Client",
               targeted: true,
-              icon: <EngineeringIcon />,
+              icon: <icons.EngineeringIcon />,
             },
             {
               label: "Venda",
               modal: "Client",
               targeted: true,
-              icon: <SellIcon />,
+              icon: <icons.SellIcon />,
             },
           ],
         },
@@ -115,17 +103,17 @@ const rowButtonOptions = [
           label: "Editar",
           action: "edit",
           modal: "User",
-          icon: <ModeEditIcon />,
+          icon: <icons.ModeEditIcon />,
         },
         {
           label: "Deletar",
           action: "delete",
           modal: "User",
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         },
         {
           label: "Alterar",
-          icon: <SettingsIcon />,
+          icon: <icons.SettingsIcon />,
           action: "dynamicChange",
           submenu: [
             {
@@ -133,14 +121,14 @@ const rowButtonOptions = [
               sourceModel: "User",
               targetModel: "Department",
               targetLabel: "Departamento",
-              icon: <LanIcon />,
+              icon: <icons.LanIcon />,
             },
             {
               modal: "small",
               sourceModel: "User",
               targetModel: "Position",
               targetLabel: "Posição",
-              icon: <AssignmentIndIcon />,
+              icon: <icons.AssignmentIndIcon />,
             },
           ],
         },
@@ -150,17 +138,17 @@ const rowButtonOptions = [
           label: "Editar",
           action: "edit",
           modal: "User",
-          icon: <ModeEditIcon />,
+          icon: <icons.ModeEditIcon />,
         },
         {
           label: "Deletar",
           action: "delete",
           modal: "User",
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         },
         {
           label: "Alterar",
-          icon: <SettingsIcon />,
+          icon: <icons.SettingsIcon />,
           action: "dynamicChange",
           submenu: [
             {
@@ -168,14 +156,14 @@ const rowButtonOptions = [
               sourceModel: "User",
               targetModel: "Department",
               targetLabel: "Departamento",
-              icon: <LanIcon />,
+              icon: <icons.LanIcon />,
             },
             {
               modal: "small",
               sourceModel: "User",
               targetModel: "Position",
               targetLabel: "Posição",
-              icon: <AssignmentIndIcon />,
+              icon: <icons.AssignmentIndIcon />,
             },
           ],
         },
@@ -191,29 +179,29 @@ const rowButtonOptions = [
           label: "Solicitar Aprovação",
           action: "requestApproval",
           modal: "Job",
-          icon: <FactCheckIcon />,
+          icon: <icons.FactCheckIcon />,
         },
         {
           label: "Resolver",
           action: "resolve",
           modal: "Job",
-          icon: <CheckIcon />,
+          icon: <icons.CheckIcon />,
         },
         {
           label: "Editar",
           action: "edit",
           modal: "Job",
-          icon: <ModeEditIcon />,
+          icon: <icons.ModeEditIcon />,
         },
         {
           label: "Deletar",
           action: "delete",
           modal: "Job",
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         },
         {
           label: "Alterar",
-          icon: <SettingsIcon />,
+          icon: <icons.SettingsIcon />,
           action: "dynamicChange",
           submenu: [
             {
@@ -221,7 +209,7 @@ const rowButtonOptions = [
               sourceModel: "Job",
               targetModel: "Static",
               targetLabel: "Status",
-              icon: <TimelapseIcon />,
+              icon: <icons.TimelapseIcon />,
               staticAttribute: "status",
               staticList: fetchStatuses,
             },
@@ -233,29 +221,29 @@ const rowButtonOptions = [
           label: "Solicitar Aprovação",
           action: "requestApproval",
           modal: "Sale",
-          icon: <FactCheckIcon />,
+          icon: <icons.FactCheckIcon />,
         },
         {
           label: "Resolver",
           action: "resolve",
           modal: "Sale",
-          icon: <CheckIcon />,
+          icon: <icons.CheckIcon />,
         },
         {
           label: "Editar",
           action: "edit",
           modal: "Sale",
-          icon: <ModeEditIcon />,
+          icon: <icons.ModeEditIcon />,
         },
         {
           label: "Deletar",
           action: "delete",
           modal: "Sale",
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         },
         {
           label: "Alterar",
-          icon: <SettingsIcon />,
+          icon: <icons.SettingsIcon />,
           action: "dynamicChange",
           submenu: [
             {
@@ -263,7 +251,7 @@ const rowButtonOptions = [
               sourceModel: "Sale",
               targetModel: "Static",
               targetLabel: "Status",
-              icon: <TimelapseIcon />,
+              icon: <icons.TimelapseIcon />,
               staticAttribute: "status",
               staticList: fetchStatuses,
             },
@@ -281,17 +269,17 @@ const rowButtonOptions = [
           label: "Editar",
           action: "edit",
           modal: "Department",
-          icon: <ModeEditIcon />,
+          icon: <icons.ModeEditIcon />,
         },
         {
           label: "Deletar",
           action: "delete",
           modal: "Department",
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         },
         {
           label: "Alterar",
-          icon: <SettingsIcon />,
+          icon: <icons.SettingsIcon />,
           action: "dynamicChange",
           submenu: [
             {
@@ -300,7 +288,7 @@ const rowButtonOptions = [
               targetModel: "User",
               targetLabel: "Membros",
               targetFlag: "members",
-              icon: <GroupIcon />,
+              icon: <icons.GroupIcon />,
             },
             {
               modal: "small",
@@ -308,7 +296,7 @@ const rowButtonOptions = [
               targetModel: "User",
               targetLabel: "Gerência",
               targetFlag: "manager",
-              icon: <Person4Icon />,
+              icon: <icons.Person4Icon />,
             },
           ],
         },
@@ -318,17 +306,17 @@ const rowButtonOptions = [
           label: "Editar",
           action: "edit",
           modal: "Group",
-          icon: <ModeEditIcon />,
+          icon: <icons.ModeEditIcon />,
         },
         {
           label: "Deletar",
           action: "delete",
           modal: "Group",
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         },
         {
           label: "Alterar",
-          icon: <SettingsIcon />,
+          icon: <icons.SettingsIcon />,
           action: "dynamicChange",
           submenu: [
             {
@@ -337,7 +325,7 @@ const rowButtonOptions = [
               targetModel: "User",
               targetLabel: "Membros",
               targetFlag: "members",
-              icon: <GroupIcon />,
+              icon: <icons.GroupIcon />,
             },
           ],
         },
@@ -353,17 +341,17 @@ const rowButtonOptions = [
           label: "Editar",
           action: "edit",
           modal: "Operator",
-          icon: <ModeEditIcon />,
+          icon: <icons.ModeEditIcon />,
         },
         {
           label: "Remover",
           action: "delete",
           modal: "Operator",
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         },
         // {
         //   label: "Alterar",
-        //   icon: <SettingsIcon />,
+        //   icon: <icons.SettingsIcon />,
         //   action: "dynamicChange",
         //   submenu: [
         //     {
@@ -371,7 +359,7 @@ const rowButtonOptions = [
         //       sourceModel: "Service",
         //       targetModel: "Department",
         //       targetLabel: "Departamento",
-        //       icon: <LanIcon />,
+        //       icon: <icons.LanIcon />,
         //     },
         //   ],
         // },
@@ -381,17 +369,17 @@ const rowButtonOptions = [
           label: "Editar",
           action: "edit",
           modal: "Position",
-          icon: <ModeEditIcon />,
+          icon: <icons.ModeEditIcon />,
         },
         {
           label: "Deletar",
           action: "delete",
           modal: "Position",
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         },
         // {
         //   label: "Alterar",
-        //   icon: <SettingsIcon />,
+        //   icon: <icons.SettingsIcon />,
         //   action: "dynamicChange",
         //   submenu: [
         //     {
@@ -399,7 +387,7 @@ const rowButtonOptions = [
         //       sourceModel: "Service",
         //       targetModel: "Department",
         //       targetLabel: "Departamento",
-        //       icon: <LanIcon />,
+        //       icon: <icons.LanIcon />,
         //     },
         //   ],
         // },
@@ -409,17 +397,17 @@ const rowButtonOptions = [
           label: "Editar",
           action: "edit",
           modal: "Role",
-          icon: <ModeEditIcon />,
+          icon: <icons.ModeEditIcon />,
         },
         {
           label: "Deletar",
           action: "delete",
           modal: "Role",
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         },
         // {
         //   label: "Alterar",
-        //   icon: <SettingsIcon />,
+        //   icon: <icons.SettingsIcon />,
         //   action: "dynamicChange",
         //   submenu: [
         //     {
@@ -427,7 +415,7 @@ const rowButtonOptions = [
         //       sourceModel: "Service",
         //       targetModel: "Department",
         //       targetLabel: "Departamento",
-        //       icon: <LanIcon />,
+        //       icon: <icons.LanIcon />,
         //     },
         //   ],
         // },
@@ -443,17 +431,17 @@ const rowButtonOptions = [
           label: "Editar",
           action: "edit",
           modal: "Service",
-          icon: <ModeEditIcon />,
+          icon: <icons.ModeEditIcon />,
         },
         {
           label: "Deletar",
           action: "delete",
           modal: "Service",
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         },
         {
           label: "Alterar",
-          icon: <SettingsIcon />,
+          icon: <icons.SettingsIcon />,
           action: "dynamicChange",
           submenu: [
             {
@@ -461,7 +449,7 @@ const rowButtonOptions = [
               sourceModel: "Service",
               targetModel: "Department",
               targetLabel: "Departamento",
-              icon: <LanIcon />,
+              icon: <icons.LanIcon />,
             },
           ],
         },
@@ -471,17 +459,17 @@ const rowButtonOptions = [
           label: "Editar",
           action: "edit",
           modal: "ServicePlan",
-          icon: <ModeEditIcon />,
+          icon: <icons.ModeEditIcon />,
         },
         {
           label: "Deletar",
           action: "delete",
           modal: "ServicePlan",
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         },
         {
           label: "Alterar",
-          icon: <SettingsIcon />,
+          icon: <icons.SettingsIcon />,
           action: "dynamicChange",
           submenu: [
             {
@@ -489,7 +477,7 @@ const rowButtonOptions = [
               sourceModel: "ServicePlan",
               targetModel: "Department",
               targetLabel: "Departamento",
-              icon: <LanIcon />,
+              icon: <icons.LanIcon />,
             },
           ],
         },

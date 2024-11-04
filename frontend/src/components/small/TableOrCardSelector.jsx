@@ -10,8 +10,8 @@ const api = axios.create({
 
 import { Grid, Typography } from "@mui/material";
 
-import AppsIcon from "@mui/icons-material/Apps";
-import TableRowsIcon from "@mui/icons-material/TableRows";
+import { icons } from "../../icons";
+
 import MultipleSelectorButton from "./buttons/MultipleSelectorButton";
 
 const TableOrCardSelector = (props) => {
@@ -151,7 +151,7 @@ const TableOrCardSelector = (props) => {
         )}
       </Grid>
       <Grid>
-        <AppsIcon
+        <icons.AppsIcon
           sx={{
             mr: 1,
             cursor: "pointer",
@@ -161,7 +161,7 @@ const TableOrCardSelector = (props) => {
         />
       </Grid>
       <Grid>
-        <TableRowsIcon
+        <icons.TableRowsIcon
           sx={{
             cursor: "pointer",
             color: tableOrCardView ? props.mainColor : "gray",

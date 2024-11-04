@@ -13,11 +13,8 @@ import {
   Dialog,
 } from "@mui/material";
 
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { icons } from "../../../icons";
+
 import DeleteMultipleFormModel from "../../../forms/delete/DeleteMultipleFormModel";
 
 const MultipleSelectorButton = (props) => {
@@ -71,7 +68,7 @@ const MultipleSelectorButton = (props) => {
                 Selecionados: {props.selectedMultipleItems.length}
               </Typography>
             </Tooltip>
-            <MoreVertIcon
+            <icons.MoreVertIcon
               sx={{
                 fontSize: 16,
                 ml: 1,
@@ -112,7 +109,7 @@ const MultipleSelectorButton = (props) => {
               <Grid sx={{ my: 2 }}>
                 <MenuItem onClick={() => console.log("Editar em Massa")}>
                   <ListItemIcon>
-                    <ModeEditIcon fontSize="small" />
+                    <icons.ModeEditIcon fontSize="small" />
                   </ListItemIcon>
                   <ListItemText primary="Editar em Massa" />
                 </MenuItem>
@@ -123,7 +120,7 @@ const MultipleSelectorButton = (props) => {
                   }}
                 >
                   <ListItemIcon>
-                    <DeleteIcon fontSize="small" />
+                    <icons.DeleteIcon fontSize="small" />
                   </ListItemIcon>
                   <ListItemText primary="Deletar Todos" />
                 </MenuItem>
@@ -148,9 +145,9 @@ const MultipleSelectorButton = (props) => {
         onClick={() => props.setMultiple(!props.multiple)}
       >
         {props.multiple ? (
-          <CheckBoxIcon />
+          <icons.CheckBoxIcon />
         ) : (
-          <CheckBoxOutlineBlankIcon sx={{ color: props.mainColor }} />
+          <icons.CheckBoxOutlineBlankIcon sx={{ color: props.mainColor }} />
         )}
       </Button>
       <Dialog

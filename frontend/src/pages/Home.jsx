@@ -15,7 +15,6 @@ const Home = ({
   configData,
   handleShortcutClick,
 }) => {
-
   React.useEffect(() => {
     if (onMount) {
       onMount();

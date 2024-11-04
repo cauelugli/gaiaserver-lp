@@ -34,8 +34,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import SettingsIcon from "@mui/icons-material/Settings";
+import { icons } from "../../icons";
 
 import AddBaseProductForm from "../add/AddBaseProductForm";
 
@@ -124,7 +123,7 @@ export default function Products({
                 alignItems="flex-start"
               >
                 <Accordion sx={{ width: "100%" }}>
-                  <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                     <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                       Produtos Base
                     </Typography>
@@ -132,7 +131,7 @@ export default function Products({
                   <AccordionDetails>
                     {baseProducts.map((product, index) => (
                       <Accordion sx={{ width: "100%" }} key={index}>
-                        <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                        <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                           <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
                             {product.type}
                           </Typography>
@@ -349,7 +348,7 @@ export default function Products({
                           color="inherit"
                           sx={{ ml: "92%", pr: 1, pb: 1 }}
                         >
-                          <SettingsIcon />
+                          <icons.SettingsIcon />
                         </Button>
                       </Accordion>
                     ))}
@@ -375,7 +374,7 @@ export default function Products({
                   </AccordionDetails>
                 </Accordion>
                 <Accordion sx={{ width: "100%", mt: 2 }}>
-                  <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                     <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                       Permissões
                     </Typography>
@@ -435,7 +434,7 @@ export default function Products({
                   </AccordionDetails>
                 </Accordion>
                 <Accordion sx={{ width: "100%", mt: 2 }}>
-                  <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                     <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                       Notificações
                     </Typography>

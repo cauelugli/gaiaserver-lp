@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import ClearIcon from "@mui/icons-material/Clear";
+import { icons } from "../../icons";
 
 import { checkAvailability } from "../../../../controllers/functions/overallFunctions";
 
@@ -129,7 +129,7 @@ const ManagerSelectTableCell = (props) => {
       </Select>
       {selectedManager && selectedManager._id !== props.oldManager._id && (
         <IconButton onClick={clearSelection} size="small">
-          <ClearIcon sx={{ color: "red", fontSize: 13 }} />
+          <icons.ClearIcon sx={{ color: "red", fontSize: 13 }} />
         </IconButton>
       )}
     </Grid>

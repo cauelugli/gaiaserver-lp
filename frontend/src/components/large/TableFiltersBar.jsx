@@ -2,8 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
+import { icons } from "../../icons";
 
 import TableFiltersOptions from "./TableFiltersOptions";
 import TableFilteredData from "./TableFiltersData";
@@ -14,7 +13,7 @@ const TableFiltersBar = (props) => {
   return (
     <>
       {showFilter ? (
-        <FilterAltOffIcon
+        <icons.FilterAltOffIcon
           sx={{
             my: "auto",
             mr: 1,
@@ -25,7 +24,7 @@ const TableFiltersBar = (props) => {
           onClick={() => setShowFilter(!showFilter)}
         />
       ) : (
-        <FilterAltIcon
+        <icons.FilterAltIcon
           sx={{
             my: "auto",
             mr: 1,

@@ -14,7 +14,6 @@ const api = axios.create({
 import {
   Button,
   DialogActions,
-  //   DialogActions,
   DialogContent,
   FormHelperText,
   Grid,
@@ -25,8 +24,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import { icons } from "../../icons";
 
 import { handleCurrencyValueChange } from "../../../../controllers/handlers/handlers";
 
@@ -305,7 +303,7 @@ export default function AddProductForm({
                     variant="outlined"
                     color="error"
                     size="small"
-                    startIcon={<DeleteIcon />}
+                    startIcon={<icons.DeleteIcon />}
                     onClick={() =>
                       setImages((prevImages) =>
                         prevImages.filter((_, i) => i !== index)
@@ -334,7 +332,7 @@ export default function AddProductForm({
             sx={{ width: 80, height: 100, mt: 2, ml: 1 }}
           >
             <Grid container direction="column" alignItems="center">
-              <PhotoCameraIcon />
+              <icons.PhotoCameraIcon />
               <Typography sx={{ fontSize: 11 }}>Adicionar Imagem</Typography>
             </Grid>
           </Button>

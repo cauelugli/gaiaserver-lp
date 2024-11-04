@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 import { Button, Grid, Popover, TextField, Typography } from "@mui/material";
 
-import CheckIcon from "@mui/icons-material/Check";
+import { icons } from "../../icons";
 
 import NewUserShortcutOptions from "./NewUserShortcutOptions";
 
@@ -109,7 +109,7 @@ const NewUserShortcut = ({ userId, reloadShortcuts, allowedLinks }) => {
                 color="success"
                 variant="contained"
                 onClick={handleAdd}
-                startIcon={<CheckIcon />}
+                startIcon={<icons.CheckIcon />}
               >
                 Criar
               </Button>

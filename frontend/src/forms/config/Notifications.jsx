@@ -20,7 +20,8 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+
+import { icons } from "../../icons";
 
 const socket = io("http://localhost:5002");
 const api = axios.create({
@@ -117,7 +118,7 @@ export default function Notifications({ onClose }) {
                 .filter((category) => labels[category])
                 .map((category) => (
                   <Accordion key={category} sx={{ width: "100%", mt: 2 }}>
-                    <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                    <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                       <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                         {labels[category]}
                       </Typography>

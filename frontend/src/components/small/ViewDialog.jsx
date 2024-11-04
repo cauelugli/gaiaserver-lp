@@ -25,13 +25,13 @@ import {
   Typography,
 } from "@mui/material";
 
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
-import ClearIcon from "@mui/icons-material/Clear";
-import SearchIcon from "@mui/icons-material/Search";
+import { icons } from "../../icons";
 
 import DialogHeader from "./DialogHeader";
+
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
 const imageExtensions = [
   ".jpg",
@@ -126,13 +126,13 @@ const ViewDialog = ({
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon />
+                    <icons.SearchIcon />
                   </InputAdornment>
                 ),
                 endAdornment:
                   searchValue.length > 0 ? (
                     <InputAdornment position="end">
-                      <ClearIcon
+                      <icons.ClearIcon
                         cursor="pointer"
                         sx={{ color: "#d21404" }}
                         onClick={() => setSearchValue("")}

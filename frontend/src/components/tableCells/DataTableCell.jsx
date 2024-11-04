@@ -4,7 +4,7 @@ import React from "react";
 
 import { Avatar, Button, Grid, Paper, Tooltip } from "@mui/material";
 
-import BuildIcon from "@mui/icons-material/Build";
+import { icons } from "../../icons"
 
 function isId(str) {
   return /^[a-f0-9]{24}$/i.test(str);
@@ -40,7 +40,7 @@ const DataTableCell = ({ item, idIndexList, column }) => {
                 >
                   <Grid item>
                     {obj.products ? (
-                      <BuildIcon />
+                      <icons.BuildIcon />
                     ) : (
                       <Avatar
                         alt="Imagem do Produto"

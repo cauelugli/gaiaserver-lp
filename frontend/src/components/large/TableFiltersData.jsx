@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
+
 import { Grid, Chip } from "@mui/material";
-import CancelIcon from "@mui/icons-material/Cancel";
+
+import { icons } from "../../icons";
 
 function TableFilteredDataBar({ tableFilters, setTableFilters, tableColumns }) {
   const getLabelByKey = (key) => {
@@ -32,7 +34,7 @@ function TableFilteredDataBar({ tableFilters, setTableFilters, tableColumns }) {
                 return rest;
               });
             }}
-            deleteIcon={<CancelIcon />}
+            deleteIcon={<icons.CancelIcon />}
           />
         </Grid>
       ))}

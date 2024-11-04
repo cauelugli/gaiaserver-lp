@@ -25,9 +25,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import { icons } from "../../icons";
 
 import DialogHeader from "../../components/small/DialogHeader";
 import ViewDialog from "../../components/small/ViewDialog";
@@ -207,7 +205,7 @@ const AddInteractionForm = ({
                         {interaction.attachments &&
                           interaction.attachments.length !== 0 && (
                             <Grid>
-                              <AttachFileIcon
+                              <icons.AttachFileIcon
                                 sx={{
                                   fontSize: 16,
                                   color: "#777",
@@ -375,7 +373,7 @@ const AddInteractionForm = ({
                     aria-label="upload picture"
                     sx={{ p: "10px" }}
                   >
-                    <AttachFileIcon />
+                    <icons.AttachFileIcon />
                   </IconButton>
                 </label>
               </Paper>
@@ -463,14 +461,14 @@ const AddInteractionForm = ({
                                     setOpenViewDialog2(true);
                                   }}
                                 >
-                                  <VisibilityIcon />
+                                  <icons.VisibilityIcon />
                                 </Button>
                                 <Button
                                   size="small"
                                   color="error"
                                   onClick={() => removeFile(index)}
                                 >
-                                  <DeleteIcon />
+                                  <icons.DeleteIcon />
                                 </Button>
                               </Grid>
                             </Grid>

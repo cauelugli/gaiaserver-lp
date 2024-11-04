@@ -14,7 +14,7 @@ import {
   Dialog,
 } from "@mui/material";
 
-import SellIcon from "@mui/icons-material/Sell";
+import { icons } from "../../../icons";
 
 import AddProductForm from "../../../forms/add/AddProductForm";
 
@@ -77,7 +77,7 @@ export default function ProductsTableButton(props) {
               onClick={() => handleMenuItemClick(product)}
             >
               <ListItemIcon>
-                <SellIcon />
+                <icons.SellIcon />
               </ListItemIcon>
               <ListItemText primary={product.type} sx={{ ml: -2 }} />
             </ListItemButton>

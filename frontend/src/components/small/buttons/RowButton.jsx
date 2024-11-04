@@ -10,7 +10,7 @@ import {
   Dialog,
 } from "@mui/material";
 
-import MenuIcon from "@mui/icons-material/Menu";
+import { icons } from "../../../icons";
 import EditFormModel from "../../../forms/edit/EditFormModel";
 
 import { modals } from "../../../options/modals";
@@ -142,7 +142,7 @@ const RowButton = (props) => {
   return (
     <>
       <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-        <MenuIcon />
+        <icons.MenuIcon />
       </IconButton>
       <Menu
         anchorEl={anchorEl}

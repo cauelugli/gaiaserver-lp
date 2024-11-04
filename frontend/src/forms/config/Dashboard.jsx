@@ -21,7 +21,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { icons } from "../../icons";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -90,7 +90,7 @@ export default function Dashboard({ onClose }) {
               alignItems="flex-start"
             >
               <Accordion sx={{ width: "100%" }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Preferências
                   </Typography>

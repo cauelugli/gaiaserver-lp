@@ -7,7 +7,7 @@ const socket = io("http://localhost:5002");
 
 import { Badge, Grid } from "@mui/material";
 
-import RefreshIcon from "@mui/icons-material/Refresh";
+import { icons } from "../../../icons";
 
 export default function RefreshDataButton({
   refreshData,
@@ -62,7 +62,7 @@ export default function RefreshDataButton({
         // this is THE prop, make the magic happen here
         invisible={newDataRefreshButton}
       >
-        <RefreshIcon
+        <icons.RefreshIcon
           sx={{
             color: configCustomization.mainColor
               ? configCustomization.mainColor

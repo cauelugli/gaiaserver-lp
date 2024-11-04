@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { icons } from "../icons";
 
 import MyCalendar from "../components/large/MyCalendar";
 // import SmartReports from "../components/large/SmartReports";
@@ -81,7 +81,7 @@ const Dashboard = ({
 
           <Accordion sx={{ m: 2 }} expanded={expanded}>
             {userUsername === "admin" ? (
-              <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+              <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                 <Grid
                   container
                   direction="row"
@@ -98,7 +98,7 @@ const Dashboard = ({
               </AccordionSummary>
             ) : (
               <AccordionSummary
-                expandIcon={<ArrowDropDownIcon />}
+                expandIcon={<icons.ArrowDropDownIcon />}
                 onClick={() => setExpanded(!expanded)}
               >
                 <Typography sx={{ fontSize: 22, fontWeight: "bold" }}>

@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 import axios from "axios";
 
@@ -12,7 +12,7 @@ import {
   Grid,
 } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import { icons } from "../../icons";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -40,7 +40,7 @@ const DeleteOperatorForm = ({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         });
       }
       setOpenDelete(!openDelete);

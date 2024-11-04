@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { icons } from "../../icons";
 
 import {
   Bar,
@@ -616,7 +616,7 @@ const SmartReports = ({ requests, customers, users, fromPage }) => {
   return (
     <>
       <Accordion sx={{ mx: fromPage ? 0 : "30%" }}>
-        <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+        <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
           <Typography sx={{ fontSize: 22, fontWeight: "bold", mr: 2 }}>
             Relatórios {fromPage && "Básicos"}
           </Typography>
@@ -761,9 +761,7 @@ const SmartReports = ({ requests, customers, users, fromPage }) => {
                     alignItems="center"
                     justifyContent="center"
                   >
-                    <Typography sx={{ fontSize: 12 }}>
-                      Geral
-                    </Typography>
+                    <Typography sx={{ fontSize: 12 }}>Geral</Typography>
                     <div style={{ width: chartWidth, height: chartHeight }}>
                       <Bar data={requestsData} options={options} />
                     </div>

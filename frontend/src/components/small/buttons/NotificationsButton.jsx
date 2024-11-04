@@ -19,12 +19,7 @@ import {
   FormControlLabel,
 } from "@mui/material";
 
-import CheckIcon from "@mui/icons-material/Check";
-import DeleteIcon from "@mui/icons-material/Delete";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import { icons } from "../../../icons";
 
 export default function NotificationsButton({
   user,
@@ -137,7 +132,7 @@ export default function NotificationsButton({
         }}
       >
         <IconButton onClick={handleOpenNotifications}>
-          <NotificationsIcon />
+          <icons.NotificationsIcon />
         </IconButton>
       </Badge>
 
@@ -175,9 +170,9 @@ export default function NotificationsButton({
                       {expanded &&
                       selectedNotificationCreatedAt ===
                         notification.createdAt ? (
-                        <ExpandLessIcon />
+                        <icons.ExpandLessIcon />
                       ) : (
-                        <ExpandMoreIcon />
+                        <icons.ExpandMoreIcon />
                       )}
                     </IconButton>
                   }
@@ -185,7 +180,7 @@ export default function NotificationsButton({
                     <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
                       {notification.title}
                       {notification.read === true && (
-                        <DoneAllIcon
+                        <icons.DoneAllIcon
                           sx={{ ml: 0.5, fontSize: 11, color: "blue" }}
                         />
                       )}
@@ -221,7 +216,7 @@ export default function NotificationsButton({
                           handleDeleteNotification(notification.createdAt)
                         }
                       >
-                        <DeleteIcon />
+                        <icons.DeleteIcon />
                       </IconButton>
                     ) : (
                       <Tooltip title={"Marcar como Lida"}>
@@ -231,7 +226,7 @@ export default function NotificationsButton({
                             handleMarkAsRead(notification.createdAt)
                           }
                         >
-                          <CheckIcon />
+                          <icons.CheckIcon />
                         </IconButton>
                       </Tooltip>
                     )}
@@ -271,7 +266,7 @@ export default function NotificationsButton({
               .length !== 0 && (
               <Tooltip title="Marcar Todas como Lidas">
                 <IconButton onClick={handleMarkAllAsRead}>
-                  <DoneAllIcon
+                  <icons.DoneAllIcon
                     sx={{
                       "&:hover": {
                         color: "darkgreen",

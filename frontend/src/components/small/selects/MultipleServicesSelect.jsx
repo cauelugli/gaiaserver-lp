@@ -17,7 +17,7 @@ import {
   Button,
 } from "@mui/material";
 
-import BuildIcon from "@mui/icons-material/Build";
+import { icons } from "../../../icons";
 
 export default function MultipleServicesSelect({
   services,
@@ -58,7 +58,7 @@ export default function MultipleServicesSelect({
         >
           <IconButton onClick={(event) => handleClickServices(event, index)}>
             <Avatar sx={{ mt: 0.5, width: 32, height: 32 }}>
-              <BuildIcon />
+              <icons.BuildIcon />
             </Avatar>
           </IconButton>
         </Badge>

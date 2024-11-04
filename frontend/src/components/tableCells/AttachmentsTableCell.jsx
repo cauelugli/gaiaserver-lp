@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
+
 import { Grid, IconButton, Typography, Button } from "@mui/material";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+
+import { icons } from "../../icons";
 
 const imageExtensions = [
   ".jpg",
@@ -37,7 +37,7 @@ const AttachmentsTableCell = ({ attachments, onUpload, onRemove }) => {
         />
         <label htmlFor="file-upload">
           <IconButton component="span">
-            <AttachFileIcon />
+            <icons.AttachFileIcon />
           </IconButton>
         </label>
       </Grid>
@@ -106,7 +106,7 @@ const AttachmentsTableCell = ({ attachments, onUpload, onRemove }) => {
                     color="error"
                     onClick={() => onRemove(index)}
                   >
-                    <DeleteIcon />
+                    <icons.DeleteIcon />
                   </Button>
                 </Grid>
               </Grid>

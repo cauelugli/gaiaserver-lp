@@ -19,9 +19,8 @@ import {
   Typography,
 } from "@mui/material";
 
-import FileUploadIcon from "@mui/icons-material/FileUpload";
-import CheckIcon from "@mui/icons-material/Check";
-import ClearIcon from "@mui/icons-material/Clear";
+import { icons } from "../icons";
+
 import AccountPreferencesBox from "../components/small/AccountPreferencesBox";
 
 const api = axios.create({
@@ -228,7 +227,7 @@ export default function Account({
                   color="primary"
                   component="span"
                   size="small"
-                  startIcon={<FileUploadIcon />}
+                  startIcon={<icons.FileUploadIcon />}
                   sx={{ mt: 2 }}
                 >
                   Nova Imagem
@@ -245,7 +244,7 @@ export default function Account({
                     variant="contained"
                     color="error"
                     size="small"
-                    startIcon={<ClearIcon />}
+                    startIcon={<icons.ClearIcon />}
                     onClick={() => setImage("")}
                   >
                     Cancelar
@@ -254,7 +253,7 @@ export default function Account({
                     variant="contained"
                     color="success"
                     size="small"
-                    startIcon={<CheckIcon />}
+                    startIcon={<icons.CheckIcon />}
                     onClick={handleChangeImage}
                   >
                     Salvar Nova Imagem

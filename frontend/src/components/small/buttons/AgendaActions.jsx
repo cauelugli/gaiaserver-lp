@@ -4,9 +4,7 @@ import * as React from "react";
 
 import { Button, Grid } from "@mui/material";
 
-import CheckIcon from "@mui/icons-material/Check";
-import ClearIcon from "@mui/icons-material/Clear";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { icons } from "../../../icons";
 
 export default function AgendaActions({ onClose, handleResolveEvent, handleDeleteEvent }) {
   return (
@@ -24,7 +22,7 @@ export default function AgendaActions({ onClose, handleResolveEvent, handleDelet
         size="small"
         onClick={handleResolveEvent}
         sx={{ mx: 0.5 }}
-        startIcon={<CheckIcon />}
+        startIcon={<icons.CheckIcon />}
       >
         Concluir
       </Button>
@@ -35,7 +33,7 @@ export default function AgendaActions({ onClose, handleResolveEvent, handleDelet
         size="small"
         onClick={handleDeleteEvent}
         sx={{ mx: 0.5 }}
-        startIcon={<DeleteIcon />}
+        startIcon={<icons.DeleteIcon />}
       >
         Excluir
       </Button>
@@ -45,7 +43,7 @@ export default function AgendaActions({ onClose, handleResolveEvent, handleDelet
         color="inherit"
         onClick={onClose}
         sx={{ mx: 0.5 }}
-        startIcon={<ClearIcon />}
+        startIcon={<icons.ClearIcon />}
         size="small"
       >
         Fechar

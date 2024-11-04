@@ -25,9 +25,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import ClearIcon from "@mui/icons-material/Clear";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import { icons } from "../icons";
 
 import NoDataText from "../components/small/NoDataText";
 
@@ -127,7 +125,7 @@ export default function Files({ topBar }) {
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         });
         fetchFiles();
         closeConfirmationDialog();
@@ -149,7 +147,7 @@ export default function Files({ topBar }) {
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
-          icon: <DeleteIcon />,
+          icon: <icons.DeleteIcon />,
         });
         fetchFiles();
         closeMultipleDeletionDialog();
@@ -229,7 +227,7 @@ export default function Files({ topBar }) {
                       <Button
                         size="small"
                         variant="outlined"
-                        startIcon={<ClearIcon sx={{ mt: -0.5, p: 0 }} />}
+                        startIcon={<icons.ClearIcon sx={{ mt: -0.5, p: 0 }} />}
                         onClick={() => setSelectedImages([])}
                         sx={{ mx: 1 }}
                       >
@@ -243,7 +241,7 @@ export default function Files({ topBar }) {
                         size="small"
                         variant="contained"
                         color="error"
-                        startIcon={<DeleteIcon sx={{ mt: -0.5 }} />}
+                        startIcon={<icons.DeleteIcon sx={{ mt: -0.5 }} />}
                         onClick={handleDeleteMultiple}
                       >
                         Excluir Selecionados
@@ -272,13 +270,13 @@ export default function Files({ topBar }) {
                             onChange={() => handleCheckboxChange(file)}
                             sx={{ p: 0, m: 0 }}
                           />
-                          <VisibilityIcon
+                          <icons.VisibilityIcon
                             color="inherit"
                             onClick={() => openViewDialog(file)}
                             sx={{ mx: 1, py: 0 }}
                             style={{ cursor: "pointer" }}
                           />
-                          <DeleteIcon
+                          <icons.DeleteIcon
                             color="error"
                             onClick={() => deleteFile(file)}
                             style={{ cursor: "pointer" }}
@@ -306,7 +304,7 @@ export default function Files({ topBar }) {
                     <Button
                       size="small"
                       variant="outlined"
-                      startIcon={<ClearIcon sx={{ mt: -0.5, p: 0 }} />}
+                      startIcon={<icons.ClearIcon sx={{ mt: -0.5, p: 0 }} />}
                       onClick={() => setSelectedImages([])}
                       sx={{ mx: 1 }}
                     >
@@ -320,7 +318,7 @@ export default function Files({ topBar }) {
                       size="small"
                       variant="contained"
                       color="error"
-                      startIcon={<DeleteIcon sx={{ mt: -0.5 }} />}
+                      startIcon={<icons.DeleteIcon sx={{ mt: -0.5 }} />}
                       onClick={handleDeleteMultiple}
                     >
                       Excluir Selecionados
@@ -349,7 +347,7 @@ export default function Files({ topBar }) {
                           onChange={() => handleCheckboxChange(file)}
                           sx={{ mr: 1, py: 0 }}
                         />
-                        <DeleteIcon
+                        <icons.DeleteIcon
                           color="error"
                           onClick={() => deleteFile(file)}
                           style={{ cursor: "pointer" }}
@@ -376,7 +374,7 @@ export default function Files({ topBar }) {
                     <Button
                       size="small"
                       variant="outlined"
-                      startIcon={<ClearIcon sx={{ mt: -0.5, p: 0 }} />}
+                      startIcon={<icons.ClearIcon sx={{ mt: -0.5, p: 0 }} />}
                       onClick={() => setSelectedImages([])}
                       sx={{ mx: 1 }}
                     >
@@ -390,7 +388,7 @@ export default function Files({ topBar }) {
                       size="small"
                       variant="contained"
                       color="error"
-                      startIcon={<DeleteIcon sx={{ mt: -0.5 }} />}
+                      startIcon={<icons.DeleteIcon sx={{ mt: -0.5 }} />}
                       onClick={handleDeleteMultiple}
                     >
                       Excluir Selecionados
@@ -442,7 +440,7 @@ export default function Files({ topBar }) {
                           onChange={() => handleCheckboxChange(file)}
                           sx={{ p: 0, m: 0 }}
                         />
-                        <DeleteIcon
+                        <icons.DeleteIcon
                           color="error"
                           onClick={() => deleteFile(file)}
                           style={{ cursor: "pointer" }}

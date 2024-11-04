@@ -1,20 +1,15 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import axios from "axios";
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
 import { toast } from "react-toastify";
 import { keyframes } from "@mui/system";
 
 import { Badge, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import MoodIcon from "@mui/icons-material/Mood";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
+import { icons } from "../../icons";
 
 // Define a animação para o ícone
 const growShrinkAnimation = keyframes`
@@ -53,22 +48,22 @@ const InteractionReactions = ({
 }) => {
   const reactionsMap = {
     love: {
-      icon: <FavoriteBorderIcon />,
+      icon: <icons.FavoriteBorderIcon />,
       title: "Amei",
       color: "#a83f39",
     },
     like: {
-      icon: <ThumbUpIcon />,
+      icon: <icons.ThumbUpIcon />,
       title: "Gostei",
       color: "#228b22",
     },
     dislike: {
-      icon: <ThumbDownIcon />,
+      icon: <icons.ThumbDownIcon />,
       title: "Não Gostei",
       color: "#2b2c5a",
     },
     haha: {
-      icon: <MoodIcon />,
+      icon: <icons.MoodIcon />,
       title: "Haha",
       color: "#ffdb58",
     },
@@ -180,7 +175,7 @@ const InteractionReactions = ({
               handleDeleteInteraction(interaction._id, interaction.activity)
             }
           >
-            <DeleteIcon
+            <icons.DeleteIcon
               sx={{
                 color: "#777",
                 "&:hover": {

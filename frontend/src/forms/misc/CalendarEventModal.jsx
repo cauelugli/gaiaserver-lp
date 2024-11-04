@@ -16,8 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import CheckIcon from "@mui/icons-material/Check";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { icons } from "../../icons";
 
 import CustomerSelect from "../../components/small/selects/CustomerSelect";
 import WorkerSelect from "../../components/small/selects/WorkerSelect";
@@ -135,7 +134,7 @@ const CalendarEventModal = ({
           onClick={handleClose}
           color="error"
           variant="contained"
-          startIcon={<DeleteIcon />}
+          startIcon={<icons.DeleteIcon />}
         >
           Cancelar
         </Button>
@@ -143,7 +142,7 @@ const CalendarEventModal = ({
           onClick={handleAddEvent}
           color="success"
           variant="contained"
-          startIcon={<CheckIcon />}
+          startIcon={<icons.CheckIcon />}
         >
           Adicionar
         </Button>

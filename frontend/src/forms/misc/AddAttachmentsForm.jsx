@@ -1,19 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import { toast } from "react-toastify";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5002");
+// const socket = io("http://localhost:5002");
 
 import { Button, Dialog, Grid, Typography } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import { icons } from "../../icons";
 
 import ViewDialog from "../../components/small/ViewDialog";
 
@@ -21,20 +18,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const AddAttachmentsForm = (
-//   {
-//   userName,
-//   userId,
-//   setOpenAddAttachments,
-//   selectedJob,
-//   refreshData,
-//   setRefreshData,
-//   toast,
-//   endpoint,
-//   usePageNotEndpoint,
-//   page,
-// }
-) => {
+const AddAttachmentsForm = () => {
   const [attachments, setAttachments] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState("");
   const [openViewDialog, setOpenViewDialog] = React.useState(false);
@@ -46,7 +30,6 @@ const AddAttachmentsForm = (
       for (const file of attachments) {
         const formData = new FormData();
         formData.append("attachment", file);
-        // formData.append("itemId", selectedJob._id);
 
         const uploadResponse = await api.post(
           "/uploads/singleAttachment",
@@ -54,31 +37,6 @@ const AddAttachmentsForm = (
         );
         uploadResponses.push(uploadResponse.data.attachmentPath);
       }
-
-      // const res = await api.put(`/${endpoint}/addAttachments`, {
-      //   jobId: selectedJob._id,
-      //   itemId: selectedJob._id,
-      //   attachments: uploadResponses,
-      //   userName: userName,
-      //   date: dayjs().format("DD/MM HH:mm"),
-      // });
-
-      // if (res.data) {
-      //   toast.success("Anexos Adicionados!", {
-      //     closeOnClick: true,
-      //     pauseOnHover: false,
-      //     theme: "colored",
-      //     autoClose: 1200,
-      //   });
-      //   socket.emit("newDataRefreshButton", {
-      //     page: usePageNotEndpoint ? page : endpoint,
-      //     userId: userId,
-      //   });
-      // }
-
-      // setOpenAddAttachments(false);
-      // setRefreshData(!refreshData);
-
     } catch (err) {
       toast.error("Houve algum erro...", {
         closeOnClick: true,
@@ -146,7 +104,7 @@ const AddAttachmentsForm = (
                     color="primary"
                     component="span"
                     size="small"
-                    startIcon={<FileUploadIcon />}
+                    startIcon={<icons.FileUploadIcon />}
                     sx={{ ml: 1 }}
                   >
                     Enviar
@@ -236,14 +194,14 @@ const AddAttachmentsForm = (
                                   setOpenViewDialog(true);
                                 }}
                               >
-                                <VisibilityIcon />
+                                <icons.VisibilityIcon />
                               </Button>
                               <Button
                                 size="small"
                                 color="error"
                                 onClick={() => removeFile(index)}
                               >
-                                <DeleteIcon />
+                                <icons.DeleteIcon />
                               </Button>
                             </Grid>
                           </Grid>

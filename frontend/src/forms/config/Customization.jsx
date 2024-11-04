@@ -27,8 +27,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ColorLensIcon from "@mui/icons-material/ColorLens";
+import { icons } from "../../icons";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -148,7 +147,7 @@ export default function Customization({ onClose }) {
               alignItems="flex-start"
             >
               <Accordion sx={{ width: "100%" }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Cores
                   </Typography>
@@ -177,7 +176,7 @@ export default function Customization({ onClose }) {
                         sx={{ mx: 1, width: "25%" }}
                       />
                       <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-                        <ColorLensIcon sx={{ fontSize: 28 }} />
+                        <icons.ColorLensIcon sx={{ fontSize: 28 }} />
                       </IconButton>
                       <Popover
                         open={Boolean(anchorEl)}
@@ -235,7 +234,7 @@ export default function Customization({ onClose }) {
                       <IconButton
                         onClick={(e) => setAnchorEl2(e.currentTarget)}
                       >
-                        <ColorLensIcon sx={{ fontSize: 28 }} />
+                        <icons.ColorLensIcon sx={{ fontSize: 28 }} />
                       </IconButton>
                       <Popover
                         open={Boolean(anchorEl2)}
@@ -272,7 +271,7 @@ export default function Customization({ onClose }) {
               </Accordion>
 
               <Accordion sx={{ width: "100%", mt: 2 }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Logotipo
                   </Typography>

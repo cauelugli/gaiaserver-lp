@@ -15,9 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import AddIcon from "@mui/icons-material/Add";
-import CheckIcon from "@mui/icons-material/Check";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { icons } from "../../icons";
 
 import { calculatePriceDifferences } from "../../../../controllers/functions/overallFunctions";
 
@@ -150,7 +148,7 @@ const PriceDifferenceTable = (props) => {
               </Typography>
             </TableCell>
             <TableCell align="right">
-              <CheckIcon sx={{ fontWeight: "bold", fontSize: 14 }} />
+              <icons.CheckIcon sx={{ fontWeight: "bold", fontSize: 14 }} />
             </TableCell>
           </TableRow>
           {Object.keys(props.priceDifference).map((key) => {
@@ -177,7 +175,7 @@ const PriceDifferenceTable = (props) => {
                   {props.okToDispatch ? (
                     ""
                   ) : (
-                    <DeleteIcon
+                    <icons.DeleteIcon
                       sx={{ fontSize: 14, cursor: "pointer" }}
                       onClick={() => handleDeleteItem(item.index)}
                     />
@@ -298,7 +296,7 @@ const PriceDifferenceTable = (props) => {
               {props.okToDispatch ? (
                 ""
               ) : (
-                <AddIcon
+                <icons.AddIcon
                   sx={{ fontSize: 14, cursor: "pointer" }}
                   onClick={handleAddItem}
                 />
