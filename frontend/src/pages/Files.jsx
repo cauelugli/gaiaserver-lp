@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
@@ -197,6 +198,7 @@ export default function Files({ topBar }) {
             value={value}
             onChange={handleChange}
             TabIndicatorProps={{ style: { backgroundColor: "black" } }}
+            sx={{ width: props.topBar ? "103%" : "102%" }}
           >
             <Tab
               label={<Typography sx={{ fontSize: 13 }}>Documentos</Typography>}

@@ -78,7 +78,7 @@ export default function TableModel(props) {
   }, [sortedRows, props.page, props.tabIndex]);
 
   return (
-    <Box sx={{ width: props.topBar ? "105%" : "100%", minHeight: "50vw" }}>
+    <Box sx={{ minHeight: "50vw" }}>
       <TableContainer component={Paper}>
         <Table size="small">
           {props.page === "products" ? (
