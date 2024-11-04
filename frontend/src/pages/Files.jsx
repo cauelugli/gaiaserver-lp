@@ -196,7 +196,7 @@ export default function Files({ topBar }) {
             value={value}
             onChange={handleChange}
             TabIndicatorProps={{ style: { backgroundColor: "black" } }}
-            sx={{ width: props.topBar ? "103%" : "102%" }}
+            sx={{ width: topBar ? "103%" : "102%" }}
           >
             <Tab
               label={<Typography sx={{ fontSize: 13 }}>Documentos</Typography>}

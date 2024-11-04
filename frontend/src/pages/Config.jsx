@@ -146,7 +146,6 @@ export default function Config({
                   justifyContent="center"
                   sx={{
                     width: showAdvancedConfig ? 150 : 220,
-                    // p: "20px",
                     p: showAdvancedConfig ? "15px" : "20px",
                     border: "1px solid #ccc",
                     borderRadius: 2,
