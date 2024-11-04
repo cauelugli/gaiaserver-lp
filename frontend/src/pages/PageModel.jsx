@@ -20,7 +20,7 @@ import {
 import TableModel from "../tables/TableModel";
 
 import PageButtonModel from "../components/small/buttons/PageButtonModel";
-import RefreshDataButton from "../buttons/RefreshDataButton";
+import RefreshDataButton from "../components/small/buttons/RefreshDataButton";
 import NoDataText from "../components/small/NoDataText";
 import TableOrCardSelector from "../components/small/TableOrCardSelector";
 import CardModel from "../components/cards/CardModel";

@@ -4,7 +4,7 @@ import React from "react";
 
 import { TableRow, TableCell, Checkbox } from "@mui/material";
 
-import RowButton from "../buttons/RowButton";
+import RowButton from "../components/small/buttons/RowButton";
 import DataTableCell from "../components/tableCells/DataTableCell";
 
 function StandardTable({

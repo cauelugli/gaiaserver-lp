@@ -9,15 +9,19 @@ import {
   ListItemText,
   Dialog,
 } from "@mui/material";
+
 import MenuIcon from "@mui/icons-material/Menu";
-import EditFormModel from "../forms/edit/EditFormModel";
-import { modals } from "../options/modals";
-import rowButtonOptions from "../options/rowButtonOptions";
-import DeleteFormModel from "../forms/delete/DeleteFormModel";
-import SmallFormModel from "../forms/edit/SmallFormModel";
-import ResolveForm from "../forms/misc/ResolveForm";
-import { checkAvailability } from "../../../controllers/functions/overallFunctions";
-import RequestApprovalForm from "../forms/misc/RequestApprovalForm";
+import EditFormModel from "../../../forms/edit/EditFormModel";
+
+import { modals } from "../../../options/modals";
+import rowButtonOptions from "../../../options/rowButtonOptions";
+
+import { checkAvailability } from "../../../../../controllers/functions/overallFunctions";
+
+import DeleteFormModel from "../../../forms/delete/DeleteFormModel";
+import SmallFormModel from "../../../forms/edit/SmallFormModel";
+import ResolveForm from "../../../forms/misc/ResolveForm";
+import RequestApprovalForm from "../../../forms/misc/RequestApprovalForm";
 
 const RowButton = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);

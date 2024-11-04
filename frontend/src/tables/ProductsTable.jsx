@@ -4,7 +4,7 @@ import React from "react";
 
 import { TableRow, TableCell, Avatar, Checkbox } from "@mui/material";
 
-import RowButton from "../buttons/RowButton";
+import RowButton from "../components/small/buttons/RowButton";
 
 function ProductsTable(props) {
   return (
