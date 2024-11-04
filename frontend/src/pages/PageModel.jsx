@@ -59,11 +59,15 @@ export default function PageModel(props) {
 
   const [tableFilters, setTableFilters] = React.useState({});
   const [multiple, setMultiple] = React.useState(false);
+  const [selectedMultipleItems, setSelectedMultipleItems] = React.useState([]);
 
   const [currentPage, setCurrentPage] = React.useState(props.item.page);
 
   const handleChange = (noArgument, newValue) => {
     setValue(newValue);
+    setTableFilters({});
+    setSelectedMultipleItems([]);
+    setMultiple(false);
   };
 
   React.useEffect(() => {
@@ -72,6 +76,7 @@ export default function PageModel(props) {
       setTableFilters({});
       setCurrentPage(props.item.page);
       setMultiple(false);
+      setSelectedMultipleItems([]);
     }
 
     const fetchData = async () => {
@@ -252,6 +257,12 @@ export default function PageModel(props) {
               mainColor={props.configCustomization.mainColor}
               multiple={multiple}
               setMultiple={setMultiple}
+              selectedMultipleItems={selectedMultipleItems}
+              setSelectedMultipleItems={setSelectedMultipleItems}
+              model={
+                props.item.models[props.item.page !== currentPage ? 0 : value]
+              }
+              page={props.item.page}
             />
           </Grid>
         </Tabs>
@@ -289,13 +300,11 @@ export default function PageModel(props) {
                       topBar={props.topBar}
                       configCustomization={props.configCustomization}
                       multiple={multiple}
+                      selectedMultipleItems={selectedMultipleItems}
+                      setSelectedMultipleItems={setSelectedMultipleItems}
                     />
                   ) : (
-                    <Grid
-                      // sx={{  }}
-                      container
-                      spacing={2}
-                    >
+                    <Grid container spacing={2}>
                       {items.map((nothing, index) => (
                         <Grid
                           item
@@ -345,13 +354,11 @@ export default function PageModel(props) {
                       topBar={props.topBar}
                       configCustomization={props.configCustomization}
                       multiple={multiple}
+                      selectedMultipleItems={selectedMultipleItems}
+                      setSelectedMultipleItems={setSelectedMultipleItems}
                     />
                   ) : (
-                    <Grid
-                      // sx={{ mt: 0.5, width: props.topBar ? "107%" : "100%" }}
-                      container
-                      spacing={2}
-                    >
+                    <Grid container spacing={2}>
                       {items.map((nothing, index) => (
                         <Grid
                           item

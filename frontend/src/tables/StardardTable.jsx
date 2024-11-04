@@ -7,55 +7,66 @@ import { TableRow, TableCell, Checkbox } from "@mui/material";
 import RowButton from "../components/small/buttons/RowButton";
 import DataTableCell from "../components/tableCells/DataTableCell";
 
-function StandardTable({
-  filteredRows,
-  startIndex,
-  endIndex,
-  tableColumns,
-  itemIndex,
-  idIndexList,
-  page,
-  tabIndex,
-  userId,
-  refreshData,
-  setRefreshData,
-  configCustomization,
-  multiple,
-}) {
+function StandardTable(props) {
+  const { selectedMultipleItems, setSelectedMultipleItems } = props;
+
+  const handleCheckboxChange = (item) => {
+    setSelectedMultipleItems((prevSelectedItems) => {
+      const isSelected = prevSelectedItems.some(
+        (selectedItem) => selectedItem._id === item._id
+      );
+      if (isSelected) {
+        return prevSelectedItems.filter(
+          (selectedItem) => selectedItem._id !== item._id
+        );
+      } else {
+        return [...prevSelectedItems, { _id: item._id, name: item.name||item.title }];
+      }
+    });
+  };
+
   return (
     <>
-      {filteredRows.slice(startIndex, endIndex).map((row, rowIndex) => (
-        <TableRow key={rowIndex}>
-          {tableColumns[itemIndex].map((column, columnIndex) => (
-            <TableCell
-              key={columnIndex}
-              align={columnIndex === 0 ? "" : "left"}
-            >
-              <DataTableCell
-                item={row[column.id]}
-                idIndexList={idIndexList}
-                column={column}
+      {props.filteredRows
+        .slice(props.startIndex, props.endIndex)
+        .map((row, rowIndex) => (
+          <TableRow key={rowIndex}>
+            {props.tableColumns[props.itemIndex].map((column, columnIndex) => (
+              <TableCell
+                key={columnIndex}
+                align={columnIndex === 0 ? "" : "left"}
+              >
+                <DataTableCell
+                  item={row[column.id]}
+                  idIndexList={props.idIndexList}
+                  column={column}
+                />
+              </TableCell>
+            ))}
+            <TableCell align="center">
+              <RowButton
+                userId={props.userId}
+                item={row}
+                page={props.page}
+                tabIndex={props.tabIndex}
+                refreshData={props.refreshData}
+                setRefreshData={props.setRefreshData}
+                configCustomization={props.configCustomization}
               />
             </TableCell>
-          ))}
-          <TableCell align="center">
-            <RowButton
-              userId={userId}
-              item={row}
-              page={page}
-              tabIndex={tabIndex}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              configCustomization={configCustomization}
-            />
-          </TableCell>
-          {multiple && (
-            <TableCell align="center" id="multiple" sx={{ p: 0, m: 0 }}>
-              <Checkbox size="small" />
-            </TableCell>
-          )}
-        </TableRow>
-      ))}
+            {props.multiple && (
+              <TableCell align="center" id="multiple" sx={{ p: 0, m: 0 }}>
+                <Checkbox
+                  size="small"
+                  checked={selectedMultipleItems.some(
+                    (selectedItem) => selectedItem._id === row._id
+                  )}
+                  onChange={() => handleCheckboxChange(row)}
+                />
+              </TableCell>
+            )}
+          </TableRow>
+        ))}
     </>
   );
 }

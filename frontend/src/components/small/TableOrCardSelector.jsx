@@ -14,23 +14,12 @@ import AppsIcon from "@mui/icons-material/Apps";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 import MultipleSelectorButton from "./buttons/MultipleSelectorButton";
 
-const TableOrCardSelector = ({
-  userId,
-  refreshData,
-  setRefreshData,
-  tableOrCard,
-  setUserPreferences,
-  cardSize,
-  mainColor,
-  multiple,
-  setMultiple
-}) => {
-  const [tableOrCardView, setTableOrCardView] = React.useState(tableOrCard);
-  
+const TableOrCardSelector = (props) => {
+  const [tableOrCardView, setTableOrCardView] = React.useState(props.tableOrCard);
 
   React.useEffect(() => {
-    setTableOrCardView(tableOrCard);
-  }, [tableOrCard]);
+    setTableOrCardView(props.tableOrCard);
+  }, [props.tableOrCard]);
 
   const handleUpdateTableOrCardView = async (newTableOrCardView) => {
     const existingPreferences =
@@ -42,7 +31,7 @@ const TableOrCardSelector = ({
 
     try {
       const response = await api.put("/userPreferences/tableOrCardView", {
-        userId: userId,
+        userId: props.userId,
         tableOrCardView: newTableOrCardView,
       });
 
@@ -51,8 +40,8 @@ const TableOrCardSelector = ({
           "userPreferences",
           JSON.stringify(updatedPreferences)
         );
-        setRefreshData(!refreshData);
-        setUserPreferences((prev) => ({
+        props.setRefreshData(!props.refreshData);
+        props.setUserPreferences((prev) => ({
           ...prev,
           tableOrCardView: newTableOrCardView,
         }));
@@ -78,7 +67,7 @@ const TableOrCardSelector = ({
 
     try {
       const response = await api.put("/userPreferences/cardSize", {
-        userId: userId,
+        userId: props.userId,
         cardSize: newCardSize,
       });
 
@@ -87,8 +76,8 @@ const TableOrCardSelector = ({
           "userPreferences",
           JSON.stringify(updatedPreferences)
         );
-        setRefreshData(!refreshData);
-        setUserPreferences((prev) => ({
+        props.setRefreshData(!props.refreshData);
+        props.setUserPreferences((prev) => ({
           ...prev,
           cardSize: newCardSize,
         }));
@@ -112,15 +101,22 @@ const TableOrCardSelector = ({
       alignItems="flex-end"
     >
       <MultipleSelectorButton
-        mainColor={mainColor}
-        multiple={multiple}
-        setMultiple={setMultiple}
+        mainColor={props.mainColor}
+        multiple={props.multiple}
+        setMultiple={props.setMultiple}
+        selectedMultipleItems={props.selectedMultipleItems}
+        setSelectedMultipleItems={props.setSelectedMultipleItems}
+        userId={props.userId}
+        model={props.model}
+        page={props.page}
+        refreshData={props.refreshData}
+        setRefreshData={props.setRefreshData}
       />
 
       <Grid item>
         {!tableOrCardView && (
           <Grid container direction="row" sx={{ mr: 3 }}>
-            {cardSize !== 12 && (
+            {props.cardSize !== 12 && (
               <Typography
                 sx={{
                   cursor: "pointer",
@@ -129,14 +125,14 @@ const TableOrCardSelector = ({
                   mr: 2,
                 }}
                 onClick={() => {
-                  const newSize = (cardSize || 0) + 1;
+                  const newSize = (props.cardSize || 0) + 1;
                   handleUpdateCardSize(newSize);
                 }}
               >
                 +
               </Typography>
             )}
-            {cardSize !== 2 && (
+            {props.cardSize !== 2 && (
               <Typography
                 sx={{
                   cursor: "pointer",
@@ -144,7 +140,7 @@ const TableOrCardSelector = ({
                   fontSize: 18,
                 }}
                 onClick={() => {
-                  const newSize = (cardSize || 0) - 1;
+                  const newSize = (props.cardSize || 0) - 1;
                   handleUpdateCardSize(newSize);
                 }}
               >
@@ -159,7 +155,7 @@ const TableOrCardSelector = ({
           sx={{
             mr: 1,
             cursor: "pointer",
-            color: !tableOrCardView ? mainColor : "gray",
+            color: !tableOrCardView ? props.mainColor : "gray",
           }}
           onClick={() => handleUpdateTableOrCardView(false)}
         />
@@ -168,7 +164,7 @@ const TableOrCardSelector = ({
         <TableRowsIcon
           sx={{
             cursor: "pointer",
-            color: tableOrCardView ? mainColor : "gray",
+            color: tableOrCardView ? props.mainColor : "gray",
           }}
           onClick={() => handleUpdateTableOrCardView(true)}
         />

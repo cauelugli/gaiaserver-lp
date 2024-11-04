@@ -114,6 +114,8 @@ export default function TableModel(props) {
                 setRefreshData={props.setRefreshData}
                 configCustomization={props.configCustomization}
                 multiple={props.multiple}
+                selectedMultipleItems={props.selectedMultipleItems}
+                setSelectedMultipleItems={props.setSelectedMultipleItems}
               />
             ) : (
               <StandardTable
@@ -130,6 +132,8 @@ export default function TableModel(props) {
                 setRefreshData={props.setRefreshData}
                 configCustomization={props.configCustomization}
                 multiple={props.multiple}
+                selectedMultipleItems={props.selectedMultipleItems}
+                setSelectedMultipleItems={props.setSelectedMultipleItems}
               />
             )}
           </TableBody>
