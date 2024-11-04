@@ -33,7 +33,7 @@ const DeleteFormModel = ({
     try {
       const res = await api.delete(`/delete/${userId}/${model}/${selectedItem._id}`);
       if (res.data) {
-        toast.success(`${selectedItem.name} Deletado!`, {
+        toast.success(`${selectedItem.name||selectedItem.title||selectedItem.number} Deletado!`, {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",

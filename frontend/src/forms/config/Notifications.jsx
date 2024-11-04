@@ -34,8 +34,9 @@ export default function Notifications({ onClose }) {
 
   const labels = {
     customer: "Clientes",
-    requests: "Solicitações",
-    user: "Colaborador",
+    job: "Jobs",
+    sale: "Vendas",
+    user: "Colaboradores",
   };
 
   React.useEffect(() => {

@@ -13,19 +13,27 @@ async function notificationRoutines(
 ) {
   try {
     const config = await Notifications.findOne({});
+    let userName = "";
 
-    const position = target.position
-      ? await Position.findById(target.position)
-      : null;
-
-    const department = target.department
-      ? await Department.findById(target.department)
-      : null;
-
-    const userName = target.name ? target.name : target;
+    if (target) {
+      target.title
+        ? (userName = target.title)
+        : target.name
+        ? (userName = target.name)
+        : target.number
+        ? (userName = target.number)
+        : (userName = target);
+    }
 
     switch (model) {
       case "User":
+        const position = target.position
+          ? await Position.findById(target.position)
+          : null;
+
+        const department = target.department
+          ? await Department.findById(target.department)
+          : null;
         socket.emit("notificationToList", {
           userName,
           method,
@@ -46,6 +54,26 @@ async function notificationRoutines(
           sourceId,
           receivers: config[model.toLowerCase()][notificationList],
           label: "Cliente",
+        });
+        break;
+      case "Job":
+        socket.emit("notificationToList", {
+          userName,
+          method,
+          item: {},
+          sourceId,
+          receivers: config[model.toLowerCase()][notificationList],
+          label: "Job",
+        });
+        break;
+      case "Sale":
+        socket.emit("notificationToList", {
+          userName,
+          method,
+          item: {},
+          sourceId,
+          receivers: config[model.toLowerCase()][notificationList],
+          label: "Venda",
         });
         break;
 

@@ -37,7 +37,7 @@ router.delete("/:sourceId/:model/:id", async (req, res) => {
 
     await notificationRoutines(
       model,
-      deletedItem.name,
+      deletedItem.name || deletedItem.title || deletedItem.number,
       "delete",
       sourceId,
       `${model.toLowerCase()}IsDeleted`
@@ -80,7 +80,7 @@ router.delete("/multiple/:sourceId/:model/:ids", async (req, res) => {
           await deleteRoutines(model, id);
           await notificationRoutines(
             model,
-            deletedItem.name,
+            deletedItem.title || deletedItem.name,
             "delete",
             sourceId,
             `${model.toLowerCase()}IsDeleted`

@@ -30,12 +30,30 @@ const notificationSchema = new Schema({
       default: [],
     },
   },
-  requests: {
+  job: {
     jobIsCreated: {
       type: Array,
       default: [],
     },
+    jobIsEdited: {
+      type: Array,
+      default: [],
+    },
+    jobIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
+  sale: {
     saleIsCreated: {
+      type: Array,
+      default: [],
+    },
+    saleIsEdited: {
+      type: Array,
+      default: [],
+    },
+    saleIsDeleted: {
       type: Array,
       default: [],
     },

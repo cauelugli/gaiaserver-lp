@@ -93,7 +93,7 @@ const initSocket = (server) => {
 
       io.emit("newNotification", data);
     });
-    
+
     socket.on("disconnect", () => {
       // console.log("User disconnected");
     });

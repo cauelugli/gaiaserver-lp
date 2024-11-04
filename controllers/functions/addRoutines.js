@@ -4,6 +4,7 @@ const Role = require("../../models/models/Role");
 const Counters = require("../../models/models/Counters");
 const User = require("../../models/models/User");
 const Job = require("../../models/models/Job");
+const Sale = require("../../models/models/Sale");
 
 async function addRoutines(model, source) {
   try {
