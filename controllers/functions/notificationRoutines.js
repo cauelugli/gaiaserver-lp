@@ -79,6 +79,26 @@ async function notificationRoutines(
           isFemale: true,
         });
         break;
+      case "Department":
+        socket.emit("notificationToList", {
+          finalTarget,
+          method,
+          item: {},
+          sourceId,
+          receivers: config[model.toLowerCase()][notificationList],
+          label: "Departamento",
+        });
+        break;
+      case "Group":
+        socket.emit("notificationToList", {
+          finalTarget,
+          method,
+          item: {},
+          sourceId,
+          receivers: config[model.toLowerCase()][notificationList],
+          label: "Grupo",
+        });
+        break;
 
       default:
         break;

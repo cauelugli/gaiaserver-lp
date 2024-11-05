@@ -37,6 +37,8 @@ export default function Notifications({ onClose }) {
     job: "Jobs",
     sale: "Vendas",
     user: "Colaboradores",
+    department: "Departamentos",
+    group: "Grupos",
   };
 
   React.useEffect(() => {

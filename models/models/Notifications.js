@@ -58,6 +58,34 @@ const notificationSchema = new Schema({
       default: [],
     },
   },
+  department: {
+    departmentIsCreated: {
+      type: Array,
+      default: [],
+    },
+    departmentIsEdited: {
+      type: Array,
+      default: [],
+    },
+    departmentIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
+  group: {
+    groupIsCreated: {
+      type: Array,
+      default: [],
+    },
+    groupIsEdited: {
+      type: Array,
+      default: [],
+    },
+    groupIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
 });
 
 const Notifications = mongoose.model("Notifications", notificationSchema);
