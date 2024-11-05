@@ -20,7 +20,10 @@ function StandardTable(props) {
           (selectedItem) => selectedItem._id !== item._id
         );
       } else {
-        return [...prevSelectedItems, { _id: item._id, name: item.name||item.title }];
+        return [
+          ...prevSelectedItems,
+          { _id: item._id, name: item.name || item.title || item.number },
+        ];
       }
     });
   };
@@ -52,6 +55,7 @@ function StandardTable(props) {
                 refreshData={props.refreshData}
                 setRefreshData={props.setRefreshData}
                 configCustomization={props.configCustomization}
+                multiple={props.multiple}
               />
             </TableCell>
             {props.multiple && (

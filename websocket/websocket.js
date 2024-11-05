@@ -54,16 +54,34 @@ const initSocket = (server) => {
 
           switch (data.method) {
             case "add":
-              parsedBodyMainString = `Um novo ${data.label} foi criado: "${data.userName}".`;
-              parsedTitleString = `Novo ${data.label} Criado`;
+              parsedBodyMainString = `${data.isFemale ? "Uma" : "Um"} ${
+                data.isFemale ? "nova" : "novo"
+              } ${data.label} foi ${data.isFemale ? "criada" : "criado"}: "${
+                data.finalTarget
+              }".`;
+              parsedTitleString = `${data.isFemale ? "Nova" : "Novo"} ${
+                data.label
+              } ${data.isFemale ? "Criada" : "Criado"}`;
               break;
             case "edit":
-              parsedBodyMainString = `Um ${data.label} foi editado: "${data.userName}".`;
-              parsedTitleString = `${data.label} Editado`;
+              parsedBodyMainString = `${data.isFemale ? "Uma" : "Um"} ${
+                data.label
+              } foi ${data.isFemale ? "editada" : "editado"}: "${
+                data.finalTarget
+              }".`;
+              parsedTitleString = `${data.label} ${
+                data.isFemale ? "Editada" : "Editado"
+              }`;
               break;
             case "delete":
-              parsedBodyMainString = `O ${data.label} "${data.userName}" foi deletado.`;
-              parsedTitleString = `${data.label} Deletado`;
+              parsedBodyMainString = `${data.isFemale ? "A" : "O"} ${
+                data.label
+              } "${data.finalTarget}" foi ${
+                data.isFemale ? "deletada" : "deletado"
+              }.`;
+              parsedTitleString = `${data.label} ${
+                data.isFemale ? "Deletada" : "Deletado"
+              }`;
               break;
             default:
               break;

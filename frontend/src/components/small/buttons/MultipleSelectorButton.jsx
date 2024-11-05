@@ -61,10 +61,7 @@ const MultipleSelectorButton = (props) => {
                 )
                 .join("")}
             >
-              <Typography
-                sx={{ fontSize: 13, mt: 0.25 }}
-                onClick={() => console.log(props.selectedMultipleItems)}
-              >
+              <Typography sx={{ fontSize: 13, mt: 0.25 }}>
                 Selecionados: {props.selectedMultipleItems.length}
               </Typography>
             </Tooltip>

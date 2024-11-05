@@ -100,6 +100,7 @@ router.post("/", async (req, res) => {
   const newItem = new Model(fields);
 
   try {
+    let countedItem;
     const savedItem = await newItem.save();
 
     if (req.body.model === "Department" || req.body.model === "Group") {
@@ -109,14 +110,17 @@ router.post("/", async (req, res) => {
         fields.members
       );
     } else if (req.body.model === "Job" || req.body.model === "Sale") {
-      await addCounter(savedItem._id.toString(), req.body.model);
+      countedItem = await addCounter(
+        savedItem._id.toString(),
+        req.body.model
+      );
     } else {
       await addRoutines(req.body.model, savedItem);
     }
 
     await notificationRoutines(
       req.body.model,
-      savedItem,
+      countedItem ? countedItem : savedItem,
       "add",
       req.body.sourceId,
       `${req.body.model.toLowerCase()}IsCreated`

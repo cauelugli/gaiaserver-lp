@@ -38,6 +38,7 @@ function ProductsTable(props) {
                   refreshData={props.refreshData}
                   setRefreshData={props.setRefreshData}
                   configCustomization={props.configCustomization}
+                  multiple={props.multiple}
                 />
               </TableCell>
               {props.multiple && (

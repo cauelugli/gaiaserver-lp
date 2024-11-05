@@ -1,5 +1,6 @@
-const Notifications = require("../../models/models/Notifications");
+const Counters = require("../../models/models/Counters");
 const Department = require("../../models/models/Department");
+const Notifications = require("../../models/models/Notifications");
 const Position = require("../../models/models/Position");
 const io = require("../../api/node_modules/socket.io-client");
 const socket = io("http://localhost:5002");
@@ -13,16 +14,17 @@ async function notificationRoutines(
 ) {
   try {
     const config = await Notifications.findOne({});
-    let userName = "";
+    const counters = await Counters.findOne({});
+    let finalTarget = "";
 
     if (target) {
       target.title
-        ? (userName = target.title)
+        ? (finalTarget = target.title)
         : target.name
-        ? (userName = target.name)
+        ? (finalTarget = target.name)
         : target.number
-        ? (userName = target.number)
-        : (userName = target);
+        ? (finalTarget = target.number)
+        : (finalTarget = target);
     }
 
     switch (model) {
@@ -35,7 +37,7 @@ async function notificationRoutines(
           ? await Department.findById(target.department)
           : null;
         socket.emit("notificationToList", {
-          userName,
+          finalTarget,
           method,
           item: {
             position: position?.name || "",
@@ -48,7 +50,7 @@ async function notificationRoutines(
         break;
       case "Customer":
         socket.emit("notificationToList", {
-          userName,
+          finalTarget,
           method,
           item: {},
           sourceId,
@@ -58,7 +60,7 @@ async function notificationRoutines(
         break;
       case "Job":
         socket.emit("notificationToList", {
-          userName,
+          finalTarget,
           method,
           item: {},
           sourceId,
@@ -68,12 +70,13 @@ async function notificationRoutines(
         break;
       case "Sale":
         socket.emit("notificationToList", {
-          userName,
+          finalTarget: counters[model.toLowerCase()],
           method,
           item: {},
           sourceId,
           receivers: config[model.toLowerCase()][notificationList],
           label: "Venda",
+          isFemale: true,
         });
         break;
 

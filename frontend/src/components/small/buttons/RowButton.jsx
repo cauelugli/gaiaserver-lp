@@ -141,7 +141,10 @@ const RowButton = (props) => {
 
   return (
     <>
-      <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+      <IconButton
+        onClick={(e) => (props.multiple ? "" : setAnchorEl(e.currentTarget))}
+        disabled={props.multiple}
+      >
         <icons.MenuIcon />
       </IconButton>
       <Menu
