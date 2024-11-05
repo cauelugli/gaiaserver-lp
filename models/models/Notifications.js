@@ -86,6 +86,34 @@ const notificationSchema = new Schema({
       default: [],
     },
   },
+  service: {
+    serviceIsCreated: {
+      type: Array,
+      default: [],
+    },
+    serviceIsEdited: {
+      type: Array,
+      default: [],
+    },
+    serviceIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
+  serviceplan: {
+    serviceplanIsCreated: {
+      type: Array,
+      default: [],
+    },
+    serviceplanIsEdited: {
+      type: Array,
+      default: [],
+    },
+    serviceplanIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
 });
 
 const Notifications = mongoose.model("Notifications", notificationSchema);

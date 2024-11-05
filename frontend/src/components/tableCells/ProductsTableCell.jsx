@@ -51,12 +51,14 @@ const ProductsTableCell = (props) => {
 
   React.useEffect(() => {
     let newSum;
-    newSum = props.selectedProducts
-      .reduce(
-        (sum, product) => sum + product.buyValue * product.count,
-        Number(props.servicePrice)
-      )
-      .toFixed(2);
+    newSum =
+      props.selectedProducts &&
+      props.selectedProducts
+        .reduce(
+          (sum, product) => sum + product.buyValue * product.count,
+          Number(props.servicePrice)
+        )
+        .toFixed(2);
 
     setSum(newSum);
   }, [props.selectedProducts, props.fieldType, props.servicePrice]);

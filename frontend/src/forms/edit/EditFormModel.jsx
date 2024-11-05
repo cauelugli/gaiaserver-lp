@@ -92,7 +92,12 @@ export default function EditFormModel(props) {
       props.options.fields.forEach((field) => {
         const fieldValue = props.target[field.name] || "";
 
-        if (field.name === "department" && typeof fieldValue === "string") {
+        if (Array.isArray(fieldValue)) {
+          initialFields[field.name] = { selectedProducts: fieldValue };
+        } else if (
+          field.name === "department" &&
+          typeof fieldValue === "string"
+        ) {
           const department = departments.find((dep) => dep._id === fieldValue);
           initialFields[field.name] = department ? department.name : "";
         } else if (
@@ -106,9 +111,7 @@ export default function EditFormModel(props) {
             (manager) => manager._id === fieldValue
           );
           initialFields[field.name] = manager ? manager : "";
-        }
-        // this is gonna scale, surely there will be a function in the future
-        else {
+        } else {
           initialFields[field.name] = fieldValue;
         }
       });
@@ -419,7 +422,11 @@ export default function EditFormModel(props) {
                         justifyContent="center"
                       >
                         <ProductsTableCell
-                          value={fields[field.name] || ""}
+                          selectedProducts={
+                            fields[field.name]?.selectedProducts ||
+                            fields[field.name] ||
+                            []
+                          }
                           onChange={handleChange(field.name)}
                           size="small"
                           required={field.required}

@@ -99,6 +99,26 @@ async function notificationRoutines(
           label: "Grupo",
         });
         break;
+      case "Service":
+        socket.emit("notificationToList", {
+          finalTarget,
+          method,
+          item: {},
+          sourceId,
+          receivers: config[model.toLowerCase()][notificationList],
+          label: "Serviço",
+        });
+        break;
+      case "ServicePlan":
+        socket.emit("notificationToList", {
+          finalTarget,
+          method,
+          item: {},
+          sourceId,
+          receivers: config[model.toLowerCase()][notificationList],
+          label: "Plano de Serviços",
+        });
+        break;
 
       default:
         break;

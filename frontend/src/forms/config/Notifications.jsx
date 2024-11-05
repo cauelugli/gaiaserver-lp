@@ -39,6 +39,8 @@ export default function Notifications({ onClose }) {
     user: "Colaboradores",
     department: "Departamentos",
     group: "Grupos",
+    service: "Serviços",
+    serviceplan: "Plano de Serviços",
   };
 
   React.useEffect(() => {
