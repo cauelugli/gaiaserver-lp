@@ -11,31 +11,16 @@ const api = axios.create({
 import {
   Box,
   Button,
-  Checkbox,
   DialogActions,
   DialogContent,
   Grid,
-  Table,
-  TableCell,
-  TableRow,
-  TextField,
   Typography,
 } from "@mui/material";
 
-import DateTableCell from "../../components/tableCells/DateTableCell";
-import DynamicDataTableCell from "../../components/tableCells/DynamicDataTableCell";
-import ProductsTableCell from "../../components/tableCells/ProductsTableCell";
-import SelectTableCell from "../../components/tableCells/SelectTableCell";
-import StringTableCell from "../../components/tableCells/StringTableCell";
-import IdDocTableCell from "../../components/tableCells/IdDocTableCell";
-import CurrencyTableCell from "../../components/tableCells/CurrencyTableCell";
-import PhoneTableCell from "../../components/tableCells/PhoneTableCell";
 import ImageTableCell from "../../components/tableCells/ImageTableCell";
-import ServicesTableCell from "../../components/tableCells/ServicesTableCell";
-
 import DialogHeader from "../../components/small/DialogHeader";
-import ColorPicker from "../../components/small/ColorPicker";
-import ManagerSelectTableCell from "../../components/tableCells/ManagerSelectTableCell";
+
+import TableCellOptions from "../../options/tableCellOptions";
 
 export default function EditFormModel(props) {
   const [fields, setFields] = React.useState(props.options.fields);
@@ -307,289 +292,21 @@ export default function EditFormModel(props) {
                       width: field.type === "productList" ? "100%" : "auto",
                     }}
                   >
-                    {field.type === "string" && (
-                      <StringTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "idDoc" && (
-                      <IdDocTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "phone" && (
-                      <PhoneTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "currency" && (
-                      <CurrencyTableCell
-                        fields={fields}
-                        field={field}
-                        setFields={setFields}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "password" && (
-                      <StringTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                        isPassword
-                      />
-                    )}
-                    {field.type === "fullWidth" && (
-                      <StringTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                        isFullWidth
-                      />
-                    )}
-                    {field.type === "select" && (
-                      <SelectTableCell
-                        fields={fields}
-                        field={field}
-                        menuOptions={field.options}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                        isFullWidth
-                      />
-                    )}
-                    {field.type === "multipleSelect" && (
-                      <SelectTableCell
-                        fields={fields}
-                        field={field}
-                        menuOptions={field.options}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                        multiple
-                      />
-                    )}
-                    {field.type === "date" && (
-                      <DateTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "dynamicData" && (
-                      <DynamicDataTableCell
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                        multiple={field.multiple}
-                      />
-                    )}
-                    {field.type === "managerSelect" && (
-                      <ManagerSelectTableCell
-                        oldManager={fields["manager"]}
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                        multiple={field.multiple}
-                      />
-                    )}
-                    {field.type === "productList" && (
-                      <Grid
-                        direction="column"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <ProductsTableCell
-                          selectedProducts={
-                            fields[field.name]?.selectedProducts ||
-                            fields[field.name] ||
-                            []
-                          }
-                          onChange={handleChange(field.name)}
-                          size="small"
-                          required={field.required}
-                          handleProductChange={handleProductChange}
-                        />
-                        {selectedProducts.length !== 0 && (
-                          <Grid
-                            sx={{
-                              m: 2,
-                              mt: 4,
-                              border: "1px solid #ccc",
-                              borderRadius: 4,
-                            }}
-                          >
-                            <Table size="small">
-                              <TableRow>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontWeight: "bold", fontSize: 14 }}
-                                  >
-                                    Nome
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="right">
-                                  <Typography
-                                    sx={{ fontWeight: "bold", fontSize: 14 }}
-                                  >
-                                    Quantidade
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="right">
-                                  <Typography
-                                    sx={{ fontWeight: "bold", fontSize: 14 }}
-                                  >
-                                    Valor por Item
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="right">
-                                  <Typography
-                                    sx={{ fontWeight: "bold", fontSize: 14 }}
-                                  >
-                                    Total
-                                  </Typography>
-                                </TableCell>
-                              </TableRow>
-                              {selectedProducts.map((product, index) => (
-                                <TableRow key={index} sx={{ mt: 3 }}>
-                                  <TableCell>
-                                    <Typography sx={{ fontSize: 14 }}>
-                                      {product.name}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="right">
-                                    <Typography sx={{ fontSize: 14 }}>
-                                      {product.count}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="right">
-                                    <Typography sx={{ fontSize: 14 }}>
-                                      R$
-                                      {field.type === "productList"
-                                        ? product.sellValue
-                                        : product.buyValue.toFixed(2)}
-                                    </Typography>
-                                  </TableCell>
-                                  <TableCell align="right">
-                                    <Typography sx={{ fontSize: 14 }}>
-                                      R$
-                                      {(field.type === "productList"
-                                        ? product.sellValue * product.count
-                                        : product.buyValue * product.count
-                                      ).toFixed(2)}
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              ))}
-                              {selectedProducts.length > 1 && (
-                                <TableRow sx={{ mt: 3 }}>
-                                  <TableCell id="ghost" />
-                                  <TableCell id="ghost" />
-                                  <TableCell id="ghost" />
-                                  <TableCell align="right">
-                                    <Typography
-                                      sx={{
-                                        fontSize: 16,
-                                        fontWeight: "bold",
-                                      }}
-                                    >
-                                      R$
-                                      {field.type === "productList"
-                                        ? selectedProducts
-                                            .reduce(
-                                              (sum, product) =>
-                                                sum +
-                                                product.sellValue *
-                                                  product.count,
-                                              0
-                                            )
-                                            .toFixed(2)
-                                        : 0.0}
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              )}
-                              {field.type === "productList" && (
-                                <Grid sx={{ mx: 2, my: 1, width: "180%" }}>
-                                  <Typography sx={{ fontWeight: "bold" }}>
-                                    Observação:
-                                  </Typography>{" "}
-                                  <Typography sx={{ fontSize: 12 }}>
-                                    Durante o cadastro do Serviço, os valor dos
-                                    materiais <strong>não é acrescido.</strong>{" "}
-                                    É possível selecionar a opção de cobrar ou
-                                    não pelos materiais{" "}
-                                    <strong>na criação de um novo Job</strong>.
-                                  </Typography>
-                                </Grid>
-                              )}
-                            </Table>
-                          </Grid>
-                        )}
-                      </Grid>
-                    )}
-                    {field.type === "servicesList" && (
-                      <ServicesTableCell
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                        size="small"
-                        required={field.required}
-                        handleServiceChange={handleServiceChange}
-                        selectedServices={selectedServices}
-                        priceDifference={priceDifference}
-                        setPriceDifference={setPriceDifference}
-                        setFinalPrice={setFinalPrice}
-                        setOkToDispatch={setOkToDispatch}
-                      />
-                    )}
-                    {field.type === "list" && (
-                      <TextField
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                        sx={{ width: "336%" }}
-                        size="small"
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "checkbox" && (
-                      <Checkbox
-                        value={fields[field.name] || ""}
-                        onChange={handleChange(field.name)}
-                        size="small"
-                        required={field.required}
-                      />
-                    )}
-                    {field.type === "color" && (
-                      <ColorPicker
-                        fields={fields}
-                        field={field}
-                        handleChange={handleChange}
-                        modalOptions={modalOptions}
-                        required={field.required}
-                      />
-                    )}
+                    <TableCellOptions
+                      field={field}
+                      fields={fields}
+                      handleChange={handleChange}
+                      modalOptions={modalOptions}
+                      setFields={setFields}
+                      handleProductChange={handleProductChange}
+                      handleServiceChange={handleServiceChange}
+                      selectedProducts={selectedProducts}
+                      selectedServices={selectedServices}
+                      priceDifference={priceDifference}
+                      setPriceDifference={setPriceDifference}
+                      setFinalPrice={setFinalPrice}
+                      setOkToDispatch={setOkToDispatch}
+                    />
                   </Grid>
                 ))}
             </Grid>
