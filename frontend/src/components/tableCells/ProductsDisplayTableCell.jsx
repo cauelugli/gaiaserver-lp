@@ -90,7 +90,8 @@ const ProductsDisplayTableCell = (props) => {
             <TableCell align="right">
               <Typography sx={{ fontSize: 14 }}>
                 R$
-                {product.sellValue && product.sellValue * product.count.toFixed(2)}
+                {product.sellValue &&
+                  product.sellValue * product.count.toFixed(2)}
               </Typography>
             </TableCell>
           </TableRow>
@@ -133,17 +134,20 @@ const ProductsDisplayTableCell = (props) => {
               <TableCell id="ghost" />
               <TableCell id="ghost" />
               <TableCell id="ghost" />
-              <TableCell align="right" sx={{ width: 200 }}>
-                <Typography
-                  sx={{
-                    fontSize: 16,
-                    fontWeight: "bold",
-                    color: "darkgreen",
-                  }}
-                >
-                  Serviço - R${props.servicePrice}
-                </Typography>
-              </TableCell>
+              {props.servicePrice ? (
+                <TableCell align="right" sx={{ width: 200 }}>
+                  <Typography
+                    sx={{
+                      fontSize: 16,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Serviço - R${props.servicePrice}
+                  </Typography>
+                </TableCell>
+              ) : (
+                <TableCell id="ghost" />
+              )}
             </TableRow>
             <TableRow sx={{ mt: 0.5 }}>
               <TableCell id="ghost" />
@@ -167,19 +171,6 @@ const ProductsDisplayTableCell = (props) => {
               </TableCell>
             </TableRow>
           </>
-        )}
-        {props.fieldType === "productList" && (
-          <Grid sx={{ mx: 2, my: 1, width: "180%" }}>
-            <Typography sx={{ fontWeight: "bold" }}>Observação:</Typography>{" "}
-            <Typography sx={{ fontSize: 12, my: 1 }}>
-              Durante o cadastro do Serviço, os valor dos materiais{" "}
-              <strong>não é acrescido.</strong>
-            </Typography>
-            <Typography sx={{ fontSize: 12 }}>
-              É possível selecionar a opção de cobrar ou não pelos materiais{" "}
-              <strong>na criação de um novo Job</strong>.
-            </Typography>
-          </Grid>
         )}
       </Table>
     </Grid>
