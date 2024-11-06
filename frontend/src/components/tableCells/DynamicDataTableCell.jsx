@@ -91,17 +91,28 @@ const DynamicDataTableCell = (props) => {
   }, [props.field.dynamicData, props.fields.data]);
 
   const renderValue = (selected) => {
-    if (props.multiple) {
+    if (props.multiple && selected) {
       return (
         <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {selected.map((value) => (
-            <Chip
-              size="small"
-              key={value.id}
-              label={value.name}
-              style={{ margin: 2 }}
-            />
-          ))}
+          {props
+            ? props.fields[props.field.name].map((value, index) =>
+                value ? (
+                  <Chip
+                    size="small"
+                    key={index}
+                    label={value.name}
+                    sx={{ mr: 1 }}
+                  />
+                ) : null
+              )
+            : selected.map((value, index) => (
+                <Chip
+                  size="small"
+                  key={index}
+                  label={value.name}
+                  style={{ margin: 2 }}
+                />
+              ))}
         </div>
       );
     } else {
@@ -134,7 +145,15 @@ const DynamicDataTableCell = (props) => {
     <>
       <InputLabel>{props.field.label}</InputLabel>
       <Select
-        value={props.fields[props.field.name] || (props.multiple ? [] : "")}
+        value={
+          props.multiple && props.fields[props.field.name]
+            ? Array.isArray(
+                props.fields[props.field.name][props.field.dynamicData]
+              )
+              ? props.fields[props.field.name][props.field.dynamicData]
+              : [props.fields[props.field.name][props.field.dynamicData]]
+            : props.fields[props.field.name] || (props.multiple ? [] : "")
+        }
         onChange={props.handleChange(props.field.name)}
         sx={{
           width: props.multiple

@@ -33,6 +33,7 @@ export default function EditFormModel(props) {
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
   const [positions, setPositions] = React.useState([]);
+  const [members, setMembers] = React.useState([]);
   const [managers, setManagers] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
   const [finalPrice, setFinalPrice] = React.useState(0);
@@ -50,12 +51,13 @@ export default function EditFormModel(props) {
         const positions = await api.get("/get", {
           params: { model: "Position" },
         });
-        const managers = await api.get("/get", {
+        const users = await api.get("/get", {
           params: { model: "User" },
         });
         setDepartments(departments.data);
         setPositions(positions.data);
-        setManagers(managers.data.filter((user) => user.isManager));
+        setMembers(users.data.filter((user) => !user.isManager));
+        setManagers(users.data.filter((user) => user.isManager));
       } catch (error) {
         console.error("Erro ao buscar departamentos:", error);
         toast.error("Erro ao buscar departamentos. Tente novamente.", {
@@ -77,12 +79,7 @@ export default function EditFormModel(props) {
       props.options.fields.forEach((field) => {
         const fieldValue = props.target[field.name] || "";
 
-        if (Array.isArray(fieldValue)) {
-          initialFields[field.name] = { selectedProducts: fieldValue };
-        } else if (
-          field.name === "department" &&
-          typeof fieldValue === "string"
-        ) {
+        if (field.name === "department" && typeof fieldValue === "string") {
           const department = departments.find((dep) => dep._id === fieldValue);
           initialFields[field.name] = department ? department.name : "";
         } else if (
@@ -96,6 +93,13 @@ export default function EditFormModel(props) {
             (manager) => manager._id === fieldValue
           );
           initialFields[field.name] = manager ? manager : "";
+        } else if (field.name === "members") {
+          const membersFound = fieldValue.map((memberId) => {
+            return members.find((member) => member._id === memberId) || null;
+          });
+          initialFields[field.name] = membersFound.filter(
+            (member) => member !== null
+          );
         } else {
           initialFields[field.name] = fieldValue;
         }
@@ -104,7 +108,14 @@ export default function EditFormModel(props) {
     };
 
     initializeFields();
-  }, [props.options.fields, props.target, departments, positions, managers]);
+  }, [
+    props.options.fields,
+    props.target,
+    departments,
+    positions,
+    managers,
+    members,
+  ]);
 
   const modalOptions = props.options;
 
