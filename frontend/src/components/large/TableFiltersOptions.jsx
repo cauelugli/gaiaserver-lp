@@ -51,7 +51,7 @@ function TableFiltersBar({
     email: { type: "string", data: "simple" },
     mainContactName: { type: "string", data: "simple" },
     manager: { type: "dynamic", data: "manager", model: "User" },
-    members: { type: "dynamic", data: "members", model: "User" },
+    members: { type: "members", data: "members", model: "User" },
     name: { type: "string", data: "simple" },
     number: { type: "number", data: "index" },
     // payment: { type: "dynamic", data: "payment" },

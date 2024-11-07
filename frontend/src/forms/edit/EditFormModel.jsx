@@ -29,6 +29,9 @@ export default function EditFormModel(props) {
       ? `http://localhost:3000/static/${props.target.image}`
       : ""
   );
+  //fix this
+  // eslint-disable-next-line no-unused-vars
+  const [selectedMembers, setSelectedMembers] = React.useState([]);
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
@@ -311,6 +314,7 @@ export default function EditFormModel(props) {
                       setFields={setFields}
                       handleProductChange={handleProductChange}
                       handleServiceChange={handleServiceChange}
+                      selectedMembers={selectedMembers}
                       selectedProducts={selectedProducts}
                       selectedServices={selectedServices}
                       priceDifference={priceDifference}

@@ -30,8 +30,7 @@ const DynamicDataTableCell = (props) => {
           data = resUsers.data;
         } else if (
           props.field.dynamicData === "workers" ||
-          props.fields.data === "worker" ||
-          props.field.dynamicData === "members"
+          props.fields.data === "worker"
         ) {
           const resWorkers = await api.get("/get", {
             params: { model: "User" },
@@ -173,7 +172,6 @@ const DynamicDataTableCell = (props) => {
         renderValue={renderValue}
       >
         {props.field.dynamicData === "users" ||
-        props.field.dynamicData === "members" ||
         props.field.dynamicData === "managers" ||
         props.field.dynamicData === "workers" ||
         props.field.dynamicData === "allCustomers"

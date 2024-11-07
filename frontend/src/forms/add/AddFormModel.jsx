@@ -27,6 +27,9 @@ import { renderField } from "../../options/formFieldOptions";
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
   const [image, setImage] = React.useState("");
+  //fix this
+  // eslint-disable-next-line no-unused-vars
+  const [selectedMembers, setSelectedMembers] = React.useState([]);
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
@@ -252,6 +255,7 @@ export default function AddFormModel(props) {
                       modalOptions,
                       handlers,
                       okToDispatch,
+                      selectedMembers,
                       selectedProducts,
                       selectedServices
                     )}

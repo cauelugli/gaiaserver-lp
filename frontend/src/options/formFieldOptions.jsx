@@ -16,6 +16,7 @@ import SelectTableCell from "../components/tableCells/SelectTableCell";
 import ServicesTableCell from "../components/tableCells/ServicesTableCell";
 import ManagerSelectTableCell from "../components/tableCells/ManagerSelectTableCell";
 import StringTableCell from "../components/tableCells/StringTableCell";
+import MembersTableCell from "../components/tableCells/MembersTableCell";
 
 export const renderField = (
   field,
@@ -24,6 +25,7 @@ export const renderField = (
   modalOptions,
   handlers,
   okToDispatch,
+  selectedMembers,
   selectedProducts,
   selectedServices
 ) => {
@@ -160,6 +162,15 @@ export const renderField = (
           setPriceDifference={handlers.setPriceDifference}
           setFinalPrice={handlers.setFinalPrice}
           setOkToDispatch={handlers.setOkToDispatch}
+        />
+      );
+    case "members":
+      return (
+        <MembersTableCell
+          value={fields[field.name] || []}
+          size="small"
+          handleMemberChange={handlers.handleMemberChange}
+          selectedMembers={selectedMembers}
         />
       );
     case "attachments":

@@ -23,6 +23,7 @@ import ManagerSelectTableCell from "../components/tableCells/ManagerSelectTableC
 import ProductsTableCell from "../components/tableCells/ProductsTableCell";
 import ServicesTableCell from "../components/tableCells/ServicesTableCell";
 import ColorPicker from "../components/small/ColorPicker";
+import MembersTableCell from "../components/tableCells/MembersTableCell";
 
 const TableCellOptions = ({
   field,
@@ -32,6 +33,7 @@ const TableCellOptions = ({
   setFields,
   handleProductChange,
   handleServiceChange,
+  selectedMembers,
   selectedProducts,
   selectedServices,
   priceDifference,
@@ -126,6 +128,14 @@ const TableCellOptions = ({
           handleChange={handleChange}
           modalOptions={modalOptions}
           required={field.required}
+        />
+      )}
+      {field.type === "members" && (
+        <MembersTableCell
+          fields={fields}
+          field={field}
+          selectedMembers={selectedMembers}
+          modalOptions={modalOptions}
         />
       )}
       {field.type === "dynamicData" && (
