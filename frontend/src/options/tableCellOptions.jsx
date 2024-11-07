@@ -138,6 +138,7 @@ const TableCellOptions = ({
           selectedMembers={selectedMembers}
           modalOptions={modalOptions}
           handleMemberChange={handleMemberChange}
+          isEditing={true}
         />
       )}
       {field.type === "dynamicData" && (
