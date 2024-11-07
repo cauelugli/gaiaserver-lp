@@ -137,6 +137,10 @@ export default function EditFormModel(props) {
     });
   };
 
+  const handleMemberChange = (members) => {
+    setSelectedMembers(members);
+  };
+
   const handleProductChange = (product, count) => {
     setSelectedProducts((prev) => {
       const existingProductIndex = prev.findIndex(
@@ -312,6 +316,7 @@ export default function EditFormModel(props) {
                       handleChange={handleChange}
                       modalOptions={modalOptions}
                       setFields={setFields}
+                      handleMemberChange={handleMemberChange}
                       handleProductChange={handleProductChange}
                       handleServiceChange={handleServiceChange}
                       selectedMembers={selectedMembers}

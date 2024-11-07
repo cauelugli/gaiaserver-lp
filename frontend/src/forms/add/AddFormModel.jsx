@@ -11,7 +11,6 @@ const api = axios.create({
 import {
   Box,
   Button,
-  // Checkbox,
   DialogActions,
   DialogContent,
   Grid,
@@ -27,8 +26,6 @@ import { renderField } from "../../options/formFieldOptions";
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
   const [image, setImage] = React.useState("");
-  //fix this
-  // eslint-disable-next-line no-unused-vars
   const [selectedMembers, setSelectedMembers] = React.useState([]);
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
@@ -61,6 +58,10 @@ export default function AddFormModel(props) {
       ...fields,
       [fieldName]: e.target.value,
     });
+  };
+
+  const handleMemberChange = (members) => {
+    setSelectedMembers(members);
   };
 
   const handleProductChange = (product) => {
@@ -125,6 +126,8 @@ export default function AddFormModel(props) {
       uploadResponses.push(uploadResponse.data.attachmentPath);
     }
 
+    const selectedMemberIds = selectedMembers.map((member) => member._id);
+
     try {
       const uploadResponse = await api.post("/uploads/singleFile", formData);
       const imagePath = uploadResponse.data.imagePath;
@@ -134,6 +137,7 @@ export default function AddFormModel(props) {
         label: modalOptions.label,
         image: imagePath,
         model: modalOptions.model,
+        selectedMembers: selectedMemberIds,
         selectedProducts,
         services: selectedServices,
         createdBy: props.userName || "Admin",
@@ -194,6 +198,7 @@ export default function AddFormModel(props) {
 
   const handlers = {
     setFields,
+    handleMemberChange,
     handleProductChange,
     handleServiceChange,
     handleFileUpload,

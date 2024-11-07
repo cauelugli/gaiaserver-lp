@@ -29,6 +29,7 @@ router.post("/", async (req, res) => {
     selectedProducts,
     services,
     price,
+    selectedMembers,
   } = req.body;
 
   const Model = defineModel(req.body.model);
@@ -84,6 +85,7 @@ router.post("/", async (req, res) => {
   fields.department = req.body.fields.department?._id || "";
   fields.position = req.body.fields.position?._id || "";
   fields.role = req.body.fields.role?._id || "";
+  fields.members = selectedMembers;
   fields.image = image;
   fields.isManager = isManager;
   fields.createdBy = createdBy;
@@ -110,10 +112,7 @@ router.post("/", async (req, res) => {
         fields.members
       );
     } else if (req.body.model === "Job" || req.body.model === "Sale") {
-      countedItem = await addCounter(
-        savedItem._id.toString(),
-        req.body.model
-      );
+      countedItem = await addCounter(savedItem._id.toString(), req.body.model);
     } else {
       await addRoutines(req.body.model, savedItem);
     }

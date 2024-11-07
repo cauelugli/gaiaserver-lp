@@ -1,20 +1,20 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
+import {
+  Avatar,
+  Grid,
+  Typography,
+  MenuItem,
+  Select,
+  InputLabel,
+  OutlinedInput,
+  Tooltip,
+} from "@mui/material";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
-
-import {
-  Avatar,
-  Grid,
-  MenuItem,
-  Select,
-  Typography,
-  // Chip,
-  InputLabel,
-} from "@mui/material";
 
 const MembersTableCell = (props) => {
   const [options, setOptions] = React.useState([]);
@@ -33,49 +33,40 @@ const MembersTableCell = (props) => {
     fetchData();
   }, []);
 
-  // const renderValue = (selected) => {
-  //   if (selected) {
-  //     return (
-  //       <div style={{ display: "flex", flexWrap: "wrap" }}>
-  //         {props
-  //           ? props.fields[props.field.name].map((value, index) =>
-  //               value ? (
-  //                 <Chip
-  //                   size="small"
-  //                   key={index}
-  //                   label={value.name}
-  //                   sx={{ mr: 1 }}
-  //                 />
-  //               ) : null
-  //             )
-  //           : selected.map((value, index) => (
-  //               <Chip
-  //                 size="small"
-  //                 key={index}
-  //                 label={value.name}
-  //                 style={{ margin: 2 }}
-  //               />
-  //             ))}
-  //       </div>
-  //     );
-  //   }
-  // };
+  const [memberList, setMemberList] = React.useState(props.selectedMembers);
 
   return (
     <>
       <InputLabel>Membros</InputLabel>
       <Select
-        value={props.selectedMembers}
-        onChange={props.handleChange}
         sx={{ width: 200 }}
         size="small"
         multiple
+        value={memberList}
+        onChange={(event) => {
+          const selectedMembers = event.target.value;
+          setMemberList(selectedMembers);
+          props.handleMemberChange(selectedMembers);
+        }}
+        input={<OutlinedInput />}
+        renderValue={(selected) => (
+          <Grid container spacing={1}>
+            {selected.map((member) => (
+              <Grid item key={member._id}>
+                <Tooltip title={member.name}>
+                  <Avatar
+                    alt="Imagem"
+                    src={`http://localhost:3000/static/${member.image}`}
+                    sx={{ width: 24, height: 24 }}
+                  />
+                </Tooltip>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       >
         {options.map((option, index) => (
-          <MenuItem
-            value={option}
-            key={index}
-          >
+          <MenuItem value={option} key={index}>
             <Grid container direction="row" alignItems="center">
               <Avatar
                 alt="Imagem"

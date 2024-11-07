@@ -31,6 +31,7 @@ const TableCellOptions = ({
   handleChange,
   modalOptions,
   setFields,
+  handleMemberChange,
   handleProductChange,
   handleServiceChange,
   selectedMembers,
@@ -136,6 +137,7 @@ const TableCellOptions = ({
           field={field}
           selectedMembers={selectedMembers}
           modalOptions={modalOptions}
+          handleMemberChange={handleMemberChange}
         />
       )}
       {field.type === "dynamicData" && (
