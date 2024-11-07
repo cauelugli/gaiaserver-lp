@@ -274,7 +274,6 @@ export default function EditFormModel(props) {
   return (
     <form onSubmit={handleEdit}>
       <DialogHeader
-        palette={props.palette}
         title={modalOptions.label}
         femaleGender={modalOptions.femaleGender}
         extraSmall

@@ -11,7 +11,6 @@ const DialogHeader = ({
   special,
   specialTitle,
   extraSmall,
-  palette,
   isEditing,
 }) => {
   return (
