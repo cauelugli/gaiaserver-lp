@@ -38,7 +38,7 @@ export const darkTheme = createTheme({
     mode: "dark",
     background: {
       default: "#1D1D1D",
-      paper: "red",
+      paper: "#1D1D1D",
     },
   },
   components: {
