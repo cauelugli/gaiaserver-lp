@@ -312,6 +312,7 @@ export default function App() {
                         hasPermission(userData, configData, "config") ? (
                           <Config
                             topBar={userPreferences.barPosition}
+                            mainColor={configData.customization.mainColor}
                             userName={userData.name}
                             userId={userData._id}
                             refreshData={refreshData}

@@ -25,6 +25,7 @@ import { configModalOptions } from "../options/configModalOptions";
 
 export default function Config({
   topBar,
+  mainColor,
   userId,
   userName,
   configCustomization,
@@ -147,12 +148,12 @@ export default function Config({
                   sx={{
                     width: showAdvancedConfig ? 150 : 220,
                     p: showAdvancedConfig ? "15px" : "20px",
-                    border: "1px solid #ccc",
+                    border: `"1px solid #ccc"`,
                     borderRadius: 2,
                     transition: "background-color 0.3s, color 0.3s",
                     backgroundColor:
-                      hoveredIndex === index ? "#777" : "initial",
-                    color: hoveredIndex === index ? "white" : "#777",
+                      hoveredIndex === index ? "#aaa" : `${mainColor}cf`,
+                    color: "white",
                     cursor: "pointer",
                   }}
                 >
