@@ -4,7 +4,7 @@ import React from "react";
 
 import { Avatar, Button, Grid, Paper, Tooltip } from "@mui/material";
 
-import { icons } from "../../icons"
+import { icons } from "../../icons";
 
 function isId(str) {
   return /^[a-f0-9]{24}$/i.test(str);
@@ -16,6 +16,8 @@ const DataTableCell = ({ item, idIndexList, column }) => {
     const found = idIndexList.find((obj) => obj.id === id);
     return found ? found.name : id;
   };
+
+  console.log("item", item);
 
   return (
     <>
@@ -31,7 +33,11 @@ const DataTableCell = ({ item, idIndexList, column }) => {
         <Grid container direction="row" alignItems="center">
           {item.map((obj, index) => (
             <Grid item key={index} sx={{ mr: 1 }}>
-              <Tooltip title={obj.name}>
+              <Tooltip
+                title={
+                  obj.name || idIndexList.find((user) => user.id === obj)?.name
+                }
+              >
                 <Grid
                   container
                   direction="column"
@@ -43,11 +49,28 @@ const DataTableCell = ({ item, idIndexList, column }) => {
                       <icons.BuildIcon />
                     ) : (
                       <Avatar
-                        alt="Imagem do Produto"
+                        onClick={() =>
+                          console.log(
+                            "item",
+                            item,
+                            "indexlist",
+                            idIndexList,
+                            "obj",
+                            obj,
+                            "image",
+
+                            idIndexList.find((user) => user.id === obj.image)
+                              ?.image
+                          )
+                        }
+                        alt={idIndexList.find((user) => user.id === obj)?.name}
                         src={
                           obj.images
                             ? `http://localhost:3000/static${obj.images[0]}`
-                            : `http://localhost:3000/static${obj.image}`
+                            : `http://localhost:3000/static${
+                                idIndexList.find((user) => user.id === obj)
+                                  ?.image
+                              }`
                         }
                         sx={{
                           width: 30,
