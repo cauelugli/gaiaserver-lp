@@ -12,7 +12,7 @@ export const lightTheme = createTheme({
     MuiGrid: {
       styleOverrides: {
         root: {
-          "&.baseGrid": {
+          "&.noHoverBackground": {
             backgroundColor: "#f8f8ff",
             "&:hover": {
               backgroundColor: "none",
@@ -38,14 +38,14 @@ export const darkTheme = createTheme({
     mode: "dark",
     background: {
       default: "#1D1D1D",
-      paper: "#1D1D1D",
+      paper: "red",
     },
   },
   components: {
     MuiGrid: {
       styleOverrides: {
         root: {
-          "&.baseGrid": {
+          "&.noHoverBackground": {
             backgroundColor: "#1D1D1D",
             "&:hover": {
               backgroundColor: "none",

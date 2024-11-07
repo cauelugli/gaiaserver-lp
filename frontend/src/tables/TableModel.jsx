@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import axios from "axios";
 import {
   Box,
   Paper,
@@ -15,10 +14,6 @@ import ProductsTableHeader from "../../src/tables/ProductsTableHeader";
 import ProductsTable from "../../src/tables/ProductsTable";
 import StandardTable from "../../src/tables/StardardTable";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
-
 export default function TableModel(props) {
   const [idIndexList, setIdIndexList] = React.useState([]);
   const [order, setOrder] = React.useState("asc");
@@ -27,14 +22,14 @@ export default function TableModel(props) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const ids = await api.get("/idIndexList");
+        const ids = await props.api.get("/idIndexList");
         setIdIndexList(ids.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [props.items]);
+  }, [props.api, props.items]);
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -83,6 +78,7 @@ export default function TableModel(props) {
         <Table size="small">
           {props.page === "products" ? (
             <ProductsTableHeader
+              themeBGColor={props.themeBGColor}
               itemSample={props.items ? props.items[0] : null}
               order={order}
               orderBy={orderBy}
@@ -91,6 +87,7 @@ export default function TableModel(props) {
             />
           ) : (
             <TableHeader
+              themeBGColor={props.themeBGColor}
               itemIndex={props.itemIndex}
               tableColumns={props.tableColumns}
               order={order}
@@ -137,19 +134,19 @@ export default function TableModel(props) {
               />
             )}
           </TableBody>
+
+          <TablePagination
+            count={filteredRows.length}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            labelRowsPerPage={"por Página"}
+            labelDisplayedRows={({ from, to, count }) =>
+              `${from}-${to} de ${count}`
+            }
+          />
         </Table>
-        <TablePagination
-          component="div"
-          count={filteredRows.length}
-          page={page}
-          onPageChange={handleChangePage}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage={"por Página"}
-          labelDisplayedRows={({ from, to, count }) =>
-            `${from}-${to} de ${count}`
-          }
-        />
       </TableContainer>
     </Box>
   );

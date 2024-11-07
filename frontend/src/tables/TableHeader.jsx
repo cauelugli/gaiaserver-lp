@@ -5,7 +5,13 @@ import { TableRow, TableCell, TableSortLabel, Checkbox } from "@mui/material";
 
 function TableHeader(props) {
   return (
-    <TableRow>
+    <TableRow
+      sx={{
+        "&:hover": {
+          backgroundColor: props.themeBGColor,
+        },
+      }}
+    >
       {props.tableColumns[props.itemIndex].map((headCell, cellIndex) => (
         <TableCell
           key={cellIndex}
@@ -22,7 +28,10 @@ function TableHeader(props) {
           </TableSortLabel>
         </TableCell>
       ))}
-      <TableCell align="center" sx={{ fontSize: 13, fontWeight: "bold" }}>
+      <TableCell
+        align="center"
+        sx={{ fontSize: 13, fontWeight: "bold", width: 80 }}
+      >
         Ações
       </TableCell>
       {props.multiple && (

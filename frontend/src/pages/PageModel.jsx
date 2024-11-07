@@ -2,11 +2,6 @@
 import React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 import {
   Box,
@@ -82,7 +77,7 @@ export default function PageModel(props) {
     const fetchData = async () => {
       try {
         const [itemsResponse, configResponse] = await Promise.all([
-          api.get("/get", {
+          props.api.get("/get", {
             params: {
               model:
                 props.item.page === "products"
@@ -93,7 +88,7 @@ export default function PageModel(props) {
             },
           }),
 
-          api.get("/config"),
+          props.api.get("/config"),
         ]);
 
         const { filteredItems, baseItems } = getDataForPage(
@@ -121,7 +116,7 @@ export default function PageModel(props) {
     };
 
     fetchData();
-  }, [refreshData, currentPage, props.item, value]);
+  }, [props.api, refreshData, currentPage, props.item, value]);
 
   if (isLoading) {
     return (
@@ -135,6 +130,8 @@ export default function PageModel(props) {
       </Box>
     );
   }
+
+  console.log("props.palette", props.palette.background['default']);
 
   return (
     <Box sx={{ minHeight: "50vw" }}>
@@ -161,7 +158,6 @@ export default function PageModel(props) {
           currentPage !== "finance" &&
           currentPage !== "products" && (
             <PageButtonModel
-              palette={props.palette}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               configCustomization={props.configCustomization}
@@ -283,6 +279,8 @@ export default function PageModel(props) {
                 <>
                   {props.tableOrCardView ? (
                     <TableModel
+                      api={props.api}
+                      themeBGColor={props.palette.background["default"]}
                       page={props.item.page}
                       mappedItem={item}
                       items={items.filter(
@@ -339,6 +337,8 @@ export default function PageModel(props) {
                 <>
                   {props.tableOrCardView ? (
                     <TableModel
+                      api={props.api}
+                      themeBGColor={props.palette.background["default"]}
                       page={props.item.page}
                       items={items}
                       itemIndex={index}

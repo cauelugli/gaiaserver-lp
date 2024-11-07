@@ -187,7 +187,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Grid
-        className="baseGrid"
+        className="noHoverBackground"
         sx={{
           width: "auto",
           height: "auto",
@@ -359,8 +359,9 @@ export default function App() {
                           isAuthenticated(login, userData) &&
                           hasPermission(userData, configData, option.page) ? (
                             <PageModel
+                              api={api}
                               item={option}
-                              palette={theme.palette.mode}
+                              palette={theme.palette}
                               userId={userData._id}
                               userUsername={userData.username}
                               userName={userData.name}

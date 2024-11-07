@@ -24,11 +24,12 @@ function ProductsTable(props) {
                 />
               </TableCell>
               <TableCell align="left">{row.name}</TableCell>
-              <TableCell align="left">R${row.buyValue?.toFixed(2)}</TableCell>
-              <TableCell align="left">R${row.sellValue?.toFixed(2)}</TableCell>
               {row.fields?.map((field, fieldIndex) => (
                 <TableCell key={fieldIndex}>{field.value}</TableCell>
               ))}
+              <TableCell align="right">R${row.buyValue?.toFixed(2)}</TableCell>
+              <TableCell align="right">R${row.sellValue?.toFixed(2)}</TableCell>
+              <TableCell align="right">oneDay</TableCell>
               <TableCell align="center">
                 <RowButton
                   userId={props.userId}

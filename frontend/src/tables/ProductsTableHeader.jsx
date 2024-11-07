@@ -5,30 +5,26 @@ import { TableRow, TableCell, TableSortLabel, Checkbox } from "@mui/material";
 
 function ProductsTableHeader(props) {
   return (
-    <TableRow>
-      <TableCell align="left" id="image">
+    <TableRow
+      sx={{
+        "&:hover": {
+          backgroundColor: props.themeBGColor,
+        },
+      }}
+    >
+      <TableCell align="left" id="image" sx={{ width: 40 }}>
         📷
       </TableCell>
       <TableCell
         align="left"
         id="name"
-        sx={{ fontSize: 13, fontWeight: "bold" }}
+        sx={{
+          fontSize: 13,
+          fontWeight: "bold",
+          width: 250,
+        }}
       >
         Nome
-      </TableCell>
-      <TableCell
-        align="left"
-        id="buyValue"
-        sx={{ fontSize: 13, fontWeight: "bold", width: 120 }}
-      >
-        Valor de Compra
-      </TableCell>
-      <TableCell
-        align="left"
-        id="sellValue"
-        sx={{ fontSize: 13, fontWeight: "bold" }}
-      >
-        Valor de Venda
       </TableCell>
       {props && props.itemSample && props.itemSample.fields
         ? props.itemSample.fields.map((headCell, cellIndex) => (
@@ -50,7 +46,31 @@ function ProductsTableHeader(props) {
             </TableCell>
           ))
         : ""}
-      <TableCell align="center" sx={{ fontSize: 13, fontWeight: "bold" }}>
+      <TableCell
+        align="right"
+        id="buyValue"
+        sx={{ fontSize: 13, fontWeight: "bold", width: 120 }}
+      >
+        Valor de Compra
+      </TableCell>
+      <TableCell
+        align="right"
+        id="sellValue"
+        sx={{ fontSize: 13, fontWeight: "bold", width: 120 }}
+      >
+        Valor de Venda
+      </TableCell>
+      <TableCell
+        align="right"
+        id="sellValue"
+        sx={{ fontSize: 13, fontWeight: "bold", width: 80 }}
+      >
+        Vendidos
+      </TableCell>
+      <TableCell
+        align="center"
+        sx={{ fontSize: 13, fontWeight: "bold", width: 80 }}
+      >
         Ações
       </TableCell>
       {props.multiple && (

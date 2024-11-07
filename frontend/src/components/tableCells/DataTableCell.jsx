@@ -2,13 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import {
-  Avatar,
-  Grid,
-  Paper,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Avatar, Grid, Paper, Tooltip, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
 
@@ -21,13 +15,14 @@ const DataTableCell = ({ item, idIndexList, column }) => {
     const found = idIndexList.find((obj) => obj.id === id);
     if (found && found.image) {
       return found ? (
-        <Tooltip title={found.name}>
-          <Grid
-            container
-            direction="row"
-            alignItems="center"
-            justifyContent="felx-start"
-          >
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-start"
+          sx={{ maxWidth: 200 }}
+        >
+          <Tooltip title={found.name}>
             <Avatar
               alt={found.name}
               src={`http://localhost:3000/static${found.image}`}
@@ -37,29 +32,33 @@ const DataTableCell = ({ item, idIndexList, column }) => {
                 mr: 0.5,
               }}
             />
-            <Typography sx={{ fontSize: 14 }}>{found.name}</Typography>
-          </Grid>
-        </Tooltip>
+          </Tooltip>
+          <Typography sx={{ fontSize: 14 }}>{found.name}</Typography>
+        </Grid>
       ) : (
         found.name
       );
     } else {
-      return found ? found.name : "";
+      return found ? (
+        <Typography sx={{ fontSize: 14 }}>{found.name}</Typography>
+      ) : (
+        ""
+      );
     }
   };
-
-  console.log("item", item);
 
   return (
     <>
       {item === null ? (
         ""
       ) : item && typeof item === "string" && item.startsWith("/images") ? (
-        <Avatar
-          alt="Imagem do Produto"
-          src={`http://localhost:3000/static${item}`}
-          sx={{ width: 30, height: 30 }}
-        />
+        <Grid sx={{ width:50 }}>
+          <Avatar
+            alt="Imagem do Produto"
+            src={`http://localhost:3000/static${item}`}
+            sx={{ width: 30, height: 30 }}
+          />
+        </Grid>
       ) : Array.isArray(item) ? (
         <Grid container direction="row" alignItems="center">
           {item.map((obj, index) => (
@@ -121,7 +120,7 @@ const DataTableCell = ({ item, idIndexList, column }) => {
       ) : isId(item) ? (
         <>{getNameById(item)}</>
       ) : (
-        item
+        <Grid sx={{ maxWidth: 200 }}>{item}</Grid>
       )}
     </>
   );
