@@ -66,6 +66,9 @@ router.put("/", async (req, res) => {
 
   // verify cases
   fields.image = image;
+  fields.worker = req.body.fields.worker?._id || "";
+  fields.seller = req.body.fields.seller?._id || "";
+  fields.customer = req.body.fields.customer?._id || "";
   fields.role = req.body.fields.role?._id || "";
   fields.isManager = isManager;
   fields.members =
