@@ -214,6 +214,7 @@ export default function EditFormModel(props) {
         model: modalOptions.model,
         selectedProducts,
         selectedMembers: selectedMemberIds,
+        previousMembers: props.target["members"],
         services: selectedServices,
         createdBy: props.userName || "Admin",
         isManager: modalOptions.label === "Colaborador" && props.tabIndex === 1,

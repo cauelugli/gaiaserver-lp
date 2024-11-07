@@ -7,6 +7,7 @@ const {
 } = require("../../controllers/functions/notificationRoutines");
 const {
   insertMembership,
+  removeMembership,
 } = require("../../controllers/functions/updateRoutines");
 
 // EDIT ITEM
@@ -22,6 +23,7 @@ router.put("/", async (req, res) => {
     services,
     price,
     selectedMembers,
+    previousMembers,
   } = req.body;
 
   const Model = defineModel(req.body.model);
@@ -66,7 +68,8 @@ router.put("/", async (req, res) => {
   fields.image = image;
   fields.role = req.body.fields.role?._id || "";
   fields.isManager = isManager;
-  fields.members = selectedMembers;
+  fields.members =
+    selectedMembers.length === 0 ? previousMembers : selectedMembers;
   fields.products = selectedProducts;
   fields.price =
     label === "Plano de Serviços"
@@ -97,6 +100,12 @@ router.put("/", async (req, res) => {
         updatedItem._id.toString(),
         req.body.model,
         fields.members
+      );
+      await removeMembership(
+        updatedItem._id.toString(),
+        req.body.model,
+        selectedMembers,
+        previousMembers
       );
     }
 

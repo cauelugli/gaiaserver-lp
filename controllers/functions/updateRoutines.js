@@ -34,4 +34,67 @@ const insertMembership = async (itemId, model, members) => {
   }
 };
 
-module.exports = { insertMembership };
+const removeMembership = async (
+  itemId,
+  model,
+  selectedMembers,
+  previousMembers
+) => {
+  try {
+    let removedMembers = [];
+    let addedMembers = [];
+
+    if (selectedMembers.length > 0) {
+      removedMembers = previousMembers.filter(
+        (memberId) => !selectedMembers.includes(memberId)
+      );
+
+      addedMembers = selectedMembers.filter(
+        (memberId) => !previousMembers.includes(memberId)
+      );
+    }
+
+    await Promise.all(
+      removedMembers.map(async (memberId) => {
+        try {
+          const user = await User.findById(memberId);
+          if (user) {
+            user.groups = user.groups.filter(
+              (groupId) => groupId.toString() !== itemId.toString()
+            );
+            await user.save();
+          }
+        } catch (error) {
+          console.log(
+            `Erro ao remover grupo para o usuário com ID ${memberId}:`,
+            error
+          );
+        }
+      })
+    );
+
+    await Promise.all(
+      addedMembers.map(async (memberId) => {
+        try {
+          const user = await User.findById(memberId);
+          if (user) {
+            if (!user.groups.includes(itemId)) {
+              user.groups.push(itemId);
+              await user.save();
+            }
+          }
+        } catch (error) {
+          console.log(
+            `Erro ao adicionar grupo para o usuário com ID ${memberId}:`,
+            error
+          );
+        }
+      })
+    );
+
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { insertMembership, removeMembership };
