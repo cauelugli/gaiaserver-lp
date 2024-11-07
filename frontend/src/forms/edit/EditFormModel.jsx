@@ -200,6 +200,8 @@ export default function EditFormModel(props) {
     const formData = new FormData();
     formData.append("image", image);
 
+    const selectedMemberIds = selectedMembers.map((member) => member._id);
+
     try {
       const uploadResponse = await api.post("/uploads/singleFile", formData);
       const imagePath = uploadResponse.data.imagePath;
@@ -211,6 +213,7 @@ export default function EditFormModel(props) {
         image: imagePath ? imagePath : props.target.image,
         model: modalOptions.model,
         selectedProducts,
+        selectedMembers: selectedMemberIds,
         services: selectedServices,
         createdBy: props.userName || "Admin",
         isManager: modalOptions.label === "Colaborador" && props.tabIndex === 1,

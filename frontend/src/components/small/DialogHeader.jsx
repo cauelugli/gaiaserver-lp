@@ -33,7 +33,7 @@ const DialogHeader = ({
         />
         <Typography
           textAlign="center"
-          sx={{ fontSize: 20, fontWeight: "bold" }}
+          sx={{ fontSize: 18, fontWeight: "bold" }}
         >
           {special
             ? specialTitle

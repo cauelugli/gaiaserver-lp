@@ -1,13 +1,13 @@
 const User = require("../../models/models/User");
 
-const insertMembership = async (itemId, itemType, members) => {
+const insertMembership = async (itemId, model, members) => {
   try {
     await Promise.all(
       members.map(async (memberId) => {
         try {
           const user = await User.findById(memberId);
           if (user) {
-            switch (itemType) {
+            switch (model) {
               case "Department":
                 user.department = itemId;
                 break;
@@ -19,7 +19,7 @@ const insertMembership = async (itemId, itemType, members) => {
                 break;
 
               default:
-                console.log(`${itemType} desconhecido`);
+                console.log(`${model} desconhecido`);
             }
 
             await user.save();

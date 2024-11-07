@@ -5,6 +5,9 @@ const { defineModel } = require("../../controllers/functions/routeFunctions");
 const {
   notificationRoutines,
 } = require("../../controllers/functions/notificationRoutines");
+const {
+  insertMembership,
+} = require("../../controllers/functions/updateRoutines");
 
 // EDIT ITEM
 router.put("/", async (req, res) => {
@@ -18,6 +21,7 @@ router.put("/", async (req, res) => {
     selectedProducts,
     services,
     price,
+    selectedMembers,
   } = req.body;
 
   const Model = defineModel(req.body.model);
@@ -62,6 +66,7 @@ router.put("/", async (req, res) => {
   fields.image = image;
   fields.role = req.body.fields.role?._id || "";
   fields.isManager = isManager;
+  fields.members = selectedMembers;
   fields.products = selectedProducts;
   fields.price =
     label === "Plano de Serviços"
@@ -85,8 +90,16 @@ router.put("/", async (req, res) => {
       "edit",
       req.body.sourceId,
       `${req.body.model.toLowerCase()}IsEdited`
-
     );
+
+    if (req.body.model === "Department" || req.body.model === "Group") {
+      await insertMembership(
+        updatedItem._id.toString(),
+        req.body.model,
+        fields.members
+      );
+    }
+
     res.status(200).json(updatedItem);
   } catch (err) {
     console.log(err);

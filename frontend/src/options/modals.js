@@ -652,7 +652,7 @@ export const modals = {
     endpoint: "/add",
     label: "Grupo",
     femaleGender: false,
-    maxWidth: "custom350px",
+    maxWidth: "custom500px",
     fieldsSections: [
       { name: "mainInfo", label: "Informações" },
       { name: "peopleInfo", label: "Pessoas" },
