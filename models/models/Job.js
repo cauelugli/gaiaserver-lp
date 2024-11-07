@@ -75,7 +75,7 @@ jobSchema = new mongoose.Schema({
     required: true,
   },
   worker: {
-    type: Object,
+    type: String,
   },
 });
 

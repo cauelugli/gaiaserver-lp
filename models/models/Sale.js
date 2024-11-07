@@ -72,8 +72,7 @@ saleSchema = new mongoose.Schema({
     type: String,
   },
   seller: {
-    type: Object,
-    required: true,
+    type: String,
   },
   status: {
     type: String,
