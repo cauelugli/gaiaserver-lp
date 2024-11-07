@@ -2,7 +2,13 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import { Avatar, Button, Grid, Paper, Tooltip } from "@mui/material";
+import {
+  Avatar,
+  Grid,
+  Paper,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import { icons } from "../../icons";
 
@@ -11,10 +17,35 @@ function isId(str) {
 }
 
 const DataTableCell = ({ item, idIndexList, column }) => {
-  // Função para encontrar o nome correspondente ao id
   const getNameById = (id) => {
     const found = idIndexList.find((obj) => obj.id === id);
-    return found ? found.name : id;
+    if (found && found.image) {
+      return found ? (
+        <Tooltip title={found.name}>
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="felx-start"
+          >
+            <Avatar
+              alt={found.name}
+              src={`http://localhost:3000/static${found.image}`}
+              sx={{
+                width: 30,
+                height: 30,
+                mr: 0.5,
+              }}
+            />
+            <Typography sx={{ fontSize: 14 }}>{found.name}</Typography>
+          </Grid>
+        </Tooltip>
+      ) : (
+        found.name
+      );
+    } else {
+      return found ? found.name : "";
+    }
   };
 
   console.log("item", item);
@@ -49,20 +80,6 @@ const DataTableCell = ({ item, idIndexList, column }) => {
                       <icons.BuildIcon />
                     ) : (
                       <Avatar
-                        onClick={() =>
-                          console.log(
-                            "item",
-                            item,
-                            "indexlist",
-                            idIndexList,
-                            "obj",
-                            obj,
-                            "image",
-
-                            idIndexList.find((user) => user.id === obj.image)
-                              ?.image
-                          )
-                        }
                         alt={idIndexList.find((user) => user.id === obj)?.name}
                         src={
                           obj.images
