@@ -33,7 +33,7 @@ router.delete("/:sourceId/:model/:id", async (req, res) => {
 
   try {
     const deletedItem = await Model.findByIdAndDelete(id);
-    await deleteRoutines(model, id);
+    await deleteRoutines(model, deletedItem, id);
 
     await notificationRoutines(
       model,
@@ -77,7 +77,7 @@ router.delete("/multiple/:sourceId/:model/:ids", async (req, res) => {
       } else {
         const deletedItem = await Model.findByIdAndDelete(id);
         if (deletedItem) {
-          await deleteRoutines(model, id);
+          await deleteRoutines(model, deletedItem, id);
           await notificationRoutines(
             model,
             deletedItem.title || deletedItem.name,
