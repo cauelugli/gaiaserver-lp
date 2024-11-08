@@ -116,6 +116,7 @@ export default function TableModel(props) {
               />
             ) : (
               <StandardTable
+                mainColor={props.mainColor}
                 filteredRows={filteredRows}
                 startIndex={startIndex}
                 endIndex={endIndex}

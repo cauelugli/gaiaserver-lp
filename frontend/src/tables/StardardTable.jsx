@@ -40,6 +40,7 @@ function StandardTable(props) {
                 align={columnIndex === 0 ? "" : "left"}
               >
                 <DataTableCell
+                  mainColor={props.mainColor}
                   item={row[column.id]}
                   idIndexList={props.idIndexList}
                   column={column}

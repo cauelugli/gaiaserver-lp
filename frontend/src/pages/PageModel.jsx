@@ -281,6 +281,7 @@ export default function PageModel(props) {
                     <TableModel
                       api={props.api}
                       themeBGColor={props.palette.background["default"]}
+                      mainColor={props.configCustomization.mainColor}
                       page={props.item.page}
                       mappedItem={item}
                       items={items.filter(
@@ -339,6 +340,7 @@ export default function PageModel(props) {
                     <TableModel
                       api={props.api}
                       themeBGColor={props.palette.background["default"]}
+                      mainColor={props.configCustomization.mainColor}
                       page={props.item.page}
                       items={items}
                       itemIndex={index}
