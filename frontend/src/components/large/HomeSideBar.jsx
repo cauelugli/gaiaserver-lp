@@ -35,6 +35,8 @@ const customPtBrLocale = {
 dayjs.locale(customPtBrLocale);
 
 const HomeSideBar = ({ userId, handleShortcutClick, allowedLinks }) => {
+  const [selectedDay, setSelectedDay] = React.useState(dayjs());
+
   return (
     <Grid>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -50,10 +52,11 @@ const HomeSideBar = ({ userId, handleShortcutClick, allowedLinks }) => {
             borderRadius: 2,
             boxShadow: 1,
           }}
+          value={selectedDay}
+          onChange={(newDay) => setSelectedDay(newDay)}
         />
       </LocalizationProvider>
       <Grid
-        id="invader"
         sx={{
           backgroundColor: "#f8f8ff",
           width: "90%",
@@ -65,7 +68,7 @@ const HomeSideBar = ({ userId, handleShortcutClick, allowedLinks }) => {
           borderRadius: 2,
         }}
       >
-        <Grid>Selecione um fucking dia</Grid>
+        <Grid>{dayjs(selectedDay).format("DD/MM")}</Grid>
       </Grid>
       <UserShortcuts
         userId={userId}
