@@ -40,6 +40,10 @@ const initSocket = (server) => {
       io.emit("forceRefresh");
     });
 
+    socket.on("forceIndividualRefresh", () => {
+      io.emit("forceIndividualRefresh");
+    });
+
     socket.on("notificationToList", async (data) => {
       for (const roleId of data.receivers) {
         try {

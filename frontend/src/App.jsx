@@ -72,7 +72,7 @@ export default function App() {
     setShowSidebar(visibility);
   };
 
-  // force refresh from websocket
+  // force 10S TIMED refresh from websocket (for global changes)
   useEffect(() => {
     socket.on("forceRefresh", () => {
       toast.info(
@@ -96,6 +96,23 @@ export default function App() {
 
     return () => {
       socket.off("forceRefresh");
+    };
+  }, []);
+
+  // force INSTANT refresh from websocket (for individual changes)
+  useEffect(() => {
+    socket.on("forceIndividualRefresh", () => {
+      const timer = setTimeout(() => {
+        window.location.reload();
+      }, 100);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    });
+
+    return () => {
+      socket.off("forceIndividualRefresh");
     };
   }, []);
 

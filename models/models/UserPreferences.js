@@ -5,6 +5,9 @@ const userPreferencesSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  paletteColor: {
+    type: String,
+  },
   barPosition: {
     type: Boolean,
     default: false,

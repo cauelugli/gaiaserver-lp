@@ -100,6 +100,24 @@ router.put("/darkMode", async (req, res) => {
   }
 });
 
+// UPDATE PALETTE COLOR
+router.put("/paletteColor", async (req, res) => {
+  const { userId, paletteColor } = req.body;
+
+  try {
+    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    userPreferences.paletteColor = paletteColor;
+    await userPreferences.save();
+
+    res
+      .status(200)
+      .json({ message: "Palette Color updated successfully", paletteColor });
+  } catch (error) {
+    console.error("Error updating dark mode:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // UPDATE BAR POSITION
 router.put("/barPosition", async (req, res) => {
   const { userId, barPosition } = req.body;
@@ -136,8 +154,7 @@ router.put("/tableOrCardView", async (req, res) => {
   }
 });
 
-
-// UPDATE TABLE OR CARD VIEW
+// UPDATE CARD SIZE
 router.put("/cardSize", async (req, res) => {
   const { userId, cardSize } = req.body;
 

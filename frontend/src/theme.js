@@ -1,11 +1,18 @@
 import { createTheme } from "@mui/material/styles";
 
+const getUserPaletteColor = () => {
+  const userPreferences = JSON.parse(sessionStorage.getItem("userPreferences"));
+  return userPreferences?.paletteColor || "#f8f8ff";
+};
+
+const userPaletteColor = getUserPaletteColor();
+
 export const lightTheme = createTheme({
   palette: {
     mode: "light",
     background: {
-      default: "#f8f8ff",
-      paper: "#f8f8ff",
+      default: userPaletteColor,
+      paper: userPaletteColor,
     },
   },
   components: {
@@ -13,7 +20,7 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           "&.noHoverBackground": {
-            backgroundColor: "#f8f8ff",
+            backgroundColor: userPaletteColor,
             "&:hover": {
               backgroundColor: "none",
             },
@@ -37,8 +44,8 @@ export const darkTheme = createTheme({
   palette: {
     mode: "dark",
     background: {
-      default: "#1D1D1D",
-      paper: "#1D1D1D",
+      default: userPaletteColor,
+      paper: userPaletteColor,
     },
   },
   components: {
@@ -46,7 +53,7 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           "&.noHoverBackground": {
-            backgroundColor: "#1D1D1D",
+            backgroundColor: userPaletteColor,
             "&:hover": {
               backgroundColor: "none",
             },

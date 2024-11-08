@@ -4,6 +4,9 @@ import React from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:5002");
 
 import {
   Avatar,
@@ -37,12 +40,16 @@ export default function Account({
 }) {
   const [image, setImage] = React.useState("");
   const [darkMode, setDarkMode] = React.useState(userPreferences.darkMode);
+  const [paletteColor, setPaletteColor] = React.useState(
+    userPreferences.paletteColor
+  );
   const [barPosition, setBarPosition] = React.useState(
     userPreferences.barPosition
   );
 
   React.useEffect(() => {
     setDarkMode(userPreferences.darkMode);
+    setPaletteColor(userPreferences.paletteColor);
     setBarPosition(userPreferences.barPosition);
   }, [userPreferences]);
 
@@ -123,6 +130,36 @@ export default function Account({
     }
   };
 
+  const handleUpdatePaletteColor = async (newPaletteColor) => {
+    try {
+      const response = await api.put("/userPreferences/paletteColor", {
+        userId: user._id,
+        paletteColor: newPaletteColor,
+      });
+
+      if (response.data) {
+        socket.emit("forceIndividualRefresh");
+        setRefreshData(!refreshData);
+        setUserPreferences((prev) => ({
+          ...prev,
+          paletteColor: newPaletteColor,
+        }));
+        sessionStorage.setItem(
+          "userPreferences",
+          JSON.stringify(response.data)
+        );
+      }
+    } catch (err) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+      console.log(err);
+    }
+  };
+
   const handleUpdateBarPosition = async (newBarPosition) => {
     try {
       const response = await api.put("/userPreferences/barPosition", {
@@ -166,6 +203,7 @@ export default function Account({
       <>
         <Grid container sx={{ ml: 2 }}>
           <AccountPreferencesBox
+            onUpdatePaletteColor={handleUpdatePaletteColor}
             onUpdateDarkMode={handleUpdateDarkMode}
             onUpdateBarPosition={handleUpdateBarPosition}
           />
@@ -175,7 +213,7 @@ export default function Account({
           direction="column"
           justifyContent="center"
           alignItems="center"
-          sx={{ mt: "-17%" }}
+          sx={{ mt: "-9%" }}
         >
           <Box>
             <Grid
