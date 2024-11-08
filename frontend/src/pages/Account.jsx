@@ -138,7 +138,7 @@ export default function Account({
       });
 
       if (response.data) {
-        socket.emit("forceIndividualRefresh");
+        socket.emit("forceIndividualRefresh", user._id)
         setRefreshData(!refreshData);
         setUserPreferences((prev) => ({
           ...prev,

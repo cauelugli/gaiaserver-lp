@@ -113,7 +113,7 @@ router.put("/paletteColor", async (req, res) => {
       .status(200)
       .json({ message: "Palette Color updated successfully", paletteColor });
   } catch (error) {
-    console.error("Error updating dark mode:", error);
+    console.error("Error updating palette color:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

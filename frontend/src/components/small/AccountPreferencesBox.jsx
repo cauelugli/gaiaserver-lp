@@ -25,8 +25,7 @@ const AccountPreferencesBox = ({
     JSON.parse(sessionStorage.getItem("userPreferences"))?.barPosition === true
   );
   const [paletteColor, setPaletteColor] = useState(
-    JSON.parse(sessionStorage.getItem("userPreferences"))?.paletteColor ||
-      "#000000"
+    JSON.parse(sessionStorage.getItem("userPreferences"))?.paletteColor
   );
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const AccountPreferencesBox = ({
 
     const darkModeStored = preferences?.darkMode === true;
     const barPositionStored = preferences?.barPosition === true;
-    const paletteColorStored = preferences?.paletteColor || "#000000";
+    const paletteColorStored = preferences?.paletteColor;
 
     if (checkedDarkMode !== darkModeStored) {
       setCheckedDarkMode(darkModeStored);
@@ -47,7 +46,7 @@ const AccountPreferencesBox = ({
     if (paletteColor !== paletteColorStored) {
       setPaletteColor(paletteColorStored);
     }
-  }, []);
+  }, [paletteColor]);
 
   const handleChangeDarkMode = (event) => {
     const newDarkMode = event.target.checked;
@@ -97,8 +96,8 @@ const AccountPreferencesBox = ({
   };
 
   const availableColors = checkedDarkMode
-    ? ["#0D0D0D", "#1A1A1A", "#333333", "#4D4D4D", "#666666"] // Cores para o tema escuro (tons de preto/cinza)
-    : ["#FFFFFF", "#F8F8FF", "#F5F5F5", "#E0E0E0", "#CCCCCC"]; // Cores para o tema claro (tons de branco/cinza)
+    ? ["#0D0D0D", "#1A1A1A", "#333333", "#4D4D4D", "#666666"] // escuro
+    : ["#FFFFFF", "#F8F8FF", "#F5F5F5", "#E0E0E0", "#CCCCCC"]; // claro
 
   return (
     <Grid
@@ -124,7 +123,7 @@ const AccountPreferencesBox = ({
               />
             }
           />
-          <Typography sx={{ mt: 2 }}>Escolha a Cor Principal:</Typography>
+          <Typography sx={{ mt: 2 }}>Tom do Plano de Fundo</Typography>
           <Grid container spacing={1} sx={{ mt: 1 }}>
             {availableColors.map((color) => (
               <Grid item key={color}>

@@ -40,8 +40,8 @@ const initSocket = (server) => {
       io.emit("forceRefresh");
     });
 
-    socket.on("forceIndividualRefresh", () => {
-      io.emit("forceIndividualRefresh");
+    socket.on("forceIndividualRefresh", (userId) => {
+      io.emit("forceIndividualRefresh", userId);
     });
 
     socket.on("notificationToList", async (data) => {

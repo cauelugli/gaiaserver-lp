@@ -99,16 +99,26 @@ export default function App() {
     };
   }, []);
 
-  // force INSTANT refresh from websocket (for individual changes)
+  // force 2S TIMED refresh from websocket (for individual changes)
   useEffect(() => {
-    socket.on("forceIndividualRefresh", () => {
-      const timer = setTimeout(() => {
-        window.location.reload();
-      }, 100);
+    socket.on("forceIndividualRefresh", (userId) => {
+      if (userId === userData._id) {
+        toast.info("Atualização necessária! Recarregando a página", {
+          closeOnClick: false,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 950,
+          color: "success",
+        });
 
-      return () => {
-        clearTimeout(timer);
-      };
+        const timer = setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+
+        return () => {
+          clearTimeout(timer);
+        };
+      }
     });
 
     return () => {
