@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const Admin = require("../../models/models/Admin");
-const UserPreferences = require("../../models/models/UserPreferences");
 const User = require("../../models/models/User");
 
 router.post("/", async (req, res) => {
@@ -45,8 +44,6 @@ router.put("/changePassFirstAccess", async (req, res) => {
 
     user.password = hashedPass;
     user.isFirstAccess = false;
-    const newUserPreferences = new UserPreferences({ userId: req.body.userId });
-    await newUserPreferences.save();
 
     await user.save();
 

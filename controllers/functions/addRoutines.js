@@ -1,11 +1,12 @@
 const Agenda = require("../../models/models/Agenda");
+const Counters = require("../../models/models/Counters");
 const Department = require("../../models/models/Department");
+const Job = require("../../models/models/Job");
 const Position = require("../../models/models/Position");
 const Role = require("../../models/models/Role");
-const Counters = require("../../models/models/Counters");
-const User = require("../../models/models/User");
-const Job = require("../../models/models/Job");
 const Sale = require("../../models/models/Sale");
+const User = require("../../models/models/User");
+const UserPreferences = require("../../models/models/UserPreferences");
 
 async function addRoutines(model, source) {
   try {
@@ -42,6 +43,9 @@ async function addRoutines(model, source) {
           },
           { upsert: true }
         );
+
+        const newUserPreferences = new UserPreferences({ userId: source._id});
+        await newUserPreferences.save();
 
         break;
       case "Department":

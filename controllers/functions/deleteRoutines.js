@@ -57,6 +57,8 @@ async function deleteRoutines(model, deletedItem, sourceId) {
           }
         }
 
+        await UserPreferences.deleteOne({ userId: sourceId.toString() });
+
         break;
 
       case "Department":
