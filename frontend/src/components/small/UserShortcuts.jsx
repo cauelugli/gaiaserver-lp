@@ -77,9 +77,9 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
           ? shortcuts.filter((shortcut) => shortcut.isActive).length * 50 + 120
           : 45,
         width: "auto",
-        backgroundColor: "#eee",
-        border: "1px solid #ddd",
-        borderRadius: 4,
+        backgroundColor: "#f8f8ff",
+        border: "1px solid #e7e7ee",
+        borderRadius: 3,
         mt: 1,
       }}
     >

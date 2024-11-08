@@ -138,7 +138,7 @@ export default function Account({
       });
 
       if (response.data) {
-        socket.emit("forceIndividualRefresh", user._id)
+        socket.emit("forceIndividualRefresh", user._id);
         setRefreshData(!refreshData);
         setUserPreferences((prev) => ({
           ...prev,
@@ -200,207 +200,203 @@ export default function Account({
       <Typography sx={{ fontSize: 25, ml: 2, mb: 2, fontWeight: "bold" }}>
         Perfil
       </Typography>
-      <>
-        <Grid container sx={{ ml: 2 }}>
-          <AccountPreferencesBox
-            onUpdatePaletteColor={handleUpdatePaletteColor}
-            onUpdateDarkMode={handleUpdateDarkMode}
-            onUpdateBarPosition={handleUpdateBarPosition}
-          />
-        </Grid>
-        <Grid
-          container
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          sx={{ mt: "-9%" }}
-        >
-          <Box>
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-between"
+        alignItems="flex-start"
+      >
+        <AccountPreferencesBox
+          onUpdatePaletteColor={handleUpdatePaletteColor}
+          onUpdateDarkMode={handleUpdateDarkMode}
+          onUpdateBarPosition={handleUpdateBarPosition}
+        />
+
+        <Box>
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            cursor="pointer"
+            sx={{ mb: 3 }}
+          >
             <Grid
               container
-              direction="column"
+              direction="row"
               alignItems="center"
               justifyContent="center"
-              cursor="pointer"
-              sx={{ mb: 3 }}
             >
+              <Avatar
+                alt="Imagem do Usuário"
+                src={`http://localhost:3000/static/${user.image}`}
+                sx={{
+                  width: 230,
+                  height: 230,
+                  opacity: image ? 0.5 : 1,
+                }}
+              />
+              {image && (
+                <Avatar
+                  alt="Nova Imagem do Usuário"
+                  src={URL.createObjectURL(image)}
+                  sx={{ ml: 3, width: 230, height: 230 }}
+                />
+              )}
+            </Grid>
+
+            <input
+              accept="image/*"
+              style={{ display: "none" }}
+              id="raised-button-file"
+              multiple
+              type="file"
+              onChange={(e) => {
+                const selectedImage = e.target.files[0];
+                setImage(selectedImage);
+              }}
+            />
+            <label htmlFor="raised-button-file">
+              <Button
+                variant="outlined"
+                color="primary"
+                component="span"
+                size="small"
+                startIcon={<icons.FileUploadIcon />}
+                sx={{ mt: 2 }}
+              >
+                Nova Imagem
+              </Button>
+            </label>
+            {image && (
               <Grid
                 container
                 direction="row"
-                alignItems="center"
-                justifyContent="center"
+                justifyContent="space-evenly"
+                sx={{ mt: 2 }}
               >
-                <Avatar
-                  alt="Imagem do Usuário"
-                  src={`http://localhost:3000/static/${user.image}`}
-                  sx={{
-                    width: 230,
-                    height: 230,
-                    opacity: image ? 0.5 : 1,
-                  }}
-                />
-                {image && (
-                  <Avatar
-                    alt="Nova Imagem do Usuário"
-                    src={URL.createObjectURL(image)}
-                    sx={{ ml: 3, width: 230, height: 230 }}
-                  />
-                )}
-              </Grid>
-
-              <input
-                accept="image/*"
-                style={{ display: "none" }}
-                id="raised-button-file"
-                multiple
-                type="file"
-                onChange={(e) => {
-                  const selectedImage = e.target.files[0];
-                  setImage(selectedImage);
-                }}
-              />
-              <label htmlFor="raised-button-file">
                 <Button
-                  variant="outlined"
-                  color="primary"
-                  component="span"
+                  variant="contained"
+                  color="error"
                   size="small"
-                  startIcon={<icons.FileUploadIcon />}
-                  sx={{ mt: 2 }}
+                  startIcon={<icons.ClearIcon />}
+                  onClick={() => setImage("")}
                 >
-                  Nova Imagem
+                  Cancelar
                 </Button>
-              </label>
-              {image && (
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-evenly"
-                  sx={{ mt: 2 }}
+                <Button
+                  variant="contained"
+                  color="success"
+                  size="small"
+                  startIcon={<icons.CheckIcon />}
+                  onClick={handleChangeImage}
                 >
-                  <Button
-                    variant="contained"
-                    color="error"
-                    size="small"
-                    startIcon={<icons.ClearIcon />}
-                    onClick={() => setImage("")}
-                  >
-                    Cancelar
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="success"
-                    size="small"
-                    startIcon={<icons.CheckIcon />}
-                    onClick={handleChangeImage}
-                  >
-                    Salvar Nova Imagem
-                  </Button>
-                </Grid>
-              )}
-            </Grid>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <Typography sx={{ fontSize: "14px", color: "#777" }}>
-                      Nome
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography sx={{ fontSize: "14px", color: "#777" }}>
-                      E-mail
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography sx={{ fontSize: "14px", color: "#777" }}>
-                      Telefone
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography sx={{ fontSize: "14px", color: "#777" }}>
-                      Departamento
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <Typography>{user.name}</Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography>{user.email}</Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography>{user.phone}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>
-                      {user.department ? (
-                        <Grid container direction="user">
-                          <Paper
-                            elevation={0}
-                            sx={{
-                              mr: 1,
-                              mt: 0.5,
-                              width: 15,
-                              height: 15,
-                              borderRadius: 50,
-                              backgroundColor: user.department.color,
-                            }}
-                          ></Paper>
-                          <Typography>{user.department.name}</Typography>
-                        </Grid>
-                      ) : (
-                        "-"
-                      )}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-            <Table size="small" sx={{ mt: 4 }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell align="center">
-                    <Typography sx={{ fontSize: "14px", color: "#777" }}>
-                      Cargo
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography sx={{ fontSize: "14px", color: "#777" }}>
-                      Nome de Operador
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography sx={{ fontSize: "14px", color: "#777" }}>
-                      Perfil de Acesso
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell align="center">
-                    <Typography>
-                      {user.position ? user.position.name : "-"}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography>
-                      {user.username ? user.username : "-"}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography>{user.role ? user.role.name : "-"}</Typography>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Box>
-        </Grid>
-      </>
+                  Salvar Nova Imagem
+                </Button>
+              </Grid>
+            )}
+          </Grid>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    Nome
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    E-mail
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    Telefone
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    Departamento
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <Typography>{user.name}</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography>{user.email}</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography>{user.phone}</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>
+                    {user.department ? (
+                      <Grid container direction="user">
+                        <Paper
+                          elevation={0}
+                          sx={{
+                            mr: 1,
+                            mt: 0.5,
+                            width: 15,
+                            height: 15,
+                            borderRadius: 50,
+                            backgroundColor: user.department.color,
+                          }}
+                        ></Paper>
+                        <Typography>{user.department.name}</Typography>
+                      </Grid>
+                    ) : (
+                      "-"
+                    )}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <Table size="small" sx={{ mt: 4 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    Cargo
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    Nome de Operador
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                    Perfil de Acesso
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell align="center">
+                  <Typography>
+                    {user.position ? user.position.name : "-"}
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography>{user.username ? user.username : "-"}</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography>{user.role ? user.role.name : "-"}</Typography>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Box>
+        <Grid id="ghost"/>
+        <Grid id="ghost"/>
+      </Grid>
     </Box>
   );
 }
