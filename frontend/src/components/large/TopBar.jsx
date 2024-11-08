@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Divider, List, ListItemButton, Typography } from "@mui/material";
+import { Divider, Grid, List, ListItemButton, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
 
@@ -104,12 +104,11 @@ const TopBar = ({ configData, user }) => {
           </ListItemButton>
         </Link>
         {filteredOptions.map((option, index) => (
-          <>
+          <Grid key={index}>
             {option.label === "Acessos" && (
               <Divider orientation="vertical" flexItem />
             )}
             <Link
-              key={index}
               to={option.link}
               style={{
                 textDecoration: "none",
@@ -157,7 +156,7 @@ const TopBar = ({ configData, user }) => {
                 </Typography>
               </ListItemButton>
             </Link>
-          </>
+          </Grid>
         ))}
       </List>
     </>

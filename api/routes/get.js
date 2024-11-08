@@ -36,9 +36,10 @@ router.get("/notifications/:userId", async (req, res) => {
   try {
     // Encontra o usuário e retorna apenas a lista de notificações
     const user = await Model.findById(userId, "notifications");
-
+    
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return "";
+      // that's life
     }
 
     res.status(200).json(user.notifications);

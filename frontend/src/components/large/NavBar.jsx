@@ -17,7 +17,9 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
         const notifications = await api.get(`/get/notifications/${user._id}`);
         setNotifications(notifications.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        if (error.response.status !== 404) {
+          console.error("Error fetching data:", error);
+        }
       }
     };
     fetchData();
@@ -28,7 +30,9 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
       const notifications = await api.get(`/get/notifications/${user._id}`);
       setNotifications(notifications.data);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      if (error.response.status !== 404) {
+        console.error("Error fetching data:", error);
+      }
     }
   };
 
@@ -37,7 +41,7 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
       // doesn't apply to 'self' emitter user
       if (notificationData && user._id !== notificationData.emitterId) {
         fetchData();
-      } 
+      }
     };
 
     socket.on("newNotification", handleNewNotification);

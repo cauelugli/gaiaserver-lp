@@ -131,8 +131,6 @@ export default function PageModel(props) {
     );
   }
 
-  console.log("props.palette", props.palette.background['default']);
-
   return (
     <Box sx={{ minHeight: "50vw" }}>
       <Grid

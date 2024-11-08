@@ -43,9 +43,9 @@ export default function CardModel({
                 sx={{ my: 1 }}
               >
                 <>
-                  {item.items.map((item) => (
+                  {item.items.map((item,index) => (
                     <Grid
-                      key
+                      key={index}
                       direction="column"
                       alignItems="center"
                       sx={{ mr: 1 }}
