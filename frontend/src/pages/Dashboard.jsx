@@ -1,45 +1,13 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  CircularProgress,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
-import { icons } from "../icons";
-
-import MyCalendar from "../components/large/MyCalendar";
-// import SmartReports from "../components/large/SmartReports";
-import WorkerSelect from "../components/small/selects/WorkerSelect";
-
-const Dashboard = ({
-  // users,
-  // requests,
-  // customers,
-  userId,
-  userUsername,
-  configDashboard,
-  configAgenda,
-  configCustomization,
-  topBar,
-}) => {
+const Dashboard = ({ configDashboard, topBar }) => {
   const [isLoading, setIsLoading] = React.useState(true);
-
-  const [worker, setWorker] = React.useState("");
-  const [expanded, setExpanded] = React.useState(
-    userUsername === "admin" ? false : true
-  );
-
-  const [showAgenda, setShowAgenda] = React.useState(true);
 
   React.useEffect(() => {
     if (configDashboard) {
-      setShowAgenda(configDashboard.showAgenda);
       setIsLoading(false);
     }
   }, [configDashboard]);
@@ -62,61 +30,6 @@ const Dashboard = ({
       <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }}>
         Dashboard
       </Typography>
-      {showAgenda && (
-        <>
-          <Typography
-            sx={{
-              opacity: userUsername === "admin" && showAgenda ? 1 : 0,
-              fontSize: 12,
-              textAlign: "right",
-              cursor: "pointer",
-              color: configCustomization
-                ? configCustomization.mainColor
-                : "black",
-            }}
-            onClick={() => setExpanded(!expanded)}
-          >
-            {expanded ? "Minimizar Agenda" : "Maximizar Agenda"}
-          </Typography>
-
-          <Accordion sx={{ m: 2 }} expanded={expanded}>
-            {userUsername === "admin" ? (
-              <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
-                <Grid
-                  container
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="flex-start"
-                >
-                  <Typography sx={{ fontSize: 22, fontWeight: "bold", mr: 2 }}>
-                    Agenda
-                  </Typography>
-                  {userUsername === "admin" && (
-                    <WorkerSelect setWorker={setWorker} needId />
-                  )}
-                </Grid>
-              </AccordionSummary>
-            ) : (
-              <AccordionSummary
-                expandIcon={<icons.ArrowDropDownIcon />}
-                onClick={() => setExpanded(!expanded)}
-              >
-                <Typography sx={{ fontSize: 22, fontWeight: "bold" }}>
-                  Minha Agenda
-                </Typography>
-              </AccordionSummary>
-            )}
-            <AccordionDetails>
-              <MyCalendar
-                userId={userId}
-                config={configAgenda}
-                selectedWorker={worker}
-              />
-            </AccordionDetails>
-          </Accordion>
-        </>
-      )}
-      {/* <SmartReports requests={requests} customers={customers} users={users} /> */}
     </Box>
   );
 };

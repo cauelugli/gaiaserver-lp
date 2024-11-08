@@ -1,3 +1,4 @@
+const Agenda = require("../../models/models/Agenda");
 const Department = require("../../models/models/Department");
 const Position = require("../../models/models/Position");
 const Role = require("../../models/models/Role");
@@ -30,17 +31,18 @@ async function addRoutines(model, source) {
           });
         }
 
-        // if (groups && groups.length > 0) {
-        //   await Promise.all(
-        //     groups
-        //       .filter((groupId) => groupId)
-        //       .map((groupId) =>
-        //         Group.findByIdAndUpdate(groupId, {
-        //           $push: { members: source._id.toString() },
-        //         })
-        //       )
-        //   );
-        // }
+        await Agenda.findOneAndUpdate(
+          {},
+          {
+            $push: {
+              users: {
+                [source._id.toString()]: [],
+              },
+            },
+          },
+          { upsert: true }
+        );
+
         break;
       case "Department":
         if (manager) {
