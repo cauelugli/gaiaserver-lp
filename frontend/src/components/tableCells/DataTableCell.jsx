@@ -4,7 +4,6 @@ import React from "react";
 
 import {
   Avatar,
-  CircularProgress,
   Grid,
   Paper,
   Tooltip,
@@ -43,13 +42,7 @@ const DataTableCell = ({ item, idIndexList, column, mainColor }) => {
           <Typography sx={{ fontSize: 14 }}>{found.name}</Typography>
         </Grid>
       ) : (
-        <CircularProgress sx={{ color: mainColor }} size="30px" />
-      );
-    } else {
-      return found ? (
-        <Typography sx={{ fontSize: 14 }}>{found.name}</Typography>
-      ) : (
-        <CircularProgress sx={{ color: mainColor }} size="30px" />
+        found === undefined && "-"
       );
     }
   };
