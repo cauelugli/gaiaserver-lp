@@ -52,7 +52,19 @@ const MembersTableCell = (props) => {
   return (
     <>
       <InputLabel>Membros</InputLabel>
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, my: 1 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 1,
+          mb: 1,
+          border: "1px solid #aaa",
+          borderRadius: 1,
+          height: 38,
+          minWidth: 200,
+          maxWidth: 400,
+        }}
+      >
         {memberList.map((member) => (
           <Box key={member._id}>
             <Tooltip title={`Remover ${member.name}`}>
@@ -80,7 +92,20 @@ const MembersTableCell = (props) => {
       </Box>
 
       <InputLabel>Adicionar Membro</InputLabel>
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, my: 1 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 1,
+          mb: 1,
+          border: "1px solid #aaa",
+          borderRadius: 1,
+          minHeight: 38,
+          maxHeight: 76,
+          minWidth: 200,
+          maxWidth: 400,
+        }}
+      >
         {options
           .filter(
             (option) => !memberList.some((member) => member._id === option._id)

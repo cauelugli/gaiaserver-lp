@@ -194,7 +194,6 @@ const pageOptions = [
       [
         {
           id: "color",
-          // colorIcon
           label: "🎨",
         },
         {
@@ -522,7 +521,7 @@ const pageOptions = [
       [
         {
           id: "name",
-          label: "Nome do Cargo",
+          label: "Nome",
         },
         {
           id: "members",

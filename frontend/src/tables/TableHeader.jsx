@@ -16,7 +16,11 @@ function TableHeader(props) {
         <TableCell
           key={cellIndex}
           align={cellIndex === 0 ? "" : "left"}
-          sx={{ fontSize: 13, fontWeight: "bold" }}
+          sx={{
+            fontSize: 13,
+            fontWeight: "bold",
+            width: cellIndex === 0 && 50,
+          }}
           sortDirection={props.orderBy === headCell.id ? props.order : false}
         >
           <TableSortLabel
