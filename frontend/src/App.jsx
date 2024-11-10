@@ -99,7 +99,7 @@ export default function App() {
     };
   }, []);
 
-  // force 2S TIMED refresh from websocket (for individual changes)
+  // force 1S TIMED refresh from websocket (for individual changes)
   useEffect(() => {
     socket.on("forceIndividualRefresh", (userId) => {
       if (userId === userData._id) {
@@ -107,13 +107,13 @@ export default function App() {
           closeOnClick: false,
           pauseOnHover: false,
           theme: "colored",
-          autoClose: 950,
+          autoClose: 450,
           color: "success",
         });
 
         const timer = setTimeout(() => {
           window.location.reload();
-        }, 2000);
+        }, 1000);
 
         return () => {
           clearTimeout(timer);
