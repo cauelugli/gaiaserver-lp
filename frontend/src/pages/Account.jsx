@@ -113,11 +113,17 @@ export default function Account({
           autoClose: 1200,
         });
         setRefreshData(!refreshData);
-        setUserPreferences((prev) => ({ ...prev, darkMode: newDarkMode }));
+        setUserPreferences((prev) => ({
+          ...prev,
+          darkMode: newDarkMode,
+          paletteColor: newDarkMode ? "#000000" : "#ffffff",
+        }));
         sessionStorage.setItem(
           "userPreferences",
           JSON.stringify(response.data)
         );
+        const newPaletteColor = newDarkMode ? "#000000" : "#ffffff";
+        await handleUpdatePaletteColor(newPaletteColor);
       }
     } catch (err) {
       toast.error("Houve algum erro...", {
@@ -394,8 +400,8 @@ export default function Account({
             </TableBody>
           </Table>
         </Box>
-        <Grid id="ghost"/>
-        <Grid id="ghost"/>
+        <Grid id="ghost" />
+        <Grid id="ghost" />
       </Grid>
     </Box>
   );
