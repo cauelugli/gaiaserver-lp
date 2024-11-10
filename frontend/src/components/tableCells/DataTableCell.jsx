@@ -2,13 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import {
-  Avatar,
-  Grid,
-  Paper,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Avatar, Grid, Paper, Tooltip, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
 
@@ -42,8 +36,10 @@ const DataTableCell = ({ item, idIndexList, column, mainColor }) => {
           <Typography sx={{ fontSize: 14 }}>{found.name}</Typography>
         </Grid>
       ) : (
-        found === undefined && "-"
+        "-"
       );
+    } else if (found) {
+      return found.name || found;
     }
   };
 
