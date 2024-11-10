@@ -325,6 +325,7 @@ export default function EditFormModel(props) {
                       selectedMembers={selectedMembers}
                       selectedProducts={selectedProducts}
                       selectedServices={selectedServices}
+                      color={props.target["color"]}
                       priceDifference={priceDifference}
                       setPriceDifference={setPriceDifference}
                       setFinalPrice={setFinalPrice}

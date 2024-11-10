@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
-import { Popover, Typography } from "@mui/material";
+import { InputLabel, Popover } from "@mui/material";
 import { CirclePicker } from "react-color";
-import colors from '../../options/colorList';
+import colors from "../../options/colorList";
 
-const ColorPicker = ({ fields, field, handleChange, required }) => {
-  const [color, setColor] = useState(fields[field.name] || "#fff");
+const ColorPicker = ({ prevColor, fields, field, handleChange }) => {
+  const [color, setColor] = useState(
+    prevColor ? prevColor : fields[field.name] || "#fff"
+  );
   const [colorAnchorEl, setColorAnchorEl] = useState(null);
 
   const handleClickColor = (event) => {
@@ -24,11 +26,12 @@ const ColorPicker = ({ fields, field, handleChange, required }) => {
 
   return (
     <>
+      <InputLabel>Cor</InputLabel>
       <div onClick={handleClickColor}>
         <div
           style={{
-            width: "38px",
-            height: "38px",
+            width: "36px",
+            height: "36px",
             border: "2px solid lightgrey",
             borderRadius: "30%",
             backgroundColor: color,
@@ -58,9 +61,6 @@ const ColorPicker = ({ fields, field, handleChange, required }) => {
           }}
         />
       </Popover>
-      {required && !color && (
-        <Typography color="error">Este campo é obrigatório</Typography>
-      )}
     </>
   );
 };

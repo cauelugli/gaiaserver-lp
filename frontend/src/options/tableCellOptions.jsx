@@ -37,6 +37,7 @@ const TableCellOptions = ({
   selectedMembers,
   selectedProducts,
   selectedServices,
+  color,
   priceDifference,
   setPriceDifference,
   setFinalPrice,
@@ -291,6 +292,7 @@ const TableCellOptions = ({
       )}
       {field.type === "color" && (
         <ColorPicker
+          prevColor={color}
           fields={fields}
           field={field}
           handleChange={handleChange}

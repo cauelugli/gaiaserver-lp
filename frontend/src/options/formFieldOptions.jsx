@@ -196,13 +196,11 @@ export const renderField = (
     case "color":
       return (
         <>
-          <InputLabel>{field.label}</InputLabel>
           <ColorPicker
             fields={fields}
             field={field}
             handleChange={handleChange}
             modalOptions={modalOptions}
-            required={field.required}
           />
         </>
       );
