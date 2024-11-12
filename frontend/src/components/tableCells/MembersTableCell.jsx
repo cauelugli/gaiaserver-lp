@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
-import { Avatar, Tooltip, Badge, Box, InputLabel } from "@mui/material";
+import { Avatar, Tooltip, Badge, Box, InputLabel, Grid } from "@mui/material";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -58,6 +58,7 @@ const MembersTableCell = (props) => {
           flexWrap: "wrap",
           gap: 1,
           mb: 1,
+          px: 1,
           border: "1px solid #aaa",
           borderRadius: 1,
           height: 38,
@@ -65,30 +66,37 @@ const MembersTableCell = (props) => {
           maxWidth: 400,
         }}
       >
-        {memberList.map((member) => (
-          <Box key={member._id}>
-            <Tooltip title={`Remover ${member.name}`}>
-              <Badge
-                badgeContent="X"
-                color="error"
-                onClick={() => handleRemoveMember(member)}
-                sx={{
-                  cursor: "pointer",
-                  "& .MuiBadge-dot": {
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-start"
+        >
+          {memberList.map((member, index) => (
+            <Box key={index} sx={{ mr: 1 }}>
+              <Tooltip title={`Remover ${member.name}`}>
+                <Badge
+                  badgeContent="X"
+                  color="error"
+                  onClick={() => handleRemoveMember(member)}
+                  sx={{
                     cursor: "pointer",
-                    backgroundColor: "red",
-                  },
-                }}
-              >
-                <Avatar
-                  alt={member.name}
-                  src={`http://localhost:3000/static/${member.image}`}
-                  sx={{ width: 40, height: 40 }}
-                />
-              </Badge>
-            </Tooltip>
-          </Box>
-        ))}
+                    "& .MuiBadge-dot": {
+                      cursor: "pointer",
+                      backgroundColor: "red",
+                    },
+                  }}
+                >
+                  <Avatar
+                    alt={member.name}
+                    src={`http://localhost:3000/static/${member.image}`}
+                    sx={{ width: 28, height: 28 }}
+                  />
+                </Badge>
+              </Tooltip>
+            </Box>
+          ))}
+        </Grid>
       </Box>
 
       <InputLabel>Adicionar Membro</InputLabel>
@@ -98,6 +106,7 @@ const MembersTableCell = (props) => {
           flexWrap: "wrap",
           gap: 1,
           mb: 1,
+          px: 1,
           border: "1px solid #aaa",
           borderRadius: 1,
           minHeight: 38,
@@ -106,21 +115,33 @@ const MembersTableCell = (props) => {
           maxWidth: 400,
         }}
       >
-        {options
-          .filter(
-            (option) => !memberList.some((member) => member._id === option._id)
-          )
-          .map((option) => (
-            <Box key={option._id} onClick={() => handleAddMember(option)}>
-              <Tooltip title={`Adicionar ${option.name}`}>
-                <Avatar
-                  alt={option.name}
-                  src={`http://localhost:3000/static/${option.image}`}
-                  sx={{ width: 40, height: 40, cursor: "pointer" }}
-                />
-              </Tooltip>
-            </Box>
-          ))}
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-start"
+        >
+          {options
+            .filter(
+              (option) =>
+                !memberList.some((member) => member._id === option._id)
+            )
+            .map((option, index) => (
+              <Box
+                key={index}
+                onClick={() => handleAddMember(option)}
+                sx={{ mr: 1 }}
+              >
+                <Tooltip title={`Adicionar ${option.name}`}>
+                  <Avatar
+                    alt={option.name}
+                    src={`http://localhost:3000/static/${option.image}`}
+                    sx={{ width: 28, height: 28, cursor: "pointer" }}
+                  />
+                </Tooltip>
+              </Box>
+            ))}
+        </Grid>
       </Box>
     </>
   );
