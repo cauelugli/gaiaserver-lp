@@ -213,8 +213,8 @@ export default function EditFormModel(props) {
         image: imagePath ? imagePath : props.target.image,
         model: modalOptions.model,
         selectedProducts,
-        selectedMembers:
-          selectedMemberIds.length > 0 ? selectedMemberIds : [0],
+
+        selectedMembers: selectedMemberIds,
         previousMembers: props.target["members"],
         services: selectedServices,
         createdBy: props.userName || "Admin",

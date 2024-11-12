@@ -71,8 +71,7 @@ router.put("/", async (req, res) => {
   fields.customer = req.body.fields.customer?._id || "";
   fields.role = req.body.fields.role?._id || "";
   fields.isManager = isManager;
-  fields.members =
-    selectedMembers[0] === 0 ? previousMembers : selectedMembers;
+  fields.members = selectedMembers;
   fields.products = selectedProducts;
   fields.price =
     label === "Plano de Serviços"

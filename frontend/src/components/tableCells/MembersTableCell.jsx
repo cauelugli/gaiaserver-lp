@@ -32,7 +32,9 @@ const MembersTableCell = (props) => {
   React.useEffect(() => {
     if (isEditing && fields["members"] && fields["members"].length > 0) {
       setMemberList(fields["members"]);
+      props.handleMemberChange(fields["members"])
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditing, fields]);
 
   const handleAddMember = (member) => {
