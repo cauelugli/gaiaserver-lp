@@ -23,7 +23,7 @@ router.delete("/:sourceId/:model/:id", async (req, res) => {
 
   // you don't 'delete' an operator, you reset User's data to blank
   if (model === "Operator") {
-    await Model["User"].findByIdAndUpdate(
+    await Model.findByIdAndUpdate(
       id,
       { $set: { username: "", password: "", role: "", isFirstAccess: true } },
       { new: true }
