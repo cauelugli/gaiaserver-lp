@@ -93,7 +93,8 @@ export default function PageModel(props) {
 
         const { filteredItems, baseItems } = getDataForPage(
           itemsResponse,
-          props.item.page
+          props.item.page,
+          props.item.models[value]
         );
 
         setItems(filteredItems);

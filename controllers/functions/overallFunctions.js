@@ -124,7 +124,7 @@ export function isArray(data) {
   return Array.isArray(data) ? data : [];
 }
 
-export function getDataForPage(itemsResponse, page) {
+export function getDataForPage(itemsResponse, page, model) {
   const filters = {
     products: (item) => item.name,
     stock: (item) => item.name,
@@ -132,26 +132,12 @@ export function getDataForPage(itemsResponse, page) {
 
   const filterFunc = filters[page] || (() => true);
 
-  const filteredItems = isArray(itemsResponse.data).filter(filterFunc);
+  let filteredItems = isArray(itemsResponse.data).filter(filterFunc);
   const baseItems = isArray(itemsResponse.data).filter((item) => !item.name);
+
+  if (model === "Operator") {
+    filteredItems = filteredItems.filter((user) => user.username);
+  }
 
   return { filteredItems, baseItems };
 }
-
-// export function darkenColor(hex, factor) {
-//   hex = hex.replace(/^#/, "");
-//   const bigint = parseInt(hex, 16);
-//   const r = (bigint >> 16) & 255;
-//   const g = (bigint >> 8) & 255;
-//   const b = bigint & 255;
-
-//   const newR = Math.max(0, Math.round(r - factor));
-//   const newG = Math.max(0, Math.round(g - factor));
-//   const newB = Math.max(0, Math.round(b - factor));
-
-//   const darkenedHex = `#${((newR << 16) | (newG << 8) | newB)
-//     .toString(16)
-//     .padStart(6, "0")}`;
-
-//   return darkenedHex;
-// }
