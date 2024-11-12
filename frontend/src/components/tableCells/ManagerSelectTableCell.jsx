@@ -127,7 +127,7 @@ const ManagerSelectTableCell = (props) => {
           </MenuItem>
         ))}
       </Select>
-      {selectedManager && selectedManager._id !== props.oldManager._id && (
+      {props.oldManager&& selectedManager && selectedManager._id !== props.oldManager._id && (
         <IconButton onClick={clearSelection} size="small">
           <icons.ClearIcon sx={{ color: "red", fontSize: 13 }} />
         </IconButton>
