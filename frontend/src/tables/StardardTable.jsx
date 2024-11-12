@@ -44,6 +44,7 @@ function StandardTable(props) {
                   item={row[column.id]}
                   idIndexList={props.idIndexList}
                   column={column}
+                  isRequestsApproverManager={row._id === props.requestsApproverManager}
                 />
               </TableCell>
             ))}

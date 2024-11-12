@@ -21,10 +21,7 @@ import TableOrCardSelector from "../components/small/TableOrCardSelector";
 import CardModel from "../components/cards/CardModel";
 import ProductsTableButton from "../components/small/buttons/ProductsTableButton";
 
-import {
-  getDataForPage,
-  isArray,
-} from "../../../controllers/functions/overallFunctions";
+import { getDataForPage } from "../../../controllers/functions/overallFunctions";
 
 import TableFiltersBar from "../components/large/TableFiltersBar";
 
@@ -46,7 +43,6 @@ export default function PageModel(props) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [newDataRefreshButton, setNewDataRefreshButton] = React.useState(true);
-  const [configItem, setConfigItem] = React.useState({});
   const [value, setValue] = React.useState(0);
 
   const [items, setItems] = React.useState([]);
@@ -76,7 +72,7 @@ export default function PageModel(props) {
 
     const fetchData = async () => {
       try {
-        const [itemsResponse, configResponse] = await Promise.all([
+        const [itemsResponse] = await Promise.all([
           props.api.get("/get", {
             params: {
               model:
@@ -99,10 +95,6 @@ export default function PageModel(props) {
 
         setItems(filteredItems);
         setBaseItems(baseItems);
-
-        const configData = isArray(configResponse.data);
-        setConfigItem(configData[0]?.props?.endpoint || null);
-
         setIsLoading(false);
       } catch (error) {
         toast.error("Houve algum erro...", {
@@ -292,7 +284,7 @@ export default function PageModel(props) {
                       userId={props.userId}
                       userRole={props.userRole}
                       userDepartment={props.userDepartment}
-                      configData={configItem}
+                      configData={props.configData[props.item.page]}
                       refreshData={refreshData}
                       setRefreshData={setRefreshData}
                       topBar={props.topBar}
@@ -349,7 +341,7 @@ export default function PageModel(props) {
                       userId={props.userId}
                       userRole={props.userRole}
                       userDepartment={props.userDepartment}
-                      configData={configItem}
+                      configData={props.configData[props.item.page]}
                       refreshData={refreshData}
                       setRefreshData={setRefreshData}
                       topBar={props.topBar}
@@ -357,6 +349,9 @@ export default function PageModel(props) {
                       multiple={multiple}
                       selectedMultipleItems={selectedMultipleItems}
                       setSelectedMultipleItems={setSelectedMultipleItems}
+                      requestsApproverManager={
+                        props.configData["requests"].requestsApproverManager
+                      }
                     />
                   ) : (
                     <Grid container spacing={2}>

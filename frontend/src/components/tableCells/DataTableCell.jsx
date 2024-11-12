@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import { Avatar, Grid, Paper, Tooltip, Typography } from "@mui/material";
+import { Avatar, Badge, Grid, Paper, Tooltip, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
 
@@ -10,7 +10,13 @@ function isId(str) {
   return /^[a-f0-9]{24}$/i.test(str);
 }
 
-const DataTableCell = ({ item, idIndexList, column, mainColor }) => {
+const DataTableCell = ({
+  item,
+  isRequestsApproverManager,
+  idIndexList,
+  column,
+  mainColor,
+}) => {
   const getNameById = (id) => {
     const found = idIndexList.find((obj) => obj.id === id);
     if (found && found.image) {
@@ -48,12 +54,43 @@ const DataTableCell = ({ item, idIndexList, column, mainColor }) => {
       {item === null ? (
         ""
       ) : item && typeof item === "string" && item.startsWith("/images") ? (
-        <Grid sx={{ width: 50 }}>
-          <Avatar
-            alt="Imagem do Produto"
-            src={`http://localhost:3000/static${item}`}
-            sx={{ width: 30, height: 30 }}
-          />
+        <Grid
+          sx={{
+            width: 50,
+          }}
+        >
+          {isRequestsApproverManager ? (
+            <Tooltip title="Gerente Aprovador de Solicitações">
+              <Badge
+                color="warning" 
+                overlap="circular"
+                variant="dot"
+                sx={{
+                  "& .MuiBadge-dot": {
+                    backgroundColor: "yellow",
+                  },
+                }}
+              >
+                <Avatar
+                  alt="Imagem"
+                  src={`http://localhost:3000/static${item}`}
+                  sx={{
+                    width: 30,
+                    height: 30,
+                  }}
+                />
+              </Badge>
+            </Tooltip>
+          ) : (
+            <Avatar
+              alt="Imagem"
+              src={`http://localhost:3000/static${item}`}
+              sx={{
+                width: 30,
+                height: 30,
+              }}
+            />
+          )}
         </Grid>
       ) : Array.isArray(item) ? (
         <Grid container direction="row" alignItems="center">

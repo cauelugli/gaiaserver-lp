@@ -116,6 +116,7 @@ export default function TableModel(props) {
               />
             ) : (
               <StandardTable
+                configData={props.configData}
                 mainColor={props.mainColor}
                 filteredRows={filteredRows}
                 startIndex={startIndex}
@@ -132,6 +133,7 @@ export default function TableModel(props) {
                 multiple={props.multiple}
                 selectedMultipleItems={props.selectedMultipleItems}
                 setSelectedMultipleItems={props.setSelectedMultipleItems}
+                requestsApproverManager={props.requestsApproverManager}
               />
             )}
           </TableBody>
