@@ -19,7 +19,7 @@ function TableHeader(props) {
           sx={{
             fontSize: 13,
             fontWeight: "bold",
-            width: cellIndex === 0 && 50,
+            width: cellIndex === 0 && headCell.id !== "name" && 50,
           }}
           sortDirection={props.orderBy === headCell.id ? props.order : false}
         >
