@@ -79,43 +79,54 @@ export function isButtonDisabled(
 }
 
 export function checkAvailability(dynamicData, option) {
-  if (dynamicData === "members" || dynamicData === "managers") {
-    if (option.department && typeof option.department === "string") {
-      return true;
-    }
-  }
-  if (dynamicData === "resolvableRequest") {
-    if (
-      option === "Aberto" ||
-      option === "Aprovação Solicitada" ||
-      option === "Resolvido"
-    ) {
-      return true;
-    }
-  }
-  if (dynamicData === "approvableRequest") {
-    if (
-      option === "Aprovado" ||
-      option === "Aprovação Solicitada" ||
-      option === "Resolvido"
-    ) {
-      return true;
-    }
-  }
-  if (dynamicData === "manager") {
-    if (option.department && typeof option.department === "string") {
-      return true;
-    }
-  }
-  if (dynamicData === "creatableUsername") {
-    if (option) {
-      return true;
-    }
-  }
-  if (dynamicData === "removableUsername") {
-    if (!option) {
-      return true;
-    }
+  switch (dynamicData) {
+    case "members":
+    case "managers":
+      if (option.department && typeof option.department === "string") {
+        return true;
+      }
+      break;
+
+    case "resolvableRequest":
+      if (
+        option === "Aberto" ||
+        option === "Aprovação Solicitada" ||
+        option === "Resolvido"
+      ) {
+        return true;
+      }
+      break;
+
+    case "approvableRequest":
+      if (
+        option === "Aprovado" ||
+        option === "Aprovação Solicitada" ||
+        option === "Resolvido"
+      ) {
+        return true;
+      }
+      break;
+
+    case "manager":
+      if (option.department && typeof option.department === "string") {
+        return true;
+      }
+      break;
+
+    case "creatableUsername":
+      if (option) {
+        return true;
+      }
+      break;
+
+    case "removableUsername":
+      if (!option) {
+        return true;
+      }
+      break;
+
+    default:
+      return false;
   }
   return false;
 }
