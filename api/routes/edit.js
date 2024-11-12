@@ -72,7 +72,7 @@ router.put("/", async (req, res) => {
   fields.role = req.body.fields.role?._id || "";
   fields.isManager = isManager;
   fields.members =
-    selectedMembers.length === 0 ? previousMembers : selectedMembers;
+    selectedMembers[0] === 0 ? previousMembers : selectedMembers;
   fields.products = selectedProducts;
   fields.price =
     label === "Plano de Serviços"
@@ -102,7 +102,7 @@ router.put("/", async (req, res) => {
       await insertMembership(
         updatedItem._id.toString(),
         req.body.model,
-        fields.members
+        selectedMembers
       );
       await removeMembership(
         updatedItem._id.toString(),
