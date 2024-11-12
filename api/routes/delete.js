@@ -25,7 +25,7 @@ router.delete("/:sourceId/:model/:id", async (req, res) => {
   if (model === "Operator") {
     await Model.findByIdAndUpdate(
       id,
-      { $set: { username: "", password: "", role: "", isFirstAccess: true } },
+      { $set: { username: "", password: "", role: "", alreadyLogin: false } },
       { new: true }
     );
     return res.status(200).json("Item deletado com sucesso");
@@ -70,7 +70,7 @@ router.delete("/multiple/:sourceId/:model/:ids", async (req, res) => {
         await Model["User"].findByIdAndUpdate(
           id,
           {
-            $set: { username: "", password: "", role: "", isFirstAccess: true },
+            $set: { username: "", password: "", role: "", alreadyLogin: false },
           },
           { new: true }
         );

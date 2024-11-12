@@ -48,10 +48,6 @@ router.post("/", async (req, res) => {
   }
 
   if (req.body.model === "Operator") {
-    console.log(
-      "req.body.fields firstAccessPassword",
-      req.body.fields["firstAccessPassword"]
-    );
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(
       req.body.fields["firstAccessPassword"],

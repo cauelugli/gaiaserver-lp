@@ -923,7 +923,7 @@ export const modals = {
       {
         fieldSection: "mainInfo",
         name: "firstAccessPassword",
-        label: "Senha do Primeiro Acesso",
+        label: "Senha Primeiro Acesso",
         type: "string",
         required: true,
       },

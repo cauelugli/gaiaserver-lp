@@ -21,8 +21,8 @@ const Login = () => {
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("1234");
   const [loading, setLoading] = useState(false);
-  const [isFirstAccess, setIsFirstAccess] = useState(false);
-  const [isFirstAccessUserId, setIsFirstAccessUserId] = useState(null);
+  const [alreadyLogin, setAlreadyLogin] = useState(false);
+  const [alreadyLoginUserId, setAlreadyLoginUserId] = useState(null);
   const [newPassword, setNewPassword] = useState("");
 
   const handleTry = async (e) => {
@@ -34,9 +34,9 @@ const Login = () => {
         password,
       });
       if (res.data) {
-        if (res.data.isFirstAccess) {
-          setIsFirstAccess(true);
-          setIsFirstAccessUserId(res.data._id);
+        if (res.data.alreadyLogin === false) {
+          setAlreadyLogin(true);
+          setAlreadyLoginUserId(res.data._id);
           setLoading(false);
           toast.warning(
             "É necessária Alteração de Senha em seu Primeiro Acesso",
@@ -119,7 +119,7 @@ const Login = () => {
     try {
       setLoading(true);
       const res = await api.put("/auth/changePassFirstAccess", {
-        userId: isFirstAccessUserId,
+        userId: alreadyLoginUserId,
         password: newPassword,
       });
       if (res.data) {
@@ -133,7 +133,7 @@ const Login = () => {
           }
         );
       }
-      setIsFirstAccess(false);
+      setAlreadyLogin(false);
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -190,7 +190,7 @@ const Login = () => {
           </div>
         ) : (
           <>
-            {isFirstAccess ? (
+            {alreadyLogin ? (
               <form onSubmit={handleNewPassword}>
                 <Grid
                   container

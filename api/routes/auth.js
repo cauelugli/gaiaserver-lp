@@ -43,7 +43,8 @@ router.put("/changePassFirstAccess", async (req, res) => {
     const hashedPass = await bcrypt.hash(req.body.password, salt);
 
     user.password = hashedPass;
-    user.isFirstAccess = false;
+    // not realy "logged in", but now is able to
+    user.alreadyLogin = true;
 
     await user.save();
 

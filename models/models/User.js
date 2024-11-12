@@ -42,9 +42,9 @@ userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  isFirstAccess: {
+  alreadyLogin: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   isManager: {
     type: Boolean,

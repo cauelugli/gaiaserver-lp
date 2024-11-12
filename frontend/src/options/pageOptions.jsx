@@ -503,6 +503,10 @@ const pageOptions = [
           id: "role",
           label: "Perfil de Acesso",
         },
+        {
+          id: "alreadyLogin",
+          label: "Login Realizado",
+        },
       ],
       [
         {

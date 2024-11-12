@@ -97,6 +97,12 @@ const DataTableCell = ({ item, idIndexList, column, mainColor }) => {
             </Grid>
           ))}
         </Grid>
+      ) : typeof item === "boolean" ? (
+        item ? (
+          "Sim"
+        ) : (
+          "Não"
+        )
       ) : typeof item === "object" ? (
         item.name
       ) : typeof item === "number" ? (
