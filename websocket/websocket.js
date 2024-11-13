@@ -117,7 +117,6 @@ const initSocket = (server) => {
     });
 
     socket.on("notifyAssignee", async (data) => {
-      console.log("data", data);
       try {
         let user;
         user = await User.findById(data.receiver);
