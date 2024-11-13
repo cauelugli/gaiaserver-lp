@@ -283,22 +283,17 @@ export default function AddFormModel(props) {
                 (fields.worker || fields.seller) &&
                 fields.scheduledToAssignee === true &&
                 fields.service && (
-                  <>
-                    <ScheduleTableCell
-                      api={props.api}
-                      assignee={fields.worker._id || fields.seller._id}
-                      selectedDate={fields.scheduledTo}
-                      serviceLength={{
-                        executionTime: fields.service.executionTime,
-                        sessions: fields.service.sessions,
-                      }}
-                      selectedSchedule={selectedSchedule}
-                      setSelectedSchedule={setSelectedSchedule}
-                    />
-                    <Button onClick={() => console.log("selectedSchedule", selectedSchedule)}>
-                      oie
-                    </Button>
-                  </>
+                  <ScheduleTableCell
+                    api={props.api}
+                    assignee={fields.worker._id || fields.seller._id}
+                    selectedDate={fields.scheduledTo}
+                    serviceLength={{
+                      executionTime: fields.service.executionTime,
+                      sessions: fields.service.sessions,
+                    }}
+                    selectedSchedule={selectedSchedule}
+                    setSelectedSchedule={setSelectedSchedule}
+                  />
                 )}
             </Grid>
           </Box>
