@@ -2,11 +2,6 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import { toast } from "react-toastify";
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
 
 import {
   Box,
@@ -119,7 +114,7 @@ export default function AddFormModel(props) {
       const formData = new FormData();
       formData.append("attachment", file);
 
-      const uploadResponse = await api.post(
+      const uploadResponse = await props.api.post(
         "/uploads/singleAttachment",
         formData
       );
@@ -129,9 +124,9 @@ export default function AddFormModel(props) {
     const selectedMemberIds = selectedMembers.map((member) => member._id);
 
     try {
-      const uploadResponse = await api.post("/uploads/singleFile", formData);
+      const uploadResponse = await props.api.post("/uploads/singleFile", formData);
       const imagePath = uploadResponse.data.imagePath;
-      const res = await api.post(`${modalOptions.endpoint}`, {
+      const res = await props.api.post(`${modalOptions.endpoint}`, {
         sourceId: props.userId,
         fields,
         label: modalOptions.label,
@@ -170,7 +165,12 @@ export default function AddFormModel(props) {
           theme: "colored",
           autoClose: 1200,
         });
+        props.socket.emit("newDataRefreshButton", {
+          page: props.page,
+          userId: props.userId,
+        });
       }
+
       props.setOpenAdd(!props.openAdd);
       !props.setRefreshData(!props.refreshData);
     } catch (err) {

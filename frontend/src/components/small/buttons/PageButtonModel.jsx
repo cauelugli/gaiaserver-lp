@@ -56,7 +56,7 @@ export default function PageButtonModel(props) {
           sx={{
             position: "relative",
             "&:hover .hover-text": {
-              opacity: 1, 
+              opacity: 1,
               marginLeft: "4px",
             },
           }}
@@ -116,6 +116,9 @@ export default function PageButtonModel(props) {
           }
         >
           <AddFormModel
+            api={props.api}
+            socket={props.socket}
+            page={props.page}
             buttonProps={props}
             options={currentPageOptions}
             selectedOptionLabel={selectedOption.label}

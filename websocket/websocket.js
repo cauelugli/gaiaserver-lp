@@ -36,6 +36,10 @@ const initSocket = (server) => {
       console.log("\nWebsocket Test OK!\n");
     });
 
+    socket.on("newDataRefreshButton", (data) => {
+      io.emit("newDataRefreshButton", data);
+    });
+
     socket.on("forceRefresh", () => {
       io.emit("forceRefresh");
     });

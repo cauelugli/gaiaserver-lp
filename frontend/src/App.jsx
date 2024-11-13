@@ -388,6 +388,7 @@ export default function App() {
                           hasPermission(userData, configData, option.page) ? (
                             <PageModel
                               api={api}
+                              socket={socket}
                               item={option}
                               palette={theme.palette}
                               userId={userData._id}
