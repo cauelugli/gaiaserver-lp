@@ -141,14 +141,16 @@ const initSocket = (server) => {
         Para: ${data.target.scheduledTo}
         `;
 
-        user.notifications.push({
-          read: false,
-          title: parsedTitleString,
-          body: notificationBody,
-          createdAt: new Date().toISOString(),
-        });
+        if (user) {
+          user.notifications.push({
+            read: false,
+            title: parsedTitleString,
+            body: notificationBody,
+            createdAt: new Date().toISOString(),
+          });
 
-        await user.save();
+          await user.save();
+        }
       } catch (err) {
         console.error("Erro ao adicionar notificação", err);
       }

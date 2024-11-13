@@ -70,7 +70,7 @@ async function notificationRoutines(
         socket.emit("notifyAssignee", {
           target: {
             customer: target.customer,
-            service: target.service.name,
+            service: target.service ? target.service.name : "",
             scheduledTo: target.scheduledTo,
             createdBy: target.createdBy,
             title: target.title,
