@@ -12,12 +12,13 @@ import {
   Typography,
 } from "@mui/material";
 
+import { isButtonDisabled } from "../../../../controllers/functions/overallFunctions";
+
 import DialogHeader from "../../components/small/DialogHeader";
 import ImageTableCell from "../../components/tableCells/ImageTableCell";
-
-import { isButtonDisabled } from "../../../../controllers/functions/overallFunctions";
-import { renderField } from "../../options/formFieldOptions";
 import ScheduleTableCell from "../../components/tableCells/ScheduleTableCell";
+
+import { renderField } from "../../options/formFieldOptions";
 
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
