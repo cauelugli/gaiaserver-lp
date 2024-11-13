@@ -139,6 +139,11 @@ const initSocket = (server) => {
         }
         Cliente: ${data.target.customer}
         Para: ${data.target.scheduledTo}
+        ${
+          data.target.scheduleTime
+            ? ` Horário: ${data.target.scheduleTime}`
+            : ""
+        }
         `;
 
         if (user) {

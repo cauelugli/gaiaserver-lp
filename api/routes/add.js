@@ -30,6 +30,7 @@ router.post("/", async (req, res) => {
     services,
     price,
     selectedMembers,
+    selectedSchedule,
   } = req.body;
 
   const Model = defineModel(req.body.model);
@@ -89,6 +90,7 @@ router.post("/", async (req, res) => {
   fields.isManager = isManager;
   fields.createdBy = createdBy;
   fields.products = selectedProducts;
+  fields.scheduleTime = selectedSchedule;
   fields.price =
     label === "Plano de Serviços"
       ? parseFloat(

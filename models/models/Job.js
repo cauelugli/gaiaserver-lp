@@ -59,7 +59,7 @@ jobSchema = new mongoose.Schema({
   scheduledTo: {
     type: String,
   },
-  scheduledTime: {
+  scheduleTime: {
     type: String,
   },
   scheduledToAssignee: {
