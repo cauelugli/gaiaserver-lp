@@ -34,9 +34,16 @@ const customPtBrLocale = {
 
 dayjs.locale(customPtBrLocale);
 
-const HomeSideBar = ({ userId, handleShortcutClick, allowedLinks }) => {
+const HomeSideBar = ({
+  userId,
+  handleShortcutClick,
+  allowedLinks,
+  userAgenda,
+}) => {
   const [selectedDay, setSelectedDay] = React.useState(dayjs());
 
+  console.log("userAgenda", userAgenda);
+  
   return (
     <Grid>
       <LocalizationProvider dateAdapter={AdapterDayjs}>

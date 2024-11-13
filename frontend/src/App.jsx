@@ -53,6 +53,7 @@ function hasPermission(user, configData, routePath) {
 export default function App() {
   const [configData, setConfigData] = useState([]);
   const [userPreferences, setUserPreferences] = useState([]);
+  const [userAgenda, setUserAgenda] = useState([]);
   const [allowedLinks, setAllowedLinks] = useState([]);
   const login = JSON.parse(sessionStorage.getItem("login"));
   const userData = JSON.parse(sessionStorage.getItem("userData"));
@@ -126,12 +127,16 @@ export default function App() {
     };
   }, []);
 
-  // fetch data
+  // fetch main data
   useEffect(() => {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
         const preferences = await api.get(`/userPreferences/${userData._id}`);
+        const agenda = await api.get("/get", {
+          params: { model: "Agenda", userId: userData._id },
+        });
+        setUserAgenda(agenda.data);
         setConfigData(config.data[0]);
         setUserPreferences(preferences.data);
         sessionStorage.setItem(
@@ -145,7 +150,7 @@ export default function App() {
     fetchData();
   }, [refreshData]);
 
-  // displaying notifications
+  // displaying notifications on Login
   useEffect(() => {
     const handleUnload = () => {
       const readNotifications = Object.values(userData.notifications)
@@ -270,6 +275,7 @@ export default function App() {
                             configDashboard={configData.dashboard}
                             onMount={() => handleSidebarVisibility(false)}
                             onUnmount={() => handleSidebarVisibility(true)}
+                            userAgenda={userAgenda}
                           />
                         ) : (
                           <Navigate to="/login" />
@@ -305,10 +311,10 @@ export default function App() {
                           <Dashboard
                             userId={userData._id}
                             userUsername={userData.username}
-                            configAgenda={configData.agenda}
                             configDashboard={configData.dashboard}
                             configCustomization={configData.customization}
                             topBar={userPreferences.barPosition}
+                            userAgenda={userAgenda}
                           />
                         ) : (
                           <Navigate to="/login" />
@@ -394,12 +400,12 @@ export default function App() {
                               userId={userData._id}
                               userUsername={userData.username}
                               userName={userData.name}
+                              userAgenda={userAgenda}
                               setUserPreferences={setUserPreferences}
                               configData={configData}
                               topBar={userPreferences.barPosition}
                               tableOrCardView={userPreferences.tableOrCardView}
                               cardSize={userPreferences.cardSize}
-                              configAgenda={configData.agenda}
                               configDashboard={configData.dashboard}
                               configCustomization={configData.customization}
                             />
@@ -427,7 +433,6 @@ export default function App() {
               fullWidth={shortcutModalState.fullWidth}
               maxWidth={shortcutModalState.maxWidth}
               selectedItem={shortcutModalState.selectedItem}
-              configAgenda={configData.agenda}
               onClose={() => setShortcutModalState({ show: false })}
             />
           )}

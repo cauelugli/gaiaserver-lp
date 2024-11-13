@@ -3,6 +3,7 @@ const Service = require("../../models/models/Service");
 const User = require("../../models/models/User");
 
 const models = {
+  Agenda: require("../../models/models/Agenda"),
   Client: require("../../models/models/Client"),
   Customer: require("../../models/models/Customer"),
   Department: require("../../models/models/Department"),

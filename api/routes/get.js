@@ -11,7 +11,7 @@ const { defineModel } = require("../../controllers/functions/routeFunctions");
 
 // GET ALL ITEMS BASED ON MODEL PARAMETER
 router.get("/", async (req, res) => {
-  const { model } = req.query;
+  const { model, userId } = req.query;
   const Model = defineModel(model);
 
   if (!Model) {
@@ -20,7 +20,19 @@ router.get("/", async (req, res) => {
   }
 
   try {
-    let data = await Model.find();
+    let data;
+    if (userId) {
+      data = await Model.find({
+        users: {
+          $elemMatch: {
+            _id: userId, 
+          },
+        },
+      });
+    } else {
+      data = await Model.find();
+    }
+
     res.status(200).json(data);
   } catch (err) {
     console.log("\nerr", err, "\n");
@@ -36,7 +48,7 @@ router.get("/notifications/:userId", async (req, res) => {
   try {
     // Encontra o usuário e retorna apenas a lista de notificações
     const user = await Model.findById(userId, "notifications");
-    
+
     if (!user) {
       return "";
       // that's life

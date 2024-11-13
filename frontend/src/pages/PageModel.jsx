@@ -59,7 +59,7 @@ export default function PageModel(props) {
     setTableFilters({});
     setSelectedMultipleItems([]);
     setMultiple(false);
-    setNewDataRefreshButton(true)
+    setNewDataRefreshButton(true);
   };
 
   React.useEffect(() => {
@@ -69,7 +69,7 @@ export default function PageModel(props) {
       setCurrentPage(props.item.page);
       setMultiple(false);
       setSelectedMultipleItems([]);
-      setNewDataRefreshButton(true)
+      setNewDataRefreshButton(true);
     }
 
     const fetchData = async () => {

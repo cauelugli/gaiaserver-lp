@@ -14,6 +14,7 @@ const Home = ({
   onUnmount,
   configData,
   handleShortcutClick,
+  userAgenda,
 }) => {
   React.useEffect(() => {
     if (onMount) {
@@ -42,6 +43,7 @@ const Home = ({
             userId={userId}
             handleShortcutClick={handleShortcutClick}
             allowedLinks={allowedLinks}
+            userAgenda={userAgenda}
           />
         </Grid>
       </Grid>
