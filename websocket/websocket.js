@@ -113,7 +113,44 @@ const initSocket = (server) => {
         }
       }
 
-      io.emit("newNotification", data);
+      io.emit("newNotificationToList", data);
+    });
+
+    socket.on("notifyAssignee", async (data) => {
+      console.log("data", data);
+      try {
+        let user;
+        user = await User.findById(data.receiver);
+
+        const parsedTitleString = `${
+          data.label === "Job"
+            ? "Novo Job atribuido a Você"
+            : "Nova Venda atribuida a Você"
+        } `;
+        const notificationBody = `Olá, ${data.receiver}! ${
+          data.label === "Job"
+            ? "Um novo Job foi atribuído"
+            : "Uma nova Venda foi atribuída"
+        } a Você ${data.label === "Job" ? `: "${data.target.title}"` : "."} ${
+          data.label === "Job" ? `Serviço: ${data.target.service}` : ""
+        }
+        Cliente: ${data.target.customer}
+        Para: ${data.target.scheduledTo}
+        `;
+
+        user.notifications.push({
+          read: false,
+          title: parsedTitleString,
+          body: notificationBody,
+          createdAt: new Date().toISOString(),
+        });
+
+        await user.save();
+      } catch (err) {
+        console.error("Erro ao adicionar notificação", err);
+      }
+
+      io.emit("newNotificationToAssignee", data);
     });
 
     socket.on("disconnect", () => {

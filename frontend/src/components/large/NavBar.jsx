@@ -37,17 +37,25 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
   };
 
   React.useEffect(() => {
-    const handleNewNotification = (notificationData) => {
+    const handleNewNotificationToList = (notificationData) => {
       // doesn't apply to 'self' emitter user
       if (notificationData && user._id !== notificationData.emitterId) {
         fetchData();
       }
     };
+    const handleNewNotificationToAssignee = (notificationData) => {
+      // doesn't apply to 'self' emitter user
+      if (notificationData && user._id !== notificationData.receiver) {
+        fetchData();
+      }
+    };
 
-    socket.on("newNotification", handleNewNotification);
+    socket.on("newNotificationToList", handleNewNotificationToList);
+    socket.on("newNotificationToAssignee", handleNewNotificationToAssignee);
 
     return () => {
-      socket.off("newNotification", handleNewNotification);
+      socket.off("newNotificationToList", handleNewNotificationToList);
+      socket.off("newNotificationToAssignee", handleNewNotificationToAssignee);
     };
   });
 

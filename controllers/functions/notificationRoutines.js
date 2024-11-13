@@ -67,6 +67,18 @@ async function notificationRoutines(
           receivers: config[model.toLowerCase()][notificationList],
           label: "Job",
         });
+        socket.emit("notifyAssignee", {
+          target: {
+            customer: target.customer,
+            service: target.service.name,
+            scheduledTo: target.scheduledTo,
+            createdBy: target.createdBy,
+            title: target.title,
+          },
+          sourceId,
+          receiver: target.worker,
+          label: "Job",
+        });
         break;
       case "Sale":
         socket.emit("notificationToList", {
@@ -77,6 +89,17 @@ async function notificationRoutines(
           receivers: config[model.toLowerCase()][notificationList],
           label: "Venda",
           isFemale: true,
+        });
+        socket.emit("notifyAssignee", {
+          target: {
+            customer: target.customer,
+            products: target.products,
+            scheduledTo: target.deliveryScheduledTo,
+            createdBy: target.createdBy,
+          },
+          sourceId,
+          receiver: target.seller,
+          label: "Venda",
         });
         break;
       case "Department":
