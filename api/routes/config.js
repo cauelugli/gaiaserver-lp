@@ -27,6 +27,32 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET SPECIFIC CONFIG
+router.get("/specific", async (req, res) => {
+  const { key, items } = req.query;
+
+  try {
+    const config = await Config.findOne();
+    if (!config || !config[key]) {
+      return res
+        .status(404)
+        .json({ message: `Key "${key}" not found in config` });
+    }
+
+    const data = {};
+    items.forEach((item) => {
+      if (config[key][item] !== undefined) {
+        data[item] = config[key][item];
+      }
+    });
+
+    res.status(200).json(data);
+  } catch (err) {
+    console.error("\nError fetching specific config:", err);
+    res.status(500).json({ message: "Error fetching specific config" });
+  }
+});
+
 // DASHBOARD
 router.put("/dashboard", async (req, res) => {
   try {
