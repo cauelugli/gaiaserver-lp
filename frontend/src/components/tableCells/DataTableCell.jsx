@@ -60,27 +60,29 @@ const DataTableCell = ({
           }}
         >
           {isRequestsApproverManager ? (
-            <Tooltip title="Gerente Aprovador de Solicitações">
-              <Badge
-                color="warning" 
-                overlap="circular"
-                variant="dot"
+            <Grid
+              container
+              direction="row"
+              alignItems="center"
+              justifyContent="space-evenly"
+            >
+              <Avatar
+                alt="Imagem"
+                src={`http://localhost:3000/static${item}`}
                 sx={{
-                  "& .MuiBadge-dot": {
-                    backgroundColor: "yellow",
-                  },
+                  width: 30,
+                  height: 30,
                 }}
-              >
-                <Avatar
-                  alt="Imagem"
-                  src={`http://localhost:3000/static${item}`}
+              />
+              <Tooltip title="Gerente Aprovador de Solicitações">
+                <icons.StarIcon
                   sx={{
-                    width: 30,
-                    height: 30,
+                    width: 16,
+                    height: 16,
                   }}
                 />
-              </Badge>
-            </Tooltip>
+              </Tooltip>
+            </Grid>
           ) : (
             <Avatar
               alt="Imagem"

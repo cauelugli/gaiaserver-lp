@@ -60,6 +60,7 @@ import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import SearchIcon from "@mui/icons-material/Search";
 import SellIcon from "@mui/icons-material/Sell";
 import SettingsIcon from "@mui/icons-material/Settings";
+import StarIcon from "@mui/icons-material/StarPurple500";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 import TableViewIcon from "@mui/icons-material/TableView";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
@@ -132,6 +133,7 @@ const icons = {
   SearchIcon,
   SellIcon,
   SettingsIcon,
+  StarIcon,
   TableRowsIcon,
   TableViewIcon,
   ThumbDownIcon,
