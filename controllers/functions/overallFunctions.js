@@ -152,3 +152,51 @@ export function getDataForPage(itemsResponse, page, model) {
 
   return { filteredItems, baseItems };
 }
+
+export function createScheduleSlots(minTime, maxTime, serviceLengthLabel) {
+  let serviceLength;
+  switch (serviceLengthLabel) {
+    case "30 min":
+      serviceLength = 30;
+      break;
+    case "1h":
+      serviceLength = 60;
+      break;
+    case "1:30h":
+      serviceLength = 90;
+      break;
+    case "2h":
+      serviceLength = 120;
+      break;
+    case "2:30h":
+      serviceLength = 150;
+      break;
+    case "3h ou mais":
+      serviceLength = 180;
+      break;
+    default:
+      serviceLength = 60;
+  }
+
+  const slots = [];
+  let currentTime = minTime * 60;
+
+  while (currentTime + serviceLength <= maxTime * 60) {
+    const startHour = Math.floor(currentTime / 60);
+    const startMinute = currentTime % 60;
+
+    const endHour = Math.floor((currentTime + serviceLength) / 60);
+    const endMinute = (currentTime + serviceLength) % 60;
+
+    const slot = `${String(startHour).padStart(2, "0")}:${String(
+      startMinute
+    ).padStart(2, "0")}h ~ ${String(endHour).padStart(2, "0")}:${String(
+      endMinute
+    ).padStart(2, "0")}h`;
+    slots.push(slot);
+
+    currentTime += serviceLength;
+  }
+
+  return slots;
+}

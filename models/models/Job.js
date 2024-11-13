@@ -59,6 +59,9 @@ jobSchema = new mongoose.Schema({
   scheduledTo: {
     type: String,
   },
+  scheduledTime: {
+    type: String,
+  },
   scheduledToAssignee: {
     type: Boolean,
   },

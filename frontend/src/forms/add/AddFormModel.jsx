@@ -23,6 +23,7 @@ export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
   const [image, setImage] = React.useState("");
   const [selectedMembers, setSelectedMembers] = React.useState([]);
+  const [selectedSchedule, setSelectedSchedule] = React.useState("");
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
@@ -145,6 +146,7 @@ export default function AddFormModel(props) {
         model: modalOptions.model,
         selectedMembers: selectedMemberIds,
         selectedProducts,
+        selectedSchedule,
         services: selectedServices,
         createdBy: props.userName || "Admin",
         isManager: modalOptions.label === "Gerente",
@@ -290,8 +292,10 @@ export default function AddFormModel(props) {
                         executionTime: fields.service.executionTime,
                         sessions: fields.service.sessions,
                       }}
+                      selectedSchedule={selectedSchedule}
+                      setSelectedSchedule={setSelectedSchedule}
                     />
-                    <Button onClick={() => console.log("fields", fields)}>
+                    <Button onClick={() => console.log("selectedSchedule", selectedSchedule)}>
                       oie
                     </Button>
                   </>
