@@ -135,6 +135,10 @@ export function isArray(data) {
   return Array.isArray(data) ? data : [];
 }
 
+export function isId(str) {
+  return /^[a-f0-9]{24}$/i.test(str);
+}
+
 export function getDataForPage(itemsResponse, page, model) {
   const filters = {
     products: (item) => item.name,

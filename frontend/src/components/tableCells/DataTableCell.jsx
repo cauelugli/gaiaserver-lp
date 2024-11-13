@@ -5,10 +5,7 @@ import React from "react";
 import { Avatar, Badge, Grid, Paper, Tooltip, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
-
-function isId(str) {
-  return /^[a-f0-9]{24}$/i.test(str);
-}
+import { isId } from "../../../../controllers/functions/overallFunctions";
 
 const DataTableCell = ({
   item,
