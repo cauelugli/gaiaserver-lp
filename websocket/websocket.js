@@ -130,11 +130,11 @@ const initSocket = (server) => {
             ? "Novo Job atribuido a Você"
             : "Nova Venda atribuida a Você"
         } `;
-        const notificationBody = `Olá, ${data.receiver}! ${
+        const notificationBody = `Olá, ${data.receiverName}! ${
           data.label === "Job"
             ? "Um novo Job foi atribuído"
             : "Uma nova Venda foi atribuída"
-        } a Você ${data.label === "Job" ? `: "${data.target.title}"` : "."} ${
+        } a Você ${data.label === "Job" ? `: "${data.target.title}"` : ""} ${
           data.label === "Job" ? `Serviço: ${data.target.service}` : ""
         }
         Cliente: ${data.target.customer}

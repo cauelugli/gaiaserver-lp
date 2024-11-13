@@ -7,10 +7,20 @@ const Role = require("../../models/models/Role");
 const Group = require("../../models/models/Group");
 const Customer = require("../../models/models/Customer");
 const Client = require("../../models/models/Client");
+const Service = require("../../models/models/Service");
 
 // GET ID INDEX LIST
 router.get("/", async (req, res) => {
-  const modelList = [Department, Position, User, Role, Group, Customer, Client];
+  const modelList = [
+    Client,
+    Customer,
+    Department,
+    Group,
+    Position,
+    Role,
+    Service,
+    User,
+  ];
 
   try {
     let data = [];

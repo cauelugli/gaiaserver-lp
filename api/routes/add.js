@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
 const bcrypt = require("bcrypt");
 const User = require("../../models/models/User");
+
 const { defineModel } = require("../../controllers/functions/routeFunctions");
+
 const {
   addRoutines,
   addCounter,
@@ -118,12 +121,17 @@ router.post("/", async (req, res) => {
       await addRoutines(req.body.model, savedItem);
     }
 
+    const { data: idIndexList } = await axios.get(
+      "http://localhost:3000/api/idIndexList"
+    );
+
     await notificationRoutines(
       req.body.model,
       countedItem ? countedItem : savedItem,
       "add",
       req.body.sourceId,
-      `${req.body.model.toLowerCase()}IsCreated`
+      `${req.body.model.toLowerCase()}IsCreated`,
+      idIndexList
     );
 
     res.status(200).json(savedItem);

@@ -10,7 +10,8 @@ async function notificationRoutines(
   target,
   method,
   sourceId,
-  notificationList
+  notificationList,
+  idIndexList
 ) {
   try {
     const config = await Notifications.findOne({});
@@ -69,8 +70,12 @@ async function notificationRoutines(
         });
         socket.emit("notifyAssignee", {
           target: {
-            customer: target.customer,
-            service: target.service,
+            customer:
+              idIndexList.find((item) => item.id === target.customer)?.name ||
+              target.customer,
+            service:
+              idIndexList.find((item) => item.id === target.service)?.name ||
+              target.service,
             scheduledTo: target.scheduledTo,
             scheduleTime: target.scheduleTime,
             createdBy: target.createdBy,
@@ -78,8 +83,12 @@ async function notificationRoutines(
           },
           sourceId,
           receiver: target.worker,
+          receiverName:
+            idIndexList.find((item) => item.id === target.worker)?.name ||
+            target.worker,
           label: "Job",
         });
+
         break;
       case "Sale":
         socket.emit("notificationToList", {
@@ -93,13 +102,18 @@ async function notificationRoutines(
         });
         socket.emit("notifyAssignee", {
           target: {
-            customer: target.customer,
+            customer:
+              idIndexList.find((item) => item.id === target.customer)?.name ||
+              target.customer,
             products: target.products,
             scheduledTo: target.deliveryScheduledTo,
             createdBy: target.createdBy,
           },
           sourceId,
           receiver: target.seller,
+          receiverName:
+            idIndexList.find((item) => item.id === target.seller)?.name ||
+            target.seller,
           label: "Venda",
         });
         break;
