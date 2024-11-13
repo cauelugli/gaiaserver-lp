@@ -13,7 +13,7 @@ jobSchema = new mongoose.Schema({
     type: String,
   },
   customer: {
-    type: Object,
+    type: String,
     required: true,
   },
   description: {
@@ -59,11 +59,11 @@ jobSchema = new mongoose.Schema({
   scheduledTo: {
     type: String,
   },
-  selectedSchedule: {
-    type: String,
+  scheduledToAssignee: {
+    type: Boolean,
   },
   service: {
-    type: Object,
+    type: String,
     required: true,
   },
   status: {

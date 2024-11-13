@@ -259,7 +259,7 @@ export const modals = {
       },
       {
         fieldSection: "scheduling",
-        name: "scheduleToWorker",
+        name: "scheduledToAssignee",
         label: "Agendar para Colaborador",
         type: "checkbox",
         required: false,

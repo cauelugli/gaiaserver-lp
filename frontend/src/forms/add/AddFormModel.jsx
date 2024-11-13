@@ -17,6 +17,7 @@ import ImageTableCell from "../../components/tableCells/ImageTableCell";
 
 import { isButtonDisabled } from "../../../../controllers/functions/overallFunctions";
 import { renderField } from "../../options/formFieldOptions";
+import ScheduleTableCell from "../../components/tableCells/ScheduleTableCell";
 
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
@@ -105,6 +106,13 @@ export default function AddFormModel(props) {
     });
   };
 
+  const handleCheck = (event) => {
+    setFields({
+      ...fields,
+      ["scheduledToAssignee"]: event.target.checked,
+    });
+  };
+
   const handleAdd = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -124,7 +132,10 @@ export default function AddFormModel(props) {
     const selectedMemberIds = selectedMembers.map((member) => member._id);
 
     try {
-      const uploadResponse = await props.api.post("/uploads/singleFile", formData);
+      const uploadResponse = await props.api.post(
+        "/uploads/singleFile",
+        formData
+      );
       const imagePath = uploadResponse.data.imagePath;
       const res = await props.api.post(`${modalOptions.endpoint}`, {
         sourceId: props.userId,
@@ -198,6 +209,7 @@ export default function AddFormModel(props) {
 
   const handlers = {
     setFields,
+    handleCheck,
     handleMemberChange,
     handleProductChange,
     handleServiceChange,
@@ -265,6 +277,25 @@ export default function AddFormModel(props) {
                     )}
                   </Grid>
                 ))}
+              {section.name === "scheduling" &&
+                (fields.worker || fields.seller) &&
+                fields.scheduledToAssignee === true &&
+                fields.service && (
+                  <>
+                    <ScheduleTableCell
+                      api={props.api}
+                      assignee={fields.worker._id || fields.seller._id}
+                      selectedDate={fields.scheduledTo}
+                      serviceLength={{
+                        executionTime: fields.service.executionTime,
+                        sessions: fields.service.sessions,
+                      }}
+                    />
+                    <Button onClick={() => console.log("fields", fields)}>
+                      oie
+                    </Button>
+                  </>
+                )}
             </Grid>
           </Box>
         ))}

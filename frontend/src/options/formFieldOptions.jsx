@@ -187,7 +187,7 @@ export const renderField = (
           <InputLabel>{field.label}</InputLabel>
           <Checkbox
             value={fields[field.name] || ""}
-            onChange={handleChange(field.name)}
+            onChange={handlers.handleCheck}
             size="small"
             required={field.required}
           />
