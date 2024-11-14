@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 
 import UserShortcuts from "../small/UserShortcuts";
+import CalendarFooter from "../small/CalendarFooter";
 
 const customPtBrLocale = {
   ...dayjs.Ls["pt-br"],
@@ -38,16 +39,17 @@ const HomeSideBar = ({
   userId,
   handleShortcutClick,
   allowedLinks,
-  userAgenda,
+  // userAgenda,
 }) => {
   const [selectedDay, setSelectedDay] = React.useState(dayjs());
 
-  console.log("userAgenda", userAgenda);
-  
+  // console.log("userAgenda", userAgenda);
+
   return (
     <Grid>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateCalendar
+
           views={["day", "month"]}
           sx={{
             bgcolor: "#f8f8ff",
@@ -63,20 +65,7 @@ const HomeSideBar = ({
           onChange={(newDay) => setSelectedDay(newDay)}
         />
       </LocalizationProvider>
-      <Grid
-        sx={{
-          backgroundColor: "#f8f8ff",
-          width: "90%",
-          maxWidth: 300,
-          mx: "auto",
-          mt: "-15%",
-          height: 46,
-          border: "1px solid #d6d6dd",
-          borderRadius: 2,
-        }}
-      >
-        <Grid>{dayjs(selectedDay).format("DD/MM")}</Grid>
-      </Grid>
+      <CalendarFooter />
       <UserShortcuts
         userId={userId}
         onShortcutClick={handleShortcutClick}
