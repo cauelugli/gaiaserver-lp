@@ -39,17 +39,14 @@ const HomeSideBar = ({
   userId,
   handleShortcutClick,
   allowedLinks,
-  // userAgenda,
+  userAgenda,
 }) => {
   const [selectedDay, setSelectedDay] = React.useState(dayjs());
-
-  // console.log("userAgenda", userAgenda);
 
   return (
     <Grid>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateCalendar
-
           views={["day", "month"]}
           sx={{
             bgcolor: "#f8f8ff",
@@ -65,7 +62,10 @@ const HomeSideBar = ({
           onChange={(newDay) => setSelectedDay(newDay)}
         />
       </LocalizationProvider>
-      <CalendarFooter />
+      <CalendarFooter
+        selectedDay={dayjs(selectedDay).format("DD/MM/YYYY")}
+        userAgenda={userAgenda}
+      />
       <UserShortcuts
         userId={userId}
         onShortcutClick={handleShortcutClick}

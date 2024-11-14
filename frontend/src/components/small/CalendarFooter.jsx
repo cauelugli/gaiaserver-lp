@@ -3,9 +3,9 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 
-const CalendarFooter = () => {
+const CalendarFooter = (props) => {
   return (
     <Grid
       sx={{
@@ -17,17 +17,10 @@ const CalendarFooter = () => {
         mt: 1,
       }}
     >
-      <Typography
-        sx={{
-          m: 2,
-          fontSize: 18,
-          fontWeight: "bold",
-          color: "#555",
-          fontFamily: "Verdana, sans-serif",
-        }}
-      >
-        banana
-      </Typography>
+      {props.selectedDay}
+      <Button onClick={() => console.log("userAgenda", props.userAgenda)}>
+        see agenda
+      </Button>
     </Grid>
   );
 };
