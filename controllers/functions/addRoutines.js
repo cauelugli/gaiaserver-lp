@@ -160,32 +160,43 @@ async function addToAssigneeAgenda(
 ) {
   try {
     const agenda = await Agenda.findOne();
+    const [day, month, year] = scheduledTo.split("/");
+    const monthYearKey = `${month}-${year}`;
 
-    if (!agenda) {
-      throw new Error("Agenda não encontrada");
-    }
-
-    const userIndex = agenda.users.findIndex((map) => map.has(assignee));
+    const userIndex = agenda.users.findIndex((userMap) =>
+      userMap.has(assignee)
+    );
 
     if (userIndex === -1) {
-      throw new Error("O assignee não existe");
+      throw new Error("Designado não encontrado");
     }
 
     const userMap = agenda.users[userIndex];
-    const tasksArray = userMap.get(assignee);
+    const userAgenda = userMap.get(assignee);
 
-    tasksArray.push({
+    if (!userAgenda) {
+      console.log("Erro: usuário não encontrado na agenda");
+      return;
+    }
+
+    if (!userAgenda[monthYearKey]) {
+      console.log("Erro: mês nao encontrado na agenda");
+      return;
+    }
+
+    userAgenda[monthYearKey].push({
       jobId,
       service,
-      scheduledTo,
+      day,
       scheduleTime,
       status: "Aberto",
     });
 
-    userMap.set(assignee, tasksArray);
-    agenda.users[userIndex] = userMap;
-
-    await agenda.save();
+    await Agenda.findOneAndUpdate(
+      {},
+      { $set: { users: agenda.users } },
+      { new: true }
+    );
 
     await Job.findByIdAndUpdate(jobId, {
       $set: {
@@ -195,8 +206,9 @@ async function addToAssigneeAgenda(
         },
       },
     });
+
   } catch (err) {
-    console.error("Erro ao adicionar na agenda do designado");
+    console.error("Erro ao adicionar na agenda do designado", err);
   }
 }
 
