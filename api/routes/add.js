@@ -9,6 +9,7 @@ const { defineModel } = require("../../controllers/functions/routeFunctions");
 const {
   addRoutines,
   addCounter,
+  addToAssigneeAgenda,
 } = require("../../controllers/functions/addRoutines");
 
 const {
@@ -119,6 +120,16 @@ router.post("/", async (req, res) => {
       countedItem = await addCounter(savedItem._id.toString(), req.body.model);
     } else {
       await addRoutines(req.body.model, savedItem);
+    }
+
+    if (fields.scheduledToAssignee === true) {
+      await addToAssigneeAgenda(
+        savedItem.scheduledTo,
+        savedItem.scheduleTime,
+        savedItem.worker,
+        savedItem._id.toString(),
+        fields.service.name
+      );
     }
 
     const { data: idIndexList } = await axios.get(

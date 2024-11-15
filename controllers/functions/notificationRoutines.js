@@ -71,10 +71,10 @@ async function notificationRoutines(
         socket.emit("notifyAssignee", {
           target: {
             customer:
-              idIndexList.find((item) => item.id === target.customer)?.name ||
+              idIndexList?.find((item) => item.id === target.customer)?.name ||
               target.customer,
             service:
-              idIndexList.find((item) => item.id === target.service)?.name ||
+              idIndexList?.find((item) => item.id === target.service)?.name ||
               target.service,
             scheduledTo: target.scheduledTo,
             scheduleTime: target.scheduleTime,
@@ -84,7 +84,7 @@ async function notificationRoutines(
           sourceId,
           receiver: target.worker,
           receiverName:
-            idIndexList.find((item) => item.id === target.worker)?.name ||
+            idIndexList?.find((item) => item.id === target.worker)?.name ||
             target.worker,
           label: "Job",
         });
@@ -103,7 +103,7 @@ async function notificationRoutines(
         socket.emit("notifyAssignee", {
           target: {
             customer:
-              idIndexList.find((item) => item.id === target.customer)?.name ||
+              idIndexList?.find((item) => item.id === target.customer)?.name ||
               target.customer,
             products: target.products,
             scheduledTo: target.deliveryScheduledTo,
@@ -112,7 +112,7 @@ async function notificationRoutines(
           sourceId,
           receiver: target.seller,
           receiverName:
-            idIndexList.find((item) => item.id === target.seller)?.name ||
+            idIndexList?.find((item) => item.id === target.seller)?.name ||
             target.seller,
           label: "Venda",
         });

@@ -44,7 +44,7 @@ async function addRoutines(model, source) {
           { upsert: true }
         );
 
-        const newUserPreferences = new UserPreferences({ userId: source._id});
+        const newUserPreferences = new UserPreferences({ userId: source._id });
         await newUserPreferences.save();
 
         break;
@@ -113,8 +113,57 @@ async function addCounter(sourceId, model) {
   }
 }
 
+async function addToAssigneeAgenda(
+  scheduledTo,
+  scheduleTime,
+  assignee,
+  jobId,
+  service
+) {
+  try {
+    const agenda = await Agenda.findOne();
+
+    if (!agenda) {
+      throw new Error("Agenda não encontrada");
+    }
+
+    const userIndex = agenda.users.findIndex((map) => map.has(assignee));
+
+    if (userIndex === -1) {
+      throw new Error("O assignee não existe");
+    }
+
+    const userMap = agenda.users[userIndex];
+    const tasksArray = userMap.get(assignee);
+
+    tasksArray.push({
+      jobId,
+      service,
+      scheduledTo,
+      scheduleTime,
+      status: "Aberto",
+    });
+
+    userMap.set(assignee, tasksArray);
+    agenda.users[userIndex] = userMap;
+
+    await agenda.save();
+
+    await Job.findByIdAndUpdate(jobId, {
+      $set: {
+        scheduleInfo: {
+          assignee,
+          time: scheduleTime,
+        },
+      },
+    });
+  } catch (err) {
+    console.error("Erro ao adicionar na agenda do designado");
+  }
+}
+
 async function createQuote(model, source) {
   "";
 }
 
-module.exports = { addRoutines, createQuote, addCounter };
+module.exports = { addRoutines, createQuote, addCounter, addToAssigneeAgenda };

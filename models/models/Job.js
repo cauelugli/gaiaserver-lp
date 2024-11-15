@@ -56,6 +56,9 @@ jobSchema = new mongoose.Schema({
   resolvedBy: {
     type: String,
   },
+  scheduledInfo: {
+    type: Object,
+  },
   scheduledTo: {
     type: String,
   },

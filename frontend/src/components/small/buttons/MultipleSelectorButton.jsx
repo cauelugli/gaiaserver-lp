@@ -104,7 +104,7 @@ const MultipleSelectorButton = (props) => {
               }}
             >
               <Grid sx={{ my: 2 }}>
-                <MenuItem onClick={() => console.log("Editar em Massa")}>
+                <MenuItem disabled onClick={() => console.log("Editar em Massa")}>
                   <ListItemIcon>
                     <icons.ModeEditIcon fontSize="small" />
                   </ListItemIcon>
