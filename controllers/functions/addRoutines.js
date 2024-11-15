@@ -32,12 +32,50 @@ async function addRoutines(model, source) {
           });
         }
 
+        const maxYears = 6;
+
+        function generateMonths() {
+          const months = [];
+          const currentDate = new Date();
+          const endDate = new Date(currentDate);
+          endDate.setFullYear(currentDate.getFullYear() + maxYears);
+
+          let currentMonth = currentDate.getMonth();
+          let currentYear = currentDate.getFullYear();
+
+          while (
+            currentYear < endDate.getFullYear() ||
+            (currentYear === endDate.getFullYear() &&
+              currentMonth <= endDate.getMonth())
+          ) {
+            const monthString = `${String(currentMonth + 1).padStart(
+              2,
+              "0"
+            )}-${currentYear}`;
+            months.push(monthString);
+            currentMonth++;
+
+            if (currentMonth === 12) {
+              currentMonth = 0;
+              currentYear++;
+            }
+          }
+
+          return months;
+        }
+
         await Agenda.findOneAndUpdate(
           {},
           {
             $push: {
               users: {
-                [source._id.toString()]: [],
+                [source._id.toString()]: generateMonths().reduce(
+                  (acc, month) => {
+                    acc[month] = [];
+                    return acc;
+                  },
+                  {}
+                ),
               },
             },
           },
