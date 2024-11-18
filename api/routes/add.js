@@ -128,7 +128,8 @@ router.post("/", async (req, res) => {
         savedItem.scheduleTime,
         savedItem.worker,
         savedItem._id.toString(),
-        fields.service.name
+        fields.service.name,
+        fields.customer
       );
     }
 

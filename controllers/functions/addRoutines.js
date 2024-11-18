@@ -156,7 +156,8 @@ async function addToAssigneeAgenda(
   scheduleTime,
   assignee,
   jobId,
-  service
+  service,
+  customer
 ) {
   try {
     const agenda = await Agenda.findOne();
@@ -190,6 +191,7 @@ async function addToAssigneeAgenda(
       day,
       scheduleTime,
       status: "Aberto",
+      customer
     });
 
     await Agenda.findOneAndUpdate(
