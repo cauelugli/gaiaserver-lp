@@ -21,14 +21,27 @@ router.get("/", async (req, res) => {
 
   try {
     let data;
-    if (userId) {
-      data = await Model.find({
-        users: {
-          $elemMatch: {
-            _id: userId, 
+    if (model === "Agenda") {
+      data = await Model.aggregate([
+        {
+          $project: {
+            users: {
+              $filter: {
+                input: "$users",
+                as: "user",
+                cond: {
+                  $eq: [{ $type: `$$user.${userId}` }, "object"],
+                },
+              },
+            },
           },
         },
-      });
+        {
+          $project: {
+            user: { $arrayElemAt: [`$users.${userId}`, 0] },
+          },
+        },
+      ]);
     } else {
       data = await Model.find();
     }

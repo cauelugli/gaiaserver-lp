@@ -136,7 +136,16 @@ export default function App() {
         const agenda = await api.get("/get", {
           params: { model: "Agenda", userId: userData._id },
         });
-        setUserAgenda(agenda.data);
+        setUserAgenda(
+          Object.entries(agenda.data[0].user)
+            // eslint-disable-next-line no-unused-vars
+            .filter(([key, value]) => Array.isArray(value) && value.length > 0)
+            .reduce((acc, [key, value]) => {
+              acc[key] = value;
+              return acc;
+            }, {})
+        );
+
         setConfigData(config.data[0]);
         setUserPreferences(preferences.data);
         sessionStorage.setItem(
@@ -269,13 +278,13 @@ export default function App() {
                             userName={userData.name}
                             userUsername={userData.username}
                             userGender={userData.gender}
+                            userAgenda={userAgenda}
                             handleShortcutClick={handleShortcutClick}
                             allowedLinks={allowedLinks}
                             configData={configData}
                             configDashboard={configData.dashboard}
                             onMount={() => handleSidebarVisibility(false)}
                             onUnmount={() => handleSidebarVisibility(true)}
-                            userAgenda={userAgenda}
                           />
                         ) : (
                           <Navigate to="/login" />
