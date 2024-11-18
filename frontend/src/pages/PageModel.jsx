@@ -71,6 +71,7 @@ export default function PageModel(props) {
       setMultiple(false);
       setSelectedMultipleItems([]);
       setNewDataRefreshButton(true);
+      setHighlightSelfUser(false);
     }
 
     const fetchData = async () => {
@@ -113,6 +114,15 @@ export default function PageModel(props) {
 
     fetchData();
   }, [props.api, refreshData, currentPage, props.item, value]);
+
+  const filteredItems = React.useMemo(() => {
+    if (highlightSelfUser) {
+      return items.filter(
+        (item) => item.worker === props.userId || item.seller === props.userId
+      );
+    }
+    return items;
+  }, [items, highlightSelfUser, props.userId]);
 
   if (isLoading) {
     return (
@@ -340,7 +350,7 @@ export default function PageModel(props) {
                       themeBGColor={props.palette.background["default"]}
                       mainColor={props.configCustomization.mainColor}
                       page={props.item.page}
-                      items={items}
+                      items={filteredItems}
                       itemIndex={index}
                       tableColumns={props.item.tableColumns}
                       tabIndex={value}
