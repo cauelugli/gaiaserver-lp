@@ -68,26 +68,28 @@ async function notificationRoutines(
           receivers: config[model.toLowerCase()][notificationList],
           label: "Job",
         });
-        socket.emit("notifyAssignee", {
-          target: {
-            customer:
-              idIndexList?.find((item) => item.id === target.customer)?.name ||
-              target.customer,
-            service:
-              idIndexList?.find((item) => item.id === target.service)?.name ||
-              target.service,
-            scheduledTo: target.scheduledTo,
-            scheduleTime: target.scheduleTime,
-            createdBy: target.createdBy,
-            title: target.title,
-          },
-          sourceId,
-          receiver: target.worker,
-          receiverName:
-            idIndexList?.find((item) => item.id === target.worker)?.name ||
-            target.worker,
-          label: "Job",
-        });
+        if (sourceId !== target.worker) {
+          socket.emit("notifyAssignee", {
+            target: {
+              customer:
+                idIndexList?.find((item) => item.id === target.customer)
+                  ?.name || target.customer,
+              service:
+                idIndexList?.find((item) => item.id === target.service)?.name ||
+                target.service,
+              scheduledTo: target.scheduledTo,
+              scheduleTime: target.scheduleTime,
+              createdBy: target.createdBy,
+              title: target.title,
+            },
+            sourceId,
+            receiver: target.worker,
+            receiverName:
+              idIndexList?.find((item) => item.id === target.worker)?.name ||
+              target.worker,
+            label: "Job",
+          });
+        }
 
         break;
       case "Sale":
@@ -100,22 +102,24 @@ async function notificationRoutines(
           label: "Venda",
           isFemale: true,
         });
-        socket.emit("notifyAssignee", {
-          target: {
-            customer:
-              idIndexList?.find((item) => item.id === target.customer)?.name ||
-              target.customer,
-            products: target.products,
-            scheduledTo: target.deliveryScheduledTo,
-            createdBy: target.createdBy,
-          },
-          sourceId,
-          receiver: target.seller,
-          receiverName:
-            idIndexList?.find((item) => item.id === target.seller)?.name ||
-            target.seller,
-          label: "Venda",
-        });
+        if (sourceId !== target.seller) {
+          socket.emit("notifyAssignee", {
+            target: {
+              customer:
+                idIndexList?.find((item) => item.id === target.customer)
+                  ?.name || target.customer,
+              products: target.products,
+              scheduledTo: target.deliveryScheduledTo,
+              createdBy: target.createdBy,
+            },
+            sourceId,
+            receiver: target.seller,
+            receiverName:
+              idIndexList?.find((item) => item.id === target.seller)?.name ||
+              target.seller,
+            label: "Venda",
+          });
+        }
         break;
       case "Department":
         socket.emit("notificationToList", {
