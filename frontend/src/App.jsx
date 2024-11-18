@@ -136,15 +136,18 @@ export default function App() {
         const agenda = await api.get("/get", {
           params: { model: "Agenda", userId: userData._id },
         });
-        setUserAgenda(
-          Object.entries(agenda.data[0].user)
-            // eslint-disable-next-line no-unused-vars
-            .filter(([key, value]) => Array.isArray(value) && value.length > 0)
-            .reduce((acc, [key, value]) => {
-              acc[key] = value;
-              return acc;
-            }, {})
-        );
+        userData.username !== "admin" &&
+          setUserAgenda(
+            Object.entries(agenda.data[0].user)
+              .filter(
+                // eslint-disable-next-line no-unused-vars
+                ([key, value]) => Array.isArray(value) && value.length > 0
+              )
+              .reduce((acc, [key, value]) => {
+                acc[key] = value;
+                return acc;
+              }, {})
+          );
         setConfigData(config.data[0]);
         setUserPreferences(preferences.data);
         sessionStorage.setItem(
@@ -278,7 +281,10 @@ export default function App() {
                             userUsername={userData.username}
                             userGender={userData.gender}
                             userAgenda={userAgenda}
-                            mainColor={configData.customization && configData.customization.mainColor}
+                            mainColor={
+                              configData.customization &&
+                              configData.customization.mainColor
+                            }
                             handleShortcutClick={handleShortcutClick}
                             allowedLinks={allowedLinks}
                             configData={configData}
