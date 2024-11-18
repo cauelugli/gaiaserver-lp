@@ -145,7 +145,6 @@ export default function App() {
               return acc;
             }, {})
         );
-
         setConfigData(config.data[0]);
         setUserPreferences(preferences.data);
         sessionStorage.setItem(
