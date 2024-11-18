@@ -77,12 +77,16 @@ const pageOptions = [
           label: "Designado",
         },
         {
-          id: "price",
-          label: "Valor",
-        },
-        {
           id: "scheduledTo",
           label: "Agendado para",
+        },
+        {
+          id: "scheduleTime",
+          label: "Horário",
+        },
+        {
+          id: "price",
+          label: "Valor",
         },
         {
           id: "status",
