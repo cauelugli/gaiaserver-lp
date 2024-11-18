@@ -8,6 +8,7 @@ import {
   CircularProgress,
   Grid,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -162,12 +163,14 @@ const Login = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <img
-          src={`http://localhost:3000/static/logo_dog_blue.png`}
-          alt="Logo GaiaServer"
-          style={{ cursor: "pointer" }}
-          onClick={() => alert("GS é um sonho feito com muito amor")}
-        />
+        <Tooltip title={"GaiaServer é um sonho feito com muito amor"}>
+          <img
+            src={`http://localhost:3000/static/logo_dog_blue.png`}
+            alt="Logo GaiaServer"
+            style={{ cursor: "pointer" }}
+            onClick={() => alert("GaiaServer é um sonho feito com muito amor")}
+          />
+        </Tooltip>
         <Typography
           component="h1"
           variant="h4"
