@@ -24,7 +24,7 @@ const CalendarFooter = (props) => {
   return (
     <Grid
       sx={{
-        height: open ? 250 : 45,
+        height: open ? (filteredItems.length > 0 ? 250 : 115) : 45,
         width: "auto",
         backgroundColor: "#f8f8ff",
         border: "1px solid #e7e7ee",
@@ -44,8 +44,12 @@ const CalendarFooter = (props) => {
           <AgendaEventChip key={index} item={item} />
         ))
       ) : (
-        <Typography variant="body2" color="textSecondary" sx={{ m: 2 }}>
-          {open && "Nenhum item para o dia selecionado."}
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          sx={{ m: 2, color: "black" }}
+        >
+          {open && "Nenhum serviço agendado para você nesta data"}
         </Typography>
       )}
     </Grid>

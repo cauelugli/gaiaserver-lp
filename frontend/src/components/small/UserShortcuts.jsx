@@ -90,10 +90,10 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
           justifyContent="space-around"
           alignItems="center"
         >
-          <Grid item id="ghost" />
+          <Typography id="ghost">99</Typography>
           <Typography
             sx={{
-              ml: 3,
+              px:"25%",
               mt: -1,
               fontSize: 18,
               fontWeight: "bold",
@@ -103,8 +103,10 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
           >
             Atalhos
           </Typography>
-
-          <IconButton onClick={() => setOpen(!open)} sx={{ mb: 1 }}>
+          <IconButton
+            onClick={() => setOpen(!open)}
+            sx={{ mb: 1, color: "black" }}
+          >
             {open ? <icons.ExpandLessIcon /> : <icons.ExpandMoreIcon />}
           </IconButton>
         </Grid>

@@ -31,7 +31,7 @@ const AgendaEventBar = (props) => {
           </Typography>
           <Typography
             sx={{
-              ml: 3,
+              px: "10%",
               mt: -1,
               fontSize: 18,
               fontWeight: "bold",
@@ -42,7 +42,10 @@ const AgendaEventBar = (props) => {
             Serviços do Dia
           </Typography>
 
-          <IconButton onClick={() => props.setOpen(!props.open)} sx={{ mb: 1 }}>
+          <IconButton
+            onClick={() => props.setOpen(!props.open)}
+            sx={{ mb: 1, color: "black" }}
+          >
             {props.open ? <icons.ExpandLessIcon /> : <icons.ExpandMoreIcon />}
           </IconButton>
         </Grid>
