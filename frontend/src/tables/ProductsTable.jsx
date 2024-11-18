@@ -44,7 +44,7 @@ function ProductsTable(props) {
               </TableCell>
               {props.multiple && (
                 <TableCell align="center" id="multiple" sx={{ p: 0, m: 0 }}>
-                  <Checkbox size="small" />
+                  <Checkbox size="small" sx={{ p: -1, m: -1 }}/>
                 </TableCell>
               )}
             </TableRow>

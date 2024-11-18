@@ -13,9 +13,12 @@ import { Grid, Typography } from "@mui/material";
 import { icons } from "../../icons";
 
 import MultipleSelectorButton from "./buttons/MultipleSelectorButton";
+import HighlightSelfUserButton from "./buttons/HighlightSelfUserButton";
 
 const TableOrCardSelector = (props) => {
-  const [tableOrCardView, setTableOrCardView] = React.useState(props.tableOrCard);
+  const [tableOrCardView, setTableOrCardView] = React.useState(
+    props.tableOrCard
+  );
 
   React.useEffect(() => {
     setTableOrCardView(props.tableOrCard);
@@ -99,7 +102,9 @@ const TableOrCardSelector = (props) => {
       direction="row"
       justifyContent="flex-end"
       alignItems="flex-end"
+      sx={{ m: 0.75 }}
     >
+      <HighlightSelfUserButton mainColor={props.mainColor} />
       <MultipleSelectorButton
         mainColor={props.mainColor}
         multiple={props.multiple}

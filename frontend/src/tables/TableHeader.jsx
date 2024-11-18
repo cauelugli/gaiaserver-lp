@@ -40,7 +40,7 @@ function TableHeader(props) {
       </TableCell>
       {props.multiple && (
         <TableCell align="center" id="multiple" sx={{ p: 0, m: 0 }}>
-          <Checkbox size="small" checked={true} disabled />
+          <Checkbox size="small" checked={true} disabled sx={{ p: -1, m: -1 }}/>
         </TableCell>
       )}
     </TableRow>

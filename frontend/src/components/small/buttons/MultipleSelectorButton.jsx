@@ -2,7 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import {
-  Button,
+  // Button,
   Grid,
   Tooltip,
   Typography,
@@ -104,7 +104,10 @@ const MultipleSelectorButton = (props) => {
               }}
             >
               <Grid sx={{ my: 2 }}>
-                <MenuItem disabled onClick={() => console.log("Editar em Massa")}>
+                <MenuItem
+                  disabled
+                  onClick={() => console.log("Editar em Massa")}
+                >
                   <ListItemIcon>
                     <icons.ModeEditIcon fontSize="small" />
                   </ListItemIcon>
@@ -126,27 +129,38 @@ const MultipleSelectorButton = (props) => {
           </Grid>
         </Grid>
       )}
-      <Button
-        size="small"
-        variant="outlined"
+      <Grid
+        container
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
         sx={{
           mr: 1,
-          backgroundColor: props.multiple ? props.mainColor : "none",
-          border: `0.5px solid ${props.mainColor}`,
+          cursor: "pointer",
+          width: 50,
+          border: `0.5px solid ${
+            props.mainColor ? props.mainColor : "#32aacd"
+          }`,
           borderRadius: 3,
-          "&:hover": {
-            backgroundColor: "none",
-            border: `0.5px solid ${props.mainColor}`,
-          },
         }}
         onClick={() => props.setMultiple(!props.multiple)}
       >
         {props.multiple ? (
-          <icons.CheckBoxIcon />
+          <icons.CheckBoxIcon
+            sx={{
+              p: 0.5,
+              color: props.mainColor ? props.mainColor : "#32aacd",
+            }}
+          />
         ) : (
-          <icons.CheckBoxOutlineBlankIcon sx={{ color: props.mainColor }} />
+          <icons.CheckBoxOutlineBlankIcon
+            sx={{
+              p: 0.5,
+              color: props.mainColor ? props.mainColor : "#32aacd",
+            }}
+          />
         )}
-      </Button>
+      </Grid>
       <Dialog
         open={openDeleteDialog}
         onClose={() => setOpenDeleteDialog(false)}

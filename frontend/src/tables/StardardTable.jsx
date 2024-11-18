@@ -44,7 +44,9 @@ function StandardTable(props) {
                   item={row[column.id]}
                   idIndexList={props.idIndexList}
                   column={column}
-                  isRequestsApproverManager={row._id === props.requestsApproverManager}
+                  isRequestsApproverManager={
+                    row._id === props.requestsApproverManager
+                  }
                 />
               </TableCell>
             ))}
@@ -63,6 +65,7 @@ function StandardTable(props) {
             {props.multiple && (
               <TableCell align="center" id="multiple" sx={{ p: 0, m: 0 }}>
                 <Checkbox
+                  sx={{ p: -1, m: -1 }}
                   size="small"
                   checked={selectedMultipleItems.some(
                     (selectedItem) => selectedItem._id === row._id

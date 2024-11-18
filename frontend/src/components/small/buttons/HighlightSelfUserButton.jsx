@@ -1,0 +1,41 @@
+/* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
+import * as React from "react";
+
+import { Grid, Tooltip } from "@mui/material";
+
+import { icons } from "../../../icons";
+
+export default function HighlightSelfUserButton({
+  // refreshData,
+  // setRefreshData,
+  mainColor,
+}) {
+  return (
+    <Grid
+      container
+      direction="row"
+      alignItems="center"
+      justifyContent="center"
+      // onClick={() => {
+      //   setRefreshData(!refreshData);
+      // }}
+      sx={{
+        cursor: "pointer",
+        width: 50,
+        mr: 1,
+        border: `0.5px solid ${mainColor ? mainColor : "#32aacd"}`,
+        borderRadius: 3,
+      }}
+    >
+      <Tooltip title={"Destacar Atribuidos à Mim"}>
+        <icons.PersonIcon
+          sx={{
+            p: 0.5,
+            color: mainColor ? mainColor : "#32aacd",
+          }}
+        />
+      </Tooltip>
+    </Grid>
+  );
+}
