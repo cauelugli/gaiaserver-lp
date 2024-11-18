@@ -104,7 +104,13 @@ const TableOrCardSelector = (props) => {
       alignItems="flex-end"
       sx={{ m: 0.75 }}
     >
-      <HighlightSelfUserButton mainColor={props.mainColor} />
+      {props.page === "requests" && (
+        <HighlightSelfUserButton
+          mainColor={props.mainColor}
+          highlightSelfUser={props.highlightSelfUser}
+          setHighlightSelfUser={props.setHighlightSelfUser}
+        />
+      )}
       <MultipleSelectorButton
         mainColor={props.mainColor}
         multiple={props.multiple}

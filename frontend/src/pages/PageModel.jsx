@@ -51,6 +51,7 @@ export default function PageModel(props) {
   const [tableFilters, setTableFilters] = React.useState({});
   const [multiple, setMultiple] = React.useState(false);
   const [selectedMultipleItems, setSelectedMultipleItems] = React.useState([]);
+  const [highlightSelfUser, setHighlightSelfUser] = React.useState(false);
 
   const [currentPage, setCurrentPage] = React.useState(props.item.page);
 
@@ -254,6 +255,8 @@ export default function PageModel(props) {
                 props.item.models[props.item.page !== currentPage ? 0 : value]
               }
               page={props.item.page}
+              highlightSelfUser={highlightSelfUser}
+              setHighlightSelfUser={setHighlightSelfUser}
             />
           </Grid>
         </Tabs>

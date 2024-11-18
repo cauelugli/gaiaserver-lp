@@ -7,8 +7,8 @@ import { Grid, Tooltip } from "@mui/material";
 import { icons } from "../../../icons";
 
 export default function HighlightSelfUserButton({
-  // refreshData,
-  // setRefreshData,
+  highlightSelfUser,
+  setHighlightSelfUser,
   mainColor,
 }) {
   return (
@@ -17,22 +17,23 @@ export default function HighlightSelfUserButton({
       direction="row"
       alignItems="center"
       justifyContent="center"
-      // onClick={() => {
-      //   setRefreshData(!refreshData);
-      // }}
+      onClick={() => {
+        setHighlightSelfUser(!highlightSelfUser);
+      }}
       sx={{
         cursor: "pointer",
         width: 50,
         mr: 1,
         border: `0.5px solid ${mainColor ? mainColor : "#32aacd"}`,
         borderRadius: 3,
+        backgroundColor: highlightSelfUser ? mainColor : "",
       }}
     >
-      <Tooltip title={"Destacar Atribuidos à Mim"}>
+      <Tooltip title={"Mostrar Somente Atribuidos à Mim"}>
         <icons.PersonIcon
           sx={{
             p: 0.5,
-            color: mainColor ? mainColor : "#32aacd",
+            color: highlightSelfUser ? "" : mainColor,
           }}
         />
       </Tooltip>
