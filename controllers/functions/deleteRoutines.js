@@ -139,6 +139,62 @@ async function deleteRoutines(model, deletedItem, sourceId) {
         // );
         break;
 
+      case "Job":
+        if (deletedItem.scheduleTime) {
+          try {
+            const assignee = deletedItem.worker || deletedItem.seller;
+            const scheduledTo = deletedItem.scheduledTo;
+            const [day, month, year] = scheduledTo.split("/");
+            const scheduleKey = `${month}-${year}`;
+
+            const agenda = await Agenda.findOne({});
+            if (!agenda || !Array.isArray(agenda.users)) {
+              console.log("Agenda não encontrada ou inválida");
+              break;
+            }
+
+            const userEntryIndex = agenda.users.findIndex((userMap) =>
+              userMap.has(assignee.toString())
+            );
+
+            if (userEntryIndex === -1) {
+              console.log("Usuário não encontrado na agenda");
+              break;
+            }
+
+            const userMap = agenda.users[userEntryIndex];
+            const userJobsByMonth = userMap.get(assignee.toString());
+
+            if (
+              userJobsByMonth &&
+              Array.isArray(userJobsByMonth[scheduleKey])
+            ) {
+              const jobIndex = userJobsByMonth[scheduleKey].findIndex(
+                (job) => job.jobId === sourceId.toString()
+              );
+
+              if (jobIndex !== -1) {
+                userJobsByMonth[scheduleKey].splice(jobIndex, 1);
+                userMap.set(assignee.toString(), userJobsByMonth);
+                agenda.users[userEntryIndex] = userMap;
+                await agenda.save();
+
+              } else {
+                console.log(
+                  `Job ${sourceId} não encontrado na lista do mês/ano ${scheduleKey}`
+                );
+              }
+            } else {
+              console.log(
+                `Nenhum job encontrado para o usuário no mês/ano ${scheduleKey}`
+              );
+            }
+          } catch (err) {
+            console.error(`Erro ao remover job da agenda`);
+          }
+        }
+        break;
+
       default:
         break;
     }
