@@ -15,6 +15,7 @@ const Home = ({
   configData,
   handleShortcutClick,
   userAgenda,
+  mainColor
 }) => {
   React.useEffect(() => {
     if (onMount) {
@@ -44,6 +45,7 @@ const Home = ({
             handleShortcutClick={handleShortcutClick}
             allowedLinks={allowedLinks}
             userAgenda={userAgenda}
+            mainColor={mainColor}
           />
         </Grid>
       </Grid>

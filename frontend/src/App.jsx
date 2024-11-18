@@ -278,6 +278,7 @@ export default function App() {
                             userUsername={userData.username}
                             userGender={userData.gender}
                             userAgenda={userAgenda}
+                            mainColor={configData.customization && configData.customization.mainColor}
                             handleShortcutClick={handleShortcutClick}
                             allowedLinks={allowedLinks}
                             configData={configData}

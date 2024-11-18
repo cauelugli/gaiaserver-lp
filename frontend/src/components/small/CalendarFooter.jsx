@@ -3,9 +3,12 @@
 import React from "react";
 import { Grid, Typography } from "@mui/material";
 import { parseAgenda } from "../../../../controllers/functions/overallFunctions";
+import AgendaEventChip from "./AgendaEventChip";
+import AgendaEventBar from "./AgendaEventBar";
 
 const CalendarFooter = (props) => {
   const [filteredItems, setFilteredItems] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     const daySelected = props.selectedDay.slice(0, 2);
@@ -21,7 +24,7 @@ const CalendarFooter = (props) => {
   return (
     <Grid
       sx={{
-        height: 150,
+        height: open ? 250 : 45,
         width: "auto",
         backgroundColor: "#f8f8ff",
         border: "1px solid #e7e7ee",
@@ -29,16 +32,20 @@ const CalendarFooter = (props) => {
         mt: 1,
       }}
     >
-      {filteredItems.length > 0 ? (
+      <AgendaEventBar
+        day={props.selectedDay.slice(0, 2)}
+        mainColor={props.mainColor}
+        open={open}
+        setOpen={setOpen}
+        isEmptyDay={filteredItems.length > 0}
+      />
+      {open && filteredItems.length > 0 ? (
         filteredItems.map((item, index) => (
-          <Typography key={index} variant="body2" sx={{ marginBottom: 1 }}>
-            Serviço: {item.service} | Horário: {item.scheduleTime} | Status:{" "}
-            {item.status}
-          </Typography>
+          <AgendaEventChip key={index} item={item} />
         ))
       ) : (
-        <Typography variant="body2" color="textSecondary">
-          Nenhum item para o dia selecionado.
+        <Typography variant="body2" color="textSecondary" sx={{ m: 2 }}>
+          {open && "Nenhum item para o dia selecionado."}
         </Typography>
       )}
     </Grid>

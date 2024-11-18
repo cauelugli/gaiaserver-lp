@@ -40,6 +40,7 @@ const HomeSideBar = ({
   handleShortcutClick,
   allowedLinks,
   userAgenda,
+  mainColor,
 }) => {
   const [selectedDay, setSelectedDay] = React.useState(dayjs());
 
@@ -65,6 +66,7 @@ const HomeSideBar = ({
       <CalendarFooter
         selectedDay={dayjs(selectedDay).format("DD/MM/YYYY")}
         userAgenda={userAgenda}
+        mainColor={mainColor}
       />
       <UserShortcuts
         userId={userId}
