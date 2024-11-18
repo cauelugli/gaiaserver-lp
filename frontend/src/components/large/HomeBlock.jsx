@@ -206,14 +206,14 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
             })}
           </Grid>
 
-          <Grid container>
+          {/* <Grid container>
             <HomeRecentActivity
               userUsername={userUsername}
               mainColor={
                 configData.customization && configData.customization.mainColor
               }
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
       <Grid item sx={{ height: "auto" }}>
