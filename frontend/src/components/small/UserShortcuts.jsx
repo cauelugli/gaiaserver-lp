@@ -90,7 +90,7 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
           justifyContent="space-around"
           alignItems="center"
         >
-          <Typography id="ghost">99</Typography>
+          <Typography id="ghost" />
           <Typography
             sx={{
               px:"25%",
