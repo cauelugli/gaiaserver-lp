@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 import { Grid, Paper } from "@mui/material";
 
-import { icons } from '../../icons'
+import { icons } from "../../icons";
 
 import HomeRecentActivity from "../small/HomeRecentActivity";
 
@@ -151,7 +151,12 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
                     item
                     key={index}
                     sx={{
-                      pr: index % 2 === 1 ? "" : 1,
+                      pr:
+                        allowedListMainblocks.length <= 4
+                          ? ""
+                          : index % 2 === 1
+                          ? ""
+                          : 1,
                       pb: 1,
                     }}
                     md={allowedListMainblocks.length <= 4 ? 12 : 6}
@@ -163,6 +168,7 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
                         sx={{
                           height: 110,
                           width: "auto",
+                          minWidth: 200,
                           maxWidth: 692,
                           transition: "background-color 0.3s, color 0.3s",
                           backgroundColor:
