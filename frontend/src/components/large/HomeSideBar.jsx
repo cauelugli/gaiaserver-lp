@@ -45,22 +45,23 @@ const HomeSideBar = ({
   const [selectedDay, setSelectedDay] = React.useState(dayjs());
 
   return (
-    <Grid>
+    <Grid
+      container
+      direction="column"
+    >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateCalendar
+          value={selectedDay}
+          onChange={(newDay) => setSelectedDay(newDay)}
           views={["day", "month"]}
           sx={{
             bgcolor: "#f8f8ff",
             color: "black",
             "& .MuiTypography-root": { color: "black" },
-            "& .MuiPickersDay-root": {
-              color: "black",
-            },
+            "& .MuiPickersDay-root": { color: "black" },
             borderRadius: 2,
             boxShadow: 1,
           }}
-          value={selectedDay}
-          onChange={(newDay) => setSelectedDay(newDay)}
         />
       </LocalizationProvider>
       <CalendarFooter

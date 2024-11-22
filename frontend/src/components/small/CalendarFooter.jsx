@@ -25,11 +25,12 @@ const CalendarFooter = (props) => {
     <Grid
       sx={{
         height: open ? (filteredItems.length > 0 ? 250 : 115) : 45,
-        width: "auto",
+        width: "90%",
         backgroundColor: "#f8f8ff",
         border: "1px solid #e7e7ee",
         borderRadius: 3,
         mt: 1,
+        ml: 2,
       }}
     >
       <AgendaEventBar
