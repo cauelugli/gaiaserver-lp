@@ -7,6 +7,7 @@ import AppsIcon from "@mui/icons-material/Apps";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import AttributionIcon from "@mui/icons-material/Attribution";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import AutoFixNormalIcon from "@mui/icons-material/AutoFixNormal";
@@ -80,6 +81,7 @@ const icons = {
   ArrowDropDownIcon,
   AssessmentIcon,
   AssignmentIndIcon,
+  AttributionIcon,
   AttachFileIcon,
   AttachMoneyIcon,
   AutoFixNormalIcon,

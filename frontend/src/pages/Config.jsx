@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
+import { icons } from "../icons";
+
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -22,6 +24,7 @@ import {
 } from "@mui/material";
 
 import { configModalOptions } from "../options/configModalOptions";
+import Admin from "../forms/config/Admin";
 
 export default function Config({
   topBar,
@@ -33,6 +36,7 @@ export default function Config({
   const [isLoading, setIsLoading] = React.useState(true);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [openModal, setOpenModal] = useState(null);
+  const [openAdminModal, setOpenAdminModal] = useState(null);
   const [configData, setConfigData] = useState([]);
   const [chosenModal, setChosenModal] = useState("");
 
@@ -177,6 +181,35 @@ export default function Config({
         </>
       )}
 
+      {userName === "Admin" && (
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+          sx={{
+            mt: 2,
+            mx: "auto",
+            height: showAdvancedConfig ? 120 : 120,
+            width: showAdvancedConfig ? 150 : 220,
+            border: `"1px solid #ccc"`,
+            borderRadius: 2,
+            transition: "background-color 0.3s, color 0.3s",
+            backgroundColor: `white`,
+            color: `${mainColor}cf`,
+            cursor: "pointer",
+            "&:hover": {
+              color: `white`,
+              backgroundColor: "#aaa",
+            },
+          }}
+          onClick={() => setOpenAdminModal(true)}
+        >
+          {<icons.AttributionIcon sx={{ fontSize: 48 }} />}
+          <Typography sx={{ mt: 1 }}>Admin</Typography>
+        </Grid>
+      )}
+
       <Dialog
         open={!!openModal}
         onClose={() => setOpenModal(null)}
@@ -197,6 +230,20 @@ export default function Config({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenModal(null)}>Fechar</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openAdminModal}
+        onClose={() => setOpenAdminModal(false)}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogContent>
+          <Admin onClose={() => setOpenAdminModal(false)} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenAdminModal(false)}>Fechar</Button>
         </DialogActions>
       </Dialog>
     </Box>

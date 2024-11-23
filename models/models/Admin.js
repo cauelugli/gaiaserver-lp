@@ -1,6 +1,10 @@
 const { mongoose } = require("../db");
 
 adminSchema = new mongoose.Schema({
+  config: {
+    type: Object,
+    default: { notifyActivities: Boolean, default: false },
+  },
   image: {
     type: String,
   },
@@ -9,9 +13,10 @@ adminSchema = new mongoose.Schema({
     default: "Admin",
   },
   notifications: {
-    type: Object,
-    default: { 0: "" },
+    type: Array,
+    default: [],
   },
+
   password: {
     type: String,
   },

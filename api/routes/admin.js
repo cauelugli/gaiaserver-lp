@@ -32,6 +32,44 @@ router.post("/createAdminUser", async (req, res) => {
   }
 });
 
+// GET ADMIN CONFIG
+router.get("/config", async (req, res) => {
+  try {
+    const adminData = await Admin.findOne();
+    return res.status(200).json(adminData.config);
+  } catch (error) {
+    console.error("Erro ao buscar config:", error);
+    return res
+      .status(500)
+      .json({ message: "Erro ao buscar as configurações." });
+  }
+});
+
+// UPDATE ADMIN CONFIG
+router.put("/config", async (req, res) => {
+  try {
+    const { notifyActivities } = req.body;
+
+    const updatedAdmin = await Admin.findOneAndUpdate(
+      {},
+      { "config.notifyActivities": notifyActivities }
+    );
+
+    if (updatedAdmin) {
+      return res
+        .status(200)
+        .json({ message: "Configuração atualizada com sucesso" });
+    } else {
+      return res
+        .status(404)
+        .json({ message: "Não foi possível encontrar o documento Admin" });
+    }
+  } catch (error) {
+    console.error("Erro ao atualizar Admin:", error);
+    return res.status(500).json({ message: "Erro ao atualizar Admin" });
+  }
+});
+
 // UPDATE ADMIN'S PROFILE PICTURE
 router.put("/changeProfilePicture", async (req, res) => {
   try {
