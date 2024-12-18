@@ -171,18 +171,51 @@ const initSocket = (server) => {
         admin = await Admin.findOne();
 
         const parsedTitleString = `${
-          data.method === "Adicionad" && data.isFemaleGender ? "Nova" : "Novo"
+          data.method === "Adicionad"
+            ? data.isFemaleGender
+              ? "Nova"
+              : "Novo"
+            : ""
         } ${data.model} ${data.method}${data.isFemaleGender ? "a" : "o"}`;
-        const notificationBody = `Olá, Admin! ${
-          data.method === "Adicionad" && data.isFemaleGender
-            ? "Uma nova"
-            : "Um novo"
-        } ${data.model} foi ${data.method}${data.isFemaleGender ? "a" : "o"}
 
-        ${data.target ? `Cliente: ${data.target.customer}` : ""}
-        ${data.target ? `Para: ${data.target.scheduledTo}` : ""}
-        ${data.target ? `Horário: ${data.target.scheduleTime}` : ""}
-        `;
+        let notificationBody;
+
+        if (data.target) {
+          notificationBody = `Olá, Admin! ${
+            data.method === "Adicionad"
+              ? data.isFemaleGender
+                ? "Uma nova"
+                : "Um novo"
+              : data.isFemaleGender
+              ? "A"
+              : "O"
+          } ${data.model} 
+          ${typeof data.target === "string" ? data.target : ""}
+           foi ${data.method}${data.isFemaleGender ? "a" : "o"}
+           ${data.sourceId ? `por ${data.sourceId}` : ""}
+  
+          ${data.target.customer ? `Cliente: ${data.target.customer}` : ""}
+          ${data.target.scheduledTo ? `Para: ${data.target.scheduledTo}` : ""}
+          ${
+            data.target.deliveryScheduledTo
+              ? `Para: ${data.target.deliveryScheduledTo}`
+              : ""
+          }
+          ${
+            data.target.worker
+              ? `Colaborador Designado: ${data.target.worker}`
+              : ""
+          }
+          ${data.target.seller ? `Vendedor: ${data.target.seller}` : ""}
+          ${
+            data.target.scheduleTime
+              ? `Horário: ${data.target.scheduleTime}`
+              : ""
+          }
+          `;
+        } else {
+          notificationBody = "";
+        }
 
         if (admin) {
           admin.notifications.push({
