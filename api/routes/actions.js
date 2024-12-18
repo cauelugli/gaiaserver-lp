@@ -2,95 +2,140 @@ const express = require("express");
 const router = express.Router();
 const { defineModel } = require("../../controllers/functions/routeFunctions");
 const dayjs = require("dayjs");
+const Admin = require("../../models/models/Admin");
 
 // USER - MARK SINGLE NOTIFICATION AS READ
 router.put("/markNotificationAsRead", async (req, res) => {
-  const { userId, notificationCreatedAt } = req.body;
-  const Model = defineModel("User");
+  const { userId, notificationCreatedAt, isAdmin } = req.body;
+  if (isAdmin) {
+    try {
+      await Admin.findOneAndUpdate(
+        { "notifications.createdAt": notificationCreatedAt },
+        {
+          $set: { "notifications.$.read": true },
+        },
+        { new: true }
+      );
 
-  if (!Model) {
-    console.log("\nModel not found\n");
-    return res.status(400).json({ error: "Modelo inválido" });
-  }
+      res.status(200).json("OK");
+    } catch (err) {
+      res.status(500).json({ error: "Erro ao atualizar notificação" });
+    }
+  } else {
+    const Model = defineModel("User");
 
-  try {
-    const updatedUser = await Model.findOneAndUpdate(
-      { _id: userId, "notifications.createdAt": notificationCreatedAt },
-      {
-        $set: { "notifications.$.read": true },
-      },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ error: "Notificação não encontrada" });
+    if (!Model) {
+      console.log("\nModel not found\n");
+      return res.status(400).json({ error: "Modelo inválido" });
     }
 
-    res.status(200).json("OK");
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Erro ao atualizar notificação" });
+    try {
+      const updatedUser = await Model.findOneAndUpdate(
+        { _id: userId, "notifications.createdAt": notificationCreatedAt },
+        {
+          $set: { "notifications.$.read": true },
+        },
+        { new: true }
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({ error: "Notificação não encontrada" });
+      }
+
+      res.status(200).json("OK");
+    } catch (err) {
+      res.status(500).json({ error: "Erro ao atualizar notificação" });
+    }
   }
 });
 
 // USER - DELETE SINGLE NOTIFICATION
 router.put("/deleteNotification", async (req, res) => {
   // in the future, as a company, we will send this somewhere, instead of deleting
-  const { userId, notificationCreatedAt } = req.body;
-  const Model = defineModel("User");
+  const { userId, isAdmin, notificationCreatedAt } = req.body;
+  if (isAdmin) {
+    try {
+      await Admin.findOneAndUpdate(
+        {},
+        {
+          $pull: { notifications: { createdAt: notificationCreatedAt } },
+        },
+        { new: true }
+      );
+      res.status(200).json("OK");
+    } catch (err) {
+      res.status(500).json({ error: "Erro ao deletar notificação" });
+    }
+  } else {
+    const Model = defineModel("User");
 
-  if (!Model) {
-    console.log("\nModel not found\n");
-    return res.status(400).json({ error: "Modelo inválido" });
-  }
-
-  try {
-    const updatedUser = await Model.findOneAndUpdate(
-      { _id: userId },
-      {
-        $pull: { notifications: { createdAt: notificationCreatedAt } },
-      },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ error: "Notificação não encontrada" });
+    if (!Model) {
+      console.log("\nModel not found\n");
+      return res.status(400).json({ error: "Modelo inválido" });
     }
 
-    res.status(200).json("OK");
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Erro ao atualizar notificação" });
+    try {
+      const updatedUser = await Model.findOneAndUpdate(
+        { _id: userId },
+        {
+          $pull: { notifications: { createdAt: notificationCreatedAt } },
+        },
+        { new: true }
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({ error: "Notificação não encontrada" });
+      }
+
+      res.status(200).json("OK");
+    } catch (err) {
+      res.status(500).json({ error: "Erro ao deletar notificação" });
+    }
   }
 });
 
 // USER - MARK ALL NOTIFICATIONS AS READ
 router.put("/markAllAsRead", async (req, res) => {
-  const { userId } = req.body;
-  const Model = defineModel("User");
+  const { userId, isAdmin } = req.body;
+  if (isAdmin) {
+    try {
+      await Admin.findOneAndUpdate(
+        {},
+        {
+          $set: { "notifications.$[].read": true },
+        },
+        { new: true }
+      );
 
-  if (!Model) {
-    console.log("\nModel not found\n");
-    return res.status(400).json({ error: "Modelo inválido" });
-  }
+      res.status(200).json("OK");
+    } catch (err) {
+      res.status(500).json({ error: "Erro ao marcar todas notificações como lidas" });
+    }
+  } else {
+    const Model = defineModel("User");
 
-  try {
-    const updatedUser = await Model.findByIdAndUpdate(
-      userId,
-      {
-        $set: { "notifications.$[].read": true },
-      },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ error: "Notificação não encontrada" });
+    if (!Model) {
+      console.log("\nModel not found\n");
+      return res.status(400).json({ error: "Modelo inválido" });
     }
 
-    res.status(200).json("OK");
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Erro ao atualizar notificação" });
+    try {
+      const updatedUser = await Model.findByIdAndUpdate(
+        userId,
+        {
+          $set: { "notifications.$[].read": true },
+        },
+        { new: true }
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({ error: "Notificação não encontrada" });
+      }
+
+      res.status(200).json("OK");
+    } catch (err) {
+      res.status(500).json({ error: "Erro ao marcar todas notificações como lidas" });
+    }
   }
 });
 

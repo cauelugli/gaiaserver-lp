@@ -1,9 +1,12 @@
+const Admin = require("../../models/models/Admin");
 const Counters = require("../../models/models/Counters");
 const Department = require("../../models/models/Department");
 const Notifications = require("../../models/models/Notifications");
 const Position = require("../../models/models/Position");
 const io = require("../../api/node_modules/socket.io-client");
 const socket = io("http://localhost:5002");
+
+const { translateModel, translateMethod } = require("../notificationOptions");
 
 async function notificationRoutines(
   model,
@@ -14,6 +17,19 @@ async function notificationRoutines(
   idIndexList
 ) {
   try {
+    const adminConfig = await Admin.findOne({}, "config");
+
+    if (adminConfig.config.notifyActivities === true) {
+      socket.emit("notifyAdmin", {
+        sourceId,
+        source: idIndexList?.find((item) => item.id === sourceId)?.name || "",
+        target,
+        method: translateMethod(method),
+        model: translateModel(model),
+        isFemaleGender: model === "Sale"
+      });
+    }
+
     const config = await Notifications.findOne({});
     const counters = await Counters.findOne({});
     let finalTarget = "";
@@ -102,7 +118,7 @@ async function notificationRoutines(
           label: "Venda",
           isFemale: true,
         });
-        if (sourceId !== target.seller) {
+        if (target && sourceId !== target.seller) {
           socket.emit("notifyAssignee", {
             target: {
               customer:

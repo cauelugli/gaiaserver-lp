@@ -87,4 +87,15 @@ router.put("/changeProfilePicture", async (req, res) => {
   }
 });
 
+router.get("/notifications", async (req, res) => {
+  try {
+    const adminData = await Admin.findOne();
+    return res.status(200).json(adminData.notifications);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Erro ao buscar notificações do Admin" });
+  }
+});
+
 module.exports = router;

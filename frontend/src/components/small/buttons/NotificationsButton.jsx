@@ -68,6 +68,7 @@ export default function NotificationsButton({
     try {
       const res = await api.put(`/actions/markNotificationAsRead/`, {
         userId: user._id,
+        isAdmin: user.username === "admin",
         notificationCreatedAt: notificationCreatedAt,
       });
 
@@ -90,6 +91,7 @@ export default function NotificationsButton({
     try {
       const res = await api.put(`/actions/deleteNotification/`, {
         userId: user._id,
+        isAdmin: user.username === "admin",
         notificationCreatedAt: notificationCreatedAt,
       });
 
@@ -105,6 +107,7 @@ export default function NotificationsButton({
     try {
       const res = await api.put(`/actions/markAllAsRead/`, {
         userId: user._id,
+        isAdmin: user.username === "admin",
       });
 
       if (res.data) {

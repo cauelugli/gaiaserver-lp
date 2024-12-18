@@ -1,4 +1,5 @@
 const { Server } = require("socket.io");
+const Admin = require("../models/models/Admin");
 const User = require("../models/models/User");
 const dotenv = require("dotenv");
 const { mongoose } = require("mongoose");
@@ -161,6 +162,43 @@ const initSocket = (server) => {
       }
 
       io.emit("newNotificationToAssignee", data);
+    });
+
+    socket.on("notifyAdmin", async (data) => {
+      console.log("data", data);
+      try {
+        let admin;
+        admin = await Admin.findOne();
+
+        const parsedTitleString = `${
+          data.method === "Adicionad" && data.isFemaleGender ? "Nova" : "Novo"
+        } ${data.model} ${data.method}${data.isFemaleGender ? "a" : "o"}`;
+        const notificationBody = `Olá, Admin! ${
+          data.method === "Adicionad" && data.isFemaleGender
+            ? "Uma nova"
+            : "Um novo"
+        } ${data.model} foi ${data.method}${data.isFemaleGender ? "a" : "o"}
+
+        ${data.target ? `Cliente: ${data.target.customer}` : ""}
+        ${data.target ? `Para: ${data.target.scheduledTo}` : ""}
+        ${data.target ? `Horário: ${data.target.scheduleTime}` : ""}
+        `;
+
+        if (admin) {
+          admin.notifications.push({
+            read: false,
+            title: parsedTitleString,
+            body: notificationBody,
+            createdAt: new Date().toISOString(),
+          });
+
+          await admin.save();
+        }
+      } catch (err) {
+        console.error("Erro ao adicionar notificação", err);
+      }
+
+      io.emit("newNotificationToAdmin", data);
     });
 
     socket.on("disconnect", () => {

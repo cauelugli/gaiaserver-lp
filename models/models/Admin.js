@@ -16,7 +16,6 @@ adminSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-
   password: {
     type: String,
   },

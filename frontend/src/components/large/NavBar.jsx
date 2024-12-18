@@ -13,8 +13,11 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
 
   React.useEffect(() => {
     const fetchData = async () => {
+      let notifications;
       try {
-        const notifications = await api.get(`/get/notifications/${user._id}`);
+        user.username === "admin"
+          ? (notifications = await api.get("/admin/notifications/"))
+          : (notifications = await api.get(`/get/notifications/${user._id}`));
         setNotifications(notifications.data);
       } catch (error) {
         if (error.response.status !== 404) {
@@ -23,11 +26,14 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
       }
     };
     fetchData();
-  }, [api, user._id]);
+  }, [api, user]);
 
   const fetchData = async () => {
+    let notifications;
     try {
-      const notifications = await api.get(`/get/notifications/${user._id}`);
+      user.username === "admin"
+        ? (notifications = await api.get("/admin/notifications/"))
+        : (notifications = await api.get(`/get/notifications/${user._id}`));
       setNotifications(notifications.data);
     } catch (error) {
       if (error.response.status !== 404) {
@@ -50,12 +56,21 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
       }
     };
 
+    const handleNewNotificationToAdmin = (notificationData) => {
+      // only to admin user
+      if (notificationData && user.username === "admin") {
+        fetchData();
+      }
+    };
+
     socket.on("newNotificationToList", handleNewNotificationToList);
     socket.on("newNotificationToAssignee", handleNewNotificationToAssignee);
+    socket.on("newNotificationToAdmin", handleNewNotificationToAdmin);
 
     return () => {
       socket.off("newNotificationToList", handleNewNotificationToList);
       socket.off("newNotificationToAssignee", handleNewNotificationToAssignee);
+      socket.on("newNotificationToAdmin", handleNewNotificationToAdmin);
     };
   });
 
@@ -108,14 +123,14 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
           <Grid item sx={{ mr: 2 }}>
             <Grid container direction="row">
               <NotificationsButton
-                sx={{ mr: 3, color: "#333" }}
                 api={api}
                 socket={socket}
-                mainColor={configData.customization.mainColor}
                 user={user}
+                mainColor={configData.customization.mainColor}
                 notifications={notifications}
                 setNotifications={setNotifications}
                 fetchData={fetchData}
+                sx={{ mr: 3, color: "#333" }}
               />
               <UserButton user={user} />
             </Grid>
