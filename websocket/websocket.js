@@ -4,6 +4,8 @@ const User = require("../models/models/User");
 const dotenv = require("dotenv");
 const { mongoose } = require("mongoose");
 
+const { createMessageTitleAndBody } = require("../controllers/functions/websocketFunctions");
+
 dotenv.config();
 
 mongoose
@@ -165,63 +167,15 @@ const initSocket = (server) => {
     });
 
     socket.on("notifyAdmin", async (data) => {
-      console.log("data", data);
       try {
-        let admin;
-        admin = await Admin.findOne();
-
-        const parsedTitleString = `${
-          data.method === "Adicionad"
-            ? data.isFemaleGender
-              ? "Nova"
-              : "Novo"
-            : ""
-        } ${data.model} ${data.method}${data.isFemaleGender ? "a" : "o"}`;
-
-        let notificationBody;
-
-        if (data.target) {
-          notificationBody = `Olá, Admin! ${
-            data.method === "Adicionad"
-              ? data.isFemaleGender
-                ? "Uma nova"
-                : "Um novo"
-              : data.isFemaleGender
-              ? "A"
-              : "O"
-          } ${data.model} 
-          ${typeof data.target === "string" ? data.target : ""}
-           foi ${data.method}${data.isFemaleGender ? "a" : "o"}
-           ${data.sourceId ? `por ${data.sourceId}` : ""}
-  
-          ${data.target.customer ? `Cliente: ${data.target.customer}` : ""}
-          ${data.target.scheduledTo ? `Para: ${data.target.scheduledTo}` : ""}
-          ${
-            data.target.deliveryScheduledTo
-              ? `Para: ${data.target.deliveryScheduledTo}`
-              : ""
-          }
-          ${
-            data.target.worker
-              ? `Colaborador Designado: ${data.target.worker}`
-              : ""
-          }
-          ${data.target.seller ? `Vendedor: ${data.target.seller}` : ""}
-          ${
-            data.target.scheduleTime
-              ? `Horário: ${data.target.scheduleTime}`
-              : ""
-          }
-          `;
-        } else {
-          notificationBody = "";
-        }
+        let admin = await Admin.findOne();
+        const { title, body } = createMessageTitleAndBody(data);
 
         if (admin) {
           admin.notifications.push({
             read: false,
-            title: parsedTitleString,
-            body: notificationBody,
+            title,
+            body,
             createdAt: new Date().toISOString(),
           });
 
