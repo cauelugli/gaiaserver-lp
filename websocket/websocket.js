@@ -169,7 +169,7 @@ const initSocket = (server) => {
     socket.on("notifyAdmin", async (data) => {
       try {
         let admin = await Admin.findOne();
-        const { title, body } = createMessageTitleAndBody(data);
+        const { title, body } = await createMessageTitleAndBody(data);
 
         if (admin) {
           admin.notifications.push({
