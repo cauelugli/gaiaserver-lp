@@ -101,6 +101,7 @@ export default function TableModel(props) {
             {props.page === "products" ? (
               <ProductsTable
                 items={props.items}
+                mainColor={props.mainColor}
                 filteredRows={filteredRows}
                 startIndex={startIndex}
                 endIndex={endIndex}

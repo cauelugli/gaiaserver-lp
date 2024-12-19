@@ -53,6 +53,7 @@ function StandardTable(props) {
             <TableCell align="center">
               <RowButton
                 userId={props.userId}
+                mainColor={props.mainColor}
                 item={row}
                 page={props.page}
                 tabIndex={props.tabIndex}

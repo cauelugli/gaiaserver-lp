@@ -6,13 +6,17 @@ import { toast } from "react-toastify";
 import {
   Box,
   Button,
+  CircularProgress,
   DialogActions,
   DialogContent,
   Grid,
   Typography,
 } from "@mui/material";
 
-import { isButtonDisabled } from "../../../../controllers/functions/overallFunctions";
+import {
+  isButtonDisabled,
+  loadPage,
+} from "../../../../controllers/functions/overallFunctions";
 
 import DialogHeader from "../../components/small/DialogHeader";
 import ImageTableCell from "../../components/tableCells/ImageTableCell";
@@ -225,6 +229,29 @@ export default function AddFormModel(props) {
     setOkToDispatch,
     attachments,
   };
+
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    loadPage().then(() => {
+      setIsLoading(false);
+    });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+        }}
+      >
+        <CircularProgress sx={{ color: props.mainColor }} />
+      </Box>
+    );
+  }
 
   return (
     <form onSubmit={handleAdd}>

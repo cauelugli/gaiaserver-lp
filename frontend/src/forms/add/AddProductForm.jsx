@@ -12,7 +12,9 @@ const api = axios.create({
 });
 
 import {
+  Box,
   Button,
+  CircularProgress,
   DialogActions,
   DialogContent,
   FormHelperText,
@@ -27,6 +29,7 @@ import {
 import { icons } from "../../icons";
 
 import { handleCurrencyValueChange } from "../../../../controllers/handlers/handlers";
+import { loadPage } from "../../../../controllers/functions/overallFunctions";
 
 export default function AddProductForm({
   userName,
@@ -35,6 +38,7 @@ export default function AddProductForm({
   onClose,
   userId,
   baseProduct,
+  mainColor,
 }) {
   const [name, setName] = React.useState("");
   const [buyValue, setBuyValue] = React.useState("");
@@ -104,6 +108,29 @@ export default function AddProductForm({
       console.log(err);
     }
   };
+
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    loadPage().then(() => {
+      setIsLoading(false);
+    });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+        }}
+      >
+        <CircularProgress sx={{ color: mainColor }} />
+      </Box>
+    );
+  }
 
   return (
     <form onSubmit={handleAddProduct}>

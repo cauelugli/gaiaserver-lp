@@ -62,6 +62,7 @@ const RowButton = (props) => {
       formComponent = (
         <EditFormModel
           palette={props.palette}
+          mainColor={props.mainColor}
           buttonProps={props}
           options={selectedModal}
           userName={props.userName}

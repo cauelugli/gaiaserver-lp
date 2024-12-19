@@ -220,3 +220,11 @@ export function parseAgenda(userAgenda) {
   });
 }
 
+export function loadPage() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 1000);
+  });
+}
+

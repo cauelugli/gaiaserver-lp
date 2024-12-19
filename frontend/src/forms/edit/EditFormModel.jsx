@@ -11,6 +11,7 @@ const api = axios.create({
 import {
   Box,
   Button,
+  CircularProgress,
   DialogActions,
   DialogContent,
   Grid,
@@ -21,6 +22,7 @@ import ImageTableCell from "../../components/tableCells/ImageTableCell";
 import DialogHeader from "../../components/small/DialogHeader";
 
 import TableCellOptions from "../../options/tableCellOptions";
+import { loadPage } from "../../../../controllers/functions/overallFunctions";
 
 export default function EditFormModel(props) {
   const [fields, setFields] = React.useState(props.options.fields);
@@ -305,6 +307,29 @@ export default function EditFormModel(props) {
       }
     }
   };
+
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    loadPage().then(() => {
+      setIsLoading(false);
+    });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+        }}
+      >
+        <CircularProgress sx={{ color: props.mainColor }} />
+      </Box>
+    );
+  }
 
   return (
     <form onSubmit={handleEdit}>

@@ -94,6 +94,7 @@ export default function ProductsTableButton(props) {
         >
           <AddProductForm
             fromProducts
+            mainColor={props.configCustomization.mainColor}
             buttonProps={props}
             baseProduct={selectedProduct}
             userName={props.userName}
