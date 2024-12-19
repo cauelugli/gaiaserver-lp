@@ -414,6 +414,7 @@ export default function App() {
                               palette={theme.palette}
                               userId={userData._id}
                               userUsername={userData.username}
+                              isAdmin={userData.username === "admin"}
                               userName={userData.name}
                               userAgenda={userAgenda}
                               setUserPreferences={setUserPreferences}

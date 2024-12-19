@@ -169,6 +169,7 @@ export default function PageModel(props) {
               configCustomization={props.configCustomization}
               page={currentPage}
               userId={props.userId}
+              isAdmin={props.isAdmin}
             />
           )}
       </Grid>

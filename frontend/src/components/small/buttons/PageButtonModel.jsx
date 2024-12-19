@@ -122,8 +122,8 @@ export default function PageButtonModel(props) {
             buttonProps={props}
             options={currentPageOptions}
             selectedOptionLabel={selectedOption.label}
-            userName={props.userName}
             userId={props.userId}
+            isAdmin={props.isAdmin}
             configAgenda={props.configAgenda}
             configCustomization={props.configCustomization}
             configNotifications={props.configNotifications}

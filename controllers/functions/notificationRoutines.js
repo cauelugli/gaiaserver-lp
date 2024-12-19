@@ -14,7 +14,8 @@ async function notificationRoutines(
   method,
   sourceId,
   notificationList,
-  idIndexList
+  idIndexList,
+  isAdmin
 ) {
   try {
     const adminConfig = await Admin.findOne({}, "config");
@@ -26,7 +27,8 @@ async function notificationRoutines(
         target,
         method: translateMethod(method),
         model: translateModel(model),
-        isFemaleGender: model === "Sale"
+        isFemaleGender: model === "Sale",
+        isAdmin
       });
     }
 

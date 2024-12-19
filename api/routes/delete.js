@@ -1,12 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
+const Admin = require("../../models/models/Admin");
 const { defineModel } = require("../../controllers/functions/routeFunctions");
-
 const {
   deleteRoutines,
 } = require("../../controllers/functions/deleteRoutines");
-
 const {
   notificationRoutines,
 } = require("../../controllers/functions/notificationRoutines");
@@ -21,6 +20,17 @@ router.delete("/:sourceId/:model/:id", async (req, res) => {
     return res.status(400).json({ error: "Modelo inválido" });
   }
 
+  // defining if user is admin
+  let isAdmin = false;
+  try {
+    const admin = await Admin.findOne();
+    if (admin && admin._id.toString() === sourceId) {
+      isAdmin = true;
+    }
+  } catch (err) {
+    return res.status(500).json({ error: "Erro ao verificar admin" });
+  }
+
   // you don't 'delete' an operator, you reset User's data to blank
   if (model === "Operator") {
     await Model.findByIdAndUpdate(
@@ -28,7 +38,7 @@ router.delete("/:sourceId/:model/:id", async (req, res) => {
       { $set: { username: "", password: "", role: "", alreadyLogin: false } },
       { new: true }
     );
-    return res.status(200).json("Item deletado com sucesso");
+    return res.status(200).json("Operador deletado com sucesso");
   }
 
   try {
@@ -40,7 +50,9 @@ router.delete("/:sourceId/:model/:id", async (req, res) => {
       deletedItem.name || deletedItem.title || deletedItem.number,
       "delete",
       sourceId,
-      `${model.toLowerCase()}IsDeleted`
+      `${model.toLowerCase()}IsDeleted`,
+      [],
+      isAdmin
     );
     res.status(200).json("Item deletado com sucesso");
   } catch (err) {
@@ -58,6 +70,17 @@ router.delete("/multiple/:sourceId/:model/:ids", async (req, res) => {
   if (!Model) {
     console.log("\nModel not found\n");
     return res.status(400).json({ error: "Modelo inválido" });
+  }
+
+  // defining if user is admin
+  let isAdmin = false;
+  try {
+    const admin = await Admin.findOne();
+    if (admin && admin._id.toString() === sourceId) {
+      isAdmin = true;
+    }
+  } catch (err) {
+    return res.status(500).json({ error: "Erro ao verificar admin" });
   }
 
   if (!idArray || idArray.length === 0) {
@@ -83,7 +106,9 @@ router.delete("/multiple/:sourceId/:model/:ids", async (req, res) => {
             deletedItem.title || deletedItem.name,
             "delete",
             sourceId,
-            `${model.toLowerCase()}IsDeleted`
+            `${model.toLowerCase()}IsDeleted`,
+            [],
+            isAdmin
           );
         }
       }

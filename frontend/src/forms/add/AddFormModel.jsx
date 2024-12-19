@@ -149,7 +149,7 @@ export default function AddFormModel(props) {
         selectedProducts,
         selectedSchedule,
         services: selectedServices,
-        createdBy: props.userName || "Admin",
+        createdBy: props.isAdmin ? "admin" : props.userId,
         isManager: modalOptions.label === "Gerente",
         price:
           modalOptions.label === "Venda"

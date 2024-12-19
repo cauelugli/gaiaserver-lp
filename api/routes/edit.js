@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const Admin = require("../../models/models/Admin");
 const { defineModel } = require("../../controllers/functions/routeFunctions");
 const {
   notificationRoutines,
@@ -31,6 +32,17 @@ router.put("/", async (req, res) => {
   if (!Model) {
     console.log("\nmodel not found\n");
     return res.status(400).json({ error: "Modelo inválido" });
+  }
+
+  // defining if user is admin
+  let isAdmin = false;
+  try {
+    const admin = await Admin.findOne();
+    if (admin && admin._id.toString() === sourceId) {
+      isAdmin = true;
+    }
+  } catch (err) {
+    return res.status(500).json({ error: "Erro ao verificar admin" });
   }
 
   // same name already registered verification
@@ -94,7 +106,9 @@ router.put("/", async (req, res) => {
       updatedItem,
       "edit",
       req.body.sourceId,
-      `${req.body.model.toLowerCase()}IsEdited`
+      `${req.body.model.toLowerCase()}IsEdited`,
+      [],
+      isAdmin
     );
 
     if (req.body.model === "Department" || req.body.model === "Group") {

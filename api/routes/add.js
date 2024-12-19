@@ -37,6 +37,9 @@ router.post("/", async (req, res) => {
     selectedSchedule,
   } = req.body;
 
+  // defining if user is admin
+  const isAdmin = createdBy === "admin" ? true : false;
+
   const Model = defineModel(req.body.model);
 
   if (!Model) {
@@ -143,7 +146,8 @@ router.post("/", async (req, res) => {
       "add",
       req.body.sourceId,
       `${req.body.model.toLowerCase()}IsCreated`,
-      idIndexList
+      idIndexList,
+      isAdmin
     );
 
     res.status(200).json(savedItem);

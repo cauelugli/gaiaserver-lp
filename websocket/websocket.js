@@ -4,7 +4,9 @@ const User = require("../models/models/User");
 const dotenv = require("dotenv");
 const { mongoose } = require("mongoose");
 
-const { createMessageTitleAndBody } = require("../controllers/functions/websocketFunctions");
+const {
+  createMessageTitleAndBody,
+} = require("../controllers/functions/websocketFunctions");
 
 dotenv.config();
 
@@ -167,22 +169,26 @@ const initSocket = (server) => {
     });
 
     socket.on("notifyAdmin", async (data) => {
-      try {
-        let admin = await Admin.findOne();
-        const { title, body } = await createMessageTitleAndBody(data);
+      if (data.isAdmin !== true) {
+        if (data.target.createdBy !== "admin") {
+          try {
+            let admin = await Admin.findOne();
+            const { title, body } = await createMessageTitleAndBody(data);
 
-        if (admin) {
-          admin.notifications.push({
-            read: false,
-            title,
-            body,
-            createdAt: new Date().toISOString(),
-          });
+            if (admin) {
+              admin.notifications.push({
+                read: false,
+                title,
+                body,
+                createdAt: new Date().toISOString(),
+              });
 
-          await admin.save();
+              await admin.save();
+            }
+          } catch (err) {
+            console.error("Erro ao adicionar notificação", err);
+          }
         }
-      } catch (err) {
-        console.error("Erro ao adicionar notificação", err);
       }
 
       io.emit("newNotificationToAdmin", data);
