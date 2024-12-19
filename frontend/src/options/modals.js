@@ -265,6 +265,15 @@ export const modals = {
         required: false,
       },
       {
+        fieldSection: "scheduling",
+        name: "scheduleTime",
+        label: "Selecione um Horário",
+        type: "dynamicData",
+        dynamicData: "scheduleTime",
+        required: false,
+        hasAvatar: false,
+      },
+      {
         fieldSection: "description",
         name: "description",
         label: "",

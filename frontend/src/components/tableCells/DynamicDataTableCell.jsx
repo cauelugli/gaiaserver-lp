@@ -15,7 +15,10 @@ import {
   Chip,
   InputLabel,
 } from "@mui/material";
-import { checkAvailability } from "../../../../controllers/functions/overallFunctions";
+import {
+  checkAvailability,
+  createScheduleSlots,
+} from "../../../../controllers/functions/overallFunctions";
 
 const DynamicDataTableCell = (props) => {
   const [options, setOptions] = React.useState([]);
@@ -46,6 +49,16 @@ const DynamicDataTableCell = (props) => {
             params: { model: "User" },
           });
           data = resPositions.data.filter((user) => !user.username);
+        } else if (props.field.dynamicData === "scheduleTime") {
+          const configAgenda = await api.get("/config/specific", {
+            params: { key: "agenda", items: ["minTime", "maxTime"] },
+          });
+          const slots = createScheduleSlots(
+            configAgenda.data.minTime,
+            configAgenda.data.maxTime,
+            props.serviceLength
+          );
+          data = slots;
         } else if (
           props.field.dynamicData === "allCustomers" ||
           props.fields.data === "customer"
@@ -87,7 +100,7 @@ const DynamicDataTableCell = (props) => {
       }
     };
     fetchData();
-  }, [props.field.dynamicData, props.fields.data]);
+  }, [props.field.dynamicData, props.fields.data, props.serviceLength]);
 
   const renderValue = (selected) => {
     if (props.multiple && selected) {

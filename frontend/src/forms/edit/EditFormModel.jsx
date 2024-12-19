@@ -34,6 +34,8 @@ export default function EditFormModel(props) {
   const [selectedMembers, setSelectedMembers] = React.useState([]);
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
+  const [customers, setCustomers] = React.useState([]);
+  const [services, setServices] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
   const [positions, setPositions] = React.useState([]);
   const [members, setMembers] = React.useState([]);
@@ -46,7 +48,7 @@ export default function EditFormModel(props) {
   React.useEffect(() => {}, [priceDifference]);
 
   React.useEffect(() => {
-    const fetchDepartments = async () => {
+    const fetchData = async () => {
       try {
         const departments = await api.get("/get", {
           params: { model: "Department" },
@@ -54,9 +56,21 @@ export default function EditFormModel(props) {
         const positions = await api.get("/get", {
           params: { model: "Position" },
         });
+        const services = await api.get("/get", {
+          params: { model: "Service" },
+        });
         const users = await api.get("/get", {
           params: { model: "User" },
         });
+        const customers = await api.get("/get", {
+          params: { model: "Customer" },
+        });
+        const clients = await api.get("/get", {
+          params: { model: "Client" },
+        });
+        const allCustomers = [...customers.data, ...clients.data];
+        setCustomers(allCustomers);
+        setServices(services.data);
         setDepartments(departments.data);
         setPositions(positions.data);
         setMembers(users.data.filter((user) => !user.isManager));
@@ -72,7 +86,7 @@ export default function EditFormModel(props) {
       }
     };
 
-    fetchDepartments();
+    fetchData();
   }, []);
 
   // Initializing form with target data
@@ -85,17 +99,36 @@ export default function EditFormModel(props) {
         if (field.name === "department" && typeof fieldValue === "string") {
           const department = departments.find((dep) => dep._id === fieldValue);
           initialFields[field.name] = department ? department.name : "";
+        } else if (field.name === "scheduledToAssignee") {
+          initialFields[field.name] = !!props.target.scheduledToAssignee;
+        } else if (field.name === "scheduleTime") {
+          initialFields[field.name] = props.target.scheduleTime
+            ? props.target.scheduleTime
+            : "";
         } else if (
           field.name === "position" &&
           typeof fieldValue === "string"
         ) {
           const position = positions.find((pos) => pos._id === fieldValue);
           initialFields[field.name] = position ? position.name : "";
-        } else if (field.name === "manager" && typeof fieldValue === "string") {
+        } else if (field.name === "manager") {
           const manager = managers.find(
             (manager) => manager._id === fieldValue
           );
           initialFields[field.name] = manager ? manager : "";
+        } else if (field.name === "service") {
+          const service = services.find(
+            (service) => service._id === fieldValue
+          );
+          initialFields[field.name] = service ? service : "";
+        } else if (field.name === "worker") {
+          const worker = members.find((worker) => worker._id === fieldValue);
+          initialFields[field.name] = worker ? worker : "";
+        } else if (field.name === "customer") {
+          const customer = customers.find(
+            (customer) => customer._id === fieldValue
+          );
+          initialFields[field.name] = customer ? customer : "";
         } else if (field.name === "members") {
           const membersFound = fieldValue.map((memberId) => {
             return members.find((member) => member._id === memberId) || null;
@@ -118,6 +151,8 @@ export default function EditFormModel(props) {
     positions,
     managers,
     members,
+    customers,
+    services,
   ]);
 
   const modalOptions = props.options;
@@ -213,7 +248,6 @@ export default function EditFormModel(props) {
         image: imagePath ? imagePath : props.target.image,
         model: modalOptions.model,
         selectedProducts,
-
         selectedMembers: selectedMemberIds,
         previousMembers: props.target["members"],
         services: selectedServices,
@@ -331,6 +365,10 @@ export default function EditFormModel(props) {
                       setPriceDifference={setPriceDifference}
                       setFinalPrice={setFinalPrice}
                       setOkToDispatch={setOkToDispatch}
+                      serviceLength={{
+                        executionTime: fields.service && fields.service.executionTime,
+                        sessions: fields.service && fields.service.sessions,
+                      }}
                     />
                   </Grid>
                 ))}

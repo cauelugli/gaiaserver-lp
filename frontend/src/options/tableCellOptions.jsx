@@ -3,27 +3,28 @@
 import React from "react";
 
 import {
-  Grid,
-  Table,
-  TableRow,
-  TableCell,
-  Typography,
-  TextField,
   Checkbox,
+  Grid,
+  InputLabel,
+  Table,
+  TableCell,
+  TableRow,
+  TextField,
+  Typography,
 } from "@mui/material";
 
-import StringTableCell from "../components/tableCells/StringTableCell";
-import IdDocTableCell from "../components/tableCells/IdDocTableCell";
-import PhoneTableCell from "../components/tableCells/PhoneTableCell";
+import ColorPicker from "../components/small/ColorPicker";
 import CurrencyTableCell from "../components/tableCells/CurrencyTableCell";
-import SelectTableCell from "../components/tableCells/SelectTableCell";
 import DateTableCell from "../components/tableCells/DateTableCell";
 import DynamicDataTableCell from "../components/tableCells/DynamicDataTableCell";
-import ManagerSelectTableCell from "../components/tableCells/ManagerSelectTableCell";
+import IdDocTableCell from "../components/tableCells/IdDocTableCell";
+import PhoneTableCell from "../components/tableCells/PhoneTableCell";
 import ProductsTableCell from "../components/tableCells/ProductsTableCell";
-import ServicesTableCell from "../components/tableCells/ServicesTableCell";
-import ColorPicker from "../components/small/ColorPicker";
+import ManagerSelectTableCell from "../components/tableCells/ManagerSelectTableCell";
 import MembersTableCell from "../components/tableCells/MembersTableCell";
+import SelectTableCell from "../components/tableCells/SelectTableCell";
+import ServicesTableCell from "../components/tableCells/ServicesTableCell";
+import StringTableCell from "../components/tableCells/StringTableCell";
 
 const TableCellOptions = ({
   field,
@@ -42,6 +43,7 @@ const TableCellOptions = ({
   setPriceDifference,
   setFinalPrice,
   setOkToDispatch,
+  serviceLength
 }) => {
   return (
     <>
@@ -150,6 +152,7 @@ const TableCellOptions = ({
           modalOptions={modalOptions}
           required={field.required}
           multiple={field.multiple}
+          serviceLength={serviceLength}
         />
       )}
       {field.type === "managerSelect" && (
@@ -283,12 +286,20 @@ const TableCellOptions = ({
         />
       )}
       {field.type === "checkbox" && (
-        <Checkbox
-          value={fields[field.name] || ""}
-          onChange={handleChange(field.name)}
-          size="small"
-          required={field.required}
-        />
+        <>
+          <InputLabel>{field.label}</InputLabel>
+          <Checkbox
+            checked={fields[field.name] || false}
+            onChange={() =>
+              setFields({
+                ...fields,
+                [field.name]: !fields[field.name],
+              })
+            }
+            size="small"
+            required={field.required}
+          />
+        </>
       )}
       {field.type === "color" && (
         <ColorPicker
