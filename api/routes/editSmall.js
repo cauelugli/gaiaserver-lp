@@ -5,6 +5,9 @@ const {
   swapDepartments,
 } = require("../../controllers/functions/routeFunctions");
 
+// need to implement notifications and routines here!!!!!
+// you lazy shity ass dog
+
 // EDIT SMALL ITEM
 router.put("/", async (req, res) => {
   const attribute = req.body.targetAttribute;

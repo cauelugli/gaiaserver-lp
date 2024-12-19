@@ -13,7 +13,6 @@ const {
 
 // EDIT ITEM
 router.put("/", async (req, res) => {
-  // console.log("\nreq.body", req.body, "\n");
   const {
     fields,
     image,
@@ -36,13 +35,9 @@ router.put("/", async (req, res) => {
 
   // defining if user is admin
   let isAdmin = false;
-  try {
-    const admin = await Admin.findOne();
-    if (admin && admin._id.toString() === sourceId) {
-      isAdmin = true;
-    }
-  } catch (err) {
-    return res.status(500).json({ error: "Erro ao verificar admin" });
+  const admin = await Admin.findOne();
+  if (admin && admin._id.toString() === req.body.sourceId) {
+    isAdmin = true;
   }
 
   // same name already registered verification
