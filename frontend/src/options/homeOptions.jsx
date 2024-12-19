@@ -52,6 +52,12 @@ export const optionsMainblocks = [
     link: "/finance",
     permissionLabel: "finance",
   },
+  {
+    icon: <icons.RequestQuoteIcon sx={{ fontSize: 52 }} />,
+    text: "Orçamentos",
+    link: "/quotes",
+    permissionLabel: "quotes",
+  },
 ];
 
 export const optionsRightColumn = [
@@ -67,12 +73,7 @@ export const optionsRightColumn = [
     link: "/reports",
     permissionLabel: "reports",
   },
-  {
-    icon: <icons.RequestQuoteIcon sx={{ fontSize: 22 }} />,
-    text: "Orçamentos",
-    link: "/quotes",
-    permissionLabel: "quotes",
-  },
+  
   {
     icon: <icons.AdminPanelSettingsIcon sx={{ fontSize: 22 }} />,
     text: "Acessos",

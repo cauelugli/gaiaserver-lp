@@ -76,12 +76,10 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
         height: open
           ? shortcuts.filter((shortcut) => shortcut.isActive).length * 50 + 120
           : 45,
-        width: "90%",
         backgroundColor: "#f8f8ff",
         border: "1px solid #e7e7ee",
         borderRadius: 3,
-        mt: 1,
-        ml: 2,
+        width: 320,
       }}
     >
       <Grid item>
@@ -96,7 +94,7 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
             sx={{
               px: "25%",
               mt: -1,
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: "bold",
               color: "#555",
               fontFamily: "Verdana, sans-serif",

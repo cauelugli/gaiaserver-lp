@@ -23,13 +23,12 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
       "stock",
       "services",
       "finance",
+      "quotes",
     ].includes(link)
   );
 
   const allowedListRightColumn = uniqueAllowedLinks.filter((link) =>
-    ["quotes", "files", "security", "dashboard", "reports", "config"].includes(
-      link
-    )
+    ["files", "security", "dashboard", "reports", "config"].includes(link)
   );
 
   React.useEffect(() => {}, [configData]);
@@ -49,7 +48,7 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
         item
         id="mainBlock"
         sx={{
-          width: allowedListMainblocks.length <= 4 ? "70%" : "80%",
+          width: allowedListMainblocks.length <= 4 ? "70%" : "75%",
         }}
       >
         <Grid
@@ -66,7 +65,7 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
                   xs={12}
                   sm={6}
                   md={4}
-                  lg={allowedListMainblocks.length <= 4 ? 10 : 6}
+                  lg={allowedListMainblocks.length <= 4 ? 10 : 4}
                   xl={2}
                   sx={{ p: 1 }}
                 >
@@ -119,15 +118,11 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
           })}
         </Grid>
       </Grid>
-      <Grid
-        item
-        id="rightColumn"
-        sx={{ mr: allowedListMainblocks.length <= 4 ? 6 : "" }}
-      >
+      <Grid item id="rightColumn" sx={{ ml: 2 }}>
         {optionsRightColumn.map((option, index) => {
           if (allowedListRightColumn.includes(option.permissionLabel)) {
             return (
-              <Grid item key={index} sx={{ mb: 4 }}>
+              <Grid item key={index} sx={{ mb: 2 }}>
                 <Link
                   to={option.link}
                   style={{
@@ -139,7 +134,7 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
                     onMouseLeave={() => setHoveredIndexRightColumn(null)}
                     sx={{
                       width: 180,
-                      py: 1.5,
+                      py: 2.25,
                       mx: 1,
                       transition: "background-color 0.3s, color 0.3s",
                       backgroundColor:

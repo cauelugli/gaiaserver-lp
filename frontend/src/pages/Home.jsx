@@ -15,7 +15,7 @@ const Home = ({
   configData,
   handleShortcutClick,
   userAgenda,
-  mainColor
+  mainColor,
 }) => {
   React.useEffect(() => {
     if (onMount) {
@@ -31,15 +31,23 @@ const Home = ({
 
   return (
     <>
-      <Grid container direction="row" sx={{ width: "105%", minHeight: "50vw" }}>
-        <Grid item md={9}>
+      <Grid
+        container
+        sx={{
+          width:"105%",
+          minHeight: "40vw",
+          mx: 2,
+          mt: 1,
+        }}
+      >
+        <Grid item md={8}>
           <HomeBlock
             userUsername={userUsername}
             allowedLinks={allowedLinks}
             configData={configData}
           />
         </Grid>
-        <Grid item md={3}>
+        <Grid item md={4}>
           <HomeSideBar
             userId={userId}
             handleShortcutClick={handleShortcutClick}

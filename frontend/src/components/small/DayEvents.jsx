@@ -6,7 +6,7 @@ import { parseAgenda } from "../../../../controllers/functions/overallFunctions"
 import AgendaEventChip from "./AgendaEventChip";
 import AgendaEventBar from "./AgendaEventBar";
 
-const CalendarFooter = (props) => {
+const DayEvents = (props) => {
   const [filteredItems, setFilteredItems] = React.useState([]);
   const [open, setOpen] = React.useState(false);
 
@@ -25,12 +25,11 @@ const CalendarFooter = (props) => {
     <Grid
       sx={{
         height: open ? (filteredItems.length > 0 ? 250 : 115) : 45,
-        width: "90%",
         backgroundColor: "#f8f8ff",
         border: "1px solid #e7e7ee",
         borderRadius: 3,
-        mt: 1,
-        ml: 2,
+        my: 1,
+        width: 320,
       }}
     >
       <AgendaEventBar
@@ -57,4 +56,4 @@ const CalendarFooter = (props) => {
   );
 };
 
-export default CalendarFooter;
+export default DayEvents;

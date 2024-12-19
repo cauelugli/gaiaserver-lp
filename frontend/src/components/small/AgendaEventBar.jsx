@@ -31,7 +31,7 @@ const AgendaEventBar = (props) => {
         sx={{
           px: "10%",
           mt: -1,
-          fontSize: 18,
+          fontSize: 16,
           fontWeight: "bold",
           color: "#555",
           fontFamily: "Verdana, sans-serif",
