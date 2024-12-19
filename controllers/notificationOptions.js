@@ -9,7 +9,7 @@ const translatedModels = [
   { key: "Customer", value: "Cliente Empresa" },
   { key: "Client", value: "Cliente Pessoa Física" },
   { key: "Service", value: "Serviço" },
-  { key: "Departamento", value: "Departamento" },
+  { key: "Department", value: "Departamento" },
   { key: "Group", value: "Grupo" },
   { key: "ServicePlan", value: "Plano de Serviços" },
   { key: "Product", value: "Produto" },
