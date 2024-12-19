@@ -83,7 +83,9 @@ export default function Requests({ onClose }) {
     try {
       const res = await api.put("/config/requests", {
         requestsNeedApproval,
-        requestsApproverManager: requestsApproverManager._id,
+        requestsApproverManager: requestsApproverManager
+          ? requestsApproverManager._id
+          : "",
         requestsCanBeDeleted,
         statuses,
       });
