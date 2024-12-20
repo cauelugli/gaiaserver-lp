@@ -32,7 +32,6 @@ import Login from "./pages/Login";
 import PageModel from "./pages/PageModel";
 import Reports from "./pages/Reports";
 
-
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -127,69 +126,64 @@ export default function App() {
     };
   }, []);
 
-  // fetch main data
+  // Fetch initial data and check permissions for pages
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAndProcessData = async () => {
       try {
-        const config = await api.get("/config");
-        const preferences = await api.get(`/userPreferences/${userData._id}`);
-        const agenda = await api.get("/get", {
-          params: { model: "Agenda", userId: userData._id },
-        });
-        userData.username !== "admin" &&
-          setUserAgenda(
-            Object.entries(agenda.data[0].user)
-              .filter(
-                // eslint-disable-next-line no-unused-vars
-                ([key, value]) => Array.isArray(value) && value.length > 0
-              )
-              .reduce((acc, [key, value]) => {
-                acc[key] = value;
-                return acc;
-              }, {})
-          );
+        const [config, preferences, agenda] = await Promise.all([
+          api.get("/config"),
+          api.get(`/userPreferences/${userData._id}`),
+          api.get("/get", {
+            params: { model: "Agenda", userId: userData._id },
+          }),
+        ]);
+
+        // Process user agenda (only if not admin)
+        if (userData.username !== "admin") {
+          const userAgenda = Object.entries(agenda.data[0].user)
+            .filter(
+              // eslint-disable-next-line no-unused-vars
+              ([key, value]) => Array.isArray(value) && value.length > 0
+            )
+            .reduce((acc, [key, value]) => {
+              acc[key] = value;
+              return acc;
+            }, {});
+          setUserAgenda(userAgenda);
+        }
         setConfigData(config.data[0]);
         setUserPreferences(preferences.data);
+
+        // Process permissions
+        const permissionsConfig = config.data[0]?.permissions;
+        if (permissionsConfig) {
+          const newAllowedLinks = Object.keys(permissionsConfig).filter(
+            (routePath) => hasPermission(userData, config.data[0], routePath)
+          );
+          setAllowedLinks(newAllowedLinks);
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching or processing data:", error);
       }
     };
-    fetchData();
+
+    fetchAndProcessData();
   }, [refreshData]);
 
-  // checks for user's permissions on app based on sidebar (permissions) config
-  // defines 'allowedLinks' as an Array of string with permitted apps
-  useEffect(() => {
-    if (!configData || !userData || !configData.permissions) {
-      return;
-    }
-    let newAllowedLinks = [];
-    Object.keys(configData.permissions).forEach((routePath) => {
-      if (hasPermission(userData, configData, routePath)) {
-        newAllowedLinks.push(routePath);
-      }
-    });
-    setAllowedLinks(newAllowedLinks);
-  }, [configData]);
-
   // opening modal according to userShortcuts
-  const handleShortcutClick = (shortcut) => {
-    setShortcutModalState({
-      show: true,
-      action: shortcut.action,
-      size: shortcut.size,
-      fullWidth: shortcut.fullWidth,
-      maxWidth: shortcut.maxWidth,
-      permission: shortcut.permission,
-      selectedItem: shortcut.selectedItem,
-      props: { ...shortcut.props },
-    });
-  };
-
-  // updating userPreferences on Account Page
-  const updateUserPreferences = (newPreferences) => {
-    setUserPreferences(newPreferences);
-  };
+  // future fix
+  // const handleShortcutClick = (shortcut) => {
+  //   setShortcutModalState({
+  //     show: true,
+  //     action: shortcut.action,
+  //     size: shortcut.size,
+  //     fullWidth: shortcut.fullWidth,
+  //     maxWidth: shortcut.maxWidth,
+  //     permission: shortcut.permission,
+  //     selectedItem: shortcut.selectedItem,
+  //     props: { ...shortcut.props },
+  //   });
+  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -249,7 +243,7 @@ export default function App() {
                               configData.customization &&
                               configData.customization.mainColor
                             }
-                            handleShortcutClick={handleShortcutClick}
+                            handleShortcutClick={"handleShortcutClick"}
                             allowedLinks={allowedLinks}
                             configData={configData}
                             configDashboard={configData.dashboard}
@@ -272,7 +266,6 @@ export default function App() {
                           <Account
                             user={userData}
                             userPreferences={userPreferences}
-                            setUserPreferences={updateUserPreferences}
                             refreshData={refreshData}
                             setRefreshData={setRefreshData}
                             topBar={userPreferences.barPosition}
