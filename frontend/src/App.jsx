@@ -19,6 +19,7 @@ import { lightTheme, darkTheme } from "./theme";
 
 import NavBar from "./components/large/NavBar";
 import SideBar from "./components/large/SideBar";
+import ShortcutModals from "./components/large/ShortcutModals";
 
 import pageOptions from "./options/pageOptions";
 
@@ -31,7 +32,6 @@ import Login from "./pages/Login";
 import PageModel from "./pages/PageModel";
 import Reports from "./pages/Reports";
 
-import ShortcutModals from "./components/large/ShortcutModals";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -52,7 +52,7 @@ function hasPermission(user, configData, routePath) {
 
 export default function App() {
   const [configData, setConfigData] = useState([]);
-  const [userPreferences, setUserPreferences] = useState([]);
+  const [userPreferences, setUserPreferences] = useState({});
   const [userAgenda, setUserAgenda] = useState([]);
   const [allowedLinks, setAllowedLinks] = useState([]);
   const login = JSON.parse(sessionStorage.getItem("login"));
@@ -150,38 +150,12 @@ export default function App() {
           );
         setConfigData(config.data[0]);
         setUserPreferences(preferences.data);
-        sessionStorage.setItem(
-          "userPreferences",
-          JSON.stringify(preferences.data)
-        );
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, [refreshData]);
-
-  // displaying notifications on Login
-  useEffect(() => {
-    const handleUnload = () => {
-      const readNotifications = Object.values(userData.notifications)
-        .filter((notification) => notification.status === "Lida")
-        .map((notification) => notification._id);
-
-      if (readNotifications.length > 0) {
-        localStorage.setItem(
-          "readNotifications",
-          JSON.stringify(readNotifications)
-        );
-      }
-    };
-
-    window.addEventListener("beforeunload", handleUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleUnload);
-    };
-  }, [userData]);
 
   // checks for user's permissions on app based on sidebar (permissions) config
   // defines 'allowedLinks' as an Array of string with permitted apps
@@ -197,16 +171,6 @@ export default function App() {
     });
     setAllowedLinks(newAllowedLinks);
   }, [configData]);
-
-  // setting userPreferences "in session", since they are being modified in backend, and fetched once,
-  // this useEffect grants the User Experience to see what he already changed,
-  // not needing to reload the App to see them
-  useEffect(() => {
-    const storedPreferences = sessionStorage.getItem("userPreferences");
-    if (storedPreferences) {
-      setUserPreferences(JSON.parse(storedPreferences));
-    }
-  }, []);
 
   // opening modal according to userShortcuts
   const handleShortcutClick = (shortcut) => {

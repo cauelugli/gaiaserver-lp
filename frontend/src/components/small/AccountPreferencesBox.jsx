@@ -13,86 +13,32 @@ import {
   Button,
 } from "@mui/material";
 
-const AccountPreferencesBox = ({
-  onUpdateDarkMode,
-  onUpdateBarPosition,
-  onUpdatePaletteColor,
-}) => {
-  const [checkedDarkMode, setCheckedDarkMode] = useState(
-    JSON.parse(sessionStorage.getItem("userPreferences"))?.darkMode === true
-  );
+const AccountPreferencesBox = (props) => {
+  const [checkedDarkMode, setCheckedDarkMode] = useState(props.darkMode);
   const [checkedBarPosition, setCheckedBarPosition] = useState(
-    JSON.parse(sessionStorage.getItem("userPreferences"))?.barPosition === true
+    props.barPosition
   );
-  const [paletteColor, setPaletteColor] = useState(
-    JSON.parse(sessionStorage.getItem("userPreferences"))?.paletteColor
-  );
+  const [paletteColor, setPaletteColor] = useState(props.paletteColor);
 
-  useEffect(() => {
-    const preferences = JSON.parse(sessionStorage.getItem("userPreferences"));
-
-    const darkModeStored = preferences?.darkMode === true;
-    const barPositionStored = preferences?.barPosition === true;
-    const paletteColorStored = preferences?.paletteColor;
-
-    if (checkedDarkMode !== darkModeStored) {
-      setCheckedDarkMode(darkModeStored);
-    }
-
-    if (checkedBarPosition !== barPositionStored) {
-      setCheckedBarPosition(barPositionStored);
-    }
-
-    if (paletteColor !== paletteColorStored) {
-      setPaletteColor(paletteColorStored);
-    }
-  }, [paletteColor]);
+  React.useEffect(() => {
+    setCheckedDarkMode(props.darkMode);
+    setPaletteColor(props.paletteColor);
+    setCheckedBarPosition(props.barPosition);
+  }, [props]);
 
   const handleChangeDarkMode = (event) => {
     const newDarkMode = event.target.checked;
-    setCheckedDarkMode(newDarkMode);
-
-    const updatedPreferences = {
-      ...JSON.parse(sessionStorage.getItem("userPreferences")),
-      darkMode: newDarkMode,
-    };
-    sessionStorage.setItem(
-      "userPreferences",
-      JSON.stringify(updatedPreferences)
-    );
-
-    onUpdateDarkMode(newDarkMode);
+    props.onUpdateDarkMode(newDarkMode);
   };
 
   const handleChangeBarPosition = (event) => {
     const newBarPosition = event.target.checked;
-    setCheckedBarPosition(newBarPosition);
-
-    const updatedPreferences = {
-      ...JSON.parse(sessionStorage.getItem("userPreferences")),
-      barPosition: newBarPosition,
-    };
-    sessionStorage.setItem(
-      "userPreferences",
-      JSON.stringify(updatedPreferences)
-    );
-
-    onUpdateBarPosition(newBarPosition);
+    props.onUpdateBarPosition(newBarPosition);
   };
 
   const handlePaletteColorChange = (color) => {
     setPaletteColor(color);
-
-    const updatedPreferences = {
-      ...JSON.parse(sessionStorage.getItem("userPreferences")),
-      paletteColor: color,
-    };
-    sessionStorage.setItem(
-      "userPreferences",
-      JSON.stringify(updatedPreferences)
-    );
-
-    onUpdatePaletteColor(color);
+    props.onUpdatePaletteColor(color);
   };
 
   const availableColors = checkedDarkMode

@@ -113,15 +113,6 @@ export default function Account({
           autoClose: 1200,
         });
         setRefreshData(!refreshData);
-        setUserPreferences((prev) => ({
-          ...prev,
-          darkMode: newDarkMode,
-          paletteColor: newDarkMode ? "#000000" : "#ffffff",
-        }));
-        sessionStorage.setItem(
-          "userPreferences",
-          JSON.stringify(response.data)
-        );
         const newPaletteColor = newDarkMode ? "#000000" : "#ffffff";
         await handleUpdatePaletteColor(newPaletteColor);
       }
@@ -142,18 +133,9 @@ export default function Account({
         userId: user._id,
         paletteColor: newPaletteColor,
       });
-
       if (response.data) {
-        socket.emit("forceIndividualRefresh", user._id);
         setRefreshData(!refreshData);
-        setUserPreferences((prev) => ({
-          ...prev,
-          paletteColor: newPaletteColor,
-        }));
-        sessionStorage.setItem(
-          "userPreferences",
-          JSON.stringify(response.data)
-        );
+        socket.emit("forceIndividualRefresh", user._id);
       }
     } catch (err) {
       toast.error("Houve algum erro...", {
@@ -174,21 +156,13 @@ export default function Account({
       });
 
       if (response.data) {
+        setRefreshData(!refreshData);
         toast.success("Posição da Barra Atualizada!", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
         });
-        setRefreshData(!refreshData);
-        setUserPreferences((prev) => ({
-          ...prev,
-          barPosition: newBarPosition,
-        }));
-        sessionStorage.setItem(
-          "userPreferences",
-          JSON.stringify(response.data)
-        );
       }
     } catch (err) {
       toast.error("Houve algum erro...", {
@@ -212,11 +186,19 @@ export default function Account({
         justifyContent="space-between"
         alignItems="flex-start"
       >
-        <AccountPreferencesBox
-          onUpdatePaletteColor={handleUpdatePaletteColor}
-          onUpdateDarkMode={handleUpdateDarkMode}
-          onUpdateBarPosition={handleUpdateBarPosition}
-        />
+        {userPreferences && (
+          <AccountPreferencesBox
+            onUpdatePaletteColor={handleUpdatePaletteColor}
+            onUpdateDarkMode={handleUpdateDarkMode}
+            onUpdateBarPosition={handleUpdateBarPosition}
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
+            paletteColor={paletteColor}
+            setPaletteColor={setPaletteColor}
+            barPosition={barPosition}
+            setBarPosition={setBarPosition}
+          />
+        )}
 
         <Box>
           <Grid

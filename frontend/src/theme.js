@@ -1,11 +1,18 @@
+import axios from "axios";
 import { createTheme } from "@mui/material/styles";
 
-const getUserPaletteColor = () => {
-  const userPreferences = JSON.parse(sessionStorage.getItem("userPreferences"));
-  return userPreferences?.paletteColor || "#f8f8ff";
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+});
+
+const getUserPaletteColor = async () => {
+  const userData = JSON.parse(sessionStorage.getItem("userData"));
+  const userId = userData?._id;
+  const userPreferences = await api.get(`/userPreferences/${userId}`);
+  return userPreferences.data?.paletteColor || "#ffffff";
 };
 
-const userPaletteColor = getUserPaletteColor();
+const userPaletteColor = await getUserPaletteColor();
 
 export const lightTheme = createTheme({
   palette: {
