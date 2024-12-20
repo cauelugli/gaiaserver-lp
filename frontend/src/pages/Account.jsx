@@ -33,7 +33,6 @@ const api = axios.create({
 export default function Account({
   user,
   userPreferences,
-  setUserPreferences,
   refreshData,
   setRefreshData,
   topBar,
