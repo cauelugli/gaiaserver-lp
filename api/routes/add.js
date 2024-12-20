@@ -10,6 +10,7 @@ const {
   addRoutines,
   addCounter,
   addToAssigneeAgenda,
+  checkNewRequestDefaultStatus,
 } = require("../../controllers/functions/addRoutines");
 
 const {
@@ -34,7 +35,6 @@ router.post("/", async (req, res) => {
     services,
     price,
     selectedMembers,
-    selectedSchedule,
   } = req.body;
 
   // defining if user is admin
@@ -81,6 +81,16 @@ router.post("/", async (req, res) => {
     }
   }
 
+  if (req.body.model === "Job" || req.body.model === "Sale") {
+    try {
+      await checkNewRequestDefaultStatus(fields);
+    } catch (err) {
+      return res.status(500).json({
+        error: "Erro ao verificar o status da requisição",
+      });
+    }
+  }
+
   // verify cases (dude....)
   fields.attachments = req.body.attachments || [];
   fields.manager = req.body.fields.manager?._id || "";
@@ -97,7 +107,6 @@ router.post("/", async (req, res) => {
   fields.isManager = isManager;
   fields.createdBy = createdBy;
   fields.products = selectedProducts;
-  fields.scheduleTime = selectedSchedule;
   fields.price =
     label === "Plano de Serviços"
       ? parseFloat(
