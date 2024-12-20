@@ -1,4 +1,5 @@
 const Agenda = require("../../models/models/Agenda");
+const Config = require("../../models/models/Config");
 const Counters = require("../../models/models/Counters");
 const Department = require("../../models/models/Department");
 const Job = require("../../models/models/Job");
@@ -119,6 +120,21 @@ async function addRoutines(model, source) {
   }
 }
 
+async function checkNewRequestDefaultStatus(fields) {
+  try {
+    const config = await Config.findOne();
+
+    if (config.requests.requestsNeedApproval === false) {
+      fields.status = "Aprovado";
+    } else {
+      fields.status = "Aberto";
+    }
+  } catch (err) {
+    console.error("Erro ao verificar requestsNeedApproval");
+    throw err;
+  }
+}
+
 async function addCounter(sourceId, model) {
   try {
     let counter = await Counters.findOne();
@@ -191,7 +207,7 @@ async function addToAssigneeAgenda(
       day,
       scheduleTime,
       status: "Aberto",
-      customer
+      customer,
     });
 
     await Agenda.findOneAndUpdate(
@@ -208,7 +224,6 @@ async function addToAssigneeAgenda(
         },
       },
     });
-
   } catch (err) {
     console.error("Erro ao adicionar na agenda do designado", err);
   }
@@ -218,4 +233,10 @@ async function createQuote(model, source) {
   "";
 }
 
-module.exports = { addRoutines, createQuote, addCounter, addToAssigneeAgenda };
+module.exports = {
+  addRoutines,
+  checkNewRequestDefaultStatus,
+  createQuote,
+  addCounter,
+  addToAssigneeAgenda,
+};
