@@ -165,7 +165,7 @@ const configSchema = new Schema({
     },
     requestStatuses: {
       type: Array,
-      default: ["Aberto", "Resolvido"],
+      default: ["Aberto", "Aprovado", "Resolvido"],
     },
   },
   security: {
