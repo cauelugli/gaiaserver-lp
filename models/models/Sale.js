@@ -76,7 +76,6 @@ saleSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default: "Aberto",
   },
 });
 

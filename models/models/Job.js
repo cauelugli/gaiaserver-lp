@@ -74,7 +74,6 @@ jobSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default: "Aberto",
   },
   title: {
     type: String,

@@ -20,7 +20,6 @@ import {
 
 import DialogHeader from "../../components/small/DialogHeader";
 import ImageTableCell from "../../components/tableCells/ImageTableCell";
-import ScheduleTableCell from "../../components/tableCells/ScheduleTableCell";
 
 import { renderField } from "../../options/formFieldOptions";
 
@@ -28,7 +27,6 @@ export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
   const [image, setImage] = React.useState("");
   const [selectedMembers, setSelectedMembers] = React.useState([]);
-  const [selectedSchedule, setSelectedSchedule] = React.useState("");
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
@@ -151,7 +149,6 @@ export default function AddFormModel(props) {
         model: modalOptions.model,
         selectedMembers: selectedMemberIds,
         selectedProducts,
-        selectedSchedule,
         services: selectedServices,
         createdBy: props.isAdmin ? "admin" : props.userId,
         isManager: modalOptions.label === "Gerente",
@@ -307,22 +304,6 @@ export default function AddFormModel(props) {
                     )}
                   </Grid>
                 ))}
-              {section.name === "scheduling" &&
-                (fields.worker || fields.seller) &&
-                fields.scheduledToAssignee === true &&
-                fields.service && (
-                  <ScheduleTableCell
-                    api={props.api}
-                    assignee={fields.worker._id || fields.seller._id}
-                    selectedDate={fields.scheduledTo}
-                    serviceLength={{
-                      executionTime: fields.service.executionTime,
-                      sessions: fields.service.sessions,
-                    }}
-                    selectedSchedule={selectedSchedule}
-                    setSelectedSchedule={setSelectedSchedule}
-                  />
-                )}
             </Grid>
           </Box>
         ))}
