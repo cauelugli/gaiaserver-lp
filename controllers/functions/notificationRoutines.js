@@ -1,4 +1,5 @@
 const Admin = require("../../models/models/Admin");
+const Config = require("../../models/models/Config");
 const Counters = require("../../models/models/Counters");
 const Department = require("../../models/models/Department");
 const Notifications = require("../../models/models/Notifications");
@@ -28,7 +29,7 @@ async function notificationRoutines(
         method: translateMethod(method),
         model: translateModel(model),
         isFemaleGender: model === "Sale",
-        isAdmin
+        isAdmin,
       });
     }
 
@@ -188,4 +189,26 @@ async function notificationRoutines(
   }
 }
 
-module.exports = { notificationRoutines };
+async function notifyApproverManager(
+  receiver,
+  model,
+  title,
+  sourceId,
+  idIndexList
+) {
+  try {
+    socket.emit("notifyApproverManager", {
+      title: title,
+      source: idIndexList?.find((item) => item.id === sourceId)?.name || "",
+      receiver: receiver,
+      receiverName:
+        idIndexList?.find((item) => item.id === receiver)?.name || "",
+      model,
+      emitter: sourceId,
+    });
+  } catch (err) {
+    console.error(`Erro na rotina de notificações`, err);
+  }
+}
+
+module.exports = { notificationRoutines, notifyApproverManager };
