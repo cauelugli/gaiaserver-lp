@@ -224,7 +224,7 @@ export function loadPage() {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
-    }, 1000);
+    }, 700);
   });
 }
 
