@@ -195,7 +195,6 @@ const initSocket = (server) => {
     });
 
     socket.on("notifyApproverManager", async (data) => {
-      console.log("data.emitter", data.emitter);
       try {
         let user;
         user = await User.findById(data.receiver);
