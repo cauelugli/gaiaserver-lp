@@ -49,9 +49,10 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
         fetchData();
       }
     };
-    const handleNewNotificationToAssignee = (notificationData) => {
+    
+    const handleNewNotificationToIndividual = (notificationData) => {
       // doesn't apply to 'self' emitter user
-      if (notificationData && user._id !== notificationData.receiver) {
+      if (notificationData && user._id !== notificationData.emitterId) {
         fetchData();
       }
     };
@@ -64,12 +65,15 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
     };
 
     socket.on("newNotificationToList", handleNewNotificationToList);
-    socket.on("newNotificationToAssignee", handleNewNotificationToAssignee);
+    socket.on("newNotificationToIndividual", handleNewNotificationToIndividual);
     socket.on("newNotificationToAdmin", handleNewNotificationToAdmin);
 
     return () => {
       socket.off("newNotificationToList", handleNewNotificationToList);
-      socket.off("newNotificationToAssignee", handleNewNotificationToAssignee);
+      socket.off(
+        "newNotificationToIndividual",
+        handleNewNotificationToIndividual
+      );
       socket.on("newNotificationToAdmin", handleNewNotificationToAdmin);
     };
   });
