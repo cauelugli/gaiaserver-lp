@@ -165,7 +165,7 @@ const initSocket = (server) => {
         console.error("Erro ao adicionar notificação", err);
       }
 
-      io.emit("newNotificationToAssignee", data);
+      io.emit("newNotificationToIndividual", data);
     });
 
     socket.on("notifyAdmin", async (data) => {
@@ -192,6 +192,37 @@ const initSocket = (server) => {
       }
 
       io.emit("newNotificationToAdmin", data);
+    });
+
+    socket.on("notifyApproverManager", async (data) => {
+      console.log("data.emitter", data.emitter);
+      try {
+        let user;
+        user = await User.findById(data.receiver);
+
+        const parsedTitleString = `${
+          data.model === "Job" ? "Job" : "Venda"
+        } Aguardando Aprovação`;
+        const notificationBody = `Olá, ${data.receiverName}! 
+        ${data.model === "Job" ? "O Job" : "A Venda"} ${data.title}
+        está aguardando por sua aprovação. \nSolicitado por: ${data.source}.
+        `;
+
+        if (user) {
+          user.notifications.push({
+            read: false,
+            title: parsedTitleString,
+            body: notificationBody,
+            createdAt: new Date().toISOString(),
+          });
+
+          await user.save();
+        }
+      } catch (err) {
+        console.error("Erro ao adicionar notificação", err);
+      }
+
+      io.emit("newNotificationToIndividual", data);
     });
 
     socket.on("disconnect", () => {
