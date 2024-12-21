@@ -11,7 +11,6 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import dayjs from "dayjs";
 
 const socket = io("http://localhost:5002");
 const api = axios.create({
@@ -21,14 +20,10 @@ const api = axios.create({
 const RequestApprovalForm = (props) => {
   const handleRequestApproval = async () => {
     try {
-      const requestedAt = dayjs().format("DD/MM/YYYY HH:mm");
-
       const res = await api.put(`/actions/requestApproval/`, {
         model: props.model,
         id: props.selectedItemId,
         requestedBy: props.userId,
-        requestedAt,
-        usesWebsocket: true,
       });
 
       if (res.data) {
