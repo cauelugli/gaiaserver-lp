@@ -9,7 +9,6 @@ const PositionMembers = ({ members, users, managers }) => {
   const [userDetails, setUserDetails] = React.useState({});
 
   React.useEffect(() => {
-    // Função para obter detalhes dos usuários associados à posição
     const fetchUserDetails = async () => {
       const details = {};
       for (const memberId of members) {

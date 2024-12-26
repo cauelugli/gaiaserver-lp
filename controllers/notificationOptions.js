@@ -15,7 +15,7 @@ const translatedModels = [
   { key: "Product", value: "Produto" },
   { key: "Operator", value: "Operador" },
   { key: "Role", value: "Perfil de Acesso" },
-  { key: "Position", value: "Posição" },
+  { key: "Position", value: "Cargo" },
   { key: "Sale", value: "Venda" },
 ];
 

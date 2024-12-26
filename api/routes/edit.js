@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const Admin = require("../../models/models/Admin");
-const { defineModel } = require("../../controllers/functions/routeFunctions");
+const {
+  defineModel,
+  swapDepartments,
+} = require("../../controllers/functions/routeFunctions");
 const {
   notificationRoutines,
 } = require("../../controllers/functions/notificationRoutines");
@@ -31,7 +34,7 @@ router.put("/", async (req, res) => {
   if (!Model) {
     console.log("\nmodel not found\n");
     return res.status(400).json({ error: "Modelo inválido" });
-  }
+  } 
 
   // defining if user is admin
   let isAdmin = false;
@@ -41,11 +44,21 @@ router.put("/", async (req, res) => {
   }
 
   // same name already registered verification
-  if (Model === "Customer") {
+  if (req.body.model === "Customer") {
     const existingNameUser = await Model.findOne({ name });
     if (existingNameUser) {
       return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
     }
+  }
+
+  // User department swap
+  if (req.body.model === "User") {
+    // we'll need swapPosition, role, and stuff...
+    await swapDepartments(
+      req.body.prevData._id,
+      req.body.model,
+      req.body.fields.department
+    );
   }
 
   // Busca pelo nome para obter o ID (provavelmente nao foi alterado o campo no frontend)
@@ -80,7 +93,8 @@ router.put("/", async (req, res) => {
   fields.customer = req.body.fields.customer?._id || "";
   fields.role = req.body.fields.role?._id || "";
   fields.isManager = isManager;
-  fields.members = selectedMembers;
+  fields.members =
+    selectedMembers.length !== 0 ? selectedMembers : req.body.fields.members;
   fields.products = selectedProducts;
   fields.price =
     label === "Plano de Serviços"
@@ -108,7 +122,7 @@ router.put("/", async (req, res) => {
       isAdmin
     );
 
-    if (req.body.model === "Department" || req.body.model === "Group") {
+    if (req.body.fields.members) {
       await insertMembership(
         updatedItem._id.toString(),
         req.body.model,

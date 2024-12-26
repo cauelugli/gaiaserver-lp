@@ -65,7 +65,7 @@ export const modals = {
       {
         fieldSection: "mainContact",
         name: "mainContactPosition",
-        label: "Posição",
+        label: "Cargo",
         type: "select",
         options: ["Proprietário", "Sócio", "Gerente", "Colaborador"],
         required: false,
@@ -436,7 +436,7 @@ export const modals = {
       {
         fieldSection: "departmentInfo",
         name: "position",
-        label: "Posição",
+        label: "Cargo",
         type: "dynamicData",
         dynamicData: "positions",
         required: false,
@@ -556,7 +556,7 @@ export const modals = {
       {
         fieldSection: "departmentInfo",
         name: "position",
-        label: "Posição",
+        label: "Cargo",
         type: "dynamicData",
         dynamicData: "positions",
         required: false,
@@ -953,7 +953,10 @@ export const modals = {
     label: "Cargo",
     femaleGender: false,
     maxWidth: "xs",
-    fieldsSections: [{ name: "mainInfo", label: "Informações Gerais" }],
+    fieldsSections: [
+      { name: "mainInfo", label: "Informações Gerais" },
+      // { name: "peopleInfo", label: "Membros" },
+    ],
     fields: [
       {
         fieldSection: "mainInfo",
@@ -969,6 +972,13 @@ export const modals = {
         type: "dynamicData",
         dynamicData: "departments",
         required: true,
+        hasAvatar: false,
+      },
+      {
+        fieldSection: "peopleInfo",
+        name: "members",
+        label: "Membros",
+        type: "members",
         hasAvatar: false,
       },
     ],
