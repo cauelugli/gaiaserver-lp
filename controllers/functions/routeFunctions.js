@@ -29,19 +29,17 @@ function defineModel(model) {
   return models[model] || null;
 }
 
-const swapDepartments = async (sourceItemId, sourceModel, newDepartmentId) => {
+const swapDepartments = async (sourceItemId, sourceModel, newDepartmentId, previousDepartment) => {
   try {
     if (sourceModel === "User") {
       const sourceItem = await User.findById(sourceItemId);
       if (sourceItem) {
-        const oldDepartmentId = sourceItem.department;
-
         if (sourceItem.isManager) {
           sourceItem.department = newDepartmentId;
           await sourceItem.save();
 
-          if (oldDepartmentId) {
-            const oldDepartment = await Department.findById(oldDepartmentId);
+          if (previousDepartment) {
+            const oldDepartment = await Department.findById(previousDepartment);
 
             if (oldDepartment) {
               oldDepartment.manager = "";
@@ -58,10 +56,11 @@ const swapDepartments = async (sourceItemId, sourceModel, newDepartmentId) => {
           sourceItem.department = newDepartmentId;
           await sourceItem.save();
 
-          if (oldDepartmentId) {
-            const oldDepartment = await Department.findById(oldDepartmentId);
+          if (previousDepartment) {
+            const oldDepartment = await Department.findById(previousDepartment);
 
             if (oldDepartment) {
+              // here
               oldDepartment.members = oldDepartment.members.filter(
                 (memberId) => memberId.toString() !== sourceItemId.toString()
               );
@@ -90,7 +89,7 @@ const swapDepartments = async (sourceItemId, sourceModel, newDepartmentId) => {
             await oldDepartment.save();
           }
         } else {
-          ""
+          ("");
         }
 
         const newDepartment = await Department.findById(newDepartmentId);

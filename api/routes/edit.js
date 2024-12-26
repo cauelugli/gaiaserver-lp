@@ -34,7 +34,7 @@ router.put("/", async (req, res) => {
   if (!Model) {
     console.log("\nmodel not found\n");
     return res.status(400).json({ error: "Modelo inválido" });
-  } 
+  }
 
   // defining if user is admin
   let isAdmin = false;
@@ -49,16 +49,6 @@ router.put("/", async (req, res) => {
     if (existingNameUser) {
       return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
     }
-  }
-
-  // User department swap
-  if (req.body.model === "User") {
-    // we'll need swapPosition, role, and stuff...
-    await swapDepartments(
-      req.body.prevData._id,
-      req.body.model,
-      req.body.fields.department
-    );
   }
 
   // Busca pelo nome para obter o ID (provavelmente nao foi alterado o campo no frontend)
@@ -111,6 +101,17 @@ router.put("/", async (req, res) => {
       { $set: fields },
       { new: true }
     );
+
+    // User department swap
+    if (req.body.model === "User") {
+      // we'll need swapPosition, role, and stuff...
+      await swapDepartments(
+        req.body.prevData._id,
+        req.body.model,
+        req.body.fields.department,
+        req.body.prevData.department
+      );
+    }
 
     await notificationRoutines(
       req.body.model,

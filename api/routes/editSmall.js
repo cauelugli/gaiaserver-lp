@@ -20,7 +20,8 @@ router.put("/", async (req, res) => {
     swapDepartments(
       req.body.sourceId,
       req.body.sourceModel,
-      req.body.newAttributeValue
+      req.body.newAttributeValue,
+      ""
     );
   }
 
