@@ -240,12 +240,16 @@ export default function EditFormModel(props) {
     const selectedMemberIds = selectedMembers.map((member) => member._id);
 
     try {
+      // add an if clause here to avoid useless post without file
       const uploadResponse = await api.post("/uploads/singleFile", formData);
       const imagePath = uploadResponse.data.imagePath;
       const res = await api.put("/edit", {
         sourceId: props.userId,
         prevData: props.target,
-        fields,
+        fields: {
+          ...fields,
+          members: fields.members?.map((member) => member._id || member.id),
+        },
         label: modalOptions.label,
         image: imagePath ? imagePath : props.target.image,
         model: modalOptions.model,
@@ -391,7 +395,8 @@ export default function EditFormModel(props) {
                       setFinalPrice={setFinalPrice}
                       setOkToDispatch={setOkToDispatch}
                       serviceLength={{
-                        executionTime: fields.service && fields.service.executionTime,
+                        executionTime:
+                          fields.service && fields.service.executionTime,
                         sessions: fields.service && fields.service.sessions,
                       }}
                     />
