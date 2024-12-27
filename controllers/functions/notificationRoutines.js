@@ -9,28 +9,42 @@ const socket = io("http://localhost:5002");
 
 const { translateModel, translateMethod } = require("../notificationOptions");
 
+async function notifyAdmin(
+  model,
+  target,
+  method,
+  sourceId,
+  idIndexList,
+  adminId
+) {
+  // try {
+  //   socket.emit("notifyAdmin", {
+  //     sourceId,
+  //     // source: idIndexList?.find((item) => item.id === sourceId)?.name || "",
+  //     target,
+  //     method: translateMethod(method),
+  //     model: translateModel(model),
+  //     isFemaleGender: model === "Sale",
+  //     isAdmin,
+  //   });
+  // } catch (err) {
+  //   console.error(`Erro na rotina de notificações`, err);
+  // }
+}
+
 async function notificationRoutines(
   model,
   target,
   method,
   sourceId,
   notificationList,
-  idIndexList,
-  isAdmin
+  idIndexList
 ) {
   try {
-    const adminConfig = await Admin.findOne({}, "config");
+    const admin = await Admin.findOne({}, "config");
 
-    if (adminConfig.config.notifyActivities === true) {
-      socket.emit("notifyAdmin", {
-        sourceId,
-        source: idIndexList?.find((item) => item.id === sourceId)?.name || "",
-        target,
-        method: translateMethod(method),
-        model: translateModel(model),
-        isFemaleGender: model === "Sale",
-        isAdmin,
-      });
+    if (admin.config.notifyActivities === true) {
+      await notifyAdmin(model, target, method, sourceId, idIndexList, sourceId);
     }
 
     const config = await Notifications.findOne({});
@@ -211,4 +225,4 @@ async function notifyApproverManager(
   }
 }
 
-module.exports = { notificationRoutines, notifyApproverManager };
+module.exports = { notifyAdmin, notificationRoutines, notifyApproverManager };

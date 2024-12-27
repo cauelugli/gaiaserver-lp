@@ -5,13 +5,15 @@ const Admin = require("../../models/models/Admin");
 const {
   defineModel,
   swapDepartments,
+  swapPositions,
+  swapRoles,
 } = require("../../controllers/functions/routeFunctions");
 const {
   notificationRoutines,
 } = require("../../controllers/functions/notificationRoutines");
 const {
-  insertMembership,
-  removeMembership,
+  insertMembersToGroup,
+  removeMembersFromGroup,
 } = require("../../controllers/functions/updateRoutines");
 
 // EDIT ITEM
@@ -111,6 +113,18 @@ router.put("/", async (req, res) => {
         req.body.fields.department,
         req.body.prevData.department
       );
+
+      await swapPositions(
+        req.body.prevData._id,
+        req.body.fields.position,
+        req.body.prevData.position
+      );
+
+      await swapRoles(
+        req.body.prevData._id,
+        req.body.fields.position,
+        req.body.prevData.position
+      );
     }
 
     await notificationRoutines(
@@ -124,12 +138,12 @@ router.put("/", async (req, res) => {
     );
 
     if (req.body.fields.members) {
-      await insertMembership(
+      await insertMembersToGroup(
         updatedItem._id.toString(),
         req.body.model,
         selectedMembers
       );
-      await removeMembership(
+      await removeMembersFromGroup(
         updatedItem._id.toString(),
         req.body.model,
         selectedMembers,

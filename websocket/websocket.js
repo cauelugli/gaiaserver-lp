@@ -54,6 +54,7 @@ const initSocket = (server) => {
     });
 
     socket.on("notificationToList", async (data) => {
+      // console.log("data.emitterId", data.emitterId);
       for (const roleId of data.receivers) {
         try {
           const users = await User.find({

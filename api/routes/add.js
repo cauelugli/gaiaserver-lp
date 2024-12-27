@@ -14,6 +14,7 @@ const {
 } = require("../../controllers/functions/addRoutines");
 
 const {
+  insertMembersToGroup,
   insertMembership,
 } = require("../../controllers/functions/updateRoutines");
 
@@ -74,6 +75,13 @@ router.post("/", async (req, res) => {
         { new: true }
       );
 
+      await insertMembership(
+        updatedItem._id.toString(),
+        // this will be dynamic at some point
+        "Role",
+        updatedItem.role
+      );
+
       return res.status(200).json(updatedItem);
     } catch (err) {
       console.log(err);
@@ -91,7 +99,7 @@ router.post("/", async (req, res) => {
     }
   }
 
-  // verify cases (dude....)
+  // '''parsing''' (dude, wtf....)
   fields.attachments = req.body.attachments || [];
   fields.manager = req.body.fields.manager?._id || "";
   fields.members =
@@ -123,7 +131,7 @@ router.post("/", async (req, res) => {
     const savedItem = await newItem.save();
 
     if (req.body.model === "Department" || req.body.model === "Group") {
-      await insertMembership(
+      await insertMembersToGroup(
         savedItem._id.toString(),
         req.body.model,
         fields.members
