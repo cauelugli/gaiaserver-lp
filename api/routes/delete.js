@@ -9,6 +9,9 @@ const {
 const {
   notificationRoutines,
 } = require("../../controllers/functions/notificationRoutines");
+const {
+  removeMembership,
+} = require("../../controllers/functions/updateRoutines");
 
 // DELETE ITEM
 router.delete("/:sourceId/:model/:id", async (req, res) => {
@@ -33,11 +36,21 @@ router.delete("/:sourceId/:model/:id", async (req, res) => {
 
   // you don't 'delete' an operator, you reset User's data to blank
   if (model === "Operator") {
-    await Model.findByIdAndUpdate(
+    const operator = await Model.findById(id);
+    const originalRole = operator.role;
+
+    const deletedOperator = await Model.findByIdAndUpdate(
       id,
       { $set: { username: "", password: "", role: "", alreadyLogin: false } },
       { new: true }
     );
+
+    await removeMembership(
+      deletedOperator._id.toString(),
+      "Role",
+      originalRole
+    );
+
     return res.status(200).json("Operador deletado com sucesso");
   }
 
@@ -54,6 +67,7 @@ router.delete("/:sourceId/:model/:id", async (req, res) => {
       [],
       isAdmin
     );
+    
     res.status(200).json("Item deletado com sucesso");
   } catch (err) {
     console.log(err);
@@ -90,13 +104,24 @@ router.delete("/multiple/:sourceId/:model/:ids", async (req, res) => {
   try {
     for (const id of idArray) {
       if (model === "Operator") {
-        await Model["User"].findByIdAndUpdate(
+        const operator = await Model.findById(id);
+        const originalRole = operator.role;
+
+        const deletedOperator = await Model.findByIdAndUpdate(
           id,
           {
             $set: { username: "", password: "", role: "", alreadyLogin: false },
           },
           { new: true }
         );
+
+        await removeMembership(
+          deletedOperator._id.toString(),
+          "Role",
+          originalRole
+        );
+
+        return res.status(200).json("Operador deletado com sucesso");
       } else {
         const deletedItem = await Model.findByIdAndDelete(id);
         if (deletedItem) {
