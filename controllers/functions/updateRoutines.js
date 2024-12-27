@@ -1,6 +1,37 @@
+const { defineModel } = require("./routeFunctions");
 const User = require("../../models/models/User");
 
-const insertMembership = async (itemId, model, members) => {
+const insertMembership = async (userId, model, modelId) => {
+  const Model = defineModel(model);
+  try {
+    const item = await Model.findById(modelId);
+    if (!item.members.includes(userId)) {
+      item.members.push(userId);
+    }
+    await item.save();
+  } catch (error) {
+    console.error(`Erro ao inserir o userId no modelo ${model}:`);
+    throw error;
+  }
+};
+
+const removeMembership = async (userId, model, modelId) => {
+  const Model = defineModel(model);
+  try {
+    const item = await Model.findById(modelId);
+    if (item.members.includes(userId)) {
+      item.members.pull(userId);
+    } else {
+      console.log("num tem no item naum", item);
+    }
+    await item.save();
+  } catch (error) {
+    console.error(`Erro ao remover o userId no modelo ${model}:`);
+    throw error;
+  }
+};
+
+const insertMembersToGroup = async (itemId, model, members) => {
   if (members[0] !== 0) {
     try {
       await Promise.all(
@@ -36,7 +67,7 @@ const insertMembership = async (itemId, model, members) => {
   }
 };
 
-const removeMembership = async (
+const removeMembersFromGroup = async (
   itemId,
   model,
   selectedMembers,
@@ -83,4 +114,9 @@ const removeMembership = async (
   }
 };
 
-module.exports = { insertMembership, removeMembership };
+module.exports = {
+  insertMembership,
+  removeMembership,
+  insertMembersToGroup,
+  removeMembersFromGroup,
+};

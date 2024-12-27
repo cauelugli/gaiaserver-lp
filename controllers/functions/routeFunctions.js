@@ -1,4 +1,6 @@
 const Department = require("../../models/models/Department");
+const Position = require("../../models/models/Position");
+const Role = require("../../models/models/Role");
 const Service = require("../../models/models/Service");
 const User = require("../../models/models/User");
 
@@ -29,7 +31,12 @@ function defineModel(model) {
   return models[model] || null;
 }
 
-const swapDepartments = async (sourceItemId, sourceModel, newDepartmentId, previousDepartment) => {
+const swapDepartments = async (
+  sourceItemId,
+  sourceModel,
+  newDepartmentId,
+  previousDepartment
+) => {
   try {
     if (sourceModel === "User") {
       const sourceItem = await User.findById(sourceItemId);
@@ -60,7 +67,6 @@ const swapDepartments = async (sourceItemId, sourceModel, newDepartmentId, previ
             const oldDepartment = await Department.findById(previousDepartment);
 
             if (oldDepartment) {
-              // here
               oldDepartment.members = oldDepartment.members.filter(
                 (memberId) => memberId.toString() !== sourceItemId.toString()
               );
@@ -106,4 +112,60 @@ const swapDepartments = async (sourceItemId, sourceModel, newDepartmentId, previ
   }
 };
 
-module.exports = { defineModel, swapDepartments };
+const swapPositions = async (userId, newPositionId, oldPositionId) => {
+  if (oldPositionId !== newPositionId) {
+    try {
+      const user = await User.findById(userId);
+      if (user) {
+        const oldPosition = await Position.findById(oldPositionId);
+
+        if (oldPosition) {
+          oldPosition.members = oldPosition.members.filter(
+            (memberId) => memberId.toString() !== userId.toString()
+          );
+          await oldPosition.save();
+        }
+
+        const newPosition = await Position.findById(newPositionId);
+        if (newPosition) {
+          if (!newPosition.members.includes(userId)) {
+            newPosition.members.push(userId);
+          }
+          await newPosition.save();
+        }
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+};
+
+const swapRoles = async (userId, newRoleId, oldRoleId) => {
+  if (newRoleId !== oldRoleId) {
+    try {
+      const user = await User.findById(userId);
+      if (user) {
+        const oldRole = await Role.findById(oldRoleId);
+
+        if (oldRole) {
+          oldRole.members = oldRole.members.filter(
+            (memberId) => memberId.toString() !== userId.toString()
+          );
+          await oldRole.save();
+        }
+
+        const newRole = await Role.findById(newRoleId);
+        if (newRole) {
+          if (!newRole.members.includes(userId)) {
+            newRole.members.push(userId);
+          }
+          await newRole.save();
+        }
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+};
+
+module.exports = { defineModel, swapDepartments, swapPositions, swapRoles };

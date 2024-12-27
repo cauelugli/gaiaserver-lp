@@ -16,9 +16,16 @@ async function addRoutines(model, source) {
       case "User":
         if (department) {
           const updateField = source.isManager ? "manager" : "members";
-          await Department.findByIdAndUpdate(department, {
-            $set: { [updateField]: source._id.toString() },
-          });
+
+          if (source.isManager) {
+            await Department.findByIdAndUpdate(department, {
+              $set: { [updateField]: source._id.toString() },
+            });
+          } else {
+            await Department.findByIdAndUpdate(department, {
+              $push: { [updateField]: source._id.toString() },
+            });
+          }
         }
 
         if (position) {
