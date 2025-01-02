@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -48,9 +49,7 @@ export default function Products({
   const [refreshData, setRefreshData] = React.useState(false);
   const [baseProducts, setBaseProducts] = React.useState([]);
   const [products, setProducts] = React.useState([]);
-  const [canBeDeleted, setCanBeDeleted] = React.useState(null);
-  const [notifyWhenProductIsCreated, setNotifyWhenProductIsCreated] =
-    React.useState(null);
+  const [productsCanBeDeleted, setProductsCanBeDeleted] = React.useState(null);
 
   const [openAddProduct, setOpenAddProduct] = React.useState(false);
 
@@ -64,10 +63,7 @@ export default function Products({
         setBaseProducts(products.data.filter((product) => !product.name));
         setProducts(products.data.filter((product) => product.name));
         setConfigData(config.data[0].products);
-        setCanBeDeleted(config.data[0].products.canBeDeleted);
-        setNotifyWhenProductIsCreated(
-          config.data[0].products.notifyWhenProductIsCreated
-        );
+        setProductsCanBeDeleted(config.data[0].products.productsCanBeDeleted);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -79,8 +75,7 @@ export default function Products({
     e.preventDefault();
     try {
       const res = await api.put("/config/products", {
-        canBeDeleted,
-        notifyWhenProductIsCreated,
+        productsCanBeDeleted,
       });
 
       if (res.data) {
@@ -131,7 +126,9 @@ export default function Products({
                   <AccordionDetails>
                     {baseProducts.map((product, index) => (
                       <Accordion sx={{ width: "100%" }} key={index}>
-                        <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
+                        <AccordionSummary
+                          expandIcon={<icons.ArrowDropDownIcon />}
+                        >
                           <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
                             {product.type}
                           </Typography>
@@ -380,100 +377,31 @@ export default function Products({
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto", mr: 1 }}>
-                        Produtos Podem ser Deletados
-                      </Typography>
-                      <Tooltip
-                        title={
-                          <Typography sx={{ fontSize: 12 }}>
-                            Se a opção marcada for <strrong>Sim</strrong>, os
-                            Produtos poderão ser deletados DEFINITIVAMENTE. A
-                            opção padrão é <strong>Não</strong>.
-                          </Typography>
-                        }
+                    <Grid item sx={{ my: 1.5 }}>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                        sx={{ px: 4 }}
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
-                      </Tooltip>
-                      <RadioGroup
-                        row
-                        value={canBeDeleted}
-                        onChange={(e) => setCanBeDeleted(e.target.value)}
-                      >
-                        <FormControlLabel
-                          value={Boolean(true)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
-                          }
-                        />
-                        <FormControlLabel
-                          value={Boolean(false)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
-                          }
-                        />
-                      </RadioGroup>
-                    </Grid>
-                  </AccordionDetails>
-                </Accordion>
-                <Accordion sx={{ width: "100%", mt: 2 }}>
-                  <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
-                    <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                      Notificações
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    {" "}
-                    <AccordionDetails>
-                      <Grid container direction="row">
-                        <Typography sx={{ my: "auto", mr: 1 }}>
-                          Notificar ao Criar Produto
-                        </Typography>
                         <Tooltip
                           title={
                             <Typography sx={{ fontSize: 12 }}>
-                              Se a opção marcada for <strong>Sim</strong>, os
-                              Administradores serão notificados quando um novo
-                              produto for criado. A opção padrão é{" "}
-                              <strong>Não</strong>.
+                              Se a opção marcada for "Sim", os Produtos criados
+                              poderão ser deletados pelos colaboradores. A opção
+                              padrão é "Sim".
                             </Typography>
                           }
                         >
-                          <Button
-                            size="small"
-                            sx={{
-                              backgroundColor: "white",
-                              color: "#32aacd",
-                              "&:hover": {
-                                backgroundColor: "white",
-                              },
-                            }}
-                          >
-                            ?
-                          </Button>
+                          <Typography sx={{ my: "auto", mr: 1 }}>
+                            Produtos Podem ser Deletados
+                          </Typography>
                         </Tooltip>
                         <RadioGroup
                           row
-                          value={notifyWhenProductIsCreated}
+                          value={productsCanBeDeleted}
                           onChange={(e) =>
-                            setNotifyWhenProductIsCreated(e.target.value)
+                            setProductsCanBeDeleted(e.target.value)
                           }
                         >
                           <FormControlLabel
@@ -502,7 +430,7 @@ export default function Products({
                           />
                         </RadioGroup>
                       </Grid>
-                    </AccordionDetails>
+                    </Grid>
                   </AccordionDetails>
                 </Accordion>
               </Grid>

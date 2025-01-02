@@ -127,13 +127,9 @@ const configSchema = new Schema({
     },
   },
   products: {
-    canBeDeleted: {
+    productsCanBeDeleted: {
       type: Boolean,
       default: true,
-    },
-    notifyWhenProductIsCreated: {
-      type: Boolean,
-      default: false,
     },
   },
   quotes: {
