@@ -22,6 +22,7 @@ async function createMessageTitleAndBody(data) {
         : "O"
     } ${data.model} 
       ${typeof data.target === "string" ? data.target : ""}
+      ${data.target.type ? ` do tipo ${data.target.type} ` : ""}
       ${data.target.name ? `"${data.target.name}"` : ""}
        foi ${data.method}${data.isFemaleGender ? "a" : "o"}
        ${

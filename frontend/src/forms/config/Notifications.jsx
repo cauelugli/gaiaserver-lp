@@ -41,6 +41,7 @@ export default function Notifications({ onClose }) {
     group: "Grupos",
     service: "Serviços",
     serviceplan: "Plano de Serviços",
+    product: "Produtos",
   };
 
   React.useEffect(() => {

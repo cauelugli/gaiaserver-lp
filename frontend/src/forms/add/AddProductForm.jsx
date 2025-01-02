@@ -32,7 +32,6 @@ import { handleCurrencyValueChange } from "../../../../controllers/handlers/hand
 import { loadPage } from "../../../../controllers/functions/overallFunctions";
 
 export default function AddProductForm({
-  userName,
   refreshData,
   setRefreshData,
   onClose,
@@ -81,7 +80,7 @@ export default function AddProductForm({
           value: field.value,
         })),
         images: imagePaths,
-        createdBy: userName,
+        createdBy: userId,
       });
 
       if (productResponse.data) {

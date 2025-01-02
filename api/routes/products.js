@@ -3,6 +3,7 @@ const path = require("path");
 const express = require("express");
 const router = express.Router();
 const Product = require("../../models/models/Product");
+const { notifyNewProductCreated } = require("../../controllers/functions/notificationRoutines");
 
 // GET ALL PRODUCTS
 router.get("/", async (req, res) => {
@@ -27,6 +28,7 @@ router.post("/", async (req, res) => {
   });
   try {
     const savedProduct = await newProduct.save();
+    await notifyNewProductCreated(savedProduct)
     res.status(200).json(savedProduct);
   } catch (err) {
     console.log(err);

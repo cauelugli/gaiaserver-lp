@@ -225,4 +225,37 @@ async function notifyApproverManager(
   }
 }
 
-module.exports = { notifyAdmin, notificationRoutines, notifyApproverManager };
+async function notifyNewProductCreated(savedProduct) {
+  try {
+    const admin = await Admin.findOne({}, "config");
+    const notificationList = await Notifications.findOne({});
+
+    if (admin.config.notifyActivities === true) {
+      socket.emit("notifyAdmin", {
+        sourceId: savedProduct.createdBy,
+        target: savedProduct,
+        method: "Adicionad",
+        model: "Produto",
+        isFemaleGender: false,
+        isAdmin: savedProduct.createdBy === admin._id,
+      });
+    }
+
+    socket.emit("notificationToList", {
+      finalTarget: `do tipo ${savedProduct.type}: "${savedProduct.name}"`,
+      method: "add",
+      sourceId: savedProduct.createdBy,
+      receivers: notificationList["product"]["productIsCreated"],
+      label: "Produto",
+    });
+  } catch (err) {
+    console.error(`Erro na rotina de notificações`, err);
+  }
+}
+
+module.exports = {
+  notifyAdmin,
+  notificationRoutines,
+  notifyApproverManager,
+  notifyNewProductCreated,
+};

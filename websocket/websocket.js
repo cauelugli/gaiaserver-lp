@@ -70,9 +70,9 @@ const initSocket = (server) => {
             case "add":
               parsedBodyMainString = `${data.isFemale ? "Uma" : "Um"} ${
                 data.isFemale ? "nova" : "novo"
-              } ${data.label} foi ${data.isFemale ? "criada" : "criado"}: "${
+              } ${data.label} foi ${data.isFemale ? "criada" : "criado"}: ${
                 data.finalTarget
-              }".`;
+              }.`;
               parsedTitleString = `${data.isFemale ? "Nova" : "Novo"} ${
                 data.label
               } ${data.isFemale ? "Criada" : "Criado"}`;
@@ -104,10 +104,12 @@ const initSocket = (server) => {
           for (const user of users) {
             const notificationBody =
               parsedBodyMainString +
-              (data.item.department
+              (data.item && data.item.department
                 ? ` Departamento: ${data.item.department}.`
                 : "") +
-              (data.item.position ? ` Cargo: ${data.item.position}.` : "");
+              (data.item && data.item.position
+                ? ` Cargo: ${data.item.position}.`
+                : "");
 
             user.notifications.push({
               read: false,
@@ -170,25 +172,24 @@ const initSocket = (server) => {
     });
 
     socket.on("notifyAdmin", async (data) => {
-      if (data.isAdmin !== true) {
-        if (data.target.createdBy !== "admin") {
-          try {
-            let admin = await Admin.findOne();
-            const { title, body } = await createMessageTitleAndBody(data);
+      if (data.isAdmin === false) {
+        // create conditional 'shouldNotifyAdmin' (based on Config) in the future
+        try {
+          let admin = await Admin.findOne();
+          const { title, body } = await createMessageTitleAndBody(data);
 
-            if (admin) {
-              admin.notifications.push({
-                read: false,
-                title,
-                body,
-                createdAt: new Date().toISOString(),
-              });
+          if (admin) {
+            admin.notifications.push({
+              read: false,
+              title,
+              body,
+              createdAt: new Date().toISOString(),
+            });
 
-              await admin.save();
-            }
-          } catch (err) {
-            console.error("Erro ao adicionar notificação", err);
+            await admin.save();
           }
+        } catch (err) {
+          console.error("Erro ao adicionar notificação", err);
         }
       }
 

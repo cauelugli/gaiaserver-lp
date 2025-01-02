@@ -86,6 +86,20 @@ const notificationSchema = new Schema({
       default: [],
     },
   },
+  product: {
+    productIsCreated: {
+      type: Array,
+      default: [],
+    },
+    productIsEdited: {
+      type: Array,
+      default: [],
+    },
+    productIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
   service: {
     serviceIsCreated: {
       type: Array,

@@ -151,6 +151,7 @@ export default function PageModel(props) {
         </Typography>
         {currentPage === "products" && (
           <ProductsTableButton
+            userId={props.userId}
             configCustomization={props.configCustomization}
             refreshData={refreshData}
             setRefreshData={setRefreshData}

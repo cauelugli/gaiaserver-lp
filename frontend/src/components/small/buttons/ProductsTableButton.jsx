@@ -97,7 +97,6 @@ export default function ProductsTableButton(props) {
             mainColor={props.configCustomization.mainColor}
             buttonProps={props}
             baseProduct={selectedProduct}
-            userName={props.userName}
             userId={props.userId}
             configAgenda={props.configAgenda}
             configCustomization={props.configCustomization}
