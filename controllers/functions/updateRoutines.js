@@ -21,9 +21,7 @@ const removeMembership = async (userId, model, modelId) => {
     const item = await Model.findById(modelId);
     if (item.members.includes(userId)) {
       item.members.pull(userId);
-    } else {
-      console.log("num tem no item naum", item);
-    }
+    } 
     await item.save();
   } catch (error) {
     console.error(`Erro ao remover o userId no modelo ${model}:`);

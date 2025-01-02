@@ -177,7 +177,7 @@ const initSocket = (server) => {
           let admin = await Admin.findOne();
           const { title, body } = await createMessageTitleAndBody(data);
 
-          if (admin) {
+          if (admin._id) {
             admin.notifications.push({
               read: false,
               title,
@@ -188,8 +188,10 @@ const initSocket = (server) => {
             await admin.save();
           }
         } catch (err) {
-          console.error("Erro ao adicionar notificação", err);
+          console.error("Erro ao adicionar notificação ao Admin");
         }
+      } else {
+        console.log("not admin");
       }
 
       io.emit("newNotificationToAdmin", data);

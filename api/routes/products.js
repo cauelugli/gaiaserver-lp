@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const router = express.Router();
+const Admin = require("../../models/models/Admin");
 const Notifications = require("../../models/models/Notifications");
 const Product = require("../../models/models/Product");
 const notificationQueue = require("../../queues/notificationQueue");
@@ -29,6 +30,18 @@ router.post("/", async (req, res) => {
   });
   try {
     const savedProduct = await newProduct.save();
+
+    const admin = await Admin.findOne({}, "config");
+
+    if (admin.config.notifyActivities === true) {
+      notificationQueue.add({
+        type: "notifyAdmin",
+        data: savedProduct,
+        method: "Adicionad",
+        model: "Produto",
+        isAdmin: savedProduct.createdBy === admin._id.toString(),
+      });
+    }
 
     const notificationList = await Notifications.findOne({});
 

@@ -2,6 +2,10 @@ const io = require("../api/node_modules/socket.io-client");
 const socket = io("http://localhost:5002");
 
 const Queue = require("bull");
+const {
+  translateMethod,
+  translateModel,
+} = require("../controllers/notificationOptions");
 const notificationQueue = new Queue("notificationQueue", {
   redis: { port: 6379, host: "127.0.0.1" },
 });
@@ -10,9 +14,13 @@ const notificationQueue = new Queue("notificationQueue", {
 notificationQueue.process(async (job) => {
   const { type, data } = job.data;
   const finalList = job.data.notificationList;
+  const isAdmin = job.data.isAdmin;
 
   try {
     switch (type) {
+      case "notifyAdmin":
+        await handleNotifyAdmin(data, isAdmin);
+        break;
       case "productIsCreated":
         await handleProductIsCreated(data, finalList);
         break;
@@ -31,6 +39,17 @@ notificationQueue.process(async (job) => {
 });
 
 // HANDLERS
+const handleNotifyAdmin = async (data, isAdmin) => {
+  socket.emit("notifyAdmin", {
+    target: data,
+    sourceId: data.createdBy,
+    method: translateMethod(data.method),
+    model: translateModel(data.model),
+    isFemaleGender: data.model === "Sale",
+    isAdmin: isAdmin,
+  });
+};
+
 const handleProductIsCreated = async (data, list) => {
   const { name, type, createdBy } = data;
 

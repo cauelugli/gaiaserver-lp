@@ -7,31 +7,6 @@ const Position = require("../../models/models/Position");
 const io = require("../../api/node_modules/socket.io-client");
 const socket = io("http://localhost:5002");
 
-const { translateModel, translateMethod } = require("../notificationOptions");
-
-async function notifyAdmin(
-  model,
-  target,
-  method,
-  sourceId,
-  idIndexList,
-  adminId
-) {
-  // try {
-  //   socket.emit("notifyAdmin", {
-  //     sourceId,
-  //     // source: idIndexList?.find((item) => item.id === sourceId)?.name || "",
-  //     target,
-  //     method: translateMethod(method),
-  //     model: translateModel(model),
-  //     isFemaleGender: model === "Sale",
-  //     isAdmin,
-  //   });
-  // } catch (err) {
-  //   console.error(`Erro na rotina de notificações`, err);
-  // }
-}
-
 async function notificationRoutines(
   model,
   target,
@@ -41,12 +16,6 @@ async function notificationRoutines(
   idIndexList
 ) {
   try {
-    const admin = await Admin.findOne({}, "config");
-
-    if (admin.config.notifyActivities === true) {
-      await notifyAdmin(model, target, method, sourceId, idIndexList, sourceId);
-    }
-
     const config = await Notifications.findOne({});
     const counters = await Counters.findOne({});
     let finalTarget = "";
@@ -225,8 +194,4 @@ async function notifyApproverManager(
   }
 }
 
-module.exports = {
-  notifyAdmin,
-  notificationRoutines,
-  notifyApproverManager,
-};
+module.exports = { notificationRoutines, notifyApproverManager };
