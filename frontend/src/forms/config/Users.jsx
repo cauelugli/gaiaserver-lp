@@ -198,7 +198,6 @@ export default function Users({ onClose }) {
                       </RadioGroup>
                     </Grid>
                   </Grid>
-
                 </AccordionDetails>
               </Accordion>
             </Grid>

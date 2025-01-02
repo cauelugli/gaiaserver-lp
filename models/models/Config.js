@@ -75,8 +75,9 @@ const configSchema = new Schema({
     },
   },
   files: {
-    canDelete: {
-      type: Array,
+    filesCanBeDeleted: {
+      type: Boolean,
+      default: true,
     },
   },
   permissions: {
