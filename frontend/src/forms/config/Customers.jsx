@@ -112,31 +112,24 @@ export default function Customers({ onClose }) {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto" }}>
-                        Clientes Empresas Podem ser Deletados
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
-                            Se a opção marcada for "Sim", os Clientes Empresas
-                            poderão ser deletados DEFINITIVAMENTE. A opção
-                            padrão é "Sim".
+                            Se a opção marcada for "Sim", os Clientes Empresa
+                            criados poderão ser deletados pelos colaboradores. A
+                            opção padrão é "Sim".
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 1 }}>
+                          Cliente Empresa Pode ser Deletado
+                        </Typography>
                       </Tooltip>
                       <RadioGroup
                         row
@@ -154,7 +147,6 @@ export default function Customers({ onClose }) {
                             <Typography sx={{ fontSize: 13 }}>Sim</Typography>
                           }
                         />
-
                         <FormControlLabel
                           value={Boolean(false)}
                           control={
@@ -168,31 +160,24 @@ export default function Customers({ onClose }) {
                     </Grid>
                   </Grid>
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto" }}>
-                        Clientes Pessoa Física Podem ser Deletados
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
                             Se a opção marcada for "Sim", os Clientes Pessoa
-                            Física poderão ser deletados DEFINITIVAMENTE. A
-                            opção padrão é "Sim".
+                            Física criados poderão ser deletados pelos
+                            colaboradores. A opção padrão é "Sim".
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 1 }}>
+                          Cliente Pessoa Física Pode ser Deletado
+                        </Typography>
                       </Tooltip>
                       <RadioGroup
                         row
@@ -208,7 +193,6 @@ export default function Customers({ onClose }) {
                             <Typography sx={{ fontSize: 13 }}>Sim</Typography>
                           }
                         />
-
                         <FormControlLabel
                           value={Boolean(false)}
                           control={
@@ -222,33 +206,26 @@ export default function Customers({ onClose }) {
                     </Grid>
                   </Grid>
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto" }}>
-                        Permitir Criação de Cliente Empresa com Nome já
-                        Cadastrado
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
                             Se a opção marcada for "Sim", novos Clientes Empresa
                             poderão ser criados com nomes que já existem no
                             sistema. A opção padrão é "Não". Clientes Pessoa
-                            Física NÃO PODEM ser duplicados.
+                            Física NÃO PODEM ser duplicados (por conta do
+                            vínculo com o CPF).
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 1 }}>
+                          Criar Cliente com Mesmo Nome
+                        </Typography>
                       </Tooltip>
                       <RadioGroup
                         row
@@ -266,7 +243,6 @@ export default function Customers({ onClose }) {
                             <Typography sx={{ fontSize: 13 }}>Sim</Typography>
                           }
                         />
-
                         <FormControlLabel
                           value={Boolean(false)}
                           control={
