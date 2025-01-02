@@ -103,10 +103,12 @@ export default function Finance({ onClose }) {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto" }}>
-                        Aceitar Pagamentos Parcelados
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
@@ -116,18 +118,9 @@ export default function Finance({ onClose }) {
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 1 }}>
+                          Aceitar Pagamentos Parcelados
+                        </Typography>
                       </Tooltip>
                       <RadioGroup
                         row
@@ -145,7 +138,6 @@ export default function Finance({ onClose }) {
                             <Typography sx={{ fontSize: 13 }}>Sim</Typography>
                           }
                         />
-
                         <FormControlLabel
                           value={Boolean(false)}
                           control={

@@ -139,15 +139,14 @@ router.put("/requests", async (req, res) => {
 router.put("/stock", async (req, res) => {
   try {
     const {
-      stockentriesDispatcherDepartment,
+      stockEntriesDispatcherManager,
       stockEntriesNeedApproval,
       stockEntriesCanBeChallenged,
     } = req.body;
 
     const config = await Config.findOne();
 
-    config.stock.stockentriesDispatcherDepartment =
-      stockentriesDispatcherDepartment;
+    config.stock.stockEntriesDispatcherManager = stockEntriesDispatcherManager;
     config.stock.stockEntriesNeedApproval = stockEntriesNeedApproval;
     config.stock.stockEntriesCanBeChallenged = stockEntriesCanBeChallenged;
 

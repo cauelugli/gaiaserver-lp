@@ -36,12 +36,8 @@ const api = axios.create({
 
 export default function Departments({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
-  const [departments, setDepartments] = React.useState([]);
-
-  const [
-    stockentriesDispatcherDepartment,
-    setStockentriesDispatcherDepartment,
-  ] = React.useState(null);
+  const [stockEntriesDispatcherManager, setStockEntriesDispatcherManager] =
+    React.useState(null);
   const [stockEntriesNeedApproval, setStockEntriesNeedApproval] =
     React.useState(null);
   const [stockEntriesCanBeChallenged, setStockEntriesCanBeChallenged] =
@@ -51,11 +47,9 @@ export default function Departments({ onClose }) {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        const departments = await api.get("/departments");
-        setDepartments(departments.data);
         setConfigData(config.data[0].stock);
-        setStockentriesDispatcherDepartment(
-          config.data[0].stock.stockentriesDispatcherDepartment
+        setStockEntriesDispatcherManager(
+          config.data[0].stock.stockEntriesDispatcherManager
         );
         setStockEntriesNeedApproval(
           config.data[0].stock.stockEntriesNeedApproval
@@ -74,7 +68,7 @@ export default function Departments({ onClose }) {
     e.preventDefault();
     try {
       const res = await api.put("/config/stock", {
-        stockentriesDispatcherDepartment,
+        stockEntriesDispatcherManager,
         stockEntriesNeedApproval,
         stockEntriesCanBeChallenged,
       });
@@ -120,106 +114,12 @@ export default function Departments({ onClose }) {
               <Accordion sx={{ width: "100%" }}>
                 <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Departamento Responsável
+                    Gerente Responsável
                   </Typography>
                 </AccordionSummary>
-                <AccordionDetails>
-                  <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row" justifyContent="space-evenly">
-                      <Grid item sx={{my:"auto"}}>
-                        <Select
-                          onChange={(e) =>
-                            setStockentriesDispatcherDepartment(e.target.value)
-                          }
-                          value={stockentriesDispatcherDepartment}
-                          displayEmpty
-                          disabled={!stockEntriesNeedApproval}
-                          required
-                          renderValue={(selected) => {
-                            if (!selected) {
-                              return (
-                                <Typography>
-                                  Selecione o Departamento
-                                </Typography>
-                              );
-                            } else {
-                              return (
-                                <Grid container direction="row">
-                                  <Paper
-                                    elevation={0}
-                                    sx={{
-                                      mr: 1,
-                                      mt: 0.5,
-                                      width: 15,
-                                      height: 15,
-                                      borderRadius: 50,
-                                      backgroundColor: selected.color,
-                                    }}
-                                  />
-                                  <Typography>{selected.name}</Typography>
-                                </Grid>
-                              );
-                            }
-                          }}
-                          sx={{ minWidth: "200px", mr: 1 }}
-                        >
-                          {departments.map((item) => (
-                            <MenuItem value={item} key={item.id} disabled={!item.manager}>
-                              <Grid container direction="row">
-                                <Paper
-                                  elevation={0}
-                                  sx={{
-                                    mr: 1,
-                                    mt: 0.5,
-                                    width: 15,
-                                    height: 15,
-                                    borderRadius: 50,
-                                    backgroundColor: item.color,
-                                  }}
-                                />
-                                <Typography>{item.name}</Typography>
-                              </Grid>
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </Grid>
-                      <Grid item>
-                        {stockentriesDispatcherDepartment &&
-                          stockEntriesNeedApproval &&
-                          stockentriesDispatcherDepartment.manager && (
-                            <Grid
-                              container
-                              direction="column"
-                              alignItems="center"
-                              justifyContent="space-around"
-                            >
-                              <Avatar
-                                src={`http://localhost:3000/static/${stockentriesDispatcherDepartment.manager.image}`}
-                                style={{
-                                  width: 82,
-                                  height: 82,
-                                }}
-                              />
-                              <Typography
-                                sx={{ mt: 1, fontSize: 12, color: "grey" }}
-                              >
-                                Gerente:{" "}
-                                <strong>
-                                  {
-                                    stockentriesDispatcherDepartment.manager
-                                      .name
-                                  }
-                                </strong>
-                              </Typography>
-                            </Grid>
-                          )}{" "}
-                        {/* </Grid> */}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </AccordionDetails>
+                <AccordionDetails>{/* here */}</AccordionDetails>
               </Accordion>
-              
+
               <Accordion sx={{ width: "100%", mt: 2 }}>
                 <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
@@ -228,10 +128,12 @@ export default function Departments({ onClose }) {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto" }}>
-                        Entradas de Estoque Precisam de Aprovação do Gerente
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
@@ -242,18 +144,9 @@ export default function Departments({ onClose }) {
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 1 }}>
+                          Entradas de Estoque Precisam de Aprovação do Gerente
+                        </Typography>
                       </Tooltip>
                       <RadioGroup
                         row
@@ -284,10 +177,12 @@ export default function Departments({ onClose }) {
                     </Grid>
                   </Grid>
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto" }}>
-                        Entradas de Estoque Aprovadas podem ser Contestadas
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
@@ -300,18 +195,9 @@ export default function Departments({ onClose }) {
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 1 }}>
+                          Entradas de Estoque Aprovadas podem ser Contestadas
+                        </Typography>
                       </Tooltip>
                       <RadioGroup
                         row

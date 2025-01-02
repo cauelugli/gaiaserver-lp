@@ -60,11 +60,7 @@ export const configModalOptions = (userName, userId, configCustomization) => [
   {
     icon: React.createElement(icons.WarehouseIcon, { sx: { fontSize: 48 } }),
     text: "Estoque",
-    modal: React.createElement(StockModal, {
-      userName,
-      userId,
-      configCustomization,
-    }),
+    modal: React.createElement(StockModal),
     isBasic: true,
   },
   {

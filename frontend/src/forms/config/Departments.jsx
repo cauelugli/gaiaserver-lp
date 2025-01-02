@@ -109,31 +109,24 @@ export default function Departments({ onClose }) {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto" }}>
-                        Departamentos Podem ser Deletados
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
                             Se a opção marcada for "Sim", os Departamentos
-                            poderão ser deletados DEFINITIVAMENTE. A opção
-                            padrão é "Sim".
+                            criados poderão ser deletados pelos colaboradores. A
+                            opção padrão é "Sim".
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 1 }}>
+                          Departamentos Podem ser Deletados
+                        </Typography>
                       </Tooltip>
                       <RadioGroup
                         row
@@ -151,7 +144,6 @@ export default function Departments({ onClose }) {
                             <Typography sx={{ fontSize: 13 }}>Sim</Typography>
                           }
                         />
-
                         <FormControlLabel
                           value={Boolean(false)}
                           control={
@@ -165,31 +157,24 @@ export default function Departments({ onClose }) {
                     </Grid>
                   </Grid>
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto" }}>
-                        Departamentos Devem Possuir um Gerente
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
-                            Se a opção marcada for "Sim", os Departamentos
-                            deverão sempre possuir um Gerente. A opção padrão é
-                            "Não".
+                            Se a opção marcada for "Sim", os novos Departamentos
+                            criados deverão sempre possuir um Gerente. A opção
+                            padrão é "Não".
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 1 }}>
+                          Departamentos Devem Possuir um Gerente
+                        </Typography>
                       </Tooltip>
                       <RadioGroup
                         row
@@ -207,7 +192,6 @@ export default function Departments({ onClose }) {
                             <Typography sx={{ fontSize: 13 }}>Sim</Typography>
                           }
                         />
-
                         <FormControlLabel
                           value={Boolean(false)}
                           control={

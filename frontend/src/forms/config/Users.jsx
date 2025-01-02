@@ -103,36 +103,31 @@ export default function Users({ onClose }) {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto", mr: 1 }}>
-                        Colaboradores Podem ser Deletados
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
-                            Se a opção marcada for "Sim", os Colaboradores
-                            poderão ser deletados DEFINITIVAMENTE. A opção
+                            Se a opção marcada for "Sim", os Colaboradores criados
+                            poderão ser deletados pelos colaboradores. A opção
                             padrão é "Sim".
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 1 }}>
+                          Colaboradores Podem ser Deletados
+                        </Typography>
                       </Tooltip>
                       <RadioGroup
                         row
                         value={usersCanBeDeleted}
-                        onChange={(e) => setUsersCanBeDeleted(e.target.value)}
+                        onChange={(e) =>
+                          setUsersCanBeDeleted(e.target.value)
+                        }
                       >
                         <FormControlLabel
                           value={Boolean(true)}
@@ -156,31 +151,24 @@ export default function Users({ onClose }) {
                     </Grid>
                   </Grid>
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto", mr: 1 }}>
-                        Gerentes Podem ser Deletados
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
-                            Se a opção marcada for "Sim", os Gerentes poderão
-                            ser deletados DEFINITIVAMENTE. A opção padrão é
-                            "Sim".
+                            Se a opção marcada for "Sim", os Gerentes criados
+                            poderão ser deletados pelos colaboradores. A opção
+                            padrão é "Sim".
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 1 }}>
+                          Gerentes Podem ser Deletados
+                        </Typography>
                       </Tooltip>
                       <RadioGroup
                         row
@@ -210,6 +198,7 @@ export default function Users({ onClose }) {
                       </RadioGroup>
                     </Grid>
                   </Grid>
+
                 </AccordionDetails>
               </Accordion>
             </Grid>

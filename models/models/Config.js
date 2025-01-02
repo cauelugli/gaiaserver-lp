@@ -181,8 +181,9 @@ const configSchema = new Schema({
     },
   },
   stock: {
-    stockentriesDispatcherDepartment: {
-      type: Object,
+    stockEntriesDispatcherManager: {
+      type: String,
+      default: "",
     },
     stockEntriesNeedApproval: {
       type: Boolean,
