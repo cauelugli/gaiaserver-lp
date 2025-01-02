@@ -2,8 +2,9 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const router = express.Router();
+const Notifications = require("../../models/models/Notifications");
 const Product = require("../../models/models/Product");
-const { notifyNewProductCreated } = require("../../controllers/functions/notificationRoutines");
+const notificationQueue = require("../../queues/notificationQueue");
 
 // GET ALL PRODUCTS
 router.get("/", async (req, res) => {
@@ -28,7 +29,18 @@ router.post("/", async (req, res) => {
   });
   try {
     const savedProduct = await newProduct.save();
-    await notifyNewProductCreated(savedProduct)
+
+    const notificationList = await Notifications.findOne({});
+
+    if (notificationList) {
+      const finalList = notificationList["product"]["productIsCreated"];
+      notificationQueue.add({
+        type: "productIsCreated",
+        data: savedProduct,
+        notificationList: finalList,
+      });
+    }
+
     res.status(200).json(savedProduct);
   } catch (err) {
     console.log(err);
