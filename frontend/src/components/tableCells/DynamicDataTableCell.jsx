@@ -15,6 +15,7 @@ import {
   Chip,
   InputLabel,
 } from "@mui/material";
+
 import {
   checkAvailability,
   createScheduleSlots,
@@ -59,17 +60,6 @@ const DynamicDataTableCell = (props) => {
             props.serviceLength
           );
           data = slots;
-        } else if (
-          props.field.dynamicData === "allCustomers" ||
-          props.fields.data === "customer"
-        ) {
-          const resCustomers = await api.get("/get", {
-            params: { model: "Customer" },
-          });
-          const resClients = await api.get("/get", {
-            params: { model: "Client" },
-          });
-          data = [...resCustomers.data, ...resClients.data];
         } else if (props.field.dynamicData === "serviceTypes") {
           const resServiceTypes = await api.get("/getConfig", {
             params: { item: "services", parameter: "serviceTypes" },
@@ -186,8 +176,7 @@ const DynamicDataTableCell = (props) => {
       >
         {props.field.dynamicData === "users" ||
         props.field.dynamicData === "managers" ||
-        props.field.dynamicData === "workers" ||
-        props.field.dynamicData === "allCustomers"
+        props.field.dynamicData === "workers"
           ? options.map((option, index) => (
               <MenuItem
                 value={option}

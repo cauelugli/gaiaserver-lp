@@ -25,6 +25,7 @@ import MembersTableCell from "../components/tableCells/MembersTableCell";
 import SelectTableCell from "../components/tableCells/SelectTableCell";
 import ServicesTableCell from "../components/tableCells/ServicesTableCell";
 import StringTableCell from "../components/tableCells/StringTableCell";
+import AllCustomersTableCell from "../components/tableCells/AllCustomersTableCell";
 
 const TableCellOptions = ({
   field,
@@ -49,6 +50,15 @@ const TableCellOptions = ({
     <>
       {field.type === "string" && (
         <StringTableCell
+          fields={fields}
+          field={field}
+          handleChange={handleChange}
+          modalOptions={modalOptions}
+          required={field.required}
+        />
+      )}
+      {field.type === "allCustomers" && (
+        <AllCustomersTableCell
           fields={fields}
           field={field}
           handleChange={handleChange}

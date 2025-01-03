@@ -1,22 +1,22 @@
-// formFieldOptions.js
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
 import { Checkbox, InputLabel } from "@mui/material";
 
-import ColorPicker from "../components/small/ColorPicker";
+import AllCustomersTableCell from "../components/tableCells/AllCustomersTableCell";
 import AttachmentsTableCell from "../components/tableCells/AttachmentsTableCell";
+import ColorPicker from "../components/small/ColorPicker";
 import CurrencyTableCell from "../components/tableCells/CurrencyTableCell";
 import DateTableCell from "../components/tableCells/DateTableCell";
 import DynamicDataTableCell from "../components/tableCells/DynamicDataTableCell";
 import IdDocTableCell from "../components/tableCells/IdDocTableCell";
+import ManagerSelectTableCell from "../components/tableCells/ManagerSelectTableCell";
+import MembersTableCell from "../components/tableCells/MembersTableCell";
 import PhoneTableCell from "../components/tableCells/PhoneTableCell";
 import ProductsTableCell from "../components/tableCells/ProductsTableCell";
 import SelectTableCell from "../components/tableCells/SelectTableCell";
 import ServicesTableCell from "../components/tableCells/ServicesTableCell";
-import ManagerSelectTableCell from "../components/tableCells/ManagerSelectTableCell";
 import StringTableCell from "../components/tableCells/StringTableCell";
-import MembersTableCell from "../components/tableCells/MembersTableCell";
 
 export const renderField = (
   field,
@@ -121,6 +121,17 @@ export const renderField = (
     case "managerSelect":
       return (
         <ManagerSelectTableCell
+          fields={fields}
+          field={field}
+          handleChange={handleChange}
+          modalOptions={modalOptions}
+          required={field.required}
+          multiple={field.multiple}
+        />
+      );
+    case "allCustomers":
+      return (
+        <AllCustomersTableCell
           fields={fields}
           field={field}
           handleChange={handleChange}
