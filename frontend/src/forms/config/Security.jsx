@@ -100,10 +100,12 @@ export default function Security({ onClose }) {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
-                      <Typography sx={{ my: "auto" }}>
-                        Complexidade de Senha
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
@@ -119,18 +121,9 @@ export default function Security({ onClose }) {
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 1 }}>
+                          Complexidade de Senha
+                        </Typography>
                       </Tooltip>
                       <RadioGroup
                         row

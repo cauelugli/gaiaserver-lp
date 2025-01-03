@@ -272,16 +272,20 @@ export default function Customization({ onClose }) {
 
               <Accordion sx={{ width: "100%", mt: 2 }}>
                 <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                  <Typography
+                    sx={{ fontSize: 16, fontWeight: "bold" }}
+                    >
                     Logotipo
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Grid item sx={{ mt: 2.5 }}>
-                    <Grid container direction="row" alignItems="center">
-                      <Typography sx={{ my: "auto", mr: 4 }}>
-                        Logotipo
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-evenly"
+                      alignItems="flex-start"
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
@@ -291,48 +295,23 @@ export default function Customization({ onClose }) {
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 4 }}>
+                          Logotipo Principal
+                        </Typography>
                       </Tooltip>
-                      <Button
-                        component="label"
-                        htmlFor="logoInput"
-                        size="small"
-                        onClick={handleImageClick}
-                        sx={{ mr: 3 }}
-                      >
-                        Carregar Imagem
-                        <input
-                          type="file"
-                          id="logoInput"
-                          accept=".png, .jpeg, .jpg"
-                          onChange={handleLogoChange}
-                          style={{ display: "none" }}
-                        />
-                      </Button>
-                      {logo && !newLogo && (
-                        <img
-                          src={`http://localhost:3000/static/${logo}`}
-                          style={{
-                            width: "auto",
-                            height: 90,
-                            marginLeft: 10,
-                            backgroundColor: "#ccc",
-                          }}
-                        />
-                      )}
-                      <Grid item>
-                        {newLogo && (
+                      <label htmlFor="logoInput" style={{ cursor: "pointer" }}>
+                        {logo && !newLogo ? (
+                          <img
+                            src={`http://localhost:3000/static/${logo}`}
+                            alt="Logotipo"
+                            style={{
+                              width: "auto",
+                              height: 90,
+                              marginLeft: 10,
+                              backgroundColor: "#ccc",
+                            }}
+                          />
+                        ) : newLogo ? (
                           <Grid
                             container
                             direction="column"
@@ -350,16 +329,37 @@ export default function Customization({ onClose }) {
                             />
                             <FormHelperText>Novo Logotipo</FormHelperText>
                           </Grid>
+                        ) : (
+                          <Typography
+                            sx={{
+                              width: 90,
+                              height: 90,
+                              lineHeight: "90px",
+                              textAlign: "center",
+                              backgroundColor: "#ccc",
+                              borderRadius: 2,
+                            }}
+                          >
+                            Clique para adicionar
+                          </Typography>
                         )}
-                      </Grid>
+                      </label>
+                      <input
+                        type="file"
+                        id="logoInput"
+                        accept=".png, .jpeg, .jpg"
+                        onChange={handleLogoChange}
+                        style={{ display: "none" }}
+                      />
                     </Grid>
                   </Grid>
-
                   <Grid item sx={{ mt: 2.5 }}>
-                    <Grid container direction="row" alignItems="center">
-                      <Typography sx={{ my: "auto", mr: 4 }}>
-                        Logotipo com Fundo
-                      </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      alignItems="flex-start"
+                      justifyContent="space-evenly"
+                    >
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
@@ -371,48 +371,26 @@ export default function Customization({ onClose }) {
                           </Typography>
                         }
                       >
-                        <Button
-                          size="small"
-                          sx={{
-                            backgroundColor: "white",
-                            color: "#32aacd",
-                            "&:hover": {
-                              backgroundColor: "white",
-                            },
-                          }}
-                        >
-                          ?
-                        </Button>
+                        <Typography sx={{ my: "auto", mr: 4  }}>
+                          Logotipo com Fundo
+                        </Typography>
                       </Tooltip>
-                      <Button
-                        component="label"
+                      <label
                         htmlFor="logoBlackInput"
-                        size="small"
-                        onClick={handleImageBlackClick}
-                        sx={{ mr: 3 }}
+                        style={{ cursor: "pointer" }}
                       >
-                        Carregar Imagem
-                        <input
-                          type="file"
-                          id="logoBlackInput"
-                          accept=".png, .jpeg, .jpg"
-                          onChange={handleLogoBlackChange}
-                          style={{ display: "none" }}
-                        />
-                      </Button>
-                      {logoBlack && !newLogoBlack && (
-                        <img
-                          src={`http://localhost:3000/static/${logoBlack}`}
-                          style={{
-                            width: "auto",
-                            height: 90,
-                            marginLeft: 10,
-                            backgroundColor: "#ccc",
-                          }}
-                        />
-                      )}
-                      <Grid item>
-                        {newLogoBlack && (
+                        {logoBlack && !newLogoBlack ? (
+                          <img
+                            src={`http://localhost:3000/static/${logoBlack}`}
+                            alt="Logotipo com Fundo"
+                            style={{
+                              width: "auto",
+                              height: 90,
+                              marginLeft: 10,
+                              backgroundColor: "#ccc",
+                            }}
+                          />
+                        ) : newLogoBlack ? (
                           <Grid
                             container
                             direction="column"
@@ -421,7 +399,7 @@ export default function Customization({ onClose }) {
                           >
                             <img
                               src={URL.createObjectURL(newLogoBlack)}
-                              alt="Prévia da Imagem"
+                              alt="Prévia da Imagem com Fundo"
                               style={{
                                 width: "auto",
                                 height: 90,
@@ -430,8 +408,28 @@ export default function Customization({ onClose }) {
                             />
                             <FormHelperText>Novo Logotipo Preto</FormHelperText>
                           </Grid>
+                        ) : (
+                          <Typography
+                            sx={{
+                              width: 90,
+                              height: 90,
+                              lineHeight: "90px",
+                              textAlign: "center",
+                              backgroundColor: "#ccc",
+                              borderRadius: 2,
+                            }}
+                          >
+                            Clique para adicionar
+                          </Typography>
                         )}
-                      </Grid>
+                      </label>
+                      <input
+                        type="file"
+                        id="logoBlackInput"
+                        accept=".png, .jpeg, .jpg"
+                        onChange={handleLogoBlackChange}
+                        style={{ display: "none" }}
+                      />
                     </Grid>
                   </Grid>
                 </AccordionDetails>
