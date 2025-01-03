@@ -17,6 +17,7 @@ import ProductsTableCell from "../components/tableCells/ProductsTableCell";
 import SelectTableCell from "../components/tableCells/SelectTableCell";
 import ServicesTableCell from "../components/tableCells/ServicesTableCell";
 import StringTableCell from "../components/tableCells/StringTableCell";
+import UsersTableCell from "../components/tableCells/UsersTableCell ";
 
 export const renderField = (
   field,
@@ -132,6 +133,17 @@ export const renderField = (
     case "allCustomers":
       return (
         <AllCustomersTableCell
+          fields={fields}
+          field={field}
+          handleChange={handleChange}
+          modalOptions={modalOptions}
+          required={field.required}
+          multiple={field.multiple}
+        />
+      );
+    case "users":
+      return (
+        <UsersTableCell
           fields={fields}
           field={field}
           handleChange={handleChange}

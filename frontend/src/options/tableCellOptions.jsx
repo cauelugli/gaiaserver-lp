@@ -26,6 +26,7 @@ import SelectTableCell from "../components/tableCells/SelectTableCell";
 import ServicesTableCell from "../components/tableCells/ServicesTableCell";
 import StringTableCell from "../components/tableCells/StringTableCell";
 import AllCustomersTableCell from "../components/tableCells/AllCustomersTableCell";
+import UsersTableCell from "../components/tableCells/UsersTableCell ";
 
 const TableCellOptions = ({
   field,
@@ -156,6 +157,17 @@ const TableCellOptions = ({
       )}
       {field.type === "dynamicData" && (
         <DynamicDataTableCell
+          fields={fields}
+          field={field}
+          handleChange={handleChange}
+          modalOptions={modalOptions}
+          required={field.required}
+          multiple={field.multiple}
+          serviceLength={serviceLength}
+        />
+      )}
+      {field.type === "users" && (
+        <UsersTableCell
           fields={fields}
           field={field}
           handleChange={handleChange}

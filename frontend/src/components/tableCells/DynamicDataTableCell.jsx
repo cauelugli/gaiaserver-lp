@@ -29,10 +29,7 @@ const DynamicDataTableCell = (props) => {
       // this is stupid...
       try {
         let data = [];
-        if (props.field.dynamicData === "users") {
-          const resUsers = await api.get("/get", { params: { model: "User" } });
-          data = resUsers.data;
-        } else if (
+        if (
           props.field.dynamicData === "workers" ||
           props.fields.data === "worker"
         ) {
@@ -174,8 +171,7 @@ const DynamicDataTableCell = (props) => {
         multiple={props.multiple}
         renderValue={renderValue}
       >
-        {props.field.dynamicData === "users" ||
-        props.field.dynamicData === "managers" ||
+        {props.field.dynamicData === "managers" ||
         props.field.dynamicData === "workers"
           ? options.map((option, index) => (
               <MenuItem
