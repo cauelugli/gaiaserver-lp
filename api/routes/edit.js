@@ -78,16 +78,13 @@ router.put("/", async (req, res) => {
 
   // verify cases
   fields.image = image;
-  fields.worker = req.body.fields.worker?._id || "";
   fields.scheduleTime = req.body.fields.scheduleTime || "";
   fields.scheduledToAssignee = req.body.fields.scheduledToAssignee || false;
-  fields.seller = req.body.fields.seller?._id || "";
-  fields.customer = req.body.fields.customer?._id || "";
   fields.role = req.body.fields.role?._id || "";
+  fields.products = req.body.fields.products || [];
   fields.isManager = isManager;
   fields.members =
     selectedMembers.length !== 0 ? selectedMembers : req.body.fields.members;
-  fields.products = selectedProducts;
   fields.price =
     label === "Plano de Serviços"
       ? parseFloat(

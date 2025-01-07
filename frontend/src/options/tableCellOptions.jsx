@@ -191,7 +191,6 @@ const TableCellOptions = ({
           }
           refreshData={refreshData}
           setRefreshData={setRefreshData}
-          onChange={handleChange(field.name)}
           required={field.required}
           handleProductChange={handleProductChange}
         />

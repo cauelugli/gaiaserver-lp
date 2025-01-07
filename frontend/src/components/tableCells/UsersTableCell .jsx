@@ -109,10 +109,7 @@ const UsersTableCell = (props) => {
 
           if (departmentUsers.length > 0) {
             menuItems.push(
-              <Grid
-                container
-                direction="row"
-              >
+              <Grid container direction="row">
                 <Paper
                   sx={{
                     width: 8,
@@ -133,8 +130,8 @@ const UsersTableCell = (props) => {
             );
 
             menuItems.push(
-              ...departmentUsers.map((user) => (
-                <MenuItem value={user} key={user._id} sx={{ mb: 1 }}>
+              ...departmentUsers.map((user, index) => (
+                <MenuItem value={user} key={index} sx={{ mb: 1 }}>
                   <Grid container direction="row" alignItems="center">
                     <Avatar
                       alt="Imagem"

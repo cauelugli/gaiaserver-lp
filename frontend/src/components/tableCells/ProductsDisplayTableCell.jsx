@@ -3,7 +3,6 @@
 import React, { useEffect } from "react";
 
 import {
-  Button,
   Grid,
   Table,
   TableCell,
@@ -108,13 +107,6 @@ const ProductsDisplayTableCell = (props) => {
             </TableCell>
           </TableRow>
         ))}
-        <Button
-          onClick={() =>
-            console.log("props.selectedProducts", props.selectedProducts)
-          }
-        >
-          dale
-        </Button>
         <TableRow sx={{ mt: 0.5 }}>
           <TableCell id="ghost" />
           <TableCell id="ghost" />

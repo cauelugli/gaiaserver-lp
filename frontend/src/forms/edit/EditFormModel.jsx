@@ -48,7 +48,7 @@ export default function EditFormModel(props) {
   const [refreshData, setRefreshData] = React.useState(false);
 
   // updating value from child modifications (basic refresh)
-  React.useEffect(() => {}, [priceDifference,refreshData]);
+  React.useEffect(() => {}, [priceDifference, refreshData]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -94,6 +94,8 @@ export default function EditFormModel(props) {
 
   // Initializing form with target data
   React.useEffect(() => {
+    // this can surely be better dude...
+    // fix this
     const initializeFields = () => {
       const initialFields = {};
       props.options.fields.forEach((field) => {
@@ -127,6 +129,9 @@ export default function EditFormModel(props) {
         } else if (field.name === "worker") {
           const worker = members.find((worker) => worker._id === fieldValue);
           initialFields[field.name] = worker ? worker : "";
+        } else if (field.name === "seller") {
+          const seller = members.find((seller) => seller._id === fieldValue);
+          initialFields[field.name] = seller ? seller : "";
         } else if (field.name === "customer") {
           const customer = customers.find(
             (customer) => customer._id === fieldValue
@@ -180,30 +185,22 @@ export default function EditFormModel(props) {
   };
 
   const handleProductChange = (product, count) => {
-    setSelectedProducts((prev) => {
-      const existingProductIndex = prev.findIndex(
-        (p) => p.name === product.name
-      );
+    const existingProductIndex = fields.products.findIndex(
+      (p) => p._id === product._id
+    );
 
-      let newState;
-      if (existingProductIndex !== -1) {
-        if (count > 0) {
-          const updatedProducts = [...prev];
-          updatedProducts[existingProductIndex].count = count;
-          newState = updatedProducts;
-        } else {
-          newState = prev.filter((p) => p.name !== product.name);
-        }
+    if (existingProductIndex !== -1) {
+      if (count > 0) {
+        fields.products[existingProductIndex].count = count;
       } else {
-        if (count > 0) {
-          newState = [...prev, { ...product, count }];
-        } else {
-          newState = prev;
-        }
+        fields.products.splice(existingProductIndex, 1);
       }
+    } else {
+      fields.products.push({ ...product, count: 1 });
+    }
 
-      return newState;
-    });
+    setSelectedProducts([...fields.products]);
+    setRefreshData(!refreshData);
   };
 
   const handleServiceChange = (service, count) => {
@@ -250,6 +247,10 @@ export default function EditFormModel(props) {
         fields: {
           ...fields,
           members: fields.members?.map((member) => member._id || member.id),
+          customer: fields.customer?._id,
+          service: fields.service?._id,
+          worker: fields.worker?._id,
+          seller: fields.seller?._id,
         },
         label: modalOptions.label,
         image: imagePath ? imagePath : props.target.image,
