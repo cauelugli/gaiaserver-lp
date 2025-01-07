@@ -19,6 +19,8 @@ import ServicesTableCell from "../components/tableCells/ServicesTableCell";
 import StringTableCell from "../components/tableCells/StringTableCell";
 import UsersTableCell from "../components/tableCells/UsersTableCell ";
 
+// this is used in AddForm
+
 export const renderField = (
   field,
   fields,
@@ -28,7 +30,9 @@ export const renderField = (
   okToDispatch,
   selectedMembers,
   selectedProducts,
-  selectedServices
+  selectedServices,
+  refreshData,
+  setRefreshData
 ) => {
   switch (field.type) {
     case "string":
@@ -157,19 +161,16 @@ export const renderField = (
         <ProductsTableCell
           selectedProducts={selectedProducts}
           handleProductChange={handlers.handleProductChange}
-          setSelectedProducts={handlers.setSelectedProducts}
           value={fields[field.name] || ""}
           onChange={handleChange(field.name)}
-          size="small"
-          required={field.required}
-          fieldType={field.type}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
           finalPrice={handlers.finalPrice}
           setFinalPrice={handlers.setFinalPrice}
           priceDifference={handlers.priceDifference}
           setPriceDifference={handlers.setPriceDifference}
           okToDispatch={okToDispatch}
           setOkToDispatch={handlers.setOkToDispatch}
-          servicePrice={fields["price"]}
         />
       );
     case "servicesList":

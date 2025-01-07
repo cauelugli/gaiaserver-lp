@@ -4,13 +4,8 @@ import React from "react";
 
 import {
   Checkbox,
-  Grid,
   InputLabel,
-  Table,
-  TableCell,
-  TableRow,
   TextField,
-  Typography,
 } from "@mui/material";
 
 import ColorPicker from "../components/small/ColorPicker";
@@ -38,14 +33,15 @@ const TableCellOptions = ({
   handleProductChange,
   handleServiceChange,
   selectedMembers,
-  selectedProducts,
   selectedServices,
   color,
   priceDifference,
   setPriceDifference,
   setFinalPrice,
   setOkToDispatch,
-  serviceLength
+  serviceLength,
+  refreshData,
+  setRefreshData
 }) => {
   return (
     <>
@@ -189,100 +185,16 @@ const TableCellOptions = ({
         />
       )}
       {field.type === "productList" && (
-        <Grid direction="column" alignItems="center" justifyContent="center">
-          <ProductsTableCell
-            selectedProducts={
-              fields[field.name]?.selectedProducts || fields[field.name] || []
-            }
-            onChange={handleChange(field.name)}
-            size="small"
-            required={field.required}
-            handleProductChange={handleProductChange}
-          />
-          {selectedProducts.length !== 0 && (
-            <Grid
-              sx={{
-                m: 2,
-                mt: 4,
-                border: "1px solid #ccc",
-                borderRadius: 4,
-              }}
-            >
-              <Table size="small">
-                <TableRow>
-                  <TableCell>
-                    <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
-                      Nome
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
-                      Quantidade
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
-                      Valor por Item
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
-                      Total
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-                {selectedProducts.map((product, index) => (
-                  <TableRow key={index} sx={{ mt: 3 }}>
-                    <TableCell>
-                      <Typography sx={{ fontSize: 14 }}>
-                        {product.name}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography sx={{ fontSize: 14 }}>
-                        {product.count}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography sx={{ fontSize: 14 }}>
-                        R$
-                        {field.type === "productList"
-                          ? product.sellValue
-                          : product.buyValue.toFixed(2)}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography sx={{ fontSize: 14 }}>
-                        R$
-                        {(field.type === "productList"
-                          ? product.sellValue * product.count
-                          : product.buyValue * product.count
-                        ).toFixed(2)}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {selectedProducts.length > 1 && (
-                  <TableRow sx={{ mt: 3 }}>
-                    <TableCell colSpan={3} />
-                    <TableCell align="right">
-                      <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                        R$
-                        {selectedProducts
-                          .reduce(
-                            (sum, product) =>
-                              sum + product.sellValue * product.count,
-                            0
-                          )
-                          .toFixed(2)}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </Table>
-            </Grid>
-          )}
-        </Grid>
+        <ProductsTableCell
+          selectedProducts={
+            fields[field.name]?.selectedProducts || fields[field.name] || []
+          }
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
+          onChange={handleChange(field.name)}
+          required={field.required}
+          handleProductChange={handleProductChange}
+        />
       )}
       {field.type === "servicesList" && (
         <ServicesTableCell

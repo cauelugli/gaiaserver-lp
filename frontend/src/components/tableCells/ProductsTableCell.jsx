@@ -54,14 +54,11 @@ const ProductsTableCell = (props) => {
     newSum =
       props.selectedProducts &&
       props.selectedProducts
-        .reduce(
-          (sum, product) => sum + product.buyValue * product.count,
-          Number(props.servicePrice)
-        )
+        .reduce((sum, product) => sum + product.sellValue * product.count, 0)
         .toFixed(2);
 
     setSum(newSum);
-  }, [props.selectedProducts, props.fieldType, props.servicePrice]);
+  }, [props.selectedProducts, props.fieldType]);
 
   const uniqueTypes = Array.from(
     new Set(baseProducts.map((option) => option.type))
@@ -170,9 +167,11 @@ const ProductsTableCell = (props) => {
         <>
           <ProductsDisplayTableCell
             selectedProducts={props.selectedProducts}
-            setSelectedProducts={props.setSelectedProducts}
+            handleProductChange={props.handleProductChange}
             fieldType={props.fieldType}
-            servicePrice={props.servicePrice}
+            servicePrice={props.servicePrice || 0}
+            refreshData={props.refreshData}
+            setRefreshData={props.setRefreshData}
           />
           {/* component this */}
           <Grid container direction="row" justifyContent="space-between">
@@ -224,7 +223,7 @@ const ProductsTableCell = (props) => {
               setOkToDispatch={props.setOkToDispatch}
               showTitle={0}
               fieldType={props.fieldType}
-              servicePrice={props.servicePrice}
+              servicePrice={props.servicePrice || 0}
             />
           ) : (
             ""

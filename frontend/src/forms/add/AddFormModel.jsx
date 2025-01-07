@@ -34,8 +34,10 @@ export default function AddFormModel(props) {
   const [attachments, setAttachments] = React.useState([]);
   const [okToDispatch, setOkToDispatch] = React.useState(false);
 
-  // updating value from child modifications
-  React.useEffect(() => {}, [priceDifference]);
+  const [refreshData, setRefreshData] = React.useState(false);
+
+  // updating value from child modifications (basic refresh)
+  React.useEffect(() => {}, [priceDifference, refreshData]);
 
   const modalOptions = props.options.find(
     (option) => option.label === props.selectedOptionLabel
@@ -65,22 +67,22 @@ export default function AddFormModel(props) {
   };
 
   const handleProductChange = (product) => {
-    setSelectedProducts((prev) => {
-      const existingProductIndex = prev?.findIndex(
-        (p) => p._id === product._id
-      );
+    if (product) {
+      setSelectedProducts((prev) => {
+        const existingProductIndex = prev?.findIndex(
+          (p) => p._id === product._id
+        );
 
-      let newState;
-      if (existingProductIndex !== -1) {
-        // Se o produto já está na lista, remove-o
-        newState = prev.filter((p) => p._id !== product._id);
-      } else {
-        // Se o produto não está na lista, adiciona com count inicial de 1
-        newState = [...prev, { ...product, count: 1 }];
-      }
+        let newState;
+        if (existingProductIndex !== -1) {
+          newState = prev.filter((p) => p._id !== product._id);
+        } else {
+          newState = [...prev, { ...product, count: 1 }];
+        }
 
-      return newState;
-    });
+        return newState;
+      });
+    }
   };
 
   const handleServiceChange = (service, count) => {
@@ -300,7 +302,9 @@ export default function AddFormModel(props) {
                       okToDispatch,
                       selectedMembers,
                       selectedProducts,
-                      selectedServices
+                      selectedServices,
+                      refreshData,
+                      setRefreshData
                     )}
                   </Grid>
                 ))}

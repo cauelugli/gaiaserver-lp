@@ -45,9 +45,10 @@ export default function EditFormModel(props) {
   const [priceDifference, setPriceDifference] = React.useState({});
   const [finalPrice, setFinalPrice] = React.useState(0);
   const [okToDispatch, setOkToDispatch] = React.useState(false);
+  const [refreshData, setRefreshData] = React.useState(false);
 
-  // updating value from child modifications
-  React.useEffect(() => {}, [priceDifference]);
+  // updating value from child modifications (basic refresh)
+  React.useEffect(() => {}, [priceDifference,refreshData]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -399,6 +400,8 @@ export default function EditFormModel(props) {
                           fields.service && fields.service.executionTime,
                         sessions: fields.service && fields.service.sessions,
                       }}
+                      refreshData={refreshData}
+                      setRefreshData={setRefreshData}
                     />
                   </Grid>
                 ))}
