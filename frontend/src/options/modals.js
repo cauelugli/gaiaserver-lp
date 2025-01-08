@@ -1,8 +1,5 @@
-// modals.js
-
 export const modals = {
   Customer: {
-    endpoint: "/add",
     label: "Cliente Empresa",
     femaleGender: false,
     maxWidth: "md",
@@ -120,7 +117,6 @@ export const modals = {
     model: "Customer",
   },
   Client: {
-    endpoint: "/add",
     label: "Cliente Pessoa Física",
     femaleGender: false,
     maxWidth: "md",
@@ -205,7 +201,6 @@ export const modals = {
     model: "DOESNT EXIST YET",
   },
   Job: {
-    endpoint: "/add",
     label: "Job",
     femaleGender: false,
     maxWidth: "md",
@@ -290,7 +285,6 @@ export const modals = {
     model: "Job",
   },
   Sale: {
-    endpoint: "/add",
     label: "Venda",
     femaleGender: true,
     maxWidth: "md",
@@ -350,7 +344,6 @@ export const modals = {
     model: "Sale",
   },
   User: {
-    endpoint: "/add",
     label: "Colaborador",
     femaleGender: false,
     maxWidth: "md",
@@ -470,7 +463,6 @@ export const modals = {
     model: "User",
   },
   Manager: {
-    endpoint: "/add",
     label: "Gerente",
     femaleGender: false,
     maxWidth: "md",
@@ -590,7 +582,6 @@ export const modals = {
     model: "User",
   },
   Department: {
-    endpoint: "/add",
     label: "Departamento",
     femaleGender: false,
     maxWidth: "custom950px",
@@ -654,7 +645,6 @@ export const modals = {
     model: "Department",
   },
   Group: {
-    endpoint: "/add",
     label: "Grupo",
     femaleGender: false,
     maxWidth: "custom500px",
@@ -681,7 +671,6 @@ export const modals = {
     model: "Group",
   },
   Service: {
-    endpoint: "/add",
     label: "Serviço",
     femaleGender: false,
     maxWidth: "md",
@@ -751,7 +740,6 @@ export const modals = {
     model: "Service",
   },
   ServicePlan: {
-    endpoint: "/add",
     label: "Plano de Serviços",
     femaleGender: false,
     maxWidth: "custom700px",
@@ -803,7 +791,6 @@ export const modals = {
     model: "ServicePlan",
   },
   StockEntry: {
-    endpoint: "/add",
     name: "AddStockEntry",
     model: "StockEntry",
     label: "Entrada de Estoque",
@@ -814,14 +801,6 @@ export const modals = {
       { name: "products", label: "Produtos" },
     ],
     fields: [
-      {
-        fieldSection: "mainInfo",
-        name: "type",
-        label: "Produtos",
-        type: "select",
-        options: ["Produtos"],
-        required: true,
-      },
       {
         fieldSection: "mainInfo",
         name: "purchaseDate",
@@ -903,7 +882,6 @@ export const modals = {
     model: "Product",
   },
   Operator: {
-    endpoint: "/add",
     label: "Operador",
     femaleGender: false,
     maxWidth: "xs",
@@ -947,7 +925,6 @@ export const modals = {
     model: "Operator",
   },
   Position: {
-    endpoint: "/add",
     label: "Cargo",
     femaleGender: false,
     maxWidth: "xs",
@@ -983,7 +960,6 @@ export const modals = {
     model: "Position",
   },
   Role: {
-    endpoint: "/add",
     label: "Perfil de Acesso",
     femaleGender: false,
     maxWidth: "xs",

@@ -14,16 +14,12 @@ const stockEntrySchema = new mongoose.Schema({
   },
   number: {
     type: Number,
-    // required: true,
   },
   quoteValue: {
     type: Number,
     required: true,
   },
   status: {
-    type: String,
-  },
-  type: {
     type: String,
   },
 });

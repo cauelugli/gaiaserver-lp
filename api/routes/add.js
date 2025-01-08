@@ -11,6 +11,7 @@ const {
   addCounter,
   addToAssigneeAgenda,
   checkNewRequestDefaultStatus,
+  checkNewStockEntryDefaultStatus,
 } = require("../../controllers/functions/addRoutines");
 
 const {
@@ -105,7 +106,14 @@ router.post("/", async (req, res) => {
       const count = product.count || 0;
       return total + buyValue * count;
     }, 0);
-    fields.items = req.body.selectedProducts
+    fields.items = req.body.selectedProducts;
+    try {
+      await checkNewStockEntryDefaultStatus(fields);
+    } catch (err) {
+      return res.status(500).json({
+        error: "Erro ao verificar o status da requisição",
+      });
+    }
   }
 
   // '''parsing''' (dude, wtf....)
@@ -145,7 +153,11 @@ router.post("/", async (req, res) => {
         req.body.model,
         fields.members
       );
-    } else if (req.body.model === "Job" || req.body.model === "Sale") {
+    } else if (
+      req.body.model === "Job" ||
+      req.body.model === "Sale" ||
+      req.body.model === "StockEntry"
+    ) {
       countedItem = await addCounter(savedItem._id.toString(), req.body.model);
     } else {
       await addRoutines(req.body.model, savedItem);

@@ -2,16 +2,14 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
-import {
-  Avatar,
-  Grid,
-  Paper,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Avatar, Grid, Paper, Tooltip, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
-import { isId } from "../../../../controllers/functions/overallFunctions";
+import {
+  isDate,
+  isId,
+} from "../../../../controllers/functions/overallFunctions";
+import dayjs from "dayjs";
 
 const DataTableCell = ({
   item,
@@ -109,7 +107,9 @@ const DataTableCell = ({
                       alignItems="center"
                       justifyContent="center"
                     >
-                      <Typography sx={{fontSize:13}}>{`${obj.count}x ${obj.name}`}</Typography>
+                      <Typography
+                        sx={{ fontSize: 13 }}
+                      >{`${obj.count}x ${obj.name}`}</Typography>
                       <Typography>
                         {`R$${(obj.sellValue * obj.count).toFixed(2)}`}
                       </Typography>
@@ -180,6 +180,8 @@ const DataTableCell = ({
         />
       ) : isId(item) ? (
         <>{getNameById(item)}</>
+      ) : isDate(item) ? (
+        <>{dayjs(item).format("DD/MM/YYYY hh:MM")}</>
       ) : (
         <Grid sx={{ maxWidth: 200 }}>{item}</Grid>
       )}

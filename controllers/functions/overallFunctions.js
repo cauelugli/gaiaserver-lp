@@ -139,6 +139,10 @@ export function isId(str) {
   return /^[a-f0-9]{24}$/i.test(str);
 }
 
+export function isDate(str) {
+  return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(str);
+}
+
 export function getDataForPage(itemsResponse, page, model) {
   const filters = {
     products: (item) => item.name,

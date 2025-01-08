@@ -6,6 +6,7 @@ const Job = require("../../models/models/Job");
 const Position = require("../../models/models/Position");
 const Role = require("../../models/models/Role");
 const Sale = require("../../models/models/Sale");
+const StockEntry = require("../../models/models/StockEntry");
 const User = require("../../models/models/User");
 const UserPreferences = require("../../models/models/UserPreferences");
 
@@ -142,6 +143,20 @@ async function checkNewRequestDefaultStatus(fields) {
   }
 }
 
+async function checkNewStockEntryDefaultStatus(fields) {
+  try {
+    const config = await Config.findOne();
+    if (config.stock.stockEntriesNeedApproval === false) {
+      fields.status = "Aprovado";
+    } else {
+      fields.status = "Aberto";
+    }
+  } catch (err) {
+    console.error("Erro ao verificar stockEntriesNeedApproval");
+    throw err;
+  }
+}
+
 async function addCounter(sourceId, model) {
   try {
     let counter = await Counters.findOne();
@@ -149,6 +164,7 @@ async function addCounter(sourceId, model) {
       counter = new Counters({
         job: model === "Job" ? 1 : 0,
         sale: model === "Sale" ? 1 : 0,
+        stockEntry: model === "StockEntry" ? 1 : 0,
       });
     }
     let newNumber;
@@ -163,6 +179,13 @@ async function addCounter(sourceId, model) {
         newNumber = counter.sale + 1;
         counter.sale = newNumber;
         await Sale.findByIdAndUpdate(sourceId, { $set: { number: newNumber } });
+        break;
+      case "StockEntry":
+        newNumber = counter.stockEntry + 1;
+        counter.stockEntry = newNumber;
+        await StockEntry.findByIdAndUpdate(sourceId, {
+          $set: { number: newNumber },
+        });
         break;
       default:
         throw new Error(`Modelo não suportado: ${model}`);
@@ -243,6 +266,7 @@ async function createQuote(model, source) {
 module.exports = {
   addRoutines,
   checkNewRequestDefaultStatus,
+  checkNewStockEntryDefaultStatus,
   createQuote,
   addCounter,
   addToAssigneeAgenda,

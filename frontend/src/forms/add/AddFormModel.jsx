@@ -143,7 +143,7 @@ export default function AddFormModel(props) {
         formData
       );
       const imagePath = uploadResponse.data.imagePath;
-      const res = await props.api.post(`${modalOptions.endpoint}`, {
+      const res = await props.api.post("/add", {
         sourceId: props.userId,
         fields,
         label: modalOptions.label,
