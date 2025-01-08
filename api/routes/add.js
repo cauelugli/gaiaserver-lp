@@ -92,8 +92,13 @@ router.post("/", async (req, res) => {
 
   if (req.body.model === "Job" || req.body.model === "Sale") {
     try {
-      await checkNewRequestDefaultStatus(fields);
+      await checkNewRequestDefaultStatus(fields, selectedProducts);
     } catch (err) {
+      if (err.message === "Itens indisponíveis em estoque") {
+        return res.status(406).json({
+          error: "Itens indisponíveis em estoque",
+        });
+      }
       return res.status(500).json({
         error: "Erro ao verificar o status da requisição",
       });
@@ -124,9 +129,6 @@ router.post("/", async (req, res) => {
   fields.department = req.body.fields.department?._id || "";
   fields.position = req.body.fields.position?._id || "";
   fields.role = req.body.fields.role?._id || "";
-  fields.customer = req.body.fields.customer?._id || "";
-  fields.worker = req.body.fields.worker?._id || "";
-  fields.seller = req.body.fields.seller?._id || "";
   fields.members = selectedMembers;
   fields.image = image;
   fields.isManager = isManager;

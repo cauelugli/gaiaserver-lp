@@ -4,6 +4,7 @@ const Counters = require("../../models/models/Counters");
 const Department = require("../../models/models/Department");
 const Job = require("../../models/models/Job");
 const Position = require("../../models/models/Position");
+const Product = require("../../models/models/Product");
 const Role = require("../../models/models/Role");
 const Sale = require("../../models/models/Sale");
 const StockEntry = require("../../models/models/StockEntry");
@@ -128,12 +129,52 @@ async function addRoutines(model, source) {
   }
 }
 
-async function checkNewRequestDefaultStatus(fields) {
+async function addToStock(items) {
+  try {
+    for (const item of items) {
+      const product = await Product.findById(item._id);
+      if (product) {
+        product.stockQuantity += item.count;
+        await product.save();
+      } else {
+        console.warn(`Produto com _id ${item._id} não encontrado.`);
+      }
+    }
+  } catch (err) {
+    console.error("Erro ao adicionar itens ao estoque:", err);
+    throw err;
+  }
+}
+
+async function removeFromStock(items) {
+  try {
+    for (const item of items) {
+      const product = await Product.findById(item._id);
+      if (product) {
+        if (item.count > product.stockQuantity) {
+          throw new Error("Itens indisponíveis em estoque");
+        }
+        product.stockQuantity -= item.count;
+        await product.save();
+      } else {
+        console.warn(`Produto com _id ${item._id} não encontrado.`);
+      }
+    }
+  } catch (err) {
+    console.error("Erro ao remover itens do estoque:", err.message);
+    throw err;
+  }
+}
+
+async function checkNewRequestDefaultStatus(fields, selectedProducts) {
   try {
     const config = await Config.findOne();
 
     if (config.requests.requestsNeedApproval === false) {
       fields.status = "Aprovado";
+      if (selectedProducts && Array.isArray(selectedProducts)) {
+        await removeFromStock(selectedProducts);
+      }
     } else {
       fields.status = "Aberto";
     }
@@ -148,11 +189,14 @@ async function checkNewStockEntryDefaultStatus(fields) {
     const config = await Config.findOne();
     if (config.stock.stockEntriesNeedApproval === false) {
       fields.status = "Aprovado";
+      if (fields.items && Array.isArray(fields.items)) {
+        await addToStock(fields.items);
+      }
     } else {
       fields.status = "Aberto";
     }
   } catch (err) {
-    console.error("Erro ao verificar stockEntriesNeedApproval");
+    console.error("Erro ao verificar stockEntriesNeedApproval:", err);
     throw err;
   }
 }
@@ -265,6 +309,7 @@ async function createQuote(model, source) {
 
 module.exports = {
   addRoutines,
+  addToStock,
   checkNewRequestDefaultStatus,
   checkNewStockEntryDefaultStatus,
   createQuote,

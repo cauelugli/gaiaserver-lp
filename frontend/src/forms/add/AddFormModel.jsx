@@ -145,7 +145,14 @@ export default function AddFormModel(props) {
       const imagePath = uploadResponse.data.imagePath;
       const res = await props.api.post("/add", {
         sourceId: props.userId,
-        fields,
+        fields: {
+          ...fields,
+          members: fields.members?.map((member) => member._id || member.id),
+          customer: fields.customer?._id,
+          service: fields.service?._id,
+          worker: fields.worker?._id,
+          seller: fields.seller?._id,
+        },
         label: modalOptions.label,
         image: imagePath,
         model: modalOptions.model,
@@ -192,6 +199,7 @@ export default function AddFormModel(props) {
       !props.setRefreshData(!props.refreshData);
     } catch (err) {
       if (
+        (err && err.response && err.response.status === 406) ||
         (err && err.response && err.response.status === 422) ||
         (err && err.response && err.response.status === 420)
       ) {
