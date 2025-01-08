@@ -1,8 +1,14 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 
-import { Avatar, Badge, Grid, Paper, Tooltip, Typography } from "@mui/material";
+import {
+  Avatar,
+  Grid,
+  Paper,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import { icons } from "../../icons";
 import { isId } from "../../../../controllers/functions/overallFunctions";
@@ -12,7 +18,6 @@ const DataTableCell = ({
   isRequestsApproverManager,
   idIndexList,
   column,
-  mainColor,
 }) => {
   const getNameById = (id) => {
     const found = idIndexList.find((obj) => obj.id === id);
@@ -97,7 +102,21 @@ const DataTableCell = ({
             <Grid item key={index} sx={{ mr: 1 }}>
               <Tooltip
                 title={
-                  obj.name || idIndexList.find((user) => user.id === obj)?.name
+                  obj.count ? (
+                    <Grid
+                      container
+                      direction="column"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <Typography sx={{fontSize:13}}>{`${obj.count}x ${obj.name}`}</Typography>
+                      <Typography>
+                        {`R$${(obj.sellValue * obj.count).toFixed(2)}`}
+                      </Typography>
+                    </Grid>
+                  ) : (
+                    idIndexList.find((user) => user.id === obj)?.name
+                  )
                 }
               >
                 <Grid
@@ -142,7 +161,11 @@ const DataTableCell = ({
       ) : typeof item === "object" ? (
         item.name
       ) : typeof item === "number" ? (
-        <>{column.label === "Valor" ? `R$${item.toFixed(2)}` : item}</>
+        <>
+          {column.label === "Valor" || column.label === "Valor Total"
+            ? `R$${item.toFixed(2).replace(".", ",")}`
+            : item}
+        </>
       ) : typeof item === "string" && item.startsWith("#") ? (
         <Paper
           elevation={0}
