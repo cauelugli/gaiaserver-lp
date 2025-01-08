@@ -27,7 +27,7 @@ function StandardTable(props) {
       }
     });
   };
-
+  
   return (
     <>
       {props.filteredRows
