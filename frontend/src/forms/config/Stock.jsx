@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
@@ -12,23 +11,20 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Avatar,
   Button,
   DialogActions,
   DialogContent,
   DialogTitle,
   FormControlLabel,
   Grid,
-  MenuItem,
-  Paper,
   Radio,
   RadioGroup,
-  Select,
   Tooltip,
   Typography,
 } from "@mui/material";
 
 import { icons } from "../../icons";
+import ManagerSelectTableCell from "../../components/tableCells/ManagerSelectTableCell";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -47,10 +43,18 @@ export default function Departments({ onClose }) {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data[0].stock);
-        setStockEntriesDispatcherManager(
-          config.data[0].stock.stockEntriesDispatcherManager
+        const managersResponse = await api.get("/get", {
+          params: { model: "User" },
+        });
+        const managersData = managersResponse.data.filter(
+          (user) => user.isManager
         );
+        setConfigData(config.data[0].stock);
+        const approverManager = managersData.find(
+          (manager) => manager._id === configData.stockEntriesDispatcherManager
+        );
+        setStockEntriesDispatcherManager(approverManager || null);
+
         setStockEntriesNeedApproval(
           config.data[0].stock.stockEntriesNeedApproval
         );
@@ -62,13 +66,15 @@ export default function Departments({ onClose }) {
       }
     };
     fetchData();
-  }, []);
+  }, [configData.stockEntriesDispatcherManager]);
 
   const handleChangeStockConfig = async (e) => {
     e.preventDefault();
     try {
       const res = await api.put("/config/stock", {
-        stockEntriesDispatcherManager,
+        stockEntriesDispatcherManager: stockEntriesDispatcherManager
+          ? stockEntriesDispatcherManager._id
+          : "",
         stockEntriesNeedApproval,
         stockEntriesCanBeChallenged,
       });
@@ -112,15 +118,6 @@ export default function Departments({ onClose }) {
               alignItems="flex-start"
             >
               <Accordion sx={{ width: "100%" }}>
-                <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
-                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                    Gerente Responsável
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>{/* here */}</AccordionDetails>
-              </Accordion>
-
-              <Accordion sx={{ width: "100%", mt: 2 }}>
                 <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Permissões
@@ -174,6 +171,35 @@ export default function Departments({ onClose }) {
                           }
                         />
                       </RadioGroup>
+                    </Grid>
+                  </Grid>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Selecione o Gerente que será responsável pela
+                            Aprovação das Entradas de Estoque solicitadas.
+                          </Typography>
+                        }
+                      >
+                        <Typography sx={{ my: "auto" }}>
+                          Gerente Aprovador
+                        </Typography>
+                      </Tooltip>
+                      <ManagerSelectTableCell
+                        fromConfig
+                        requestsApproverManager={stockEntriesDispatcherManager}
+                        setRequestsApproverManager={
+                          setStockEntriesDispatcherManager
+                        }
+                        field={{ dynamicData: "managers", required: false }}
+                      />
                     </Grid>
                   </Grid>
                   <Grid item sx={{ my: 1.5 }}>

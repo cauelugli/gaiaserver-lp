@@ -47,6 +47,9 @@ function StandardTable(props) {
                   isRequestsApproverManager={
                     row._id === props.requestsApproverManager
                   }
+                  isStockApproverManager={
+                    row._id === props.stockApproverManager
+                  }
                 />
               </TableCell>
             ))}

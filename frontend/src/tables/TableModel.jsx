@@ -135,6 +135,7 @@ export default function TableModel(props) {
                 selectedMultipleItems={props.selectedMultipleItems}
                 setSelectedMultipleItems={props.setSelectedMultipleItems}
                 requestsApproverManager={props.requestsApproverManager}
+                stockApproverManager={props.stockApproverManager}
               />
             )}
           </TableBody>

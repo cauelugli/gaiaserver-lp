@@ -371,6 +371,9 @@ export default function PageModel(props) {
                       requestsApproverManager={
                         props.configData["requests"].requestsApproverManager
                       }
+                      stockApproverManager={
+                        props.configData["stock"].stockEntriesDispatcherManager
+                      }
                     />
                   ) : (
                     <Grid container spacing={2}>

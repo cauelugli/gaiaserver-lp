@@ -33,13 +33,6 @@ const ManagerSelectTableCell = (props) => {
         });
         data = resManagers.data.filter((user) => user.isManager);
         setOptions(data);
-
-        if (props.oldManager) {
-          const oldManagerData = data.find(
-            (manager) => manager._id === props.oldManager._id
-          );
-          setSelectedManager(oldManagerData);
-        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -72,20 +65,6 @@ const ManagerSelectTableCell = (props) => {
       props.setRequestsApproverManager(value);
     } else {
       props.handleChange(props.field.name)(event);
-    }
-  };
-
-  const clearSelection = () => {
-    if (props.oldManager) {
-      setSelectedManager(props.oldManager); // Volta para o antigo manager, se houver
-    } else {
-      setSelectedManager(null); // Limpa a seleção
-    }
-
-    if (props.fromConfig) {
-      props.setRequestsApproverManager(null);
-    } else {
-      props.handleChange(props.field.name)({ target: { value: null } });
     }
   };
 
@@ -127,11 +106,6 @@ const ManagerSelectTableCell = (props) => {
           </MenuItem>
         ))}
       </Select>
-      {props.oldManager&& selectedManager && selectedManager._id !== props.oldManager._id && (
-        <IconButton onClick={clearSelection} size="small">
-          <icons.ClearIcon sx={{ color: "red", fontSize: 13 }} />
-        </IconButton>
-      )}
     </Grid>
   );
 };

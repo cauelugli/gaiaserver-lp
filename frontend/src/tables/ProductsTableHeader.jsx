@@ -65,6 +65,13 @@ function ProductsTableHeader(props) {
         id="sellValue"
         sx={{ fontSize: 13, fontWeight: "bold", width: 80 }}
       >
+        Em Estoque
+      </TableCell>
+      <TableCell
+        align="right"
+        id="sellValue"
+        sx={{ fontSize: 13, fontWeight: "bold", width: 80 }}
+      >
         Vendidos
       </TableCell>
       <TableCell
@@ -75,7 +82,7 @@ function ProductsTableHeader(props) {
       </TableCell>
       {props.multiple && (
         <TableCell align="center" id="multiple" sx={{ p: 0, m: 0 }}>
-          <Checkbox size="small" sx={{ p: -1, m: -1 }}/>
+          <Checkbox size="small" sx={{ p: -1, m: -1 }} />
         </TableCell>
       )}
     </TableRow>

@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 const DataTableCell = ({
   item,
   isRequestsApproverManager,
+  isStockApproverManager,
   idIndexList,
   column,
 }) => {
@@ -56,34 +57,15 @@ const DataTableCell = ({
       ) : item && typeof item === "string" && item.startsWith("/images") ? (
         <Grid
           sx={{
-            width: 50,
+            width: 60,
           }}
         >
-          {isRequestsApproverManager ? (
-            <Grid
-              container
-              direction="row"
-              alignItems="center"
-              justifyContent="space-evenly"
-            >
-              <Avatar
-                alt="Imagem"
-                src={`http://localhost:3000/static${item}`}
-                sx={{
-                  width: 30,
-                  height: 30,
-                }}
-              />
-              <Tooltip title="Gerente Aprovador de Solicitações">
-                <icons.StarIcon
-                  sx={{
-                    width: 16,
-                    height: 16,
-                  }}
-                />
-              </Tooltip>
-            </Grid>
-          ) : (
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="flex-start"
+          >
             <Avatar
               alt="Imagem"
               src={`http://localhost:3000/static${item}`}
@@ -92,7 +74,27 @@ const DataTableCell = ({
                 height: 30,
               }}
             />
-          )}
+            {isRequestsApproverManager && (
+              <Tooltip title="Gerente Aprovador de Solicitações">
+                <icons.StarIcon
+                  sx={{
+                    width: 14,
+                    height: 14,
+                  }}
+                />
+              </Tooltip>
+            )}
+            {isStockApproverManager && (
+              <Tooltip title="Gerente Aprovador de Estoque">
+                <icons.StarIcon
+                  sx={{
+                    width: 14,
+                    height: 14,
+                  }}
+                />
+              </Tooltip>
+            )}
+          </Grid>
         </Grid>
       ) : Array.isArray(item) ? (
         <Grid container direction="row" alignItems="center">
