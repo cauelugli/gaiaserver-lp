@@ -803,13 +803,15 @@ export const modals = {
     model: "ServicePlan",
   },
   StockEntry: {
+    endpoint: "/add",
     name: "AddStockEntry",
+    model: "StockEntry",
     label: "Entrada de Estoque",
     femaleGender: false,
     maxWidth: "md",
     fieldsSections: [
       { name: "mainInfo", label: "Informações Gerais" },
-      { name: "items", label: "Itens" },
+      { name: "products", label: "Produtos" },
     ],
     fields: [
       {
@@ -842,12 +844,12 @@ export const modals = {
         required: true,
       },
       {
-        fieldSection: "items",
-        name: "items",
+        fieldSection: "products",
+        name: "products",
         label: "",
-        type: "list",
-        options: ["products"],
-        required: true,
+        type: "productList",
+        options: [],
+        required: false,
       },
     ],
   },

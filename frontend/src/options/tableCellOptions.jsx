@@ -193,6 +193,7 @@ const TableCellOptions = ({
           setRefreshData={setRefreshData}
           required={field.required}
           handleProductChange={handleProductChange}
+          toStock={modalOptions.name === "AddStockEntry"}
         />
       )}
       {field.type === "servicesList" && (

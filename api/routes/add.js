@@ -99,6 +99,15 @@ router.post("/", async (req, res) => {
     }
   }
 
+  if (req.body.model === "StockEntry") {
+    fields.quoteValue = req.body.selectedProducts.reduce((total, product) => {
+      const buyValue = product.buyValue || 0;
+      const count = product.count || 0;
+      return total + buyValue * count;
+    }, 0);
+    fields.items = req.body.selectedProducts
+  }
+
   // '''parsing''' (dude, wtf....)
   fields.attachments = req.body.attachments || [];
   fields.manager = req.body.fields.manager?._id || "";

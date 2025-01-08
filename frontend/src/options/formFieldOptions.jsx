@@ -171,6 +171,7 @@ export const renderField = (
           setPriceDifference={handlers.setPriceDifference}
           okToDispatch={okToDispatch}
           setOkToDispatch={handlers.setOkToDispatch}
+          toStock={modalOptions.name === "AddStockEntry"}
         />
       );
     case "servicesList":

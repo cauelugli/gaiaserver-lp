@@ -2,13 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect } from "react";
 
-import {
-  Grid,
-  Table,
-  TableCell,
-  TableRow,
-  Typography,
-} from "@mui/material";
+import { Grid, Table, TableCell, TableRow, Typography } from "@mui/material";
 
 const ProductsDisplayTableCell = (props) => {
   const handleIncrement = (product) => {
@@ -54,7 +48,7 @@ const ProductsDisplayTableCell = (props) => {
           </TableCell>
           <TableCell align="left" sx={{ width: 200 }}>
             <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
-              Valor por Item
+              Valor {props.toStock ? "de Compra " : "de Venda "} por Item
             </Typography>
           </TableCell>
           <TableCell align="center">
@@ -76,7 +70,9 @@ const ProductsDisplayTableCell = (props) => {
             <TableCell align="left">
               <Typography sx={{ fontSize: 14 }}>
                 R$
-                {product.sellValue?.toFixed(2)}
+                {props.toStock
+                  ? product.buyValue?.toFixed(2)
+                  : product.sellValue?.toFixed(2)}
               </Typography>
             </TableCell>
             <TableCell align="right">
@@ -101,8 +97,11 @@ const ProductsDisplayTableCell = (props) => {
             <TableCell align="right">
               <Typography sx={{ fontSize: 14 }}>
                 R$
-                {product.sellValue &&
-                  (product.sellValue * product.count).toFixed(2)}
+                {props.toStock
+                  ? product.buyValue &&
+                    (product.buyValue * product.count).toFixed(2)
+                  : product.sellValue &&
+                    (product.sellValue * product.count).toFixed(2)}
               </Typography>
             </TableCell>
           </TableRow>
@@ -119,12 +118,19 @@ const ProductsDisplayTableCell = (props) => {
               }}
             >
               Total R$
-              {props.selectedProducts
-                .reduce(
-                  (sum, product) => sum + product.sellValue * product.count,
-                  0
-                )
-                .toFixed(2)}
+              {props.toStock
+                ? props.selectedProducts
+                    .reduce(
+                      (sum, product) => sum + product.buyValue * product.count,
+                      0
+                    )
+                    .toFixed(2)
+                : props.selectedProducts
+                    .reduce(
+                      (sum, product) => sum + product.sellValue * product.count,
+                      0
+                    )
+                    .toFixed(2)}
             </Typography>
           </TableCell>
         </TableRow>

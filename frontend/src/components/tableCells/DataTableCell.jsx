@@ -162,7 +162,7 @@ const DataTableCell = ({
         item.name
       ) : typeof item === "number" ? (
         <>
-          {column.label === "Valor" || column.label === "Valor Total"
+          {column.label.startsWith("Valor")
             ? `R$${item.toFixed(2).replace(".", ",")}`
             : item}
         </>

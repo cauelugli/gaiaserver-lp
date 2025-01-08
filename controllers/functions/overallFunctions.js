@@ -142,7 +142,7 @@ export function isId(str) {
 export function getDataForPage(itemsResponse, page, model) {
   const filters = {
     products: (item) => item.name,
-    stock: (item) => item.name,
+    stock: (item) => (model === "Product" ? item.name : true),
   };
 
   const filterFunc = filters[page] || (() => true);
@@ -227,4 +227,3 @@ export function loadPage() {
     }, 700);
   });
 }
-

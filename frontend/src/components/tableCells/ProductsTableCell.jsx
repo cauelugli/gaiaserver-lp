@@ -172,6 +172,7 @@ const ProductsTableCell = (props) => {
             servicePrice={props.servicePrice || 0}
             refreshData={props.refreshData}
             setRefreshData={props.setRefreshData}
+            toStock={props.toStock}
           />
           {/* component this */}
           <Grid container direction="row" justifyContent="space-between">
