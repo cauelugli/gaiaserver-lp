@@ -12,7 +12,7 @@ import {
 import TableHeader from "../../src/tables/TableHeader";
 import ProductsTableHeader from "../../src/tables/ProductsTableHeader";
 import ProductsTable from "../../src/tables/ProductsTable";
-import StandardTable from "../../src/tables/StardardTable";
+import StandardTable from "./StandardTable";
 
 export default function TableModel(props) {
   const [idIndexList, setIdIndexList] = React.useState([]);
