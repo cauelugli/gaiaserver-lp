@@ -8,6 +8,7 @@ const {
 } = require("../controllers/notificationOptions");
 
 const {
+  insertMembership,
   insertMembersToGroup,
 } = require("../controllers/functions/updateRoutines");
 
@@ -39,7 +40,7 @@ mainQueue.process(async (job) => {
         // await handleAddItem(data, isAdmin);
         break;
       case "insertMembership":
-        // await handleAddItem(data, isAdmin);
+        await handleInsertMembership(data);
         break;
       case "insertMembersToGroup":
         await handleInsertMembersToGroup(data);
@@ -68,22 +69,12 @@ mainQueue.process(async (job) => {
 });
 
 // HANDLERS
-const handleInsertMembersToGroup = async (data) => {
-  console.log("data", data);
-  await insertMembersToGroup(
-    data.id,
-    data.model,
-    data.members
-  );
+const handleInsertMembership = async (data) => {
+  await insertMembership(data.id, data.role);
+};
 
-  // socket.emit("notifyAdmin", {
-  //   target: data,
-  //   sourceId: data.createdBy,
-  //   method: translateMethod(data.method),
-  //   model: translateModel(data.model),
-  //   isFemaleGender: data.model === "Sale",
-  //   isAdmin: isAdmin,
-  // });
+const handleInsertMembersToGroup = async (data) => {
+  await insertMembersToGroup(data.id, data.model, data.members);
 };
 
 const handleNotifyAdmin = async (data, isAdmin) => {

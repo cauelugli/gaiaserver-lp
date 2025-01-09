@@ -17,10 +17,6 @@ const {
 } = require("../../controllers/functions/addRoutines");
 
 const {
-  insertMembership,
-} = require("../../controllers/functions/updateRoutines");
-
-const {
   notificationRoutines,
 } = require("../../controllers/functions/notificationRoutines");
 
@@ -77,13 +73,13 @@ router.post("/", async (req, res) => {
         { new: true }
       );
 
-      //insertMembership
-      await insertMembership(
-        updatedItem._id.toString(),
-        // this will be dynamic at some point
-        "Role",
-        updatedItem.role
-      );
+      mainQueue.add({
+        type: "insertMembership",
+        data: {
+          id: updatedItem._id.toString(),
+          role: updatedItem.role,
+        },
+      });
 
       return res.status(200).json(updatedItem);
     } catch (err) {

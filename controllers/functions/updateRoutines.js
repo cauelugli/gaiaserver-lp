@@ -1,8 +1,8 @@
 const { defineModel } = require("./routeFunctions");
 const User = require("../../models/models/User");
 
-const insertMembership = async (userId, model, modelId) => {
-  const Model = defineModel(model);
+const insertMembership = async (userId, modelId) => {
+  const Model = defineModel("Role");
   try {
     const item = await Model.findById(modelId);
     if (!item.members.includes(userId)) {
