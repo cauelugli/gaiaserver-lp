@@ -154,13 +154,6 @@ router.post("/", async (req, res) => {
     const savedItem = await newItem.save();
 
     if (req.body.model === "Department" || req.body.model === "Group") {
-      //insertMembersToGroup
-      // await insertMembersToGroup(
-      //   savedItem._id.toString(),
-      //   req.body.model,
-      //   fields.members
-      // );
-
       mainQueue.add({
         type: "insertMembersToGroup",
         data: {
