@@ -12,13 +12,16 @@ const {
   addRoutines,
   addCounter,
   addToAssigneeAgenda,
-  checkNewRequestDefaultStatus,
-  checkNewStockEntryDefaultStatus,
 } = require("../../controllers/functions/addRoutines");
 
 const {
   notificationRoutines,
 } = require("../../controllers/functions/notificationRoutines");
+
+const {
+  checkNewStockEntryDefaultStatus,
+  checkNewRequestDefaultStatus,
+} = require("../../controllers/functions/checkFunctions");
 
 // CREATE ITEM
 router.post("/", async (req, res) => {
