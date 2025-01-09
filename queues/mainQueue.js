@@ -11,6 +11,7 @@ const {
   insertMembership,
   insertMembersToGroup,
 } = require("../controllers/functions/updateRoutines");
+const { addToAssigneeAgenda } = require("../controllers/functions/addRoutines");
 
 const mainQueue = new Queue("mainQueue", {
   redis: { port: 6379, host: "127.0.0.1" },
@@ -31,13 +32,7 @@ mainQueue.process(async (job) => {
         // await handleAddItem(data, isAdmin);
         break;
       case "addToAssigneeAgenda":
-        // await handleAddItem(data, isAdmin);
-        break;
-      case "checkNewRequestDefaultStatus":
-        // await handleAddItem(data, isAdmin);
-        break;
-      case "checkNewStockEntryDefaultStatus":
-        // await handleAddItem(data, isAdmin);
+        await handleAddToAssigneeAgenda(data);
         break;
       case "insertMembership":
         await handleInsertMembership(data);
@@ -69,6 +64,17 @@ mainQueue.process(async (job) => {
 });
 
 // HANDLERS
+const handleAddToAssigneeAgenda = async (data) => {
+  await addToAssigneeAgenda(
+    data.scheduledTo,
+    data.scheduleTime,
+    data.worker,
+    data.itemId,
+    data.service,
+    data.customer
+  );
+};
+
 const handleInsertMembership = async (data) => {
   await insertMembership(data.id, data.role);
 };

@@ -173,15 +173,17 @@ router.post("/", async (req, res) => {
     }
 
     if (fields.scheduledToAssignee === true) {
-      //addToAssigneeAgenda
-      await addToAssigneeAgenda(
-        savedItem.scheduledTo,
-        savedItem.scheduleTime,
-        savedItem.worker,
-        savedItem._id.toString(),
-        fields.service.name,
-        fields.customer
-      );
+      mainQueue.add({
+        type: "addToAssigneeAgenda",
+        data: {
+          scheduledTo: savedItem.scheduledTo,
+          scheduleTime: savedItem.scheduleTime,
+          worker: savedItem.worker,
+          itemId: savedItem._id.toString(),
+          service: fields.service.name,
+          customer: fields.customer,
+        },
+      });
     }
 
     const { data: idIndexList } = await axios.get(

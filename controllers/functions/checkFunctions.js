@@ -15,7 +15,7 @@ async function checkNewRequestDefaultStatus(fields, selectedProducts) {
       fields.status = "Aberto";
     }
   } catch (err) {
-    console.error("Erro ao verificar requestsNeedApproval");
+    console.error("Erro ao verificar requestsNeedApproval", err);
     throw err;
   }
 }
