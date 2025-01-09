@@ -5,7 +5,7 @@ const dayjs = require("dayjs");
 
 const Admin = require("../../models/models/Admin");
 const Config = require("../../models/models/Config");
-const notificationQueue = require("../../queues/notificationQueue");
+const mainQueue = require("../../queues/mainQueue");
 
 const { defineModel } = require("../../controllers/functions/routeFunctions");
 const {
@@ -257,7 +257,7 @@ router.put("/requestBuy", async (req, res) => {
         "http://localhost:3000/api/idIndexList"
       );
 
-      notificationQueue.add({
+      mainQueue.add({
         type: "notifyStockManagerToBuyProduct",
         data: {
           receiver: config.stock.stockEntriesDispatcherManager,

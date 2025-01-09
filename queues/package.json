@@ -2,9 +2,9 @@
   "name": "queues",
   "version": "1.0.0",
   "description": "",
-  "main": "notificationQueue.js",
+  "main": "mainQueue.js",
   "scripts": {
-    "start": "nodemon notificationQueue.js"
+    "start": "nodemon mainQueue.js"
   },
   "keywords": [],
   "author": "",

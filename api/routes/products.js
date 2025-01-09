@@ -5,7 +5,7 @@ const router = express.Router();
 const Admin = require("../../models/models/Admin");
 const Notifications = require("../../models/models/Notifications");
 const Product = require("../../models/models/Product");
-const notificationQueue = require("../../queues/notificationQueue");
+const mainQueue = require("../../queues/mainQueue");
 
 // GET ALL PRODUCTS
 router.get("/", async (req, res) => {
@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
     const admin = await Admin.findOne({}, "config");
 
     if (admin.config.notifyActivities === true) {
-      notificationQueue.add({
+      mainQueue.add({
         type: "notifyAdmin",
         data: savedProduct,
         method: "Adicionad",
@@ -47,7 +47,7 @@ router.post("/", async (req, res) => {
 
     if (notificationList) {
       const finalList = notificationList["product"]["productIsCreated"];
-      notificationQueue.add({
+      mainQueue.add({
         type: "productIsCreated",
         data: savedProduct,
         notificationList: finalList,

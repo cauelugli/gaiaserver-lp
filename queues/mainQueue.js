@@ -6,12 +6,12 @@ const {
   translateMethod,
   translateModel,
 } = require("../controllers/notificationOptions");
-const notificationQueue = new Queue("notificationQueue", {
+const mainQueue = new Queue("mainQueue", {
   redis: { port: 6379, host: "127.0.0.1" },
 });
 
 // MAIN PROCESSOR
-notificationQueue.process(async (job) => {
+mainQueue.process(async (job) => {
   const { type, data } = job.data;
   const finalList = job.data.notificationList;
   const isAdmin = job.data.isAdmin;
@@ -76,12 +76,12 @@ const handleProductIsCreated = async (data, list) => {
 };
 
 // MONITORING (DEBUG)
-// notificationQueue.on("completed", (job) => {
+// mainQueue.on("completed", (job) => {
 //   console.log(`Tarefa ${job.id} concluída com sucesso.`);
 // });
-// notificationQueue.on("failed", (job, err) => {
+// mainQueue.on("failed", (job, err) => {
 //   console.error(`Tarefa ${job.id} falhou: ${err.message}`);
 // });
 console.log("Worker Server running on port 6379 and waiting for jobs");
 
-module.exports = notificationQueue;
+module.exports = mainQueue;
