@@ -4,6 +4,8 @@ const axios = require("axios");
 const bcrypt = require("bcrypt");
 const User = require("../../models/models/User");
 
+const mainQueue = require("../../queues/mainQueue");
+
 const { defineModel } = require("../../controllers/functions/routeFunctions");
 
 const {
@@ -15,7 +17,6 @@ const {
 } = require("../../controllers/functions/addRoutines");
 
 const {
-  insertMembersToGroup,
   insertMembership,
 } = require("../../controllers/functions/updateRoutines");
 
@@ -154,11 +155,20 @@ router.post("/", async (req, res) => {
 
     if (req.body.model === "Department" || req.body.model === "Group") {
       //insertMembersToGroup
-      await insertMembersToGroup(
-        savedItem._id.toString(),
-        req.body.model,
-        fields.members
-      );
+      // await insertMembersToGroup(
+      //   savedItem._id.toString(),
+      //   req.body.model,
+      //   fields.members
+      // );
+
+      mainQueue.add({
+        type: "insertMembersToGroup",
+        data: {
+          id: savedItem._id.toString(),
+          model: req.body.model,
+          members: fields.members,
+        },
+      });
     } else if (
       req.body.model === "Job" ||
       req.body.model === "Sale" ||

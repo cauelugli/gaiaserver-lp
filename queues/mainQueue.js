@@ -6,6 +6,11 @@ const {
   translateMethod,
   translateModel,
 } = require("../controllers/notificationOptions");
+
+const {
+  insertMembersToGroup,
+} = require("../controllers/functions/updateRoutines");
+
 const mainQueue = new Queue("mainQueue", {
   redis: { port: 6379, host: "127.0.0.1" },
 });
@@ -37,7 +42,7 @@ mainQueue.process(async (job) => {
         // await handleAddItem(data, isAdmin);
         break;
       case "insertMembersToGroup":
-        // await handleAddItem(data, isAdmin);
+        await handleInsertMembersToGroup(data);
         break;
       case "notifyAdmin":
         await handleNotifyAdmin(data, isAdmin);
@@ -63,6 +68,24 @@ mainQueue.process(async (job) => {
 });
 
 // HANDLERS
+const handleInsertMembersToGroup = async (data) => {
+  console.log("data", data);
+  await insertMembersToGroup(
+    data.id,
+    data.model,
+    data.members
+  );
+
+  // socket.emit("notifyAdmin", {
+  //   target: data,
+  //   sourceId: data.createdBy,
+  //   method: translateMethod(data.method),
+  //   model: translateModel(data.model),
+  //   isFemaleGender: data.model === "Sale",
+  //   isAdmin: isAdmin,
+  // });
+};
+
 const handleNotifyAdmin = async (data, isAdmin) => {
   socket.emit("notifyAdmin", {
     target: data,
