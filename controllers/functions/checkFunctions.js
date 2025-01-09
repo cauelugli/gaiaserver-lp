@@ -1,5 +1,7 @@
 const Config = require("../../models/models/Config");
 
+const { removeFromStock } = require("./deleteFunctions");
+
 async function checkNewRequestDefaultStatus(fields, selectedProducts) {
   try {
     const config = await Config.findOne();
