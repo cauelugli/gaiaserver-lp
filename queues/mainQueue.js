@@ -18,6 +18,27 @@ mainQueue.process(async (job) => {
 
   try {
     switch (type) {
+      case "addCounter":
+        // await handleAddItem(data, isAdmin);
+        break;
+      case "addItem":
+        // await handleAddItem(data, isAdmin);
+        break;
+      case "addToAssigneeAgenda":
+        // await handleAddItem(data, isAdmin);
+        break;
+      case "checkNewRequestDefaultStatus":
+        // await handleAddItem(data, isAdmin);
+        break;
+      case "checkNewStockEntryDefaultStatus":
+        // await handleAddItem(data, isAdmin);
+        break;
+      case "insertMembership":
+        // await handleAddItem(data, isAdmin);
+        break;
+      case "insertMembersToGroup":
+        // await handleAddItem(data, isAdmin);
+        break;
       case "notifyAdmin":
         await handleNotifyAdmin(data, isAdmin);
         break;
@@ -55,11 +76,11 @@ const handleNotifyAdmin = async (data, isAdmin) => {
 
 const handleNotifyStockManagerToBuyProduct = async (data, isAdmin) => {
   socket.emit("notifyStockManagerToBuyProduct", {
-    receiver:data.receiver,
-    receiverName:data.receiverName,
-    emitterName:data.emitterName,
-    product:data.product,
-    isAdmin
+    receiver: data.receiver,
+    receiverName: data.receiverName,
+    emitterName: data.emitterName,
+    product: data.product,
+    isAdmin,
   });
 };
 

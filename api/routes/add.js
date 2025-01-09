@@ -76,6 +76,7 @@ router.post("/", async (req, res) => {
         { new: true }
       );
 
+      //insertMembership
       await insertMembership(
         updatedItem._id.toString(),
         // this will be dynamic at some point
@@ -92,6 +93,7 @@ router.post("/", async (req, res) => {
 
   if (req.body.model === "Job" || req.body.model === "Sale") {
     try {
+      //checkNewRequestDefaultStatus
       await checkNewRequestDefaultStatus(fields, selectedProducts);
     } catch (err) {
       if (err.message === "Itens indisponíveis em estoque") {
@@ -113,6 +115,7 @@ router.post("/", async (req, res) => {
     }, 0);
     fields.items = req.body.selectedProducts;
     try {
+      //checkNewStockEntryDefaultStatus
       await checkNewStockEntryDefaultStatus(fields);
     } catch (err) {
       return res.status(500).json({
@@ -150,6 +153,7 @@ router.post("/", async (req, res) => {
     const savedItem = await newItem.save();
 
     if (req.body.model === "Department" || req.body.model === "Group") {
+      //insertMembersToGroup
       await insertMembersToGroup(
         savedItem._id.toString(),
         req.body.model,
@@ -160,12 +164,14 @@ router.post("/", async (req, res) => {
       req.body.model === "Sale" ||
       req.body.model === "StockEntry"
     ) {
+      //addCounter
       countedItem = await addCounter(savedItem._id.toString(), req.body.model);
     } else {
       await addRoutines(req.body.model, savedItem);
     }
 
     if (fields.scheduledToAssignee === true) {
+      //addToAssigneeAgenda
       await addToAssigneeAgenda(
         savedItem.scheduledTo,
         savedItem.scheduleTime,
