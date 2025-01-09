@@ -57,10 +57,12 @@ import Person4Icon from "@mui/icons-material/Person4";
 import PersonIcon from "@mui/icons-material/Person";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import RemoveIcon from "@mui/icons-material/Remove";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import SearchIcon from "@mui/icons-material/Search";
 import SellIcon from "@mui/icons-material/Sell";
 import SettingsIcon from "@mui/icons-material/Settings";
+import ShopIcon from '@mui/icons-material/Shop';
 import StarIcon from "@mui/icons-material/StarPurple500";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 import TableViewIcon from "@mui/icons-material/TableView";
@@ -131,10 +133,12 @@ const icons = {
   PersonIcon,
   PhotoCameraIcon,
   RefreshIcon,
+  RemoveIcon,
   RequestQuoteIcon,
   SearchIcon,
   SellIcon,
   SettingsIcon,
+  ShopIcon,
   StarIcon,
   TableRowsIcon,
   TableViewIcon,

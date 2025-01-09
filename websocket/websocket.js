@@ -227,6 +227,37 @@ const initSocket = (server) => {
       io.emit("newNotificationToIndividual", data);
     });
 
+    socket.on("notifyStockManagerToBuyProduct", async (data) => {
+      try {
+        let user;
+        user = await User.findById(data.receiver);
+
+        const parsedTitleString = "Nova Solicitação de Compra";
+        const notificationBody = `Olá, ${data.receiverName}! 
+        ${
+          data.emitterName
+            ? `${data.emitterName} está solicitando a compra de `
+            : "Solicitada compra de "
+        } ${data.product.quantity} ${data.product.name}, 
+        no total de R$${data.product.finalPrice}.`;
+
+        if (user) {
+          user.notifications.push({
+            read: false,
+            title: parsedTitleString,
+            body: notificationBody,
+            createdAt: new Date().toISOString(),
+          });
+
+          await user.save();
+        }
+      } catch (err) {
+        console.error("Erro ao adicionar notificação", err);
+      }
+
+      io.emit("newNotificationToIndividual", data);
+    });
+
     socket.on("disconnect", () => {
       // console.log("User disconnected");
     });

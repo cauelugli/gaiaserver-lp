@@ -22,6 +22,7 @@ import DeleteFormModel from "../../../forms/delete/DeleteFormModel";
 import SmallFormModel from "../../../forms/edit/SmallFormModel";
 import ResolveForm from "../../../forms/misc/ResolveForm";
 import RequestApprovalForm from "../../../forms/misc/RequestApprovalForm";
+import RequestBuyForm from "../../../forms/misc/RequestBuyForm";
 
 const RowButton = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -58,6 +59,7 @@ const RowButton = (props) => {
   let formComponent;
 
   switch (selectedAction) {
+    // action ===
     case "edit":
       formComponent = (
         <EditFormModel
@@ -120,7 +122,19 @@ const RowButton = (props) => {
         />
       );
       break;
-
+    case "requestBuy":
+      formComponent = (
+        <RequestBuyForm
+          userId={props.userId}
+          selectedItem={props.item}
+          refreshData={props.refreshData}
+          setRefreshData={props.setRefreshData}
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+          page={currentOption.page}
+        />
+      );
+      break;
     case "delete":
       formComponent = (
         <DeleteFormModel

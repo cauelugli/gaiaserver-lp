@@ -21,6 +21,9 @@ notificationQueue.process(async (job) => {
       case "notifyAdmin":
         await handleNotifyAdmin(data, isAdmin);
         break;
+      case "notifyStockManagerToBuyProduct":
+        await handleNotifyStockManagerToBuyProduct(data, isAdmin);
+        break;
       case "productIsCreated":
         await handleProductIsCreated(data, finalList);
         break;
@@ -47,6 +50,16 @@ const handleNotifyAdmin = async (data, isAdmin) => {
     model: translateModel(data.model),
     isFemaleGender: data.model === "Sale",
     isAdmin: isAdmin,
+  });
+};
+
+const handleNotifyStockManagerToBuyProduct = async (data, isAdmin) => {
+  socket.emit("notifyStockManagerToBuyProduct", {
+    receiver:data.receiver,
+    receiverName:data.receiverName,
+    emitterName:data.emitterName,
+    product:data.product,
+    isAdmin
   });
 };
 

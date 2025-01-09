@@ -261,6 +261,40 @@ const rowButtonOptions = [
     },
   },
   {
+    page: "stock",
+    models: ["Product", "StockEntry"],
+    menus: {
+      0: [
+        {
+          label: "Solicitar Compra para Estoque",
+          action: "requestBuy",
+          modal: "Product",
+          icon: <icons.ShopIcon />,
+        },
+      ],
+      1: [
+        {
+          label: "Solicitar Aprovação",
+          action: "requestApproval",
+          modal: "StockEntry",
+          icon: <icons.FactCheckIcon />,
+        },
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "StockEntry",
+          icon: <icons.ModeEditIcon />,
+        },
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "StockEntry",
+          icon: <icons.DeleteIcon />,
+        },
+      ],
+    },
+  },
+  {
     page: "departments",
     models: ["Department", "Group"],
     menus: {

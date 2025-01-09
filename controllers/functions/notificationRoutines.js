@@ -1,5 +1,3 @@
-const Admin = require("../../models/models/Admin");
-const Config = require("../../models/models/Config");
 const Counters = require("../../models/models/Counters");
 const Department = require("../../models/models/Department");
 const Notifications = require("../../models/models/Notifications");
@@ -194,4 +192,7 @@ async function notifyApproverManager(
   }
 }
 
-module.exports = { notificationRoutines, notifyApproverManager };
+module.exports = {
+  notificationRoutines,
+  notifyApproverManager,
+};

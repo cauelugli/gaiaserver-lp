@@ -1,10 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
-const { defineModel } = require("../../controllers/functions/routeFunctions");
 const dayjs = require("dayjs");
+
 const Admin = require("../../models/models/Admin");
 const Config = require("../../models/models/Config");
+const notificationQueue = require("../../queues/notificationQueue");
+
+const { defineModel } = require("../../controllers/functions/routeFunctions");
 const {
   notifyApproverManager,
 } = require("../../controllers/functions/notificationRoutines");
@@ -238,6 +241,44 @@ router.put("/requestApproval", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Erro ao resolver o item" });
+  }
+});
+
+// STOCK - REQUEST PRODUCT BUY
+router.put("/requestBuy", async (req, res) => {
+  const { product, requestedBy } = req.body;
+  try {
+    const config = await Config.findOne();
+    const admin = await Admin.findOne({}, "config");
+
+    if (config.stock.stockEntriesNeedApproval === true) {
+      // else notify admin?
+      const { data: idIndexList } = await axios.get(
+        "http://localhost:3000/api/idIndexList"
+      );
+
+      notificationQueue.add({
+        type: "notifyStockManagerToBuyProduct",
+        data: {
+          receiver: config.stock.stockEntriesDispatcherManager,
+          receiverName:
+            idIndexList?.find(
+              (item) => item.id === config.stock.stockEntriesDispatcherManager
+            )?.name || "",
+          emitterName:
+            idIndexList?.find((item) => item.id === requestedBy)?.name || "",
+          product,
+        },
+        isAdmin: requestedBy === admin._id.toString(),
+      });
+    }
+
+    res
+      .status(200)
+      .json("Solicitação de Compra de Produto enviada com sucesso");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Erro ao solicitar compra do produto" });
   }
 });
 
