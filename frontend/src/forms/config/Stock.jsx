@@ -184,7 +184,9 @@ export default function Departments({ onClose }) {
                         title={
                           <Typography sx={{ fontSize: 12 }}>
                             Selecione o Gerente que será responsável pela
-                            Aprovação das Entradas de Estoque solicitadas.
+                            Aprovação das Entradas de Estoque solicitadas. Este
+                            Gerente será notificado também para novas Solicitações de
+                            Compras de Produtos.
                           </Typography>
                         }
                       >
