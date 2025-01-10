@@ -11,7 +11,15 @@ const {
   insertMembership,
   insertMembersToGroup,
 } = require("../controllers/functions/updateRoutines");
-const { addToAssigneeAgenda } = require("../controllers/functions/addRoutines");
+
+const {
+  addCounter,
+  addToAssigneeAgenda,
+  addToStock,
+} = require("../controllers/functions/addRoutines");
+const {
+  checkNewStockEntryDefaultStatus,
+} = require("../controllers/functions/checkFunctions");
 
 const mainQueue = new Queue("mainQueue", {
   redis: { port: 6379, host: "127.0.0.1" },
@@ -26,7 +34,7 @@ mainQueue.process(async (job) => {
   try {
     switch (type) {
       case "addCounter":
-        // await handleAddItem(data, isAdmin);
+        await handleAddCounter(data);
         break;
       case "addItem":
         // await handleAddItem(data, isAdmin);
@@ -34,14 +42,26 @@ mainQueue.process(async (job) => {
       case "addToAssigneeAgenda":
         await handleAddToAssigneeAgenda(data);
         break;
+      case "addToStock":
+        await handleAddToStock(data);
+        break;
+      case "checkNewStockEntryDefaultStatus":
+        await handleCheckNewStockEntryDefaultStatus(data);
+        break;
       case "insertMembership":
         await handleInsertMembership(data);
         break;
       case "insertMembersToGroup":
         await handleInsertMembersToGroup(data);
         break;
+      case "notificationToList":
+        await handleNotificationToList(data, isAdmin);
+        break;
       case "notifyAdmin":
         await handleNotifyAdmin(data, isAdmin);
+        break;
+      case "notifyAssignee":
+        await handleNotifyAssignee(data);
         break;
       case "notifyStockManagerToBuyProduct":
         await handleNotifyStockManagerToBuyProduct(data, isAdmin);
@@ -64,6 +84,34 @@ mainQueue.process(async (job) => {
 });
 
 // HANDLERS
+const handleNotificationToList = async (data, isAdmin) => {
+  let finalTarget = "";
+
+  if (data.target) {
+    data.target.title
+      ? (finalTarget = data.target.title)
+      : data.target.name
+      ? (finalTarget = data.target.name)
+      : data.target.number
+      ? (finalTarget = data.target.number)
+      : (finalTarget = data.target);
+  }
+  socket.emit("notificationToList", {
+    finalTarget,
+    method: data.method,
+    item: data.item,
+    sourceId: data.sourceId,
+    receivers: data.notificationList,
+    label: translateModel(data.model),
+    isFemale: data.model === "Sale" ? true : false,
+    isAdmin,
+  });
+};
+
+const handleAddCounter = async (data) => {
+  await addCounter(data.itemId, data.model);
+};
+
 const handleAddToAssigneeAgenda = async (data) => {
   await addToAssigneeAgenda(
     data.scheduledTo,
@@ -73,6 +121,15 @@ const handleAddToAssigneeAgenda = async (data) => {
     data.service,
     data.customer
   );
+};
+
+const handleAddToStock = async (data) => {
+  await addToStock(data.items);
+};
+
+const handleCheckNewStockEntryDefaultStatus = async (data) => {
+  console.log("handleCheckNewStockEntryDefaultStatus data", data);
+  await checkNewStockEntryDefaultStatus(data);
 };
 
 const handleInsertMembership = async (data) => {
@@ -91,6 +148,16 @@ const handleNotifyAdmin = async (data, isAdmin) => {
     model: translateModel(data.model),
     isFemaleGender: data.model === "Sale",
     isAdmin: isAdmin,
+  });
+};
+
+const handleNotifyAssignee = async (data) => {
+  socket.emit("notifyAssignee", {
+    target: data.target,
+    sourceId: data.sourceId,
+    receiver: data.receiver,
+    receiverName: data.receiverName,
+    label: data.label,
   });
 };
 
