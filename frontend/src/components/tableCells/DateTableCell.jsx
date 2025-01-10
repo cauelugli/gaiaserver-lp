@@ -3,14 +3,17 @@
 import React from "react";
 import InputMask from "react-input-mask";
 import { InputLabel, TextField } from "@mui/material";
+import dayjs from "dayjs";
 
 const DateTableCell = (props) => {
+  const today = dayjs().format("DD/MM/YYYY");
+
   return (
     <>
       <InputLabel>{props.field.label}</InputLabel>
       <InputMask
         mask="99/99/9999"
-        value={props.fields[props.field.name] || ""}
+        value={props.fields[props.field.name] || today}
         onChange={props.handleChange(props.field.name)}
       >
         {(inputProps) => (
