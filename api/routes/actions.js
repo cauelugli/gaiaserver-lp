@@ -199,6 +199,7 @@ router.put("/requestApproval", async (req, res) => {
       id,
       {
         status: "Aprovação Solicitada",
+        requester: requestedBy,
         $push: {
           interactions: {
             activity: "Solicitação de Aprovação",
@@ -242,11 +243,59 @@ router.put("/requestApproval", async (req, res) => {
           model: model,
           item: updatedItem.title || updatedItem.number,
           requestedBy: requestedBy,
-          idIndexList, 
+          idIndexList,
         },
         isAdmin: requestedBy === admin._id.toString(),
       });
     }
+
+    res.status(200).json("Item resolvido com sucesso");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Erro ao resolver o item" });
+  }
+});
+
+// REQUEST/STOCK - MANAGER REQUEST APPROVAL
+router.put("/approveRequest", async (req, res) => {
+  const { model, id, approvedBy } = req.body;
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
+
+  try {
+    const updatedItem = await Model.findByIdAndUpdate(
+      id,
+      {
+        status: "Aprovado",
+      },
+      { new: true }
+    );
+
+    if (!updatedItem) {
+      return res.status(404).json({ error: "Item não encontrado" });
+    }
+
+    const { data: idIndexList } = await axios.get(
+      "http://localhost:3000/api/idIndexList"
+    );
+
+    mainQueue.add({
+      type: "notifyRequester",
+      data: {
+        target: updatedItem.title || updatedItem.number,
+        managerName:
+          idIndexList?.find((item) => item.id === approvedBy)?.name || "",
+        model: model,
+        receiver: updatedItem.requester,
+        receiverName:
+          idIndexList?.find((item) => item.id === updatedItem.requester)
+            ?.name || "",
+      },
+    });
 
     res.status(200).json("Item resolvido com sucesso");
   } catch (err) {

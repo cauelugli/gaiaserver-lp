@@ -47,6 +47,9 @@ jobSchema = new mongoose.Schema({
   price: {
     type: Number,
   },
+  requester: {
+    type: String,
+  },
   resolution: {
     type: String,
   },

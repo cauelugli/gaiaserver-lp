@@ -66,6 +66,9 @@ mainQueue.process(async (job) => {
       case "notifyAssignee":
         await handleNotifyAssignee(data);
         break;
+      case "notifyRequester":
+        await handleNotifyRequester(data);
+        break;
       case "notifyStockManagerToBuyProduct":
         await handleNotifyStockManagerToBuyProduct(data, isAdmin);
         break;
@@ -131,7 +134,6 @@ const handleAddToStock = async (data) => {
 };
 
 const handleCheckNewStockEntryDefaultStatus = async (data) => {
-  console.log("handleCheckNewStockEntryDefaultStatus data", data);
   await checkNewStockEntryDefaultStatus(data);
 };
 
@@ -176,6 +178,16 @@ const handleNotifyAssignee = async (data) => {
     receiver: data.receiver,
     receiverName: data.receiverName,
     label: data.label,
+  });
+};
+
+const handleNotifyRequester = async (data) => {
+  socket.emit("notifyRequester", {
+    target: data.target,
+    receiver: data.receiver,
+    receiverName: data.receiverName,
+    managerName: data.managerName,
+    model: data.model,
   });
 };
 

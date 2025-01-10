@@ -19,6 +19,9 @@ const stockEntrySchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  requester: {
+    type: String,
+  },
   status: {
     type: String,
     default: "Aberto",

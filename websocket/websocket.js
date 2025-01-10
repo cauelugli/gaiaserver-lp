@@ -120,7 +120,6 @@ const initSocket = (server) => {
     });
 
     socket.on("notifyAssignee", async (data) => {
-      console.log("data on websocket", data);
       try {
         let user;
         user = await User.findById(data.receiver);
@@ -182,8 +181,6 @@ const initSocket = (server) => {
         } catch (err) {
           console.error("Erro ao adicionar notificação ao Admin");
         }
-      } else {
-        console.log("not admin");
       }
 
       io.emit("newNotificationToAdmin", data);
@@ -220,6 +217,39 @@ const initSocket = (server) => {
             createdAt: new Date().toISOString(),
           });
 
+          await user.save();
+        }
+      } catch (err) {
+        console.error("Erro ao adicionar notificação", err);
+      }
+
+      io.emit("newNotificationToIndividual", data);
+    });
+
+    socket.on("notifyRequester", async (data) => {
+      try {
+        let user;
+        user = await User.findById(data.receiver);
+
+        const parsedTitleString = "Solicitação de Aprovação Respondida";
+        const notificationBody = `Olá, ${
+          data.receiverName
+        }! Sua solicitação para aprovação para 
+        ${
+          data.model === "StockEntry"
+            ? "Entrada de Estoque"
+            : data.model === "Sale"
+            ? "Venda"
+            : data.model
+        } ${data.target} foi respondida por ${data.managerName}.`;
+
+        if (user) {
+          user.notifications.push({
+            read: false,
+            title: parsedTitleString,
+            body: notificationBody,
+            createdAt: new Date().toISOString(),
+          });
           await user.save();
         }
       } catch (err) {

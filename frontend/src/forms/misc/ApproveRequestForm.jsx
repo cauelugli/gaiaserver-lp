@@ -18,16 +18,16 @@ const api = axios.create({
 });
 
 const ApproveRequestForm = (props) => {
-  const handleRequestApproval = async () => {
+  const handleApproveRequest = async () => {
     try {
       const res = await api.put(`/actions/approveRequest/`, {
         model: props.model,
         id: props.selectedItemId,
-        requestedBy: props.userId,
+        approvedBy: props.userId,
       });
 
       if (res.data) {
-        toast.success(`Aprovação Solicitada`, {
+        toast.success(`Solicitação Aprovada`, {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
@@ -64,14 +64,14 @@ const ApproveRequestForm = (props) => {
     >
       <DialogTitle>
         <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
-          Solicitar Aprovação para {props.selectedItemName}?
+          Aprovar Solicitação {props.selectedItemName}?
         </Typography>
       </DialogTitle>
       <DialogActions>
         <Button
           variant="contained"
           color="success"
-          onClick={handleRequestApproval}
+          onClick={handleApproveRequest}
           sx={{ mr: 2 }}
         >
           Confirmar
