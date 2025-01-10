@@ -124,16 +124,6 @@ router.put("/", async (req, res) => {
       );
     }
 
-    await notificationRoutines(
-      req.body.model,
-      updatedItem,
-      "edit",
-      req.body.sourceId,
-      `${req.body.model.toLowerCase()}IsEdited`,
-      [],
-      isAdmin
-    );
-
     if (req.body.fields.members) {
       await insertMembersToGroup(
         updatedItem._id.toString(),
