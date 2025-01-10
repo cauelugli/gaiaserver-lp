@@ -195,10 +195,20 @@ const initSocket = (server) => {
         user = await User.findById(data.receiver);
 
         const parsedTitleString = `${
-          data.model === "Job" ? "Job" : "Venda"
+          data.model === "StockEntry"
+            ? "Entrada de Estoque"
+            : data.model === "Job"
+            ? "Job"
+            : "Venda"
         } Aguardando Aprovação`;
         const notificationBody = `Olá, ${data.receiverName}! 
-        ${data.model === "Job" ? "O Job" : "A Venda"} ${data.title}
+        ${
+          data.model === "StockEntry"
+            ? "A Entrada de Estoque"
+            : data.model === "Job"
+            ? "O Job"
+            : "A Venda"
+        } ${data.title}
         está aguardando por sua aprovação. \nSolicitado por: ${data.source}.
         `;
 

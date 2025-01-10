@@ -183,10 +183,11 @@ router.put("/resolve", async (req, res) => {
   }
 });
 
-// REQUEST - REQUEST APPROVAL
+// REQUEST/STOCK - REQUEST APPROVAL
 router.put("/requestApproval", async (req, res) => {
   const { model, id, requestedBy } = req.body;
   const Model = defineModel(model);
+  const admin = await Admin.findOne({}, "config");
 
   if (!Model) {
     console.log("\nModel not found\n");
@@ -223,18 +224,28 @@ router.put("/requestApproval", async (req, res) => {
 
     const config = await Config.findOne();
 
-    if (config.requests.requestsNeedApproval === true) {
+    const formattedModel = model === "StockEntry" ? "stock" : "requests";
+    const formattedModelOption =
+      model === "StockEntry"
+        ? "stockEntriesNeedApproval"
+        : "requestsNeedApproval";
+
+    if (config[formattedModel][formattedModelOption] === true) {
       const { data: idIndexList } = await axios.get(
         "http://localhost:3000/api/idIndexList"
       );
 
-      await notifyApproverManager(
-        config.requests.requestsApproverManager,
-        model,
-        updatedItem.title || updatedItem.number,
-        requestedBy,
-        idIndexList
-      );
+      mainQueue.add({
+        type: "notifyApproverManager",
+        data: {
+          requestsApproverManager: config.requests.requestsApproverManager,
+          model: model,
+          item: updatedItem.title || updatedItem.number,
+          requestedBy: requestedBy,
+          idIndexList, 
+        },
+        isAdmin: requestedBy === admin._id.toString(),
+      });
     }
 
     res.status(200).json("Item resolvido com sucesso");

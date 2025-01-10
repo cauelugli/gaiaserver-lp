@@ -195,7 +195,7 @@ async function addToAssigneeAgenda(
 ) {
   try {
     const agenda = await Agenda.findOne();
-    const [day, month, year] = scheduledTo.split("/");
+    const [day, month, year] = scheduledTo?.split("/");
     const monthYearKey = `${month}-${year}`;
 
     const userIndex = agenda.users.findIndex((userMap) =>

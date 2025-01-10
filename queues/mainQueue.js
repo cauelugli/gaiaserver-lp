@@ -60,6 +60,9 @@ mainQueue.process(async (job) => {
       case "notifyAdmin":
         await handleNotifyAdmin(data, isAdmin);
         break;
+      case "notifyApproverManager":
+        await handleNotifyApproverManager(data, isAdmin);
+        break;
       case "notifyAssignee":
         await handleNotifyAssignee(data);
         break;
@@ -148,6 +151,21 @@ const handleNotifyAdmin = async (data, isAdmin) => {
     model: translateModel(data.model),
     isFemaleGender: data.model === "Sale",
     isAdmin: isAdmin,
+  });
+};
+
+const handleNotifyApproverManager = async (data, isAdmin) => {
+  socket.emit("notifyApproverManager", {
+    title: data.item,
+    source:
+      data.idIndexList?.find((item) => item.id === data.requestedBy)?.name ||
+      "admin",
+    receiver: data.requestsApproverManager,
+    receiverName:
+      data.idIndexList?.find((item) => item.id === data.requestsApproverManager)
+        ?.name || "",
+    model: data.model,
+    emitter: data.requestedBy,
   });
 };
 
