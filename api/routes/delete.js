@@ -56,18 +56,8 @@ router.delete("/:sourceId/:model/:id", async (req, res) => {
 
   try {
     const deletedItem = await Model.findByIdAndDelete(id);
+    //deleteRoutines
     await deleteRoutines(model, deletedItem, id);
-
-    await notificationRoutines(
-      model,
-      deletedItem.name || deletedItem.title || deletedItem.number,
-      "delete",
-      sourceId,
-      `${model.toLowerCase()}IsDeleted`,
-      [],
-      isAdmin
-    );
-    
     res.status(200).json("Item deletado com sucesso");
   } catch (err) {
     console.log(err);
@@ -125,16 +115,18 @@ router.delete("/multiple/:sourceId/:model/:ids", async (req, res) => {
       } else {
         const deletedItem = await Model.findByIdAndDelete(id);
         if (deletedItem) {
+          //deleteRoutines
           await deleteRoutines(model, deletedItem, id);
-          await notificationRoutines(
-            model,
-            deletedItem.title || deletedItem.name,
-            "delete",
-            sourceId,
-            `${model.toLowerCase()}IsDeleted`,
-            [],
-            isAdmin
-          );
+          //notificationRoutines
+          // await notificationRoutines(
+          //   model,
+          //   deletedItem.title || deletedItem.name,
+          //   "delete",
+          //   sourceId,
+          //   `${model.toLowerCase()}IsDeleted`,
+          //   [],
+          //   isAdmin
+          // );
         }
       }
     }

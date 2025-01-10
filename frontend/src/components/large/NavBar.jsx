@@ -45,11 +45,11 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
   React.useEffect(() => {
     const handleNewNotificationToList = (notificationData) => {
       // doesn't apply to 'self' emitter user
-      if (notificationData && user._id !== notificationData.emitterId) {
+      if (notificationData && user._id !== notificationData.sourceId) {
         fetchData();
       }
     };
-    
+
     const handleNewNotificationToIndividual = (notificationData) => {
       // doesn't apply to 'self' emitter user
       if (notificationData && user._id !== notificationData.emitterId) {

@@ -3,24 +3,18 @@ const router = express.Router();
 const axios = require("axios");
 const bcrypt = require("bcrypt");
 const User = require("../../models/models/User");
+const Notifications = require("../../models/models/Notifications");
+const Config = require("../../models/models/Config");
 
 const mainQueue = require("../../queues/mainQueue");
 
 const { defineModel } = require("../../controllers/functions/routeFunctions");
 
-const {
-  addRoutines,
-  addCounter,
-  addToAssigneeAgenda,
-} = require("../../controllers/functions/addRoutines");
+const { addRoutines } = require("../../controllers/functions/addRoutines");
 
 const {
-  notificationRoutines,
-} = require("../../controllers/functions/notificationRoutines");
-
-const {
-  checkNewStockEntryDefaultStatus,
   checkNewRequestDefaultStatus,
+  checkNewStockEntryDefaultStatus,
 } = require("../../controllers/functions/checkFunctions");
 
 // CREATE ITEM
@@ -93,7 +87,6 @@ router.post("/", async (req, res) => {
 
   if (req.body.model === "Job" || req.body.model === "Sale") {
     try {
-      //checkNewRequestDefaultStatus
       await checkNewRequestDefaultStatus(fields, selectedProducts);
     } catch (err) {
       if (err.message === "Itens indisponíveis em estoque") {
@@ -115,7 +108,6 @@ router.post("/", async (req, res) => {
     }, 0);
     fields.items = req.body.selectedProducts;
     try {
-      //checkNewStockEntryDefaultStatus
       await checkNewStockEntryDefaultStatus(fields);
     } catch (err) {
       return res.status(500).json({
@@ -149,8 +141,13 @@ router.post("/", async (req, res) => {
   const newItem = new Model(fields);
 
   try {
-    let countedItem;
     const savedItem = await newItem.save();
+    const notifications = await Notifications.findOne({});
+    const config = await Config.findOne({});
+
+    const { data: idIndexList } = await axios.get(
+      "http://localhost:3000/api/idIndexList"
+    );
 
     if (req.body.model === "Department" || req.body.model === "Group") {
       mainQueue.add({
@@ -166,9 +163,15 @@ router.post("/", async (req, res) => {
       req.body.model === "Sale" ||
       req.body.model === "StockEntry"
     ) {
-      //addCounter
-      countedItem = await addCounter(savedItem._id.toString(), req.body.model);
+      mainQueue.add({
+        type: "addCounter",
+        data: {
+          itemId: savedItem._id.toString(),
+          model: req.body.model,
+        },
+      });
     } else {
+      //addRoutines
       await addRoutines(req.body.model, savedItem);
     }
 
@@ -186,19 +189,69 @@ router.post("/", async (req, res) => {
       });
     }
 
-    const { data: idIndexList } = await axios.get(
-      "http://localhost:3000/api/idIndexList"
-    );
+    if (req.body.model === "Job" || req.body.model === "Sale") {
+      // console.log("req.body", req.body.fields);
+      mainQueue.add({
+        type: "notifyAssignee",
+        data: {
+          target: {
+            customer:
+              idIndexList?.find((item) => item.id === req.body.fields.customer)
+                ?.name || req.body.fields.customer,
+            service:
+              idIndexList?.find((item) => item.id === req.body.fields.service)
+                ?.name || req.body.fields.service,
+            scheduledTo:
+              req.body.fields.scheduledTo ||
+              req.body.fields.deliveryScheduledTo,
+            scheduleTime: req.body.fields.scheduleTime,
+            createdBy: req.body.createdBy,
+            title: req.body.fields.title || savedItem.number,
+          },
+          sourceId: createdBy,
+          receiver: req.body.fields.worker || req.body.fields.seller,
+          receiverName:
+            idIndexList?.find(
+              (item) =>
+                item.id === req.body.fields.worker ||
+                item.id === req.body.fields.seller
+            )?.name || "?",
+          label: req.body.model === "Job" ? "Job" : "Venda",
+        },
+      });
+    }
 
-    await notificationRoutines(
-      req.body.model,
-      countedItem ? countedItem : savedItem,
-      "add",
-      req.body.sourceId,
-      `${req.body.model.toLowerCase()}IsCreated`,
-      idIndexList,
-      isAdmin
-    );
+    if (
+      req.body.model === "StockEntry" &&
+      config.stock.stockEntriesNeedApproval === false
+    ) {
+      mainQueue.add({
+        type: "addToStock",
+        data: { items: savedItem.items },
+      });
+    }
+
+    mainQueue.add({
+      type: "notificationToList",
+      data: {
+        model: req.body.model,
+        method: "add",
+        item: savedItem,
+        sourceId: req.body.sourceId,
+        notificationList: notifications[
+          req.body.model === "Client"
+            ? "customer"
+            : req.body.model.toLowerCase()
+        ][
+          `${
+            req.body.model === "Client"
+              ? "customer"
+              : req.body.model.toLowerCase()
+          }IsCreated`
+        ] || [""],
+      },
+      isAdmin,
+    });
 
     res.status(200).json(savedItem);
   } catch (err) {

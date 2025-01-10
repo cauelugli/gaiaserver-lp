@@ -128,6 +128,20 @@ const notificationSchema = new Schema({
       default: [],
     },
   },
+  stockentry: {
+    stockentryIsCreated: {
+      type: Array,
+      default: [],
+    },
+    stockentryIsEdited: {
+      type: Array,
+      default: [],
+    },
+    stockentryIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
 });
 
 const Notifications = mongoose.model("Notifications", notificationSchema);
