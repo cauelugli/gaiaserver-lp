@@ -23,6 +23,7 @@ import SmallFormModel from "../../../forms/edit/SmallFormModel";
 import ResolveForm from "../../../forms/misc/ResolveForm";
 import RequestApprovalForm from "../../../forms/misc/RequestApprovalForm";
 import RequestBuyForm from "../../../forms/misc/RequestBuyForm";
+import ApproveRequestForm from "../../../forms/misc/ApproveRequestForm";
 
 const RowButton = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -33,9 +34,10 @@ const RowButton = (props) => {
   const [selectedModal, setSelectedModal] = useState({});
   const [selectedAction, setSelectedAction] = useState("");
 
-  const currentOption = rowButtonOptions.find(
-    (option) => option.page === props.page
-  );
+  const options = rowButtonOptions(props);
+
+  const currentOption = options.find((option) => option.page === props.page);
+
   const menuItems = currentOption?.menus[props.tabIndex] || [];
 
   const handleMenuItemClick = (menuItem, index) => {
@@ -122,6 +124,22 @@ const RowButton = (props) => {
         />
       );
       break;
+    case "approveRequest":
+      formComponent = (
+        <ApproveRequestForm
+          userId={props.userId}
+          selectedItemId={props.item._id || props.item.id}
+          selectedItemName={props.item.title || props.item.number}
+          model={selectedModal.model}
+          refreshData={props.refreshData}
+          setRefreshData={props.setRefreshData}
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+          page={currentOption.page}
+        />
+      );
+      break;
+
     case "requestBuy":
       formComponent = (
         <RequestBuyForm
@@ -135,6 +153,7 @@ const RowButton = (props) => {
         />
       );
       break;
+
     case "delete":
       formComponent = (
         <DeleteFormModel

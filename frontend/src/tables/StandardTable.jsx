@@ -27,7 +27,7 @@ function StandardTable(props) {
       }
     });
   };
-  
+
   return (
     <>
       {props.filteredRows
@@ -56,6 +56,16 @@ function StandardTable(props) {
             <TableCell align="center">
               <RowButton
                 userId={props.userId}
+                isRequestsApproverManager={
+                  row._id === props.requestsApproverManager
+                }
+                isStockApproverManager={row._id === props.stockApproverManager}
+                userIsRequestsApproverManager={
+                  props.userId === props.requestsApproverManager
+                }
+                userIsStockApproverManager={
+                  props.userId === props.stockApproverManager
+                }
                 mainColor={props.mainColor}
                 item={row}
                 page={props.page}

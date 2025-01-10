@@ -21,7 +21,7 @@ const fetchStatuses = () => {
   });
 };
 
-const rowButtonOptions = [
+const rowButtonOptions = (props) => [
   {
     page: "customers",
     models: ["Customer", "Customer"],
@@ -181,6 +181,16 @@ const rowButtonOptions = [
           modal: "Job",
           icon: <icons.FactCheckIcon />,
         },
+        ...(props.userIsRequestsApproverManager
+          ? [
+              {
+                label: "Aprovar Solicitação",
+                action: "approveRequest",
+                modal: "Job",
+                icon: <icons.SpellcheckIcon />,
+              },
+            ]
+          : []),
         {
           label: "Resolver",
           action: "resolve",
@@ -223,6 +233,16 @@ const rowButtonOptions = [
           modal: "Sale",
           icon: <icons.FactCheckIcon />,
         },
+        ...(props.userIsRequestsApproverManager
+          ? [
+              {
+                label: "Aprovar Solicitação",
+                action: "approveRequest",
+                modal: "Sale",
+                icon: <icons.SpellcheckIcon />,
+              },
+            ]
+          : []),
         {
           label: "Resolver",
           action: "resolve",
@@ -279,6 +299,16 @@ const rowButtonOptions = [
           modal: "StockEntry",
           icon: <icons.FactCheckIcon />,
         },
+        ...(props.userIsStockApproverManager
+          ? [
+              {
+                label: "Aprovar Solicitação",
+                action: "approveRequest",
+                modal: "StockEntry",
+                icon: <icons.SpellcheckIcon />,
+              },
+            ]
+          : []),
         {
           label: "Editar",
           action: "edit",
