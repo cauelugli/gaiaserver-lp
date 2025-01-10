@@ -70,8 +70,9 @@ const initSocket = (server) => {
               parsedBodyMainString = `${data.isFemale ? "Uma" : "Um"} ${
                 data.isFemale ? "nova" : "novo"
               } ${data.label} foi ${data.isFemale ? "criada" : "criado"}: ${
-                data.finalTarget
-              }.`;
+                data.item ? data.item.name : ""
+              }`;
+
               parsedTitleString = `${data.isFemale ? "Nova" : "Novo"} ${
                 data.label
               } ${data.isFemale ? "Criada" : "Criado"}`;
@@ -101,19 +102,10 @@ const initSocket = (server) => {
           }
 
           for (const user of users) {
-            const notificationBody =
-              parsedBodyMainString +
-              (data.item && data.item.department
-                ? ` Departamento: ${data.item.department}.`
-                : "") +
-              (data.item && data.item.position
-                ? ` Cargo: ${data.item.position}.`
-                : "");
-
             user.notifications.push({
               read: false,
               title: parsedTitleString,
-              body: notificationBody,
+              body: parsedBodyMainString,
               createdAt: new Date().toISOString(),
             });
 
@@ -128,6 +120,7 @@ const initSocket = (server) => {
     });
 
     socket.on("notifyAssignee", async (data) => {
+      console.log("data on websocket", data);
       try {
         let user;
         user = await User.findById(data.receiver);
@@ -160,7 +153,6 @@ const initSocket = (server) => {
             body: notificationBody,
             createdAt: new Date().toISOString(),
           });
-
           await user.save();
         }
       } catch (err) {
