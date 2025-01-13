@@ -8,14 +8,14 @@ const {
 } = require("../controllers/notificationOptions");
 
 const {
-  insertMembership,
-  insertMembersToGroup,
-} = require("../controllers/functions/updateRoutines");
-
-const {
+  addRoutines,
   addCounter,
   addToAssigneeAgenda,
   addToStock,
+  addServiceToDepartment,
+  addManagerToDepartment,
+  insertMembership,
+  insertMembersToGroup,
 } = require("../controllers/functions/addRoutines");
 const {
   checkNewStockEntryDefaultStatus,
@@ -37,13 +37,22 @@ mainQueue.process(async (job) => {
         await handleAddCounter(data);
         break;
       case "addItem":
-        // await handleAddItem(data, isAdmin);
+        await handleAddItem(data);
         break;
       case "addToAssigneeAgenda":
         await handleAddToAssigneeAgenda(data);
         break;
       case "addToStock":
         await handleAddToStock(data);
+        break;
+      case "addManagerToDepartment":
+        await handleAddManagerToDepartment(data);
+        break;
+      // case "addMembersToDepartment":
+      //   await handleAddMembersToDepartment(data);
+      //   break;
+      case "addServiceToDepartment":
+        await handleAddServiceToDepartment(data);
         break;
       case "checkNewStockEntryDefaultStatus":
         await handleCheckNewStockEntryDefaultStatus(data);
@@ -116,6 +125,22 @@ const handleNotificationToList = async (data, isAdmin) => {
 
 const handleAddCounter = async (data) => {
   await addCounter(data.itemId, data.model);
+};
+
+const handleAddManagerToDepartment = async (data) => {
+  await addManagerToDepartment(data.managerId, data.departmentId);
+};
+
+// const handleAddMembersToDepartment = async (data) => {
+//   await addMembersToDepartment(data.members, data.departmentId);
+// };
+
+const handleAddServiceToDepartment = async (data) => {
+  await addServiceToDepartment(data.serviceId, data.departmentId);
+};
+
+const handleAddItem = async (data) => {
+  await addRoutines(data.model, data.item);
 };
 
 const handleAddToAssigneeAgenda = async (data) => {

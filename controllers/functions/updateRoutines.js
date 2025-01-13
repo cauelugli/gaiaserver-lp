@@ -1,20 +1,6 @@
 const { defineModel } = require("./routeFunctions");
 const User = require("../../models/models/User");
 
-const insertMembership = async (userId, modelId) => {
-  const Model = defineModel("Role");
-  try {
-    const item = await Model.findById(modelId);
-    if (!item.members.includes(userId)) {
-      item.members.push(userId);
-    }
-    await item.save();
-  } catch (error) {
-    console.error(`Erro ao inserir o userId no modelo ${model}:`);
-    throw error;
-  }
-};
-
 const removeMembership = async (userId, model, modelId) => {
   const Model = defineModel(model);
   try {
@@ -26,42 +12,6 @@ const removeMembership = async (userId, model, modelId) => {
   } catch (error) {
     console.error(`Erro ao remover o userId no modelo ${model}:`);
     throw error;
-  }
-};
-
-const insertMembersToGroup = async (itemId, model, members) => {
-  if (members[0] !== 0) {
-    try {
-      await Promise.all(
-        members.map(async (memberId) => {
-          try {
-            const user = await User.findById(memberId);
-            if (user) {
-              switch (model) {
-                case "Department":
-                  user.department = itemId;
-                  break;
-
-                case "Group":
-                  if (!user.groups.includes(itemId)) {
-                    user.groups.push(itemId);
-                  }
-                  break;
-
-                default:
-                  console.log(`${model} desconhecido`);
-              }
-
-              await user.save();
-            }
-          } catch (error) {
-            console.log(`Erro ao executar rotina de update`, error);
-          }
-        })
-      );
-    } catch (error) {
-      throw error;
-    }
   }
 };
 
@@ -113,8 +63,6 @@ const removeMembersFromGroup = async (
 };
 
 module.exports = {
-  insertMembership,
   removeMembership,
-  insertMembersToGroup,
   removeMembersFromGroup,
 };

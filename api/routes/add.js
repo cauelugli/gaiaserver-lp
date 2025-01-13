@@ -43,7 +43,7 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "Modelo inválido" });
   }
 
-  // same name already registered verification
+  // ACTIONS THAT NEED TO BE DONE _BEFORE_ ITEM IS CREATED
   if (req.body.model === "Customer" || req.body.model === "Client") {
     const existingNameUser = await Model.findOne({ name });
     if (existingNameUser) {
@@ -149,6 +149,18 @@ router.post("/", async (req, res) => {
       "http://localhost:3000/api/idIndexList"
     );
 
+    // ACTIONS THAT NEED TO BE DONE _AFTER_ ITEM IS CREATED
+
+    if (req.body.model === "Service") {
+      mainQueue.add({
+        type: "addServiceToDepartment",
+        data: {
+          serviceId: savedItem._id.toString(),
+          departmentId: savedItem.department,
+        },
+      });
+    }
+
     if (req.body.model === "Department" || req.body.model === "Group") {
       mainQueue.add({
         type: "insertMembersToGroup",
@@ -171,8 +183,13 @@ router.post("/", async (req, res) => {
         },
       });
     } else {
-      //addRoutines
-      await addRoutines(req.body.model, savedItem);
+      mainQueue.add({
+        type: "addItem",
+        data: {
+          model: req.body.model,
+          item: savedItem,
+        },
+      });
     }
 
     if (fields.scheduledToAssignee === true) {

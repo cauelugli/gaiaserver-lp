@@ -95,53 +95,23 @@ async function addRoutines(model, source) {
         await newUserPreferences.save();
 
         break;
-      case "Department":
-        if (manager) {
-          await User.findByIdAndUpdate(manager, {
-            $set: { department: source._id.toString() },
-          });
-        }
+      // case "Department":
+      //   if (manager) {
+      //     await User.findByIdAndUpdate(manager, {
+      //       $set: { department: source._id.toString() },
+      //     });
+      //   }
 
-        if (members && members.length > 0) {
-          await Promise.all(
-            members.map((memberId) =>
-              User.findByIdAndUpdate(memberId, {
-                $set: { department: source._id.toString() },
-              })
-            )
-          );
-        }
-        break;
-      case "Service":
-        if (department) {
-          await Department.findByIdAndUpdate(department, {
-            $set: { services: source._id.toString() },
-          });
-        }
-        break;
+      //   if (members && members.length > 0) {
+      //     "add"
+      //   }
+      //   break;
 
       default:
         break;
     }
   } catch (err) {
     console.error(`Erro na rotina de adição em ${model}`, err);
-  }
-}
-
-async function addToStock(items) {
-  try {
-    for (const item of items) {
-      const product = await Product.findById(item._id);
-      if (product) {
-        product.stockQuantity += item.count;
-        await product.save();
-      } else {
-        console.warn(`Produto com _id ${item._id} não encontrado.`);
-      }
-    }
-  } catch (err) {
-    console.error("Erro ao adicionar itens ao estoque:", err);
-    throw err;
   }
 }
 
@@ -183,6 +153,18 @@ async function addCounter(sourceId, model) {
   } catch (err) {
     console.error(`Erro na rotina de adição em ${model}:`, err);
   }
+}
+
+async function addManagerToDepartment(managerId, departmentId) {
+  await Department.findByIdAndUpdate(departmentId, {
+    $set: { manager: managerId.toString() },
+  });
+}
+
+async function addServiceToDepartment(serviceId, departmentId) {
+  await Department.findByIdAndUpdate(departmentId, {
+    $push: { services: serviceId.toString() },
+  });
 }
 
 async function addToAssigneeAgenda(
@@ -247,14 +229,85 @@ async function addToAssigneeAgenda(
   }
 }
 
+async function addToStock(items) {
+  try {
+    for (const item of items) {
+      const product = await Product.findById(item._id);
+      if (product) {
+        product.stockQuantity += item.count;
+        await product.save();
+      } else {
+        console.warn(`Produto com _id ${item._id} não encontrado.`);
+      }
+    }
+  } catch (err) {
+    console.error("Erro ao adicionar itens ao estoque:", err);
+    throw err;
+  }
+}
+
 async function createQuote(model, source) {
   "";
 }
 
+const insertMembership = async (userId, modelId) => {
+  const Model = defineModel("Role");
+  try {
+    const item = await Model.findById(modelId);
+    if (!item.members.includes(userId)) {
+      item.members.push(userId);
+    }
+    await item.save();
+  } catch (error) {
+    console.error(`Erro ao inserir o userId no modelo ${model}:`);
+    throw error;
+  }
+};
+
+const insertMembersToGroup = async (itemId, model, members) => {
+  if (members[0] !== 0) {
+    try {
+      await Promise.all(
+        members.map(async (memberId) => {
+          try {
+            const user = await User.findById(memberId);
+            if (user) {
+              switch (model) {
+                case "Department":
+                  user.department = itemId;
+                  break;
+
+                case "Group":
+                  if (!user.groups.includes(itemId)) {
+                    user.groups.push(itemId);
+                  }
+                  break;
+
+                default:
+                  console.log(`${model} desconhecido`);
+              }
+
+              await user.save();
+            }
+          } catch (error) {
+            console.log(`Erro ao executar rotina de update`, error);
+          }
+        })
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+};
+
 module.exports = {
   addRoutines,
+  addCounter,
+  addManagerToDepartment,
+  addServiceToDepartment,
+  addToAssigneeAgenda,
   addToStock,
   createQuote,
-  addCounter,
-  addToAssigneeAgenda,
+  insertMembership,
+  insertMembersToGroup,
 };

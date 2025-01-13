@@ -125,6 +125,7 @@ router.put("/", async (req, res) => {
     }
 
     if (req.body.fields.members) {
+      //insertMembersToGroup
       await insertMembersToGroup(
         updatedItem._id.toString(),
         req.body.model,
