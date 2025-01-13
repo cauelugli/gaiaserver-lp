@@ -10,8 +10,6 @@ const mainQueue = require("../../queues/mainQueue");
 
 const { defineModel } = require("../../controllers/functions/routeFunctions");
 
-const { addRoutines } = require("../../controllers/functions/addRoutines");
-
 const {
   checkNewRequestDefaultStatus,
   checkNewStockEntryDefaultStatus,
@@ -33,7 +31,7 @@ router.post("/", async (req, res) => {
     selectedMembers,
   } = req.body;
 
-  // defining if user is admin
+  // one way of defining if user is admin
   const isAdmin = createdBy === "admin" ? true : false;
 
   const Model = defineModel(req.body.model);
@@ -44,76 +42,82 @@ router.post("/", async (req, res) => {
   }
 
   // ACTIONS THAT NEED TO BE DONE _BEFORE_ ITEM IS CREATED
-  if (req.body.model === "Customer" || req.body.model === "Client") {
-    const existingNameUser = await Model.findOne({ name });
-    if (existingNameUser) {
-      return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
-    }
-  }
+  switch (req.body.model) {
+    case "Customer":
+    case "Client":
+      const existingNameUser = await Model.findOne({ name });
+      if (existingNameUser) {
+        return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
+      }
+      break;
 
-  if (req.body.model === "Operator") {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPass = await bcrypt.hash(
-      req.body.fields["firstAccessPassword"],
-      salt
-    );
-    try {
-      const updatedItem = await User.findByIdAndUpdate(
-        req.body.fields["user"]._id,
-        {
-          $set: {
-            username: req.body.fields["username"],
-            password: hashedPass,
-            role: req.body.fields["role"]._id,
-          },
-        },
-        { new: true }
+    case "Operator":
+      const salt = await bcrypt.genSalt(10);
+      const hashedPass = await bcrypt.hash(
+        req.body.fields["firstAccessPassword"],
+        salt
       );
+      try {
+        const updatedItem = await User.findByIdAndUpdate(
+          req.body.fields["user"]._id,
+          {
+            $set: {
+              username: req.body.fields["username"],
+              password: hashedPass,
+              role: req.body.fields["role"]._id,
+            },
+          },
+          { new: true }
+        );
 
-      mainQueue.add({
-        type: "insertMembership",
-        data: {
-          id: updatedItem._id.toString(),
-          role: updatedItem.role,
-        },
-      });
+        mainQueue.add({
+          type: "insertMembership",
+          data: {
+            id: updatedItem._id.toString(),
+            role: updatedItem.role,
+          },
+        });
 
-      return res.status(200).json(updatedItem);
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json(err);
-    }
-  }
+        return res.status(200).json(updatedItem);
+      } catch (err) {
+        console.log(err);
+        return res.status(500).json(err);
+      }
 
-  if (req.body.model === "Job" || req.body.model === "Sale") {
-    try {
-      await checkNewRequestDefaultStatus(fields, selectedProducts);
-    } catch (err) {
-      if (err.message === "Itens indisponíveis em estoque") {
-        return res.status(406).json({
-          error: "Itens indisponíveis em estoque",
+    case "Job":
+    case "Sale":
+      try {
+        await checkNewRequestDefaultStatus(fields, selectedProducts);
+      } catch (err) {
+        if (err.message === "Itens indisponíveis em estoque") {
+          return res.status(406).json({
+            error: "Itens indisponíveis em estoque",
+          });
+        }
+        return res.status(500).json({
+          error: "Erro ao verificar o status da requisição",
         });
       }
-      return res.status(500).json({
-        error: "Erro ao verificar o status da requisição",
-      });
-    }
-  }
+      break;
 
-  if (req.body.model === "StockEntry") {
-    fields.quoteValue = req.body.selectedProducts.reduce((total, product) => {
-      const buyValue = product.buyValue || 0;
-      const count = product.count || 0;
-      return total + buyValue * count;
-    }, 0);
-    fields.items = req.body.selectedProducts;
-    try {
-      await checkNewStockEntryDefaultStatus(fields);
-    } catch (err) {
-      return res.status(500).json({
-        error: "Erro ao verificar o status da requisição",
-      });
-    }
+    case "StockEntry":
+      fields.quoteValue = req.body.selectedProducts.reduce((total, product) => {
+        const buyValue = product.buyValue || 0;
+        const count = product.count || 0;
+        return total + buyValue * count;
+      }, 0);
+      fields.items = req.body.selectedProducts;
+      try {
+        await checkNewStockEntryDefaultStatus(fields);
+      } catch (err) {
+        return res.status(500).json({
+          error: "Erro ao verificar o status da requisição",
+        });
+      }
+      break;
+
+    default:
+      break;
   }
 
   // '''parsing''' (dude, wtf....)
@@ -151,45 +155,99 @@ router.post("/", async (req, res) => {
 
     // ACTIONS THAT NEED TO BE DONE _AFTER_ ITEM IS CREATED
 
-    if (req.body.model === "Service") {
-      mainQueue.add({
-        type: "addServiceToDepartment",
-        data: {
-          serviceId: savedItem._id.toString(),
-          departmentId: savedItem.department,
-        },
-      });
-    }
+    switch (req.body.model) {
+      case "Service":
+        mainQueue.add({
+          type: "addServiceToDepartment",
+          data: {
+            serviceId: savedItem._id.toString(),
+            departmentId: savedItem.department,
+          },
+        });
+        break;
 
-    if (req.body.model === "Department" || req.body.model === "Group") {
-      mainQueue.add({
-        type: "insertMembersToGroup",
-        data: {
-          id: savedItem._id.toString(),
-          model: req.body.model,
-          members: fields.members,
-        },
-      });
-    } else if (
-      req.body.model === "Job" ||
-      req.body.model === "Sale" ||
-      req.body.model === "StockEntry"
-    ) {
-      mainQueue.add({
-        type: "addCounter",
-        data: {
-          itemId: savedItem._id.toString(),
-          model: req.body.model,
-        },
-      });
-    } else {
-      mainQueue.add({
-        type: "addItem",
-        data: {
-          model: req.body.model,
-          item: savedItem,
-        },
-      });
+      case "Department":
+      case "Group":
+        mainQueue.add({
+          type: "insertMembersToGroup",
+          data: {
+            id: savedItem._id.toString(),
+            model: req.body.model,
+            members: fields.members,
+          },
+        });
+        break;
+
+      case "Job":
+      case "Sale":
+        mainQueue.add({
+          type: "addCounter",
+          data: {
+            itemId: savedItem._id.toString(),
+            model: req.body.model,
+          },
+        });
+
+        mainQueue.add({
+          type: "notifyAssignee",
+          data: {
+            target: {
+              customer:
+                idIndexList?.find(
+                  (item) => item.id === req.body.fields.customer
+                )?.name || req.body.fields.customer,
+              service:
+                idIndexList?.find((item) => item.id === req.body.fields.service)
+                  ?.name || req.body.fields.service,
+              scheduledTo:
+                req.body.fields.scheduledTo ||
+                req.body.fields.deliveryScheduledTo,
+              scheduleTime: req.body.fields.scheduleTime,
+              createdBy: req.body.createdBy,
+              title: req.body.fields.title || savedItem.number,
+            },
+            sourceId: createdBy,
+            receiver: req.body.fields.worker || req.body.fields.seller,
+            receiverName:
+              idIndexList?.find(
+                (item) =>
+                  item.id === req.body.fields.worker ||
+                  item.id === req.body.fields.seller
+              )?.name || "?",
+            label: req.body.model === "Job" ? "Job" : "Venda",
+          },
+        });
+        break;
+
+      case "StockEntry":
+        if (config.stock.stockEntriesNeedApproval === false) {
+          mainQueue.add({
+            type: "addToStock",
+            data: { items: savedItem.items },
+          });
+        } else {
+          mainQueue.add({
+            type: "addCounter",
+            data: {
+              itemId: savedItem._id.toString(),
+              model: req.body.model,
+            },
+          });
+        }
+        break;
+
+      case "User":
+        mainQueue.add({
+          type: "addUserRoutines",
+          data: {
+            model: req.body.model,
+            item: savedItem,
+          },
+        });
+        break;
+
+      default:
+        break;
     }
 
     if (fields.scheduledToAssignee === true) {
@@ -203,48 +261,6 @@ router.post("/", async (req, res) => {
           service: fields.service.name,
           customer: fields.customer,
         },
-      });
-    }
-
-    if (req.body.model === "Job" || req.body.model === "Sale") {
-      // console.log("req.body", req.body.fields);
-      mainQueue.add({
-        type: "notifyAssignee",
-        data: {
-          target: {
-            customer:
-              idIndexList?.find((item) => item.id === req.body.fields.customer)
-                ?.name || req.body.fields.customer,
-            service:
-              idIndexList?.find((item) => item.id === req.body.fields.service)
-                ?.name || req.body.fields.service,
-            scheduledTo:
-              req.body.fields.scheduledTo ||
-              req.body.fields.deliveryScheduledTo,
-            scheduleTime: req.body.fields.scheduleTime,
-            createdBy: req.body.createdBy,
-            title: req.body.fields.title || savedItem.number,
-          },
-          sourceId: createdBy,
-          receiver: req.body.fields.worker || req.body.fields.seller,
-          receiverName:
-            idIndexList?.find(
-              (item) =>
-                item.id === req.body.fields.worker ||
-                item.id === req.body.fields.seller
-            )?.name || "?",
-          label: req.body.model === "Job" ? "Job" : "Venda",
-        },
-      });
-    }
-
-    if (
-      req.body.model === "StockEntry" &&
-      config.stock.stockEntriesNeedApproval === false
-    ) {
-      mainQueue.add({
-        type: "addToStock",
-        data: { items: savedItem.items },
       });
     }
 

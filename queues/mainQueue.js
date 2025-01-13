@@ -8,12 +8,12 @@ const {
 } = require("../controllers/notificationOptions");
 
 const {
-  addRoutines,
   addCounter,
+  addManagerToDepartment,
+  addServiceToDepartment,
   addToAssigneeAgenda,
   addToStock,
-  addServiceToDepartment,
-  addManagerToDepartment,
+  addUserRoutines,
   insertMembership,
   insertMembersToGroup,
 } = require("../controllers/functions/addRoutines");
@@ -36,8 +36,8 @@ mainQueue.process(async (job) => {
       case "addCounter":
         await handleAddCounter(data);
         break;
-      case "addItem":
-        await handleAddItem(data);
+      case "addUserRoutines":
+        await handleAddUserRoutines(data);
         break;
       case "addToAssigneeAgenda":
         await handleAddToAssigneeAgenda(data);
@@ -131,16 +131,13 @@ const handleAddManagerToDepartment = async (data) => {
   await addManagerToDepartment(data.managerId, data.departmentId);
 };
 
-// const handleAddMembersToDepartment = async (data) => {
-//   await addMembersToDepartment(data.members, data.departmentId);
-// };
 
 const handleAddServiceToDepartment = async (data) => {
   await addServiceToDepartment(data.serviceId, data.departmentId);
 };
 
-const handleAddItem = async (data) => {
-  await addRoutines(data.model, data.item);
+const handleAddUserRoutines = async (data) => {
+  await addUserRoutines(data.model, data.item);
 };
 
 const handleAddToAssigneeAgenda = async (data) => {

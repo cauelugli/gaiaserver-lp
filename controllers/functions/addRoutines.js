@@ -10,9 +10,9 @@ const StockEntry = require("../../models/models/StockEntry");
 const User = require("../../models/models/User");
 const UserPreferences = require("../../models/models/UserPreferences");
 
-async function addRoutines(model, source) {
+async function addUserRoutines(model, source) {
   try {
-    const { department, position, role, members, manager } = source;
+    const { department, position, role } = source;
     switch (model) {
       case "User":
         if (department) {
@@ -95,17 +95,7 @@ async function addRoutines(model, source) {
         await newUserPreferences.save();
 
         break;
-      // case "Department":
-      //   if (manager) {
-      //     await User.findByIdAndUpdate(manager, {
-      //       $set: { department: source._id.toString() },
-      //     });
-      //   }
-
-      //   if (members && members.length > 0) {
-      //     "add"
-      //   }
-      //   break;
+      
 
       default:
         break;
@@ -301,12 +291,12 @@ const insertMembersToGroup = async (itemId, model, members) => {
 };
 
 module.exports = {
-  addRoutines,
   addCounter,
   addManagerToDepartment,
   addServiceToDepartment,
   addToAssigneeAgenda,
   addToStock,
+  addUserRoutines,
   createQuote,
   insertMembership,
   insertMembersToGroup,
