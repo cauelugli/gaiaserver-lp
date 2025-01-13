@@ -219,23 +219,6 @@ async function addToAssigneeAgenda(
   }
 }
 
-async function addToStock(items) {
-  try {
-    for (const item of items) {
-      const product = await Product.findById(item._id);
-      if (product) {
-        product.stockQuantity += item.count;
-        await product.save();
-      } else {
-        console.warn(`Produto com _id ${item._id} não encontrado.`);
-      }
-    }
-  } catch (err) {
-    console.error("Erro ao adicionar itens ao estoque:", err);
-    throw err;
-  }
-}
-
 async function createQuote(model, source) {
   "";
 }
@@ -295,7 +278,6 @@ module.exports = {
   addManagerToDepartment,
   addServiceToDepartment,
   addToAssigneeAgenda,
-  addToStock,
   addUserRoutines,
   createQuote,
   insertMembership,

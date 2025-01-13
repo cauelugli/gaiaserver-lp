@@ -8,7 +8,10 @@ const Config = require("../../models/models/Config");
 
 const mainQueue = require("../../queues/mainQueue");
 
-const { defineModel } = require("../../controllers/functions/routeFunctions");
+const {
+  defineModel,
+  parseReqFields,
+} = require("../../controllers/functions/routeFunctions");
 
 const {
   checkNewRequestDefaultStatus,
@@ -21,14 +24,8 @@ router.post("/", async (req, res) => {
   const {
     createdBy,
     fields,
-    image,
-    isManager,
-    label,
     name,
     selectedProducts,
-    services,
-    price,
-    selectedMembers,
   } = req.body;
 
   // one way of defining if user is admin
@@ -40,6 +37,9 @@ router.post("/", async (req, res) => {
     console.log("\nmodel not found\n");
     return res.status(400).json({ error: "Modelo inválido" });
   }
+
+  const notifications = await Notifications.findOne({});
+  const config = await Config.findOne({});
 
   // ACTIONS THAT NEED TO BE DONE _BEFORE_ ITEM IS CREATED
   switch (req.body.model) {
@@ -120,34 +120,13 @@ router.post("/", async (req, res) => {
       break;
   }
 
-  // '''parsing''' (dude, wtf....)
-  fields.attachments = req.body.attachments || [];
-  fields.manager = req.body.fields.manager?._id || "";
-  fields.members =
-    req.body.fields.members?.map((member) => member._id || member) || [];
-  fields.department = req.body.fields.department?._id || "";
-  fields.position = req.body.fields.position?._id || "";
-  fields.role = req.body.fields.role?._id || "";
-  fields.members = selectedMembers;
-  fields.image = image;
-  fields.isManager = isManager;
-  fields.createdBy = createdBy;
-  fields.products = selectedProducts;
-  fields.price =
-    label === "Plano de Serviços"
-      ? parseFloat(
-          req.body.finalPrice === 0 ? req.body.price : req.body.finalPrice
-        )
-      : parseFloat(price);
+  // parsing needs checking
+  const processedFields = parseReqFields(req.body.fields, req.body);
 
-  fields.services = services;
-
-  const newItem = new Model(fields);
+  const newItem = new Model(processedFields);
 
   try {
     const savedItem = await newItem.save();
-    const notifications = await Notifications.findOne({});
-    const config = await Config.findOne({});
 
     const { data: idIndexList } = await axios.get(
       "http://localhost:3000/api/idIndexList"
@@ -188,6 +167,13 @@ router.post("/", async (req, res) => {
           },
         });
 
+        if (config.requests.requestsNeedApproval === false) {
+          mainQueue.add({
+            type: "removeFromStock",
+            data: { items: savedItem.products },
+          });
+        }
+
         mainQueue.add({
           type: "notifyAssignee",
           data: {
@@ -225,15 +211,14 @@ router.post("/", async (req, res) => {
             type: "addToStock",
             data: { items: savedItem.items },
           });
-        } else {
-          mainQueue.add({
-            type: "addCounter",
-            data: {
-              itemId: savedItem._id.toString(),
-              model: req.body.model,
-            },
-          });
         }
+        mainQueue.add({
+          type: "addCounter",
+          data: {
+            itemId: savedItem._id.toString(),
+            model: req.body.model,
+          },
+        });
         break;
 
       case "User":

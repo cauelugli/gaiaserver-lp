@@ -1,5 +1,22 @@
 const Product = require("../../models/models/Product");
 
+async function addToStock(items) {
+  try {
+    for (const item of items) {
+      const product = await Product.findById(item._id);
+      if (product) {
+        product.stockQuantity += item.count;
+        await product.save();
+      } else {
+        console.warn(`Produto com _id ${item._id} não encontrado.`);
+      }
+    }
+  } catch (err) {
+    console.error("Erro ao adicionar itens ao estoque:", err);
+    throw err;
+  }
+}
+
 async function removeFromStock(items) {
   try {
     for (const item of items) {
@@ -20,4 +37,4 @@ async function removeFromStock(items) {
   }
 }
 
-module.exports = { removeFromStock };
+module.exports = { addToStock, removeFromStock };

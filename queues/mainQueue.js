@@ -2,6 +2,7 @@ const io = require("../api/node_modules/socket.io-client");
 const socket = io("http://localhost:5002");
 
 const Queue = require("bull");
+
 const {
   translateMethod,
   translateModel,
@@ -12,14 +13,19 @@ const {
   addManagerToDepartment,
   addServiceToDepartment,
   addToAssigneeAgenda,
-  addToStock,
   addUserRoutines,
   insertMembership,
   insertMembersToGroup,
 } = require("../controllers/functions/addRoutines");
+
 const {
   checkNewStockEntryDefaultStatus,
 } = require("../controllers/functions/checkFunctions");
+
+const {
+  addToStock,
+  removeFromStock,
+} = require("../controllers/functions/actionsFunctions");
 
 const mainQueue = new Queue("mainQueue", {
   redis: { port: 6379, host: "127.0.0.1" },
@@ -48,9 +54,6 @@ mainQueue.process(async (job) => {
       case "addManagerToDepartment":
         await handleAddManagerToDepartment(data);
         break;
-      // case "addMembersToDepartment":
-      //   await handleAddMembersToDepartment(data);
-      //   break;
       case "addServiceToDepartment":
         await handleAddServiceToDepartment(data);
         break;
@@ -80,6 +83,9 @@ mainQueue.process(async (job) => {
         break;
       case "notifyStockManagerToBuyProduct":
         await handleNotifyStockManagerToBuyProduct(data, isAdmin);
+        break;
+      case "removeFromStock":
+        await handleRemoveFromStock(data);
         break;
       case "productIsCreated":
         await handleProductIsCreated(data, finalList);
@@ -131,7 +137,6 @@ const handleAddManagerToDepartment = async (data) => {
   await addManagerToDepartment(data.managerId, data.departmentId);
 };
 
-
 const handleAddServiceToDepartment = async (data) => {
   await addServiceToDepartment(data.serviceId, data.departmentId);
 };
@@ -153,6 +158,10 @@ const handleAddToAssigneeAgenda = async (data) => {
 
 const handleAddToStock = async (data) => {
   await addToStock(data.items);
+};
+
+const handleRemoveFromStock = async (data) => {
+  await removeFromStock(data.items);
 };
 
 const handleCheckNewStockEntryDefaultStatus = async (data) => {

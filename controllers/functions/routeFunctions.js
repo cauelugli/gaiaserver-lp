@@ -168,4 +168,39 @@ const swapRoles = async (userId, newRoleId, oldRoleId) => {
   }
 };
 
-module.exports = { defineModel, swapDepartments, swapPositions, swapRoles };
+const parseReqFields = function (fields, reqBody) {
+  return {
+    manager: fields.manager?._id || reqBody.manager?._id || "",
+    members: (fields.members || reqBody.members || []).map(
+      (member) => member._id || member
+    ),
+    department: fields.department?._id || reqBody.department?._id || "",
+    position: fields.position?._id || reqBody.position?._id || "",
+    role: fields.role?._id || reqBody.role?._id || "",
+    selectedMembers: fields.selectedMembers || reqBody.selectedMembers || [],
+    image: fields.image || reqBody.image || "",
+    isManager: fields.isManager || reqBody.isManager || false,
+    createdBy: fields.createdBy || reqBody.createdBy || "",
+    products: fields.selectedProducts || reqBody.selectedProducts || [],
+    price:
+      fields.label === "Plano de Serviços"
+        ? parseFloat(
+            fields.finalPrice === 0 ? fields.price : fields.finalPrice
+          ) ||
+          parseFloat(
+            reqBody.finalPrice === 0 ? reqBody.price : reqBody.finalPrice
+          ) ||
+          0
+        : parseFloat(fields.price) || parseFloat(reqBody.price) || 0,
+    services: fields.services || reqBody.services || [],
+    ...fields,
+  };
+};
+
+module.exports = {
+  defineModel,
+  swapDepartments,
+  swapPositions,
+  swapRoles,
+  parseReqFields,
+};

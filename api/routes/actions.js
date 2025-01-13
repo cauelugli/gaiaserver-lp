@@ -296,11 +296,27 @@ router.put("/approveRequest", async (req, res) => {
             ?.name || "",
       },
     });
+    switch (model) {
+      case "Sale":
+        mainQueue.add({
+          type: "removeFromStock",
+          data: { items: updatedItem.products },
+        });
+        break;
+      case "StockEntry":
+        mainQueue.add({
+          type: "addToStock",
+          data: { items: updatedItem.items },
+        });
+        break;
+      default:
+        break;
+    }
 
-    res.status(200).json("Item resolvido com sucesso");
+    res.status(200).json("Item aprovado com sucesso");
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Erro ao resolver o item" });
+    res.status(500).json({ error: "Erro ao aprovar o item" });
   }
 });
 
