@@ -173,7 +173,7 @@ export default function Customization({ onClose }) {
                         size="small"
                         value={mainColor}
                         onChange={(e) => setMainColor(e.target.value)}
-                        sx={{ mx: 1, width: "25%" }}
+                        sx={{ mx: 1, width: "12%" }}
                       />
                       <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
                         <icons.ColorLensIcon sx={{ fontSize: 28 }} />
@@ -229,7 +229,7 @@ export default function Customization({ onClose }) {
                         size="small"
                         value={fontColor}
                         onChange={(e) => setFontColor(e.target.value)}
-                        sx={{ mx: 1, width: "25%" }}
+                        sx={{ mx: 1, width: "12%" }}
                       />
                       <IconButton
                         onClick={(e) => setAnchorEl2(e.currentTarget)}
