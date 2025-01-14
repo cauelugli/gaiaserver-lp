@@ -213,13 +213,6 @@ export const modals = {
     fields: [
       {
         fieldSection: "mainInfo",
-        name: "title",
-        label: "Título",
-        type: "string",
-        required: true,
-      },
-      {
-        fieldSection: "mainInfo",
         name: "customer",
         label: "Cliente",
         type: "allCustomers",
@@ -230,8 +223,7 @@ export const modals = {
         fieldSection: "mainInfo",
         name: "service",
         label: "Serviço",
-        type: "dynamicData",
-        dynamicData: "services",
+        type: "services",
         required: true,
         hasAvatar: false,
       },
@@ -242,6 +234,13 @@ export const modals = {
         type: "users",
         required: true,
         hasAvatar: true,
+      },
+      {
+        fieldSection: "mainInfo",
+        name: "title",
+        label: "Título",
+        type: "string",
+        required: true,
       },
       {
         fieldSection: "scheduling",

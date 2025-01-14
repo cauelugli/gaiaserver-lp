@@ -1,48 +1,21 @@
 const express = require("express");
 const router = express.Router();
+const mainQueue = require("../../queues/mainQueue");
 
-const Admin = require("../../models/models/Admin");
 const {
   defineModel,
-  swapDepartments,
-  swapPositions,
-  swapRoles,
+  parseReqFields,
 } = require("../../controllers/functions/routeFunctions");
-const {
-  notificationRoutines,
-} = require("../../controllers/functions/notificationRoutines");
-const {
-  insertMembersToGroup,
-  removeMembersFromGroup,
-} = require("../../controllers/functions/updateRoutines");
 
 // EDIT ITEM
 router.put("/", async (req, res) => {
-  const {
-    fields,
-    image,
-    isManager,
-    label,
-    name,
-    selectedProducts,
-    services,
-    price,
-    selectedMembers,
-    previousMembers,
-  } = req.body;
+  const { name } = req.body;
 
   const Model = defineModel(req.body.model);
 
   if (!Model) {
     console.log("\nmodel not found\n");
     return res.status(400).json({ error: "Modelo inválido" });
-  }
-
-  // defining if user is admin
-  let isAdmin = false;
-  const admin = await Admin.findOne();
-  if (admin && admin._id.toString() === req.body.sourceId) {
-    isAdmin = true;
   }
 
   // same name already registered verification
@@ -53,75 +26,51 @@ router.put("/", async (req, res) => {
     }
   }
 
-  // Busca pelo nome para obter o ID (provavelmente nao foi alterado o campo no frontend)
-  if (typeof req.body.fields.department === "string") {
-    const department = await defineModel("Department").findOne({
-      name: req.body.fields.department,
-    });
-    if (department) {
-      fields.department = department._id.toString();
-    }
-  } else {
-    fields.department = req.body.fields.department?._id || "";
-  }
-
-  if (typeof req.body.fields.position === "string") {
-    const position = await defineModel("Position").findOne({
-      name: req.body.fields.position,
-    });
-    if (position) {
-      fields.position = position._id.toString();
-    }
-  } else {
-    fields.position = req.body.fields.position?._id || "";
-  }
-
-  // verify cases
-  fields.image = image;
-  fields.scheduleTime = req.body.fields.scheduleTime || "";
-  fields.scheduledToAssignee = req.body.fields.scheduledToAssignee || false;
-  fields.role = req.body.fields.role?._id || "";
-  fields.products = req.body.fields.products || [];
-  fields.isManager = isManager;
-  fields.members =
-    selectedMembers.length !== 0 ? selectedMembers : req.body.fields.members;
-  fields.price =
-    label === "Plano de Serviços"
-      ? parseFloat(
-          req.body.finalPrice === 0 ? req.body.price : req.body.finalPrice
-        )
-      : parseFloat(price);
-
-  fields.services = services;
+  const processedFields = parseReqFields(req.body.fields, req.body);
 
   try {
     const updatedItem = await Model.findByIdAndUpdate(
       req.body.prevData._id,
-      { $set: fields },
+      { $set: processedFields },
       { new: true }
     );
 
-    // User department swap
-    if (req.body.model === "User") {
-      // we'll need swapPosition, role, and stuff...
-      await swapDepartments(
-        req.body.prevData._id,
-        req.body.model,
-        req.body.fields.department,
-        req.body.prevData.department
-      );
+    switch (req.body.model) {
+      case "User":
+        mainQueue.add({
+          type: "swapDepartments",
+          data: {
+            prevDataId: req.body.prevData._id.toString(),
+            model: req.body.model,
+            newDepartment: req.body.fields.department,
+            oldDepartment: req.body.prevData.department,
+          },
+        });
 
-      await swapPositions(
-        req.body.prevData._id,
-        req.body.fields.position,
-        req.body.prevData.position
-      );
+        mainQueue.add({
+          type: "swapPositions",
+          data: {
+            prevDataId: req.body.prevData._id.toString(),
+            newPosition: req.body.fields.position,
+            oldPosition: req.body.prevData.position,
+          },
+        });
+        break;
 
-      await swapRoles(
-        req.body.prevData._id,
-        req.body.fields.position,
-        req.body.prevData.position
-      );
+      case "Job":
+        mainQueue.add({
+          type: "swapDepartments",
+          data: {
+            prevDataId: req.body.prevData._id.toString(),
+            model: req.body.model,
+            newDepartment: req.body.fields.department,
+            oldDepartment: req.body.prevData.department,
+          },
+        });
+        break;
+
+      default:
+        break;
     }
 
     if (req.body.fields.members) {

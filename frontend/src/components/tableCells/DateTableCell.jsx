@@ -6,7 +6,7 @@ import { InputLabel, TextField } from "@mui/material";
 import dayjs from "dayjs";
 
 const DateTableCell = (props) => {
-  const today = dayjs().format("DD/MM/YYYY");
+  const today = dayjs().add(1, "day").format("DD/MM/YYYY");
 
   return (
     <>

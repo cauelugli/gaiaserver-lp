@@ -18,6 +18,7 @@ import SelectTableCell from "../components/tableCells/SelectTableCell";
 import ServicesTableCell from "../components/tableCells/ServicesTableCell";
 import StringTableCell from "../components/tableCells/StringTableCell";
 import UsersTableCell from "../components/tableCells/UsersTableCell ";
+import ServiceListTableCell from "../components/tableCells/ServiceListTableCell";
 
 // this is used in AddForm
 
@@ -145,6 +146,17 @@ export const renderField = (
           multiple={field.multiple}
         />
       );
+    case "services":
+      return (
+        <ServicesTableCell
+          fields={fields}
+          field={field}
+          handleChange={handleChange}
+          modalOptions={modalOptions}
+          required={field.required}
+          multiple={field.multiple}
+        />
+      );
     case "users":
       return (
         <UsersTableCell
@@ -176,7 +188,7 @@ export const renderField = (
       );
     case "servicesList":
       return (
-        <ServicesTableCell
+        <ServiceListTableCell
           value={fields[field.name] || ""}
           onChange={handleChange(field.name)}
           size="small"

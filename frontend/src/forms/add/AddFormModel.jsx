@@ -22,6 +22,7 @@ import DialogHeader from "../../components/small/DialogHeader";
 import ImageTableCell from "../../components/tableCells/ImageTableCell";
 
 import { renderField } from "../../options/formFieldOptions";
+import dayjs from "dayjs";
 
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
@@ -37,7 +38,32 @@ export default function AddFormModel(props) {
   const [refreshData, setRefreshData] = React.useState(false);
 
   // updating value from child modifications (basic refresh)
-  React.useEffect(() => {}, [priceDifference, refreshData]);
+  React.useEffect(() => {
+    console.log("looping crazy");
+    if (fields.worker) {
+      //setting Title and Description conveniently for user
+      setFields({
+        ...fields,
+        ["title"]: `${fields.service ? fields.service.name : "Serviço"} - ${
+          fields.customer ? fields.customer.name : "Cliente"
+        }`,
+        ["description"]: `${fields.worker.name}: Realizar ${
+          fields.service ? fields.service.name : "Serviço"
+        } para ${
+          fields.customer ? fields.customer.name : "Cliente"
+        } na data ${dayjs().add(1, "day").format("DD/MM/YYYY")} (${dayjs()
+          .add(1, "day")
+          .format("dddd")}).`,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    priceDifference,
+    refreshData,
+    fields.worker,
+    fields.customer,
+    fields.service,
+  ]);
 
   const modalOptions = props.options.find(
     (option) => option.label === props.selectedOptionLabel

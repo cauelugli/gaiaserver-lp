@@ -42,6 +42,7 @@ const {
   deleteRoutinesStockEntry,
   deleteRoutinesUser,
 } = require("../controllers/functions/deleteRoutines");
+const { swapDepartments, swapPositions } = require("../controllers/functions/swapFunctions");
 
 const deleteRoutinesFunctions = {
   deleteRoutinesClient,
@@ -122,11 +123,17 @@ mainQueue.process(async (job) => {
       case "notifyStockManagerToBuyProduct":
         await handleNotifyStockManagerToBuyProduct(data, isAdmin);
         break;
+      case "productIsCreated":
+        await handleProductIsCreated(data, finalList);
+        break;
       case "removeFromStock":
         await handleRemoveFromStock(data);
         break;
-      case "productIsCreated":
-        await handleProductIsCreated(data, finalList);
+      case "swapDepartments":
+        await handleSwapDepartments(data);
+        break;
+      case "swapPositions":
+        await handleSwapPositions(data);
         break;
 
       default:
@@ -314,6 +321,18 @@ const handleProductIsCreated = async (data, list) => {
     receivers: list,
     label: "Produto",
   });
+};
+
+const handleSwapDepartments = async (data) => {
+  const { prevDataId, model, newDepartment, oldDepartment } = data;
+
+  await swapDepartments(prevDataId, model, newDepartment, oldDepartment);
+};
+
+const handleSwapPositions = async (data) => {
+  const { prevDataId, newPosition, oldPosition } = data;
+
+  await swapPositions(prevDataId, newPosition, oldPosition);
 };
 
 // MONITORING (DEBUG)

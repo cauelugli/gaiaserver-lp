@@ -18,10 +18,11 @@ import ProductsTableCell from "../components/tableCells/ProductsTableCell";
 import ManagerSelectTableCell from "../components/tableCells/ManagerSelectTableCell";
 import MembersTableCell from "../components/tableCells/MembersTableCell";
 import SelectTableCell from "../components/tableCells/SelectTableCell";
-import ServicesTableCell from "../components/tableCells/ServicesTableCell";
 import StringTableCell from "../components/tableCells/StringTableCell";
 import AllCustomersTableCell from "../components/tableCells/AllCustomersTableCell";
 import UsersTableCell from "../components/tableCells/UsersTableCell ";
+import ServiceListTableCell from "../components/tableCells/ServiceListTableCell";
+import ServicesTableCell from "../components/tableCells/ServicesTableCell";
 
 const TableCellOptions = ({
   field,
@@ -56,6 +57,15 @@ const TableCellOptions = ({
       )}
       {field.type === "allCustomers" && (
         <AllCustomersTableCell
+          fields={fields}
+          field={field}
+          handleChange={handleChange}
+          modalOptions={modalOptions}
+          required={field.required}
+        />
+      )}
+      {field.type === "services" && (
+        <ServicesTableCell
           fields={fields}
           field={field}
           handleChange={handleChange}
@@ -197,7 +207,7 @@ const TableCellOptions = ({
         />
       )}
       {field.type === "servicesList" && (
-        <ServicesTableCell
+        <ServiceListTableCell
           value={fields[field.name] || ""}
           onChange={handleChange(field.name)}
           size="small"
