@@ -126,17 +126,17 @@ router.put("/", async (req, res) => {
 
     if (req.body.fields.members) {
       //insertMembersToGroup
-      await insertMembersToGroup(
-        updatedItem._id.toString(),
-        req.body.model,
-        selectedMembers
-      );
-      await removeMembersFromGroup(
-        updatedItem._id.toString(),
-        req.body.model,
-        selectedMembers,
-        previousMembers
-      );
+      // await insertMembersToGroup(
+      //   updatedItem._id.toString(),
+      //   req.body.model,
+      //   selectedMembers
+      // );
+      // await removeMembersFromGroup(
+      //   updatedItem._id.toString(),
+      //   req.body.model,
+      //   selectedMembers,
+      //   previousMembers
+      // );
     }
 
     res.status(200).json(updatedItem);
