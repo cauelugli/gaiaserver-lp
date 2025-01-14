@@ -28,6 +28,8 @@ const {
 } = require("../controllers/functions/actionsFunctions");
 
 const {
+  deleteRoutinesClient,
+  deleteRoutinesCustomer,
   deleteRoutinesDepartment,
   deleteRoutinesGroup,
   deleteRoutinesJob,
@@ -42,6 +44,8 @@ const {
 } = require("../controllers/functions/deleteRoutines");
 
 const deleteRoutinesFunctions = {
+  deleteRoutinesClient,
+  deleteRoutinesCustomer,
   deleteRoutinesDepartment,
   deleteRoutinesGroup,
   deleteRoutinesJob,

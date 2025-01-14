@@ -3,6 +3,62 @@ const UserPreferences = require("../../models/models/UserPreferences");
 
 const { defineModel } = require("../../controllers/functions/routeFunctions");
 
+async function deleteRoutinesClient(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
+  try {
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
+
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        await Model.findByIdAndDelete(id);
+      })
+    );
+
+    // notify that sourceId made this
+  } catch (err) {
+    console.error("Erro na rotina de deleção", err);
+  }
+}
+
+async function deleteRoutinesCustomer(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
+  try {
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
+
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        await Model.findByIdAndDelete(id);
+      })
+    );
+
+    // notify that sourceId made this
+  } catch (err) {
+    console.error("Erro na rotina de deleção", err);
+  }
+}
+
 async function deleteRoutinesDepartment(
   model,
   isMultiple,
@@ -19,39 +75,41 @@ async function deleteRoutinesDepartment(
   try {
     const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-    for (const id of itemsToDelete) {
-      const deletedItem = await Model.findByIdAndDelete(id);
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        const deletedItem = await Model.findByIdAndDelete(id);
 
-      if (deletedItem) {
-        const { members, manager, services } = deletedItem;
+        if (deletedItem) {
+          const { members, manager, services } = deletedItem;
 
-        if (manager) {
-          await defineModel("User").findByIdAndUpdate(manager, {
-            $set: { department: "" },
-          });
+          if (manager) {
+            await defineModel("User").findByIdAndUpdate(manager, {
+              $set: { department: "" },
+            });
+          }
+
+          if (members && members.length > 0) {
+            await Promise.all(
+              members.map((memberId) =>
+                defineModel("User").findByIdAndUpdate(memberId, {
+                  $set: { department: "" },
+                })
+              )
+            );
+          }
+
+          if (services && services.length > 0) {
+            await Promise.all(
+              services.map((serviceId) =>
+                defineModel("Service").findByIdAndUpdate(serviceId, {
+                  $set: { department: "" },
+                })
+              )
+            );
+          }
         }
-
-        if (members && members.length > 0) {
-          await Promise.all(
-            members.map((memberId) =>
-              defineModel("User").findByIdAndUpdate(memberId, {
-                $set: { department: "" },
-              })
-            )
-          );
-        }
-
-        if (services && services.length > 0) {
-          await Promise.all(
-            services.map((serviceId) =>
-              defineModel("Service").findByIdAndUpdate(serviceId, {
-                $set: { department: "" },
-              })
-            )
-          );
-        }
-      }
-    }
+      })
+    );
 
     // notify that sourceId made this
   } catch (err) {
@@ -75,47 +133,29 @@ async function deleteRoutinesGroup(
   try {
     const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-    for (const id of itemsToDelete) {
-      const deletedItem = await Model.findByIdAndDelete(id);
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        const deletedItem = await Model.findByIdAndDelete(id);
 
-      if (deletedItem) {
-        const { members } = deletedItem;
+        if (deletedItem) {
+          const { members } = deletedItem;
 
-        if (members && members.length > 0) {
-          await Promise.all(
-            members.map((memberId) =>
-              defineModel("User").findByIdAndUpdate(memberId, {
-                $pull: { groups: deletedItem._id.toSting() },
-              })
-            )
-          );
+          if (members && members.length > 0) {
+            await Promise.all(
+              members.map((memberId) =>
+                defineModel("User").findByIdAndUpdate(memberId, {
+                  $pull: { groups: deletedItem._id.toSting() },
+                })
+              )
+            );
+          }
         }
-      }
-    }
+      })
+    );
 
     // notify that sourceId made this
   } catch (err) {
     console.error("Erro na rotina de deleção", err);
-  }
-
-  try {
-    const group = await defineModel("Group").findById(sourceId);
-    //check this
-    if (!group) return;
-
-    const { members: groupMembers } = group;
-
-    if (groupMembers && groupMembers.length > 0) {
-      await Promise.all(
-        groupMembers.map((memberId) =>
-          defineModel("User").findByIdAndUpdate(memberId, {
-            $pull: { groups: sourceId },
-          })
-        )
-      );
-    }
-  } catch (err) {
-    console.error(`Erro na rotina de deleção`, err);
   }
 }
 
@@ -136,59 +176,62 @@ async function deleteRoutinesJob(
   try {
     const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-    for (const id of itemsToDelete) {
-      const item = await Model.findByIdAndDelete(id);
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        const item = await Model.findByIdAndDelete(id);
 
-      if (item && item.scheduleTime) {
-        try {
-          const assignee = item.worker || item.seller;
-          const scheduledTo = item.scheduledTo;
-          const [day, month, year] = scheduledTo.split("/");
-          const scheduleKey = `${month}-${year}`;
+        if (item && item.scheduleTime) {
+          try {
+            const assignee = item.worker || item.seller;
+            const scheduledTo = item.scheduledTo;
+            const [day, month, year] = scheduledTo.split("/");
+            const scheduleKey = `${month}-${year}`;
 
-          const agenda = await Agenda.findOne({});
-          if (!agenda || !Array.isArray(agenda.users)) {
-            console.log("Agenda não encontrada ou inválida");
-            continue;
-          }
+            const agenda = await Agenda.findOne({});
+            if (!agenda || !Array.isArray(agenda.users)) {
+              console.log("Agenda não encontrada ou inválida");
+            }
 
-          const userEntryIndex = agenda.users.findIndex((userMap) =>
-            userMap.has(assignee.toString())
-          );
-
-          if (userEntryIndex === -1) {
-            console.log("Usuário não encontrado na agenda");
-            continue;
-          }
-
-          const userMap = agenda.users[userEntryIndex];
-          const userJobsByMonth = userMap.get(assignee.toString());
-
-          if (userJobsByMonth && Array.isArray(userJobsByMonth[scheduleKey])) {
-            const jobIndex = userJobsByMonth[scheduleKey].findIndex(
-              (job) => job.jobId === sourceId.toString()
+            const userEntryIndex = agenda.users.findIndex((userMap) =>
+              userMap.has(assignee.toString())
             );
 
-            if (jobIndex !== -1) {
-              userJobsByMonth[scheduleKey].splice(jobIndex, 1);
-              userMap.set(assignee.toString(), userJobsByMonth);
-              agenda.users[userEntryIndex] = userMap;
-              await agenda.save();
+            if (userEntryIndex === -1) {
+              console.log("Usuário não encontrado na agenda");
+            }
+
+            const userMap = agenda.users[userEntryIndex];
+            const userJobsByMonth = userMap.get(assignee.toString());
+
+            if (
+              userJobsByMonth &&
+              Array.isArray(userJobsByMonth[scheduleKey])
+            ) {
+              const jobIndex = userJobsByMonth[scheduleKey].findIndex(
+                (job) => job.jobId === sourceId.toString()
+              );
+
+              if (jobIndex !== -1) {
+                userJobsByMonth[scheduleKey].splice(jobIndex, 1);
+                userMap.set(assignee.toString(), userJobsByMonth);
+                agenda.users[userEntryIndex] = userMap;
+                await agenda.save();
+              } else {
+                console.log(
+                  `Job ${sourceId} não encontrado na lista do mês/ano ${scheduleKey}`
+                );
+              }
             } else {
               console.log(
-                `Job ${sourceId} não encontrado na lista do mês/ano ${scheduleKey}`
+                `Nenhum job encontrado para o usuário no mês/ano ${scheduleKey}`
               );
             }
-          } else {
-            console.log(
-              `Nenhum job encontrado para o usuário no mês/ano ${scheduleKey}`
-            );
+          } catch (err) {
+            console.error("Erro ao remover job da agenda");
           }
-        } catch (err) {
-          console.error("Erro ao remover job da agenda");
         }
-      }
-    }
+      })
+    );
   } catch (err) {
     console.error("Erro na rotina de deleção", err);
   }
@@ -210,22 +253,24 @@ async function deleteRoutinesOperator(
   try {
     const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-    for (const id of itemsToDelete) {
-      const operator = await defineModel("User").findById(id);
-      const originalRole = operator.role;
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        const operator = await defineModel("User").findById(id);
+        const originalRole = operator.role;
 
-      await defineModel("User").findByIdAndUpdate(
-        id,
-        {
-          $set: { username: "", password: "", role: "", alreadyLogin: false },
-        },
-        { new: true }
-      );
+        await defineModel("User").findByIdAndUpdate(
+          id,
+          {
+            $set: { username: "", password: "", role: "", alreadyLogin: false },
+          },
+          { new: true }
+        );
 
-      await defineModel("Role").findByIdAndUpdate(originalRole, {
-        $pull: { members: operator._id.toString() },
-      });
-    }
+        await defineModel("Role").findByIdAndUpdate(originalRole, {
+          $pull: { members: operator._id.toString() },
+        });
+      })
+    );
 
     // notify that sourceId made this
   } catch (err) {
@@ -249,22 +294,24 @@ async function deleteRoutinesPosition(
   try {
     const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-    for (const id of itemsToDelete) {
-      const deletedItem = await Model.findByIdAndDelete(id);
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        const deletedItem = await Model.findByIdAndDelete(id);
 
-      if (deletedItem) {
-        const { members } = deletedItem;
-        if (members && members.length > 0) {
-          await Promise.all(
-            members.map((memberId) =>
-              defineModel("User").findByIdAndUpdate(memberId, {
-                $set: { position: "" },
-              })
-            )
-          );
+        if (deletedItem) {
+          const { members } = deletedItem;
+          if (members && members.length > 0) {
+            await Promise.all(
+              members.map((memberId) =>
+                defineModel("User").findByIdAndUpdate(memberId, {
+                  $set: { position: "" },
+                })
+              )
+            );
+          }
         }
-      }
-    }
+      })
+    );
 
     // notify that sourceId made this
   } catch (err) {
@@ -288,29 +335,30 @@ async function deleteRoutinesRole(
   try {
     const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-    for (const id of itemsToDelete) {
-      const deletedItem = await Model.findByIdAndDelete(id);
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        const deletedItem = await Model.findByIdAndDelete(id);
 
-      if (deletedItem) {
-        const { members } = deletedItem;
+        if (deletedItem) {
+          const { members } = deletedItem;
 
-        if (members && members.length > 0) {
-          await Promise.all(
-            members.map((memberId) =>
-              defineModel("User").findByIdAndUpdate(memberId, {
-                $set: { role: "" },
-              })
-            )
-          );
+          if (members && members.length > 0) {
+            await Promise.all(
+              members.map((memberId) =>
+                defineModel("User").findByIdAndUpdate(memberId, {
+                  $set: { role: "" },
+                })
+              )
+            );
+          }
         }
-      }
-    }
+      })
+    );
 
     // notify that sourceId made this
   } catch (err) {
     console.error("Erro na rotina de deleção", err);
   }
-  
 }
 
 async function deleteRoutinesSale(
@@ -329,9 +377,11 @@ async function deleteRoutinesSale(
   try {
     const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-    for (const id of itemsToDelete) {
-      await Model.findByIdAndDelete(id);
-    }
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        await Model.findByIdAndDelete(id);
+      })
+    );
 
     // notify that sourceId made this
   } catch (err) {
@@ -391,9 +441,11 @@ async function deleteRoutinesServicePlan(
   try {
     const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-    for (const id of itemsToDelete) {
-      await Model.findByIdAndDelete(id);
-    }
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        await Model.findByIdAndDelete(id);
+      })
+    );
 
     // notify that sourceId made this
   } catch (err) {
@@ -417,9 +469,11 @@ async function deleteRoutinesStockEntry(
   try {
     const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-    for (const id of itemsToDelete) {
-      await Model.findByIdAndDelete(id);
-    }
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        await Model.findByIdAndDelete(id);
+      })
+    );
 
     // notify that sourceId made this
   } catch (err) {
@@ -444,75 +498,81 @@ async function deleteRoutinesUser(
 
     const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-    for (const id of itemsToDelete) {
-      // Deletar e armazenar o usuário
-      const deletedUser = await Model.findByIdAndDelete(id);
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        await Model.findByIdAndDelete(id);
+        const deletedUser = await Model.findByIdAndDelete(id);
 
-      if (deletedUser) {
-        const { department, position, role, groups } = deletedUser;
+        if (deletedUser) {
+          const { department, position, role, groups } = deletedUser;
 
-        // Atualizar departamento se existir
-        if (department) {
-          const updateField = deletedUser.isManager ? "manager" : "members";
+          // Atualizar departamento se existir
+          if (department) {
+            const updateField = deletedUser.isManager ? "manager" : "members";
 
-          if (updateField === "manager") {
-            await defineModel("Department").findByIdAndUpdate(department, {
-              $set: { manager: "" },
-            });
-          } else {
-            await defineModel("Department").findByIdAndUpdate(department, {
+            if (updateField === "manager") {
+              await defineModel("Department").findByIdAndUpdate(department, {
+                $set: { manager: "" },
+              });
+            } else {
+              await defineModel("Department").findByIdAndUpdate(department, {
+                $pull: { members: deletedUser._id.toString() },
+              });
+            }
+          }
+
+          // Atualizar cargo se existir
+          if (position) {
+            await defineModel("Position").findByIdAndUpdate(position, {
               $pull: { members: deletedUser._id.toString() },
             });
           }
-        }
 
-        // Atualizar cargo se existir
-        if (position) {
-          await defineModel("Position").findByIdAndUpdate(position, {
-            $pull: { members: deletedUser._id.toString() },
-          });
-        }
-
-        // Atualizar perfil de acesso se existir
-        if (role) {
-          await defineModel("Role").findByIdAndUpdate(role, {
-            $pull: { members: deletedUser._id.toString() },
-          });
-        }
-
-        // Atualizar grupos se existirem
-        if (groups && groups.length > 0) {
-          await Promise.all(
-            groups.map((groupId) =>
-              defineModel("Group").findByIdAndUpdate(groupId, {
-                $pull: { members: deletedUser._id.toString() },
-              })
-            )
-          );
-        }
-
-        // Atualizar agenda
-        const agenda = await Agenda.findOne({});
-        if (agenda && Array.isArray(agenda.users)) {
-          const indexToRemove = agenda.users.findIndex((userMap) =>
-            userMap.has(deletedUser._id.toString())
-          );
-          if (indexToRemove !== -1) {
-            agenda.users.splice(indexToRemove, 1);
-            await agenda.save();
+          // Atualizar perfil de acesso se existir
+          if (role) {
+            await defineModel("Role").findByIdAndUpdate(role, {
+              $pull: { members: deletedUser._id.toString() },
+            });
           }
-        }
 
-        // Deletar preferências do usuário
-        await UserPreferences.deleteOne({ userId: deletedUser._id.toString() });
-      }
-    }
+          // Atualizar grupos se existirem
+          if (groups && groups.length > 0) {
+            await Promise.all(
+              groups.map((groupId) =>
+                defineModel("Group").findByIdAndUpdate(groupId, {
+                  $pull: { members: deletedUser._id.toString() },
+                })
+              )
+            );
+          }
+
+          // Atualizar agenda
+          const agenda = await Agenda.findOne({});
+          if (agenda && Array.isArray(agenda.users)) {
+            const indexToRemove = agenda.users.findIndex((userMap) =>
+              userMap.has(deletedUser._id.toString())
+            );
+            if (indexToRemove !== -1) {
+              agenda.users.splice(indexToRemove, 1);
+              await agenda.save();
+            }
+          }
+
+          // Deletar preferências do usuário
+          await UserPreferences.deleteOne({
+            userId: deletedUser._id.toString(),
+          });
+        }
+      })
+    );
   } catch (err) {
     console.error("Erro na rotina de deleção do usuário", err);
   }
 }
 
 module.exports = {
+  deleteRoutinesClient,
+  deleteRoutinesCustomer,
   deleteRoutinesDepartment,
   deleteRoutinesGroup,
   deleteRoutinesJob,
