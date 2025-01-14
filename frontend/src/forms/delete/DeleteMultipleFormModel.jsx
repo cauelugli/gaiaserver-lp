@@ -28,6 +28,7 @@ const DeleteMultipleFormModel = (props) => {
       );
 
       if (res.data) {
+        props.setMultiple(false);
         props.setSelectedMultipleItems([]);
         toast.success(
           `${props.selectedItems.length} itens deletados com sucesso!`,

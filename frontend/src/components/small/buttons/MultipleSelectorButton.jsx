@@ -173,6 +173,7 @@ const MultipleSelectorButton = (props) => {
           setRefreshData={props.setRefreshData}
           selectedItems={props.selectedMultipleItems}
           setSelectedMultipleItems={props.setSelectedMultipleItems}
+          setMultiple={props.setMultiple}
           openDialog={openDeleteDialog}
           setOpenDialog={setOpenDeleteDialog}
         />
