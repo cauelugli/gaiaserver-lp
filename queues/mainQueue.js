@@ -16,7 +16,7 @@ const {
   addUserRoutines,
   insertMembership,
   insertMembersToGroup,
-} = require("../controllers/functions/addRoutines");
+} = require("../controllers/functions/addFunctions");
 
 const {
   checkNewStockEntryDefaultStatus,
