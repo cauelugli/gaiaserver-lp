@@ -86,6 +86,20 @@ const notificationSchema = new Schema({
       default: [],
     },
   },
+  position: {
+    positionIsCreated: {
+      type: Array,
+      default: [],
+    },
+    positionIsEdited: {
+      type: Array,
+      default: [],
+    },
+    positionIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
   product: {
     productIsCreated: {
       type: Array,
@@ -96,6 +110,20 @@ const notificationSchema = new Schema({
       default: [],
     },
     productIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
+  role: {
+    roleIsCreated: {
+      type: Array,
+      default: [],
+    },
+    roleIsEdited: {
+      type: Array,
+      default: [],
+    },
+    roleIsDeleted: {
       type: Array,
       default: [],
     },

@@ -1,50 +1,105 @@
 const Agenda = require("../../models/models/Agenda");
-const Config = require("../../models/models/Config");
-const Department = require("../../models/models/Department");
-const Group = require("../../models/models/Group");
-const Position = require("../../models/models/Position");
-const Role = require("../../models/models/Role");
-const Service = require("../../models/models/Service");
-const User = require("../../models/models/User");
 const UserPreferences = require("../../models/models/UserPreferences");
 
-async function deleteRoutinesDepartment(model, deletedItem, sourceId) {
+const { defineModel } = require("../../controllers/functions/routeFunctions");
+
+async function deleteRoutinesDepartment(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
   try {
-    const department = await Department.findById(sourceId);
-    //check this
-    if (!department) return;
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-    const { members, manager, services } = department;
+    for (const id of itemsToDelete) {
+      const deletedItem = await Model.findByIdAndDelete(id);
 
-    if (manager) {
-      await User.findByIdAndUpdate(manager, {
-        $set: { department: "" },
-      });
+      if (deletedItem) {
+        const { members, manager, services } = deletedItem;
+
+        if (manager) {
+          await defineModel("User").findByIdAndUpdate(manager, {
+            $set: { department: "" },
+          });
+        }
+
+        if (members && members.length > 0) {
+          await Promise.all(
+            members.map((memberId) =>
+              defineModel("User").findByIdAndUpdate(memberId, {
+                $set: { department: "" },
+              })
+            )
+          );
+        }
+
+        if (services && services.length > 0) {
+          await Promise.all(
+            services.map((serviceId) =>
+              defineModel("Service").findByIdAndUpdate(serviceId, {
+                $set: { department: "" },
+              })
+            )
+          );
+        }
+      }
     }
 
-    if (members && members.length > 0) {
-      await Promise.all(
-        members.map((memberId) =>
-          User.findByIdAndUpdate(memberId, { $set: { department: "" } })
-        )
-      );
-    }
-
-    if (services && services.length > 0) {
-      await Promise.all(
-        services.map((serviceId) =>
-          Service.findByIdAndUpdate(serviceId, { $set: { department: "" } })
-        )
-      );
-    }
+    // notify that sourceId made this
   } catch (err) {
-    console.error(`Erro na rotina de deleção`, err);
+    console.error("Erro na rotina de deleção", err);
   }
 }
 
-async function deleteRoutinesGroup(model, deletedItem, sourceId) {
+async function deleteRoutinesGroup(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
   try {
-    const group = await Group.findById(sourceId);
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
+
+    for (const id of itemsToDelete) {
+      const deletedItem = await Model.findByIdAndDelete(id);
+
+      if (deletedItem) {
+        const { members } = deletedItem;
+
+        if (members && members.length > 0) {
+          await Promise.all(
+            members.map((memberId) =>
+              defineModel("User").findByIdAndUpdate(memberId, {
+                $pull: { groups: deletedItem._id.toSting() },
+              })
+            )
+          );
+        }
+      }
+    }
+
+    // notify that sourceId made this
+  } catch (err) {
+    console.error("Erro na rotina de deleção", err);
+  }
+
+  try {
+    const group = await defineModel("Group").findById(sourceId);
     //check this
     if (!group) return;
 
@@ -53,7 +108,9 @@ async function deleteRoutinesGroup(model, deletedItem, sourceId) {
     if (groupMembers && groupMembers.length > 0) {
       await Promise.all(
         groupMembers.map((memberId) =>
-          User.findByIdAndUpdate(memberId, { $pull: { groups: sourceId } })
+          defineModel("User").findByIdAndUpdate(memberId, {
+            $pull: { groups: sourceId },
+          })
         )
       );
     }
@@ -62,144 +119,396 @@ async function deleteRoutinesGroup(model, deletedItem, sourceId) {
   }
 }
 
-async function deleteRoutinesJob(model, deletedItem, sourceId) {
+async function deleteRoutinesJob(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
+
   try {
-    if (deletedItem.scheduleTime) {
-      try {
-        const assignee = deletedItem.worker || deletedItem.seller;
-        const scheduledTo = deletedItem.scheduledTo;
-        const [day, month, year] = scheduledTo.split("/");
-        const scheduleKey = `${month}-${year}`;
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-        const agenda = await Agenda.findOne({});
-        if (!agenda || !Array.isArray(agenda.users)) {
-          console.log("Agenda não encontrada ou inválida");
-        }
+    for (const id of itemsToDelete) {
+      const item = await Model.findByIdAndDelete(id);
 
-        const userEntryIndex = agenda.users.findIndex((userMap) =>
-          userMap.has(assignee.toString())
-        );
+      if (item && item.scheduleTime) {
+        try {
+          const assignee = item.worker || item.seller;
+          const scheduledTo = item.scheduledTo;
+          const [day, month, year] = scheduledTo.split("/");
+          const scheduleKey = `${month}-${year}`;
 
-        if (userEntryIndex === -1) {
-          console.log("Usuário não encontrado na agenda");
-        }
+          const agenda = await Agenda.findOne({});
+          if (!agenda || !Array.isArray(agenda.users)) {
+            console.log("Agenda não encontrada ou inválida");
+            continue;
+          }
 
-        const userMap = agenda.users[userEntryIndex];
-        const userJobsByMonth = userMap.get(assignee.toString());
-
-        if (userJobsByMonth && Array.isArray(userJobsByMonth[scheduleKey])) {
-          const jobIndex = userJobsByMonth[scheduleKey].findIndex(
-            (job) => job.jobId === sourceId.toString()
+          const userEntryIndex = agenda.users.findIndex((userMap) =>
+            userMap.has(assignee.toString())
           );
 
-          if (jobIndex !== -1) {
-            userJobsByMonth[scheduleKey].splice(jobIndex, 1);
-            userMap.set(assignee.toString(), userJobsByMonth);
-            agenda.users[userEntryIndex] = userMap;
-            await agenda.save();
+          if (userEntryIndex === -1) {
+            console.log("Usuário não encontrado na agenda");
+            continue;
+          }
+
+          const userMap = agenda.users[userEntryIndex];
+          const userJobsByMonth = userMap.get(assignee.toString());
+
+          if (userJobsByMonth && Array.isArray(userJobsByMonth[scheduleKey])) {
+            const jobIndex = userJobsByMonth[scheduleKey].findIndex(
+              (job) => job.jobId === sourceId.toString()
+            );
+
+            if (jobIndex !== -1) {
+              userJobsByMonth[scheduleKey].splice(jobIndex, 1);
+              userMap.set(assignee.toString(), userJobsByMonth);
+              agenda.users[userEntryIndex] = userMap;
+              await agenda.save();
+            } else {
+              console.log(
+                `Job ${sourceId} não encontrado na lista do mês/ano ${scheduleKey}`
+              );
+            }
           } else {
             console.log(
-              `Job ${sourceId} não encontrado na lista do mês/ano ${scheduleKey}`
+              `Nenhum job encontrado para o usuário no mês/ano ${scheduleKey}`
             );
           }
-        } else {
-          console.log(
-            `Nenhum job encontrado para o usuário no mês/ano ${scheduleKey}`
+        } catch (err) {
+          console.error("Erro ao remover job da agenda");
+        }
+      }
+    }
+  } catch (err) {
+    console.error("Erro na rotina de deleção", err);
+  }
+}
+
+async function deleteRoutinesOperator(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
+  try {
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
+
+    for (const id of itemsToDelete) {
+      const operator = await defineModel("User").findById(id);
+      const originalRole = operator.role;
+
+      await defineModel("User").findByIdAndUpdate(
+        id,
+        {
+          $set: { username: "", password: "", role: "", alreadyLogin: false },
+        },
+        { new: true }
+      );
+
+      await defineModel("Role").findByIdAndUpdate(originalRole, {
+        $pull: { members: operator._id.toString() },
+      });
+    }
+
+    // notify that sourceId made this
+  } catch (err) {
+    console.error("Erro na rotina de deleção", err);
+  }
+}
+
+async function deleteRoutinesPosition(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
+  try {
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
+
+    for (const id of itemsToDelete) {
+      const deletedItem = await Model.findByIdAndDelete(id);
+
+      if (deletedItem) {
+        const { members } = deletedItem;
+        if (members && members.length > 0) {
+          await Promise.all(
+            members.map((memberId) =>
+              defineModel("User").findByIdAndUpdate(memberId, {
+                $set: { position: "" },
+              })
+            )
           );
         }
-      } catch (err) {
-        console.error(`Erro ao remover job da agenda`);
       }
     }
+
+    // notify that sourceId made this
   } catch (err) {
-    console.error(`Erro na rotina de deleção`, err);
+    console.error("Erro na rotina de deleção", err);
   }
 }
 
-async function deleteRoutinesRole(model, deletedItem, sourceId) {
-  try {
-    //check this
-    const roleNotifications = await Role.findById(sourceId);
-    if (!roleNotifications) return;
-    //fix this
-    // await Config.findOneAndUpdate(
-    //   {},
-    //   {
-    //     $pull: {
-    //       "notifications.whenUserIsCreated": sourceId,
-    //       "notifications.whenUserIsEdited": sourceId,
-    //       "notifications.whenUserIsDeleted": sourceId,
-    //     },
-    //   }
-    // );
-  } catch (err) {
-    console.error(`Erro na rotina de deleção`, err);
+async function deleteRoutinesRole(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
   }
-}
-
-async function deleteRoutinesService(model, deletedItem, sourceId) {
   try {
-    const service = await Service.findById(sourceId);
-    //check this
-    if (!service) return;
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-    const { department: serviceDepartment } = service;
+    for (const id of itemsToDelete) {
+      const deletedItem = await Model.findByIdAndDelete(id);
 
-    if (serviceDepartment) {
-      await Department.findByIdAndUpdate(serviceDepartment, {
-        $pull: { services: sourceId },
-      });
+      if (deletedItem) {
+        const { members } = deletedItem;
+
+        if (members && members.length > 0) {
+          await Promise.all(
+            members.map((memberId) =>
+              defineModel("User").findByIdAndUpdate(memberId, {
+                $set: { role: "" },
+              })
+            )
+          );
+        }
+      }
     }
+
+    // notify that sourceId made this
   } catch (err) {
-    console.error(`Erro na rotina de deleção`, err);
+    console.error("Erro na rotina de deleção", err);
+  }
+  
+}
+
+async function deleteRoutinesSale(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
+  try {
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
+
+    for (const id of itemsToDelete) {
+      await Model.findByIdAndDelete(id);
+    }
+
+    // notify that sourceId made this
+  } catch (err) {
+    console.error("Erro na rotina de deleção", err);
   }
 }
 
-async function deleteRoutinesUser(deletedItem, sourceId) {
+async function deleteRoutinesService(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
   try {
-    const { department, position, role, groups } = deletedItem;
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
 
-    if (department) {
-      const updateField = deletedItem.isManager ? "manager" : "members";
+    for (const id of itemsToDelete) {
+      const deletedItem = await Model.findByIdAndDelete(id);
 
-      updateField === "manager"
-        ? await Department.findByIdAndUpdate(department, {
-            $set: { manager: "" },
-          })
-        : await Department.findByIdAndUpdate(department, {
-            $pull: { members: sourceId.toString() },
+      if (deletedItem) {
+        const { department } = deletedItem;
+
+        if (department) {
+          await defineModel("Department").findByIdAndUpdate(department, {
+            $pull: { services: deletedItem._id.toString() },
           });
-    }
-    if (position) {
-      await Position.findByIdAndUpdate(position, {
-        $pull: { members: sourceId },
-      });
-    }
-    if (role) {
-      await Role.findByIdAndUpdate(role, { $pull: { members: sourceId } });
-    }
-    if (groups && groups.length > 0) {
-      await Promise.all(
-        groups.map((groupId) =>
-          Group.findByIdAndUpdate(groupId, { $pull: { members: sourceId } })
-        )
-      );
-    }
-
-    const agenda = await Agenda.findOne({});
-    if (agenda && Array.isArray(agenda.users)) {
-      const indexToRemove = agenda.users.findIndex((userMap) =>
-        userMap.has(sourceId.toString())
-      );
-      if (indexToRemove !== -1) {
-        agenda.users.splice(indexToRemove, 1);
-        await agenda.save();
+        }
       }
     }
 
-    await UserPreferences.deleteOne({ userId: sourceId.toString() });
+    // notify that sourceId made this
   } catch (err) {
-    console.error(`Erro na rotina de deleção`, err);
+    console.error("Erro na rotina de deleção", err);
+  }
+}
+
+async function deleteRoutinesServicePlan(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
+  try {
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
+
+    for (const id of itemsToDelete) {
+      await Model.findByIdAndDelete(id);
+    }
+
+    // notify that sourceId made this
+  } catch (err) {
+    console.error("Erro na rotina de deleção", err);
+  }
+}
+
+async function deleteRoutinesStockEntry(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
+  try {
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
+
+    for (const id of itemsToDelete) {
+      await Model.findByIdAndDelete(id);
+    }
+
+    // notify that sourceId made this
+  } catch (err) {
+    console.error("Erro na rotina de deleção", err);
+  }
+}
+
+async function deleteRoutinesUser(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  try {
+    const Model = defineModel(model);
+
+    if (!Model) {
+      console.log("\nModel not found\n");
+      return res.status(400).json({ error: "Modelo inválido" });
+    }
+
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
+
+    for (const id of itemsToDelete) {
+      // Deletar e armazenar o usuário
+      const deletedUser = await Model.findByIdAndDelete(id);
+
+      if (deletedUser) {
+        const { department, position, role, groups } = deletedUser;
+
+        // Atualizar departamento se existir
+        if (department) {
+          const updateField = deletedUser.isManager ? "manager" : "members";
+
+          if (updateField === "manager") {
+            await defineModel("Department").findByIdAndUpdate(department, {
+              $set: { manager: "" },
+            });
+          } else {
+            await defineModel("Department").findByIdAndUpdate(department, {
+              $pull: { members: deletedUser._id.toString() },
+            });
+          }
+        }
+
+        // Atualizar cargo se existir
+        if (position) {
+          await defineModel("Position").findByIdAndUpdate(position, {
+            $pull: { members: deletedUser._id.toString() },
+          });
+        }
+
+        // Atualizar perfil de acesso se existir
+        if (role) {
+          await defineModel("Role").findByIdAndUpdate(role, {
+            $pull: { members: deletedUser._id.toString() },
+          });
+        }
+
+        // Atualizar grupos se existirem
+        if (groups && groups.length > 0) {
+          await Promise.all(
+            groups.map((groupId) =>
+              defineModel("Group").findByIdAndUpdate(groupId, {
+                $pull: { members: deletedUser._id.toString() },
+              })
+            )
+          );
+        }
+
+        // Atualizar agenda
+        const agenda = await Agenda.findOne({});
+        if (agenda && Array.isArray(agenda.users)) {
+          const indexToRemove = agenda.users.findIndex((userMap) =>
+            userMap.has(deletedUser._id.toString())
+          );
+          if (indexToRemove !== -1) {
+            agenda.users.splice(indexToRemove, 1);
+            await agenda.save();
+          }
+        }
+
+        // Deletar preferências do usuário
+        await UserPreferences.deleteOne({ userId: deletedUser._id.toString() });
+      }
+    }
+  } catch (err) {
+    console.error("Erro na rotina de deleção do usuário", err);
   }
 }
 
@@ -207,7 +516,12 @@ module.exports = {
   deleteRoutinesDepartment,
   deleteRoutinesGroup,
   deleteRoutinesJob,
+  deleteRoutinesOperator,
+  deleteRoutinesPosition,
   deleteRoutinesRole,
+  deleteRoutinesSale,
   deleteRoutinesService,
+  deleteRoutinesServicePlan,
+  deleteRoutinesStockEntry,
   deleteRoutinesUser,
 };

@@ -27,6 +27,34 @@ const {
   removeFromStock,
 } = require("../controllers/functions/actionsFunctions");
 
+const {
+  deleteRoutinesDepartment,
+  deleteRoutinesGroup,
+  deleteRoutinesJob,
+  deleteRoutinesOperator,
+  deleteRoutinesPosition,
+  deleteRoutinesRole,
+  deleteRoutinesSale,
+  deleteRoutinesService,
+  deleteRoutinesServicePlan,
+  deleteRoutinesStockEntry,
+  deleteRoutinesUser,
+} = require("../controllers/functions/deleteRoutines");
+
+const deleteRoutinesFunctions = {
+  deleteRoutinesDepartment,
+  deleteRoutinesGroup,
+  deleteRoutinesJob,
+  deleteRoutinesOperator,
+  deleteRoutinesPosition,
+  deleteRoutinesRole,
+  deleteRoutinesSale,
+  deleteRoutinesService,
+  deleteRoutinesServicePlan,
+  deleteRoutinesStockEntry,
+  deleteRoutinesUser,
+};
+
 const mainQueue = new Queue("mainQueue", {
   redis: { port: 6379, host: "127.0.0.1" },
 });
@@ -59,6 +87,12 @@ mainQueue.process(async (job) => {
         break;
       case "checkNewStockEntryDefaultStatus":
         await handleCheckNewStockEntryDefaultStatus(data);
+        break;
+      case "deleteSingleItem":
+        await handleDeleteSingleItem(data);
+        break;
+      case "deleteMultipleItems":
+        await handleDeleteMultipleItems(data);
         break;
       case "insertMembership":
         await handleInsertMembership(data);
@@ -166,6 +200,40 @@ const handleRemoveFromStock = async (data) => {
 
 const handleCheckNewStockEntryDefaultStatus = async (data) => {
   await checkNewStockEntryDefaultStatus(data);
+};
+
+const handleDeleteSingleItem = async (data) => {
+  const { sourceId, model, id } = data;
+
+  const routineFunction = `deleteRoutines${model}`;
+  if (deleteRoutinesFunctions[routineFunction]) {
+    await deleteRoutinesFunctions[routineFunction](
+      model,
+      false,
+      id,
+      sourceId,
+      ""
+    );
+  } else {
+    console.error(`Function ${routineFunction} is not defined.`);
+  }
+};
+
+const handleDeleteMultipleItems = async (data) => {
+  const { sourceId, model, ids } = data;
+
+  const routineFunction = `deleteRoutines${model}`;
+  if (deleteRoutinesFunctions[routineFunction]) {
+    await deleteRoutinesFunctions[routineFunction](
+      model,
+      true,
+      "",
+      sourceId,
+      ids
+    );
+  } else {
+    console.error(`Function ${routineFunction} is not defined.`);
+  }
 };
 
 const handleInsertMembership = async (data) => {
