@@ -95,7 +95,6 @@ async function addUserRoutines(model, source) {
         await newUserPreferences.save();
 
         break;
-      
 
       default:
         break;
@@ -167,7 +166,7 @@ async function addToAssigneeAgenda(
 ) {
   try {
     const agenda = await Agenda.findOne();
-    const [day, month, year] = scheduledTo?.split("/");
+    const [day, month, year] = scheduledTo ? scheduledTo.split("/") : "";
     const monthYearKey = `${month}-${year}`;
 
     const userIndex = agenda.users.findIndex((userMap) =>
