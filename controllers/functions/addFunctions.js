@@ -9,6 +9,7 @@ const Sale = require("../../models/models/Sale");
 const StockEntry = require("../../models/models/StockEntry");
 const User = require("../../models/models/User");
 const UserPreferences = require("../../models/models/UserPreferences");
+const { defineModel } = require("./routeFunctions");
 
 async function addUserRoutines(model, source) {
   try {
@@ -150,6 +151,25 @@ async function addManagerToDepartment(managerId, departmentId) {
   });
 }
 
+async function addOperator(data) {
+  const user = await User.findById(data.id);
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const updatedFields = {
+    username: data.username,
+    password: data.password,
+    role: data.role,
+  };
+
+  return await User.findByIdAndUpdate(
+    data.id,
+    { $set: updatedFields },
+  );
+}
+
 async function addServiceToDepartment(serviceId, departmentId) {
   await Department.findByIdAndUpdate(departmentId, {
     $push: { services: serviceId.toString() },
@@ -166,6 +186,7 @@ async function addToAssigneeAgenda(
 ) {
   try {
     const agenda = await Agenda.findOne();
+    console.log("scheduledTo", scheduledTo);
     const [day, month, year] = scheduledTo ? scheduledTo.split("/") : "";
     const monthYearKey = `${month}-${year}`;
 
@@ -205,14 +226,14 @@ async function addToAssigneeAgenda(
       { new: true }
     );
 
-    await Job.findByIdAndUpdate(jobId, {
-      $set: {
-        scheduleInfo: {
-          assignee,
-          time: scheduleTime,
-        },
-      },
-    });
+    // await Job.findByIdAndUpdate(jobId, {
+    //   $set: {
+    //     scheduleInfo: {
+    //       assignee,
+    //       time: scheduleTime,
+    //     },
+    //   },
+    // });
   } catch (err) {
     console.error("Erro ao adicionar na agenda do designado", err);
   }
@@ -231,7 +252,7 @@ const insertMembership = async (userId, modelId) => {
     }
     await item.save();
   } catch (error) {
-    console.error(`Erro ao inserir o userId no modelo ${model}:`);
+    console.error(`Erro ao inserir o userId no modelo Role`);
     throw error;
   }
 };
@@ -275,6 +296,7 @@ const insertMembersToGroup = async (itemId, model, members) => {
 module.exports = {
   addCounter,
   addManagerToDepartment,
+  addOperator,
   addServiceToDepartment,
   addToAssigneeAgenda,
   addUserRoutines,

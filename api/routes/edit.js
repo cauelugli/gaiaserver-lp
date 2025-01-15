@@ -58,15 +58,16 @@ router.put("/", async (req, res) => {
         break;
 
       case "Job":
-        mainQueue.add({
-          type: "swapDepartments",
-          data: {
-            prevDataId: req.body.prevData._id.toString(),
-            model: req.body.model,
-            newDepartment: req.body.fields.department,
-            oldDepartment: req.body.prevData.department,
-          },
-        });
+        if (updatedItem.worker !== req.body.prevData.worker) {
+          mainQueue.add({
+            type: "swapWorker",
+            data: {
+              jobId: updatedItem._id.toString(),
+              newAssignee: updatedItem.worker,
+              oldAssignee: req.body.prevData.worker,
+            },
+          });
+        }
         break;
 
       default:

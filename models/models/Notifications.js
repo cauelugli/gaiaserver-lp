@@ -86,6 +86,20 @@ const notificationSchema = new Schema({
       default: [],
     },
   },
+  operator: {
+    operatorIsCreated: {
+      type: Array,
+      default: [],
+    },
+    operatorIsEdited: {
+      type: Array,
+      default: [],
+    },
+    operatorIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
   position: {
     positionIsCreated: {
       type: Array,

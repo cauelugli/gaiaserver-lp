@@ -31,14 +31,21 @@ const DeleteFormModel = ({
 }) => {
   const handleDelete = async () => {
     try {
-      const res = await api.delete(`/delete/${userId}/${model}/${selectedItem._id}`);
-      if (res.data) {
-        toast.success(`${selectedItem.name||selectedItem.title||selectedItem.number} Deletado!`, {
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-          autoClose: 1200,
-        });
+      const res = await api.delete(
+        `/delete/${userId}/${model}/${selectedItem._id}`
+      );
+      if (res.data || res.status === 200) {
+        toast.success(
+          `${
+            selectedItem.name || selectedItem.title || selectedItem.number
+          } Deletado!`,
+          {
+            closeOnClick: true,
+            pauseOnHover: false,
+            theme: "colored",
+            autoClose: 1200,
+          }
+        );
 
         if (userId) {
           socket.emit("newDataRefreshButton", {

@@ -39,7 +39,6 @@ export default function AddFormModel(props) {
 
   // updating value from child modifications (basic refresh)
   React.useEffect(() => {
-    console.log("looping crazy");
     if (fields.worker) {
       //setting Title and Description conveniently for user
       setFields({
@@ -178,6 +177,12 @@ export default function AddFormModel(props) {
           service: fields.service?._id,
           worker: fields.worker?._id,
           seller: fields.seller?._id,
+          scheduledTo: fields.scheduledTo
+            ? fields.scheduledTo
+            : dayjs().add(1, "day").format("DD/MM/YYYY"),
+          deliveryScheduledTo: fields.deliveryScheduledTo
+            ? fields.deliveryScheduledTo
+            : dayjs().add(1, "day").format("DD/MM/YYYY"),
         },
         label: modalOptions.label,
         image: imagePath,
@@ -208,7 +213,7 @@ export default function AddFormModel(props) {
         finalPrice,
         attachments: uploadResponses,
       });
-      if (res.data) {
+      if (res.data || res.status === 200) {
         toast.success(`${props.selectedOptionLabel} Adicionado!`, {
           closeOnClick: true,
           pauseOnHover: false,

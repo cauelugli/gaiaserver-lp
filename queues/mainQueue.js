@@ -10,6 +10,7 @@ const {
 
 const {
   addCounter,
+  addOperator,
   addManagerToDepartment,
   addServiceToDepartment,
   addToAssigneeAgenda,
@@ -42,7 +43,13 @@ const {
   deleteRoutinesStockEntry,
   deleteRoutinesUser,
 } = require("../controllers/functions/deleteRoutines");
-const { swapDepartments, swapPositions } = require("../controllers/functions/swapFunctions");
+
+const {
+  swapDepartments,
+  swapPositions,
+  swapSeller,
+  swapWorker,
+} = require("../controllers/functions/swapFunctions");
 
 const deleteRoutinesFunctions = {
   deleteRoutinesClient,
@@ -74,6 +81,9 @@ mainQueue.process(async (job) => {
     switch (type) {
       case "addCounter":
         await handleAddCounter(data);
+        break;
+      case "addOperator":
+        await handleOperator(data);
         break;
       case "addUserRoutines":
         await handleAddUserRoutines(data);
@@ -135,6 +145,9 @@ mainQueue.process(async (job) => {
       case "swapPositions":
         await handleSwapPositions(data);
         break;
+      case "swapWorker":
+        await handleSwapWorker(data);
+        break;
 
       default:
         throw new Error(`Tipo de notificação não suportado: ${type}`);
@@ -188,6 +201,10 @@ const handleAddServiceToDepartment = async (data) => {
 
 const handleAddUserRoutines = async (data) => {
   await addUserRoutines(data.model, data.item);
+};
+
+const handleOperator = async (data) => {
+  await addOperator(data);
 };
 
 const handleAddToAssigneeAgenda = async (data) => {
@@ -321,6 +338,11 @@ const handleProductIsCreated = async (data, list) => {
     receivers: list,
     label: "Produto",
   });
+};
+
+const handleSwapWorker = async (data) => {
+  const { jobId, newAssignee, oldAssignee } = data;
+  await swapWorker(jobId, newAssignee, oldAssignee);
 };
 
 const handleSwapDepartments = async (data) => {

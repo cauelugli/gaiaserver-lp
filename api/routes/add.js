@@ -21,12 +21,7 @@ const {
 // CREATE ITEM
 router.post("/", async (req, res) => {
   // console.log("\nreq.body", req.body, "\n");
-  const {
-    createdBy,
-    fields,
-    name,
-    selectedProducts,
-  } = req.body;
+  const { createdBy, fields, name, selectedProducts } = req.body;
 
   // one way of defining if user is admin
   const isAdmin = createdBy === "admin" ? true : false;
@@ -50,40 +45,32 @@ router.post("/", async (req, res) => {
         return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
       }
       break;
-
     case "Operator":
       const salt = await bcrypt.genSalt(10);
       const hashedPass = await bcrypt.hash(
         req.body.fields["firstAccessPassword"],
         salt
       );
-      try {
-        const updatedItem = await User.findByIdAndUpdate(
-          req.body.fields["user"]._id,
-          {
-            $set: {
-              username: req.body.fields["username"],
-              password: hashedPass,
-              role: req.body.fields["role"]._id,
-            },
-          },
-          { new: true }
-        );
 
-        mainQueue.add({
-          type: "insertMembership",
-          data: {
-            id: updatedItem._id.toString(),
-            role: updatedItem.role,
-          },
-        });
+      mainQueue.add({
+        type: "addOperator",
+        data: {
+          id: req.body.fields["user"]._id.toString(),
+          username: req.body.fields["username"],
+          password: hashedPass,
+          role: req.body.fields["role"]._id.toString(),
+        },
+      });
 
-        return res.status(200).json(updatedItem);
-      } catch (err) {
-        console.log(err);
-        return res.status(500).json(err);
-      }
+      mainQueue.add({
+        type: "insertMembership",
+        data: {
+          id: req.body.fields["user"]._id.toString(),
+          role: req.body.fields["role"],
+        },
+      });
 
+      break;
     case "Job":
     case "Sale":
       try {
@@ -99,7 +86,6 @@ router.post("/", async (req, res) => {
         });
       }
       break;
-
     case "StockEntry":
       fields.quoteValue = req.body.selectedProducts.reduce((total, product) => {
         const buyValue = product.buyValue || 0;
@@ -115,7 +101,6 @@ router.post("/", async (req, res) => {
         });
       }
       break;
-
     default:
       break;
   }
@@ -126,7 +111,10 @@ router.post("/", async (req, res) => {
   const newItem = new Model(processedFields);
 
   try {
-    const savedItem = await newItem.save();
+    let savedItem;
+    if (req.body.model !== "Operator") {
+      savedItem = await newItem.save();
+    }
 
     const { data: idIndexList } = await axios.get(
       "http://localhost:3000/api/idIndexList"
@@ -243,7 +231,7 @@ router.post("/", async (req, res) => {
           scheduleTime: savedItem.scheduleTime,
           worker: savedItem.worker,
           itemId: savedItem._id.toString(),
-          service: fields.service.name,
+          service: fields.service,
           customer: fields.customer,
         },
       });
