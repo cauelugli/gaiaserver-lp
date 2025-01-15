@@ -58,38 +58,23 @@ export const optionsMainblocks = [
     link: "/quotes",
     permissionLabel: "quotes",
   },
-];
-
-export const optionsRightColumn = [
   {
-    icon: <icons.DashboardIcon sx={{ fontSize: 22 }} />,
+    icon: <icons.DashboardIcon sx={{ fontSize: 52 }} />,
     text: "Dashboard",
     link: "/dashboard",
     permissionLabel: "dashboard",
   },
   {
-    icon: <icons.AssessmentIcon sx={{ fontSize: 22 }} />,
+    icon: <icons.AssessmentIcon sx={{ fontSize: 52 }} />,
     text: "Relatórios",
     link: "/reports",
     permissionLabel: "reports",
   },
-  
   {
-    icon: <icons.AdminPanelSettingsIcon sx={{ fontSize: 22 }} />,
+    icon: <icons.AdminPanelSettingsIcon sx={{ fontSize: 52 }} />,
     text: "Acessos",
     link: "/security",
     permissionLabel: "security",
   },
-  {
-    icon: <icons.InsertDriveFileIcon sx={{ fontSize: 22 }} />,
-    text: "Arquivos",
-    link: "/files",
-    permissionLabel: "files",
-  },
-  {
-    icon: <icons.SettingsIcon sx={{ fontSize: 22 }} />,
-    text: "Configurações",
-    link: "/config",
-    permissionLabel: "config",
-  },
 ];
+

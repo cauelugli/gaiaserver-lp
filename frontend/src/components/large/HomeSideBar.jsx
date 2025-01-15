@@ -48,12 +48,7 @@ const HomeSideBar = ({
   const [openCalendar, setOpenCalendar] = React.useState(true);
 
   return (
-    <Grid
-      container
-      direction="column"
-      alignItems="center"
-      sx={{ ml:2, width: "80%" }}
-    >
+    <Grid container direction="column" alignItems="center">
       <Grid
         container
         direction="row"

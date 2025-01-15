@@ -185,6 +185,47 @@ export default function App() {
   //   });
   // };
 
+  // Changing window size
+  // eslint-disable-next-line no-unused-vars
+  const [windowSizeSetter, setWindowSizeSetter] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  const getSizeCategory = (width) => {
+    if (width < 480) return "nano"; // nano
+    if (width < 600) return "xs"; // extra small
+    if (width < 960) return "sm"; // small
+    if (width < 1200) return "md1"; // medium 1
+    if (width < 1280) return "md2"; // medium 2
+    if (width < 1600) return "lg1"; // large 1
+    if (width < 1920) return "lg2"; // large 2
+    return "xl"; // extra large
+  };
+  const [currentWindowSize, setCurrentWindowSize] = useState(
+    getSizeCategory(window.innerWidth)
+  );
+  useEffect(() => {
+    let timeoutId;
+
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        const newWidth = window.innerWidth;
+        setWindowSizeSetter({
+          width: newWidth,
+          height: window.innerHeight,
+        });
+        setCurrentWindowSize(getSizeCategory(newWidth));
+      }, 500);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Grid
@@ -249,6 +290,7 @@ export default function App() {
                             configDashboard={configData.dashboard}
                             onMount={() => handleSidebarVisibility(false)}
                             onUnmount={() => handleSidebarVisibility(true)}
+                            currentWindowSize={currentWindowSize}
                           />
                         ) : (
                           <Navigate to="/login" />
@@ -287,6 +329,7 @@ export default function App() {
                             configCustomization={configData.customization}
                             topBar={userPreferences.barPosition}
                             userAgenda={userAgenda}
+                            currentWindowSize={currentWindowSize}
                           />
                         ) : (
                           <Navigate to="/login" />
@@ -323,6 +366,7 @@ export default function App() {
                             refreshData={refreshData}
                             setRefreshData={setRefreshData}
                             configCustomization={configData.customization}
+                            currentWindowSize={currentWindowSize}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -381,6 +425,7 @@ export default function App() {
                               cardSize={userPreferences.cardSize}
                               configDashboard={configData.dashboard}
                               configCustomization={configData.customization}
+                              currentWindowSize={currentWindowSize}
                             />
                           ) : (
                             <Navigate to="/login" />

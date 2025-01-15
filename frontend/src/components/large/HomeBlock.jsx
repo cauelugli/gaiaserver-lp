@@ -5,12 +5,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Grid, Paper } from "@mui/material";
 
-import {
-  optionsMainblocks,
-  optionsRightColumn,
-} from "../../options/homeOptions";
+import { optionsMainblocks } from "../../options/homeOptions";
 
-const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
+const HomeBlock = ({ currentWindowSize, allowedLinks, configData }) => {
   const uniqueAllowedLinks = [...new Set(allowedLinks)];
 
   const allowedListMainblocks = uniqueAllowedLinks.filter((link) =>
@@ -24,157 +21,94 @@ const HomeBlock = ({ userUsername, allowedLinks, configData }) => {
       "services",
       "finance",
       "quotes",
+      "security",
+      "dashboard",
+      "reports",
     ].includes(link)
-  );
-
-  const allowedListRightColumn = uniqueAllowedLinks.filter((link) =>
-    ["files", "security", "dashboard", "reports", "config"].includes(link)
   );
 
   React.useEffect(() => {}, [configData]);
 
   const [hoveredIndexMainblocks, setHoveredIndexMainblocks] = useState(null);
-  const [hoveredIndexRightColumn, setHoveredIndexRightColumn] = useState(null);
+
+  const factor =
+    {
+      nano: 0.5,
+      xs: 1,
+      sm: 2,
+      md1: 2.5,
+      md2: 2.75,
+      lg1: 3.5,
+      lg2: 3.75,
+      xl: 4.25,
+    }[currentWindowSize] || 0;
 
   return (
     <Grid
       container
       direction="row"
-      justifyContent={
-        allowedListRightColumn.length === 0 ? "center" : "space-between"
-      }
+      sx={{ mt: -1, ml: allowedListMainblocks.length <= 4 ? 15 : "" }}
     >
-      <Grid
-        item
-        id="mainBlock"
-        sx={{
-          width: allowedListMainblocks.length <= 4 ? "70%" : "75%",
-        }}
-      >
-        <Grid
-          container
-          direction="row"
-          sx={{ mt: -1, ml: allowedListMainblocks.length <= 4 ? 15 : "" }}
-        >
-          {optionsMainblocks.map((option, index) => {
-            if (allowedListMainblocks.includes(option.permissionLabel)) {
-              return (
-                <Grid
-                  item
-                  key={index}
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={allowedListMainblocks.length <= 4 ? 10 : 4}
-                  xl={2}
-                  sx={{ p: 1 }}
-                >
-                  <Link to={option.link} style={{ textDecoration: "none" }}>
-                    <Paper
-                      onMouseEnter={() => setHoveredIndexMainblocks(index)}
-                      onMouseLeave={() => setHoveredIndexMainblocks(null)}
-                      sx={{
-                        height: 110,
-                        width: "100%",
-                        transition: "background-color 0.3s, color 0.3s",
-                        backgroundColor:
-                          hoveredIndexMainblocks === index &&
-                          configData &&
-                          configData.customization
-                            ? configData.customization.mainColor
-                            : "white",
-                        color:
-                          hoveredIndexMainblocks === index ? "white" : "#777",
-                      }}
-                    >
-                      <Grid
-                        container
-                        direction="column"
-                        alignItems="center"
-                        justifyContent="center"
-                        sx={{
-                          height: "100%",
-                          cursor: "pointer",
-                        }}
-                      >
-                        {option.icon}
-                        <span
-                          style={{
-                            fontSize: 14,
-                            fontWeight: "bold",
-                            fontFamily: "Verdana, sans-serif",
-                          }}
-                        >
-                          {option.text}
-                        </span>
-                      </Grid>
-                    </Paper>
-                  </Link>
-                </Grid>
-              );
-            } else {
-              return null;
-            }
-          })}
-        </Grid>
-      </Grid>
-      <Grid item id="rightColumn" sx={{ ml: 2 }}>
-        {optionsRightColumn.map((option, index) => {
-          if (allowedListRightColumn.includes(option.permissionLabel)) {
-            return (
-              <Grid item key={index} sx={{ mb: 2 }}>
-                <Link
-                  to={option.link}
-                  style={{
-                    textDecoration: "none",
+      {optionsMainblocks.map((option, index) => {
+        if (allowedListMainblocks.includes(option.permissionLabel)) {
+          return (
+            <Grid
+              item
+              key={index}
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              xl={4}
+              sx={{ p: 1 }}
+            >
+              <Link to={option.link} style={{ textDecoration: "none" }}>
+                <Paper
+                  onMouseEnter={() => setHoveredIndexMainblocks(index)}
+                  onMouseLeave={() => setHoveredIndexMainblocks(null)}
+                  sx={{
+                    height: 40 * factor,
+                    transition: "background-color 0.3s, color 0.3s",
+                    backgroundColor:
+                      hoveredIndexMainblocks === index &&
+                      configData &&
+                      configData.customization
+                        ? configData.customization.mainColor
+                        : "white",
+                    color: hoveredIndexMainblocks === index ? "white" : "#777",
                   }}
                 >
-                  <Paper
-                    onMouseEnter={() => setHoveredIndexRightColumn(index)}
-                    onMouseLeave={() => setHoveredIndexRightColumn(null)}
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
                     sx={{
-                      width: 180,
-                      py: 2.25,
-                      mx: 1,
-                      transition: "background-color 0.3s, color 0.3s",
-                      backgroundColor:
-                        hoveredIndexRightColumn === index
-                          ? "white"
-                          : configData && configData.customization
-                          ? configData.customization.mainColor
-                          : "white",
-                      color:
-                        hoveredIndexRightColumn === index ? "#777" : "white",
+                      height: "100%",
+                      cursor: "pointer",
                     }}
                   >
-                    <Grid
-                      container
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="center"
-                      sx={{
-                        cursor: "pointer",
+                    {option.icon}
+                    <span
+                      style={{
+                        marginTop: factor * 2,
+                        width: "auto",
+                        fontSize: 14 + (factor + factor / 2),
+                        fontWeight: "bold",
+                        fontFamily: "Verdana, sans-serif",
                       }}
                     >
-                      {option.icon}
-                      <span
-                        style={{
-                          marginLeft: 10,
-                          fontSize: 14,
-                          fontWeight: "bold",
-                          fontFamily: "Verdana, sans-serif",
-                        }}
-                      >
-                        {option.text}
-                      </span>
-                    </Grid>
-                  </Paper>
-                </Link>
-              </Grid>
-            );
-          }
-        })}
-      </Grid>
+                      {option.text}
+                    </span>
+                  </Grid>
+                </Paper>
+              </Link>
+            </Grid>
+          );
+        } else {
+          return null;
+        }
+      })}
     </Grid>
   );
 };

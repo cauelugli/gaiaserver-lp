@@ -16,6 +16,7 @@ const Home = ({
   handleShortcutClick,
   userAgenda,
   mainColor,
+  currentWindowSize,
 }) => {
   React.useEffect(() => {
     if (onMount) {
@@ -30,24 +31,31 @@ const Home = ({
   }, [onMount, onUnmount]);
 
   return (
-    <>
-      <Grid
-        container
-        sx={{
-          width:"105%",
-          minHeight: "40vw",
-          mx: 2,
-          mt: 1,
-        }}
-      >
-        <Grid item md={8}>
-          <HomeBlock
-            userUsername={userUsername}
-            allowedLinks={allowedLinks}
-            configData={configData}
-          />
-        </Grid>
-        <Grid item md={4}>
+    <Grid
+      container
+      sx={{
+        mx:
+          currentWindowSize === "lg1" ||
+          currentWindowSize === "lg2" ||
+          currentWindowSize === "xl"
+            ? 1
+            : 0,
+        mt: 1,
+      }}
+    >
+      <Grid item lg={9} xl={8}>
+        <HomeBlock
+          userUsername={userUsername}
+          allowedLinks={allowedLinks}
+          configData={configData}
+          currentWindowSize={currentWindowSize}
+        />
+      </Grid>
+      {(currentWindowSize === "md2" ||
+        currentWindowSize === "lg1" ||
+        currentWindowSize === "lg2" ||
+        currentWindowSize === "xl") && (
+        <Grid item lg={3} xl={4}>
           <HomeSideBar
             userId={userId}
             handleShortcutClick={handleShortcutClick}
@@ -56,8 +64,8 @@ const Home = ({
             mainColor={mainColor}
           />
         </Grid>
-      </Grid>
-    </>
+      )}
+    </Grid>
   );
 };
 
