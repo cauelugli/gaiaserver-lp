@@ -1,4 +1,5 @@
 const Config = require("../../models/models/Config");
+const { defineModel } = require("./routeFunctions");
 
 async function checkNewRequestDefaultStatus(fields) {
   try {
@@ -28,7 +29,27 @@ async function checkNewStockEntryDefaultStatus(fields) {
   }
 }
 
+async function checkSameName(data) {
+  try {
+    const Model = defineModel(data.model);
+
+    if (!Model) {
+      console.log("\nModel not found\n");
+      throw new Error("Modelo Inválido");
+    }
+
+    const existingName = await Model.findOne({ name: data.name });
+    if (existingName) {
+      throw new Error("Nome já cadastrado");
+    }
+  } catch (err) {
+    //Nome já cadastrado
+    throw err;
+  }
+}
+
 module.exports = {
   checkNewRequestDefaultStatus,
   checkNewStockEntryDefaultStatus,
+  checkSameName,
 };

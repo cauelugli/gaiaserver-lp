@@ -16,12 +16,13 @@ const {
 const {
   checkNewRequestDefaultStatus,
   checkNewStockEntryDefaultStatus,
+  checkSameName,
 } = require("../../controllers/functions/checkFunctions");
 
 // CREATE ITEM
 router.post("/", async (req, res) => {
   // console.log("\nreq.body", req.body, "\n");
-  const { createdBy, fields, name, selectedProducts } = req.body;
+  const { createdBy, fields, selectedProducts } = req.body;
 
   // one way of defining if user is admin
   const isAdmin = createdBy === "admin" ? true : false;
@@ -40,9 +41,13 @@ router.post("/", async (req, res) => {
   switch (req.body.model) {
     case "Customer":
     case "Client":
-      const existingNameUser = await Model.findOne({ name });
-      if (existingNameUser) {
-        return res.status(422).json({ error: "Nome de Cliente já cadastrado" });
+      try {
+        await checkSameName({
+          model: req.body.model,
+          name: req.body.fields.name || req.body.name,
+        });
+      } catch (err) {
+        return res.status(422).json({ error: err.message });
       }
       break;
     case "Operator":
