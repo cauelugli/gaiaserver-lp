@@ -27,7 +27,6 @@ const DataTableCell = ({
           direction="row"
           alignItems="center"
           justifyContent="flex-start"
-          sx={{ maxWidth: 200 }}
         >
           <Tooltip title={found.name}>
             <Avatar
@@ -57,7 +56,7 @@ const DataTableCell = ({
       ) : item && typeof item === "string" && item.startsWith("/images") ? (
         <Grid
           sx={{
-            width: 60,
+            maxWidth: 60,
           }}
         >
           <Grid
@@ -97,7 +96,11 @@ const DataTableCell = ({
           </Grid>
         </Grid>
       ) : Array.isArray(item) ? (
-        <Grid container direction="row" alignItems="center">
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+        >
           {item.map((obj, index) => (
             <Grid item key={index} sx={{ mr: 1 }}>
               <Tooltip
@@ -185,7 +188,7 @@ const DataTableCell = ({
       ) : isDate(item) ? (
         <>{dayjs(item).format("DD/MM/YYYY hh:MM")}</>
       ) : (
-        <Grid sx={{ maxWidth: 200 }}>{item}</Grid>
+        <Grid>{item}</Grid>
       )}
     </>
   );

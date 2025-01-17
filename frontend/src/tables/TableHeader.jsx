@@ -19,7 +19,7 @@ function TableHeader(props) {
           sx={{
             fontSize: 13,
             fontWeight: "bold",
-            width: cellIndex === 0 && headCell.id !== "name" && 50,
+            width: cellIndex === 0 ? 50:"auto",
           }}
           sortDirection={props.orderBy === headCell.id ? props.order : false}
         >
@@ -33,13 +33,13 @@ function TableHeader(props) {
         </TableCell>
       ))}
       <TableCell
-        align="center"
-        sx={{ fontSize: 13, fontWeight: "bold", width: 80 }}
+        align="right"
+        sx={{ fontSize: 13, fontWeight: "bold" }}
       >
         Ações
       </TableCell>
       {props.multiple && (
-        <TableCell align="center" id="multiple" sx={{ p: 0, m: 0 }}>
+        <TableCell id="multiple" sx={{ p: 0, m: 0 }}>
           <Checkbox size="small" checked={true} disabled sx={{ p: -1, m: -1 }}/>
         </TableCell>
       )}

@@ -35,10 +35,7 @@ function StandardTable(props) {
         .map((row, rowIndex) => (
           <TableRow key={rowIndex}>
             {props.tableColumns[props.itemIndex].map((column, columnIndex) => (
-              <TableCell
-                key={columnIndex}
-                align={columnIndex === 0 ? "" : "left"}
-              >
+              <TableCell key={columnIndex} align="left">
                 <DataTableCell
                   mainColor={props.mainColor}
                   item={row[column.id]}
@@ -53,7 +50,7 @@ function StandardTable(props) {
                 />
               </TableCell>
             ))}
-            <TableCell align="center">
+            <TableCell align="right">
               <RowButton
                 userId={props.userId}
                 isRequestsApproverManager={
@@ -77,7 +74,10 @@ function StandardTable(props) {
               />
             </TableCell>
             {props.multiple && (
-              <TableCell align="center" id="multiple" sx={{ p: 0, m: 0 }}>
+              <TableCell
+                id="multiple"
+                sx={{ p: 0, m: 0, width: 30 }}
+              >
                 <Checkbox
                   sx={{ p: -1, m: -1 }}
                   size="small"
