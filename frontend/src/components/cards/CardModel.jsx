@@ -126,7 +126,7 @@ export default function CardModel({
               </Typography>
             </Grid>
           )}
-          {usesProduct.includes(label) && (
+          {item && usesProduct.includes(label) && (
             <Grid
               container
               direction="row"
@@ -135,7 +135,7 @@ export default function CardModel({
               sx={{ mb: 1 }}
             >
               {label === "Sale" ? (
-                item.products.map((item, index) => (
+                item?.products?.map((item, index) => (
                   <Grid item key={index}>
                     <Avatar
                       alt={`Image ${index}`}

@@ -28,7 +28,7 @@ export default function ProductCardModel({
   setRefreshData,
 }) {
   const renderTypographies = () => {
-    return item.fields.map(({ name, value }, index) => (
+    return item?.fields?.map(({ name, value }, index) => (
       <Typography key={index} variant="body2" sx={{ mt: 1, fontSize: 13 }}>
         <strong>{name}:</strong> {value || "N/A"}
       </Typography>
@@ -47,26 +47,27 @@ export default function ProductCardModel({
               justifyContent="center"
             >
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                {item.name}
+                {item?.name || "N/A"}
               </Typography>
             </Grid>
             <Grid container direction="row" justifyContent="center">
               <Avatar
-                src={`http://localhost:3000/static/${item.images[0] || ""}`}
+                alt=""
+                src={`http://localhost:3000/static/${item?.images?.[0] || ""}`}
                 sx={{ width: 50, height: 50, mt: 2 }}
               />
             </Grid>
             {renderTypographies()}
             <Typography variant="body2" sx={{ mt: 1, fontSize: 13 }}>
               <strong>Valor de Compra:</strong> R$
-              {item.buyValue.toFixed(2) || "N/A"}
+              {item?.buyValue?.toFixed(2) || "N/A"}
             </Typography>
             <Typography variant="body2" sx={{ mt: 1, fontSize: 13 }}>
               <strong>Valor de Venda:</strong> R$
-              {item.sellValue.toFixed(2) || "N/A"}
+              {item?.sellValue?.toFixed(2) || "N/A"}
             </Typography>{" "}
             <Typography variant="body2" sx={{ mt: 1, fontSize: 13 }}>
-              <strong>Em estoque:</strong> {item.stockQuantity || "N/A"}
+              <strong>Em estoque:</strong> {item?.stockQuantity || "N/A"}
             </Typography>{" "}
             <Typography variant="body2" sx={{ mt: 1, fontSize: 13 }}>
               <strong>Vendidos:</strong> {"N/A"}
