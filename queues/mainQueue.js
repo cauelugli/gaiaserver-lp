@@ -283,18 +283,12 @@ const handleNotifyAdmin = async (data, isAdmin) => {
   });
 };
 
-const handleNotifyApproverManager = async (data, isAdmin) => {
+const handleNotifyApproverManager = async (data) => {
   socket.emit("notifyApproverManager", {
     title: data.item,
-    source:
-      data.idIndexList?.find((item) => item.id === data.requestedBy)?.name ||
-      "admin",
+    source: data.requestedBy || "admin",
     receiver: data.requestsApproverManager,
-    receiverName:
-      data.idIndexList?.find((item) => item.id === data.requestsApproverManager)
-        ?.name || "",
     model: data.model,
-    emitter: data.requestedBy,
   });
 };
 
@@ -303,7 +297,6 @@ const handleNotifyAssignee = async (data) => {
     target: data.target,
     sourceId: data.sourceId,
     receiver: data.receiver,
-    receiverName: data.receiverName,
     label: data.label,
   });
 };
@@ -312,8 +305,7 @@ const handleNotifyRequester = async (data) => {
   socket.emit("notifyRequester", {
     target: data.target,
     receiver: data.receiver,
-    receiverName: data.receiverName,
-    managerName: data.managerName,
+    manager: data.manager,
     model: data.model,
   });
 };
@@ -321,8 +313,7 @@ const handleNotifyRequester = async (data) => {
 const handleNotifyStockManagerToBuyProduct = async (data, isAdmin) => {
   socket.emit("notifyStockManagerToBuyProduct", {
     receiver: data.receiver,
-    receiverName: data.receiverName,
-    emitterName: data.emitterName,
+    requester: data.requester,
     product: data.product,
     isAdmin,
   });

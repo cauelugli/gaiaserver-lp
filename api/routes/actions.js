@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
 const dayjs = require("dayjs");
 
 const Admin = require("../../models/models/Admin");
@@ -8,9 +7,6 @@ const Config = require("../../models/models/Config");
 const mainQueue = require("../../queues/mainQueue");
 
 const { defineModel } = require("../../controllers/functions/routeFunctions");
-const {
-  notifyApproverManager,
-} = require("../../controllers/functions/notificationRoutines");
 
 // USER - MARK SINGLE NOTIFICATION AS READ
 router.put("/markNotificationAsRead", async (req, res) => {
@@ -232,10 +228,6 @@ router.put("/requestApproval", async (req, res) => {
         : "requestsNeedApproval";
 
     if (config[formattedModel][formattedModelOption] === true) {
-      const { data: idIndexList } = await axios.get(
-        "http://localhost:3000/api/idIndexList"
-      );
-
       mainQueue.add({
         type: "notifyApproverManager",
         data: {
@@ -243,7 +235,6 @@ router.put("/requestApproval", async (req, res) => {
           model: model,
           item: updatedItem.title || updatedItem.number,
           requestedBy: requestedBy,
-          idIndexList,
         },
         isAdmin: requestedBy === admin._id.toString(),
       });
@@ -279,21 +270,13 @@ router.put("/approveRequest", async (req, res) => {
       return res.status(404).json({ error: "Item não encontrado" });
     }
 
-    const { data: idIndexList } = await axios.get(
-      "http://localhost:3000/api/idIndexList"
-    );
-
     mainQueue.add({
       type: "notifyRequester",
       data: {
         target: updatedItem.title || updatedItem.number,
-        managerName:
-          idIndexList?.find((item) => item.id === approvedBy)?.name || "",
+        manager: approvedBy,
         model: model,
         receiver: updatedItem.requester,
-        receiverName:
-          idIndexList?.find((item) => item.id === updatedItem.requester)
-            ?.name || "",
       },
     });
     switch (model) {
@@ -329,20 +312,11 @@ router.put("/requestBuy", async (req, res) => {
 
     if (config.stock.stockEntriesNeedApproval === true) {
       // else notify admin?
-      const { data: idIndexList } = await axios.get(
-        "http://localhost:3000/api/idIndexList"
-      );
-
       mainQueue.add({
         type: "notifyStockManagerToBuyProduct",
         data: {
           receiver: config.stock.stockEntriesDispatcherManager,
-          receiverName:
-            idIndexList?.find(
-              (item) => item.id === config.stock.stockEntriesDispatcherManager
-            )?.name || "",
-          emitterName:
-            idIndexList?.find((item) => item.id === requestedBy)?.name || "",
+          requester: requestedBy || "",
           product,
         },
         isAdmin: requestedBy === admin._id.toString(),

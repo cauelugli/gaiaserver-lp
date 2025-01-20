@@ -129,7 +129,7 @@ const initSocket = (server) => {
             ? "Novo Job atribuido a Você"
             : "Nova Venda atribuida a Você"
         } `;
-        const notificationBody = `Olá, ${data.receiverName}! ${
+        const notificationBody = `Olá, ${data.receiver}! ${
           data.label === "Job"
             ? "Um novo Job foi atribuído"
             : "Uma nova Venda foi atribuída"
@@ -198,7 +198,7 @@ const initSocket = (server) => {
             ? "Job"
             : "Venda"
         } Aguardando Aprovação`;
-        const notificationBody = `Olá, ${data.receiverName}! 
+        const notificationBody = `Olá, ${data.receiver}! 
         ${
           data.model === "StockEntry"
             ? "A Entrada de Estoque"
@@ -233,7 +233,7 @@ const initSocket = (server) => {
 
         const parsedTitleString = "Solicitação de Aprovação Respondida";
         const notificationBody = `Olá, ${
-          data.receiverName
+          data.receiver
         }! Sua solicitação para aprovação para 
         ${
           data.model === "StockEntry"
@@ -241,7 +241,7 @@ const initSocket = (server) => {
             : data.model === "Sale"
             ? "Venda"
             : data.model
-        } ${data.target} foi respondida por ${data.managerName}.`;
+        } ${data.target} foi respondida por ${data.manager}.`;
 
         if (user) {
           user.notifications.push({
@@ -265,10 +265,10 @@ const initSocket = (server) => {
         user = await User.findById(data.receiver);
 
         const parsedTitleString = "Nova Solicitação de Compra";
-        const notificationBody = `Olá, ${data.receiverName}! 
+        const notificationBody = `Olá, ${data.receiver}! 
         ${
-          data.emitterName
-            ? `${data.emitterName} está solicitando a compra de `
+          data.requester
+            ? `${data.requester} está solicitando a compra de `
             : "Solicitada compra de "
         } ${data.product.quantity} ${data.product.name}, 
         no total de R$${data.product.finalPrice}.`;

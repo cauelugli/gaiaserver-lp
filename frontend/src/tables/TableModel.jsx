@@ -13,23 +13,12 @@ import TableHeader from "../../src/tables/TableHeader";
 import ProductsTableHeader from "../../src/tables/ProductsTableHeader";
 import ProductsTable from "../../src/tables/ProductsTable";
 import StandardTable from "./StandardTable";
+import { useAppData } from "../AppDataContext";
 
 export default function TableModel(props) {
-  const [idIndexList, setIdIndexList] = React.useState([]);
+  const appData = useAppData();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("number");
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const ids = await props.api.get("/idIndexList");
-        setIdIndexList(ids.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [props.api, props.items]);
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -124,7 +113,7 @@ export default function TableModel(props) {
                 endIndex={endIndex}
                 tableColumns={props.tableColumns}
                 itemIndex={props.itemIndex}
-                idIndexList={idIndexList}
+                idIndexList={appData.idIndexList}
                 page={props.page}
                 tabIndex={props.tabIndex}
                 userId={props.userId}

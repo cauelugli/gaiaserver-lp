@@ -121,10 +121,6 @@ router.post("/", async (req, res) => {
       savedItem = await newItem.save();
     }
 
-    const { data: idIndexList } = await axios.get(
-      "http://localhost:3000/api/idIndexList"
-    );
-
     // ACTIONS THAT NEED TO BE DONE _AFTER_ ITEM IS CREATED
 
     switch (req.body.model) {
@@ -171,13 +167,8 @@ router.post("/", async (req, res) => {
           type: "notifyAssignee",
           data: {
             target: {
-              customer:
-                idIndexList?.find(
-                  (item) => item.id === req.body.fields.customer
-                )?.name || req.body.fields.customer,
-              service:
-                idIndexList?.find((item) => item.id === req.body.fields.service)
-                  ?.name || req.body.fields.service,
+              customer: req.body.fields.customer,
+              service: req.body.fields.service,
               scheduledTo:
                 req.body.fields.scheduledTo ||
                 req.body.fields.deliveryScheduledTo,
@@ -187,12 +178,7 @@ router.post("/", async (req, res) => {
             },
             sourceId: createdBy,
             receiver: req.body.fields.worker || req.body.fields.seller,
-            receiverName:
-              idIndexList?.find(
-                (item) =>
-                  item.id === req.body.fields.worker ||
-                  item.id === req.body.fields.seller
-              )?.name || "?",
+            receiverName: req.body.fields.worker || req.body.fields.seller,
             label: req.body.model === "Job" ? "Job" : "Venda",
           },
         });

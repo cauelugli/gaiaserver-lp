@@ -6,17 +6,13 @@ async function notifyApproverManager(
   model,
   title,
   sourceId,
-  idIndexList
 ) {
   try {
     socket.emit("notifyApproverManager", {
       title: title,
-      source: idIndexList?.find((item) => item.id === sourceId)?.name || "",
+      source: sourceId,
       receiver: receiver,
-      receiverName:
-        idIndexList?.find((item) => item.id === receiver)?.name || "",
       model,
-      emitter: sourceId,
     });
   } catch (err) {
     console.error(`Erro na rotina de notificações`, err);

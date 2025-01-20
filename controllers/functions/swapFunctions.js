@@ -177,19 +177,14 @@ const swapWorker = async (jobId, newWorkerId, oldWorkerId) => {
   try {
     const job = await Job.findById(jobId);
 
-    const { data: idIndexList } = await axios.get(
-      "http://localhost:3000/api/idIndexList"
-    );
-
     if (job) {
-      console.log("job", job);
       await addToAssigneeAgenda(
         job.scheduledTo,
         job.scheduleTime,
         newWorkerId,
         jobId,
-        idIndexList?.find((item) => item.id === job.service)?.name || "",
-        idIndexList?.find((item) => item.id === job.customer)?.name || ""
+        job.service,
+        job.customer
       );
 
       //notify new
