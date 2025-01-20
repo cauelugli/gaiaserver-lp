@@ -19,7 +19,7 @@ import {
 
 import { options } from "../../options/cardOptions";
 
-export default function CardModel({
+export default function ProductCardModel({
   userId,
   userName,
   configData,
@@ -37,7 +37,7 @@ export default function CardModel({
 
   return (
     <Card elevation={3}>
-      {item && (
+      {item ? (
         <CardContent>
           <Grid container direction="column">
             <Grid
@@ -73,6 +73,8 @@ export default function CardModel({
             </Typography>
           </Grid>
         </CardContent>
+      ) : (
+        ""
       )}
     </Card>
   );
