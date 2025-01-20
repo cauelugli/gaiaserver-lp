@@ -1,8 +1,13 @@
+const { default: axios } = require("axios");
 const Department = require("../../models/models/Department");
+const Job = require("../../models/models/Job");
 const Position = require("../../models/models/Position");
 const Role = require("../../models/models/Role");
+const Sale = require("../../models/models/Sale");
 const Service = require("../../models/models/Service");
 const User = require("../../models/models/User");
+const { addToAssigneeAgenda } = require("./addFunctions");
+const { removeFromAssigneeAgenda } = require("./deleteRoutines");
 
 const swapDepartments = async (
   sourceItemId,
@@ -141,8 +146,74 @@ const swapRoles = async (userId, newRoleId, oldRoleId) => {
   }
 };
 
+const swapSeller = async (saleId, newAssigneeId, oldAssigneeId) => {
+  try {
+    const user = await User.findById(userId);
+
+    if (user) {
+      const oldPosition = await Position.findById(oldPositionId);
+
+      if (oldPosition) {
+        oldPosition.members = oldPosition.members.filter(
+          (memberId) => memberId.toString() !== userId.toString()
+        );
+        await oldPosition.save();
+      }
+
+      const newPosition = await Position.findById(user);
+      if (newPosition) {
+        if (!newPosition.members.includes(newAssigneeId)) {
+          newPosition.members.push(newAssigneeId);
+        }
+        await newPosition.save();
+      }
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const swapWorker = async (jobId, newWorkerId, oldWorkerId) => {
+  try {
+    const job = await Job.findById(jobId);
+
+    const { data: idIndexList } = await axios.get(
+      "http://localhost:3000/api/idIndexList"
+    );
+
+    if (job) {
+      console.log("job", job);
+      await addToAssigneeAgenda(
+        job.scheduledTo,
+        job.scheduleTime,
+        newWorkerId,
+        jobId,
+        idIndexList?.find((item) => item.id === job.service)?.name || "",
+        idIndexList?.find((item) => item.id === job.customer)?.name || ""
+      );
+
+      //notify new
+
+      await removeFromAssigneeAgenda(
+        job.scheduledTo,
+        job.scheduleTime,
+        oldWorkerId,
+        jobId
+      );
+
+      //notify old
+    } else {
+      console.log("job NOT FOUND BOR....");
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   swapDepartments,
   swapPositions,
   swapRoles,
+  swapSeller,
+  swapWorker,
 };

@@ -570,6 +570,69 @@ async function deleteRoutinesUser(
   }
 }
 
+async function removeFromAssigneeAgenda(
+  scheduledTo,
+  scheduleTime,
+  assignee,
+  jobId
+) {
+  try {
+    const agenda = await Agenda.findOne();
+    const [day, month, year] = scheduledTo ? scheduledTo.split("/") : "";
+    const monthYearKey = `${month}-${year}`;
+
+    // Encontra o índice do designado na lista de usuários
+    const userIndex = agenda.users.findIndex((userMap) =>
+      userMap.has(assignee)
+    );
+
+    if (userIndex === -1) {
+      throw new Error("Designado não encontrado");
+    }
+
+    const userMap = agenda.users[userIndex];
+    const userAgenda = userMap.get(assignee);
+
+    if (!userAgenda) {
+      console.log("Erro: usuário não encontrado na agenda");
+      return;
+    }
+
+    if (!userAgenda[monthYearKey]) {
+      console.log("Erro: mês não encontrado na agenda");
+      return;
+    }
+
+    // Encontra o índice do evento a ser removido
+    const eventIndex = userAgenda[monthYearKey].findIndex(
+      (event) =>
+        event.jobId === jobId &&
+        event.day === day &&
+        event.scheduleTime === scheduleTime
+    );
+
+    if (eventIndex === -1) {
+      console.log("Erro: evento não encontrado na agenda");
+      return;
+    }
+
+    // Remove o evento da agenda
+    userAgenda[monthYearKey].splice(eventIndex, 1);
+
+    // Atualiza somente a agenda do usuário no banco
+    const updateKey = `users.${userIndex}.${assignee}.${monthYearKey}`;
+    await Agenda.updateOne(
+      {},
+      { $set: { [updateKey]: userAgenda[monthYearKey] } },
+      { new: true }
+    );
+
+    console.log("Evento removido com sucesso!");
+  } catch (err) {
+    console.error("Erro ao remover evento da agenda do designado", err);
+  }
+}
+
 module.exports = {
   deleteRoutinesClient,
   deleteRoutinesCustomer,
@@ -584,4 +647,5 @@ module.exports = {
   deleteRoutinesServicePlan,
   deleteRoutinesStockEntry,
   deleteRoutinesUser,
+  removeFromAssigneeAgenda,
 };
