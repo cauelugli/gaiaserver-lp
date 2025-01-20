@@ -37,7 +37,7 @@ export default function CardModel({
   stockApproverManager,
   mainColor,
 }) {
-  const appData = useAppData();
+  // const appData = useAppData();
 
   const renderTypographies = () => {
     const labelOptions = options[label] || [];
@@ -86,8 +86,6 @@ export default function CardModel({
   const usesProduct = ["Sale", "Stock", "Product", "StockEntry"];
   const usesColor = ["Department", "Service"];
   const usesMembers = ["Group", "Position", "Role"];
-
-  console.log("cardSize", cardSize);
 
   return (
     <Card elevation={3}>
@@ -228,13 +226,6 @@ export default function CardModel({
           />
         </Grid>
       </CardContent>
-      <Button
-        onClick={() => {
-          console.log("useAppData, or simply the response...", appData.idIndexList);
-        }}
-      >
-        go
-      </Button>
     </Card>
   );
 }
