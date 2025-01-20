@@ -331,6 +331,7 @@ export default function PageModel(props) {
                           <ProductCardModel
                             userId={props.userId}
                             userName={props.userName}
+                            cardSize={props.cardSize}
                             configData={props.configData}
                             item={itemMapped}
                             label={props.item.models[value]}
@@ -395,6 +396,7 @@ export default function PageModel(props) {
                             userId={props.userId}
                             userName={props.userName}
                             configData={props.configData}
+                            cardSize={props.cardSize}
                             item={itemMapped}
                             label={props.item.models[value]}
                             refreshData={refreshData}

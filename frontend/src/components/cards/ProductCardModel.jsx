@@ -26,10 +26,15 @@ export default function ProductCardModel({
   item,
   refreshData,
   setRefreshData,
+  cardSize,
 }) {
   const renderTypographies = () => {
     return item?.fields?.map(({ name, value }, index) => (
-      <Typography key={index} variant="body2" sx={{ mt: 1, fontSize: 13 }}>
+      <Typography
+        key={index}
+        variant="body2"
+        sx={{ mt: 1, fontSize: 11 + cardSize }}
+      >
         <strong>{name}:</strong> {value || "N/A"}
       </Typography>
     ));
@@ -54,22 +59,26 @@ export default function ProductCardModel({
               <Avatar
                 alt=""
                 src={`http://localhost:3000/static/${item?.images?.[0] || ""}`}
-                sx={{ width: 50, height: 50, mt: 2 }}
+                sx={{
+                  width: 40 + cardSize * 15,
+                  height: 40 + cardSize * 15,
+                  mt: 2,
+                }}
               />
             </Grid>
             {renderTypographies()}
-            <Typography variant="body2" sx={{ mt: 1, fontSize: 13 }}>
+            <Typography variant="body2" sx={{ mt: 1, fontSize: 11 + cardSize }}>
               <strong>Valor de Compra:</strong> R$
               {item?.buyValue?.toFixed(2) || "N/A"}
             </Typography>
-            <Typography variant="body2" sx={{ mt: 1, fontSize: 13 }}>
+            <Typography variant="body2" sx={{ mt: 1, fontSize: 11 + cardSize }}>
               <strong>Valor de Venda:</strong> R$
               {item?.sellValue?.toFixed(2) || "N/A"}
             </Typography>{" "}
-            <Typography variant="body2" sx={{ mt: 1, fontSize: 13 }}>
+            <Typography variant="body2" sx={{ mt: 1, fontSize: 11 + cardSize }}>
               <strong>Em estoque:</strong> {item?.stockQuantity || "N/A"}
             </Typography>{" "}
-            <Typography variant="body2" sx={{ mt: 1, fontSize: 13 }}>
+            <Typography variant="body2" sx={{ mt: 1, fontSize: 11 + cardSize }}>
               <strong>Vendidos:</strong> {"N/A"}
             </Typography>
           </Grid>

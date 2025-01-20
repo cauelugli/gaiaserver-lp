@@ -28,11 +28,16 @@ export default function CardModel({
   refreshData,
   setRefreshData,
   label,
+  cardSize,
 }) {
   const renderTypographies = () => {
     const labelOptions = options[label] || [];
     return labelOptions.map(({ label, value }, index) => (
-      <Typography key={index} variant="body2" sx={{ mt: 1, fontSize: 13 }}>
+      <Typography
+        key={index}
+        variant="body2"
+        sx={{ mt: 1, fontSize: 11 + cardSize }}
+      >
         <strong>{label}:</strong> {label.startsWith("Valor") ? "R$" : ""}
         {Array.isArray(item[value]) ? (
           <Grid container direction="row" sx={{ m: 1 }}>
@@ -73,6 +78,8 @@ export default function CardModel({
   const usesColor = ["Department", "Service"];
   const usesMembers = ["Group", "Position", "Role"];
 
+  console.log("cardSize", cardSize);
+
   return (
     <Card elevation={3}>
       <CardContent>
@@ -87,7 +94,11 @@ export default function CardModel({
               <Avatar
                 alt="Imagem"
                 src={`http://localhost:3000/static/${item.image}`}
-                sx={{ width: 100, height: 100, mx: "auto" }}
+                sx={{
+                  width: 80 + cardSize * 15,
+                  height: 80 + cardSize * 15,
+                  mx: "auto",
+                }}
                 variant="square"
               />
               <Typography variant="h5" sx={{ mt: 1, fontWeight: "bold" }}>
@@ -142,14 +153,17 @@ export default function CardModel({
                       src={`http://localhost:3000/static/${
                         item.images[0] || ""
                       }`}
-                      sx={{ width: 50, height: 50 }}
+                      sx={{
+                        width: 50 + cardSize * 15,
+                        height: 50 + cardSize * 15,
+                      }}
                     />
                   </Grid>
                 ))
               ) : item.images ? (
                 <Avatar
                   src={`http://localhost:3000/static/${item.images[0] || ""}`}
-                  sx={{ width: 50, height: 50 }}
+                  sx={{ width: 50 + cardSize * 15, height: 50 + cardSize * 15 }}
                 />
               ) : (
                 ""
@@ -165,8 +179,8 @@ export default function CardModel({
             >
               <Paper
                 sx={{
-                  width: 64,
-                  height: 64,
+                  width: 44 + cardSize * 15,
+                  height: 44 + cardSize * 15,
                   mx: "auto",
                   borderRadius: 20,
                   backgroundColor: item.color,
