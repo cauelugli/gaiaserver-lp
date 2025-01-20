@@ -3,6 +3,7 @@
 import * as React from "react";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import { useAppData } from "../../../src/AppDataContext";
 
 import {
   Avatar,
@@ -23,8 +24,8 @@ import RowButton from "../small/buttons/RowButton";
 
 export default function CardModel({
   userId,
-  userName,
-  configData,
+  // userName,
+  // configData,
   item,
   refreshData,
   setRefreshData,
@@ -36,6 +37,8 @@ export default function CardModel({
   stockApproverManager,
   mainColor,
 }) {
+  const appData = useAppData();
+
   const renderTypographies = () => {
     const labelOptions = options[label] || [];
     return labelOptions.map(({ label, value }, index) => (
@@ -225,6 +228,13 @@ export default function CardModel({
           />
         </Grid>
       </CardContent>
+      <Button
+        onClick={() => {
+          console.log("useAppData, or simply the response...", appData.idIndexList);
+        }}
+      >
+        go
+      </Button>
     </Card>
   );
 }

@@ -31,6 +31,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import PageModel from "./pages/PageModel";
 import Reports from "./pages/Reports";
+import { AppDataProvider } from "./AppDataContext";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -227,204 +228,70 @@ export default function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Grid
-        className="noHoverBackground"
-        sx={{
-          width: "auto",
-          height: "auto",
-          m: -1,
-          mr: -2,
-          backgroundColor: userPreferences.darkMode ? "#302c34" : "none",
-        }}
-      >
-        <Router>
-          <Grid container>
-            {login && (
-              <NavBar
-                api={api}
-                socket={socket}
-                user={userData}
-                configData={configData}
-                barPosition={userPreferences.barPosition}
-              />
-            )}
-            {login && showSidebar && !userPreferences.barPosition && (
+    <AppDataProvider>
+      <ThemeProvider theme={theme}>
+        <Grid
+          className="noHoverBackground"
+          sx={{
+            width: "auto",
+            height: "auto",
+            m: -1,
+            mr: -2,
+            backgroundColor: userPreferences.darkMode ? "#302c34" : "none",
+          }}
+        >
+          <Router>
+            <Grid container>
+              {login && (
+                <NavBar
+                  api={api}
+                  socket={socket}
+                  user={userData}
+                  configData={configData}
+                  barPosition={userPreferences.barPosition}
+                />
+              )}
+              {login && showSidebar && !userPreferences.barPosition && (
+                <Grid
+                  item
+                  sx={{
+                    textAlign: "center",
+                    height: "auto",
+                    maxWidth: 58,
+                  }}
+                >
+                  <SideBar configData={configData} user={userData} />
+                </Grid>
+              )}
+
               <Grid
-                item
                 sx={{
-                  textAlign: "center",
-                  height: "auto",
-                  maxWidth: 58,
+                  width: "95%",
                 }}
               >
-                <SideBar configData={configData} user={userData} />
-              </Grid>
-            )}
-
-            <Grid
-              sx={{
-                width: "95%",
-              }}
-            >
-              <Grid container sx={{ p: 2 }}>
-                <Grid item xs={12} xl={12}>
-                  <Routes>
-                    <Route
-                      path="/"
-                      element={
-                        isAuthenticated(login, userData) ? (
-                          <Home
-                            userId={userData._id}
-                            userName={userData.name}
-                            userUsername={userData.username}
-                            userGender={userData.gender}
-                            userAgenda={userAgenda}
-                            mainColor={
-                              configData.customization &&
-                              configData.customization.mainColor
-                            }
-                            handleShortcutClick={"handleShortcutClick"}
-                            allowedLinks={allowedLinks}
-                            configData={configData}
-                            configDashboard={configData.dashboard}
-                            onMount={() => handleSidebarVisibility(false)}
-                            onUnmount={() => handleSidebarVisibility(true)}
-                            currentWindowSize={currentWindowSize}
-                          />
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/login"
-                      element={!login ? <Login /> : <Navigate to="/" />}
-                    />
-                    <Route
-                      path="/account"
-                      element={
-                        isAuthenticated(login, userData) ? (
-                          <Account
-                            user={userData}
-                            userPreferences={userPreferences}
-                            refreshData={refreshData}
-                            setRefreshData={setRefreshData}
-                            topBar={userPreferences.barPosition}
-                          />
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/dashboard"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "dashboard") ? (
-                          <Dashboard
-                            userId={userData._id}
-                            userUsername={userData.username}
-                            configDashboard={configData.dashboard}
-                            configCustomization={configData.customization}
-                            topBar={userPreferences.barPosition}
-                            userAgenda={userAgenda}
-                            currentWindowSize={currentWindowSize}
-                          />
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-
-                    <Route
-                      path="/reports"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "reports") ? (
-                          <Reports
-                            userId={userData._id}
-                            userUsername={userData.username}
-                            configCustomization={configData.customization}
-                            topBar={userPreferences.barPosition}
-                          />
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/config"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "config") ? (
-                          <Config
-                            topBar={userPreferences.barPosition}
-                            mainColor={configData.customization.mainColor}
-                            userName={userData.name}
-                            userId={userData._id}
-                            refreshData={refreshData}
-                            setRefreshData={setRefreshData}
-                            configCustomization={configData.customization}
-                            currentWindowSize={currentWindowSize}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-
-                    <Route
-                      path="/files"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "files") ? (
-                          <Files
-                            topBar={userPreferences.barPosition}
-                            userName={userData.name}
-                            userId={userData._id}
-                            refreshData={refreshData}
-                            setRefreshData={setRefreshData}
-                            configCustomization={configData.customization}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-
-                    {pageOptions.map((option, index) => (
+                <Grid container sx={{ p: 2 }}>
+                  <Grid item xs={12} xl={12}>
+                    <Routes>
                       <Route
-                        key={index}
-                        path={`/${option.page}`}
+                        path="/"
                         element={
-                          isAuthenticated(login, userData) &&
-                          hasPermission(userData, configData, option.page) ? (
-                            <PageModel
-                              api={api}
-                              socket={socket}
-                              item={option}
-                              palette={theme.palette}
+                          isAuthenticated(login, userData) ? (
+                            <Home
                               userId={userData._id}
-                              userUsername={userData.username}
-                              isAdmin={userData.username === "admin"}
                               userName={userData.name}
+                              userUsername={userData.username}
+                              userGender={userData.gender}
                               userAgenda={userAgenda}
-                              setUserPreferences={setUserPreferences}
+                              mainColor={
+                                configData.customization &&
+                                configData.customization.mainColor
+                              }
+                              handleShortcutClick={"handleShortcutClick"}
+                              allowedLinks={allowedLinks}
                               configData={configData}
-                              topBar={userPreferences.barPosition}
-                              tableOrCardView={userPreferences.tableOrCardView}
-                              cardSize={userPreferences.cardSize}
                               configDashboard={configData.dashboard}
-                              configCustomization={configData.customization}
+                              onMount={() => handleSidebarVisibility(false)}
+                              onUnmount={() => handleSidebarVisibility(true)}
                               currentWindowSize={currentWindowSize}
                             />
                           ) : (
@@ -432,30 +299,168 @@ export default function App() {
                           )
                         }
                       />
-                    ))}
-                  </Routes>
+                      <Route
+                        path="/login"
+                        element={!login ? <Login /> : <Navigate to="/" />}
+                      />
+                      <Route
+                        path="/account"
+                        element={
+                          isAuthenticated(login, userData) ? (
+                            <Account
+                              user={userData}
+                              userPreferences={userPreferences}
+                              refreshData={refreshData}
+                              setRefreshData={setRefreshData}
+                              topBar={userPreferences.barPosition}
+                            />
+                          ) : (
+                            <Navigate to="/login" />
+                          )
+                        }
+                      />
+                      <Route
+                        path="/dashboard"
+                        element={
+                          isAuthenticated(login, userData) &&
+                          hasPermission(userData, configData, "dashboard") ? (
+                            <Dashboard
+                              userId={userData._id}
+                              userUsername={userData.username}
+                              configDashboard={configData.dashboard}
+                              configCustomization={configData.customization}
+                              topBar={userPreferences.barPosition}
+                              userAgenda={userAgenda}
+                              currentWindowSize={currentWindowSize}
+                            />
+                          ) : (
+                            <Navigate to="/login" />
+                          )
+                        }
+                      />
+
+                      <Route
+                        path="/reports"
+                        element={
+                          isAuthenticated(login, userData) &&
+                          hasPermission(userData, configData, "reports") ? (
+                            <Reports
+                              userId={userData._id}
+                              userUsername={userData.username}
+                              configCustomization={configData.customization}
+                              topBar={userPreferences.barPosition}
+                            />
+                          ) : (
+                            <Navigate to="/login" />
+                          )
+                        }
+                      />
+                      <Route
+                        path="/config"
+                        element={
+                          isAuthenticated(login, userData) &&
+                          hasPermission(userData, configData, "config") ? (
+                            <Config
+                              topBar={userPreferences.barPosition}
+                              mainColor={configData.customization.mainColor}
+                              userName={userData.name}
+                              userId={userData._id}
+                              refreshData={refreshData}
+                              setRefreshData={setRefreshData}
+                              configCustomization={configData.customization}
+                              currentWindowSize={currentWindowSize}
+                            />
+                          ) : isAuthenticated(login, userData) ? (
+                            <Typography sx={{ m: 2, fontSize: 16 }}>
+                              Seu usuário não possui autorização à página.
+                            </Typography>
+                          ) : (
+                            <Navigate to="/login" />
+                          )
+                        }
+                      />
+
+                      <Route
+                        path="/files"
+                        element={
+                          isAuthenticated(login, userData) &&
+                          hasPermission(userData, configData, "files") ? (
+                            <Files
+                              topBar={userPreferences.barPosition}
+                              userName={userData.name}
+                              userId={userData._id}
+                              refreshData={refreshData}
+                              setRefreshData={setRefreshData}
+                              configCustomization={configData.customization}
+                            />
+                          ) : isAuthenticated(login, userData) ? (
+                            <Typography sx={{ m: 2, fontSize: 16 }}>
+                              Seu usuário não possui autorização à página.
+                            </Typography>
+                          ) : (
+                            <Navigate to="/login" />
+                          )
+                        }
+                      />
+
+                      {pageOptions.map((option, index) => (
+                        <Route
+                          key={index}
+                          path={`/${option.page}`}
+                          element={
+                            isAuthenticated(login, userData) &&
+                            hasPermission(userData, configData, option.page) ? (
+                              <PageModel
+                                api={api}
+                                socket={socket}
+                                item={option}
+                                palette={theme.palette}
+                                userId={userData._id}
+                                userUsername={userData.username}
+                                isAdmin={userData.username === "admin"}
+                                userName={userData.name}
+                                userAgenda={userAgenda}
+                                setUserPreferences={setUserPreferences}
+                                configData={configData}
+                                topBar={userPreferences.barPosition}
+                                tableOrCardView={
+                                  userPreferences.tableOrCardView
+                                }
+                                cardSize={userPreferences.cardSize}
+                                configDashboard={configData.dashboard}
+                                configCustomization={configData.customization}
+                                currentWindowSize={currentWindowSize}
+                              />
+                            ) : (
+                              <Navigate to="/login" />
+                            )
+                          }
+                        />
+                      ))}
+                    </Routes>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          <ToastContainer />
-          {shortcutModalState.show && (
-            <ShortcutModals
-              {...shortcutModalState.props}
-              configData={configData}
-              configCustomization={configData.customization}
-              configNotifications={configData.notifications}
-              user={userData}
-              toast={toast}
-              action={shortcutModalState.action}
-              fullWidth={shortcutModalState.fullWidth}
-              maxWidth={shortcutModalState.maxWidth}
-              selectedItem={shortcutModalState.selectedItem}
-              onClose={() => setShortcutModalState({ show: false })}
-            />
-          )}
-        </Router>
-      </Grid>
-    </ThemeProvider>
+            <ToastContainer />
+            {shortcutModalState.show && (
+              <ShortcutModals
+                {...shortcutModalState.props}
+                configData={configData}
+                configCustomization={configData.customization}
+                configNotifications={configData.notifications}
+                user={userData}
+                toast={toast}
+                action={shortcutModalState.action}
+                fullWidth={shortcutModalState.fullWidth}
+                maxWidth={shortcutModalState.maxWidth}
+                selectedItem={shortcutModalState.selectedItem}
+                onClose={() => setShortcutModalState({ show: false })}
+              />
+            )}
+          </Router>
+        </Grid>
+      </ThemeProvider>
+    </AppDataProvider>
   );
 }
