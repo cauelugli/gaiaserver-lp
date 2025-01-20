@@ -401,6 +401,15 @@ export default function PageModel(props) {
                             label={props.item.models[value]}
                             refreshData={refreshData}
                             setRefreshData={setRefreshData}
+                            requestsApproverManager={
+                              props.configData["requests"].requestsApproverManager
+                            }
+                            stockApproverManager={
+                              props.configData["stock"].stockEntriesDispatcherManager
+                            }
+                            page={props.item.page}
+                            tabIndex={value}
+                            mainColor={props.configCustomization.mainColor}
                           />
                         </Grid>
                       ))}

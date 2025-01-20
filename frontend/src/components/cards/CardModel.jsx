@@ -19,6 +19,7 @@ import {
 
 import { options } from "../../options/cardOptions";
 import { isDate } from "../../../../controllers/functions/overallFunctions";
+import RowButton from "../small/buttons/RowButton";
 
 export default function CardModel({
   userId,
@@ -29,6 +30,11 @@ export default function CardModel({
   setRefreshData,
   label,
   cardSize,
+  page,
+  tabIndex,
+  requestsApproverManager,
+  stockApproverManager,
+  mainColor,
 }) {
   const renderTypographies = () => {
     const labelOptions = options[label] || [];
@@ -204,6 +210,19 @@ export default function CardModel({
             </Grid>
           )}
           {renderTypographies()}
+          <RowButton
+            userId={userId}
+            userIsRequestsApproverManager={userId === requestsApproverManager}
+            userIsStockApproverManager={userId === stockApproverManager}
+            mainColor={mainColor}
+            item={item}
+            page={page}
+            tabIndex={tabIndex}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            fromCard={true}
+            // multiple={props.multiple} maybe 'multipleFromCard', cause styling will be different
+          />
         </Grid>
       </CardContent>
     </Card>

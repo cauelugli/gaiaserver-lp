@@ -72,7 +72,6 @@ const RowButton = (props) => {
           userName={props.userName}
           userId={props.userId}
           configAgenda={props.configAgenda}
-          configCustomization={props.configCustomization}
           openDialog={openDialog}
           setOpenDialog={setOpenDialog}
           refreshData={props.refreshData}
@@ -178,6 +177,11 @@ const RowButton = (props) => {
       <IconButton
         onClick={(e) => (props.multiple ? "" : setAnchorEl(e.currentTarget))}
         disabled={props.multiple}
+        sx={{
+          "&:hover": {
+            backgroundColor: props.fromCard ? "transparent" : "",
+          },
+        }}
       >
         <icons.MenuIcon />
       </IconButton>
@@ -231,7 +235,7 @@ const RowButton = (props) => {
                     menuItem={menuItem.submenu}
                     smallmenuOptions={smallmenuOptions}
                     setSmallmenuAnchorEl={setSmallmenuAnchorEl}
-                    configCustomization={props.configCustomization}
+                    mainColor={props.mainColor}
                     closeAllMenus={closeAllMenus}
                     refreshData={props.refreshData}
                     setRefreshData={props.setRefreshData}

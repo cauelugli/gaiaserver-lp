@@ -69,7 +69,6 @@ function StandardTable(props) {
                 tabIndex={props.tabIndex}
                 refreshData={props.refreshData}
                 setRefreshData={props.setRefreshData}
-                configCustomization={props.configCustomization}
                 multiple={props.multiple}
               />
             </TableCell>

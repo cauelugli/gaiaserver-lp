@@ -106,7 +106,7 @@ const SmallFormModel = (props) => {
   return (
     <form
       onSubmit={handleSubmit}
-      style={{ backgroundColor: `${props.configCustomization.mainColor}B3` }}
+      style={{ backgroundColor: `${props.mainColor}B3` }}
     >
       <Grid
         sx={{ width: 250, height: 240, px: 2, mt: -1 }}

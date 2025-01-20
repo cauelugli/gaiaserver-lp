@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 
 import { options } from "../../options/cardOptions";
+import RowButton from "../small/buttons/RowButton";
 
 export default function ProductCardModel({
   userId,
@@ -81,6 +82,19 @@ export default function ProductCardModel({
             <Typography variant="body2" sx={{ mt: 1, fontSize: 11 + cardSize }}>
               <strong>Vendidos:</strong> {"N/A"}
             </Typography>
+            <RowButton
+              userId={userId}
+              // userIsRequestsApproverManager={userId === requestsApproverManager}
+              // userIsStockApproverManager={userId === stockApproverManager}
+              // mainColor={mainColor}
+              item={item}
+              // page={page}
+              // tabIndex={tabIndex}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              fromCard={true}
+              // multiple={props.multiple} maybe 'multipleFromCard', cause styling will be different
+            />
           </Grid>
         </CardContent>
       ) : (
