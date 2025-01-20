@@ -27,15 +27,19 @@ function defineModel(model) {
 
 const parseReqFields = function (fields, reqBody) {
   return {
+    ...fields,
     manager: fields.manager?._id || reqBody.manager?._id || "",
-    members: (fields.members || reqBody.members || []).map(
-      (member) => member._id || member
-    ),
-    department: fields.department?._id || reqBody.department?._id || "",
+    members: (
+      fields.members ||
+      reqBody.members ||
+      reqBody.selectedMembers ||
+      []
+    ).map((member) => member._id || member),
     position: fields.position?._id || reqBody.position?._id || "",
     role: fields.role?._id || reqBody.role?._id || "",
     selectedMembers: fields.selectedMembers || reqBody.selectedMembers || [],
     image: fields.image || reqBody.image || "",
+    type: fields.type?.name?.toString() || "",
     isManager: fields.isManager || reqBody.isManager || false,
     createdBy: fields.createdBy || reqBody.createdBy || "",
     products: fields.selectedProducts || reqBody.selectedProducts || [],
@@ -50,7 +54,6 @@ const parseReqFields = function (fields, reqBody) {
           0
         : parseFloat(fields.price) || parseFloat(reqBody.price) || 0,
     services: fields.services || reqBody.services || [],
-    ...fields,
   };
 };
 

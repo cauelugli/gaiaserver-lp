@@ -19,6 +19,7 @@ import RefreshDataButton from "../components/small/buttons/RefreshDataButton";
 import NoDataText from "../components/small/NoDataText";
 import TableOrCardSelector from "../components/small/TableOrCardSelector";
 import CardModel from "../components/cards/CardModel";
+import ProductCardModel from "../components/cards/ProductCardModel";
 import ProductsTableButton from "../components/small/buttons/ProductsTableButton";
 
 import { getDataForPage } from "../../../controllers/functions/overallFunctions";
@@ -97,7 +98,12 @@ export default function PageModel(props) {
           props.item.models[value]
         );
 
-        setItems(filteredItems);
+        props.item.page === "users"
+          ? value === 0
+            ? setItems(filteredItems.filter((item) => !item.isManager))
+            : setItems(filteredItems.filter((item) => item.isManager))
+          : setItems(filteredItems);
+
         setBaseItems(baseItems);
         setIsLoading(false);
       } catch (error) {
@@ -313,8 +319,8 @@ export default function PageModel(props) {
                       setSelectedMultipleItems={setSelectedMultipleItems}
                     />
                   ) : (
-                    <Grid container spacing={2}>
-                      {items.map((nothing, index) => (
+                    <Grid container spacing={2} sx={{ mt: 0.5 }}>
+                      {items.map((itemMapped, index) => (
                         <Grid
                           item
                           key={index}
@@ -322,12 +328,12 @@ export default function PageModel(props) {
                           lg={props.cardSize}
                           xl={props.cardSize}
                         >
-                          <CardModel
+                          <ProductCardModel
                             userId={props.userId}
                             userName={props.userName}
                             configData={props.configData}
-                            item={props.item}
-                            type={props.endpoint}
+                            item={itemMapped}
+                            label={props.item.models[value]}
                             refreshData={refreshData}
                             setRefreshData={setRefreshData}
                           />
@@ -376,8 +382,8 @@ export default function PageModel(props) {
                       }
                     />
                   ) : (
-                    <Grid container spacing={2}>
-                      {items.map((nothing, index) => (
+                    <Grid container spacing={2} sx={{ mt: 0.5 }}>
+                      {items.map((itemMapped, index) => (
                         <Grid
                           item
                           key={index}
@@ -389,8 +395,8 @@ export default function PageModel(props) {
                             userId={props.userId}
                             userName={props.userName}
                             configData={props.configData}
-                            item={props.item}
-                            type={props.endpoint}
+                            item={itemMapped}
+                            label={props.item.models[value]}
                             refreshData={refreshData}
                             setRefreshData={setRefreshData}
                           />

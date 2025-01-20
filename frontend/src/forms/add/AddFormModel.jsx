@@ -174,6 +174,7 @@ export default function AddFormModel(props) {
           ...fields,
           members: fields.members?.map((member) => member._id || member.id),
           customer: fields.customer?._id,
+          department: fields.department?._id,
           service: fields.service?._id,
           worker: fields.worker?._id,
           seller: fields.seller?._id,
@@ -189,7 +190,7 @@ export default function AddFormModel(props) {
         model: modalOptions.model,
         selectedMembers: selectedMemberIds,
         selectedProducts,
-        services: selectedServices,
+        services: selectedServices?.map((service) => service._id || service.id),
         createdBy: props.isAdmin ? "admin" : props.userId,
         isManager: modalOptions.label === "Gerente",
         price:

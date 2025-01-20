@@ -31,7 +31,7 @@ const serviceSchema = new mongoose.Schema({
     type: String,
   },
   type: {
-    type: Object,
+    type: String,
   },
 });
 

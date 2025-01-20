@@ -145,7 +145,7 @@ router.post("/", async (req, res) => {
           data: {
             id: savedItem._id.toString(),
             model: req.body.model,
-            members: fields.members,
+            members: processedFields.members,
           },
         });
         break;
