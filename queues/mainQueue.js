@@ -25,7 +25,9 @@ const {
 
 const {
   addToStock,
+  approveRequest,
   removeFromStock,
+  requestApproval,
 } = require("../controllers/functions/actionsFunctions");
 
 const {
@@ -100,6 +102,9 @@ mainQueue.process(async (job) => {
       case "addServiceToDepartment":
         await handleAddServiceToDepartment(data);
         break;
+      case "approveRequest":
+        await handleApproveRequest(data);
+        break;
       case "checkNewStockEntryDefaultStatus":
         await handleCheckNewStockEntryDefaultStatus(data);
         break;
@@ -123,6 +128,9 @@ mainQueue.process(async (job) => {
         break;
       case "notifyApproverManager":
         await handleNotifyApproverManager(data, isAdmin);
+        break;
+      case "requestApproval":
+        await handleRequestApproval(data, isAdmin);
         break;
       case "notifyAssignee":
         await handleNotifyAssignee(data);
@@ -222,6 +230,10 @@ const handleAddToStock = async (data) => {
   await addToStock(data.items);
 };
 
+const handleApproveRequest = async (data) => {
+  await approveRequest(data);
+};
+
 const handleRemoveFromStock = async (data) => {
   await removeFromStock(data.items);
 };
@@ -290,6 +302,10 @@ const handleNotifyApproverManager = async (data) => {
     receiver: data.requestsApproverManager,
     model: data.model,
   });
+};
+
+const handleRequestApproval = async (data) => {
+  await requestApproval(data);
 };
 
 const handleNotifyAssignee = async (data) => {

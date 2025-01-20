@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const dayjs = require("dayjs");
 
 const Admin = require("../../models/models/Admin");
 const Config = require("../../models/models/Config");
@@ -149,7 +148,7 @@ router.put("/markAllAsRead", async (req, res) => {
 
 // REQUEST - RESOLVE ITEM
 router.put("/resolve", async (req, res) => {
-  const { model, id, resolvedBy, resolvedAt } = req.body;
+  const { model, id, resolvedBy } = req.body;
   const Model = defineModel(model);
 
   if (!Model) {
@@ -158,12 +157,13 @@ router.put("/resolve", async (req, res) => {
   }
 
   try {
+    //QUEUE: resolveItem
     const updatedItem = await Model.findByIdAndUpdate(
       id,
       {
         status: "Resolvido",
         resolvedBy,
-        resolvedAt: resolvedAt || dayjs().format("DD/MM/YYYY HH:mm"),
+        resolvedAt: new Date(),
       },
       { new: true }
     );
@@ -191,33 +191,21 @@ router.put("/requestApproval", async (req, res) => {
   }
 
   try {
-    const updatedItem = await Model.findByIdAndUpdate(
-      id,
-      {
-        status: "Aprovação Solicitada",
-        requester: requestedBy,
-        $push: {
-          interactions: {
-            activity: "Solicitação de Aprovação",
-            attachments: [],
-            date: dayjs().format("DD/MM/YYYY HH:mm"),
-            number: null,
-            reactions: {
-              dislike: { quantity: 0, usersReacted: [] },
-              haha: { quantity: 0, usersReacted: [] },
-              like: { quantity: 0, usersReacted: [] },
-              love: { quantity: 0, usersReacted: [] },
-            },
-            user: requestedBy,
-          },
-        },
-      },
-      { new: true }
-    );
+    const targetItem = await Model.findById(id);
 
-    if (!updatedItem) {
+    if (!targetItem) {
       return res.status(404).json({ error: "Item não encontrado" });
     }
+
+    mainQueue.add({
+      type: "requestApproval",
+      data: {
+        requester: requestedBy,
+        item: targetItem.title || targetItem.number,
+        model: model,
+        modelId: id,
+      },
+    });
 
     const config = await Config.findOne();
 
@@ -232,9 +220,9 @@ router.put("/requestApproval", async (req, res) => {
         type: "notifyApproverManager",
         data: {
           requestsApproverManager: config.requests.requestsApproverManager,
-          model: model,
-          item: updatedItem.title || updatedItem.number,
-          requestedBy: requestedBy,
+          model: req.body.model,
+          item: targetItem.title || targetItem.number,
+          requestedBy: req.body.requestedBy,
         },
         isAdmin: requestedBy === admin._id.toString(),
       });
@@ -258,38 +246,44 @@ router.put("/approveRequest", async (req, res) => {
   }
 
   try {
-    const updatedItem = await Model.findByIdAndUpdate(
-      id,
-      {
-        status: "Aprovado",
-      },
-      { new: true }
-    );
+    const targetItem = await Model.findById(id);
 
-    if (!updatedItem) {
+    if (!targetItem) {
       return res.status(404).json({ error: "Item não encontrado" });
     }
 
     mainQueue.add({
-      type: "notifyRequester",
+      type: "approveRequest",
       data: {
-        target: updatedItem.title || updatedItem.number,
+        target: targetItem.title || targetItem.number,
         manager: approvedBy,
         model: model,
-        receiver: updatedItem.requester,
+        modelId: id,
       },
     });
+
+    mainQueue.add({
+      type: "notifyRequester",
+      data: {
+        target: targetItem.title || targetItem.number,
+        manager: approvedBy,
+        model: model,
+        modelId: id,
+        receiver: targetItem.requester,
+      },
+    });
+    // switch (model && 'requestWasApproved') {
     switch (model) {
       case "Sale":
         mainQueue.add({
           type: "removeFromStock",
-          data: { items: updatedItem.products },
+          data: { items: targetItem.products },
         });
         break;
       case "StockEntry":
         mainQueue.add({
           type: "addToStock",
-          data: { items: updatedItem.items },
+          data: { items: targetItem.items },
         });
         break;
       default:

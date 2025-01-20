@@ -11,7 +11,6 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import dayjs from "dayjs";
 
 const socket = io("http://localhost:5002");
 const api = axios.create({
@@ -31,14 +30,10 @@ const ResolveForm = ({
 }) => {
   const handleResolve = async () => {
     try {
-      const resolvedAt = dayjs().format("DD/MM/YYYY HH:mm");
-
       const res = await api.put(`/actions/resolve/`, {
         model,
         id: selectedItemId,
         resolvedBy: userId,
-        resolvedAt,
-        usesWebsocket: true,
       });
 
       if (res.data) {

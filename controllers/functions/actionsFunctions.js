@@ -1,4 +1,5 @@
 const Product = require("../../models/models/Product");
+const { defineModel } = require("./routeFunctions");
 
 async function addToStock(items) {
   try {
@@ -13,6 +14,22 @@ async function addToStock(items) {
     }
   } catch (err) {
     console.error("Erro ao adicionar itens ao estoque:", err);
+    throw err;
+  }
+}
+
+async function approveRequest(data) {
+  const Model = defineModel(data.model);
+  try {
+    await Model.findByIdAndUpdate(
+      data.modelId,
+      {
+        status: "Aprovado",
+      },
+      { new: true }
+    );
+  } catch (err) {
+    console.error("Erro ao aprovar solicitação:", err.message);
     throw err;
   }
 }
@@ -37,4 +54,41 @@ async function removeFromStock(items) {
   }
 }
 
-module.exports = { addToStock, removeFromStock };
+async function requestApproval(data) {
+  const Model = defineModel(data.model);
+  try {
+    await Model.findByIdAndUpdate(
+      data.modelId,
+      {
+        status: "Aprovação Solicitada",
+        requester: data.requester,
+        $push: {
+          interactions: {
+            activity: "Solicitação de Aprovação",
+            attachments: [],
+            date: new Date(),
+            number: null,
+            reactions: {
+              dislike: { quantity: 0, usersReacted: [] },
+              haha: { quantity: 0, usersReacted: [] },
+              like: { quantity: 0, usersReacted: [] },
+              love: { quantity: 0, usersReacted: [] },
+            },
+            user: data.requester,
+          },
+        },
+      },
+      { new: true }
+    );
+  } catch (err) {
+    console.error("Erro ao solicitar aprovação:", err.message);
+    throw err;
+  }
+}
+
+module.exports = {
+  addToStock,
+  approveRequest,
+  removeFromStock,
+  requestApproval,
+};
