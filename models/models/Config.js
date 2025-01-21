@@ -134,9 +134,13 @@ const configSchema = new Schema({
     },
   },
   quotes: {
-    canBeDeleted: {
+    quotesCanBeDeleted: {
       type: Boolean,
       default: false,
+    },
+    whenCreateQuote: {
+      type: Number,
+      default: 0,
     },
   },
   reports: {

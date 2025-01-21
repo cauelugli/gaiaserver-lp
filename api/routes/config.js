@@ -161,7 +161,15 @@ router.put("/stock", async (req, res) => {
 // QUOTES
 router.put("/quotes", async (req, res) => {
   try {
+    const {
+      quotesCanBeDeleted,
+      whenCreateQuote,
+    } = req.body;
+
     const config = await Config.findOne();
+
+    config.quotes.quotesCanBeDeleted = quotesCanBeDeleted;
+    config.quotes.whenCreateQuote = whenCreateQuote;
 
     await config.save();
     res.status(200).json(config);
