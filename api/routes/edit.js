@@ -74,22 +74,7 @@ router.put("/", async (req, res) => {
         break;
     }
 
-    if (req.body.fields.members) {
-      //insertMembersToGroup
-      // await insertMembersToGroup(
-      //   updatedItem._id.toString(),
-      //   req.body.model,
-      //   selectedMembers
-      // );
-      // await removeMembersFromGroup(
-      //   updatedItem._id.toString(),
-      //   req.body.model,
-      //   selectedMembers,
-      //   previousMembers
-      // );
-    }
-
-    res.status(200).json(updatedItem);
+   res.status(200).json(updatedItem);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

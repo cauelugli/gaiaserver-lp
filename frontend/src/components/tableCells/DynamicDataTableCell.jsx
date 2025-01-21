@@ -27,6 +27,7 @@ const DynamicDataTableCell = (props) => {
   React.useEffect(() => {
     const fetchData = async () => {
       // this is stupid...
+      // update: really...
       try {
         let data = [];
         if (
