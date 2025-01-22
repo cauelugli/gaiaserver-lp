@@ -130,8 +130,8 @@ export default function Config({
       {configData ? (
         <Grid
           container
-          rowSpacing={3}
-          columnSpacing={2}
+          rowSpacing={2}
+          columnSpacing={1}
           justifyContent="center"
         >
           {options
@@ -150,8 +150,8 @@ export default function Config({
                   alignItems="center"
                   justifyContent="center"
                   sx={{
-                    width: showAdvancedConfig ? 150 : 220,
-                    p: showAdvancedConfig ? "15px" : "20px",
+                    width: showAdvancedConfig ? "12vw" : "18vw",
+                    height: "10vw",
                     border: `"1px solid #ccc"`,
                     borderRadius: 2,
                     transition: "background-color 0.3s, color 0.3s",
@@ -162,7 +162,9 @@ export default function Config({
                   }}
                 >
                   {config.icon}
-                  <Typography sx={{ mt: 1 }}>{config.text}</Typography>
+                  <Typography sx={{ mt: 1, fontSize: "1.3vw" }}>
+                    {config.text}
+                  </Typography>
                 </Grid>
               </Grid>
             ))}
@@ -191,23 +193,23 @@ export default function Config({
           sx={{
             mt: 2,
             mx: "auto",
-            height: showAdvancedConfig ? 120 : 120,
-            width: showAdvancedConfig ? 150 : 220,
-            border: `"1px solid #ccc"`,
+            width: showAdvancedConfig ? "15vw" : "20vw",
+            height: "10vw",
+            border: `1px solid ${mainColor}88`,
             borderRadius: 2,
             transition: "background-color 0.3s, color 0.3s",
             backgroundColor: `white`,
-            color: `${mainColor}cf`,
+            color: `${mainColor}88`,
             cursor: "pointer",
             "&:hover": {
               color: `white`,
-              backgroundColor: "#aaa",
+              backgroundColor: `${mainColor}88`,
             },
           }}
           onClick={() => setOpenAdminModal(true)}
         >
-          {<icons.AttributionIcon sx={{ fontSize: 48 }} />}
-          <Typography sx={{ mt: 1 }}>Admin</Typography>
+          {<icons.AttributionIcon sx={{ fontSize: "4vw" }} />}
+          <Typography sx={{ mt: 1, fontSize: "1.3vw" }}>Admin</Typography>
         </Grid>
       )}
 
