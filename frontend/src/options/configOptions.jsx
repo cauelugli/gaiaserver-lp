@@ -36,11 +36,6 @@ export const permissionOptions = [
     icon: <icons.BuildIcon sx={{ fontSize: 26 }} />,
   },
   {
-    tooltip: "Orçamentos",
-    label: "quotes",
-    icon: <icons.RequestQuoteIcon sx={{ fontSize: 26 }} />,
-  },
-  {
     tooltip: "Estoque",
     label: "stock",
     icon: <icons.WarehouseIcon sx={{ fontSize: 26 }} />,

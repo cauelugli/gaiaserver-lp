@@ -53,12 +53,6 @@ export const optionsMainblocks = [
     permissionLabel: "finance",
   },
   {
-    icon: <icons.RequestQuoteIcon sx={{ fontSize: 52 }} />,
-    text: "Orçamentos",
-    link: "/quotes",
-    permissionLabel: "quotes",
-  },
-  {
     icon: <icons.DashboardIcon sx={{ fontSize: 52 }} />,
     text: "Dashboard",
     link: "/dashboard",

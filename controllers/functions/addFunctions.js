@@ -164,10 +164,7 @@ async function addOperator(data) {
     role: data.role,
   };
 
-  return await User.findByIdAndUpdate(
-    data.id,
-    { $set: updatedFields },
-  );
+  return await User.findByIdAndUpdate(data.id, { $set: updatedFields });
 }
 
 async function addServiceToDepartment(serviceId, departmentId) {
@@ -226,21 +223,9 @@ async function addToAssigneeAgenda(
       { new: true }
     );
 
-    // await Job.findByIdAndUpdate(jobId, {
-    //   $set: {
-    //     scheduleInfo: {
-    //       assignee,
-    //       time: scheduleTime,
-    //     },
-    //   },
-    // });
   } catch (err) {
     console.error("Erro ao adicionar na agenda do designado", err);
   }
-}
-
-async function createQuote(model, source) {
-  "";
 }
 
 const insertMembership = async (userId, modelId) => {
@@ -300,7 +285,6 @@ module.exports = {
   addServiceToDepartment,
   addToAssigneeAgenda,
   addUserRoutines,
-  createQuote,
   insertMembership,
   insertMembersToGroup,
 };

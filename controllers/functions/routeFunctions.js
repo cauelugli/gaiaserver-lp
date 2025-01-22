@@ -11,7 +11,6 @@ const models = {
   Operator: require("../../models/models/User"),
   Position: require("../../models/models/Position"),
   Product: require("../../models/models/Product"),
-  Quote: require("../../models/models/Quote"),
   RecentActivity: require("../../models/models/RecentActivity"),
   Role: require("../../models/models/Role"),
   Sale: require("../../models/models/Sale"),

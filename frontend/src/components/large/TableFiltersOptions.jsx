@@ -59,7 +59,6 @@ function TableFiltersBar({
     position: { type: "dynamic", data: "position", model: "Position" },
     price: { type: "number", data: "currency" },
     products: { type: "dynamic", data: "products", model: "Product" },
-    quote: { type: "dynamic", data: "quote", model: "Quote" },
     role: { type: "dynamic", data: "role", model: "Role" },
     scheduledTo: { type: "date", data: "simple" },
     sellValue: { type: "number", data: "currency" },

@@ -12,7 +12,6 @@ import FinanceModal from "../forms/config/Finance";
 import NotificationsModal from "../forms/config/Notifications";
 import PermissionsModal from "../forms/config/Permissions";
 import ProductsModal from "../forms/config/Products";
-import QuotesModal from "../forms/config/Quotes";
 import RequestsModal from "../forms/config/Requests";
 import SecurityModal from "../forms/config/Security";
 import ServicesModal from "../forms/config/Services";
@@ -74,12 +73,6 @@ export const configModalOptions = (userName, userId, configCustomization) => [
     text: "Notificações",
     modal: React.createElement(NotificationsModal),
     isBasic: false,
-  },
-  {
-    icon: React.createElement(icons.RequestQuoteIcon, { sx: { fontSize: 48 } }),
-    text: "Orçamentos",
-    modal: React.createElement(QuotesModal),
-    isBasic: true,
   },
   {
     icon: React.createElement(icons.AdminPanelSettingsIcon, { sx: { fontSize: 48 } }),

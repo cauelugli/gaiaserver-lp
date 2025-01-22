@@ -13,7 +13,6 @@ const options = [
   { label: "Colaboradores", icon: <icons.GroupIcon />, link: "/users" },
   { label: "Departamentos", icon: <icons.LanIcon />, link: "/departments" },
   { label: "Serviços", icon: <icons.BuildIcon />, link: "/services" },
-  { label: "Orçamentos", icon: <icons.RequestQuoteIcon />, link: "/quotes" },
   { label: "Produtos", icon: <icons.SellIcon />, link: "/products" },
   { label: "Estoque", icon: <icons.WarehouseIcon />, link: "/stock" },
   { label: "Chat", icon: <icons.ChatIcon />, link: "/", disabled: true },

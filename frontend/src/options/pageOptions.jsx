@@ -290,68 +290,6 @@ const pageOptions = [
     ],
   },
   {
-    page: "quotes",
-    models: ["Quote", "Quote"],
-    label: "Orçamentos",
-    tabs: ["Jobs", "Vendas"],
-    tableColumns: [
-      // JOB QUOTES TABLE
-      [
-        {
-          id: "number",
-          label: "#",
-        },
-        {
-          id: "service",
-          label: "Serviço",
-        },
-        {
-          id: "customer",
-          label: "Cliente",
-        },
-        {
-          id: "user",
-          label: "Colaborador",
-        },
-        {
-          id: "department",
-          label: "Departamento",
-        },
-        {
-          id: "value",
-          label: "Valor Total",
-        },
-      ],
-      // SALE QUOTES TABLE
-      [
-        {
-          id: "number",
-          label: "#",
-        },
-        {
-          id: "products",
-          label: "Itens",
-        },
-        {
-          id: "customer",
-          label: "Cliente",
-        },
-        {
-          id: "user",
-          label: "Colaborador",
-        },
-        {
-          id: "department",
-          label: "Departamento",
-        },
-        {
-          id: "price",
-          label: "Valor Total",
-        },
-      ],
-    ],
-  },
-  {
     page: "stock",
     label: "Estoque",
     models: ["Product", "StockEntry"],

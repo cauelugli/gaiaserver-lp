@@ -165,20 +165,18 @@ export default function PageModel(props) {
           />
         )}
 
-        {currentPage !== "quotes" &&
-          currentPage !== "finance" &&
-          currentPage !== "products" && (
-            <PageButtonModel
-              api={props.api}
-              socket={props.socket}
-              refreshData={refreshData}
-              setRefreshData={setRefreshData}
-              configCustomization={props.configCustomization}
-              page={currentPage}
-              userId={props.userId}
-              isAdmin={props.isAdmin}
-            />
-          )}
+        {currentPage !== "finance" && currentPage !== "products" && (
+          <PageButtonModel
+            api={props.api}
+            socket={props.socket}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            configCustomization={props.configCustomization}
+            page={currentPage}
+            userId={props.userId}
+            isAdmin={props.isAdmin}
+          />
+        )}
       </Grid>
       <Grid sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -402,10 +400,12 @@ export default function PageModel(props) {
                             refreshData={refreshData}
                             setRefreshData={setRefreshData}
                             requestsApproverManager={
-                              props.configData["requests"].requestsApproverManager
+                              props.configData["requests"]
+                                .requestsApproverManager
                             }
                             stockApproverManager={
-                              props.configData["stock"].stockEntriesDispatcherManager
+                              props.configData["stock"]
+                                .stockEntriesDispatcherManager
                             }
                             page={props.item.page}
                             tabIndex={value}

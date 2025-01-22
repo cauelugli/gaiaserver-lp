@@ -20,7 +20,6 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData }) => {
       "stock",
       "services",
       "finance",
-      "quotes",
       "security",
       "dashboard",
       "reports",

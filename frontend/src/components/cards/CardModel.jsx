@@ -82,7 +82,7 @@ export default function CardModel({
 
   const usesAvatar = ["Client", "Customer", "User", "Operator"];
   const usesTitle = ["Job", "ServicePlan"];
-  const usesNumber = ["Sale", "Quote", "StockEntry"];
+  const usesNumber = ["Sale", "StockEntry"];
   const usesProduct = ["Sale", "Stock", "Product", "StockEntry"];
   const usesColor = ["Department", "Service"];
   const usesMembers = ["Group", "Position", "Role"];
@@ -135,8 +135,6 @@ export default function CardModel({
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                 {label === "Sale"
                   ? "Venda"
-                  : label === "Quote"
-                  ? "Orçamento"
                   : label === "StockEntry"
                   ? "Entrada"
                   : ""}{" "}

@@ -91,10 +91,6 @@ const pageButtonOptions = [
     ],
   },
   {
-    page: "quotes",
-    pageButtonOptions: [""],
-  },
-  {
     page: "stock",
     pageButtonOptions: [
       {

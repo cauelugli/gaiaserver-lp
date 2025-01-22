@@ -92,6 +92,7 @@ router.post("/", async (req, res) => {
       }
       break;
     case "StockEntry":
+      //change thiss
       fields.quoteValue = req.body.selectedProducts.reduce((total, product) => {
         const buyValue = product.buyValue || 0;
         const count = product.count || 0;

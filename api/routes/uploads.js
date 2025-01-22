@@ -143,9 +143,6 @@ router.get("/listDocs", async (req, res) => {
       return res.status(500).json({ message: "Erro ao listar os documentos" });
     }
     try {
-      // const quotes = await Quote.find();
-      // inUse.push(...quotes.map((quote) => quote."image"));
-
       let totalSpace = 0;
 
       docs.forEach((doc) => {
@@ -189,9 +186,6 @@ router.get("/listAttachments", async (req, res) => {
       return res.status(500).json({ message: "Erro ao listar os documentos" });
     }
     try {
-      // const quotes = await Quote.find();
-      // inUse.push(...quotes.map((quote) => quote."image"));
-
       let totalSpace = 0;
 
       docs.forEach((doc) => {

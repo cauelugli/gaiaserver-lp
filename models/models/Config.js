@@ -96,9 +96,6 @@ const configSchema = new Schema({
     requests: {
       type: Array,
     },
-    quotes: {
-      type: Array,
-    },
     services: {
       type: Array,
     },
@@ -131,16 +128,6 @@ const configSchema = new Schema({
     productsCanBeDeleted: {
       type: Boolean,
       default: true,
-    },
-  },
-  quotes: {
-    quotesCanBeDeleted: {
-      type: Boolean,
-      default: false,
-    },
-    whenCreateQuote: {
-      type: Number,
-      default: 0,
     },
   },
   reports: {
