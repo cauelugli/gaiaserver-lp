@@ -74,8 +74,7 @@ export default function Departments({ onClose }) {
       }
     };
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [configData]);
 
   const handleChangeStockConfig = async (e) => {
     e.preventDefault();
