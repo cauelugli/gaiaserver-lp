@@ -36,11 +36,14 @@ import {
 import { icons } from "../../icons";
 
 import ManagerSelectTableCell from "../../components/tableCells/ManagerSelectTableCell";
+import AlternateManagerSelectTableCell from "../../components/tableCells/AlternateManagerSelectTableCell";
 
 export default function Requests({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
   const [requestsNeedApproval, setRequestsNeedApproval] = React.useState(null);
   const [requestsApproverManager, setRequestsApproverManager] =
+    React.useState(null);
+  const [requestsApproverAlternate, setRequestsApproverAlternate] =
     React.useState(null);
   const [requestsCanBeDeleted, setRequestsCanBeDeleted] = React.useState(null);
   const [statuses, setStatuses] = React.useState([]);
@@ -52,10 +55,10 @@ export default function Requests({ onClose }) {
     const fetchData = async () => {
       try {
         const configResponse = await api.get("/config");
-        const managersResponse = await api.get("/get", {
+        const usersResponse = await api.get("/get", {
           params: { model: "User" },
         });
-        const managersData = managersResponse.data.filter(
+        const managersData = usersResponse.data.filter(
           (user) => user.isManager
         );
         const configData = configResponse.data[0].requests;
@@ -71,12 +74,18 @@ export default function Requests({ onClose }) {
           (manager) => manager._id === configData.requestsApproverManager
         );
         setRequestsApproverManager(approverManager || null);
+
+        const approverManagerAlternate = usersResponse.data.find(
+          (user) => user._id === configData.requestsApproverAlternate
+        );
+        setRequestsApproverAlternate(approverManagerAlternate || null);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, []);
+  console.log("approverManagerAlternate", requestsApproverAlternate);
 
   const handleChangeRequestConfig = async (e) => {
     e.preventDefault();
@@ -86,6 +95,9 @@ export default function Requests({ onClose }) {
         requestsApproverManager: requestsApproverManager
           ? requestsApproverManager._id
           : "",
+        requestsApproverAlternate: requestsApproverAlternate
+          ? requestsApproverAlternate._id
+          : "none",
         requestsCanBeDeleted,
         statuses,
       });
@@ -212,6 +224,35 @@ export default function Requests({ onClose }) {
                         setRequestsApproverManager={setRequestsApproverManager}
                         requestsApproverManager={requestsApproverManager}
                         field={{ dynamicData: "managers", required: false }}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid item sx={{ my: 1.5 }}>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      sx={{ px: 4 }}
+                    >
+                      <Tooltip
+                        title={
+                          <Typography sx={{ fontSize: 12 }}>
+                            Selecione um Colaborador que também poderá Aprovar as
+                            Solicitações além do Gerente. Por padrão a opção é
+                            "Nenhum".
+                          </Typography>
+                        }
+                      >
+                        <Typography sx={{ my: "auto" }}>Suplente</Typography>
+                      </Tooltip>
+                      <AlternateManagerSelectTableCell
+                        fromConfig
+                        setRequestsApproverAlternate={
+                          setRequestsApproverAlternate
+                        }
+                        requestsApproverAlternate={requestsApproverAlternate}
+                        requestsApproverManager={requestsApproverManager}
+                        field={{ dynamicData: "users", required: false }}
                       />
                     </Grid>
                   </Grid>

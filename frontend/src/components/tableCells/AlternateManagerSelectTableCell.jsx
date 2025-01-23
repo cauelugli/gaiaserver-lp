@@ -17,29 +17,42 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-const ManagerSelectTableCell = (props) => {
+const AlternateManagerSelectTableCell = (props) => {
   const [options, setOptions] = React.useState([]);
-  const [selectedManager, setSelectedManager] = React.useState(null);
+  const [selectedAlternate, setSelectedAlternate] = React.useState(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        let data = [];
         const resManagers = await api.get("/get", {
           params: { model: "User" },
         });
-        data = resManagers.data.filter((user) => user.isManager);
-        setOptions(data);
+        const filteredUsers = resManagers.data.filter(
+          (user) => user._id !== props.requestsApproverManager._id
+        );
+        setOptions(filteredUsers);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [props.field.dynamicData, props.oldManager]);
+  }, [props]);
 
   const renderValue = (selected) => {
-    if (!selected) {
-      return "";
+    if (!selected || props.requestsApproverAlternate === "none") {
+      return (
+        <Grid container direction="row" alignItems="center">
+          <Avatar sx={{ width: 24, height: 24, marginRight: 2 }} />
+          <Typography sx={{ fontSize: 13 }}>Nenhum</Typography>
+        </Grid>
+      );
+    } else if (selected === "none") {
+      return (
+        <Grid container direction="row" alignItems="center">
+          <Avatar sx={{ width: 24, height: 24, marginRight: 2 }} />
+          <Typography sx={{ fontSize: 13 }}>Nenhum</Typography>
+        </Grid>
+      );
     } else {
       return (
         <Grid container direction="row" alignItems="center">
@@ -56,10 +69,10 @@ const ManagerSelectTableCell = (props) => {
 
   const handleChange = (event) => {
     const value = event.target.value;
-    setSelectedManager(value);
+    setSelectedAlternate(value);
 
     if (props.fromConfig) {
-      props.setRequestsApproverManager(value);
+      props.setRequestsApproverAlternate(value || "none");
     } else {
       props.handleChange(props.field.name)(event);
     }
@@ -71,10 +84,10 @@ const ManagerSelectTableCell = (props) => {
       <Select
         value={
           props.fromConfig
-            ? props.requestsApproverManager
-              ? props.requestsApproverManager
-              : selectedManager
-            : selectedManager
+            ? props.requestsApproverAlternate
+              ? props.requestsApproverAlternate
+              : selectedAlternate
+            : selectedAlternate
         }
         onChange={handleChange}
         sx={{
@@ -84,6 +97,12 @@ const ManagerSelectTableCell = (props) => {
         size="small"
         renderValue={renderValue}
       >
+        <MenuItem value={"none"}>
+          <Grid container direction="row" alignItems="center">
+            <Avatar sx={{ width: 24, height: 24, marginRight: 2 }} />
+            <Typography sx={{ fontSize: 13 }}>Nenhum</Typography>
+          </Grid>
+        </MenuItem>
         {options.map((option, index) => (
           <MenuItem
             value={option}
@@ -107,4 +126,4 @@ const ManagerSelectTableCell = (props) => {
   );
 };
 
-export default ManagerSelectTableCell;
+export default AlternateManagerSelectTableCell;

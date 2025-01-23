@@ -144,6 +144,9 @@ const configSchema = new Schema({
     requestsApproverManager: {
       type: String,
     },
+    requestsApproverAlternate: {
+      type: String,
+    },
     canBeDeleted: {
       type: Boolean,
       default: true,
