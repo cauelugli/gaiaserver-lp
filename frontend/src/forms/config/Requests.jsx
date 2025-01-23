@@ -91,6 +91,7 @@ export default function Requests({ onClose }) {
     e.preventDefault();
     try {
       const res = await api.put("/config/requests", {
+        prevData: configData,
         requestsNeedApproval,
         requestsApproverManager: requestsApproverManager
           ? requestsApproverManager._id
@@ -237,9 +238,9 @@ export default function Requests({ onClose }) {
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
-                            Selecione um Colaborador que também poderá Aprovar as
-                            Solicitações além do Gerente. Por padrão a opção é
-                            "Nenhum".
+                            Selecione um Colaborador que também poderá Aprovar
+                            as Solicitações além do Gerente. Por padrão a opção
+                            é "Nenhum".
                           </Typography>
                         }
                       >

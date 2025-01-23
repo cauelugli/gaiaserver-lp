@@ -135,6 +135,9 @@ mainQueue.process(async (job) => {
       case "notifyAssignee":
         await handleNotifyAssignee(data);
         break;
+      case "notifyNewConfiguredUser":
+        await handleNotifyNewConfiguredUser(data);
+        break;
       case "notifyRequester":
         await handleNotifyRequester(data);
         break;
@@ -314,6 +317,13 @@ const handleNotifyAssignee = async (data) => {
     sourceId: data.sourceId,
     receiver: data.receiver,
     label: data.label,
+  });
+};
+
+const handleNotifyNewConfiguredUser = async (data) => {
+  socket.emit("notifyNewConfiguredUser", {
+    receiver: data.receiver,
+    configuration: data.configuration,
   });
 };
 

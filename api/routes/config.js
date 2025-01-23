@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Config = require("../../models/models/Config");
 const Notifications = require("../../models/models/Notifications");
+const mainQueue = require("../../queues/mainQueue");
 
 // CREATE INITIAL CONFIG
 router.post("/", async (req, res) => {
@@ -114,6 +115,7 @@ router.put("/users", async (req, res) => {
 router.put("/requests", async (req, res) => {
   try {
     const {
+      prevData,
       requestsNeedApproval,
       requestsCanBeDeleted,
       requestsApproverManager,
@@ -130,6 +132,26 @@ router.put("/requests", async (req, res) => {
     config.requests.requestStatuses = statuses;
 
     await config.save();
+
+    if (prevData.requestsApproverManager !== requestsApproverManager) {
+      mainQueue.add({
+        type: "notifyNewConfiguredUser",
+        data: {
+          receiver: requestsApproverManager,
+          configuration: "requestApprover",
+        },
+      });
+    }
+    if (prevData.requestsApproverAlternate !== requestsApproverAlternate) {
+      mainQueue.add({
+        type: "notifyNewConfiguredUser",
+        data: {
+          receiver: requestsApproverAlternate,
+          configuration: "requestAlternate",
+        },
+      });
+    }
+
     res.status(200).json(config);
   } catch (err) {
     console.error(err);

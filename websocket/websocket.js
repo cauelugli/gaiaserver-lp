@@ -226,6 +226,59 @@ const initSocket = (server) => {
       io.emit("newNotificationToIndividual", data);
     });
 
+    socket.on("notifyNewConfiguredUser", async (data) => {
+      try {
+        let configuration;
+        switch (data.configuration) {
+          case "requestApprover":
+            configuration = "Agora você é o Gerente Aprovador de Solicitações.";
+            break;
+          case "requestAlternate":
+            configuration =
+              "Agora você é o Suplente do Aprovador de Solicitações.";
+            break;
+          default:
+            configuration = "";
+        }
+
+        let explanation;
+        switch (data.configuration) {
+          case "requestApprover":
+            explanation =
+              "As solicitações de Aprovação de Jobs e Vendas serão enviadas a você e, se configurado, também ao suplente.";
+            break;
+          case "requestAlternate":
+            explanation =
+              "Como Suplente do Gerente Aprovador de Solicitações (Jobs e Vendas), agora você também pode Aprovar as solicitações dos colaboradores.";
+            break;
+          default:
+            explanation = "";
+        }
+
+        let user;
+        user = await User.findById(data.receiver);
+
+        const parsedTitleString = "Nova Configuração Atribuida";
+        const notificationBody = `Olá, ${data.receiver}! 
+        Você recebeu uma nova configuração em seu usuário: ${configuration} ${explanation}`;
+
+        if (user) {
+          user.notifications.push({
+            read: false,
+            title: parsedTitleString,
+            body: notificationBody,
+            createdAt: new Date().toISOString(),
+          });
+
+          await user.save();
+        }
+      } catch (err) {
+        console.error("Erro ao adicionar notificação", err);
+      }
+
+      io.emit("newNotificationToIndividual", data);
+    });
+
     socket.on("notifyRequester", async (data) => {
       try {
         let user;
