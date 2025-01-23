@@ -85,7 +85,6 @@ export default function Requests({ onClose }) {
     };
     fetchData();
   }, []);
-  console.log("approverManagerAlternate", requestsApproverAlternate);
 
   const handleChangeRequestConfig = async (e) => {
     e.preventDefault();

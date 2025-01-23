@@ -377,7 +377,7 @@ export default function PageModel(props) {
                         props.configData["requests"].requestsApproverManager
                       }
                       stockApproverManager={
-                        props.configData["stock"].stockEntriesDispatcherManager
+                        props.configData["stock"].stockEntriesApproverManager
                       }
                     />
                   ) : (
@@ -405,7 +405,7 @@ export default function PageModel(props) {
                             }
                             stockApproverManager={
                               props.configData["stock"]
-                                .stockEntriesDispatcherManager
+                                .stockEntriesApproverManager
                             }
                             page={props.item.page}
                             tabIndex={value}

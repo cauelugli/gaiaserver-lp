@@ -163,16 +163,40 @@ router.put("/requests", async (req, res) => {
 router.put("/stock", async (req, res) => {
   try {
     const {
-      stockEntriesDispatcherManager,
+      prevData,
+      stockEntriesApproverManager,
+      stockEntriesApproverAlternate,
       stockEntriesNeedApproval,
       stockEntriesCanBeChallenged,
     } = req.body;
 
     const config = await Config.findOne();
 
-    config.stock.stockEntriesDispatcherManager = stockEntriesDispatcherManager;
+    config.stock.stockEntriesApproverManager = stockEntriesApproverManager;
+    config.stock.stockEntriesApproverAlternate = stockEntriesApproverAlternate;
     config.stock.stockEntriesNeedApproval = stockEntriesNeedApproval;
     config.stock.stockEntriesCanBeChallenged = stockEntriesCanBeChallenged;
+
+    if (prevData.stockEntriesApproverManager !== stockEntriesApproverManager) {
+      mainQueue.add({
+        type: "notifyNewConfiguredUser",
+        data: {
+          receiver: stockEntriesApproverManager,
+          configuration: "stockApprover",
+        },
+      });
+    }
+    if (
+      prevData.stockEntriesApproverAlternate !== stockEntriesApproverAlternate
+    ) {
+      mainQueue.add({
+        type: "notifyNewConfiguredUser",
+        data: {
+          receiver: stockEntriesApproverAlternate,
+          configuration: "stockAlternate",
+        },
+      });
+    }
 
     await config.save();
     res.status(200).json(config);

@@ -309,7 +309,7 @@ router.put("/requestBuy", async (req, res) => {
       mainQueue.add({
         type: "notifyStockManagerToBuyProduct",
         data: {
-          receiver: config.stock.stockEntriesDispatcherManager,
+          receiver: config.stock.stockEntriesApproverManager,
           requester: requestedBy || "",
           product,
         },

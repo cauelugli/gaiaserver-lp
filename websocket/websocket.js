@@ -231,11 +231,18 @@ const initSocket = (server) => {
         let configuration;
         switch (data.configuration) {
           case "requestApprover":
-            configuration = "Agora você é o Gerente Aprovador de Solicitações.";
+            configuration = "Agora você é o Gerente Aprovador de Solicitações!";
             break;
           case "requestAlternate":
             configuration =
-              "Agora você é o Suplente do Aprovador de Solicitações.";
+              "Agora você é o Suplente do Aprovador de Solicitações!";
+          case "stockApprover":
+            configuration =
+              "Agora você é o Gerente Aprovador de Entradas de Estoque!";
+            break;
+          case "stockAlternate":
+            configuration =
+              "Agora você é o Suplente do Aprovador de Entradas de Estoque!";
             break;
           default:
             configuration = "";
@@ -250,6 +257,14 @@ const initSocket = (server) => {
           case "requestAlternate":
             explanation =
               "Como Suplente do Gerente Aprovador de Solicitações (Jobs e Vendas), agora você também pode Aprovar as solicitações dos colaboradores.";
+            break;
+          case "stockApprover":
+            explanation =
+              "As solicitações de Aprovação de Entradas de Estoque serão enviadas a você e, se configurado, também ao suplente.";
+            break;
+          case "stockAlternate":
+            explanation =
+              "Como Suplente do Gerente Aprovador de Entradas de Estoque, agora você também pode Aprovar as solicitações dos colaboradores.";
             break;
           default:
             explanation = "";

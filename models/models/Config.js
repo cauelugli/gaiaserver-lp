@@ -176,7 +176,11 @@ const configSchema = new Schema({
     },
   },
   stock: {
-    stockEntriesDispatcherManager: {
+    stockEntriesApproverManager: {
+      type: String,
+      default: "",
+    },
+    stockEntriesApproverAlternate: {
       type: String,
       default: "",
     },
