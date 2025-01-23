@@ -145,40 +145,26 @@ export default function NotificationsButton({
         onClose={handleCloseNotifications}
         sx={{ height: 330 }}
       >
-        <Grid sx={{ width: 260, mt: -2 }}>
+        <Grid sx={{ width: "17vw", mt: -2 }}>
           <List>
             {filteredNotifications.reverse().map((notification, index) => (
               <Card
                 elevation={0}
                 key={index}
                 sx={{
+                  cursor: "pointer",
                   m: 1,
                   backgroundColor:
                     notification.read === true
                       ? `${mainColor}80`
                       : `${mainColor}B3`,
                 }}
+                onClick={() => {
+                  setExpanded(!expanded);
+                  setSelectedNotificationCreatedAt(notification.createdAt);
+                }}
               >
                 <CardHeader
-                  action={
-                    <IconButton
-                      onClick={() => {
-                        setExpanded(!expanded);
-                        setSelectedNotificationCreatedAt(
-                          notification.createdAt
-                        );
-                      }}
-                      aria-expanded={expanded}
-                    >
-                      {expanded &&
-                      selectedNotificationCreatedAt ===
-                        notification.createdAt ? (
-                        <icons.ExpandLessIcon />
-                      ) : (
-                        <icons.ExpandMoreIcon />
-                      )}
-                    </IconButton>
-                  }
                   title={
                     <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
                       {notification.title}
@@ -190,7 +176,7 @@ export default function NotificationsButton({
                     </Typography>
                   }
                   subheader={
-                    <Typography sx={{ fontSize: 10 }}>
+                    <Typography sx={{ fontSize: 10, ml: "65%" }}>
                       {dayjs(notification.createdAt).format(
                         "DD/MM/YYYY HH:mm:ss"
                       )}
