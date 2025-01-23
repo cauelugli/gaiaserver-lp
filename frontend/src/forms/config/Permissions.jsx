@@ -29,7 +29,6 @@ import {
 
 import { permissionOptions } from "../../options/configOptions";
 
-
 export default function Permissions({ onClose }) {
   const [configData, setConfigData] = useState({});
   const [roles, setRoles] = useState([]);
@@ -119,7 +118,7 @@ export default function Permissions({ onClose }) {
               </Typography>
             </TableCell>
             {permissionOptions.map((item, index) => (
-              <TableCell key={index}>
+              <TableCell key={index} align="center">
                 <Grid
                   container
                   direction="column"
@@ -137,7 +136,7 @@ export default function Permissions({ onClose }) {
           <TableRow>
             <TableCell>Admin</TableCell>
             {permissionOptions.map((item, index) => (
-              <TableCell key={index}>
+              <TableCell key={index} align="center">
                 <Checkbox size="small" disabled checked />
               </TableCell>
             ))}
@@ -146,7 +145,11 @@ export default function Permissions({ onClose }) {
             <TableRow key={roleIndex}>
               <TableCell>{role.name}</TableCell>
               {permissionOptions.map((option, optionIndex) => (
-                <TableCell key={optionIndex} sx={{ maxWidth: 2 }}>
+                <TableCell
+                  key={optionIndex}
+                  sx={{ maxWidth: 2 }}
+                  align="center"
+                >
                   <Checkbox
                     size="small"
                     checked={
