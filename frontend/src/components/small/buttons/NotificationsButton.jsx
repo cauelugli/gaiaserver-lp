@@ -176,10 +176,12 @@ export default function NotificationsButton({
                     </Typography>
                   }
                   subheader={
-                    <Typography sx={{ fontSize: 10, ml: "65%" }}>
-                      {dayjs(notification.createdAt).format(
-                        "DD/MM/YYYY HH:mm:ss"
-                      )}
+                    <Typography sx={{ fontSize: 11, ml: "65%" }}>
+                      {expanded
+                        ? ""
+                        : dayjs(notification.createdAt).format(
+                            "DD/MM/YYYY HH:mm"
+                          )}
                     </Typography>
                   }
                 />
@@ -192,12 +194,21 @@ export default function NotificationsButton({
                   timeout="auto"
                   unmountOnExit
                 >
-                  <CardContent sx={{ mt: -4 }}>
+                  <CardContent sx={{ mt: -2 }}>
                     <Typography sx={{ fontSize: 13 }}>
                       {notification.body}
                     </Typography>
                   </CardContent>
-                  <CardActions disableSpacing>
+                  <CardActions>
+                    {expanded ? (
+                      <Typography sx={{ fontSize: 11 }}>
+                        {dayjs(notification.createdAt).format(
+                          "DD/MM/YYYY HH:mm"
+                        )}
+                      </Typography>
+                    ) : (
+                      ""
+                    )}
                     {notification.read === true ? (
                       <IconButton
                         sx={{ ml: "auto" }}
