@@ -248,6 +248,7 @@ export default function EditFormModel(props) {
           ...fields,
           members: fields.members?.map((member) => member._id || member.id),
           customer: fields.customer?._id,
+          department: fields.department?._id || props.target.department,
           service: fields.service?._id,
           worker: fields.worker?._id,
           seller: fields.seller?._id,

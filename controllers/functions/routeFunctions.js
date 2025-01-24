@@ -38,7 +38,10 @@ const parseReqFields = function (fields, reqBody) {
     role: fields.role?._id || reqBody.role?._id || "",
     selectedMembers: fields.selectedMembers || reqBody.selectedMembers || [],
     image: fields.image || reqBody.image || "",
-    type: fields.type?.name?.toString() || "",
+    type:
+      typeof fields.type === "string"
+        ? fields.type
+        : fields.type?.name?.toString() || "",
     isManager: fields.isManager || reqBody.isManager || false,
     createdBy: fields.createdBy || reqBody.createdBy || "",
     products: fields.selectedProducts || reqBody.selectedProducts || [],

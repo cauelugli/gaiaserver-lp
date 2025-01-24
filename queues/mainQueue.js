@@ -169,9 +169,7 @@ mainQueue.process(async (job) => {
 
     return true;
   } catch (err) {
-    console.error(
-      `Erro ao processar notificação do tipo ${type}: ${err.message}`
-    );
+    console.error(`Erro ao processar o tipo ${type}: ${err.message}`);
     throw err;
   }
 });
@@ -370,9 +368,8 @@ const handleSwapWorker = async (data) => {
 };
 
 const handleSwapDepartments = async (data) => {
-  const { prevDataId, model, newDepartment, oldDepartment } = data;
-
-  await swapDepartments(prevDataId, model, newDepartment, oldDepartment);
+  const { userId, model, newDepartment, oldDepartment } = data;
+  await swapDepartments(userId, model, newDepartment, oldDepartment);
 };
 
 const handleSwapPositions = async (data) => {

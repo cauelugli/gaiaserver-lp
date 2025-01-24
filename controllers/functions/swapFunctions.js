@@ -10,21 +10,23 @@ const { addToAssigneeAgenda } = require("./addFunctions");
 const { removeFromAssigneeAgenda } = require("./deleteRoutines");
 
 const swapDepartments = async (
-  sourceItemId,
-  sourceModel,
+  userId,
+  model,
   newDepartmentId,
-  previousDepartment
+  previousDepartmentId
 ) => {
   try {
-    if (sourceModel === "User") {
-      const sourceItem = await User.findById(sourceItemId);
-      if (sourceItem) {
-        if (sourceItem.isManager) {
-          sourceItem.department = newDepartmentId;
-          await sourceItem.save();
+    if (model === "User") {
+      const user = await User.findById(userId);
+      if (user) {
+        if (user.isManager) {
+          user.department = newDepartmentId;
+          await user.save();
 
-          if (previousDepartment) {
-            const oldDepartment = await Department.findById(previousDepartment);
+          if (previousDepartmentId) {
+            const oldDepartment = await Department.findById(
+              previousDepartmentId
+            );
 
             if (oldDepartment) {
               oldDepartment.manager = "";
@@ -34,56 +36,54 @@ const swapDepartments = async (
 
           const newDepartment = await Department.findById(newDepartmentId);
           if (newDepartment) {
-            newDepartment.manager = sourceItem._id.toString();
+            newDepartment.manager = userId;
             await newDepartment.save();
           }
         } else {
-          sourceItem.department = newDepartmentId;
-          await sourceItem.save();
-
-          if (previousDepartment) {
-            const oldDepartment = await Department.findById(previousDepartment);
+          if (previousDepartmentId) {
+            const oldDepartment = await Department.findById(
+              previousDepartmentId
+            );
 
             if (oldDepartment) {
-              oldDepartment.members = oldDepartment.members.filter(
-                (memberId) => memberId.toString() !== sourceItemId.toString()
-              );
+              await oldDepartment.updateOne({
+                $pull: { members: userId },
+              });
               await oldDepartment.save();
             }
           }
 
           const newDepartment = await Department.findById(newDepartmentId);
-
           if (newDepartment) {
-            if (!newDepartment.members.includes(sourceItemId)) {
-              newDepartment.members.push(sourceItemId);
+            if (!newDepartment.members.includes(userId)) {
+              newDepartment.members.push(userId);
             }
             await newDepartment.save();
           }
         }
       }
     }
-    if (sourceModel === "Service") {
-      const sourceItem = await Service.findById(sourceItemId);
-      if (sourceItem) {
-        const oldDepartment = await Department.findById(sourceItem.department);
-        if (oldDepartment) {
-          if (oldDepartment.services.includes(sourceItemId)) {
-            oldDepartment.services.pull(sourceItemId);
-            await oldDepartment.save();
-          }
-        } else {
-          ("");
-        }
+    if (model === "Service") {
+      // const sourceItem = await Service.findById(sourceItemId);
+      // if (sourceItem) {
+      //   const oldDepartment = await Department.findById(sourceItem.department);
+      //   if (oldDepartment) {
+      //     if (oldDepartment.services.includes(sourceItemId)) {
+      //       oldDepartment.services.pull(sourceItemId);
+      //       await oldDepartment.save();
+      //     }
+      //   } else {
+      //     ("");
+      //   }
 
-        const newDepartment = await Department.findById(newDepartmentId);
-        if (newDepartment) {
-          if (!newDepartment.services.includes(sourceItemId)) {
-            newDepartment.services.push(sourceItemId);
-            await newDepartment.save();
-          }
-        }
-      }
+      //   const newDepartment = await Department.findById(newDepartmentId);
+      //   if (newDepartment) {
+      //     if (!newDepartment.services.includes(sourceItemId)) {
+      //       newDepartment.services.push(sourceItemId);
+      //       await newDepartment.save();
+      //     }
+      //   }
+      // }
     }
   } catch (error) {
     throw error;

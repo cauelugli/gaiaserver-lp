@@ -37,16 +37,16 @@ router.put("/", async (req, res) => {
 
     switch (req.body.model) {
       case "User":
-        if (req.body.fields.department !== req.body.prevData.department) {
-          // mainQueue.add({
-          //   type: "swapDepartments",
-          //   data: {
-          //     prevDataId: req.body.prevData._id.toString(),
-          //     model: req.body.model,
-          //     newDepartment: req.body.fields.department,
-          //     oldDepartment: req.body.prevData.department,
-          //   },
-          // });
+        if (processedFields.department !== req.body.prevData.department) {
+          mainQueue.add({
+            type: "swapDepartments",
+            data: {
+              userId: req.body.prevData._id.toString(),
+              model: req.body.model,
+              newDepartment: req.body.fields.department,
+              oldDepartment: req.body.prevData.department,
+            },
+          });
         }
 
         // mainQueue.add({
