@@ -49,6 +49,10 @@ const initSocket = (server) => {
       io.emit("forceRefresh");
     });
 
+    socket.on("refreshIdIndexList", () => {
+      io.emit("refreshIdIndexList");
+    });
+
     socket.on("forceIndividualRefresh", (userId) => {
       io.emit("forceIndividualRefresh", userId);
     });

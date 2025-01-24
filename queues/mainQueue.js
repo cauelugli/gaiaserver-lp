@@ -84,6 +84,9 @@ mainQueue.process(async (job) => {
       case "addCounter":
         await handleAddCounter(data);
         break;
+      case "refreshIdIndexList":
+        await handleRefreshIdIndexList();
+        break;
       case "addOperator":
         await handleOperator(data);
         break;
@@ -196,6 +199,10 @@ const handleNotificationToList = async (data, isAdmin) => {
     isFemale: data.model === "Sale" ? true : false,
     isAdmin,
   });
+};
+
+const handleRefreshIdIndexList = async () => {
+  socket.emit("refreshIdIndexList");
 };
 
 const handleAddCounter = async (data) => {
