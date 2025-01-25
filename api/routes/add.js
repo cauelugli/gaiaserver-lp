@@ -251,6 +251,8 @@ router.post("/", async (req, res) => {
       isAdmin,
     });
 
+    mainQueue.add({ type: "refreshIdIndexList" });
+
     res.status(200).json(savedItem);
   } catch (err) {
     console.log(err);
