@@ -485,7 +485,6 @@ async function deleteRoutinesUser(
   model,
   isMultiple,
   deletedItem,
-  sourceId,
   ids
 ) {
   try {
@@ -500,7 +499,6 @@ async function deleteRoutinesUser(
 
     await Promise.all(
       itemsToDelete.map(async (id) => {
-        await Model.findByIdAndDelete(id);
         const deletedUser = await Model.findByIdAndDelete(id);
 
         if (deletedUser) {
@@ -521,21 +519,18 @@ async function deleteRoutinesUser(
             }
           }
 
-          // Atualizar cargo se existir
           if (position) {
             await defineModel("Position").findByIdAndUpdate(position, {
               $pull: { members: deletedUser._id.toString() },
             });
           }
 
-          // Atualizar perfil de acesso se existir
           if (role) {
             await defineModel("Role").findByIdAndUpdate(role, {
               $pull: { members: deletedUser._id.toString() },
             });
           }
 
-          // Atualizar grupos se existirem
           if (groups && groups.length > 0) {
             await Promise.all(
               groups.map((groupId) =>
@@ -546,7 +541,6 @@ async function deleteRoutinesUser(
             );
           }
 
-          // Atualizar agenda
           const agenda = await Agenda.findOne({});
           if (agenda && Array.isArray(agenda.users)) {
             const indexToRemove = agenda.users.findIndex((userMap) =>
@@ -555,10 +549,9 @@ async function deleteRoutinesUser(
             if (indexToRemove !== -1) {
               agenda.users.splice(indexToRemove, 1);
               await agenda.save();
-            }
-          }
+            } 
+          } 
 
-          // Deletar preferências do usuário
           await UserPreferences.deleteOne({
             userId: deletedUser._id.toString(),
           });

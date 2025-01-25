@@ -1,0 +1,15 @@
+I know, dont judge me
+
+    CUSTOMER
+        *no relations*
+
+    USER
+        Agenda
+        Department
+        Group
+        Operator
+        Position
+        Role
+        UserPreferences
+
+    REQUEST
