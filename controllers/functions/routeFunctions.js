@@ -34,7 +34,7 @@ const parseReqFields = function (fields, reqBody) {
       reqBody.selectedMembers ||
       []
     ).map((member) => member._id || member),
-    position: fields.position?._id || reqBody.position?._id || "",
+    position: fields.position || reqBody.position || "",
     role: fields.role?._id || reqBody.role?._id || "",
     selectedMembers: fields.selectedMembers || reqBody.selectedMembers || [],
     image: fields.image || reqBody.image || "",

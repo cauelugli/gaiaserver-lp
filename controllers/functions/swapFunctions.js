@@ -75,7 +75,6 @@ const swapDepartments = async (
       //   } else {
       //     ("");
       //   }
-
       //   const newDepartment = await Department.findById(newDepartmentId);
       //   if (newDepartment) {
       //     if (!newDepartment.services.includes(sourceItemId)) {
@@ -91,30 +90,27 @@ const swapDepartments = async (
 };
 
 const swapPositions = async (userId, newPositionId, oldPositionId) => {
-  if (oldPositionId !== newPositionId) {
-    try {
-      const user = await User.findById(userId);
-      if (user) {
-        const oldPosition = await Position.findById(oldPositionId);
-
-        if (oldPosition) {
-          oldPosition.members = oldPosition.members.filter(
-            (memberId) => memberId.toString() !== userId.toString()
-          );
-          await oldPosition.save();
-        }
-
-        const newPosition = await Position.findById(newPositionId);
-        if (newPosition) {
-          if (!newPosition.members.includes(userId)) {
-            newPosition.members.push(userId);
-          }
-          await newPosition.save();
-        }
+  try {
+    const user = await User.findById(userId);
+    if (user) {
+      const oldPosition = await Position.findById(oldPositionId);
+      if (oldPosition) {
+        await oldPosition.updateOne({
+          $pull: { members: userId },
+        });
+        await oldPosition.save();
       }
-    } catch (error) {
-      throw error;
+
+      const newPosition = await Position.findById(newPositionId);
+      if (newPosition) {
+        if (!newPosition.members.includes(userId)) {
+          newPosition.members.push(userId);
+        }
+        await newPosition.save();
+      }
     }
+  } catch (error) {
+    throw error;
   }
 };
 

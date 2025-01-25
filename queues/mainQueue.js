@@ -373,9 +373,8 @@ const handleSwapDepartments = async (data) => {
 };
 
 const handleSwapPositions = async (data) => {
-  const { prevDataId, newPosition, oldPosition } = data;
-
-  await swapPositions(prevDataId, newPosition, oldPosition);
+  const { userId, newPosition, oldPosition } = data;
+  await swapPositions(userId, newPosition, oldPosition);
 };
 
 // MONITORING (DEBUG)

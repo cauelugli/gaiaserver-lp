@@ -49,14 +49,19 @@ router.put("/", async (req, res) => {
           });
         }
 
-        // mainQueue.add({
-        //   type: "swapPositions",
-        //   data: {
-        //     prevDataId: req.body.prevData._id.toString(),
-        //     newPosition: req.body.fields.position,
-        //     oldPosition: req.body.prevData.position,
-        //   },
-        // });
+        if (
+          processedFields.position !== "" &&
+          processedFields.position !== req.body.prevData.position
+        ) {
+          mainQueue.add({
+            type: "swapPositions",
+            data: {
+              userId: req.body.prevData._id.toString(),
+              newPosition: processedFields.position,
+              oldPosition: req.body.prevData.position,
+            },
+          });
+        }
         break;
 
       case "Job":
