@@ -110,7 +110,7 @@ async function markAllNotificationAsRead(data) {
   try {
     switch (data.model) {
       case "Admin":
-        await Admin.findOneAndUpdate(
+        await Model.findOneAndUpdate(
           {},
           {
             $set: { "notifications.$[].read": true },
@@ -141,8 +141,8 @@ async function markNotificationAsRead(data) {
   try {
     switch (data.model) {
       case "Admin":
-        await Admin.findOneAndUpdate(
-          { "notifications.createdAt": notificationCreatedAt },
+        await Model.findOneAndUpdate(
+          { "notifications.createdAt": data.notificationCreatedAt },
           {
             $set: { "notifications.$.read": true },
           },
@@ -151,9 +151,40 @@ async function markNotificationAsRead(data) {
         break;
       case "User":
         await Model.findOneAndUpdate(
-          { _id: userId, "notifications.createdAt": notificationCreatedAt },
+          { _id: data.userId, "notifications.createdAt": data.notificationCreatedAt },
           {
             $set: { "notifications.$.read": true },
+          },
+          { new: true }
+        );
+        break;
+      default:
+        "";
+    }
+  } catch (err) {
+    console.error("Erro ao marcar todas como lidas:", err.message);
+    throw err;
+  }
+}
+
+async function deleteNotification(data) {
+  const Model = defineModel(data.model);
+  try {
+    switch (data.model) {
+      case "Admin":
+        await Model.findOneAndUpdate(
+          {},
+          {
+            $pull: { notifications: { createdAt: data.notificationCreatedAt } },
+          },
+          { new: true }
+        );
+        break;
+      case "User":
+        await Model.findOneAndUpdate(
+          { _id: data.userId },
+          {
+            $pull: { notifications: { createdAt: data.notificationCreatedAt } },
           },
           { new: true }
         );
@@ -175,4 +206,5 @@ module.exports = {
   removeFromStock,
   requestApproval,
   resolveItem,
+  deleteNotification,
 };

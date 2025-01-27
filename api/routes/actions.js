@@ -26,48 +26,23 @@ router.put("/markNotificationAsRead", async (req, res) => {
   }
 });
 
-// USER - DELETE SINGLE NOTIFICATION -
+// USER - DELETE SINGLE NOTIFICATION - QUEUE OK
 router.put("/deleteNotification", async (req, res) => {
   // in the future, as a company, we will send this somewhere, instead of deleting
   const { userId, isAdmin, notificationCreatedAt } = req.body;
-  if (isAdmin) {
-    try {
-      await Admin.findOneAndUpdate(
-        {},
-        {
-          $pull: { notifications: { createdAt: notificationCreatedAt } },
-        },
-        { new: true }
-      );
-      res.status(200).json("OK");
-    } catch (err) {
-      res.status(500).json({ error: "Erro ao deletar notificação" });
-    }
-  } else {
-    const Model = defineModel("User");
+  try {
+    mainQueue.add({
+      type: "deleteNotification",
+      data: {
+        userId,
+        notificationCreatedAt,
+        model: isAdmin ? "Admin" : "User",
+      },
+    });
 
-    if (!Model) {
-      console.log("\nModel not found\n");
-      return res.status(400).json({ error: "Modelo inválido" });
-    }
-
-    try {
-      const updatedUser = await Model.findOneAndUpdate(
-        { _id: userId },
-        {
-          $pull: { notifications: { createdAt: notificationCreatedAt } },
-        },
-        { new: true }
-      );
-
-      if (!updatedUser) {
-        return res.status(404).json({ error: "Notificação não encontrada" });
-      }
-
-      res.status(200).json("OK");
-    } catch (err) {
-      res.status(500).json({ error: "Erro ao deletar notificação" });
-    }
+    res.status(200).json("OK");
+  } catch (err) {
+    res.status(500).json({ error: "Erro ao deletar notificação" });
   }
 });
 

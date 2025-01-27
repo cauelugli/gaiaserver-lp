@@ -31,6 +31,7 @@ const {
   resolveItem,
   markAllNotificationAsRead,
   markNotificationAsRead,
+  deleteNotification,
 } = require("../controllers/functions/actionsFunctions");
 
 const {
@@ -143,6 +144,9 @@ mainQueue.process(async (job) => {
         break;
       case "markNotificationAsRead":
         await handleMarkNotificationAsRead(data);
+        break;
+      case "deleteNotification":
+        await handleDeleteNotification(data);
         break;
       case "notifyAssignee":
         await handleNotifyAssignee(data);
@@ -314,6 +318,10 @@ const handleMarkAllNotificationsAsRead = async (data) => {
 
 const handleMarkNotificationAsRead = async (data) => {
   await markNotificationAsRead(data);
+};
+
+const handleDeleteNotification = async (data) => {
+  await deleteNotification(data);
 };
 
 const handleNotifyAdmin = async (data, isAdmin) => {
