@@ -94,7 +94,6 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData }) => {
                         width: "auto",
                         fontSize: 14 + (factor + factor / 2),
                         fontWeight: "bold",
-                        fontFamily: "Verdana, sans-serif",
                       }}
                     >
                       {option.text}

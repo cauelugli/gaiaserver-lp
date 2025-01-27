@@ -174,7 +174,6 @@ const Login = () => {
         <Typography
           component="h1"
           variant="h4"
-          style={{ fontFamily: "Roboto, sans-serif" }}
         >
           GaiaServer
         </Typography>

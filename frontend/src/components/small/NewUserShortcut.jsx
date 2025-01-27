@@ -57,7 +57,6 @@ const NewUserShortcut = ({ userId, reloadShortcuts, allowedLinks }) => {
           p: 1,
           px: 2,
           fontSize: 12,
-          fontFamily: "Verdana, sans-serif",
           mb: 1,
           backgroundColor: "#fff",
           borderRadius: 2,

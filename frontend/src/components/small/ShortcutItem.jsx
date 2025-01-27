@@ -43,7 +43,6 @@ const ShortcutItem = ({ shortcut, onShortcutClick, onDeleteShortcut }) => {
         sx={{
           p: 1,
           fontSize: 12,
-          fontFamily: "Verdana, sans-serif",
           mx: "auto",
           color: "#777",
         }}
@@ -56,7 +55,6 @@ const ShortcutItem = ({ shortcut, onShortcutClick, onDeleteShortcut }) => {
           p: 1,
           fontSize: 12,
           borderRadius: 2,
-          fontFamily: "Verdana, sans-serif",
           cursor: "pointer",
           color: "#777",
           "&:hover": {

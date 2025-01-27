@@ -34,7 +34,6 @@ const AgendaEventBar = (props) => {
           fontSize: 16,
           fontWeight: "bold",
           color: "#555",
-          fontFamily: "Verdana, sans-serif",
         }}
       >
         Serviços do Dia
