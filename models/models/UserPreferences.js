@@ -5,6 +5,9 @@ const userPreferencesSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  fontFamily: {
+    type: String,
+  },
   paletteColor: {
     type: String,
   },

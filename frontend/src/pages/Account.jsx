@@ -45,11 +45,15 @@ export default function Account({
   const [barPosition, setBarPosition] = React.useState(
     userPreferences.barPosition
   );
+  const [fontFamily, setFontFamily] = React.useState(
+    userPreferences.fontFamily
+  );
 
   React.useEffect(() => {
     setDarkMode(userPreferences.darkMode);
     setPaletteColor(userPreferences.paletteColor);
     setBarPosition(userPreferences.barPosition);
+    setFontFamily(userPreferences.fontFamily);
   }, [userPreferences]);
 
   const handleChangeImage = async (e) => {
@@ -174,6 +178,34 @@ export default function Account({
     }
   };
 
+  const handleUpdateFontFamily = async (newFontFamily) => {
+    try {
+      const response = await api.put("/userPreferences/fontFamily", {
+        userId: user._id,
+        fontFamily: newFontFamily,
+      });
+
+      if (response.data) {
+        setRefreshData(!refreshData);
+        socket.emit("forceIndividualRefresh", user._id);
+        toast.success("Fonte Atualizada!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
+    } catch (err) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+      console.log(err);
+    }
+  };
+
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <Typography sx={{ fontSize: 25, ml: 2, mb: 2, fontWeight: "bold" }}>
@@ -190,12 +222,15 @@ export default function Account({
             onUpdatePaletteColor={handleUpdatePaletteColor}
             onUpdateDarkMode={handleUpdateDarkMode}
             onUpdateBarPosition={handleUpdateBarPosition}
+            onUpdateFontFamily={handleUpdateFontFamily}
             darkMode={darkMode}
             setDarkMode={setDarkMode}
             paletteColor={paletteColor}
             setPaletteColor={setPaletteColor}
             barPosition={barPosition}
             setBarPosition={setBarPosition}
+            fontFamily={fontFamily}
+            setFontFamily={setFontFamily}
           />
         )}
 

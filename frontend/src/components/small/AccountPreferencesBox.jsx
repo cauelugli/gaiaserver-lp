@@ -12,6 +12,7 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import FontFamilySelect from "./selects/FontFamilySelect";
 
 const AccountPreferencesBox = (props) => {
   const [checkedDarkMode, setCheckedDarkMode] = useState(props.darkMode);
@@ -19,11 +20,13 @@ const AccountPreferencesBox = (props) => {
     props.barPosition
   );
   const [paletteColor, setPaletteColor] = useState(props.paletteColor);
+  const [fontFamily, setFontFamily] = useState(props.fontFamily);
 
   React.useEffect(() => {
     setCheckedDarkMode(props.darkMode);
     setPaletteColor(props.paletteColor);
     setCheckedBarPosition(props.barPosition);
+    setFontFamily(props.fontFamily);
   }, [props]);
 
   const handleChangeDarkMode = (event) => {
@@ -39,6 +42,11 @@ const AccountPreferencesBox = (props) => {
   const handlePaletteColorChange = (color) => {
     setPaletteColor(color);
     props.onUpdatePaletteColor(color);
+  };
+
+  const handleFontChange = (font) => {
+    setFontFamily(font);
+    props.onUpdateFontFamily(font);
   };
 
   const availableColors = checkedDarkMode
@@ -91,6 +99,19 @@ const AccountPreferencesBox = (props) => {
               </Grid>
             ))}
           </Grid>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion sx={{ width: "100%", mt: 1 }}>
+        <AccordionSummary>
+          <Typography sx={{ fontSize: 16 }}>Fonte</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <FontFamilySelect
+            currentFont={props.fontFamily}
+            selectedFont={fontFamily}
+            onChangeFont={handleFontChange}
+          />
         </AccordionDetails>
       </Accordion>
 

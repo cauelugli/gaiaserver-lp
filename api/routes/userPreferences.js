@@ -100,6 +100,24 @@ router.put("/darkMode", async (req, res) => {
   }
 });
 
+// UPDATE FONT FAMILY
+router.put("/fontFamily", async (req, res) => {
+  const { userId, fontFamily } = req.body;
+
+  try {
+    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    userPreferences.fontFamily = fontFamily;
+    await userPreferences.save();
+
+    res
+      .status(200)
+      .json({ message: "FontFamily updated successfully", fontFamily });
+  } catch (error) {
+    console.error("Error updating FontFamily:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // UPDATE PALETTE COLOR
 router.put("/paletteColor", async (req, res) => {
   const { userId, paletteColor } = req.body;
