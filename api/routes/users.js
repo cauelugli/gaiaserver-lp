@@ -47,30 +47,6 @@ router.put("/readNotification", async (req, res) => {
   }
 });
 
-// MARK ALL NOTIFICATIONS AS READ
-router.put("/markAllAsRead", async (req, res) => {
-  try {
-      const { userId } = req.body;
-      const user = await User.findById(userId);
-
-      if (!user) {
-          return res.status(404).json({ success: false, error: "User not found" });
-      }
-
-      Object.keys(user.notifications).forEach(key => {
-          user.notifications[key].status = "Lida";
-      });
-
-      user.markModified("notifications");
-      await user.save();
-
-      return res.json({ success: true, message: "All notifications marked as read" });
-  } catch (error) {
-      console.error("Error marking all notifications as read:", error);
-      return res.status(500).json({ success: false, error: "Internal Server Error" });
-  }
-});
-
 // UPDATE USER'S PROFILE PICTURE
 router.put("/changeProfilePicture", async (req, res) => {
   try {

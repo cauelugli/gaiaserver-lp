@@ -97,52 +97,23 @@ router.put("/deleteNotification", async (req, res) => {
   }
 });
 
-// USER - MARK ALL NOTIFICATIONS AS READ
+// USER - MARK ALL NOTIFICATIONS AS READ - QUEUE OK
 router.put("/markAllAsRead", async (req, res) => {
   const { userId, isAdmin } = req.body;
-  if (isAdmin) {
-    try {
-      await Admin.findOneAndUpdate(
-        {},
-        {
-          $set: { "notifications.$[].read": true },
-        },
-        { new: true }
-      );
-
-      res.status(200).json("OK");
-    } catch (err) {
-      res
-        .status(500)
-        .json({ error: "Erro ao marcar todas notificações como lidas" });
-    }
-  } else {
-    const Model = defineModel("User");
-
-    if (!Model) {
-      console.log("\nModel not found\n");
-      return res.status(400).json({ error: "Modelo inválido" });
-    }
-
-    try {
-      const updatedUser = await Model.findByIdAndUpdate(
+  try {
+    mainQueue.add({
+      type: "markAllNotificationAsRead",
+      data: {
         userId,
-        {
-          $set: { "notifications.$[].read": true },
-        },
-        { new: true }
-      );
+        model: isAdmin ? "Admin" : "User",
+      },
+    });
 
-      if (!updatedUser) {
-        return res.status(404).json({ error: "Notificação não encontrada" });
-      }
-
-      res.status(200).json("OK");
-    } catch (err) {
-      res
-        .status(500)
-        .json({ error: "Erro ao marcar todas notificações como lidas" });
-    }
+    res.status(200).json("OK");
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: "Erro ao marcar todas notificações como lidas" });
   }
 });
 

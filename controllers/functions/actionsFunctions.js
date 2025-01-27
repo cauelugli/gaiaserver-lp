@@ -105,9 +105,41 @@ async function resolveItem(data) {
   }
 }
 
+async function markAllNotificationAsRead(data) {
+  const Model = defineModel(data.model);
+  try {
+    switch (data.model) {
+      case "Admin":
+        await Admin.findOneAndUpdate(
+          {},
+          {
+            $set: { "notifications.$[].read": true },
+          },
+          { new: true }
+        );
+        break;
+      case "User":
+        await Model.findByIdAndUpdate(
+          data.userId,
+          {
+            $set: { "notifications.$[].read": true },
+          },
+          { new: true }
+        );
+        break;
+      default:
+        "";
+    }
+  } catch (err) {
+    console.error("Erro ao marcar todas como lidas:", err.message);
+    throw err;
+  }
+}
+
 module.exports = {
   addToStock,
   approveRequest,
+  markAllNotificationAsRead,
   removeFromStock,
   requestApproval,
   resolveItem,

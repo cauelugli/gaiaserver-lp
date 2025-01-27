@@ -29,6 +29,7 @@ const {
   removeFromStock,
   requestApproval,
   resolveItem,
+  markAllNotificationAsRead,
 } = require("../controllers/functions/actionsFunctions");
 
 const {
@@ -135,6 +136,9 @@ mainQueue.process(async (job) => {
         break;
       case "requestApproval":
         await handleRequestApproval(data, isAdmin);
+        break;
+      case "markAllNotificationAsRead":
+        await handleMarkAllNotificationsAsRead(data);
         break;
       case "notifyAssignee":
         await handleNotifyAssignee(data);
@@ -298,6 +302,10 @@ const handleInsertMembership = async (data) => {
 
 const handleInsertMembersToGroup = async (data) => {
   await insertMembersToGroup(data.id, data.model, data.members);
+};
+
+const handleMarkAllNotificationsAsRead = async (data) => {
+  await markAllNotificationAsRead(data);
 };
 
 const handleNotifyAdmin = async (data, isAdmin) => {
