@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
@@ -9,6 +10,8 @@ import {
   DialogActions,
   DialogTitle,
   Grid,
+  InputLabel,
+  TextField,
   Typography,
 } from "@mui/material";
 
@@ -28,10 +31,13 @@ const ResolveForm = ({
   setOpenDialog,
   page,
 }) => {
+  const [resolution, setResolution] = React.useState("");
+
   const handleResolve = async () => {
     try {
       const res = await api.put(`/actions/resolve/`, {
         model,
+        resolution,
         id: selectedItemId,
         resolvedBy: userId,
       });
@@ -62,24 +68,27 @@ const ResolveForm = ({
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      sx={{ my: 2 }}
-    >
+    <Grid container direction="column" sx={{ my: 2 }}>
       <DialogTitle>
         <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
-          Resolver {selectedItemName}?
+          Resolver "{selectedItemName}" ?
         </Typography>
       </DialogTitle>
+      <Grid sx={{ ml: 3, mb: 1 }}>
+        <InputLabel>Resolução</InputLabel>
+        <TextField
+          size="small"
+          sx={{ width: "95%" }}
+          value={resolution}
+          onChange={(e) => setResolution(e.target.value)}
+        />
+      </Grid>
       <DialogActions>
         <Button
           variant="contained"
           color="success"
           onClick={handleResolve}
-          sx={{ mr: 2 }}
+          sx={{ mr: 1 }}
         >
           Resolver
         </Button>

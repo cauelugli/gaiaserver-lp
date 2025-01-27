@@ -148,7 +148,7 @@ router.put("/markAllAsRead", async (req, res) => {
 
 // REQUEST - RESOLVE ITEM
 router.put("/resolve", async (req, res) => {
-  const { model, id, resolvedBy } = req.body;
+  const { model, id, resolution, resolvedBy } = req.body;
   const Model = defineModel(model);
 
   if (!Model) {
@@ -162,6 +162,7 @@ router.put("/resolve", async (req, res) => {
       id,
       {
         status: "Resolvido",
+        resolution,
         resolvedBy,
         resolvedAt: new Date(),
       },
@@ -179,7 +180,7 @@ router.put("/resolve", async (req, res) => {
   }
 });
 
-// REQUEST/STOCK - REQUEST APPROVAL
+// REQUEST/STOCK - REQUEST APPROVAL - QUEUE OK
 router.put("/requestApproval", async (req, res) => {
   const { model, id, requestedBy } = req.body;
   const Model = defineModel(model);
@@ -235,7 +236,7 @@ router.put("/requestApproval", async (req, res) => {
   }
 });
 
-// REQUEST/STOCK - MANAGER REQUEST APPROVAL
+// REQUEST/STOCK - MANAGER REQUEST APPROVAL - QUEUE OK
 router.put("/approveRequest", async (req, res) => {
   const { model, id, approvedBy } = req.body;
   const Model = defineModel(model);
@@ -272,7 +273,6 @@ router.put("/approveRequest", async (req, res) => {
         receiver: targetItem.requester,
       },
     });
-    // switch (model && 'requestWasApproved') {
     switch (model) {
       case "Sale":
         mainQueue.add({
@@ -297,7 +297,7 @@ router.put("/approveRequest", async (req, res) => {
   }
 });
 
-// STOCK - REQUEST PRODUCT BUY
+// STOCK - REQUEST PRODUCT BUY - QUEUE OK
 router.put("/requestBuy", async (req, res) => {
   const { product, requestedBy } = req.body;
   try {
