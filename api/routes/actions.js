@@ -146,7 +146,7 @@ router.put("/markAllAsRead", async (req, res) => {
   }
 });
 
-// REQUEST - RESOLVE ITEM
+// REQUEST - RESOLVE ITEM - QUEUE OK
 router.put("/resolve", async (req, res) => {
   const { model, id, resolution, resolvedBy } = req.body;
   const Model = defineModel(model);
@@ -157,21 +157,15 @@ router.put("/resolve", async (req, res) => {
   }
 
   try {
-    //QUEUE: resolveItem
-    const updatedItem = await Model.findByIdAndUpdate(
-      id,
-      {
-        status: "Resolvido",
+    mainQueue.add({
+      type: "resolveItem",
+      data: {
+        id,
+        model,
         resolution,
         resolvedBy,
-        resolvedAt: new Date(),
       },
-      { new: true }
-    );
-
-    if (!updatedItem) {
-      return res.status(404).json({ error: "Item não encontrado" });
-    }
+    });
 
     res.status(200).json("Item resolvido com sucesso");
   } catch (err) {

@@ -86,9 +86,29 @@ async function requestApproval(data) {
   }
 }
 
+async function resolveItem(data) {
+  const Model = defineModel(data.model);
+  try {
+    await Model.findByIdAndUpdate(
+      data.id,
+      {
+        status: "Resolvido",
+        resolution: data.resolution || "",
+        resolvedBy: data.resolvedBy,
+        resolvedAt: new Date(),
+      },
+      { new: true }
+    );
+  } catch (err) {
+    console.error("Erro ao solicitar aprovação:", err.message);
+    throw err;
+  }
+}
+
 module.exports = {
   addToStock,
   approveRequest,
   removeFromStock,
   requestApproval,
+  resolveItem,
 };

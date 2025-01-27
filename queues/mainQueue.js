@@ -28,6 +28,7 @@ const {
   approveRequest,
   removeFromStock,
   requestApproval,
+  resolveItem,
 } = require("../controllers/functions/actionsFunctions");
 
 const {
@@ -153,6 +154,9 @@ mainQueue.process(async (job) => {
       case "removeFromStock":
         await handleRemoveFromStock(data);
         break;
+      case "resolveItem":
+        await handleResolveItem(data);
+        break;
       case "swapDepartments":
         await handleSwapDepartments(data);
         break;
@@ -244,6 +248,10 @@ const handleApproveRequest = async (data) => {
 
 const handleRemoveFromStock = async (data) => {
   await removeFromStock(data.items);
+};
+
+const handleResolveItem = async (data) => {
+  await resolveItem(data);
 };
 
 const handleCheckNewStockEntryDefaultStatus = async (data) => {
