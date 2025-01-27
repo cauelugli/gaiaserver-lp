@@ -102,16 +102,15 @@ router.put("/darkMode", async (req, res) => {
 
 // UPDATE FONT FAMILY
 router.put("/fontFamily", async (req, res) => {
-  const { userId, fontFamily } = req.body;
+  const { userId, fontFamilyTitle, fontFamilyRest } = req.body;
 
   try {
     const userPreferences = await UserPreferences.findOne({ userId: userId });
-    userPreferences.fontFamily = fontFamily;
+    userPreferences.fontFamilyTitle = fontFamilyTitle;
+    userPreferences.fontFamilyRest = fontFamilyRest;
     await userPreferences.save();
 
-    res
-      .status(200)
-      .json({ message: "FontFamily updated successfully", fontFamily });
+    res.status(200).json({ message: "FontFamily updated successfully" });
   } catch (error) {
     console.error("Error updating FontFamily:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -163,9 +162,10 @@ router.put("/tableOrCardView", async (req, res) => {
     userPreferences.tableOrCardView = tableOrCardView;
     await userPreferences.save();
 
-    res
-      .status(200)
-      .json({ message: "Table/Card view updated successfully", tableOrCardView });
+    res.status(200).json({
+      message: "Table/Card view updated successfully",
+      tableOrCardView,
+    });
   } catch (error) {
     console.error("Error updating tableCard view:", error);
     res.status(500).json({ error: "Internal Server Error" });

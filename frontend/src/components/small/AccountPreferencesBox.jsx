@@ -20,13 +20,15 @@ const AccountPreferencesBox = (props) => {
     props.barPosition
   );
   const [paletteColor, setPaletteColor] = useState(props.paletteColor);
-  const [fontFamily, setFontFamily] = useState(props.fontFamily);
+  const [fontFamilyTitle, setFontFamilyTitle] = useState(props.fontFamilyTitle);
+  const [fontFamilyRest, setFontFamilyRest] = useState(props.fontFamilyRest);
 
   React.useEffect(() => {
     setCheckedDarkMode(props.darkMode);
     setPaletteColor(props.paletteColor);
     setCheckedBarPosition(props.barPosition);
-    setFontFamily(props.fontFamily);
+    setFontFamilyTitle(props.fontFamilyTitle);
+    setFontFamilyRest(props.fontFamilyRest);
   }, [props]);
 
   const handleChangeDarkMode = (event) => {
@@ -44,9 +46,14 @@ const AccountPreferencesBox = (props) => {
     props.onUpdatePaletteColor(color);
   };
 
-  const handleFontChange = (font) => {
-    setFontFamily(font);
-    props.onUpdateFontFamily(font);
+  const handleFontTitleChange = (font) => {
+    setFontFamilyTitle(font);
+    props.setFontFamilyTitle(font);
+  };
+
+  const handleFontRestChange = (font) => {
+    setFontFamilyRest(font);
+    props.setFontFamilyRest(font);
   };
 
   const availableColors = checkedDarkMode
@@ -108,10 +115,23 @@ const AccountPreferencesBox = (props) => {
         </AccordionSummary>
         <AccordionDetails>
           <FontFamilySelect
-            currentFont={props.fontFamily}
-            selectedFont={fontFamily}
-            onChangeFont={handleFontChange}
+            fontFamilyTitle={fontFamilyTitle}
+            onChangeFontTitle={handleFontTitleChange}
+            fontFamilyRest={fontFamilyRest}
+            onChangeFontRest={handleFontRestChange}
           />
+          <Button
+            type="submit"
+            variant="contained"
+            color="success"
+            size="small"
+            sx={{ ml: "70%", mt: 2 }}
+            onClick={() =>
+              props.handleUpdateFontFamily(fontFamilyTitle, fontFamilyRest)
+            }
+          >
+            OK
+          </Button>
         </AccordionDetails>
       </Accordion>
 

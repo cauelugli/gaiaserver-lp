@@ -45,15 +45,19 @@ export default function Account({
   const [barPosition, setBarPosition] = React.useState(
     userPreferences.barPosition
   );
-  const [fontFamily, setFontFamily] = React.useState(
-    userPreferences.fontFamily
+  const [fontFamilyTitle, setFontFamilyTitle] = React.useState(
+    userPreferences.fontFamilyTitle
+  );
+  const [fontFamilyRest, setFontFamilyRest] = React.useState(
+    userPreferences.fontFamilyRest
   );
 
   React.useEffect(() => {
     setDarkMode(userPreferences.darkMode);
     setPaletteColor(userPreferences.paletteColor);
     setBarPosition(userPreferences.barPosition);
-    setFontFamily(userPreferences.fontFamily);
+    setFontFamilyTitle(userPreferences.fontFamilyTitle);
+    setFontFamilyRest(userPreferences.fontFamilyRest);
   }, [userPreferences]);
 
   const handleChangeImage = async (e) => {
@@ -178,11 +182,18 @@ export default function Account({
     }
   };
 
-  const handleUpdateFontFamily = async (newFontFamily) => {
+  const handleUpdateFontFamily = async (
+    newFontFamilyTitle,
+    newFontFamilyRest
+  ) => {
+    setFontFamilyTitle(newFontFamilyTitle);
+    setFontFamilyRest(newFontFamilyRest);
+
     try {
       const response = await api.put("/userPreferences/fontFamily", {
         userId: user._id,
-        fontFamily: newFontFamily,
+        fontFamilyTitle: newFontFamilyTitle,
+        fontFamilyRest: newFontFamilyRest,
       });
 
       if (response.data) {
@@ -222,15 +233,14 @@ export default function Account({
             onUpdatePaletteColor={handleUpdatePaletteColor}
             onUpdateDarkMode={handleUpdateDarkMode}
             onUpdateBarPosition={handleUpdateBarPosition}
-            onUpdateFontFamily={handleUpdateFontFamily}
             darkMode={darkMode}
-            setDarkMode={setDarkMode}
             paletteColor={paletteColor}
-            setPaletteColor={setPaletteColor}
             barPosition={barPosition}
-            setBarPosition={setBarPosition}
-            fontFamily={fontFamily}
-            setFontFamily={setFontFamily}
+            fontFamilyTitle={fontFamilyTitle}
+            fontFamilyRest={fontFamilyRest}
+            handleUpdateFontFamily={handleUpdateFontFamily}
+            setFontFamilyTitle={setFontFamilyTitle}
+            setFontFamilyRest={setFontFamilyRest}
           />
         )}
 
