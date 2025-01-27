@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Typography } from "@mui/material";
 
 import { optionsMainblocks } from "../../options/homeOptions";
 
@@ -88,7 +88,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData }) => {
                     }}
                   >
                     {option.icon}
-                    <span
+                    <Typography
                       style={{
                         marginTop: factor * 2,
                         width: "auto",
@@ -97,7 +97,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData }) => {
                       }}
                     >
                       {option.text}
-                    </span>
+                    </Typography>
                   </Grid>
                 </Paper>
               </Link>

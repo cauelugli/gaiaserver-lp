@@ -170,7 +170,7 @@ const SideBar = ({ configData, user }) => {
               >
                 {option.label}
               </Typography>
-              <span
+              <Typography
                 style={{
                   position: "absolute",
                   top: 0,

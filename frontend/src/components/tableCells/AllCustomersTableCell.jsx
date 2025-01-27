@@ -72,7 +72,16 @@ const AllCustomersTableCell = (props) => {
                 src={`http://localhost:3000/static/${selected.image}`}
                 sx={{ width: 24, height: 24, marginRight: 2 }}
               />
-              <Typography>{selected.name}</Typography>
+              <Typography
+                sx={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  maxWidth: 100,
+                }}
+              >
+                {selected.name}
+              </Typography>
             </Grid>
           ) : (
             <Typography>Selecione um Cliente</Typography>
