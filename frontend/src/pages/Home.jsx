@@ -41,6 +41,7 @@ const Home = ({
             ? 1
             : 0,
         mt: 1,
+        minHeight: "45vw",
       }}
     >
       <Grid item lg={9} xl={8}>
