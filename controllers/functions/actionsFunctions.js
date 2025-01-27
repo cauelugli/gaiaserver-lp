@@ -136,10 +136,42 @@ async function markAllNotificationAsRead(data) {
   }
 }
 
+async function markNotificationAsRead(data) {
+  const Model = defineModel(data.model);
+  try {
+    switch (data.model) {
+      case "Admin":
+        await Admin.findOneAndUpdate(
+          { "notifications.createdAt": notificationCreatedAt },
+          {
+            $set: { "notifications.$.read": true },
+          },
+          { new: true }
+        );
+        break;
+      case "User":
+        await Model.findOneAndUpdate(
+          { _id: userId, "notifications.createdAt": notificationCreatedAt },
+          {
+            $set: { "notifications.$.read": true },
+          },
+          { new: true }
+        );
+        break;
+      default:
+        "";
+    }
+  } catch (err) {
+    console.error("Erro ao marcar todas como lidas:", err.message);
+    throw err;
+  }
+}
+
 module.exports = {
   addToStock,
   approveRequest,
   markAllNotificationAsRead,
+  markNotificationAsRead,
   removeFromStock,
   requestApproval,
   resolveItem,

@@ -1,10 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
 const User = require("../../models/models/User");
-const UserPreferences = require("../../models/models/UserPreferences");
-const Department = require("../../models/models/Department");
-const Position = require("../../models/models/Position");
 
 // GET USER'S NOTIFICATIONS
 router.get("/notifications/:userId", async (req, res) => {
@@ -20,30 +16,6 @@ router.get("/notifications/:userId", async (req, res) => {
   } catch (error) {
     console.error("Error fetching notifications:", error);
     res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// MARK NOTIFICATION AS READ
-router.put("/readNotification", async (req, res) => {
-  try {
-    const { userId, notificationId } = req.body;
-
-    const user = await User.findById(userId);
-
-    if (!user || !user.notifications[notificationId]) {
-      return res.status(404).json({ success: false, error: "Not found" });
-    }
-
-    user.notifications[notificationId].status = "Lida";
-    user.markModified("notifications");
-    await user.save();
-
-    return res.json({ success: true });
-  } catch (error) {
-    console.error("Error marking notification as read:", error);
-    return res
-      .status(500)
-      .json({ success: false, error: "Internal Server Error" });
   }
 });
 

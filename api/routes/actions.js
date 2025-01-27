@@ -7,52 +7,26 @@ const mainQueue = require("../../queues/mainQueue");
 
 const { defineModel } = require("../../controllers/functions/routeFunctions");
 
-// USER - MARK SINGLE NOTIFICATION AS READ
+// USER - MARK SINGLE NOTIFICATION AS READ - QUEUE OK
 router.put("/markNotificationAsRead", async (req, res) => {
   const { userId, notificationCreatedAt, isAdmin } = req.body;
-  if (isAdmin) {
-    try {
-      await Admin.findOneAndUpdate(
-        { "notifications.createdAt": notificationCreatedAt },
-        {
-          $set: { "notifications.$.read": true },
-        },
-        { new: true }
-      );
+  try {
+    mainQueue.add({
+      type: "markAllNotificationAsRead",
+      data: {
+        userId,
+        notificationCreatedAt,
+        model: isAdmin ? "Admin" : "User",
+      },
+    });
 
-      res.status(200).json("OK");
-    } catch (err) {
-      res.status(500).json({ error: "Erro ao atualizar notificação" });
-    }
-  } else {
-    const Model = defineModel("User");
-
-    if (!Model) {
-      console.log("\nModel not found\n");
-      return res.status(400).json({ error: "Modelo inválido" });
-    }
-
-    try {
-      const updatedUser = await Model.findOneAndUpdate(
-        { _id: userId, "notifications.createdAt": notificationCreatedAt },
-        {
-          $set: { "notifications.$.read": true },
-        },
-        { new: true }
-      );
-
-      if (!updatedUser) {
-        return res.status(404).json({ error: "Notificação não encontrada" });
-      }
-
-      res.status(200).json("OK");
-    } catch (err) {
-      res.status(500).json({ error: "Erro ao atualizar notificação" });
-    }
+    res.status(200).json("OK");
+  } catch (err) {
+    res.status(500).json({ error: "Erro ao atualizar notificação" });
   }
 });
 
-// USER - DELETE SINGLE NOTIFICATION
+// USER - DELETE SINGLE NOTIFICATION -
 router.put("/deleteNotification", async (req, res) => {
   // in the future, as a company, we will send this somewhere, instead of deleting
   const { userId, isAdmin, notificationCreatedAt } = req.body;

@@ -30,6 +30,7 @@ const {
   requestApproval,
   resolveItem,
   markAllNotificationAsRead,
+  markNotificationAsRead,
 } = require("../controllers/functions/actionsFunctions");
 
 const {
@@ -139,6 +140,9 @@ mainQueue.process(async (job) => {
         break;
       case "markAllNotificationAsRead":
         await handleMarkAllNotificationsAsRead(data);
+        break;
+      case "markNotificationAsRead":
+        await handleMarkNotificationAsRead(data);
         break;
       case "notifyAssignee":
         await handleNotifyAssignee(data);
@@ -306,6 +310,10 @@ const handleInsertMembersToGroup = async (data) => {
 
 const handleMarkAllNotificationsAsRead = async (data) => {
   await markAllNotificationAsRead(data);
+};
+
+const handleMarkNotificationAsRead = async (data) => {
+  await markNotificationAsRead(data);
 };
 
 const handleNotifyAdmin = async (data, isAdmin) => {
