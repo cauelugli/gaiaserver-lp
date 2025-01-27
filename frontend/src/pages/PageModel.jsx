@@ -152,7 +152,7 @@ export default function PageModel(props) {
         alignItems="center"
         sx={{ ml: 1, mt: 1, mb: 2 }}
       >
-        <Typography sx={{ fontSize: 30, mr: 2, fontWeight: "bold" }}>
+        <Typography  id="title" sx={{ fontSize: "1.5vw", mr: 2, fontWeight: "bold" }}>
           {props.item.label}
         </Typography>
         {currentPage === "products" && (

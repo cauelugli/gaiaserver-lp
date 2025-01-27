@@ -1,5 +1,4 @@
 import axios from "axios";
-
 import { createTheme } from "@mui/material/styles";
 
 const api = axios.create({
@@ -12,23 +11,26 @@ const getUserPreferences = async () => {
   const userPreferences = await api.get(`/userPreferences/${userId}`);
   return {
     paletteColor: userPreferences.data?.paletteColor || "#ffffff",
-    fontFamily: userPreferences.data?.fontFamily || "Arial, sans-serif",
+    fontFamilyTitle:
+      userPreferences.data?.fontFamilyTitle || "Arial, sans-serif",
+    fontFamilyRest: userPreferences.data?.fontFamilyRest || "Arial, sans-serif",
   };
 };
 
 const userPreferences = await getUserPreferences();
 const userPaletteColor = userPreferences.paletteColor;
-const userFontFamily = userPreferences.fontFamily;
+const userFontFamilyTitle = userPreferences.fontFamilyTitle.value;
+const userFontFamilyRest = userPreferences.fontFamilyRest.value;
 
 const commonThemeSettings = {
   typography: {
-    fontFamily: userFontFamily,
+    fontFamily: userFontFamilyRest,
   },
   components: {
     MuiTypography: {
       styleOverrides: {
         root: {
-          fontFamily: userFontFamily,
+          fontFamily: userFontFamilyRest,
         },
       },
     },
@@ -46,6 +48,16 @@ export const lightTheme = createTheme({
   },
   components: {
     ...commonThemeSettings.components,
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontFamily: userFontFamilyRest, 
+          "&#title": {
+            fontFamily: userFontFamilyTitle,
+          },
+        },
+      },
+    },
     MuiGrid: {
       styleOverrides: {
         root: {
@@ -54,15 +66,6 @@ export const lightTheme = createTheme({
             "&:hover": {
               backgroundColor: "none",
             },
-          },
-        },
-      },
-    },
-    MuiTableRow: {
-      styleOverrides: {
-        root: {
-          "&:hover": {
-            backgroundColor: "#eee",
           },
         },
       },
@@ -81,52 +84,12 @@ export const darkTheme = createTheme({
   },
   components: {
     ...commonThemeSettings.components,
-    MuiGrid: {
-      styleOverrides: {
-        root: {
-          "&.noHoverBackground": {
-            backgroundColor: userPaletteColor,
-            "&:hover": {
-              backgroundColor: "none",
-            },
-          },
-        },
-      },
-    },
     MuiTypography: {
       styleOverrides: {
         root: {
-          color: "white",
-        },
-      },
-    },
-    MuiDialogTitle: {
-      styleOverrides: {
-        root: {
-          color: "white",
-        },
-      },
-    },
-    MuiTableRow: {
-      styleOverrides: {
-        root: {
-          backgroundColor: "none",
-          "&:hover": {
-            backgroundColor: "none",
-          },
-        },
-      },
-    },
-    MuiTab: {
-      styleOverrides: {
-        root: {
-          color: "#aaa",
-          "&.Mui-selected": {
-            color: "#fff",
-          },
-          "&:hover": {
-            color: "#ddd",
-            backgroundColor: "#2e2e2e",
+          fontFamily: userFontFamilyRest,
+          "&#title": {
+            fontFamily: userFontFamilyTitle,
           },
         },
       },
