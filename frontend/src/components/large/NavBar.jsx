@@ -2,7 +2,9 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-import { Grid } from "@mui/material";
+import { Grid, Tooltip, Typography } from "@mui/material";
+
+import { icons } from "../../icons";
 
 import UserButton from "../small/buttons/UserButton";
 import NotificationsButton from "../small/buttons/NotificationsButton";
@@ -10,15 +12,21 @@ import TopBar from "../large/TopBar";
 
 export default function NavBar({ user, api, socket, configData, barPosition }) {
   const [notifications, setNotifications] = React.useState([]);
+  const [missingCoreData, setMissingCoreData] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       let notifications;
+      let missingCoreData;
       try {
         user.username === "admin"
           ? (notifications = await api.get("/admin/notifications/"))
           : (notifications = await api.get(`/get/notifications/${user._id}`));
         setNotifications(notifications.data);
+        user.username === "admin"
+          ? (missingCoreData = await api.get("/get/coreData"))
+          : "";
+        setMissingCoreData(missingCoreData.data);
       } catch (error) {
         if (error.response.status !== 404) {
           console.error("Error fetching data:", error);
@@ -111,14 +119,49 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
               />
             </Link>
           </Grid>
-
+          {missingCoreData.length !== 0 && (
+            <Grid sx={{ ml: 1, mr: "auto" }}>
+              <Tooltip
+                title={
+                  <React.Fragment>
+                    {missingCoreData.map((item, index) => (
+                      <Typography key={index} sx={{ fontSize: 15, m: 1 }}>
+                        Não há nenhum {item}
+                      </Typography>
+                    ))}
+                  </React.Fragment>
+                }
+              >
+                <icons.ReportProblemIcon
+                  sx={{
+                    height: "2vw",
+                    width: "2vw",
+                    animation: "fadeOpacity 2s infinite",
+                    "@keyframes fadeOpacity": {
+                      "0%": { opacity: 1 },
+                      "14%": { opacity: 0.9 },
+                      "28%": { opacity: 0.8 },
+                      "42%": { opacity: 0.7 },
+                      "57%": { opacity: 0.6 },
+                      "71%": { opacity: 0.5 },
+                      "85%": { opacity: 0.4 },
+                      "100%": { opacity: 0.3 },
+                    },
+                  }}
+                />
+              </Tooltip>
+            </Grid>
+          )}
           {barPosition && (
             <Grid
               container
               direction="row"
               alignItems="center"
               justifyContent="space-evenly"
-              sx={{ width: "auto" }}
+              sx={{
+                width: "auto",
+                mr: missingCoreData.length === 0 ? "" : "auto",
+              }}
             >
               <TopBar configData={configData} user={user} />
             </Grid>
