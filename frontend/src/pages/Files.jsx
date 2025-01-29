@@ -188,7 +188,7 @@ export default function Files({ topBar }) {
   return (
     <>
       <Box>
-        <Typography sx={{ fontSize: 25, ml: 2, fontWeight: "bold" }}>
+        <Typography sx={{ fontSize: 25, ml: 2, fontWeight: "bold" }} id="title">
           Arquivos
         </Typography>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

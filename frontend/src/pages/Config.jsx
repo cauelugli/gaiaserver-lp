@@ -111,7 +111,10 @@ export default function Config({
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <Grid container direction="row" sx={{ mb: 2 }}>
-        <Typography sx={{ fontSize: 25, ml: 2, mr: 1, fontWeight: "bold" }}>
+        <Typography
+          sx={{ fontSize: 25, ml: 2, mr: 1, fontWeight: "bold" }}
+          id="title"
+        >
           Configurações
         </Typography>
         <FormControlLabel
