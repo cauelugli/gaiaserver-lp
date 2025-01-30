@@ -26,6 +26,7 @@ const {
 const {
   addToStock,
   approveRequest,
+  archiveItem,
   removeFromStock,
   requestApproval,
   resolveItem,
@@ -87,6 +88,9 @@ mainQueue.process(async (job) => {
     switch (type) {
       case "addCounter":
         await handleAddCounter(data);
+        break;
+      case "archiveItem":
+        await handleArchiveItem(data);
         break;
       case "refreshIdIndexList":
         await handleRefreshIdIndexList();
@@ -221,6 +225,10 @@ const handleRefreshIdIndexList = async () => {
 
 const handleAddCounter = async (data) => {
   await addCounter(data.itemId, data.model);
+};
+
+const handleArchiveItem = async (data) => {
+  await archiveItem(data);
 };
 
 const handleAddManagerToDepartment = async (data) => {

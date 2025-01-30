@@ -4,6 +4,7 @@ import AddIcon from "@mui/icons-material/Add";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import AppsIcon from "@mui/icons-material/Apps";
+import ArchiveIcon from "@mui/icons-material/Archive";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
@@ -81,6 +82,7 @@ const icons = {
   AdminPanelSettingsIcon,
   ApartmentIcon,
   AppsIcon,
+  ArchiveIcon,
   ArrowDropDownIcon,
   AssessmentIcon,
   AssignmentIndIcon,

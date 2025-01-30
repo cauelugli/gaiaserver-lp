@@ -24,6 +24,7 @@ import ResolveForm from "../../../forms/misc/ResolveForm";
 import RequestApprovalForm from "../../../forms/misc/RequestApprovalForm";
 import RequestBuyForm from "../../../forms/misc/RequestBuyForm";
 import ApproveRequestForm from "../../../forms/misc/ApproveRequestForm";
+import ArchiveItemForm from "../../../forms/misc/ArchiveItemForm";
 
 const RowButton = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -87,6 +88,21 @@ const RowButton = (props) => {
       formComponent = "add targeted";
       break;
 
+    case "archive":
+      formComponent = (
+        <ArchiveItemForm
+          userId={props.userId}
+          selectedItem={props.item}
+          model={selectedModal.model}
+          refreshData={props.refreshData}
+          setRefreshData={props.setRefreshData}
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+          page={currentOption.page}
+        />
+      );
+      break;
+
     case "resolve":
       formComponent = (
         <ResolveForm
@@ -123,6 +139,7 @@ const RowButton = (props) => {
         />
       );
       break;
+
     case "approveRequest":
       formComponent = (
         <ApproveRequestForm

@@ -13,6 +13,20 @@ export const useAppData = () => {
 };
 
 export const AppDataProvider = ({ children }) => {
+  const useArchiveList = [
+    "Customer",
+    "Client",
+    "Job",
+    "Sale",
+    "User",
+    "Department",
+    "StockEntry",
+    "Group",
+    "Position",
+    "Role",
+    "Service",
+    "ServicePlan",
+  ];
   const [idIndexList, setIdIndexList] = useState([]);
   const [loadingIdIndexList, setLoadingIdIndexList] = useState(true);
 
@@ -37,10 +51,7 @@ export const AppDataProvider = ({ children }) => {
     });
   }, []);
 
-  const contextValue = {
-    idIndexList,
-    loadingIdIndexList,
-  };
+  const contextValue = { useArchiveList, idIndexList, loadingIdIndexList };
 
   return (
     <AppDataContext.Provider value={contextValue}>

@@ -34,6 +34,20 @@ async function approveRequest(data) {
   }
 }
 
+async function archiveItem(data) {
+  try {
+    const Model = defineModel(data.model);
+    const item = await Model.findById(data.itemId);
+    if (item) {
+      item.status = "Arquivado";
+      await item.save();
+    } 
+  } catch (err) {
+    console.error("Erro ao arquivar item ou itens", err);
+    throw err;
+  }
+}
+
 async function removeFromStock(items) {
   try {
     for (const item of items) {
@@ -151,7 +165,10 @@ async function markNotificationAsRead(data) {
         break;
       case "User":
         await Model.findOneAndUpdate(
-          { _id: data.userId, "notifications.createdAt": data.notificationCreatedAt },
+          {
+            _id: data.userId,
+            "notifications.createdAt": data.notificationCreatedAt,
+          },
           {
             $set: { "notifications.$.read": true },
           },
@@ -201,6 +218,7 @@ async function deleteNotification(data) {
 module.exports = {
   addToStock,
   approveRequest,
+  archiveItem,
   markAllNotificationAsRead,
   markNotificationAsRead,
   removeFromStock,

@@ -3,6 +3,8 @@ import React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { useAppData } from "../AppDataContext";
+
 import {
   Box,
   CircularProgress,
@@ -41,6 +43,7 @@ function CustomTabPanel(props) {
 }
 
 export default function PageModel(props) {
+  const appData = useAppData();
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshData, setRefreshData] = React.useState(false);
   const [newDataRefreshButton, setNewDataRefreshButton] = React.useState(true);
@@ -53,6 +56,7 @@ export default function PageModel(props) {
   const [multiple, setMultiple] = React.useState(false);
   const [selectedMultipleItems, setSelectedMultipleItems] = React.useState([]);
   const [highlightSelfUser, setHighlightSelfUser] = React.useState(false);
+  const [highlightArchived, setHighlightArchived] = React.useState(false);
 
   const [currentPage, setCurrentPage] = React.useState(props.item.page);
 
@@ -122,13 +126,23 @@ export default function PageModel(props) {
   }, [props.api, refreshData, currentPage, props.item, value]);
 
   const filteredItems = React.useMemo(() => {
+    let result = items;
+
     if (highlightSelfUser) {
-      return items.filter(
+      result = result.filter(
         (item) => item.worker === props.userId || item.seller === props.userId
       );
     }
-    return items;
-  }, [items, highlightSelfUser, props.userId]);
+
+    if (highlightArchived) {
+      result = result.filter((item) => !item.status || item.status === "Arquivado" || item.status !== "Arquivado");
+    } else {
+      result = result.filter((item) => !item.status || item.status !== "Arquivado");
+    }
+    
+
+    return result;
+  }, [items, highlightSelfUser, highlightArchived, props.userId]);
 
   if (isLoading) {
     return (
@@ -152,7 +166,10 @@ export default function PageModel(props) {
         alignItems="center"
         sx={{ ml: 1, mt: 1, mb: 2 }}
       >
-        <Typography  id="title" sx={{ fontSize: "1.5vw", mr: 2, fontWeight: "bold" }}>
+        <Typography
+          id="title"
+          sx={{ fontSize: "1.5vw", mr: 2, fontWeight: "bold" }}
+        >
           {props.item.label}
         </Typography>
         {currentPage === "products" && (
@@ -273,6 +290,11 @@ export default function PageModel(props) {
               page={props.item.page}
               highlightSelfUser={highlightSelfUser}
               setHighlightSelfUser={setHighlightSelfUser}
+              useArchiveList={appData.useArchiveList?.includes(
+                props.item.models[value]
+              )}
+              highlightArchived={highlightArchived}
+              setHighlightArchived={setHighlightArchived}
             />
           </Grid>
         </Tabs>
@@ -287,7 +309,7 @@ export default function PageModel(props) {
         {props.item.page === "products" &&
           items.map((item, index) => (
             <CustomTabPanel key={index} value={value} index={index}>
-              {items.length === 0 ? (
+              {items.length === 0 || filteredItems.length === 0 ? (
                 <NoDataText option={item} />
               ) : (
                 <>
@@ -347,7 +369,7 @@ export default function PageModel(props) {
         {props.item.page !== "products" &&
           props.item.tabs.map((tab, index) => (
             <CustomTabPanel key={index} value={value} index={index}>
-              {items.length === 0 ? (
+              {items.length === 0 || filteredItems.length === 0 ? (
                 <NoDataText option={tab} />
               ) : (
                 <>

@@ -34,6 +34,12 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
+          label: "Arquivar",
+          action: "archive",
+          modal: "Customer",
+          icon: <icons.ArchiveIcon />,
+        },
+        {
           label: "Deletar",
           action: "delete",
           modal: "Customer",
@@ -65,6 +71,12 @@ const rowButtonOptions = (props) => [
           action: "edit",
           modal: "Client",
           icon: <icons.ModeEditIcon />,
+        },
+        {
+          label: "Arquivar",
+          action: "archive",
+          modal: "Client",
+          icon: <icons.ArchiveIcon />,
         },
         {
           label: "Deletar",
@@ -106,6 +118,12 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
+          label: "Arquivar",
+          action: "archive",
+          modal: "User",
+          icon: <icons.ArchiveIcon />,
+        },
+        {
           label: "Deletar",
           action: "delete",
           modal: "User",
@@ -139,6 +157,12 @@ const rowButtonOptions = (props) => [
           action: "edit",
           modal: "User",
           icon: <icons.ModeEditIcon />,
+        },
+        {
+          label: "Arquivar",
+          action: "archive",
+          modal: "User",
+          icon: <icons.ArchiveIcon />,
         },
         {
           label: "Deletar",
@@ -204,6 +228,12 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
+          label: "Arquivar",
+          action: "archive",
+          modal: "Job",
+          icon: <icons.ArchiveIcon />,
+        },
+        {
           label: "Deletar",
           action: "delete",
           modal: "Job",
@@ -254,6 +284,12 @@ const rowButtonOptions = (props) => [
           action: "edit",
           modal: "Sale",
           icon: <icons.ModeEditIcon />,
+        },
+        {
+          label: "Arquivar",
+          action: "archive",
+          modal: "Sale",
+          icon: <icons.ArchiveIcon />,
         },
         {
           label: "Deletar",
@@ -316,6 +352,12 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
+          label: "Arquivar",
+          action: "archive",
+          modal: "StockEntry",
+          icon: <icons.ArchiveIcon />,
+        },
+        {
           label: "Deletar",
           action: "delete",
           modal: "StockEntry",
@@ -334,6 +376,12 @@ const rowButtonOptions = (props) => [
           action: "edit",
           modal: "Department",
           icon: <icons.ModeEditIcon />,
+        },
+        {
+          label: "Arquivar",
+          action: "archive",
+          modal: "Department",
+          icon: <icons.ArchiveIcon />,
         },
         {
           label: "Deletar",
@@ -373,6 +421,12 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
+          label: "Arquivar",
+          action: "archive",
+          modal: "Group",
+          icon: <icons.ArchiveIcon />,
+        },
+        {
           label: "Deletar",
           action: "delete",
           modal: "Group",
@@ -407,6 +461,7 @@ const rowButtonOptions = (props) => [
           modal: "Operator",
           icon: <icons.ModeEditIcon />,
         },
+        // it doesn't make sense archiving Operator 'model'
         {
           label: "Remover",
           action: "delete",
@@ -436,6 +491,12 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
+          label: "Arquivar",
+          action: "archive",
+          modal: "Position",
+          icon: <icons.ArchiveIcon />,
+        },
+        {
           label: "Deletar",
           action: "delete",
           modal: "Position",
@@ -462,6 +523,12 @@ const rowButtonOptions = (props) => [
           action: "edit",
           modal: "Role",
           icon: <icons.ModeEditIcon />,
+        },
+        {
+          label: "Arquivar",
+          action: "archive",
+          modal: "Role",
+          icon: <icons.ArchiveIcon />,
         },
         {
           label: "Deletar",
@@ -498,6 +565,12 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
+          label: "Arquivar",
+          action: "archive",
+          modal: "Service",
+          icon: <icons.ArchiveIcon />,
+        },
+        {
           label: "Deletar",
           action: "delete",
           modal: "Service",
@@ -524,6 +597,12 @@ const rowButtonOptions = (props) => [
           action: "edit",
           modal: "ServicePlan",
           icon: <icons.ModeEditIcon />,
+        },
+        {
+          label: "Arquivar",
+          action: "archive",
+          modal: "ServicePlan",
+          icon: <icons.ArchiveIcon />,
         },
         {
           label: "Deletar",

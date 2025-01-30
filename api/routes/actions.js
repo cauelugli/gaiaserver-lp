@@ -240,4 +240,20 @@ router.put("/requestBuy", async (req, res) => {
   }
 });
 
+// UNIVERSAL - ARCHIVE ITEMS
+router.put("/archiveItem", async (req, res) => {
+  const { model, itemId } = req.body;
+  try {
+    await mainQueue.add({
+      type: "archiveItem",
+      data: { model: model, itemId: itemId },
+    });
+
+    res.status(200).json("Item Arquivado com sucesso");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Erro ao arquivar item" });
+  }
+});
+
 module.exports = router;
