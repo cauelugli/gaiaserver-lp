@@ -33,16 +33,20 @@ const ArchiveItemForm = ({
       const res = await api.put("/actions/archiveItem", {
         model: model,
         itemId: selectedItem._id || selectedItem.id,
+        isUnarchive: selectedItem.status === "Arquivado",
       });
       if (res.data || res.status === 200) {
-        // console.log("res.data",res.data)
-        // console.log("res.status",res.status)
-        toast.success(`Item Arquivado`, {
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-          autoClose: 1200,
-        });
+        toast.success(
+          `Item ${
+            selectedItem.status === "Arquivado" ? "Desarquivado" : "Arquivado"
+          }`,
+          {
+            closeOnClick: true,
+            pauseOnHover: false,
+            theme: "colored",
+            autoClose: 1200,
+          }
+        );
 
         if (userId) {
           socket.emit("newDataRefreshButton", {
@@ -74,7 +78,7 @@ const ArchiveItemForm = ({
     >
       <DialogTitle>
         <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
-          Arquivar{" "}
+          {selectedItem.status === "Arquivado" ? "Desarquivar" : "Arquivar"}{" "}
           {selectedItem.name ||
             selectedItem.title ||
             selectedItem.quoteNumber ||

@@ -242,11 +242,11 @@ router.put("/requestBuy", async (req, res) => {
 
 // UNIVERSAL - ARCHIVE ITEMS
 router.put("/archiveItem", async (req, res) => {
-  const { model, itemId } = req.body;
+  const { model, itemId, isUnarchive } = req.body;
   try {
     await mainQueue.add({
       type: "archiveItem",
-      data: { model: model, itemId: itemId },
+      data: { model: model, itemId: itemId, isUnarchive: isUnarchive },
     });
 
     res.status(200).json("Item Arquivado com sucesso");

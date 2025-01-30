@@ -35,13 +35,15 @@ async function approveRequest(data) {
 }
 
 async function archiveItem(data) {
+  const Model = defineModel(data.model);
   try {
-    const Model = defineModel(data.model);
-    const item = await Model.findById(data.itemId);
-    if (item) {
-      item.status = "Arquivado";
-      await item.save();
-    } 
+    await Model.findByIdAndUpdate(
+      data.itemId,
+      {
+        status: data.isUnarchive ? "Aberto" : "Arquivado",
+      },
+      { new: true }
+    );
   } catch (err) {
     console.error("Erro ao arquivar item ou itens", err);
     throw err;

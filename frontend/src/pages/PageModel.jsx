@@ -68,6 +68,31 @@ export default function PageModel(props) {
     setNewDataRefreshButton(true);
   };
 
+  const filteredItems = React.useMemo(() => {
+    let result = items;
+
+    if (highlightSelfUser) {
+      result = result.filter(
+        (item) => item.worker === props.userId || item.seller === props.userId
+      );
+    }
+
+    if (highlightArchived) {
+      result = result.filter(
+        (item) =>
+          !item.status ||
+          item.status === "Arquivado" ||
+          item.status !== "Arquivado"
+      );
+    } else {
+      result = result.filter(
+        (item) => !item.status || item.status !== "Arquivado"
+      );
+    }
+
+    return result;
+  }, [items, highlightSelfUser, highlightArchived, props.userId]);
+
   React.useEffect(() => {
     if (props.item.page !== currentPage) {
       setValue(0);
@@ -122,27 +147,11 @@ export default function PageModel(props) {
       }
     };
 
+    console.log("looping in parent");
+    // console.log("filteredItems", filteredItems);
+
     fetchData();
   }, [props.api, refreshData, currentPage, props.item, value]);
-
-  const filteredItems = React.useMemo(() => {
-    let result = items;
-
-    if (highlightSelfUser) {
-      result = result.filter(
-        (item) => item.worker === props.userId || item.seller === props.userId
-      );
-    }
-
-    if (highlightArchived) {
-      result = result.filter((item) => !item.status || item.status === "Arquivado" || item.status !== "Arquivado");
-    } else {
-      result = result.filter((item) => !item.status || item.status !== "Arquivado");
-    }
-    
-
-    return result;
-  }, [items, highlightSelfUser, highlightArchived, props.userId]);
 
   if (isLoading) {
     return (

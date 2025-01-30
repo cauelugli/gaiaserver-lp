@@ -34,7 +34,7 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
-          label: "Arquivar",
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "Customer",
           icon: <icons.ArchiveIcon />,
@@ -73,7 +73,7 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
-          label: "Arquivar",
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "Client",
           icon: <icons.ArchiveIcon />,
@@ -118,7 +118,7 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
-          label: "Arquivar",
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "User",
           icon: <icons.ArchiveIcon />,
@@ -159,7 +159,7 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
-          label: "Arquivar",
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "User",
           icon: <icons.ArchiveIcon />,
@@ -228,7 +228,7 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
-          label: "Arquivar",
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "Job",
           icon: <icons.ArchiveIcon />,
@@ -286,7 +286,7 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
-          label: "Arquivar",
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "Sale",
           icon: <icons.ArchiveIcon />,
@@ -352,7 +352,7 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
-          label: "Arquivar",
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "StockEntry",
           icon: <icons.ArchiveIcon />,
@@ -378,7 +378,7 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
-          label: "Arquivar",
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "Department",
           icon: <icons.ArchiveIcon />,
@@ -421,7 +421,7 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
-          label: "Arquivar",
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "Group",
           icon: <icons.ArchiveIcon />,
@@ -491,7 +491,7 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
-          label: "Arquivar",
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "Position",
           icon: <icons.ArchiveIcon />,
@@ -525,7 +525,7 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
-          label: "Arquivar",
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "Role",
           icon: <icons.ArchiveIcon />,
@@ -565,7 +565,7 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
-          label: "Arquivar",
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "Service",
           icon: <icons.ArchiveIcon />,
@@ -599,7 +599,7 @@ const rowButtonOptions = (props) => [
           icon: <icons.ModeEditIcon />,
         },
         {
-          label: "Arquivar",
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "ServicePlan",
           icon: <icons.ArchiveIcon />,
