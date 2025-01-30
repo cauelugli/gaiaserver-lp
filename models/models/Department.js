@@ -34,6 +34,10 @@ departmentSchema = new mongoose.Schema({
   services: {
     type: Array,
   },
+  status: {
+    type: String,
+    default: "Aberto",
+  },
   type: {
     type: String,
     required: true,

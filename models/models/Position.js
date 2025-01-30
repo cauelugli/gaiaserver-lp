@@ -17,6 +17,10 @@ const positionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    default: "Aberto",
+  },
 });
 
 const Position = mongoose.model("Position", positionSchema);

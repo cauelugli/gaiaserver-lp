@@ -13,6 +13,10 @@ const roleSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  status: {
+    type: String,
+    default: "Aberto",
+  },
 });
 
 const Role = mongoose.model("Role", roleSchema);

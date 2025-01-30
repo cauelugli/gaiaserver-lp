@@ -37,10 +37,6 @@ const clientSchema = new mongoose.Schema({
     type: String,
     default: "/images/default_userPicture.png",
   },
-  isActive: {
-    type: Boolean,
-    default: true,
-  },
   name: {
     type: String,
     required: true,
@@ -50,6 +46,10 @@ const clientSchema = new mongoose.Schema({
   },
   recentRequests: {
     type: Array,
+  },
+  status: {
+    type: String,
+    default: "Aberto",
   },
 });
 

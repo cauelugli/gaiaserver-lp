@@ -55,6 +55,10 @@ const customerSchema = new mongoose.Schema({
   segment: {
     type: String,
   },
+  status: {
+    type: String,
+    default: "Aberto",
+  },
   website: {
     type: String,
   },

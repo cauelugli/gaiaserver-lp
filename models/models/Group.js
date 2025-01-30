@@ -10,6 +10,10 @@ const groupSchema = new mongoose.Schema({
   name: {
     type: String,
   },
+  status: {
+    type: String,
+    default: "Aberto",
+  },
 });
 
 const Group = mongoose.model("Group", groupSchema);

@@ -28,6 +28,10 @@ const servicePlanSchema = new mongoose.Schema({
     type: Object,
     required: true,
   },
+  status: {
+    type: String,
+    default: "Aberto",
+  },
 });
 
 const ServicePlan = mongoose.model("ServicePlan", servicePlanSchema);

@@ -33,7 +33,7 @@ userSchema = new mongoose.Schema({
   },
   groups: {
     type: Array,
-    default: []
+    default: [],
   },
   image: {
     type: String,
@@ -69,10 +69,14 @@ userSchema = new mongoose.Schema({
   role: {
     type: String,
   },
+  status: {
+    type: String,
+    default: "Aberto",
+  },
   username: {
     type: String,
   },
-  // social media 
+  // social media
   facebook: {
     type: String,
   },

@@ -30,6 +30,10 @@ const serviceSchema = new mongoose.Schema({
   sessions: {
     type: String,
   },
+  status: {
+    type: String,
+    default: "Aberto",
+  },
   type: {
     type: String,
   },
