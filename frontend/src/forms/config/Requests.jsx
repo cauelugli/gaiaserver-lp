@@ -45,7 +45,7 @@ export default function Requests({ onClose }) {
     React.useState(null);
   const [requestsApproverAlternate, setRequestsApproverAlternate] =
     React.useState(null);
-  const [requestsCanBeDeleted, setRequestsCanBeDeleted] = React.useState(null);
+  const [canBeDeleted, setCanBeDeleted] = React.useState(null);
   const [statuses, setStatuses] = React.useState([]);
 
   const [showNewStatus, setShowNewStatus] = React.useState(false);
@@ -65,7 +65,7 @@ export default function Requests({ onClose }) {
 
         setConfigData(configData);
         setRequestsNeedApproval(configData.requestsNeedApproval);
-        setRequestsCanBeDeleted(configData.canBeDeleted);
+        setCanBeDeleted(configData.canBeDeleted);
         setStatuses(
           configData.requestStatuses.sort((a, b) => a.localeCompare(b))
         );
@@ -98,7 +98,7 @@ export default function Requests({ onClose }) {
         requestsApproverAlternate: requestsApproverAlternate
           ? requestsApproverAlternate._id
           : "none",
-        requestsCanBeDeleted,
+        canBeDeleted,
         statuses,
       });
 
@@ -279,9 +279,9 @@ export default function Requests({ onClose }) {
                       </Tooltip>
                       <RadioGroup
                         row
-                        value={requestsCanBeDeleted}
+                        value={canBeDeleted}
                         onChange={(e) =>
-                          setRequestsCanBeDeleted(e.target.value)
+                          setCanBeDeleted(e.target.value)
                         }
                       >
                         <FormControlLabel
