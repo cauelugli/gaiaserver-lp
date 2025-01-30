@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
+import { useAppData } from "../AppDataContext";
 
 import { TableRow, TableCell, Checkbox } from "@mui/material";
 
@@ -8,6 +9,7 @@ import RowButton from "../components/small/buttons/RowButton";
 import DataTableCell from "../components/tableCells/DataTableCell";
 
 function StandardTable(props) {
+  const appData = useAppData();
   const { selectedMultipleItems, setSelectedMultipleItems } = props;
 
   const handleCheckboxChange = (item) => {
@@ -52,6 +54,9 @@ function StandardTable(props) {
             ))}
             <TableCell align="right">
               <RowButton
+                //passing specific config to rowButton
+                canBeDeleted={appData.configData[props.page].canBeDeleted}
+                //
                 userId={props.userId}
                 isRequestsApproverManager={
                   row._id === props.requestsApproverManager
@@ -73,10 +78,7 @@ function StandardTable(props) {
               />
             </TableCell>
             {props.multiple && (
-              <TableCell
-                id="multiple"
-                sx={{ p: 0, m: 0, width: 30 }}
-              >
+              <TableCell id="multiple" sx={{ p: 0, m: 0, width: 30 }}>
                 <Checkbox
                   sx={{ p: -1, m: -1 }}
                   size="small"

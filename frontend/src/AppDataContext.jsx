@@ -29,6 +29,7 @@ export const AppDataProvider = ({ children }) => {
   ];
   const [idIndexList, setIdIndexList] = useState([]);
   const [loadingIdIndexList, setLoadingIdIndexList] = useState(true);
+  const [configData, setConfigData] = useState(true);
 
   useEffect(() => {
     const fetchIdIndexList = async () => {
@@ -36,7 +37,9 @@ export const AppDataProvider = ({ children }) => {
         const { data: idIndexList } = await axios.get(
           "http://localhost:3000/api/idIndexList"
         );
+        const config = await axios.get("http://localhost:3000/api/config");
 
+        setConfigData(config.data[0]);
         setIdIndexList(idIndexList);
       } catch (error) {
         console.error("Erro ao buscar a idIndexList:", error);
@@ -51,7 +54,12 @@ export const AppDataProvider = ({ children }) => {
     });
   }, []);
 
-  const contextValue = { useArchiveList, idIndexList, loadingIdIndexList };
+  const contextValue = {
+    useArchiveList,
+    idIndexList,
+    loadingIdIndexList,
+    configData,
+  };
 
   return (
     <AppDataContext.Provider value={contextValue}>

@@ -262,18 +262,29 @@ const RowButton = (props) => {
             ) : (
               <MenuItem
                 onClick={() => handleMenuItemClick(menuItem, index)}
-                sx={{ minWidth: 150 }}
+                sx={{
+                  minWidth: 150,
+                  backgroundColor: menuItem.label.startsWith("Deletar")
+                    ? "#e42528"
+                    : "",
+                  color: menuItem.label.startsWith("Deletar") ? "white" : "",
+                  "&:hover": {
+                    backgroundColor: menuItem.label.startsWith("Deletar")
+                      ? "#b12427"
+                      : "",
+                  },
+                }}
                 disabled={
                   menuItem.label === "Resolver"
                     ? checkAvailability("resolvableRequest", props.item.status)
                     : menuItem.label === "Solicitar Aprovação"
                     ? checkAvailability("approvableRequest", props.item.status)
-                    : menuItem.label === "Criar" // username
+                    : menuItem.label === "Criar"
                     ? checkAvailability(
                         "creatableUsername",
                         props.item.username
                       )
-                    : menuItem.label === "Remover" // username
+                    : menuItem.label === "Remover"
                     ? checkAvailability(
                         "removableUsername",
                         props.item.username
@@ -281,7 +292,13 @@ const RowButton = (props) => {
                     : false
                 }
               >
-                <ListItemIcon>{menuItem.icon}</ListItemIcon>
+                <ListItemIcon
+                  sx={{
+                    color: menuItem.label.startsWith("Deletar") ? "white" : "",
+                  }}
+                >
+                  {menuItem.icon}
+                </ListItemIcon>
                 <ListItemText>{menuItem.label}</ListItemText>
               </MenuItem>
             )}

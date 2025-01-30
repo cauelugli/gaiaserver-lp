@@ -21,11 +21,7 @@ const configSchema = new Schema({
     },
   },
   customers: {
-    customersCanBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
-    clientsCanBeDeleted: {
+    canBeDeleted: {
       type: Boolean,
       default: true,
     },
@@ -59,7 +55,7 @@ const configSchema = new Schema({
     },
   },
   departments: {
-    departmentsCanBeDeleted: {
+    canBeDeleted: {
       type: Boolean,
       default: true,
     },
@@ -75,7 +71,7 @@ const configSchema = new Schema({
     },
   },
   files: {
-    filesCanBeDeleted: {
+    canBeDeleted: {
       type: Boolean,
       default: true,
     },
@@ -125,7 +121,7 @@ const configSchema = new Schema({
     },
   },
   products: {
-    productsCanBeDeleted: {
+    canBeDeleted: {
       type: Boolean,
       default: true,
     },
@@ -150,9 +146,6 @@ const configSchema = new Schema({
     canBeDeleted: {
       type: Boolean,
       default: true,
-    },
-    canCreate: {
-      type: Array,
     },
     requestStatuses: {
       type: Array,
@@ -232,11 +225,7 @@ const configSchema = new Schema({
     },
   },
   users: {
-    usersCanBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
-    managersCanBeDeleted: {
+    canBeDeleted: {
       type: Boolean,
       default: true,
     },

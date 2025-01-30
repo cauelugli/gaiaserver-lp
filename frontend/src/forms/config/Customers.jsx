@@ -32,9 +32,7 @@ const api = axios.create({
 
 export default function Customers({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
-  const [customersCanBeDeleted, setCustomersCanBeDeleted] =
-    React.useState(null);
-  const [clientsCanBeDeleted, setClientsCanBeDeleted] = React.useState(null);
+  const [canBeDeleted, setCanBeDeleted] = React.useState(null);
   const [allowSameNameCustomer, setAllowSameNameCustomer] =
     React.useState(null);
 
@@ -43,10 +41,7 @@ export default function Customers({ onClose }) {
       try {
         const config = await api.get("/config");
         setConfigData(config.data[0].customers);
-        setCustomersCanBeDeleted(
-          config.data[0].customers.customersCanBeDeleted
-        );
-        setClientsCanBeDeleted(config.data[0].customers.clientsCanBeDeleted);
+        setCanBeDeleted(config.data[0].customers.canBeDeleted);
         setAllowSameNameCustomer(
           config.data[0].customers.allowSameNameCustomer
         );
@@ -61,8 +56,7 @@ export default function Customers({ onClose }) {
     e.preventDefault();
     try {
       const res = await api.put("/config/customers", {
-        customersCanBeDeleted,
-        clientsCanBeDeleted,
+        canBeDeleted,
         allowSameNameCustomer,
       });
 
@@ -121,68 +115,20 @@ export default function Customers({ onClose }) {
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12 }}>
-                            Se a opção marcada for "Sim", os Clientes Empresa
-                            criados poderão ser deletados pelos colaboradores. A
-                            opção padrão é "Sim".
+                            Se a opção marcada for "Sim", os Clientes criados
+                            poderão ser deletados pelos colaboradores. A opção
+                            padrão é "Sim".
                           </Typography>
                         }
                       >
                         <Typography sx={{ my: "auto", mr: 1 }}>
-                          Cliente Empresa Pode ser Deletado
+                          Clientes Podem ser Deletados
                         </Typography>
                       </Tooltip>
                       <RadioGroup
                         row
-                        value={customersCanBeDeleted}
-                        onChange={(e) =>
-                          setCustomersCanBeDeleted(e.target.value)
-                        }
-                      >
-                        <FormControlLabel
-                          value={Boolean(true)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
-                          }
-                        />
-                        <FormControlLabel
-                          value={Boolean(false)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
-                          }
-                        />
-                      </RadioGroup>
-                    </Grid>
-                  </Grid>
-                  <Grid item sx={{ my: 1.5 }}>
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      sx={{ px: 4 }}
-                    >
-                      <Tooltip
-                        title={
-                          <Typography sx={{ fontSize: 12 }}>
-                            Se a opção marcada for "Sim", os Clientes Pessoa
-                            Física criados poderão ser deletados pelos
-                            colaboradores. A opção padrão é "Sim".
-                          </Typography>
-                        }
-                      >
-                        <Typography sx={{ my: "auto", mr: 1 }}>
-                          Cliente Pessoa Física Pode ser Deletado
-                        </Typography>
-                      </Tooltip>
-                      <RadioGroup
-                        row
-                        value={clientsCanBeDeleted}
-                        onChange={(e) => setClientsCanBeDeleted(e.target.value)}
+                        value={canBeDeleted}
+                        onChange={(e) => setCanBeDeleted(e.target.value)}
                       >
                         <FormControlLabel
                           value={Boolean(true)}

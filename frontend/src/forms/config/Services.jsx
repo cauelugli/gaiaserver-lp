@@ -39,7 +39,7 @@ const api = axios.create({
 export default function Services({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
   const [serviceTypes, setServiceTypes] = React.useState(null);
-  const [servicesCanBeDeleted, setServicesCanBeDeleted] = React.useState(null);
+  const [canBeDeleted, setCanBeDeleted] = React.useState(null);
   const [newType, setNewType] = React.useState("");
 
   React.useEffect(() => {
@@ -48,7 +48,7 @@ export default function Services({ onClose }) {
         const config = await api.get("/config");
         setConfigData(config.data[0].services);
         setServiceTypes(config.data[0].services.serviceTypes);
-        setServicesCanBeDeleted(config.data[0].services.canBeDeleted);
+        setCanBeDeleted(config.data[0].services.canBeDeleted);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -60,7 +60,7 @@ export default function Services({ onClose }) {
     e.preventDefault();
     try {
       const res = await api.put("/config/services", {
-        canBeDeleted: servicesCanBeDeleted,
+        canBeDeleted: canBeDeleted,
         serviceTypes: serviceTypes,
       });
 
@@ -191,9 +191,9 @@ export default function Services({ onClose }) {
                       </Tooltip>
                       <RadioGroup
                         row
-                        value={servicesCanBeDeleted}
+                        value={canBeDeleted}
                         onChange={(e) =>
-                          setServicesCanBeDeleted(e.target.value)
+                          setCanBeDeleted(e.target.value)
                         }
                       >
                         <FormControlLabel

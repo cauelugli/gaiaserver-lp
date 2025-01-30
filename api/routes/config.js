@@ -74,16 +74,11 @@ router.put("/dashboard", async (req, res) => {
 // CUSTOMERS
 router.put("/customers", async (req, res) => {
   try {
-    const {
-      customersCanBeDeleted,
-      clientsCanBeDeleted,
-      allowSameNameCustomer,
-    } = req.body;
+    const { canBeDeleted, allowSameNameCustomer } = req.body;
 
     const config = await Config.findOne();
 
-    config.customers.customersCanBeDeleted = customersCanBeDeleted;
-    config.customers.clientsCanBeDeleted = clientsCanBeDeleted;
+    config.customers.canBeDeleted = canBeDeleted;
     config.customers.allowSameNameCustomer = allowSameNameCustomer;
 
     await config.save();
@@ -97,11 +92,11 @@ router.put("/customers", async (req, res) => {
 // USERS
 router.put("/users", async (req, res) => {
   try {
-    const { usersCanBeDeleted } = req.body;
+    const { canBeDeleted } = req.body;
 
     const config = await Config.findOne();
 
-    config.users.usersCanBeDeleted = usersCanBeDeleted;
+    config.users.canBeDeleted = canBeDeleted;
 
     await config.save();
     res.status(200).json(config);
@@ -117,7 +112,7 @@ router.put("/requests", async (req, res) => {
     const {
       prevData,
       requestsNeedApproval,
-      requestsCanBeDeleted,
+      canBeDeleted,
       requestsApproverManager,
       requestsApproverAlternate,
       statuses,
@@ -126,7 +121,7 @@ router.put("/requests", async (req, res) => {
     const config = await Config.findOne();
 
     config.requests.requestsNeedApproval = requestsNeedApproval;
-    config.requests.canBeDeleted = requestsCanBeDeleted;
+    config.requests.canBeDeleted = canBeDeleted;
     config.requests.requestsApproverManager = requestsApproverManager;
     config.requests.requestsApproverAlternate = requestsApproverAlternate;
     config.requests.requestStatuses = statuses;
@@ -295,11 +290,11 @@ router.put("/customization", async (req, res) => {
 // DEPARTMENTS
 router.put("/departments", async (req, res) => {
   try {
-    const { departmentsCanBeDeleted, departmentsNeedManager } = req.body;
+    const { canBeDeleted, departmentsNeedManager } = req.body;
 
     const config = await Config.findOne();
 
-    config.departments.departmentsCanBeDeleted = departmentsCanBeDeleted;
+    config.departments.canBeDeleted = canBeDeleted;
     config.departments.departmentsNeedManager = departmentsNeedManager;
 
     await config.save();
@@ -348,11 +343,11 @@ router.put("/permissions", async (req, res) => {
 // PRODUCTS
 router.put("/products", async (req, res) => {
   try {
-    const { productsCanBeDeleted } = req.body;
+    const { canBeDeleted } = req.body;
 
     const config = await Config.findOne();
 
-    config.products.productsCanBeDeleted = productsCanBeDeleted;
+    config.products.canBeDeleted = canBeDeleted;
 
     await config.save();
     res.status(200).json(config);

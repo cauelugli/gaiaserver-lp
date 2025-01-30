@@ -32,7 +32,7 @@ const api = axios.create({
 
 export default function Departments({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
-  const [departmentsCanBeDeleted, setDepartmentsCanBeDeleted] =
+  const [canBeDeleted, setCanBeDeleted] =
     React.useState(null);
   const [departmentsNeedManager, setDepartmentsNeedManager] =
     React.useState(null);
@@ -42,8 +42,8 @@ export default function Departments({ onClose }) {
       try {
         const config = await api.get("/config");
         setConfigData(config.data[0].departments);
-        setDepartmentsCanBeDeleted(
-          config.data[0].departments.departmentsCanBeDeleted
+        setCanBeDeleted(
+          config.data[0].departments.canBeDeleted
         );
         setDepartmentsNeedManager(
           config.data[0].departments.departmentsNeedManager
@@ -59,7 +59,7 @@ export default function Departments({ onClose }) {
     e.preventDefault();
     try {
       const res = await api.put("/config/departments", {
-        departmentsCanBeDeleted,
+        canBeDeleted,
         departmentsNeedManager,
       });
 
@@ -130,9 +130,9 @@ export default function Departments({ onClose }) {
                       </Tooltip>
                       <RadioGroup
                         row
-                        value={departmentsCanBeDeleted}
+                        value={canBeDeleted}
                         onChange={(e) =>
-                          setDepartmentsCanBeDeleted(e.target.value)
+                          setCanBeDeleted(e.target.value)
                         }
                       >
                         <FormControlLabel

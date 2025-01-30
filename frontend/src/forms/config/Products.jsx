@@ -49,7 +49,7 @@ export default function Products({
   const [refreshData, setRefreshData] = React.useState(false);
   const [baseProducts, setBaseProducts] = React.useState([]);
   const [products, setProducts] = React.useState([]);
-  const [productsCanBeDeleted, setProductsCanBeDeleted] = React.useState(null);
+  const [canBeDeleted, setCanBeDeleted] = React.useState(null);
 
   const [openAddProduct, setOpenAddProduct] = React.useState(false);
 
@@ -63,7 +63,7 @@ export default function Products({
         setBaseProducts(products.data.filter((product) => !product.name));
         setProducts(products.data.filter((product) => product.name));
         setConfigData(config.data[0].products);
-        setProductsCanBeDeleted(config.data[0].products.productsCanBeDeleted);
+        setCanBeDeleted(config.data[0].products.canBeDeleted);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -75,7 +75,7 @@ export default function Products({
     e.preventDefault();
     try {
       const res = await api.put("/config/products", {
-        productsCanBeDeleted,
+        canBeDeleted,
       });
 
       if (res.data) {
@@ -399,9 +399,9 @@ export default function Products({
                         </Tooltip>
                         <RadioGroup
                           row
-                          value={productsCanBeDeleted}
+                          value={canBeDeleted}
                           onChange={(e) =>
-                            setProductsCanBeDeleted(e.target.value)
+                            setCanBeDeleted(e.target.value)
                           }
                         >
                           <FormControlLabel
