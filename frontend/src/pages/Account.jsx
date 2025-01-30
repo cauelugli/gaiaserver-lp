@@ -6,6 +6,8 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { io } from "socket.io-client";
 
+import { useAppData } from "../../src/AppDataContext";
+
 const socket = io("http://localhost:5002");
 
 import {
@@ -37,6 +39,9 @@ export default function Account({
   setRefreshData,
   topBar,
 }) {
+  const appData = useAppData();
+  const idIndexList = appData.idIndexList;
+  console.log("idIndexList", idIndexList);
   const [image, setImage] = React.useState("");
   const [darkMode, setDarkMode] = React.useState(userPreferences.darkMode);
   const [paletteColor, setPaletteColor] = React.useState(
@@ -219,7 +224,10 @@ export default function Account({
 
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-      <Typography sx={{ fontSize: 25, ml: 2, mb: 2, fontWeight: "bold" }} id="title">
+      <Typography
+        sx={{ fontSize: 25, ml: 2, mb: 2, fontWeight: "bold" }}
+        id="title"
+      >
         Perfil
       </Typography>
       <Grid
@@ -364,26 +372,10 @@ export default function Account({
                 <TableCell align="center">
                   <Typography>{user.phone}</Typography>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <Typography>
-                    {user.department ? (
-                      <Grid container direction="user">
-                        <Paper
-                          elevation={0}
-                          sx={{
-                            mr: 1,
-                            mt: 0.5,
-                            width: 15,
-                            height: 15,
-                            borderRadius: 50,
-                            backgroundColor: user.department.color,
-                          }}
-                        ></Paper>
-                        <Typography>{user.department.name}</Typography>
-                      </Grid>
-                    ) : (
-                      "-"
-                    )}
+                    {idIndexList.find((item) => item.id === user.department)
+                      ?.name || ""}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -413,14 +405,18 @@ export default function Account({
               <TableRow>
                 <TableCell align="center">
                   <Typography>
-                    {user.position ? user.position.name : "-"}
+                    {idIndexList.find((item) => item.id === user.position)
+                      ?.name || "-"}
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography>{user.username ? user.username : "-"}</Typography>
+                  <Typography>{user.username ? user.username : ""}</Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography>{user.role ? user.role.name : "-"}</Typography>
+                  <Typography>
+                    {idIndexList.find((item) => item.id === user.role)?.name ||
+                      ""}
+                  </Typography>
                 </TableCell>
               </TableRow>
             </TableBody>
