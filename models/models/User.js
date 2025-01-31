@@ -38,10 +38,6 @@ userSchema = new mongoose.Schema({
   image: {
     type: String,
   },
-  isActive: {
-    type: Boolean,
-    default: true,
-  },
   alreadyLogin: {
     type: Boolean,
     default: false,

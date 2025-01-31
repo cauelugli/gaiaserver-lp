@@ -35,14 +35,12 @@ const userPreferencesSchema = new mongoose.Schema({
     default: [
       {
         name: "Adicionar Job",
-        isActive: true,
         action: "addJob",
         fullWidth: true,
         maxWidth: "lg",
       },
       {
         name: "Adicionar Venda",
-        isActive: true,
         action: "addSale",
         fullWidth: true,
         maxWidth: "md",

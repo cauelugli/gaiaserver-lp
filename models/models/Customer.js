@@ -25,10 +25,6 @@ const customerSchema = new mongoose.Schema({
   image: {
     type: String,
   },
-  isActive: {
-    type: Boolean,
-    default: true,
-  },
   mainContactEmail: {
     type: String,
   },

@@ -34,10 +34,6 @@ saleSchema = new mongoose.Schema({
   deliveryScheduledTo: {
     type: String,
   },
-  isActive: {
-    type: Boolean,
-    default: true,
-  },
   interactions: [
     {
       activity: String,

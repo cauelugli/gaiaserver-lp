@@ -9,10 +9,6 @@ quicknoteSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  isActive: {
-    type: Boolean,
-    default: true,
-  },
 });
 
 const QuickNote = mongoose.model("QuickNote", quicknoteSchema);
