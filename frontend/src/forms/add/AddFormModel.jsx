@@ -229,6 +229,10 @@ export default function AddFormModel(props) {
 
       props.setOpenAdd(!props.openAdd);
       !props.setRefreshData(!props.refreshData);
+      props.api.post("/log", {
+        createdItem: res.data,
+        label: modalOptions.label,
+      });
     } catch (err) {
       if (
         (err && err.response && err.response.status === 406) ||

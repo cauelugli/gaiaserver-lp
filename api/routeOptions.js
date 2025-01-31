@@ -14,6 +14,7 @@ const configRoute = require("./routes/config");
 const uploadsRoute = require("./routes/uploads");
 const userPreferencesRoute = require("./routes/userPreferences");
 const productsRoute = require("./routes/products");
+const logsRoute = require("./routes/log");
 
 const routes = [
   { path: "/api/actions", route: actionsRoute },
@@ -33,6 +34,7 @@ const routes = [
   { path: "/api/uploads", route: uploadsRoute },
   { path: "/api/agenda", route: agendaRoute },
   { path: "/api/userPreferences", route: userPreferencesRoute },
+  { path: "/api/log", route: logsRoute },
 ];
 
 module.exports = routes;
