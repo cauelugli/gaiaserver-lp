@@ -32,6 +32,7 @@ import Login from "./pages/Login";
 import PageModel from "./pages/PageModel";
 import Reports from "./pages/Reports";
 import { AppDataProvider } from "./AppDataContext";
+import Log from "./pages/Log";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -369,6 +370,26 @@ export default function App() {
                               setRefreshData={setRefreshData}
                               configCustomization={configData.customization}
                               currentWindowSize={currentWindowSize}
+                            />
+                          ) : isAuthenticated(login, userData) ? (
+                            <Typography sx={{ m: 2, fontSize: 16 }}>
+                              Seu usuário não possui autorização à página.
+                            </Typography>
+                          ) : (
+                            <Navigate to="/login" />
+                          )
+                        }
+                      />
+
+                      <Route
+                        path="/log"
+                        element={
+                          isAuthenticated(login, userData) &&
+                          userData.username === "admin" ? (
+                            <Log
+                              topBar={userPreferences.barPosition}
+                              refreshData={refreshData}
+                              setRefreshData={setRefreshData}
                             />
                           ) : isAuthenticated(login, userData) ? (
                             <Typography sx={{ m: 2, fontSize: 16 }}>

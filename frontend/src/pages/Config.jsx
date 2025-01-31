@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -190,29 +191,65 @@ export default function Config({
       {userName === "Admin" && (
         <Grid
           container
-          direction="column"
+          direction="row"
           alignItems="center"
           justifyContent="center"
-          sx={{
-            mt: 2,
-            mx: "auto",
-            width: showAdvancedConfig ? "15vw" : "20vw",
-            height: "10vw",
-            border: `1px solid ${mainColor}88`,
-            borderRadius: 2,
-            transition: "background-color 0.3s, color 0.3s",
-            backgroundColor: `white`,
-            color: `${mainColor}88`,
-            cursor: "pointer",
-            "&:hover": {
-              color: `white`,
-              backgroundColor: `${mainColor}88`,
-            },
-          }}
-          onClick={() => setOpenAdminModal(true)}
         >
-          {<icons.AttributionIcon sx={{ fontSize: "4vw" }} />}
-          <Typography sx={{ mt: 1, fontSize: "1.3vw" }}>Admin</Typography>
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            sx={{
+              mt: 2,
+              mx: 1,
+              width: showAdvancedConfig ? "15vw" : "20vw",
+              height: "10vw",
+              border: `1px solid ${mainColor}88`,
+              borderRadius: 2,
+              transition: "background-color 0.3s, color 0.3s",
+              backgroundColor: `white`,
+              color: `${mainColor}88`,
+              cursor: "pointer",
+              "&:hover": {
+                color: `white`,
+                backgroundColor: `${mainColor}88`,
+              },
+            }}
+            onClick={() => setOpenAdminModal(true)}
+          >
+            {<icons.AttributionIcon sx={{ fontSize: "4vw" }} />}
+            <Typography sx={{ mt: 1, fontSize: "1.3vw" }}>Admin</Typography>
+          </Grid>{" "}
+          <Link to={"/log"} style={{ textDecoration: "none" }}>
+            <Grid
+              container
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+              sx={{
+                mt: 2,
+                mx: 1,
+                width: showAdvancedConfig ? "15vw" : "20vw",
+                height: "10vw",
+                border: `1px solid ${mainColor}88`,
+                borderRadius: 2,
+                transition: "background-color 0.3s, color 0.3s",
+                backgroundColor: `white`,
+                color: `${mainColor}88`,
+                cursor: "pointer",
+                "&:hover": {
+                  color: `white`,
+                  backgroundColor: `${mainColor}88`,
+                },
+              }}
+            >
+              {<icons.PlagiarismIcon sx={{ fontSize: "4vw" }} />}
+              <Typography sx={{ mt: 1, fontSize: "1.3vw" }}>
+                Logs do Sistema
+              </Typography>
+            </Grid>
+          </Link>
         </Grid>
       )}
 

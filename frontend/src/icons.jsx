@@ -56,6 +56,7 @@ import NumbersIcon from "@mui/icons-material/Numbers";
 import PaletteIcon from "@mui/icons-material/Palette";
 import Person4Icon from "@mui/icons-material/Person4";
 import PersonIcon from "@mui/icons-material/Person";
+import PlagiarismIcon from "@mui/icons-material/Plagiarism";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -134,6 +135,7 @@ const icons = {
   PaletteIcon,
   Person4Icon,
   PersonIcon,
+  PlagiarismIcon,
   PhotoCameraIcon,
   RefreshIcon,
   RemoveIcon,
