@@ -81,6 +81,11 @@ const SmallFormModel = (props) => {
       }
       props.closeAllMenus();
       props.setRefreshData(!props.refreshData);
+      api.post("/log", {
+        source: source._id,
+        target: res.data,
+        label: props.label,
+      });
     } catch (error) {
       console.log("error", error);
       toast.error("Houve algum erro...", {

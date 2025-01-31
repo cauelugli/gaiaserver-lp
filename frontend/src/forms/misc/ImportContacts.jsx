@@ -92,6 +92,11 @@ const ImportContacts = ({
         page: "customers",
         userId: userId,
       });
+      api.post("/log", {
+        source: userId,
+        target: fileData,
+        label: "Upload de Arquivos",
+      });
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
       toast.error("Erro ao enviar dados. Por favor, tente novamente.");

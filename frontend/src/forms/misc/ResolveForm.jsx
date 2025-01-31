@@ -30,6 +30,7 @@ const ResolveForm = ({
   openDialog,
   setOpenDialog,
   page,
+  label,
 }) => {
   const [resolution, setResolution] = React.useState("");
 
@@ -56,6 +57,11 @@ const ResolveForm = ({
       }
       setOpenDialog(false);
       setRefreshData(!refreshData);
+      api.post("/log", {
+        source: userId,
+        target: res.data,
+        label: label,
+      });
     } catch (err) {
       toast.error("Houve um erro...", {
         closeOnClick: true,

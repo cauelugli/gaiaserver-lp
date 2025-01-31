@@ -169,6 +169,7 @@ const MultipleSelectorButton = (props) => {
           userId={props.userId}
           model={props.model}
           page={props.page}
+          label={props.label}
           refreshData={props.refreshData}
           setRefreshData={props.setRefreshData}
           selectedItems={props.selectedMultipleItems}

@@ -27,6 +27,7 @@ const ArchiveItemForm = ({
   openDialog,
   setOpenDialog,
   page,
+  label,
 }) => {
   const handleArchive = async () => {
     try {
@@ -57,6 +58,11 @@ const ArchiveItemForm = ({
       }
       setOpenDialog(false);
       setRefreshData(!refreshData);
+      api.post("/log", {
+        source: userId,
+        target: res.data,
+        label: label,
+      });
     } catch (err) {
       toast.error("Houve algum erro...", {
         closeOnClick: true,

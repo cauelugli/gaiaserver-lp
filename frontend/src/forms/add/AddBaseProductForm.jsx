@@ -89,6 +89,11 @@ export default function AddBaseProductForm({
       }
       onClose();
       setRefreshData(!refreshData);
+      api.post("/log", {
+        source: userId,
+        target: productResponse.data,
+        label: "Produto",
+      });
     } catch (err) {
       toast.error("Houve algum erro...", {
         closeOnClick: true,

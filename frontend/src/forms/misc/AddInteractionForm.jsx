@@ -123,6 +123,11 @@ const AddInteractionForm = ({
         });
       }
       setRefreshData(!refreshData);
+      api.post("/log", {
+        source: userId,
+        target: res.data,
+        label: "Interação",
+      });
     } catch (err) {
       toast.error("Houve algum erro...", {
         closeOnClick: true,

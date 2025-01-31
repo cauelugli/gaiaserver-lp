@@ -28,6 +28,7 @@ const DeleteFormModel = ({
   openDialog,
   setOpenDialog,
   page,
+  label,
 }) => {
   const handleDelete = async () => {
     try {
@@ -56,6 +57,11 @@ const DeleteFormModel = ({
       }
       setOpenDialog(false);
       setRefreshData(!refreshData);
+      api.post("/log", {
+        source: userId,
+        target: res.data,
+        label: label,
+      });
     } catch (err) {
       toast.error("Houve um erro na deleção...", {
         closeOnClick: true,

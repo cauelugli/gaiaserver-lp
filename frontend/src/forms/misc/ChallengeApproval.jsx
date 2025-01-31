@@ -49,6 +49,11 @@ export default function ChallengeApproval({
         });
         setOpen(false);
         setRefreshData(!refreshData);
+        api.post("/log", {
+          source: userId,
+          target: res.data,
+          label: "Contestação",
+        });
       }
     } catch (err) {
       toast.error("Houve algum erro...", {

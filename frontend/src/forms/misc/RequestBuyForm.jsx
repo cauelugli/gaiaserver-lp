@@ -45,6 +45,11 @@ const RequestBuyForm = (props) => {
       }
       props.setOpenDialog(false);
       props.setRefreshData(!props.refreshData);
+      api.post("/log", {
+        source: props.userId,
+        target: res.data,
+        label: props.label,
+      });
     } catch (err) {
       toast.error("Houve um erro...", {
         closeOnClick: true,
@@ -101,7 +106,7 @@ const RequestBuyForm = (props) => {
         justifyContent="center"
         sx={{ my: 2 }}
       >
-        <Typography sx={{mr:5}}>
+        <Typography sx={{ mr: 5 }}>
           Valor por Item: R${props.selectedItem.buyValue.toFixed(2)}
         </Typography>
         <Typography>

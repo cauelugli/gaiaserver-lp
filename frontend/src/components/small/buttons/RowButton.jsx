@@ -92,6 +92,7 @@ const RowButton = (props) => {
       formComponent = (
         <ArchiveItemForm
           userId={props.userId}
+          label={selectedModal.label}
           selectedItem={props.item}
           model={selectedModal.model}
           refreshData={props.refreshData}
@@ -107,6 +108,7 @@ const RowButton = (props) => {
       formComponent = (
         <ResolveForm
           userId={props.userId}
+          label={selectedModal.label}
           selectedItemId={props.item._id || props.item.id}
           selectedItemName={
             props.item.name ||
@@ -131,6 +133,7 @@ const RowButton = (props) => {
           selectedItemId={props.item._id || props.item.id}
           selectedItemName={props.item.title || props.item.number}
           model={selectedModal.model}
+          label={selectedModal.label}
           refreshData={props.refreshData}
           setRefreshData={props.setRefreshData}
           openDialog={openDialog}
@@ -147,6 +150,7 @@ const RowButton = (props) => {
           selectedItemId={props.item._id || props.item.id}
           selectedItemName={props.item.title || props.item.number}
           model={selectedModal.model}
+          label={selectedModal.label}
           refreshData={props.refreshData}
           setRefreshData={props.setRefreshData}
           openDialog={openDialog}
@@ -160,6 +164,7 @@ const RowButton = (props) => {
       formComponent = (
         <RequestBuyForm
           userId={props.userId}
+          label={selectedModal.label}
           selectedItem={props.item}
           refreshData={props.refreshData}
           setRefreshData={props.setRefreshData}
@@ -176,6 +181,7 @@ const RowButton = (props) => {
           userId={props.userId}
           selectedItem={props.item}
           model={selectedModal.model}
+          label={selectedModal.label}
           refreshData={props.refreshData}
           setRefreshData={props.setRefreshData}
           openDialog={openDialog}
@@ -249,6 +255,7 @@ const RowButton = (props) => {
                 >
                   <SmallFormModel
                     source={props.item}
+                    label={selectedModal.label}
                     menuItem={menuItem.submenu}
                     smallmenuOptions={smallmenuOptions}
                     setSmallmenuAnchorEl={setSmallmenuAnchorEl}
