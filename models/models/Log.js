@@ -5,7 +5,7 @@ const logSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  model: {
+  label: {
     type: String,
   },
   source: {

@@ -230,7 +230,8 @@ export default function AddFormModel(props) {
       props.setOpenAdd(!props.openAdd);
       !props.setRefreshData(!props.refreshData);
       props.api.post("/log", {
-        createdItem: res.data,
+        source: props.userId,
+        target: res.data,
         label: modalOptions.label,
       });
     } catch (err) {
