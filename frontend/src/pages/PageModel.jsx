@@ -147,9 +147,6 @@ export default function PageModel(props) {
       }
     };
 
-    console.log("looping in parent");
-    // console.log("filteredItems", filteredItems);
-
     fetchData();
   }, [props.api, refreshData, currentPage, props.item, value]);
 
