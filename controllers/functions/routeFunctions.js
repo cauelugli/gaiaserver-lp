@@ -7,6 +7,7 @@ const models = {
   FinanceOutcome: require("../../models/models/FinanceOutcome"),
   Group: require("../../models/models/Group"),
   Job: require("../../models/models/Job"),
+  Log: require("../../models/models/Log"),
   Notifications: require("../../models/models/Notifications"),
   Operator: require("../../models/models/User"),
   Position: require("../../models/models/Position"),

@@ -387,6 +387,7 @@ export default function App() {
                           isAuthenticated(login, userData) &&
                           userData.username === "admin" ? (
                             <Log
+                              api={api}
                               topBar={userPreferences.barPosition}
                               refreshData={refreshData}
                               setRefreshData={setRefreshData}
