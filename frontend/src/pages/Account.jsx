@@ -41,7 +41,6 @@ export default function Account({
 }) {
   const appData = useAppData();
   const idIndexList = appData.idIndexList;
-  console.log("idIndexList", idIndexList);
   const [image, setImage] = React.useState("");
   const [darkMode, setDarkMode] = React.useState(userPreferences.darkMode);
   const [paletteColor, setPaletteColor] = React.useState(
