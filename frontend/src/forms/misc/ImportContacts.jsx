@@ -96,6 +96,7 @@ const ImportContacts = ({
         source: userId,
         target: fileData,
         label: "Upload de Arquivos",
+        type: "importContacts",
       });
     } catch (error) {
       console.error("Erro ao enviar dados:", error);

@@ -54,6 +54,7 @@ const DeleteMultipleFormModel = (props) => {
         source: props.userId,
         target: res.data,
         label: props.label,
+        type: "deleteMultiple",
       });
     } catch (err) {
       toast.error("Houve um erro na deleção...", {

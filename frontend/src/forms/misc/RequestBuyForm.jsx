@@ -49,6 +49,7 @@ const RequestBuyForm = (props) => {
         source: props.userId,
         target: res.data,
         label: props.label,
+        type: "requestBuy",
       });
     } catch (err) {
       toast.error("Houve um erro...", {

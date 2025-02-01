@@ -233,6 +233,7 @@ export default function AddFormModel(props) {
         source: props.userId,
         target: res.data,
         label: modalOptions.label,
+        type: "add",
       });
     } catch (err) {
       if (

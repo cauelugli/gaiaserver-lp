@@ -93,6 +93,7 @@ export default function AddBaseProductForm({
         source: userId,
         target: productResponse.data,
         label: "Produto",
+        type: "add",
       });
     } catch (err) {
       toast.error("Houve algum erro...", {

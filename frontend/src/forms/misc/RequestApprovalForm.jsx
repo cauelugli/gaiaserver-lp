@@ -47,6 +47,7 @@ const RequestApprovalForm = (props) => {
         source: props.userId,
         target: res.data,
         label: props.label,
+        type: "requestApproval",
       });
     } catch (err) {
       toast.error("Houve um erro...", {

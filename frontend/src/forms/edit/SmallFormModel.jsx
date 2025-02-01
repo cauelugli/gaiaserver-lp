@@ -85,6 +85,8 @@ const SmallFormModel = (props) => {
         source: source._id,
         target: res.data,
         label: props.label,
+        type: "editSmall",
+        prevData: props.source,
       });
     } catch (error) {
       console.log("error", error);

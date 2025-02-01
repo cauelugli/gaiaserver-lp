@@ -61,6 +61,7 @@ const ResolveForm = ({
         source: userId,
         target: res.data,
         label: label,
+        type: "resolve",
       });
     } catch (err) {
       toast.error("Houve um erro...", {

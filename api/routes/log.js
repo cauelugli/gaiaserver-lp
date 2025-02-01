@@ -4,6 +4,7 @@ const Log = require("../../models/models/Log");
 
 // CREATE LOG
 router.post("/", async (req, res) => {
+  console.log("type", req.body.type)
   try {
     new Log({
       source: req.body.source,

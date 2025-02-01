@@ -297,6 +297,8 @@ export default function EditFormModel(props) {
         source: props.userId,
         target: res.data,
         label: modalOptions.label,
+        type: "edit",
+        prevData: props.target,
       });
     } catch (err) {
       if (

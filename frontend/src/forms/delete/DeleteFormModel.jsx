@@ -61,6 +61,7 @@ const DeleteFormModel = ({
         source: userId,
         target: res.data,
         label: label,
+        type: "delete",
       });
     } catch (err) {
       toast.error("Houve um erro na deleção...", {

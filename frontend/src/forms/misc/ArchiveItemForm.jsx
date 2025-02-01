@@ -62,6 +62,7 @@ const ArchiveItemForm = ({
         source: userId,
         target: res.data,
         label: label,
+        type: "archive",
       });
     } catch (err) {
       toast.error("Houve algum erro...", {
