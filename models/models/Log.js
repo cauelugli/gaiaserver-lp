@@ -14,6 +14,9 @@ const logSchema = new mongoose.Schema({
   target: {
     type: Object,
   },
+  type: {
+    type: String,
+  },
 });
 
 const Log = mongoose.model("Log", logSchema);

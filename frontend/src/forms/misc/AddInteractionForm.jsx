@@ -127,7 +127,7 @@ const AddInteractionForm = ({
         source: userId,
         target: res.data,
         label: "Interação",
-        type: "add",
+        type: "interaction",
       });
     } catch (err) {
       toast.error("Houve algum erro...", {

@@ -59,7 +59,6 @@ export default function RefreshDataButton({
         color="success"
         variant="dot"
         sx={{ m: 0.5 }}
-        // this is THE prop, make the magic happen here
         invisible={newDataRefreshButton}
       >
         <icons.RefreshIcon

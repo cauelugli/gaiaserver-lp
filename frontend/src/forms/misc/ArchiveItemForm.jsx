@@ -62,7 +62,7 @@ const ArchiveItemForm = ({
         source: userId,
         target: res.data,
         label: label,
-        type: "archive",
+        type: selectedItem.status === "Arquivado" ? "unarchive" : "archive",
       });
     } catch (err) {
       toast.error("Houve algum erro...", {

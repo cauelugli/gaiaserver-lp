@@ -1,19 +1,52 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
+import dayjs from "dayjs";
+
 import {
   TableRow,
   TableCell,
   Typography,
   InputLabel,
   Grid,
+  Avatar,
 } from "@mui/material";
+
 import { isId } from "../../../controllers/functions/overallFunctions";
 
 function LogTable(props) {
+  const translatedLogTypes = [
+    { key: "add", value: "Adição" },
+    { key: "delete", value: "Deleção" },
+    { key: "deleteMultiple", value: "Deleção Múltipla" },
+    { key: "edit", value: "Edição" },
+    { key: "archive", value: "Arquivamento" },
+    { key: "unarchive", value: "Desarquivamento" },
+    { key: "interaction", value: "Interação" },
+    { key: "challengeRequest", value: "Contestação" },
+    { key: "resolve", value: "Resolução" },
+    { key: "requestBuy", value: "Resquisição de Compra" },
+    { key: "requestApproval", value: "Resquisição de Aprovação" },
+  ];
+
+  const translateLogType = (logType) => {
+    const translated = translatedLogTypes.find((item) => item.key === logType);
+    return translated ? translated.value : logType;
+  };
+
   return (
     <>
       <TableRow>
+        <TableCell align="left" sx={{ mr: 1 }}>
+          <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
+            Data
+          </Typography>
+        </TableCell>
+        <TableCell align="left" sx={{ mr: 1 }}>
+          <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
+            Tipo
+          </Typography>
+        </TableCell>
         <TableCell align="left" sx={{ mr: 1 }}>
           <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
             Colaborador
@@ -24,25 +57,55 @@ function LogTable(props) {
             Modelo
           </Typography>
         </TableCell>
-        <TableCell align="left">
+        <TableCell align="left" sx={{ width: "65vw" }}>
           <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
             Payload
           </Typography>
         </TableCell>
       </TableRow>
       {props.items.map((row, rowIndex) => (
-        <TableRow key={rowIndex}>
+        <TableRow
+          key={rowIndex}
+          sx={{
+            backgroundColor:
+              row.type === "add" ? "red" : row.type === "add" ? "" : "",
+          }}
+        >
           <TableCell align="left" sx={{ mr: 1 }}>
             <Typography sx={{ fontSize: 12 }}>
-              {props.idIndexList.find((item) => item.id === row.source)?.name ||
-                "??? ou Admin"}
+              {dayjs(row.createdAt).format("DD/MM/YYYY HH:mm:ss")}
             </Typography>
           </TableCell>
+          <TableCell align="left" sx={{ mr: 1 }}>
+            <Typography sx={{ fontSize: 12 }}>
+              {translateLogType(row.type) || ""}
+            </Typography>
+          </TableCell>
+          <TableCell align="left" sx={{ mr: 1 }}>
+            <Grid container alignItems="center" spacing={1}>
+              <Grid item>
+                <Avatar
+                  sx={{ width: 24, height: 24 }}
+                  src={`http://localhost:3000/static/${
+                    props.idIndexList.find((item) => item.id === row.source)
+                      ?.image || ""
+                  }`}
+                />
+              </Grid>
+              <Grid item>
+                <Typography sx={{ fontSize: 12 }}>
+                  {props.idIndexList.find((item) => item.id === row.source)
+                    ?.name || "Admin"}
+                </Typography>
+              </Grid>
+            </Grid>
+          </TableCell>
+
           <TableCell align="left" sx={{ mr: 1 }}>
             <Typography sx={{ fontSize: 12 }}>{row.label}</Typography>
           </TableCell>
           <TableCell align="left">
-            <Grid container direction="row">
+            {/* <Grid container direction="row">
               {Object.entries(row.target)
                 .filter(
                   ([key]) =>
@@ -62,7 +125,7 @@ function LogTable(props) {
                     </Typography>
                   </Grid>
                 ))}
-            </Grid>
+            </Grid> */}
           </TableCell>
         </TableRow>
       ))}

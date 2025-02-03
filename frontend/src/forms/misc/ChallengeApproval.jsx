@@ -53,7 +53,7 @@ export default function ChallengeApproval({
           source: userId,
           target: res.data,
           label: "Contestação",
-          type: "challenge",
+          type: "challengeRequest",
         });
       }
     } catch (err) {

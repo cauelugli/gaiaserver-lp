@@ -389,8 +389,10 @@ export default function App() {
                             <Log
                               api={api}
                               topBar={userPreferences.barPosition}
-                              refreshData={refreshData}
-                              setRefreshData={setRefreshData}
+                              mainColor={
+                                configData.customization &&
+                                configData.customization.mainColor
+                              }
                             />
                           ) : isAuthenticated(login, userData) ? (
                             <Typography sx={{ m: 2, fontSize: 16 }}>
