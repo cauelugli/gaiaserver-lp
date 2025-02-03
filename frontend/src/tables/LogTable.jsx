@@ -29,14 +29,33 @@ function LogTable(props) {
     { key: "requestApproval", value: "Resquisição de Aprovação" },
   ];
 
+  const typeColors = [
+    { key: "Adição", value: "#66ff66" }, // green
+    { key: "Deleção", value: "#ff6666" }, // red
+    { key: "Deleção Múltipla", value: "#ff6666" }, // red
+    { key: "Edição", value: "#66ffff" }, // blue
+    { key: "Arquivamento", value: "#d9d9d9" }, // lightgrey
+    { key: "Desarquivamento", value: "#66ff66" }, // green
+    { key: "Interação", value: "#ffffff" }, // white
+    { key: "Contestação", value: "#ffffff" }, // white
+    { key: "Resolução", value: "#66ff66" }, // green
+    { key: "Resquisição de Compra", value: "#ffffff" }, // white
+    { key: "Resquisição de Aprovação", value: "#ffffff" }, // white
+  ];
+
   const translateLogType = (logType) => {
     const translated = translatedLogTypes.find((item) => item.key === logType);
     return translated ? translated.value : logType;
   };
 
+  const findTypeColor = (logType) => {
+    const translated = typeColors.find((item) => item.key === String(logType));
+    return translated ? translated.value : "#f5f5f5";
+  };
+
   return (
     <>
-      <TableRow>
+      <TableRow sx={{ m: 0 }}>
         <TableCell align="left" sx={{ mr: 1 }}>
           <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
             Data
@@ -59,7 +78,7 @@ function LogTable(props) {
         </TableCell>
         <TableCell align="left" sx={{ width: "65vw" }}>
           <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
-            Payload
+            Item / Alteração
           </Typography>
         </TableCell>
       </TableRow>
@@ -67,8 +86,8 @@ function LogTable(props) {
         <TableRow
           key={rowIndex}
           sx={{
-            backgroundColor:
-              row.type === "add" ? "red" : row.type === "add" ? "" : "",
+            m: 0,
+            backgroundColor: findTypeColor(row.type) || "white",
           }}
         >
           <TableCell align="left" sx={{ mr: 1 }}>
