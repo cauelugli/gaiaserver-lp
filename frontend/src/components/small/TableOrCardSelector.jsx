@@ -26,13 +26,6 @@ const TableOrCardSelector = (props) => {
   }, [props.tableOrCard]);
 
   const handleUpdateTableOrCardView = async (newTableOrCardView) => {
-    const existingPreferences =
-      JSON.parse(sessionStorage.getItem("userPreferences")) || {};
-    const updatedPreferences = {
-      ...existingPreferences,
-      tableOrCardView: newTableOrCardView,
-    };
-
     try {
       const response = await api.put("/userPreferences/tableOrCardView", {
         userId: props.userId,
@@ -40,10 +33,6 @@ const TableOrCardSelector = (props) => {
       });
 
       if (response.data && response.data.tableOrCardView !== undefined) {
-        sessionStorage.setItem(
-          "userPreferences",
-          JSON.stringify(updatedPreferences)
-        );
         props.setRefreshData(!props.refreshData);
         props.setUserPreferences((prev) => ({
           ...prev,
@@ -62,13 +51,6 @@ const TableOrCardSelector = (props) => {
   };
 
   const handleUpdateCardSize = async (newCardSize) => {
-    const existingPreferences =
-      JSON.parse(sessionStorage.getItem("userPreferences")) || {};
-    const updatedPreferences = {
-      ...existingPreferences,
-      cardSize: newCardSize,
-    };
-
     try {
       const response = await api.put("/userPreferences/cardSize", {
         userId: props.userId,
@@ -76,10 +58,6 @@ const TableOrCardSelector = (props) => {
       });
 
       if (response.data && response.data.cardSize !== undefined) {
-        sessionStorage.setItem(
-          "userPreferences",
-          JSON.stringify(updatedPreferences)
-        );
         props.setRefreshData(!props.refreshData);
         props.setUserPreferences((prev) => ({
           ...prev,
