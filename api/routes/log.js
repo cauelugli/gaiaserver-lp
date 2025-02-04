@@ -82,10 +82,6 @@ router.post("/", async (req, res) => {
       logTarget = prevData ? compareData(prevData, target) : [];
     }
 
-    if (type === "edit" && logTarget.length > 0) {
-      console.log("Changes detected:", logTarget);
-    }
-
     await new Log({
       source: req.body.source,
       target: logTarget,
