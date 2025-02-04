@@ -1,3 +1,17 @@
+const translatedLogTypes = [
+  { key: "add", value: "Adição" },
+  { key: "delete", value: "Deleção" },
+  { key: "deleteMultiple", value: "Deleção Múltipla" },
+  { key: "edit", value: "Edição" },
+  { key: "archive", value: "Arquivamento" },
+  { key: "unarchive", value: "Desarquivamento" },
+  { key: "interaction", value: "Interação" },
+  { key: "challenge", value: "Contestação" },
+  { key: "resolve", value: "Resolução" },
+  { key: "requestBuy", value: "Resquisição de Compra" },
+  { key: "requestApproval", value: "Resquisição de Aprovação" },
+];
+
 const translatedMethods = [
   { key: "add", value: "Adicionad" },
   { key: "delete", value: "Deletad" },
@@ -29,9 +43,16 @@ const translateModel = (model) => {
   return translated ? translated.value : model;
 };
 
+const translateLogType = (logType) => {
+  const translated = translatedLogTypes.find((item) => item.key === logType);
+  return translated ? translated.value : logType;
+};
+
 module.exports = {
   translatedMethods,
   translateMethod,
   translatedModels,
   translateModel,
+  translatedLogTypes,
+  translateLogType,
 };
