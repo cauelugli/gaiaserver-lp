@@ -52,9 +52,10 @@ const DeleteMultipleFormModel = (props) => {
       props.setRefreshData(!props.refreshData);
       api.post("/log", {
         source: props.userId,
-        target: res.data,
+        target: props.selectedItems,
         label: props.label,
         type: "deleteMultiple",
+        targetModel: props.model,
       });
     } catch (err) {
       toast.error("Houve um erro na deleção...", {

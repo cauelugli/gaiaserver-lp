@@ -10,6 +10,7 @@ import {
   InputLabel,
   Grid,
   Avatar,
+  Button,
 } from "@mui/material";
 
 import { isId } from "../../../controllers/functions/overallFunctions";
@@ -30,17 +31,26 @@ function LogTable(props) {
   ];
 
   const typeColors = [
-    { key: "Adição", value: "#66ff66" }, // green
-    { key: "Deleção", value: "#ff6666" }, // red
-    { key: "Deleção Múltipla", value: "#ff6666" }, // red
-    { key: "Edição", value: "#66ffff" }, // blue
-    { key: "Arquivamento", value: "#d9d9d9" }, // lightgrey
-    { key: "Desarquivamento", value: "#66ff66" }, // green
+    { key: "Adição", value: "#bbffbb" }, // green
+    { key: "Deleção", value: "#ffbbbb" }, // red
+    { key: "Deleção Múltipla", value: "#ffbbbb" }, // red
+    { key: "Edição", value: "#bbffff" }, // blue
+    { key: "Arquivamento", value: "#dbdbdb" }, // lightgrey
+    { key: "Desarquivamento", value: "#bbffbb" }, // green
     { key: "Interação", value: "#ffffff" }, // white
     { key: "Contestação", value: "#ffffff" }, // white
-    { key: "Resolução", value: "#66ff66" }, // green
+    { key: "Resolução", value: "#bbffbb" }, // green
     { key: "Resquisição de Compra", value: "#ffffff" }, // white
     { key: "Resquisição de Aprovação", value: "#ffffff" }, // white
+  ];
+
+  const translatedKeys = [
+    { key: "customer", value: "Cliente" },
+    { key: "worker", value: "Designado" },
+    { key: "service", value: "Serviço" },
+    { key: "scheduledTo", value: "Data Agendada" },
+    { key: "description", value: "Descrição" },
+    { key: "createdBy", value: "Criado por" },
   ];
 
   const translateLogType = (logType) => {
@@ -53,12 +63,20 @@ function LogTable(props) {
     return translated ? translated.value : "#f5f5f5";
   };
 
+  const translateKeys = (key) => {
+    if (key === "number") {
+      return "#";
+    }
+    const translated = translatedKeys.find((item) => item.key === String(key));
+    return translated ? translated.value : "";
+  };
+
   return (
     <>
       <TableRow sx={{ m: 0 }}>
         <TableCell align="left" sx={{ mr: 1 }}>
           <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
-            Data
+            Data &uarr;
           </Typography>
         </TableCell>
         <TableCell align="left" sx={{ mr: 1 }}>
@@ -121,30 +139,90 @@ function LogTable(props) {
           </TableCell>
 
           <TableCell align="left" sx={{ mr: 1 }}>
-            <Typography sx={{ fontSize: 12 }}>{row.label}</Typography>
+            <Typography sx={{ fontSize: 12 }}>
+              {row.targetModel || row.label}
+            </Typography>
           </TableCell>
           <TableCell align="left">
-            {/* <Grid container direction="row">
-              {Object.entries(row.target)
-                .filter(
-                  ([key]) =>
-                    ![
-                      "_id",
-                      "__v",
-                      "password",
-                      "attachments",
-                      "interactions",
-                    ].includes(key)
-                )
-                .map(([key, value], index) => (
-                  <Grid item key={index} sx={{ mr: 0.5 }}>
-                    <InputLabel sx={{ fontSize: 12 }}>{key}</InputLabel>
+            <Grid container direction="row">
+              {row.target ? (
+                Array.isArray(row.target) && row.type === "Deleção Múltipla" ? (
+                  row.target.map((item, index) => (
+                    <Grid item key={index} sx={{ mr: 0.5, width: 200 }}>
+                      <InputLabel sx={{ fontSize: 12 }}>
+                        Item {index + 1}:
+                      </InputLabel>
+                      <Typography sx={{ fontSize: 12 }}>{item.name}</Typography>
+                    </Grid>
+                  ))
+                ) : Array.isArray(row.target) ? (
+                  row.target.map((change, index) => (
+                    <Grid item key={index} sx={{ mr: 0.5, width: 200 }}>
+                      <InputLabel sx={{ fontSize: 12 }}>
+                        {translateKeys(change.field)}
+                      </InputLabel>
+                      <Typography sx={{ fontSize: 12 }}>
+                        <b>Antes:</b>{" "}
+                        {isId(change.oldValue)
+                          ? props.idIndexList.find(
+                              (item) => item.id === change.oldValue
+                            )?.name || change.oldValue
+                          : change.oldValue}
+                      </Typography>
+                      <Typography sx={{ fontSize: 12 }}>
+                        <b>Depois:</b>{" "}
+                        {isId(change.newValue)
+                          ? props.idIndexList.find(
+                              (item) => item.id === change.newValue
+                            )?.name || change.newValue
+                          : change.newValue}
+                      </Typography>
+                    </Grid>
+                  ))
+                ) : typeof row.target === "string" ? (
+                  <Grid item sx={{ mr: 0.5, width: 200 }}>
+                    <InputLabel sx={{ fontSize: 12 }}>Nome</InputLabel>
                     <Typography sx={{ fontSize: 12 }}>
-                      {value ? (isId(value) ? value.name : value) : "-"}
+                      {props.idIndexList.find((item) => item.id === row.target)
+                        ?.name || row.target}
                     </Typography>
                   </Grid>
-                ))}
-            </Grid> */}
+                ) : typeof row.target === "number" ? (
+                  <Grid item sx={{ mr: 0.5, width: 200 }}>
+                    <InputLabel sx={{ fontSize: 12 }}>#</InputLabel>
+                    <Typography sx={{ fontSize: 12 }}>{row.target}</Typography>
+                  </Grid>
+                ) : (
+                  Object.entries(row.target)
+                    .filter(([key]) => !["_id", "__v"].includes(key))
+                    .map(([key, value], index) => (
+                      <Grid
+                        item
+                        key={index}
+                        sx={{
+                          mr: 0.5,
+                          width: index === 0 && key === "number" ? 50 : 200,
+                        }}
+                      >
+                        <InputLabel sx={{ fontSize: 12 }}>
+                          {translateKeys(key)}
+                        </InputLabel>
+                        <Typography sx={{ fontSize: 12 }}>
+                          {isId(value)
+                            ? props.idIndexList.find(
+                                (item) => item.id === value
+                              )?.name || ""
+                            : value}
+                        </Typography>
+                      </Grid>
+                    ))
+                )
+              ) : (
+                <Typography sx={{ fontSize: 12, fontStyle: "italic" }}>
+                  Nenhum dado disponível
+                </Typography>
+              )}
+            </Grid>
           </TableCell>
         </TableRow>
       ))}

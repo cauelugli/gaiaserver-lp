@@ -261,7 +261,8 @@ export default function EditFormModel(props) {
         selectedMembers: selectedMemberIds,
         previousMembers: props.target["members"],
         services: selectedServices,
-        createdBy: props.userName || "Admin",
+        // add this shit everywhere in models
+        lastEditedBy: props.userName || "Admin",
         isManager: modalOptions.label === "Colaborador" && props.tabIndex === 1,
         price:
           modalOptions.label === "Venda"

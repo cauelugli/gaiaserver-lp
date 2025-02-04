@@ -18,7 +18,6 @@ router.put("/", async (req, res) => {
     return res.status(400).json({ error: "Modelo inválido" });
   }
 
-  // same name already registered verification
   if (req.body.model === "Customer") {
     const existingNameUser = await Model.findOne({ name });
     if (existingNameUser) {

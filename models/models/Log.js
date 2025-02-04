@@ -14,6 +14,9 @@ const logSchema = new mongoose.Schema({
   target: {
     type: Object,
   },
+  targetModel: {
+    type: String,
+  },
   type: {
     type: String,
   },

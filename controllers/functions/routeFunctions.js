@@ -25,10 +25,11 @@ function defineModel(model) {
   return models[model] || null;
 }
 
-const parseReqFields = function (fields, reqBody) {
-  return {
+const parseReqFields = function (fields, reqBody, filteredCounter) {
+  const result = {
     ...fields,
     manager: fields.manager?._id || reqBody.manager?._id || "",
+    number: filteredCounter,
     members: (
       fields.members ||
       reqBody.members ||
@@ -44,7 +45,6 @@ const parseReqFields = function (fields, reqBody) {
         ? fields.type
         : fields.type?.name?.toString() || "",
     isManager: fields.isManager || reqBody.isManager || false,
-    createdBy: fields.createdBy || reqBody.createdBy || "",
     products: fields.selectedProducts || reqBody.selectedProducts || [],
     price:
       fields.label === "Plano de Serviços"
@@ -58,6 +58,12 @@ const parseReqFields = function (fields, reqBody) {
         : parseFloat(fields.price) || parseFloat(reqBody.price) || 0,
     services: fields.services || reqBody.services || [],
   };
+
+  if (reqBody.createdBy !== undefined) {
+    result.createdBy = reqBody.createdBy;
+  }
+
+  return result;
 };
 
 module.exports = {

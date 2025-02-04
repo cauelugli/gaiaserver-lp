@@ -21,7 +21,10 @@ const Log = ({ api, topBar, mainColor }) => {
           params: { model: "Log" },
         });
 
-        setLogs(resLogs.data);
+        const sortedLogs = resLogs.data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setLogs(sortedLogs);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

@@ -60,7 +60,7 @@ const ArchiveItemForm = ({
       setRefreshData(!refreshData);
       api.post("/log", {
         source: userId,
-        target: res.data,
+        target: selectedItem,
         label: label,
         type: selectedItem.status === "Arquivado" ? "unarchive" : "archive",
       });

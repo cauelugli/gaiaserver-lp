@@ -59,9 +59,10 @@ const DeleteFormModel = ({
       setRefreshData(!refreshData);
       api.post("/log", {
         source: userId,
-        target: res.data,
+        target: selectedItem,
         label: label,
         type: "delete",
+        targetModel: model,
       });
     } catch (err) {
       toast.error("Houve um erro na deleção...", {
