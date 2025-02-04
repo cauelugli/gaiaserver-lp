@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
 const bcrypt = require("bcrypt");
-const User = require("../../models/models/User");
-const Notifications = require("../../models/models/Notifications");
 const Config = require("../../models/models/Config");
+const Counters = require("../../models/models/Counters");
+const Notifications = require("../../models/models/Notifications");
 
 const mainQueue = require("../../queues/mainQueue");
 
@@ -36,6 +35,23 @@ router.post("/", async (req, res) => {
 
   const notifications = await Notifications.findOne({});
   const config = await Config.findOne({});
+  const counters = await Counters.findOne();
+  let filteredCounter;
+
+  switch (req.body.model) {
+    case "Job":
+      filteredCounter = counters.job + 1;
+      break;
+    case "Sale":
+      filteredCounter = counters.sale + 1;
+      break;
+    case "StockEntry":
+      filteredCounter = counters.stockEntry + 1;
+      break;
+    default:
+      filteredCounter = 0;
+      break;
+  }
 
   // ACTIONS THAT NEED TO BE DONE _BEFORE_ ITEM IS CREATED
   switch (req.body.model) {
@@ -111,8 +127,12 @@ router.post("/", async (req, res) => {
       break;
   }
 
-  // parsing needs checking
-  const processedFields = parseReqFields(req.body.fields, req.body);
+  // parsing fields
+  const processedFields = parseReqFields(
+    req.body.fields,
+    req.body,
+    filteredCounter
+  );
 
   const newItem = new Model(processedFields);
 
