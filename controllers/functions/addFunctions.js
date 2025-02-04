@@ -183,7 +183,6 @@ async function addToAssigneeAgenda(
 ) {
   try {
     const agenda = await Agenda.findOne();
-    console.log("scheduledTo", scheduledTo);
     const [day, month, year] = scheduledTo ? scheduledTo.split("/") : "";
     const monthYearKey = `${month}-${year}`;
 
