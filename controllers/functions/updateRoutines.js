@@ -125,8 +125,67 @@ const updateAgendaEvent = async (
   }
 };
 
+const resolveAgendaEvent = async (
+  jobId,
+  assignee,
+  scheduledTo,
+  scheduleTime
+) => {
+  try {
+    const agenda = await Agenda.findOne();
+    const [day, month, year] = scheduledTo ? scheduledTo.split("/") : [];
+    const monthYearKey = `${month}-${year}`;
+
+    // Encontra o índice do designado na lista de usuários
+    const userIndex = await agenda.users.findIndex((userMap) =>
+      userMap.has(assignee)
+    );
+
+    if (userIndex === -1) {
+      throw new Error("Designado não encontrado");
+    }
+
+    const userMap = agenda.users[userIndex];
+    const userAgenda = userMap.get(assignee);
+
+    if (!userAgenda) {
+      console.log("Erro: usuário não encontrado na agenda");
+      return;
+    }
+
+    if (!userAgenda[monthYearKey]) {
+      console.log("Erro: mês não encontrado na agenda");
+      return;
+    }
+
+    const eventIndex = userAgenda[monthYearKey].findIndex(
+      (event) =>
+        event.jobId === jobId &&
+        event.day === day &&
+        event.scheduleTime === scheduleTime
+    );
+
+    if (eventIndex === -1) {
+      console.log("Erro: evento não encontrado na agenda");
+      return;
+    }
+
+    const eventToUpdate = userAgenda[monthYearKey][eventIndex];
+    eventToUpdate.status = "Resolvido";
+
+    await Agenda.findOneAndUpdate(
+      {},
+      { $set: { users: agenda.users } },
+      { new: true }
+    );
+  } catch (err) {
+    console.error("Erro ao atualizar evento da agenda do designado", err);
+  }
+};
+
 module.exports = {
   removeMembership,
   removeMembersFromGroup,
   updateAgendaEvent,
+  resolveAgendaEvent,
 };

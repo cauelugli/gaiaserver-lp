@@ -60,6 +60,7 @@ const {
 
 const {
   updateAgendaEvent,
+  resolveAgendaEvent,
 } = require("../controllers/functions/updateRoutines");
 
 const deleteRoutinesFunctions = {
@@ -188,6 +189,9 @@ mainQueue.process(async (job) => {
         break;
       case "updateAgendaEvent":
         await handleUpdateAgendaEvent(data);
+        break;
+      case "resolveAgendaEvent":
+        await handleResolveAgendaEvent(data);
         break;
 
       default:
@@ -435,6 +439,11 @@ const handleUpdateAgendaEvent = async (data) => {
     scheduledTo,
     scheduleTime
   );
+};
+
+const handleResolveAgendaEvent = async (data) => {
+  const { jobId, assignee, scheduledTo, scheduleTime } = data;
+  await resolveAgendaEvent(jobId, assignee, scheduledTo, scheduleTime);
 };
 
 // MONITORING (DEBUG)

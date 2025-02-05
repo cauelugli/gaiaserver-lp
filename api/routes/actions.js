@@ -71,6 +71,8 @@ router.put("/resolve", async (req, res) => {
   const { model, id, resolution, resolvedBy } = req.body;
   const Model = defineModel(model);
 
+  const resolvedItem = await Model.findById(id)
+
   if (!Model) {
     console.log("\nModel not found\n");
     return res.status(400).json({ error: "Modelo inválido" });
@@ -84,6 +86,16 @@ router.put("/resolve", async (req, res) => {
         model,
         resolution,
         resolvedBy,
+      },
+    });
+
+    mainQueue.add({
+      type: "resolveAgendaEvent",
+      data: {
+        jobId: id,
+        assignee: resolvedItem.worker,
+        scheduledTo: resolvedItem.scheduledTo,
+        scheduleTime: resolvedItem.scheduleTime,
       },
     });
 
