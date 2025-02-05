@@ -65,14 +65,15 @@ router.put("/", async (req, res) => {
 
       case "Job":
         if (updatedItem.worker !== req.body.prevData.worker) {
-          mainQueue.add({
-            type: "swapWorker",
-            data: {
-              jobId: updatedItem._id.toString(),
-              newAssignee: updatedItem.worker,
-              oldAssignee: req.body.prevData.worker,
-            },
-          });
+          // notify instead
+          // mainQueue.add({
+          //   type: "swapWorker",
+          //   data: {
+          //     jobId: updatedItem._id.toString(),
+          //     newAssignee: updatedItem.worker,
+          //     oldAssignee: req.body.prevData.worker,
+          //   },
+          // });
         }
         break;
 
