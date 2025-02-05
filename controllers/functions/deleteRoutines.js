@@ -171,9 +171,16 @@ async function deleteRoutinesJob(
     console.log("\nModel not found\n");
     return res.status(400).json({ error: "Modelo inválido" });
   }
-
   try {
-    // const itemsToDelete = isMultiple ? ids : [deletedItem];
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
+
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        await Model.findByIdAndDelete(id);
+      })
+    );
+
+    // notify that sourceId made this
   } catch (err) {
     console.error("Erro na rotina de deleção", err);
   }
@@ -488,7 +495,6 @@ async function deleteRoutinesUser(model, isMultiple, deletedItem, ids) {
     console.error("Erro na rotina de deleção do usuário", err);
   }
 }
-
 
 module.exports = {
   deleteRoutinesClient,
