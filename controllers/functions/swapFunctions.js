@@ -6,8 +6,6 @@ const Role = require("../../models/models/Role");
 const Sale = require("../../models/models/Sale");
 const Service = require("../../models/models/Service");
 const User = require("../../models/models/User");
-const { addToAssigneeAgenda } = require("./addFunctions");
-const { removeFromAssigneeAgenda } = require("./deleteRoutines");
 
 const swapDepartments = async (
   userId,
@@ -169,42 +167,9 @@ const swapSeller = async (saleId, newAssigneeId, oldAssigneeId) => {
   }
 };
 
-const swapWorker = async (jobId, newWorkerId, oldWorkerId) => {
-  try {
-    const job = await Job.findById(jobId);
-
-    if (job) {
-      await addToAssigneeAgenda(
-        job.scheduledTo,
-        job.scheduleTime,
-        newWorkerId,
-        jobId,
-        job.service,
-        job.customer
-      );
-
-      //notify new
-
-      await removeFromAssigneeAgenda(
-        job.scheduledTo,
-        job.scheduleTime,
-        oldWorkerId,
-        jobId
-      );
-
-      //notify old
-    } else {
-      console.log("job NOT FOUND BOR....");
-    }
-  } catch (error) {
-    throw error;
-  }
-};
-
 module.exports = {
   swapDepartments,
   swapPositions,
   swapRoles,
   swapSeller,
-  swapWorker,
 };

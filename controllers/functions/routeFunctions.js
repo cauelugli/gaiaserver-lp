@@ -1,5 +1,4 @@
 const models = {
-  Agenda: require("../../models/models/Agenda"),
   Client: require("../../models/models/Client"),
   Customer: require("../../models/models/Customer"),
   Department: require("../../models/models/Department"),

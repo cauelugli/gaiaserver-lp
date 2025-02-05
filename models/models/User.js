@@ -1,10 +1,6 @@
 const { mongoose } = require("../db");
 
 userSchema = new mongoose.Schema({
-  agenda: {
-    type: Array,
-    default: [],
-  },
   address: {
     type: String,
   },

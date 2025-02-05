@@ -331,7 +331,6 @@ export default function App() {
                               configDashboard={configData.dashboard}
                               configCustomization={configData.customization}
                               topBar={userPreferences.barPosition}
-                              userAgenda={userAgenda}
                               currentWindowSize={currentWindowSize}
                             />
                           ) : (
@@ -443,7 +442,6 @@ export default function App() {
                                 userUsername={userData.username}
                                 isAdmin={userData.username === "admin"}
                                 userName={userData.name}
-                                userAgenda={userAgenda}
                                 setUserPreferences={setUserPreferences}
                                 configData={configData}
                                 topBar={userPreferences.barPosition}

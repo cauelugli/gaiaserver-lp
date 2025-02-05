@@ -72,7 +72,6 @@ const RowButton = (props) => {
           options={selectedModal}
           userName={props.userName}
           userId={props.userId}
-          configAgenda={props.configAgenda}
           openDialog={openDialog}
           setOpenDialog={setOpenDialog}
           refreshData={props.refreshData}

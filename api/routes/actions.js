@@ -89,16 +89,6 @@ router.put("/resolve", async (req, res) => {
       },
     });
 
-    mainQueue.add({
-      type: "resolveAgendaEvent",
-      data: {
-        jobId: id,
-        assignee: resolvedItem.worker,
-        scheduledTo: resolvedItem.scheduledTo,
-        scheduleTime: resolvedItem.scheduleTime,
-      },
-    });
-
     res.status(200).json("Item resolvido com sucesso");
   } catch (err) {
     console.log(err);

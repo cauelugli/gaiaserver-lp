@@ -8,7 +8,6 @@ const getConfigRoute = require("./routes/getConfig");
 const idIndexListRoute = require("./routes/idIndexList");
 const actionsRoute = require("./routes/actions");
 const adminRoute = require("./routes/admin");
-const agendaRoute = require("./routes/agenda");
 const authRoute = require("./routes/auth");
 const configRoute = require("./routes/config");
 const uploadsRoute = require("./routes/uploads");
@@ -32,7 +31,6 @@ const routes = [
   { path: "/api/config", route: configRoute },
   { path: "/api/products", route: productsRoute },
   { path: "/api/uploads", route: uploadsRoute },
-  { path: "/api/agenda", route: agendaRoute },
   { path: "/api/userPreferences", route: userPreferencesRoute },
   { path: "/api/log", route: logsRoute },
 ];

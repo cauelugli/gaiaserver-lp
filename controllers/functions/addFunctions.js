@@ -1,4 +1,3 @@
-const Agenda = require("../../models/models/Agenda");
 const Counters = require("../../models/models/Counters");
 const Department = require("../../models/models/Department");
 const Job = require("../../models/models/Job");
@@ -73,24 +72,6 @@ async function addUserRoutines(model, source) {
 
           return months;
         }
-
-        await Agenda.findOneAndUpdate(
-          {},
-          {
-            $push: {
-              users: {
-                [source._id.toString()]: generateMonths().reduce(
-                  (acc, month) => {
-                    acc[month] = [];
-                    return acc;
-                  },
-                  {}
-                ),
-              },
-            },
-          },
-          { upsert: true }
-        );
 
         const newUserPreferences = new UserPreferences({ userId: source._id });
         await newUserPreferences.save();
@@ -173,60 +154,6 @@ async function addServiceToDepartment(serviceId, departmentId) {
   });
 }
 
-async function addToAssigneeAgenda(
-  scheduledTo,
-  scheduleTime,
-  assignee,
-  jobId,
-  service,
-  customer
-) {
-  try {
-    const agenda = await Agenda.findOne();
-    const [day, month, year] = scheduledTo ? scheduledTo.split("/") : "";
-    const monthYearKey = `${month}-${year}`;
-
-    const userIndex = agenda.users.findIndex((userMap) =>
-      userMap.has(assignee)
-    );
-
-    if (userIndex === -1) {
-      throw new Error("Designado não encontrado");
-    }
-
-    const userMap = agenda.users[userIndex];
-    const userAgenda = userMap.get(assignee);
-
-    if (!userAgenda) {
-      console.log("Erro: usuário não encontrado na agenda");
-      return;
-    }
-
-    if (!userAgenda[monthYearKey]) {
-      console.log("Erro: mês nao encontrado na agenda");
-      return;
-    }
-
-    userAgenda[monthYearKey].push({
-      jobId,
-      service,
-      day,
-      scheduleTime,
-      status: "Aberto",
-      customer,
-    });
-
-    await Agenda.findOneAndUpdate(
-      {},
-      { $set: { users: agenda.users } },
-      { new: true }
-    );
-
-  } catch (err) {
-    console.error("Erro ao adicionar na agenda do designado", err);
-  }
-}
-
 const insertMembership = async (userId, modelId) => {
   const Model = defineModel("Role");
   try {
@@ -282,7 +209,6 @@ module.exports = {
   addManagerToDepartment,
   addOperator,
   addServiceToDepartment,
-  addToAssigneeAgenda,
   addUserRoutines,
   insertMembership,
   insertMembersToGroup,

@@ -235,20 +235,6 @@ router.post("/", async (req, res) => {
         break;
     }
 
-    if (fields.scheduledToAssignee === true) {
-      mainQueue.add({
-        type: "addToAssigneeAgenda",
-        data: {
-          scheduledTo: savedItem.scheduledTo,
-          scheduleTime: savedItem.scheduleTime,
-          worker: savedItem.worker,
-          itemId: savedItem._id.toString(),
-          service: fields.service,
-          customer: fields.customer,
-        },
-      });
-    }
-
     mainQueue.add({
       type: "notificationToList",
       data: {

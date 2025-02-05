@@ -74,17 +74,6 @@ router.put("/", async (req, res) => {
             },
           });
         }
-        mainQueue.add({
-          type: "updateAgendaEvent",
-          data: {
-            jobId: updatedItem._id.toString(),
-            assignee: updatedItem.worker,
-            customer: updatedItem.customer,
-            service: updatedItem.service,
-            scheduledTo: updatedItem.scheduledTo,
-            scheduleTime: updatedItem.scheduleTime,
-          },
-        });
         break;
 
       default:

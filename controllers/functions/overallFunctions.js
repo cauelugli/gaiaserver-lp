@@ -209,21 +209,6 @@ export function createScheduleSlots(minTime, maxTime, serviceLengthLabel) {
   return slots;
 }
 
-export function parseAgenda(userAgenda) {
-  if (!userAgenda || typeof userAgenda !== "object") {
-    return [];
-  }
-
-  return Object.entries(userAgenda).map(([key, value]) => {
-    const [month, year] = key.split("-");
-
-    return {
-      monthYear: `${month}/${year}`,
-      items: value,
-    };
-  });
-}
-
 export function loadPage() {
   return new Promise((resolve) => {
     setTimeout(() => {

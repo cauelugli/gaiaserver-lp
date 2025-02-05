@@ -13,7 +13,6 @@ const {
   addOperator,
   addManagerToDepartment,
   addServiceToDepartment,
-  addToAssigneeAgenda,
   addUserRoutines,
   insertMembership,
   insertMembersToGroup,
@@ -54,14 +53,8 @@ const {
 const {
   swapDepartments,
   swapPositions,
-  swapSeller,
-  swapWorker,
 } = require("../controllers/functions/swapFunctions");
 
-const {
-  updateAgendaEvent,
-  resolveAgendaEvent,
-} = require("../controllers/functions/updateRoutines");
 
 const deleteRoutinesFunctions = {
   deleteRoutinesClient,
@@ -105,9 +98,6 @@ mainQueue.process(async (job) => {
         break;
       case "addUserRoutines":
         await handleAddUserRoutines(data);
-        break;
-      case "addToAssigneeAgenda":
-        await handleAddToAssigneeAgenda(data);
         break;
       case "addToStock":
         await handleAddToStock(data);
@@ -184,15 +174,6 @@ mainQueue.process(async (job) => {
       case "swapPositions":
         await handleSwapPositions(data);
         break;
-      case "swapWorker":
-        await handleSwapWorker(data);
-        break;
-      case "updateAgendaEvent":
-        await handleUpdateAgendaEvent(data);
-        break;
-      case "resolveAgendaEvent":
-        await handleResolveAgendaEvent(data);
-        break;
 
       default:
         throw new Error(`Tipo de notificação não suportado: ${type}`);
@@ -256,17 +237,6 @@ const handleAddUserRoutines = async (data) => {
 
 const handleOperator = async (data) => {
   await addOperator(data);
-};
-
-const handleAddToAssigneeAgenda = async (data) => {
-  await addToAssigneeAgenda(
-    data.scheduledTo,
-    data.scheduleTime,
-    data.worker,
-    data.itemId,
-    data.service,
-    data.customer
-  );
 };
 
 const handleAddToStock = async (data) => {
@@ -428,23 +398,6 @@ const handleSwapPositions = async (data) => {
   await swapPositions(userId, newPosition, oldPosition);
 };
 
-const handleUpdateAgendaEvent = async (data) => {
-  const { jobId, assignee, customer, service, scheduledTo, scheduleTime } =
-    data;
-  await updateAgendaEvent(
-    jobId,
-    assignee,
-    customer,
-    service,
-    scheduledTo,
-    scheduleTime
-  );
-};
-
-const handleResolveAgendaEvent = async (data) => {
-  const { jobId, assignee, scheduledTo, scheduleTime } = data;
-  await resolveAgendaEvent(jobId, assignee, scheduledTo, scheduleTime);
-};
 
 // MONITORING (DEBUG)
 // mainQueue.on("completed", (job) => {
