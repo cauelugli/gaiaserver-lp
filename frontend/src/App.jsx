@@ -132,26 +132,15 @@ export default function App() {
   useEffect(() => {
     const fetchAndProcessData = async () => {
       try {
-        const [config, preferences, agenda] = await Promise.all([
+        const [config, preferences, userAgenda] = await Promise.all([
           api.get("/config"),
           api.get(`/userPreferences/${userData._id}`),
-          api.get("/get", {
-            params: { model: "Agenda", userId: userData._id },
-          }),
+          api.get(`/get/userAgenda/${userData._id}`),
         ]);
 
         // Process user agenda (only if not admin)
         if (userData.username !== "admin") {
-          const userAgenda = Object.entries(agenda.data[0].user)
-            .filter(
-              // eslint-disable-next-line no-unused-vars
-              ([key, value]) => Array.isArray(value) && value.length > 0
-            )
-            .reduce((acc, [key, value]) => {
-              acc[key] = value;
-              return acc;
-            }, {});
-          setUserAgenda(userAgenda);
+          setUserAgenda(userAgenda.data);
         }
         setConfigData(config.data[0]);
         setUserPreferences(preferences.data);
@@ -278,6 +267,7 @@ export default function App() {
                         element={
                           isAuthenticated(login, userData) ? (
                             <Home
+                              api={api}
                               userId={userData._id}
                               userName={userData.name}
                               userUsername={userData.username}

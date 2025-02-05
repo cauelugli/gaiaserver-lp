@@ -17,7 +17,7 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
   React.useEffect(() => {
     const fetchData = async () => {
       let notifications;
-      let missingCoreData;
+      let missingCoreData = [];
       try {
         user.username === "admin"
           ? (notifications = await api.get("/admin/notifications/"))
@@ -26,10 +26,12 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
         user.username === "admin"
           ? (missingCoreData = await api.get("/get/coreData"))
           : "";
-        setMissingCoreData(missingCoreData.data);
+        setMissingCoreData(missingCoreData.data || "");
       } catch (error) {
-        if (error.response.status !== 404) {
+        if (error.response?.status !== 404) {
           console.error("Error fetching data:", error);
+        } else {
+          console.log(error);
         }
       }
     };

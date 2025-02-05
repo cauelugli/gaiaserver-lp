@@ -2,24 +2,53 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import { Grid, Typography } from "@mui/material";
-import { parseAgenda } from "../../../../controllers/functions/overallFunctions";
 import AgendaEventChip from "./AgendaEventChip";
 import AgendaEventBar from "./AgendaEventBar";
 
 const DayEvents = (props) => {
   const [filteredItems, setFilteredItems] = React.useState([]);
   const [open, setOpen] = React.useState(false);
+  const [itemsWithDetails, setItemsWithDetails] = React.useState([]);
 
   React.useEffect(() => {
     const daySelected = props.selectedDay.slice(0, 2);
 
-    const parsedAgenda = parseAgenda(props.userAgenda);
-    const itemsForSelectedDay = parsedAgenda.flatMap((entry) =>
-      entry.items.filter((item) => String(item.day) === daySelected)
-    );
+    const filteredJobs = props.userAgenda.jobs
+      ? props.userAgenda.jobs.filter((job) => job.day === daySelected)
+      : [];
+    const filteredSales = props.userAgenda.sales
+      ? props.userAgenda.sales.filter((sale) => sale.day === daySelected)
+      : [];
 
-    setFilteredItems(itemsForSelectedDay);
-  }, [props.selectedDay, props.userAgenda]);
+    const combinedItems = [...filteredJobs, ...filteredSales];
+    setFilteredItems(combinedItems);
+
+    const fetchItemDetails = async (item) => {
+      try {
+        const response = await props.api.get("/get", {
+          params: { model: item.type === "job" ? "Job" : "Sale", id: item.id },
+        });
+        return response.data.find((detail) => detail._id === item.id);
+      } catch (err) {
+        console.error("Erro ao buscar detalhes do item:", err);
+        return null;
+      }
+    };
+
+    const fetchAllDetails = async () => {
+      const itemsWithDetails = await Promise.all(
+        combinedItems.map(async (item) => {
+          const details = await fetchItemDetails(item);
+          return { ...item, details };
+        })
+      );
+      setItemsWithDetails(itemsWithDetails);
+    };
+
+    fetchAllDetails();
+  }, [props.selectedDay, props.userAgenda, props.api]);
+
+  console.log("itemsWithDetails", itemsWithDetails);
 
   return (
     <Grid
@@ -40,8 +69,13 @@ const DayEvents = (props) => {
         isEmptyDay={filteredItems.length > 0}
       />
       {open && filteredItems.length > 0 ? (
-        filteredItems.map((item, index) => (
-          <AgendaEventChip key={index} item={item} />
+        itemsWithDetails.map((item, index) => (
+          <AgendaEventChip
+            key={index}
+            item={item}
+            api={props.api}
+            itemIndex={index}
+          />
         ))
       ) : (
         <Typography

@@ -38,6 +38,7 @@ const customPtBrLocale = {
 dayjs.locale(customPtBrLocale);
 
 const HomeSideBar = ({
+  api,
   userId,
   handleShortcutClick,
   allowedLinks,
@@ -105,6 +106,7 @@ const HomeSideBar = ({
         selectedDay={dayjs(selectedDay).format("DD/MM/YYYY")}
         userAgenda={userAgenda}
         mainColor={mainColor}
+        api={api}
       />
       <UserShortcuts
         userId={userId}

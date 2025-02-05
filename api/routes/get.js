@@ -3,11 +3,10 @@ const router = express.Router();
 const { defineModel } = require("../../controllers/functions/routeFunctions");
 const { translateModel } = require("../../controllers/notificationOptions");
 
-// console.log("\n don't try this at home \n");
+// don't try this at home!
 // if (model === "Unexisting_Model_in_Database") {
 //   const newItem = new Model();
 //   const savedItem = await newItem.save();
-//   console.log("savedItem", savedItem);
 // }
 
 // GET ALL ITEMS BASED ON MODEL PARAMETER
@@ -70,6 +69,37 @@ router.get("/coreData", async (req, res) => {
   } catch (err) {
     console.log("\nError fetching core data:", err, "\n");
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// GET USER AGENDA
+router.get("/userAgenda/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  const Job = defineModel("Job");
+  const Sale = defineModel("Sale");
+
+  try {
+    const jobs = await Job.find({ worker: userId });
+    const sales = await Sale.find({ seller: userId });
+
+    const userAgenda = {
+      jobs: jobs.map((job) => ({
+        id: job._id.toString(),
+        day: job.scheduledTo.slice(0, 2) || "",
+        type: "job",
+      })),
+      sales: sales.map((sale) => ({
+        id: sale._id.toString(),
+        day: sale.deliveryScheduledTo.slice(0, 2) || "",
+        type: "sale",
+      })),
+    };
+
+    res.status(200).json(userAgenda);
+  } catch (err) {
+    console.log("\nerr", err, "\n");
+    res.status(500).json(err);
   }
 });
 

@@ -7,6 +7,7 @@ import HomeBlock from "../components/large/HomeBlock";
 import HomeSideBar from "../components/large/HomeSideBar";
 
 const Home = ({
+  api,
   userId,
   userUsername,
   allowedLinks,
@@ -63,6 +64,7 @@ const Home = ({
             allowedLinks={allowedLinks}
             userAgenda={userAgenda}
             mainColor={mainColor}
+            api={api}
           />
         </Grid>
       )}
