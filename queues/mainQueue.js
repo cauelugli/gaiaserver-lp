@@ -383,11 +383,6 @@ const handleProductIsCreated = async (data, list) => {
   });
 };
 
-const handleSwapWorker = async (data) => {
-  const { jobId, newAssignee, oldAssignee } = data;
-  await swapWorker(jobId, newAssignee, oldAssignee);
-};
-
 const handleSwapDepartments = async (data) => {
   const { userId, model, newDepartment, oldDepartment } = data;
   await swapDepartments(userId, model, newDepartment, oldDepartment);

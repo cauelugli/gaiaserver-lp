@@ -140,36 +140,8 @@ const swapRoles = async (userId, newRoleId, oldRoleId) => {
   }
 };
 
-const swapSeller = async (saleId, newAssigneeId, oldAssigneeId) => {
-  try {
-    const user = await User.findById(userId);
-
-    if (user) {
-      const oldPosition = await Position.findById(oldPositionId);
-
-      if (oldPosition) {
-        oldPosition.members = oldPosition.members.filter(
-          (memberId) => memberId.toString() !== userId.toString()
-        );
-        await oldPosition.save();
-      }
-
-      const newPosition = await Position.findById(user);
-      if (newPosition) {
-        if (!newPosition.members.includes(newAssigneeId)) {
-          newPosition.members.push(newAssigneeId);
-        }
-        await newPosition.save();
-      }
-    }
-  } catch (error) {
-    throw error;
-  }
-};
-
 module.exports = {
   swapDepartments,
   swapPositions,
   swapRoles,
-  swapSeller,
 };
