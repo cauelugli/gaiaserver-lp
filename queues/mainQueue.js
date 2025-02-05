@@ -58,6 +58,10 @@ const {
   swapWorker,
 } = require("../controllers/functions/swapFunctions");
 
+const {
+  updateAgendaEvent,
+} = require("../controllers/functions/updateRoutines");
+
 const deleteRoutinesFunctions = {
   deleteRoutinesClient,
   deleteRoutinesCustomer,
@@ -181,6 +185,9 @@ mainQueue.process(async (job) => {
         break;
       case "swapWorker":
         await handleSwapWorker(data);
+        break;
+      case "updateAgendaEvent":
+        await handleUpdateAgendaEvent(data);
         break;
 
       default:
@@ -415,6 +422,19 @@ const handleSwapDepartments = async (data) => {
 const handleSwapPositions = async (data) => {
   const { userId, newPosition, oldPosition } = data;
   await swapPositions(userId, newPosition, oldPosition);
+};
+
+const handleUpdateAgendaEvent = async (data) => {
+  const { jobId, assignee, customer, service, scheduledTo, scheduleTime } =
+    data;
+  await updateAgendaEvent(
+    jobId,
+    assignee,
+    customer,
+    service,
+    scheduledTo,
+    scheduleTime
+  );
 };
 
 // MONITORING (DEBUG)

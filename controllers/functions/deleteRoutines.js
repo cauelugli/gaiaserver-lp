@@ -481,12 +481,7 @@ async function deleteRoutinesStockEntry(
   }
 }
 
-async function deleteRoutinesUser(
-  model,
-  isMultiple,
-  deletedItem,
-  ids
-) {
+async function deleteRoutinesUser(model, isMultiple, deletedItem, ids) {
   try {
     const Model = defineModel(model);
 
@@ -549,8 +544,8 @@ async function deleteRoutinesUser(
             if (indexToRemove !== -1) {
               agenda.users.splice(indexToRemove, 1);
               await agenda.save();
-            } 
-          } 
+            }
+          }
 
           await UserPreferences.deleteOne({
             userId: deletedUser._id.toString(),
@@ -609,18 +604,14 @@ async function removeFromAssigneeAgenda(
       return;
     }
 
-    // Remove o evento da agenda
     userAgenda[monthYearKey].splice(eventIndex, 1);
 
-    // Atualiza somente a agenda do usuário no banco
-    const updateKey = `users.${userIndex}.${assignee}.${monthYearKey}`;
-    await Agenda.updateOne(
+    await Agenda.findOneAndUpdate(
       {},
-      { $set: { [updateKey]: userAgenda[monthYearKey] } },
+      { $set: { users: agenda.users } },
       { new: true }
     );
 
-    console.log("Evento removido com sucesso!");
   } catch (err) {
     console.error("Erro ao remover evento da agenda do designado", err);
   }
