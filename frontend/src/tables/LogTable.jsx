@@ -51,6 +51,7 @@ function LogTable(props) {
     { key: "scheduledTo", value: "Data Agendada" },
     { key: "description", value: "Descrição" },
     { key: "createdBy", value: "Criado por" },
+    { key: "title", value: "Título" },
   ];
 
   const translateLogType = (logType) => {

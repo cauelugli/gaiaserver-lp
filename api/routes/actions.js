@@ -71,7 +71,7 @@ router.put("/resolve", async (req, res) => {
   const { model, id, resolution, resolvedBy } = req.body;
   const Model = defineModel(model);
 
-  const resolvedItem = await Model.findById(id)
+  const resolvedItem = await Model.findById(id);
 
   if (!Model) {
     console.log("\nModel not found\n");
@@ -145,7 +145,13 @@ router.put("/requestApproval", async (req, res) => {
       });
     }
 
-    res.status(200).json("Item resolvido com sucesso");
+    res
+      .status(200)
+      .json({
+        number: targetItem.number,
+        title: targetItem.title,
+        customer: targetItem.customer,
+      });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Erro ao resolver o item" });
