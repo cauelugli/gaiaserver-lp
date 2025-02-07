@@ -201,6 +201,7 @@ const TableCellOptions = ({
           modalOptions={modalOptions}
           required={field.required}
           multiple={field.multiple}
+          fromConfig={false}
         />
       )}
       {field.type === "productList" && (

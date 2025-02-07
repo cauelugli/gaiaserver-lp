@@ -78,8 +78,8 @@ export function isButtonDisabled(
   }
 }
 
-export function checkAvailability(dynamicData, option) {
-  switch (dynamicData) {
+export function checkAvailability(item, option) {
+  switch (item) {
     case "members":
     case "managers":
       if (option.department && typeof option.department === "string") {
@@ -108,6 +108,7 @@ export function checkAvailability(dynamicData, option) {
       break;
 
     case "manager":
+      console.log("option", option);
       if (option.department && typeof option.department === "string") {
         return true;
       }
