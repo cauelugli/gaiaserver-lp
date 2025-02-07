@@ -11,7 +11,7 @@ const { translateModel } = require("../../controllers/notificationOptions");
 
 // GET ALL ITEMS BASED ON MODEL PARAMETER
 router.get("/", async (req, res) => {
-  const { model, userId } = req.query;
+  const { model } = req.query;
   const Model = defineModel(model);
 
   if (!Model) {
@@ -22,6 +22,17 @@ router.get("/", async (req, res) => {
   try {
     let data;
     data = await Model.find();
+
+    switch (model) {
+      case "User":
+        data = data.map((user) => {
+          const { password, notifications, ...rest } = user.toObject();
+          return rest;
+        });
+        break;
+      default:
+        break;
+    }
 
     res.status(200).json(data);
   } catch (err) {
