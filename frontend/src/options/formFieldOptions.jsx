@@ -19,6 +19,7 @@ import ServicesTableCell from "../components/tableCells/ServicesTableCell";
 import StringTableCell from "../components/tableCells/StringTableCell";
 import UsersTableCell from "../components/tableCells/UsersTableCell ";
 import ServiceListTableCell from "../components/tableCells/ServiceListTableCell";
+import DepartmentTypeTableCell from "../components/tableCells/DepartmentTypeTableCell";
 
 // this is used in AddForm
 
@@ -101,6 +102,19 @@ export const renderField = (
           required={field.required}
           isFullWidth={field.type === "select"}
           multiple={field.type === "multipleSelect"}
+        />
+      );
+    case "departmentType":
+      return (
+        <DepartmentTypeTableCell
+          fields={fields}
+          field={field}
+          menuOptions={field.options}
+          handleChange={handleChange}
+          // modalOptions={modalOptions}
+          // required={field.required}
+          // isFullWidth={field.type === "select"}
+          // multiple={field.type === "multipleSelect"}
         />
       );
     case "date":

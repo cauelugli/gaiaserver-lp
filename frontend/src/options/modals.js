@@ -600,7 +600,7 @@ export const modals = {
         fieldSection: "mainInfo",
         name: "type",
         label: "Tipo de Departamento",
-        type: "select",
+        type: "departmentType",
         required: true,
         options: ["Serviços", "Vendas", "Interno"],
       },

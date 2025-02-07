@@ -2,11 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
-import {
-  Checkbox,
-  InputLabel,
-  TextField,
-} from "@mui/material";
+import { Checkbox, InputLabel, TextField } from "@mui/material";
 
 import ColorPicker from "../components/small/ColorPicker";
 import CurrencyTableCell from "../components/tableCells/CurrencyTableCell";
@@ -23,6 +19,7 @@ import AllCustomersTableCell from "../components/tableCells/AllCustomersTableCel
 import UsersTableCell from "../components/tableCells/UsersTableCell ";
 import ServiceListTableCell from "../components/tableCells/ServiceListTableCell";
 import ServicesTableCell from "../components/tableCells/ServicesTableCell";
+import DepartmentTypeTableCell from "../components/tableCells/DepartmentTypeTableCell";
 
 const TableCellOptions = ({
   field,
@@ -42,7 +39,7 @@ const TableCellOptions = ({
   setOkToDispatch,
   serviceLength,
   refreshData,
-  setRefreshData
+  setRefreshData,
 }) => {
   return (
     <>
@@ -118,6 +115,18 @@ const TableCellOptions = ({
           modalOptions={modalOptions}
           required={field.required}
           isFullWidth
+        />
+      )}
+
+      {field.type === "departmentType" && (
+        <DepartmentTypeTableCell
+          fields={fields}
+          field={field}
+          menuOptions={field.options}
+          handleChange={handleChange}
+          // modalOptions={modalOptions}
+          // required={field.required}
+          // isFullWidth
         />
       )}
       {field.type === "select" && (
