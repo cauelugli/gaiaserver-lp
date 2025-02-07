@@ -44,9 +44,6 @@ const clientSchema = new mongoose.Schema({
   phone: {
     type: String,
   },
-  recentRequests: {
-    type: Array,
-  },
   status: {
     type: String,
     default: "Aberto",

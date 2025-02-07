@@ -45,9 +45,6 @@ const customerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  recentRequests: {
-    type: Array,
-  },
   segment: {
     type: String,
   },
