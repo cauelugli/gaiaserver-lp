@@ -53,8 +53,8 @@ const {
 const {
   swapDepartments,
   swapPositions,
+  swapMembers,
 } = require("../controllers/functions/swapFunctions");
-
 
 const deleteRoutinesFunctions = {
   deleteRoutinesClient,
@@ -173,6 +173,9 @@ mainQueue.process(async (job) => {
         break;
       case "swapPositions":
         await handleSwapPositions(data);
+        break;
+      case "swapMembers":
+        await handleSwapMembers(data);
         break;
 
       default:
@@ -393,6 +396,10 @@ const handleSwapPositions = async (data) => {
   await swapPositions(userId, newPosition, oldPosition);
 };
 
+const handleSwapMembers = async (data) => {
+  const { departmentId, addUsers, removeUsers } = data;
+  await swapMembers(departmentId, addUsers, removeUsers);
+};
 
 // MONITORING (DEBUG)
 // mainQueue.on("completed", (job) => {

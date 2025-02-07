@@ -243,7 +243,7 @@ export default function EditFormModel(props) {
       const imagePath = uploadResponse.data.imagePath;
       const res = await api.put("/edit", {
         sourceId: props.userId,
-        prevData: props.target,
+        targetId: props.target._id.toString(),
         fields: {
           ...fields,
           members: fields.members?.map((member) => member._id || member.id),

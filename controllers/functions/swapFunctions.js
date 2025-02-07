@@ -1,4 +1,3 @@
-const { default: axios } = require("axios");
 const Department = require("../../models/models/Department");
 const Job = require("../../models/models/Job");
 const Position = require("../../models/models/Position");
@@ -140,8 +139,48 @@ const swapRoles = async (userId, newRoleId, oldRoleId) => {
   }
 };
 
+const swapMembers = async (departmentId, addUsers, removeUsers) => {
+  try {
+    const department = await Department.findById(departmentId);
+
+    if (addUsers && addUsers.length > 0) {
+      for (const userId of addUsers) {
+        if (!department.members.includes(userId)) {
+          department.members.push(userId);
+        }
+
+        const user = await User.findById(userId);
+        if (user) {
+          user.department = departmentId;
+          await user.save();
+        }
+      }
+    }
+
+    if (removeUsers && removeUsers.length > 0) {
+      for (const userId of removeUsers) {
+        department.members = department.members.filter(
+          (memberId) => memberId.toString() !== userId.toString()
+        );
+
+        const user = await User.findById(userId);
+        if (user) {
+          user.department = "";
+          await user.save();
+        }
+      }
+    }
+
+    await department.save();
+  } catch (error) {
+    console.error("Error in swapMembers");
+    throw error;
+  }
+};
+
 module.exports = {
   swapDepartments,
+  swapMembers,
   swapPositions,
   swapRoles,
 };

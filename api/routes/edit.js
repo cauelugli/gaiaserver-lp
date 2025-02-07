@@ -28,7 +28,7 @@ router.put("/", async (req, res) => {
 
   const processedFields = parseReqFields(req.body.fields, req.body);
 
-  console.log("req.body", req.body);
+  // console.log("req.body", req.body);
 
   // const createdLog = await new Log({
   //   source: req.body.sourceId,
@@ -39,43 +39,44 @@ router.put("/", async (req, res) => {
   // }).save();
 
   try {
+    const prevData = await Model.findById(req.body.targetId);
     const updatedItem = await Model.findByIdAndUpdate(
-      req.body.prevData._id,
+      req.body.targetId,
       { $set: processedFields },
       { new: true }
     );
 
     switch (req.body.model) {
       case "User":
-        if (processedFields.department !== req.body.prevData.department) {
+        if (processedFields.department !== prevData.department) {
           mainQueue.add({
             type: "swapDepartments",
             data: {
-              userId: req.body.prevData._id.toString(),
+              userId: req.body.targetId,
               model: req.body.model,
               newDepartment: req.body.fields.department,
-              oldDepartment: req.body.prevData.department,
+              oldDepartment: prevData.department,
             },
           });
         }
 
         if (
           processedFields.position !== "" &&
-          processedFields.position !== req.body.prevData.position
+          processedFields.position !== prevData.position
         ) {
           mainQueue.add({
             type: "swapPositions",
             data: {
-              userId: req.body.prevData._id.toString(),
+              userId: req.body.targetId,
               newPosition: processedFields.position,
-              oldPosition: req.body.prevData.position,
+              oldPosition: prevData.position,
             },
           });
         }
         break;
 
       case "Job":
-        if (updatedItem.worker !== req.body.prevData.worker) {
+        if (processedFields.worker !== prevData.worker) {
           // notify instead
           // mainQueue.add({
           //   type: "swapWorker",
@@ -85,6 +86,41 @@ router.put("/", async (req, res) => {
           //     oldAssignee: req.body.prevData.worker,
           //   },
           // });
+        }
+        break;
+
+      case "Department":
+        const areArraysEqual = (arr1, arr2) => {
+          if (arr1.length !== arr2.length) return false;
+          return (
+            arr1.every((item) => arr2.includes(item)) &&
+            arr2.every((item) => arr1.includes(item))
+          );
+        };
+
+        if (!areArraysEqual(processedFields.selectedMembers, prevData.members)) {
+          const updatedMembers = processedFields.selectedMembers || [];
+          const prevMembers = prevData.members || [];
+
+          const addUsers = updatedMembers.filter(
+            (member) => !prevMembers.includes(member)
+          );
+
+          const removeUsers = prevMembers.filter(
+            (member) => !updatedMembers.includes(member)
+          );
+
+          mainQueue.add({
+            type: "swapMembers",
+            data: {
+              departmentId: updatedItem._id.toString(),
+              addUsers,
+              removeUsers,
+            },
+          });
+
+          console.log("addUsers:", addUsers);
+          console.log("removeUsers:", removeUsers);
         }
         break;
 
