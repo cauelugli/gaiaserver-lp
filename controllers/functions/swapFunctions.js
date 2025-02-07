@@ -178,8 +178,33 @@ const swapMembers = async (departmentId, addUsers, removeUsers) => {
   }
 };
 
+const swapManagers = async (departmentId, newManagerId, oldManagerId) => {
+  try {
+    const department = await Department.findById(departmentId);
+    const oldManager = await User.findById(oldManagerId);
+
+    if (oldManager) {
+      oldManager.department = "";
+      await oldManager.save();
+    }
+
+    const newManager = await User.findById(newManagerId);
+    if (newManager) {
+      console.log("departmentId", departmentId);
+      newManager.department = departmentId;
+      department.manager = newManagerId;
+      await newManager.save();
+    }
+
+    await department.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   swapDepartments,
+  swapManagers,
   swapMembers,
   swapPositions,
   swapRoles,

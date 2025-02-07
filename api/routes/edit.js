@@ -98,7 +98,9 @@ router.put("/", async (req, res) => {
           );
         };
 
-        if (!areArraysEqual(processedFields.selectedMembers, prevData.members)) {
+        if (
+          !areArraysEqual(processedFields.selectedMembers, prevData.members)
+        ) {
           const updatedMembers = processedFields.selectedMembers || [];
           const prevMembers = prevData.members || [];
 
@@ -121,6 +123,17 @@ router.put("/", async (req, res) => {
 
           console.log("addUsers:", addUsers);
           console.log("removeUsers:", removeUsers);
+        }
+
+        if (processedFields.manager !== prevData.manager) {
+          mainQueue.add({
+            type: "swapManagers",
+            data: {
+              departmentId: updatedItem._id.toString(),
+              newManagerId: processedFields.manager,
+              oldManagerId: prevData.manager,
+            },
+          });
         }
         break;
 
