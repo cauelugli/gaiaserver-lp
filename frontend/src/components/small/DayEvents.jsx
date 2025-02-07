@@ -48,8 +48,6 @@ const DayEvents = (props) => {
     fetchAllDetails();
   }, [props.selectedDay, props.userAgenda, props.api]);
 
-  console.log("itemsWithDetails", itemsWithDetails);
-
   return (
     <Grid
       sx={{
