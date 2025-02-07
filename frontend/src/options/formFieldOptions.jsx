@@ -20,6 +20,7 @@ import StringTableCell from "../components/tableCells/StringTableCell";
 import UsersTableCell from "../components/tableCells/UsersTableCell ";
 import ServiceListTableCell from "../components/tableCells/ServiceListTableCell";
 import DepartmentTypeTableCell from "../components/tableCells/DepartmentTypeTableCell";
+import DepartmentsTableCell from "../components/tableCells/DepartmentsTableCell";
 
 // this is used in AddForm
 
@@ -130,6 +131,17 @@ export const renderField = (
     case "dynamicData":
       return (
         <DynamicDataTableCell
+          fields={fields}
+          field={field}
+          handleChange={handleChange}
+          modalOptions={modalOptions}
+          required={field.required}
+          multiple={field.multiple}
+        />
+      );
+    case "department":
+      return (
+        <DepartmentsTableCell
           fields={fields}
           field={field}
           handleChange={handleChange}

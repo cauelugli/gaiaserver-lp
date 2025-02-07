@@ -20,6 +20,7 @@ import UsersTableCell from "../components/tableCells/UsersTableCell ";
 import ServiceListTableCell from "../components/tableCells/ServiceListTableCell";
 import ServicesTableCell from "../components/tableCells/ServicesTableCell";
 import DepartmentTypeTableCell from "../components/tableCells/DepartmentTypeTableCell";
+import DepartmentsTableCell from "../components/tableCells/DepartmentsTableCell";
 
 const TableCellOptions = ({
   field,
@@ -179,6 +180,16 @@ const TableCellOptions = ({
           required={field.required}
           multiple={field.multiple}
           serviceLength={serviceLength}
+        />
+      )}
+      {field.type === "department" && (
+        <DepartmentsTableCell
+          fields={fields}
+          field={field}
+          handleChange={handleChange}
+          modalOptions={modalOptions}
+          required={field.required}
+          multiple={field.multiple}
         />
       )}
       {field.type === "users" && (
