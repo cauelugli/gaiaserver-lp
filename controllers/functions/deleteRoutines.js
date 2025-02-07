@@ -140,6 +140,7 @@ async function deleteRoutinesGroup(
           const { members } = deletedItem;
 
           if (members && members.length > 0) {
+            console.log("deletedItem had a problem")
             await Promise.all(
               members.map((memberId) =>
                 defineModel("User").findByIdAndUpdate(memberId, {
