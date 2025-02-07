@@ -28,6 +28,7 @@ function LogTable(props) {
     { key: "resolve", value: "Resolução" },
     { key: "requestBuy", value: "Resquisição de Compra" },
     { key: "requestApproval", value: "Resquisição de Aprovação" },
+    { key: "approveRequest", value: "Aprovação de Requisição" },
   ];
 
   const typeColors = [
@@ -42,9 +43,11 @@ function LogTable(props) {
     { key: "Resolução", value: "#bbffbb" }, // green
     { key: "Resquisição de Compra", value: "#ffffff" }, // white
     { key: "Resquisição de Aprovação", value: "#ffffff" }, // white
+    { key: "Aprovação de Requisição", value: "#bbffff" }, // blue
   ];
 
   const translatedKeys = [
+    { key: "name", value: "Nome" },
     { key: "customer", value: "Cliente" },
     { key: "worker", value: "Designado" },
     { key: "service", value: "Serviço" },
@@ -52,6 +55,14 @@ function LogTable(props) {
     { key: "description", value: "Descrição" },
     { key: "createdBy", value: "Criado por" },
     { key: "title", value: "Título" },
+    { key: "position", value: "Cargo" },
+    { key: "department", value: "Departamento" },
+    { key: "resolution", value: "Resolução" },
+    { key: "products", value: "Produtos" },
+    { key: "buyValue", value: "Valor de Compra" },
+    { key: "fields", value: "Campos" },
+    { key: "sellValue", value: "Valor de Venda" },
+    { key: "type", value: "Tipo" },
   ];
 
   const translateLogType = (logType) => {
@@ -75,22 +86,22 @@ function LogTable(props) {
   return (
     <>
       <TableRow sx={{ m: 0 }}>
-        <TableCell align="left" sx={{ mr: 1 }}>
+        <TableCell align="left" sx={{ mr: 2 }}>
           <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
             Data &uarr;
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ mr: 1 }}>
+        <TableCell align="left" sx={{ mr: 2 }}>
           <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
             Tipo
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ mr: 1 }}>
+        <TableCell align="left" sx={{ mr: 2 }}>
           <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
             Colaborador
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ mr: 1 }}>
+        <TableCell align="left" sx={{ mr: 2 }}>
           <Typography sx={{ fontWeight: "bold", fontSize: 12 }}>
             Modelo
           </Typography>
@@ -109,17 +120,17 @@ function LogTable(props) {
             backgroundColor: findTypeColor(row.type) || "white",
           }}
         >
-          <TableCell align="left" sx={{ mr: 1 }}>
+          <TableCell align="left" sx={{ mr: 2 }}>
             <Typography sx={{ fontSize: 12 }}>
               {dayjs(row.createdAt).format("DD/MM/YYYY HH:mm:ss")}
             </Typography>
           </TableCell>
-          <TableCell align="left" sx={{ mr: 1 }}>
+          <TableCell align="left" sx={{ mr: 2 }}>
             <Typography sx={{ fontSize: 12 }}>
               {translateLogType(row.type) || ""}
             </Typography>
           </TableCell>
-          <TableCell align="left" sx={{ mr: 1 }}>
+          <TableCell align="left" sx={{ mr: 2 }}>
             <Grid container alignItems="center" spacing={1}>
               <Grid item>
                 <Avatar
@@ -138,12 +149,12 @@ function LogTable(props) {
               </Grid>
             </Grid>
           </TableCell>
-
-          <TableCell align="left" sx={{ mr: 1 }}>
+          <TableCell align="left" sx={{ mr: 2 }}>
             <Typography sx={{ fontSize: 12 }}>
               {row.targetModel || row.label}
             </Typography>
           </TableCell>
+
           <TableCell align="left">
             <Grid container direction="row">
               {row.target ? (
@@ -160,24 +171,171 @@ function LogTable(props) {
                   row.target.map((change, index) => (
                     <Grid item key={index} sx={{ mr: 0.5, width: 200 }}>
                       <InputLabel sx={{ fontSize: 12 }}>
-                        {translateKeys(change.field)}
+                        {translateKeys(change.field) || change.field}
                       </InputLabel>
-                      <Typography sx={{ fontSize: 12 }}>
-                        <b>Antes:</b>{" "}
-                        {isId(change.oldValue)
-                          ? props.idIndexList.find(
-                              (item) => item.id === change.oldValue
-                            )?.name || change.oldValue
-                          : change.oldValue}
-                      </Typography>
-                      <Typography sx={{ fontSize: 12 }}>
-                        <b>Depois:</b>{" "}
-                        {isId(change.newValue)
-                          ? props.idIndexList.find(
-                              (item) => item.id === change.newValue
-                            )?.name || change.newValue
-                          : change.newValue}
-                      </Typography>
+                      {change.field === "products" ? (
+                        // Renderização específica para "products"
+                        <Grid container spacing={1}>
+                          <Grid item xs={12}>
+                            <b>Antes:</b>{" "}
+                            {Array.isArray(change.oldValue)
+                              ? change.oldValue.map((item, idx) => {
+                                  // Filtra as keys que não devem ser exibidas
+                                  const filteredItem = Object.keys(item).reduce(
+                                    (acc, key) => {
+                                      if (
+                                        ![
+                                          "createdAt",
+                                          "createdBy",
+                                          "__v",
+                                          "_id",
+                                          "count",
+                                          "stockQuantity",
+                                          "usedIn",
+                                        ].includes(key)
+                                      ) {
+                                        acc[key] = item[key];
+                                      }
+                                      return acc;
+                                    },
+                                    {}
+                                  );
+
+                                  return (
+                                    <div
+                                      key={idx}
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 8,
+                                      }}
+                                    >
+                                      {/* Exibe o Avatar se houver imagens */}
+                                      {filteredItem.images &&
+                                        filteredItem.images.length > 0 && (
+                                          <Avatar
+                                            sx={{ width: 24, height: 24 }}
+                                            src={`http://localhost:3000/static/${filteredItem.images[0]}`}
+                                          />
+                                        )}
+                                      {/* Exibe as demais informações */}
+                                      <div>
+                                        {Object.entries(filteredItem).map(
+                                          ([key, value]) => {
+                                            if (key === "images") return null; // Ignora a key "images" pois já foi tratada
+                                            return (
+                                              <div key={key}>
+                                                <b>{translateKeys(key)}:</b>{" "}
+                                                {isId(value)
+                                                  ? props.idIndexList.find(
+                                                      (i) => i.id === value
+                                                    )?.name || value
+                                                  : JSON.stringify(value)}
+                                              </div>
+                                            );
+                                          }
+                                        )}
+                                      </div>
+                                    </div>
+                                  );
+                                })
+                              : isId(change.oldValue)
+                              ? props.idIndexList.find(
+                                  (item) => item.id === change.oldValue
+                                )?.name || change.oldValue
+                              : change.oldValue}
+                          </Grid>
+                          <Grid item xs={12}>
+                            <b>Depois:</b>{" "}
+                            {Array.isArray(change.newValue)
+                              ? change.newValue.map((item, idx) => {
+                                  // Filtra as keys que não devem ser exibidas
+                                  const filteredItem = Object.keys(item).reduce(
+                                    (acc, key) => {
+                                      if (
+                                        ![
+                                          "createdAt",
+                                          "createdBy",
+                                          "__v",
+                                          "_id",
+                                          "count",
+                                          "stockQuantity",
+                                          "usedIn",
+                                        ].includes(key)
+                                      ) {
+                                        acc[key] = item[key];
+                                      }
+                                      return acc;
+                                    },
+                                    {}
+                                  );
+
+                                  return (
+                                    <div
+                                      key={idx}
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 8,
+                                      }}
+                                    >
+                                      {/* Exibe o Avatar se houver imagens */}
+                                      {filteredItem.images &&
+                                        filteredItem.images.length > 0 && (
+                                          <Avatar
+                                            sx={{ width: 24, height: 24 }}
+                                            src={`http://localhost:3000/static/${filteredItem.images[0]}`}
+                                          />
+                                        )}
+                                      {/* Exibe as demais informações */}
+                                      <div>
+                                        {Object.entries(filteredItem).map(
+                                          ([key, value]) => {
+                                            if (key === "images") return null; // Ignora a key "images" pois já foi tratada
+                                            return (
+                                              <div key={key}>
+                                                <b>{translateKeys(key)}:</b>{" "}
+                                                {isId(value)
+                                                  ? props.idIndexList.find(
+                                                      (i) => i.id === value
+                                                    )?.name || value
+                                                  : JSON.stringify(value)}
+                                              </div>
+                                            );
+                                          }
+                                        )}
+                                      </div>
+                                    </div>
+                                  );
+                                })
+                              : isId(change.newValue)
+                              ? props.idIndexList.find(
+                                  (item) => item.id === change.newValue
+                                )?.name || change.newValue
+                              : change.newValue}
+                          </Grid>
+                        </Grid>
+                      ) : (
+                        // Renderização padrão para outros campos
+                        <>
+                          <Typography sx={{ fontSize: 12 }}>
+                            <b>Antes:</b>{" "}
+                            {isId(change.oldValue)
+                              ? props.idIndexList.find(
+                                  (item) => item.id === change.oldValue
+                                )?.name || change.oldValue
+                              : change.oldValue}
+                          </Typography>
+                          <Typography sx={{ fontSize: 12 }}>
+                            <b>Depois:</b>{" "}
+                            {isId(change.newValue)
+                              ? props.idIndexList.find(
+                                  (item) => item.id === change.newValue
+                                )?.name || change.newValue
+                              : change.newValue}
+                          </Typography>
+                        </>
+                      )}
                     </Grid>
                   ))
                 ) : typeof row.target === "string" ? (
@@ -195,14 +353,19 @@ function LogTable(props) {
                   </Grid>
                 ) : (
                   Object.entries(row.target)
-                    .filter(([key]) => !["_id", "__v"].includes(key))
+                    .filter(([key]) => !["_id", "__v", "image"].includes(key))
                     .map(([key, value], index) => (
                       <Grid
                         item
                         key={index}
                         sx={{
                           mr: 0.5,
-                          width: index === 0 && key === "number" ? 50 : 200,
+                          width:
+                            index === 0 && key === "number"
+                              ? 50
+                              : key === "title"
+                              ? 400
+                              : 200,
                         }}
                       >
                         <InputLabel sx={{ fontSize: 12 }}>

@@ -10,6 +10,7 @@ const translatedLogTypes = [
   { key: "resolve", value: "Resolução" },
   { key: "requestBuy", value: "Resquisição de Compra" },
   { key: "requestApproval", value: "Resquisição de Aprovação" },
+  { key: "approveRequest", value: "Aprovação de Requisição" },
 ];
 
 const translatedMethods = [
