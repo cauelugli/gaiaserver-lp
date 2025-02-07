@@ -35,7 +35,6 @@ router.put("/addShortcut", async (req, res) => {
     const newShortcut = {
       name: newShortcutName,
       action: newShortcutAction.action,
-      isActive: true,
       fullWidth: newShortcutAction.fullWidth,
       maxWidth: newShortcutAction.maxWidth,
       permission: newShortcutAction.permission,

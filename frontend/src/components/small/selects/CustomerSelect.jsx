@@ -64,10 +64,7 @@ const CustomerSelect = (props) => {
             selected = props.selectedCustomer;
             return selected.name;
           } else {
-            if (
-              (props.selectedCustomer && props.selectedCustomer.isActive) ||
-              props.fromShortcut
-            ) {
+            if (props.selectedCustomer || props.fromShortcut) {
               selected = props.selectedCustomer;
               return selected.name;
             } else {

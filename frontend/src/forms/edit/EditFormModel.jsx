@@ -294,13 +294,6 @@ export default function EditFormModel(props) {
       }
       props.setOpenDialog(!props.openDialog);
       !props.setRefreshData(!props.refreshData);
-      api.post("/log", {
-        source: props.userId,
-        target: res.data,
-        label: modalOptions.label,
-        type: "edit",
-        prevData: props.target,
-      });
     } catch (err) {
       if (
         (err && err.response && err.response.status === 422) ||
