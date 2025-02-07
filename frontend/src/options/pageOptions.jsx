@@ -201,10 +201,13 @@ const pageOptions = [
           label: "🎨",
         },
         {
+          id: "type",
+          label: "Tipo",
+        },
+        {
           id: "name",
           label: "Nome",
         },
-
         {
           id: "members",
           label: "Colaboradores",

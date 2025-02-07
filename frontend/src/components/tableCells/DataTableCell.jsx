@@ -49,6 +49,12 @@ const DataTableCell = ({
     }
   };
 
+  const departmentTypes = {
+    Vendas: <icons.SellIcon />,
+    Serviços: <icons.BuildIcon />,
+    Interno: <icons.LanIcon />,
+  };
+
   return (
     <>
       {item === null ? (
@@ -96,11 +102,7 @@ const DataTableCell = ({
           </Grid>
         </Grid>
       ) : Array.isArray(item) ? (
-        <Grid
-          container
-          direction="row"
-          alignItems="center"
-        >
+        <Grid container direction="row" alignItems="center">
           {item.map((obj, index) => (
             <Grid item key={index} sx={{ mr: 1 }}>
               <Tooltip
@@ -187,6 +189,8 @@ const DataTableCell = ({
         <>{getNameById(item)}</>
       ) : isDate(item) ? (
         <>{dayjs(item).format("DD/MM/YYYY hh:MM")}</>
+      ) : column.id === "type" ? (
+        <Tooltip title={item}>{departmentTypes[item]}</Tooltip>
       ) : (
         <Grid>{item}</Grid>
       )}

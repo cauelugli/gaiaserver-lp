@@ -1,7 +1,13 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { TableRow, TableCell, TableSortLabel, Checkbox } from "@mui/material";
+import {
+  TableRow,
+  TableCell,
+  TableSortLabel,
+  Checkbox,
+  Button,
+} from "@mui/material";
 
 function TableHeader(props) {
   return (
@@ -19,7 +25,13 @@ function TableHeader(props) {
           sx={{
             fontSize: 13,
             fontWeight: "bold",
-            width: cellIndex === 0 ? 50:"auto",
+            width:
+              cellIndex === 0
+                ? 50
+                : cellIndex === 1 && headCell.id === "type"
+                ? 50
+                : "auto",
+            // width: cellIndex === 0 && headCell.id!=="" ? 50 : "auto",
           }}
           sortDirection={props.orderBy === headCell.id ? props.order : false}
         >
@@ -29,18 +41,21 @@ function TableHeader(props) {
             onClick={() => props.handleRequestSort(headCell.id)}
           >
             {headCell.label}
+            {/* <Button onClick={() => console.log("headCell", headCell)}>headCell</Button> */}
           </TableSortLabel>
         </TableCell>
       ))}
-      <TableCell
-        align="right"
-        sx={{ fontSize: 13, fontWeight: "bold" }}
-      >
+      <TableCell align="right" sx={{ fontSize: 13, fontWeight: "bold" }}>
         Ações
       </TableCell>
       {props.multiple && (
         <TableCell id="multiple" sx={{ p: 0, m: 0 }}>
-          <Checkbox size="small" checked={true} disabled sx={{ p: -1, m: -1 }}/>
+          <Checkbox
+            size="small"
+            checked={true}
+            disabled
+            sx={{ p: -1, m: -1 }}
+          />
         </TableCell>
       )}
     </TableRow>
