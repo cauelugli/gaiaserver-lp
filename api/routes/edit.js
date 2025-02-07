@@ -12,6 +12,7 @@ router.put("/", async (req, res) => {
   const { name } = req.body;
 
   const Model = defineModel(req.body.model);
+  const Log = defineModel("Log");
 
   if (!Model) {
     console.log("\nmodel not found\n");
@@ -26,6 +27,16 @@ router.put("/", async (req, res) => {
   }
 
   const processedFields = parseReqFields(req.body.fields, req.body);
+
+  console.log("req.body", req.body);
+
+  // const createdLog = await new Log({
+  //   source: req.body.sourceId,
+  //   target: logTarget,
+  //   label:req.body.model||"",
+  //   type: "edit",
+  //   targetModel: req.body.model || "",
+  // }).save();
 
   try {
     const updatedItem = await Model.findByIdAndUpdate(
@@ -85,6 +96,7 @@ router.put("/", async (req, res) => {
 
     res.status(200).json(updatedItem);
   } catch (err) {
+    console.log("createdLog", createdLog._id.toString());
     console.log(err);
     res.status(500).json(err);
   }

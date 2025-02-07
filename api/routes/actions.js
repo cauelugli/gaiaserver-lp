@@ -89,7 +89,12 @@ router.put("/resolve", async (req, res) => {
       },
     });
 
-    res.status(200).json("Item resolvido com sucesso");
+    res.status(200).json({
+      number: resolvedItem.number,
+      title: resolvedItem.title,
+      customer: resolvedItem.customer,
+      resolution: resolvedItem.resolution
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Erro ao resolver o item" });
@@ -145,13 +150,11 @@ router.put("/requestApproval", async (req, res) => {
       });
     }
 
-    res
-      .status(200)
-      .json({
-        number: targetItem.number,
-        title: targetItem.title,
-        customer: targetItem.customer,
-      });
+    res.status(200).json({
+      number: targetItem.number,
+      title: targetItem.title,
+      customer: targetItem.customer,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Erro ao resolver o item" });
@@ -212,7 +215,11 @@ router.put("/approveRequest", async (req, res) => {
         break;
     }
 
-    res.status(200).json("Item aprovado com sucesso");
+    res.status(200).json({
+      number: targetItem.number,
+      title: targetItem.title,
+      customer: targetItem.customer,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Erro ao aprovar o item" });
