@@ -41,6 +41,7 @@ const TableCellOptions = ({
   serviceLength,
   refreshData,
   setRefreshData,
+  targetId,
 }) => {
   return (
     <>
@@ -169,6 +170,7 @@ const TableCellOptions = ({
           modalOptions={modalOptions}
           handleMemberChange={handleMemberChange}
           isEditing={true}
+          targetId={targetId}
         />
       )}
       {field.type === "dynamicData" && (

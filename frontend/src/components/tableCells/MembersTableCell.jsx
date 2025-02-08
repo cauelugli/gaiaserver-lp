@@ -2,13 +2,16 @@
 import React from "react";
 import axios from "axios";
 import { Avatar, Tooltip, Badge, Box, InputLabel, Grid } from "@mui/material";
+import { useAppData } from "../../../src/AppDataContext";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
 const MembersTableCell = (props) => {
-  const { isEditing, fields, handleMemberChange } = props;
+  const appData = useAppData();
+  const idIndexList = appData.idIndexList;
+  const { isEditing, fields, handleMemberChange, targetId } = props;
 
   const [options, setOptions] = React.useState([]);
   const [memberList, setMemberList] = React.useState(
@@ -32,9 +35,9 @@ const MembersTableCell = (props) => {
   React.useEffect(() => {
     if (isEditing && fields["members"] && fields["members"].length > 0) {
       setMemberList(fields["members"]);
-      props.handleMemberChange(fields["members"])
+      props.handleMemberChange(fields["members"]);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditing, fields]);
 
   const handleAddMember = (member) => {
@@ -50,6 +53,8 @@ const MembersTableCell = (props) => {
     setMemberList(updatedMembers);
     handleMemberChange(updatedMembers);
   };
+
+  console.log("targetId", targetId);
 
   return (
     <>
@@ -131,14 +136,43 @@ const MembersTableCell = (props) => {
             .map((option, index) => (
               <Box
                 key={index}
-                onClick={() => handleAddMember(option)}
+                onClick={() =>
+                  !option.department ||
+                  option.department === "" ||
+                  option.department === targetId
+                    ? handleAddMember(option)
+                    : ""
+                }
                 sx={{ mr: 1 }}
               >
-                <Tooltip title={`Adicionar ${option.name}`}>
+                <Tooltip
+                  title={
+                    option.department
+                      ? option.department !== ""
+                        ? option.department === targetId
+                          ? `Adicionar ${option.name}`
+                          : `Alocado em ${
+                              idIndexList.find(
+                                (item) => item.id === option.department
+                              )?.name || ""
+                            }`
+                        : `Adicionar ${option.name}`
+                      : `Adicionar ${option.name}`
+                  }
+                >
                   <Avatar
                     alt={option.name}
                     src={`http://localhost:3000/static/${option.image}`}
-                    sx={{ width: 28, height: 28, cursor: "pointer" }}
+                    sx={{
+                      width: 28,
+                      height: 28,
+                      cursor: "pointer",
+                      filter: option.department
+                        ? option.department === targetId
+                          ? "none"
+                          : "grayscale(100%)"
+                        : "grayscale(100%)",
+                    }}
                   />
                 </Tooltip>
               </Box>

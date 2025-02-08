@@ -231,6 +231,8 @@ export const renderField = (
     case "members":
       return (
         <MembersTableCell
+          fields={fields}
+          modalOptions={modalOptions}
           value={fields[field.name] || []}
           size="small"
           handleMemberChange={handlers.handleMemberChange}
