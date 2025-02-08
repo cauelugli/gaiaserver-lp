@@ -108,7 +108,6 @@ export function checkAvailability(item, option) {
       break;
 
     case "manager":
-      console.log("option", option);
       if (option.department && typeof option.department === "string") {
         return true;
       }
