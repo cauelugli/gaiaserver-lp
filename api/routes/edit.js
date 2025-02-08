@@ -120,9 +120,6 @@ router.put("/", async (req, res) => {
               removeUsers,
             },
           });
-
-          console.log("addUsers:", addUsers);
-          console.log("removeUsers:", removeUsers);
         }
 
         if (processedFields.manager !== prevData.manager) {
