@@ -181,7 +181,7 @@ const swapMembers = async (departmentId, addUsers, removeUsers) => {
 const swapManagers = async (departmentId, newManagerId, oldManagerId) => {
   try {
     const department = await Department.findById(departmentId);
-    const oldManager = await User.findById(oldManagerId);
+    const oldManager = oldManagerId ? await User.findById(oldManagerId) : null;
 
     if (oldManager) {
       oldManager.department = "";

@@ -34,8 +34,9 @@ const ManagerSelectTableCell = (props) => {
         console.error("Error fetching data:", error);
       }
     };
+    setSelectedManager(props.fields.manager);
     fetchData();
-  }, [props.field.dynamicData, props.oldManager]);
+  }, [props.field.dynamicData, props.fields.manager]);
 
   const renderValue = (selected) => {
     if (!selected) {
@@ -89,7 +90,9 @@ const ManagerSelectTableCell = (props) => {
             value={option}
             key={index}
             disabled={
-              props.fromConfig ? "" : checkAvailability("manager", option)
+              props.fromConfig
+                ? ""
+                : checkAvailability("manager", option, props.targetId)
             }
           >
             <Grid container direction="row" alignItems="center">

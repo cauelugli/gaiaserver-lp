@@ -147,7 +147,7 @@ export const renderField = (
           handleChange={handleChange}
           modalOptions={modalOptions}
           required={field.required}
-          multiple={field.multiple}
+          managerRestriction={modalOptions.label === "Gerente" ? true : false}
         />
       );
     case "managerSelect":

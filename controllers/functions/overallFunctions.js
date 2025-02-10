@@ -78,7 +78,7 @@ export function isButtonDisabled(
   }
 }
 
-export function checkAvailability(item, option) {
+export function checkAvailability(item, option, targetId) {
   switch (item) {
     case "members":
     case "managers":
@@ -109,7 +109,11 @@ export function checkAvailability(item, option) {
 
     case "manager":
       if (option.department && typeof option.department === "string") {
-        return true;
+        if (option.department === targetId) {
+          return false;
+        } else {
+          return true;
+        }
       }
       break;
 

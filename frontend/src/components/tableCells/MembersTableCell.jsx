@@ -54,8 +54,6 @@ const MembersTableCell = (props) => {
     handleMemberChange(updatedMembers);
   };
 
-  console.log("targetId", targetId);
-
   return (
     <>
       <InputLabel>Membros</InputLabel>

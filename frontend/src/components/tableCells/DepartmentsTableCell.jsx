@@ -10,6 +10,7 @@ import {
   Paper,
   TextField,
   InputAdornment,
+  Tooltip,
 } from "@mui/material";
 import { icons } from "../../icons";
 
@@ -50,6 +51,10 @@ const DepartmentsTableCell = (props) => {
     department.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleClearSearch = () => {
+    setSearchQuery("");
+  };
+
   return (
     <>
       <InputLabel>{props.field.label}</InputLabel>
@@ -60,18 +65,30 @@ const DepartmentsTableCell = (props) => {
         size="small"
         renderValue={(selected) =>
           selected ? (
-            <Grid container alignItems="center">
-              <Paper
-                sx={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: 50,
-                  backgroundColor: selected.color,
-                  mr: 1,
-                }}
-              />
-              <Typography>{selected.name}</Typography>
-            </Grid>
+            <Tooltip title={selected.name}>
+              <Grid container alignItems="center">
+                <Paper
+                  sx={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: 50,
+                    backgroundColor: selected.color,
+                    mr: 1,
+                  }}
+                />
+                {departmentTypes[selected.type]}
+                <Typography
+                  sx={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: 100,
+                  }}
+                >
+                  {selected.name}
+                </Typography>
+              </Grid>
+            </Tooltip>
           ) : (
             <Typography>Selecione um Departamento</Typography>
           )
@@ -90,6 +107,15 @@ const DepartmentsTableCell = (props) => {
             startAdornment: (
               <InputAdornment position="start">🔍</InputAdornment>
             ),
+            endAdornment: searchQuery && (
+              <InputAdornment
+                position="end"
+                onClick={handleClearSearch}
+                style={{ cursor: "pointer" }}
+              >
+                ❌
+              </InputAdornment>
+            ),
           }}
           sx={{
             marginBottom: 2,
@@ -101,23 +127,29 @@ const DepartmentsTableCell = (props) => {
           }}
         />
 
-        {filteredDepartments.map((department) => (
-          <MenuItem value={department} key={department._id}>
-            <Grid container alignItems="center">
-              <Paper
-                sx={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: 50,
-                  backgroundColor: department.color,
-                  mr: 1,
-                }}
-              />
-              {departmentTypes[department.type]}
-              <Typography sx={{ ml: 1 }}>{department.name}</Typography>
-            </Grid>
-          </MenuItem>
-        ))}
+        {filteredDepartments.map((department, index) => {
+          const hasManager =
+            department.manager && department.manager.trim() !== "";
+          const isDisabled = props.managerRestriction && hasManager;
+
+          return (
+            <MenuItem key={index} value={department} disabled={isDisabled}>
+              <Grid container alignItems="center">
+                <Paper
+                  sx={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: 50,
+                    backgroundColor: department.color,
+                    mr: 1,
+                  }}
+                />
+                {departmentTypes[department.type]}
+                <Typography sx={{ ml: 1 }}>{department.name}</Typography>
+              </Grid>
+            </MenuItem>
+          );
+        })}
 
         {filteredDepartments.length === 0 && (
           <Typography sx={{ ml: 1, fontSize: 13 }}>

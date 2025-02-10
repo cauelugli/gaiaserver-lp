@@ -43,6 +43,7 @@ const TableCellOptions = ({
   setRefreshData,
   targetId,
 }) => {
+  // this is used in EditFormModel
   return (
     <>
       {field.type === "string" && (
@@ -215,6 +216,7 @@ const TableCellOptions = ({
           required={field.required}
           multiple={field.multiple}
           fromConfig={false}
+          targetId={targetId}
         />
       )}
       {field.type === "productList" && (
