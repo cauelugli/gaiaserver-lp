@@ -42,8 +42,9 @@ const TableCellOptions = ({
   refreshData,
   setRefreshData,
   targetId,
+  tabIndex,
 }) => {
-  // this is used in EditFormModel
+  // this is used in EditForm
   return (
     <>
       {field.type === "string" && (
@@ -193,6 +194,11 @@ const TableCellOptions = ({
           modalOptions={modalOptions}
           required={field.required}
           multiple={field.multiple}
+          managerRestriction={
+            modalOptions.label === "Colaborador" && tabIndex === 1
+              ? true
+              : false
+          }
         />
       )}
       {field.type === "users" && (
