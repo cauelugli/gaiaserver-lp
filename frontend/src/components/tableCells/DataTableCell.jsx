@@ -15,6 +15,8 @@ const DataTableCell = ({
   item,
   isRequestsApproverManager,
   isStockApproverManager,
+  isRequestsApproverAlternate,
+  isStockApproverAlternate,
   idIndexList,
   column,
 }) => {
@@ -91,6 +93,26 @@ const DataTableCell = ({
             )}
             {isStockApproverManager && (
               <Tooltip title="Gerente Aprovador de Estoque">
+                <icons.StarIcon
+                  sx={{
+                    width: 14,
+                    height: 14,
+                  }}
+                />
+              </Tooltip>
+            )}
+            {isRequestsApproverAlternate && (
+              <Tooltip title="Suplente Aprovador de Solicitações">
+                <icons.StarIcon
+                  sx={{
+                    width: 14,
+                    height: 14,
+                  }}
+                />
+              </Tooltip>
+            )}
+            {isStockApproverAlternate && (
+              <Tooltip title="Suplente Aprovador de Estoque">
                 <icons.StarIcon
                   sx={{
                     width: 14,
