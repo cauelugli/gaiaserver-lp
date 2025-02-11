@@ -208,7 +208,6 @@ const TableCellOptions = ({
       )}
       {field.type === "managerSelect" && (
         <ManagerSelectTableCell
-          oldManager={fields["manager"]}
           fields={fields}
           field={field}
           handleChange={handleChange}

@@ -223,7 +223,9 @@ export default function Requests({ onClose }) {
                         fromConfig
                         setRequestsApproverManager={setRequestsApproverManager}
                         requestsApproverManager={requestsApproverManager}
-                        field={{ dynamicData: "managers", required: false }}
+                        field={""}
+                        fields={""}
+                        type="requests"
                       />
                     </Grid>
                   </Grid>
@@ -246,12 +248,13 @@ export default function Requests({ onClose }) {
                         <Typography sx={{ my: "auto" }}>Suplente</Typography>
                       </Tooltip>
                       <AlternateManagerSelectTableCell
+                        type="requests"
                         fromConfig
                         setRequestsApproverAlternate={
                           setRequestsApproverAlternate
                         }
                         requestsApproverAlternate={requestsApproverAlternate}
-                        requestsApproverManager={requestsApproverManager}
+                        approverManager={requestsApproverManager}
                         field={{ dynamicData: "users", required: false }}
                       />
                     </Grid>
@@ -280,9 +283,7 @@ export default function Requests({ onClose }) {
                       <RadioGroup
                         row
                         value={canBeDeleted}
-                        onChange={(e) =>
-                          setCanBeDeleted(e.target.value)
-                        }
+                        onChange={(e) => setCanBeDeleted(e.target.value)}
                       >
                         <FormControlLabel
                           value={Boolean(true)}

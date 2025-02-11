@@ -24,19 +24,35 @@ const ManagerSelectTableCell = (props) => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        let data = [];
         const resManagers = await api.get("/get", {
           params: { model: "User" },
         });
-        data = resManagers.data.filter((user) => user.isManager);
-        setOptions(data);
+        const filteredUsers = resManagers.data.filter((user) => user.isManager);
+        setOptions(filteredUsers);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-    setSelectedManager(props.fields.manager);
     fetchData();
-  }, [props.field.dynamicData, props.fields.manager]);
+  }, [props.field.dynamicData]);
+
+  React.useEffect(() => {
+    if (props.fromConfig) {
+      setSelectedManager(
+        props.type === "requests"
+          ? props.requestsApproverManager
+          : props.stockEntriesApproverManager
+      );
+    } else {
+      setSelectedManager(props.fields.manager);
+    }
+  }, [
+    props.fromConfig,
+    props.type,
+    props.requestsApproverManager,
+    props.stockEntriesApproverManager,
+    props.fields.manager,
+  ]);
 
   const renderValue = (selected) => {
     if (!selected) {
@@ -60,7 +76,11 @@ const ManagerSelectTableCell = (props) => {
     setSelectedManager(value);
 
     if (props.fromConfig) {
-      props.setRequestsApproverManager(value);
+      if (props.type === "requests") {
+        props.setRequestsApproverManager(value);
+      } else if (props.type === "stock") {
+        props.setStockEntriesApproverManager(value);
+      }
     } else {
       props.handleChange(props.field.name)(event);
     }
@@ -70,13 +90,7 @@ const ManagerSelectTableCell = (props) => {
     <Grid>
       <InputLabel>{props.field.label}</InputLabel>
       <Select
-        value={
-          props.fromConfig
-            ? props.requestsApproverManager
-              ? props.requestsApproverManager
-              : selectedManager
-            : selectedManager
-        }
+        value={selectedManager || ""}
         onChange={handleChange}
         sx={{
           width: 200,

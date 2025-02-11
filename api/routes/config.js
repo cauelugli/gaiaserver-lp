@@ -170,6 +170,8 @@ router.put("/stock", async (req, res) => {
     config.stock.stockEntriesNeedApproval = stockEntriesNeedApproval;
     config.stock.stockEntriesCanBeChallenged = stockEntriesCanBeChallenged;
 
+    await config.save();
+
     if (prevData.stockEntriesApproverManager !== stockEntriesApproverManager) {
       mainQueue.add({
         type: "notifyNewConfiguredUser",
@@ -191,7 +193,6 @@ router.put("/stock", async (req, res) => {
       });
     }
 
-    await config.save();
     res.status(200).json(config);
   } catch (err) {
     console.error(err);

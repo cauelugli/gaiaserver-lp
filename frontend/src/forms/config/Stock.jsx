@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import React from "react";
@@ -31,7 +32,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function Departments({ onClose }) {
+export default function Stock({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
   const [stockEntriesApproverManager, setStockEntriesApproverManager] =
     React.useState(null);
@@ -46,35 +47,35 @@ export default function Departments({ onClose }) {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
+        const configData = config.data[0].stock;
+
+        setConfigData(configData);
         const usersResponse = await api.get("/get", {
           params: { model: "User" },
         });
         const managersData = usersResponse.data.filter(
           (user) => user.isManager
         );
-        setConfigData(config.data[0].stock);
         const approverManager = managersData.find(
           (manager) => manager._id === configData.stockEntriesApproverManager
         );
-        setStockEntriesApproverManager(approverManager || null);
-
         const approverManagerAlternate = usersResponse.data.find(
           (user) => user._id === configData.stockEntriesApproverAlternate
         );
-        setStockEntriesApproverAlternate(approverManagerAlternate || null);
-
         setStockEntriesNeedApproval(
-          config.data[0].stock.stockEntriesNeedApproval
+          configData.stockEntriesNeedApproval
         );
         setStockEntriesCanBeChallenged(
-          config.data[0].stock.stockEntriesCanBeChallenged
+          configData.stockEntriesCanBeChallenged
         );
+        setStockEntriesApproverManager(approverManager || null);
+        setStockEntriesApproverAlternate(approverManagerAlternate || null);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [configData]);
+  }, [configData.stockEntriesApproverAlternate]);
 
   const handleChangeStockConfig = async (e) => {
     e.preventDefault();
@@ -86,7 +87,7 @@ export default function Departments({ onClose }) {
           : "",
         stockEntriesApproverAlternate: stockEntriesApproverAlternate
           ? stockEntriesApproverAlternate._id
-          : "",
+          : "none",
         stockEntriesNeedApproval,
         stockEntriesCanBeChallenged,
       });
@@ -208,11 +209,15 @@ export default function Departments({ onClose }) {
                       </Tooltip>
                       <ManagerSelectTableCell
                         fromConfig
-                        requestsApproverManager={stockEntriesApproverManager}
-                        setRequestsApproverManager={
+                        stockEntriesApproverManager={
+                          stockEntriesApproverManager
+                        }
+                        setStockEntriesApproverManager={
                           setStockEntriesApproverManager
                         }
-                        field={{ dynamicData: "managers", required: false }}
+                        field={""}
+                        fields={""}
+                        type="stock"
                       />
                     </Grid>
                   </Grid>
@@ -227,20 +232,23 @@ export default function Departments({ onClose }) {
                         title={
                           <Typography sx={{ fontSize: 12 }}>
                             Selecione um Colaborador que também poderá Aprovar
-                            as Entradas de Estoque além do Gerente. Por padrão a opção
-                            é "Nenhum".
+                            as Entradas de Estoque além do Gerente. Por padrão a
+                            opção é "Nenhum".
                           </Typography>
                         }
                       >
                         <Typography sx={{ my: "auto" }}>Suplente</Typography>
                       </Tooltip>
                       <AlternateManagerSelectTableCell
+                        type="stock"
                         fromConfig
-                        setRequestsApproverAlternate={
+                        setStockEntriesApproverAlternate={
                           setStockEntriesApproverAlternate
                         }
-                        requestsApproverAlternate={stockEntriesApproverAlternate}
-                        requestsApproverManager={stockEntriesApproverManager}
+                        stockEntriesApproverAlternate={
+                          stockEntriesApproverAlternate
+                        }
+                        approverManager={stockEntriesApproverManager}
                         field={{ dynamicData: "users", required: false }}
                       />
                     </Grid>

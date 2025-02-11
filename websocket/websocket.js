@@ -275,7 +275,11 @@ const initSocket = (server) => {
         }
 
         let user;
-        user = await User.findById(data.receiver);
+        user = data.receiver
+          ? data.receiver === "none"
+            ? ""
+            : await User.findById(data.receiver)
+          : "";
 
         const parsedTitleString = "Nova Configuração Atribuida";
         const notificationBody = `Olá, ${data.receiver}! 

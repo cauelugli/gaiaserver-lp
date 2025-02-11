@@ -142,6 +142,7 @@ const configSchema = new Schema({
     },
     requestsApproverAlternate: {
       type: String,
+      default: "none"
     },
     canBeDeleted: {
       type: Boolean,
@@ -175,7 +176,7 @@ const configSchema = new Schema({
     },
     stockEntriesApproverAlternate: {
       type: String,
-      default: "",
+      default: "none",
     },
     stockEntriesNeedApproval: {
       type: Boolean,

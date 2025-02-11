@@ -19,17 +19,42 @@ const api = axios.create({
 
 const AlternateManagerSelectTableCell = (props) => {
   const [options, setOptions] = React.useState([]);
-  const [selectedAlternate, setSelectedAlternate] = React.useState(null);
+  const [selectedAlternate, setSelectedAlternate] = React.useState(
+    props.fromConfig
+      ? props.type === "requests"
+        ? props.requestsApproverAlternate
+        : props.type === "stock"
+        ? props.stockEntriesApproverAlternate
+        : ""
+      : null
+  );
+
+  React.useEffect(() => {
+    if (props.fromConfig) {
+      if (props.type === "requests") {
+        setSelectedAlternate(props.requestsApproverAlternate || "none");
+      } else if (props.type === "stock") {
+        setSelectedAlternate(props.stockEntriesApproverAlternate || "none");
+      }
+    }
+  }, [
+    props.fromConfig,
+    props.type,
+    props.requestsApproverAlternate,
+    props.stockEntriesApproverAlternate,
+  ]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const resManagers = await api.get("/get", {
+        const resUsers = await api.get("/get", {
           params: { model: "User" },
         });
-        const filteredUsers = resManagers.data.filter(
-          (user) => user._id !== props.requestsApproverManager._id
-        );
+        const filteredUsers = props.approverManager
+          ? resUsers.data.filter(
+              (user) => user._id !== props.approverManager._id
+            )
+          : resUsers.data;
         setOptions(filteredUsers);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -39,14 +64,7 @@ const AlternateManagerSelectTableCell = (props) => {
   }, [props]);
 
   const renderValue = (selected) => {
-    if (!selected || props.requestsApproverAlternate === "none") {
-      return (
-        <Grid container direction="row" alignItems="center">
-          <Avatar sx={{ width: 24, height: 24, marginRight: 2 }} />
-          <Typography sx={{ fontSize: 13 }}>Nenhum</Typography>
-        </Grid>
-      );
-    } else if (selected === "none") {
+    if (!selected || selected === "none") {
       return (
         <Grid container direction="row" alignItems="center">
           <Avatar sx={{ width: 24, height: 24, marginRight: 2 }} />
@@ -69,10 +87,14 @@ const AlternateManagerSelectTableCell = (props) => {
 
   const handleChange = (event) => {
     const value = event.target.value;
-    setSelectedAlternate(value);
-
+    setSelectedAlternate(value); // Atualiza o estado local
     if (props.fromConfig) {
-      props.setRequestsApproverAlternate(value || "none");
+      if (props.type === "requests") {
+        props.setRequestsApproverAlternate(value || "none");
+      }
+      if (props.type === "stock") {
+        props.setStockEntriesApproverAlternate(value || "none");
+      }
     } else {
       props.handleChange(props.field.name)(event);
     }
@@ -82,13 +104,7 @@ const AlternateManagerSelectTableCell = (props) => {
     <Grid>
       <InputLabel>{props.field.label}</InputLabel>
       <Select
-        value={
-          props.fromConfig
-            ? props.requestsApproverAlternate
-              ? props.requestsApproverAlternate
-              : selectedAlternate
-            : selectedAlternate
-        }
+        value={selectedAlternate || "none"} // Garante que o valor nunca seja undefined
         onChange={handleChange}
         sx={{
           width: 200,
