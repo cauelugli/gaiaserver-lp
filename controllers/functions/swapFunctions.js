@@ -89,6 +89,7 @@ const swapDepartments = async (
 const swapPositions = async (userId, newPositionId, oldPositionId) => {
   try {
     const user = await User.findById(userId);
+    const oldPositionId = oldPositionId ? await User.findById(oldPositionId) : null;
     if (user) {
       const oldPosition = await Position.findById(oldPositionId);
       if (oldPosition) {
