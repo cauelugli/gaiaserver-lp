@@ -104,8 +104,6 @@ export default function EditFormModel(props) {
         if (field.name === "department" && typeof fieldValue === "string") {
           const department = departments.find((dep) => dep._id === fieldValue);
           initialFields[field.name] = department ? department.name : "";
-        } else if (field.name === "scheduledToAssignee") {
-          initialFields[field.name] = !!props.target.scheduledToAssignee;
         } else if (field.name === "scheduleTime") {
           initialFields[field.name] = props.target.scheduleTime
             ? props.target.scheduleTime

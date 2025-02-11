@@ -137,13 +137,6 @@ export default function AddFormModel(props) {
     });
   };
 
-  const handleCheck = (event) => {
-    setFields({
-      ...fields,
-      ["scheduledToAssignee"]: event.target.checked,
-    });
-  };
-
   const handleAdd = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -261,7 +254,6 @@ export default function AddFormModel(props) {
 
   const handlers = {
     setFields,
-    handleCheck,
     handleMemberChange,
     handleProductChange,
     handleServiceChange,

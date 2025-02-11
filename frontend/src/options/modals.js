@@ -251,13 +251,6 @@ export const modals = {
       },
       {
         fieldSection: "scheduling",
-        name: "scheduledToAssignee",
-        label: "Agendar para Colaborador",
-        type: "checkbox",
-        required: false,
-      },
-      {
-        fieldSection: "scheduling",
         name: "scheduleTime",
         label: "Selecione um Horário",
         type: "dynamicData",
