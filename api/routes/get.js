@@ -41,6 +41,46 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET DASHBOARD DATA
+router.get("/dashboard", async (req, res) => {
+  let models = [];
+  try {
+    const modelsToCheck = ["User", "Job", "Sale"];
+
+    for (const modelName of modelsToCheck) {
+      const model = defineModel(modelName);
+      let data;
+
+      if (modelName === "User") {
+        // Para "User", buscamos apenas o campo 'createdAt'
+        data = await model.find({}, { createdAt: 1, _id: 1 });
+      } else if (modelName === "Job") {
+        data = await model.find(
+          {},
+          { createdAt: 1, customer: 1, number: 1, service: 1, _id: 0 }
+        );
+      } else if (modelName === "Sale") {
+        data = await model.find(
+          {},
+          { createdAt: 1, customer: 1, number: 1, seller: 1, _id: 0 }
+        );
+      }
+
+      // Adiciona os dados ao objeto de resposta
+      models.push({
+        model: modelName,
+        data: data,
+      });
+    }
+
+    // Retorna os dados no formato esperado pelo frontend
+    res.status(200).json(models);
+  } catch (err) {
+    console.log("\nError fetching core data:", err, "\n");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // GET USER'S NOTIFICATIONS
 router.get("/notifications/:userId", async (req, res) => {
   const { userId } = req.params;

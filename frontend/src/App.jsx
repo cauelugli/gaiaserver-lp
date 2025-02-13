@@ -322,6 +322,7 @@ export default function App() {
                               configCustomization={configData.customization}
                               topBar={userPreferences.barPosition}
                               currentWindowSize={currentWindowSize}
+                              api={api}
                             />
                           ) : (
                             <Navigate to="/login" />
