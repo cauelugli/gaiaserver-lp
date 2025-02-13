@@ -7,7 +7,6 @@ import { Divider, Grid, List, ListItemButton, Typography } from "@mui/material";
 import { icons } from "../../icons";
 
 const options = [
-  { label: "Dashboard", icon: <icons.DashboardIcon />, link: "/", disabled: true },
   { label: "Clientes", icon: <icons.WorkIcon />, link: "/customers" },
   { label: "Solicitações", icon: <icons.GradingIcon />, link: "/requests" },
   { label: "Colaboradores", icon: <icons.GroupIcon />, link: "/users" },
@@ -15,8 +14,9 @@ const options = [
   { label: "Serviços", icon: <icons.BuildIcon />, link: "/services" },
   { label: "Produtos", icon: <icons.SellIcon />, link: "/products" },
   { label: "Estoque", icon: <icons.WarehouseIcon />, link: "/stock" },
-  { label: "Chat", icon: <icons.ChatIcon />, link: "/", disabled: true },
   { label: "Financeiro", icon: <icons.AttachMoneyIcon />, link: "/finance" },
+  { label: "Dashboard", icon: <icons.DashboardIcon />, link: "/dashboard" },
+  { label: "Chat", icon: <icons.ChatIcon />, link: "/", disabled: true },
   { label: "Relatórios", icon: <icons.AssessmentIcon />, link: "/reports" },
   {
     label: "Acessos",
