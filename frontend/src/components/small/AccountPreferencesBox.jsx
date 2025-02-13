@@ -13,6 +13,7 @@ import {
   Button,
 } from "@mui/material";
 import FontFamilySelect from "./selects/FontFamilySelect";
+import HomePageLayoutSelect from "./selects/HomePageLayoutSelect";
 
 const AccountPreferencesBox = (props) => {
   const [checkedDarkMode, setCheckedDarkMode] = useState(props.darkMode);
@@ -23,12 +24,15 @@ const AccountPreferencesBox = (props) => {
   const [fontFamilyTitle, setFontFamilyTitle] = useState(props.fontFamilyTitle);
   const [fontFamilyRest, setFontFamilyRest] = useState(props.fontFamilyRest);
 
+  const [homePageLayout, setHomePageLayout] = useState(props.homePageLayout);
+
   React.useEffect(() => {
     setCheckedDarkMode(props.darkMode);
     setPaletteColor(props.paletteColor);
     setCheckedBarPosition(props.barPosition);
     setFontFamilyTitle(props.fontFamilyTitle);
     setFontFamilyRest(props.fontFamilyRest);
+    setHomePageLayout(props.homePageLayout);
   }, [props]);
 
   const handleChangeDarkMode = (event) => {
@@ -54,6 +58,11 @@ const AccountPreferencesBox = (props) => {
   const handleFontRestChange = (font) => {
     setFontFamilyRest(font);
     props.setFontFamilyRest(font);
+  };
+
+  const handleHomePageLayoutChange = (homePageLayout) => {
+    setHomePageLayout(homePageLayout);
+    props.onUpdateHomePageLayout(homePageLayout);
   };
 
   const availableColors = checkedDarkMode
@@ -149,6 +158,17 @@ const AccountPreferencesBox = (props) => {
                 onChange={handleChangeBarPosition}
               />
             }
+          />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion sx={{ width: "100%", mt: 1 }}>
+        <AccordionSummary>
+          <Typography sx={{ fontSize: 16 }}>Layout Home Page</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <HomePageLayoutSelect
+            homePageLayout={homePageLayout}
+            onChangeHomePageLayout={handleHomePageLayoutChange}
           />
         </AccordionDetails>
       </Accordion>

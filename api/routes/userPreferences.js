@@ -116,6 +116,22 @@ router.put("/fontFamily", async (req, res) => {
   }
 });
 
+// UPDATE HOME PAGE LAYOUT
+router.put("/homePageLayout", async (req, res) => {
+  const { userId, homePageLayout } = req.body;
+
+  try {
+    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    userPreferences.homePageLayout = homePageLayout;
+    await userPreferences.save();
+
+    res.status(200).json({ message: "homePageLayout updated successfully" });
+  } catch (error) {
+    console.error("Error updating FontFamily:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // UPDATE PALETTE COLOR
 router.put("/paletteColor", async (req, res) => {
   const { userId, paletteColor } = req.body;

@@ -54,6 +54,9 @@ export default function Account({
   const [fontFamilyRest, setFontFamilyRest] = React.useState(
     userPreferences.fontFamilyRest
   );
+  const [homePageLayout, setHomePageLayout] = React.useState(
+    userPreferences.homePageLayout
+  );
 
   React.useEffect(() => {
     setDarkMode(userPreferences.darkMode);
@@ -61,6 +64,7 @@ export default function Account({
     setBarPosition(userPreferences.barPosition);
     setFontFamilyTitle(userPreferences.fontFamilyTitle);
     setFontFamilyRest(userPreferences.fontFamilyRest);
+    setHomePageLayout(userPreferences.homePageLayout);
   }, [userPreferences]);
 
   const handleChangeImage = async (e) => {
@@ -220,6 +224,33 @@ export default function Account({
     }
   };
 
+  const handleUpdateHomePageLayout = async (newHomePageLayout) => {
+    try {
+      const response = await api.put("/userPreferences/homePageLayout", {
+        userId: user._id,
+        homePageLayout: newHomePageLayout,
+      });
+
+      if (response.data) {
+        setRefreshData(!refreshData);
+        toast.success("Layout da Home Page Atualizado!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
+    } catch (err) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+      console.log(err);
+    }
+  };
+
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <Typography
@@ -239,9 +270,11 @@ export default function Account({
             onUpdatePaletteColor={handleUpdatePaletteColor}
             onUpdateDarkMode={handleUpdateDarkMode}
             onUpdateBarPosition={handleUpdateBarPosition}
+            onUpdateHomePageLayout={handleUpdateHomePageLayout}
             darkMode={darkMode}
             paletteColor={paletteColor}
             barPosition={barPosition}
+            homePageLayout={homePageLayout}
             fontFamilyTitle={fontFamilyTitle}
             fontFamilyRest={fontFamilyRest}
             handleUpdateFontFamily={handleUpdateFontFamily}

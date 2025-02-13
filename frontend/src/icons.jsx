@@ -1,6 +1,7 @@
 // src/icons.jsx
 import AbcIcon from "@mui/icons-material/Abc";
 import AddIcon from "@mui/icons-material/Add";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import AppsIcon from "@mui/icons-material/Apps";
@@ -34,6 +35,7 @@ import FileUploadIcon from "@mui/icons-material/FileUpload";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import GradingIcon from "@mui/icons-material/Grading";
+import GridViewIcon from "@mui/icons-material/GridView";
 import GroupIcon from "@mui/icons-material/Group";
 import GroupsIcon from "@mui/icons-material/Groups";
 import HelpCenterIcon from "@mui/icons-material/HelpCenter";
@@ -73,6 +75,7 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
+import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
@@ -80,6 +83,7 @@ import WorkIcon from "@mui/icons-material/Work";
 const icons = {
   AbcIcon,
   AddIcon,
+  AccountCircleIcon,
   AdminPanelSettingsIcon,
   ApartmentIcon,
   AppsIcon,
@@ -113,6 +117,7 @@ const icons = {
   FilterAltIcon,
   FilterAltOffIcon,
   GradingIcon,
+  GridViewIcon,
   GroupIcon,
   GroupsIcon,
   HelpCenterIcon,
@@ -152,6 +157,7 @@ const icons = {
   ThumbUpIcon,
   TimelapseIcon,
   UploadFileIcon,
+  ViewCarouselIcon,
   VisibilityIcon,
   WarehouseIcon,
   WorkIcon,

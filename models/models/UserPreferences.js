@@ -14,6 +14,10 @@ const userPreferencesSchema = new mongoose.Schema({
   paletteColor: {
     type: String,
   },
+  homePageLayout: {
+    type: String,
+    default: "Padrão",
+  },
   barPosition: {
     type: Boolean,
     default: false,
