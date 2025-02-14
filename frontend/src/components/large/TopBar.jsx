@@ -149,6 +149,10 @@ const TopBar = ({ configData, user }) => {
                     opacity: hoveredIndex === index ? 1 : 0,
                     transition: "opacity 0.3s ease-in-out",
                     padding: "2px 0",
+                    color:
+                      configData && configData.customization
+                        ? configData.customization.fontColor
+                        : "white",
                   }}
                 >
                   {option.label}

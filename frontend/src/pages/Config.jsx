@@ -166,7 +166,7 @@ export default function Config({
                   }}
                 >
                   {config.icon}
-                  <Typography sx={{ mt: 1, fontSize: "1.3vw" }}>
+                  <Typography sx={{ mt: 1, fontSize: "1.3vw", color: "white" }}>
                     {config.text}
                   </Typography>
                 </Grid>
