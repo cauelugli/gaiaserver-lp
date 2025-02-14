@@ -51,7 +51,7 @@ const Home = ({
           layout={layout}
           // userUsername={userUsername}
           allowedLinks={allowedLinks}
-          configData={configData}
+          configData={configData.customization}
           currentWindowSize={currentWindowSize}
         />
       </Grid>

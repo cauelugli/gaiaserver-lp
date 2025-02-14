@@ -45,15 +45,20 @@ export const lightTheme = createTheme({
       default: userPaletteColor,
       paper: userPaletteColor,
     },
+    text: {
+      primary: "#4D4D4D",
+    },
   },
   components: {
     ...commonThemeSettings.components,
     MuiTypography: {
       styleOverrides: {
         root: {
-          fontFamily: userFontFamilyRest, 
+          fontFamily: userFontFamilyRest,
+          color: "#4D4D4D",
           "&#title": {
             fontFamily: userFontFamilyTitle,
+            color: "#4D4D4D",
           },
         },
       },
@@ -81,6 +86,9 @@ export const darkTheme = createTheme({
       default: userPaletteColor,
       paper: userPaletteColor,
     },
+    text: {
+      primary: "#ffffff",
+    },
   },
   components: {
     ...commonThemeSettings.components,
@@ -88,8 +96,10 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           fontFamily: userFontFamilyRest,
+          color: "#ffffff",
           "&#title": {
             fontFamily: userFontFamilyTitle,
+            color: "#ffffff",
           },
         },
       },

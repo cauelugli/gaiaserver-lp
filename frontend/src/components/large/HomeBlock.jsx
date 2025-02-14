@@ -30,7 +30,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
       "security",
       "dashboard",
       "reports",
-      "chat"
+      "chat",
     ].includes(link)
   );
 
@@ -49,6 +49,8 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
       lg2: 3.75,
       xl: 4.25,
     }[currentWindowSize] || 0;
+
+  console.log("configData", configData);
 
   return (
     <Grid
@@ -78,13 +80,11 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                       height: (layout === "Chip" ? 25 : 40) * factor,
                       transition: "background-color 0.3s, color 0.3s",
                       backgroundColor:
-                        hoveredIndexMainblocks === index &&
-                        configData &&
-                        configData.customization
-                          ? configData.customization.mainColor
-                          : "white",
+                        hoveredIndexMainblocks === index && configData
+                          ? configData.mainColor
+                          : "none",
                       color:
-                        hoveredIndexMainblocks === index ? "white" : "#777",
+                        hoveredIndexMainblocks === index ? "white" : "none",
                       borderRadius: layout === "Chip" ? 50 : 0,
                     }}
                   >
@@ -105,6 +105,10 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                           width: "auto",
                           fontSize: 14 + (factor + factor / 2),
                           fontWeight: "bold",
+                          color:
+                            hoveredIndexMainblocks === index
+                              ? "white"
+                              : "inherit",
                         }}
                       >
                         {option.text}
@@ -137,13 +141,11 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                       width: 45 * factor,
                       transition: "background-color 0.3s, color 0.3s",
                       backgroundColor:
-                        hoveredIndexMainblocks === index &&
-                        configData &&
-                        configData.customization
-                          ? configData.customization.mainColor
-                          : "white",
+                        hoveredIndexMainblocks === index && configData
+                          ? configData.mainColor
+                          : "none",
                       color:
-                        hoveredIndexMainblocks === index ? "white" : "#777",
+                        hoveredIndexMainblocks === index ? "white" : "none",
                     }}
                   >
                     <Grid
@@ -160,7 +162,6 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                       {React.cloneElement(option.icon, {
                         style: {
                           fontSize: "1.5vw",
-                          
                         },
                       })}
                       <Typography
@@ -169,6 +170,10 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                           width: "auto",
                           fontSize: 12 + factor,
                           fontWeight: "bold",
+                          color:
+                            hoveredIndexMainblocks === index
+                              ? "white"
+                              : "inherit",
                         }}
                       >
                         {option.text}
@@ -192,61 +197,64 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                 xl={3}
                 sx={{ p: 1 }}
               >
-                <Paper
-                  onMouseEnter={() => setHoveredIndexMainblocks(index)}
-                  onMouseLeave={() => setHoveredIndexMainblocks(null)}
-                  sx={{
-                    height: 55 * factor,
-                    width: 55 * factor,
-                    transition: "background-color 0.3s, color 0.3s",
-                    backgroundColor:
-                      hoveredIndexMainblocks === index &&
-                      configData &&
-                      configData.customization
-                        ? configData.customization.mainColor
-                        : "white",
-                    color: hoveredIndexMainblocks === index ? "white" : "#777",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Link to={option.link} style={{ textDecoration: "none" }}>
-                    <Grid
-                      container
-                      direction="column"
-                      alignItems="center"
-                      sx={{
-                        height: "100%",
-                        cursor: "pointer",
-                        backgroundColor:
-                          hoveredIndexMainblocks === index &&
-                          configData &&
-                          configData.customization
-                            ? configData.customization.mainColor
-                            : "white",
-                        color:
-                          hoveredIndexMainblocks === index ? "white" : "#777",
-                        transition: "background-color 0.3s, color 0.3s",
-                      }}
-                    >
-                      {React.cloneElement(option.icon, {
-                        style: { fontSize: "6vw" },
-                      })}
-                      <Typography
-                        style={{
-                          marginTop: factor,
-                          width: "auto",
-                          fontSize: 12 + factor,
-                          fontWeight: "bold",
+                <Link to={option.link} style={{ textDecoration: "none" }}>
+                  <Paper
+                    onMouseEnter={() => setHoveredIndexMainblocks(index)}
+                    onMouseLeave={() => setHoveredIndexMainblocks(null)}
+                    sx={{
+                      height: 55 * factor,
+                      width: 55 * factor,
+                      transition: "background-color 0.3s, color 0.3s",
+                      backgroundColor:
+                        hoveredIndexMainblocks === index && configData
+                          ? configData.mainColor
+                          : "white",
+                      color:
+                        hoveredIndexMainblocks === index ? "white" : "#777",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Link to={option.link} style={{ textDecoration: "none" }}>
+                      <Grid
+                        container
+                        direction="column"
+                        alignItems="center"
+                        sx={{
+                          height: "100%",
+                          cursor: "pointer",
+                          backgroundColor:
+                            hoveredIndexMainblocks === index &&
+                            configData &&
+                            configData.mainColor,
+                          color:
+                            hoveredIndexMainblocks === index ? "white" : "#777",
+                          transition: "background-color 0.3s, color 0.3s",
                         }}
                       >
-                        {option.text}
-                      </Typography>
-                    </Grid>
-                  </Link>
-                </Paper>
+                        {React.cloneElement(option.icon, {
+                          style: { fontSize: "6vw" },
+                        })}
+                        <Typography
+                          style={{
+                            marginTop: factor,
+                            width: "auto",
+                            fontSize: 12 + factor,
+                            fontWeight: "bold",
+                            color:
+                              hoveredIndexMainblocks === index
+                                ? "white"
+                                : "inherit",
+                          }}
+                        >
+                          {option.text}
+                        </Typography>
+                      </Grid>
+                    </Link>
+                  </Paper>
+                </Link>
               </Grid>
             );
           }
@@ -273,9 +281,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                           backgroundColor:
                             hoveredIndexMainblocks === index &&
                             configData &&
-                            configData.customization
-                              ? configData.customization.mainColor
-                              : "white",
+                            configData.mainColor,
                           color:
                             hoveredIndexMainblocks === index ? "white" : "#777",
                           cursor: "pointer",
@@ -292,13 +298,9 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                                 backgroundColor:
                                   hoveredIndexMainblocks === index &&
                                   configData &&
-                                  configData.customization
-                                    ? configData.customization.mainColor
-                                    : "white",
+                                  configData.mainColor,
                                 color:
-                                  hoveredIndexMainblocks === index
-                                    ? "white"
-                                    : "#777",
+                                  hoveredIndexMainblocks === index && "white",
                               }}
                             >
                               <Grid item>
@@ -311,6 +313,10 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                                   style={{
                                     fontSize: 14 + factor,
                                     fontWeight: "bold",
+                                    color:
+                                      hoveredIndexMainblocks === index
+                                        ? "white"
+                                        : "inherit",
                                   }}
                                 >
                                   {option.text}
