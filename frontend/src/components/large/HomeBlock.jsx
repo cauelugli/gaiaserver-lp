@@ -208,7 +208,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                           ? configData.mainColor
                           : "white",
                       color:
-                        hoveredIndexMainblocks === index ? "white" : "#777",
+                        hoveredIndexMainblocks === index && "white",
                       borderRadius: "50%",
                       display: "flex",
                       alignItems: "center",
@@ -228,7 +228,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                             configData &&
                             configData.mainColor,
                           color:
-                            hoveredIndexMainblocks === index ? "white" : "#777",
+                            hoveredIndexMainblocks === index && "white",
                           transition: "background-color 0.3s, color 0.3s",
                         }}
                       >
@@ -281,7 +281,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                             configData &&
                             configData.mainColor,
                           color:
-                            hoveredIndexMainblocks === index ? "white" : "#777",
+                            hoveredIndexMainblocks === index && "white",
                           cursor: "pointer",
                         }}
                       >

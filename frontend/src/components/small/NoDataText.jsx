@@ -13,7 +13,7 @@ const NoDataText = ({ option, femaleGender }) => {
       justifyContent="center"
       sx={{ mt: 3, mb:"30vw" }}
     >
-      <Typography sx={{ fontSize: 30, color: "#777" }}>
+      <Typography sx={{ fontSize: 30 }}>
         Não há {option} Cadastrad{femaleGender?"a":"o"}s
       </Typography>
     </Grid>

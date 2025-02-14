@@ -60,7 +60,6 @@ const NewUserShortcut = ({ userId, reloadShortcuts, allowedLinks }) => {
           mb: 1,
           backgroundColor: "#fff",
           borderRadius: 2,
-          color: "#777",
           textAlign: "center",
           cursor: "pointer",
           "&:hover": {

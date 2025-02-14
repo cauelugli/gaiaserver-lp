@@ -211,7 +211,7 @@ const ViewDialog = ({
               <TableRow>
                 <TableCell
                   sx={{
-                    color: "#777",
+                    
                     position: "sticky",
                     top: 0,
                     zIndex: 100,
@@ -222,7 +222,7 @@ const ViewDialog = ({
                 <TableCell
                   align="left"
                   sx={{
-                    color: "#777",
+                    
                     position: "sticky",
                     top: 0,
                     zIndex: 100,
@@ -233,7 +233,7 @@ const ViewDialog = ({
                 <TableCell
                   align="left"
                   sx={{
-                    color: "#777",
+                    
                     position: "sticky",
                     top: 0,
                     zIndex: 100,
@@ -246,7 +246,7 @@ const ViewDialog = ({
                 <TableCell
                   align="left"
                   sx={{
-                    color: "#777",
+                    
                     position: "sticky",
                     top: 0,
                     zIndex: 100,
@@ -257,7 +257,7 @@ const ViewDialog = ({
                 <TableCell
                   align="left"
                   sx={{
-                    color: "#777",
+                    
                     position: "sticky",
                     top: 0,
                     zIndex: 100,

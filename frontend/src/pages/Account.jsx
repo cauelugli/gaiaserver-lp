@@ -404,22 +404,22 @@ export default function Account({
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                  <Typography sx={{ fontSize: "14px" }}>
                     Nome
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                  <Typography sx={{ fontSize: "14px" }}>
                     E-mail
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                  <Typography sx={{ fontSize: "14px" }}>
                     Telefone
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                  <Typography sx={{ fontSize: "14px" }}>
                     Departamento
                   </Typography>
                 </TableCell>
@@ -449,17 +449,17 @@ export default function Account({
             <TableHead>
               <TableRow>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                  <Typography sx={{ fontSize: "14px" }}>
                     Cargo
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                  <Typography sx={{ fontSize: "14px" }}>
                     Nome de Operador
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: "14px", color: "#777" }}>
+                  <Typography sx={{ fontSize: "14px" }}>
                     Perfil de Acesso
                   </Typography>
                 </TableCell>

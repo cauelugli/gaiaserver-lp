@@ -146,7 +146,7 @@ const InteractionReactions = ({
             sx={{
               color: userReacted(reactionType)
                 ? reactionsMap[reactionType].color
-                : "#777",
+                : "inherit",
               "&:active": {
                 animation: `${growShrinkAnimation} 3s ease-in-out`,
               },
@@ -177,7 +177,6 @@ const InteractionReactions = ({
           >
             <icons.DeleteIcon
               sx={{
-                color: "#777",
                 "&:hover": {
                   color: "red",
                 },

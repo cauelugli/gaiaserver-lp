@@ -214,7 +214,6 @@ const AddInteractionForm = ({
                               <icons.AttachFileIcon
                                 sx={{
                                   fontSize: 16,
-                                  color: "#777",
                                   cursor: "pointer",
                                 }}
                                 onClick={handlePopoverOpen(index)}
@@ -444,7 +443,6 @@ const AddInteractionForm = ({
                             <Typography
                               sx={{
                                 fontSize: 10,
-                                color: "#777",
                                 maxWidth: "75px",
                                 whiteSpace: "nowrap",
                                 overflow: "hidden",

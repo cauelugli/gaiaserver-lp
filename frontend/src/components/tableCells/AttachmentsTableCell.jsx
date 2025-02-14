@@ -92,7 +92,6 @@ const AttachmentsTableCell = ({ attachments, onUpload, onRemove }) => {
                   <Typography
                     sx={{
                       fontSize: 10,
-                      color: "#777",
                       maxWidth: "75px",
                       whiteSpace: "nowrap",
                       overflow: "hidden",

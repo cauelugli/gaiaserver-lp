@@ -32,7 +32,7 @@ const ShortcutItem = ({ shortcut, onShortcutClick, onDeleteShortcut }) => {
         mb: 1,
         backgroundColor: "#fff",
         borderRadius: 2,
-        color: "#777",
+
         cursor: "pointer",
         "&:hover": {
           backgroundColor: "#ddd",
@@ -44,7 +44,6 @@ const ShortcutItem = ({ shortcut, onShortcutClick, onDeleteShortcut }) => {
           p: 1,
           fontSize: 12,
           mx: "auto",
-          color: "#777",
         }}
       >
         {shortcut.name.toUpperCase()}
@@ -56,7 +55,7 @@ const ShortcutItem = ({ shortcut, onShortcutClick, onDeleteShortcut }) => {
           fontSize: 12,
           borderRadius: 2,
           cursor: "pointer",
-          color: "#777",
+
           "&:hover": {
             backgroundColor: "#bbb",
           },

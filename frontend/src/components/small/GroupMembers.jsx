@@ -46,7 +46,7 @@ const GroupMembers = ({ members, users, managers }) => {
         }
       })}
       {remainingMembersCount > 0 && (
-        <Typography sx={{ fontSize: 13, color: "#777", ml: 0.5 }}>
+        <Typography sx={{ fontSize: 13, ml: 0.5 }}>
           ...+{remainingMembersCount}
         </Typography>
       )}

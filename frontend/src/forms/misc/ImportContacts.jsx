@@ -204,9 +204,7 @@ const ImportContacts = ({
               </a>{" "}
             </Button>
           </Grid>
-          <Typography
-            sx={{ fontSize: 20, mt: 8, textAlign: "center", color: "#777" }}
-          >
+          <Typography sx={{ fontSize: 20, mt: 8, textAlign: "center" }}>
             FAÇA O ENVIO DO ARQUIVO NO BOTÃO ABAIXO
           </Typography>
         </>
