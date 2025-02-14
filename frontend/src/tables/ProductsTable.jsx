@@ -30,7 +30,6 @@ function ProductsTable(props) {
               <TableCell align="right">R${row.buyValue?.toFixed(2)}</TableCell>
               <TableCell align="right">R${row.sellValue?.toFixed(2)}</TableCell>
               <TableCell align="right">{row.stockQuantity}</TableCell>
-              <TableCell align="right">oneDay</TableCell>
               <TableCell align="center">
                 <RowButton
                   userId={props.userId}

@@ -68,13 +68,6 @@ function ProductsTableHeader(props) {
         Em Estoque
       </TableCell>
       <TableCell
-        align="right"
-        id="sellValue"
-        sx={{ fontSize: 13, fontWeight: "bold", width: 80 }}
-      >
-        Vendidos
-      </TableCell>
-      <TableCell
         align="center"
         sx={{ fontSize: 13, fontWeight: "bold", width: 80 }}
       >

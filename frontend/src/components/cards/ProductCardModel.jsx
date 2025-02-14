@@ -79,9 +79,6 @@ export default function ProductCardModel({
             <Typography variant="body2" sx={{ mt: 1, fontSize: 11 + cardSize }}>
               <strong>Em estoque:</strong> {item?.stockQuantity || "N/A"}
             </Typography>{" "}
-            <Typography variant="body2" sx={{ mt: 1, fontSize: 11 + cardSize }}>
-              <strong>Vendidos:</strong> {"N/A"}
-            </Typography>
             <RowButton
               userId={userId}
               // userIsRequestsApproverManager={userId === requestsApproverManager}
