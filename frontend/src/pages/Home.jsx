@@ -9,6 +9,7 @@ import HomeSideBar from "../components/large/HomeSideBar";
 const Home = ({
   api,
   layout,
+  homePagePreferences,
   userId,
   // userUsername,
   allowedLinks,
@@ -45,6 +46,7 @@ const Home = ({
         mt: 1,
         minHeight: "45vw",
       }}
+      justifyContent={homePagePreferences === 3 && "center"}
     >
       <Grid item lg={9} xl={8}>
         <HomeBlock
@@ -55,21 +57,23 @@ const Home = ({
           currentWindowSize={currentWindowSize}
         />
       </Grid>
-      {(currentWindowSize === "md2" ||
-        currentWindowSize === "lg1" ||
-        currentWindowSize === "lg2" ||
-        currentWindowSize === "xl") && (
-        <Grid item lg={3} xl={4}>
-          <HomeSideBar
-            userId={userId}
-            handleShortcutClick={handleShortcutClick}
-            allowedLinks={allowedLinks}
-            userAgenda={userAgenda}
-            mainColor={mainColor}
-            api={api}
-          />
-        </Grid>
-      )}
+      {homePagePreferences !== 3 &&
+        (currentWindowSize === "md2" ||
+          currentWindowSize === "lg1" ||
+          currentWindowSize === "lg2" ||
+          currentWindowSize === "xl") && (
+          <Grid item lg={3} xl={4}>
+            <HomeSideBar
+              userId={userId}
+              homePagePreferences={homePagePreferences}
+              handleShortcutClick={handleShortcutClick}
+              allowedLinks={allowedLinks}
+              userAgenda={userAgenda}
+              mainColor={mainColor}
+              api={api}
+            />
+          </Grid>
+        )}
     </Grid>
   );
 };

@@ -44,9 +44,12 @@ const HomeSideBar = ({
   allowedLinks,
   userAgenda,
   mainColor,
+  homePagePreferences,
 }) => {
   const [selectedDay, setSelectedDay] = React.useState(dayjs());
-  const [openCalendar, setOpenCalendar] = React.useState(true);
+  const [openCalendar, setOpenCalendar] = React.useState(
+    homePagePreferences === 1 ? true : false
+  );
 
   return (
     <Grid container direction="column" alignItems="center">

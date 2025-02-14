@@ -269,6 +269,7 @@ export default function App() {
                             <Home
                               api={api}
                               layout={userPreferences.homePageLayout}
+                              homePagePreferences={userPreferences.homePagePreferences}
                               userId={userData._id}
                               userName={userData.name}
                               userUsername={userData.username}

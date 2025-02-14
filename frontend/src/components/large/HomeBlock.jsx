@@ -50,8 +50,6 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
       xl: 4.25,
     }[currentWindowSize] || 0;
 
-  console.log("configData", configData);
-
   return (
     <Grid
       container
