@@ -15,6 +15,8 @@ import {
 import FontFamilySelect from "./selects/FontFamilySelect";
 import HomePageLayoutSelect from "./selects/HomePageLayoutSelect";
 
+import { icons } from "../../icons";
+
 const AccountPreferencesBox = (props) => {
   const [checkedDarkMode, setCheckedDarkMode] = useState(props.darkMode);
   const [checkedBarPosition, setCheckedBarPosition] = useState(
@@ -80,7 +82,8 @@ const AccountPreferencesBox = (props) => {
     >
       <Accordion sx={{ width: "100%" }}>
         <AccordionSummary>
-          <Typography sx={{ fontSize: 16 }}>Tema</Typography>
+          <icons.PaletteIcon />
+          <Typography sx={{ fontSize: 16, ml: 1 }}>Tema</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <FormControlLabel
@@ -120,7 +123,8 @@ const AccountPreferencesBox = (props) => {
 
       <Accordion sx={{ width: "100%", mt: 1 }}>
         <AccordionSummary>
-          <Typography sx={{ fontSize: 16 }}>Fonte</Typography>
+          <icons.AbcIcon />
+          <Typography sx={{ fontSize: 16, ml: 1 }}>Fonte</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <FontFamilySelect
@@ -146,7 +150,8 @@ const AccountPreferencesBox = (props) => {
 
       <Accordion sx={{ width: "100%", mt: 1 }}>
         <AccordionSummary>
-          <Typography sx={{ fontSize: 16 }}>Barra de Ferramentas</Typography>
+          <icons.WebAssetIcon />
+          <Typography sx={{ fontSize: 16, ml: 1 }}>Posição da Barra</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <FormControlLabel
@@ -161,9 +166,11 @@ const AccountPreferencesBox = (props) => {
           />
         </AccordionDetails>
       </Accordion>
+
       <Accordion sx={{ width: "100%", mt: 1 }}>
         <AccordionSummary>
-          <Typography sx={{ fontSize: 16 }}>Layout Home Page</Typography>
+          <icons.AppsIcon />
+          <Typography sx={{ fontSize: 16, ml: 1 }}>Layout Home Page</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <HomePageLayoutSelect

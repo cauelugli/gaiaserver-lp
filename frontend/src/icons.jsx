@@ -1,4 +1,5 @@
 // src/icons.jsx
+// icons
 import AbcIcon from "@mui/icons-material/Abc";
 import AddIcon from "@mui/icons-material/Add";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -34,7 +35,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
-import FilterNoneIcon from '@mui/icons-material/FilterNone';
+import FilterNoneIcon from "@mui/icons-material/FilterNone";
 import GradingIcon from "@mui/icons-material/Grading";
 import GridViewIcon from "@mui/icons-material/GridView";
 import GroupIcon from "@mui/icons-material/Group";
@@ -77,9 +78,10 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import ViewCompactIcon from '@mui/icons-material/ViewCompact';
+import ViewCompactIcon from "@mui/icons-material/ViewCompact";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
+import WebAssetIcon from "@mui/icons-material/WebAsset";
 import WorkIcon from "@mui/icons-material/Work";
 
 const icons = {
@@ -164,6 +166,7 @@ const icons = {
   ViewCompactIcon,
   VisibilityIcon,
   WarehouseIcon,
+  WebAssetIcon,
   WorkIcon,
 };
 
