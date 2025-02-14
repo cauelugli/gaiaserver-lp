@@ -268,6 +268,7 @@ export default function App() {
                           isAuthenticated(login, userData) ? (
                             <Home
                               api={api}
+                              layout={userPreferences.homePageLayout}
                               userId={userData._id}
                               userName={userData.name}
                               userUsername={userData.username}

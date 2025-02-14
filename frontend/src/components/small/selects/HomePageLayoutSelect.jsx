@@ -21,9 +21,10 @@ const HomePageLayoutSelect = (props) => {
 
   const options = [
     { name: "Padrão", icon: <icons.GridViewIcon /> },
+    { name: "Compacto", icon: <icons.ViewCompactIcon /> },
+    { name: "Chip", icon: <icons.HomeMaxIcon /> },
     { name: "Avatar", icon: <icons.AccountCircleIcon /> },
-    { name: "Compacto", icon: <icons.TableRowsIcon /> },
-    { name: "Carrossel", icon: <icons.ViewCarouselIcon /> },
+    { name: "Tabela", icon: <icons.TableRowsIcon /> },
   ];
 
   const handleChange = (event) => {

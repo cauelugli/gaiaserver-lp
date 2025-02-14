@@ -34,12 +34,14 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
+import FilterNoneIcon from '@mui/icons-material/FilterNone';
 import GradingIcon from "@mui/icons-material/Grading";
 import GridViewIcon from "@mui/icons-material/GridView";
 import GroupIcon from "@mui/icons-material/Group";
 import GroupsIcon from "@mui/icons-material/Groups";
 import HelpCenterIcon from "@mui/icons-material/HelpCenter";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import HomeMaxIcon from "@mui/icons-material/HomeMax";
 import HomeIcon from "@mui/icons-material/Home";
 import HubIcon from "@mui/icons-material/Hub";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
@@ -75,7 +77,7 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
+import ViewCompactIcon from '@mui/icons-material/ViewCompact';
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import WorkIcon from "@mui/icons-material/Work";
@@ -116,12 +118,14 @@ const icons = {
   FileUploadIcon,
   FilterAltIcon,
   FilterAltOffIcon,
+  FilterNoneIcon,
   GradingIcon,
   GridViewIcon,
   GroupIcon,
   GroupsIcon,
   HelpCenterIcon,
   HelpOutlineIcon,
+  HomeMaxIcon,
   HomeIcon,
   HubIcon,
   InsertDriveFileIcon,
@@ -157,7 +161,7 @@ const icons = {
   ThumbUpIcon,
   TimelapseIcon,
   UploadFileIcon,
-  ViewCarouselIcon,
+  ViewCompactIcon,
   VisibilityIcon,
   WarehouseIcon,
   WorkIcon,

@@ -8,8 +8,9 @@ import HomeSideBar from "../components/large/HomeSideBar";
 
 const Home = ({
   api,
+  layout,
   userId,
-  userUsername,
+  // userUsername,
   allowedLinks,
   onMount,
   onUnmount,
@@ -47,7 +48,8 @@ const Home = ({
     >
       <Grid item lg={9} xl={8}>
         <HomeBlock
-          userUsername={userUsername}
+          layout={layout}
+          // userUsername={userUsername}
           allowedLinks={allowedLinks}
           configData={configData}
           currentWindowSize={currentWindowSize}
