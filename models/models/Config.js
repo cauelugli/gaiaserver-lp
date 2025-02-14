@@ -145,7 +145,7 @@ const configSchema = new Schema({
     },
     requestsApproverAlternate: {
       type: String,
-      default: "none"
+      default: "none",
     },
     canBeDeleted: {
       type: Boolean,
@@ -199,7 +199,7 @@ const configSchema = new Schema({
       type: Boolean,
       default: true,
     },
-    departmentInternal: {
+    groups: {
       type: Boolean,
       default: true,
     },
@@ -211,19 +211,7 @@ const configSchema = new Schema({
       type: Boolean,
       default: true,
     },
-    serviceConsulting: {
-      type: Boolean,
-      default: true,
-    },
     servicePlan: {
-      type: Boolean,
-      default: true,
-    },
-    stockProduct: {
-      type: Boolean,
-      default: true,
-    },
-    stockItems: {
       type: Boolean,
       default: true,
     },

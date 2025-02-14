@@ -267,7 +267,9 @@ export default function AddBaseProductForm({
             onClick={(event) => setAnchorEl(event.currentTarget)}
             sx={{ maxWidth: 80, mt: 4, ml: 1 }}
           >
-            <Typography sx={{ fontSize: 11 }}>Adicionar Campo</Typography>
+            <Typography sx={{ fontSize: 11, color: "white" }}>
+              Adicionar Campo
+            </Typography>
           </Button>
         </Grid>
 

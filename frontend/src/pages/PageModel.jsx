@@ -60,6 +60,12 @@ export default function PageModel(props) {
 
   const [currentPage, setCurrentPage] = React.useState(props.item.page);
 
+  // eslint-disable-next-line no-unused-vars
+  const [configTables, setConfigTables] = React.useState(
+    props.configData.tables
+  );
+  console.log("configTables", configTables);
+
   const handleChange = (noArgument, newValue) => {
     setValue(newValue);
     setTableFilters({});
@@ -163,6 +169,28 @@ export default function PageModel(props) {
     );
   }
 
+  const shouldDisplayTab = (page, tabIndex, configTables) => {
+    if (page === "departments" && tabIndex === 1) {
+      return configTables.groups;
+    }
+    if (page === "customers" && tabIndex === 0) {
+      return configTables.customerCustomer;
+    }
+    if (page === "customers" && tabIndex === 1) {
+      return configTables.customerClient;
+    }
+    if (page === "requests" && tabIndex === 0) {
+      return configTables.requestJob;
+    }
+    if (page === "requests" && tabIndex === 1) {
+      return configTables.requestSale;
+    }
+    if (page === "services" && tabIndex === 1) {
+      return configTables.servicePlan;
+    }
+    return true;
+  };
+
   return (
     <Box sx={{ minHeight: "50vw" }}>
       <Grid
@@ -229,20 +257,28 @@ export default function PageModel(props) {
                   }}
                 />
               ))
-            : props.item.tabs.map((tab, index) => (
-                <Tab
-                  key={index}
-                  label={<Typography sx={{ fontSize: 13 }}>{tab}</Typography>}
-                  sx={{
-                    color: "black",
-                    "&.Mui-selected": {
-                      color: "black",
-                      backgroundColor: `${props.configCustomization.mainColor}42`,
-                      borderRadius: "15px 15px 0 0",
-                    },
-                  }}
-                />
-              ))}
+            : props.item.tabs.map((tab, index) => {
+                // Verifica se a tab deve ser exibida
+                if (shouldDisplayTab(props.item.page, index, configTables)) {
+                  return (
+                    <Tab
+                      key={index}
+                      label={
+                        <Typography sx={{ fontSize: 13 }}>{tab}</Typography>
+                      }
+                      sx={{
+                        color: "black",
+                        "&.Mui-selected": {
+                          color: "black",
+                          backgroundColor: `${props.configCustomization.mainColor}42`,
+                          borderRadius: "15px 15px 0 0",
+                        },
+                      }}
+                    />
+                  );
+                }
+                return null;
+              })}
           <RefreshDataButton
             refreshData={refreshData}
             setRefreshData={setRefreshData}

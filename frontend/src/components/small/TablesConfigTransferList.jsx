@@ -2,30 +2,18 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 
-import {
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  IconButton,
-  Switch,
-  Typography,
-} from "@mui/material";
+import { Grid, Switch, Typography } from "@mui/material";
 
 const tableTitles = {
-  customerCustomer: "Clientes Empresa",
-  customerClient: "Clientes Pessoa Física",
-  departmentInternal: "Departamentos Internos",
-  requestJob: "Solicitações de Job",
-  requestSale: "Solicitações de Vendas",
-  serviceConsulting: "Serviços de Consultoria",
-  servicePlan: "Serviços Planos",
-  stockProduct: "Estoque de Produtos",
-  stockItems: "Estoque de Materiais",
+  customerCustomer: "Clientes - Empresa",
+  customerClient: "Clientes - Pessoa Física",
+  groups: "Grupos",
+  requestJob: "Solicitações - Job",
+  requestSale: "Solicitações - Vendas",
+  servicePlan: "Plano de Serviços",
 };
 
 export default function TablesConfigTransferList({
-  configData,
   tableStates,
   setTableStates,
 }) {

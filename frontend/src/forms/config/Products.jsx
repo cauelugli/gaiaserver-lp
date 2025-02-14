@@ -39,12 +39,16 @@ import { icons } from "../../icons";
 
 import AddBaseProductForm from "../add/AddBaseProductForm";
 
+import { useAppData } from "../../../src/AppDataContext";
+
 export default function Products({
   onClose,
   userId,
   userName,
   configCustomization,
 }) {
+  const appData = useAppData();
+  const idIndexList = appData.idIndexList;
   const [configData, setConfigData] = React.useState([]);
   const [refreshData, setRefreshData] = React.useState(false);
   const [baseProducts, setBaseProducts] = React.useState([]);
@@ -323,7 +327,11 @@ export default function Products({
 
                                     <TableCell>
                                       <Typography sx={{ fontSize: 12 }}>
-                                        {prod.createdBy ? prod.createdBy : "-"}
+                                        {/* here */}
+                                        {idIndexList.find(
+                                          (creator) =>
+                                            creator.id === prod.createdBy
+                                        )?.name || ""}
                                       </Typography>
                                     </TableCell>
 
