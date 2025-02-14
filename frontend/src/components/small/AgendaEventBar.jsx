@@ -36,7 +36,7 @@ const AgendaEventBar = (props) => {
           color: "#555",
         }}
       >
-        Serviços do Dia
+        Atividades do Dia
       </Typography>
 
       <IconButton
