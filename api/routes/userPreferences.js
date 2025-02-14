@@ -130,6 +130,22 @@ router.put("/homePageLayout", async (req, res) => {
     console.error("Error updating FontFamily:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
+}); 
+
+// UPDATE HOME PAGE PREFERENCES
+router.put("/homePagePreferences", async (req, res) => {
+  const { userId, homePagePreferences } = req.body;
+
+  try {
+    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    userPreferences.homePagePreferences = homePagePreferences;
+    await userPreferences.save();
+
+    res.status(200).json({ message: "homePagePreferences updated successfully" });
+  } catch (error) {
+    console.error("Error updating FontFamily:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 // UPDATE PALETTE COLOR

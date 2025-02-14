@@ -16,6 +16,7 @@ import FontFamilySelect from "./selects/FontFamilySelect";
 import HomePageLayoutSelect from "./selects/HomePageLayoutSelect";
 
 import { icons } from "../../icons";
+import HomePagePreferencesSelect from "./selects/HomePagePreferencesSelect";
 
 const AccountPreferencesBox = (props) => {
   const [checkedDarkMode, setCheckedDarkMode] = useState(props.darkMode);
@@ -27,6 +28,7 @@ const AccountPreferencesBox = (props) => {
   const [fontFamilyRest, setFontFamilyRest] = useState(props.fontFamilyRest);
 
   const [homePageLayout, setHomePageLayout] = useState(props.homePageLayout);
+  const [homePagePreferences, setHomePagePreferences] = useState(props.homePagePreferences);
 
   React.useEffect(() => {
     setCheckedDarkMode(props.darkMode);
@@ -35,6 +37,7 @@ const AccountPreferencesBox = (props) => {
     setFontFamilyTitle(props.fontFamilyTitle);
     setFontFamilyRest(props.fontFamilyRest);
     setHomePageLayout(props.homePageLayout);
+    setHomePagePreferences(props.homePagePreferences);
   }, [props]);
 
   const handleChangeDarkMode = (event) => {
@@ -65,6 +68,11 @@ const AccountPreferencesBox = (props) => {
   const handleHomePageLayoutChange = (homePageLayout) => {
     setHomePageLayout(homePageLayout);
     props.onUpdateHomePageLayout(homePageLayout);
+  };
+  
+  const handleHomePagePreferencesChange = (homePagePreferences) => {
+    setHomePagePreferences(homePagePreferences);
+    props.onUpdateHomePagePreferences(homePagePreferences);
   };
 
   const availableColors = checkedDarkMode
@@ -169,6 +177,19 @@ const AccountPreferencesBox = (props) => {
 
       <Accordion sx={{ width: "100%", mt: 1 }}>
         <AccordionSummary>
+          <icons.ListIcon />
+          <Typography sx={{ fontSize: 16, ml: 1 }}>Home Page</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <HomePagePreferencesSelect
+            homePagePreferences={homePagePreferences}
+            onChangeHomePagePreferences={handleHomePagePreferencesChange}
+          />
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion sx={{ width: "100%", mt: 1 }}>
+        <AccordionSummary>
           <icons.AppsIcon />
           <Typography sx={{ fontSize: 16, ml: 1 }}>Layout Home Page</Typography>
         </AccordionSummary>
@@ -179,6 +200,8 @@ const AccountPreferencesBox = (props) => {
           />
         </AccordionDetails>
       </Accordion>
+
+
     </Grid>
   );
 };

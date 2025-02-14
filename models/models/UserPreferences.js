@@ -18,6 +18,10 @@ const userPreferencesSchema = new mongoose.Schema({
     type: String,
     default: "Padrão",
   },
+  homePagePreferences: {
+    type: Number,
+    default: 0,
+  },
   barPosition: {
     type: Boolean,
     default: false,

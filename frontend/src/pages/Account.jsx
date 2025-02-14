@@ -57,6 +57,9 @@ export default function Account({
   const [homePageLayout, setHomePageLayout] = React.useState(
     userPreferences.homePageLayout
   );
+  const [homePagePreferences, setHomePagePreferences] = React.useState(
+    userPreferences.homePagePreferences
+  );
 
   React.useEffect(() => {
     setDarkMode(userPreferences.darkMode);
@@ -65,6 +68,7 @@ export default function Account({
     setFontFamilyTitle(userPreferences.fontFamilyTitle);
     setFontFamilyRest(userPreferences.fontFamilyRest);
     setHomePageLayout(userPreferences.homePageLayout);
+    setHomePagePreferences(userPreferences.homePagePreferences);
   }, [userPreferences]);
 
   const handleChangeImage = async (e) => {
@@ -251,6 +255,33 @@ export default function Account({
     }
   };
 
+  const handleUpdateHomePagePreferences = async (newHomePagePreferences) => {
+    try {
+      const response = await api.put("/userPreferences/homePagePreferences", {
+        userId: user._id,
+        homePagePreferences: newHomePagePreferences,
+      });
+
+      if (response.data) {
+        setRefreshData(!refreshData);
+        toast.success("Home Page Atualizada!", {
+          closeOnClick: true,
+          pauseOnHover: false,
+          theme: "colored",
+          autoClose: 1200,
+        });
+      }
+    } catch (err) {
+      toast.error("Houve algum erro...", {
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 1200,
+      });
+      console.log(err);
+    }
+  };
+
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <Typography
@@ -271,10 +302,12 @@ export default function Account({
             onUpdateDarkMode={handleUpdateDarkMode}
             onUpdateBarPosition={handleUpdateBarPosition}
             onUpdateHomePageLayout={handleUpdateHomePageLayout}
+            onUpdateHomePagePreferences={handleUpdateHomePagePreferences}
             darkMode={darkMode}
             paletteColor={paletteColor}
             barPosition={barPosition}
             homePageLayout={homePageLayout}
+            homePagePreferences={homePagePreferences}
             fontFamilyTitle={fontFamilyTitle}
             fontFamilyRest={fontFamilyRest}
             handleUpdateFontFamily={handleUpdateFontFamily}
