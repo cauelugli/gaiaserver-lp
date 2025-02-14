@@ -119,6 +119,9 @@ const configSchema = new Schema({
     products: {
       type: Array,
     },
+    chat: {
+      type: Array,
+    },
   },
   products: {
     canBeDeleted: {

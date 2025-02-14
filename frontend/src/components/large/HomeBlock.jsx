@@ -1,11 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Grid,
-  Icon,
   Paper,
   Typography,
   Table,
@@ -33,6 +30,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
       "security",
       "dashboard",
       "reports",
+      "chat"
     ].includes(link)
   );
 

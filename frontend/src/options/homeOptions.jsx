@@ -70,5 +70,10 @@ export const optionsMainblocks = [
     link: "/security",
     permissionLabel: "security",
   },
+  {
+    icon: <icons.ChatIcon sx={{ fontSize: 52 }} />,
+    text: "Chat",
+    link: "/chat",
+    permissionLabel: "chat",
+  },
 ];
-
