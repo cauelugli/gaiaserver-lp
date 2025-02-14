@@ -62,12 +62,8 @@ export default function Stock({ onClose }) {
         const approverManagerAlternate = usersResponse.data.find(
           (user) => user._id === configData.stockEntriesApproverAlternate
         );
-        setStockEntriesNeedApproval(
-          configData.stockEntriesNeedApproval
-        );
-        setStockEntriesCanBeChallenged(
-          configData.stockEntriesCanBeChallenged
-        );
+        setStockEntriesNeedApproval(configData.stockEntriesNeedApproval);
+        setStockEntriesCanBeChallenged(configData.stockEntriesCanBeChallenged);
         setStockEntriesApproverManager(approverManager || null);
         setStockEntriesApproverAlternate(approverManagerAlternate || null);
       } catch (error) {
@@ -146,7 +142,7 @@ export default function Stock({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Se a opção marcada for "Sim", o 'status' de uma nova
                             Entrada de Estoque será "Aberto". Se estiver marcado
                             "Não", o status será 'Aprovado'. A opção padrão é
@@ -195,7 +191,7 @@ export default function Stock({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Selecione o Gerente que será responsável pela
                             Aprovação das Entradas de Estoque solicitadas. Este
                             Gerente será notificado também para novas
@@ -230,7 +226,7 @@ export default function Stock({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Selecione um Colaborador que também poderá Aprovar
                             as Entradas de Estoque além do Gerente. Por padrão a
                             opção é "Nenhum".
@@ -262,7 +258,7 @@ export default function Stock({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Se a opção marcada for "Sim", os operadores com
                             acesso à página 'Financeiro' poderão rejeitar as
                             aprovações do Gerente designado às Entradas de

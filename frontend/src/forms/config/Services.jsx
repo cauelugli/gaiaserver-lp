@@ -178,7 +178,7 @@ export default function Services({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Se a opção marcada for "Sim", os Serviços poderão
                             ser deletados pelos colaboradores. A opção padrão é
                             "Sim".
@@ -192,9 +192,7 @@ export default function Services({ onClose }) {
                       <RadioGroup
                         row
                         value={canBeDeleted}
-                        onChange={(e) =>
-                          setCanBeDeleted(e.target.value)
-                        }
+                        onChange={(e) => setCanBeDeleted(e.target.value)}
                       >
                         <FormControlLabel
                           value={Boolean(true)}

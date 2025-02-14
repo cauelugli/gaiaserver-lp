@@ -107,7 +107,7 @@ export default function Users({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Se a opção marcada for "Sim", os Colaboradores
                             criados poderão ser deletados pelos colaboradores. A
                             opção padrão é "Sim".

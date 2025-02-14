@@ -97,8 +97,8 @@ export default function Permissions({ onClose }) {
     <form onSubmit={handleChangePermissionsConfig}>
       <Tooltip
         title={
-          <Typography sx={{ fontSize: 12 }}>
-            Nesta sessão escolha o os Perfis de Acesso que podem visualizar os
+          <Typography sx={{ fontSize: 12, color: "white" }}>
+            Nesta sessão escolha os Perfis de Acesso que podem visualizar os
             recursos do aplicativo.
           </Typography>
         }

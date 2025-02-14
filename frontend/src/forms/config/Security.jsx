@@ -108,7 +108,7 @@ export default function Security({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Para a opção "Baixo", não há exigência de
                             complexidade, exemplo: "senha123". Para a opção
                             "Alto" é exigido no mínimo 10 caracteres, incluindo

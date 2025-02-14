@@ -114,7 +114,7 @@ export default function Customers({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Se a opção marcada for "Sim", os Clientes criados
                             poderão ser deletados pelos colaboradores. A opção
                             padrão é "Sim".
@@ -160,7 +160,7 @@ export default function Customers({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Se a opção marcada for "Sim", novos Clientes Empresa
                             poderão ser criados com nomes que já existem no
                             sistema. A opção padrão é "Não". Clientes Pessoa

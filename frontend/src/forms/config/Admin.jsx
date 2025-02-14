@@ -105,7 +105,7 @@ export default function Admin({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Se a opção marcada for "Sim", seu usuário será
                             notificado de todas as atividades: Criação, Edição e
                             Deleção.

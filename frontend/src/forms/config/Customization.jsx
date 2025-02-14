@@ -157,7 +157,7 @@ export default function Customization({ onClose }) {
                     <Grid container direction="row">
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             A cor que será utilizada no sistema. Forneça um
                             valor hexadecimal de seis caracteres. A opção padrão
                             é "#32aacd"
@@ -212,7 +212,7 @@ export default function Customization({ onClose }) {
                     <Grid container direction="row">
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             A cor da fonte que será utilizada na barra lateral.
                             Forneça um valor hexadecimal de seis caracteres,
                             também pode ser utilizado "black" ou "white". A
@@ -272,9 +272,7 @@ export default function Customization({ onClose }) {
 
               <Accordion sx={{ width: "100%", mt: 2 }}>
                 <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
-                  <Typography
-                    sx={{ fontSize: 16, fontWeight: "bold" }}
-                    >
+                  <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     Logotipo
                   </Typography>
                 </AccordionSummary>
@@ -288,7 +286,7 @@ export default function Customization({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             O logotipo da sua empresa. Tamanho máximo da imagem:
                             2MB. Suportados formatos '.png' e '.jpeg'. O tamanho
                             ideal é em torno de 500x200.
@@ -362,7 +360,7 @@ export default function Customization({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             O logotipo da sua empresa com fundo, ou na cor
                             preta. Será utilizado em partes do sistema onde a
                             cor do fundo é branca. Tamanho máximo da imagem:
@@ -371,7 +369,7 @@ export default function Customization({ onClose }) {
                           </Typography>
                         }
                       >
-                        <Typography sx={{ my: "auto", mr: 4  }}>
+                        <Typography sx={{ my: "auto", mr: 4 }}>
                           Logotipo com Fundo
                         </Typography>
                       </Tooltip>

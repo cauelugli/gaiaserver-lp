@@ -160,7 +160,7 @@ export default function Requests({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Se a opção marcada for "Sim", o 'status' de uma nova
                             solicitação de Job será "Aberto". Se estiver marcado
                             "Não", o status será 'Aprovado'. A opção padrão é
@@ -209,7 +209,7 @@ export default function Requests({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Selecione o Gerente que será responsável pela
                             Aprovação das Requisições solicitadas.
                           </Typography>
@@ -238,7 +238,7 @@ export default function Requests({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Selecione um Colaborador que também poderá Aprovar
                             as Solicitações além do Gerente. Por padrão a opção
                             é "Nenhum".
@@ -269,7 +269,7 @@ export default function Requests({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Se a opção marcada for "Sim", as solicitações de
                             Jobs e Vendas poderão ser deletadas. A opção padrão
                             é "Sim".

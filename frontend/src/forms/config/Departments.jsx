@@ -32,8 +32,7 @@ const api = axios.create({
 
 export default function Departments({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
-  const [canBeDeleted, setCanBeDeleted] =
-    React.useState(null);
+  const [canBeDeleted, setCanBeDeleted] = React.useState(null);
   const [departmentsNeedManager, setDepartmentsNeedManager] =
     React.useState(null);
 
@@ -42,9 +41,7 @@ export default function Departments({ onClose }) {
       try {
         const config = await api.get("/config");
         setConfigData(config.data[0].departments);
-        setCanBeDeleted(
-          config.data[0].departments.canBeDeleted
-        );
+        setCanBeDeleted(config.data[0].departments.canBeDeleted);
         setDepartmentsNeedManager(
           config.data[0].departments.departmentsNeedManager
         );
@@ -117,7 +114,7 @@ export default function Departments({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Se a opção marcada for "Sim", os Departamentos
                             criados poderão ser deletados pelos colaboradores. A
                             opção padrão é "Sim".
@@ -131,9 +128,7 @@ export default function Departments({ onClose }) {
                       <RadioGroup
                         row
                         value={canBeDeleted}
-                        onChange={(e) =>
-                          setCanBeDeleted(e.target.value)
-                        }
+                        onChange={(e) => setCanBeDeleted(e.target.value)}
                       >
                         <FormControlLabel
                           value={Boolean(true)}
@@ -165,7 +160,7 @@ export default function Departments({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Se a opção marcada for "Sim", os novos Departamentos
                             criados deverão sempre possuir um Gerente. A opção
                             padrão é "Não".

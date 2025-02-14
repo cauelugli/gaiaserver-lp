@@ -111,7 +111,7 @@ export default function Finance({ onClose }) {
                     >
                       <Tooltip
                         title={
-                          <Typography sx={{ fontSize: 12 }}>
+                          <Typography sx={{ fontSize: 12, color: "white" }}>
                             Se a opção marcada for "Sim", permite o Agendamento
                             de Pagamento a prazo na sessão 'Financeiro'. A opção
                             padrão é "Sim".
