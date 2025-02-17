@@ -55,6 +55,18 @@ export default function AddFormModel(props) {
           .format("dddd")}).`,
       });
     }
+    if (fields.customer) {
+      // setting deliveryAddress conveniently for user
+      setFields({
+        ...fields,
+        ["deliveryAddress"]: `${
+          fields.customer?.address ||
+          fields.customer?.addressHome ||
+          fields.customer?.addressDelivery ||
+          ""
+        }`,
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     priceDifference,
