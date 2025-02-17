@@ -39,7 +39,7 @@ router.post("/", async (req, res) => {
         data: savedProduct,
         method: "Adicionad",
         model: "Produto",
-        isAdmin: savedProduct.createdBy === admin._id.toString(),
+        isAdmin: savedProduct.createdBy === "Admin",
       });
     }
 

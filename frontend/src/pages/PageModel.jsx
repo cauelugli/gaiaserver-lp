@@ -64,9 +64,16 @@ export default function PageModel(props) {
   const [configTables, setConfigTables] = React.useState(
     props.configData.tables
   );
-  console.log("configTables", configTables);
 
   const handleChange = (noArgument, newValue) => {
+    const validTabs = props.item.tabs.filter((tab, index) =>
+      shouldDisplayTab(props.item.page, index, configTables)
+    );
+  
+    if (!validTabs[newValue]) {
+      newValue = 0;
+    }
+  
     setValue(newValue);
     setTableFilters({});
     setSelectedMultipleItems([]);

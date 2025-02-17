@@ -4,18 +4,16 @@ import React from "react";
 
 import { Grid, Typography } from "@mui/material";
 
-const NoDataText = ({ option, femaleGender }) => {
+const NoDataText = () => {
   return (
     <Grid
       container
       direction="row"
       alignItems="center"
       justifyContent="center"
-      sx={{ mt: 3, mb:"30vw" }}
+      sx={{ mt: 3, mb: "30vw" }}
     >
-      <Typography sx={{ fontSize: 30 }}>
-        Não há {option} Cadastrad{femaleGender?"a":"o"}s
-      </Typography>
+      <Typography sx={{ fontSize: 30 }}>Nenhum Item Encontrado</Typography>
     </Grid>
   );
 };

@@ -3,6 +3,7 @@ const Admin = require("../models/models/Admin");
 const User = require("../models/models/User");
 const dotenv = require("dotenv");
 const { mongoose } = require("mongoose");
+const { ObjectId } = mongoose.Types;
 
 const {
   createMessageTitleAndBody,
@@ -60,10 +61,25 @@ const initSocket = (server) => {
     socket.on("notificationToList", async (data) => {
       for (const roleId of data.receivers) {
         try {
+          let emitterId = data.emitterId;
+
+          if (typeof emitterId === "string" && !ObjectId.isValid(emitterId)) {
+            const admin = await Admin.findOne({ name: emitterId });
+            if (admin) {
+              emitterId = admin._id;
+            } else {
+              console.error("Admin não encontrado");
+              continue;
+            }
+          }
+
+          if (!ObjectId.isValid(emitterId)) {
+            continue; 
+          }
+          emitterId = new ObjectId(emitterId);
           const users = await User.find({
             role: roleId,
-            // NotEquals emitterId, for a better UX
-            _id: { $ne: data.emitterId },
+            _id: { $ne: emitterId },
           });
 
           let parsedBodyMainString;
@@ -105,6 +121,7 @@ const initSocket = (server) => {
               break;
           }
 
+          // Adiciona a notificação para cada usuário encontrado
           for (const user of users) {
             user.notifications.push({
               read: false,
