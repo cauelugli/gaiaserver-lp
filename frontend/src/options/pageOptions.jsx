@@ -295,32 +295,9 @@ const pageOptions = [
   {
     page: "stock",
     label: "Estoque",
-    models: ["Product", "StockEntry"],
-    tabs: ["Produtos", "Entradas"],
+    models: ["StockEntry"],
+    tabs: ["Entradas"],
     tableColumns: [
-      // STOCK PRODUCTS
-      [
-        {
-          id: "image",
-          label: "📷",
-        },
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "stockQuantity",
-          label: "Quantidade em Estoque",
-        },
-        {
-          id: "buyValue",
-          label: "Valor de Compra / Produção",
-        },
-        {
-          id: "sellValue",
-          label: "Valor de Venda",
-        },
-      ],
       // STOCK ENTRIES TABLE
       [
         {
