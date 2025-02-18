@@ -342,17 +342,9 @@ const rowButtonOptions = (props) => [
   },
   {
     page: "stock",
-    models: ["Product", "StockEntry"],
+    models: ["StockEntry"],
     menus: {
       0: [
-        {
-          label: "Solicitar Compra para Estoque",
-          action: "requestBuy",
-          modal: "Product",
-          icon: <icons.ShopIcon />,
-        },
-      ],
-      1: [
         {
           label: "Solicitar Aprovação",
           action: "requestApproval",
@@ -380,6 +372,12 @@ const rowButtonOptions = (props) => [
           action: "archive",
           modal: "StockEntry",
           icon: <icons.ArchiveIcon />,
+        },
+        {
+          label: "Resolver",
+          action: "resolve",
+          modal: "StockEntry",
+          icon: <icons.CheckIcon />,
         },
         ...(props.canBeDeleted === true
           ? [
@@ -627,6 +625,92 @@ const rowButtonOptions = (props) => [
               targetModel: "Department",
               targetLabel: "Departamento",
               icon: <icons.LanIcon />,
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    page: "finance",
+    models: ["FinanceIncome", "FinanceOutcome"],
+    menus: {
+      0: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "FinanceIncome",
+          icon: <icons.ModeEditIcon />,
+        },
+        {
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
+          action: "archive",
+          modal: "FinanceIncome",
+          icon: <icons.ArchiveIcon />,
+        },
+        ...(props.canBeDeleted === true
+          ? [
+              {
+                label: "Deletar",
+                action: "delete",
+                modal: "FinanceIncome",
+                icon: <icons.DeleteIcon />,
+              },
+            ]
+          : []),
+        {
+          label: "Alterar",
+          icon: <icons.SettingsIcon />,
+          action: "dynamicChange",
+          submenu: [
+            {
+              modal: "small",
+              sourceModel: "FinanceIncome",
+              targetModel: "Static",
+              targetLabel: "Status",
+              icon: <icons.TimelapseIcon />,
+              staticAttribute: "status",
+              staticList: fetchStatuses,
+            },
+          ],
+        },
+      ],
+      1: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "FinanceOutcome",
+          icon: <icons.ModeEditIcon />,
+        },
+        {
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
+          action: "archive",
+          modal: "FinanceOutcome",
+          icon: <icons.ArchiveIcon />,
+        },
+        ...(props.canBeDeleted === true
+          ? [
+              {
+                label: "Deletar",
+                action: "delete",
+                modal: "FinanceOutcome",
+                icon: <icons.DeleteIcon />,
+              },
+            ]
+          : []),
+        {
+          label: "Alterar",
+          icon: <icons.SettingsIcon />,
+          action: "FinanceOutcome",
+          submenu: [
+            {
+              modal: "small",
+              sourceModel: "FinanceOutcome",
+              targetModel: "Static",
+              targetLabel: "Status",
+              icon: <icons.TimelapseIcon />,
+              staticAttribute: "status",
+              staticList: fetchStatuses,
             },
           ],
         },

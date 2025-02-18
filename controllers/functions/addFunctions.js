@@ -1,5 +1,7 @@
 const Counters = require("../../models/models/Counters");
 const Department = require("../../models/models/Department");
+const FinanceIncome = require("../../models/models/FinanceIncome");
+const FinanceOutcome = require("../../models/models/FinanceOutcome");
 const Job = require("../../models/models/Job");
 const Position = require("../../models/models/Position");
 const Product = require("../../models/models/Product");
@@ -94,6 +96,8 @@ async function addCounter(sourceId, model) {
         job: model === "Job" ? 1 : 0,
         sale: model === "Sale" ? 1 : 0,
         stockEntry: model === "StockEntry" ? 1 : 0,
+        financeIncome: model === "FinanceIncome" ? 1 : 0,
+        financeOutcome: model === "FinanceOutcome" ? 1 : 0,
       });
     }
     let newNumber;
@@ -109,6 +113,20 @@ async function addCounter(sourceId, model) {
         counter.sale = newNumber;
         await Sale.findByIdAndUpdate(sourceId, { $set: { number: newNumber } });
         break;
+      case "FinanceIncome":
+        newNumber = counter.financeIncome + 1;
+        counter.financeIncome = newNumber;
+        await FinanceIncome.findByIdAndUpdate(sourceId, {
+          $set: { number: newNumber },
+        });
+        break;
+      case "FinanceOutcome":
+        newNumber = counter.financeOutcome + 1;
+        counter.financeOutcome = newNumber;
+        await FinanceOutcome.findByIdAndUpdate(sourceId, {
+          $set: { number: newNumber },
+        });
+        break;
       case "StockEntry":
         newNumber = counter.stockEntry + 1;
         counter.stockEntry = newNumber;
@@ -121,6 +139,23 @@ async function addCounter(sourceId, model) {
     }
 
     await counter.save();
+  } catch (err) {
+    console.error(`Erro na rotina de adição em ${model}:`, err);
+  }
+}
+
+async function addFinanceOutcome(data) {
+  try {
+    const newFinanceOutome = new FinanceOutcome({
+      itemId: data.resolvedItem._id.toString(),
+      itemNumber: data.resolvedItem.number,
+      price: data.resolvedItem.price,
+      items: data.resolvedItem.items,
+      typeOutcome: data.type,
+      createdBy: data.createdBy,
+    });
+    const savedFinanceOutcome = await newFinanceOutome.save();
+    await addCounter(savedFinanceOutcome._id, "FinanceOutcome");
   } catch (err) {
     console.error(`Erro na rotina de adição em ${model}:`, err);
   }
@@ -206,6 +241,7 @@ const insertMembersToGroup = async (itemId, model, members) => {
 
 module.exports = {
   addCounter,
+  addFinanceOutcome,
   addManagerToDepartment,
   addOperator,
   addServiceToDepartment,

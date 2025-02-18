@@ -10,6 +10,9 @@ const financeOutcomeSchema = new mongoose.Schema({
   commentary: {
     type: String,
   },
+  createdBy: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -17,11 +20,11 @@ const financeOutcomeSchema = new mongoose.Schema({
   customer: {
     type: String,
   },
-  customerType: {
-    type: String,
+  itemNumber: {
+    type: Number,
   },
-  entry: {
-    type: Object,
+  itemId: {
+    type: String,
   },
   finalPrice: {
     type: Number,
@@ -38,23 +41,22 @@ const financeOutcomeSchema = new mongoose.Schema({
   price: {
     type: Number,
   },
+  number: {
+    type: Number,
+  },
   quote: {
     type: String,
   },
   resolvedAt: {
     type: String,
   },
-  service: {
-    type: String,
-  },
   status: {
     type: String,
+    default: "Aberto",
   },
-  type: {
+  typeOutcome: {
     type: String,
-  },
-  user: {
-    type: String,
+    required: true,
   },
 });
 

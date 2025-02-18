@@ -206,12 +206,6 @@ router.post("/", async (req, res) => {
         break;
 
       case "StockEntry":
-        if (config.stock.stockEntriesNeedApproval === false) {
-          mainQueue.add({
-            type: "addToStock",
-            data: { items: savedItem.items },
-          });
-        }
         mainQueue.add({
           type: "addCounter",
           data: {

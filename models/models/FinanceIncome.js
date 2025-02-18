@@ -49,12 +49,12 @@ const financeIncomeSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default: "Aguardando Agendamento",
+    default: "Aberto",
   },
   user: {
     type: String,
   },
-  type: {
+  typeIncome: {
     type: String,
   },
 });

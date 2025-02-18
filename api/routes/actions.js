@@ -89,11 +89,27 @@ router.put("/resolve", async (req, res) => {
       },
     });
 
+    if (model === "StockEntry") {
+      mainQueue.add({
+        type: "addFinanceOutcome",
+        data: {
+          resolvedItem,
+          type: "Entrada de Estoque",
+          createdBy: resolvedBy,
+        },
+      });
+
+      mainQueue.add({
+        type: "addToStock",
+        data: { items: resolvedItem.items },
+      });
+    }
+
     res.status(200).json({
       number: resolvedItem.number,
       title: resolvedItem.title,
       customer: resolvedItem.customer,
-      resolution: resolvedItem.resolution
+      resolution: resolvedItem.resolution,
     });
   } catch (err) {
     console.log(err);
@@ -199,16 +215,11 @@ router.put("/approveRequest", async (req, res) => {
       },
     });
     switch (model) {
+      // remove this step here 
       case "Sale":
         mainQueue.add({
           type: "removeFromStock",
           data: { items: targetItem.products },
-        });
-        break;
-      case "StockEntry":
-        mainQueue.add({
-          type: "addToStock",
-          data: { items: targetItem.items },
         });
         break;
       default:

@@ -348,11 +348,11 @@ const pageOptions = [
     tableColumns: [
       [
         {
-          id: "quote",
-          label: "Orçamento",
+          id: "number",
+          label: "#",
         },
         {
-          id: "type",
+          id: "typeIncome",
           label: "Tipo",
         },
         {
@@ -378,12 +378,12 @@ const pageOptions = [
       ],
       [
         {
-          id: "type",
-          label: "Tipo",
+          id: "number",
+          label: "#",
         },
         {
-          id: "payment",
-          label: "Pagamento",
+          id: "typeOutcome",
+          label: "Tipo",
         },
         {
           id: "price",

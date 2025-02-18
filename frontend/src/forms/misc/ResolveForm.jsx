@@ -1,13 +1,15 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
 import { toast } from "react-toastify";
 import {
   Button,
+  Dialog,
   DialogActions,
+  DialogContent,
   DialogTitle,
   Grid,
   InputLabel,
@@ -24,6 +26,7 @@ const ResolveForm = ({
   userId,
   selectedItemId,
   selectedItemName,
+  selectedItemPrice,
   model,
   refreshData,
   setRefreshData,
@@ -32,7 +35,8 @@ const ResolveForm = ({
   page,
   label,
 }) => {
-  const [resolution, setResolution] = React.useState("");
+  const [resolution, setResolution] = useState("");
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
   const handleResolve = async () => {
     try {
@@ -74,6 +78,19 @@ const ResolveForm = ({
     }
   };
 
+  const handlePrimaryResolve = () => {
+    if (model === "StockEntry") {
+      setConfirmDialogOpen(true);
+    } else {
+      handleResolve();
+    }
+  };
+
+  const handleConfirm = () => {
+    setConfirmDialogOpen(false);
+    handleResolve();
+  };
+
   return (
     <Grid container direction="column" sx={{ my: 2 }}>
       <DialogTitle>
@@ -94,7 +111,7 @@ const ResolveForm = ({
         <Button
           variant="contained"
           color="success"
-          onClick={handleResolve}
+          onClick={handlePrimaryResolve}
           sx={{ mr: 1 }}
         >
           Resolver
@@ -107,6 +124,34 @@ const ResolveForm = ({
           X
         </Button>
       </DialogActions>
+
+      <Dialog
+        open={confirmDialogOpen}
+        onClose={() => setConfirmDialogOpen(false)}
+      >
+        <DialogTitle>Atenção</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Resolver esta Entrada de Estoque vai gerar um novo Encargo
+            Financeiro{" "}
+            {selectedItemPrice && (
+              <strong>de R${selectedItemPrice.toFixed(2)}</strong>
+            )}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" color="success" onClick={handleConfirm}>
+            OK
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => setConfirmDialogOpen(false)}
+          >
+            X
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Grid>
   );
 };

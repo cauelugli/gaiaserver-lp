@@ -115,6 +115,7 @@ const RowButton = (props) => {
             props.item.number ||
             props.item.quoteNumber
           }
+          selectedItemPrice={props.item.price}
           model={selectedModal.model}
           refreshData={props.refreshData}
           setRefreshData={props.setRefreshData}
