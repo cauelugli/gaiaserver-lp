@@ -309,7 +309,7 @@ const pageOptions = [
           label: "Itens",
         },
         {
-          id: "quoteValue",
+          id: "price",
           label: "Valor Total",
         },
         {
