@@ -69,11 +69,19 @@ export default function PageModel(props) {
     const validTabs = props.item.tabs.filter((tab, index) =>
       shouldDisplayTab(props.item.page, index, configTables)
     );
-  
+
     if (!validTabs[newValue]) {
       newValue = 0;
     }
-  
+
+    setValue(newValue);
+    setTableFilters({});
+    setSelectedMultipleItems([]);
+    setMultiple(false);
+    setNewDataRefreshButton(true);
+  };
+
+  const handleChangeProductTabs = (noArgument, newValue) => {
     setValue(newValue);
     setTableFilters({});
     setSelectedMultipleItems([]);
@@ -239,7 +247,11 @@ export default function PageModel(props) {
       <Grid sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
-          onChange={handleChange}
+          onChange={
+            props.item.page === "products"
+              ? handleChangeProductTabs
+              : handleChange
+          }
           TabIndicatorProps={{
             style: {
               backgroundColor: props.configCustomization.mainColor,
