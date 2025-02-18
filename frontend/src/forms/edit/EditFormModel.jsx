@@ -194,7 +194,7 @@ export default function EditFormModel(props) {
         fields.products.splice(existingProductIndex, 1);
       }
     } else {
-      fields.products.push({ ...product, count: 1 });
+      fields.products.push({ ...product, count: 0 });
     }
 
     setSelectedProducts([...fields.products]);

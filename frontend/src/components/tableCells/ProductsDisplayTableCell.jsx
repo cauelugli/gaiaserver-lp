@@ -1,18 +1,40 @@
 /* eslint-disable react/prop-types */
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect } from "react";
-
 import { Grid, Table, TableCell, TableRow, Typography } from "@mui/material";
 
 const ProductsDisplayTableCell = (props) => {
+  // Ajusta o count automaticamente se stockQuantity for 0 (aplicado apenas quando toStock é false)
+  const adjustCountForZeroStock = () => {
+    if (!props.toStock) {
+      props.selectedProducts.forEach((product) => {
+        if (product.stockQuantity === 0 && product.count > 0) {
+          product.count = 0;
+        }
+      });
+      props.setRefreshData(!props.refreshData);
+    }
+  };
+
+  useEffect(() => {
+    adjustCountForZeroStock();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.selectedProducts]);
+
   const handleIncrement = (product) => {
     const updatedProducts = [...props.selectedProducts];
     const existingProduct = updatedProducts.find(
       (item) => item._id === product._id
     );
+
     if (existingProduct) {
-      existingProduct.count += 1;
-      props.setRefreshData(!props.refreshData);
+      if (props.toStock || existingProduct.stockQuantity > 0) {
+        existingProduct.count += 1;
+        if (!props.toStock) {
+          existingProduct.stockQuantity -= 1;
+        }
+        props.setRefreshData(!props.refreshData);
+      }
     }
   };
 
@@ -22,11 +44,12 @@ const ProductsDisplayTableCell = (props) => {
       (item) => item._id === product._id
     );
 
-    if (existingProduct) {
-      if (existingProduct.count >= 1) {
-        existingProduct.count -= 1;
-        props.setRefreshData(!props.refreshData);
+    if (existingProduct && existingProduct.count > 0) {
+      existingProduct.count -= 1;
+      if (!props.toStock) {
+        existingProduct.stockQuantity += 1;
       }
+      props.setRefreshData(!props.refreshData);
     }
   };
 
@@ -54,6 +77,11 @@ const ProductsDisplayTableCell = (props) => {
           <TableCell align="center">
             <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
               Quantidade
+            </Typography>
+          </TableCell>
+          <TableCell align="right">
+            <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
+              Estoque
             </Typography>
           </TableCell>
           <TableCell align="right">
@@ -87,12 +115,40 @@ const ProductsDisplayTableCell = (props) => {
                   {product.count}
                 </Typography>
                 <Typography
-                  sx={{ fontSize: 16, cursor: "pointer" }}
-                  onClick={() => handleIncrement(product)}
+                  sx={{
+                    fontSize: 16,
+                    cursor:
+                      props.toStock || product.stockQuantity > 0
+                        ? "pointer"
+                        : "not-allowed",
+                    color:
+                      props.toStock || product.stockQuantity > 0
+                        ? "inherit"
+                        : "#ccc",
+                  }}
+                  onClick={() =>
+                    (props.toStock || product.stockQuantity > 0) &&
+                    handleIncrement(product)
+                  }
                 >
                   +
                 </Typography>
               </Grid>
+            </TableCell>
+            <TableCell align="right">
+              <Typography
+                sx={{
+                  fontSize: 14,
+                  color:
+                    product.stockQuantity === 0 && !props.toStock
+                      ? "#ffbbbb"
+                      : "inherit",
+                }}
+              >
+                {props.toStock
+                  ? product.stockQuantity + product.count
+                  : product.stockQuantity}
+              </Typography>
             </TableCell>
             <TableCell align="right">
               <Typography sx={{ fontSize: 14 }}>
@@ -107,6 +163,7 @@ const ProductsDisplayTableCell = (props) => {
           </TableRow>
         ))}
         <TableRow sx={{ mt: 0.5 }}>
+          <TableCell id="ghost" />
           <TableCell id="ghost" />
           <TableCell id="ghost" />
           <TableCell id="ghost" />

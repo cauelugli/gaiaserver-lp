@@ -114,7 +114,7 @@ export default function AddFormModel(props) {
         if (existingProductIndex !== -1) {
           newState = prev.filter((p) => p._id !== product._id);
         } else {
-          newState = [...prev, { ...product, count: 1 }];
+          newState = [...prev, { ...product, count: 0 }];
         }
 
         return newState;
