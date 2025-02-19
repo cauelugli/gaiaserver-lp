@@ -133,6 +133,11 @@ export default function PageModel(props) {
               model:
                 props.item.page === "products"
                   ? "Product"
+                  : props.item.page === "customers" &&
+                    !configTables.customerCustomer
+                  ? "Client"
+                  : props.item.page === "requests" && !configTables.requestJob
+                  ? "Sale"
                   : props.item.models[
                       props.item.page !== currentPage ? 0 : value
                     ],
@@ -441,7 +446,15 @@ export default function PageModel(props) {
                       mainColor={props.configCustomization.mainColor}
                       page={props.item.page}
                       items={filteredItems}
-                      itemIndex={index}
+                      itemIndex={
+                        props.item.page === "customers" &&
+                        !configTables.customerCustomer
+                          ? index + 1
+                          : props.item.page === "requests" &&
+                            !configTables.requestJob
+                          ? index + 1
+                          : index
+                      }
                       tableColumns={props.item.tableColumns}
                       tabIndex={value}
                       userName={props.userName}

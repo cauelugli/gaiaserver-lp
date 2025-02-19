@@ -1,13 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
-import {
-  TableRow,
-  TableCell,
-  TableSortLabel,
-  Checkbox,
-  Button,
-} from "@mui/material";
+import { TableRow, TableCell, TableSortLabel, Checkbox } from "@mui/material";
 
 function TableHeader(props) {
   return (
@@ -31,7 +25,6 @@ function TableHeader(props) {
                 : cellIndex === 1 && headCell.id === "type"
                 ? 50
                 : "auto",
-            // width: cellIndex === 0 && headCell.id!=="" ? 50 : "auto",
           }}
           sortDirection={props.orderBy === headCell.id ? props.order : false}
         >
@@ -41,7 +34,6 @@ function TableHeader(props) {
             onClick={() => props.handleRequestSort(headCell.id)}
           >
             {headCell.label}
-            {/* <Button onClick={() => console.log("headCell", headCell)}>headCell</Button> */}
           </TableSortLabel>
         </TableCell>
       ))}
