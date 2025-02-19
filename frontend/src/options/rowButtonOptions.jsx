@@ -637,27 +637,11 @@ const rowButtonOptions = (props) => [
     menus: {
       0: [
         {
-          label: "Editar",
-          action: "edit",
-          modal: "FinanceIncome",
-          icon: <icons.ModeEditIcon />,
-        },
-        {
           label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "FinanceIncome",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "FinanceIncome",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
         {
           label: "Alterar",
           icon: <icons.SettingsIcon />,
@@ -677,27 +661,11 @@ const rowButtonOptions = (props) => [
       ],
       1: [
         {
-          label: "Editar",
-          action: "edit",
-          modal: "FinanceOutcome",
-          icon: <icons.ModeEditIcon />,
-        },
-        {
           label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
           action: "archive",
           modal: "FinanceOutcome",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "FinanceOutcome",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
         {
           label: "Alterar",
           icon: <icons.SettingsIcon />,
