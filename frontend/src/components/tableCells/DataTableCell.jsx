@@ -137,9 +137,9 @@ const DataTableCell = ({
                       justifyContent="center"
                     >
                       <Typography
-                        sx={{ fontSize: 13 }}
+                        sx={{ fontSize: 13, color: "white" }}
                       >{`${obj.count}x ${obj.name}`}</Typography>
-                      <Typography>
+                      <Typography sx={{ color: "white" }}>
                         {`R$${(obj.sellValue * obj.count).toFixed(2)}`}
                       </Typography>
                     </Grid>
@@ -210,7 +210,7 @@ const DataTableCell = ({
       ) : isId(item) ? (
         <>{getNameById(item)}</>
       ) : isDate(item) ? (
-        <>{dayjs(item).format("DD/MM/YYYY hh:MM")}</>
+        <>{dayjs(item).format("DD/MM/YY HH:MM")}</>
       ) : column.id === "type" ? (
         <Tooltip title={item}>{departmentTypes[item]}</Tooltip>
       ) : (

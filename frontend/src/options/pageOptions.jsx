@@ -356,12 +356,16 @@ const pageOptions = [
           label: "Tipo",
         },
         {
-          id: "payment",
-          label: "Pagamento",
+          id: "customer",
+          label: "Cliente",
         },
         {
-          id: "department",
-          label: "Departamento",
+          id: "user",
+          label: "Colaborador",
+        },
+        {
+          id: "items",
+          label: "Itens",
         },
         {
           id: "price",
@@ -384,6 +388,10 @@ const pageOptions = [
         {
           id: "typeOutcome",
           label: "Tipo",
+        },
+        {
+          id: "items",
+          label: "Itens",
         },
         {
           id: "price",
