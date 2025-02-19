@@ -11,6 +11,7 @@ const {
 const {
   addCounter,
   addFinanceOutcome,
+  addFinanceIncome,
   addOperator,
   addManagerToDepartment,
   addServiceToDepartment,
@@ -91,6 +92,9 @@ mainQueue.process(async (job) => {
         break;
       case "addFinanceOutcome":
         await handleFinanceOutcome(data);
+        break;
+      case "addFinanceIncome":
+        await handleFinanceIncome(data);
         break;
       case "archiveItem":
         await handleArchiveItem(data);
@@ -232,6 +236,10 @@ const handleAddCounter = async (data) => {
 
 const handleFinanceOutcome = async (data) => {
   await addFinanceOutcome(data);
+};
+
+const handleFinanceIncome = async (data) => {
+  await addFinanceIncome(data);
 };
 
 const handleArchiveItem = async (data) => {

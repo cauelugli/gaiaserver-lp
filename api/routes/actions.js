@@ -99,9 +99,21 @@ router.put("/resolve", async (req, res) => {
         },
       });
 
+      // this step makes sense to be here
       mainQueue.add({
         type: "addToStock",
         data: { items: resolvedItem.items },
+      });
+    }
+
+    if (model === "Sale" || model === "Job") {
+      mainQueue.add({
+        type: "addFinanceIncome",
+        data: {
+          resolvedItem,
+          type: model === "Sale" ? "Venda" : "Job",
+          createdBy: resolvedBy,
+        },
       });
     }
 
@@ -215,7 +227,8 @@ router.put("/approveRequest", async (req, res) => {
       },
     });
     switch (model) {
-      // remove this step here 
+      // this step makes sense to be here
+      // needs to remove 'materials' from service for case 'Job'
       case "Sale":
         mainQueue.add({
           type: "removeFromStock",

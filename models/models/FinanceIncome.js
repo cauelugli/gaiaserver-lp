@@ -14,14 +14,14 @@ const financeIncomeSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  createdBy: {
+    type: String,
+  },
   customer: {
     type: Object,
   },
-  customerType: {
-    type: String,
-  },
-  department: {
-    type: String,
+  number: {
+    type: Number,
   },
   finalPrice: {
     type: Number,
@@ -37,9 +37,6 @@ const financeIncomeSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-  },
-  quote: {
-    type: String,
   },
   resolvedAt: {
     type: String,
