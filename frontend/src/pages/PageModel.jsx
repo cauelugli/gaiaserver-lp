@@ -8,7 +8,7 @@ import { useAppData } from "../AppDataContext";
 import {
   Box,
   CircularProgress,
-  Grid,
+  Grid2,
   Tab,
   Tabs,
   Typography,
@@ -215,7 +215,7 @@ export default function PageModel(props) {
 
   return (
     <Box sx={{ minHeight: "50vw" }}>
-      <Grid
+      <Grid2
         container
         direction="row"
         justifyContent="flex-start"
@@ -251,8 +251,8 @@ export default function PageModel(props) {
           />
         )}
         {currentPage === "finance" && <FinanceSmallReports api={props.api} />}
-      </Grid>
-      <Grid sx={{ borderBottom: 1, borderColor: "divider" }}>
+      </Grid2>
+      <Grid2 sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={
@@ -340,7 +340,7 @@ export default function PageModel(props) {
               />
             )
           )}
-          <Grid sx={{ my: "auto", ml: "auto" }}>
+          <Grid2 sx={{ my: "auto", ml: "auto" }}>
             <TableOrCardSelector
               userId={props.userId}
               refreshData={refreshData}
@@ -365,10 +365,10 @@ export default function PageModel(props) {
               highlightArchived={highlightArchived}
               setHighlightArchived={setHighlightArchived}
             />
-          </Grid>
+          </Grid2>
         </Tabs>
-      </Grid>
-      <Grid
+      </Grid2>
+      <Grid2
         sx={{
           mt: -1,
           ml: -1,
@@ -408,9 +408,9 @@ export default function PageModel(props) {
                       setSelectedMultipleItems={setSelectedMultipleItems}
                     />
                   ) : (
-                    <Grid container spacing={2} sx={{ mt: 0.5 }}>
+                    <Grid2 container spacing={2} sx={{ mt: 0.5 }}>
                       {items.map((itemMapped, index) => (
-                        <Grid
+                        <Grid2
                           item
                           key={index}
                           md={props.cardSize}
@@ -427,9 +427,9 @@ export default function PageModel(props) {
                             refreshData={refreshData}
                             setRefreshData={setRefreshData}
                           />
-                        </Grid>
+                        </Grid2>
                       ))}
-                    </Grid>
+                    </Grid2>
                   )}
                 </>
               )}
@@ -486,9 +486,9 @@ export default function PageModel(props) {
                       }
                     />
                   ) : (
-                    <Grid container spacing={2} sx={{ mt: 0.5 }}>
+                    <Grid2 container spacing={2} sx={{ mt: 0.5 }}>
                       {items.map((itemMapped, index) => (
-                        <Grid
+                        <Grid2
                           item
                           key={index}
                           md={props.cardSize}
@@ -516,15 +516,15 @@ export default function PageModel(props) {
                             tabIndex={value}
                             mainColor={props.configCustomization.mainColor}
                           />
-                        </Grid>
+                        </Grid2>
                       ))}
-                    </Grid>
+                    </Grid2>
                   )}
                 </>
               )}
             </CustomTabPanel>
           ))}
-      </Grid>
+      </Grid2>
     </Box>
   );
 }

@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import { InputLabel, Grid, Select, MenuItem } from "@mui/material";
+import { InputLabel, Grid2, Select, MenuItem } from "@mui/material";
 
 import { createScheduleSlots } from "../../../../controllers/functions/overallFunctions";
 
@@ -38,7 +38,7 @@ const ScheduleTableCell = (props) => {
   };
 
   return (
-    <Grid container direction="column" sx={{ width: 200 }}>
+    <Grid2 container direction="column" sx={{ width: 200 }}>
       <InputLabel>Selecione um Horário</InputLabel>
       <Select
         value={props.selectedSchedule}
@@ -52,7 +52,7 @@ const ScheduleTableCell = (props) => {
           </MenuItem>
         ))}
       </Select>
-    </Grid>
+    </Grid2>
   );
 };
 

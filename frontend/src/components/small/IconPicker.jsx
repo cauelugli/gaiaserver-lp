@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
-import { Grid, Popover } from "@mui/material";
+import { Grid2, Popover } from "@mui/material";
 import AnchorIcon from '@mui/icons-material/Anchor';
 
 const IconPicker = ({
@@ -62,9 +62,9 @@ const IconPicker = ({
         }}
       >
         <div style={{ width: 256, height: 280, border: "2px solid lightgrey" }}>
-          <Grid container direction="row">
+          <Grid2 container direction="row">
             {iconList.map((item) => (
-              <Grid
+              <Grid2
                 item
                 key={item.id}
                 sx={{
@@ -82,9 +82,9 @@ const IconPicker = ({
                 selected={item.icon === icon}
               >
                 {item.icon}
-              </Grid>
+              </Grid2>
             ))}
-          </Grid>
+          </Grid2>
         </div>
       </Popover>
     </>

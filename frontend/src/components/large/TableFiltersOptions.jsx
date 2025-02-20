@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
-import { Grid, Chip, Paper, TextField, Popper } from "@mui/material";
+import { Grid2, Chip, Paper, TextField, Popper } from "@mui/material";
 import TableFilterDialog from "./TableFilterDialog";
 
 function TableFiltersBar({
@@ -74,7 +74,7 @@ function TableFiltersBar({
   };
 
   return (
-    <Grid
+    <Grid2
       container
       spacing={1}
       alignItems="center"
@@ -84,7 +84,7 @@ function TableFiltersBar({
       {availableColumns.map(
         (column, index) =>
           index !== 0 && (
-            <Grid item key={index} sx={{ cursor: "pointer" }}>
+            <Grid2 item key={index} sx={{ cursor: "pointer" }}>
               <Chip
                 label={column.label}
                 variant="contained"
@@ -111,10 +111,10 @@ function TableFiltersBar({
                   dialogData={mappedDataTypes[column.id]}
                 />
               </Popper>
-            </Grid>
+            </Grid2>
           )
       )}
-    </Grid>
+    </Grid2>
   );
 }
 

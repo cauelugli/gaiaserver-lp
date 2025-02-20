@@ -9,7 +9,7 @@ import {
   FormControlLabel,
   FormGroup,
   FormHelperText,
-  Grid,
+  Grid2,
   IconButton,
   InputAdornment,
   Paper,
@@ -79,11 +79,11 @@ export default function ServicePlanList({ onSelectedServicesChange }) {
   };
 
   return (
-    <Grid container sx={{ mt: 2 }}>
-      <Grid item>
-        <Grid container direction="row" justifyContent="flex-start">
+    <Grid2 container sx={{ mt: 2 }}>
+      <Grid2 item>
+        <Grid2 container direction="row" justifyContent="flex-start">
           <Typography>Serviços Disponíveis:</Typography>
-        </Grid>
+        </Grid2>
 
         <Paper sx={{ width: 400, height: 200, overflow: "auto" }}>
           <FormGroup sx={{ mt: 1 }}>
@@ -100,8 +100,8 @@ export default function ServicePlanList({ onSelectedServicesChange }) {
                   />
                 }
                 label={
-                  <Grid>
-                    <Grid container direction="row">
+                  <Grid2>
+                    <Grid2 container direction="row">
                       <Typography>
                         {option.name}
                         {"\u00A0"}
@@ -134,16 +134,16 @@ export default function ServicePlanList({ onSelectedServicesChange }) {
                           <Typography sx={{ fontWeight: "bold" }}>+</Typography>
                         </IconButton>
                       )}
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
                 }
               />
             ))}
           </FormGroup>
         </Paper>
-      </Grid>
+      </Grid2>
 
-      <Grid item sx={{ ml: "50px" }}>
+      <Grid2 item sx={{ ml: "50px" }}>
         <Typography>Selecionados:</Typography>
         <Paper
           sx={{
@@ -155,7 +155,7 @@ export default function ServicePlanList({ onSelectedServicesChange }) {
         >
           {selectedList.map((item) => (
             <li key={item._id}>
-              <Grid container direction="row" sx={{ mt: 2, px: 0.5 }}>
+              <Grid2 container direction="row" sx={{ mt: 2, px: 0.5 }}>
                 <IconButton
                   sx={{
                     ml: 1,
@@ -174,11 +174,11 @@ export default function ServicePlanList({ onSelectedServicesChange }) {
                   <Typography sx={{ fontWeight: "bold" }}>-</Typography>
                 </IconButton>
                 <Typography sx={{ ml: 2 }}>{item.name}</Typography>
-              </Grid>
+              </Grid2>
             </li>
           ))}
         </Paper>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 }

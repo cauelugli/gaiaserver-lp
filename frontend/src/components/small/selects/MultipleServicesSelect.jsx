@@ -13,7 +13,7 @@ import {
   IconButton,
   Popover,
   Tooltip,
-  Grid,
+  Grid2,
   Button,
 } from "@mui/material";
 
@@ -44,7 +44,7 @@ export default function MultipleServicesSelect({
   };
 
   return (
-    <Grid>
+    <Grid2>
       <Tooltip title={<Typography sx={{ fontSize: 12 }}>Serviços</Typography>}>
         <Badge
           key
@@ -77,7 +77,7 @@ export default function MultipleServicesSelect({
         }}
         disableRestoreFocus
       >
-        <Grid sx={{ p: 2, border: "1px solid #555", height: 350 }}>
+        <Grid2 sx={{ p: 2, border: "1px solid #555", height: 350 }}>
           <Select
             multiple
             value={selectedServices}
@@ -100,13 +100,13 @@ export default function MultipleServicesSelect({
               </MenuItem>
             ))}
           </Select>
-          <Grid container direction="column">
+          <Grid2 container direction="column">
             {selectedServices.map((service) => (
               <Typography key sx={{ mt: 1 }}>
                 • {service.name}
               </Typography>
             ))}
-          </Grid>
+          </Grid2>
           {selectedServices.length > 0 && (
             <Button
               onClick={handleClose}
@@ -118,8 +118,8 @@ export default function MultipleServicesSelect({
               OK
             </Button>
           )}
-        </Grid>
+        </Grid2>
       </Popover>
-    </Grid>
+    </Grid2>
   );
 }

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import { FormLabel, Grid, MenuItem, Select, Typography } from "@mui/material";
+import { FormLabel, Grid2, MenuItem, Select, Typography } from "@mui/material";
 
 const HomePagePreferencesSelect = (props) => {
   const [selectedValue, setSelectedValue] = useState(
@@ -42,9 +42,9 @@ const HomePagePreferencesSelect = (props) => {
       >
         {options.map((item, index) => (
           <MenuItem value={item.number} key={index}>
-            <Grid container direction="row" alignItems="center">
+            <Grid2 container direction="row" alignItems="center">
               <Typography sx={{ ml: 1 }}>{item.name}</Typography>
-            </Grid>
+            </Grid2>
           </MenuItem>
         ))}
       </Select>

@@ -6,7 +6,7 @@ import {
   MenuItem,
   Select,
   Typography,
-  Grid,
+  Grid2,
   Paper,
   TextField,
   InputAdornment,
@@ -93,7 +93,7 @@ const DepartmentsTableCell = (props) => {
           renderValue={(selected) =>
             selected ? (
               <Tooltip title={props.managerRestriction ? "" : selected.name}>
-                <Grid container alignItems="center">
+                <Grid2 container alignItems="center">
                   <Paper
                     sx={{
                       width: 8,
@@ -115,7 +115,7 @@ const DepartmentsTableCell = (props) => {
                   >
                     {selected.name}
                   </Typography>
-                </Grid>
+                </Grid2>
               </Tooltip>
             ) : (
               ""
@@ -162,7 +162,7 @@ const DepartmentsTableCell = (props) => {
 
             return (
               <MenuItem key={index} value={department} disabled={isDisabled}>
-                <Grid container alignItems="center">
+                <Grid2 container alignItems="center">
                   <Paper
                     sx={{
                       width: 8,
@@ -174,7 +174,7 @@ const DepartmentsTableCell = (props) => {
                   />
                   {departmentTypes[department.type]}
                   <Typography sx={{ ml: 1 }}>{department.name}</Typography>
-                </Grid>
+                </Grid2>
               </MenuItem>
             );
           })}

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import dayjs from "dayjs";
 import { useAppData } from "../../AppDataContext";
-import { Avatar, Grid, Tooltip, Typography, Box } from "@mui/material";
+import { Avatar, Grid2, Tooltip, Typography, Box } from "@mui/material";
 import { icons } from "../../../src/icons";
 
 const AgendaEventChip = (props) => {
@@ -15,7 +15,7 @@ const AgendaEventChip = (props) => {
 
   const renderItem = (detail, typeColor) => {
     return (
-      <Grid
+      <Grid2
         container
         direction="row"
         alignItems="center"
@@ -87,7 +87,7 @@ const AgendaEventChip = (props) => {
             <icons.MoreVertIcon sx={{ fontSize: 16 }} />
           </Box>
         )}
-      </Grid>
+      </Grid2>
     );
   };
 

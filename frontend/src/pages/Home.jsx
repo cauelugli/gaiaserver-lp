@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 
-import { Grid } from "@mui/material";
+import { Grid2 } from "@mui/material";
 
 import HomeBlock from "../components/large/HomeBlock";
 import HomeSideBar from "../components/large/HomeSideBar";
@@ -34,7 +34,7 @@ const Home = ({
   }, [onMount, onUnmount]);
 
   return (
-    <Grid
+    <Grid2
       container
       sx={{
         mx:
@@ -48,7 +48,7 @@ const Home = ({
       }}
       justifyContent={homePagePreferences === 3 && "center"}
     >
-      <Grid item lg={9} xl={8}>
+      <Grid2 item lg={9} xl={8}>
         <HomeBlock
           layout={layout}
           // userUsername={userUsername}
@@ -56,13 +56,13 @@ const Home = ({
           configData={configData.customization}
           currentWindowSize={currentWindowSize}
         />
-      </Grid>
+      </Grid2>
       {homePagePreferences !== 3 &&
         (currentWindowSize === "md2" ||
           currentWindowSize === "lg1" ||
           currentWindowSize === "lg2" ||
           currentWindowSize === "xl") && (
-          <Grid item lg={3} xl={4}>
+          <Grid2 item lg={3} xl={4}>
             <HomeSideBar
               userId={userId}
               homePagePreferences={homePagePreferences}
@@ -72,9 +72,9 @@ const Home = ({
               mainColor={mainColor}
               api={api}
             />
-          </Grid>
+          </Grid2>
         )}
-    </Grid>
+    </Grid2>
   );
 };
 

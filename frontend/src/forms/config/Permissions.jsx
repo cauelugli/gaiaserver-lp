@@ -17,7 +17,7 @@ import {
   Checkbox,
   DialogActions,
   DialogTitle,
-  Grid,
+  Grid2,
   Table,
   TableBody,
   TableCell,
@@ -119,7 +119,7 @@ export default function Permissions({ onClose }) {
             </TableCell>
             {permissionOptions.map((item, index) => (
               <TableCell key={index} align="center">
-                <Grid
+                <Grid2
                   container
                   direction="column"
                   alignItems="center"
@@ -127,7 +127,7 @@ export default function Permissions({ onClose }) {
                 >
                   {item.icon}
                   <Typography sx={{ fontSize: 9 }}>{item.tooltip}</Typography>
-                </Grid>
+                </Grid2>
               </TableCell>
             ))}
           </TableRow>

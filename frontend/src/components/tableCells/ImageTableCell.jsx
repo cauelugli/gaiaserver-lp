@@ -2,7 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
-import { Avatar, Badge, Grid } from "@mui/material";
+import { Avatar, Badge, Grid2 } from "@mui/material";
 import { Typography } from "@mui/material";
 
 const ImageTableCell = ({
@@ -14,8 +14,8 @@ const ImageTableCell = ({
   const imageSrc = image instanceof File ? URL.createObjectURL(image) : image;
 
   return (
-    <Grid item>
-      <Grid
+    <Grid2 item>
+      <Grid2
         container
         direction="column"
         alignItems="center"
@@ -60,8 +60,8 @@ const ImageTableCell = ({
             </Avatar>
           </Badge>
         </label>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };
 

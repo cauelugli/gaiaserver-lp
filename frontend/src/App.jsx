@@ -13,7 +13,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 const socket = io("http://localhost:5002");
 
-import { Grid, Typography } from "@mui/material";
+import { Grid2, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "./theme";
 
@@ -220,7 +220,7 @@ export default function App() {
   return (
     <AppDataProvider>
       <ThemeProvider theme={theme}>
-        <Grid
+        <Grid2
           className="noHoverBackground"
           sx={{
             width: "auto",
@@ -231,7 +231,7 @@ export default function App() {
           }}
         >
           <Router>
-            <Grid container>
+            <Grid2 container>
               {login && (
                 <NavBar
                   api={api}
@@ -242,7 +242,7 @@ export default function App() {
                 />
               )}
               {login && showSidebar && !userPreferences.barPosition && (
-                <Grid
+                <Grid2
                   item
                   sx={{
                     textAlign: "center",
@@ -251,16 +251,16 @@ export default function App() {
                   }}
                 >
                   <SideBar configData={configData} user={userData} />
-                </Grid>
+                </Grid2>
               )}
 
-              <Grid
+              <Grid2
                 sx={{
                   width: "95%",
                 }}
               >
-                <Grid container sx={{ p: 2 }}>
-                  <Grid item xs={12} xl={12}>
+                <Grid2 container sx={{ p: 2 }}>
+                  <Grid2 item xs={12} xl={12}>
                     <Routes>
                       <Route
                         path="/"
@@ -453,10 +453,10 @@ export default function App() {
                         />
                       ))}
                     </Routes>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
+                  </Grid2>
+                </Grid2>
+              </Grid2>
+            </Grid2>
             <ToastContainer />
             {shortcutModalState.show && (
               <ShortcutModals
@@ -474,7 +474,7 @@ export default function App() {
               />
             )}
           </Router>
-        </Grid>
+        </Grid2>
       </ThemeProvider>
     </AppDataProvider>
   );

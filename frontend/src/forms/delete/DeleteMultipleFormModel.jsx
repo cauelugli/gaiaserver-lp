@@ -15,7 +15,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
+  Grid2,
   Typography,
 } from "@mui/material";
 
@@ -69,7 +69,7 @@ const DeleteMultipleFormModel = (props) => {
   };
 
   return (
-    <Grid
+    <Grid2
       container
       direction="column"
       justifyContent="center"
@@ -82,19 +82,19 @@ const DeleteMultipleFormModel = (props) => {
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <Grid
+        <Grid2
           container
           direction="column"
           justifyContent="center"
           alignItems="center"
         >
-          <Grid sx={{ maxWidth: 200 }}>
+          <Grid2 sx={{ maxWidth: 200 }}>
             {props.selectedItems.map((item, index) => (
-              <Grid item key={index}>
+              <Grid2 item key={index}>
                 <Typography>{item.name}</Typography>
-              </Grid>
+              </Grid2>
             ))}
-          </Grid>
+          </Grid2>
           <Typography
             sx={{
               mt: 2,
@@ -110,7 +110,7 @@ const DeleteMultipleFormModel = (props) => {
             Esta ação é IRREVERSÍVEL e removerá {props.selectedItems.length}{" "}
             itens selecionados!
           </Typography>
-        </Grid>
+        </Grid2>
       </DialogContent>
       <DialogActions>
         <Button
@@ -129,7 +129,7 @@ const DeleteMultipleFormModel = (props) => {
           X
         </Button>
       </DialogActions>
-    </Grid>
+    </Grid2>
   );
 };
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
-import { Button, Grid, Popover, Typography } from "@mui/material";
+import { Button, Grid2, Popover, Typography } from "@mui/material";
 
 const ShortcutItem = ({ shortcut, onShortcutClick, onDeleteShortcut }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -23,7 +23,7 @@ const ShortcutItem = ({ shortcut, onShortcutClick, onDeleteShortcut }) => {
   };
 
   return (
-    <Grid
+    <Grid2
       container
       onClick={() => onShortcutClick(shortcut)}
       direction="row"
@@ -73,10 +73,10 @@ const ShortcutItem = ({ shortcut, onShortcutClick, onDeleteShortcut }) => {
         }}
         elevation={0}
       >
-        <Grid container direction="column">
+        <Grid2 container direction="column">
           <Typography sx={{ p: 2 }}>Deletar Atalho?</Typography>
-          <Grid item>
-            <Grid
+          <Grid2 item>
+            <Grid2
               container
               direction="row"
               justifyContent="space-around"
@@ -98,11 +98,11 @@ const ShortcutItem = ({ shortcut, onShortcutClick, onDeleteShortcut }) => {
               >
                 X
               </Button>
-            </Grid>
-          </Grid>
-        </Grid>
+            </Grid2>
+          </Grid2>
+        </Grid2>
       </Popover>
-    </Grid>
+    </Grid2>
   );
 };
 

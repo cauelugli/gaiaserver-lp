@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { Avatar, Divider, Grid } from "@mui/material";
+import { Avatar, Divider, Grid2 } from "@mui/material";
 
 const FormEndLineTenant = ({ configCustomization, extraSmall }) => {
   return (
-    <Grid container direction="row" justifyContent="center">
+    <Grid2 container direction="row" justifyContent="center">
       <Divider
         sx={{
           border: "1px nothing #444",
@@ -33,7 +33,7 @@ const FormEndLineTenant = ({ configCustomization, extraSmall }) => {
           my: "auto",
         }}
       />
-    </Grid>
+    </Grid2>
   );
 };
 

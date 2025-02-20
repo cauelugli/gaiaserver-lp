@@ -6,7 +6,7 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
-  Grid,
+  Grid2,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -53,20 +53,20 @@ export default function SideBarConfigTransferList({
   );
 
   return (
-    <Grid
+    <Grid2
       container
       direction="row"
       alignItems="center"
       justifyContent="center"
       sx={{ mt: 2, border: "1px solid #ddd", borderRadius: 3 }}
     >
-      <Grid item sx={{width:160, ml:1}}>
+      <Grid2 item sx={{width:160, ml:1}}>
         <Typography sx={{ fontWeight: "bold" }}>
           {title.toUpperCase()}
         </Typography>
-      </Grid>
-      <Grid item sx={{width:180, my:2}}>
-        <Grid
+      </Grid2>
+      <Grid2 item sx={{width:180, my:2}}>
+        <Grid2
           sx={{
             height: 120,
             overflow: "auto",
@@ -86,8 +86,8 @@ export default function SideBarConfigTransferList({
                   />
                 }
                 label={
-                  <Grid>
-                    <Grid container direction="row">
+                  <Grid2>
+                    <Grid2 container direction="row">
                       <Typography sx={{ fontSize: 14 }}>
                         {option.name}
                       </Typography>
@@ -110,16 +110,16 @@ export default function SideBarConfigTransferList({
                           <Typography sx={{ fontWeight: "bold" }}>+</Typography>
                         </IconButton>
                       )}
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
                 }
               />
             ))}
           </FormGroup>
-        </Grid>
-      </Grid>
-      <Grid item sx={{width:180, my:2}}>
-        <Grid
+        </Grid2>
+      </Grid2>
+      <Grid2 item sx={{width:180, my:2}}>
+        <Grid2
           sx={{
             height: 120,
             overflow: "auto",
@@ -130,7 +130,7 @@ export default function SideBarConfigTransferList({
           ) : (
             selectedList.map((item) => (
               <li key={item._id}>
-                <Grid container direction="row" sx={{ mt: 1 }}>
+                <Grid2 container direction="row" sx={{ mt: 1 }}>
                   <IconButton
                     sx={{
                       ml: 1,
@@ -149,12 +149,12 @@ export default function SideBarConfigTransferList({
                     <Typography sx={{ fontWeight: "bold" }}>-</Typography>
                   </IconButton>
                   <Typography sx={{ ml: 2 }}>{item.name}</Typography>
-                </Grid>
+                </Grid2>
               </li>
             ))
           )}
-        </Grid>
-      </Grid>
-    </Grid>
+        </Grid2>
+      </Grid2>
+    </Grid2>
   );
 }

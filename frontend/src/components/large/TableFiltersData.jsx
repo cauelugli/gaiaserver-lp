@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import { Grid, Chip } from "@mui/material";
+import { Grid2, Chip } from "@mui/material";
 
 import { icons } from "../../icons";
 
@@ -13,7 +13,7 @@ function TableFilteredDataBar({ tableFilters, setTableFilters, tableColumns }) {
   };
 
   return (
-    <Grid
+    <Grid2
       container
       spacing={1}
       alignItems="center"
@@ -21,7 +21,7 @@ function TableFilteredDataBar({ tableFilters, setTableFilters, tableColumns }) {
       sx={{ width: "auto", ml: 0.5 }}
     >
       {Object.entries(tableFilters).map(([key, value], index) => (
-        <Grid item key={index} sx={{ cursor: "pointer" }}>
+        <Grid2 item key={index} sx={{ cursor: "pointer" }}>
           <Chip
             label={`${getLabelByKey(key)}: ${value}`}
             variant="contained"
@@ -36,9 +36,9 @@ function TableFilteredDataBar({ tableFilters, setTableFilters, tableColumns }) {
             }}
             deleteIcon={<icons.CancelIcon />}
           />
-        </Grid>
+        </Grid2>
       ))}
-    </Grid>
+    </Grid2>
   );
 }
 

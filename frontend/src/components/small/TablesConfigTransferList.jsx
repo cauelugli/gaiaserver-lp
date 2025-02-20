@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 
-import { Grid, Switch, Typography } from "@mui/material";
+import { Grid2, Switch, Typography } from "@mui/material";
 
 const tableTitles = {
   customerCustomer: "Clientes - Empresa",
@@ -25,14 +25,14 @@ export default function TablesConfigTransferList({
   };
 
   return (
-    <Grid
+    <Grid2
       container
       direction="column"
       alignItems="center"
       justifyContent="center"
     >
       {Object.keys(tableStates).map((tableName) => (
-        <Grid
+        <Grid2
           key={tableName}
           container
           direction="row"
@@ -45,8 +45,8 @@ export default function TablesConfigTransferList({
             checked={tableStates[tableName]}
             onChange={() => handleSwitchChange(tableName)}
           />
-        </Grid>
+        </Grid2>
       ))}
-    </Grid>
+    </Grid2>
   );
 }

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-import { Button, Grid, Popover, TextField, Typography } from "@mui/material";
+import { Button, Grid2, Popover, TextField, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
 
@@ -50,7 +50,7 @@ const NewUserShortcut = ({ userId, reloadShortcuts, allowedLinks }) => {
   };
 
   return (
-    <Grid>
+    <Grid2>
       <Typography
         onClick={(e) => setAnchorEl(e.currentTarget)}
         sx={{
@@ -80,7 +80,7 @@ const NewUserShortcut = ({ userId, reloadShortcuts, allowedLinks }) => {
         sx={{ mt: 1 }}
         elevation={0}
       >
-        <Grid
+        <Grid2
           container
           direction="column"
           sx={{ width: "100%", height: "100%", maxWidth: 260 }}
@@ -93,16 +93,16 @@ const NewUserShortcut = ({ userId, reloadShortcuts, allowedLinks }) => {
             value={newShortcutName}
             onChange={(e) => setNewShortcutName(e.target.value)}
           />
-          <Grid sx={{ p: 1.5, mb: 2 }}>
+          <Grid2 sx={{ p: 1.5, mb: 2 }}>
             <NewUserShortcutOptions
               setOption={setNewShortcutAction}
               newShortcutSelectedItem={newShortcutSelectedItem}
               setNewShortcutSelectedItem={setNewShortcutSelectedItem}
               allowedLinks={allowedLinks}
             />
-          </Grid>
+          </Grid2>
           {newShortcutName && newShortcutAction && (
-            <Grid sx={{ mb: 1.5, mx: "auto" }}>
+            <Grid2 sx={{ mb: 1.5, mx: "auto" }}>
               <Button
                 color="success"
                 variant="contained"
@@ -111,11 +111,11 @@ const NewUserShortcut = ({ userId, reloadShortcuts, allowedLinks }) => {
               >
                 Criar
               </Button>
-            </Grid>
+            </Grid2>
           )}
-        </Grid>
+        </Grid2>
       </Popover>
-    </Grid>
+    </Grid2>
   );
 };
 

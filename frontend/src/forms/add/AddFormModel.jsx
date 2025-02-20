@@ -9,7 +9,7 @@ import {
   CircularProgress,
   DialogActions,
   DialogContent,
-  Grid,
+  Grid2,
   Typography,
 } from "@mui/material";
 
@@ -326,7 +326,7 @@ export default function AddFormModel(props) {
                 onImageClick={handleImageClick}
               />
             )}
-            <Grid container direction="row">
+            <Grid2 container direction="row">
               {modalOptions.fields
                 .filter(
                   (field) =>
@@ -334,7 +334,7 @@ export default function AddFormModel(props) {
                     modalOptions.fieldsSections[sectionIndex].name
                 )
                 .map((field, fieldIndex) => (
-                  <Grid
+                  <Grid2
                     item
                     key={fieldIndex}
                     sx={{
@@ -356,9 +356,9 @@ export default function AddFormModel(props) {
                       refreshData,
                       setRefreshData
                     )}
-                  </Grid>
+                  </Grid2>
                 ))}
-            </Grid>
+            </Grid2>
           </Box>
         ))}
       </DialogContent>

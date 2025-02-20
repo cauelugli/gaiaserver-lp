@@ -6,7 +6,7 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
-  Grid,
+  Grid2,
   IconButton,
   Switch,
   Typography,
@@ -63,15 +63,15 @@ export default function NotificationsConfigTransferList({
   };
 
   return (
-    <Grid
+    <Grid2
       container
       direction="row"
       alignItems="center"
       justifyContent="space-around"
       sx={{ mt: 3, border: "1px solid #ddd", px: 1, py: 2, borderRadius: 3 }}
     >
-      <Grid item sx={{ width: 200, ml: 5, mr: -2 }}>
-        <Grid
+      <Grid2 item sx={{ width: 200, ml: 5, mr: -2 }}>
+        <Grid2
           container
           direction="column"
           alignItems="center"
@@ -80,7 +80,7 @@ export default function NotificationsConfigTransferList({
           <Typography sx={{ fontWeight: "bold" }}>
             {title.toUpperCase()}
           </Typography>
-          <Grid
+          <Grid2
             container
             direction="row"
             alignItems="center"
@@ -92,11 +92,11 @@ export default function NotificationsConfigTransferList({
             </Typography>
             <Switch checked={switchState} onChange={handleSwitchChange} />
             <Typography sx={{ my: "auto", fontSize: 12 }}>Ativado</Typography>
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item sx={{ width: 250, ml: 4 }}>
-        <Grid
+          </Grid2>
+        </Grid2>
+      </Grid2>
+      <Grid2 item sx={{ width: 250, ml: 4 }}>
+        <Grid2
           sx={{
             height: 120,
             overflow: "auto",
@@ -116,8 +116,8 @@ export default function NotificationsConfigTransferList({
                   />
                 }
                 label={
-                  <Grid>
-                    <Grid container direction="row">
+                  <Grid2>
+                    <Grid2 container direction="row">
                       <Typography sx={{ fontSize: 14 }}>
                         {option.name}
                       </Typography>
@@ -140,16 +140,16 @@ export default function NotificationsConfigTransferList({
                           <Typography sx={{ fontWeight: "bold" }}>+</Typography>
                         </IconButton>
                       )}
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
                 }
               />
             ))}
           </FormGroup>
-        </Grid>
-      </Grid>
-      <Grid item sx={{ width: 250 }}>
-        <Grid
+        </Grid2>
+      </Grid2>
+      <Grid2 item sx={{ width: 250 }}>
+        <Grid2
           sx={{
             height: 120,
             overflow: "auto",
@@ -158,7 +158,7 @@ export default function NotificationsConfigTransferList({
           {Array.isArray(selectedList) && selectedList.length > 0 ? (
             selectedList.map((item) => (
               <li key={item._id}>
-                <Grid container direction="row" sx={{ mt: 1 }}>
+                <Grid2 container direction="row" sx={{ mt: 1 }}>
                   <IconButton
                     sx={{
                       ml: 1,
@@ -177,14 +177,14 @@ export default function NotificationsConfigTransferList({
                     <Typography sx={{ fontWeight: "bold" }}>-</Typography>
                   </IconButton>
                   <Typography sx={{ ml: 2 }}>{item.name}</Typography>
-                </Grid>
+                </Grid2>
               </li>
             ))
           ) : (
             <Typography sx={{ mt: 5, ml: 4 }}>Não há selecionados</Typography>
           )}
-        </Grid>
-      </Grid>
-    </Grid>
+        </Grid2>
+      </Grid2>
+    </Grid2>
   );
 }

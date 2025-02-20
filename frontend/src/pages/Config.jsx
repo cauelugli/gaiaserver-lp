@@ -12,7 +12,7 @@ const api = axios.create({
 });
 
 import {
-  Grid,
+  Grid2,
   Typography,
   Dialog,
   DialogContent,
@@ -111,7 +111,7 @@ export default function Config({
 
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-      <Grid container direction="row" sx={{ mb: 2 }}>
+      <Grid2 container direction="row" sx={{ mb: 2 }}>
         <Typography
           sx={{ fontSize: 25, ml: 2, mr: 1, fontWeight: "bold" }}
           id="title"
@@ -130,9 +130,9 @@ export default function Config({
           labelPlacement="start"
           sx={{ mb: 2 }}
         />
-      </Grid>
+      </Grid2>
       {configData ? (
-        <Grid
+        <Grid2
           container
           rowSpacing={2}
           columnSpacing={1}
@@ -141,14 +141,14 @@ export default function Config({
           {options
             .filter((config) => showAdvancedConfig || config.isBasic)
             .map((config, index) => (
-              <Grid
+              <Grid2
                 item
                 key={index}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 onClick={() => handleItemClick(config.modal)}
               >
-                <Grid
+                <Grid2
                   container
                   direction="column"
                   alignItems="center"
@@ -169,10 +169,10 @@ export default function Config({
                   <Typography sx={{ mt: 1, fontSize: "1.3vw", color: "white" }}>
                     {config.text}
                   </Typography>
-                </Grid>
-              </Grid>
+                </Grid2>
+              </Grid2>
             ))}
-        </Grid>
+        </Grid2>
       ) : (
         <>
           <Typography>Crie a Configuração Inicial</Typography>
@@ -189,13 +189,13 @@ export default function Config({
 
       {/* do this right please.... */}
       {userName === "Admin" && (
-        <Grid
+        <Grid2
           container
           direction="row"
           alignItems="center"
           justifyContent="center"
         >
-          <Grid
+          <Grid2
             container
             direction="column"
             alignItems="center"
@@ -220,9 +220,9 @@ export default function Config({
           >
             {<icons.AttributionIcon sx={{ fontSize: "4vw" }} />}
             <Typography sx={{ mt: 1, fontSize: "1.3vw" }}>Admin</Typography>
-          </Grid>{" "}
+          </Grid2>{" "}
           <Link to={"/log"} style={{ textDecoration: "none" }}>
-            <Grid
+            <Grid2
               container
               direction="column"
               alignItems="center"
@@ -248,9 +248,9 @@ export default function Config({
               <Typography sx={{ mt: 1, fontSize: "1.3vw" }}>
                 Logs do Sistema
               </Typography>
-            </Grid>
+            </Grid2>
           </Link>
-        </Grid>
+        </Grid2>
       )}
 
       <Dialog

@@ -6,7 +6,7 @@ import axios from "axios";
 import {
   Avatar,
   FormControl,
-  Grid,
+  Grid2,
   InputAdornment,
   MenuItem,
   Select,
@@ -52,14 +52,14 @@ const WorkerSelect = (props) => {
           }
 
           return (
-            <Grid container direction="row" alignItems="center">
+            <Grid2 container direction="row" alignItems="center">
               <Avatar
                 alt="Imagem do Cliente"
                 src={`http://localhost:3000/static/${selected.image}`}
                 sx={{ width: 24, height: 24, marginRight: 2 }}
               />
               <Typography>{selected.name}</Typography>
-            </Grid>
+            </Grid2>
           );
         }}
         sx={{ mt: 1, width: 180 }}
@@ -84,7 +84,7 @@ const WorkerSelect = (props) => {
         {filteredWorkers.length > 0 ? (
           filteredWorkers.map((item) => (
             <MenuItem value={item} key={item._id}>
-              <Grid container direction="row" alignItems="center">
+              <Grid2 container direction="row" alignItems="center">
                 <Avatar
                   alt="Imagem do Cliente"
                   src={`http://localhost:3000/static/${item.image}`}
@@ -94,7 +94,7 @@ const WorkerSelect = (props) => {
                   {"•"}
                 </Typography>
                 <Typography>{item.name}</Typography>
-              </Grid>
+              </Grid2>
             </MenuItem>
           ))
         ) : (

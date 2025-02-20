@@ -19,7 +19,7 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
-  Grid,
+  Grid2,
   IconButton,
   Radio,
   RadioGroup,
@@ -137,7 +137,7 @@ export default function Requests({ onClose }) {
       {configData.length !== 0 && (
         <>
           <DialogContent>
-            <Grid
+            <Grid2
               container
               sx={{ mt: 2 }}
               direction="column"
@@ -151,8 +151,8 @@ export default function Requests({ onClose }) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid item sx={{ my: 1.5 }}>
-                    <Grid
+                  <Grid2 item sx={{ my: 1.5 }}>
+                    <Grid2
                       container
                       direction="row"
                       justifyContent="space-between"
@@ -198,10 +198,10 @@ export default function Requests({ onClose }) {
                           }
                         />
                       </RadioGroup>
-                    </Grid>
-                  </Grid>
-                  <Grid item sx={{ my: 1.5 }}>
-                    <Grid
+                    </Grid2>
+                  </Grid2>
+                  <Grid2 item sx={{ my: 1.5 }}>
+                    <Grid2
                       container
                       direction="row"
                       justifyContent="space-between"
@@ -227,10 +227,10 @@ export default function Requests({ onClose }) {
                         fields={""}
                         type="requests"
                       />
-                    </Grid>
-                  </Grid>
-                  <Grid item sx={{ my: 1.5 }}>
-                    <Grid
+                    </Grid2>
+                  </Grid2>
+                  <Grid2 item sx={{ my: 1.5 }}>
+                    <Grid2
                       container
                       direction="row"
                       justifyContent="space-between"
@@ -257,11 +257,11 @@ export default function Requests({ onClose }) {
                         approverManager={requestsApproverManager}
                         field={{ dynamicData: "users", required: false }}
                       />
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
 
-                  <Grid item sx={{ my: 1.5 }}>
-                    <Grid
+                  <Grid2 item sx={{ my: 1.5 }}>
+                    <Grid2
                       container
                       direction="row"
                       justifyContent="space-between"
@@ -304,8 +304,8 @@ export default function Requests({ onClose }) {
                           }
                         />
                       </RadioGroup>
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
                 </AccordionDetails>
               </Accordion>
               <Accordion sx={{ width: "100%", mt: 2 }}>
@@ -315,8 +315,8 @@ export default function Requests({ onClose }) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="column" alignItems="center">
+                  <Grid2 item sx={{ my: 1.5 }}>
+                    <Grid2 container direction="column" alignItems="center">
                       <Table size="small">
                         <TableHead>
                           <TableRow>
@@ -360,19 +360,19 @@ export default function Requests({ onClose }) {
                           )}
                         </TableBody>
                       </Table>
-                    </Grid>
-                    <Grid container direction="column" alignItems="center">
+                    </Grid2>
+                    <Grid2 container direction="column" alignItems="center">
                       {showNewStatus && (
-                        <Grid sx={{ mt: 2 }}>
+                        <Grid2 sx={{ mt: 2 }}>
                           <TextField
                             sx={{ mr: 2 }}
                             label="Nome do Novo Status"
                             value={newStatus}
                             onChange={(e) => setNewStatus(e.target.value)}
                           />
-                        </Grid>
+                        </Grid2>
                       )}
-                      <Grid item>
+                      <Grid2 item>
                         <Button
                           variant="contained"
                           onClick={() => setShowNewStatus((prev) => !prev)}
@@ -401,12 +401,12 @@ export default function Requests({ onClose }) {
                             Adicionar Status
                           </Button>
                         )}
-                      </Grid>
-                    </Grid>
-                  </Grid>
+                      </Grid2>
+                    </Grid2>
+                  </Grid2>
                 </AccordionDetails>
               </Accordion>
-            </Grid>
+            </Grid2>
           </DialogContent>
           <DialogActions>
             <Button type="submit" variant="contained" color="success">

@@ -11,7 +11,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
+  Grid2,
   InputLabel,
   TextField,
   Typography,
@@ -92,13 +92,13 @@ const ResolveForm = ({
   };
 
   return (
-    <Grid container direction="column" sx={{ my: 2 }}>
+    <Grid2 container direction="column" sx={{ my: 2 }}>
       <DialogTitle>
         <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
           Resolver "{selectedItemName}" ?
         </Typography>
       </DialogTitle>
-      <Grid sx={{ ml: 3, mb: 1 }}>
+      <Grid2 sx={{ ml: 3, mb: 1 }}>
         <InputLabel>Resolução</InputLabel>
         <TextField
           size="small"
@@ -106,7 +106,7 @@ const ResolveForm = ({
           value={resolution}
           onChange={(e) => setResolution(e.target.value)}
         />
-      </Grid>
+      </Grid2>
       <DialogActions>
         <Button
           variant="contained"
@@ -152,7 +152,7 @@ const ResolveForm = ({
           </Button>
         </DialogActions>
       </Dialog>
-    </Grid>
+    </Grid2>
   );
 };
 

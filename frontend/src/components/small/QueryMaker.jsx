@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Grid, MenuItem, Select, Typography } from "@mui/material";
+import { Grid2, MenuItem, Select, Typography } from "@mui/material";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -77,14 +77,14 @@ const QueryMaker = () => {
 
 //   return (
 //     <>
-//       <Grid
+//       <Grid2
 //         container
 //         direction="row"
 //         alignItems="center"
 //         justifyContent="flex-start"
 //       >
 //         <Typography>Buscar por</Typography>
-//         <Grid item sx={{ mx: 2 }}>
+//         <Grid2 item sx={{ mx: 2 }}>
 //           <Select
 //             size="small"
 //             value={firstOption}
@@ -100,11 +100,11 @@ const QueryMaker = () => {
 //             <MenuItem value={"user"}>Usuário</MenuItem>
 //             <MenuItem value={"sale"}>Venda</MenuItem>
 //           </Select>
-//         </Grid>
+//         </Grid2>
 //         {firstOption && (
 //           <>
 //             <Typography sx={{ mx: 1 }}>selecionar</Typography>
-//             <Grid item sx={{ mx: 2 }}>
+//             <Grid2 item sx={{ mx: 2 }}>
 //               <Select
 //                 size="small"
 //                 value={secondOption}
@@ -116,10 +116,10 @@ const QueryMaker = () => {
 //                   </MenuItem>
 //                 ))}
 //               </Select>
-//             </Grid>
+//             </Grid2>
 //           </>
 //         )}
-//       </Grid>
+//       </Grid2>
 //     </>
 //   );
 // };

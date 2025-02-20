@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 
-import { DialogTitle, Divider, Grid, Typography } from "@mui/material";
+import { DialogTitle, Divider, Grid2, Typography } from "@mui/material";
 
 const DialogHeader = ({
   title,
@@ -21,7 +21,7 @@ const DialogHeader = ({
         zIndex: 1,
       }}
     >
-      <Grid container direction="row" justifyContent="center">
+      <Grid2 container direction="row" justifyContent="center">
         <Divider
           sx={{
             border: "1px nothing #444",
@@ -50,7 +50,7 @@ const DialogHeader = ({
             ml: 1.5,
           }}
         />
-      </Grid>
+      </Grid2>
     </DialogTitle>
   );
 };

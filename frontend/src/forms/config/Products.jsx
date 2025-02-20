@@ -23,7 +23,7 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
-  Grid,
+  Grid2,
   Radio,
   RadioGroup,
   Table,
@@ -114,7 +114,7 @@ export default function Products({
         {configData.length !== 0 && (
           <>
             <DialogContent>
-              <Grid
+              <Grid2
                 container
                 sx={{ mt: 2 }}
                 direction="column"
@@ -215,7 +215,7 @@ export default function Products({
                                           field.maxValue
                                         }`}
                                       {field.type === "options" && (
-                                        <Grid container direction="row">
+                                        <Grid2 container direction="row">
                                           <Typography
                                             sx={{ mr: 1, fontSize: 12 }}
                                           >
@@ -231,7 +231,7 @@ export default function Products({
                                               </Typography>
                                             )
                                           )}
-                                        </Grid>
+                                        </Grid2>
                                       )}
                                       {field.type === "currency" && "-"}
                                       {field.type === "date" &&
@@ -358,14 +358,14 @@ export default function Products({
                       </Accordion>
                     ))}
 
-                    <Grid
+                    <Grid2
                       container
                       direction="row"
                       alignItems="center"
                       justifyContent="center"
                       sx={{ mt: 2 }}
                     >
-                      <Grid item>
+                      <Grid2 item>
                         <Button
                           variant="contained"
                           color="primary"
@@ -374,8 +374,8 @@ export default function Products({
                         >
                           Novo Produto
                         </Button>
-                      </Grid>
-                    </Grid>
+                      </Grid2>
+                    </Grid2>
                   </AccordionDetails>
                 </Accordion>
                 <Accordion sx={{ width: "100%", mt: 2 }}>
@@ -385,8 +385,8 @@ export default function Products({
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Grid item sx={{ my: 1.5 }}>
-                      <Grid
+                    <Grid2 item sx={{ my: 1.5 }}>
+                      <Grid2
                         container
                         direction="row"
                         justifyContent="space-between"
@@ -435,11 +435,11 @@ export default function Products({
                             }
                           />
                         </RadioGroup>
-                      </Grid>
-                    </Grid>
+                      </Grid2>
+                    </Grid2>
                   </AccordionDetails>
                 </Accordion>
-              </Grid>
+              </Grid2>
             </DialogContent>
             <DialogActions>
               <Button type="submit" variant="contained" color="success">

@@ -17,7 +17,7 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
-  Grid,
+  Grid2,
   Radio,
   RadioGroup,
   Tooltip,
@@ -88,7 +88,7 @@ export default function Finance({ onClose }) {
       {configData.length !== 0 && (
         <>
           <DialogContent>
-            <Grid
+            <Grid2
               container
               sx={{ mt: 2 }}
               direction="column"
@@ -102,8 +102,8 @@ export default function Finance({ onClose }) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid item sx={{ my: 1.5 }}>
-                    <Grid
+                  <Grid2 item sx={{ my: 1.5 }}>
+                    <Grid2
                       container
                       direction="row"
                       justifyContent="space-between"
@@ -148,11 +148,11 @@ export default function Finance({ onClose }) {
                           }
                         />
                       </RadioGroup>
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
                 </AccordionDetails>
               </Accordion>
-            </Grid>
+            </Grid2>
           </DialogContent>
           <DialogActions>
             <Button type="submit" variant="contained" color="success">

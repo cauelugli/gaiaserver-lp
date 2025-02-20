@@ -8,7 +8,7 @@ const api = axios.create({
 
 import {
   FormControlLabel,
-  Grid,
+  Grid2,
   InputAdornment,
   MenuItem,
   Radio,
@@ -79,7 +79,7 @@ const ProductsTableCell = (props) => {
 
   return (
     <>
-      <Grid container direction="row" sx={{ mb: 1 }}>
+      <Grid2 container direction="row" sx={{ mb: 1 }}>
         {searchType === "name" ? (
           <TextField
             placeholder="Pesquise..."
@@ -138,9 +138,9 @@ const ProductsTableCell = (props) => {
           <FormControlLabel value="name" control={<Radio />} label="Nome" />
           <FormControlLabel value="type" control={<Radio />} label="Tipo" />
         </RadioGroup>
-      </Grid>
+      </Grid2>
 
-      <Grid
+      <Grid2
         container
         direction="row"
         alignItems="center"
@@ -152,17 +152,17 @@ const ProductsTableCell = (props) => {
           </Typography>
         ) : (
           filteredOptions.map((option) => (
-            <Grid item key={option._id}>
+            <Grid2 item key={option._id}>
               <BadgedIcon
                 item={option}
                 handleProductChange={props.handleProductChange}
                 value={props.value}
                 isInList={isProductInList(option._id)}
               />
-            </Grid>
+            </Grid2>
           ))
         )}
-      </Grid>
+      </Grid2>
       {props.selectedProducts?.length !== 0 && (
         <>
           <ProductsDisplayTableCell
@@ -175,8 +175,8 @@ const ProductsTableCell = (props) => {
             toStock={props.toStock}
           />
           {/* component this */}
-          <Grid container direction="row" justifyContent="space-between">
-            <Grid>
+          <Grid2 container direction="row" justifyContent="space-between">
+            <Grid2>
               <Typography
                 onClick={() => {
                   setIsChangeingQuote(!isChangingQuote),
@@ -194,8 +194,8 @@ const ProductsTableCell = (props) => {
                   ? "Cancelar Alteração de Orçamento"
                   : "Alterar Orçamento"}
               </Typography>{" "}
-            </Grid>
-            <Grid>
+            </Grid2>
+            <Grid2>
               <Typography
                 onClick={() => props.setOkToDispatch(!props.okToDispatch)}
                 sx={{
@@ -210,8 +210,8 @@ const ProductsTableCell = (props) => {
                   ? ""
                   : "Confirmar Orçamento"}
               </Typography>
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
           {/* component this */}
           {isChangingQuote ? (
             <PriceDifferenceTable

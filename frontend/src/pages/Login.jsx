@@ -6,7 +6,7 @@ import axios from "axios";
 import {
   Button,
   CircularProgress,
-  Grid,
+  Grid2,
   TextField,
   Tooltip,
   Typography,
@@ -148,14 +148,14 @@ const Login = () => {
   };
 
   return (
-    <Grid
+    <Grid2
       container
       direction="row"
       alignItems="center"
       justifyContent="space-evenly"
       sx={{ mt: loginOrNew ? "10%" : "5%", ml: "5em" }}
     >
-      <Grid
+      <Grid2
         container
         item
         xs={5}
@@ -177,8 +177,8 @@ const Login = () => {
         >
           GaiaServer
         </Typography>
-      </Grid>
-      <Grid
+      </Grid2>
+      <Grid2
         container
         item
         xs={5}
@@ -194,7 +194,7 @@ const Login = () => {
           <>
             {alreadyLogin ? (
               <form onSubmit={handleNewPassword}>
-                <Grid
+                <Grid2
                   container
                   direction="column"
                   alignItems="center"
@@ -220,13 +220,13 @@ const Login = () => {
                   >
                     Atualizar Senha
                   </Button>
-                </Grid>
+                </Grid2>
               </form>
             ) : (
               <>
                 {loginOrNew ? (
                   <form onSubmit={handleTry}>
-                    <Grid
+                    <Grid2
                       container
                       direction="column"
                       alignItems="center"
@@ -264,11 +264,11 @@ const Login = () => {
                       >
                         Login
                       </Button>
-                    </Grid>
+                    </Grid2>
                   </form>
                 ) : (
                   <form onSubmit={handleTryNew}>
-                    <Grid
+                    <Grid2
                       container
                       direction="column"
                       alignItems="center"
@@ -302,7 +302,7 @@ const Login = () => {
                       >
                         Registrar
                       </Button>
-                    </Grid>
+                    </Grid2>
                   </form>
                 )}
               </>
@@ -316,8 +316,8 @@ const Login = () => {
             </Typography>
           </>
         )}
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };
 

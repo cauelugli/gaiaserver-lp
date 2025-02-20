@@ -16,7 +16,7 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Grid,
+  Grid2,
   TextField,
   DialogTitle,
   Switch,
@@ -105,7 +105,7 @@ const ImportContacts = ({
   };
 
   return (
-    <Grid>
+    <Grid2>
       <DialogTitle
         sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
       >
@@ -184,7 +184,7 @@ const ImportContacts = ({
         </TableContainer>
       ) : (
         <>
-          <Grid
+          <Grid2
             container
             direction="row"
             justifyContent="center"
@@ -203,7 +203,7 @@ const ImportContacts = ({
                 Baixar Arquivo Modelo
               </a>{" "}
             </Button>
-          </Grid>
+          </Grid2>
           <Typography sx={{ fontSize: 20, mt: 8, textAlign: "center" }}>
             FAÇA O ENVIO DO ARQUIVO NO BOTÃO ABAIXO
           </Typography>
@@ -257,7 +257,7 @@ const ImportContacts = ({
           </Button>
         </DialogTitle>
       )}
-    </Grid>
+    </Grid2>
   );
 };
 

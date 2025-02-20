@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5002");
 
-import { Badge, Grid } from "@mui/material";
+import { Badge, Grid2 } from "@mui/material";
 
 import { icons } from "../../../icons";
 
@@ -34,7 +34,7 @@ export default function RefreshDataButton({
   }, [currentPath, setNewDataRefreshButton, userId]);
 
   return (
-    <Grid
+    <Grid2
       container
       direction="row"
       alignItems="center"
@@ -69,6 +69,6 @@ export default function RefreshDataButton({
           }}
         />
       </Badge>
-    </Grid>
+    </Grid2>
   );
 }

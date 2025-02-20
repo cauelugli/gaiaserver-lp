@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid2, Typography } from "@mui/material";
 import BarChart from "../components/charts/BarChart";
 
 const Dashboard = (props) => {
@@ -170,7 +170,7 @@ const Dashboard = (props) => {
           height="300"
         />
       </Box>
-      <Grid
+      <Grid2
         container
         direction="row"
         justifyContent="space-around"
@@ -211,7 +211,7 @@ const Dashboard = (props) => {
             height="300"
           />
         </Box>
-      </Grid>
+      </Grid2>
     </Box>
   );
 };

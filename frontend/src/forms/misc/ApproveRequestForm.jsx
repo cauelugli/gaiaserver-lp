@@ -8,7 +8,7 @@ import {
   Button,
   DialogActions,
   DialogTitle,
-  Grid,
+  Grid2,
   Typography,
 } from "@mui/material";
 
@@ -61,7 +61,7 @@ const ApproveRequestForm = (props) => {
   };
 
   return (
-    <Grid
+    <Grid2
       container
       direction="column"
       justifyContent="center"
@@ -90,7 +90,7 @@ const ApproveRequestForm = (props) => {
           X
         </Button>
       </DialogActions>
-    </Grid>
+    </Grid2>
   );
 };
 

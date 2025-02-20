@@ -3,7 +3,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
-import { Grid, Paper, TextField } from "@mui/material";
+import { Grid2, Paper, TextField } from "@mui/material";
 
 import { icons } from "../../icons";
 
@@ -60,8 +60,8 @@ const TableFilterDialog = (props) => {
         );
       case "number":
         return (
-          <Grid container spacing={1}>
-            <Grid item xs={6}>
+          <Grid2 container spacing={1}>
+            <Grid2 item xs={6}>
               <TextField
                 label={props.dialogData.data === "currency" ? "de R$" : "Min"}
                 value={minValue}
@@ -70,8 +70,8 @@ const TableFilterDialog = (props) => {
                 variant="outlined"
                 type="number"
               />
-            </Grid>
-            <Grid item xs={6}>
+            </Grid2>
+            <Grid2 item xs={6}>
               <TextField
                 label={props.dialogData.data === "currency" ? "a R$" : "Max"}
                 value={maxValue}
@@ -80,8 +80,8 @@ const TableFilterDialog = (props) => {
                 variant="outlined"
                 type="number"
               />
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         );
       case "phone":
         return (
@@ -96,8 +96,8 @@ const TableFilterDialog = (props) => {
         );
       case "date":
         return (
-          <Grid container spacing={1}>
-            <Grid item xs={6}>
+          <Grid2 container spacing={1}>
+            <Grid2 item xs={6}>
               <DateTableCell
                 fields={{ startDate }}
                 field={{ name: "startDate", required: false }}
@@ -105,8 +105,8 @@ const TableFilterDialog = (props) => {
                   handleDateRangeChange(e.target.value, "start")}
                 modalOptions={{ maxWidth: "xxs" }}
               />
-            </Grid>
-            <Grid item xs={6}>
+            </Grid2>
+            <Grid2 item xs={6}>
               <DateTableCell
                 fields={{ endDate }}
                 field={{ name: "endDate", required: false }}
@@ -114,8 +114,8 @@ const TableFilterDialog = (props) => {
                   handleDateRangeChange(e.target.value, "end")}
                 modalOptions={{ maxWidth: "xxs" }}
               />
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         );
       case "dynamic":
         //paramos aqui => funciona parcialmente
@@ -155,7 +155,7 @@ const TableFilterDialog = (props) => {
       }}
     >
       {renderInputField()}
-      <Grid container spacing={1} justifyContent="flex-end" sx={{ mt: 1 }}>
+      <Grid2 container spacing={1} justifyContent="flex-end" sx={{ mt: 1 }}>
         <icons.CheckIcon
           onClick={props.handleApplyFilter}
           color="success"
@@ -166,7 +166,7 @@ const TableFilterDialog = (props) => {
           color="error"
           sx={{ cursor: "pointer" }}
         />
-      </Grid>
+      </Grid2>
     </Paper>
   );
 };

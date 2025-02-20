@@ -18,7 +18,7 @@ import {
   DialogActions,
   DialogContent,
   FormHelperText,
-  Grid,
+  Grid2,
   InputAdornment,
   MenuItem,
   Select,
@@ -143,7 +143,7 @@ export default function AddProductForm({
         <Typography sx={{ fontSize: 16, fontWeight: "bold", mb: 1 }}>
           Campos do Produto
         </Typography>
-        <Grid
+        <Grid2
           id="fieldsRow"
           container
           spacing={1.5}
@@ -152,7 +152,7 @@ export default function AddProductForm({
           justifyContent="flex-start"
           alignItems="center"
         >
-          <Grid item>
+          <Grid2 item>
             <Typography sx={{ fontSize: 13 }}>Tipo</Typography>
             <TextField
               size="small"
@@ -161,9 +161,9 @@ export default function AddProductForm({
               variant="outlined"
               sx={{ width: 150 }}
             />
-          </Grid>
+          </Grid2>
 
-          <Grid item>
+          <Grid2 item>
             <Typography sx={{ fontSize: 13 }}>Nome</Typography>
             <TextField
               size="small"
@@ -172,9 +172,9 @@ export default function AddProductForm({
               required
               sx={{ width: 150 }}
             />
-          </Grid>
+          </Grid2>
 
-          <Grid item>
+          <Grid2 item>
             <Typography sx={{ fontSize: 13 }}>
               Valor de Compra/Produção
             </Typography>
@@ -189,9 +189,9 @@ export default function AddProductForm({
               size="small"
               sx={{ width: 150 }}
             />
-          </Grid>
+          </Grid2>
           <>
-            <Grid item>
+            <Grid2 item>
               <Typography sx={{ fontSize: 13 }}>Valor de Venda</Typography>
               <TextField
                 value={sellValue}
@@ -204,9 +204,9 @@ export default function AddProductForm({
                 size="small"
                 sx={{ width: 150 }}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item>
+            <Grid2 item>
               <Typography sx={{ fontSize: 13 }}>
                 Lucro por Item Vendido
               </Typography>
@@ -221,11 +221,11 @@ export default function AddProductForm({
                 readOnly
                 sx={{ width: 150 }}
               />
-            </Grid>
+            </Grid2>
           </>
 
           {baseProduct.fields.map((field, index) => (
-            <Grid item key={index}>
+            <Grid2 item key={index}>
               <Typography sx={{ fontSize: 13 }}>{field.name}</Typography>
               {field.type === "string" && (
                 <TextField
@@ -301,15 +301,15 @@ export default function AddProductForm({
                   )}
                 </InputMask>
               )}
-            </Grid>
+            </Grid2>
           ))}
-        </Grid>
+        </Grid2>
 
         <Typography sx={{ fontSize: 16, fontWeight: "bold", mt: 4 }}>
           Imagens do Produto
         </Typography>
 
-        <Grid
+        <Grid2
           id="imagesRow"
           container
           spacing={1.5}
@@ -319,8 +319,8 @@ export default function AddProductForm({
           alignItems="center"
         >
           {images.map((img, index) => (
-            <Grid item key={index} sx={{ mt: index === 0 && 2.5 }}>
-              <Grid container direction="column" alignItems="center">
+            <Grid2 item key={index} sx={{ mt: index === 0 && 2.5 }}>
+              <Grid2 container direction="column" alignItems="center">
                 <img
                   src={URL.createObjectURL(img)}
                   alt="Prévia da Imagem"
@@ -350,8 +350,8 @@ export default function AddProductForm({
                     Imagem Principal
                   </FormHelperText>
                 )}
-              </Grid>
-            </Grid>
+              </Grid2>
+            </Grid2>
           ))}
           <Button
             variant="contained"
@@ -363,10 +363,10 @@ export default function AddProductForm({
             }
             sx={{ width: 80, height: 100, mt: 2, ml: 1 }}
           >
-            <Grid container direction="column" alignItems="center">
+            <Grid2 container direction="column" alignItems="center">
               <icons.PhotoCameraIcon />
               <Typography sx={{ fontSize: 11 }}>Adicionar Imagem</Typography>
-            </Grid>
+            </Grid2>
           </Button>
           <input
             id="image-upload-input"
@@ -375,7 +375,7 @@ export default function AddProductForm({
             style={{ display: "none" }}
             onChange={handleAddImage}
           />
-        </Grid>
+        </Grid2>
       </DialogContent>
       <DialogActions sx={{ mt: 2 }}>
         <Button type="submit" variant="contained" color="success">

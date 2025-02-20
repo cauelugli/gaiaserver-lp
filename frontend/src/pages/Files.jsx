@@ -19,7 +19,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
+  Grid2,
   Tab,
   Tabs,
   Typography,
@@ -218,11 +218,11 @@ export default function Files({ topBar }) {
           ) : (
             <>
               <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-                <Grid container direction="row" sx={{ py: 2 }}>
+                <Grid2 container direction="row" sx={{ py: 2 }}>
                   <Typography sx={{ my: "auto" }}>
                     Tamanho em Disco: {totalSpaceOccupiedMB}MB
                   </Typography>
-                  <Grid item sx={{ mt: -1 }}>
+                  <Grid2 item sx={{ mt: -1 }}>
                     {selectedImages.length > 0 && (
                       <Button
                         size="small"
@@ -234,8 +234,8 @@ export default function Files({ topBar }) {
                         Limpar Seleção
                       </Button>
                     )}
-                  </Grid>
-                  <Grid item sx={{ mt: -1 }}>
+                  </Grid2>
+                  <Grid2 item sx={{ mt: -1 }}>
                     {selectedImages.length > 0 && (
                       <Button
                         size="small"
@@ -247,12 +247,12 @@ export default function Files({ topBar }) {
                         Excluir Selecionados
                       </Button>
                     )}
-                  </Grid>
-                </Grid>
-                <Grid container spacing={2}>
+                  </Grid2>
+                </Grid2>
+                <Grid2 container spacing={2}>
                   {documents.map((file) => {
                     return (
-                      <Grid key={file._id} item xs={2}>
+                      <Grid2 key={file._id} item xs={2}>
                         <img
                           alt="Imagem do Documento"
                           src={`http://localhost:3000/static/pdf.png`}
@@ -264,7 +264,7 @@ export default function Files({ topBar }) {
                         <Typography sx={{ fontSize: 10 }}>
                           {file.name} - {file.sizeKB}KB
                         </Typography>
-                        <Grid container direction="row" sx={{ ml: 2 }}>
+                        <Grid2 container direction="row" sx={{ ml: 2 }}>
                           <Checkbox
                             checked={selectedImages.includes(file)}
                             onChange={() => handleCheckboxChange(file)}
@@ -281,11 +281,11 @@ export default function Files({ topBar }) {
                             onClick={() => deleteFile(file)}
                             style={{ cursor: "pointer" }}
                           />
-                        </Grid>
-                      </Grid>
+                        </Grid2>
+                      </Grid2>
                     );
                   })}
-                </Grid>
+                </Grid2>
               </Box>
             </>
           )}
@@ -295,11 +295,11 @@ export default function Files({ topBar }) {
             <NoDataText option="Imagens" />
           ) : (
             <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-              <Grid container direction="row" sx={{ py: 2 }}>
+              <Grid2 container direction="row" sx={{ py: 2 }}>
                 <Typography sx={{ my: "auto" }}>
                   Tamanho em Disco: {totalSpaceOccupiedMB}MB
                 </Typography>
-                <Grid item sx={{ mt: -1 }}>
+                <Grid2 item sx={{ mt: -1 }}>
                   {selectedImages.length > 0 && (
                     <Button
                       size="small"
@@ -311,8 +311,8 @@ export default function Files({ topBar }) {
                       Limpar Seleção
                     </Button>
                   )}
-                </Grid>
-                <Grid item sx={{ mt: -1 }}>
+                </Grid2>
+                <Grid2 item sx={{ mt: -1 }}>
                   {selectedImages.length > 0 && (
                     <Button
                       size="small"
@@ -324,12 +324,12 @@ export default function Files({ topBar }) {
                       Excluir Selecionados
                     </Button>
                   )}
-                </Grid>
-              </Grid>
-              <Grid container spacing={2}>
+                </Grid2>
+              </Grid2>
+              <Grid2 container spacing={2}>
                 {images.map((file) => {
                   return (
-                    <Grid key={file._id} item xs={2}>
+                    <Grid2 key={file._id} item xs={2}>
                       <img
                         alt="Imagem do Produto"
                         src={`http://localhost:3000/static/images/${file.name}`}
@@ -341,7 +341,7 @@ export default function Files({ topBar }) {
                       <Typography sx={{ fontSize: 10 }}>
                         {file.name} - {file.sizeKB}KB
                       </Typography>
-                      <Grid container direction="row" sx={{ ml: 1 }}>
+                      <Grid2 container direction="row" sx={{ ml: 1 }}>
                         <Checkbox
                           checked={selectedImages.includes(file)}
                           onChange={() => handleCheckboxChange(file)}
@@ -352,11 +352,11 @@ export default function Files({ topBar }) {
                           onClick={() => deleteFile(file)}
                           style={{ cursor: "pointer" }}
                         />
-                      </Grid>
-                    </Grid>
+                      </Grid2>
+                    </Grid2>
                   );
                 })}
-              </Grid>
+              </Grid2>
             </Box>
           )}
         </CustomTabPanel>
@@ -365,11 +365,11 @@ export default function Files({ topBar }) {
             <NoDataText option="Anexos" />
           ) : (
             <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-              <Grid container direction="row" sx={{ py: 2 }}>
+              <Grid2 container direction="row" sx={{ py: 2 }}>
                 <Typography sx={{ my: "auto" }}>
                   Tamanho em Disco: {totalSpaceOccupiedMB}MB
                 </Typography>
-                <Grid item sx={{ mt: -1 }}>
+                <Grid2 item sx={{ mt: -1 }}>
                   {selectedImages.length > 0 && (
                     <Button
                       size="small"
@@ -381,8 +381,8 @@ export default function Files({ topBar }) {
                       Limpar Seleção
                     </Button>
                   )}
-                </Grid>
-                <Grid item sx={{ mt: -1 }}>
+                </Grid2>
+                <Grid2 item sx={{ mt: -1 }}>
                   {selectedImages.length > 0 && (
                     <Button
                       size="small"
@@ -394,12 +394,12 @@ export default function Files({ topBar }) {
                       Excluir Selecionados
                     </Button>
                   )}
-                </Grid>
-              </Grid>
-              <Grid container spacing={2}>
+                </Grid2>
+              </Grid2>
+              <Grid2 container spacing={2}>
                 {attachments.map((file) => {
                   return (
-                    <Grid key={file._id} item xs={2}>
+                    <Grid2 key={file._id} item xs={2}>
                       {isPdf(file.name) ? (
                         <img
                           src={`http://localhost:3000/static/pdf.png`}
@@ -434,7 +434,7 @@ export default function Files({ topBar }) {
                       <Typography sx={{ fontSize: 10 }}>
                         {file.name} - {file.sizeKB}KB
                       </Typography>
-                      <Grid container direction="row" sx={{ ml: 2 }}>
+                      <Grid2 container direction="row" sx={{ ml: 2 }}>
                         <Checkbox
                           checked={selectedImages.includes(file)}
                           onChange={() => handleCheckboxChange(file)}
@@ -445,11 +445,11 @@ export default function Files({ topBar }) {
                           onClick={() => deleteFile(file)}
                           style={{ cursor: "pointer" }}
                         />
-                      </Grid>
-                    </Grid>
+                      </Grid2>
+                    </Grid2>
                   );
                 })}
-              </Grid>
+              </Grid2>
             </Box>
           )}{" "}
         </CustomTabPanel>

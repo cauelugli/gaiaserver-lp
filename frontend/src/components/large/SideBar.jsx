@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Divider, Grid, List, ListItemButton, Typography } from "@mui/material";
+import { Divider, Grid2, List, ListItemButton, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
 
@@ -71,7 +71,7 @@ const SideBar = ({ configData, user }) => {
   );
 
   return (
-    <Grid sx={{ height: "98%" }}>
+    <Grid2 sx={{ height: "98%" }}>
       <List
         sx={{
           height: "100%",
@@ -202,7 +202,7 @@ const SideBar = ({ configData, user }) => {
           </Link>
         ))}
       </List>
-    </Grid>
+    </Grid2>
   );
 };
 

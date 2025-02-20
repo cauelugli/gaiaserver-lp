@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Grid, MenuItem, Select, Typography } from "@mui/material";
+import { Grid2, MenuItem, Select, Typography } from "@mui/material";
 
 import { icons } from "../../../icons";
 
@@ -47,10 +47,10 @@ const HomePageLayoutSelect = (props) => {
             (option) => option.name === selected
           );
           return (
-            <Grid container direction="row" alignItems="center">
+            <Grid2 container direction="row" alignItems="center">
               {selectedOption.icon}
               <Typography sx={{ ml: 1 }}>{selected}</Typography>
-            </Grid>
+            </Grid2>
           );
         }
         return "";
@@ -58,10 +58,10 @@ const HomePageLayoutSelect = (props) => {
     >
       {options.map((item) => (
         <MenuItem value={item.name} key={item.name}>
-          <Grid container direction="row" alignItems="center">
+          <Grid2 container direction="row" alignItems="center">
             {item.icon}
             <Typography sx={{ ml: 1 }}>{item.name}</Typography>
-          </Grid>
+          </Grid2>
         </MenuItem>
       ))}
     </Select>

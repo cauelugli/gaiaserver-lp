@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import {
   Button,
-  Grid,
+  Grid2,
   InputAdornment,
   Table,
   TableCell,
@@ -118,7 +118,7 @@ const PriceDifferenceTable = (props) => {
           Alterações
         </Typography>
       )}
-      <Grid
+      <Grid2
         container
         direction="column"
         justifyContent="flex-end"
@@ -304,14 +304,14 @@ const PriceDifferenceTable = (props) => {
             </TableCell>
           </TableRow>
         </Table>
-      </Grid>
+      </Grid2>
       {props.openAddDifference &&
         Object.keys(props.priceDifference).length !== 0 && (
           <>
             <Typography sx={{ mt: 2, fontSize: 16, fontWeight: "bold" }}>
               Acréscimos e Descontos
             </Typography>
-            <Grid
+            <Grid2
               container
               direction="column"
               sx={{
@@ -319,8 +319,8 @@ const PriceDifferenceTable = (props) => {
                 borderRadius: 1,
               }}
             >
-              <Grid item sx={{ m: 1, mx: 2 }}>
-                <Grid container direction="row" justifyContent="space-between">
+              <Grid2 item sx={{ m: 1, mx: 2 }}>
+                <Grid2 container direction="row" justifyContent="space-between">
                   <Typography sx={{ fontSize: 16 }}>
                     {props.fieldType === "productList"
                       ? "Serviço + Itens"
@@ -329,38 +329,38 @@ const PriceDifferenceTable = (props) => {
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     R${props.sum ? props.sum : 0.0}
                   </Typography>
-                </Grid>
-              </Grid>
-              <Grid item sx={{ m: 1, mx: 2 }}>
-                <Grid container direction="row" justifyContent="space-between">
+                </Grid2>
+              </Grid2>
+              <Grid2 item sx={{ m: 1, mx: 2 }}>
+                <Grid2 container direction="row" justifyContent="space-between">
                   <Typography sx={{ fontSize: 16, color: "green" }}>
                     Acréscimos
                   </Typography>
                   <Typography sx={{ fontSize: 16, color: "green" }}>
                     + R${sumOfAllIncreases.toFixed(2)}
                   </Typography>
-                </Grid>
-              </Grid>
-              <Grid item sx={{ m: 1, mx: 2 }}>
-                <Grid container direction="row" justifyContent="space-between">
+                </Grid2>
+              </Grid2>
+              <Grid2 item sx={{ m: 1, mx: 2 }}>
+                <Grid2 container direction="row" justifyContent="space-between">
                   <Typography sx={{ fontSize: 16, color: "red" }}>
                     Descontos
                   </Typography>
                   <Typography sx={{ fontSize: 16, color: "red" }}>
                     - R${sumOfAllDiscounts.toFixed(2)}
                   </Typography>
-                </Grid>
-              </Grid>
-              <Grid item sx={{ m: 1, mx: 2 }}>
-                <Grid container direction="row" justifyContent="space-between">
+                </Grid2>
+              </Grid2>
+              <Grid2 item sx={{ m: 1, mx: 2 }}>
+                <Grid2 container direction="row" justifyContent="space-between">
                   <Typography sx={{ fontSize: 16 }}>Valor Final</Typography>
                   <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
                     R${finalSum.toFixed(2)}
                   </Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid container direction="row" justifyContent="flex-end">
+                </Grid2>
+              </Grid2>
+            </Grid2>
+            <Grid2 container direction="row" justifyContent="flex-end">
               {confirmButton ? (
                 <Button
                   size="small"
@@ -382,7 +382,7 @@ const PriceDifferenceTable = (props) => {
                   Aceitar Acréscimos
                 </Button>
               )}
-            </Grid>
+            </Grid2>
           </>
         )}
     </>

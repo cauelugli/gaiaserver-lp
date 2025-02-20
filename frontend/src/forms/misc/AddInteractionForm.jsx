@@ -12,7 +12,7 @@ import {
   Box,
   Button,
   Dialog,
-  Grid,
+  Grid2,
   IconButton,
   InputBase,
   Paper,
@@ -166,9 +166,9 @@ const AddInteractionForm = ({
           specialTitle={`Histórico ${fromSales ? "da Venda" : "do Job"}`}
           femaleGender={false}
         />
-        <Grid container>
-          <Grid container direction="column" sx={{ mx: 3 }}>
-            <Grid item>
+        <Grid2 container>
+          <Grid2 container direction="column" sx={{ mx: 3 }}>
+            <Grid2 item>
               <Typography
                 sx={{ mt: 3, mb: 1, fontSize: 18, fontWeight: "bold" }}
               >
@@ -210,7 +210,7 @@ const AddInteractionForm = ({
                       <TableCell align="left">
                         {interaction.attachments &&
                           interaction.attachments.length !== 0 && (
-                            <Grid>
+                            <Grid2>
                               <icons.AttachFileIcon
                                 sx={{
                                   fontSize: 16,
@@ -243,10 +243,10 @@ const AddInteractionForm = ({
                                     >
                                       Anexos
                                     </Typography>
-                                    <Grid container direction="row">
+                                    <Grid2 container direction="row">
                                       {interaction.attachments.map(
                                         (attachment, attachmentIndex) => (
-                                          <Grid
+                                          <Grid2
                                             key={attachmentIndex}
                                             sx={{
                                               mr: 2,
@@ -292,14 +292,14 @@ const AddInteractionForm = ({
                                                 }}
                                               />
                                             )}
-                                          </Grid>
+                                          </Grid2>
                                         )
                                       )}
-                                    </Grid>
+                                    </Grid2>
                                   </Box>
                                 </Popover>
                               )}
-                            </Grid>
+                            </Grid2>
                           )}
                       </TableCell>
                       <TableCell align="left">
@@ -341,9 +341,9 @@ const AddInteractionForm = ({
                   ))}
                 </TableBody>
               </Table>
-            </Grid>
+            </Grid2>
 
-            <Grid item>
+            <Grid2 item>
               <Typography
                 sx={{ mb: 2, mt: 4, fontSize: 18, fontWeight: "bold" }}
               >
@@ -395,11 +395,11 @@ const AddInteractionForm = ({
                     mt: 2,
                   }}
                 >
-                  <Grid item>
-                    <Grid container direction="row">
+                  <Grid2 item>
+                    <Grid2 container direction="row">
                       {attachments.map((attachment, index) => (
-                        <Grid key={index} item sx={{ mr: 1 }}>
-                          <Grid
+                        <Grid2 key={index} item sx={{ mr: 1 }}>
+                          <Grid2
                             container
                             direction="column"
                             alignItems="center"
@@ -452,8 +452,8 @@ const AddInteractionForm = ({
                               {attachment.name}
                             </Typography>
 
-                            <Grid item>
-                              <Grid
+                            <Grid2 item>
+                              <Grid2
                                 container
                                 direction="row"
                                 justifyContent="space-around"
@@ -474,18 +474,18 @@ const AddInteractionForm = ({
                                 >
                                   <icons.DeleteIcon />
                                 </Button>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid>
+                              </Grid2>
+                            </Grid2>
+                          </Grid2>
+                        </Grid2>
                       ))}
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
                 </Paper>
               )}
 
-              <Grid item>
-                <Grid container direction="row" justifyContent="flex-end">
+              <Grid2 item>
+                <Grid2 container direction="row" justifyContent="flex-end">
                   <Button
                     type="submit"
                     disabled={activity === ""}
@@ -503,11 +503,11 @@ const AddInteractionForm = ({
                   >
                     X
                   </Button>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+                </Grid2>
+              </Grid2>
+            </Grid2>
+          </Grid2>
+        </Grid2>
       </form>
       {openViewDialog && (
         <Dialog

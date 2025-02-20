@@ -7,7 +7,7 @@ import {
   Select,
   FormControl,
   InputLabel,
-  Grid,
+  Grid2,
 } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart"; // Importe o LineChart
 
@@ -72,8 +72,8 @@ const FinanceSmallReports = ({ api }) => {
   const values = labels.map((date) => processedData[date]);
 
   return (
-    <Grid container direction="column" spacing={2}>
-      <Grid item>
+    <Grid2 container direction="column" spacing={2}>
+      <Grid2 item>
         <FormControl sx={{ mt: 1 }}>
           <InputLabel>Período</InputLabel>
           <Select
@@ -86,8 +86,8 @@ const FinanceSmallReports = ({ api }) => {
             <MenuItem value="month">Por Mês</MenuItem>
           </Select>
         </FormControl>
-      </Grid>
-      <Grid item>
+      </Grid2>
+      <Grid2 item>
         <Typography variant="h6" align="center" gutterBottom>
           Vendas Resolvidas{" "}
           {groupBy === "day"
@@ -96,8 +96,8 @@ const FinanceSmallReports = ({ api }) => {
             ? "por Semana"
             : "por Mês"}
         </Typography>
-      </Grid>
-      <Grid item>
+      </Grid2>
+      <Grid2 item>
         {/* Gráfico de linhas */}
         <LineChart
           xAxis={[
@@ -116,8 +116,8 @@ const FinanceSmallReports = ({ api }) => {
           width={800}
           height={400}
         />
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };
 

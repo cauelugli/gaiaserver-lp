@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
-import { Avatar, Tooltip, Badge, Box, InputLabel, Grid } from "@mui/material";
+import { Avatar, Tooltip, Badge, Box, InputLabel, Grid2 } from "@mui/material";
 import { useAppData } from "../../../src/AppDataContext";
 
 const api = axios.create({
@@ -71,7 +71,7 @@ const MembersTableCell = (props) => {
           maxWidth: 400,
         }}
       >
-        <Grid
+        <Grid2
           container
           direction="row"
           alignItems="center"
@@ -101,7 +101,7 @@ const MembersTableCell = (props) => {
               </Tooltip>
             </Box>
           ))}
-        </Grid>
+        </Grid2>
       </Box>
 
       <InputLabel>Adicionar Membro</InputLabel>
@@ -120,7 +120,7 @@ const MembersTableCell = (props) => {
           maxWidth: 400,
         }}
       >
-        <Grid
+        <Grid2
           container
           direction="row"
           alignItems="center"
@@ -175,7 +175,7 @@ const MembersTableCell = (props) => {
                 </Tooltip>
               </Box>
             ))}
-        </Grid>
+        </Grid2>
       </Box>
     </>
   );

@@ -7,7 +7,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   FormControlLabel,
-  Grid,
+  Grid2,
   Switch,
   Typography,
   Button,
@@ -80,7 +80,7 @@ const AccountPreferencesBox = (props) => {
     : ["#FFFFFF", "#F8F8FF", "#F5F5F5", "#E0E0E0", "#CCCCCC"]; // claro
 
   return (
-    <Grid
+    <Grid2
       container
       sx={{ mt: 1, width: 250 }}
       direction="column"
@@ -105,9 +105,9 @@ const AccountPreferencesBox = (props) => {
             }
           />
           <Typography sx={{ mt: 2 }}>Tom do Plano de Fundo</Typography>
-          <Grid container spacing={1} sx={{ mt: 1 }}>
+          <Grid2 container spacing={1} sx={{ mt: 1 }}>
             {availableColors.map((color) => (
-              <Grid item key={color}>
+              <Grid2 item key={color}>
                 <Button
                   variant="contained"
                   sx={{
@@ -123,9 +123,9 @@ const AccountPreferencesBox = (props) => {
                   }}
                   onClick={() => handlePaletteColorChange(color)}
                 />
-              </Grid>
+              </Grid2>
             ))}
-          </Grid>
+          </Grid2>
         </AccordionDetails>
       </Accordion>
 
@@ -202,7 +202,7 @@ const AccountPreferencesBox = (props) => {
       </Accordion>
 
 
-    </Grid>
+    </Grid2>
   );
 };
 

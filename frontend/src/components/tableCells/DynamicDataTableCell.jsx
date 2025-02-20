@@ -8,7 +8,7 @@ const api = axios.create({
 
 import {
   Avatar,
-  Grid,
+  Grid2,
   MenuItem,
   Select,
   Typography,
@@ -122,14 +122,14 @@ const DynamicDataTableCell = (props) => {
         return (
           <>
             {props.field.hasAvatar ? (
-              <Grid container direction="row" alignItems="center">
+              <Grid2 container direction="row" alignItems="center">
                 <Avatar
                   alt="Imagem"
                   src={`http://localhost:3000/static/${selected.image}`}
                   sx={{ width: 24, height: 24, marginRight: 2 }}
                 />
                 <Typography sx={{ fontSize: 13 }}>{selected.name}</Typography>
-              </Grid>
+              </Grid2>
             ) : (
               <Typography sx={{ fontSize: 13 }}>
                 {selected.name || selected}
@@ -180,14 +180,14 @@ const DynamicDataTableCell = (props) => {
                 key={index}
                 disabled={checkAvailability(props.field.dynamicData, option)}
               >
-                <Grid container direction="row" alignItems="center">
+                <Grid2 container direction="row" alignItems="center">
                   <Avatar
                     alt="Imagem"
                     src={`http://localhost:3000/static/${option.image}`}
                     sx={{ width: 24, height: 24, marginRight: 2 }}
                   />
                   <Typography>{option.name}</Typography>
-                </Grid>
+                </Grid2>
               </MenuItem>
             ))
           : options.map((option, index) => (

@@ -9,7 +9,7 @@ const api = axios.create({
 });
 
 import {
-  Grid,
+  Grid2,
   TextField,
   Typography,
   Select,
@@ -115,7 +115,7 @@ const SmallFormModel = (props) => {
       onSubmit={handleSubmit}
       style={{ backgroundColor: `${props.mainColor}B3` }}
     >
-      <Grid
+      <Grid2
         sx={{ width: 250, height: 240, px: 2, mt: -1 }}
         container
         direction="column"
@@ -124,7 +124,7 @@ const SmallFormModel = (props) => {
         <Typography sx={{ color: "white", fontWeight: "bold", pt: 1 }}>
           Alterando {options.targetLabel}
         </Typography>
-        <Grid item>
+        <Grid2 item>
           <Typography sx={{ fontSize: 12, mt: 2, color: "white" }}>
             Atual
           </Typography>
@@ -136,8 +136,8 @@ const SmallFormModel = (props) => {
             }}
             value={inputValue}
           />
-        </Grid>
-        <Grid item>
+        </Grid2>
+        <Grid2 item>
           <Typography sx={{ fontSize: 12, mt: 2, color: "white" }}>
             Novo
           </Typography>
@@ -163,9 +163,9 @@ const SmallFormModel = (props) => {
                   </MenuItem>
                 ))}
           </Select>
-        </Grid>
-      </Grid>
-      <Grid
+        </Grid2>
+      </Grid2>
+      <Grid2
         container
         direction="row"
         alignItems="center"
@@ -183,7 +183,7 @@ const SmallFormModel = (props) => {
         <Button variant="contained" color="error" onClick={handleCancel}>
           Cancelar
         </Button>
-      </Grid>
+      </Grid2>
     </form>
   );
 };

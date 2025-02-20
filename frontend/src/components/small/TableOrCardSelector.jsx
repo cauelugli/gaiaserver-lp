@@ -8,7 +8,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-import { Grid, Typography } from "@mui/material";
+import { Grid2, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
 
@@ -76,7 +76,7 @@ const TableOrCardSelector = (props) => {
   };
 
   return (
-    <Grid
+    <Grid2
       container
       direction="row"
       justifyContent="flex-end"
@@ -110,9 +110,9 @@ const TableOrCardSelector = (props) => {
         setRefreshData={props.setRefreshData}
       />
 
-      <Grid item>
+      <Grid2 item>
         {!tableOrCardView && (
-          <Grid container direction="row" sx={{ mr: 3 }}>
+          <Grid2 container direction="row" sx={{ mr: 3 }}>
             {props.cardSize !== 12 && (
               <Typography
                 sx={{
@@ -144,10 +144,10 @@ const TableOrCardSelector = (props) => {
                 -
               </Typography>
             )}
-          </Grid>
+          </Grid2>
         )}
-      </Grid>
-      <Grid>
+      </Grid2>
+      <Grid2>
         <icons.AppsIcon
           sx={{
             mr: 1,
@@ -156,8 +156,8 @@ const TableOrCardSelector = (props) => {
           }}
           onClick={() => handleUpdateTableOrCardView(false)}
         />
-      </Grid>
-      <Grid>
+      </Grid2>
+      <Grid2>
         <icons.TableRowsIcon
           sx={{
             cursor: "pointer",
@@ -165,8 +165,8 @@ const TableOrCardSelector = (props) => {
           }}
           onClick={() => handleUpdateTableOrCardView(true)}
         />
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };
 

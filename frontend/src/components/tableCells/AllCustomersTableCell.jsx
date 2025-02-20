@@ -9,7 +9,7 @@ const api = axios.create({
 import {
   Avatar,
   Divider,
-  Grid,
+  Grid2,
   InputLabel,
   MenuItem,
   Select,
@@ -66,7 +66,7 @@ const AllCustomersTableCell = (props) => {
         size="small"
         renderValue={(selected) =>
           selected ? (
-            <Grid container direction="row" alignItems="center">
+            <Grid2 container direction="row" alignItems="center">
               <Avatar
                 alt="Imagem"
                 src={`http://localhost:3000/static/${selected.image}`}
@@ -82,7 +82,7 @@ const AllCustomersTableCell = (props) => {
               >
                 {selected.name}
               </Typography>
-            </Grid>
+            </Grid2>
           ) : (
             <Typography>Selecione um Cliente</Typography>
           )
@@ -129,14 +129,14 @@ const AllCustomersTableCell = (props) => {
         ) : (
           filteredCustomers.map((option, index) => (
             <MenuItem value={option} key={index}>
-              <Grid container direction="row" alignItems="center">
+              <Grid2 container direction="row" alignItems="center">
                 <Avatar
                   alt="Imagem"
                   src={`http://localhost:3000/static/${option.image}`}
                   sx={{ width: 24, height: 24, marginRight: 2 }}
                 />
                 <Typography>{option.name}</Typography>
-              </Grid>
+              </Grid2>
             </MenuItem>
           ))
         )}
@@ -157,14 +157,14 @@ const AllCustomersTableCell = (props) => {
         ) : (
           filteredClients.map((option, index) => (
             <MenuItem value={option} key={index}>
-              <Grid container direction="row" alignItems="center">
+              <Grid2 container direction="row" alignItems="center">
                 <Avatar
                   alt="Imagem"
                   src={`http://localhost:3000/static/${option.image}`}
                   sx={{ width: 24, height: 24, marginRight: 2 }}
                 />
                 <Typography>{option.name}</Typography>
-              </Grid>
+              </Grid2>
             </MenuItem>
           ))
         )}

@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
-import { Avatar, Grid, Typography } from "@mui/material";
+import { Avatar, Grid2, Typography } from "@mui/material";
 
 const GroupMembers = ({ members, users, managers }) => {
   const allUsers = [...users, ...managers];
@@ -29,7 +29,7 @@ const GroupMembers = ({ members, users, managers }) => {
   const remainingMembersCount = members.length - displayedMembers.length;
 
   return (
-    <Grid container direction="row" alignItems="center" justifyContent="center">
+    <Grid2 container direction="row" alignItems="center" justifyContent="center">
       {displayedMembers.map((member) => {
         const user = userDetails[member._id];
         if (user) {
@@ -50,7 +50,7 @@ const GroupMembers = ({ members, users, managers }) => {
           ...+{remainingMembersCount}
         </Typography>
       )}
-    </Grid>
+    </Grid2>
   );
 };
 

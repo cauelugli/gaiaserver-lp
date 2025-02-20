@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import {
   // Button,
-  Grid,
+  Grid2,
   Tooltip,
   Typography,
   Popover,
@@ -34,7 +34,7 @@ const MultipleSelectorButton = (props) => {
   return (
     <>
       {props.multiple && (
-        <Grid
+        <Grid2
           sx={{
             mr: 1,
             backgroundColor: props.multiple ? `${props.mainColor}B3` : "none",
@@ -42,7 +42,7 @@ const MultipleSelectorButton = (props) => {
             "&:hover": { backgroundColor: "none" },
           }}
         >
-          <Grid
+          <Grid2
             container
             direction="row"
             justifyContent="center"
@@ -103,7 +103,7 @@ const MultipleSelectorButton = (props) => {
                 horizontal: "left",
               }}
             >
-              <Grid sx={{ my: 2 }}>
+              <Grid2 sx={{ my: 2 }}>
                 <MenuItem
                   disabled
                   onClick={() => console.log("Editar em Massa")}
@@ -124,12 +124,12 @@ const MultipleSelectorButton = (props) => {
                   </ListItemIcon>
                   <ListItemText primary="Deletar Todos" />
                 </MenuItem>
-              </Grid>
+              </Grid2>
             </Popover>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       )}
-      <Grid
+      <Grid2
         container
         direction="row"
         alignItems="center"
@@ -160,7 +160,7 @@ const MultipleSelectorButton = (props) => {
             }}
           />
         )}
-      </Grid>
+      </Grid2>
       <Dialog
         open={openDeleteDialog}
         onClose={() => setOpenDeleteDialog(false)}

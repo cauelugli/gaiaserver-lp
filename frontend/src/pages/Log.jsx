@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid2, Typography } from "@mui/material";
 import LogTable from "../tables/LogTable";
 import { useAppData } from "../AppDataContext";
 
@@ -34,12 +34,12 @@ const Log = ({ api, topBar, mainColor }) => {
 
   return (
     <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
-      <Grid container>
+      <Grid2 container>
         <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }} id="title">
           Logs do Sistema{" "}
         </Typography>
 
-        <Grid
+        <Grid2
           container
           direction="row"
           alignItems="center"
@@ -63,8 +63,8 @@ const Log = ({ api, topBar, mainColor }) => {
               color: mainColor ? mainColor : "#32aacd",
             }}
           />
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
 
       <LogTable items={logs} idIndexList={idIndexList} />
     </Box>

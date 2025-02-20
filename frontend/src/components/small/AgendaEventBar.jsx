@@ -2,13 +2,13 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
-import { Grid, IconButton, Typography } from "@mui/material";
+import { Grid2, IconButton, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
 
 const AgendaEventBar = (props) => {
   return (
-    <Grid
+    <Grid2
       container
       direction="row"
       justifyContent="space-around"
@@ -45,7 +45,7 @@ const AgendaEventBar = (props) => {
       >
         {props.open ? <icons.ExpandLessIcon /> : <icons.ExpandMoreIcon />}
       </IconButton>
-    </Grid>
+    </Grid2>
   );
 };
 

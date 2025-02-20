@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { Avatar, Divider, Grid } from "@mui/material";
+import { Avatar, Divider, Grid2 } from "@mui/material";
 
 const FormEndLine = ({ config, image }) => {
   return (
-    <Grid container direction="row" justifyContent="center">
+    <Grid2 container direction="row" justifyContent="center">
       <Divider sx={{ border: "1px nothing #444", width: "35%", my: "auto" }} />
       {image && (
         <Avatar
@@ -19,7 +19,7 @@ const FormEndLine = ({ config, image }) => {
         />
       )}
       <Divider sx={{ border: "1px nothing #444", width: "35%", my: "auto" }} />
-    </Grid>
+    </Grid2>
   );
 };
 

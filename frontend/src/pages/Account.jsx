@@ -14,7 +14,7 @@ import {
   Avatar,
   Box,
   Button,
-  Grid,
+  Grid2,
   Table,
   TableBody,
   TableCell,
@@ -290,7 +290,7 @@ export default function Account({
       >
         Perfil
       </Typography>
-      <Grid
+      <Grid2
         container
         direction="row"
         justifyContent="space-between"
@@ -317,7 +317,7 @@ export default function Account({
         )}
 
         <Box>
-          <Grid
+          <Grid2
             container
             direction="column"
             alignItems="center"
@@ -325,7 +325,7 @@ export default function Account({
             cursor="pointer"
             sx={{ mb: 3 }}
           >
-            <Grid
+            <Grid2
               container
               direction="row"
               alignItems="center"
@@ -347,7 +347,7 @@ export default function Account({
                   sx={{ ml: 3, width: 230, height: 230 }}
                 />
               )}
-            </Grid>
+            </Grid2>
 
             <input
               accept="image/*"
@@ -373,7 +373,7 @@ export default function Account({
               </Button>
             </label>
             {image && (
-              <Grid
+              <Grid2
                 container
                 direction="row"
                 justifyContent="space-evenly"
@@ -397,9 +397,9 @@ export default function Account({
                 >
                   Salvar Nova Imagem
                 </Button>
-              </Grid>
+              </Grid2>
             )}
-          </Grid>
+          </Grid2>
           <Table size="small">
             <TableHead>
               <TableRow>
@@ -486,9 +486,9 @@ export default function Account({
             </TableBody>
           </Table>
         </Box>
-        <Grid id="ghost" />
-        <Grid id="ghost" />
-      </Grid>
+        <Grid2 id="ghost" />
+        <Grid2 id="ghost" />
+      </Grid2>
     </Box>
   );
 }

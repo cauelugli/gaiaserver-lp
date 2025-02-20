@@ -2,7 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import * as React from "react";
 
-import { Grid, Tooltip } from "@mui/material";
+import { Grid2, Tooltip } from "@mui/material";
 
 import { icons } from "../../../icons";
 
@@ -12,7 +12,7 @@ export default function HighlightArchivedButton({
   mainColor,
 }) {
   return (
-    <Grid
+    <Grid2
       container
       direction="row"
       alignItems="center"
@@ -43,6 +43,6 @@ export default function HighlightArchivedButton({
           }}
         />
       </Tooltip>
-    </Grid>
+    </Grid2>
   );
 }

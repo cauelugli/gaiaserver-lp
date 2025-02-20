@@ -9,7 +9,7 @@ import {
   Button,
   DialogActions,
   DialogTitle,
-  Grid,
+  Grid2,
   Typography,
   IconButton,
 } from "@mui/material";
@@ -68,7 +68,7 @@ const RequestBuyForm = (props) => {
   };
 
   return (
-    <Grid
+    <Grid2
       container
       direction="column"
       justifyContent="center"
@@ -85,7 +85,7 @@ const RequestBuyForm = (props) => {
           src={`http://localhost:3000/static${props.selectedItem.images[0]}`}
           sx={{ width: 128, height: 128, my: 1 }}
         />
-        <Grid
+        <Grid2
           container
           direction="row"
           alignItems="center"
@@ -98,9 +98,9 @@ const RequestBuyForm = (props) => {
           <IconButton onClick={incrementQuantity} color="inherit">
             <icons.AddIcon />
           </IconButton>
-        </Grid>
+        </Grid2>
       </>
-      <Grid
+      <Grid2
         container
         direction="row"
         alignItems="center"
@@ -113,7 +113,7 @@ const RequestBuyForm = (props) => {
         <Typography>
           Valor Total: R${(props.selectedItem.buyValue * quantity).toFixed(2)}
         </Typography>
-      </Grid>
+      </Grid2>
       <DialogActions>
         <Button
           variant="contained"
@@ -131,7 +131,7 @@ const RequestBuyForm = (props) => {
           X
         </Button>
       </DialogActions>
-    </Grid>
+    </Grid2>
   );
 };
 

@@ -14,7 +14,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
+  Grid2,
   InputAdornment,
   Table,
   TableBody,
@@ -108,7 +108,7 @@ const ViewDialog = ({
       </DialogTitle>
 
       {search && (
-        <Grid
+        <Grid2
           item
           sx={{ width: "100%", mt: 1 }}
           container
@@ -116,7 +116,7 @@ const ViewDialog = ({
           alignItems="center"
           justifyContent="space-evenly"
         >
-          <Grid>
+          <Grid2>
             <TextField
               placeholder="Pesquise..."
               size="small"
@@ -143,10 +143,10 @@ const ViewDialog = ({
                   ),
               }}
             />
-          </Grid>
-          <Grid item>
-            <Grid container>
-              <Grid>
+          </Grid2>
+          <Grid2 item>
+            <Grid2 container>
+              <Grid2>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     format="DD/MM/YYYY"
@@ -165,9 +165,9 @@ const ViewDialog = ({
                     }}
                   />
                 </LocalizationProvider>{" "}
-              </Grid>
+              </Grid2>
 
-              <Grid sx={{ mx: 2 }}>
+              <Grid2 sx={{ mx: 2 }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     format="DD/MM/YYYY"
@@ -185,8 +185,8 @@ const ViewDialog = ({
                     }}
                   />
                 </LocalizationProvider>{" "}
-              </Grid>
-              <Grid>
+              </Grid2>
+              <Grid2>
                 <Button
                   size="small"
                   variant="outlined"
@@ -198,10 +198,10 @@ const ViewDialog = ({
                 >
                   Limpar
                 </Button>{" "}
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+              </Grid2>
+            </Grid2>
+          </Grid2>
+        </Grid2>
       )}
 
       <DialogContent style={{ height: "100%", width: list ? "95%" : "100%" }}>
@@ -305,7 +305,7 @@ const ViewDialog = ({
             </TableBody>
           </Table>
         ) : (
-          <Grid
+          <Grid2
             container
             justifyContent="center"
             alignItems="center"
@@ -337,7 +337,7 @@ const ViewDialog = ({
                 </Worker>
               </Box>
             )}
-          </Grid>
+          </Grid2>
         )}
       </DialogContent>
       <DialogActions>

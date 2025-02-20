@@ -8,7 +8,7 @@ import {
   TableCell,
   Typography,
   InputLabel,
-  Grid,
+  Grid2,
   Avatar,
   Button,
 } from "@mui/material";
@@ -131,8 +131,8 @@ function LogTable(props) {
             </Typography>
           </TableCell>
           <TableCell align="left" sx={{ mr: 2 }}>
-            <Grid container alignItems="center" spacing={1}>
-              <Grid item>
+            <Grid2 container alignItems="center" spacing={1}>
+              <Grid2 item>
                 <Avatar
                   sx={{ width: 24, height: 24 }}
                   src={`http://localhost:3000/static/${
@@ -140,14 +140,14 @@ function LogTable(props) {
                       ?.image || ""
                   }`}
                 />
-              </Grid>
-              <Grid item>
+              </Grid2>
+              <Grid2 item>
                 <Typography sx={{ fontSize: 12 }}>
                   {props.idIndexList.find((item) => item.id === row.source)
                     ?.name || "Admin"}
                 </Typography>
-              </Grid>
-            </Grid>
+              </Grid2>
+            </Grid2>
           </TableCell>
           <TableCell align="left" sx={{ mr: 2 }}>
             <Typography sx={{ fontSize: 12 }}>
@@ -156,27 +156,27 @@ function LogTable(props) {
           </TableCell>
 
           <TableCell align="left">
-            <Grid container direction="row">
+            <Grid2 container direction="row">
               {row.target ? (
                 Array.isArray(row.target) && row.type === "Deleção Múltipla" ? (
                   row.target.map((item, index) => (
-                    <Grid item key={index} sx={{ mr: 0.5, width: 200 }}>
+                    <Grid2 item key={index} sx={{ mr: 0.5, width: 200 }}>
                       <InputLabel sx={{ fontSize: 12 }}>
                         Item {index + 1}:
                       </InputLabel>
                       <Typography sx={{ fontSize: 12 }}>{item.name}</Typography>
-                    </Grid>
+                    </Grid2>
                   ))
                 ) : Array.isArray(row.target) ? (
                   row.target.map((change, index) => (
-                    <Grid item key={index} sx={{ mr: 0.5, width: 200 }}>
+                    <Grid2 item key={index} sx={{ mr: 0.5, width: 200 }}>
                       <InputLabel sx={{ fontSize: 12 }}>
                         {translateKeys(change.field) || change.field}
                       </InputLabel>
                       {change.field === "products" ? (
                         // Renderização específica para "products"
-                        <Grid container spacing={1}>
-                          <Grid item xs={12}>
+                        <Grid2 container spacing={1}>
+                          <Grid2 item xs={12}>
                             <b>Antes:</b>{" "}
                             {Array.isArray(change.oldValue)
                               ? change.oldValue.map((item, idx) => {
@@ -244,8 +244,8 @@ function LogTable(props) {
                                   (item) => item.id === change.oldValue
                                 )?.name || change.oldValue
                               : change.oldValue}
-                          </Grid>
-                          <Grid item xs={12}>
+                          </Grid2>
+                          <Grid2 item xs={12}>
                             <b>Depois:</b>{" "}
                             {Array.isArray(change.newValue)
                               ? change.newValue.map((item, idx) => {
@@ -313,8 +313,8 @@ function LogTable(props) {
                                   (item) => item.id === change.newValue
                                 )?.name || change.newValue
                               : change.newValue}
-                          </Grid>
-                        </Grid>
+                          </Grid2>
+                        </Grid2>
                       ) : (
                         // Renderização padrão para outros campos
                         <>
@@ -336,26 +336,26 @@ function LogTable(props) {
                           </Typography>
                         </>
                       )}
-                    </Grid>
+                    </Grid2>
                   ))
                 ) : typeof row.target === "string" ? (
-                  <Grid item sx={{ mr: 0.5, width: 200 }}>
+                  <Grid2 item sx={{ mr: 0.5, width: 200 }}>
                     <InputLabel sx={{ fontSize: 12 }}>Nome</InputLabel>
                     <Typography sx={{ fontSize: 12 }}>
                       {props.idIndexList.find((item) => item.id === row.target)
                         ?.name || row.target}
                     </Typography>
-                  </Grid>
+                  </Grid2>
                 ) : typeof row.target === "number" ? (
-                  <Grid item sx={{ mr: 0.5, width: 200 }}>
+                  <Grid2 item sx={{ mr: 0.5, width: 200 }}>
                     <InputLabel sx={{ fontSize: 12 }}>#</InputLabel>
                     <Typography sx={{ fontSize: 12 }}>{row.target}</Typography>
-                  </Grid>
+                  </Grid2>
                 ) : (
                   Object.entries(row.target)
                     .filter(([key]) => !["_id", "__v", "image"].includes(key))
                     .map(([key, value], index) => (
-                      <Grid
+                      <Grid2
                         item
                         key={index}
                         sx={{
@@ -378,7 +378,7 @@ function LogTable(props) {
                               )?.name || ""
                             : value}
                         </Typography>
-                      </Grid>
+                      </Grid2>
                     ))
                 )
               ) : (
@@ -386,7 +386,7 @@ function LogTable(props) {
                   Nenhum dado disponível
                 </Typography>
               )}
-            </Grid>
+            </Grid2>
           </TableCell>
         </TableRow>
       ))}

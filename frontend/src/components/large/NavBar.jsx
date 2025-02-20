@@ -2,7 +2,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-import { Grid, Tooltip, Typography } from "@mui/material";
+import { Grid2, Tooltip, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
 
@@ -91,14 +91,14 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
   return (
     <>
       {configData && configData.customization && (
-        <Grid
+        <Grid2
           container
           direction="row"
           alignItems="center"
           justifyContent="space-between"
           sx={{ backgroundColor: configData.customization.mainColor }}
         >
-          <Grid
+          <Grid2
             item
             sx={{
               ml: 1,
@@ -120,9 +120,9 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
                 }}
               />
             </Link>
-          </Grid>
+          </Grid2>
           {missingCoreData.length !== 0 && (
-            <Grid sx={{ ml: 1, mr: "auto" }}>
+            <Grid2 sx={{ ml: 1, mr: "auto" }}>
               <Tooltip
                 title={
                   <React.Fragment>
@@ -152,10 +152,10 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
                   }}
                 />
               </Tooltip>
-            </Grid>
+            </Grid2>
           )}
           {barPosition && (
-            <Grid
+            <Grid2
               container
               direction="row"
               alignItems="center"
@@ -166,11 +166,11 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
               }}
             >
               <TopBar configData={configData} user={user} />
-            </Grid>
+            </Grid2>
           )}
 
-          <Grid item sx={{ mr: 2 }}>
-            <Grid container direction="row">
+          <Grid2 item sx={{ mr: 2 }}>
+            <Grid2 container direction="row">
               <NotificationsButton
                 api={api}
                 socket={socket}
@@ -182,9 +182,9 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
                 sx={{ mr: 3, color: "#333" }}
               />
               <UserButton user={user} />
-            </Grid>
-          </Grid>
-        </Grid>
+            </Grid2>
+          </Grid2>
+        </Grid2>
       )}
     </>
   );

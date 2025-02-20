@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import {
   Button,
-  Grid,
+  Grid2,
   Menu,
   List,
   ListItemButton,
@@ -41,7 +41,7 @@ export default function ProductsTableButton(props) {
           "&:hover": { borderColor: "#eee" },
         }}
       >
-        <Grid
+        <Grid2
           container
           direction="row"
           alignItems="center"
@@ -67,7 +67,7 @@ export default function ProductsTableButton(props) {
           >
             Novo
           </Typography>
-        </Grid>
+        </Grid2>
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
         <List sx={{ minWidth: 150, maxWidth: 220 }}>

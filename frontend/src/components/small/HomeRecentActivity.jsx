@@ -8,7 +8,7 @@ import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
 import {
-  Grid,
+  Grid2,
   IconButton,
   InputAdornment,
   TextField,
@@ -75,10 +75,10 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
 
   return (
     <>
-      <Grid sx={{ width: 700, mt:3 }}>
-        <Grid item>
-          <Grid container direction="row" justifyContent="space-between">
-            <Grid item>
+      <Grid2 sx={{ width: 700, mt:3 }}>
+        <Grid2 item>
+          <Grid2 container direction="row" justifyContent="space-between">
+            <Grid2 item>
               <Typography
                 sx={{
                   fontWeight: "bold",
@@ -101,9 +101,9 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
                   </IconButton>
                 )}
               </Typography>
-            </Grid>
-            <Grid item>
-              <Grid container>
+            </Grid2>
+            <Grid2 item>
+              <Grid2 container>
                 <Typography
                   sx={{
                     fontSize: 20,
@@ -126,12 +126,12 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
                 >
                   -
                 </Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+              </Grid2>
+            </Grid2>
+          </Grid2>
+        </Grid2>
 
-        <Grid
+        <Grid2
           sx={{
             height: selectedHeight,
             width: "auto",
@@ -141,9 +141,9 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
             // ...eventStyle,
           }}
         >
-          <Grid container direction="column">
+          <Grid2 container direction="column">
             {selectedHeight >= 240 && recentActivities.length !== 0 && (
-              <Grid
+              <Grid2
                 item
                 sx={{ width: "100%", mt: 1 }}
                 container
@@ -212,18 +212,18 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
                     }}
                   />
                 </LocalizationProvider>
-              </Grid>
+              </Grid2>
             )}
             {filteredActivities.length !== 0 ? (
               filteredActivities.reverse().map((activity) => (
-                <Grid key={activity.id} item sx={{ mt: 1 }}>
+                <Grid2 key={activity.id} item sx={{ mt: 1 }}>
                   <Typography sx={{ fontSize: 13, maxWidth: 650 }}>
                     <Typography sx={{ fontSize: 12, color: "grey" }}>
                       {activity.createdAt}
                     </Typography>
                     {activity.activity}
                   </Typography>
-                </Grid>
+                </Grid2>
               ))
             ) : (
               <Typography
@@ -233,9 +233,9 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
                 {recentActivities.length === 0 ? "Recente" : "Localizada"}
               </Typography>
             )}
-          </Grid>
-        </Grid>
-      </Grid>
+          </Grid2>
+        </Grid2>
+      </Grid2>
     </>
   );
 };

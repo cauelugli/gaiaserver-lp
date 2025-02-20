@@ -18,7 +18,7 @@ import {
   DialogContent,
   DialogTitle,
   FormHelperText,
-  Grid,
+  Grid2,
   IconButton,
   Paper,
   Popover,
@@ -139,7 +139,7 @@ export default function Customization({ onClose }) {
       {configData.length !== 0 && (
         <>
           <DialogContent>
-            <Grid
+            <Grid2
               container
               sx={{ mt: 2 }}
               direction="column"
@@ -153,8 +153,8 @@ export default function Customization({ onClose }) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
+                  <Grid2 item sx={{ my: 1.5 }}>
+                    <Grid2 container direction="row">
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12, color: "white" }}>
@@ -206,10 +206,10 @@ export default function Customization({ onClose }) {
                           borderRadius: 50,
                         }}
                       />
-                    </Grid>
-                  </Grid>
-                  <Grid item sx={{ my: 1.5 }}>
-                    <Grid container direction="row">
+                    </Grid2>
+                  </Grid2>
+                  <Grid2 item sx={{ my: 1.5 }}>
+                    <Grid2 container direction="row">
                       <Tooltip
                         title={
                           <Typography sx={{ fontSize: 12, color: "white" }}>
@@ -265,8 +265,8 @@ export default function Customization({ onClose }) {
                           borderRadius: 50,
                         }}
                       />
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
                 </AccordionDetails>
               </Accordion>
 
@@ -277,8 +277,8 @@ export default function Customization({ onClose }) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid item sx={{ mt: 2.5 }}>
-                    <Grid
+                  <Grid2 item sx={{ mt: 2.5 }}>
+                    <Grid2
                       container
                       direction="row"
                       justifyContent="space-evenly"
@@ -310,7 +310,7 @@ export default function Customization({ onClose }) {
                             }}
                           />
                         ) : newLogo ? (
-                          <Grid
+                          <Grid2
                             container
                             direction="column"
                             alignItems="center"
@@ -326,7 +326,7 @@ export default function Customization({ onClose }) {
                               }}
                             />
                             <FormHelperText>Novo Logotipo</FormHelperText>
-                          </Grid>
+                          </Grid2>
                         ) : (
                           <Typography
                             sx={{
@@ -349,10 +349,10 @@ export default function Customization({ onClose }) {
                         onChange={handleLogoChange}
                         style={{ display: "none" }}
                       />
-                    </Grid>
-                  </Grid>
-                  <Grid item sx={{ mt: 2.5 }}>
-                    <Grid
+                    </Grid2>
+                  </Grid2>
+                  <Grid2 item sx={{ mt: 2.5 }}>
+                    <Grid2
                       container
                       direction="row"
                       alignItems="flex-start"
@@ -389,7 +389,7 @@ export default function Customization({ onClose }) {
                             }}
                           />
                         ) : newLogoBlack ? (
-                          <Grid
+                          <Grid2
                             container
                             direction="column"
                             alignItems="center"
@@ -405,7 +405,7 @@ export default function Customization({ onClose }) {
                               }}
                             />
                             <FormHelperText>Novo Logotipo Preto</FormHelperText>
-                          </Grid>
+                          </Grid2>
                         ) : (
                           <Typography
                             sx={{
@@ -428,11 +428,11 @@ export default function Customization({ onClose }) {
                         onChange={handleLogoBlackChange}
                         style={{ display: "none" }}
                       />
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
                 </AccordionDetails>
               </Accordion>
-            </Grid>
+            </Grid2>
           </DialogContent>
           <DialogActions>
             <Button type="submit" variant="contained" color="success">

@@ -2,7 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
-import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
+import { Avatar, Button, Grid2, Paper, Typography } from "@mui/material";
 
 export default function BadgedIcon(props) {
   const handleChangeItem = () => {
@@ -19,31 +19,31 @@ export default function BadgedIcon(props) {
         },
       }}
     >
-      <Grid
+      <Grid2
         container
         direction="column"
         alignItems="center"
         justifyContent="center"
       >
-        <Grid item>
+        <Grid2 item>
           <Typography sx={{ fontSize: 12, my: 0.5 }}>
             {props.item.name}
           </Typography>
-        </Grid>
+        </Grid2>
 
-        <Grid item>
+        <Grid2 item>
           <Avatar
             alt="Imagem do Item"
             src={`http://localhost:3000/static/${props.item.images[0]}`}
             sx={{ width: 64, height: 64 }}
           />
-        </Grid>
-        <Grid item>
+        </Grid2>
+        <Grid2 item>
           <Typography sx={{ fontSize: 12, my: 0.5, fontWeight: "bold" }}>
             {props.item.type}
           </Typography>
-        </Grid>
-        <Grid item sx={{ m: 1 }}>
+        </Grid2>
+        <Grid2 item sx={{ m: 1 }}>
           <Button
             size="small"
             variant="contained"
@@ -63,8 +63,8 @@ export default function BadgedIcon(props) {
               {props.isInList ? "REMOVER" : "ADICIONAR"}
             </Typography>
           </Button>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </Paper>
   );
 }

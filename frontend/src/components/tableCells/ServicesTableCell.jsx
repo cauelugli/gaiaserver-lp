@@ -7,7 +7,7 @@ const api = axios.create({
 });
 
 import {
-  Grid,
+  Grid2,
   InputLabel,
   MenuItem,
   Select,
@@ -101,7 +101,7 @@ const ServicesTableCell = (props) => {
 
           if (departmentServices.length > 0) {
             menuItems.push(
-              <Grid container direction="row">
+              <Grid2 container direction="row">
                 <Paper
                   sx={{
                     width: 8,
@@ -118,7 +118,7 @@ const ServicesTableCell = (props) => {
                 >
                   {department.name}
                 </InputLabel>
-              </Grid>
+              </Grid2>
             );
 
             menuItems.push(

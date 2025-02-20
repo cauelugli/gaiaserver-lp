@@ -15,7 +15,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
+  Grid2,
   Typography,
 } from "@mui/material";
 
@@ -76,7 +76,7 @@ const DeleteFormModel = ({
   };
 
   return (
-    <Grid
+    <Grid2
       container
       direction="column"
       justifyContent="center"
@@ -94,7 +94,7 @@ const DeleteFormModel = ({
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <Grid
+        <Grid2
           container
           direction="column"
           justifyContent="center"
@@ -114,7 +114,7 @@ const DeleteFormModel = ({
           <Typography sx={{ mb: 2, fontSize: 18, fontWeight: "bold" }}>
             Esta ação é IRREVERSÍVEL!
           </Typography>
-        </Grid>
+        </Grid2>
       </DialogContent>
       <DialogActions>
         <Button
@@ -133,7 +133,7 @@ const DeleteFormModel = ({
           X
         </Button>
       </DialogActions>
-    </Grid>
+    </Grid2>
   );
 };
 

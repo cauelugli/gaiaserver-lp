@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid2, Typography } from "@mui/material";
 import AgendaEventChip from "./AgendaEventChip";
 import AgendaEventBar from "./AgendaEventBar";
 
@@ -49,7 +49,7 @@ const DayEvents = (props) => {
   }, [props.selectedDay, props.userAgenda, props.api]);
 
   return (
-    <Grid
+    <Grid2
       sx={{
         height: open ? (filteredItems.length > 0 ? 250 : 115) : 45,
         backgroundColor: "#f8f8ff",
@@ -84,7 +84,7 @@ const DayEvents = (props) => {
           {open && "Nenhum serviço agendado para você nesta data"}
         </Typography>
       )}
-    </Grid>
+    </Grid2>
   );
 };
 

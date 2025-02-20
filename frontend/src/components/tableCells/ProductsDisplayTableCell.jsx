@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect } from "react";
-import { Grid, Table, TableCell, TableRow, Typography } from "@mui/material";
+import { Grid2, Table, TableCell, TableRow, Typography } from "@mui/material";
 
 const ProductsDisplayTableCell = (props) => {
   // Ajusta o count automaticamente se stockQuantity for 0 (aplicado apenas quando toStock é false)
@@ -54,7 +54,7 @@ const ProductsDisplayTableCell = (props) => {
   };
 
   return (
-    <Grid
+    <Grid2
       sx={{
         m: 2,
         mt: 4,
@@ -104,7 +104,7 @@ const ProductsDisplayTableCell = (props) => {
               </Typography>
             </TableCell>
             <TableCell align="right">
-              <Grid container direction="row" justifyContent="center">
+              <Grid2 container direction="row" justifyContent="center">
                 <Typography
                   sx={{ fontSize: 16, cursor: "pointer" }}
                   onClick={() => handleDecrement(product)}
@@ -133,7 +133,7 @@ const ProductsDisplayTableCell = (props) => {
                 >
                   +
                 </Typography>
-              </Grid>
+              </Grid2>
             </TableCell>
             <TableCell align="right">
               <Typography
@@ -192,7 +192,7 @@ const ProductsDisplayTableCell = (props) => {
           </TableCell>
         </TableRow>
       </Table>
-    </Grid>
+    </Grid2>
   );
 };
 

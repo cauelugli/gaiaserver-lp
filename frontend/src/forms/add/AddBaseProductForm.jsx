@@ -15,7 +15,7 @@ import {
   DialogActions,
   DialogContent,
   FormControlLabel,
-  Grid,
+  Grid2,
   ListItemIcon,
   MenuItem,
   Popover,
@@ -161,7 +161,7 @@ export default function AddBaseProductForm({
         <Typography sx={{ fontSize: 16, fontWeight: "bold", mb: 1 }}>
           Campos do Produto
         </Typography>
-        <Grid
+        <Grid2
           id="fieldsRow"
           container
           spacing={1.5}
@@ -170,7 +170,7 @@ export default function AddBaseProductForm({
           justifyContent="flex-start"
           alignItems="center"
         >
-          <Grid item>
+          <Grid2 item>
             <Typography sx={{ fontSize: 13 }}>Tipo</Typography>
             <TextField
               size="small"
@@ -180,13 +180,13 @@ export default function AddBaseProductForm({
               variant="outlined"
               sx={{ width: 150 }}
             />
-          </Grid>
+          </Grid2>
 
           {fields.map((field, index) => (
-            <Grid key={index} item>
+            <Grid2 key={index} item>
               <Typography>
                 {field.type === "string" ? (
-                  <Grid item>
+                  <Grid2 item>
                     <Typography sx={{ fontSize: 13 }}>
                       {`Campo ${index + 1}: Texto`}
                     </Typography>
@@ -198,9 +198,9 @@ export default function AddBaseProductForm({
                         readOnly: true,
                       }}
                     />
-                  </Grid>
+                  </Grid2>
                 ) : field.type === "number" ? (
-                  <Grid item>
+                  <Grid2 item>
                     <Typography sx={{ fontSize: 13 }}>
                       {`Campo ${index + 1}: Número`}
                     </Typography>
@@ -212,9 +212,9 @@ export default function AddBaseProductForm({
                         readOnly: true,
                       }}
                     />
-                  </Grid>
+                  </Grid2>
                 ) : field.type === "options" ? (
-                  <Grid item>
+                  <Grid2 item>
                     <Typography sx={{ fontSize: 13 }}>{`Lista ${index + 1}: ${
                       field.name
                     } ${field.allowMultiple && "(Múltiplo)"}`}</Typography>
@@ -226,9 +226,9 @@ export default function AddBaseProductForm({
                         </MenuItem>
                       ))}
                     </Select>
-                  </Grid>
+                  </Grid2>
                 ) : field.type === "date" ? (
-                  <Grid item>
+                  <Grid2 item>
                     <Typography sx={{ fontSize: 13 }}>
                       {`Campo ${index + 1}: Data`}
                     </Typography>
@@ -240,9 +240,9 @@ export default function AddBaseProductForm({
                         readOnly: true,
                       }}
                     />
-                  </Grid>
+                  </Grid2>
                 ) : field.type === "currency" ? (
-                  <Grid item>
+                  <Grid2 item>
                     <Typography sx={{ fontSize: 13 }}>
                       {`Campo ${index + 1}: Moeda (R$)`}
                     </Typography>
@@ -254,12 +254,12 @@ export default function AddBaseProductForm({
                         readOnly: true,
                       }}
                     />
-                  </Grid>
+                  </Grid2>
                 ) : (
                   ""
                 )}
               </Typography>
-            </Grid>
+            </Grid2>
           ))}
           <Button
             variant="contained"
@@ -271,7 +271,7 @@ export default function AddBaseProductForm({
               Adicionar Campo
             </Typography>
           </Button>
-        </Grid>
+        </Grid2>
 
         <Popover
           id={id}
@@ -283,9 +283,9 @@ export default function AddBaseProductForm({
             horizontal: "left",
           }}
         >
-          <Grid container direction="column" sx={{ p: 2 }}>
+          <Grid2 container direction="column" sx={{ p: 2 }}>
             <Typography>Novo Campo</Typography>
-            <Grid item>
+            <Grid2 item>
               <TextField
                 label="Nome do Campo"
                 value={newFieldName}
@@ -293,8 +293,8 @@ export default function AddBaseProductForm({
                 size="small"
                 sx={{ my: 2 }}
               />
-            </Grid>
-            <Grid item>
+            </Grid2>
+            <Grid2 item>
               <Select
                 value={newFieldType}
                 onChange={(e) => setNewFieldType(e.target.value)}
@@ -351,17 +351,17 @@ export default function AddBaseProductForm({
                   Data
                 </MenuItem>
               </Select>
-            </Grid>
-            <Grid item>
+            </Grid2>
+            <Grid2 item>
               {newFieldType === "string" && (
-                <Grid sx={{ my: 2, mx: 1 }}>
+                <Grid2 sx={{ my: 2, mx: 1 }}>
                   <Typography>Caracteres</Typography>
-                  <Grid
+                  <Grid2
                     container
                     direction="row"
                     justifyContent="space-between"
                   >
-                    <Grid item>
+                    <Grid2 item>
                       <Typography sx={{ fontSize: 10 }}>Min</Typography>
                       <TextField
                         type="number"
@@ -372,8 +372,8 @@ export default function AddBaseProductForm({
                         size="small"
                         sx={{ maxWidth: 90 }}
                       />
-                    </Grid>
-                    <Grid item>
+                    </Grid2>
+                    <Grid2 item>
                       <Typography sx={{ fontSize: 10 }}>Max</Typography>
                       <TextField
                         type="number"
@@ -384,15 +384,15 @@ export default function AddBaseProductForm({
                         size="small"
                         sx={{ maxWidth: 90 }}
                       />
-                    </Grid>
-                  </Grid>
-                </Grid>
+                    </Grid2>
+                  </Grid2>
+                </Grid2>
               )}
-            </Grid>
-            <Grid item>
+            </Grid2>
+            <Grid2 item>
               {newFieldType === "number" && (
                 <>
-                  <Grid sx={{ mt: 2 }}>
+                  <Grid2 sx={{ mt: 2 }}>
                     <Typography>Tipo de Número</Typography>
                     <RadioGroup
                       row
@@ -418,15 +418,15 @@ export default function AddBaseProductForm({
                         }
                       />
                     </RadioGroup>
-                  </Grid>
-                  <Grid sx={{ my: 2 }}>
+                  </Grid2>
+                  <Grid2 sx={{ my: 2 }}>
                     <Typography>Valores</Typography>
-                    <Grid
+                    <Grid2
                       container
                       direction="row"
                       justifyContent="space-between"
                     >
-                      <Grid item>
+                      <Grid2 item>
                         <Typography sx={{ fontSize: 10 }}>Min</Typography>
                         <TextField
                           type="number"
@@ -437,8 +437,8 @@ export default function AddBaseProductForm({
                           size="small"
                           sx={{ maxWidth: 90 }}
                         />
-                      </Grid>
-                      <Grid item>
+                      </Grid2>
+                      <Grid2 item>
                         <Typography sx={{ fontSize: 10 }}>Max</Typography>
                         <TextField
                           type="number"
@@ -449,17 +449,17 @@ export default function AddBaseProductForm({
                           size="small"
                           sx={{ maxWidth: 90 }}
                         />
-                      </Grid>
-                    </Grid>
-                  </Grid>
+                      </Grid2>
+                    </Grid2>
+                  </Grid2>
                 </>
               )}
-            </Grid>
-            <Grid item>
+            </Grid2>
+            <Grid2 item>
               {newFieldType === "options" && (
                 <>
-                  <Grid sx={{ my: 1 }}>
-                    <Grid container direction="row" alignItems="center">
+                  <Grid2 sx={{ my: 1 }}>
+                    <Grid2 container direction="row" alignItems="center">
                       <Typography>Permitir Múltiplos</Typography>
                       <Checkbox
                         size="small"
@@ -468,11 +468,11 @@ export default function AddBaseProductForm({
                           setNewOptionAllowMultiple(e.target.checked)
                         }
                       />
-                    </Grid>
-                  </Grid>{" "}
-                  <Grid sx={{ mb: 2 }}>
+                    </Grid2>
+                  </Grid2>{" "}
+                  <Grid2 sx={{ mb: 2 }}>
                     <Typography>Itens da Lista</Typography>
-                    <Grid container alignItems="center" sx={{ my: 2 }}>
+                    <Grid2 container alignItems="center" sx={{ my: 2 }}>
                       <TextField
                         value={newOptionItem}
                         onChange={(e) => setNewOptionItem(e.target.value)}
@@ -487,9 +487,9 @@ export default function AddBaseProductForm({
                       >
                         + Item
                       </Button>
-                    </Grid>
+                    </Grid2>
                     {newOptions.map((option, index) => (
-                      <Grid container alignItems="center" key={index}>
+                      <Grid2 container alignItems="center" key={index}>
                         <Typography sx={{ mr: 1 }}>
                           Item {index + 1}: {option}
                         </Typography>
@@ -503,16 +503,16 @@ export default function AddBaseProductForm({
                             style={{ cursor: "pointer" }}
                           />
                         )}
-                      </Grid>
+                      </Grid2>
                     ))}
-                  </Grid>
+                  </Grid2>
                 </>
               )}
-            </Grid>
-            <Grid item>
+            </Grid2>
+            <Grid2 item>
               {newFieldType === "date" && (
                 <>
-                  <Grid sx={{ mt: 2, mb: newDateType === "simple" ? 2 : 0 }}>
+                  <Grid2 sx={{ mt: 2, mb: newDateType === "simple" ? 2 : 0 }}>
                     <Typography>Tipo de Data</Typography>
                     <RadioGroup
                       row
@@ -538,16 +538,16 @@ export default function AddBaseProductForm({
                         }
                       />
                     </RadioGroup>
-                  </Grid>
+                  </Grid2>
                   {newDateType === "range" ? (
-                    <Grid sx={{ my: 2 }}>
+                    <Grid2 sx={{ my: 2 }}>
                       <Typography sx={{ mb: 1 }}>Data Composta</Typography>
-                      <Grid
+                      <Grid2
                         container
                         direction="row"
                         justifyContent="space-between"
                       >
-                        <Grid item>
+                        <Grid2 item>
                           <Typography sx={{ fontSize: 10, ml: 1 }}>
                             #
                           </Typography>
@@ -558,8 +558,8 @@ export default function AddBaseProductForm({
                             size="small"
                             sx={{ maxWidth: 70 }}
                           />
-                        </Grid>
-                        <Grid item>
+                        </Grid2>
+                        <Grid2 item>
                           <Typography sx={{ fontSize: 10 }}>Período</Typography>
                           <Select
                             size="small"
@@ -572,15 +572,15 @@ export default function AddBaseProductForm({
                             <MenuItem value={"month"}>Meses</MenuItem>
                             <MenuItem value={"year"}>Anos</MenuItem>
                           </Select>
-                        </Grid>
-                      </Grid>
-                    </Grid>
+                        </Grid2>
+                      </Grid2>
+                    </Grid2>
                   ) : (
                     ""
                   )}
                 </>
               )}
-            </Grid>
+            </Grid2>
             <Button
               variant="contained"
               onClick={handleAddField}
@@ -588,7 +588,7 @@ export default function AddBaseProductForm({
             >
               Adicionar
             </Button>
-          </Grid>
+          </Grid2>
         </Popover>
       </DialogContent>
       <DialogActions sx={{ mt: 2 }}>

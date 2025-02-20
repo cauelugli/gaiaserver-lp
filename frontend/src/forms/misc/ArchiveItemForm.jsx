@@ -14,7 +14,7 @@ import {
   Button,
   DialogActions,
   DialogTitle,
-  Grid,
+  Grid2,
   Typography,
 } from "@mui/material";
 
@@ -76,7 +76,7 @@ const ArchiveItemForm = ({
   };
 
   return (
-    <Grid
+    <Grid2
       container
       direction="column"
       justifyContent="center"
@@ -110,7 +110,7 @@ const ArchiveItemForm = ({
           X
         </Button>
       </DialogActions>
-    </Grid>
+    </Grid2>
   );
 };
 

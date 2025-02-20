@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import { Grid, IconButton, Typography, Button } from "@mui/material";
+import { Grid2, IconButton, Typography, Button } from "@mui/material";
 
 import { icons } from "../../icons";
 
@@ -26,8 +26,8 @@ const AttachmentsTableCell = ({ attachments, onUpload, onRemove }) => {
   };
 
   return (
-    <Grid container direction="column" spacing={2}>
-      <Grid item>
+    <Grid2 container direction="column" spacing={2}>
+      <Grid2 item>
         <input
           type="file"
           multiple
@@ -40,14 +40,14 @@ const AttachmentsTableCell = ({ attachments, onUpload, onRemove }) => {
             <icons.AttachFileIcon />
           </IconButton>
         </label>
-      </Grid>
+      </Grid2>
 
-      <Grid item>
+      <Grid2 item>
         {attachments.length > 0 ? (
-          <Grid container direction="row" spacing={2}>
+          <Grid2 container direction="row" spacing={2}>
             {attachments.map((file, index) => (
-              <Grid item key={index}>
-                <Grid
+              <Grid2 item key={index}>
+                <Grid2
                   container
                   direction="column"
                   alignItems="center"
@@ -107,15 +107,15 @@ const AttachmentsTableCell = ({ attachments, onUpload, onRemove }) => {
                   >
                     <icons.DeleteIcon />
                   </Button>
-                </Grid>
-              </Grid>
+                </Grid2>
+              </Grid2>
             ))}
-          </Grid>
+          </Grid2>
         ) : (
           ""
         )}
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };
 

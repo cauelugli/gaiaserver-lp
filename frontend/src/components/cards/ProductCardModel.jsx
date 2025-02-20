@@ -11,7 +11,7 @@ import {
   CardActions,
   CardContent,
   Dialog,
-  Grid,
+  Grid2,
   Paper,
   Tooltip,
   Typography,
@@ -45,8 +45,8 @@ export default function ProductCardModel({
     <Card elevation={3}>
       {item ? (
         <CardContent>
-          <Grid container direction="column">
-            <Grid
+          <Grid2 container direction="column">
+            <Grid2
               container
               direction="column"
               alignItems="center"
@@ -55,8 +55,8 @@ export default function ProductCardModel({
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                 {item?.name || "N/A"}
               </Typography>
-            </Grid>
-            <Grid container direction="row" justifyContent="center">
+            </Grid2>
+            <Grid2 container direction="row" justifyContent="center">
               <Avatar
                 alt=""
                 src={`http://localhost:3000/static/${item?.images?.[0] || ""}`}
@@ -66,7 +66,7 @@ export default function ProductCardModel({
                   mt: 2,
                 }}
               />
-            </Grid>
+            </Grid2>
             {renderTypographies()}
             <Typography variant="body2" sx={{ mt: 1, fontSize: 11 + cardSize }}>
               <strong>Valor de Compra:</strong> R$
@@ -92,7 +92,7 @@ export default function ProductCardModel({
               fromCard={true}
               // multiple={props.multiple} maybe 'multipleFromCard', cause styling will be different
             />
-          </Grid>
+          </Grid2>
         </CardContent>
       ) : (
         ""

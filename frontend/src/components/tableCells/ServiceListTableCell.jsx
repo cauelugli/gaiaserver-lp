@@ -4,7 +4,7 @@ import axios from "axios";
 
 import {
   Box,
-  Grid,
+  Grid2,
   Table,
   TableCell,
   TableRow,
@@ -50,7 +50,7 @@ const ServiceListTableCell = (props) => {
 
   return (
     <Box>
-      <Grid
+      <Grid2
         sx={{
           border: "1px solid #ccc",
           borderRadius: 1,
@@ -87,7 +87,7 @@ const ServiceListTableCell = (props) => {
                 <Typography sx={{ fontSize: 13 }}>{option.name}</Typography>
               </TableCell>
               <TableCell align="right">
-                <Grid
+                <Grid2
                   container
                   direction="row"
                   justifyContent="space-evenly"
@@ -118,7 +118,7 @@ const ServiceListTableCell = (props) => {
                   >
                     +
                   </Typography>
-                </Grid>
+                </Grid2>
               </TableCell>
               <TableCell align="right">
                 <Typography sx={{ fontSize: 13 }}>
@@ -152,8 +152,8 @@ const ServiceListTableCell = (props) => {
             </TableRow>
           )}
         </Table>
-      </Grid>
-      <Grid container direction="row" justifyContent="flex-end">
+      </Grid2>
+      <Grid2 container direction="row" justifyContent="flex-end">
         <Typography
           sx={{ fontSize: 10, my: 0.5, cursor: "pointer" }}
           onClick={() => setOpenAddDifference(!openAddDifference)}
@@ -162,7 +162,7 @@ const ServiceListTableCell = (props) => {
             ? "fechar tabela de alterações"
             : "alterar valores"}
         </Typography>
-      </Grid>
+      </Grid2>
       {openAddDifference && (
         <PriceDifferenceTable
           openAddDifference={openAddDifference}

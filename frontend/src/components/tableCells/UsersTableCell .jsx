@@ -8,7 +8,7 @@ const api = axios.create({
 
 import {
   Avatar,
-  Grid,
+  Grid2,
   InputLabel,
   MenuItem,
   Select,
@@ -64,14 +64,14 @@ const UsersTableCell = (props) => {
         size="small"
         renderValue={(selected) =>
           selected ? (
-            <Grid container direction="row" alignItems="center">
+            <Grid2 container direction="row" alignItems="center">
               <Avatar
                 alt="Imagem"
                 src={`http://localhost:3000/static/${selected.image}`}
                 sx={{ width: 24, height: 24, marginRight: 2 }}
               />
               <Typography>{selected.name}</Typography>
-            </Grid>
+            </Grid2>
           ) : (
             <Typography>Selecione um Cliente</Typography>
           )
@@ -109,7 +109,7 @@ const UsersTableCell = (props) => {
 
           if (departmentUsers.length > 0) {
             menuItems.push(
-              <Grid container direction="row">
+              <Grid2 container direction="row">
                 <Paper
                   sx={{
                     width: 8,
@@ -126,20 +126,20 @@ const UsersTableCell = (props) => {
                 >
                   {department.name}
                 </InputLabel>
-              </Grid>
+              </Grid2>
             );
 
             menuItems.push(
               ...departmentUsers.map((user, index) => (
                 <MenuItem value={user} key={index} sx={{ mb: 1 }}>
-                  <Grid container direction="row" alignItems="center">
+                  <Grid2 container direction="row" alignItems="center">
                     <Avatar
                       alt="Imagem"
                       src={`http://localhost:3000/static/${user.image}`}
                       sx={{ width: 24, height: 24, marginRight: 2 }}
                     />
                     <Typography>{user.name}</Typography>
-                  </Grid>
+                  </Grid2>
                 </MenuItem>
               ))
             );

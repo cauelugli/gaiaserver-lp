@@ -2,7 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
-import { Avatar, Grid, Paper, Tooltip, Typography } from "@mui/material";
+import { Avatar, Grid2, Paper, Tooltip, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
 import {
@@ -24,7 +24,7 @@ const DataTableCell = ({
     const found = idIndexList.find((obj) => obj.id === id);
     if (found && found.image) {
       return found ? (
-        <Grid
+        <Grid2
           container
           direction="row"
           alignItems="center"
@@ -42,7 +42,7 @@ const DataTableCell = ({
             />
           </Tooltip>
           <Typography sx={{ fontSize: 14 }}>{found.name}</Typography>
-        </Grid>
+        </Grid2>
       ) : (
         "-"
       );
@@ -62,12 +62,12 @@ const DataTableCell = ({
       {item === null ? (
         ""
       ) : item && typeof item === "string" && item.startsWith("/images") ? (
-        <Grid
+        <Grid2
           sx={{
             maxWidth: 60,
           }}
         >
-          <Grid
+          <Grid2
             container
             direction="row"
             alignItems="center"
@@ -121,16 +121,16 @@ const DataTableCell = ({
                 />
               </Tooltip>
             )}
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       ) : Array.isArray(item) ? (
-        <Grid container direction="row" alignItems="center">
+        <Grid2 container direction="row" alignItems="center">
           {item.map((obj, index) => (
-            <Grid item key={index} sx={{ mr: 1 }}>
+            <Grid2 item key={index} sx={{ mr: 1 }}>
               <Tooltip
                 title={
                   obj.count ? (
-                    <Grid
+                    <Grid2
                       container
                       direction="column"
                       alignItems="center"
@@ -142,19 +142,19 @@ const DataTableCell = ({
                       <Typography sx={{ color: "white" }}>
                         {`R$${(obj.sellValue * obj.count).toFixed(2)}`}
                       </Typography>
-                    </Grid>
+                    </Grid2>
                   ) : (
                     idIndexList.find((user) => user.id === obj)?.name
                   )
                 }
               >
-                <Grid
+                <Grid2
                   container
                   direction="column"
                   alignItems="center"
                   justifyContent="center"
                 >
-                  <Grid item>
+                  <Grid2 item>
                     {obj.products ? (
                       <icons.BuildIcon />
                     ) : (
@@ -175,12 +175,12 @@ const DataTableCell = ({
                         }}
                       />
                     )}
-                  </Grid>
-                </Grid>
+                  </Grid2>
+                </Grid2>
               </Tooltip>
-            </Grid>
+            </Grid2>
           ))}
-        </Grid>
+        </Grid2>
       ) : typeof item === "boolean" ? (
         item ? (
           "Sim"
@@ -214,7 +214,7 @@ const DataTableCell = ({
       ) : column.id === "type" ? (
         <Tooltip title={item}>{departmentTypes[item]}</Tooltip>
       ) : (
-        <Grid>{item}</Grid>
+        <Grid2>{item}</Grid2>
       )}
     </>
   );

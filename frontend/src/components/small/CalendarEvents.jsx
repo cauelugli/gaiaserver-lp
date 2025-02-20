@@ -2,11 +2,11 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 
-import { Grid, Typography } from "@mui/material";
+import { Grid2, Typography } from "@mui/material";
 
 const CalendarEvents = ({ event }) => {
   return (
-    <Grid>
+    <Grid2>
       <Typography
         sx={{
           textAlign: "center",
@@ -41,7 +41,7 @@ const CalendarEvents = ({ event }) => {
           <strong>Grupo:</strong> {event.group.name}
         </Typography>
       )}
-    </Grid>
+    </Grid2>
   );
 };
 

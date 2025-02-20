@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  Grid,
+  Grid2,
   Paper,
   Typography,
   Table,
@@ -51,7 +51,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
     }[currentWindowSize] || 0;
 
   return (
-    <Grid
+    <Grid2
       container
       direction="row"
       sx={{ mt: -1, ml: allowedListMainblocks.length <= 4 ? 15 : "" }}
@@ -60,7 +60,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
         if (allowedListMainblocks.includes(option.permissionLabel)) {
           if (layout === "Padrão" || layout === "Chip") {
             return (
-              <Grid
+              <Grid2
                 item
                 key={index}
                 xs={12}
@@ -86,7 +86,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                       borderRadius: layout === "Chip" ? 50 : 0,
                     }}
                   >
-                    <Grid
+                    <Grid2
                       container
                       direction="column"
                       alignItems="center"
@@ -111,16 +111,16 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                       >
                         {option.text}
                       </Typography>
-                    </Grid>
+                    </Grid2>
                   </Paper>
                 </Link>
-              </Grid>
+              </Grid2>
             );
           }
 
           if (layout === "Compacto") {
             return (
-              <Grid
+              <Grid2
                 item
                 key={index}
                 xs={12}
@@ -146,7 +146,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                         hoveredIndexMainblocks === index ? "white" : "none",
                     }}
                   >
-                    <Grid
+                    <Grid2
                       container
                       direction="row"
                       alignItems="center"
@@ -176,16 +176,16 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                       >
                         {option.text}
                       </Typography>
-                    </Grid>
+                    </Grid2>
                   </Paper>
                 </Link>
-              </Grid>
+              </Grid2>
             );
           }
 
           if (layout === "Avatar") {
             return (
-              <Grid
+              <Grid2
                 item
                 key={index}
                 xs={12}
@@ -216,7 +216,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                     }}
                   >
                     <Link to={option.link} style={{ textDecoration: "none" }}>
-                      <Grid
+                      <Grid2
                         container
                         direction="column"
                         alignItems="center"
@@ -249,17 +249,17 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                         >
                           {option.text}
                         </Typography>
-                      </Grid>
+                      </Grid2>
                     </Link>
                   </Paper>
                 </Link>
-              </Grid>
+              </Grid2>
             );
           }
 
           if (layout === "Tabela") {
             return (
-              <Grid
+              <Grid2
                 item
                 key={index}
                 xs={12}
@@ -290,7 +290,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                             to={option.link}
                             style={{ textDecoration: "none", color: "inherit" }}
                           >
-                            <Grid
+                            <Grid2
                               container
                               sx={{
                                 backgroundColor:
@@ -301,12 +301,12 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                                   hoveredIndexMainblocks === index && "white",
                               }}
                             >
-                              <Grid item>
+                              <Grid2 item>
                                 {React.cloneElement(option.icon, {
                                   style: { fontSize: "24px" },
                                 })}
-                              </Grid>
-                              <Grid item sx={{ ml: 1 }}>
+                              </Grid2>
+                              <Grid2 item sx={{ ml: 1 }}>
                                 <Typography
                                   style={{
                                     fontSize: 14 + factor,
@@ -319,22 +319,22 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                                 >
                                   {option.text}
                                 </Typography>
-                              </Grid>
-                            </Grid>
+                              </Grid2>
+                            </Grid2>
                           </Link>
                         </TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
                 </TableContainer>
-              </Grid>
+              </Grid2>
             );
           }
         } else {
           return null;
         }
       })}
-    </Grid>
+    </Grid2>
   );
 };
 

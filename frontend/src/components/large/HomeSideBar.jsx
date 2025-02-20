@@ -2,7 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 
-import { Collapse, Grid, IconButton, Typography } from "@mui/material";
+import { Collapse, Grid2, IconButton, Typography } from "@mui/material";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -52,8 +52,8 @@ const HomeSideBar = ({
   );
 
   return (
-    <Grid container direction="column" alignItems="center">
-      <Grid
+    <Grid2 container direction="column" alignItems="center">
+      <Grid2
         container
         direction="row"
         justifyContent="space-around"
@@ -84,7 +84,7 @@ const HomeSideBar = ({
         >
           {openCalendar ? <icons.ExpandLessIcon /> : <icons.ExpandMoreIcon />}
         </IconButton>
-        <Grid item>
+        <Grid2 item>
           <Collapse in={openCalendar}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateCalendar
@@ -102,8 +102,8 @@ const HomeSideBar = ({
               />
             </LocalizationProvider>
           </Collapse>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
 
       <DayEvents
         selectedDay={dayjs(selectedDay).format("DD/MM/YYYY")}
@@ -116,7 +116,7 @@ const HomeSideBar = ({
         onShortcutClick={handleShortcutClick}
         allowedLinks={allowedLinks}
       />
-    </Grid>
+    </Grid2>
   );
 };
 

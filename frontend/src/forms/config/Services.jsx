@@ -17,7 +17,7 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
-  Grid,
+  Grid2,
   IconButton,
   List,
   ListItem,
@@ -106,7 +106,7 @@ export default function Services({ onClose }) {
       {configData.length !== 0 && (
         <>
           <DialogContent>
-            <Grid
+            <Grid2
               container
               sx={{ mt: 2 }}
               direction="column"
@@ -135,21 +135,21 @@ export default function Services({ onClose }) {
                       </ListItem>
                     ))}
                   </List>
-                  <Grid
+                  <Grid2
                     container
                     direction="row"
                     alignItems="center"
                     justifyContent="center"
                   >
-                    <Grid item>
+                    <Grid2 item>
                       <TextField
                         variant="outlined"
                         label="Adicionar novo tipo"
                         value={newType}
                         onChange={(e) => setNewType(e.target.value)}
                       />
-                    </Grid>
-                    <Grid item>
+                    </Grid2>
+                    <Grid2 item>
                       <Button
                         variant="contained"
                         color="primary"
@@ -158,8 +158,8 @@ export default function Services({ onClose }) {
                       >
                         Adicionar
                       </Button>
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
                 </AccordionDetails>
               </Accordion>
               <Accordion sx={{ width: "100%", mt: 2 }}>
@@ -169,8 +169,8 @@ export default function Services({ onClose }) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid item sx={{ my: 1.5 }}>
-                    <Grid
+                  <Grid2 item sx={{ my: 1.5 }}>
+                    <Grid2
                       container
                       direction="row"
                       justifyContent="space-between"
@@ -213,11 +213,11 @@ export default function Services({ onClose }) {
                           }
                         />
                       </RadioGroup>
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
                 </AccordionDetails>
               </Accordion>
-            </Grid>
+            </Grid2>
           </DialogContent>
           <DialogActions>
             <Button type="submit" variant="contained" color="success">

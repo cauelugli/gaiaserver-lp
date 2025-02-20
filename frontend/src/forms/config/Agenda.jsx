@@ -20,7 +20,7 @@ import {
   DialogTitle,
   FormControlLabel,
   FormHelperText,
-  Grid,
+  Grid2,
   IconButton,
   List,
   ListItem,
@@ -119,7 +119,7 @@ export default function Agenda({ onClose }) {
       {configData.length !== 0 && (
         <>
           <DialogContent>
-            <Grid
+            <Grid2
               container
               sx={{ mt: 2 }}
               direction="column"
@@ -133,7 +133,7 @@ export default function Agenda({ onClose }) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid container direction="row">
+                  <Grid2 container direction="row">
                     <Typography sx={{ my: "auto", mr: 1 }}>
                       Utilizar cor do Serviço para Jobs na Agenda
                     </Typography>
@@ -165,7 +165,7 @@ export default function Agenda({ onClose }) {
                         }
                       />
                     </RadioGroup>
-                  </Grid>{" "}
+                  </Grid2>{" "}
                 </AccordionDetails>
               </Accordion>
               <Accordion sx={{ width: "100%", mt: 2 }}>
@@ -175,7 +175,7 @@ export default function Agenda({ onClose }) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid container direction="row">
+                  <Grid2 container direction="row">
                     <Typography sx={{ my: "auto", mr: 1 }}>Das</Typography>
 
                     <TextField
@@ -208,7 +208,7 @@ export default function Agenda({ onClose }) {
                       variant="outlined"
                       sx={{ width: 80 }}
                     />
-                  </Grid>
+                  </Grid2>
                 </AccordionDetails>
               </Accordion>
               <Accordion sx={{ width: "100%", mt: 2 }}>
@@ -218,7 +218,7 @@ export default function Agenda({ onClose }) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid
+                  <Grid2
                     container
                     direction="column"
                     alignItems="center"
@@ -227,7 +227,7 @@ export default function Agenda({ onClose }) {
                     <List>
                       {eventTypes.map((type, index) => (
                         <ListItem key={index} sx={{ pl: 0 }}>
-                          <Grid
+                          <Grid2
                             container
                             direction="row"
                             alignItems="center"
@@ -319,19 +319,19 @@ export default function Agenda({ onClose }) {
                                 <icons.DeleteIcon />
                               </IconButton>
                             )}
-                          </Grid>
+                          </Grid2>
                         </ListItem>
                       ))}
                     </List>
-                  </Grid>
-                  <Grid
+                  </Grid2>
+                  <Grid2
                     container
                     direction="row"
                     alignItems="center"
                     justifyContent="center"
                     sx={{ my: 3 }}
                   >
-                    <Grid item>
+                    <Grid2 item>
                       <TextField
                         variant="outlined"
                         label="Novo tipo"
@@ -344,7 +344,7 @@ export default function Agenda({ onClose }) {
                         }
                         sx={{ width: 200 }}
                       />
-                    </Grid>
+                    </Grid2>
                     <IconButton
                       edge="start"
                       sx={{ ml: 2 }}
@@ -382,7 +382,7 @@ export default function Agenda({ onClose }) {
                         borderRadius: 50,
                       }}
                     />
-                    <Grid item>
+                    <Grid2 item>
                       <Button
                         variant="contained"
                         color="primary"
@@ -391,11 +391,11 @@ export default function Agenda({ onClose }) {
                       >
                         Adicionar
                       </Button>
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
                 </AccordionDetails>
               </Accordion>
-            </Grid>
+            </Grid2>
           </DialogContent>
           <DialogActions>
             <Button type="submit" variant="contained" color="success">

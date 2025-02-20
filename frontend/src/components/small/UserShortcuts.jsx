@@ -6,7 +6,7 @@ import axios from "axios";
 import {
   Box,
   CircularProgress,
-  Grid,
+  Grid2,
   Typography,
   IconButton,
   Collapse,
@@ -71,7 +71,7 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
   };
 
   return (
-    <Grid
+    <Grid2
       sx={{
         height: open
           ? shortcuts.filter((shortcut) => shortcut.isActive).length * 50 + 120
@@ -82,8 +82,8 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
         width: 320,
       }}
     >
-      <Grid item>
-        <Grid
+      <Grid2 item>
+        <Grid2
           container
           direction="row"
           justifyContent="space-around"
@@ -107,10 +107,10 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
           >
             {open ? <icons.ExpandLessIcon /> : <icons.ExpandMoreIcon />}
           </IconButton>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
 
-      <Grid item sx={{ m: 2 }}>
+      <Grid2 item sx={{ m: 2 }}>
         <Collapse in={open}>
           {shortcuts
             .filter((shortcut) => shortcut.isActive)
@@ -128,8 +128,8 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
             allowedLinks={allowedLinks}
           />
         </Collapse>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };
 

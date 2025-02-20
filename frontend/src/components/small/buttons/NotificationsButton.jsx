@@ -14,7 +14,7 @@ import {
   Card,
   Badge,
   Tooltip,
-  Grid,
+  Grid2,
   Switch,
   FormControlLabel,
 } from "@mui/material";
@@ -145,7 +145,7 @@ export default function NotificationsButton({
         onClose={handleCloseNotifications}
         sx={{ height: 330 }}
       >
-        <Grid sx={{ width: "17vw", mt: -2 }}>
+        <Grid2 sx={{ width: "17vw", mt: -2 }}>
           <List>
             {filteredNotifications.reverse().map((notification, index) => (
               <Card
@@ -235,7 +235,7 @@ export default function NotificationsButton({
               </Card>
             ))}
           </List>
-          <Grid
+          <Grid2
             container
             direction="row"
             alignItems="center"
@@ -250,9 +250,9 @@ export default function NotificationsButton({
                   : " Sem Novas Notificações"}
               </Typography>
             )}
-          </Grid>
+          </Grid2>
 
-          <Grid
+          <Grid2
             sx={{ px: 2, mt: -5 }}
             container
             justifyContent={
@@ -290,8 +290,8 @@ export default function NotificationsButton({
               }
               labelPlacement="start"
             />
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Menu>
     </>
   );

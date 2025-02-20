@@ -5,7 +5,7 @@ import axios from "axios";
 import {
   Avatar,
   FormControl,
-  Grid,
+  Grid2,
   InputAdornment,
   MenuItem,
   Select,
@@ -120,7 +120,7 @@ const CustomerSelect = (props) => {
         {filteredCustomers.length > 0 ? (
           filteredCustomers.map((item) => (
             <MenuItem value={item} key={item._id}>
-              <Grid container direction="row" alignItems="center">
+              <Grid2 container direction="row" alignItems="center">
                 <Avatar
                   alt="Imagem do Cliente"
                   src={`http://localhost:3000/static/${item.image}`}
@@ -130,7 +130,7 @@ const CustomerSelect = (props) => {
                   {"•"}
                 </Typography>
                 <Typography>{item.name}</Typography>
-              </Grid>
+              </Grid2>
             </MenuItem>
           ))
         ) : (

@@ -2,11 +2,11 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 
-import { Grid, Typography } from "@mui/material";
+import { Grid2, Typography } from "@mui/material";
 
 const NoDataText = () => {
   return (
-    <Grid
+    <Grid2
       container
       direction="row"
       alignItems="center"
@@ -14,7 +14,7 @@ const NoDataText = () => {
       sx={{ mt: 3, mb: "30vw" }}
     >
       <Typography sx={{ fontSize: 30 }}>Nenhum Item Encontrado</Typography>
-    </Grid>
+    </Grid2>
   );
 };
 

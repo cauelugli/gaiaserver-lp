@@ -12,7 +12,7 @@ import {
   CardActions,
   CardContent,
   Dialog,
-  Grid,
+  Grid2,
   Paper,
   Tooltip,
   Typography,
@@ -49,7 +49,7 @@ export default function CardModel({
       >
         <strong>{label}:</strong> {label.startsWith("Valor") ? "R$" : ""}
         {Array.isArray(item[value]) ? (
-          <Grid container direction="row" sx={{ m: 1 }}>
+          <Grid2 container direction="row" sx={{ m: 1 }}>
             {item[value].map((subItem, index) => (
               <>
                 <Tooltip key={index} title={subItem.name || "N/A"}>
@@ -62,7 +62,7 @@ export default function CardModel({
                 </Tooltip>
               </>
             ))}
-          </Grid>
+          </Grid2>
         ) : label.startsWith("Valor") && typeof item[value] === "number" ? (
           item[value].toFixed(2)
         ) : isDate(item[value]) ? (
@@ -90,9 +90,9 @@ export default function CardModel({
   return (
     <Card elevation={3}>
       <CardContent>
-        <Grid container direction="column">
+        <Grid2 container direction="column">
           {usesAvatar.includes(label) && (
-            <Grid
+            <Grid2
               container
               direction="column"
               alignItems="center"
@@ -111,10 +111,10 @@ export default function CardModel({
               <Typography variant="h5" sx={{ mt: 1, fontWeight: "bold" }}>
                 {item.name}
               </Typography>
-            </Grid>
+            </Grid2>
           )}
           {usesTitle.includes(label) && (
-            <Grid
+            <Grid2
               container
               direction="column"
               alignItems="center"
@@ -123,10 +123,10 @@ export default function CardModel({
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                 {item.title || item.name}
               </Typography>
-            </Grid>
+            </Grid2>
           )}
           {usesNumber.includes(label) && (
-            <Grid
+            <Grid2
               container
               direction="column"
               alignItems="center"
@@ -140,10 +140,10 @@ export default function CardModel({
                   : ""}{" "}
                 #{item.number}
               </Typography>
-            </Grid>
+            </Grid2>
           )}
           {item && usesProduct.includes(label) && (
-            <Grid
+            <Grid2
               container
               direction="row"
               spacing={2}
@@ -152,7 +152,7 @@ export default function CardModel({
             >
               {label === "Sale" ? (
                 item?.products?.map((item, index) => (
-                  <Grid item key={index}>
+                  <Grid2 item key={index}>
                     <Avatar
                       alt={`Image ${index}`}
                       src={`http://localhost:3000/static/${
@@ -163,7 +163,7 @@ export default function CardModel({
                         height: 50 + cardSize * 15,
                       }}
                     />
-                  </Grid>
+                  </Grid2>
                 ))
               ) : item.images ? (
                 <Avatar
@@ -173,10 +173,10 @@ export default function CardModel({
               ) : (
                 ""
               )}
-            </Grid>
+            </Grid2>
           )}
           {usesColor.includes(label) && (
-            <Grid
+            <Grid2
               container
               direction="column"
               alignItems="center"
@@ -194,10 +194,10 @@ export default function CardModel({
               <Typography variant="h5" sx={{ mt: 1, fontWeight: "bold" }}>
                 {item.name}
               </Typography>
-            </Grid>
+            </Grid2>
           )}
           {usesMembers.includes(label) && (
-            <Grid
+            <Grid2
               container
               direction="column"
               alignItems="center"
@@ -206,7 +206,7 @@ export default function CardModel({
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 {item.name}
               </Typography>
-            </Grid>
+            </Grid2>
           )}
           {renderTypographies()}
           <RowButton
@@ -222,7 +222,7 @@ export default function CardModel({
             fromCard={true}
             // multiple={props.multiple} maybe 'multipleFromCard', cause styling will be different
           />
-        </Grid>
+        </Grid2>
       </CardContent>
     </Card>
   );
