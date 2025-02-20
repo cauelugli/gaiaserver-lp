@@ -57,12 +57,19 @@ router.get("/dashboard", async (req, res) => {
       } else if (modelName === "Job") {
         data = await model.find(
           {},
-          { createdAt: 1, customer: 1, number: 1, service: 1, _id: 0 }
+          {
+            createdAt: 1,
+            customer: 1,
+            number: 1,
+            service: 1,
+            status: 1,
+            _id: 0,
+          }
         );
       } else if (modelName === "Sale") {
         data = await model.find(
           {},
-          { createdAt: 1, customer: 1, number: 1, seller: 1, _id: 0 }
+          { createdAt: 1, customer: 1, number: 1, seller: 1, status: 1, _id: 0 }
         );
       }
 

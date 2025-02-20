@@ -156,7 +156,7 @@ const Dashboard = (props) => {
 
   return (
     <Box sx={{ width: props.topBar ? "105%" : "100%", minHeight: "50vw" }}>
-      <Typography sx={{ fontSize: 25, m: 2, fontWeight: "bold" }} id="title">
+      <Typography sx={{ fontSize: "1.5vw", m: 2, fontWeight: "bold" }} id="title">
         Dashboard
       </Typography>
       <Box sx={{ width: "40%", mx: "auto" }}>

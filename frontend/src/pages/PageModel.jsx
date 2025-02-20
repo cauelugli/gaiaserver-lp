@@ -27,6 +27,7 @@ import ProductsTableButton from "../components/small/buttons/ProductsTableButton
 import { getDataForPage } from "../../../controllers/functions/overallFunctions";
 
 import TableFiltersBar from "../components/large/TableFiltersBar";
+import FinanceSmallReports from "../components/small/FinanceSmallReports";
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -174,6 +175,7 @@ export default function PageModel(props) {
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.api, refreshData, currentPage, props.item, value]);
 
   if (isLoading) {
@@ -248,6 +250,7 @@ export default function PageModel(props) {
             isAdmin={props.isAdmin}
           />
         )}
+        {currentPage === "finance" && <FinanceSmallReports api={props.api} />}
       </Grid>
       <Grid sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
