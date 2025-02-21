@@ -212,9 +212,13 @@ export default function PageModel(props) {
     }
     return true;
   };
-
   return (
-    <Box sx={{ minHeight: "50vw" }}>
+    <Grid2
+      sx={{
+        minHeight: "50vw",
+        width: props.windowSizeSetter.width * 0.93,
+      }}
+    >
       <Grid2
         container
         direction="row"
@@ -525,6 +529,6 @@ export default function PageModel(props) {
             </CustomTabPanel>
           ))}
       </Grid2>
-    </Box>
+    </Grid2>
   );
 }

@@ -96,7 +96,10 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
           direction="row"
           alignItems="center"
           justifyContent="space-between"
-          sx={{ backgroundColor: configData.customization.mainColor }}
+          sx={{
+            backgroundColor: configData.customization.mainColor,
+            width: "100%",
+          }}
         >
           <Grid2
             item

@@ -36,19 +36,9 @@ const Home = ({
   return (
     <Grid2
       container
-      sx={{
-        mx:
-          currentWindowSize === "lg1" ||
-          currentWindowSize === "lg2" ||
-          currentWindowSize === "xl"
-            ? 1
-            : 0,
-        mt: 1,
-        minHeight: "45vw",
-      }}
       justifyContent={homePagePreferences === 3 && "center"}
     >
-      <Grid2 item lg={9} xl={8}>
+      <Grid2 sx={{ width: "80%" }}>
         <HomeBlock
           layout={layout}
           // userUsername={userUsername}
@@ -62,7 +52,7 @@ const Home = ({
           currentWindowSize === "lg1" ||
           currentWindowSize === "lg2" ||
           currentWindowSize === "xl") && (
-          <Grid2 item lg={3} xl={4}>
+            <Grid2 sx={{ width: "20%" }}>
             <HomeSideBar
               userId={userId}
               homePagePreferences={homePagePreferences}

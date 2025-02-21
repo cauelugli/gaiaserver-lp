@@ -82,11 +82,10 @@ const AccountPreferencesBox = (props) => {
   return (
     <Grid2
       container
-      sx={{ mt: 1, width: 250 }}
+      sx={{ mt: 0.5, width: 280,p:1 }}
       direction="column"
       alignContent="center"
       justifyContent="center"
-      rowSpacing={2}
     >
       <Accordion sx={{ width: "100%" }}>
         <AccordionSummary>
@@ -105,7 +104,7 @@ const AccountPreferencesBox = (props) => {
             }
           />
           <Typography sx={{ mt: 2 }}>Tom do Plano de Fundo</Typography>
-          <Grid2 container spacing={1} sx={{ mt: 1 }}>
+          <Grid2 container spacing={1} sx={{ mt: 0.5 }}>
             {availableColors.map((color) => (
               <Grid2 item key={color}>
                 <Button
@@ -129,7 +128,7 @@ const AccountPreferencesBox = (props) => {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion sx={{ width: "100%", mt: 1 }}>
+      <Accordion sx={{ width: "100%", mt: 0.5 }}>
         <AccordionSummary>
           <icons.AbcIcon />
           <Typography sx={{ fontSize: 16, ml: 1 }}>Fonte</Typography>
@@ -156,7 +155,7 @@ const AccountPreferencesBox = (props) => {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion sx={{ width: "100%", mt: 1 }}>
+      <Accordion sx={{ width: "100%", mt: 0.5 }}>
         <AccordionSummary>
           <icons.WebAssetIcon />
           <Typography sx={{ fontSize: 16, ml: 1 }}>Posição da Barra</Typography>
@@ -175,7 +174,7 @@ const AccountPreferencesBox = (props) => {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion sx={{ width: "100%", mt: 1 }}>
+      <Accordion sx={{ width: "100%", mt: 0.5 }}>
         <AccordionSummary>
           <icons.ListIcon />
           <Typography sx={{ fontSize: 16, ml: 1 }}>Home Page</Typography>
@@ -188,7 +187,7 @@ const AccountPreferencesBox = (props) => {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion sx={{ width: "100%", mt: 1 }}>
+      <Accordion sx={{ width: "100%", mt: 0.5 }}>
         <AccordionSummary>
           <icons.AppsIcon />
           <Typography sx={{ fontSize: 16, ml: 1 }}>Layout Home Page</Typography>

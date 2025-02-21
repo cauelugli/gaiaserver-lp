@@ -283,7 +283,7 @@ export default function Account({
   };
 
   return (
-    <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
+    <Grid2 sx={{ width: "150%" }}>
       <Typography
         sx={{ fontSize: 25, ml: 2, mb: 2, fontWeight: "bold" }}
         id="title"
@@ -316,7 +316,7 @@ export default function Account({
           />
         )}
 
-        <Box>
+        <Grid2 container justifyContent="center" alignItems="center">
           <Grid2
             container
             direction="column"
@@ -404,19 +404,13 @@ export default function Account({
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <Typography sx={{ fontSize: "14px" }}>
-                    Nome
-                  </Typography>
+                  <Typography sx={{ fontSize: "14px" }}>Nome</Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: "14px" }}>
-                    E-mail
-                  </Typography>
+                  <Typography sx={{ fontSize: "14px" }}>E-mail</Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: "14px" }}>
-                    Telefone
-                  </Typography>
+                  <Typography sx={{ fontSize: "14px" }}>Telefone</Typography>
                 </TableCell>
                 <TableCell align="center">
                   <Typography sx={{ fontSize: "14px" }}>
@@ -449,9 +443,7 @@ export default function Account({
             <TableHead>
               <TableRow>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: "14px" }}>
-                    Cargo
-                  </Typography>
+                  <Typography sx={{ fontSize: "14px" }}>Cargo</Typography>
                 </TableCell>
                 <TableCell align="center">
                   <Typography sx={{ fontSize: "14px" }}>
@@ -485,10 +477,10 @@ export default function Account({
               </TableRow>
             </TableBody>
           </Table>
-        </Box>
+        </Grid2>
         <Grid2 id="ghost" />
         <Grid2 id="ghost" />
       </Grid2>
-    </Box>
+    </Grid2>
   );
 }

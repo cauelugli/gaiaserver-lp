@@ -153,17 +153,15 @@ const Login = () => {
       direction="row"
       alignItems="center"
       justifyContent="space-evenly"
-      sx={{ mt: loginOrNew ? "10%" : "5%", ml: "5em" }}
+      sx={{ backgroundColor: "red", width:1800 }}
     >
       <Grid2
         container
-        item
-        xs={5}
         direction="column"
         alignItems="center"
         justifyContent="center"
       >
-        <Tooltip title={"GaiaServer é um sonho feito com muito amor"}>
+        <Tooltip title={"o GaiaServer é um sonho feito com muito amor"}>
           <img
             src={`http://localhost:3000/static/logo_dog_blue.png`}
             alt="Logo GaiaServer"
@@ -171,17 +169,12 @@ const Login = () => {
             onClick={() => alert("GaiaServer é um sonho feito com muito amor")}
           />
         </Tooltip>
-        <Typography
-          component="h1"
-          variant="h4"
-        >
+        <Typography component="h1" variant="h4">
           GaiaServer
         </Typography>
       </Grid2>
       <Grid2
         container
-        item
-        xs={5}
         direction="column"
         alignItems="center"
         justifyContent="center"

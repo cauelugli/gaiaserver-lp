@@ -60,22 +60,14 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
         if (allowedListMainblocks.includes(option.permissionLabel)) {
           if (layout === "Padrão" || layout === "Chip") {
             return (
-              <Grid2
-                item
-                key={index}
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                xl={4}
-                sx={{ p: 1 }}
-              >
+              <Grid2 item key={index} sx={{ p: 1, my:1 }}>
                 <Link to={option.link} style={{ textDecoration: "none" }}>
                   <Paper
                     onMouseEnter={() => setHoveredIndexMainblocks(index)}
                     onMouseLeave={() => setHoveredIndexMainblocks(null)}
                     sx={{
-                      height: (layout === "Chip" ? 25 : 40) * factor,
+                      height: (layout === "Chip" ? 30 : 55) * factor,
+                      width: (layout === "Chip" ? 55 : 55) * factor,
                       transition: "background-color 0.3s, color 0.3s",
                       backgroundColor:
                         hoveredIndexMainblocks === index && configData
@@ -101,7 +93,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                         style={{
                           marginTop: factor * 2,
                           width: "auto",
-                          fontSize: 14 + (factor + factor / 2),
+                          fontSize: 16 + (factor * 3) / 2,
                           fontWeight: "bold",
                           color:
                             hoveredIndexMainblocks === index
@@ -207,8 +199,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                         hoveredIndexMainblocks === index && configData
                           ? configData.mainColor
                           : "white",
-                      color:
-                        hoveredIndexMainblocks === index && "white",
+                      color: hoveredIndexMainblocks === index && "white",
                       borderRadius: "50%",
                       display: "flex",
                       alignItems: "center",
@@ -227,8 +218,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                             hoveredIndexMainblocks === index &&
                             configData &&
                             configData.mainColor,
-                          color:
-                            hoveredIndexMainblocks === index && "white",
+                          color: hoveredIndexMainblocks === index && "white",
                           transition: "background-color 0.3s, color 0.3s",
                         }}
                       >
@@ -259,75 +249,63 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
 
           if (layout === "Tabela") {
             return (
-              <Grid2
-                item
-                key={index}
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                sx={{ p: 0 }}
-              >
-                <TableContainer component={Paper}>
-                  <Table>
-                    <TableBody>
-                      <TableRow
-                        onMouseEnter={() => setHoveredIndexMainblocks(index)}
-                        onMouseLeave={() => setHoveredIndexMainblocks(null)}
-                        sx={{
-                          backgroundColor:
-                            hoveredIndexMainblocks === index &&
-                            configData &&
-                            configData.mainColor,
-                          color:
-                            hoveredIndexMainblocks === index && "white",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <TableCell align="left">
-                          <Link
-                            to={option.link}
-                            style={{ textDecoration: "none", color: "inherit" }}
+              <TableContainer key={index} component={Paper} sx={{ mt: 0.25 }}>
+                <Table>
+                  <TableBody>
+                    <TableRow
+                      onMouseEnter={() => setHoveredIndexMainblocks(index)}
+                      onMouseLeave={() => setHoveredIndexMainblocks(null)}
+                      sx={{
+                        backgroundColor:
+                          hoveredIndexMainblocks === index &&
+                          configData &&
+                          configData.mainColor,
+                        color: hoveredIndexMainblocks === index && "white",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <TableCell align="left">
+                        <Link
+                          to={option.link}
+                          style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                          <Grid2
+                            container
+                            sx={{
+                              backgroundColor:
+                                hoveredIndexMainblocks === index &&
+                                configData &&
+                                configData.mainColor,
+                              color:
+                                hoveredIndexMainblocks === index && "white",
+                            }}
                           >
-                            <Grid2
-                              container
-                              sx={{
-                                backgroundColor:
-                                  hoveredIndexMainblocks === index &&
-                                  configData &&
-                                  configData.mainColor,
-                                color:
-                                  hoveredIndexMainblocks === index && "white",
-                              }}
-                            >
-                              <Grid2 item>
-                                {React.cloneElement(option.icon, {
-                                  style: { fontSize: "24px" },
-                                })}
-                              </Grid2>
-                              <Grid2 item sx={{ ml: 1 }}>
-                                <Typography
-                                  style={{
-                                    fontSize: 14 + factor,
-                                    fontWeight: "bold",
-                                    color:
-                                      hoveredIndexMainblocks === index
-                                        ? "white"
-                                        : "inherit",
-                                  }}
-                                >
-                                  {option.text}
-                                </Typography>
-                              </Grid2>
+                            <Grid2 item>
+                              {React.cloneElement(option.icon, {
+                                style: { fontSize: "24px" },
+                              })}
                             </Grid2>
-                          </Link>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Grid2>
+                            <Grid2 item sx={{ ml: 1 }}>
+                              <Typography
+                                style={{
+                                  fontSize: 14 + factor,
+                                  fontWeight: "bold",
+                                  color:
+                                    hoveredIndexMainblocks === index
+                                      ? "white"
+                                      : "inherit",
+                                }}
+                              >
+                                {option.text}
+                              </Typography>
+                            </Grid2>
+                          </Grid2>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             );
           }
         } else {

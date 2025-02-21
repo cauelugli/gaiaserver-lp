@@ -223,10 +223,7 @@ export default function App() {
         <Grid2
           className="noHoverBackground"
           sx={{
-            width: "auto",
-            height: "auto",
             m: -1,
-            mr: -2,
             backgroundColor: userPreferences.darkMode ? "#302c34" : "none",
           }}
         >
@@ -254,206 +251,201 @@ export default function App() {
                 </Grid2>
               )}
 
-              <Grid2
-                sx={{
-                  width: "95%",
-                }}
-              >
-                <Grid2 container sx={{ p: 2 }}>
-                  <Grid2 item xs={12} xl={12}>
-                    <Routes>
+              <Grid2 container sx={{ p: 1, minHeight: "45vw" }}>
+                <Grid2>
+                  <Routes>
+                    <Route
+                      path="/"
+                      element={
+                        isAuthenticated(login, userData) ? (
+                          <Home
+                            api={api}
+                            layout={userPreferences.homePageLayout}
+                            homePagePreferences={
+                              userPreferences.homePagePreferences
+                            }
+                            userId={userData._id}
+                            userName={userData.name}
+                            userUsername={userData.username}
+                            userGender={userData.gender}
+                            userAgenda={userAgenda}
+                            mainColor={
+                              configData.customization &&
+                              configData.customization.mainColor
+                            }
+                            handleShortcutClick={"handleShortcutClick"}
+                            allowedLinks={allowedLinks}
+                            configData={configData}
+                            configDashboard={configData.dashboard}
+                            onMount={() => handleSidebarVisibility(false)}
+                            onUnmount={() => handleSidebarVisibility(true)}
+                            currentWindowSize={currentWindowSize}
+                          />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/login"
+                      element={!login ? <Login /> : <Navigate to="/" />}
+                    />
+                    <Route
+                      path="/account"
+                      element={
+                        isAuthenticated(login, userData) ? (
+                          <Account
+                            user={userData}
+                            userPreferences={userPreferences}
+                            refreshData={refreshData}
+                            setRefreshData={setRefreshData}
+                            topBar={userPreferences.barPosition}
+                          />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/dashboard"
+                      element={
+                        isAuthenticated(login, userData) &&
+                        hasPermission(userData, configData, "dashboard") ? (
+                          <Dashboard
+                            userId={userData._id}
+                            userUsername={userData.username}
+                            configDashboard={configData.dashboard}
+                            configCustomization={configData.customization}
+                            topBar={userPreferences.barPosition}
+                            currentWindowSize={currentWindowSize}
+                            api={api}
+                          />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+
+                    <Route
+                      path="/reports"
+                      element={
+                        isAuthenticated(login, userData) &&
+                        hasPermission(userData, configData, "reports") ? (
+                          <Reports
+                            userId={userData._id}
+                            userUsername={userData.username}
+                            configCustomization={configData.customization}
+                            topBar={userPreferences.barPosition}
+                          />
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/config"
+                      element={
+                        isAuthenticated(login, userData) &&
+                        hasPermission(userData, configData, "config") ? (
+                          <Config
+                            topBar={userPreferences.barPosition}
+                            mainColor={configData.customization.mainColor}
+                            userName={userData.name}
+                            userId={userData._id}
+                            refreshData={refreshData}
+                            setRefreshData={setRefreshData}
+                            configCustomization={configData.customization}
+                            currentWindowSize={currentWindowSize}
+                          />
+                        ) : isAuthenticated(login, userData) ? (
+                          <Typography sx={{ m: 2, fontSize: 16 }}>
+                            Seu usuário não possui autorização à página.
+                          </Typography>
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+
+                    <Route
+                      path="/log"
+                      element={
+                        isAuthenticated(login, userData) &&
+                        userData.username === "admin" ? (
+                          <Log
+                            api={api}
+                            topBar={userPreferences.barPosition}
+                            mainColor={
+                              configData.customization &&
+                              configData.customization.mainColor
+                            }
+                          />
+                        ) : isAuthenticated(login, userData) ? (
+                          <Typography sx={{ m: 2, fontSize: 16 }}>
+                            Seu usuário não possui autorização à página.
+                          </Typography>
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+
+                    <Route
+                      path="/files"
+                      element={
+                        isAuthenticated(login, userData) &&
+                        hasPermission(userData, configData, "files") ? (
+                          <Files
+                            topBar={userPreferences.barPosition}
+                            userName={userData.name}
+                            userId={userData._id}
+                            refreshData={refreshData}
+                            setRefreshData={setRefreshData}
+                            configCustomization={configData.customization}
+                          />
+                        ) : isAuthenticated(login, userData) ? (
+                          <Typography sx={{ m: 2, fontSize: 16 }}>
+                            Seu usuário não possui autorização à página.
+                          </Typography>
+                        ) : (
+                          <Navigate to="/login" />
+                        )
+                      }
+                    />
+
+                    {pageOptions.map((option, index) => (
                       <Route
-                        path="/"
+                        key={index}
+                        path={`/${option.page}`}
                         element={
-                          isAuthenticated(login, userData) ? (
-                            <Home
+                          isAuthenticated(login, userData) &&
+                          hasPermission(userData, configData, option.page) ? (
+                            <PageModel
                               api={api}
-                              layout={userPreferences.homePageLayout}
-                              homePagePreferences={userPreferences.homePagePreferences}
+                              socket={socket}
+                              item={option}
+                              palette={theme.palette}
                               userId={userData._id}
-                              userName={userData.name}
                               userUsername={userData.username}
-                              userGender={userData.gender}
-                              userAgenda={userAgenda}
-                              mainColor={
-                                configData.customization &&
-                                configData.customization.mainColor
-                              }
-                              handleShortcutClick={"handleShortcutClick"}
-                              allowedLinks={allowedLinks}
+                              isAdmin={userData.username === "admin"}
+                              userName={userData.name}
+                              setUserPreferences={setUserPreferences}
                               configData={configData}
-                              configDashboard={configData.dashboard}
-                              onMount={() => handleSidebarVisibility(false)}
-                              onUnmount={() => handleSidebarVisibility(true)}
-                              currentWindowSize={currentWindowSize}
-                            />
-                          ) : (
-                            <Navigate to="/login" />
-                          )
-                        }
-                      />
-                      <Route
-                        path="/login"
-                        element={!login ? <Login /> : <Navigate to="/" />}
-                      />
-                      <Route
-                        path="/account"
-                        element={
-                          isAuthenticated(login, userData) ? (
-                            <Account
-                              user={userData}
-                              userPreferences={userPreferences}
-                              refreshData={refreshData}
-                              setRefreshData={setRefreshData}
                               topBar={userPreferences.barPosition}
-                            />
-                          ) : (
-                            <Navigate to="/login" />
-                          )
-                        }
-                      />
-                      <Route
-                        path="/dashboard"
-                        element={
-                          isAuthenticated(login, userData) &&
-                          hasPermission(userData, configData, "dashboard") ? (
-                            <Dashboard
-                              userId={userData._id}
-                              userUsername={userData.username}
+                              tableOrCardView={userPreferences.tableOrCardView}
+                              cardSize={userPreferences.cardSize}
                               configDashboard={configData.dashboard}
                               configCustomization={configData.customization}
-                              topBar={userPreferences.barPosition}
                               currentWindowSize={currentWindowSize}
-                              api={api}
+                              windowSizeSetter={windowSizeSetter}
                             />
                           ) : (
                             <Navigate to="/login" />
                           )
                         }
                       />
-
-                      <Route
-                        path="/reports"
-                        element={
-                          isAuthenticated(login, userData) &&
-                          hasPermission(userData, configData, "reports") ? (
-                            <Reports
-                              userId={userData._id}
-                              userUsername={userData.username}
-                              configCustomization={configData.customization}
-                              topBar={userPreferences.barPosition}
-                            />
-                          ) : (
-                            <Navigate to="/login" />
-                          )
-                        }
-                      />
-                      <Route
-                        path="/config"
-                        element={
-                          isAuthenticated(login, userData) &&
-                          hasPermission(userData, configData, "config") ? (
-                            <Config
-                              topBar={userPreferences.barPosition}
-                              mainColor={configData.customization.mainColor}
-                              userName={userData.name}
-                              userId={userData._id}
-                              refreshData={refreshData}
-                              setRefreshData={setRefreshData}
-                              configCustomization={configData.customization}
-                              currentWindowSize={currentWindowSize}
-                            />
-                          ) : isAuthenticated(login, userData) ? (
-                            <Typography sx={{ m: 2, fontSize: 16 }}>
-                              Seu usuário não possui autorização à página.
-                            </Typography>
-                          ) : (
-                            <Navigate to="/login" />
-                          )
-                        }
-                      />
-
-                      <Route
-                        path="/log"
-                        element={
-                          isAuthenticated(login, userData) &&
-                          userData.username === "admin" ? (
-                            <Log
-                              api={api}
-                              topBar={userPreferences.barPosition}
-                              mainColor={
-                                configData.customization &&
-                                configData.customization.mainColor
-                              }
-                            />
-                          ) : isAuthenticated(login, userData) ? (
-                            <Typography sx={{ m: 2, fontSize: 16 }}>
-                              Seu usuário não possui autorização à página.
-                            </Typography>
-                          ) : (
-                            <Navigate to="/login" />
-                          )
-                        }
-                      />
-
-                      <Route
-                        path="/files"
-                        element={
-                          isAuthenticated(login, userData) &&
-                          hasPermission(userData, configData, "files") ? (
-                            <Files
-                              topBar={userPreferences.barPosition}
-                              userName={userData.name}
-                              userId={userData._id}
-                              refreshData={refreshData}
-                              setRefreshData={setRefreshData}
-                              configCustomization={configData.customization}
-                            />
-                          ) : isAuthenticated(login, userData) ? (
-                            <Typography sx={{ m: 2, fontSize: 16 }}>
-                              Seu usuário não possui autorização à página.
-                            </Typography>
-                          ) : (
-                            <Navigate to="/login" />
-                          )
-                        }
-                      />
-
-                      {pageOptions.map((option, index) => (
-                        <Route
-                          key={index}
-                          path={`/${option.page}`}
-                          element={
-                            isAuthenticated(login, userData) &&
-                            hasPermission(userData, configData, option.page) ? (
-                              <PageModel
-                                api={api}
-                                socket={socket}
-                                item={option}
-                                palette={theme.palette}
-                                userId={userData._id}
-                                userUsername={userData.username}
-                                isAdmin={userData.username === "admin"}
-                                userName={userData.name}
-                                setUserPreferences={setUserPreferences}
-                                configData={configData}
-                                topBar={userPreferences.barPosition}
-                                tableOrCardView={
-                                  userPreferences.tableOrCardView
-                                }
-                                cardSize={userPreferences.cardSize}
-                                configDashboard={configData.dashboard}
-                                configCustomization={configData.customization}
-                                currentWindowSize={currentWindowSize}
-                              />
-                            ) : (
-                              <Navigate to="/login" />
-                            )
-                          }
-                        />
-                      ))}
-                    </Routes>
-                  </Grid2>
+                    ))}
+                  </Routes>
                 </Grid2>
               </Grid2>
             </Grid2>
