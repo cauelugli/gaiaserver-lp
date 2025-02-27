@@ -31,7 +31,7 @@ export function isButtonDisabled(
   modalOptions,
   okToDispatch,
   selectedServices,
-  selectedProducts,
+  // selectedProducts,
   priceDifference
 ) {
   if (okToDispatch) return false;
@@ -43,7 +43,6 @@ export function isButtonDisabled(
           selectedServices.length === 0 ||
           (Object.keys(priceDifference).length !== 0 && !okToDispatch)
         );
-
       case "Job":
         return false;
       case "Cliente Empresa":
@@ -64,14 +63,10 @@ export function isButtonDisabled(
         return false;
       case "Perfil de Acesso":
         return false;
-
       case "Venda":
-        return (
-          !okToDispatch ||
-          selectedProducts.length === 0 ||
-          (Object.keys(priceDifference).length !== 0 && !okToDispatch)
-        );
-
+        return false;
+      case "Entrada de Estoque":
+        return false;
       default:
         return true;
     }
