@@ -463,7 +463,15 @@ export default function PageModel(props) {
                           : index
                       }
                       tableColumns={props.item.tableColumns}
-                      tabIndex={value}
+                      tabIndex={
+                        props.item.page === "customers" &&
+                        !configTables.customerCustomer
+                          ? index + 1
+                          : props.item.page === "requests" &&
+                            !configTables.requestJob
+                          ? index + 1
+                          : index
+                      }
                       userName={props.userName}
                       userId={props.userId}
                       userRole={props.userRole}
