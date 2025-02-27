@@ -21,7 +21,6 @@ import {
 import { icons } from "../../icons";
 
 import BadgedIcon from "../small/BadgedIcon";
-import PriceDifferenceTable from "../small/PriceDifferenceTable";
 import ProductsDisplayTableCell from "../tableCells/ProductsDisplayTableCell";
 
 const ProductsTableCell = (props) => {
@@ -31,8 +30,8 @@ const ProductsTableCell = (props) => {
   const [searchType, setSearchType] = React.useState("name");
   const [selectedSearchType, setSelectedSearchType] =
     React.useState("Selecione");
+  // eslint-disable-next-line no-unused-vars
   const [sum, setSum] = React.useState(0);
-  const [isChangingQuote, setIsChangeingQuote] = React.useState(false);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -164,72 +163,15 @@ const ProductsTableCell = (props) => {
         )}
       </Grid2>
       {props.selectedProducts?.length !== 0 && (
-        <>
-          <ProductsDisplayTableCell
-            selectedProducts={props.selectedProducts}
-            handleProductChange={props.handleProductChange}
-            fieldType={props.fieldType}
-            servicePrice={props.servicePrice || 0}
-            refreshData={props.refreshData}
-            setRefreshData={props.setRefreshData}
-            toStock={props.toStock}
-          />
-          {/* component this */}
-          <Grid2 container direction="row" justifyContent="space-between">
-            <Grid2>
-              <Typography
-                onClick={() => {
-                  setIsChangeingQuote(!isChangingQuote),
-                    props.okToDispatch
-                      ? props.setOkToDispatch(!props.okToDispatch)
-                      : "";
-                }}
-                sx={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                }}
-              >
-                {isChangingQuote
-                  ? "Cancelar Alteração de Orçamento"
-                  : "Alterar Orçamento"}
-              </Typography>{" "}
-            </Grid2>
-            <Grid2>
-              <Typography
-                onClick={() => props.setOkToDispatch(!props.okToDispatch)}
-                sx={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                }}
-              >
-                {isChangingQuote
-                  ? ""
-                  : props.okToDispatch
-                  ? ""
-                  : "Confirmar Orçamento"}
-              </Typography>
-            </Grid2>
-          </Grid2>
-          {/* component this */}
-          {isChangingQuote ? (
-            <PriceDifferenceTable
-              openAddDifference={isChangingQuote}
-              priceDifference={props.priceDifference}
-              setPriceDifference={props.setPriceDifference}
-              sum={parseFloat(sum)}
-              setFinalPrice={props.setFinalPrice}
-              okToDispatch={props.okToDispatch}
-              setOkToDispatch={props.setOkToDispatch}
-              showTitle={0}
-              fieldType={props.fieldType}
-              servicePrice={props.servicePrice || 0}
-            />
-          ) : (
-            ""
-          )}
-        </>
+        <ProductsDisplayTableCell
+          selectedProducts={props.selectedProducts}
+          handleProductChange={props.handleProductChange}
+          fieldType={props.fieldType}
+          servicePrice={props.servicePrice || 0}
+          refreshData={props.refreshData}
+          setRefreshData={props.setRefreshData}
+          toStock={props.toStock}
+        />
       )}
     </>
   );

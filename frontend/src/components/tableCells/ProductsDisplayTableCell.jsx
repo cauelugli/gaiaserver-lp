@@ -66,12 +66,17 @@ const ProductsDisplayTableCell = (props) => {
         <TableRow>
           <TableCell>
             <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
+              Tipo
+            </Typography>
+          </TableCell>
+          <TableCell>
+            <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
               Nome
             </Typography>
           </TableCell>
           <TableCell align="left" sx={{ width: 200 }}>
             <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
-              Valor {props.toStock ? "de Compra " : "de Venda "} por Item
+              Valor {props.toStock ? "de Compra " : "de Venda "}
             </Typography>
           </TableCell>
           <TableCell align="center">
@@ -92,6 +97,9 @@ const ProductsDisplayTableCell = (props) => {
         </TableRow>
         {props.selectedProducts.map((product, index) => (
           <TableRow key={index} sx={{ mt: 3 }}>
+            <TableCell>
+              <Typography sx={{ fontSize: 14 }}>{product.type}</Typography>
+            </TableCell>
             <TableCell>
               <Typography sx={{ fontSize: 14 }}>{product.name}</Typography>
             </TableCell>
@@ -167,14 +175,15 @@ const ProductsDisplayTableCell = (props) => {
           <TableCell id="ghost" />
           <TableCell id="ghost" />
           <TableCell id="ghost" />
-          <TableCell align="right" sx={{ width: 200 }}>
+          <TableCell id="ghost" />
+          <TableCell align="right">
             <Typography
               sx={{
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: "bold",
               }}
             >
-              Total R$
+              Total Geral R$
               {props.toStock
                 ? props.selectedProducts
                     .reduce(
