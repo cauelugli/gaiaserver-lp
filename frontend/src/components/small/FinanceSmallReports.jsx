@@ -2,6 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import {
+  CircularProgress,
   Typography,
   MenuItem,
   Select,
@@ -9,10 +10,11 @@ import {
   InputLabel,
   Grid2,
 } from "@mui/material";
-import { LineChart } from "@mui/x-charts/LineChart"; // Importe o LineChart
+import { LineChart } from "@mui/x-charts/LineChart";
 
 const FinanceSmallReports = ({ api }) => {
   const [salesData, setSalesData] = useState(null);
+  const [stockData, setStockData] = useState(null);
   const [groupBy, setGroupBy] = useState("week");
 
   useEffect(() => {
@@ -20,10 +22,9 @@ const FinanceSmallReports = ({ api }) => {
       try {
         const response = await api.get("/get/dashboard");
         const sales = response.data.find((item) => item.model === "Sale");
-        const resolvedSales = sales
-          ? sales.data.filter((item) => item.status === "Resolvido")
-          : [];
-        setSalesData({ ...sales, data: resolvedSales });
+        const stock = response.data.find((item) => item.model === "StockEntry");
+        setSalesData(sales);
+        setStockData(stock);
       } catch (err) {
         console.error("Erro ao buscar dados de vendas:", err);
       }
@@ -32,7 +33,6 @@ const FinanceSmallReports = ({ api }) => {
     fetchSalesData();
   }, [api]);
 
-  // Função para processar os dados conforme a opção selecionada
   const processData = (data, groupBy) => {
     const counts = {};
 
@@ -41,16 +41,16 @@ const FinanceSmallReports = ({ api }) => {
       let key;
 
       if (groupBy === "day") {
-        key = date.toISOString().split("T")[0]; // Formato: YYYY-MM-DD
+        key = date.toISOString().split("T")[0];
       } else if (groupBy === "week") {
         const weekStart = new Date(date);
-        weekStart.setDate(date.getDate() - date.getDay()); // Início da semana (domingo)
-        key = weekStart.toISOString().split("T")[0]; // Formato: YYYY-MM-DD
+        weekStart.setDate(date.getDate() - date.getDay());
+        key = weekStart.toISOString().split("T")[0];
       } else if (groupBy === "month") {
         key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
           2,
           "0"
-        )}`; // Formato: YYYY-MM
+        )}`;
       }
 
       counts[key] = (counts[key] || 0) + 1;
@@ -59,22 +59,66 @@ const FinanceSmallReports = ({ api }) => {
     return counts;
   };
 
-  // Se não houver dados de vendas, exibe uma mensagem
-  if (!salesData || !salesData.data) {
-    return <div>Nenhum dado de vendas disponível.</div>;
+  if (!salesData || !salesData.data || !stockData || !stockData.data) {
+    return <CircularProgress />;
   }
 
-  // Processa os dados conforme a opção selecionada
-  const processedData = processData(salesData.data, groupBy);
+  // Processamento dos dados de Sales
+  const resolvedSales = salesData.data.filter(
+    (item) => item.status === "Resolvido"
+  );
+  const allSales = salesData.data;
+  const totalPriceAllSales = allSales.reduce(
+    (total, item) => total + item.price,
+    0
+  );
+  const totalPriceResolvedSales = resolvedSales.reduce(
+    (total, item) => total + item.price,
+    0
+  );
 
-  // Prepara os dados para o gráfico
-  const labels = Object.keys(processedData).sort();
-  const values = labels.map((date) => processedData[date]);
+  const processedResolvedData = processData(resolvedSales, groupBy);
+  const processedAllData = processData(allSales, groupBy);
+
+  const labelsResolved = Object.keys(processedResolvedData).sort();
+  const valuesResolved = labelsResolved.map(
+    (date) => processedResolvedData[date]
+  );
+
+  const labelsAll = Object.keys(processedAllData).sort();
+  const valuesAll = labelsAll.map((date) => processedAllData[date]);
+
+  // Processamento dos dados de StockEntry
+  const resolvedStockEntries = stockData.data.filter(
+    (item) => item.status === "Resolvido"
+  );
+  const allStockEntries = stockData.data;
+  const totalResolvedStockEntries = resolvedStockEntries.reduce(
+    (total, item) => total + item.price,
+    0
+  );
+  const totalAllStockEntries = allStockEntries.reduce(
+    (total, item) => total + item.price,
+    0
+  );
+
+  const processedResolvedStockData = processData(resolvedStockEntries, groupBy);
+  const processedAllStockData = processData(allStockEntries, groupBy);
+
+  const labelsResolvedStock = Object.keys(processedResolvedStockData).sort();
+  const valuesResolvedStock = labelsResolvedStock.map(
+    (date) => processedResolvedStockData[date]
+  );
+
+  const labelsAllStock = Object.keys(processedAllStockData).sort();
+  const valuesAllStock = labelsAllStock.map(
+    (date) => processedAllStockData[date]
+  );
 
   return (
-    <Grid2 container direction="column" spacing={2}>
+    <Grid2 container direction="row" spacing={1}>
       <Grid2 item>
-        <FormControl sx={{ mt: 1 }}>
+        <FormControl>
           <InputLabel>Período</InputLabel>
           <Select
             value={groupBy}
@@ -87,35 +131,119 @@ const FinanceSmallReports = ({ api }) => {
           </Select>
         </FormControl>
       </Grid2>
+
       <Grid2 item>
-        <Typography variant="h6" align="center" gutterBottom>
-          Vendas Resolvidas{" "}
-          {groupBy === "day"
-            ? "por Dia"
-            : groupBy === "week"
-            ? "por Semana"
-            : "por Mês"}
-        </Typography>
-      </Grid2>
-      <Grid2 item>
-        {/* Gráfico de linhas */}
         <LineChart
           xAxis={[
             {
-              data: labels,
-              scaleType: "point", // Exibe os rótulos como pontos no eixo X
+              data: labelsAll,
+              scaleType: "point",
             },
           ]}
           series={[
             {
-              data: values,
-              label: "Vendas Resolvidas",
-              color: "#1976d2", // Cor da linha
+              data: valuesAll,
+              label: "Vendas Criadas",
+              color: "#1976d2",
             },
           ]}
-          width={800}
-          height={400}
+          width={350}
+          height={200}
         />
+        <Typography sx={{ fontWeight: "bold" }} align="center">
+          Total: R$ {totalPriceAllSales.toFixed(2)}
+        </Typography>
+      </Grid2>
+
+      <Grid2 item>
+        <LineChart
+          xAxis={[
+            {
+              data: labelsResolved,
+              scaleType: "point",
+            },
+          ]}
+          series={[
+            {
+              data: valuesResolved,
+              label: "Vendas Resolvidas",
+              color: "#4caf50",
+            },
+          ]}
+          width={350}
+          height={200}
+        />
+        <Typography sx={{ fontWeight: "bold" }} align="center">
+          Total: R$ {totalPriceResolvedSales.toFixed(2)}
+        </Typography>
+      </Grid2>
+
+      <Grid2 item>
+        <LineChart
+          xAxis={[
+            {
+              data: labelsAllStock,
+              scaleType: "point",
+            },
+          ]}
+          series={[
+            {
+              data: valuesAllStock,
+              label: "Entradas de Estoque",
+              color: "#ff9800",
+            },
+          ]}
+          width={350}
+          height={200}
+        />
+        <Typography sx={{ fontWeight: "bold" }} align="center">
+          Total: R$ {totalAllStockEntries.toFixed(2)}
+        </Typography>
+      </Grid2>
+
+      <Grid2 item>
+        <LineChart
+          xAxis={[
+            {
+              data: labelsResolvedStock,
+              scaleType: "point",
+            },
+          ]}
+          series={[
+            {
+              data: valuesResolvedStock,
+              label: "Entradas de Estoque Resolvidas",
+              color: "#9c27b0",
+            },
+          ]}
+          width={350}
+          height={200}
+        />
+        <Typography sx={{ fontWeight: "bold" }} align="center">
+          Total: R$ {totalResolvedStockEntries.toFixed(2)}
+        </Typography>
+      </Grid2>
+      <Grid2 item>
+        <LineChart
+          xAxis={[
+            {
+              data: labelsResolvedStock,
+              scaleType: "point",
+            },
+          ]}
+          series={[
+            {
+              data: valuesResolvedStock,
+              label: "Entradas de Estoque Resolvidas",
+              color: "#9c27b0",
+            },
+          ]}
+          width={350}
+          height={200}
+        />
+        <Typography sx={{ fontWeight: "bold" }} align="center">
+          Total: R$ {totalResolvedStockEntries.toFixed(2)}
+        </Typography>
       </Grid2>
     </Grid2>
   );

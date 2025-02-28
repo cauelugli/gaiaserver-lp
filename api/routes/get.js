@@ -45,7 +45,7 @@ router.get("/", async (req, res) => {
 router.get("/dashboard", async (req, res) => {
   let models = [];
   try {
-    const modelsToCheck = ["User", "Job", "Sale"];
+    const modelsToCheck = ["User", "Job", "Sale", "StockEntry"];
 
     for (const modelName of modelsToCheck) {
       const model = defineModel(modelName);
@@ -69,7 +69,27 @@ router.get("/dashboard", async (req, res) => {
       } else if (modelName === "Sale") {
         data = await model.find(
           {},
-          { createdAt: 1, customer: 1, number: 1, seller: 1, status: 1, _id: 0 }
+          {
+            createdAt: 1,
+            customer: 1,
+            number: 1,
+            seller: 1,
+            status: 1,
+            price: 1,
+            _id: 0,
+          }
+        );
+      } else if (modelName === "StockEntry") {
+        data = await model.find(
+          {},
+          {
+            createdAt: 1,
+            createdBy: 1,
+            number: 1,
+            status: 1,
+            price: 1,
+            _id: 0,
+          }
         );
       }
 
