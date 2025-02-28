@@ -259,22 +259,26 @@ const rowButtonOptions = (props) => [
               },
             ]
           : []),
-        {
-          label: "Alterar",
-          icon: <icons.SettingsIcon />,
-          action: "dynamicChange",
-          submenu: [
-            {
-              modal: "small",
-              sourceModel: "Job",
-              targetModel: "Static",
-              targetLabel: "Status",
-              icon: <icons.TimelapseIcon />,
-              staticAttribute: "status",
-              staticList: fetchStatuses,
-            },
-          ],
-        },
+        ...(props.item.status !== "Resolvido"
+          ? [
+              {
+                label: "Alterar",
+                icon: <icons.SettingsIcon />,
+                action: "dynamicChange",
+                submenu: [
+                  {
+                    modal: "small",
+                    sourceModel: "Job",
+                    targetModel: "Static",
+                    targetLabel: "Status",
+                    icon: <icons.TimelapseIcon />,
+                    staticAttribute: "status",
+                    staticList: fetchStatuses,
+                  },
+                ],
+              },
+            ]
+          : []),
       ],
       1: [
         {
@@ -321,22 +325,26 @@ const rowButtonOptions = (props) => [
               },
             ]
           : []),
-        {
-          label: "Alterar",
-          icon: <icons.SettingsIcon />,
-          action: "dynamicChange",
-          submenu: [
-            {
-              modal: "small",
-              sourceModel: "Sale",
-              targetModel: "Static",
-              targetLabel: "Status",
-              icon: <icons.TimelapseIcon />,
-              staticAttribute: "status",
-              staticList: fetchStatuses,
-            },
-          ],
-        },
+        ...(props.item.status !== "Resolvido"
+          ? [
+              {
+                label: "Alterar",
+                icon: <icons.SettingsIcon />,
+                action: "dynamicChange",
+                submenu: [
+                  {
+                    modal: "small",
+                    sourceModel: "Sale",
+                    targetModel: "Static",
+                    targetLabel: "Status",
+                    icon: <icons.TimelapseIcon />,
+                    staticAttribute: "status",
+                    staticList: fetchStatuses,
+                  },
+                ],
+              },
+            ]
+          : []),
       ],
     },
   },
@@ -386,6 +394,26 @@ const rowButtonOptions = (props) => [
                 action: "delete",
                 modal: "StockEntry",
                 icon: <icons.DeleteIcon />,
+              },
+            ]
+          : []),
+        ...(props.item.status !== "Resolvido"
+          ? [
+              {
+                label: "Alterar",
+                icon: <icons.SettingsIcon />,
+                action: "dynamicChange",
+                submenu: [
+                  {
+                    modal: "small",
+                    sourceModel: "StockEntry",
+                    targetModel: "Static",
+                    targetLabel: "Status",
+                    icon: <icons.TimelapseIcon />,
+                    staticAttribute: "status",
+                    staticList: fetchStatuses,
+                  },
+                ],
               },
             ]
           : []),
@@ -642,22 +670,26 @@ const rowButtonOptions = (props) => [
           modal: "FinanceIncome",
           icon: <icons.ArchiveIcon />,
         },
-        {
-          label: "Alterar",
-          icon: <icons.SettingsIcon />,
-          action: "dynamicChange",
-          submenu: [
-            {
-              modal: "small",
-              sourceModel: "FinanceIncome",
-              targetModel: "Static",
-              targetLabel: "Status",
-              icon: <icons.TimelapseIcon />,
-              staticAttribute: "status",
-              staticList: fetchStatuses,
-            },
-          ],
-        },
+        ...(props.item.status !== "Resolvido"
+          ? [
+              {
+                label: "Alterar",
+                icon: <icons.SettingsIcon />,
+                action: "dynamicChange",
+                submenu: [
+                  {
+                    modal: "small",
+                    sourceModel: "FinanceIncome",
+                    targetModel: "Static",
+                    targetLabel: "Status",
+                    icon: <icons.TimelapseIcon />,
+                    staticAttribute: "status",
+                    staticList: fetchStatuses,
+                  },
+                ],
+              },
+            ]
+          : []),
       ],
       1: [
         {
@@ -666,22 +698,26 @@ const rowButtonOptions = (props) => [
           modal: "FinanceOutcome",
           icon: <icons.ArchiveIcon />,
         },
-        {
-          label: "Alterar",
-          icon: <icons.SettingsIcon />,
-          action: "FinanceOutcome",
-          submenu: [
-            {
-              modal: "small",
-              sourceModel: "FinanceOutcome",
-              targetModel: "Static",
-              targetLabel: "Status",
-              icon: <icons.TimelapseIcon />,
-              staticAttribute: "status",
-              staticList: fetchStatuses,
-            },
-          ],
-        },
+        ...(props.item.status !== "Resolvido"
+          ? [
+              {
+                label: "Alterar",
+                icon: <icons.SettingsIcon />,
+                action: "dynamicChange",
+                submenu: [
+                  {
+                    modal: "small",
+                    sourceModel: "FinanceOutcome",
+                    targetModel: "Static",
+                    targetLabel: "Status",
+                    icon: <icons.TimelapseIcon />,
+                    staticAttribute: "status",
+                    staticList: fetchStatuses,
+                  },
+                ],
+              },
+            ]
+          : []),
       ],
     },
   },

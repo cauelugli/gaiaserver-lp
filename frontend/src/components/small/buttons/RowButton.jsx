@@ -282,7 +282,9 @@ const RowButton = (props) => {
                   },
                 }}
                 disabled={
-                  menuItem.label === "Resolver"
+                  props.item.status === "Resolvido"
+                    ? true
+                    : menuItem.label === "Resolver"
                     ? checkAvailability("resolvableRequest", props.item.status)
                     : menuItem.label === "Solicitar Aprovação"
                     ? checkAvailability("approvableRequest", props.item.status)

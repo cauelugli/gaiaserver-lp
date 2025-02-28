@@ -125,12 +125,10 @@ const SmallFormModel = (props) => {
           Alterando {options.targetLabel}
         </Typography>
         <Grid2 item>
-          <Typography sx={{ fontSize: 12, mt: 2, color: "white" }}>
-            Atual
-          </Typography>
+          <Typography sx={{ fontSize: 12, mt: 2 }}>Atual</Typography>
           <TextField
             size="small"
-            sx={{ width: 200 }}
+            sx={{ width: 200, backgroundColor: "white", borderRadius: 1 }}
             InputProps={{
               readOnly: true,
             }}
@@ -143,7 +141,7 @@ const SmallFormModel = (props) => {
           </Typography>
           <Select
             size="small"
-            sx={{ width: 200 }}
+            sx={{ width: 200, backgroundColor: "white", borderRadius: 1 }}
             value={selectedOption}
             onChange={(e) => setSelectedOption(e.target.value)}
           >
