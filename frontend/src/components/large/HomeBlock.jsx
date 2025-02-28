@@ -60,7 +60,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
         if (allowedListMainblocks.includes(option.permissionLabel)) {
           if (layout === "Padrão" || layout === "Chip") {
             return (
-              <Grid2 item key={index} sx={{ p: 1, my:1 }}>
+              <Grid2 item key={index} sx={{ p: 1, my: 1 }}>
                 <Link to={option.link} style={{ textDecoration: "none" }}>
                   <Paper
                     onMouseEnter={() => setHoveredIndexMainblocks(index)}
@@ -169,6 +169,75 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
                         {option.text}
                       </Typography>
                     </Grid2>
+                  </Paper>
+                </Link>
+              </Grid2>
+            );
+          }
+
+          if (layout === "Nuvem") {
+            return (
+              <Grid2 item key={index} sx={{ p: 2, mt: 5 }}>
+                <Link to={option.link} style={{ textDecoration: "none" }}>
+                  <Paper
+                    onMouseEnter={() => setHoveredIndexMainblocks(index)}
+                    onMouseLeave={() => setHoveredIndexMainblocks(null)}
+                    sx={{
+                      height: 25 * factor,
+                      width: 80 * factor,
+                      transition: "transform 0.3s ease-in-out",
+                      backgroundColor:
+                        hoveredIndexMainblocks === index && configData
+                          ? configData.mainColor
+                          : "#f0f8ff",
+                      color: hoveredIndexMainblocks === index ? "white" : "",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      position: "relative",
+                      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                      transform:
+                        hoveredIndexMainblocks === index
+                          ? "scale(1.2)"
+                          : "scale(1)",
+                      "::before": {
+                        content: "''",
+                        position: "absolute",
+                        width: "60%",
+                        height: "60%",
+                        backgroundColor: "inherit",
+                        borderRadius: "50%",
+                        top: "-40%",
+                        left: "10%",
+                      },
+                      "::after": {
+                        content: "''",
+                        position: "absolute",
+                        width: "50%",
+                        height: "50%",
+                        backgroundColor: "inherit",
+                        borderRadius: "50%",
+                        top: "-20%",
+                        right: "10%",
+                      },
+                    }}
+                  >
+                    {React.cloneElement(option.icon, {
+                      style: {
+                        fontSize: "2vw",
+                      },
+                    })}
+                    <Typography
+                      style={{
+                        marginLeft: factor,
+                        fontSize: 14 + factor,
+                        fontWeight: "bold",
+                        color: hoveredIndexMainblocks === index ? "white" : "",
+                      }}
+                    >
+                      {option.text}
+                    </Typography>
                   </Paper>
                 </Link>
               </Grid2>

@@ -25,6 +25,7 @@ const HomePageLayoutSelect = (props) => {
     { name: "Chip", icon: <icons.HomeMaxIcon /> },
     { name: "Avatar", icon: <icons.AccountCircleIcon /> },
     { name: "Tabela", icon: <icons.TableRowsIcon /> },
+    { name: "Nuvem", icon: <icons.CloudQueueIcon /> },
   ];
 
   const handleChange = (event) => {

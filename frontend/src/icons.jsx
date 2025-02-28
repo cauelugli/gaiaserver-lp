@@ -22,6 +22,7 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
+import CloudQueueIcon from "@mui/icons-material/CloudQueue";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -107,6 +108,7 @@ const icons = {
   CheckBoxOutlineBlankIcon,
   CheckIcon,
   ClearIcon,
+  CloudQueueIcon,
   ColorLensIcon,
   DashboardIcon,
   DeleteIcon,
