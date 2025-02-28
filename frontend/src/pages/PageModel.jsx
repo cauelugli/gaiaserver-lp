@@ -58,6 +58,7 @@ export default function PageModel(props) {
   const [selectedMultipleItems, setSelectedMultipleItems] = React.useState([]);
   const [highlightSelfUser, setHighlightSelfUser] = React.useState(false);
   const [highlightArchived, setHighlightArchived] = React.useState(false);
+  const [highlightResolved, setHighlightResolved] = React.useState(false);
 
   const [currentPage, setCurrentPage] = React.useState(props.item.page);
 
@@ -99,21 +100,32 @@ export default function PageModel(props) {
       );
     }
 
-    if (highlightArchived) {
+    if (!highlightArchived && !highlightResolved) {
       result = result.filter(
-        (item) =>
-          !item.status ||
-          item.status === "Arquivado" ||
-          item.status !== "Arquivado"
-      );
-    } else {
-      result = result.filter(
-        (item) => !item.status || item.status !== "Arquivado"
+        (item) => item.status !== "Arquivado" && item.status !== "Resolvido"
       );
     }
 
+    if (highlightArchived && highlightResolved) {
+      return result;
+    }
+
+    if (highlightArchived) {
+      result = result.filter((item) => item.status !== "Resolvido");
+    }
+
+    if (highlightResolved) {
+      result = result.filter((item) => item.status !== "Arquivado");
+    }
+
     return result;
-  }, [items, highlightSelfUser, highlightArchived, props.userId]);
+  }, [
+    items,
+    highlightSelfUser,
+    highlightArchived,
+    highlightResolved,
+    props.userId,
+  ]);
 
   React.useEffect(() => {
     if (props.item.page !== currentPage) {
@@ -363,6 +375,8 @@ export default function PageModel(props) {
               page={props.item.page}
               highlightSelfUser={highlightSelfUser}
               setHighlightSelfUser={setHighlightSelfUser}
+              highlightResolved={highlightResolved}
+              setHighlightResolved={setHighlightResolved}
               useArchiveList={appData.useArchiveList?.includes(
                 props.item.models[value]
               )}

@@ -15,6 +15,7 @@ import { icons } from "../../icons";
 import MultipleSelectorButton from "./buttons/MultipleSelectorButton";
 import HighlightSelfUserButton from "./buttons/HighlightSelfUserButton";
 import HighlightArchivedButton from "./buttons/HighlightArchivedButton";
+import HighlightResolvedButton from "./buttons/HighlightResolvedButton";
 
 const TableOrCardSelector = (props) => {
   const [tableOrCardView, setTableOrCardView] = React.useState(
@@ -88,6 +89,13 @@ const TableOrCardSelector = (props) => {
           mainColor={props.mainColor}
           highlightSelfUser={props.highlightSelfUser}
           setHighlightSelfUser={props.setHighlightSelfUser}
+        />
+      )}
+      {props.page === "requests" && (
+        <HighlightResolvedButton
+          mainColor={props.mainColor}
+          highlightResolved={props.highlightResolved}
+          setHighlightResolved={props.setHighlightResolved}
         />
       )}
       {props.useArchiveList && (
