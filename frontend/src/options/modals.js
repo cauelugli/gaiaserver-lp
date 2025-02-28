@@ -963,4 +963,30 @@ export const modals = {
     ],
     model: "Role",
   },
+  FinanceIncome: {
+    label: "Entrada Financeira",
+    femaleGender: false,
+    maxWidth: "md",
+    fieldsSections: [
+      // { name: "mainInfo", label: "Informações Gerais" },
+      // { name: "description", label: "Descrição" },
+      // { name: "scheduling", label: "Agendamento" },
+      // { name: "attachments", label: "Anexos" },
+    ],
+    fields: [],
+    model: "FinanceIncome",
+  },
+  FinanceOutcome: {
+    label: "Encargo Financeiro",
+    femaleGender: false,
+    maxWidth: "md",
+    fieldsSections: [
+      // { name: "mainInfo", label: "Informações Gerais" },
+      // { name: "description", label: "Descrição" },
+      // { name: "scheduling", label: "Agendamento" },
+      // { name: "attachments", label: "Anexos" },
+    ],
+    fields: [],
+    model: "FinanceOutcome",
+  },
 };

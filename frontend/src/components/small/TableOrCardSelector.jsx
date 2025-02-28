@@ -76,6 +76,8 @@ const TableOrCardSelector = (props) => {
     }
   };
 
+  const validPages = ["requests", "finance", "stock"];
+
   return (
     <Grid2
       container
@@ -84,14 +86,14 @@ const TableOrCardSelector = (props) => {
       alignItems="flex-end"
       sx={{ m: 0.75 }}
     >
-      {props.page === "requests" && (
+      {validPages.includes(props.page) && (
         <HighlightSelfUserButton
           mainColor={props.mainColor}
           highlightSelfUser={props.highlightSelfUser}
           setHighlightSelfUser={props.setHighlightSelfUser}
         />
       )}
-      {props.page === "requests" && (
+      {validPages.includes(props.page) && (
         <HighlightResolvedButton
           mainColor={props.mainColor}
           highlightResolved={props.highlightResolved}

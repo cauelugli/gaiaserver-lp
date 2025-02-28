@@ -26,6 +26,8 @@ export const AppDataProvider = ({ children }) => {
     "Role",
     "Service",
     "ServicePlan",
+    "FinanceIncome",
+    "FinanceOutcome",
   ];
   const [idIndexList, setIdIndexList] = useState([]);
   const [loadingIdIndexList, setLoadingIdIndexList] = useState(true);

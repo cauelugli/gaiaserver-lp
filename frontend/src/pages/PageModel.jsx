@@ -224,6 +224,7 @@ export default function PageModel(props) {
     }
     return true;
   };
+  
   return (
     <Grid2
       sx={{
@@ -266,7 +267,6 @@ export default function PageModel(props) {
             isAdmin={props.isAdmin}
           />
         )}
-        {/* {currentPage === "finance" && <FinanceSmallReports api={props.api} />} */}
       </Grid2>
       <Grid2 sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
