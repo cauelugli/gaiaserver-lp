@@ -87,7 +87,7 @@ export default function Tables({ onClose }) {
               sx={{ mt: 2 }}
               direction="column"
               justifyContent="center"
-              alignItems="flex-start"
+              alignItems="center"
             >
               <TablesConfigTransferList
                 tableStates={tableStates}

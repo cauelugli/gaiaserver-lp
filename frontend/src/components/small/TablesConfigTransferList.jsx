@@ -25,12 +25,7 @@ export default function TablesConfigTransferList({
   };
 
   return (
-    <Grid2
-      container
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-    >
+    <>
       {Object.keys(tableStates).map((tableName) => (
         <Grid2
           key={tableName}
@@ -38,7 +33,7 @@ export default function TablesConfigTransferList({
           direction="row"
           alignItems="center"
           justifyContent="space-between"
-          sx={{ width: 250 }}
+          sx={{ width: "25vw" }}
         >
           <Typography sx={{ my: "auto" }}>{tableTitles[tableName]}</Typography>
           <Switch
@@ -47,6 +42,6 @@ export default function TablesConfigTransferList({
           />
         </Grid2>
       ))}
-    </Grid2>
+    </>
   );
 }

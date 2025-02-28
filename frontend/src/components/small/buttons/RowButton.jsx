@@ -8,6 +8,7 @@ import {
   ListItemIcon,
   ListItemText,
   Dialog,
+  Typography,
 } from "@mui/material";
 
 import { icons } from "../../../icons";
@@ -274,7 +275,6 @@ const RowButton = (props) => {
                   backgroundColor: menuItem.label.startsWith("Deletar")
                     ? "#e42528"
                     : "",
-                  color: menuItem.label.startsWith("Deletar") ? "white" : "",
                   "&:hover": {
                     backgroundColor: menuItem.label.startsWith("Deletar")
                       ? "#b12427"
@@ -306,7 +306,15 @@ const RowButton = (props) => {
                 >
                   {menuItem.icon}
                 </ListItemIcon>
-                <ListItemText>{menuItem.label}</ListItemText>
+                <ListItemText>
+                  <Typography
+                    sx={{
+                      color: menuItem.label === "Deletar" ? "white" : "",
+                    }}
+                  >
+                    {menuItem.label}
+                  </Typography>
+                </ListItemText>
               </MenuItem>
             )}
           </div>
