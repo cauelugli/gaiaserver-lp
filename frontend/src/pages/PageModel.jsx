@@ -27,7 +27,7 @@ import ProductsTableButton from "../components/small/buttons/ProductsTableButton
 import { getDataForPage } from "../../../controllers/functions/overallFunctions";
 
 import TableFiltersBar from "../components/large/TableFiltersBar";
-import FinanceSmallReports from "../components/small/FinanceSmallReports";
+// import FinanceSmallReports from "../components/small/FinanceSmallReports";
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -266,7 +266,7 @@ export default function PageModel(props) {
             isAdmin={props.isAdmin}
           />
         )}
-        {currentPage === "finance" && <FinanceSmallReports api={props.api} />}
+        {/* {currentPage === "finance" && <FinanceSmallReports api={props.api} />} */}
       </Grid2>
       <Grid2 sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
