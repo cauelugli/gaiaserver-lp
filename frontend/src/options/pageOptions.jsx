@@ -30,6 +30,10 @@ const pageOptions = [
           id: "mainContactName",
           label: "Contato Principal",
         },
+        {
+          id: "address",
+          label: "Endereço",
+        },
       ],
       // CLIENT TABLE
       [
@@ -48,6 +52,10 @@ const pageOptions = [
         {
           id: "email",
           label: "E-mail",
+        },
+        {
+          id: "addressHome",
+          label: "Endereço",
         },
       ],
     ],
