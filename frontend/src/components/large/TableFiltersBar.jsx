@@ -3,9 +3,7 @@
 import React from "react";
 
 import { icons } from "../../icons";
-
-import TableFiltersOptions from "./TableFiltersOptions";
-import TableFilteredData from "./TableFiltersData";
+import { Button } from "@mui/material";
 
 const TableFiltersBar = (props) => {
   const [showFilter, setShowFilter] = React.useState(false);
@@ -37,21 +35,7 @@ const TableFiltersBar = (props) => {
       )}
 
       {showFilter && (
-        <>
-          <TableFiltersOptions
-            tableColumns={props.tableColumns}
-            mainColor={props.mainColor}
-            tableFilters={props.tableFilters}
-            setTableFilters={props.setTableFilters}
-          />
-          {Object.keys(props.tableFilters).length > 0 && (
-            <TableFilteredData
-              tableFilters={props.tableFilters}
-              setTableFilters={props.setTableFilters}
-              tableColumns={props.tableColumns}
-            />
-          )}
-        </>
+        <Button onClick={() => console.log("props", props)}>oi</Button>
       )}
     </>
   );

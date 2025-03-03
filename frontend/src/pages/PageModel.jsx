@@ -224,7 +224,7 @@ export default function PageModel(props) {
     }
     return true;
   };
-  
+
   return (
     <Grid2
       sx={{
@@ -330,32 +330,15 @@ export default function PageModel(props) {
             newDataRefreshButton={newDataRefreshButton}
             setNewDataRefreshButton={setNewDataRefreshButton}
           />
-          {props.item.page === "products" ? (
+          {
             <TableFiltersBar
               tableFilters={tableFilters}
               setTableFilters={setTableFilters}
-              tableColumns={[
-                { id: "fakeCut", label: "fakeCut" },
-                { id: "name", label: "Nome" },
-                { id: "buyValue", label: "Valor de Compra" },
-                { id: "sellValue", label: "Valor de Venda" },
-              ]}
               mainColor={props.configCustomization.mainColor}
-              isFromProducts
-              extraColumnFields={
-                baseItems[value] ? baseItems[value].fields : []
-              }
+              page={props.item.page}
+              tabIndex={value}
             />
-          ) : (
-            props.item.tableColumns[0] && (
-              <TableFiltersBar
-                tableFilters={tableFilters}
-                setTableFilters={setTableFilters}
-                tableColumns={props.item.tableColumns[0]}
-                mainColor={props.configCustomization.mainColor}
-              />
-            )
-          )}
+          }
           <Grid2 sx={{ my: "auto", ml: "auto" }}>
             <TableOrCardSelector
               userId={props.userId}
@@ -539,7 +522,15 @@ export default function PageModel(props) {
                                 .stockEntriesApproverManager
                             }
                             page={props.item.page}
-                            tabIndex={value}
+                            tabIndex={
+                              props.item.page === "customers" &&
+                              !configTables.customerCustomer
+                                ? index + 1
+                                : props.item.page === "requests" &&
+                                  !configTables.requestJob
+                                ? index + 1
+                                : index
+                            }
                             mainColor={props.configCustomization.mainColor}
                           />
                         </Grid2>
