@@ -217,8 +217,6 @@ export default function App() {
     };
   }, []);
 
-  console.log(userPreferences.paletteColor);
-
   return (
     <AppDataProvider>
       <ThemeProvider theme={theme}>
