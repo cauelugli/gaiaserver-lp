@@ -251,7 +251,7 @@ export default function App() {
                 </Grid2>
               )}
 
-              <Grid2 container sx={{ p: 1, minHeight: "45vw" }}>
+              <Grid2 container sx={{ p: 1, minHeight: "55vw" }}>
                 <Grid2>
                   <Routes>
                     <Route

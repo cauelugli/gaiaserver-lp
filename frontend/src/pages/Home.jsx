@@ -65,7 +65,7 @@ const Home = ({
           )}
       </Grid2>
       <Grid2 container sx={{ height: "15vw", mt: 3 }}>
-        <FinanceSmallReports api={api} />
+        <FinanceSmallReports api={api} mainColor={mainColor}/>
       </Grid2>
     </>
   );

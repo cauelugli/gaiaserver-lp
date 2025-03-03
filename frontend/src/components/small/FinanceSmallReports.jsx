@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
 
-const FinanceSmallReports = ({ api }) => {
+const FinanceSmallReports = ({ api, mainColor }) => {
   const [salesData, setSalesData] = useState(null);
   const [stockData, setStockData] = useState(null);
   const [groupBy, setGroupBy] = useState("week");
@@ -63,7 +63,6 @@ const FinanceSmallReports = ({ api }) => {
     return <CircularProgress />;
   }
 
-  // Processamento dos dados de Sales
   const resolvedSales = salesData.data.filter(
     (item) => item.status === "Resolvido"
   );
@@ -88,7 +87,6 @@ const FinanceSmallReports = ({ api }) => {
   const labelsAll = Object.keys(processedAllData).sort();
   const valuesAll = labelsAll.map((date) => processedAllData[date]);
 
-  // Processamento dos dados de StockEntry
   const resolvedStockEntries = stockData.data.filter(
     (item) => item.status === "Resolvido"
   );
@@ -116,8 +114,18 @@ const FinanceSmallReports = ({ api }) => {
   );
 
   return (
-    <Grid2 container direction="row" spacing={1}>
-      <Grid2 item>
+    <Grid2
+      sx={{
+        ml: 2,
+        border: `1px solid ${mainColor}`,
+        borderRadius: 2,
+        width: "98%",
+      }}
+    >
+      <Grid2 sx={{ m: 2 }} container direction="row">
+        <Typography id="title" sx={{ fontSize: "2vw", mr: "1vw" }}>
+          Relatórios
+        </Typography>
         <FormControl>
           <InputLabel>Período</InputLabel>
           <Select
@@ -131,119 +139,120 @@ const FinanceSmallReports = ({ api }) => {
           </Select>
         </FormControl>
       </Grid2>
+      <Grid2 container direction="row" spacing={3} sx={{ pb: 2 }}>
+        <Grid2 item>
+          <LineChart
+            xAxis={[
+              {
+                data: labelsAll,
+                scaleType: "point",
+              },
+            ]}
+            series={[
+              {
+                data: valuesAll,
+                label: "Vendas Criadas",
+                color: "#1976d2",
+              },
+            ]}
+            width={350}
+            height={200}
+          />
+          <Typography sx={{ fontWeight: "bold" }} align="center">
+            Total: R$ {totalPriceAllSales.toFixed(2)}
+          </Typography>
+        </Grid2>
 
-      <Grid2 item>
-        <LineChart
-          xAxis={[
-            {
-              data: labelsAll,
-              scaleType: "point",
-            },
-          ]}
-          series={[
-            {
-              data: valuesAll,
-              label: "Vendas Criadas",
-              color: "#1976d2",
-            },
-          ]}
-          width={350}
-          height={200}
-        />
-        <Typography sx={{ fontWeight: "bold" }} align="center">
-          Total: R$ {totalPriceAllSales.toFixed(2)}
-        </Typography>
-      </Grid2>
+        <Grid2 item>
+          <LineChart
+            xAxis={[
+              {
+                data: labelsResolved,
+                scaleType: "point",
+              },
+            ]}
+            series={[
+              {
+                data: valuesResolved,
+                label: "Vendas Resolvidas",
+                color: "#4caf50",
+              },
+            ]}
+            width={350}
+            height={200}
+          />
+          <Typography sx={{ fontWeight: "bold" }} align="center">
+            Total: R$ {totalPriceResolvedSales.toFixed(2)}
+          </Typography>
+        </Grid2>
 
-      <Grid2 item>
-        <LineChart
-          xAxis={[
-            {
-              data: labelsResolved,
-              scaleType: "point",
-            },
-          ]}
-          series={[
-            {
-              data: valuesResolved,
-              label: "Vendas Resolvidas",
-              color: "#4caf50",
-            },
-          ]}
-          width={350}
-          height={200}
-        />
-        <Typography sx={{ fontWeight: "bold" }} align="center">
-          Total: R$ {totalPriceResolvedSales.toFixed(2)}
-        </Typography>
-      </Grid2>
+        <Grid2 item>
+          <LineChart
+            xAxis={[
+              {
+                data: labelsAllStock,
+                scaleType: "point",
+              },
+            ]}
+            series={[
+              {
+                data: valuesAllStock,
+                label: "Entradas de Estoque",
+                color: "#ff9800",
+              },
+            ]}
+            width={350}
+            height={200}
+          />
+          <Typography sx={{ fontWeight: "bold" }} align="center">
+            Total: R$ {totalAllStockEntries.toFixed(2)}
+          </Typography>
+        </Grid2>
 
-      <Grid2 item>
-        <LineChart
-          xAxis={[
-            {
-              data: labelsAllStock,
-              scaleType: "point",
-            },
-          ]}
-          series={[
-            {
-              data: valuesAllStock,
-              label: "Entradas de Estoque",
-              color: "#ff9800",
-            },
-          ]}
-          width={350}
-          height={200}
-        />
-        <Typography sx={{ fontWeight: "bold" }} align="center">
-          Total: R$ {totalAllStockEntries.toFixed(2)}
-        </Typography>
-      </Grid2>
-
-      <Grid2 item>
-        <LineChart
-          xAxis={[
-            {
-              data: labelsResolvedStock,
-              scaleType: "point",
-            },
-          ]}
-          series={[
-            {
-              data: valuesResolvedStock,
-              label: "Entradas de Estoque Resolvidas",
-              color: "#9c27b0",
-            },
-          ]}
-          width={350}
-          height={200}
-        />
-        <Typography sx={{ fontWeight: "bold" }} align="center">
-          Total: R$ {totalResolvedStockEntries.toFixed(2)}
-        </Typography>
-      </Grid2>
-      <Grid2 item>
-        <LineChart
-          xAxis={[
-            {
-              data: labelsResolvedStock,
-              scaleType: "point",
-            },
-          ]}
-          series={[
-            {
-              data: valuesResolvedStock,
-              label: "Entradas de Estoque Resolvidas",
-              color: "#9c27b0",
-            },
-          ]}
-          width={350}
-          height={200}
-        />
-        <Typography sx={{ fontWeight: "bold" }} align="center">
-          Total: R$ {totalResolvedStockEntries.toFixed(2)}
-        </Typography>
+        <Grid2 item>
+          <LineChart
+            xAxis={[
+              {
+                data: labelsResolvedStock,
+                scaleType: "point",
+              },
+            ]}
+            series={[
+              {
+                data: valuesResolvedStock,
+                label: "Entradas de Estoque Resolvidas",
+                color: "#9c27b0",
+              },
+            ]}
+            width={350}
+            height={200}
+          />
+          <Typography sx={{ fontWeight: "bold" }} align="center">
+            Total: R$ {totalResolvedStockEntries.toFixed(2)}
+          </Typography>
+        </Grid2>
+        <Grid2 item>
+          <LineChart
+            xAxis={[
+              {
+                data: labelsResolvedStock,
+                scaleType: "point",
+              },
+            ]}
+            series={[
+              {
+                data: valuesResolvedStock,
+                label: "Entradas de Estoque Resolvidas",
+                color: "#9c27b0",
+              },
+            ]}
+            width={350}
+            height={200}
+          />
+          <Typography sx={{ fontWeight: "bold" }} align="center">
+            Total: R$ {totalResolvedStockEntries.toFixed(2)}
+          </Typography>
+        </Grid2>
       </Grid2>
     </Grid2>
   );
