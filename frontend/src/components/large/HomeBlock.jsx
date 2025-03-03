@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import { optionsMainblocks } from "../../options/homeOptions";
+import { icons } from "../../icons";
 
 const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
   const uniqueAllowedLinks = [...new Set(allowedLinks)];
@@ -177,68 +178,66 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
 
           if (layout === "Nuvem") {
             return (
-              <Grid2 item key={index} sx={{ p: 2, mt: 5 }}>
-                <Link to={option.link} style={{ textDecoration: "none" }}>
-                  <Paper
-                    onMouseEnter={() => setHoveredIndexMainblocks(index)}
-                    onMouseLeave={() => setHoveredIndexMainblocks(null)}
+              <Grid2
+                item
+                key={index}
+                sx={{
+                  position: "relative",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  transition: "transform 0.2s ease-in-out",
+
+                  transform:
+                    hoveredIndexMainblocks === index
+                      ? "scale(1.1)"
+                      : "scale(1)",
+                }}
+              >
+                <icons.CloudIcon
+                  sx={{
+                    height: "13vw",
+                    width: "22vw",
+                    m: -3,
+                    color:
+                      hoveredIndexMainblocks === index && configData
+                        ? configData.mainColor
+                        : `${configData.mainColor}B3`,
+                    transition: "color 0.3s ease-in-out",
+                  }}
+                />
+
+                <Link
+                  to={option.link}
+                  style={{
+                    textDecoration: "none",
+                    position: "absolute",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={() => setHoveredIndexMainblocks(index)}
+                  onMouseLeave={() => setHoveredIndexMainblocks(null)}
+                >
+                  {React.cloneElement(option.icon, {
+                    style: {
+                      fontSize: "2vw",
+                      color: "black",
+                      transition: "color 0.3s ease-in-out",
+                    },
+                  })}
+                  <Typography
                     sx={{
-                      height: 25 * factor,
-                      width: 80 * factor,
-                      transition: "transform 0.3s ease-in-out",
-                      backgroundColor:
-                        hoveredIndexMainblocks === index && configData
-                          ? configData.mainColor
-                          : "#f0f8ff",
-                      color: hoveredIndexMainblocks === index ? "white" : "",
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      position: "relative",
-                      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-                      transform:
-                        hoveredIndexMainblocks === index
-                          ? "scale(1.2)"
-                          : "scale(1)",
-                      "::before": {
-                        content: "''",
-                        position: "absolute",
-                        width: "60%",
-                        height: "60%",
-                        backgroundColor: "inherit",
-                        borderRadius: "50%",
-                        top: "-40%",
-                        left: "10%",
-                      },
-                      "::after": {
-                        content: "''",
-                        position: "absolute",
-                        width: "50%",
-                        height: "50%",
-                        backgroundColor: "inherit",
-                        borderRadius: "50%",
-                        top: "-20%",
-                        right: "10%",
-                      },
+                      fontSize: "1vw",
+                      fontWeight: "bold",
+                      mt: 1,
+                      color: "black",
+                      transition: "color 0.3s ease-in-out",
                     }}
                   >
-                    {React.cloneElement(option.icon, {
-                      style: {
-                        fontSize: "2vw",
-                      },
-                    })}
-                    <Typography
-                      style={{
-                        marginLeft: factor,
-                        fontSize: 14 + factor,
-                        fontWeight: "bold",
-                        color: hoveredIndexMainblocks === index ? "white" : "",
-                      }}
-                    >
-                      {option.text}
-                    </Typography>
-                  </Paper>
+                    {option.text}
+                  </Typography>
                 </Link>
               </Grid2>
             );
