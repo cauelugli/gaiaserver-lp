@@ -59,7 +59,6 @@ const HomeSideBar = ({
         justifyContent="space-around"
         alignItems="center"
         sx={{
-          backgroundColor: "#f8f8ff",
           border: "1px solid #e7e7ee",
           borderRadius: 3,
           width: 320,
@@ -72,15 +71,13 @@ const HomeSideBar = ({
             mt: -1,
             fontSize: 16,
             fontWeight: "bold",
-            color: "#555",
-            fontFamily: "Verdana, sans-serif",
           }}
         >
           Calendário
         </Typography>
         <IconButton
           onClick={() => setOpenCalendar(!openCalendar)}
-          sx={{ mb: 1, color: "black" }}
+          sx={{ mb: 1 }}
         >
           {openCalendar ? <icons.ExpandLessIcon /> : <icons.ExpandMoreIcon />}
         </IconButton>
@@ -92,10 +89,6 @@ const HomeSideBar = ({
                 onChange={(newDay) => setSelectedDay(newDay)}
                 views={["day", "month"]}
                 sx={{
-                  bgcolor: "#f8f8ff",
-                  color: "black",
-                  "& .MuiTypography-root": { color: "black" },
-                  "& .MuiPickersDay-root": { color: "black" },
                   borderRadius: 2,
                   boxShadow: 1,
                 }}

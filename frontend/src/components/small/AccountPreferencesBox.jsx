@@ -103,7 +103,7 @@ const AccountPreferencesBox = (props) => {
               />
             }
           />
-          <Typography sx={{ mt: 2 }}>Tom do Plano de Fundo</Typography>
+          <Typography sx={{ mt: 2 }}>Tom de Fundo</Typography>
           <Grid2 container spacing={1} sx={{ mt: 0.5 }}>
             {availableColors.map((color) => (
               <Grid2 item key={color}>

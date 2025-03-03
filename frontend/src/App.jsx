@@ -217,14 +217,15 @@ export default function App() {
     };
   }, []);
 
+  console.log(userPreferences.paletteColor);
+
   return (
     <AppDataProvider>
       <ThemeProvider theme={theme}>
         <Grid2
-          className="noHoverBackground"
           sx={{
             m: -1,
-            backgroundColor: userPreferences.darkMode ? "#302c34" : "none",
+            backgroundColor: userPreferences.paletteColor,
           }}
         >
           <Router>

@@ -22,7 +22,6 @@ const AgendaEventBar = (props) => {
           mt: -1,
           px: 0.5,
           py: 0.25,
-          color: "black",
         }}
       >
         {props.day}
@@ -33,7 +32,6 @@ const AgendaEventBar = (props) => {
           mt: -1,
           fontSize: 16,
           fontWeight: "bold",
-          color: "#555",
         }}
       >
         Atividades do Dia
@@ -41,7 +39,7 @@ const AgendaEventBar = (props) => {
 
       <IconButton
         onClick={() => props.setOpen(!props.open)}
-        sx={{ mb: 1, color: "black" }}
+        sx={{ mb: 1 }}
       >
         {props.open ? <icons.ExpandLessIcon /> : <icons.ExpandMoreIcon />}
       </IconButton>

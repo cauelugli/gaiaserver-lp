@@ -52,7 +52,6 @@ const DayEvents = (props) => {
     <Grid2
       sx={{
         height: open ? (filteredItems.length > 0 ? 250 : 115) : 45,
-        backgroundColor: "#f8f8ff",
         border: "1px solid #e7e7ee",
         borderRadius: 3,
         my: 1,
@@ -79,7 +78,7 @@ const DayEvents = (props) => {
         <Typography
           variant="body2"
           color="textSecondary"
-          sx={{ m: 2, color: "black" }}
+          sx={{ m: 2 }}
         >
           {open && "Nenhum serviço agendado para você nesta data"}
         </Typography>

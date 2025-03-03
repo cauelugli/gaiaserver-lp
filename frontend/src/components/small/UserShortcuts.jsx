@@ -76,7 +76,6 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
         height: open
           ? shortcuts.filter((shortcut) => shortcut.isActive).length * 50 + 120
           : 45,
-        backgroundColor: "#f8f8ff",
         border: "1px solid #e7e7ee",
         borderRadius: 3,
         width: 320,
@@ -96,14 +95,13 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
               mt: -1,
               fontSize: 16,
               fontWeight: "bold",
-              color: "#555",
             }}
           >
             Atalhos
           </Typography>
           <IconButton
             onClick={() => setOpen(!open)}
-            sx={{ mb: 1, color: "black" }}
+            sx={{ mb: 1 }}
           >
             {open ? <icons.ExpandLessIcon /> : <icons.ExpandMoreIcon />}
           </IconButton>
