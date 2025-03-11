@@ -13,7 +13,7 @@ function TableHeader(props) {
       }}
     >
       {props && props.tableColumns
-        ? props.tableColumns[props.itemIndex].map((headCell, cellIndex) => (
+        ? props.tableColumns[props.itemIndex]?.map((headCell, cellIndex) => (
             <TableCell
               key={cellIndex}
               align={cellIndex === 0 ? "" : "left"}
