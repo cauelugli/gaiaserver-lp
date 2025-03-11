@@ -336,7 +336,16 @@ export default function PageModel(props) {
               setTableFilters={setTableFilters}
               mainColor={props.configCustomization.mainColor}
               page={props.item.page}
-              tabIndex={value}
+              // tabIndex={value}
+              tabIndex={
+                props.item.page === "customers" &&
+                !configTables.customerCustomer
+                  ? value + 1
+                  : props.item.page === "requests" &&
+                    !configTables.requestJob
+                  ? value + 1
+                  : value
+              }
             />
           }
           <Grid2 sx={{ my: "auto", ml: "auto" }}>
