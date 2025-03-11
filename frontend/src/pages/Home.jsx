@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 
-import { Grid2 } from "@mui/material";
+import { Divider, Grid2 } from "@mui/material";
 
 import HomeBlock from "../components/large/HomeBlock";
 import HomeSideBar from "../components/large/HomeSideBar";
@@ -64,8 +64,9 @@ const Home = ({
             </Grid2>
           )}
       </Grid2>
-      <Grid2 container sx={{ height: "15vw", mt: 3 }}>
-        <FinanceSmallReports api={api} mainColor={mainColor}/>
+      <Divider sx={{ m: 1, mt: 2, borderColor: mainColor }} />
+      <Grid2 container sx={{ height: "15vw", mt: 1 }}>
+        <FinanceSmallReports api={api} mainColor={mainColor} />
       </Grid2>
     </>
   );
