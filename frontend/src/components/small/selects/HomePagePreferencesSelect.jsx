@@ -27,7 +27,7 @@ const HomePagePreferencesSelect = (props) => {
 
   return (
     <>
-      <FormLabel>Barra Lateral</FormLabel>
+      <FormLabel>Calendário</FormLabel>
       <Select
         size="small"
         fullWidth

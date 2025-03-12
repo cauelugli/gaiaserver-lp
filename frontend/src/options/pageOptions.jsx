@@ -260,7 +260,7 @@ const pageOptions = [
         },
         {
           id: "type",
-          label: "Tipo de Serviço",
+          label: "Tipo",
         },
         {
           id: "department",
@@ -279,7 +279,7 @@ const pageOptions = [
       [
         {
           id: "name",
-          label: "Nome do Plano",
+          label: "Nome",
         },
         {
           id: "period",
