@@ -13,8 +13,9 @@ import {
   Button,
 } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
+import { getChartItems } from "../../options/chartOptions";
 
-const FinanceSmallReports = ({ api, mainColor }) => {
+const ChartReports = ({ api, mainColor }) => {
   const [salesData, setSalesData] = useState(null);
   const [stockData, setStockData] = useState(null);
   const [groupBy, setGroupBy] = useState("week");
@@ -42,120 +43,11 @@ const FinanceSmallReports = ({ api, mainColor }) => {
     fetchSalesData();
   }, [api]);
 
-  const processData = (data, groupBy) => {
-    const counts = {};
-
-    data.forEach((item) => {
-      const date = new Date(item.createdAt);
-      let key;
-
-      if (groupBy === "day") {
-        key = date.toISOString().split("T")[0];
-      } else if (groupBy === "week") {
-        const weekStart = new Date(date);
-        weekStart.setDate(date.getDate() - date.getDay());
-        key = weekStart.toISOString().split("T")[0];
-      } else if (groupBy === "month") {
-        key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-          2,
-          "0"
-        )}`;
-      }
-
-      counts[key] = (counts[key] || 0) + 1;
-    });
-
-    return counts;
-  };
-
   if (!salesData || !salesData.data || !stockData || !stockData.data) {
     return <CircularProgress />;
   }
 
-  const resolvedSales = salesData.data.filter(
-    (item) => item.status === "Resolvido"
-  );
-  const allSales = salesData.data;
-  const totalPriceAllSales = allSales.reduce(
-    (total, item) => total + item.price,
-    0
-  );
-  const totalPriceResolvedSales = resolvedSales.reduce(
-    (total, item) => total + item.price,
-    0
-  );
-
-  const processedResolvedData = processData(resolvedSales, groupBy);
-  const processedAllData = processData(allSales, groupBy);
-
-  const labelsResolved = Object.keys(processedResolvedData).sort();
-  const valuesResolved = labelsResolved.map(
-    (date) => processedResolvedData[date]
-  );
-
-  const labelsAll = Object.keys(processedAllData).sort();
-  const valuesAll = labelsAll.map((date) => processedAllData[date]);
-
-  const resolvedStockEntries = stockData.data.filter(
-    (item) => item.status === "Resolvido"
-  );
-  const allStockEntries = stockData.data;
-  const totalResolvedStockEntries = resolvedStockEntries.reduce(
-    (total, item) => total + item.price,
-    0
-  );
-  const totalAllStockEntries = allStockEntries.reduce(
-    (total, item) => total + item.price,
-    0
-  );
-
-  const processedResolvedStockData = processData(resolvedStockEntries, groupBy);
-  const processedAllStockData = processData(allStockEntries, groupBy);
-
-  const labelsResolvedStock = Object.keys(processedResolvedStockData).sort();
-  const valuesResolvedStock = labelsResolvedStock.map(
-    (date) => processedResolvedStockData[date]
-  );
-
-  const labelsAllStock = Object.keys(processedAllStockData).sort();
-  const valuesAllStock = labelsAllStock.map(
-    (date) => processedAllStockData[date]
-  );
-
-  const chartItems = [
-    {
-      id: 0,
-      title: "Vendas Criadas",
-      labels: labelsAll,
-      values: valuesAll,
-      total: totalPriceAllSales,
-      color: "#1976d2",
-    },
-    {
-      id: 1,
-      title: "Vendas Resolvidas",
-      labels: labelsResolved,
-      values: valuesResolved,
-      total: totalPriceResolvedSales,
-      color: "#4caf50",
-    },
-    {
-      id: 2,
-      title: "Entradas de Estoque",
-      labels: labelsAllStock,
-      values: valuesAllStock,
-      total: totalAllStockEntries,
-      color: "#ff9800",
-    },
-    {
-      id: 3,
-      title: "Entradas de Estoque Resolvidas",
-      labels: labelsResolvedStock,
-      values: valuesResolvedStock,
-      total: totalResolvedStockEntries,
-      color: "#9c27b0",
-    },
-  ];
+  const chartItems = getChartItems(salesData, stockData, groupBy);
 
   return (
     <Grid2 sx={{ width: "98%" }}>
@@ -186,13 +78,29 @@ const FinanceSmallReports = ({ api, mainColor }) => {
           </Button>
         )}
       </Grid2>
+
       <Grid2
         container
         direction="row"
-        justifyContent="center"
+        justifyContent={isChartFocused ? "space-evenly" : "center"}
         spacing={4}
         sx={{ pb: 2 }}
       >
+        {isChartFocused && (
+          <Grid2 container sx={{ mt: 1, width: "10vw" }}>
+            {chartItems.map((item, index) => (
+              <Button
+                size="small"
+                variant="contained"
+                key={index}
+                sx={{ width: "100%", backgroundColor: item.color, my: 1 }}
+                onClick={() => handleHighlightItem(index)}
+              >
+                {item.title}
+              </Button>
+            ))}
+          </Grid2>
+        )}
         {isChartFocused ? (
           <Grid2 container direction="column">
             <Typography
@@ -288,9 +196,10 @@ const FinanceSmallReports = ({ api, mainColor }) => {
             </Grid2>
           ))
         )}
+        {isChartFocused && <Grid2 id="ghost" sx={{ width: "7vw" }} />}
       </Grid2>
     </Grid2>
   );
 };
 
-export default FinanceSmallReports;
+export default ChartReports;

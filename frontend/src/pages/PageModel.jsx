@@ -27,7 +27,7 @@ import ProductsTableButton from "../components/small/buttons/ProductsTableButton
 import { getDataForPage } from "../../../controllers/functions/overallFunctions";
 
 import TableFiltersBar from "../components/large/TableFiltersBar";
-// import FinanceSmallReports from "../components/small/FinanceSmallReports";
+// import ChartReports from "../components/small/ChartReports";
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;

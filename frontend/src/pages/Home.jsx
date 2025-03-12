@@ -5,7 +5,7 @@ import { Divider, Grid2 } from "@mui/material";
 
 import HomeBlock from "../components/large/HomeBlock";
 import HomeSideBar from "../components/large/HomeSideBar";
-import FinanceSmallReports from "../components/small/FinanceSmallReports";
+import ChartReports from "../components/small/ChartReports";
 
 const Home = ({
   api,
@@ -66,7 +66,7 @@ const Home = ({
       </Grid2>
       <Divider sx={{ m: 1, mt: 2, borderColor: mainColor }} />
       <Grid2 container sx={{ height: "15vw", mt: 1 }}>
-        <FinanceSmallReports api={api} mainColor={mainColor} />
+        <ChartReports api={api} mainColor={mainColor} />
       </Grid2>
     </>
   );
