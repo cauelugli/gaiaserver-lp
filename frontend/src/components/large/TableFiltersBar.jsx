@@ -3,10 +3,12 @@
 import React from "react";
 
 import { icons } from "../../icons";
-import { Button } from "@mui/material";
+
+import { getTableFiltersOptions } from "../../options/tableFiltersOptions";
 
 const TableFiltersBar = (props) => {
   const [showFilter, setShowFilter] = React.useState(false);
+  const filterOptions = getTableFiltersOptions(props.page, props.tabIndex);
 
   return (
     <>
@@ -34,9 +36,12 @@ const TableFiltersBar = (props) => {
         />
       )}
 
-      {showFilter && (
-        <Button onClick={() => console.log("props", props)}>oi</Button>
-      )}
+      {showFilter &&
+        Object.entries(filterOptions).map(([key, values]) => (
+          <div key={key}>
+            <strong>{key}</strong>: {values.join(", ")}
+          </div>
+        ))}
     </>
   );
 };
