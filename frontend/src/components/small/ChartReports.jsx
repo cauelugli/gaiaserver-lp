@@ -142,12 +142,6 @@ const ChartReports = ({ api, mainColor }) => {
                     width={1350}
                     height={300}
                   />
-                  <Typography
-                    sx={{ fontWeight: "bold", fontSize: "1.25vw" }}
-                    align="center"
-                  >
-                    Total: R$ {chartItems[selectedChart].total.toFixed(2)}
-                  </Typography>
                 </Grid2>
               </Grid2>
             ) : (
@@ -198,12 +192,10 @@ const ChartReports = ({ api, mainColor }) => {
                           color: item.color,
                         },
                       ]}
+                      onClick={()=>console.log("item",item)}
                       width={350}
                       height={200}
                     />
-                    <Typography sx={{ fontWeight: "bold" }} align="center">
-                      Total: R$ {item.total.toFixed(2)}
-                    </Typography>
                   </Grid2>
                 </Grid2>
               ))
