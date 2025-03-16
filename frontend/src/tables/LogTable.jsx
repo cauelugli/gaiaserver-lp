@@ -191,7 +191,6 @@ function LogTable(props) {
                                           "_id",
                                           "count",
                                           "stockQuantity",
-                                          "usedIn",
                                         ].includes(key)
                                       ) {
                                         acc[key] = item[key];
@@ -260,7 +259,6 @@ function LogTable(props) {
                                           "_id",
                                           "count",
                                           "stockQuantity",
-                                          "usedIn",
                                         ].includes(key)
                                       ) {
                                         acc[key] = item[key];
