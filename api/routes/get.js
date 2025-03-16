@@ -52,16 +52,12 @@ router.get("/dashboard", async (req, res) => {
       let data;
 
       if (modelName === "User") {
-        // Para "User", buscamos apenas o campo 'createdAt'
         data = await model.find({}, { createdAt: 1, _id: 1 });
       } else if (modelName === "Job") {
         data = await model.find(
           {},
           {
             createdAt: 1,
-            customer: 1,
-            number: 1,
-            service: 1,
             status: 1,
             _id: 0,
           }
@@ -71,12 +67,10 @@ router.get("/dashboard", async (req, res) => {
           {},
           {
             createdAt: 1,
-            customer: 1,
-            number: 1,
-            seller: 1,
             status: 1,
-            price: 1,
-            _id: 0,
+            products: 1,
+            customer: 1,
+            _id: 1,
           }
         );
       } else if (modelName === "StockEntry") {
@@ -84,23 +78,19 @@ router.get("/dashboard", async (req, res) => {
           {},
           {
             createdAt: 1,
-            createdBy: 1,
-            number: 1,
             status: 1,
-            price: 1,
-            _id: 0,
+            items: 1,
+            _id: 1,
           }
         );
       }
 
-      // Adiciona os dados ao objeto de resposta
       models.push({
         model: modelName,
         data: data,
       });
     }
 
-    // Retorna os dados no formato esperado pelo frontend
     res.status(200).json(models);
   } catch (err) {
     console.log("\nError fetching core data:", err, "\n");
