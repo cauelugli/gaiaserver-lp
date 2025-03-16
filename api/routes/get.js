@@ -70,6 +70,14 @@ router.get("/dashboard", async (req, res) => {
             status: 1,
             products: 1,
             customer: 1,
+            seller: 1,
+            deliveryScheduledTo: 1,
+            deliveryAddress: 1,
+            createdBy: 1,
+            createdAt: 1,
+            resolvedBy: 1,
+            resolvedAt: 1,
+            number: 1,
             _id: 1,
           }
         );
