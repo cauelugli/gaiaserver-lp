@@ -1,17 +1,24 @@
 // chartOptions.jsx
+// chartOptions.jsx
 export const processData = (data, groupBy) => {
-  const counts = {};
+  const groupedData = {};
 
   data.forEach((item) => {
     const date = new Date(item.createdAt);
     let key;
 
     if (groupBy === "day") {
-      key = date.toISOString().split("T")[0];
+      // Formatar a data como YYYY-MM-DD
+      key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+        2,
+        "0"
+      )}-${String(date.getDate()).padStart(2, "0")}`;
     } else if (groupBy === "week") {
       const weekStart = new Date(date);
       weekStart.setDate(date.getDate() - date.getDay());
-      key = weekStart.toISOString().split("T")[0];
+      key = `${weekStart.getFullYear()}-${String(
+        weekStart.getMonth() + 1
+      ).padStart(2, "0")}-${String(weekStart.getDate()).padStart(2, "0")}`;
     } else if (groupBy === "month") {
       key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
         2,
@@ -19,10 +26,14 @@ export const processData = (data, groupBy) => {
       )}`;
     }
 
-    counts[key] = (counts[key] || 0) + 1;
+    if (!groupedData[key]) {
+      groupedData[key] = [];
+    }
+
+    groupedData[key].push(item); // Alterado para adicionar o objeto completo
   });
 
-  return counts;
+  return groupedData;
 };
 
 export const getChartItems = (salesData, stockData, groupBy) => {
@@ -30,14 +41,6 @@ export const getChartItems = (salesData, stockData, groupBy) => {
     (item) => item.status === "Resolvido"
   );
   const allSales = salesData.data;
-  const totalPriceAllSales = allSales.reduce(
-    (total, item) => total + item.price,
-    0
-  );
-  const totalPriceResolvedSales = resolvedSales.reduce(
-    (total, item) => total + item.price,
-    0
-  );
 
   const processedResolvedData = processData(resolvedSales, groupBy);
   const processedAllData = processData(allSales, groupBy);
@@ -54,14 +57,6 @@ export const getChartItems = (salesData, stockData, groupBy) => {
     (item) => item.status === "Resolvido"
   );
   const allStockEntries = stockData.data;
-  const totalResolvedStockEntries = resolvedStockEntries.reduce(
-    (total, item) => total + item.price,
-    0
-  );
-  const totalAllStockEntries = allStockEntries.reduce(
-    (total, item) => total + item.price,
-    0
-  );
 
   const processedResolvedStockData = processData(resolvedStockEntries, groupBy);
   const processedAllStockData = processData(allStockEntries, groupBy);
@@ -82,7 +77,7 @@ export const getChartItems = (salesData, stockData, groupBy) => {
       title: "Vendas Criadas",
       labels: labelsAll,
       values: valuesAll,
-      total: totalPriceAllSales,
+      length: valuesAll.map((value) => value.length),
       color: "#1976d2",
     },
     {
@@ -90,7 +85,7 @@ export const getChartItems = (salesData, stockData, groupBy) => {
       title: "Vendas Resolvidas",
       labels: labelsResolved,
       values: valuesResolved,
-      total: totalPriceResolvedSales,
+      length: valuesResolved.map((value) => value.length),
       color: "#4caf50",
     },
     {
@@ -98,7 +93,7 @@ export const getChartItems = (salesData, stockData, groupBy) => {
       title: "Entradas de Estoque",
       labels: labelsAllStock,
       values: valuesAllStock,
-      total: totalAllStockEntries,
+      length: valuesAllStock.map((value) => value.length),
       color: "#ff9800",
     },
     {
@@ -106,7 +101,7 @@ export const getChartItems = (salesData, stockData, groupBy) => {
       title: "Entradas de Estoque Resolvidas",
       labels: labelsResolvedStock,
       values: valuesResolvedStock,
-      total: totalResolvedStockEntries,
+      length: valuesResolvedStock.map((value) => value.length),
       color: "#9c27b0",
     },
   ];

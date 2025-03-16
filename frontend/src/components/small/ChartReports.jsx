@@ -11,10 +11,12 @@ import {
   Grid2,
   Box,
   Button,
+  Popper,
 } from "@mui/material";
 import { icons } from "../../icons";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { getChartItems } from "../../options/chartOptions";
+import ChartDataDetail from "./ChartDataDetail";
 
 const ChartReports = ({ api, mainColor }) => {
   const [salesData, setSalesData] = useState(null);
@@ -23,6 +25,9 @@ const ChartReports = ({ api, mainColor }) => {
   const [selectedChart, setSelectedChart] = useState(0);
   const [isChartFocused, setIsChartFocused] = useState(false);
   const [displayChart, setDisplayChart] = useState(true);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [highlightedIndex, setHighlightedIndex] = useState(null);
+  const [popoverData, setPopoverData] = useState("");
 
   const handleHighlightItem = (item) => {
     setSelectedChart(item);
@@ -30,7 +35,7 @@ const ChartReports = ({ api, mainColor }) => {
   };
 
   useEffect(() => {
-    const fetchSalesData = async () => {
+    const fetchData = async () => {
       try {
         const response = await api.get("/get/dashboard");
         const sales = response.data.find((item) => item.model === "Sale");
@@ -38,11 +43,11 @@ const ChartReports = ({ api, mainColor }) => {
         setSalesData(sales);
         setStockData(stock);
       } catch (err) {
-        console.error("Erro ao buscar dados de vendas:", err);
+        console.error("Erro ao buscar dados");
       }
     };
 
-    fetchSalesData();
+    fetchData();
   }, [api]);
 
   if (!salesData || !salesData.data || !stockData || !stockData.data) {
@@ -50,6 +55,32 @@ const ChartReports = ({ api, mainColor }) => {
   }
 
   const chartItems = getChartItems(salesData, stockData, groupBy);
+
+  const handleChartClick = (item, index) => (e) => {
+    const chartRect = e.target.getBoundingClientRect();
+    const clickX = e.clientX - chartRect.left;
+    const clickIndex = Math.floor(
+      (clickX / chartRect.width) * item.labels.length
+    );
+
+    if (clickIndex >= 0 && clickIndex < item.labels.length) {
+      const selectedDate = item.labels[clickIndex];
+      const selectedValues = item.values[clickIndex] || [];
+
+      setPopoverData({ date: selectedDate, data: selectedValues });
+      setAnchorEl(e.currentTarget);
+      setHighlightedIndex(index);
+    } else {
+      setAnchorEl(null);
+      setHighlightedIndex(null);
+    }
+  };
+
+  const handleCloseChartClick = () => {
+    setPopoverData(null);
+    setAnchorEl(null);
+    setHighlightedIndex(null);
+  };
 
   return (
     <Grid2 sx={{ width: "98%" }}>
@@ -180,22 +211,26 @@ const ChartReports = ({ api, mainColor }) => {
                   </Box>
                   <Grid2 sx={{ my: -5 }}>
                     <LineChart
-                      xAxis={[
-                        {
-                          data: item.labels,
-                          scaleType: "point",
-                        },
-                      ]}
-                      series={[
-                        {
-                          data: item.values,
-                          color: item.color,
-                        },
-                      ]}
-                      onClick={()=>console.log("item",item)}
+                      xAxis={[{ data: item.labels, scaleType: "point" }]}
+                      series={[{ data: item.length, color: item.color }]}
+                      onClick={handleChartClick(item, index)}
                       width={350}
                       height={200}
                     />
+                    {highlightedIndex === index && (
+                      <Popper
+                        open={Boolean(anchorEl && highlightedIndex === index)}
+                        anchorEl={anchorEl} 
+                        placement="right"
+                      >
+                        <ChartDataDetail
+                          title={item.title}
+                          popoverData={popoverData}
+                          handleCloseChartClick={handleCloseChartClick}
+                          mainColor={mainColor}
+                        />
+                      </Popper>
+                    )}
                   </Grid2>
                 </Grid2>
               ))
