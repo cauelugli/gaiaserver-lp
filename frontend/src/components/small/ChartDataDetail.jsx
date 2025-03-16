@@ -187,21 +187,25 @@ const ChartDataDetail = ({
                   <Typography sx={{ my: "auto" }}>
                     R$
                     {item.products
-                      .reduce((acc, product) => {
-                        const value = product.sellValue || 0;
-                        return acc + (product.count || 1) * value;
-                      }, 0)
-                      .toFixed(2)}
+                      ? item.products
+                          .reduce((acc, product) => {
+                            const value = product.sellValue || 0;
+                            return acc + (product.count || 1) * value;
+                          }, 0)
+                          .toFixed(2)
+                      : "0.00"}
                   </Typography>
                 ) : (
                   <Typography sx={{ my: "auto" }}>
                     R$
                     {item.items
-                      .reduce((acc, item) => {
-                        const value = item.buyValue || 0;
-                        return acc + (item.count || 1) * value;
-                      }, 0)
-                      .toFixed(2)}
+                      ? item.items
+                          .reduce((acc, item) => {
+                            const value = item.buyValue || 0;
+                            return acc + (item.count || 1) * value;
+                          }, 0)
+                          .toFixed(2)
+                      : "0.00"}
                   </Typography>
                 )}
               </Grid2>

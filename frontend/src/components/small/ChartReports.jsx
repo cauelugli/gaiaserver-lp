@@ -156,6 +156,7 @@ const ChartReports = ({ api, mainColor }) => {
                 >
                   {chartItems[selectedChart].title}
                 </Typography>
+
                 <Grid2 sx={{ my: -5 }}>
                   <LineChart
                     xAxis={[
@@ -166,13 +167,28 @@ const ChartReports = ({ api, mainColor }) => {
                     ]}
                     series={[
                       {
-                        data: chartItems[selectedChart].values,
+                        data: chartItems[selectedChart].length,
                         color: chartItems[selectedChart].color,
                       },
                     ]}
+                    onClick={handleChartClick(chartItems[selectedChart], 999)}
                     width={1350}
                     height={300}
                   />
+                  {highlightedIndex === 999 && (
+                    <Popper
+                      open={Boolean(anchorEl && highlightedIndex === 999)}
+                      anchorEl={anchorEl}
+                      // placement=""
+                    >
+                      <ChartDataDetail
+                        title={chartItems[selectedChart].title}
+                        popoverData={popoverData}
+                        handleCloseChartClick={handleCloseChartClick}
+                        mainColor={mainColor}
+                      />
+                    </Popper>
+                  )}
                 </Grid2>
               </Grid2>
             ) : (
@@ -220,7 +236,7 @@ const ChartReports = ({ api, mainColor }) => {
                     {highlightedIndex === index && (
                       <Popper
                         open={Boolean(anchorEl && highlightedIndex === index)}
-                        anchorEl={anchorEl} 
+                        anchorEl={anchorEl}
                         placement="right"
                       >
                         <ChartDataDetail

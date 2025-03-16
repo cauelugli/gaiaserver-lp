@@ -91,6 +91,7 @@ router.get("/dashboard", async (req, res) => {
             createdAt: 1,
             resolvedBy: 1,
             resolvedAt: 1,
+            number: 1,
             _id: 1,
           }
         );
