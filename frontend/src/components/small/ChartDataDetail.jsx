@@ -124,46 +124,82 @@ const ChartDataDetail = ({
                     />
                   </Tooltip>
                 ) : (
-                  ""
+                  <Tooltip title={"Entrada de Estoque"}>
+                    <icons.WarehouseIcon />
+                  </Tooltip>
                 )}
 
                 <Grid2 container direction="row" alignItems="center">
-                  {item.products?.map((product, index) => (
-                    <Grid2 key={index} item>
-                      <Tooltip
-                        title={
-                          <>
-                            <Typography sx={{ color: "white" }}>
-                              {product.name}
-                            </Typography>
-                            <Typography sx={{ color: "white" }}>
-                              {product.count} x {product.sellValue}
-                            </Typography>
-                          </>
-                        }
-                      >
-                        <Avatar
-                          alt={product.name || "Product Image"}
-                          src={`http://localhost:3000/static/${
-                            product.images?.[0] || product.image?.[0] || ""
-                          }`}
-                          sx={{ width: 32, height: 32, mr: 0.5 }}
-                        />
-                      </Tooltip>
-                    </Grid2>
-                  ))}
+                  {title.startsWith("Venda")
+                    ? item.products?.map((product, index) => (
+                        <Grid2 key={index} item>
+                          <Tooltip
+                            title={
+                              <>
+                                <Typography sx={{ color: "white" }}>
+                                  {product.name}
+                                </Typography>
+                                <Typography sx={{ color: "white" }}>
+                                  {product.count} x {product.sellValue}
+                                </Typography>
+                              </>
+                            }
+                          >
+                            <Avatar
+                              alt={product.name || "Product Image"}
+                              src={`http://localhost:3000/static/${
+                                product.images?.[0] || product.image?.[0] || ""
+                              }`}
+                              sx={{ width: 32, height: 32, mr: 0.5 }}
+                            />
+                          </Tooltip>
+                        </Grid2>
+                      ))
+                    : item.items?.map((item, index) => (
+                        <Grid2 key={index} item>
+                          <Tooltip
+                            title={
+                              <>
+                                <Typography sx={{ color: "white" }}>
+                                  {item.name}
+                                </Typography>
+                                <Typography sx={{ color: "white" }}>
+                                  {item.count} x {item.buyValue}
+                                </Typography>
+                              </>
+                            }
+                          >
+                            <Avatar
+                              alt={item.name || "Product Image"}
+                              src={`http://localhost:3000/static/${
+                                item.images?.[0] || item.image?.[0] || ""
+                              }`}
+                              sx={{ width: 32, height: 32, mr: 0.5 }}
+                            />
+                          </Tooltip>
+                        </Grid2>
+                      ))}
                 </Grid2>
 
                 {hoveredIndex === index ? (
                   <icons.VisibilityIcon />
-                ) : (
+                ) : title.startsWith("Venda") ? (
                   <Typography sx={{ my: "auto" }}>
                     R$
                     {item.products
                       .reduce((acc, product) => {
-                        const value =
-                          product.sellValue || product.buyValue || 0;
+                        const value = product.sellValue || 0;
                         return acc + (product.count || 1) * value;
+                      }, 0)
+                      .toFixed(2)}
+                  </Typography>
+                ) : (
+                  <Typography sx={{ my: "auto" }}>
+                    R$
+                    {item.items
+                      .reduce((acc, item) => {
+                        const value = item.buyValue || 0;
+                        return acc + (item.count || 1) * value;
                       }, 0)
                       .toFixed(2)}
                   </Typography>
@@ -173,21 +209,39 @@ const ChartDataDetail = ({
           ))}
         </Grid2>
 
-        <Typography
-          align="right"
-          sx={{ pt: 3, fontWeight: "bold", fontSize: "1.1vw" }}
-        >
-          Total do Dia: R$
-          {popoverData?.data
-            .reduce((total, item) => {
-              const itemTotal = item.products.reduce((acc, product) => {
-                const value = product.sellValue || product.buyValue || 0;
-                return acc + (product.count || 1) * value;
-              }, 0);
-              return total + itemTotal;
-            }, 0)
-            .toFixed(2)}
-        </Typography>
+        {title.startsWith("Venda") ? (
+          <Typography
+            align="right"
+            sx={{ pt: 3, fontWeight: "bold", fontSize: "1.1vw" }}
+          >
+            Total do Dia: R$
+            {popoverData?.data
+              .reduce((total, item) => {
+                const itemTotal = item.products.reduce((acc, product) => {
+                  const value = product.sellValue || product.buyValue || 0;
+                  return acc + (product.count || 1) * value;
+                }, 0);
+                return total + itemTotal;
+              }, 0)
+              .toFixed(2)}
+          </Typography>
+        ) : (
+          <Typography
+            align="right"
+            sx={{ pt: 3, fontWeight: "bold", fontSize: "1.1vw" }}
+          >
+            Total do Dia: R$
+            {popoverData?.data
+              .reduce((total, item) => {
+                const itemTotal = item.items.reduce((acc, product) => {
+                  const value = product.sellValue || product.sellValue || 0;
+                  return acc + (product.count || 1) * value;
+                }, 0);
+                return total + itemTotal;
+              }, 0)
+              .toFixed(2)}
+          </Typography>
+        )}
       </Grid2>
 
       <Popper
@@ -201,6 +255,7 @@ const ChartDataDetail = ({
           mainColor={mainColor}
           idIndexList={idIndexList}
           handleCloseItemPopper={handleCloseItemPopper}
+          itemType={title.startsWith("Venda") === true ? "sale" : "stockEntry"}
         />
       </Popper>
     </Grid2>

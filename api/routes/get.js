@@ -85,9 +85,12 @@ router.get("/dashboard", async (req, res) => {
         data = await model.find(
           {},
           {
-            createdAt: 1,
             status: 1,
             items: 1,
+            createdBy: 1,
+            createdAt: 1,
+            resolvedBy: 1,
+            resolvedAt: 1,
             _id: 1,
           }
         );
