@@ -57,9 +57,21 @@ router.get("/dashboard", async (req, res) => {
         data = await model.find(
           {},
           {
-            createdAt: 1,
             status: 1,
-            _id: 0,
+            customer: 1,
+            service: 1,
+            worker: 1,
+            address: 1,
+            scheduledTo: 1,
+            scheduleTime: 1,
+            createdBy: 1,
+            createdAt: 1,
+            resolvedBy: 1,
+            resolvedAt: 1,
+            products: 1,
+            price: 1,
+            number: 1,
+            _id: 1,
           }
         );
       } else if (modelName === "Sale") {

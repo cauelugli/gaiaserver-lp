@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 // eslint-disable-next-line no-unused-vars
+/* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import {
   CircularProgress,
@@ -12,14 +14,17 @@ import {
   Box,
   Button,
   Popper,
+  Tooltip,
 } from "@mui/material";
 import { icons } from "../../icons";
 import { LineChart } from "@mui/x-charts/LineChart";
+import { BarChart } from "@mui/x-charts/BarChart";
 import { getChartItems } from "../../options/chartOptions";
 import ChartDataDetail from "./ChartDataDetail";
 
 const ChartReports = ({ api, mainColor }) => {
   const [salesData, setSalesData] = useState(null);
+  const [jobsData, setJobsData] = useState(null);
   const [stockData, setStockData] = useState(null);
   const [groupBy, setGroupBy] = useState("week");
   const [selectedChart, setSelectedChart] = useState(0);
@@ -28,6 +33,7 @@ const ChartReports = ({ api, mainColor }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [highlightedIndex, setHighlightedIndex] = useState(null);
   const [popoverData, setPopoverData] = useState("");
+  const [chartType, setChartType] = useState("line"); // Estado para armazenar o tipo de gráfico
 
   const handleHighlightItem = (item) => {
     setSelectedChart(item);
@@ -39,8 +45,10 @@ const ChartReports = ({ api, mainColor }) => {
       try {
         const response = await api.get("/get/dashboard");
         const sales = response.data.find((item) => item.model === "Sale");
+        const jobs = response.data.find((item) => item.model === "Job");
         const stock = response.data.find((item) => item.model === "StockEntry");
         setSalesData(sales);
+        setJobsData(jobs);
         setStockData(stock);
       } catch (err) {
         console.error("Erro ao buscar dados");
@@ -50,11 +58,18 @@ const ChartReports = ({ api, mainColor }) => {
     fetchData();
   }, [api]);
 
-  if (!salesData || !salesData.data || !stockData || !stockData.data) {
+  if (
+    !salesData ||
+    !salesData.data ||
+    !jobsData ||
+    !jobsData.data ||
+    !stockData ||
+    !stockData.data
+  ) {
     return <CircularProgress />;
   }
 
-  const chartItems = getChartItems(salesData, stockData, groupBy);
+  const chartItems = getChartItems(salesData, jobsData, stockData, groupBy);
 
   const handleChartClick = (item, index) => (e) => {
     const chartRect = e.target.getBoundingClientRect();
@@ -87,18 +102,51 @@ const ChartReports = ({ api, mainColor }) => {
       {displayChart ? (
         <>
           <Grid2 sx={{ m: 2 }} container direction="row" alignItems="center">
-            <Typography
-              id="title"
-              sx={{ fontSize: "2vw", mr: "1vw", ml: -1, cursor: "pointer" }}
-              onClick={() => setDisplayChart(!displayChart)}
-            >
-              Relatórios
-            </Typography>
+            <Grid2 item>
+              <Grid2>
+                <Typography
+                  id="title"
+                  sx={{ fontSize: "2vw", mr: "1vw", ml: -1, cursor: "pointer" }}
+                  onClick={() => setDisplayChart(!displayChart)}
+                >
+                  Relatórios
+                </Typography>
+
+                {displayChart && (
+                  <Grid2
+                    container
+                    direction="row"
+                    justifyContent="space-evenly"
+                    sx={{ mt: 1 }}
+                  >
+                    <Tooltip title="Gráfico em Linhas">
+                      <Button
+                        variant={
+                          chartType === "line" ? "contained" : "outlined"
+                        }
+                        onClick={() => setChartType("line")}
+                      >
+                        <icons.ShowChartIcon />
+                      </Button>
+                    </Tooltip>
+                    <Tooltip title="Gráfico em Barras">
+                      <Button
+                        variant={chartType === "bar" ? "contained" : "outlined"}
+                        onClick={() => setChartType("bar")}
+                      >
+                        <icons.BarChartIcon />
+                      </Button>
+                    </Tooltip>
+                  </Grid2>
+                )}
+              </Grid2>
+            </Grid2>
+
             <icons.ExpandLessIcon
               onClick={() => setDisplayChart(!displayChart)}
-              sx={{ cursor: "pointer" }}
+              sx={{ cursor: "pointer", mb: 2 }}
             />
-            <FormControl sx={{ ml: 1 }}>
+            <FormControl sx={{ ml: 2, mb: 2 }}>
               <InputLabel>Período</InputLabel>
               <Select
                 value={groupBy}
@@ -110,6 +158,7 @@ const ChartReports = ({ api, mainColor }) => {
                 <MenuItem value="month">Por Mês</MenuItem>
               </Select>
             </FormControl>
+
             {isChartFocused && (
               <Button
                 sx={{ ml: "auto", height: "auto" }}
@@ -158,34 +207,66 @@ const ChartReports = ({ api, mainColor }) => {
                 </Typography>
 
                 <Grid2 sx={{ my: -5 }}>
-                  <LineChart
-                    xAxis={[
-                      {
-                        data: chartItems[selectedChart].labels,
-                        scaleType: "point",
-                      },
-                    ]}
-                    series={[
-                      {
-                        data: chartItems[selectedChart].length,
-                        color: chartItems[selectedChart].color,
-                      },
-                    ]}
-                    onClick={handleChartClick(chartItems[selectedChart], 999)}
-                    width={1350}
-                    height={300}
-                  />
+                  {chartType === "line" ? (
+                    <LineChart
+                      xAxis={[
+                        {
+                          data: chartItems[selectedChart].labels,
+                          scaleType: "point",
+                        },
+                      ]}
+                      yAxis={[
+                        {
+                          tickMinStep: 1,
+                          min: 0,
+                        },
+                      ]}
+                      series={[
+                        {
+                          data: chartItems[selectedChart].length,
+                          color: chartItems[selectedChart].color,
+                        },
+                      ]}
+                      onClick={handleChartClick(chartItems[selectedChart], 999)}
+                      width={1350}
+                      height={300}
+                    />
+                  ) : (
+                    <BarChart
+                      xAxis={[
+                        {
+                          data: chartItems[selectedChart].labels,
+                          scaleType: "band",
+                        },
+                      ]}
+                      yAxis={[
+                        {
+                          tickMinStep: 1,
+                          min: 0,
+                        },
+                      ]}
+                      series={[
+                        {
+                          data: chartItems[selectedChart].length,
+                          color: chartItems[selectedChart].color,
+                        },
+                      ]}
+                      onClick={handleChartClick(chartItems[selectedChart], 999)}
+                      width={1350}
+                      height={300}
+                    />
+                  )}
                   {highlightedIndex === 999 && (
                     <Popper
                       open={Boolean(anchorEl && highlightedIndex === 999)}
                       anchorEl={anchorEl}
-                      // placement=""
                     >
                       <ChartDataDetail
                         title={chartItems[selectedChart].title}
                         popoverData={popoverData}
                         handleCloseChartClick={handleCloseChartClick}
                         mainColor={mainColor}
+                        groupBy={groupBy}
                       />
                     </Popper>
                   )}
@@ -226,13 +307,35 @@ const ChartReports = ({ api, mainColor }) => {
                     </Typography>
                   </Box>
                   <Grid2 sx={{ my: -5 }}>
-                    <LineChart
-                      xAxis={[{ data: item.labels, scaleType: "point" }]}
-                      series={[{ data: item.length, color: item.color }]}
-                      onClick={handleChartClick(item, index)}
-                      width={350}
-                      height={200}
-                    />
+                    {chartType === "line" ? (
+                      <LineChart
+                        xAxis={[{ data: item.labels, scaleType: "point" }]}
+                        yAxis={[
+                          {
+                            tickMinStep: 1,
+                            min: 0,
+                          },
+                        ]}
+                        series={[{ data: item.length, color: item.color }]}
+                        onClick={handleChartClick(item, index)}
+                        width={350}
+                        height={200}
+                      />
+                    ) : (
+                      <BarChart
+                        xAxis={[{ data: item.labels, scaleType: "band" }]}
+                        yAxis={[
+                          {
+                            tickMinStep: 1,
+                            min: 0,
+                          },
+                        ]}
+                        series={[{ data: item.length, color: item.color }]}
+                        onClick={handleChartClick(item, index)}
+                        width={350}
+                        height={200}
+                      />
+                    )}
                     {highlightedIndex === index && (
                       <Popper
                         open={Boolean(anchorEl && highlightedIndex === index)}
@@ -244,6 +347,7 @@ const ChartReports = ({ api, mainColor }) => {
                           popoverData={popoverData}
                           handleCloseChartClick={handleCloseChartClick}
                           mainColor={mainColor}
+                          groupBy={groupBy}
                         />
                       </Popper>
                     )}

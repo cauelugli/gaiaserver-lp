@@ -14,6 +14,7 @@ import AttributionIcon from "@mui/icons-material/Attribution";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import AutoFixNormalIcon from "@mui/icons-material/AutoFixNormal";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import BuildIcon from "@mui/icons-material/Build";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -72,6 +73,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import SellIcon from "@mui/icons-material/Sell";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ShopIcon from "@mui/icons-material/Shop";
+import ShowChartIcon from "@mui/icons-material/ShowChart";
 import SpellcheckIcon from "@mui/icons-material/Spellcheck";
 import StarIcon from "@mui/icons-material/StarPurple500";
 import TableRowsIcon from "@mui/icons-material/TableRows";
@@ -101,6 +103,7 @@ const icons = {
   AttachFileIcon,
   AttachMoneyIcon,
   AutoFixNormalIcon,
+  BarChartIcon,
   BuildIcon,
   CalendarMonthIcon,
   CancelIcon,
@@ -159,6 +162,7 @@ const icons = {
   SellIcon,
   SettingsIcon,
   ShopIcon,
+  ShowChartIcon,
   SpellcheckIcon,
   StarIcon,
   TableRowsIcon,
