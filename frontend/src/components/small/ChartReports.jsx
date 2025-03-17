@@ -6,21 +6,17 @@ import React, { useEffect, useState } from "react";
 import {
   CircularProgress,
   Typography,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
   Grid2,
   Box,
   Button,
   Popper,
-  Tooltip,
 } from "@mui/material";
 import { icons } from "../../icons";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { getChartItems } from "../../options/chartOptions";
 import ChartDataDetail from "./ChartDataDetail";
+import ChartReportsHeader from "./ChartReportsHeader";
 
 const ChartReports = ({ api, mainColor }) => {
   const [salesData, setSalesData] = useState(null);
@@ -101,75 +97,16 @@ const ChartReports = ({ api, mainColor }) => {
     <Grid2 sx={{ width: "98%" }}>
       {displayChart ? (
         <>
-          <Grid2 sx={{ m: 2 }} container direction="row" alignItems="center">
-            <Grid2 item>
-              <Grid2>
-                <Typography
-                  id="title"
-                  sx={{ fontSize: "2vw", mr: "1vw", ml: -1, cursor: "pointer" }}
-                  onClick={() => setDisplayChart(!displayChart)}
-                >
-                  Relatórios
-                </Typography>
-
-                {displayChart && (
-                  <Grid2
-                    container
-                    direction="row"
-                    justifyContent="space-evenly"
-                    sx={{ mt: 1 }}
-                  >
-                    <Tooltip title="Gráfico em Linhas">
-                      <Button
-                        variant={
-                          chartType === "line" ? "contained" : "outlined"
-                        }
-                        onClick={() => setChartType("line")}
-                      >
-                        <icons.ShowChartIcon />
-                      </Button>
-                    </Tooltip>
-                    <Tooltip title="Gráfico em Barras">
-                      <Button
-                        variant={chartType === "bar" ? "contained" : "outlined"}
-                        onClick={() => setChartType("bar")}
-                      >
-                        <icons.BarChartIcon />
-                      </Button>
-                    </Tooltip>
-                  </Grid2>
-                )}
-              </Grid2>
-            </Grid2>
-
-            <icons.ExpandLessIcon
-              onClick={() => setDisplayChart(!displayChart)}
-              sx={{ cursor: "pointer", mb: 2 }}
-            />
-            <FormControl sx={{ ml: 2, mb: 2 }}>
-              <InputLabel>Período</InputLabel>
-              <Select
-                value={groupBy}
-                label="Período"
-                onChange={(e) => setGroupBy(e.target.value)}
-              >
-                <MenuItem value="day">Por Dia</MenuItem>
-                <MenuItem value="week">Por Semana</MenuItem>
-                <MenuItem value="month">Por Mês</MenuItem>
-              </Select>
-            </FormControl>
-
-            {isChartFocused && (
-              <Button
-                sx={{ ml: "auto", height: "auto" }}
-                variant="contained"
-                color="error"
-                onClick={() => setIsChartFocused(false)}
-              >
-                X
-              </Button>
-            )}
-          </Grid2>
+          <ChartReportsHeader
+            displayChart={displayChart}
+            setDisplayChart={setDisplayChart}
+            chartType={chartType}
+            setChartType={setChartType}
+            groupBy={groupBy}
+            setGroupBy={setGroupBy}
+            isChartFocused={isChartFocused}
+            setIsChartFocused={setIsChartFocused}
+          />
 
           <Grid2
             container
