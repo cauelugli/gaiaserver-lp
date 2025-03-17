@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { Box, CircularProgress, Grid2, Typography } from "@mui/material";
-import BarChart from "../components/charts/BarChart";
 
 const Dashboard = (props) => {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -159,7 +158,7 @@ const Dashboard = (props) => {
       <Typography sx={{ fontSize: "1.5vw", m: 2, fontWeight: "bold" }} id="title">
         Dashboard
       </Typography>
-      <Box sx={{ width: "40%", mx: "auto" }}>
+      {/* <Box sx={{ width: "40%", mx: "auto" }}>
         <Typography variant="h6" align="center" gutterBottom>
           Geral
         </Typography>
@@ -211,7 +210,7 @@ const Dashboard = (props) => {
             height="300"
           />
         </Box>
-      </Grid2>
+      </Grid2> */}
     </Box>
   );
 };
