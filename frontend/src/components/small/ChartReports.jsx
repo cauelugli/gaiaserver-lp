@@ -29,7 +29,12 @@ const ChartReports = ({ api, mainColor }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [highlightedIndex, setHighlightedIndex] = useState(null);
   const [popoverData, setPopoverData] = useState("");
-  const [chartType, setChartType] = useState("line"); // Estado para armazenar o tipo de gráfico
+  const [chartType, setChartType] = useState("line");
+  const typesTranslated = {
+    Sale: "Vendas",
+    Job: "Jobs",
+    StockEntry: "Estoque",
+  };
 
   const handleHighlightItem = (item) => {
     setSelectedChart(item);
@@ -66,6 +71,7 @@ const ChartReports = ({ api, mainColor }) => {
   }
 
   const chartItems = getChartItems(salesData, jobsData, stockData, groupBy);
+  const types = [...new Set(chartItems.map((item) => item.type))];
 
   const handleChartClick = (item, index) => (e) => {
     const chartRect = e.target.getBoundingClientRect();
@@ -210,87 +216,137 @@ const ChartReports = ({ api, mainColor }) => {
                 </Grid2>
               </Grid2>
             ) : (
-              chartItems.map((item, index) => (
-                <Grid2 container direction="column" key={index}>
-                  <Box
-                    sx={{
-                      position: "relative",
-                      display: "inline-block",
-                    }}
-                  >
-                    <Typography
-                      onClick={() => handleHighlightItem(index)}
-                      id="title"
-                      align="center"
-                      sx={{
-                        fontWeight: "bold",
-                        borderRadius: "4px",
-                        transition: "background-color 0.3s ease",
-                        ":hover": {
-                          backgroundColor: `${mainColor}`,
-                          color: "white !important",
-                          cursor: "pointer",
-                        },
-                        ":hover::after": {
-                          content: "'🔍'", // don't remove the '' !!!
-                          position: "absolute",
-                          ml: index === 3 ? 1 : 2,
-                          top: "50%",
-                          transform: "translateY(-50%)",
-                        },
-                      }}
-                    >
-                      {item.title}
-                    </Typography>
-                  </Box>
-                  <Grid2 sx={{ my: -5 }}>
-                    {chartType === "line" ? (
-                      <LineChart
-                        xAxis={[{ data: item.labels, scaleType: "point" }]}
-                        yAxis={[
-                          {
-                            tickMinStep: 1,
-                            min: 0,
-                          },
-                        ]}
-                        series={[{ data: item.length, color: item.color }]}
-                        onClick={handleChartClick(item, index)}
-                        width={350}
-                        height={200}
-                      />
-                    ) : (
-                      <BarChart
-                        xAxis={[{ data: item.labels, scaleType: "band" }]}
-                        yAxis={[
-                          {
-                            tickMinStep: 1,
-                            min: 0,
-                          },
-                        ]}
-                        series={[{ data: item.length, color: item.color }]}
-                        onClick={handleChartClick(item, index)}
-                        width={350}
-                        height={200}
-                      />
-                    )}
-                    {highlightedIndex === index && (
-                      <Popper
-                        open={Boolean(anchorEl && highlightedIndex === index)}
-                        anchorEl={anchorEl}
-                        placement="right"
-                      >
-                        <ChartDataDetail
-                          title={item.title}
-                          popoverData={popoverData}
-                          handleCloseChartClick={handleCloseChartClick}
-                          mainColor={mainColor}
-                          groupBy={groupBy}
-                        />
-                      </Popper>
-                    )}
+              <Grid2 container direction="column" spacing={4}>
+                {types.map((type, index) => (
+                  <Grid2 item key={index}>
+                    <Grid2 container direction="column" spacing={2}>
+                      {/* Título do tipo */}
+                      <Grid2 item>
+                        <Typography
+                          variant="h6"
+                          sx={{ fontWeight: "bold", mb: 2 }}
+                        >
+                          {typesTranslated[type] || ""}
+                        </Typography>
+                      </Grid2>
+
+                      {/* Itens do gráfico */}
+                      <Grid2 container spacing={2}>
+                        {chartItems
+                          .filter((item) => item.type === type)
+                          .map((item, index) => {
+                            const globalIndex = chartItems.indexOf(item);
+
+                            return (
+                              <Grid2 item key={index} xs={12} sm={6} md={4}>
+                                <Box
+                                  sx={{
+                                    position: "relative",
+                                    display: "inline-block",
+                                  }}
+                                >
+                                  <Typography
+                                    onClick={() =>
+                                      handleHighlightItem(globalIndex)
+                                    }
+                                    id="title"
+                                    align="center"
+                                    sx={{
+                                      fontWeight: "bold",
+                                      borderRadius: "4px",
+                                      transition: "background-color 0.3s ease",
+                                      ":hover": {
+                                        backgroundColor: `${mainColor}`,
+                                        color: "white !important",
+                                        cursor: "pointer",
+                                      },
+                                      ":hover::after": {
+                                        content: "'🔍'", // don't remove the '' !!!
+                                        position: "absolute",
+                                        ml: globalIndex === 3 ? 1 : 2,
+                                        top: "50%",
+                                        transform: "translateY(-50%)",
+                                      },
+                                    }}
+                                  >
+                                    {item.title}
+                                  </Typography>
+                                </Box>
+                                <Grid2 sx={{ my: -5 }}>
+                                  {chartType === "line" ? (
+                                    <LineChart
+                                      xAxis={[
+                                        {
+                                          data: item.labels,
+                                          scaleType: "point",
+                                        },
+                                      ]}
+                                      yAxis={[{ tickMinStep: 1, min: 0 }]}
+                                      series={[
+                                        {
+                                          data: item.length,
+                                          color: item.color,
+                                        },
+                                      ]}
+                                      onClick={handleChartClick(
+                                        item,
+                                        globalIndex
+                                      )}
+                                      width={350}
+                                      height={200}
+                                    />
+                                  ) : (
+                                    <BarChart
+                                      xAxis={[
+                                        {
+                                          data: item.labels,
+                                          scaleType: "band",
+                                        },
+                                      ]}
+                                      yAxis={[{ tickMinStep: 1, min: 0 }]}
+                                      series={[
+                                        {
+                                          data: item.length,
+                                          color: item.color,
+                                        },
+                                      ]}
+                                      onClick={handleChartClick(
+                                        item,
+                                        globalIndex
+                                      )}
+                                      width={350}
+                                      height={200}
+                                    />
+                                  )}
+                                  {highlightedIndex === globalIndex && (
+                                    <Popper
+                                      open={Boolean(
+                                        anchorEl &&
+                                          highlightedIndex === globalIndex
+                                      )}
+                                      anchorEl={anchorEl}
+                                      placement="right"
+                                    >
+                                      <ChartDataDetail
+                                        title={item.title}
+                                        popoverData={popoverData}
+                                        handleCloseChartClick={
+                                          handleCloseChartClick
+                                        }
+                                        mainColor={mainColor}
+                                        groupBy={groupBy}
+                                      />
+                                    </Popper>
+                                  )}
+                                </Grid2>
+                              </Grid2>
+                            );
+                          })}
+                      </Grid2>
+                    </Grid2>
                   </Grid2>
-                </Grid2>
-              ))
+                ))}
+              </Grid2>
             )}
             {isChartFocused && <Grid2 id="ghost" sx={{ width: "7vw" }} />}
           </Grid2>

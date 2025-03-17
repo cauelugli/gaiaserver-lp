@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useAppData } from "../../../src/AppDataContext";
 import { icons } from "../../icons";
-import ChartItemDetail from "./ChartItemDetail"; // Importe o novo componente
+import ChartItemDetail from "./ChartItemDetail";
 
 const ChartDataDetail = ({
   title,
@@ -38,6 +38,15 @@ const ChartDataDetail = ({
     setSelectedItem(null);
     setItemPopperAnchor(null);
   };
+
+  const getType = (title) => {
+    if (title.startsWith("Venda")) return "sale";
+    if (title.startsWith("Entradas de Estoque")) return "stockEntry";
+    if (title.startsWith("Job")) return "job";
+    return "";
+  };
+
+  const type = getType(title);
 
   return (
     <Grid2
@@ -131,7 +140,7 @@ const ChartDataDetail = ({
                 )}
 
                 <Grid2 container direction="row" alignItems="center">
-                  {title.startsWith("Venda")
+                  {type === "sale"
                     ? item.products?.map((product, index) => (
                         <Grid2 key={index} item>
                           <Tooltip
@@ -156,7 +165,8 @@ const ChartDataDetail = ({
                           </Tooltip>
                         </Grid2>
                       ))
-                    : item.items?.map((item, index) => (
+                    : type === "stockEntry"
+                    ? item.items.map((item, index) => (
                         <Grid2 key={index} item>
                           <Tooltip
                             title={
@@ -179,12 +189,13 @@ const ChartDataDetail = ({
                             />
                           </Tooltip>
                         </Grid2>
-                      ))}
+                      ))
+                    : null}
                 </Grid2>
 
                 {hoveredIndex === index ? (
                   <icons.VisibilityIcon />
-                ) : title.startsWith("Venda") ? (
+                ) : type === "sale" ? (
                   <Typography sx={{ my: "auto" }}>
                     R$
                     {item.products
@@ -196,7 +207,7 @@ const ChartDataDetail = ({
                           .toFixed(2)
                       : "0.00"}
                   </Typography>
-                ) : (
+                ) : type === "stockEntry" ? (
                   <Typography sx={{ my: "auto" }}>
                     R$
                     {item.items
@@ -208,13 +219,13 @@ const ChartDataDetail = ({
                           .toFixed(2)
                       : "0.00"}
                   </Typography>
-                )}
+                ) : null}
               </Grid2>
             </Grid2>
           ))}
         </Grid2>
 
-        {title.startsWith("Venda") ? (
+        {type === "sale" ? (
           <Typography
             align="right"
             sx={{ pt: 3, fontWeight: "bold", fontSize: "1.1vw" }}
@@ -229,14 +240,14 @@ const ChartDataDetail = ({
             {popoverData?.data
               .reduce((total, item) => {
                 const itemTotal = item.products.reduce((acc, product) => {
-                  const value = product.sellValue || product.buyValue || 0;
+                  const value = product.sellValue || 0;
                   return acc + (product.count || 1) * value;
                 }, 0);
                 return total + itemTotal;
               }, 0)
               .toFixed(2)}
           </Typography>
-        ) : (
+        ) : type === "stockEntry" ? (
           <Typography
             align="right"
             sx={{ pt: 3, fontWeight: "bold", fontSize: "1.1vw" }}
@@ -250,15 +261,15 @@ const ChartDataDetail = ({
             : R$
             {popoverData?.data
               .reduce((total, item) => {
-                const itemTotal = item.items.reduce((acc, product) => {
-                  const value = product.sellValue || product.sellValue || 0;
-                  return acc + (product.count || 1) * value;
+                const itemTotal = item.items.reduce((acc, item) => {
+                  const value = item.buyValue || 0;
+                  return acc + (item.count || 1) * value;
                 }, 0);
                 return total + itemTotal;
               }, 0)
               .toFixed(2)}
           </Typography>
-        )}
+        ) : null}
       </Grid2>
 
       <Popper
@@ -272,7 +283,7 @@ const ChartDataDetail = ({
           mainColor={mainColor}
           idIndexList={idIndexList}
           handleCloseItemPopper={handleCloseItemPopper}
-          itemType={title.startsWith("Venda") === true ? "sale" : "stockEntry"}
+          itemType={type}
         />
       </Popper>
     </Grid2>
