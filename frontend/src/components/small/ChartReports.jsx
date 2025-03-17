@@ -216,22 +216,24 @@ const ChartReports = ({ api, mainColor }) => {
                 </Grid2>
               </Grid2>
             ) : (
-              <Grid2 container direction="column" spacing={4}>
+              <Grid2
+                container
+                direction="column"
+                sx={{ width: "95%" }}
+              >
                 {types.map((type, index) => (
                   <Grid2 item key={index}>
-                    <Grid2 container direction="column" spacing={2}>
-                      {/* Título do tipo */}
+                    <Grid2 container direction="column">
                       <Grid2 item>
                         <Typography
-                          variant="h6"
-                          sx={{ fontWeight: "bold", mb: 2 }}
+                          variant="h5"
+                          sx={{ fontWeight: "bold", mb: 1 }}
                         >
                           {typesTranslated[type] || ""}
                         </Typography>
                       </Grid2>
 
-                      {/* Itens do gráfico */}
-                      <Grid2 container spacing={2}>
+                      <Grid2 container sx={{ m: 2 }}>
                         {chartItems
                           .filter((item) => item.type === type)
                           .map((item, index) => {
@@ -292,8 +294,8 @@ const ChartReports = ({ api, mainColor }) => {
                                         item,
                                         globalIndex
                                       )}
-                                      width={350}
-                                      height={200}
+                                      width={430}
+                                      height={300}
                                     />
                                   ) : (
                                     <BarChart
@@ -314,8 +316,8 @@ const ChartReports = ({ api, mainColor }) => {
                                         item,
                                         globalIndex
                                       )}
-                                      width={350}
-                                      height={200}
+                                      width={430}
+                                      height={300}
                                     />
                                   )}
                                   {highlightedIndex === globalIndex && (
