@@ -240,7 +240,7 @@ const ChartReports = ({ api, mainColor }) => {
                             const globalIndex = chartItems.indexOf(item);
 
                             return (
-                              <Grid2 item key={index} xs={12} sm={6} md={4}>
+                              <Grid2 item key={index}>
                                 <Box
                                   sx={{
                                     position: "relative",
@@ -254,7 +254,6 @@ const ChartReports = ({ api, mainColor }) => {
                                     id="title"
                                     align="center"
                                     sx={{
-                                      fontWeight: "bold",
                                       borderRadius: "4px",
                                       transition: "background-color 0.3s ease",
                                       ":hover": {
