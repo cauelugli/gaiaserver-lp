@@ -230,13 +230,7 @@ const ChartDataDetail = ({
             align="right"
             sx={{ pt: 3, fontWeight: "bold", fontSize: "1.1vw" }}
           >
-            Total{" "}
-            {groupBy === "day"
-              ? "do Dia"
-              : groupBy === "week"
-              ? "da Semana"
-              : "do Mês"}
-            : R$
+            Total {groupBy === "day" ? "do Dia" : "do Mês"}: R$
             {popoverData?.data
               .reduce((total, item) => {
                 const itemTotal = item.products.reduce((acc, product) => {
@@ -252,13 +246,7 @@ const ChartDataDetail = ({
             align="right"
             sx={{ pt: 3, fontWeight: "bold", fontSize: "1.1vw" }}
           >
-            Total{" "}
-            {groupBy === "day"
-              ? "do Dia"
-              : groupBy === "week"
-              ? "da Semana"
-              : "do Mês"}
-            : R$
+            Total {groupBy === "day" ? "do Dia" : "do Mês"}: R$
             {popoverData?.data
               .reduce((total, item) => {
                 const itemTotal = item.items.reduce((acc, item) => {

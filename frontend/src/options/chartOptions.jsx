@@ -10,12 +10,6 @@ export const processData = (data, groupBy) => {
         2,
         "0"
       )}-${String(date.getDate()).padStart(2, "0")}`;
-    } else if (groupBy === "week") {
-      const weekStart = new Date(date);
-      weekStart.setDate(date.getDate() - date.getDay());
-      key = `${weekStart.getFullYear()}-${String(
-        weekStart.getMonth() + 1
-      ).padStart(2, "0")}-${String(weekStart.getDate()).padStart(2, "0")}`;
     } else if (groupBy === "month") {
       key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
         2,

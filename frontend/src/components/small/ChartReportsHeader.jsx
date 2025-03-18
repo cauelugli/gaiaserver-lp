@@ -75,7 +75,6 @@ const ChartReportsHeader = ({
           onChange={(e) => setGroupBy(e.target.value)}
         >
           <MenuItem value="day">Por Dia</MenuItem>
-          <MenuItem value="week">Por Semana</MenuItem>
           <MenuItem value="month">Por Mês</MenuItem>
         </Select>
       </FormControl>

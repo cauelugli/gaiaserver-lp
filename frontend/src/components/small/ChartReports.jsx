@@ -22,7 +22,7 @@ const ChartReports = ({ api, mainColor }) => {
   const [salesData, setSalesData] = useState(null);
   const [jobsData, setJobsData] = useState(null);
   const [stockData, setStockData] = useState(null);
-  const [groupBy, setGroupBy] = useState("week");
+  const [groupBy, setGroupBy] = useState("day");
   const [selectedChart, setSelectedChart] = useState(0);
   const [isChartFocused, setIsChartFocused] = useState(false);
   const [displayChart, setDisplayChart] = useState(true);
