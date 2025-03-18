@@ -65,7 +65,7 @@ const Home = ({
           )}
       </Grid2>
       <Divider sx={{ m: 1, mt: 2, borderColor: mainColor }} />
-      <Grid2 container sx={{ height: "15vw", mt: 1 }}>
+      <Grid2 container sx={{ mt: 1 }}>
         <ChartReports api={api} mainColor={mainColor} />
       </Grid2>
     </>
