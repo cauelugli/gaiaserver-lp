@@ -172,7 +172,7 @@ const ChartReports = ({ api, mainColor }) => {
                       ]}
                       onClick={handleChartClick(chartItems[selectedChart], 999)}
                       width={1350}
-                      height={300}
+                      height={200}
                     />
                   ) : (
                     <BarChart
@@ -198,7 +198,7 @@ const ChartReports = ({ api, mainColor }) => {
                       ]}
                       onClick={handleChartClick(chartItems[selectedChart], 999)}
                       width={1350}
-                      height={300}
+                      height={200}
                     />
                   )}
                   {highlightedIndex === 999 && (
@@ -292,7 +292,7 @@ const ChartReports = ({ api, mainColor }) => {
                                         globalIndex
                                       )}
                                       width={430}
-                                      height={300}
+                                      height={200}
                                     />
                                   ) : (
                                     <BarChart
@@ -316,7 +316,7 @@ const ChartReports = ({ api, mainColor }) => {
                                         globalIndex
                                       )}
                                       width={430}
-                                      height={300}
+                                      height={200}
                                     />
                                   )}
                                   {highlightedIndex === globalIndex && (

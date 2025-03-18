@@ -104,28 +104,35 @@ const ChartItemDetail = ({
             </InputLabel>
           </Grid2>
 
-          <Grid2 item>
-            <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
-              Resolvido por
-            </Typography>
-            <Grid2 container direction="row">
-              <Avatar
-                src={`http://localhost:3000/static/${
-                  idIndexList.find(
-                    (resolver) => resolver.id === selectedItem.resolvedBy
-                  )?.image || ""
-                }`}
-              />
-              <Typography sx={{ my: "auto" }}>
-                {idIndexList.find(
-                  (resolver) => resolver.id === selectedItem.resolvedBy
-                )?.name || ""}
+          {selectedItem.resolvedBy ? (
+            <Grid2 item>
+              <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
+                Resolvido por
               </Typography>
+              <Grid2 container direction="row">
+                <Avatar
+                  src={`http://localhost:3000/static/${
+                    idIndexList.find(
+                      (resolver) => resolver.id === selectedItem.resolvedBy
+                    )?.image || ""
+                  }`}
+                />
+                <Typography sx={{ my: "auto" }}>
+                  {idIndexList.find(
+                    (resolver) => resolver.id === selectedItem.resolvedBy
+                  )?.name || ""}
+                </Typography>
+              </Grid2>
+              <InputLabel variant="standard" sx={{ mt: 1 }}>
+                {dayjs(selectedItem.resolvedAt).format("DD/MM/YY HH:MM")}{" "}
+              </InputLabel>
             </Grid2>
-            <InputLabel variant="standard" sx={{ mt: 1 }}>
-              {dayjs(selectedItem.resolvedAt).format("DD/MM/YY HH:MM")}{" "}
-            </InputLabel>
-          </Grid2>
+          ) : (
+            <>
+              <Grid2 id="ghost"></Grid2>
+              <Grid2 id="ghost"></Grid2>
+            </>
+          )}
         </Grid2>
 
         {itemType === "sale" ? (
