@@ -180,6 +180,8 @@ const ChartReports = ({ api, mainColor }) => {
                         {
                           data: chartItems[selectedChart].labels,
                           scaleType: "band",
+                          categoryGapRatio: 0.7,
+                          tickPlacement: "middle",
                         },
                       ]}
                       yAxis={[
@@ -216,11 +218,7 @@ const ChartReports = ({ api, mainColor }) => {
                 </Grid2>
               </Grid2>
             ) : (
-              <Grid2
-                container
-                direction="column"
-                sx={{ width: "95%" }}
-              >
+              <Grid2 container direction="column" sx={{ width: "95%" }}>
                 {types.map((type, index) => (
                   <Grid2 item key={index}>
                     <Grid2 container direction="column">
@@ -302,6 +300,8 @@ const ChartReports = ({ api, mainColor }) => {
                                         {
                                           data: item.labels,
                                           scaleType: "band",
+                                          categoryGapRatio: 0.7,
+                                          tickPlacement: "middle",
                                         },
                                       ]}
                                       yAxis={[{ tickMinStep: 1, min: 0 }]}
