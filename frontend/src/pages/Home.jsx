@@ -5,7 +5,7 @@ import { Divider, Grid2 } from "@mui/material";
 
 import HomeBlock from "../components/large/HomeBlock";
 import HomeSideBar from "../components/large/HomeSideBar";
-import ChartReports from "../components/small/ChartReports";
+import ChartReports from "../components/charts/ChartReports";
 
 const Home = ({
   api,

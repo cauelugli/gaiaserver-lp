@@ -11,7 +11,7 @@ import {
   Typography,
   Popper,
 } from "@mui/material";
-import { useAppData } from "../../../src/AppDataContext";
+import { useAppData } from "../../AppDataContext";
 import { icons } from "../../icons";
 import ChartItemDetail from "./ChartItemDetail";
 
