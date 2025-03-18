@@ -58,6 +58,7 @@ router.get("/dashboard", async (req, res) => {
           {},
           {
             status: 1,
+            title: 1,
             customer: 1,
             service: 1,
             worker: 1,

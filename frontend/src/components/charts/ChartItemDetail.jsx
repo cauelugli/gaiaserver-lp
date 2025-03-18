@@ -46,7 +46,11 @@ const ChartItemDetail = ({
       <Grid2 container direction="column">
         <Grid2 sx={{ p: 1 }}>
           <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
-            {itemType === "sale" ? "Venda" : "Entrada de Estoque"}
+            {itemType === "sale"
+              ? "Venda"
+              : itemType === "stockEntry"
+              ? "Entrada de Estoque"
+              : "Job"}
           </Typography>
           <Typography sx={{ my: "auto", ml: 2 }}>
             {selectedItem.number}
@@ -198,7 +202,7 @@ const ChartItemDetail = ({
               ))}
             </Grid2>
           </Grid2>
-        ) : (
+        ) : itemType === "stockEntry" ? (
           <Grid2 sx={{ mb: 1, p: 1 }}>
             <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
               Produtos
@@ -259,7 +263,10 @@ const ChartItemDetail = ({
               ))}
             </Grid2>
           </Grid2>
+        ) : (
+          ""
         )}
+
         {itemType === "sale" ? (
           <Grid2 sx={{ mb: 1, p: 1 }}>
             <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
@@ -273,32 +280,38 @@ const ChartItemDetail = ({
         ) : (
           ""
         )}
-        <Grid2 sx={{ mb: 1, p: 1 }}>
-          <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
-            Total
-          </Typography>
-          {itemType === "sale" ? (
-            <Typography sx={{ my: "auto", ml: 2 }}>
-              R$
-              {selectedItem.products
-                .reduce((acc, product) => {
-                  const value = product.sellValue || 0;
-                  return acc + (product.count || 1) * value;
-                }, 0)
-                .toFixed(2)}
+
+        {itemType === "sale" || itemType === "stockEntry" ? (
+          <Grid2 sx={{ mb: 1, p: 1 }}>
+            <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
+              Total
             </Typography>
-          ) : (
-            <Typography sx={{ my: "auto", ml: 2 }}>
-              R$
-              {selectedItem.items
-                .reduce((acc, item) => {
-                  const value = item.buyValue || 0;
-                  return acc + (item.count || 1) * value;
-                }, 0)
-                .toFixed(2)}
-            </Typography>
-          )}
-        </Grid2>
+            {itemType === "sale" ? (
+              <Typography sx={{ my: "auto", ml: 2 }}>
+                R$
+                {selectedItem.products
+                  .reduce((acc, product) => {
+                    const value = product.sellValue || 0;
+                    return acc + (product.count || 1) * value;
+                  }, 0)
+                  .toFixed(2)}
+              </Typography>
+            ) : (
+              <Typography sx={{ my: "auto", ml: 2 }}>
+                R$
+                {selectedItem.items
+                  .reduce((acc, item) => {
+                    const value = item.buyValue || 0;
+                    return acc + (item.count || 1) * value;
+                  }, 0)
+                  .toFixed(2)}
+              </Typography>
+            )}
+          </Grid2>
+        ) : (
+          ""
+        )}
+
         <Grid2 sx={{ mb: 1, p: 1 }}>
           <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
             Status

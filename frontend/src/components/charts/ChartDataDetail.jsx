@@ -48,6 +48,8 @@ const ChartDataDetail = ({
 
   const type = getType(title);
 
+  console.log("type", type);
+
   return (
     <Grid2
       sx={{
@@ -101,7 +103,14 @@ const ChartDataDetail = ({
               <Typography
                 sx={{ fontWeight: hoveredIndex === index ? "bold" : "" }}
               >
-                # {index + 1}
+                # {index + 1}{" "}
+                {item.status === "Resolvido" ? (
+                  <Tooltip title="Resolvido">✅</Tooltip>
+                ) : item.status === "Arquivado" ? (
+                  <Tooltip title="Arquivado">📁</Tooltip>
+                ) : (
+                  <Tooltip title="Pendente">🕒</Tooltip>
+                )}
               </Typography>
               <Grid2
                 container
@@ -140,59 +149,62 @@ const ChartDataDetail = ({
                 )}
 
                 <Grid2 container direction="row" alignItems="center">
-                  {type === "sale"
-                    ? item.products?.map((product, index) => (
-                        <Grid2 key={index} item>
-                          <Tooltip
-                            title={
-                              <>
-                                <Typography sx={{ color: "white" }}>
-                                  {product.name}
-                                </Typography>
-                                <Typography sx={{ color: "white" }}>
-                                  {product.count} x {product.sellValue}
-                                </Typography>
-                              </>
-                            }
-                          >
-                            <Avatar
-                              alt={product.name || "Product Image"}
-                              src={`http://localhost:3000/static/${
-                                product.images?.[0] || product.image?.[0] || ""
-                              }`}
-                              sx={{ width: 32, height: 32, mr: 0.5 }}
-                            />
-                          </Tooltip>
-                        </Grid2>
-                      ))
-                    : type === "stockEntry"
-                    ? item.items.map((item, index) => (
-                        <Grid2 key={index} item>
-                          <Tooltip
-                            title={
-                              <>
-                                <Typography sx={{ color: "white" }}>
-                                  {item.name}
-                                </Typography>
-                                <Typography sx={{ color: "white" }}>
-                                  {item.count} x {item.buyValue}
-                                </Typography>
-                              </>
-                            }
-                          >
-                            <Avatar
-                              alt={item.name || "Product Image"}
-                              src={`http://localhost:3000/static/${
-                                item.images?.[0] || item.image?.[0] || ""
-                              }`}
-                              sx={{ width: 32, height: 32, mr: 0.5 }}
-                            />
-                          </Tooltip>
-                        </Grid2>
-                      ))
-                    : null}
+                  {type === "sale" ? (
+                    item.products?.map((product, index) => (
+                      <Grid2 key={index} item>
+                        <Tooltip
+                          title={
+                            <>
+                              <Typography sx={{ color: "white" }}>
+                                {product.name}
+                              </Typography>
+                              <Typography sx={{ color: "white" }}>
+                                {product.count} x {product.sellValue}
+                              </Typography>
+                            </>
+                          }
+                        >
+                          <Avatar
+                            alt={product.name || "Product Image"}
+                            src={`http://localhost:3000/static/${
+                              product.images?.[0] || product.image?.[0] || ""
+                            }`}
+                            sx={{ width: 32, height: 32, mr: 0.5 }}
+                          />
+                        </Tooltip>
+                      </Grid2>
+                    ))
+                  ) : type === "stockEntry" ? (
+                    item.items.map((item, index) => (
+                      <Grid2 key={index} item>
+                        <Tooltip
+                          title={
+                            <>
+                              <Typography sx={{ color: "white" }}>
+                                {item.name}
+                              </Typography>
+                              <Typography sx={{ color: "white" }}>
+                                {item.count} x {item.buyValue}
+                              </Typography>
+                            </>
+                          }
+                        >
+                          <Avatar
+                            alt={item.name || "Product Image"}
+                            src={`http://localhost:3000/static/${
+                              item.images?.[0] || item.image?.[0] || ""
+                            }`}
+                            sx={{ width: 32, height: 32, mr: 0.5 }}
+                          />
+                        </Tooltip>
+                      </Grid2>
+                    ))
+                  ) : type === "job" ? (
+                    <Typography variant="body1">{item.title}</Typography>
+                  ) : (
+                    "null"
+                  )}
                 </Grid2>
-
                 {hoveredIndex === index ? (
                   <icons.VisibilityIcon />
                 ) : type === "sale" ? (
@@ -220,6 +232,24 @@ const ChartDataDetail = ({
                       : "0.00"}
                   </Typography>
                 ) : null}
+
+                {hoveredIndex !== index && item.worker ? (
+                  <Tooltip
+                    title={
+                      idIndexList.find((worker) => worker.id === item.worker)
+                        ?.name || ""
+                    }
+                  >
+                    <Avatar
+                      src={`http://localhost:3000/static/${
+                        idIndexList.find((worker) => worker.id === item.worker)
+                          ?.image || ""
+                      }`}
+                    />
+                  </Tooltip>
+                ) : (
+                  ""
+                )}
               </Grid2>
             </Grid2>
           ))}

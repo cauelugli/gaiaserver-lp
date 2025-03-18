@@ -11,6 +11,7 @@ import {
   Tooltip,
   Grid2,
 } from "@mui/material";
+
 import { icons } from "../../icons";
 
 const ChartReportsHeader = ({
@@ -78,6 +79,17 @@ const ChartReportsHeader = ({
           <MenuItem value="month">Por Mês</MenuItem>
         </Select>
       </FormControl>
+      {groupBy === "day" ? (
+        <Grid2>
+          <>day</>
+        </Grid2>
+      ) : groupBy === "month" ? (
+        <Grid2>
+          <>month</>
+        </Grid2>
+      ) : (
+        ""
+      )}
 
       {isChartFocused && (
         <Button

@@ -287,7 +287,7 @@ const ChartReports = ({ api, mainColor }) => {
                                           color: item.color,
                                         },
                                       ]}
-                                      onClick={handleChartClick(
+                                      onAxisClick={handleChartClick(
                                         item,
                                         globalIndex
                                       )}
@@ -311,7 +311,7 @@ const ChartReports = ({ api, mainColor }) => {
                                           color: item.color,
                                         },
                                       ]}
-                                      onClick={handleChartClick(
+                                      onAxisClick={handleChartClick(
                                         item,
                                         globalIndex
                                       )}
