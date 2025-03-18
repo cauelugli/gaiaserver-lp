@@ -721,6 +721,37 @@ const rowButtonOptions = (props) => [
       ],
     },
   },
+
+  {
+    page: "products",
+    models: ["Product"],
+    menus: {
+      0: [
+        {
+          label: "Editar",
+          action: "edit",
+          modal: "Product",
+          icon: <icons.ModeEditIcon />,
+        },
+        {
+          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
+          action: "archive",
+          modal: "Product",
+          icon: <icons.ArchiveIcon />,
+        },
+        ...(props.canBeDeleted === true
+          ? [
+              {
+                label: "Deletar",
+                action: "delete",
+                modal: "Product",
+                icon: <icons.DeleteIcon />,
+              },
+            ]
+          : []),
+      ],
+    },
+  },
 ];
 
 export default rowButtonOptions;

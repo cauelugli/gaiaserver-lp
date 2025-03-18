@@ -40,7 +40,10 @@ const RowButton = (props) => {
 
   const currentOption = options.find((option) => option.page === props.page);
 
-  const menuItems = currentOption?.menus[props.tabIndex] || [];
+  const menuItems =
+    currentOption?.page === "products"
+      ? currentOption?.menus[0]
+      : currentOption?.menus[props.tabIndex] || [];
 
   const handleMenuItemClick = (menuItem, index) => {
     if (menuItem.modal === "small") {
@@ -50,7 +53,11 @@ const RowButton = (props) => {
       setSelectedModal(modals[menuItem.modal]);
       setOpenDialog(true);
       closeAllMenus();
-      setSelectedAction(currentOption?.menus[props.tabIndex][index].action);
+      setSelectedAction(
+        currentOption?.menus[
+          currentOption?.page === "products" ? 0 : props.tabIndex
+        ][index].action
+      );
     }
   };
 
