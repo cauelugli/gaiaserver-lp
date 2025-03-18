@@ -56,7 +56,7 @@ const ChartItemDetail = ({
           sx={{ mb: 1, p: 1 }}
           container
           direction="row"
-          justifyContent={itemType === "sale"?"space-between":""}
+          justifyContent={itemType === "sale" ? "space-between" : ""}
           columnSpacing={3}
         >
           {selectedItem.customer && (
@@ -291,6 +291,14 @@ const ChartItemDetail = ({
                 .toFixed(2)}
             </Typography>
           )}
+        </Grid2>
+        <Grid2 sx={{ mb: 1, p: 1 }}>
+          <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
+            Status
+          </Typography>
+          <Typography sx={{ my: "auto", ml: 2 }}>
+            {selectedItem.status}
+          </Typography>
         </Grid2>
       </Grid2>
     </Grid2>
