@@ -35,27 +35,37 @@ export const processData = (data, groupBy) => {
 
 export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
   // Processamento de Sales
+  const allSales = salesData.data;
   const resolvedSales = salesData.data.filter(
     (item) => item.status === "Resolvido"
   );
   const pendingSales = salesData.data.filter(
     (item) => item.status !== "Resolvido" && item.status !== "Arquivado"
   );
-  const allSales = salesData.data;
+  const archivedSales = salesData.data.filter(
+    (item) => item.status === "Arquivado"
+  );
 
   const processedResolvedData = processData(resolvedSales, groupBy);
   const processedPendingData = processData(pendingSales, groupBy);
+  const processedArchivedData = processData(archivedSales, groupBy);
   const processedAllData = processData(allSales, groupBy);
 
-  const labelsResolved = Object.keys(processedResolvedData).sort();
-  const labelsPending = Object.keys(processedPendingData).sort();
-  const valuesResolved = labelsResolved.map(
+  const labelsResolvedSales = Object.keys(processedResolvedData).sort();
+  const labelsPendingSales = Object.keys(processedPendingData).sort();
+  const labelsArchivedSales = Object.keys(processedArchivedData).sort();
+  const valuesResolvedSales = labelsResolvedSales.map(
     (date) => processedResolvedData[date]
   );
-  const valuesPending = labelsPending.map((date) => processedPendingData[date]);
+  const valuesPendingSales = labelsPendingSales.map(
+    (date) => processedPendingData[date]
+  );
+  const valuesArchivedSales = labelsArchivedSales.map(
+    (date) => processedArchivedData[date]
+  );
 
-  const labelsAll = Object.keys(processedAllData).sort();
-  const valuesAll = labelsAll.map((date) => processedAllData[date]);
+  const labelsAllSales = Object.keys(processedAllData).sort();
+  const valuesAllSales = labelsAllSales.map((date) => processedAllData[date]);
 
   // Processamento de Stock
   const resolvedStockEntries = stockData.data.filter(
@@ -80,18 +90,26 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
   const resolvedJobs = jobsData.data.filter(
     (item) => item.status === "Resolvido"
   );
+  const archivedJobs = jobsData.data.filter(
+    (item) => item.status === "Arquivado"
+  );
   const pendingJobs = jobsData.data.filter(
     (item) => item.status !== "Resolvido" && item.status !== "Arquivado"
   );
   const allJobs = jobsData.data;
 
   const processedResolvedJobsData = processData(resolvedJobs, groupBy);
+  const processedArchivedJobsData = processData(archivedJobs, groupBy);
   const processedPendingJobsData = processData(pendingJobs, groupBy);
   const processedAllJobsData = processData(allJobs, groupBy);
 
   const labelsResolvedJobs = Object.keys(processedResolvedJobsData).sort();
+  const labelsArchivedJobs = Object.keys(processedArchivedJobsData).sort();
   const labelsPendingJobs = Object.keys(processedPendingJobsData).sort();
   const valuesResolvedJobs = labelsResolvedJobs.map(
+    (date) => processedResolvedJobsData[date]
+  );
+  const valuesArchivedJobs = labelsArchivedJobs.map(
     (date) => processedResolvedJobsData[date]
   );
   const valuesPendingJobs = labelsPendingJobs.map(
@@ -103,37 +121,47 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
 
   return [
     {
-      id: 0,
+      id: 1,
       title: "Vendas Criadas",
-      labels: labelsAll,
-      values: valuesAll,
-      length: valuesAll.map((value) => value.length),
+      labels: labelsAllSales,
+      values: valuesAllSales,
+      length: valuesAllSales.map((value) => value.length),
       color: "#1976d2",
       type: "Sale",
       subtype: "created",
     },
     {
-      id: 1,
+      id: 2,
       title: "Vendas Pendentes",
-      labels: labelsPending,
-      values: valuesPending,
-      length: valuesPending.map((value) => value.length),
+      labels: labelsPendingSales,
+      values: valuesPendingSales,
+      length: valuesPendingSales.map((value) => value.length),
       color: "#1976d2",
       type: "Sale",
       subtype: "pending",
     },
     {
-      id: 1,
+      id: 3,
       title: "Vendas Resolvidas",
-      labels: labelsResolved,
-      values: valuesResolved,
-      length: valuesResolved.map((value) => value.length),
+      labels: labelsResolvedSales,
+      values: valuesResolvedSales,
+      length: valuesResolvedSales.map((value) => value.length),
       color: "#1976d2",
       type: "Sale",
       subtype: "resolved",
     },
     {
-      id: 2,
+      id: 4,
+      title: "Vendas Arquivadas",
+      labels: labelsArchivedSales,
+      values: valuesArchivedSales,
+      length: valuesArchivedSales.map((value) => value.length),
+      color: "#1976d2",
+      type: "Sale",
+      subtype: "archived",
+    },
+    {
+      id: 5,
       title: "Jobs Criados",
       labels: labelsAllJobs,
       values: valuesAllJobs,
@@ -143,7 +171,7 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
       subtype: "created",
     },
     {
-      id: 3,
+      id: 6,
       title: "Jobs Pendentes",
       labels: labelsPendingJobs,
       values: valuesPendingJobs,
@@ -153,7 +181,7 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
       subtype: "pending",
     },
     {
-      id: 4,
+      id: 7,
       title: "Jobs Resolvidos",
       labels: labelsResolvedJobs,
       values: valuesResolvedJobs,
@@ -163,7 +191,17 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
       subtype: "resolved",
     },
     {
-      id: 5,
+      id: 8,
+      title: "Jobs Arquivados",
+      labels: labelsArchivedJobs,
+      values: valuesArchivedJobs,
+      length: valuesArchivedJobs.map((value) => value.length),
+      color: "#e04414",
+      type: "Job",
+      subtype: "archived",
+    },
+    {
+      id: 9,
       title: "Entradas de Estoque",
       labels: labelsAllStock,
       values: valuesAllStock,
@@ -173,7 +211,7 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
       subtype: "created",
     },
     {
-      id: 6,
+      id: 10,
       title: "Entradas de Estoque Resolvidas",
       labels: labelsResolvedStock,
       values: valuesResolvedStock,
