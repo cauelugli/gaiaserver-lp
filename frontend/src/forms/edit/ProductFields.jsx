@@ -2,15 +2,32 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import {
-  TextField,
-  Select,
-  MenuItem,
   FormControl,
-  InputLabel,
   Grid2,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
 } from "@mui/material";
 
 const ProductFields = ({ productFields, handleChange, fields }) => {
+  const renderValue = (field, fields) => {
+    switch (field.type) {
+      case "number":
+        return fields[field.name] || field.value || "";
+      case "string":
+        return fields[field.name] || field.value || "";
+      case "options":
+        return fields[field.name] || field.value || "";
+      case "currency":
+        return fields[field.name] || field.value || "";
+      case "date":
+        return fields[field.name] || field.value || "";
+      default:
+        return "";
+    }
+  };
+
   const renderField = (field) => {
     switch (field.type) {
       case "string":
@@ -18,11 +35,11 @@ const ProductFields = ({ productFields, handleChange, fields }) => {
           <Grid2>
             <InputLabel>{field.name}</InputLabel>
             <TextField
-              fullWidth
+              size="small"
               label={field.name}
-              value={fields[field.name] || ""}
+              value={renderValue(field, fields)}
               onChange={handleChange(field.name)}
-              margin="normal"
+              sx={{ width: 200 }}
             />
           </Grid2>
         );
@@ -34,9 +51,9 @@ const ProductFields = ({ productFields, handleChange, fields }) => {
             <TextField
               size="small"
               type="number"
-              value={fields[field.name] || ""}
+              value={renderValue(field, fields)}
               onChange={handleChange(field.name)}
-              slotprops={{
+              slotProps={{
                 htmlInput: {
                   min: field.minValue || 0,
                   max: field.maxValue || undefined,
@@ -47,7 +64,6 @@ const ProductFields = ({ productFields, handleChange, fields }) => {
             />
           </Grid2>
         );
-
       case "options":
         return (
           <Grid2>
@@ -55,7 +71,7 @@ const ProductFields = ({ productFields, handleChange, fields }) => {
             <FormControl>
               <Select
                 size="small"
-                value={fields[field.name] || ""}
+                value={renderValue(field, fields)}
                 onChange={handleChange(field.name)}
                 sx={{ width: 200 }}
               >
@@ -68,42 +84,19 @@ const ProductFields = ({ productFields, handleChange, fields }) => {
             </FormControl>
           </Grid2>
         );
-
       case "currency":
-        return (
-          <Grid2>
-            <InputLabel>{field.name}</InputLabel>
-            {/* <TextField
-              fullWidth
-              label={field.name}
-              value={fields[field.name] || ""}
-              onChange={handleChange(field.name)}
-              margin="normal"
-            /> */}
-          </Grid2>
-        );
-
+        return;
+      // return formatCurrency(fields[field.name] || field.value || "");
       case "date":
-        return (
-          <Grid2>
-            <InputLabel>{field.name}</InputLabel>
-            {/* <TextField
-              fullWidth
-              label={field.name}
-              value={fields[field.name] || ""}
-              onChange={handleChange(field.name)}
-              margin="normal"
-            /> */}
-          </Grid2>
-        );
-
+        return;
+      // return formatDate(fields[field.name] || field.value || "");
       default:
         return null;
     }
   };
 
   return (
-    <Grid2 container>
+    <Grid2 container sx={{ mt: -2 }}>
       {productFields.map((field, index) => (
         <Grid2 key={index} sx={{ mr: 1 }}>
           {renderField(field)}

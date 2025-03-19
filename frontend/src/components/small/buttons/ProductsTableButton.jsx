@@ -88,7 +88,7 @@ export default function ProductsTableButton(props) {
       {openAdd && (
         <Dialog
           fullWidth
-          maxWidth="lg"
+          maxWidth="xl"
           open={openAdd}
           onClose={() => setOpenAdd(!openAdd)}
         >
