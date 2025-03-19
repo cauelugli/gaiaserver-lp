@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
+import { useAppData } from "../AppDataContext";
 
 import { TableRow, TableCell, Avatar, Checkbox } from "@mui/material";
 
 import RowButton from "../components/small/buttons/RowButton";
 
 function ProductsTable(props) {
+  const appData = useAppData();
   return (
     <>
       {props.items.length > 0 &&
@@ -41,11 +43,12 @@ function ProductsTable(props) {
                   setRefreshData={props.setRefreshData}
                   configCustomization={props.configCustomization}
                   multiple={props.multiple}
+                  canBeDeleted={appData?.configData[props.page]?.canBeDeleted}
                 />
               </TableCell>
               {props.multiple && (
                 <TableCell align="center" id="multiple" sx={{ p: 0, m: 0 }}>
-                  <Checkbox size="small" sx={{ p: -1, m: -1 }}/>
+                  <Checkbox size="small" sx={{ p: -1, m: -1 }} />
                 </TableCell>
               )}
             </TableRow>

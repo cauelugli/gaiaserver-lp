@@ -140,7 +140,7 @@ async function deleteRoutinesGroup(
           const { members } = deletedItem;
 
           if (members && members.length > 0) {
-            console.log("deletedItem had a problem")
+            console.log("deletedItem had a problem");
             await Promise.all(
               members.map((memberId) =>
                 defineModel("User").findByIdAndUpdate(memberId, {
@@ -260,6 +260,34 @@ async function deleteRoutinesPosition(
             );
           }
         }
+      })
+    );
+
+    // notify that sourceId made this
+  } catch (err) {
+    console.error("Erro na rotina de deleção", err);
+  }
+}
+
+async function deleteRoutinesProduct(
+  model,
+  isMultiple,
+  deletedItem,
+  sourceId,
+  ids
+) {
+  const Model = defineModel(model);
+
+  if (!Model) {
+    console.log("\nModel not found\n");
+    return res.status(400).json({ error: "Modelo inválido" });
+  }
+  try {
+    const itemsToDelete = isMultiple ? ids : [deletedItem];
+
+    await Promise.all(
+      itemsToDelete.map(async (id) => {
+        await Model.findByIdAndDelete(id);
       })
     );
 
@@ -505,6 +533,7 @@ module.exports = {
   deleteRoutinesJob,
   deleteRoutinesOperator,
   deleteRoutinesPosition,
+  deleteRoutinesProduct,
   deleteRoutinesRole,
   deleteRoutinesSale,
   deleteRoutinesService,

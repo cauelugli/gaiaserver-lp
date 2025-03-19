@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 
 import { options } from "../../options/cardOptions";
+import { useAppData } from "../../AppDataContext";
 import RowButton from "../small/buttons/RowButton";
 
 export default function ProductCardModel({
@@ -29,6 +30,7 @@ export default function ProductCardModel({
   setRefreshData,
   cardSize,
 }) {
+  const appData = useAppData();
   const renderTypographies = () => {
     return item?.fields?.map(({ name, value }, index) => (
       <Typography
@@ -90,6 +92,7 @@ export default function ProductCardModel({
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               fromCard={true}
+              canBeDeleted={appData?.configData["products"]?.canBeDeleted}
               // multiple={props.multiple} maybe 'multipleFromCard', cause styling will be different
             />
           </Grid2>
