@@ -50,21 +50,7 @@ export default function AddProductForm({
   );
   const [images, setImages] = React.useState([]);
 
-  const handleFieldChange = (
-    index,
-    value,
-    isOption = false,
-    multiple = false
-  ) => {
-    if (isOption && multiple) {
-      console.log("eh option", isOption);
-      console.log("eh multiplo", multiple);
-      return;
-    }
-
-    console.log("index", index);
-    console.log("value", value);
-    console.log("fields", fields);
+  const handleFieldChange = (index, value) => {
     const updatedFields = [...fields];
     updatedFields[index].value = value;
     setFields(updatedFields);
@@ -274,13 +260,13 @@ export default function AddProductForm({
                   ) : (
                     <CurrencyTableProductsCell
                       field={field}
-                      value={fields[index]?.value || ""} // Passa o valor atual
+                      value={fields[index]?.value || ""}
                       onChange={(newValue) => {
                         setFields((prevFields) => {
                           const updatedFields = [...prevFields];
                           updatedFields[index] = {
                             ...updatedFields[index],
-                            value: newValue, // Atualiza o valor pelo índice
+                            value: newValue,
                           };
                           return updatedFields;
                         });
@@ -289,28 +275,49 @@ export default function AddProductForm({
                       hideAdornment
                     />
                   ))}
-                {field.type === "options" && (
-                  <Select
-                    sx={{ width: 200 }}
-                    size="small"
-                    value={field.value || []}
-                    onChange={(e) =>
-                      handleFieldChange(
-                        index,
-                        e.target.value,
-                        true,
-                        field.allowMultiple
-                      )
-                    }
-                    multiple={field.allowMultiple}
-                  >
-                    {field.options.map((option, index) => (
-                      <MenuItem key={index} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                )}
+                {field.type === "options" &&
+                  (field.allowMultiple ? (
+                    <>
+                      <Select
+                        sx={{ width: 200 }}
+                        size="small"
+                        value={fields[index].value || []}
+                        onChange={(e) =>
+                          handleFieldChange(
+                            index,
+                            e.target.value,
+                            true,
+                            field.allowMultiple
+                          )
+                        }
+                        multiple={true}
+                      >
+                        {field.options.map((option, index) => (
+                          <MenuItem key={index} value={option}>
+                            {option}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </>
+                  ) : (
+                    <>
+                      <Select
+                        sx={{ width: 200 }}
+                        size="small"
+                        value={fields[index].value || ""}
+                        onChange={(e) =>
+                          handleFieldChange(index, e.target.value)
+                        }
+                        multiple={false}
+                      >
+                        {field.options.map((option, index) => (
+                          <MenuItem key={index} value={option}>
+                            {option}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </>
+                  ))}
                 {field.type === "currency" && (
                   <CurrencyTableProductsCell
                     field={field}
