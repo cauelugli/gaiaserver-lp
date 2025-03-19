@@ -7,71 +7,94 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Checkbox,
-  FormControlLabel,
+  Grid2,
 } from "@mui/material";
 
 const ProductFields = ({ productFields, handleChange, fields }) => {
   const renderField = (field) => {
     switch (field.type) {
-      case "text":
+      case "string":
         return (
-          <TextField
-            fullWidth
-            label={field.name}
-            value={fields[field.name] || ""}
-            onChange={handleChange(field.name)}
-            margin="normal"
-          />
+          <Grid2>
+            <InputLabel>{field.name}</InputLabel>
+            <TextField
+              fullWidth
+              label={field.name}
+              value={fields[field.name] || ""}
+              onChange={handleChange(field.name)}
+              margin="normal"
+            />
+          </Grid2>
         );
 
       case "number":
         return (
-          <TextField
-            fullWidth
-            label={field.name}
-            type="number"
-            value={fields[field.name] || ""}
-            onChange={handleChange(field.name)}
-            margin="normal"
-            inputProps={{
-              min: field.minValue || 0,
-              max: field.maxValue || undefined,
-              step: field.numberType === "integer" ? 1 : 0.01,
-            }}
-          />
+          <Grid2>
+            <InputLabel>{field.name}</InputLabel>
+            <TextField
+              size="small"
+              type="number"
+              value={fields[field.name] || ""}
+              onChange={handleChange(field.name)}
+              slotprops={{
+                htmlInput: {
+                  min: field.minValue || 0,
+                  max: field.maxValue || undefined,
+                  step: field.numberType === "integer" ? 1 : 0.01,
+                },
+              }}
+              sx={{ width: 200 }}
+            />
+          </Grid2>
         );
 
       case "options":
         return (
-          <FormControl fullWidth margin="normal">
+          <Grid2>
             <InputLabel>{field.name}</InputLabel>
-            <Select
-              value={fields[field.name] || ""}
-              onChange={handleChange(field.name)}
-              label={field.name}
-            >
-              {field.options.map((option, index) => (
-                <MenuItem key={index} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+            <FormControl>
+              <Select
+                size="small"
+                value={fields[field.name] || ""}
+                onChange={handleChange(field.name)}
+                sx={{ width: 200 }}
+              >
+                {field.options.map((option, index) => (
+                  <MenuItem key={index} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid2>
         );
 
-      case "checkbox":
+      case "currency":
         return (
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={fields[field.name] || false}
-                onChange={handleChange(field.name)}
-                color="primary"
-              />
-            }
-            label={field.name}
-          />
+          <Grid2>
+            <InputLabel>{field.name}</InputLabel>
+            {/* <TextField
+              fullWidth
+              label={field.name}
+              value={fields[field.name] || ""}
+              onChange={handleChange(field.name)}
+              margin="normal"
+            /> */}
+          </Grid2>
+        );
+
+      case "date":
+        return (
+          <Grid2>
+            <InputLabel>{field.name}</InputLabel>
+            {/* <TextField
+              fullWidth
+              label={field.name}
+              value={fields[field.name] || ""}
+              onChange={handleChange(field.name)}
+              margin="normal"
+            /> */}
+          </Grid2>
         );
 
       default:
@@ -80,11 +103,13 @@ const ProductFields = ({ productFields, handleChange, fields }) => {
   };
 
   return (
-    <div>
+    <Grid2 container>
       {productFields.map((field, index) => (
-        <div key={index}>{renderField(field)}</div>
+        <Grid2 key={index} sx={{ mr: 1 }}>
+          {renderField(field)}
+        </Grid2>
       ))}
-    </div>
+    </Grid2>
   );
 };
 
