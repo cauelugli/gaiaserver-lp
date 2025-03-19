@@ -75,10 +75,7 @@ export default function AddProductForm({
         name,
         buyValue,
         sellValue,
-        fields: fields.map((field) => ({
-          name: field.name,
-          value: field.value,
-        })),
+        fields,
         images: imagePaths,
         createdBy: userId,
       });

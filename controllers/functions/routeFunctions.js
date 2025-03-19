@@ -24,7 +24,6 @@ const models = {
 function defineModel(model) {
   return models[model] || null;
 }
-
 const parseReqFields = function (fields, reqBody, filteredCounter) {
   const result = {
     ...fields,
@@ -58,6 +57,12 @@ const parseReqFields = function (fields, reqBody, filteredCounter) {
         : parseFloat(fields.price) || parseFloat(reqBody.price) || 0,
     services: fields.services || reqBody.services || [],
   };
+
+  if (reqBody.model === "Product" && Array.isArray(reqBody.fields)) {
+    reqBody.fields.forEach((field) => {
+      result[field.name] = field.value || "";
+    });
+  }
 
   if (reqBody.createdBy !== undefined) {
     result.createdBy = reqBody.createdBy;

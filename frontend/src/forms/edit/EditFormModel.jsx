@@ -23,6 +23,7 @@ import DialogHeader from "../../components/small/DialogHeader";
 
 import TableCellOptions from "../../options/tableCellOptions";
 import { loadPage } from "../../../../controllers/functions/overallFunctions";
+import ProductFields from "./ProductFields";
 
 export default function EditFormModel(props) {
   const [fields, setFields] = React.useState(props.options.fields);
@@ -96,6 +97,7 @@ export default function EditFormModel(props) {
   React.useEffect(() => {
     // this can surely be better dude...
     // fix this
+    // for God's sake...
     const initializeFields = () => {
       const initialFields = {};
       props.options.fields.forEach((field) => {
@@ -236,22 +238,24 @@ export default function EditFormModel(props) {
     const selectedMemberIds = selectedMembers.map((member) => member._id);
 
     try {
-      // add an if clause here to avoid useless post without file
       const uploadResponse = await api.post("/uploads/singleFile", formData);
       const imagePath = uploadResponse.data.imagePath;
+
+      const updatedFields = {
+        ...fields,
+        // Inclui os campos dinâmicos de Product apenas se productFields existir
+        ...(props.productFields && {
+          fields: props.productFields.map((field) => ({
+            ...field,
+            value: fields[field.name] || field.value,
+          })),
+        }),
+      };
+
       const res = await api.put("/edit", {
         sourceId: props.userId,
         targetId: props.target._id.toString(),
-        fields: {
-          ...fields,
-          members: fields.members?.map((member) => member._id || member.id),
-          customer: fields.customer?._id,
-          department: fields.department?._id || props.target.department,
-          position: fields.position?._id || props.target.position,
-          service: fields.service?._id,
-          worker: fields.worker?._id,
-          seller: fields.seller?._id,
-        },
+        fields: updatedFields,
         label: modalOptions.label,
         image: imagePath ? imagePath : props.target.image,
         model: modalOptions.model,
@@ -259,7 +263,6 @@ export default function EditFormModel(props) {
         selectedMembers: selectedMemberIds,
         previousMembers: props.target["members"],
         services: selectedServices,
-        // add this shit everywhere in models
         lastEditedBy: props.userName || "Admin",
         isManager: modalOptions.label === "Colaborador" && props.tabIndex === 1,
         price:
@@ -282,6 +285,7 @@ export default function EditFormModel(props) {
             : fields.price,
         finalPrice,
       });
+
       if (res.data) {
         toast.success(`${modalOptions.label} Editado!`, {
           closeOnClick: true,
@@ -412,6 +416,13 @@ export default function EditFormModel(props) {
             </Grid2>
           </Box>
         ))}
+        {props.productFields && (
+          <ProductFields
+            productFields={props.productFields}
+            handleChange={handleChange}
+            fields={fields}
+          />
+        )}
       </DialogContent>
       <DialogActions>
         <Button

@@ -78,6 +78,9 @@ const RowButton = (props) => {
           mainColor={props.mainColor}
           buttonProps={props}
           options={selectedModal}
+          productFields={
+            currentOption?.page === "products" ? props.item.fields : ""
+          }
           userName={props.userName}
           userId={props.userId}
           openDialog={openDialog}
