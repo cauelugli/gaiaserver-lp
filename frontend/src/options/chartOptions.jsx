@@ -252,3 +252,48 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
     },
   ];
 };
+
+export const getRequestsPerCustomer = (jobsData, salesData, groupBy) => {
+  // Combina Jobs e Sales em uma única lista de requisições
+  const allRequests = [
+    ...jobsData.data.map((job) => ({ ...job, type: "Job" })), // Flag como Job
+    ...salesData.data.map((sale) => ({ ...sale, type: "Sale" })), // Flag como Sale
+  ];
+
+  // Agrupa requisições por cliente
+  const requestsByCustomer = {};
+
+  allRequests.forEach((request) => {
+    const customerId = request.customer; // ID do cliente associado à requisição
+
+    if (!requestsByCustomer[customerId]) {
+      requestsByCustomer[customerId] = [];
+    }
+
+    requestsByCustomer[customerId].push(request);
+  });
+
+  // Processa os dados para o gráfico
+  const chartData = Object.keys(requestsByCustomer).map((customerId) => {
+    const requests = requestsByCustomer[customerId];
+
+    // Processa as requisições por data (groupBy)
+    const groupedRequests = processData(requests, groupBy);
+
+    const labels = Object.keys(groupedRequests).sort();
+    const values = labels.map((date) => groupedRequests[date]);
+
+    return {
+      id: customerId,
+      title: `Cliente ${customerId}`, // Aqui você pode buscar o nome do cliente se necessário
+      labels: labels,
+      values: values,
+      length: values.map((value) => value.length),
+      color: "#4caf50", // Cor para o gráfico de requisições por cliente
+      type: "RequestsPerUser",
+      subtype: "created",
+    };
+  });
+
+  return chartData;
+};

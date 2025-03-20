@@ -14,14 +14,19 @@ import {
 import { icons } from "../../icons";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { getChartItems } from "../../options/chartOptions";
+import {
+  getChartItems,
+  getRequestsPerCustomer,
+} from "../../options/chartOptions";
 import ChartDataDetail from "./ChartDataDetail";
 import ChartReportsHeader from "./ChartReportsHeader";
+import ChartRequestPerCustomer from "./ChartRequestsPerCustomer";
 
 const ChartReports = ({ api, mainColor }) => {
   const [salesData, setSalesData] = useState(null);
   const [jobsData, setJobsData] = useState(null);
   const [stockData, setStockData] = useState(null);
+  const [requestsPerCustomer, setRequestsPerCustomerData] = useState({});
   const [groupBy, setGroupBy] = useState("day");
   const [selectedChart, setSelectedChart] = useState(0);
   const [isChartFocused, setIsChartFocused] = useState(false);
@@ -48,17 +53,29 @@ const ChartReports = ({ api, mainColor }) => {
         const sales = response.data.find((item) => item.model === "Sale");
         const jobs = response.data.find((item) => item.model === "Job");
         const stock = response.data.find((item) => item.model === "StockEntry");
+
         setSalesData(sales);
         setJobsData(jobs);
         setStockData(stock);
+
+        // Processa as requisições por cliente
+        const requestsPerCustomer = getRequestsPerCustomer(
+          jobs,
+          sales,
+          groupBy
+        );
+        if (requestsPerCustomer) {
+          setRequestsPerCustomerData(requestsPerCustomer);
+        } else {
+          console.error("Dados de requisições por cliente não encontrados.");
+        }
       } catch (err) {
-        console.error("Erro ao buscar dados");
+        console.error("Erro ao buscar dados:", err);
       }
     };
 
     fetchData();
-  }, [api]);
-
+  }, [api, groupBy]);
   if (
     !salesData ||
     !salesData.data ||
@@ -347,6 +364,11 @@ const ChartReports = ({ api, mainColor }) => {
                     </Grid2>
                   </Grid2>
                 ))}
+                <ChartRequestPerCustomer
+                  requestsPerCustomer={requestsPerCustomer}
+                  mainColor={mainColor}
+                  chartType={chartType}
+                />
               </Grid2>
             )}
             {isChartFocused && <Grid2 id="ghost" sx={{ width: "7vw" }} />}

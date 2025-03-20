@@ -45,7 +45,14 @@ router.get("/", async (req, res) => {
 router.get("/dashboard", async (req, res) => {
   let models = [];
   try {
-    const modelsToCheck = ["User", "Job", "Sale", "StockEntry"];
+    const modelsToCheck = [
+      "User",
+      "Job",
+      "Sale",
+      "StockEntry",
+      "Customer",
+      "Client",
+    ];
 
     for (const modelName of modelsToCheck) {
       const model = defineModel(modelName);
@@ -59,7 +66,7 @@ router.get("/dashboard", async (req, res) => {
           {
             status: 1,
             title: 1,
-            customer: 1,
+            customer: 1, // Incluído para associar ao cliente
             service: 1,
             worker: 1,
             address: 1,
@@ -82,7 +89,7 @@ router.get("/dashboard", async (req, res) => {
             createdAt: 1,
             status: 1,
             products: 1,
-            customer: 1,
+            customer: 1, // Incluído para associar ao cliente
             seller: 1,
             deliveryScheduledTo: 1,
             deliveryAddress: 1,
@@ -108,6 +115,8 @@ router.get("/dashboard", async (req, res) => {
             _id: 1,
           }
         );
+      } else if (modelName === "Customer" || modelName === "Client") {
+        data = await model.find({}, { name: 1, _id: 1 }); // Busca apenas nome e ID
       }
 
       models.push({
@@ -116,12 +125,51 @@ router.get("/dashboard", async (req, res) => {
       });
     }
 
+    // Adiciona um novo item para as requisições por cliente
+    const requestsPerCustomer = await getRequestsPerCustomer(models);
+    models.push({
+      model: "requestsPerCustomer",
+      data: requestsPerCustomer,
+    });
+
     res.status(200).json(models);
   } catch (err) {
     console.log("\nError fetching core data:", err, "\n");
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// Função para processar requisições por cliente
+const getRequestsPerCustomer = async (models) => {
+  const customers = models.find((item) => item.model === "Customer").data;
+  const clients = models.find((item) => item.model === "Client").data;
+  const jobs = models.find((item) => item.model === "Job").data;
+  const sales = models.find((item) => item.model === "Sale").data;
+
+  // Combina Customer e Client em uma única lista
+  const allClients = [...customers, ...clients];
+
+  // Mapeia as requisições por cliente
+  const requestsPerCustomer = allClients.map((client) => {
+    const clientJobs = jobs.filter(
+      (job) => job.customer === client._id.toString()
+    );
+    const clientSales = sales.filter(
+      (sale) => sale.customer === client._id.toString()
+    );
+
+    return {
+      clientId: client._id,
+      clientName: client.name,
+      requests: [
+        ...clientJobs.map((job) => ({ ...job, type: "Job" })), // Flag como Job
+        ...clientSales.map((sale) => ({ ...sale, type: "Sale" })), // Flag como Sale
+      ],
+    };
+  });
+
+  return requestsPerCustomer;
+};
 
 // GET USER'S NOTIFICATIONS
 router.get("/notifications/:userId", async (req, res) => {
