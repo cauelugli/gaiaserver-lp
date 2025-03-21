@@ -43,7 +43,7 @@ const ChartDataDetail = ({
     if (title.startsWith("Venda")) return "sale";
     if (title.startsWith("Entradas de Estoque")) return "stockEntry";
     if (title.startsWith("Job")) return "job";
-    return "";
+    return "customer";
   };
 
   const type = getType(title);
@@ -200,9 +200,45 @@ const ChartDataDetail = ({
                   ) : type === "job" ? (
                     <Typography variant="body1">{item.title}</Typography>
                   ) : (
-                    "null"
+                    <>
+                      {item.products ? (
+                        item.products?.map((product, index) => (
+                          <Grid2 key={index} item>
+                            <Tooltip
+                              title={
+                                <>
+                                  <Typography sx={{ color: "white" }}>
+                                    {product.name}
+                                  </Typography>
+                                  <Typography sx={{ color: "white" }}>
+                                    {product.count} x {product.sellValue}
+                                  </Typography>
+                                </>
+                              }
+                            >
+                              <Avatar
+                                alt={product.name || "Product Image"}
+                                src={`http://localhost:3000/static/${
+                                  product.images?.[0] ||
+                                  product.image?.[0] ||
+                                  ""
+                                }`}
+                                sx={{ width: 32, height: 32, mr: 0.5 }}
+                              />
+                            </Tooltip>
+                          </Grid2>
+                        ))
+                      ) : item.title ? (
+                        item.title
+                      ) : (
+                        <Button onClick={() => console.log("item", item)}>
+                          item
+                        </Button>
+                      )}
+                    </>
                   )}
                 </Grid2>
+
                 {hoveredIndex === index ? (
                   <icons.VisibilityIcon />
                 ) : type === "sale" ? (
@@ -215,7 +251,7 @@ const ChartDataDetail = ({
                             return acc + (product.count || 1) * value;
                           }, 0)
                           .toFixed(2)
-                      : "0.00"}
+                      : "4.04"}
                   </Typography>
                 ) : type === "stockEntry" ? (
                   <Typography sx={{ my: "auto" }}>
@@ -227,9 +263,23 @@ const ChartDataDetail = ({
                             return acc + (item.count || 1) * value;
                           }, 0)
                           .toFixed(2)
-                      : "0.00"}
+                      : "4.04"}
                   </Typography>
-                ) : null}
+                ) : item.products ? (
+                  <Typography sx={{ my: "auto" }}>
+                    R$
+                    {item.products
+                      ? item.products
+                          .reduce((acc, product) => {
+                            const value = product.sellValue || 0;
+                            return acc + (product.count || 1) * value;
+                          }, 0)
+                          .toFixed(2)
+                      : "4.04"}
+                  </Typography>
+                ) : (
+                  "idk"
+                )}
 
                 {hoveredIndex !== index && item.worker ? (
                   <Tooltip
