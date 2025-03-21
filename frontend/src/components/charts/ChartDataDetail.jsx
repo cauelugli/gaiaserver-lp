@@ -48,8 +48,6 @@ const ChartDataDetail = ({
 
   const type = getType(title);
 
-  console.log("type", type);
-
   return (
     <Grid2
       sx={{

@@ -209,8 +209,6 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
     .sort()
     .map((date) => processedAllJobsData[date]);
 
-  console.log("valuesAllSales", valuesAllSales);
-  console.log("labelsAllSales", labelsAllSales);
   return [
     {
       id: 1,
