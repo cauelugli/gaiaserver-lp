@@ -31,6 +31,7 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
       "security",
       "reports",
       "chat",
+      "config",
     ].includes(link)
   );
 

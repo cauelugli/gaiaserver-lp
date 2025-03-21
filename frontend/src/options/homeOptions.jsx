@@ -70,4 +70,10 @@ export const optionsMainblocks = [
     link: "/chat",
     permissionLabel: "chat",
   },
+  {
+    icon: <icons.SettingsIcon sx={{ fontSize: 52 }} />,
+    text: "Configurações",
+    link: "/config",
+    permissionLabel: "config",
+  },
 ];
