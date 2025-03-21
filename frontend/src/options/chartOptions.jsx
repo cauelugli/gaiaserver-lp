@@ -8,9 +8,9 @@ const translatedMonths = {
   "07": "Jul",
   "08": "Ago",
   "09": "Set",
-  "10": "Out",
-  "11": "Nov",
-  "12": "Dez",
+  10: "Out",
+  11: "Nov",
+  12: "Dez",
 };
 
 const formatLabels = (groupBy, labels) => {
@@ -76,21 +76,38 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
   const processedArchivedData = processData(archivedSales, groupBy);
   const processedAllData = processData(allSales, groupBy);
 
-  const labelsResolvedSales = Object.keys(processedResolvedData).sort();
-  const labelsPendingSales = Object.keys(processedPendingData).sort();
-  const labelsArchivedSales = Object.keys(processedArchivedData).sort();
-  const valuesResolvedSales = labelsResolvedSales.map(
-    (date) => processedResolvedData[date]
+  // Formatar labels de vendas
+  const labelsResolvedSales = formatLabels(
+    groupBy,
+    Object.keys(processedResolvedData).sort()
   );
-  const valuesPendingSales = labelsPendingSales.map(
-    (date) => processedPendingData[date]
-  );
-  const valuesArchivedSales = labelsArchivedSales.map(
-    (date) => processedArchivedData[date]
-  );
+  const valuesResolvedSales = Object.keys(processedResolvedData)
+    .sort()
+    .map((date) => processedResolvedData[date]);
 
-  const labelsAllSales = Object.keys(processedAllData).sort();
-  const valuesAllSales = labelsAllSales.map((date) => processedAllData[date]);
+  const labelsPendingSales = formatLabels(
+    groupBy,
+    Object.keys(processedPendingData).sort()
+  );
+  const valuesPendingSales = Object.keys(processedPendingData)
+    .sort()
+    .map((date) => processedPendingData[date]);
+
+  const labelsArchivedSales = formatLabels(
+    groupBy,
+    Object.keys(processedArchivedData).sort()
+  );
+  const valuesArchivedSales = Object.keys(processedArchivedData)
+    .sort()
+    .map((date) => processedArchivedData[date]);
+
+  const labelsAllSales = formatLabels(
+    groupBy,
+    Object.keys(processedAllData).sort()
+  );
+  const valuesAllSales = Object.keys(processedAllData)
+    .sort()
+    .map((date) => processedAllData[date]);
 
   // Processamento de Stock
   const resolvedStockEntries = stockData.data.filter(
@@ -109,23 +126,38 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
   const processedPendingStockData = processData(pendingStockEntries, groupBy);
   const processedAllStockData = processData(allStockEntries, groupBy);
 
-  const labelsResolvedStock = Object.keys(processedResolvedStockData).sort();
-  const labelsArchivedStock = Object.keys(processedArchivedStockData).sort();
-  const labelsPendingStock = Object.keys(processedPendingStockData).sort();
-  const valuesResolvedStock = labelsResolvedStock.map(
-    (date) => processedResolvedStockData[date]
+  // Formatar labels de estoque
+  const labelsResolvedStock = formatLabels(
+    groupBy,
+    Object.keys(processedResolvedStockData).sort()
   );
-  const valuesArchivedStock = labelsArchivedStock.map(
-    (date) => processedArchivedStockData[date]
-  );
-  const valuesPendingStock = labelsPendingStock.map(
-    (date) => processedPendingStockData[date]
-  );
+  const valuesResolvedStock = Object.keys(processedResolvedStockData)
+    .sort()
+    .map((date) => processedResolvedStockData[date]);
 
-  const labelsAllStock = Object.keys(processedAllStockData).sort();
-  const valuesAllStock = labelsAllStock.map(
-    (date) => processedAllStockData[date]
+  const labelsArchivedStock = formatLabels(
+    groupBy,
+    Object.keys(processedArchivedStockData).sort()
   );
+  const valuesArchivedStock = Object.keys(processedArchivedStockData)
+    .sort()
+    .map((date) => processedArchivedStockData[date]);
+
+  const labelsPendingStock = formatLabels(
+    groupBy,
+    Object.keys(processedPendingStockData).sort()
+  );
+  const valuesPendingStock = Object.keys(processedPendingStockData)
+    .sort()
+    .map((date) => processedPendingStockData[date]);
+
+  const labelsAllStock = formatLabels(
+    groupBy,
+    Object.keys(processedAllStockData).sort()
+  );
+  const valuesAllStock = Object.keys(processedAllStockData)
+    .sort()
+    .map((date) => processedAllStockData[date]);
 
   // Processamento de Jobs
   const resolvedJobs = jobsData.data.filter(
@@ -144,25 +176,41 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
   const processedPendingJobsData = processData(pendingJobs, groupBy);
   const processedAllJobsData = processData(allJobs, groupBy);
 
-  const labelsResolvedJobs = Object.keys(processedResolvedJobsData).sort();
-  const labelsArchivedJobs = Object.keys(processedArchivedJobsData).sort();
-  const labelsPendingJobs = Object.keys(processedPendingJobsData).sort();
-  const valuesResolvedJobs = labelsResolvedJobs.map(
-    (date) => processedResolvedJobsData[date]
+  // Formatar labels de jobs
+  const labelsResolvedJobs = formatLabels(
+    groupBy,
+    Object.keys(processedResolvedJobsData).sort()
   );
-  const valuesArchivedJobs = labelsArchivedJobs.map(
-    (date) => processedResolvedJobsData[date]
+  const valuesResolvedJobs = Object.keys(processedResolvedJobsData)
+    .sort()
+    .map((date) => processedResolvedJobsData[date]);
+
+  const labelsArchivedJobs = formatLabels(
+    groupBy,
+    Object.keys(processedArchivedJobsData).sort()
   );
-  console.log("valuesArchivedJobs", valuesArchivedJobs);
-  console.log("valuesResolvedJobs", valuesResolvedJobs);
+  const valuesArchivedJobs = Object.keys(processedArchivedJobsData)
+    .sort()
+    .map((date) => processedArchivedJobsData[date]);
 
-  const valuesPendingJobs = labelsPendingJobs.map(
-    (date) => processedPendingJobsData[date]
+  const labelsPendingJobs = formatLabels(
+    groupBy,
+    Object.keys(processedPendingJobsData).sort()
   );
+  const valuesPendingJobs = Object.keys(processedPendingJobsData)
+    .sort()
+    .map((date) => processedPendingJobsData[date]);
 
-  const labelsAllJobs = Object.keys(processedAllJobsData).sort();
-  const valuesAllJobs = labelsAllJobs.map((date) => processedAllJobsData[date]);
+  const labelsAllJobs = formatLabels(
+    groupBy,
+    Object.keys(processedAllJobsData).sort()
+  );
+  const valuesAllJobs = Object.keys(processedAllJobsData)
+    .sort()
+    .map((date) => processedAllJobsData[date]);
 
+  console.log("valuesAllSales", valuesAllSales);
+  console.log("labelsAllSales", labelsAllSales);
   return [
     {
       id: 1,
@@ -310,7 +358,7 @@ export const getRequestsPerCustomer = (jobsData, salesData, groupBy) => {
     const groupedRequests = processData(requests, groupBy);
 
     const labels = Object.keys(groupedRequests).sort();
-    const formattedLabels = formatLabels(groupBy, labels); 
+    const formattedLabels = formatLabels(groupBy, labels);
     const values = labels.map((date) => groupedRequests[date]);
 
     return {
