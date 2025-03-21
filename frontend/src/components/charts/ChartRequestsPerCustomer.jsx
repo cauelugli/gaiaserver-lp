@@ -8,6 +8,7 @@ import {
   Avatar,
   TextField,
   InputAdornment,
+  Popper,
 } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { BarChart } from "@mui/x-charts/BarChart";
@@ -15,6 +16,7 @@ import { useAppData } from "../../../src/AppDataContext";
 import { icons } from "../../icons";
 
 import ChartRequestsPerCustomerHeader from "./ChartRequestsPerCustomerHeader";
+import ChartDataDetail from "./ChartDataDetail";
 
 const ChartRequestPerCustomer = ({
   requestsPerCustomer,
@@ -31,6 +33,9 @@ const ChartRequestPerCustomer = ({
   );
   const [selectedCustomerDisplay, setSelectedCustomerDisplay] = useState("all");
   const [searchValue, setSearchValue] = React.useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [popoverData, setPopoverData] = useState("");
+  const [highlightedIndex, setHighlightedIndex] = useState(null);
 
   const filteredCustomers = requestsPerCustomer.filter((item) => {
     const customer = idIndexList.find(
@@ -57,6 +62,32 @@ const ChartRequestPerCustomer = ({
     );
     return customer?.name?.toLowerCase().includes(searchValue.toLowerCase());
   });
+
+  const handleChartClick = (item, index) => (e) => {
+    const chartRect = e.target.getBoundingClientRect();
+    const clickX = e.clientX - chartRect.left;
+    const clickIndex = Math.floor(
+      (clickX / chartRect.width) * item.labels.length
+    );
+
+    if (clickIndex >= 0 && clickIndex < item.labels.length) {
+      const selectedDate = item.labels[clickIndex];
+      const selectedValues = item.values[clickIndex] || [];
+
+      setPopoverData({ date: selectedDate, data: selectedValues });
+      setAnchorEl(e.currentTarget);
+      setHighlightedIndex(index);
+    } else {
+      setAnchorEl(null);
+      setHighlightedIndex(null);
+    }
+  };
+
+  const handleCloseChartClick = () => {
+    setPopoverData(null);
+    setAnchorEl(null);
+    setHighlightedIndex(null);
+  };
 
   return (
     <Grid2 container direction="column" sx={{ mt: 4 }}>
@@ -153,7 +184,7 @@ const ChartRequestPerCustomer = ({
                     )?.name || ""}
                   </Typography>
                 </Grid2>
-                <Grid2 item sx={{mt:-5}}>
+                <Grid2 item sx={{ mt: -5 }}>
                   {chartType === "line" ? (
                     <LineChart
                       xAxis={[
@@ -166,6 +197,7 @@ const ChartRequestPerCustomer = ({
                           color: selectedCustomer.color,
                         },
                       ]}
+                      onAxisClick={handleChartClick(selectedCustomer, 999)}
                       width={1450}
                       height={300}
                     />
@@ -181,6 +213,7 @@ const ChartRequestPerCustomer = ({
                           color: selectedCustomer.color,
                         },
                       ]}
+                      onAxisClick={handleChartClick(selectedCustomer, 999)}
                       width={1450}
                       height={300}
                     />
@@ -191,6 +224,21 @@ const ChartRequestPerCustomer = ({
           </Grid2>
         </Grid2>
       )}
+      <Popper
+        open={Boolean(anchorEl && highlightedIndex === 999)}
+        anchorEl={anchorEl}
+      >
+        <ChartDataDetail
+          title={
+            idIndexList.find((customer) => customer.id === selectedCustomer.customerId)
+              ?.name || ""
+          }
+          popoverData={popoverData}
+          handleCloseChartClick={handleCloseChartClick}
+          mainColor={mainColor}
+          groupBy={groupBy}
+        />
+      </Popper>
     </Grid2>
   );
 };
