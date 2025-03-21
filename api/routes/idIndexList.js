@@ -27,11 +27,23 @@ router.get("/", async (req, res) => {
 
     for (const model of modelList) {
       const items = await model.find({}, { name: 1, image: 1 });
-      const formattedItems = items.map((item) => ({
-        name: item.name,
-        image: item.image,
-        id: item._id.toString(),
-      }));
+      const formattedItems = items.map((item) => {
+        let customerType = "";
+
+        if (model === Customer) {
+          customerType = "Customer";
+        } else if (model === Client) {
+          customerType = "Client";
+        }
+
+        return {
+          name: item.name,
+          image: item.image,
+          id: item._id.toString(),
+          customerType: customerType,
+        };
+      });
+
       data = data.concat(formattedItems);
     }
 

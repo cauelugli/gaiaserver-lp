@@ -122,6 +122,9 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
   const valuesArchivedJobs = labelsArchivedJobs.map(
     (date) => processedResolvedJobsData[date]
   );
+  console.log("valuesArchivedJobs", valuesArchivedJobs);
+  console.log("valuesResolvedJobs", valuesResolvedJobs);
+
   const valuesPendingJobs = labelsPendingJobs.map(
     (date) => processedPendingJobsData[date]
   );
@@ -205,7 +208,7 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
       title: "Jobs Arquivados",
       labels: labelsArchivedJobs,
       values: valuesArchivedJobs,
-      length: valuesArchivedJobs.map((value) => value.length),
+      length: valuesArchivedJobs.map((value) => value?.length),
       color: "#e04414",
       type: "Job",
       subtype: "archived",
@@ -280,12 +283,13 @@ export const getRequestsPerCustomer = (jobsData, salesData, groupBy) => {
     // Processa as requisições por data (groupBy)
     const groupedRequests = processData(requests, groupBy);
 
+    console.log("groupedRequests", groupedRequests);
+
     const labels = Object.keys(groupedRequests).sort();
     const values = labels.map((date) => groupedRequests[date]);
 
     return {
-      id: customerId,
-      title: `Cliente ${customerId}`, // Aqui você pode buscar o nome do cliente se necessário
+      customerId: customerId,
       labels: labels,
       values: values,
       length: values.map((value) => value.length),

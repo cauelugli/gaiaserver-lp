@@ -4,6 +4,7 @@ import AbcIcon from "@mui/icons-material/Abc";
 import AddIcon from "@mui/icons-material/Add";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import AppsIcon from "@mui/icons-material/Apps";
 import ArchiveIcon from "@mui/icons-material/Archive";
@@ -93,6 +94,7 @@ const icons = {
   AddIcon,
   AccountCircleIcon,
   AdminPanelSettingsIcon,
+  AllInclusiveIcon,
   ApartmentIcon,
   AppsIcon,
   ArchiveIcon,

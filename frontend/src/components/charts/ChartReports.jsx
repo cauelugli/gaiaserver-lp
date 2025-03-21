@@ -58,17 +58,12 @@ const ChartReports = ({ api, mainColor }) => {
         setJobsData(jobs);
         setStockData(stock);
 
-        // Processa as requisições por cliente
         const requestsPerCustomer = getRequestsPerCustomer(
           jobs,
           sales,
           groupBy
         );
-        if (requestsPerCustomer) {
-          setRequestsPerCustomerData(requestsPerCustomer);
-        } else {
-          console.error("Dados de requisições por cliente não encontrados.");
-        }
+        setRequestsPerCustomerData(requestsPerCustomer);
       } catch (err) {
         console.error("Erro ao buscar dados:", err);
       }
@@ -76,6 +71,7 @@ const ChartReports = ({ api, mainColor }) => {
 
     fetchData();
   }, [api, groupBy]);
+
   if (
     !salesData ||
     !salesData.data ||
@@ -368,6 +364,7 @@ const ChartReports = ({ api, mainColor }) => {
                   requestsPerCustomer={requestsPerCustomer}
                   mainColor={mainColor}
                   chartType={chartType}
+                  groupBy={groupBy}
                 />
               </Grid2>
             )}
