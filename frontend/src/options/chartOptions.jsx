@@ -1,3 +1,34 @@
+const translatedMonths = {
+  "01": "Jan",
+  "02": "Fev",
+  "03": "Mar",
+  "04": "Abr",
+  "05": "Mai",
+  "06": "Jun",
+  "07": "Jul",
+  "08": "Ago",
+  "09": "Set",
+  "10": "Out",
+  "11": "Nov",
+  "12": "Dez",
+};
+
+const formatLabels = (groupBy, labels) => {
+  return labels.map((label) => {
+    if (groupBy === "month") {
+      // "2025-02" -> "Fev/25"
+      const [year, month] = label.split("-");
+      return `${translatedMonths[month]}/${year.slice(2)}`;
+    } else if (groupBy === "day") {
+      // "2025-02-01" -> "01/02"
+      // eslint-disable-next-line no-unused-vars
+      const [year, month, day] = label.split("-");
+      return `${day}/${month}`;
+    }
+    return label;
+  });
+};
+
 export const processData = (data, groupBy) => {
   const groupedData = {};
 
@@ -257,17 +288,15 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
 };
 
 export const getRequestsPerCustomer = (jobsData, salesData, groupBy) => {
-  // Combina Jobs e Sales em uma única lista de requisições
   const allRequests = [
-    ...jobsData.data.map((job) => ({ ...job, type: "Job" })), // Flag como Job
-    ...salesData.data.map((sale) => ({ ...sale, type: "Sale" })), // Flag como Sale
+    ...jobsData.data.map((job) => ({ ...job, type: "Job" })),
+    ...salesData.data.map((sale) => ({ ...sale, type: "Sale" })),
   ];
 
-  // Agrupa requisições por cliente
   const requestsByCustomer = {};
 
   allRequests.forEach((request) => {
-    const customerId = request.customer; // ID do cliente associado à requisição
+    const customerId = request.customer;
 
     if (!requestsByCustomer[customerId]) {
       requestsByCustomer[customerId] = [];
@@ -276,24 +305,20 @@ export const getRequestsPerCustomer = (jobsData, salesData, groupBy) => {
     requestsByCustomer[customerId].push(request);
   });
 
-  // Processa os dados para o gráfico
   const chartData = Object.keys(requestsByCustomer).map((customerId) => {
     const requests = requestsByCustomer[customerId];
-
-    // Processa as requisições por data (groupBy)
     const groupedRequests = processData(requests, groupBy);
 
-    console.log("groupedRequests", groupedRequests);
-
     const labels = Object.keys(groupedRequests).sort();
+    const formattedLabels = formatLabels(groupBy, labels); 
     const values = labels.map((date) => groupedRequests[date]);
 
     return {
       customerId: customerId,
-      labels: labels,
+      labels: formattedLabels,
       values: values,
       length: values.map((value) => value.length),
-      color: "#4caf50", // Cor para o gráfico de requisições por cliente
+      color: "#4caf50",
       type: "RequestsPerUser",
       subtype: "created",
     };
