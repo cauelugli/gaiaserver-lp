@@ -14,7 +14,7 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 
-export default function Dashboard() {
+export default function Reports() {
 // { onClose }
   const [configData, setConfigData] = React.useState([]);
 
@@ -22,7 +22,7 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data[0].dashboard);
+        setConfigData(config.data[0].reports);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -35,7 +35,7 @@ export default function Dashboard() {
       <DialogTitle
         sx={{ textAlign: "center", fontSize: 20, fontWeight: "bold" }}
       >
-        Configurações da Dashboard
+        Configurações de Relatórios
       </DialogTitle>
       {configData.length !== 0 && (
         <>

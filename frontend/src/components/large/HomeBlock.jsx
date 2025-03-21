@@ -29,7 +29,6 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
       "services",
       "finance",
       "security",
-      "dashboard",
       "reports",
       "chat",
     ].includes(link)

@@ -7,10 +7,6 @@ import { modals } from "./modals";
 
 const pageButtonOptions = [
   {
-    page: "dashboard",
-    label: "Dashboard",
-  },
-  {
     page: "customers",
     pageButtonOptions: [
       {

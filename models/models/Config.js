@@ -48,12 +48,6 @@ const configSchema = new Schema({
       default: "",
     },
   },
-  dashboard: {
-    showAgenda: {
-      type: Boolean,
-      default: true,
-    },
-  },
   departments: {
     canBeDeleted: {
       type: Boolean,
@@ -77,9 +71,6 @@ const configSchema = new Schema({
     },
   },
   permissions: {
-    dashboard: {
-      type: Array,
-    },
     customers: {
       type: Array,
     },

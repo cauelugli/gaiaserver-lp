@@ -25,7 +25,6 @@ import pageOptions from "./options/pageOptions";
 
 import Account from "./pages/Account";
 import Config from "./pages/Config";
-import Dashboard from "./pages/Dashboard";
 import Files from "./pages/Files";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -275,7 +274,6 @@ export default function App() {
                             handleShortcutClick={"handleShortcutClick"}
                             allowedLinks={allowedLinks}
                             configData={configData}
-                            configDashboard={configData.dashboard}
                             onMount={() => handleSidebarVisibility(false)}
                             onUnmount={() => handleSidebarVisibility(true)}
                             currentWindowSize={currentWindowSize}
@@ -299,25 +297,6 @@ export default function App() {
                             refreshData={refreshData}
                             setRefreshData={setRefreshData}
                             topBar={userPreferences.barPosition}
-                          />
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/dashboard"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "dashboard") ? (
-                          <Dashboard
-                            userId={userData._id}
-                            userUsername={userData.username}
-                            configDashboard={configData.dashboard}
-                            configCustomization={configData.customization}
-                            topBar={userPreferences.barPosition}
-                            currentWindowSize={currentWindowSize}
-                            api={api}
                           />
                         ) : (
                           <Navigate to="/login" />
@@ -433,7 +412,6 @@ export default function App() {
                               topBar={userPreferences.barPosition}
                               tableOrCardView={userPreferences.tableOrCardView}
                               cardSize={userPreferences.cardSize}
-                              configDashboard={configData.dashboard}
                               configCustomization={configData.customization}
                               currentWindowSize={currentWindowSize}
                               windowSizeSetter={windowSizeSetter}

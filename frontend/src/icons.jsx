@@ -27,7 +27,6 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CloudIcon from "@mui/icons-material/Cloud";
 import CloudQueueIcon from "@mui/icons-material/CloudQueue";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -117,7 +116,6 @@ const icons = {
   CloudIcon,
   CloudQueueIcon,
   ColorLensIcon,
-  DashboardIcon,
   DeleteIcon,
   DoneAllIcon,
   DownloadIcon,

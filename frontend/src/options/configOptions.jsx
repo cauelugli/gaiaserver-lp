@@ -6,11 +6,6 @@ import { icons } from "../icons";
 
 export const permissionOptions = [
   {
-    tooltip: "Dashboard",
-    label: "dashboard",
-    icon: <icons.DashboardIcon sx={{ fontSize: 22 }} />,
-  },
-  {
     tooltip: "Clientes",
     label: "customers",
     icon: <icons.WorkIcon sx={{ fontSize: 22 }} />,

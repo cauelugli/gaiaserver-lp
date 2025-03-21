@@ -49,7 +49,7 @@ const ChartReports = ({ api, mainColor }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/get/dashboard");
+        const response = await api.get("/get/reports");
         const sales = response.data.find((item) => item.model === "Sale");
         const jobs = response.data.find((item) => item.model === "Job");
         const stock = response.data.find((item) => item.model === "StockEntry");

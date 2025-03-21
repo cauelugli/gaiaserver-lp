@@ -5,7 +5,7 @@ import { icons } from "../icons";
 import AgendaModal from "../forms/config/Agenda";
 import CustomersModal from "../forms/config/Customers";
 import CustomizationModal from "../forms/config/Customization";
-import DashboardModal from "../forms/config/Dashboard";
+import ReportsModal from "../forms/config/Reports";
 import DepartmentsModal from "../forms/config/Departments";
 import FilesModal from "../forms/config/Files";
 import FinanceModal from "../forms/config/Finance";
@@ -45,12 +45,6 @@ export const configModalOptions = (userName, userId, configCustomization) => [
     isBasic: true,
   },
   {
-    icon: React.createElement(icons.DashboardIcon, { sx: { fontSize: "4vw" } }),
-    text: "Dashboard",
-    modal: React.createElement(DashboardModal),
-    isBasic: false,
-  },
-  {
     icon: React.createElement(icons.LanIcon, { sx: { fontSize: "4vw" } }),
     text: "Departamentos",
     modal: React.createElement(DepartmentsModal),
@@ -79,8 +73,18 @@ export const configModalOptions = (userName, userId, configCustomization) => [
     text: "Permissões",
     modal: React.createElement(PermissionsModal),
     isBasic: true,
+  },{
+    icon: React.createElement(icons.BarChartIcon, { sx: { fontSize: "4vw" } }),
+    text: "Relatórios",
+    modal: React.createElement(ReportsModal),
+    isBasic: true,
   },
   {
+    icon: React.createElement(icons.AutoFixNormalIcon, { sx: { fontSize: "4vw" } }),
+    text: "Personalização",
+    modal: React.createElement(CustomizationModal),
+    isBasic: false,
+  },{
     icon: React.createElement(icons.AutoFixNormalIcon, { sx: { fontSize: "4vw" } }),
     text: "Personalização",
     modal: React.createElement(CustomizationModal),

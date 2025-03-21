@@ -3,10 +3,6 @@ import React from "react";
 
 const pageOptions = [
   {
-    page: "dashboard",
-    label: "Dashboard",
-  },
-  {
     page: "customers",
     label: "Clientes",
     models: ["Customer", "Client"],

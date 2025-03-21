@@ -7,12 +7,6 @@ import { Divider, Grid2, List, ListItemButton, Typography } from "@mui/material"
 import { icons } from "../../icons";
 
 const options = [
-  {
-    label: "Dashboard",
-    icon: <icons.DashboardIcon />,
-    link: "/",
-    disabled: true,
-  },
   { label: "Clientes", icon: <icons.WorkIcon />, link: "/customers" },
   { label: "Solicitações", icon: <icons.GradingIcon />, link: "/requests" },
   { label: "Colaboradores", icon: <icons.GroupIcon />, link: "/users" },
@@ -53,7 +47,7 @@ const SideBar = ({ configData, user }) => {
     if (user.username === "admin") return true;
     if (!configData.permissions) return false;
 
-    const route = routePath === "/" ? "dashboard" : routePath.slice(1);
+    const route = routePath.slice(1);
     if (route === "" || route === "help" || route === "account") {
       return true;
     }

@@ -15,7 +15,6 @@ const options = [
   { label: "Produtos", icon: <icons.SellIcon />, link: "/products" },
   { label: "Estoque", icon: <icons.WarehouseIcon />, link: "/stock" },
   { label: "Financeiro", icon: <icons.AttachMoneyIcon />, link: "/finance" },
-  { label: "Dashboard", icon: <icons.DashboardIcon />, link: "/dashboard" },
   { label: "Chat", icon: <icons.ChatIcon />, link: "/", disabled: true },
   { label: "Relatórios", icon: <icons.AssessmentIcon />, link: "/reports" },
   {

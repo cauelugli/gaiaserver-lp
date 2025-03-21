@@ -41,8 +41,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET DASHBOARD DATA
-router.get("/dashboard", async (req, res) => {
+// GET REPORTS DATA
+router.get("/reports", async (req, res) => {
   let models = [];
   try {
     const modelsToCheck = [
