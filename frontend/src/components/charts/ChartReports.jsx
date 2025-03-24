@@ -40,6 +40,7 @@ const ChartReports = ({ api, mainColor }) => {
     Job: "Jobs",
     StockEntry: "Estoque",
   };
+  const [selectedDate, setSelectedDate] = useState({ type: "", value: [] });
 
   const handleHighlightItem = (item) => {
     setSelectedChart(item);
@@ -125,6 +126,8 @@ const ChartReports = ({ api, mainColor }) => {
             setGroupBy={setGroupBy}
             isChartFocused={isChartFocused}
             setIsChartFocused={setIsChartFocused}
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
           />
 
           <Grid2

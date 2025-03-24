@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import { icons } from "../../icons";
+import ChartDate from "./ChartDate";
 
 const ChartReportsHeader = ({
   displayChart,
@@ -23,6 +24,8 @@ const ChartReportsHeader = ({
   setGroupBy,
   isChartFocused,
   setIsChartFocused,
+  selectedDate,
+  setSelectedDate,
 }) => {
   return (
     <Grid2 sx={{ m: 2 }} container direction="row" alignItems="center">
@@ -79,17 +82,11 @@ const ChartReportsHeader = ({
           <MenuItem value="month">Por Mês</MenuItem>
         </Select>
       </FormControl>
-      {groupBy === "day" ? (
-        <Grid2>
-          <>day</>
-        </Grid2>
-      ) : groupBy === "month" ? (
-        <Grid2>
-          <>month</>
-        </Grid2>
-      ) : (
-        ""
-      )}
+      <ChartDate
+        groupBy={groupBy}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
 
       {isChartFocused && (
         <Button
