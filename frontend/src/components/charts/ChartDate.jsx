@@ -28,18 +28,18 @@ const ChartDate = ({ groupBy, selectedDate, setSelectedDate }) => {
   const [applied, setApplied] = useState(false);
 
   const months = [
-    { value: "01", label: "Janeiro" },
-    { value: "02", label: "Fevereiro" },
-    { value: "03", label: "Março" },
-    { value: "04", label: "Abril" },
-    { value: "05", label: "Maio" },
-    { value: "06", label: "Junho" },
-    { value: "07", label: "Julho" },
-    { value: "08", label: "Agosto" },
-    { value: "09", label: "Setembro" },
-    { value: "10", label: "Outubro" },
-    { value: "11", label: "Novembro" },
-    { value: "12", label: "Dezembro" },
+    { value: "Jan", label: "Janeiro" },
+    { value: "Fev", label: "Fevereiro" },
+    { value: "Mar", label: "Março" },
+    { value: "Abr", label: "Abril" },
+    { value: "Mai", label: "Maio" },
+    { value: "Jun", label: "Junho" },
+    { value: "Jul", label: "Julho" },
+    { value: "Ago", label: "Agosto" },
+    { value: "Set", label: "Setembro" },
+    { value: "Out", label: "Outubro" },
+    { value: "Nov", label: "Novembro" },
+    { value: "Dez", label: "Dezembro" },
   ];
 
   useEffect(() => {

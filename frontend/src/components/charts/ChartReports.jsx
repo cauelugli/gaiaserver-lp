@@ -21,6 +21,9 @@ import {
 import ChartDataDetail from "./ChartDataDetail";
 import ChartReportsHeader from "./ChartReportsHeader";
 import ChartRequestPerCustomer from "./ChartRequestsPerCustomer";
+import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
+dayjs.extend(isBetween);
 
 const ChartReports = ({ api, mainColor }) => {
   const [salesData, setSalesData] = useState(null);
@@ -111,6 +114,48 @@ const ChartReports = ({ api, mainColor }) => {
     setPopoverData(null);
     setAnchorEl(null);
     setHighlightedIndex(null);
+  };
+
+  const filterDataByDate = (labels, data) => {
+    if (!selectedDate.value || selectedDate.value.length === 0) {
+      return { filteredLabels: labels, filteredData: data };
+    }
+
+    if (selectedDate.type === "day") {
+      const [start, end] = selectedDate.value;
+      const startDate = dayjs(start, "DD/MM");
+      const endDate = dayjs(end, "DD/MM");
+
+      const filteredIndices = labels
+        .map((label, index) => {
+          const currentDate = dayjs(label, "DD/MM");
+          return currentDate.isBetween(startDate, endDate, "day", "[]")
+            ? index
+            : null;
+        })
+        .filter((index) => index !== null);
+
+      const filteredLabels = filteredIndices.map((index) => labels[index]);
+      const filteredData = filteredIndices.map((index) => data[index]);
+
+      return { filteredLabels, filteredData };
+    }
+
+    if (selectedDate.type === "month") {
+      const filteredIndices = labels
+        .map((label, index) => {
+          const monthPart = label.substring(0, 3);
+          return selectedDate.value.includes(monthPart) ? index : null;
+        })
+        .filter((index) => index !== null);
+
+      const filteredLabels = filteredIndices.map((index) => labels[index]);
+      const filteredData = filteredIndices.map((index) => data[index]);
+
+      return { filteredLabels, filteredData };
+    }
+
+    return { filteredLabels: labels, filteredData: data };
   };
 
   return (
@@ -292,14 +337,20 @@ const ChartReports = ({ api, mainColor }) => {
                                     <LineChart
                                       xAxis={[
                                         {
-                                          data: item.labels,
+                                          data: filterDataByDate(
+                                            chartItems[selectedChart].labels,
+                                            chartItems[selectedChart].length
+                                          ).filteredLabels,
                                           scaleType: "point",
                                         },
                                       ]}
                                       yAxis={[{ tickMinStep: 1, min: 0 }]}
                                       series={[
                                         {
-                                          data: item.length,
+                                          data: filterDataByDate(
+                                            chartItems[selectedChart].labels,
+                                            chartItems[selectedChart].length
+                                          ).filteredData,
                                           color: item.color,
                                         },
                                       ]}
@@ -314,7 +365,10 @@ const ChartReports = ({ api, mainColor }) => {
                                     <BarChart
                                       xAxis={[
                                         {
-                                          data: item.labels,
+                                          data: filterDataByDate(
+                                            chartItems[selectedChart].labels,
+                                            chartItems[selectedChart].length
+                                          ).filteredLabels,
                                           scaleType: "band",
                                           categoryGapRatio: 0.7,
                                           tickPlacement: "middle",
@@ -323,7 +377,10 @@ const ChartReports = ({ api, mainColor }) => {
                                       yAxis={[{ tickMinStep: 1, min: 0 }]}
                                       series={[
                                         {
-                                          data: item.length,
+                                          data: filterDataByDate(
+                                            chartItems[selectedChart].labels,
+                                            chartItems[selectedChart].length
+                                          ).filteredData,
                                           color: item.color,
                                         },
                                       ]}
