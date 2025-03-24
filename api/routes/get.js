@@ -76,6 +76,7 @@ router.get("/reports", async (req, res) => {
             createdAt: 1,
             resolvedBy: 1,
             resolvedAt: 1,
+            resolution: 1,
             products: 1,
             price: 1,
             number: 1,
@@ -89,7 +90,7 @@ router.get("/reports", async (req, res) => {
             createdAt: 1,
             status: 1,
             products: 1,
-            customer: 1, // Incluído para associar ao cliente
+            customer: 1,
             seller: 1,
             deliveryScheduledTo: 1,
             deliveryAddress: 1,
@@ -97,6 +98,7 @@ router.get("/reports", async (req, res) => {
             createdAt: 1,
             resolvedBy: 1,
             resolvedAt: 1,
+            resolution: 1,
             number: 1,
             _id: 1,
           }

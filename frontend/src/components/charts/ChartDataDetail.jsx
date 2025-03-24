@@ -201,7 +201,7 @@ const ChartDataDetail = ({
                     <Typography variant="body1">{item.title}</Typography>
                   ) : (
                     <>
-                      {item.products ? (
+                      {item.products.length !== 0 ? (
                         item.products?.map((product, index) => (
                           <Grid2 key={index} item>
                             <Tooltip
@@ -229,7 +229,7 @@ const ChartDataDetail = ({
                           </Grid2>
                         ))
                       ) : item.title ? (
-                        item.title
+                        <Typography>{item.title}</Typography>
                       ) : (
                         <Button onClick={() => console.log("item", item)}>
                           item
@@ -244,7 +244,7 @@ const ChartDataDetail = ({
                 ) : type === "sale" ? (
                   <Typography sx={{ my: "auto" }}>
                     R$
-                    {item.products
+                    {item.products.length !== 0
                       ? item.products
                           .reduce((acc, product) => {
                             const value = product.sellValue || 0;
@@ -256,7 +256,7 @@ const ChartDataDetail = ({
                 ) : type === "stockEntry" ? (
                   <Typography sx={{ my: "auto" }}>
                     R$
-                    {item.items
+                    {item.items.length !== 0
                       ? item.items
                           .reduce((acc, item) => {
                             const value = item.buyValue || 0;
@@ -265,7 +265,7 @@ const ChartDataDetail = ({
                           .toFixed(2)
                       : "4.04"}
                   </Typography>
-                ) : item.products ? (
+                ) : item.products.length !== 0 ? (
                   <Typography sx={{ my: "auto" }}>
                     R$
                     {item.products
@@ -278,7 +278,7 @@ const ChartDataDetail = ({
                       : "4.04"}
                   </Typography>
                 ) : (
-                  "idk"
+                  <Typography>R$ {item.price.toFixed(2)}</Typography>
                 )}
 
                 {hoveredIndex !== index && item.worker ? (

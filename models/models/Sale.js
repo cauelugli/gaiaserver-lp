@@ -64,6 +64,9 @@ saleSchema = new mongoose.Schema({
   requester: {
     type: String,
   },
+  resolution: {
+    type: String,
+  },
   resolvedAt: {
     type: String,
   },

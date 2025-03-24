@@ -312,6 +312,19 @@ const ChartItemDetail = ({
           ""
         )}
 
+        {selectedItem.price ? (
+          <Grid2 sx={{ mb: 1, p: 1 }}>
+            <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
+              Valor
+            </Typography>
+            <Typography sx={{ my: "auto", ml: 2 }}>
+              R${selectedItem.price.toFixed(2)}
+            </Typography>
+          </Grid2>
+        ) : (
+          ""
+        )}
+
         <Grid2 sx={{ mb: 1, p: 1 }}>
           <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
             Status
@@ -320,6 +333,19 @@ const ChartItemDetail = ({
             {selectedItem.status}
           </Typography>
         </Grid2>
+
+        {selectedItem.resolution ? (
+          <Grid2 sx={{ mb: 1, p: 1 }}>
+            <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
+              Resolução
+            </Typography>
+            <Typography sx={{ my: "auto", ml: 2 }}>
+              {selectedItem.resolution}
+            </Typography>
+          </Grid2>
+        ) : (
+          ""
+        )}
       </Grid2>
     </Grid2>
   );
