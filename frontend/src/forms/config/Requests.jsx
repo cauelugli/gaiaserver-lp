@@ -35,9 +35,6 @@ import {
 
 import { icons } from "../../icons";
 
-import ManagerSelectTableCell from "../../components/tableCells/ManagerSelectTableCell";
-import AlternateManagerSelectTableCell from "../../components/tableCells/AlternateManagerSelectTableCell";
-
 export default function Requests({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
   const [requestsNeedApproval, setRequestsNeedApproval] = React.useState(null);
@@ -151,115 +148,6 @@ export default function Requests({ onClose }) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid2 item sx={{ my: 1.5 }}>
-                    <Grid2
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      sx={{ px: 4 }}
-                    >
-                      <Tooltip
-                        title={
-                          <Typography sx={{ fontSize: 12, color: "white" }}>
-                            Se a opção marcada for "Sim", o 'status' de uma nova
-                            solicitação de Job será "Aberto". Se estiver marcado
-                            "Não", o status será 'Aprovado'. A opção padrão é
-                            "Sim".
-                          </Typography>
-                        }
-                      >
-                        <Typography sx={{ my: "auto" }}>
-                          Solicitações Precisam de Aprovação do Gerente
-                        </Typography>
-                      </Tooltip>
-                      <RadioGroup
-                        row
-                        value={requestsNeedApproval}
-                        onChange={(e) =>
-                          setRequestsNeedApproval(e.target.value)
-                        }
-                      >
-                        <FormControlLabel
-                          value={Boolean(true)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
-                          }
-                        />
-                        <FormControlLabel
-                          value={Boolean(false)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
-                          }
-                        />
-                      </RadioGroup>
-                    </Grid2>
-                  </Grid2>
-                  <Grid2 item sx={{ my: 1.5 }}>
-                    <Grid2
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      sx={{ px: 4 }}
-                    >
-                      <Tooltip
-                        title={
-                          <Typography sx={{ fontSize: 12, color: "white" }}>
-                            Selecione o Gerente que será responsável pela
-                            Aprovação das Requisições solicitadas.
-                          </Typography>
-                        }
-                      >
-                        <Typography sx={{ my: "auto" }}>
-                          Gerente Aprovador
-                        </Typography>
-                      </Tooltip>
-                      <ManagerSelectTableCell
-                        fromConfig
-                        setRequestsApproverManager={setRequestsApproverManager}
-                        requestsApproverManager={requestsApproverManager}
-                        field={""}
-                        fields={""}
-                        type="requests"
-                      />
-                    </Grid2>
-                  </Grid2>
-                  <Grid2 item sx={{ my: 1.5 }}>
-                    <Grid2
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      sx={{ px: 4 }}
-                    >
-                      <Tooltip
-                        title={
-                          <Typography sx={{ fontSize: 12, color: "white" }}>
-                            Selecione um Colaborador que também poderá Aprovar
-                            as Solicitações além do Gerente. Por padrão a opção
-                            é "Nenhum".
-                          </Typography>
-                        }
-                      >
-                        <Typography sx={{ my: "auto" }}>Suplente</Typography>
-                      </Tooltip>
-                      <AlternateManagerSelectTableCell
-                        type="requests"
-                        fromConfig
-                        setRequestsApproverAlternate={
-                          setRequestsApproverAlternate
-                        }
-                        requestsApproverAlternate={requestsApproverAlternate}
-                        approverManager={requestsApproverManager}
-                        field={{ dynamicData: "users", required: false }}
-                      />
-                    </Grid2>
-                  </Grid2>
-
                   <Grid2 item sx={{ my: 1.5 }}>
                     <Grid2
                       container

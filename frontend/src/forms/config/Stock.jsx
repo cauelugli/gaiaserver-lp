@@ -25,8 +25,6 @@ import {
 } from "@mui/material";
 
 import { icons } from "../../icons";
-import ManagerSelectTableCell from "../../components/tableCells/ManagerSelectTableCell";
-import AlternateManagerSelectTableCell from "../../components/tableCells/AlternateManagerSelectTableCell";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -133,122 +131,6 @@ export default function Stock({ onClose }) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid2 item sx={{ my: 1.5 }}>
-                    <Grid2
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      sx={{ px: 4 }}
-                    >
-                      <Tooltip
-                        title={
-                          <Typography sx={{ fontSize: 12, color: "white" }}>
-                            Se a opção marcada for "Sim", o 'status' de uma nova
-                            Entrada de Estoque será "Aberto". Se estiver marcado
-                            "Não", o status será 'Aprovado'. A opção padrão é
-                            "Sim".
-                          </Typography>
-                        }
-                      >
-                        <Typography sx={{ my: "auto", mr: 1 }}>
-                          Entradas de Estoque Precisam de Aprovação do Gerente
-                        </Typography>
-                      </Tooltip>
-                      <RadioGroup
-                        row
-                        value={stockEntriesNeedApproval}
-                        onChange={(e) =>
-                          setStockEntriesNeedApproval(e.target.value)
-                        }
-                      >
-                        <FormControlLabel
-                          value={Boolean(true)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
-                          }
-                        />
-                        <FormControlLabel
-                          value={Boolean(false)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
-                          }
-                        />
-                      </RadioGroup>
-                    </Grid2>
-                  </Grid2>
-                  <Grid2 item sx={{ my: 1.5 }}>
-                    <Grid2
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      sx={{ px: 4 }}
-                    >
-                      <Tooltip
-                        title={
-                          <Typography sx={{ fontSize: 12, color: "white" }}>
-                            Selecione o Gerente que será responsável pela
-                            Aprovação das Entradas de Estoque solicitadas. Este
-                            Gerente será notificado também para novas
-                            Solicitações de Compras de Produtos.
-                          </Typography>
-                        }
-                      >
-                        <Typography sx={{ my: "auto" }}>
-                          Gerente Aprovador
-                        </Typography>
-                      </Tooltip>
-                      <ManagerSelectTableCell
-                        fromConfig
-                        stockEntriesApproverManager={
-                          stockEntriesApproverManager
-                        }
-                        setStockEntriesApproverManager={
-                          setStockEntriesApproverManager
-                        }
-                        field={""}
-                        fields={""}
-                        type="stock"
-                      />
-                    </Grid2>
-                  </Grid2>
-                  <Grid2 item sx={{ my: 1.5 }}>
-                    <Grid2
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      sx={{ px: 4 }}
-                    >
-                      <Tooltip
-                        title={
-                          <Typography sx={{ fontSize: 12, color: "white" }}>
-                            Selecione um Colaborador que também poderá Aprovar
-                            as Entradas de Estoque além do Gerente. Por padrão a
-                            opção é "Nenhum".
-                          </Typography>
-                        }
-                      >
-                        <Typography sx={{ my: "auto" }}>Suplente</Typography>
-                      </Tooltip>
-                      <AlternateManagerSelectTableCell
-                        type="stock"
-                        fromConfig
-                        setStockEntriesApproverAlternate={
-                          setStockEntriesApproverAlternate
-                        }
-                        stockEntriesApproverAlternate={
-                          stockEntriesApproverAlternate
-                        }
-                        approverManager={stockEntriesApproverManager}
-                        field={{ dynamicData: "users", required: false }}
-                      />
-                    </Grid2>
-                  </Grid2>
                   <Grid2 item sx={{ my: 1.5 }}>
                     <Grid2
                       container

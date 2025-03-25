@@ -4,7 +4,6 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const Product = require("../../models/models/Product");
-const User = require("../../models/models/User");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -95,9 +94,6 @@ router.get("/listFiles", async (req, res) => {
     try {
       const products = await Product.find();
       inUse.push(...products.map((product) => product.image));
-
-      const users = await User.find();
-      inUse.push(...users.map((user) => user.image));
 
       let totalSpace = 0;
 
