@@ -23,6 +23,7 @@ const ChartRequestPerCustomer = ({
   mainColor,
   chartType,
   groupBy,
+  filterDataByDate,
 }) => {
   const appData = useAppData();
   const idIndexList = appData.idIndexList;
@@ -54,8 +55,13 @@ const ChartRequestPerCustomer = ({
     }
   });
 
-  useEffect(() => {}, [groupBy]);
+  useEffect(() => {
+    if (requestsPerCustomer && requestsPerCustomer.length > 0) {
+      setSelectedCustomer(requestsPerCustomer[0]);
+    }
+  }, [groupBy, requestsPerCustomer]);
 
+  
   const searchedCustomers = filteredCustomers.filter((item) => {
     const customer = idIndexList.find(
       (customer) => customer.id === item.customerId
@@ -188,12 +194,21 @@ const ChartRequestPerCustomer = ({
                   {chartType === "line" ? (
                     <LineChart
                       xAxis={[
-                        { data: selectedCustomer.labels, scaleType: "point" },
+                        {
+                          data: filterDataByDate(
+                            selectedCustomer.labels,
+                            selectedCustomer.length
+                          ).filteredLabels,
+                          scaleType: "point",
+                        },
                       ]}
                       yAxis={[{ tickMinStep: 1, min: 0 }]}
                       series={[
                         {
-                          data: selectedCustomer.length,
+                          data: filterDataByDate(
+                            selectedCustomer.labels,
+                            selectedCustomer.length
+                          ).filteredData,
                           color: selectedCustomer.color,
                         },
                       ]}
@@ -204,12 +219,21 @@ const ChartRequestPerCustomer = ({
                   ) : (
                     <BarChart
                       xAxis={[
-                        { data: selectedCustomer.labels, scaleType: "band" },
+                        {
+                          data: filterDataByDate(
+                            selectedCustomer.labels,
+                            selectedCustomer.length
+                          ).filteredLabels,
+                          scaleType: "band",
+                        },
                       ]}
                       yAxis={[{ tickMinStep: 1, min: 0 }]}
                       series={[
                         {
-                          data: selectedCustomer.length,
+                          data: filterDataByDate(
+                            selectedCustomer.labels,
+                            selectedCustomer.length
+                          ).filteredData,
                           color: selectedCustomer.color,
                         },
                       ]}
@@ -230,8 +254,9 @@ const ChartRequestPerCustomer = ({
       >
         <ChartDataDetail
           title={
-            idIndexList.find((customer) => customer.id === selectedCustomer.customerId)
-              ?.name || ""
+            idIndexList.find(
+              (customer) => customer.id === selectedCustomer.customerId
+            )?.name || ""
           }
           popoverData={popoverData}
           handleCloseChartClick={handleCloseChartClick}

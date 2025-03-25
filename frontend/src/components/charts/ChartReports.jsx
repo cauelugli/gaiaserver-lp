@@ -425,6 +425,7 @@ const ChartReports = ({ api, mainColor }) => {
                   mainColor={mainColor}
                   chartType={chartType}
                   groupBy={groupBy}
+                  filterDataByDate={filterDataByDate}
                 />
               </Grid2>
             )}
