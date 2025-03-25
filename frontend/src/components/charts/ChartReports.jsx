@@ -167,9 +167,6 @@ const ChartReports = ({ api, mainColor, windowSizeSetter }) => {
     return { filteredLabels: labels, filteredData: data };
   };
 
-  console.log("windowSizeSetter wid", windowSizeSetter.width);
-  console.log("windowSizeSetter hei", windowSizeSetter.height);
-
   return (
     <Grid2 sx={{ width: "auto" }}>
       {displayChart ? (
