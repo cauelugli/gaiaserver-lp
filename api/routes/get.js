@@ -58,9 +58,7 @@ router.get("/reports", async (req, res) => {
       const model = defineModel(modelName);
       let data;
 
-      if (modelName === "User") {
-        data = await model.find({}, { createdAt: 1, _id: 1 });
-      } else if (modelName === "Job") {
+      if (modelName === "Job") {
         data = await model.find(
           {},
           {
@@ -198,7 +196,7 @@ router.get("/notifications/:userId", async (req, res) => {
 router.get("/coreData", async (req, res) => {
   let missingCoreData = [];
   try {
-    const modelsToCheck = ["User", "Department", "Service", "Customer", "Role"];
+    const modelsToCheck = ["Customer"];
 
     for (const modelName of modelsToCheck) {
       const model = defineModel(modelName);
