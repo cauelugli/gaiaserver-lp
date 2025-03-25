@@ -22,8 +22,6 @@ const ChartReportsHeader = ({
   setChartType,
   groupBy,
   setGroupBy,
-  isChartFocused,
-  setIsChartFocused,
   selectedDate,
   setSelectedDate,
 }) => {
@@ -87,17 +85,6 @@ const ChartReportsHeader = ({
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
-
-      {isChartFocused && (
-        <Button
-          sx={{ ml: "auto", height: "auto" }}
-          variant="contained"
-          color="error"
-          onClick={() => setIsChartFocused(false)}
-        >
-          X
-        </Button>
-      )}
     </Grid2>
   );
 };

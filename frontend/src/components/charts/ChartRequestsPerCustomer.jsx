@@ -60,7 +60,6 @@ const ChartRequestPerCustomer = ({
       setSelectedCustomer(requestsPerCustomer[0]);
     }
   }, [groupBy, requestsPerCustomer]);
-
   
   const searchedCustomers = filteredCustomers.filter((item) => {
     const customer = idIndexList.find(
