@@ -103,7 +103,7 @@ const ViewDialog = ({
         ) : (
           !isImage &&
           !isPdf &&
-          (selectedItem.name || selectedItem.title || selectedItem.quoteNumber)
+          (selectedItem.name || selectedItem.title)
         )}
       </DialogTitle>
 

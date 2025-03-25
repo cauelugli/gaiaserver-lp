@@ -86,11 +86,7 @@ const ArchiveItemForm = ({
       <DialogTitle>
         <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
           {selectedItem.status === "Arquivado" ? "Desarquivar" : "Arquivar"}{" "}
-          {selectedItem.name ||
-            selectedItem.title ||
-            selectedItem.quoteNumber ||
-            selectedItem.number}
-          ?
+          {selectedItem.name || selectedItem.title || selectedItem.number}?
         </Typography>
       </DialogTitle>
       <DialogActions>

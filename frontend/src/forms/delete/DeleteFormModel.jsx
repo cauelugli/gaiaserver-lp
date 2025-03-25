@@ -90,11 +90,7 @@ const DeleteFormModel = ({
       <DialogTitle>
         <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
           Deletar{" "}
-          {selectedItem.name ||
-            selectedItem.title ||
-            selectedItem.quoteNumber ||
-            selectedItem.number}
-          ?
+          {selectedItem.name || selectedItem.title || selectedItem.number}?
         </Typography>
       </DialogTitle>
       <DialogContent>

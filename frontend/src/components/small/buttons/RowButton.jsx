@@ -121,10 +121,7 @@ const RowButton = (props) => {
           label={selectedModal.label}
           selectedItemId={props.item._id || props.item.id}
           selectedItemName={
-            props.item.name ||
-            props.item.title ||
-            props.item.number ||
-            props.item.quoteNumber
+            props.item.name || props.item.title || props.item.number
           }
           selectedItemPrice={props.item.price}
           model={selectedModal.model}
