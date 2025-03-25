@@ -26,7 +26,6 @@ export const renderField = (
   modalOptions,
   handlers,
   okToDispatch,
-  selectedMembers,
   selectedProducts,
   selectedServices,
   refreshData,

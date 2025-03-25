@@ -27,7 +27,6 @@ import dayjs from "dayjs";
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
   const [image, setImage] = React.useState("");
-  const [selectedMembers, setSelectedMembers] = React.useState([]);
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
@@ -97,10 +96,6 @@ export default function AddFormModel(props) {
       ...fields,
       [fieldName]: e.target.value,
     });
-  };
-
-  const handleMemberChange = (members) => {
-    setSelectedMembers(members);
   };
 
   const handleProductChange = (product) => {
@@ -257,7 +252,6 @@ export default function AddFormModel(props) {
 
   const handlers = {
     setFields,
-    handleMemberChange,
     handleProductChange,
     handleServiceChange,
     handleFileUpload,
@@ -341,7 +335,6 @@ export default function AddFormModel(props) {
                       modalOptions,
                       handlers,
                       okToDispatch,
-                      selectedMembers,
                       selectedProducts,
                       selectedServices,
                       refreshData,

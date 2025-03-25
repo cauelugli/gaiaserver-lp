@@ -14,8 +14,6 @@ const {
   addFinanceIncome,
   addOperator,
   addUserRoutines,
-  insertMembership,
-  insertMembersToGroup,
 } = require("../controllers/functions/addFunctions");
 
 const {
@@ -114,12 +112,6 @@ mainQueue.process(async (job) => {
         break;
       case "deleteMultipleItems":
         await handleDeleteMultipleItems(data);
-        break;
-      case "insertMembership":
-        await handleInsertMembership(data);
-        break;
-      case "insertMembersToGroup":
-        await handleInsertMembersToGroup(data);
         break;
       case "notificationToList":
         await handleNotificationToList(data, isAdmin);
@@ -289,10 +281,6 @@ const handleDeleteMultipleItems = async (data) => {
   } else {
     console.error(`Function ${routineFunction} is not defined.`);
   }
-};
-
-const handleInsertMembersToGroup = async (data) => {
-  await insertMembersToGroup(data.id, data.model, data.members);
 };
 
 const handleMarkAllNotificationsAsRead = async (data) => {
