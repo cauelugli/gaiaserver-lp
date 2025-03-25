@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
-const ChartReports = ({ api, mainColor }) => {
+const ChartReports = ({ api, mainColor, windowSizeSetter }) => {
   const [salesData, setSalesData] = useState(null);
   const [jobsData, setJobsData] = useState(null);
   const [stockData, setStockData] = useState(null);
@@ -43,6 +43,17 @@ const ChartReports = ({ api, mainColor }) => {
     StockEntry: "Estoque",
   };
   const [selectedDate, setSelectedDate] = useState({ type: "", value: [] });
+  const [chartSize, setChartSize] = useState({
+    width: windowSizeSetter.width / 4.5,
+    height: windowSizeSetter.height / 4,
+  });
+
+  useEffect(() => {
+    setChartSize({
+      width: windowSizeSetter.width / 4.5,
+      height: windowSizeSetter.height / 4,
+    });
+  }, [windowSizeSetter]);
 
   const handleHighlightItem = (item) => {
     setSelectedChart(item);
@@ -156,8 +167,11 @@ const ChartReports = ({ api, mainColor }) => {
     return { filteredLabels: labels, filteredData: data };
   };
 
+  console.log("windowSizeSetter wid", windowSizeSetter.width);
+  console.log("windowSizeSetter hei", windowSizeSetter.height);
+
   return (
-    <Grid2 sx={{ width: "98%" }}>
+    <Grid2 sx={{ width: "auto" }}>
       {displayChart ? (
         <>
           <ChartReportsHeader
@@ -257,7 +271,7 @@ const ChartReports = ({ api, mainColor }) => {
                                       item,
                                       globalIndex
                                     )}
-                                    width={430}
+                                    width={chartSize.width}
                                     height={200}
                                   />
                                 ) : (
@@ -287,7 +301,7 @@ const ChartReports = ({ api, mainColor }) => {
                                       item,
                                       globalIndex
                                     )}
-                                    width={430}
+                                    width={chartSize.width}
                                     height={200}
                                   />
                                 )}
@@ -325,6 +339,7 @@ const ChartReports = ({ api, mainColor }) => {
                 chartType={chartType}
                 groupBy={groupBy}
                 filterDataByDate={filterDataByDate}
+                chartSize={chartSize}
               />
             </Grid2>
             <Grid2 id="ghost" sx={{ width: "7vw" }} />

@@ -23,6 +23,7 @@ const ChartRequestPerCustomer = ({
   mainColor,
   chartType,
   groupBy,
+  chartSize,
   filterDataByDate,
 }) => {
   const appData = useAppData();
@@ -59,8 +60,8 @@ const ChartRequestPerCustomer = ({
     if (requestsPerCustomer && requestsPerCustomer.length > 0) {
       setSelectedCustomer(requestsPerCustomer[0]);
     }
-  }, [groupBy, requestsPerCustomer]);
-  
+  }, [groupBy, requestsPerCustomer, chartSize]);
+
   const searchedCustomers = filteredCustomers.filter((item) => {
     const customer = idIndexList.find(
       (customer) => customer.id === item.customerId
@@ -212,8 +213,8 @@ const ChartRequestPerCustomer = ({
                         },
                       ]}
                       onAxisClick={handleChartClick(selectedCustomer, 999)}
-                      width={1450}
-                      height={300}
+                      width={chartSize.width*3.5}
+                      height={chartSize.height*1.15}
                     />
                   ) : (
                     <BarChart
@@ -237,8 +238,8 @@ const ChartRequestPerCustomer = ({
                         },
                       ]}
                       onAxisClick={handleChartClick(selectedCustomer, 999)}
-                      width={1450}
-                      height={300}
+                      width={chartSize.width*3.5}
+                      height={chartSize.height*1.15}
                     />
                   )}
                 </Grid2>

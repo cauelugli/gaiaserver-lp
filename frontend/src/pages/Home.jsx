@@ -21,6 +21,7 @@ const Home = ({
   userAgenda,
   mainColor,
   currentWindowSize,
+  windowSizeSetter,
 }) => {
   React.useEffect(() => {
     if (onMount) {
@@ -33,6 +34,8 @@ const Home = ({
       }
     };
   }, [onMount, onUnmount]);
+
+  
 
   return (
     <>
@@ -66,7 +69,11 @@ const Home = ({
       </Grid2>
       <Divider sx={{ m: 1, mt: 2, borderColor: mainColor }} />
       <Grid2 container sx={{ mt: 1 }}>
-        <ChartReports api={api} mainColor={mainColor} />
+        <ChartReports
+          api={api}
+          mainColor={mainColor}
+          windowSizeSetter={windowSizeSetter}
+        />
       </Grid2>
     </>
   );

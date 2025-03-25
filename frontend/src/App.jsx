@@ -277,6 +277,7 @@ export default function App() {
                             onMount={() => handleSidebarVisibility(false)}
                             onUnmount={() => handleSidebarVisibility(true)}
                             currentWindowSize={currentWindowSize}
+                            windowSizeSetter={windowSizeSetter}
                           />
                         ) : (
                           <Navigate to="/login" />
