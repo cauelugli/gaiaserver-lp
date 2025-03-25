@@ -1,10 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Department = require("../../models/models/Department");
-const Position = require("../../models/models/Position");
-const User = require("../../models/models/User");
-const Role = require("../../models/models/Role");
-const Group = require("../../models/models/Group");
 const Customer = require("../../models/models/Customer");
 const Client = require("../../models/models/Client");
 const Service = require("../../models/models/Service");
@@ -14,12 +9,7 @@ router.get("/", async (req, res) => {
   const modelList = [
     Client,
     Customer,
-    Department,
-    Group,
-    Position,
-    Role,
     Service,
-    User,
   ];
 
   try {

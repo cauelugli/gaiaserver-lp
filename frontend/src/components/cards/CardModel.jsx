@@ -80,12 +80,11 @@ export default function CardModel({
     ));
   };
 
-  const usesAvatar = ["Client", "Customer", "User", "Operator"];
+  const usesAvatar = ["Client", "Customer"];
   const usesTitle = ["Job", "ServicePlan"];
   const usesNumber = ["Sale", "StockEntry"];
   const usesProduct = ["Sale", "Stock", "Product", "StockEntry"];
-  const usesColor = ["Department", "Service"];
-  const usesMembers = ["Group", "Position", "Role"];
+  const usesColor = ["Service"];
 
   return (
     <Card elevation={3}>
@@ -192,18 +191,6 @@ export default function CardModel({
                 }}
               />
               <Typography variant="h5" sx={{ mt: 1, fontWeight: "bold" }}>
-                {item.name}
-              </Typography>
-            </Grid2>
-          )}
-          {usesMembers.includes(label) && (
-            <Grid2
-              container
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 {item.name}
               </Typography>
             </Grid2>

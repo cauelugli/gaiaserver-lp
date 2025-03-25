@@ -131,118 +131,6 @@ const pageOptions = [
     ],
   },
   {
-    page: "users",
-    models: ["User", "User"],
-    label: "Colaboradores",
-    tabs: ["Funcionários", "Gerentes"],
-    tableColumns: [
-      // USER TABLE
-      [
-        {
-          id: "image",
-          label: "📷",
-        },
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "email",
-          label: "E-mail",
-        },
-        {
-          id: "cellphone",
-          label: "Telefone",
-        },
-        {
-          id: "position",
-          label: "Cargo",
-        },
-        {
-          id: "department",
-          label: "Departamento",
-        },
-      ],
-      // MANAGER TABLE
-      [
-        {
-          id: "image",
-          label: "📷",
-        },
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "email",
-          label: "E-mail",
-        },
-        {
-          id: "cellphone",
-          label: "Telefone",
-        },
-        {
-          id: "position",
-          label: "Cargo",
-        },
-        {
-          id: "department",
-          label: "Departamento",
-        },
-      ],
-    ],
-  },
-  {
-    page: "departments",
-    models: ["Department", "Group"],
-    label: "Departamentos",
-    tabs: ["Departamentos", "Grupos"],
-    tableColumns: [
-      // SERVICE SALES AND INTERNAL DEPARTMENTS TABLE
-      [
-        {
-          id: "color",
-          label: "🎨",
-        },
-        {
-          id: "type",
-          label: "Tipo",
-        },
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "members",
-          label: "Colaboradores",
-        },
-        {
-          id: "manager",
-          label: "Gerente",
-        },
-        {
-          id: "email",
-          label: "E-mail",
-        },
-        {
-          id: "phone",
-          label: "Telefone",
-        },
-      ],
-      // GROUPS TABLE
-      [
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "members",
-          label: "Colaboradores",
-        },
-      ],
-    ],
-  },
-  {
     page: "services",
     models: ["Service", "ServicePlan"],
     label: "Serviços",
@@ -338,13 +226,6 @@ const pageOptions = [
     tabs: [],
   },
   {
-    page: "chat",
-    label: "Chat",
-    tabs: ["Chats"],
-    models: ["Chat"],
-    tableColumns: [[""], [""]],
-  },
-  {
     page: "finance",
     label: "Financeiro",
     tabs: ["A Receber", "A Pagar"],
@@ -417,56 +298,6 @@ const pageOptions = [
     label: "Relatórios",
     tabs: [],
     tableColumns: [],
-  },
-  {
-    page: "security",
-    label: "Segurança de Acessos",
-    tabs: ["Operadores", "Cargos", "Perfil de Acesso"],
-    models: ["Operator", "Position", "Role"],
-    tableColumns: [
-      [
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "username",
-          label: "Nome de Operador",
-        },
-        {
-          id: "role",
-          label: "Perfil de Acesso",
-        },
-        {
-          id: "alreadyLogin",
-          label: "Login Realizado",
-        },
-      ],
-      [
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "department",
-          label: "Departamento",
-        },
-        {
-          id: "members",
-          label: "Colaboradores",
-        },
-      ],
-      [
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "members",
-          label: "Colaboradores",
-        },
-      ],
-    ],
   },
 ];
 

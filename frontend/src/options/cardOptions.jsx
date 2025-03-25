@@ -10,14 +10,6 @@ export const options = {
     { label: "E-mail", value: "mainContactEmail" },
     { label: "Endereço", value: "address" },
   ],
-  Department: [
-    { label: "Gerente", value: "manager" },
-    { label: "Membros", value: "members" },
-    { label: "E-mail", value: "email" },
-    { label: "Telefone", value: "phone" },
-    { label: "Tipo", value: "type" },
-  ],
-  Group: [{ label: "Membros", value: "members" }],
   Job: [
     { label: "Cliente", value: "customer" },
     { label: "Designado", value: "worker" },
@@ -25,16 +17,6 @@ export const options = {
     { label: "Valor", value: "price" },
     { label: "Status", value: "status" },
   ],
-  Operator: [
-    { label: "Nome de Operador", value: "username" },
-    { label: "Perfil de Acesso", value: "role" },
-    { label: "Login Realizado", value: "alreadyLogin" },
-  ],
-  Position: [
-    { label: "Departamento", value: "department" },
-    { label: "Colaboradores", value: "members" },
-  ],
-  Role: [{ label: "Colaboradores", value: "members" }],
   Sale: [
     { label: "Cliente", value: "customer" },
     { label: "Vendedor", value: "seller" },
@@ -66,11 +48,5 @@ export const options = {
     { label: "Criado por", value: "createdBy" },
     { label: "Criado em", value: "createdAt" },
     { label: "Status", value: "status" },
-  ],
-  User: [
-    { label: "E-mail", value: "email" },
-    { label: "Telefone", value: "phone" },
-    { label: "Departamento", value: "department" },
-    { label: "Cargo", value: "position" },
   ],
 };

@@ -42,36 +42,6 @@ const pageButtonOptions = [
     ],
   },
   {
-    page: "users",
-    pageButtonOptions: [
-      {
-        label: "Colaborador",
-        icon: <icons.PersonIcon />,
-        modal: modals["User"],
-      },
-      {
-        label: "Gerente",
-        icon: <icons.Person4Icon />,
-        modal: modals["Manager"],
-      },
-    ],
-  },
-  {
-    page: "departments",
-    pageButtonOptions: [
-      {
-        label: "Departamento",
-        icon: <icons.LanIcon />,
-        modal: modals["Department"],
-      },
-      {
-        label: "Grupo",
-        icon: <icons.GroupsIcon />,
-        modal: modals["Group"],
-      },
-    ],
-  },
-  {
     page: "services",
     pageButtonOptions: [
       {
@@ -103,32 +73,6 @@ const pageButtonOptions = [
         label: "Produto",
         icon: <icons.SellIcon />,
         modal: modals["Product"],
-      },
-    ],
-  },
-  {
-    page: "chat",
-    pageButtonOptions: [
-      { label: "Mensagem", icon: <icons.ApartmentIcon />, modal: "oneday" },
-    ],
-  },
-  {
-    page: "security",
-    pageButtonOptions: [
-      {
-        label: "Operador",
-        icon: <icons.ManageAccountsIcon />,
-        modal: modals["Operator"],
-      },
-      {
-        label: "Cargo",
-        icon: <icons.AssignmentIndIcon />,
-        modal: modals["Position"],
-      },
-      {
-        label: "Perfil de Acesso",
-        icon: <icons.AdminPanelSettingsIcon />,
-        modal: modals["Role"],
       },
     ],
   },

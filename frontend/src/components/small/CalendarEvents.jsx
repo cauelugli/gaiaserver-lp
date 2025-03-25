@@ -35,12 +35,7 @@ const CalendarEvents = ({ event }) => {
           <strong>Colaborador:</strong> {event.worker}
         </Typography>
       )}
-
-      {event.group && event.group.name && (
-        <Typography sx={{ fontSize: 13, color: "black", mt: 0.5 }}>
-          <strong>Grupo:</strong> {event.group.name}
-        </Typography>
-      )}
+      
     </Grid2>
   );
 };

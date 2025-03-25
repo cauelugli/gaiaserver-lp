@@ -37,8 +37,6 @@ export default function Notifications({ onClose }) {
     job: "Jobs",
     sale: "Vendas",
     user: "Colaboradores",
-    department: "Departamentos",
-    group: "Grupos",
     service: "Serviços",
     serviceplan: "Plano de Serviços",
     product: "Produtos",
