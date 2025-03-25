@@ -51,12 +51,6 @@ const DataTableCell = ({
     }
   };
 
-  const departmentTypes = {
-    Vendas: <icons.SellIcon />,
-    Serviços: <icons.BuildIcon />,
-    Interno: <icons.LanIcon />,
-  };
-
   return (
     <>
       {item === null ? (
@@ -211,8 +205,6 @@ const DataTableCell = ({
         <>{getNameById(item)}</>
       ) : isDate(item) ? (
         <>{dayjs(item).format("DD/MM/YY HH:MM")}</>
-      ) : column.id === "type" ? (
-        <Tooltip title={item}>{departmentTypes[item]}</Tooltip>
       ) : (
         <Grid2>{item}</Grid2>
       )}

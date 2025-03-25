@@ -22,16 +22,14 @@ const NewUserShortcutOptions = ({
 }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const sections = [
-    { name: "Clientes", icon: <icons.WorkIcon sx={{ fontSize: 14, mb: 0.5 }} /> },
+    {
+      name: "Clientes",
+      icon: <icons.WorkIcon sx={{ fontSize: 14, mb: 0.5 }} />,
+    },
     {
       name: "Solicitações",
       icon: <icons.GradingIcon sx={{ fontSize: 14, mb: 0.5 }} />,
     },
-    {
-      name: "Colaboradores",
-      icon: <icons.GroupIcon sx={{ fontSize: 14, mb: 0.5 }} />,
-    },
-    { name: "Departamentos", icon: <icons.LanIcon sx={{ fontSize: 14, mb: 0.5 }} /> },
   ];
 
   let options = [
@@ -95,36 +93,6 @@ const NewUserShortcutOptions = ({
         section: "Clientes",
       },
     },
-    {
-      value: {
-        label: "Novo Usuário",
-        action: "addUser",
-        fullWidth: true,
-        maxWidth: "md",
-        permission: "users",
-        section: "Colaboradores",
-      },
-    },
-    {
-      value: {
-        label: "Novo Gerente",
-        action: "addManager",
-        fullWidth: true,
-        maxWidth: "md",
-        permission: "users",
-        section: "Colaboradores",
-      },
-    },
-    {
-      value: {
-        label: "Novo Departamento",
-        action: "addDepartment",
-        fullWidth: true,
-        maxWidth: "md",
-        permission: "departments",
-        section: "Departamentos",
-      },
-    },
   ];
 
   options = options.filter((option) =>
@@ -166,8 +134,8 @@ const NewUserShortcutOptions = ({
         MenuProps={{
           PaperProps: {
             style: {
-              maxHeight: 250, 
-              overflow: 'auto',
+              maxHeight: 250,
+              overflow: "auto",
             },
           },
         }}

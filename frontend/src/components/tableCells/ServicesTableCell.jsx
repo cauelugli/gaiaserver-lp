@@ -19,7 +19,6 @@ import {
 
 const ServicesTableCell = (props) => {
   const [services, setServices] = React.useState([]);
-  const [departments, setDepartments] = React.useState([]);
   const [searchQuery, setSearchQuery] = React.useState("");
 
   React.useEffect(() => {
@@ -28,20 +27,12 @@ const ServicesTableCell = (props) => {
         const resServices = await api.get("/get", {
           params: { model: "Service" },
         });
-        const resDepartments = await api.get("/get", {
-          params: { model: "Department" },
-        });
 
         const sortedServices = resServices.data.sort((a, b) =>
           a.name.localeCompare(b.name)
         );
 
-        const filteredDepartments = resDepartments.data
-          .filter((department) => department.type !== "Interno")
-          .sort((a, b) => a.name.localeCompare(b.name));
-
         setServices(sortedServices);
-        setDepartments(filteredDepartments);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -94,7 +85,7 @@ const ServicesTableCell = (props) => {
             },
           }}
         />
-        {departments.reduce((menuItems, department) => {
+        {/* {departments.reduce((menuItems, department) => {
           const departmentServices = filteredServices.filter((service) =>
             department.services.includes(service._id)
           );
@@ -131,7 +122,7 @@ const ServicesTableCell = (props) => {
           }
 
           return menuItems;
-        }, [])}
+        }, [])} */}
         {filteredServices.length === 0 && (
           <Typography sx={{ ml: 1, fontSize: 13 }}>
             Nenhum Serviço Encontrado

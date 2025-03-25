@@ -15,25 +15,9 @@ const tableFiltersOptions = {
       sale: ["customer", "seller", "status"],
     },
   ],
-  users: [
-    {
-      users: ["name", "department", "position"],
-    },
-    {
-      managers: ["name", "department", "position"],
-    },
-  ],
-  departments: [
-    {
-      departments: ["name", "type", "members"],
-    },
-    {
-      groups: ["name", "members"],
-    },
-  ],
   services: [
     {
-      services: ["name", "type", "department", "products", "price"],
+      services: ["name", "type", "products", "price"],
     },
     {
       servicePlan: ["name", "period", "services", "price"],

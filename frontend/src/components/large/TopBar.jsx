@@ -9,20 +9,11 @@ import { icons } from "../../icons";
 const options = [
   { label: "Clientes", icon: <icons.WorkIcon />, link: "/customers" },
   { label: "Solicitações", icon: <icons.GradingIcon />, link: "/requests" },
-  { label: "Colaboradores", icon: <icons.GroupIcon />, link: "/users" },
-  { label: "Departamentos", icon: <icons.LanIcon />, link: "/departments" },
   { label: "Serviços", icon: <icons.BuildIcon />, link: "/services" },
   { label: "Produtos", icon: <icons.SellIcon />, link: "/products" },
   { label: "Estoque", icon: <icons.WarehouseIcon />, link: "/stock" },
   { label: "Financeiro", icon: <icons.AttachMoneyIcon />, link: "/finance" },
-  { label: "Chat", icon: <icons.ChatIcon />, link: "/", disabled: true },
   { label: "Relatórios", icon: <icons.AssessmentIcon />, link: "/reports" },
-  {
-    label: "Acessos",
-    icon: <icons.AdminPanelSettingsIcon />,
-    link: "/security",
-  },
-
   { label: "Arquivos", icon: <icons.InsertDriveFileIcon />, link: "/files" },
   { label: "Configurações", icon: <icons.SettingsIcon />, link: "/config" },
   {

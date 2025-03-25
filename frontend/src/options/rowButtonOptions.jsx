@@ -351,20 +351,6 @@ const rowButtonOptions = (props) => [
               },
             ]
           : []),
-        {
-          label: "Alterar",
-          icon: <icons.SettingsIcon />,
-          action: "dynamicChange",
-          submenu: [
-            {
-              modal: "small",
-              sourceModel: "Service",
-              targetModel: "Department",
-              targetLabel: "Departamento",
-              icon: <icons.LanIcon />,
-            },
-          ],
-        },
       ],
       1: [
         {
@@ -389,20 +375,6 @@ const rowButtonOptions = (props) => [
               },
             ]
           : []),
-        {
-          label: "Alterar",
-          icon: <icons.SettingsIcon />,
-          action: "dynamicChange",
-          submenu: [
-            {
-              modal: "small",
-              sourceModel: "ServicePlan",
-              targetModel: "Department",
-              targetLabel: "Departamento",
-              icon: <icons.LanIcon />,
-            },
-          ],
-        },
       ],
     },
   },

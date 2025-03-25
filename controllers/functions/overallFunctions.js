@@ -49,19 +49,7 @@ export function isButtonDisabled(
         return false;
       case "Cliente Pessoa Física":
         return false;
-      case "Operador":
-        return false;
-      case "Colaborador":
-        return false;
-      case "Gerente":
-        return false;
-      case "Cargo":
-        return false;
-      case "Departamento":
-        return false;
-      case "Grupo":
-        return false;
-      case "Perfil de Acesso":
+
         return false;
       case "Venda":
         return false;
@@ -73,60 +61,7 @@ export function isButtonDisabled(
   }
 }
 
-export function checkAvailability(item, option, targetId) {
-  switch (item) {
-    case "members":
-    case "managers":
-      if (option.department && typeof option.department === "string") {
-        return true;
-      }
-      break;
-
-    case "resolvableRequest":
-      if (
-        option === "Aberto" ||
-        option === "Aprovação Solicitada" ||
-        option === "Resolvido"
-      ) {
-        return true;
-      }
-      break;
-
-    case "approvableRequest":
-      if (
-        option === "Aprovado" ||
-        option === "Aprovação Solicitada" ||
-        option === "Resolvido"
-      ) {
-        return true;
-      }
-      break;
-
-    case "manager":
-      if (option.department && typeof option.department === "string") {
-        if (option.department === targetId) {
-          return false;
-        } else {
-          return true;
-        }
-      }
-      break;
-
-    case "creatableUsername":
-      if (option) {
-        return true;
-      }
-      break;
-
-    case "removableUsername":
-      if (!option) {
-        return true;
-      }
-      break;
-
-    default:
-      return false;
-  }
+export function checkAvailability(item) {
   return false;
 }
 

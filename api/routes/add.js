@@ -145,16 +145,6 @@ router.post("/", async (req, res) => {
     // ACTIONS THAT NEED TO BE DONE _AFTER_ ITEM IS CREATED
 
     switch (req.body.model) {
-      case "Service":
-        mainQueue.add({
-          type: "addServiceToDepartment",
-          data: {
-            serviceId: savedItem._id.toString(),
-            departmentId: savedItem.department,
-          },
-        });
-        break;
-
       case "Job":
       case "Sale":
         mainQueue.add({

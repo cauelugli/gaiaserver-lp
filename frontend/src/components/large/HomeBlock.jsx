@@ -21,16 +21,12 @@ const HomeBlock = ({ currentWindowSize, allowedLinks, configData, layout }) => {
   const allowedListMainblocks = uniqueAllowedLinks.filter((link) =>
     [
       "customers",
-      "users",
-      "departments",
       "requests",
       "products",
       "stock",
       "services",
       "finance",
-      "security",
       "reports",
-      "chat",
       "config",
     ].includes(link)
   );

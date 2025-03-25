@@ -167,17 +167,7 @@ async function deleteRoutinesService(
     const itemsToDelete = isMultiple ? ids : [deletedItem];
 
     for (const id of itemsToDelete) {
-      const deletedItem = await Model.findByIdAndDelete(id);
-
-      if (deletedItem) {
-        const { department } = deletedItem;
-
-        if (department) {
-          await defineModel("Department").findByIdAndUpdate(department, {
-            $pull: { services: deletedItem._id.toString() },
-          });
-        }
-      }
+      await Model.findByIdAndDelete(id);
     }
 
     // notify that sourceId made this

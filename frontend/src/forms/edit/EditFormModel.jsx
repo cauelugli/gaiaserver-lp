@@ -34,15 +34,10 @@ export default function EditFormModel(props) {
   );
   //fix this
   // eslint-disable-next-line no-unused-vars
-  const [selectedMembers, setSelectedMembers] = React.useState([]);
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [customers, setCustomers] = React.useState([]);
   const [services, setServices] = React.useState([]);
-  const [departments, setDepartments] = React.useState([]);
-  const [positions, setPositions] = React.useState([]);
-  const [members, setMembers] = React.useState([]);
-  const [managers, setManagers] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
   const [finalPrice, setFinalPrice] = React.useState(0);
   const [okToDispatch, setOkToDispatch] = React.useState(false);
@@ -54,17 +49,8 @@ export default function EditFormModel(props) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const departments = await api.get("/get", {
-          params: { model: "Department" },
-        });
-        const positions = await api.get("/get", {
-          params: { model: "Position" },
-        });
         const services = await api.get("/get", {
           params: { model: "Service" },
-        });
-        const users = await api.get("/get", {
-          params: { model: "User" },
         });
         const customers = await api.get("/get", {
           params: { model: "Customer" },
@@ -75,13 +61,8 @@ export default function EditFormModel(props) {
         const allCustomers = [...customers.data, ...clients.data];
         setCustomers(allCustomers);
         setServices(services.data);
-        setDepartments(departments.data);
-        setPositions(positions.data);
-        setMembers(users.data.filter((user) => !user.isManager));
-        setManagers(users.data.filter((user) => user.isManager));
       } catch (error) {
-        console.error("Erro ao buscar departamentos:", error);
-        toast.error("Erro ao buscar departamentos. Tente novamente.", {
+        toast.error("Erro ao buscar dados. Tente novamente.", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
@@ -95,55 +76,21 @@ export default function EditFormModel(props) {
 
   // Initializing form with target data
   React.useEffect(() => {
-    // this can surely be better dude...
-    // fix this
-    // for God's sake...
     const initializeFields = () => {
       const initialFields = {};
       props.options.fields.forEach((field) => {
         const fieldValue = props.target[field.name] || "";
 
-        if (field.name === "department" && typeof fieldValue === "string") {
-          const department = departments.find((dep) => dep._id === fieldValue);
-          initialFields[field.name] = department ? department.name : "";
-        } else if (field.name === "scheduleTime") {
-          initialFields[field.name] = props.target.scheduleTime
-            ? props.target.scheduleTime
-            : "";
-        } else if (
-          field.name === "position" &&
-          typeof fieldValue === "string"
-        ) {
-          const position = positions.find((pos) => pos._id === fieldValue);
-          initialFields[field.name] = position ? position.name : "";
-        } else if (field.name === "manager") {
-          const manager = managers.find(
-            (manager) => manager._id === fieldValue
-          );
-          initialFields[field.name] = manager ? manager : "";
-        } else if (field.name === "service") {
+        if (field.name === "service") {
           const service = services.find(
             (service) => service._id === fieldValue
           );
           initialFields[field.name] = service ? service : "";
-        } else if (field.name === "worker") {
-          const worker = members.find((worker) => worker._id === fieldValue);
-          initialFields[field.name] = worker ? worker : "";
-        } else if (field.name === "seller") {
-          const seller = members.find((seller) => seller._id === fieldValue);
-          initialFields[field.name] = seller ? seller : "";
         } else if (field.name === "customer") {
           const customer = customers.find(
             (customer) => customer._id === fieldValue
           );
           initialFields[field.name] = customer ? customer : "";
-        } else if (field.name === "members") {
-          const membersFound = fieldValue.map((memberId) => {
-            return members.find((member) => member._id === memberId) || null;
-          });
-          initialFields[field.name] = membersFound.filter(
-            (member) => member !== null
-          );
         } else {
           initialFields[field.name] = fieldValue;
         }
@@ -152,16 +99,7 @@ export default function EditFormModel(props) {
     };
 
     initializeFields();
-  }, [
-    props.options.fields,
-    props.target,
-    departments,
-    positions,
-    managers,
-    members,
-    customers,
-    services,
-  ]);
+  }, [props.options.fields, props.target, customers, services]);
 
   const modalOptions = props.options;
 
@@ -178,10 +116,6 @@ export default function EditFormModel(props) {
       ...fields,
       [fieldName]: e.target.value,
     });
-  };
-
-  const handleMemberChange = (members) => {
-    setSelectedMembers(members);
   };
 
   const handleProductChange = (product, count) => {
@@ -235,7 +169,6 @@ export default function EditFormModel(props) {
     const formData = new FormData();
     formData.append("image", image);
 
-    const selectedMemberIds = selectedMembers.map((member) => member._id);
 
     try {
       const uploadResponse = await api.post("/uploads/singleFile", formData);
@@ -260,11 +193,7 @@ export default function EditFormModel(props) {
         image: imagePath ? imagePath : props.target.image,
         model: modalOptions.model,
         selectedProducts,
-        selectedMembers: selectedMemberIds,
-        previousMembers: props.target["members"],
         services: selectedServices,
-        lastEditedBy: props.userName || "Admin",
-        isManager: modalOptions.label === "Colaborador" && props.tabIndex === 1,
         price:
           modalOptions.label === "Venda"
             ? selectedProducts
@@ -390,10 +319,8 @@ export default function EditFormModel(props) {
                       handleChange={handleChange}
                       modalOptions={modalOptions}
                       setFields={setFields}
-                      handleMemberChange={handleMemberChange}
                       handleProductChange={handleProductChange}
                       handleServiceChange={handleServiceChange}
-                      selectedMembers={selectedMembers}
                       selectedProducts={selectedProducts}
                       selectedServices={selectedServices}
                       color={props.target["color"]}

@@ -11,16 +11,11 @@ import DynamicDataTableCell from "../components/tableCells/DynamicDataTableCell"
 import IdDocTableCell from "../components/tableCells/IdDocTableCell";
 import PhoneTableCell from "../components/tableCells/PhoneTableCell";
 import ProductsTableCell from "../components/tableCells/ProductsTableCell";
-import ManagerSelectTableCell from "../components/tableCells/ManagerSelectTableCell";
-import MembersTableCell from "../components/tableCells/MembersTableCell";
 import SelectTableCell from "../components/tableCells/SelectTableCell";
 import StringTableCell from "../components/tableCells/StringTableCell";
 import AllCustomersTableCell from "../components/tableCells/AllCustomersTableCell";
-import UsersTableCell from "../components/tableCells/UsersTableCell ";
 import ServiceListTableCell from "../components/tableCells/ServiceListTableCell";
 import ServicesTableCell from "../components/tableCells/ServicesTableCell";
-import DepartmentTypeTableCell from "../components/tableCells/DepartmentTypeTableCell";
-import DepartmentsTableCell from "../components/tableCells/DepartmentsTableCell";
 
 const TableCellOptions = ({
   field,
@@ -28,10 +23,8 @@ const TableCellOptions = ({
   handleChange,
   modalOptions,
   setFields,
-  handleMemberChange,
   handleProductChange,
   handleServiceChange,
-  selectedMembers,
   selectedServices,
   color,
   priceDifference,
@@ -41,8 +34,6 @@ const TableCellOptions = ({
   serviceLength,
   refreshData,
   setRefreshData,
-  targetId,
-  tabIndex,
 }) => {
   // this is used in EditForm
   return (
@@ -122,17 +113,6 @@ const TableCellOptions = ({
         />
       )}
 
-      {field.type === "departmentType" && (
-        <DepartmentTypeTableCell
-          fields={fields}
-          field={field}
-          menuOptions={field.options}
-          handleChange={handleChange}
-          // modalOptions={modalOptions}
-          // required={field.required}
-          // isFullWidth
-        />
-      )}
       {field.type === "select" && (
         <SelectTableCell
           fields={fields}
@@ -164,17 +144,6 @@ const TableCellOptions = ({
           required={field.required}
         />
       )}
-      {field.type === "members" && (
-        <MembersTableCell
-          fields={fields}
-          field={field}
-          selectedMembers={selectedMembers}
-          modalOptions={modalOptions}
-          handleMemberChange={handleMemberChange}
-          isEditing={true}
-          targetId={targetId}
-        />
-      )}
       {field.type === "dynamicData" && (
         <DynamicDataTableCell
           fields={fields}
@@ -184,44 +153,6 @@ const TableCellOptions = ({
           required={field.required}
           multiple={field.multiple}
           serviceLength={serviceLength}
-        />
-      )}
-      {field.type === "department" && (
-        <DepartmentsTableCell
-          fields={fields}
-          field={field}
-          handleChange={handleChange}
-          modalOptions={modalOptions}
-          required={field.required}
-          multiple={field.multiple}
-          managerRestriction={
-            modalOptions.label === "Colaborador" && tabIndex === 1
-              ? true
-              : false
-          }
-        />
-      )}
-      {field.type === "users" && (
-        <UsersTableCell
-          fields={fields}
-          field={field}
-          handleChange={handleChange}
-          modalOptions={modalOptions}
-          required={field.required}
-          multiple={field.multiple}
-          serviceLength={serviceLength}
-        />
-      )}
-      {field.type === "managerSelect" && (
-        <ManagerSelectTableCell
-          fields={fields}
-          field={field}
-          handleChange={handleChange}
-          modalOptions={modalOptions}
-          required={field.required}
-          multiple={field.multiple}
-          fromConfig={false}
-          targetId={targetId}
         />
       )}
       {field.type === "productList" && (

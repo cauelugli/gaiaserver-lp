@@ -16,16 +16,6 @@ export const permissionOptions = [
     icon: <icons.GradingIcon sx={{ fontSize: 22 }} />,
   },
   {
-    tooltip: "Colaboradores",
-    label: "users",
-    icon: <icons.GroupIcon sx={{ fontSize: 22 }} />,
-  },
-  {
-    tooltip: "Departamentos",
-    label: "departments",
-    icon: <icons.LanIcon sx={{ fontSize: 22 }} />,
-  },
-  {
     tooltip: "Serviços",
     label: "services",
     icon: <icons.BuildIcon sx={{ fontSize: 22 }} />,
@@ -49,11 +39,6 @@ export const permissionOptions = [
     tooltip: "Relatórios",
     label: "reports",
     icon: <icons.AssessmentIcon sx={{ fontSize: 22 }} />,
-  },
-  {
-    tooltip: "Acessos",
-    label: "security",
-    icon: <icons.AdminPanelSettingsIcon sx={{ fontSize: 22 }} />,
   },
   {
     tooltip: "Arquivos",

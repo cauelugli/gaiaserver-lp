@@ -204,9 +204,6 @@ export default function PageModel(props) {
   }
 
   const shouldDisplayTab = (page, tabIndex, configTables) => {
-    if (page === "departments" && tabIndex === 1) {
-      return configTables.groups;
-    }
     if (page === "customers" && tabIndex === 0) {
       return configTables.customerCustomer;
     }
@@ -407,7 +404,6 @@ export default function PageModel(props) {
                       userName={props.userName}
                       userId={props.userId}
                       userRole={props.userRole}
-                      userDepartment={props.userDepartment}
                       configData={props.configData[props.item.page]}
                       refreshData={refreshData}
                       setRefreshData={setRefreshData}
@@ -481,7 +477,6 @@ export default function PageModel(props) {
                       userName={props.userName}
                       userId={props.userId}
                       userRole={props.userRole}
-                      userDepartment={props.userDepartment}
                       configData={props.configData[props.item.page]}
                       refreshData={refreshData}
                       setRefreshData={setRefreshData}

@@ -147,10 +147,6 @@ const pageOptions = [
           label: "Tipo",
         },
         {
-          id: "department",
-          label: "Departamento",
-        },
-        {
           id: "products",
           label: "Produtos",
         },

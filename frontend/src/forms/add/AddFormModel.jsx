@@ -165,8 +165,6 @@ export default function AddFormModel(props) {
       uploadResponses.push(uploadResponse.data.attachmentPath);
     }
 
-    const selectedMemberIds = selectedMembers.map((member) => member._id);
-
     try {
       const uploadResponse = await props.api.post(
         "/uploads/singleFile",
@@ -177,12 +175,8 @@ export default function AddFormModel(props) {
         sourceId: props.userId,
         fields: {
           ...fields,
-          members: fields.members?.map((member) => member._id || member.id),
           customer: fields.customer?._id,
-          department: fields.department?._id,
           service: fields.service?._id,
-          worker: fields.worker?._id,
-          seller: fields.seller?._id,
           scheduledTo: fields.scheduledTo
             ? fields.scheduledTo
             : dayjs().add(1, "day").format("DD/MM/YYYY"),
@@ -193,11 +187,8 @@ export default function AddFormModel(props) {
         label: modalOptions.label,
         image: imagePath,
         model: modalOptions.model,
-        selectedMembers: selectedMemberIds,
         selectedProducts,
         services: selectedServices?.map((service) => service._id || service.id),
-        createdBy: props.isAdmin ? "admin" : props.userId,
-        isManager: modalOptions.label === "Gerente",
         price:
           modalOptions.label === "Venda"
             ? selectedProducts

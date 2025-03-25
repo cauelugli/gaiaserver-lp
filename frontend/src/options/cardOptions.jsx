@@ -12,20 +12,17 @@ export const options = {
   ],
   Job: [
     { label: "Cliente", value: "customer" },
-    { label: "Designado", value: "worker" },
     { label: "Agendado para", value: "scheduledTo" },
     { label: "Valor", value: "price" },
     { label: "Status", value: "status" },
   ],
   Sale: [
     { label: "Cliente", value: "customer" },
-    { label: "Vendedor", value: "seller" },
     { label: "Valor", value: "price" },
     { label: "Status", value: "status" },
   ],
   Service: [
     { label: "Tipo", value: "type" },
-    { label: "Departamento", value: "department" },
     { label: "Valor", value: "price" },
     { label: "Produtos", value: "products" },
   ],
@@ -34,13 +31,6 @@ export const options = {
     { label: "Dia de Renovação", value: "renewDay" },
     { label: "Valor", value: "price" },
     { label: "Serviços", value: "services" },
-  ],
-  Stock: [
-    { label: "Tipo", value: "type" },
-    { label: "Membros", value: "members" },
-    { label: "E-mail", value: "email" },
-    { label: "Telefone", value: "phone" },
-    { label: "Tipo", value: "type" },
   ],
   StockEntry: [
     { label: "Produtos", value: "items" },

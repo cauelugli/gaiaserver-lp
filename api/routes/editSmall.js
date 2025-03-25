@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const {
   defineModel,
-  swapDepartments,
 } = require("../../controllers/functions/routeFunctions");
 
 // need to implement notifications and routines here!!!!!
@@ -14,15 +13,6 @@ router.put("/", async (req, res) => {
   const Model = defineModel(req.body.sourceModel);
   if (!Model) {
     return res.status(400).json({ error: "Modelo não encontrado" });
-  }
-
-  if (req.body.targetAttribute === "department") {
-    swapDepartments(
-      req.body.sourceId,
-      req.body.sourceModel,
-      req.body.newAttributeValue,
-      ""
-    );
   }
 
   try {

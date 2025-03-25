@@ -13,8 +13,6 @@ const {
   addFinanceOutcome,
   addFinanceIncome,
   addOperator,
-  addManagerToDepartment,
-  addServiceToDepartment,
   addUserRoutines,
   insertMembership,
   insertMembersToGroup,
@@ -39,7 +37,6 @@ const {
 const {
   deleteRoutinesClient,
   deleteRoutinesCustomer,
-  deleteRoutinesDepartment,
   deleteRoutinesGroup,
   deleteRoutinesJob,
   deleteRoutinesOperator,
@@ -54,17 +51,9 @@ const {
   deleteRoutinesBaseProduct,
 } = require("../controllers/functions/deleteRoutines");
 
-const {
-  swapDepartments,
-  swapPositions,
-  swapMembers,
-  swapManagers,
-} = require("../controllers/functions/swapFunctions");
-
 const deleteRoutinesFunctions = {
   deleteRoutinesClient,
   deleteRoutinesCustomer,
-  deleteRoutinesDepartment,
   deleteRoutinesGroup,
   deleteRoutinesJob,
   deleteRoutinesOperator,
@@ -114,12 +103,6 @@ mainQueue.process(async (job) => {
         break;
       case "addToStock":
         await handleAddToStock(data);
-        break;
-      case "addManagerToDepartment":
-        await handleAddManagerToDepartment(data);
-        break;
-      case "addServiceToDepartment":
-        await handleAddServiceToDepartment(data);
         break;
       case "approveRequest":
         await handleApproveRequest(data);
@@ -184,18 +167,6 @@ mainQueue.process(async (job) => {
       case "resolveItem":
         await handleResolveItem(data);
         break;
-      case "swapDepartments":
-        await handleSwapDepartments(data);
-        break;
-      case "swapPositions":
-        await handleSwapPositions(data);
-        break;
-      case "swapMembers":
-        await handleSwapMembers(data);
-        break;
-      case "swapManagers":
-        await handleSwapManagers(data);
-        break;
 
       default:
         throw new Error(`Tipo de notificação não suportado: ${type}`);
@@ -251,14 +222,6 @@ const handleFinanceIncome = async (data) => {
 
 const handleArchiveItem = async (data) => {
   await archiveItem(data);
-};
-
-const handleAddManagerToDepartment = async (data) => {
-  await addManagerToDepartment(data.managerId, data.departmentId);
-};
-
-const handleAddServiceToDepartment = async (data) => {
-  await addServiceToDepartment(data.serviceId, data.departmentId);
 };
 
 const handleAddUserRoutines = async (data) => {
@@ -420,26 +383,6 @@ const handleProductIsCreated = async (data, list) => {
     receivers: list,
     label: "Produto",
   });
-};
-
-const handleSwapDepartments = async (data) => {
-  const { userId, model, newDepartment, oldDepartment } = data;
-  await swapDepartments(userId, model, newDepartment, oldDepartment);
-};
-
-const handleSwapPositions = async (data) => {
-  const { userId, newPosition, oldPosition } = data;
-  await swapPositions(userId, newPosition, oldPosition);
-};
-
-const handleSwapMembers = async (data) => {
-  const { departmentId, addUsers, removeUsers } = data;
-  await swapMembers(departmentId, addUsers, removeUsers);
-};
-
-const handleSwapManagers = async (data) => {
-  const { departmentId, newManagerId, oldManagerId } = data;
-  await swapManagers(departmentId, newManagerId, oldManagerId);
 };
 
 // MONITORING (DEBUG)

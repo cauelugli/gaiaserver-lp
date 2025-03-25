@@ -48,16 +48,6 @@ const configSchema = new Schema({
       default: "",
     },
   },
-  departments: {
-    canBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
-    departmentsNeedManager: {
-      type: Boolean,
-      default: false,
-    },
-  },
   finance: {
     canReceiveInstallments: {
       type: Boolean,
@@ -68,50 +58,6 @@ const configSchema = new Schema({
     canBeDeleted: {
       type: Boolean,
       default: true,
-    },
-  },
-  permissions: {
-    customers: {
-      type: Array,
-    },
-    users: {
-      type: Array,
-    },
-    departments: {
-      type: Array,
-    },
-    requests: {
-      type: Array,
-    },
-    services: {
-      type: Array,
-    },
-    stock: {
-      type: Array,
-    },
-    finance: {
-      type: Array,
-    },
-    files: {
-      type: Array,
-    },
-    config: {
-      type: Array,
-    },
-    customization: {
-      type: Array,
-    },
-    security: {
-      type: Array,
-    },
-    reports: {
-      type: Array,
-    },
-    products: {
-      type: Array,
-    },
-    chat: {
-      type: Array,
     },
   },
   products: {
@@ -145,12 +91,6 @@ const configSchema = new Schema({
     requestStatuses: {
       type: Array,
       default: ["Aberto"],
-    },
-  },
-  security: {
-    passwordComplexity: {
-      type: String,
-      default: "low",
     },
   },
   services: {
@@ -203,12 +143,6 @@ const configSchema = new Schema({
       default: true,
     },
     servicePlan: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  users: {
-    canBeDeleted: {
       type: Boolean,
       default: true,
     },

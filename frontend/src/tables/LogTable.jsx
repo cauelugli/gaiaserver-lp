@@ -56,7 +56,6 @@ function LogTable(props) {
     { key: "createdBy", value: "Criado por" },
     { key: "title", value: "Título" },
     { key: "position", value: "Cargo" },
-    { key: "department", value: "Departamento" },
     { key: "resolution", value: "Resolução" },
     { key: "products", value: "Produtos" },
     { key: "buyValue", value: "Valor de Compra" },

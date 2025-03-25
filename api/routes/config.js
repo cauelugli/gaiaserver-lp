@@ -87,23 +87,6 @@ router.put("/customers", async (req, res) => {
   }
 });
 
-// USERS
-router.put("/users", async (req, res) => {
-  try {
-    const { canBeDeleted } = req.body;
-
-    const config = await Config.findOne();
-
-    config.users.canBeDeleted = canBeDeleted;
-
-    await config.save();
-    res.status(200).json(config);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
 // REQUESTS
 router.put("/requests", async (req, res) => {
   try {
@@ -279,59 +262,6 @@ router.put("/customization", async (req, res) => {
     config.customization.logoBlack = logoBlack;
 
     await config.save();
-    res.status(200).json(config);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// DEPARTMENTS
-router.put("/departments", async (req, res) => {
-  try {
-    const { canBeDeleted, departmentsNeedManager } = req.body;
-
-    const config = await Config.findOne();
-
-    config.departments.canBeDeleted = canBeDeleted;
-    config.departments.departmentsNeedManager = departmentsNeedManager;
-
-    await config.save();
-    res.status(200).json(config);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// SECURITY
-router.put("/security", async (req, res) => {
-  try {
-    const { passwordComplexity } = req.body;
-
-    const config = await Config.findOne();
-
-    config.security.passwordComplexity = passwordComplexity;
-
-    await config.save();
-    res.status(200).json(config);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// PERMISSIONS
-router.put("/permissions", async (req, res) => {
-  try {
-    const payload = req.body;
-
-    const config = await Config.findOneAndUpdate(
-      {},
-      { permissions: payload },
-      { new: true }
-    );
-
     res.status(200).json(config);
   } catch (err) {
     console.error(err);

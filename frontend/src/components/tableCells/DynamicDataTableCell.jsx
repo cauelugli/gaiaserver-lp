@@ -63,11 +63,6 @@ const DynamicDataTableCell = (props) => {
             params: { item: "services", parameter: "serviceTypes" },
           });
           data = resServiceTypes.data;
-        } else if (props.field.dynamicData === "departments") {
-          const resDepartments = await api.get("/get", {
-            params: { model: "Department" },
-          });
-          data = resDepartments.data;
         } else if (props.field.dynamicData === "services") {
           const resServices = await api.get("/get", {
             params: { model: "Service" },

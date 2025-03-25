@@ -46,15 +46,9 @@ const addMappingTable = {
     "createdBy",
   ],
   "Entrada de Estoque": ["number", "createdBy", "items"],
-  Colaborador: ["image", "name", "department", "position"],
-  Departamento: ["color", "name", "type", "manager"],
-  Grupo: ["name", "members"],
-  Serviço: ["name", "type", "department", "price"],
+  Serviço: ["name", "type", "price"],
   "Plano de Serviço": ["name", "price"],
   Produto: ["name", "buyValue", "sellValue"],
-  Operador: ["username", "name", "role"],
-  Cargo: ["name", "department"],
-  "Perfil de Acesso": ["name"],
 };
 
 router.post("/", async (req, res) => {

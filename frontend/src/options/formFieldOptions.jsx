@@ -10,17 +10,12 @@ import CurrencyTableCell from "../components/tableCells/CurrencyTableCell";
 import DateTableCell from "../components/tableCells/DateTableCell";
 import DynamicDataTableCell from "../components/tableCells/DynamicDataTableCell";
 import IdDocTableCell from "../components/tableCells/IdDocTableCell";
-import ManagerSelectTableCell from "../components/tableCells/ManagerSelectTableCell";
-import MembersTableCell from "../components/tableCells/MembersTableCell";
 import PhoneTableCell from "../components/tableCells/PhoneTableCell";
 import ProductsTableCell from "../components/tableCells/ProductsTableCell";
 import SelectTableCell from "../components/tableCells/SelectTableCell";
 import ServicesTableCell from "../components/tableCells/ServicesTableCell";
 import StringTableCell from "../components/tableCells/StringTableCell";
-import UsersTableCell from "../components/tableCells/UsersTableCell ";
 import ServiceListTableCell from "../components/tableCells/ServiceListTableCell";
-import DepartmentTypeTableCell from "../components/tableCells/DepartmentTypeTableCell";
-import DepartmentsTableCell from "../components/tableCells/DepartmentsTableCell";
 
 // this is used in AddForm
 
@@ -105,19 +100,6 @@ export const renderField = (
           multiple={field.type === "multipleSelect"}
         />
       );
-    case "departmentType":
-      return (
-        <DepartmentTypeTableCell
-          fields={fields}
-          field={field}
-          menuOptions={field.options}
-          handleChange={handleChange}
-          // modalOptions={modalOptions}
-          // required={field.required}
-          // isFullWidth={field.type === "select"}
-          // multiple={field.type === "multipleSelect"}
-        />
-      );
     case "date":
       return (
         <DateTableCell
@@ -139,29 +121,7 @@ export const renderField = (
           multiple={field.multiple}
         />
       );
-    case "department":
-      return (
-        <DepartmentsTableCell
-          fields={fields}
-          field={field}
-          handleChange={handleChange}
-          modalOptions={modalOptions}
-          required={field.required}
-          managerRestriction={modalOptions.label === "Gerente" ? true : false}
-        />
-      );
-    case "managerSelect":
-      return (
-        <ManagerSelectTableCell
-          fields={fields}
-          field={field}
-          handleChange={handleChange}
-          modalOptions={modalOptions}
-          required={field.required}
-          multiple={field.multiple}
-          fromConfig={false}
-        />
-      );
+
     case "allCustomers":
       return (
         <AllCustomersTableCell
@@ -176,17 +136,6 @@ export const renderField = (
     case "services":
       return (
         <ServicesTableCell
-          fields={fields}
-          field={field}
-          handleChange={handleChange}
-          modalOptions={modalOptions}
-          required={field.required}
-          multiple={field.multiple}
-        />
-      );
-    case "users":
-      return (
-        <UsersTableCell
           fields={fields}
           field={field}
           handleChange={handleChange}
@@ -226,17 +175,6 @@ export const renderField = (
           setPriceDifference={handlers.setPriceDifference}
           setFinalPrice={handlers.setFinalPrice}
           setOkToDispatch={handlers.setOkToDispatch}
-        />
-      );
-    case "members":
-      return (
-        <MembersTableCell
-          fields={fields}
-          modalOptions={modalOptions}
-          value={fields[field.name] || []}
-          size="small"
-          handleMemberChange={handlers.handleMemberChange}
-          selectedMembers={selectedMembers}
         />
       );
     case "attachments":

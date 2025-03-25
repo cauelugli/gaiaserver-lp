@@ -362,14 +362,6 @@ export const modals = {
         hasAvatar: false,
       },
       {
-        fieldSection: "mainInfo",
-        name: "department",
-        label: "Departamento",
-        type: "department",
-        required: true,
-        hasAvatar: false,
-      },
-      {
         fieldSection: "serviceInfo",
         name: "executionTime",
         label: "Tempo de Execução",

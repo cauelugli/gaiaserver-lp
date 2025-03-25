@@ -412,11 +412,6 @@ export default function Account({
                 <TableCell align="center">
                   <Typography sx={{ fontSize: "14px" }}>Telefone</Typography>
                 </TableCell>
-                <TableCell align="center">
-                  <Typography sx={{ fontSize: "14px" }}>
-                    Departamento
-                  </Typography>
-                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -429,12 +424,6 @@ export default function Account({
                 </TableCell>
                 <TableCell align="center">
                   <Typography>{user.phone}</Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography>
-                    {idIndexList.find((item) => item.id === user.department)
-                      ?.name || ""}
-                  </Typography>
                 </TableCell>
               </TableRow>
             </TableBody>
