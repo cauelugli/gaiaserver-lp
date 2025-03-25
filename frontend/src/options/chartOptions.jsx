@@ -212,7 +212,7 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
   return [
     {
       id: 1,
-      title: "Vendas Total",
+      title: "Vendas Criadas",
       labels: labelsAllSales,
       values: valuesAllSales,
       length: valuesAllSales.map((value) => value.length),
@@ -252,7 +252,7 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
     },
     {
       id: 5,
-      title: "Jobs Total",
+      title: "Jobs Criados",
       labels: labelsAllJobs,
       values: valuesAllJobs,
       length: valuesAllJobs.map((value) => value.length),
@@ -292,7 +292,7 @@ export const getChartItems = (salesData, jobsData, stockData, groupBy) => {
     },
     {
       id: 9,
-      title: "Entradas de Estoque Total",
+      title: "Entradas de Estoque Criadas",
       labels: labelsAllStock,
       values: valuesAllStock,
       length: valuesAllStock.map((value) => value.length),
