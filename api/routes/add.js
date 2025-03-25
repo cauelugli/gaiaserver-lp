@@ -155,18 +155,6 @@ router.post("/", async (req, res) => {
         });
         break;
 
-      case "Department":
-      case "Group":
-        mainQueue.add({
-          type: "insertMembersToGroup",
-          data: {
-            id: savedItem._id.toString(),
-            model: req.body.model,
-            members: processedFields.members,
-          },
-        });
-        break;
-
       case "Job":
       case "Sale":
         mainQueue.add({
