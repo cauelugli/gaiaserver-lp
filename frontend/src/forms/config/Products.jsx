@@ -452,7 +452,7 @@ export default function Products({
       {openAddProduct && (
         <Dialog
           fullWidth
-          maxWidth="md"
+          maxWidth="lg"
           open={openAddProduct}
           onClose={() => setOpenAddProduct(!openAddProduct)}
         >
