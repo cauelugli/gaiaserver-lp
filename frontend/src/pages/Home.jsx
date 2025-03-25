@@ -41,13 +41,13 @@ const Home = ({
     <>
       <Grid2 container justifyContent={homePagePreferences === 3 && "center"}>
         <Grid2 sx={{ width: "80%" }}>
-          {/* <HomeBlock
+          <HomeBlock
             layout={layout}
             // userUsername={userUsername}
             allowedLinks={allowedLinks}
             configData={configData.customization}
             currentWindowSize={currentWindowSize}
-          /> */}
+          />
         </Grid2>
         {homePagePreferences !== 3 &&
           (currentWindowSize === "md2" ||
