@@ -4,7 +4,6 @@ const app = express();
 const server = http.createServer(app);
 const dotenv = require("dotenv");
 const { mongoose } = require("../models/db");
-const Role = require("../models/models/Role");
 
 dotenv.config();
 
@@ -14,8 +13,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Connected to MongoDB");
-    return Role.find();
+    return console.log("Connected to MongoDB");
   })
   .catch((err) => {
     console.error("Error connecting to MongoDB:", err);

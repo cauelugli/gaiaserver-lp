@@ -2,7 +2,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Divider, Grid2, List, ListItemButton, Typography } from "@mui/material";
+import {
+  Divider,
+  Grid2,
+  List,
+  ListItemButton,
+  Typography,
+} from "@mui/material";
 
 import { icons } from "../../icons";
 
@@ -34,21 +40,8 @@ const TopBar = ({ configData, user }) => {
     setHoveredIndex(null);
   };
 
-  function hasPermission(user, configData, routePath) {
-    if (user.username === "admin") return true;
-    if (!configData.permissions) return false;
-
-    const route = routePath.slice(1);
-    if (route === "" || route === "help" || route === "account") {
-      return true;
-    }
-
-    if (!route) {
-      return false;
-    }
-
-    const allowedRoles = configData.permissions[route];
-    return allowedRoles && allowedRoles.some((id) => id === user.role);
+  function hasPermission() {
+    return true;
   }
 
   const filteredOptions = options.filter((option) =>

@@ -403,7 +403,6 @@ export default function PageModel(props) {
                       tableColumns={item.fields}
                       userName={props.userName}
                       userId={props.userId}
-                      userRole={props.userRole}
                       configData={props.configData[props.item.page]}
                       refreshData={refreshData}
                       setRefreshData={setRefreshData}
@@ -476,7 +475,6 @@ export default function PageModel(props) {
                       }
                       userName={props.userName}
                       userId={props.userId}
-                      userRole={props.userRole}
                       configData={props.configData[props.item.page]}
                       refreshData={refreshData}
                       setRefreshData={setRefreshData}

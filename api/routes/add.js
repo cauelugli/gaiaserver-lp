@@ -66,32 +66,6 @@ router.post("/", async (req, res) => {
         return res.status(422).json({ error: err.message });
       }
       break;
-    case "Operator":
-      const salt = await bcrypt.genSalt(10);
-      const hashedPass = await bcrypt.hash(
-        req.body.fields["firstAccessPassword"],
-        salt
-      );
-
-      mainQueue.add({
-        type: "addOperator",
-        data: {
-          id: req.body.fields["user"]._id.toString(),
-          username: req.body.fields["username"],
-          password: hashedPass,
-          role: req.body.fields["role"]._id.toString(),
-        },
-      });
-
-      mainQueue.add({
-        type: "insertMembership",
-        data: {
-          id: req.body.fields["user"]._id.toString(),
-          role: req.body.fields["role"],
-        },
-      });
-
-      break;
     case "Job":
     case "Sale":
       try {

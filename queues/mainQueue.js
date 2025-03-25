@@ -41,7 +41,6 @@ const {
   deleteRoutinesJob,
   deleteRoutinesOperator,
   deleteRoutinesProduct,
-  deleteRoutinesRole,
   deleteRoutinesSale,
   deleteRoutinesService,
   deleteRoutinesServicePlan,
@@ -57,7 +56,6 @@ const deleteRoutinesFunctions = {
   deleteRoutinesJob,
   deleteRoutinesOperator,
   deleteRoutinesProduct,
-  deleteRoutinesRole,
   deleteRoutinesSale,
   deleteRoutinesService,
   deleteRoutinesServicePlan,
@@ -291,10 +289,6 @@ const handleDeleteMultipleItems = async (data) => {
   } else {
     console.error(`Function ${routineFunction} is not defined.`);
   }
-};
-
-const handleInsertMembership = async (data) => {
-  await insertMembership(data.id, data.role);
 };
 
 const handleInsertMembersToGroup = async (data) => {

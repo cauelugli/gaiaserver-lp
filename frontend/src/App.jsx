@@ -41,13 +41,9 @@ function isAuthenticated(login, userData) {
   return login && userData;
 }
 
-function hasPermission(user, configData, routePath) {
-  if (!configData.permissions) return false;
-  if (user.username === "admin") return true;
-
-  const allowedRoles = configData.permissions[routePath];
-
-  return allowedRoles && allowedRoles.some((id) => id === user.role);
+function hasPermission() {
+  // remove this
+  return true
 }
 
 export default function App() {

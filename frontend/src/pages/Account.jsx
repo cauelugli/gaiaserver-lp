@@ -439,11 +439,6 @@ export default function Account({
                     Nome de Operador
                   </Typography>
                 </TableCell>
-                <TableCell align="center">
-                  <Typography sx={{ fontSize: "14px" }}>
-                    Perfil de Acesso
-                  </Typography>
-                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -456,12 +451,6 @@ export default function Account({
                 </TableCell>
                 <TableCell align="center">
                   <Typography>{user.username ? user.username : ""}</Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography>
-                    {idIndexList.find((item) => item.id === user.role)?.name ||
-                      ""}
-                  </Typography>
                 </TableCell>
               </TableRow>
             </TableBody>
