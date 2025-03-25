@@ -20,6 +20,21 @@ router.delete("/:sourceId/:model/:id", async (req, res) => {
   }
 });
 
+// DELETE PRODUCT
+router.delete("/product/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    mainQueue.add({
+      type: "deleteBaseProduct",
+      data: { id: id }
+    });
+    res.status(200).json("Produto deletado com sucesso");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Erro ao deletar o produto" });
+  }
+});
+
 // DELETE MULTIPLE ITEMS
 router.delete("/multiple/:sourceId/:model/:ids", async (req, res) => {
   const { sourceId, model, ids } = req.params;

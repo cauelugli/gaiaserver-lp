@@ -51,6 +51,7 @@ const {
   deleteRoutinesServicePlan,
   deleteRoutinesStockEntry,
   deleteRoutinesUser,
+  deleteRoutinesBaseProduct,
 } = require("../controllers/functions/deleteRoutines");
 
 const {
@@ -75,6 +76,7 @@ const deleteRoutinesFunctions = {
   deleteRoutinesServicePlan,
   deleteRoutinesStockEntry,
   deleteRoutinesUser,
+  deleteRoutinesBaseProduct,
 };
 
 const mainQueue = new Queue("mainQueue", {
@@ -127,6 +129,9 @@ mainQueue.process(async (job) => {
         break;
       case "deleteSingleItem":
         await handleDeleteSingleItem(data);
+        break;
+      case "deleteBaseProduct":
+        await handleDeleteBaseProduct(data);
         break;
       case "deleteMultipleItems":
         await handleDeleteMultipleItems(data);
@@ -282,6 +287,15 @@ const handleResolveItem = async (data) => {
 
 const handleCheckNewStockEntryDefaultStatus = async (data) => {
   await checkNewStockEntryDefaultStatus(data);
+};
+
+const handleDeleteBaseProduct = async (data) => {
+  const { id } = data;
+  if (deleteRoutinesFunctions["deleteRoutinesBaseProduct"]) {
+    await deleteRoutinesFunctions["deleteRoutinesBaseProduct"](id);
+  } else {
+    console.error(`Function ${routineFunction} is not defined.`);
+  }
 };
 
 const handleDeleteSingleItem = async (data) => {

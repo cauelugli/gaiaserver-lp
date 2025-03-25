@@ -38,8 +38,10 @@ import {
 import { icons } from "../../icons";
 
 import AddBaseProductForm from "../add/AddBaseProductForm";
+import EditBaseProductForm from "../edit/EditBaseProductForm";
 
 import { useAppData } from "../../../src/AppDataContext";
+import DeleteFormModel from "../delete/DeleteFormModel";
 
 export default function Products({
   onClose,
@@ -54,8 +56,12 @@ export default function Products({
   const [baseProducts, setBaseProducts] = React.useState([]);
   const [products, setProducts] = React.useState([]);
   const [canBeDeleted, setCanBeDeleted] = React.useState(null);
-
   const [openAddProduct, setOpenAddProduct] = React.useState(false);
+  const [openEditProduct, setOpenEditProduct] = React.useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [selectedProductId, setSelectedProductId] = React.useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [selectedProductName, setSelectedProductName] = React.useState(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -184,7 +190,6 @@ export default function Products({
                                       {field.index + 1}
                                     </Typography>
                                   </TableCell>
-
                                   <TableCell>
                                     <Typography sx={{ fontSize: 12 }}>
                                       {field.name}
@@ -201,7 +206,6 @@ export default function Products({
                                       {field.type === "date" && "Data"}
                                     </Typography>
                                   </TableCell>
-
                                   <TableCell>
                                     <Typography sx={{ fontSize: 12 }}>
                                       {field.type === "string" &&
@@ -236,12 +240,12 @@ export default function Products({
                                       {field.type === "currency" && "-"}
                                       {field.type === "date" &&
                                         `Tipo: ${
-                                          field.newDateType === "simple"
+                                          field.dateType === "simple"
                                             ? "Simples"
                                             : "Período"
                                         } ${
-                                          field.newDateType === "period"
-                                            ? `${field.newDateValue} ${field.newDatePeriod} `
+                                          field.dateType === "range"
+                                            ? `${field.dateValue} ${field.datePeriod}`
                                             : ""
                                         }`}
                                     </Typography>
@@ -310,31 +314,29 @@ export default function Products({
                                   <TableRow key={index}>
                                     <TableCell>
                                       <Avatar
-                                        src={`http://localhost:3000/static/${prod.images[0]}`}
-                                        alt={prod.name[0]}
+                                        src={`http://localhost:3000/static/${
+                                          prod.images?.[0] || ""
+                                        }`}
+                                        alt={prod.name?.[0] || ""}
                                         style={{
                                           width: 32,
                                           height: 32,
                                         }}
                                       />
                                     </TableCell>
-
                                     <TableCell>
                                       <Typography sx={{ fontSize: 12 }}>
                                         {prod.name ? prod.name : "-"}
                                       </Typography>
                                     </TableCell>
-
                                     <TableCell>
                                       <Typography sx={{ fontSize: 12 }}>
-                                        {/* here */}
                                         {idIndexList.find(
                                           (creator) =>
                                             creator.id === prod.createdBy
                                         )?.name || ""}
                                       </Typography>
                                     </TableCell>
-
                                     <TableCell>
                                       <Typography sx={{ fontSize: 12 }}>
                                         {prod.createdAt
@@ -349,12 +351,35 @@ export default function Products({
                             </TableBody>
                           </Table>
                         </AccordionDetails>
-                        <Button
-                          color="inherit"
-                          sx={{ ml: "92%", pr: 1, pb: 1 }}
+                        <Grid2
+                          container
+                          direction="row"
+                          justifyContent="flex-end"
                         >
-                          <icons.SettingsIcon />
-                        </Button>
+                          <Button
+                            sx={{ m: 1 }}
+                            color="inherit"
+                            variant="contained"
+                            onClick={() => {
+                              setSelectedProductId(product._id);
+                              setOpenEditProduct(true);
+                            }}
+                          >
+                            <icons.SettingsIcon />
+                          </Button>
+                          <Button
+                            sx={{ m: 1 }}
+                            color="error"
+                            variant="contained"
+                            onClick={() => {
+                              setSelectedProductId(product._id);
+                              setSelectedProductName(product.type);
+                              setOpenDialog(!openDialog);
+                            }}
+                          >
+                            <icons.DeleteIcon />
+                          </Button>
+                        </Grid2>
                       </Accordion>
                     ))}
 
@@ -378,6 +403,7 @@ export default function Products({
                     </Grid2>
                   </AccordionDetails>
                 </Accordion>
+
                 <Accordion sx={{ width: "100%", mt: 2 }}>
                   <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>
                     <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
@@ -411,7 +437,7 @@ export default function Products({
                           onChange={(e) => setCanBeDeleted(e.target.value)}
                         >
                           <FormControlLabel
-                            value={Boolean(true)}
+                            value={true}
                             control={
                               <Radio
                                 size="small"
@@ -423,7 +449,7 @@ export default function Products({
                             }
                           />
                           <FormControlLabel
-                            value={Boolean(false)}
+                            value={false}
                             control={
                               <Radio
                                 size="small"
@@ -449,21 +475,68 @@ export default function Products({
           </>
         )}
       </form>
+
+      {/* Diálogo para adicionar novo produto */}
       {openAddProduct && (
         <Dialog
           fullWidth
           maxWidth="lg"
           open={openAddProduct}
-          onClose={() => setOpenAddProduct(!openAddProduct)}
+          onClose={() => setOpenAddProduct(false)}
         >
           <AddBaseProductForm
             userName={userName}
             userId={userId}
-            onClose={() => setOpenAddProduct(!openAddProduct)}
+            onClose={() => setOpenAddProduct(false)}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             configCustomization={configCustomization}
             toast={toast}
+          />
+        </Dialog>
+      )}
+
+      {/* Diálogo para editar produto existente */}
+      {openEditProduct && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openEditProduct}
+          onClose={() => setOpenEditProduct(false)}
+        >
+          <EditBaseProductForm
+            productId={selectedProductId}
+            userName={userName}
+            userId={userId}
+            onClose={() => {
+              setOpenEditProduct(false);
+              setRefreshData(!refreshData);
+            }}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            toast={toast}
+          />
+        </Dialog>
+      )}
+
+      {openDialog && (
+        <Dialog
+          fullWidth
+          maxWidth="lg"
+          open={openDialog}
+          onClose={() => setOpenDialog(false)}
+        >
+          <DeleteFormModel
+            userId={userId}
+            selectedItem={{ id: selectedProductId, title: selectedProductName }}
+            model={"Product"}
+            label={"Produto"}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            openDialog={openDialog}
+            setOpenDialog={setOpenDialog}
+            page={"products"}
+            isProduct={true}
           />
         </Dialog>
       )}

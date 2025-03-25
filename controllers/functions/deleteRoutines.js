@@ -297,6 +297,16 @@ async function deleteRoutinesProduct(
   }
 }
 
+async function deleteRoutinesBaseProduct(id) {
+  const Model = defineModel("Product");
+
+  try {
+    await Model.findByIdAndDelete(id);
+  } catch (err) {
+    console.error("Erro na rotina de deleção", err);
+  }
+}
+
 async function deleteRoutinesRole(
   model,
   isMultiple,
@@ -534,6 +544,7 @@ module.exports = {
   deleteRoutinesOperator,
   deleteRoutinesPosition,
   deleteRoutinesProduct,
+  deleteRoutinesBaseProduct,
   deleteRoutinesRole,
   deleteRoutinesSale,
   deleteRoutinesService,

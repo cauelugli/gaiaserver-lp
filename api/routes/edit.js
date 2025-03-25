@@ -148,4 +148,29 @@ router.put("/", async (req, res) => {
   }
 });
 
+// EDIT BASE PRODUCT
+router.post("/baseProduct", async (req, res) => {
+  try {
+    const { id, type, fields, updatedBy } = req.body;
+
+    const updatedProduct = await defineModel("Product").findByIdAndUpdate(
+      id,
+      { type, fields, updatedBy, updatedAt: Date.now() },
+      { new: true }
+    );
+
+    // Registrar no log
+    await defineModel("Log").create({
+      source: updatedBy,
+      target: id,
+      label: "Product",
+      type: "edit",
+    });
+
+    res.json(updatedProduct);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

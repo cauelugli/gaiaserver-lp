@@ -29,12 +29,16 @@ const DeleteFormModel = ({
   setOpenDialog,
   page,
   label,
+  isProduct,
 }) => {
   const handleDelete = async () => {
     try {
-      const res = await api.delete(
-        `/delete/${userId}/${model}/${selectedItem._id}`
-      );
+      const endpoint = isProduct
+        ? `/delete/product/${selectedItem.id}`
+        : `/delete/${userId}/${model}/${selectedItem._id}`;
+
+      const res = await api.delete(endpoint);
+
       if (res.data || res.status === 200) {
         toast.success(
           `${
