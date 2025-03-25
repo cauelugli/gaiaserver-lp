@@ -21,23 +21,12 @@ function defineModel(model) {
 const parseReqFields = function (fields, reqBody, filteredCounter) {
   const result = {
     ...fields,
-    manager: fields.manager?._id || reqBody.manager?._id || "",
     number: filteredCounter,
-    members: (
-      fields.members ||
-      reqBody.members ||
-      reqBody.selectedMembers ||
-      []
-    ).map((member) => member._id || member),
-    position: fields.position || reqBody.position || "",
-    role: fields.role?._id || reqBody.role?._id || "",
-    selectedMembers: fields.selectedMembers || reqBody.selectedMembers || [],
     image: fields.image || reqBody.image || "",
     type:
       typeof fields.type === "string"
         ? fields.type
         : fields.type?.name?.toString() || "",
-    isManager: fields.isManager || reqBody.isManager || false,
     products: fields.selectedProducts || reqBody.selectedProducts || [],
     price:
       fields.label === "Plano de Serviços"
@@ -57,11 +46,6 @@ const parseReqFields = function (fields, reqBody, filteredCounter) {
       result[field.name] = field.value || "";
     });
   }
-
-  if (reqBody.createdBy !== undefined) {
-    result.createdBy = reqBody.createdBy;
-  }
-
   return result;
 };
 

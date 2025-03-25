@@ -49,13 +49,10 @@ function LogTable(props) {
   const translatedKeys = [
     { key: "name", value: "Nome" },
     { key: "customer", value: "Cliente" },
-    { key: "worker", value: "Designado" },
     { key: "service", value: "Serviço" },
     { key: "scheduledTo", value: "Data Agendada" },
     { key: "description", value: "Descrição" },
-    { key: "createdBy", value: "Criado por" },
     { key: "title", value: "Título" },
-    { key: "position", value: "Cargo" },
     { key: "resolution", value: "Resolução" },
     { key: "products", value: "Produtos" },
     { key: "buyValue", value: "Valor de Compra" },

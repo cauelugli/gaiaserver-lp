@@ -30,25 +30,7 @@ const DynamicDataTableCell = (props) => {
       // update: really...
       try {
         let data = [];
-        if (
-          props.field.dynamicData === "workers" ||
-          props.fields.data === "worker"
-        ) {
-          const resWorkers = await api.get("/get", {
-            params: { model: "User" },
-          });
-          data = resWorkers.data.filter((user) => !user.isManager);
-        } else if (props.field.dynamicData === "positions") {
-          const resPositions = await api.get("/get", {
-            params: { model: "Position" },
-          });
-          data = resPositions.data;
-        } else if (props.field.dynamicData === "username") {
-          const resPositions = await api.get("/get", {
-            params: { model: "User" },
-          });
-          data = resPositions.data.filter((user) => !user.username);
-        } else if (props.field.dynamicData === "scheduleTime") {
+        if (props.field.dynamicData === "scheduleTime") {
           const configAgenda = await api.get("/config/specific", {
             params: { key: "agenda", items: ["minTime", "maxTime"] },
           });
@@ -68,11 +50,6 @@ const DynamicDataTableCell = (props) => {
             params: { model: "Service" },
           });
           data = resServices.data;
-        } else if (props.field.dynamicData === "roles") {
-          const resRoles = await api.get("/get", {
-            params: { model: "Role" },
-          });
-          data = resRoles.data;
         } else {
           const response = await api.get(`/${props.field.dynamicData}`);
           data = response.data;
