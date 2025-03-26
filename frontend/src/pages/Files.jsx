@@ -199,10 +199,6 @@ export default function Files({ topBar }) {
             sx={{ width: topBar ? "103%" : "102%" }}
           >
             <Tab
-              label={<Typography sx={{ fontSize: 13 }}>Documentos</Typography>}
-              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-            />
-            <Tab
               label={<Typography sx={{ fontSize: 13 }}>Imagens</Typography>}
               sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
             />

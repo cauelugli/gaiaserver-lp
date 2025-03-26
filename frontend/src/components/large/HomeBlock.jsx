@@ -33,11 +33,7 @@ const HomeBlock = ({ currentWindowSize, configData, layout }) => {
     }[currentWindowSize] || 0;
 
   return (
-    <Grid2
-      container
-      direction="row"
-      sx={{ mt: -1 }}
-    >
+    <Grid2 container direction="row" sx={{ mt: -1 }}>
       {optionsMainblocks.map((option, index) => {
         if (layout === "Padrão" || layout === "Chip") {
           return (
@@ -47,8 +43,8 @@ const HomeBlock = ({ currentWindowSize, configData, layout }) => {
                   onMouseEnter={() => setHoveredIndexMainblocks(index)}
                   onMouseLeave={() => setHoveredIndexMainblocks(null)}
                   sx={{
-                    height: (layout === "Chip" ? 30 : 55) * factor,
-                    width: (layout === "Chip" ? 55 : 55) * factor,
+                    height: (layout === "Chip" ? 45 : 55) * factor,
+                    width: 85 * factor,
                     transition: "background-color 0.3s, color 0.3s",
                     backgroundColor:
                       hoveredIndexMainblocks === index && configData
@@ -92,23 +88,14 @@ const HomeBlock = ({ currentWindowSize, configData, layout }) => {
 
         if (layout === "Compacto") {
           return (
-            <Grid2
-              item
-              key={index}
-              xs={12}
-              sm={6}
-              md={4}
-              lg={3}
-              xl={2}
-              sx={{ p: 1 }}
-            >
+            <Grid2 item key={index} sx={{ px: 3, py: 1 }}>
               <Link to={option.link} style={{ textDecoration: "none" }}>
                 <Paper
                   onMouseEnter={() => setHoveredIndexMainblocks(index)}
                   onMouseLeave={() => setHoveredIndexMainblocks(null)}
                   sx={{
-                    height: 20 * factor,
-                    width: 45 * factor,
+                    height: 17 * factor,
+                    width: 75 * factor,
                     transition: "background-color 0.3s, color 0.3s",
                     backgroundColor:
                       hoveredIndexMainblocks === index && configData
@@ -221,16 +208,7 @@ const HomeBlock = ({ currentWindowSize, configData, layout }) => {
 
         if (layout === "Avatar") {
           return (
-            <Grid2
-              item
-              key={index}
-              xs={12}
-              sm={6}
-              md={4}
-              lg={3}
-              xl={3}
-              sx={{ p: 1 }}
-            >
+            <Grid2 item key={index} sx={{ p: 1, mx: 8 }}>
               <Link to={option.link} style={{ textDecoration: "none" }}>
                 <Paper
                   onMouseEnter={() => setHoveredIndexMainblocks(index)}
