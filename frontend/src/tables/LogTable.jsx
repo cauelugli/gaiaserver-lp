@@ -125,7 +125,7 @@ function LogTable(props) {
               <Grid2 item>
                 <Avatar
                   sx={{ width: 24, height: 24 }}
-                  src={`http://localhost:3000/static/${
+                  src={`http://localhost:8080/static/${
                     props.idIndexList.find((item) => item.id === row.source)
                       ?.image || ""
                   }`}
@@ -203,7 +203,7 @@ function LogTable(props) {
                                         filteredItem.images.length > 0 && (
                                           <Avatar
                                             sx={{ width: 24, height: 24 }}
-                                            src={`http://localhost:3000/static/${filteredItem.images[0]}`}
+                                            src={`http://localhost:8080/static/${filteredItem.images[0]}`}
                                           />
                                         )}
                                       {/* Exibe as demais informações */}
@@ -270,7 +270,7 @@ function LogTable(props) {
                                         filteredItem.images.length > 0 && (
                                           <Avatar
                                             sx={{ width: 24, height: 24 }}
-                                            src={`http://localhost:3000/static/${filteredItem.images[0]}`}
+                                            src={`http://localhost:8080/static/${filteredItem.images[0]}`}
                                           />
                                         )}
                                       {/* Exibe as demais informações */}

@@ -297,7 +297,7 @@ export default function Products({
                                   <TableRow key={index}>
                                     <TableCell>
                                       <Avatar
-                                        src={`http://localhost:3000/static/${
+                                        src={`http://localhost:8080/static/${
                                           prod.images?.[0] || ""
                                         }`}
                                         alt={prod.name?.[0] || ""}

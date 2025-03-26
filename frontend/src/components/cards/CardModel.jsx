@@ -52,7 +52,7 @@ export default function CardModel({
               <>
                 <Tooltip key={index} title={subItem.name || "N/A"}>
                   <Avatar
-                    src={`http://localhost:3000/static/${
+                    src={`http://localhost:8080/static/${
                       subItem.images?.[0] || ""
                     }`}
                     sx={{ width: 30, height: 30, mr: 1 }}
@@ -97,7 +97,7 @@ export default function CardModel({
             >
               <Avatar
                 alt="Imagem"
-                src={`http://localhost:3000/static/${item.image}`}
+                src={`http://localhost:8080/static/${item.image}`}
                 sx={{
                   width: 80 + cardSize * 15,
                   height: 80 + cardSize * 15,
@@ -152,7 +152,7 @@ export default function CardModel({
                   <Grid2 item key={index}>
                     <Avatar
                       alt={`Image ${index}`}
-                      src={`http://localhost:3000/static/${
+                      src={`http://localhost:8080/static/${
                         item.images[0] || ""
                       }`}
                       sx={{
@@ -164,7 +164,7 @@ export default function CardModel({
                 ))
               ) : item.images ? (
                 <Avatar
-                  src={`http://localhost:3000/static/${item.images[0] || ""}`}
+                  src={`http://localhost:8080/static/${item.images[0] || ""}`}
                   sx={{ width: 50 + cardSize * 15, height: 50 + cardSize * 15 }}
                 />
               ) : (

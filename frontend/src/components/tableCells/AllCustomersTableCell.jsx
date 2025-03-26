@@ -69,7 +69,7 @@ const AllCustomersTableCell = (props) => {
             <Grid2 container direction="row" alignItems="center">
               <Avatar
                 alt="Imagem"
-                src={`http://localhost:3000/static/${selected.image}`}
+                src={`http://localhost:8080/static/${selected.image}`}
                 sx={{ width: 24, height: 24, marginRight: 2 }}
               />
               <Typography
@@ -132,7 +132,7 @@ const AllCustomersTableCell = (props) => {
               <Grid2 container direction="row" alignItems="center">
                 <Avatar
                   alt="Imagem"
-                  src={`http://localhost:3000/static/${option.image}`}
+                  src={`http://localhost:8080/static/${option.image}`}
                   sx={{ width: 24, height: 24, marginRight: 2 }}
                 />
                 <Typography>{option.name}</Typography>
@@ -160,7 +160,7 @@ const AllCustomersTableCell = (props) => {
               <Grid2 container direction="row" alignItems="center">
                 <Avatar
                   alt="Imagem"
-                  src={`http://localhost:3000/static/${option.image}`}
+                  src={`http://localhost:8080/static/${option.image}`}
                   sx={{ width: 24, height: 24, marginRight: 2 }}
                 />
                 <Typography>{option.name}</Typography>

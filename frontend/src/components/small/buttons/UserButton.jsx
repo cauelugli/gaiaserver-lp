@@ -40,7 +40,7 @@ export default function UserButton({ user }) {
   return (
     <Box>
       <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} sx={{ p: 0.5 }}>
-        <Avatar src={`http://localhost:3000/static${user.image}`} />
+        <Avatar src={`http://localhost:8080/static${user.image}`} />
       </IconButton>
       <Menu
         anchorEl={anchorEl}

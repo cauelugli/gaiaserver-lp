@@ -34,7 +34,7 @@ export default function BadgedIcon(props) {
         <Grid2 item>
           <Avatar
             alt="Imagem do Item"
-            src={`http://localhost:3000/static/${props.item.images[0]}`}
+            src={`http://localhost:8080/static/${props.item.images[0]}`}
             sx={{ width: 64, height: 64 }}
           />
         </Grid2>

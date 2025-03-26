@@ -16,7 +16,7 @@ const FormEndLineTenant = ({ configCustomization, extraSmall }) => {
       {configCustomization.logoBlack !== "" && (
         <Avatar
           alt="Imagem do Cliente"
-          src={`http://localhost:3000/static/${configCustomization.logoBlack}`}
+          src={`http://localhost:8080/static/${configCustomization.logoBlack}`}
           sx={{
             width: 250,
             height: 70,

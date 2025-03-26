@@ -94,7 +94,7 @@ const DynamicDataTableCell = (props) => {
               <Grid2 container direction="row" alignItems="center">
                 <Avatar
                   alt="Imagem"
-                  src={`http://localhost:3000/static/${selected.image}`}
+                  src={`http://localhost:8080/static/${selected.image}`}
                   sx={{ width: 24, height: 24, marginRight: 2 }}
                 />
                 <Typography sx={{ fontSize: 13 }}>{selected.name}</Typography>

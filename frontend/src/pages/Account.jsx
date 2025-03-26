@@ -325,7 +325,7 @@ export default function Account({
             >
               <Avatar
                 alt="Imagem do Usuário"
-                src={`http://localhost:3000/static/${user.image}`}
+                src={`http://localhost:8080/static/${user.image}`}
                 sx={{
                   width: 230,
                   height: 230,

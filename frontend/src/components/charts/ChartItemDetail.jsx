@@ -69,7 +69,7 @@ const ChartItemDetail = ({
               </Typography>
               <Grid2 container direction="row">
                 <Avatar
-                  src={`http://localhost:3000/static/${
+                  src={`http://localhost:8080/static/${
                     idIndexList.find(
                       (customer) => customer.id === selectedItem.customer
                     )?.image || ""
@@ -121,7 +121,7 @@ const ChartItemDetail = ({
                       >
                         <Avatar
                           alt={product.name || "Product Image"}
-                          src={`http://localhost:3000/static/${
+                          src={`http://localhost:8080/static/${
                             product.images?.[0] || product.image?.[0] || ""
                           }`}
                           sx={{ width: 32, height: 32, mr: 1 }}
@@ -184,7 +184,7 @@ const ChartItemDetail = ({
                       >
                         <Avatar
                           alt={item.name || "Product Image"}
-                          src={`http://localhost:3000/static/${
+                          src={`http://localhost:8080/static/${
                             item.images?.[0] || item.image?.[0] || ""
                           }`}
                           sx={{ width: 32, height: 32, mr: 1 }}

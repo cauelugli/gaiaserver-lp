@@ -302,7 +302,7 @@ const ViewDialog = ({
                 src={
                   createObjectURL
                     ? URL.createObjectURL(createObjectURLItem)
-                    : `http://localhost:3000/static/${selectedItem}`
+                    : `http://localhost:8080/static/${selectedItem}`
                 }
                 alt="Imagem"
                 style={{
