@@ -24,8 +24,6 @@ import CardModel from "../components/cards/CardModel";
 import ProductCardModel from "../components/cards/ProductCardModel";
 import ProductsTableButton from "../components/small/buttons/ProductsTableButton";
 
-import { getDataForPage } from "../../../controllers/functions/overallFunctions";
-
 import TableFiltersBar from "../components/large/TableFiltersBar";
 // import ChartReports from "../components/small/ChartReports";
 
@@ -41,6 +39,24 @@ function CustomTabPanel(props) {
       )}
     </div>
   );
+}
+
+function isArray(data) {
+  return Array.isArray(data) ? data : [];
+}
+
+function getDataForPage(itemsResponse, page, model) {
+  const filters = {
+    products: (item) => item.name,
+    stock: (item) => (model === "Product" ? item.name : true),
+  };
+
+  const filterFunc = filters[page] || (() => true);
+
+  let filteredItems = isArray(itemsResponse.data).filter(filterFunc);
+  const baseItems = isArray(itemsResponse.data).filter((item) => !item.name);
+
+  return { filteredItems, baseItems };
 }
 
 export default function PageModel(props) {

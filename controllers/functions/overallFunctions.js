@@ -73,20 +73,6 @@ export function isDate(str) {
   return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(str);
 }
 
-export function getDataForPage(itemsResponse, page, model) {
-  const filters = {
-    products: (item) => item.name,
-    stock: (item) => (model === "Product" ? item.name : true),
-  };
-
-  const filterFunc = filters[page] || (() => true);
-
-  let filteredItems = isArray(itemsResponse.data).filter(filterFunc);
-  const baseItems = isArray(itemsResponse.data).filter((item) => !item.name);
-
-  return { filteredItems, baseItems };
-}
-
 export function createScheduleSlots(minTime, maxTime, serviceLengthLabel) {
   let serviceLength;
   switch (serviceLengthLabel) {

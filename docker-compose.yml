@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  # Backend (API)
+  api:
+    build:
+      context: .
+      target: backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    volumes:
+      - ./uploads:/app/uploads # Presume-se que você tem uploads persistente
+
+  # Frontend (construído e servido pelo NGINX)
+  frontend:
+    build:
+      context: .
+      target: frontend
+    ports:
+      - "5173:5173" # Apenas para desenvolvimento
+    # Em produção, o frontend será servido pelo NGINX
+
+  # WebSocket
+  websocket:
+    build:
+      context: .
+      target: backend # Mesma imagem do backend
+    command: ["npm", "run", "websocket"] # Ajuste para o comando que inicia seu WS
+    ports:
+      - "5002:5002"
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+
+  # Redis (para queues e cache)
+  redis:
+    image: redis:alpine
+    ports:
+    # maybe a problem here
+      - "6379:6379" # Ou "6123:6379" se você mapear externamente para 6123
+    volumes:
+      - redis_data:/data
+
+  # NGINX (para produção - opcional aqui, pode ser no VPS)
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/dist:/usr/share/nginx/html # Presumindo build do Vite para 'dist'
+    depends_on:
+      - api
+      - frontend
+      - websocket
+
+volumes:
+  redis_data:
