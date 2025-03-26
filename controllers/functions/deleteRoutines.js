@@ -4,7 +4,7 @@ async function deleteRoutinesClient(
   model,
   isMultiple,
   deletedItem,
-  sourceId,
+
   ids
 ) {
   const Model = defineModel(model);
@@ -21,8 +21,6 @@ async function deleteRoutinesClient(
         await Model.findByIdAndDelete(id);
       })
     );
-
-    // notify that sourceId made this
   } catch (err) {
     console.error("Erro na rotina de deleção", err);
   }
@@ -32,7 +30,7 @@ async function deleteRoutinesCustomer(
   model,
   isMultiple,
   deletedItem,
-  sourceId,
+
   ids
 ) {
   const Model = defineModel(model);
@@ -49,8 +47,6 @@ async function deleteRoutinesCustomer(
         await Model.findByIdAndDelete(id);
       })
     );
-
-    // notify that sourceId made this
   } catch (err) {
     console.error("Erro na rotina de deleção", err);
   }
@@ -60,7 +56,7 @@ async function deleteRoutinesJob(
   model,
   isMultiple,
   deletedItem,
-  sourceId,
+
   ids
 ) {
   const Model = defineModel(model);
@@ -78,7 +74,7 @@ async function deleteRoutinesJob(
       })
     );
 
-    // notify that sourceId made this
+    //  that sourceId made this
   } catch (err) {
     console.error("Erro na rotina de deleção", err);
   }
@@ -88,7 +84,7 @@ async function deleteRoutinesProduct(
   model,
   isMultiple,
   deletedItem,
-  sourceId,
+
   ids
 ) {
   const Model = defineModel(model);
@@ -105,8 +101,6 @@ async function deleteRoutinesProduct(
         await Model.findByIdAndDelete(id);
       })
     );
-
-    // notify that sourceId made this
   } catch (err) {
     console.error("Erro na rotina de deleção", err);
   }
@@ -126,7 +120,7 @@ async function deleteRoutinesSale(
   model,
   isMultiple,
   deletedItem,
-  sourceId,
+
   ids
 ) {
   const Model = defineModel(model);
@@ -143,8 +137,6 @@ async function deleteRoutinesSale(
         await Model.findByIdAndDelete(id);
       })
     );
-
-    // notify that sourceId made this
   } catch (err) {
     console.error("Erro na rotina de deleção", err);
   }
@@ -154,7 +146,7 @@ async function deleteRoutinesService(
   model,
   isMultiple,
   deletedItem,
-  sourceId,
+
   ids
 ) {
   const Model = defineModel(model);
@@ -169,8 +161,6 @@ async function deleteRoutinesService(
     for (const id of itemsToDelete) {
       await Model.findByIdAndDelete(id);
     }
-
-    // notify that sourceId made this
   } catch (err) {
     console.error("Erro na rotina de deleção", err);
   }
@@ -180,7 +170,7 @@ async function deleteRoutinesServicePlan(
   model,
   isMultiple,
   deletedItem,
-  sourceId,
+
   ids
 ) {
   const Model = defineModel(model);
@@ -197,8 +187,6 @@ async function deleteRoutinesServicePlan(
         await Model.findByIdAndDelete(id);
       })
     );
-
-    // notify that sourceId made this
   } catch (err) {
     console.error("Erro na rotina de deleção", err);
   }
@@ -208,7 +196,7 @@ async function deleteRoutinesStockEntry(
   model,
   isMultiple,
   deletedItem,
-  sourceId,
+
   ids
 ) {
   const Model = defineModel(model);
@@ -225,8 +213,6 @@ async function deleteRoutinesStockEntry(
         await Model.findByIdAndDelete(id);
       })
     );
-
-    // notify that sourceId made this
   } catch (err) {
     console.error("Erro na rotina de deleção", err);
   }

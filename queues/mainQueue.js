@@ -109,18 +109,6 @@ mainQueue.process(async (job) => {
       case "deleteNotification":
         await handleDeleteNotification(data);
         break;
-      case "notifyAssignee":
-        await handleNotifyAssignee(data);
-        break;
-      case "notifyNewConfiguredUser":
-        await handleNotifyNewConfiguredUser(data);
-        break;
-      case "notifyRequester":
-        await handleNotifyRequester(data);
-        break;
-      case "notifyStockManagerToBuyProduct":
-        await handleNotifyStockManagerToBuyProduct(data, isAdmin);
-        break;
       case "productIsCreated":
         await handleProductIsCreated(data, finalList);
         break;
@@ -270,40 +258,6 @@ const handleNotifyAdmin = async (data, isAdmin) => {
     model: translateModel(data.model),
     isFemaleGender: data.model === "Sale",
     isAdmin: isAdmin,
-  });
-};
-
-const handleNotifyAssignee = async (data) => {
-  socket.emit("notifyAssignee", {
-    target: data.target,
-    sourceId: data.sourceId,
-    receiver: data.receiver,
-    label: data.label,
-  });
-};
-
-const handleNotifyNewConfiguredUser = async (data) => {
-  socket.emit("notifyNewConfiguredUser", {
-    receiver: data.receiver,
-    configuration: data.configuration,
-  });
-};
-
-const handleNotifyRequester = async (data) => {
-  socket.emit("notifyRequester", {
-    target: data.target,
-    receiver: data.receiver,
-    manager: data.manager,
-    model: data.model,
-  });
-};
-
-const handleNotifyStockManagerToBuyProduct = async (data, isAdmin) => {
-  socket.emit("notifyStockManagerToBuyProduct", {
-    receiver: data.receiver,
-    requester: data.requester,
-    product: data.product,
-    isAdmin,
   });
 };
 

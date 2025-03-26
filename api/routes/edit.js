@@ -28,8 +28,6 @@ router.put("/", async (req, res) => {
 
   const processedFields = parseReqFields(req.body.fields, req.body);
 
-  // console.log("req.body", req.body);
-
   // const createdLog = await new Log({
   //   source: req.body.sourceId,
   //   target: logTarget,
@@ -45,25 +43,6 @@ router.put("/", async (req, res) => {
       { $set: processedFields },
       { new: true }
     );
-
-    switch (req.body.model) {
-      case "Job":
-        if (processedFields.worker !== prevData.worker) {
-          // notify instead
-          // mainQueue.add({
-          //   type: "swapWorker",
-          //   data: {
-          //     jobId: updatedItem._id.toString(),
-          //     newAssignee: updatedItem.worker,
-          //     oldAssignee: req.body.prevData.worker,
-          //   },
-          // });
-        }
-        break;
-
-      default:
-        break;
-    }
 
     mainQueue.add({ type: "refreshIdIndexList" });
 
@@ -87,12 +66,12 @@ router.post("/baseProduct", async (req, res) => {
     );
 
     // Registrar no log
-    await defineModel("Log").create({
-      source: updatedBy,
-      target: id,
-      label: "Product",
-      type: "edit",
-    });
+    // await defineModel("Log").create({
+    //   source: updatedBy,
+    //   target: id,
+    //   label: "Product",
+    //   type: "edit",
+    // });
 
     res.json(updatedProduct);
   } catch (error) {

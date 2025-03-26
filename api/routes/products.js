@@ -31,28 +31,13 @@ router.post("/", async (req, res) => {
   try {
     const savedProduct = await newProduct.save();
 
-    const admin = await Admin.findOne({}, "config");
-
-    if (admin.config.notifyActivities === true) {
-      mainQueue.add({
-        type: "notifyAdmin",
-        data: savedProduct,
-        method: "Adicionad",
-        model: "Produto",
-        isAdmin: savedProduct.createdBy === "Admin",
-      });
-    }
-
-    const notificationList = await Notifications.findOne({});
-
-    if (notificationList) {
-      const finalList = notificationList["product"]["productIsCreated"];
-      mainQueue.add({
-        type: "productIsCreated",
-        data: savedProduct,
-        notificationList: finalList,
-      });
-    }
+    mainQueue.add({
+      type: "notifyAdmin",
+      data: savedProduct,
+      method: "Adicionad",
+      model: "Produto",
+      isAdmin: true,
+    });
 
     res.status(200).json(savedProduct);
   } catch (err) {

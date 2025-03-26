@@ -58,25 +58,22 @@ const initSocket = (server) => {
     });
 
     socket.on("notifyAdmin", async (data) => {
-      if (data.isAdmin === false) {
-        // create conditional 'shouldNotifyAdmin' (based on Config) in the future
-        try {
-          let admin = await Admin.findOne();
-          const { title, body } = await createMessageTitleAndBody(data);
+      try {
+        let admin = await Admin.findOne();
+        const { title, body } = await createMessageTitleAndBody(data);
 
-          if (admin._id) {
-            admin.notifications.push({
-              read: false,
-              title,
-              body,
-              createdAt: new Date().toISOString(),
-            });
+        if (admin._id) {
+          admin.notifications.push({
+            read: false,
+            title,
+            body,
+            createdAt: new Date().toISOString(),
+          });
 
-            await admin.save();
-          }
-        } catch (err) {
-          console.error("Erro ao adicionar notificação ao Admin");
+          await admin.save();
         }
+      } catch (err) {
+        console.error("Erro ao adicionar notificação ao Admin");
       }
 
       io.emit("newNotificationToAdmin", data);
