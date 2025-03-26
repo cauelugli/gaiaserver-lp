@@ -42,7 +42,7 @@ export default function Requests({ onClose }) {
     const fetchData = async () => {
       try {
         const configResponse = await api.get("/config");
-        const configData = configResponse.data[0].requests;
+        const configData = configResponse.data.requests;
 
         setConfigData(configData);
         setStatuses(

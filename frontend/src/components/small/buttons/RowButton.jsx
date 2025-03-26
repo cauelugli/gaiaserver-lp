@@ -169,7 +169,7 @@ const RowButton = (props) => {
     <>
       <IconButton
         onClick={(e) => (props.multiple ? "" : setAnchorEl(e.currentTarget))}
-        disabled={props.multiple}
+        disabled={props.multiple || props.item.status === "Resolvido"}
         sx={{
           "&:hover": {
             backgroundColor: props.fromCard ? "transparent" : "",

@@ -9,7 +9,7 @@ const fetchStatuses = () => {
     try {
       const response = await fetch("http://localhost:3000/api/config");
       const data = await response.json();
-      const configData = data[0].requests;
+      const configData = data.requests;
       const sortedStatuses = configData.requestStatuses.sort((a, b) =>
         a.localeCompare(b)
       );
