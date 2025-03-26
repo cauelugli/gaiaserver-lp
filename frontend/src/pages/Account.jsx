@@ -79,17 +79,9 @@ export default function Account({
     try {
       const uploadResponse = await api.post("/uploads/singleFile", formData);
       const imagePath = uploadResponse.data.imagePath;
-      let res;
-      if (user.username === "admin") {
-        res = await api.put("/admin/changeProfilePicture", {
-          image: imagePath,
-        });
-      } else {
-        res = await api.put("/users/changeProfilePicture", {
-          userId: user._id,
-          image: imagePath,
-        });
-      }
+      const res = await api.put("/admin/changeProfilePicture", {
+        image: imagePath,
+      });
 
       if (res.data) {
         toast.success("Imagem Alterada Adicionado!", {
@@ -415,9 +407,6 @@ export default function Account({
                 <TableCell align="center">
                   <Typography sx={{ fontSize: "14px" }}>E-mail</Typography>
                 </TableCell>
-                <TableCell align="center">
-                  <Typography sx={{ fontSize: "14px" }}>Telefone</Typography>
-                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -430,9 +419,6 @@ export default function Account({
                 </TableCell>
                 <TableCell align="center">
                   <Typography>{user.email}</Typography>
-                </TableCell>
-                <TableCell align="center">
-                  <Typography>{user.phone}</Typography>
                 </TableCell>
               </TableRow>
             </TableBody>
