@@ -72,11 +72,10 @@ router.put("/reports", async (req, res) => {
 // CUSTOMERS
 router.put("/customers", async (req, res) => {
   try {
-    const { canBeDeleted, allowSameNameCustomer } = req.body;
+    const { allowSameNameCustomer } = req.body;
 
     const config = await Config.findOne();
 
-    config.customers.canBeDeleted = canBeDeleted;
     config.customers.allowSameNameCustomer = allowSameNameCustomer;
 
     await config.save();
@@ -90,11 +89,10 @@ router.put("/customers", async (req, res) => {
 // REQUESTS
 router.put("/requests", async (req, res) => {
   try {
-    const { prevData, canBeDeleted, statuses } = req.body;
+    const { prevData, statuses } = req.body;
 
     const config = await Config.findOne();
 
-    config.requests.canBeDeleted = canBeDeleted;
     config.requests.requestStatuses = statuses;
 
     await config.save();
@@ -173,11 +171,10 @@ router.put("/finance", async (req, res) => {
 // SERVICES
 router.put("/services", async (req, res) => {
   try {
-    const { canBeDeleted, serviceTypes } = req.body;
+    const { serviceTypes } = req.body;
 
     const config = await Config.findOne();
 
-    config.services.canBeDeleted = canBeDeleted;
     config.services.serviceTypes = serviceTypes;
 
     await config.save();
@@ -211,12 +208,7 @@ router.put("/customization", async (req, res) => {
 // PRODUCTS
 router.put("/products", async (req, res) => {
   try {
-    const { canBeDeleted } = req.body;
-
     const config = await Config.findOne();
-
-    config.products.canBeDeleted = canBeDeleted;
-
     await config.save();
     res.status(200).json(config);
   } catch (err) {

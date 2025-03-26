@@ -32,7 +32,6 @@ const api = axios.create({
 
 export default function Customers({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
-  const [canBeDeleted, setCanBeDeleted] = React.useState(null);
   const [allowSameNameCustomer, setAllowSameNameCustomer] =
     React.useState(null);
 
@@ -41,7 +40,6 @@ export default function Customers({ onClose }) {
       try {
         const config = await api.get("/config");
         setConfigData(config.data[0].customers);
-        setCanBeDeleted(config.data[0].customers.canBeDeleted);
         setAllowSameNameCustomer(
           config.data[0].customers.allowSameNameCustomer
         );
@@ -56,7 +54,6 @@ export default function Customers({ onClose }) {
     e.preventDefault();
     try {
       const res = await api.put("/config/customers", {
-        canBeDeleted,
         allowSameNameCustomer,
       });
 
@@ -105,52 +102,6 @@ export default function Customers({ onClose }) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid2 item sx={{ my: 1.5 }}>
-                    <Grid2
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      sx={{ px: 4 }}
-                    >
-                      <Tooltip
-                        title={
-                          <Typography sx={{ fontSize: 12, color: "white" }}>
-                            Se a opção marcada for "Sim", os Clientes criados
-                            poderão ser deletados pelos colaboradores. A opção
-                            padrão é "Sim".
-                          </Typography>
-                        }
-                      >
-                        <Typography sx={{ my: "auto", mr: 1 }}>
-                          Clientes Podem ser Deletados
-                        </Typography>
-                      </Tooltip>
-                      <RadioGroup
-                        row
-                        value={canBeDeleted}
-                        onChange={(e) => setCanBeDeleted(e.target.value)}
-                      >
-                        <FormControlLabel
-                          value={Boolean(true)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
-                          }
-                        />
-                        <FormControlLabel
-                          value={Boolean(false)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
-                          }
-                        />
-                      </RadioGroup>
-                    </Grid2>
-                  </Grid2>
                   <Grid2 item sx={{ my: 1.5 }}>
                     <Grid2
                       container

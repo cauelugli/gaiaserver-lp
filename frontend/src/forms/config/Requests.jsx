@@ -18,18 +18,14 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControlLabel,
   Grid2,
   IconButton,
-  Radio,
-  RadioGroup,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
   TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -37,7 +33,6 @@ import { icons } from "../../icons";
 
 export default function Requests({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
-  const [canBeDeleted, setCanBeDeleted] = React.useState(null);
   const [statuses, setStatuses] = React.useState([]);
 
   const [showNewStatus, setShowNewStatus] = React.useState(false);
@@ -50,7 +45,6 @@ export default function Requests({ onClose }) {
         const configData = configResponse.data[0].requests;
 
         setConfigData(configData);
-        setCanBeDeleted(configData.canBeDeleted);
         setStatuses(
           configData.requestStatuses.sort((a, b) => a.localeCompare(b))
         );
@@ -66,7 +60,6 @@ export default function Requests({ onClose }) {
     try {
       const res = await api.put("/config/requests", {
         prevData: configData,
-        canBeDeleted,
         statuses,
       });
 
@@ -118,54 +111,7 @@ export default function Requests({ onClose }) {
                     Permissões
                   </Typography>
                 </AccordionSummary>
-                <AccordionDetails>
-                  <Grid2 item sx={{ my: 1.5 }}>
-                    <Grid2
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      sx={{ px: 4 }}
-                    >
-                      <Tooltip
-                        title={
-                          <Typography sx={{ fontSize: 12, color: "white" }}>
-                            Se a opção marcada for "Sim", as solicitações de
-                            Jobs e Vendas poderão ser deletadas. A opção padrão
-                            é "Sim".
-                          </Typography>
-                        }
-                      >
-                        <Typography sx={{ my: "auto", mr: 1 }}>
-                          Solicitações Podem ser Deletadas
-                        </Typography>
-                      </Tooltip>
-                      <RadioGroup
-                        row
-                        value={canBeDeleted}
-                        onChange={(e) => setCanBeDeleted(e.target.value)}
-                      >
-                        <FormControlLabel
-                          value={Boolean(true)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Sim</Typography>
-                          }
-                        />
-                        <FormControlLabel
-                          value={Boolean(false)}
-                          control={
-                            <Radio size="small" sx={{ mt: -0.25, mr: -0.5 }} />
-                          }
-                          label={
-                            <Typography sx={{ fontSize: 13 }}>Não</Typography>
-                          }
-                        />
-                      </RadioGroup>
-                    </Grid2>
-                  </Grid2>
-                </AccordionDetails>
+                <AccordionDetails></AccordionDetails>
               </Accordion>
               <Accordion sx={{ width: "100%", mt: 2 }}>
                 <AccordionSummary expandIcon={<icons.ArrowDropDownIcon />}>

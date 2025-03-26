@@ -21,10 +21,6 @@ const configSchema = new Schema({
     },
   },
   customers: {
-    canBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
     allowSameNameCustomer: {
       type: Boolean,
       default: false,
@@ -54,39 +50,16 @@ const configSchema = new Schema({
       default: true,
     },
   },
-  files: {
-    canBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  products: {
-    canBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  reports: {
-    canBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
-  },
+  files: {},
+  products: {},
+  reports: {},
   requests: {
-    canBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
     requestStatuses: {
       type: Array,
       default: ["Aberto"],
     },
   },
   services: {
-    canBeDeleted: {
-      type: Boolean,
-      default: true,
-    },
     serviceTypes: {
       type: Array,
       default: [],

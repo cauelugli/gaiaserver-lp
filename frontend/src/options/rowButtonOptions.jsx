@@ -39,16 +39,12 @@ const rowButtonOptions = (props) => [
           modal: "Customer",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Customer",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Customer",
+          icon: <icons.DeleteIcon />,
+        },
         {
           label: "Novo",
           icon: <icons.AddIcon />,
@@ -82,16 +78,12 @@ const rowButtonOptions = (props) => [
           modal: "Client",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Client",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Client",
+          icon: <icons.DeleteIcon />,
+        },
         {
           label: "Novo",
           icon: <icons.AddIcon />,
@@ -137,16 +129,12 @@ const rowButtonOptions = (props) => [
           modal: "Job",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Job",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Job",
+          icon: <icons.DeleteIcon />,
+        },
         ...(props.item.status !== "Resolvido"
           ? [
               {
@@ -187,16 +175,12 @@ const rowButtonOptions = (props) => [
           modal: "Sale",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Sale",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Sale",
+          icon: <icons.DeleteIcon />,
+        },
         ...(props.item.status !== "Resolvido"
           ? [
               {
@@ -243,16 +227,12 @@ const rowButtonOptions = (props) => [
           modal: "StockEntry",
           icon: <icons.CheckIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "StockEntry",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "StockEntry",
+          icon: <icons.DeleteIcon />,
+        },
         ...(props.item.status !== "Resolvido"
           ? [
               {
@@ -293,16 +273,12 @@ const rowButtonOptions = (props) => [
           modal: "Service",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Service",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Service",
+          icon: <icons.DeleteIcon />,
+        },
       ],
       1: [
         {
@@ -317,16 +293,12 @@ const rowButtonOptions = (props) => [
           modal: "ServicePlan",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "ServicePlan",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "ServicePlan",
+          icon: <icons.DeleteIcon />,
+        },
       ],
     },
   },
@@ -409,16 +381,12 @@ const rowButtonOptions = (props) => [
           modal: "Product",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Product",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Product",
+          icon: <icons.DeleteIcon />,
+        },
       ],
     },
   },

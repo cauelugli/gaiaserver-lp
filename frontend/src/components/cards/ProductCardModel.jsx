@@ -90,7 +90,6 @@ export default function ProductCardModel({
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               fromCard={true}
-              canBeDeleted={appData?.configData["products"]?.canBeDeleted}
               // multiple={props.multiple} maybe 'multipleFromCard', cause styling will be different
             />
           </Grid2>

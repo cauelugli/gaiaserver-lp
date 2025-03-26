@@ -48,9 +48,6 @@ function StandardTable(props) {
             ))}
             <TableCell align="right">
               <RowButton
-                //passing specific config to rowButton
-                canBeDeleted={appData?.configData[props.page]?.canBeDeleted}
-                //
                 userId={props.userId}
                 mainColor={props.mainColor}
                 item={row}

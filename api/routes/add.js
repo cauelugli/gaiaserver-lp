@@ -87,6 +87,7 @@ router.post("/", async (req, res) => {
   try {
     let savedItem;
     // ACTIONS THAT NEED TO BE DONE _AFTER_ ITEM IS CREATED
+    savedItem = await newItem.save();
 
     switch (req.body.model) {
       case "Job":
@@ -119,28 +120,6 @@ router.post("/", async (req, res) => {
       default:
         break;
     }
-
-    mainQueue.add({
-      type: "notificationToList",
-      data: {
-        model: req.body.model,
-        method: "add",
-        item: savedItem,
-        sourceId: req.body.sourceId,
-        notificationList: notifications[
-          req.body.model === "Client"
-            ? "customer"
-            : req.body.model.toLowerCase()
-        ][
-          `${
-            req.body.model === "Client"
-              ? "customer"
-              : req.body.model.toLowerCase()
-          }IsCreated`
-        ] || [""],
-      },
-      isAdmin,
-    });
 
     mainQueue.add({ type: "refreshIdIndexList" });
 

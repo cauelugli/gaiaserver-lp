@@ -350,7 +350,7 @@ export default function App() {
                       }
                     />
 
-                    {configData &&
+                    {configData.customization ?
                       pageOptions.map((option, index) => (
                         <Route
                           key={index}
@@ -382,7 +382,7 @@ export default function App() {
                             )
                           }
                         />
-                      ))}
+                      )):""}
                   </Routes>
                 </Grid2>
               </Grid2>

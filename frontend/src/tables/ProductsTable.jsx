@@ -43,7 +43,6 @@ function ProductsTable(props) {
                   setRefreshData={props.setRefreshData}
                   configCustomization={props.configCustomization}
                   multiple={props.multiple}
-                  canBeDeleted={appData?.configData[props.page]?.canBeDeleted}
                 />
               </TableCell>
               {props.multiple && (

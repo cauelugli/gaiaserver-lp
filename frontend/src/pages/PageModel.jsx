@@ -67,7 +67,7 @@ export default function PageModel(props) {
 
   // eslint-disable-next-line no-unused-vars
   const [configTables, setConfigTables] = React.useState(
-    props.configData.tables
+    props.configData.tables || {}
   );
 
   const handleChange = (noArgument, newValue) => {
@@ -266,7 +266,7 @@ export default function PageModel(props) {
           }
           TabIndicatorProps={{
             style: {
-              backgroundColor: props.configCustomization.mainColor,
+              backgroundColor: props?.configCustomization?.mainColor,
             },
           }}
           sx={{ width: props.topBar ? "103%" : "102%" }}
@@ -282,7 +282,7 @@ export default function PageModel(props) {
                     color: "black",
                     "&.Mui-selected": {
                       color: "black",
-                      backgroundColor: `${props.configCustomization.mainColor}42`,
+                      backgroundColor: `${props.configCustomization?.mainColor}42`,
                       borderRadius: "15px 15px 0 0",
                     },
                   }}
@@ -301,7 +301,7 @@ export default function PageModel(props) {
                         color: "black",
                         "&.Mui-selected": {
                           color: "black",
-                          backgroundColor: `${props.configCustomization.mainColor}42`,
+                          backgroundColor: `${props.configCustomization?.mainColor}42`,
                           borderRadius: "15px 15px 0 0",
                         },
                       }}
@@ -322,7 +322,7 @@ export default function PageModel(props) {
             <TableFiltersBar
               tableFilters={tableFilters}
               setTableFilters={setTableFilters}
-              mainColor={props.configCustomization.mainColor}
+              mainColor={props.configCustomization?.mainColor}
               page={props.item.page}
               // tabIndex={value}
               tabIndex={
@@ -343,7 +343,7 @@ export default function PageModel(props) {
               tableOrCard={props.tableOrCardView}
               setUserPreferences={props.setUserPreferences}
               cardSize={props.cardSize}
-              mainColor={props.configCustomization.mainColor}
+              mainColor={props.configCustomization?.mainColor}
               multiple={multiple}
               setMultiple={setMultiple}
               selectedMultipleItems={selectedMultipleItems}
@@ -383,7 +383,7 @@ export default function PageModel(props) {
                     <TableModel
                       api={props.api}
                       themeBGColor={props.palette.background["default"]}
-                      mainColor={props.configCustomization.mainColor}
+                      mainColor={props.configCustomization?.mainColor}
                       page={props.item.page}
                       mappedItem={item}
                       items={items.filter(
@@ -441,7 +441,7 @@ export default function PageModel(props) {
                     <TableModel
                       api={props.api}
                       themeBGColor={props.palette.background["default"]}
-                      mainColor={props.configCustomization.mainColor}
+                      mainColor={props.configCustomization?.mainColor}
                       page={props.item.page}
                       items={filteredItems}
                       itemIndex={
@@ -503,7 +503,7 @@ export default function PageModel(props) {
                                 ? index + 1
                                 : index
                             }
-                            mainColor={props.configCustomization.mainColor}
+                            mainColor={props.configCustomization?.mainColor}
                           />
                         </Grid2>
                       ))}
