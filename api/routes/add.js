@@ -17,10 +17,10 @@ const { checkSameName } = require("../../controllers/functions/checkFunctions");
 // CREATE ITEM
 router.post("/", async (req, res) => {
   // console.log("\nreq.body", req.body, "\n");
-  const { createdBy, fields, selectedProducts } = req.body;
+  const { fields, selectedProducts } = req.body;
 
   // one way of defining if user is admin
-  const isAdmin = createdBy === "admin" ? true : false;
+  const isAdmin = true;
 
   const Model = defineModel(req.body.model);
 
@@ -112,16 +112,6 @@ router.post("/", async (req, res) => {
           data: {
             itemId: savedItem._id.toString(),
             model: req.body.model,
-          },
-        });
-        break;
-
-      case "User":
-        mainQueue.add({
-          type: "addUserRoutines",
-          data: {
-            model: req.body.model,
-            item: savedItem,
           },
         });
         break;

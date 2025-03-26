@@ -30,12 +30,6 @@ const CalendarEvents = ({ event }) => {
         </Typography>
       )}
 
-      {event.worker && (
-        <Typography sx={{ fontSize: 13, color: "black", mt: 0.5 }}>
-          <strong>Colaborador:</strong> {event.worker}
-        </Typography>
-      )}
-      
     </Grid2>
   );
 };

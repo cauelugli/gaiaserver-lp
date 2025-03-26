@@ -26,7 +26,6 @@ router.post("/", async (req, res) => {
     sellValue: parseFloat(req.body.sellValue) || null,
     fields: req.body.fields || null,
     images: req.body.images || null,
-    createdBy: req.body.createdBy || null,
   });
   try {
     const savedProduct = await newProduct.save();

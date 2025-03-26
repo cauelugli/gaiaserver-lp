@@ -141,25 +141,11 @@ const DynamicDataTableCell = (props) => {
         multiple={props.multiple}
         renderValue={renderValue}
       >
-        {props.field.dynamicData === "managers" ||
-        props.field.dynamicData === "workers"
-          ? options.map((option, index) => (
-              <MenuItem value={option} key={index}>
-                <Grid2 container direction="row" alignItems="center">
-                  <Avatar
-                    alt="Imagem"
-                    src={`http://localhost:3000/static/${option.image}`}
-                    sx={{ width: 24, height: 24, marginRight: 2 }}
-                  />
-                  <Typography>{option.name}</Typography>
-                </Grid2>
-              </MenuItem>
-            ))
-          : options.map((option, index) => (
-              <MenuItem value={option} key={index}>
-                {option.name || option}
-              </MenuItem>
-            ))}
+        {options.map((option, index) => (
+          <MenuItem value={option} key={index}>
+            {option.name || option}
+          </MenuItem>
+        ))}
       </Select>
     </>
   );

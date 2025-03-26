@@ -18,7 +18,6 @@ async function addToStock(items) {
   }
 }
 
-
 async function archiveItem(data) {
   const Model = defineModel(data.model);
   try {
@@ -63,7 +62,6 @@ async function resolveItem(data) {
       {
         status: "Resolvido",
         resolution: data.resolution || "",
-        resolvedBy: data.resolvedBy,
         resolvedAt: new Date(),
       },
       { new: true }
@@ -77,28 +75,13 @@ async function resolveItem(data) {
 async function markAllNotificationAsRead(data) {
   const Model = defineModel(data.model);
   try {
-    switch (data.model) {
-      case "Admin":
-        await Model.findOneAndUpdate(
-          {},
-          {
-            $set: { "notifications.$[].read": true },
-          },
-          { new: true }
-        );
-        break;
-      case "User":
-        await Model.findByIdAndUpdate(
-          data.userId,
-          {
-            $set: { "notifications.$[].read": true },
-          },
-          { new: true }
-        );
-        break;
-      default:
-        "";
-    }
+    await Model.findOneAndUpdate(
+      {},
+      {
+        $set: { "notifications.$[].read": true },
+      },
+      { new: true }
+    );
   } catch (err) {
     console.error("Erro ao marcar todas como lidas:", err.message);
     throw err;
@@ -108,31 +91,13 @@ async function markAllNotificationAsRead(data) {
 async function markNotificationAsRead(data) {
   const Model = defineModel(data.model);
   try {
-    switch (data.model) {
-      case "Admin":
-        await Model.findOneAndUpdate(
-          { "notifications.createdAt": data.notificationCreatedAt },
-          {
-            $set: { "notifications.$.read": true },
-          },
-          { new: true }
-        );
-        break;
-      case "User":
-        await Model.findOneAndUpdate(
-          {
-            _id: data.userId,
-            "notifications.createdAt": data.notificationCreatedAt,
-          },
-          {
-            $set: { "notifications.$.read": true },
-          },
-          { new: true }
-        );
-        break;
-      default:
-        "";
-    }
+    await Model.findOneAndUpdate(
+      { "notifications.createdAt": data.notificationCreatedAt },
+      {
+        $set: { "notifications.$.read": true },
+      },
+      { new: true }
+    );
   } catch (err) {
     console.error("Erro ao marcar todas como lidas:", err.message);
     throw err;
@@ -142,28 +107,13 @@ async function markNotificationAsRead(data) {
 async function deleteNotification(data) {
   const Model = defineModel(data.model);
   try {
-    switch (data.model) {
-      case "Admin":
-        await Model.findOneAndUpdate(
-          {},
-          {
-            $pull: { notifications: { createdAt: data.notificationCreatedAt } },
-          },
-          { new: true }
-        );
-        break;
-      case "User":
-        await Model.findOneAndUpdate(
-          { _id: data.userId },
-          {
-            $pull: { notifications: { createdAt: data.notificationCreatedAt } },
-          },
-          { new: true }
-        );
-        break;
-      default:
-        "";
-    }
+    await Model.findOneAndUpdate(
+      {},
+      {
+        $pull: { notifications: { createdAt: data.notificationCreatedAt } },
+      },
+      { new: true }
+    );
   } catch (err) {
     console.error("Erro ao marcar todas como lidas:", err.message);
     throw err;

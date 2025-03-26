@@ -10,9 +10,6 @@ const financeOutcomeSchema = new mongoose.Schema({
   commentary: {
     type: String,
   },
-  createdBy: {
-    type: String,
-  },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -14,7 +14,7 @@ router.put("/markNotificationAsRead", async (req, res) => {
       data: {
         userId,
         notificationCreatedAt,
-        model: isAdmin ? "Admin" : "User",
+        model: "Admin",
       },
     });
 
@@ -34,7 +34,7 @@ router.put("/deleteNotification", async (req, res) => {
       data: {
         userId,
         notificationCreatedAt,
-        model: isAdmin ? "Admin" : "User",
+        model: "Admin",
       },
     });
 
@@ -52,7 +52,7 @@ router.put("/markAllAsRead", async (req, res) => {
       type: "markAllNotificationAsRead",
       data: {
         userId,
-        model: isAdmin ? "Admin" : "User",
+        model: "Admin",
       },
     });
 
@@ -66,7 +66,7 @@ router.put("/markAllAsRead", async (req, res) => {
 
 // REQUEST - RESOLVE ITEM - QUEUE OK
 router.put("/resolve", async (req, res) => {
-  const { model, id, resolution, resolvedBy } = req.body;
+  const { model, id, resolution } = req.body;
   const Model = defineModel(model);
 
   const resolvedItem = await Model.findById(id);
@@ -83,7 +83,6 @@ router.put("/resolve", async (req, res) => {
         id,
         model,
         resolution,
-        resolvedBy,
       },
     });
 
@@ -93,7 +92,6 @@ router.put("/resolve", async (req, res) => {
         data: {
           resolvedItem,
           type: "Entrada de Estoque",
-          createdBy: resolvedBy,
         },
       });
 
@@ -110,7 +108,6 @@ router.put("/resolve", async (req, res) => {
         data: {
           resolvedItem,
           type: model === "Sale" ? "Venda" : "Job",
-          createdBy: resolvedBy,
         },
       });
     }

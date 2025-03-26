@@ -38,22 +38,6 @@ export default function AddFormModel(props) {
 
   // updating value from child modifications (basic refresh)
   React.useEffect(() => {
-    if (fields.worker) {
-      //setting Title and Description conveniently for user
-      setFields({
-        ...fields,
-        ["title"]: `${fields.service ? fields.service.name : "Serviço"} - ${
-          fields.customer ? fields.customer.name : "Cliente"
-        }`,
-        ["description"]: `${fields.worker.name}: Realizar ${
-          fields.service ? fields.service.name : "Serviço"
-        } para ${
-          fields.customer ? fields.customer.name : "Cliente"
-        } na data ${dayjs().add(1, "day").format("DD/MM/YYYY")} (${dayjs()
-          .add(1, "day")
-          .format("dddd")}).`,
-      });
-    }
     if (fields.customer) {
       // setting deliveryAddress conveniently for user
       setFields({
@@ -70,7 +54,6 @@ export default function AddFormModel(props) {
   }, [
     priceDifference,
     refreshData,
-    fields.worker,
     fields.customer,
     fields.service,
   ]);

@@ -34,7 +34,6 @@ router.get("/reports", async (req, res) => {
   let models = [];
   try {
     const modelsToCheck = [
-      "User",
       "Job",
       "Sale",
       "StockEntry",
@@ -52,15 +51,12 @@ router.get("/reports", async (req, res) => {
           {
             status: 1,
             title: 1,
-            customer: 1, // Incluído para associar ao cliente
+            customer: 1,
             service: 1,
-            worker: 1,
             address: 1,
             scheduledTo: 1,
             scheduleTime: 1,
-            createdBy: 1,
             createdAt: 1,
-            resolvedBy: 1,
             resolvedAt: 1,
             resolution: 1,
             products: 1,
@@ -77,12 +73,9 @@ router.get("/reports", async (req, res) => {
             status: 1,
             products: 1,
             customer: 1,
-            seller: 1,
             deliveryScheduledTo: 1,
             deliveryAddress: 1,
-            createdBy: 1,
             createdAt: 1,
-            resolvedBy: 1,
             resolvedAt: 1,
             resolution: 1,
             number: 1,
@@ -95,9 +88,7 @@ router.get("/reports", async (req, res) => {
           {
             status: 1,
             items: 1,
-            createdBy: 1,
             createdAt: 1,
-            resolvedBy: 1,
             resolvedAt: 1,
             number: 1,
             _id: 1,
@@ -181,34 +172,34 @@ router.get("/coreData", async (req, res) => {
 });
 
 // GET USER AGENDA
-router.get("/userAgenda/:userId", async (req, res) => {
-  const { userId } = req.params;
+// router.get("/userAgenda/:userId", async (req, res) => {
+//   const { userId } = req.params;
 
-  const Job = defineModel("Job");
-  const Sale = defineModel("Sale");
+//   const Job = defineModel("Job");
+//   const Sale = defineModel("Sale");
 
-  try {
-    const jobs = await Job.find({ worker: userId });
-    const sales = await Sale.find({ seller: userId });
+//   try {
+//     const jobs = await Job.find({ worker: userId });
+//     const sales = await Sale.find({ seller: userId });
 
-    const userAgenda = {
-      jobs: jobs.map((job) => ({
-        id: job._id.toString(),
-        day: job.scheduledTo.slice(0, 2) || "",
-        type: "job",
-      })),
-      sales: sales.map((sale) => ({
-        id: sale._id.toString(),
-        day: sale.deliveryScheduledTo.slice(0, 2) || "",
-        type: "sale",
-      })),
-    };
+//     const userAgenda = {
+//       jobs: jobs.map((job) => ({
+//         id: job._id.toString(),
+//         day: job.scheduledTo.slice(0, 2) || "",
+//         type: "job",
+//       })),
+//       sales: sales.map((sale) => ({
+//         id: sale._id.toString(),
+//         day: sale.deliveryScheduledTo.slice(0, 2) || "",
+//         type: "sale",
+//       })),
+//     };
 
-    res.status(200).json(userAgenda);
-  } catch (err) {
-    console.log("\nerr", err, "\n");
-    res.status(500).json(err);
-  }
-});
+//     res.status(200).json(userAgenda);
+//   } catch (err) {
+//     console.log("\nerr", err, "\n");
+//     res.status(500).json(err);
+//   }
+// });
 
 module.exports = router;

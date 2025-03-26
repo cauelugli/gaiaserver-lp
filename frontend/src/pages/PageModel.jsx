@@ -94,12 +94,6 @@ export default function PageModel(props) {
   const filteredItems = React.useMemo(() => {
     let result = items;
 
-    if (highlightSelfUser) {
-      result = result.filter(
-        (item) => item.worker === props.userId || item.seller === props.userId
-      );
-    }
-
     if (!highlightArchived && !highlightResolved) {
       result = result.filter(
         (item) => item.status !== "Arquivado" && item.status !== "Resolvido"
@@ -119,13 +113,7 @@ export default function PageModel(props) {
     }
 
     return result;
-  }, [
-    items,
-    highlightSelfUser,
-    highlightArchived,
-    highlightResolved,
-    props.userId,
-  ]);
+  }, [items, highlightArchived, highlightResolved]);
 
   React.useEffect(() => {
     if (props.item.page !== currentPage) {
@@ -338,8 +326,7 @@ export default function PageModel(props) {
                 props.item.page === "customers" &&
                 !configTables.customerCustomer
                   ? value + 1
-                  : props.item.page === "requests" &&
-                    !configTables.requestJob
+                  : props.item.page === "requests" && !configTables.requestJob
                   ? value + 1
                   : value
               }

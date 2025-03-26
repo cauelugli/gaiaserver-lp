@@ -35,7 +35,6 @@ export const options = {
   StockEntry: [
     { label: "Produtos", value: "items" },
     { label: "Valor", value: "price" },
-    { label: "Criado por", value: "createdBy" },
     { label: "Criado em", value: "createdAt" },
     { label: "Status", value: "status" },
   ],

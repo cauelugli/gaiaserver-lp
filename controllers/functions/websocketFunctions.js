@@ -27,8 +27,6 @@ async function createMessageTitleAndBody(data) {
           ? `Para: ${data.target.deliveryScheduledTo}`
           : ""
       }
-      ${data.target.worker || ""}
-      ${data.target.seller || ""}
       ${data.target.scheduleTime ? `Horário: ${data.target.scheduleTime}` : ""}
       `;
   } else {

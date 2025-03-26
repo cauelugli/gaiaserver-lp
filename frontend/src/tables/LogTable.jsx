@@ -176,7 +176,6 @@ function LogTable(props) {
                                       if (
                                         ![
                                           "createdAt",
-                                          "createdBy",
                                           "__v",
                                           "_id",
                                           "count",
@@ -244,7 +243,6 @@ function LogTable(props) {
                                       if (
                                         ![
                                           "createdAt",
-                                          "createdBy",
                                           "__v",
                                           "_id",
                                           "count",

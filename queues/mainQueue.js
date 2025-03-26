@@ -212,7 +212,6 @@ const handleDeleteNotification = async (data) => {
 const handleNotifyAdmin = async (data, isAdmin) => {
   socket.emit("notifyAdmin", {
     target: data,
-    sourceId: data.createdBy,
     method: translateMethod(data.method),
     model: translateModel(data.model),
     isFemaleGender: data.model === "Sale",

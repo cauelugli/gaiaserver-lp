@@ -9,10 +9,10 @@ const tableFiltersOptions = {
   ],
   requests: [
     {
-      job: ["customer", "worker", "status"],
+      job: ["customer", "status"],
     },
     {
-      sale: ["customer", "seller", "status"],
+      sale: ["customer", "status"],
     },
   ],
   services: [
@@ -25,7 +25,7 @@ const tableFiltersOptions = {
   ],
   stock: [
     {
-      stockEntries: ["name", "products", "createdBy", "status", "price"],
+      stockEntries: ["name", "products", "status", "price"],
     },
   ],
   finance: [
@@ -34,7 +34,6 @@ const tableFiltersOptions = {
         "number",
         "type",
         "customer",
-        "user",
         "items",
         "price",
         "status",

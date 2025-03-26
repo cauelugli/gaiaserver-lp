@@ -39,8 +39,6 @@ import { icons } from "../../icons";
 
 import AddBaseProductForm from "../add/AddBaseProductForm";
 import EditBaseProductForm from "../edit/EditBaseProductForm";
-
-import { useAppData } from "../../../src/AppDataContext";
 import DeleteFormModel from "../delete/DeleteFormModel";
 
 export default function Products({
@@ -49,8 +47,6 @@ export default function Products({
   userName,
   configCustomization,
 }) {
-  const appData = useAppData();
-  const idIndexList = appData.idIndexList;
   const [configData, setConfigData] = React.useState([]);
   const [refreshData, setRefreshData] = React.useState(false);
   const [baseProducts, setBaseProducts] = React.useState([]);
@@ -295,13 +291,6 @@ export default function Products({
                                   <Typography
                                     sx={{ fontSize: 14, fontWeight: "bold" }}
                                   >
-                                    Criador
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography
-                                    sx={{ fontSize: 14, fontWeight: "bold" }}
-                                  >
                                     Criado em
                                   </Typography>
                                 </TableCell>
@@ -327,14 +316,6 @@ export default function Products({
                                     <TableCell>
                                       <Typography sx={{ fontSize: 12 }}>
                                         {prod.name ? prod.name : "-"}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography sx={{ fontSize: 12 }}>
-                                        {idIndexList.find(
-                                          (creator) =>
-                                            creator.id === prod.createdBy
-                                        )?.name || ""}
                                       </Typography>
                                     </TableCell>
                                     <TableCell>

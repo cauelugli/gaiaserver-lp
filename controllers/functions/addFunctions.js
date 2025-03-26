@@ -67,12 +67,10 @@ async function addFinanceIncome(data) {
       itemId: data.resolvedItem._id.toString(),
       itemNumber: data.resolvedItem.number,
       customer: data.resolvedItem.customer,
-      user: data.resolvedItem.worker || data.resolvedItem.seller,
       service: data.resolvedItem.service,
       price: data.resolvedItem.price,
       items: data.resolvedItem.items || data.resolvedItem.products,
       typeIncome: data.type,
-      createdBy: data.createdBy,
     });
     const savedFinanceIncome = await newFinanceIncome.save();
     await addCounter(savedFinanceIncome._id, "FinanceIncome");
@@ -89,7 +87,6 @@ async function addFinanceOutcome(data) {
       price: data.resolvedItem.price,
       items: data.resolvedItem.items,
       typeOutcome: data.type,
-      createdBy: data.createdBy,
     });
     const savedFinanceOutcome = await newFinanceOutcome.save();
     await addCounter(savedFinanceOutcome._id, "FinanceOutcome");

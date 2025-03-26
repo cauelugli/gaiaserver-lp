@@ -280,24 +280,6 @@ const ChartDataDetail = ({
                 ) : (
                   <Typography>R$ {item.price.toFixed(2)}</Typography>
                 )}
-
-                {hoveredIndex !== index && item.worker ? (
-                  <Tooltip
-                    title={
-                      idIndexList.find((worker) => worker.id === item.worker)
-                        ?.name || ""
-                    }
-                  >
-                    <Avatar
-                      src={`http://localhost:3000/static/${
-                        idIndexList.find((worker) => worker.id === item.worker)
-                          ?.image || ""
-                      }`}
-                    />
-                  </Tooltip>
-                ) : (
-                  ""
-                )}
               </Grid2>
             </Grid2>
           ))}
