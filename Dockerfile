@@ -26,7 +26,7 @@ COPY .env.docker .env
 COPY websocket .
 
 # Estágio Final
-FROM node:18
+FROM node:18 as final
 WORKDIR /app
 # Garante que o .env exista (copia do websocket-builder)
 COPY --from=websocket-builder /app/websocket/.env .
