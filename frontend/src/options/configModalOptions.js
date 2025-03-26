@@ -75,14 +75,6 @@ export const configModalOptions = (userName, userId, configCustomization) => [
     isBasic: false,
   },
   {
-    icon: React.createElement(icons.AutoFixNormalIcon, {
-      sx: { fontSize: "4vw" },
-    }),
-    text: "Personalização",
-    modal: React.createElement(CustomizationModal),
-    isBasic: false,
-  },
-  {
     icon: React.createElement(icons.SellIcon, { sx: { fontSize: "4vw" } }),
     text: "Produtos",
     modal: React.createElement(ProductsModal, {

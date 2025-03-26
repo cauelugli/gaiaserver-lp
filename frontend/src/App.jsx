@@ -55,7 +55,7 @@ export default function App() {
   const [showSidebar, setShowSidebar] = useState(true);
 
   const [refreshData, setRefreshData] = React.useState(false);
-  const theme = userPreferences.darkMode ? darkTheme : lightTheme;
+  const theme = userPreferences?.darkMode ? darkTheme : lightTheme;
 
   console.log("App mounted control");
 
@@ -186,7 +186,7 @@ export default function App() {
         <Grid2
           sx={{
             m: -1,
-            backgroundColor: userPreferences.paletteColor,
+            backgroundColor: userPreferences?.paletteColor,
           }}
         >
           <Router>
