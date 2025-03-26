@@ -45,8 +45,8 @@ export default function Services({ onClose }) {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data[0].services);
-        setServiceTypes(config.data[0].services.serviceTypes);
+        setConfigData(config.data.services);
+        setServiceTypes(config.data.services.serviceTypes);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

@@ -39,9 +39,9 @@ export default function Finance({ onClose }) {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data[0].finance);
+        setConfigData(config.data.finance);
         setCanReceiveInstallments(
-          config.data[0].finance.canReceiveInstallments
+          config.data.finance.canReceiveInstallments
         );
       } catch (error) {
         console.error("Error fetching data:", error);

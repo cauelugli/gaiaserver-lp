@@ -50,11 +50,11 @@ export default function Customization({ onClose }) {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data[0].customization);
-        setMainColor(config.data[0].customization.mainColor);
-        setFontColor(config.data[0].customization.fontColor);
-        setLogo(config.data[0].customization.logo);
-        setLogoBlack(config.data[0].customization.logoBlack);
+        setConfigData(config.data.customization);
+        setMainColor(config.data.customization.mainColor);
+        setFontColor(config.data.customization.fontColor);
+        setLogo(config.data.customization.logo);
+        setLogoBlack(config.data.customization.logoBlack);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

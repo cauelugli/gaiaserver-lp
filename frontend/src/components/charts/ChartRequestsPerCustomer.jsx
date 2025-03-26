@@ -255,7 +255,7 @@ const ChartRequestPerCustomer = ({
         <ChartDataDetail
           title={
             idIndexList.find(
-              (customer) => customer.id === selectedCustomer.customerId
+              (customer) => customer.id === selectedCustomer?.customerId
             )?.name || ""
           }
           popoverData={popoverData}

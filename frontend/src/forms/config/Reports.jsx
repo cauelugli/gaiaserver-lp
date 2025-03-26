@@ -22,7 +22,7 @@ export default function Reports() {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data[0].reports);
+        setConfigData(config.data.reports);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

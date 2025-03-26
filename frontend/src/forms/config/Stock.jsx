@@ -33,7 +33,7 @@ export default function Stock({ onClose }) {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        const configData = config.data[0].stock;
+        const configData = config.data.stock;
 
         setConfigData(configData);
       } catch (error) {

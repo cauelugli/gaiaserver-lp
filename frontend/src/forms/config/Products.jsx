@@ -63,7 +63,7 @@ export default function Products({
         });
         setBaseProducts(products.data.filter((product) => !product.name));
         setProducts(products.data.filter((product) => product.name));
-        setConfigData(config.data[0].products);
+        setConfigData(config.data.products);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

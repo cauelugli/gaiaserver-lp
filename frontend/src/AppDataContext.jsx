@@ -36,7 +36,7 @@ export const AppDataProvider = ({ children }) => {
         );
         const config = await axios.get("http://localhost:3000/api/config");
 
-        setConfigData(config.data[0]);
+        setConfigData(config.data);
         setIdIndexList(idIndexList);
       } catch (error) {
         console.error("Erro ao buscar a idIndexList:", error);

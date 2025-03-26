@@ -39,9 +39,9 @@ export default function Customers({ onClose }) {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data[0].customers);
+        setConfigData(config.data.customers);
         setAllowSameNameCustomer(
-          config.data[0].customers.allowSameNameCustomer
+          config.data.customers.allowSameNameCustomer
         );
       } catch (error) {
         console.error("Error fetching data:", error);
