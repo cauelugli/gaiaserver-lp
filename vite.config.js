@@ -5,8 +5,17 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    allowedHosts: ["gaiaserver"], // Permite o host "gaiaserver"
-    host: "0.0.0.0", // Permite acesso de qualquer IP (útil para desenvolvimento)
-    port: 5173, // Certifique-se de que o Vite está rodando na porta 5173
+    allowedHosts: ["gaiaserver"],
+    host: "0.0.0.0",
+    port: 5173,
+  },
+  build: {
+    target: "esnext", // Adiciona suporte a top-level await
+    minify: true, // Mantém a minificação ativada
+  },
+  esbuild: {
+    supported: {
+      "top-level-await": true, // Habilita explicitamente
+    },
   },
 });

@@ -3,3 +3,4 @@ Frontend - Vite React app: 5173
 Websocket - Real time Activities: 5002
 Queues - BullJS Workers: 6379
 Redis - Workers and Stuff: 6123
+NGINX - Docker : 8080

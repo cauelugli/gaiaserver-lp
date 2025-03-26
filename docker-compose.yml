@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   frontend:
@@ -9,42 +9,36 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/app/frontend
-      - ./controllers:/app/controllers
-      - ./models:/app/models
-      - /app/frontend/node_modules
+      - ./uploads:/app/frontend/public/static # Frontend acessa uploads
+    working_dir: /app/frontend
     command: npm run dev
 
   api:
-    build:
-      context: .
-      target: backend-builder
+    build: .
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=development
+    command: ["node", "api/index.js"]
     volumes:
-      - ./api:/app/api
-      - ./controllers:/app/controllers
-      - ./models:/app/models
-      - ./queues:/app/queues
-      - ./websocket:/app/websocket
-      - ./uploads:/app/uploads
-      - /app/node_modules
-    depends_on:
-      - redis
+      - ./uploads:/app/uploads # API também acessa
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./uploads:/usr/share/nginx/html/static # NGINX serve os arquivos
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
 
   websocket:
     build: .
     ports:
       - "5002:5002"
-    command: ["npm", "run", "websocket"]
-    depends_on:
-      - redis
+    command: ["node", "websocket/index.js"]
 
   redis:
     image: redis:alpine
     ports:
-      - "6379:6379"
+      - "6123:6379"
     volumes:
       - redis_data:/data
 

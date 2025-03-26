@@ -163,7 +163,7 @@ const Login = () => {
       >
         <Tooltip title={"o GS é um sonho feito com muito amor"}>
           <img
-            src={`http://localhost:3000/static/${
+            src={`http://localhost:8080/static/${
               loading ? "logo_dog_blue_thinking" : "logo_dog_blue"
             }.png`}
             alt="Logo GaiaServer"
