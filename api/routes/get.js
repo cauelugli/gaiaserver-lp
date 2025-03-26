@@ -172,34 +172,32 @@ router.get("/coreData", async (req, res) => {
 });
 
 // GET USER AGENDA
-// router.get("/userAgenda/:userId", async (req, res) => {
-//   const { userId } = req.params;
+router.get("/userAgenda", async (req, res) => {
+  const Job = defineModel("Job");
+  const Sale = defineModel("Sale");
 
-//   const Job = defineModel("Job");
-//   const Sale = defineModel("Sale");
+  try {
+    const jobs = await Job.find();
+    const sales = await Sale.find();
 
-//   try {
-//     const jobs = await Job.find({ worker: userId });
-//     const sales = await Sale.find({ seller: userId });
+    const userAgenda = {
+      jobs: jobs.map((job) => ({
+        id: job._id.toString(),
+        day: job.scheduledTo.slice(0, 2) || "",
+        type: "job",
+      })),
+      sales: sales.map((sale) => ({
+        id: sale._id.toString(),
+        day: sale.deliveryScheduledTo.slice(0, 2) || "",
+        type: "sale",
+      })),
+    };
 
-//     const userAgenda = {
-//       jobs: jobs.map((job) => ({
-//         id: job._id.toString(),
-//         day: job.scheduledTo.slice(0, 2) || "",
-//         type: "job",
-//       })),
-//       sales: sales.map((sale) => ({
-//         id: sale._id.toString(),
-//         day: sale.deliveryScheduledTo.slice(0, 2) || "",
-//         type: "sale",
-//       })),
-//     };
-
-//     res.status(200).json(userAgenda);
-//   } catch (err) {
-//     console.log("\nerr", err, "\n");
-//     res.status(500).json(err);
-//   }
-// });
+    res.status(200).json(userAgenda);
+  } catch (err) {
+    console.log("\nerr", err, "\n");
+    res.status(500).json(err);
+  }
+});
 
 module.exports = router;

@@ -130,7 +130,7 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
                 title={
                   <React.Fragment>
                     {missingCoreData.map((item, index) => (
-                      <Typography key={index} sx={{ fontSize: 15, m: 1 }}>
+                      <Typography key={index} sx={{ fontSize: 15, m: 1, color:"white" }}>
                         Não há nenhum {item}
                       </Typography>
                     ))}

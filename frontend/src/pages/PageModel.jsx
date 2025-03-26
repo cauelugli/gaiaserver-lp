@@ -62,6 +62,9 @@ export default function PageModel(props) {
 
   const [currentPage, setCurrentPage] = React.useState(props.item.page);
 
+  console.log("configCustomization", props.configCustomization);
+  console.log("configData", props.configData);
+
   // eslint-disable-next-line no-unused-vars
   const [configTables, setConfigTables] = React.useState(
     props.configData.tables

@@ -41,16 +41,10 @@ function isAuthenticated(login, userData) {
   return login && userData;
 }
 
-function hasPermission() {
-  // remove this
-  return true
-}
-
 export default function App() {
   const [configData, setConfigData] = useState([]);
   const [userPreferences, setUserPreferences] = useState({});
   const [userAgenda, setUserAgenda] = useState([]);
-  const [allowedLinks, setAllowedLinks] = useState([]);
   const login = JSON.parse(sessionStorage.getItem("login"));
   const userData = JSON.parse(sessionStorage.getItem("userData"));
   const [shortcutModalState, setShortcutModalState] = useState({
@@ -124,30 +118,19 @@ export default function App() {
   }, []);
 
   // Fetch initial data and check permissions for pages
+  // Fetch initial data and check permissions for pages
   useEffect(() => {
     const fetchAndProcessData = async () => {
       try {
         const [config, preferences, userAgenda] = await Promise.all([
           api.get("/config"),
           api.get(`/userPreferences`),
-          // api.get(`/get/userAgenda/${userData._id}`),
+          api.get(`/get/userAgenda`),
         ]);
 
-        // Process user agenda (only if not admin)
-        if (userData.username !== "admin") {
-          setUserAgenda(userAgenda.data);
-        }
-        setConfigData(config.data[0]);
+        setConfigData(config.data);
         setUserPreferences(preferences.data);
-
-        // Process permissions
-        const permissionsConfig = config.data[0]?.permissions;
-        if (permissionsConfig) {
-          const newAllowedLinks = Object.keys(permissionsConfig).filter(
-            (routePath) => hasPermission(userData, config.data[0], routePath)
-          );
-          setAllowedLinks(newAllowedLinks);
-        }
+        setUserAgenda(userAgenda.data);
       } catch (error) {
         console.error("Error fetching or processing data:", error);
       }
@@ -155,21 +138,6 @@ export default function App() {
 
     fetchAndProcessData();
   }, [refreshData]);
-
-  // opening modal according to userShortcuts
-  // future fix
-  // const handleShortcutClick = (shortcut) => {
-  //   setShortcutModalState({
-  //     show: true,
-  //     action: shortcut.action,
-  //     size: shortcut.size,
-  //     fullWidth: shortcut.fullWidth,
-  //     maxWidth: shortcut.maxWidth,
-  //     permission: shortcut.permission,
-  //     selectedItem: shortcut.selectedItem,
-  //     props: { ...shortcut.props },
-  //   });
-  // };
 
   // Changing window size
   // eslint-disable-next-line no-unused-vars
@@ -261,14 +229,12 @@ export default function App() {
                             userId={userData._id}
                             userName={userData.name}
                             userUsername={userData.username}
-                            userGender={userData.gender}
                             userAgenda={userAgenda}
                             mainColor={
-                              configData.customization &&
-                              configData.customization.mainColor
+                              configData?.customization &&
+                              configData?.customization?.mainColor
                             }
                             handleShortcutClick={"handleShortcutClick"}
-                            allowedLinks={allowedLinks}
                             configData={configData}
                             onMount={() => handleSidebarVisibility(false)}
                             onUnmount={() => handleSidebarVisibility(true)}
@@ -304,12 +270,11 @@ export default function App() {
                     <Route
                       path="/reports"
                       element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "reports") ? (
+                        isAuthenticated(login, userData) ? (
                           <Reports
                             userId={userData._id}
                             userUsername={userData.username}
-                            configCustomization={configData.customization}
+                            configCustomization={configData?.customization}
                             topBar={userPreferences.barPosition}
                           />
                         ) : (
@@ -320,16 +285,17 @@ export default function App() {
                     <Route
                       path="/config"
                       element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "config") ? (
+                        isAuthenticated(login, userData) ? (
                           <Config
                             topBar={userPreferences.barPosition}
-                            mainColor={configData?.customization?.mainColor ||"#f8ff00"}
+                            mainColor={
+                              configData?.customization?.mainColor || "#f8ff00"
+                            }
                             userName={userData.name}
                             userId={userData._id}
                             refreshData={refreshData}
                             setRefreshData={setRefreshData}
-                            configCustomization={configData.customization}
+                            configCustomization={configData?.customization}
                             currentWindowSize={currentWindowSize}
                           />
                         ) : isAuthenticated(login, userData) ? (
@@ -350,10 +316,7 @@ export default function App() {
                           <Log
                             api={api}
                             topBar={userPreferences.barPosition}
-                            mainColor={
-                              configData.customization &&
-                              configData.customization.mainColor
-                            }
+                            mainColor={configData?.customization?.mainColor}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -368,15 +331,14 @@ export default function App() {
                     <Route
                       path="/files"
                       element={
-                        isAuthenticated(login, userData) &&
-                        hasPermission(userData, configData, "files") ? (
+                        isAuthenticated(login, userData) ? (
                           <Files
                             topBar={userPreferences.barPosition}
                             userName={userData.name}
                             userId={userData._id}
                             refreshData={refreshData}
                             setRefreshData={setRefreshData}
-                            configCustomization={configData.customization}
+                            configCustomization={configData?.customization}
                           />
                         ) : isAuthenticated(login, userData) ? (
                           <Typography sx={{ m: 2, fontSize: 16 }}>
@@ -388,37 +350,39 @@ export default function App() {
                       }
                     />
 
-                    {pageOptions.map((option, index) => (
-                      <Route
-                        key={index}
-                        path={`/${option.page}`}
-                        element={
-                          isAuthenticated(login, userData) &&
-                          hasPermission(userData, configData, option.page) ? (
-                            <PageModel
-                              api={api}
-                              socket={socket}
-                              item={option}
-                              palette={theme.palette}
-                              userId={userData._id}
-                              userUsername={userData.username}
-                              isAdmin={userData.username === "admin"}
-                              userName={userData.name}
-                              setUserPreferences={setUserPreferences}
-                              configData={configData}
-                              topBar={userPreferences.barPosition}
-                              tableOrCardView={userPreferences.tableOrCardView}
-                              cardSize={userPreferences.cardSize}
-                              configCustomization={configData.customization}
-                              currentWindowSize={currentWindowSize}
-                              windowSizeSetter={windowSizeSetter}
-                            />
-                          ) : (
-                            <Navigate to="/login" />
-                          )
-                        }
-                      />
-                    ))}
+                    {configData &&
+                      pageOptions.map((option, index) => (
+                        <Route
+                          key={index}
+                          path={`/${option.page}`}
+                          element={
+                            isAuthenticated(login, userData) ? (
+                              <PageModel
+                                api={api}
+                                socket={socket}
+                                item={option}
+                                palette={theme.palette}
+                                userId={userData._id}
+                                userUsername={userData.username}
+                                isAdmin={userData.username === "admin"}
+                                userName={userData.name}
+                                setUserPreferences={setUserPreferences}
+                                configData={configData}
+                                topBar={userPreferences.barPosition}
+                                tableOrCardView={
+                                  userPreferences.tableOrCardView
+                                }
+                                cardSize={userPreferences.cardSize}
+                                configCustomization={configData?.customization}
+                                currentWindowSize={currentWindowSize}
+                                windowSizeSetter={windowSizeSetter}
+                              />
+                            ) : (
+                              <Navigate to="/login" />
+                            )
+                          }
+                        />
+                      ))}
                   </Routes>
                 </Grid2>
               </Grid2>
@@ -428,7 +392,7 @@ export default function App() {
               <ShortcutModals
                 {...shortcutModalState.props}
                 configData={configData}
-                configCustomization={configData.customization}
+                configCustomization={configData?.customization}
                 configNotifications={configData.notifications}
                 user={userData}
                 toast={toast}

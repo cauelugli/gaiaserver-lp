@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
 // GET ALL CONFIGS
 router.get("/", async (req, res) => {
   try {
-    const configs = await Config.find();
+    const configs = await Config.findOne({});
     res.status(200).json(configs);
   } catch (err) {
     res.status(500).json(err);

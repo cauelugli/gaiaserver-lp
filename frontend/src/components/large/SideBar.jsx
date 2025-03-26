@@ -3,7 +3,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import {
-  Divider,
   Grid2,
   List,
   ListItemButton,
@@ -30,7 +29,7 @@ const options = [
   { label: "Configurações", icon: <icons.SettingsIcon />, link: "/config" },
 ];
 
-const SideBar = ({ configData, user }) => {
+const SideBar = ({ configData }) => {
   const [hoveredIndex, setHoveredIndex] = React.useState(null);
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
@@ -39,14 +38,6 @@ const SideBar = ({ configData, user }) => {
   const handleMouseLeave = () => {
     setHoveredIndex(null);
   };
-
-  function hasPermission() {
-    return true;
-  }
-
-  const filteredOptions = options.filter((option) =>
-    hasPermission(user, configData, option.link)
-  );
 
   return (
     <Grid2 sx={{ height: "98%" }}>
@@ -83,7 +74,7 @@ const SideBar = ({ configData, user }) => {
             />
           </ListItemButton>
         </Link>
-        {filteredOptions.map((option, index) => (
+        {options.map((option, index) => (
           <Link
             key={index}
             onClick={() => setHoveredIndex(index)}
@@ -166,17 +157,6 @@ const SideBar = ({ configData, user }) => {
                 }}
               />
             </ListItemButton>
-            {option.label === "Ajuda" && user.username === "admin" && (
-              <Divider
-                sx={{
-                  my: 0.75,
-                  backgroundColor:
-                    configData && configData.customization
-                      ? configData.customization.mainColor
-                      : "white",
-                }}
-              />
-            )}
           </Link>
         ))}
       </List>

@@ -30,7 +30,7 @@ const options = [
   },
 ];
 
-const TopBar = ({ configData, user }) => {
+const TopBar = ({ configData }) => {
   const [hoveredIndex, setHoveredIndex] = React.useState(null);
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
@@ -39,14 +39,6 @@ const TopBar = ({ configData, user }) => {
   const handleMouseLeave = () => {
     setHoveredIndex(null);
   };
-
-  function hasPermission() {
-    return true;
-  }
-
-  const filteredOptions = options.filter((option) =>
-    hasPermission(user, configData, option.link)
-  );
 
   return (
     <>
@@ -85,7 +77,7 @@ const TopBar = ({ configData, user }) => {
             />
           </ListItemButton>
         </Link>
-        {filteredOptions.map((option, index) => (
+        {options.map((option, index) => (
           <Grid2 key={index}>
             {option.label === "Acessos" && (
               <Divider orientation="vertical" flexItem />
