@@ -276,6 +276,9 @@ export default function App() {
                             userUsername={userData.username}
                             configCustomization={configData?.customization}
                             topBar={userPreferences.barPosition}
+                            api={api}
+                            mainColor={configData?.customization?.mainColor}
+                            windowSizeSetter={windowSizeSetter}
                           />
                         ) : (
                           <Navigate to="/login" />
@@ -350,39 +353,42 @@ export default function App() {
                       }
                     />
 
-                    {configData.customization ?
-                      pageOptions.map((option, index) => (
-                        <Route
-                          key={index}
-                          path={`/${option.page}`}
-                          element={
-                            isAuthenticated(login, userData) ? (
-                              <PageModel
-                                api={api}
-                                socket={socket}
-                                item={option}
-                                palette={theme.palette}
-                                userId={userData._id}
-                                userUsername={userData.username}
-                                isAdmin={userData.username === "admin"}
-                                userName={userData.name}
-                                setUserPreferences={setUserPreferences}
-                                configData={configData}
-                                topBar={userPreferences.barPosition}
-                                tableOrCardView={
-                                  userPreferences.tableOrCardView
-                                }
-                                cardSize={userPreferences.cardSize}
-                                configCustomization={configData?.customization}
-                                currentWindowSize={currentWindowSize}
-                                windowSizeSetter={windowSizeSetter}
-                              />
-                            ) : (
-                              <Navigate to="/login" />
-                            )
-                          }
-                        />
-                      )):""}
+                    {configData.customization
+                      ? pageOptions.map((option, index) => (
+                          <Route
+                            key={index}
+                            path={`/${option.page}`}
+                            element={
+                              isAuthenticated(login, userData) ? (
+                                <PageModel
+                                  api={api}
+                                  socket={socket}
+                                  item={option}
+                                  palette={theme.palette}
+                                  userId={userData._id}
+                                  userUsername={userData.username}
+                                  isAdmin={userData.username === "admin"}
+                                  userName={userData.name}
+                                  setUserPreferences={setUserPreferences}
+                                  configData={configData}
+                                  topBar={userPreferences.barPosition}
+                                  tableOrCardView={
+                                    userPreferences.tableOrCardView
+                                  }
+                                  cardSize={userPreferences.cardSize}
+                                  configCustomization={
+                                    configData?.customization
+                                  }
+                                  currentWindowSize={currentWindowSize}
+                                  windowSizeSetter={windowSizeSetter}
+                                />
+                              ) : (
+                                <Navigate to="/login" />
+                              )
+                            }
+                          />
+                        ))
+                      : ""}
                   </Routes>
                 </Grid2>
               </Grid2>

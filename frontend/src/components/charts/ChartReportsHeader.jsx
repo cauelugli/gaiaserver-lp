@@ -24,14 +24,26 @@ const ChartReportsHeader = ({
   setGroupBy,
   selectedDate,
   setSelectedDate,
+  fromPage,
 }) => {
   return (
-    <Grid2 sx={{ m: 2 }} container direction="row" alignItems="center">
+    <Grid2
+      sx={{ m: 2, mb: fromPage ? 4 : 2 }}
+      container
+      direction="row"
+      alignItems="center"
+    >
       <Grid2 item>
         <Grid2>
           <Typography
             id="title"
-            sx={{ fontSize: "2vw", mr: "1vw", ml: -1, cursor: "pointer" }}
+            sx={{
+              fontSize: "2vw",
+              mr: fromPage ? "3vw" : "1vw",
+              pr: fromPage ? 5 : 0,
+              ml: -1,
+              cursor: "pointer",
+            }}
             onClick={() => setDisplayChart(!displayChart)}
           >
             Relatórios
@@ -65,10 +77,12 @@ const ChartReportsHeader = ({
         </Grid2>
       </Grid2>
 
-      <icons.ExpandLessIcon
-        onClick={() => setDisplayChart(!displayChart)}
-        sx={{ cursor: "pointer", mb: 2 }}
-      />
+      {!fromPage && (
+        <icons.ExpandLessIcon
+          onClick={() => setDisplayChart(!displayChart)}
+          sx={{ cursor: "pointer", mb: 2 }}
+        />
+      )}
       <FormControl sx={{ ml: 2, mb: 2 }}>
         <InputLabel>Período</InputLabel>
         <Select
