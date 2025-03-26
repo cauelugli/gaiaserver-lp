@@ -3,11 +3,9 @@ const router = express.Router();
 const UserPreferences = require("../../models/models/UserPreferences");
 
 // GET USER PREFERENCES
-router.get("/:userId", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const userId = req.params.userId;
-
-    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    const userPreferences = await UserPreferences.findOne({});
 
     res.status(200).json(userPreferences);
   } catch (error) {
@@ -26,7 +24,7 @@ router.put("/addShortcut", async (req, res) => {
   } = req.body;
 
   try {
-    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    const userPreferences = await UserPreferences.findOne({});
 
     if (!userPreferences) {
       return res.status(404).json({ error: "User preferences not found." });
@@ -58,7 +56,7 @@ router.put("/deleteShortcut", async (req, res) => {
   const { userId, shortcutName } = req.body;
 
   try {
-    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    const userPreferences = await UserPreferences.findOne({});
 
     if (!userPreferences) {
       return res.status(404).json({ error: "User preferences not found." });
@@ -86,7 +84,7 @@ router.put("/darkMode", async (req, res) => {
   const { userId, darkMode } = req.body;
 
   try {
-    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    const userPreferences = await UserPreferences.findOne({});
     userPreferences.darkMode = darkMode;
     await userPreferences.save();
 
@@ -104,7 +102,7 @@ router.put("/fontFamily", async (req, res) => {
   const { userId, fontFamilyTitle, fontFamilyRest } = req.body;
 
   try {
-    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    const userPreferences = await UserPreferences.findOne({});
     userPreferences.fontFamilyTitle = fontFamilyTitle;
     userPreferences.fontFamilyRest = fontFamilyRest;
     await userPreferences.save();
@@ -121,7 +119,7 @@ router.put("/homePageLayout", async (req, res) => {
   const { userId, homePageLayout } = req.body;
 
   try {
-    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    const userPreferences = await UserPreferences.findOne({});
     userPreferences.homePageLayout = homePageLayout;
     await userPreferences.save();
 
@@ -130,18 +128,20 @@ router.put("/homePageLayout", async (req, res) => {
     console.error("Error updating FontFamily:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
-}); 
+});
 
 // UPDATE HOME PAGE PREFERENCES
 router.put("/homePagePreferences", async (req, res) => {
   const { userId, homePagePreferences } = req.body;
 
   try {
-    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    const userPreferences = await UserPreferences.findOne({});
     userPreferences.homePagePreferences = homePagePreferences;
     await userPreferences.save();
 
-    res.status(200).json({ message: "homePagePreferences updated successfully" });
+    res
+      .status(200)
+      .json({ message: "homePagePreferences updated successfully" });
   } catch (error) {
     console.error("Error updating FontFamily:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -153,7 +153,7 @@ router.put("/paletteColor", async (req, res) => {
   const { userId, paletteColor } = req.body;
 
   try {
-    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    const userPreferences = await UserPreferences.findOne({});
     userPreferences.paletteColor = paletteColor;
     await userPreferences.save();
 
@@ -171,7 +171,7 @@ router.put("/barPosition", async (req, res) => {
   const { userId, barPosition } = req.body;
 
   try {
-    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    const userPreferences = await UserPreferences.findOne({});
     userPreferences.barPosition = barPosition;
     await userPreferences.save();
 
@@ -189,7 +189,7 @@ router.put("/tableOrCardView", async (req, res) => {
   const { userId, tableOrCardView } = req.body;
 
   try {
-    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    const userPreferences = await UserPreferences.findOne({});
     userPreferences.tableOrCardView = tableOrCardView;
     await userPreferences.save();
 
@@ -208,7 +208,7 @@ router.put("/cardSize", async (req, res) => {
   const { userId, cardSize } = req.body;
 
   try {
-    const userPreferences = await UserPreferences.findOne({ userId: userId });
+    const userPreferences = await UserPreferences.findOne({});
     userPreferences.cardSize = cardSize;
     await userPreferences.save();
 

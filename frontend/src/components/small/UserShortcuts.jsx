@@ -30,7 +30,7 @@ const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
 
   const fetchData = async () => {
     try {
-      const preferences = await api.get(`/userPreferences/${userId}`);
+      const preferences = await api.get(`/userPreferences`);
       setUserPreferences(preferences.data);
     } catch (error) {
       console.error("Error fetching data:", error);

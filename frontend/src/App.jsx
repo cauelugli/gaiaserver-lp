@@ -129,8 +129,8 @@ export default function App() {
       try {
         const [config, preferences, userAgenda] = await Promise.all([
           api.get("/config"),
-          api.get(`/userPreferences/${userData._id}`),
-          api.get(`/get/userAgenda/${userData._id}`),
+          api.get(`/userPreferences`),
+          // api.get(`/get/userAgenda/${userData._id}`),
         ]);
 
         // Process user agenda (only if not admin)
@@ -324,7 +324,7 @@ export default function App() {
                         hasPermission(userData, configData, "config") ? (
                           <Config
                             topBar={userPreferences.barPosition}
-                            mainColor={configData.customization.mainColor}
+                            mainColor={configData?.customization?.mainColor ||"#f8ff00"}
                             userName={userData.name}
                             userId={userData._id}
                             refreshData={refreshData}
