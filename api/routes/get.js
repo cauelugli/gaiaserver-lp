@@ -22,18 +22,6 @@ router.get("/", async (req, res) => {
   try {
     let data;
     data = await Model.find();
-
-    switch (model) {
-      case "User":
-        data = data.map((user) => {
-          const { password, notifications, ...rest } = user.toObject();
-          return rest;
-        });
-        break;
-      default:
-        break;
-    }
-
     res.status(200).json(data);
   } catch (err) {
     console.log("\nerr", err, "\n");
@@ -170,27 +158,6 @@ const getRequestsPerCustomer = async (models) => {
 
   return requestsPerCustomer;
 };
-
-// GET USER'S NOTIFICATIONS
-router.get("/notifications/:userId", async (req, res) => {
-  const { userId } = req.params;
-  const Model = defineModel("User");
-
-  try {
-    // Encontra o usuário e retorna apenas a lista de notificações
-    const user = await Model.findById(userId, "notifications");
-
-    if (!user) {
-      return "";
-      // that's life
-    }
-
-    res.status(200).json(user.notifications);
-  } catch (err) {
-    console.log("\nerr", err, "\n");
-    res.status(500).json(err);
-  }
-});
 
 // GET MISSING CORE DATA
 router.get("/coreData", async (req, res) => {

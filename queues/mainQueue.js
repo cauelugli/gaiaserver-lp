@@ -55,7 +55,6 @@ const mainQueue = new Queue("mainQueue", {
 // MAIN PROCESSOR
 mainQueue.process(async (job) => {
   const { type, data } = job.data;
-  const finalList = job.data.notificationList;
   const isAdmin = job.data.isAdmin;
 
   try {
@@ -94,9 +93,7 @@ mainQueue.process(async (job) => {
       case "deleteMultipleItems":
         await handleDeleteMultipleItems(data);
         break;
-      case "notificationToList":
-        await handleNotificationToList(data, isAdmin);
-        break;
+
       case "notifyAdmin":
         await handleNotifyAdmin(data, isAdmin);
         break;
@@ -108,9 +105,6 @@ mainQueue.process(async (job) => {
         break;
       case "deleteNotification":
         await handleDeleteNotification(data);
-        break;
-      case "productIsCreated":
-        await handleProductIsCreated(data, finalList);
         break;
       case "removeFromStock":
         await handleRemoveFromStock(data);
@@ -131,30 +125,6 @@ mainQueue.process(async (job) => {
 });
 
 // HANDLERS
-const handleNotificationToList = async (data, isAdmin) => {
-  let finalTarget = "";
-
-  if (data.target) {
-    data.target.title
-      ? (finalTarget = data.target.title)
-      : data.target.name
-      ? (finalTarget = data.target.name)
-      : data.target.number
-      ? (finalTarget = data.target.number)
-      : (finalTarget = data.target);
-  }
-  socket.emit("notificationToList", {
-    finalTarget,
-    method: data.method,
-    item: data.item,
-    sourceId: data.sourceId,
-    receivers: data.notificationList,
-    label: translateModel(data.model),
-    isFemale: data.model === "Sale" ? true : false,
-    isAdmin,
-  });
-};
-
 const handleRefreshIdIndexList = async () => {
   socket.emit("refreshIdIndexList");
 };
@@ -173,14 +143,6 @@ const handleFinanceIncome = async (data) => {
 
 const handleArchiveItem = async (data) => {
   await archiveItem(data);
-};
-
-const handleAddUserRoutines = async (data) => {
-  await addUserRoutines(data.model, data.item);
-};
-
-const handleOperator = async (data) => {
-  await addOperator(data);
 };
 
 const handleAddToStock = async (data) => {
@@ -258,18 +220,6 @@ const handleNotifyAdmin = async (data, isAdmin) => {
     model: translateModel(data.model),
     isFemaleGender: data.model === "Sale",
     isAdmin: isAdmin,
-  });
-};
-
-const handleProductIsCreated = async (data, list) => {
-  const { name, type, createdBy } = data;
-
-  socket.emit("notificationToList", {
-    finalTarget: `do tipo ${type}: "${name}"`,
-    method: "add",
-    emitterId: createdBy,
-    receivers: list,
-    label: "Produto",
   });
 };
 

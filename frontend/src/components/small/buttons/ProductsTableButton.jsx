@@ -98,8 +98,6 @@ export default function ProductsTableButton(props) {
             buttonProps={props}
             baseProduct={selectedProduct}
             userId={props.userId}
-            configCustomization={props.configCustomization}
-            configNotifications={props.configNotifications}
             openAdd={openAdd}
             setOpenAdd={setOpenAdd}
             refreshData={props.refreshData}
