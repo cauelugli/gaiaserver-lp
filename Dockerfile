@@ -1,34 +1,44 @@
-# Estágio 1: Construir o frontend
+# Estágio 1: Frontend Builder
 FROM node:18 as frontend-builder
 
 WORKDIR /app/frontend
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm install
-COPY frontend .
-# Vite normalmente gera para 'dist'
-RUN npm run build  
 
-# Estágio 2: Construir o backend
+# Copia frontend e pastas compartilhadas que ele precisa
+COPY frontend .
+COPY controllers /app/controllers
+COPY models /app/models
+
+RUN npm run build
+
+# Estágio 2: Backend Builder
 FROM node:18 as backend-builder
 
 WORKDIR /app
+
+# Copia especificamente a pasta api e arquivos raiz
+COPY api ./api
 COPY package.json package-lock.json ./
-RUN npm install --production
-COPY . .
+COPY controllers ./controllers
+COPY models ./models
+COPY queues ./queues
+COPY websocket ./websocket
 
-# Estágio final para a API
-FROM node:18 as backend
+RUN npm install
+
+# Estágio Final
+FROM node:18
+
 WORKDIR /app
-COPY --from=backend-builder /app .
-# API e WebSocket
-EXPOSE 3000 5002  
-# Ou comando específico para sua aplicação
-CMD ["npm", "start"] 
 
-# Estágio final para o Frontend (dev)
-FROM node:18 as frontend
-WORKDIR /app/frontend
-COPY --from=frontend-builder /app/frontend .
-EXPOSE 5173
-# Apenas para desenvolvimento
-CMD ["npm", "run", "dev"]  
+# Copia o backend
+COPY --from=backend-builder /app .
+COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
+
+# Garante que a pasta uploads existe
+RUN mkdir -p ./uploads
+
+EXPOSE 3000 5002
+
+CMD ["npm", "start"]

@@ -218,10 +218,7 @@ router.get("/listAttachments", async (req, res) => {
 
 // DELETE SINGLE FILE
 router.delete("/deleteFile/:filename", (req, res) => {
-  const directory = path.join(
-    __dirname,
-    `../../uploads/${req.params.filename.endsWith(".pdf") ? "docs" : "images"}`
-  );
+  const directory = path.join(__dirname, `../../uploads/images`);
   const filePath = path.join(directory, req.params.filename);
 
   if (fs.existsSync(filePath)) {
@@ -258,12 +255,7 @@ router.delete("/deleteAttachment/:filename", (req, res) => {
 // DELETE MULTIPLE FILES
 router.post("/deleteMultipleFiles", (req, res) => {
   const { files } = req.body;
-  const directory = path.join(
-    __dirname,
-    `../../uploads/${
-      req.body.files[0].name.endsWith(".pdf") ? "docs" : "images"
-    }`
-  );
+  const directory = path.join(__dirname, `../../uploads/images`);
   try {
     files.forEach((file) => {
       const filePath = path.join(directory, file.name);

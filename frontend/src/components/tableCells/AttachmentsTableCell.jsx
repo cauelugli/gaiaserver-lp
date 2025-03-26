@@ -17,7 +17,6 @@ const imageExtensions = [
 ];
 const isImage = (filename) =>
   imageExtensions.some((extension) => filename.endsWith(extension));
-const isPdf = (filename) => filename.endsWith(".pdf");
 
 const AttachmentsTableCell = ({ attachments, onUpload, onRemove }) => {
   const handleFileUpload = (event) => {
@@ -58,17 +57,7 @@ const AttachmentsTableCell = ({ attachments, onUpload, onRemove }) => {
                     padding: 1,
                   }}
                 >
-                  {isPdf(file.name) ? (
-                    <img
-                      src={`http://localhost:3000/static/pdf.png`}
-                      alt="PDF"
-                      style={{
-                        width: "80px",
-                        height: "80px",
-                        marginBottom: "8px",
-                      }}
-                    />
-                  ) : isImage(file.name) ? (
+                  {isImage(file.name) ? (
                     <img
                       src={URL.createObjectURL(file)}
                       alt="Pré-visualização"

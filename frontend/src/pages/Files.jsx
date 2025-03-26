@@ -5,7 +5,6 @@ import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Worker, Viewer } from "@react-pdf-viewer/core";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -159,12 +158,6 @@ export default function Files({ topBar }) {
   };
 
   const [viewDialogOpen, setViewDialogOpen] = React.useState(false);
-  const [pdfUrl, setPdfUrl] = React.useState("");
-
-  const openViewDialog = (file) => {
-    setPdfUrl(`http://localhost:3000/static/docs/${file.name}`);
-    setViewDialogOpen(true);
-  };
 
   const closeViewDialog = () => {
     setViewDialogOpen(false);
@@ -182,8 +175,6 @@ export default function Files({ topBar }) {
 
   const isImage = (filename) =>
     imageExtensions.some((extension) => filename.endsWith(extension));
-
-  const isPdf = (filename) => filename.endsWith(".pdf");
 
   return (
     <>
@@ -396,17 +387,7 @@ export default function Files({ topBar }) {
                 {attachments.map((file) => {
                   return (
                     <Grid2 key={file._id} item xs={2}>
-                      {isPdf(file.name) ? (
-                        <img
-                          src={`http://localhost:3000/static/pdf.png`}
-                          alt="PDF"
-                          style={{
-                            width: "80px",
-                            height: "80px",
-                            marginBottom: "8px",
-                          }}
-                        />
-                      ) : isImage(file.name) ? (
+                      {isImage(file.name) ? (
                         <img
                           src={`http://localhost:3000/static/attachments/${file.name}`}
                           alt="Pré-visualização"
@@ -486,28 +467,6 @@ export default function Files({ topBar }) {
               color="secondary"
             >
               Confirmar
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Dialog
-          open={viewDialogOpen}
-          onClose={closeViewDialog}
-          fullWidth
-          maxWidth="md"
-        >
-          <DialogTitle>Visualização do Orçamento</DialogTitle>
-          <DialogContent>
-            <Box style={{ height: "600px" }}>
-              <Worker
-                workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
-              >
-                <Viewer fileUrl={pdfUrl} />
-              </Worker>
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={closeViewDialog} color="primary">
-              Fechar
             </Button>
           </DialogActions>
         </Dialog>
