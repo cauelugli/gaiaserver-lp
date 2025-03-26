@@ -16,10 +16,7 @@ import {
   InputLabel,
 } from "@mui/material";
 
-import {
-  checkAvailability,
-  createScheduleSlots,
-} from "../../../../controllers/functions/overallFunctions";
+import { createScheduleSlots } from "../../../../controllers/functions/overallFunctions";
 
 const DynamicDataTableCell = (props) => {
   const [options, setOptions] = React.useState([]);
@@ -147,11 +144,7 @@ const DynamicDataTableCell = (props) => {
         {props.field.dynamicData === "managers" ||
         props.field.dynamicData === "workers"
           ? options.map((option, index) => (
-              <MenuItem
-                value={option}
-                key={index}
-                disabled={checkAvailability(props.field.dynamicData, option)}
-              >
+              <MenuItem value={option} key={index}>
                 <Grid2 container direction="row" alignItems="center">
                   <Avatar
                     alt="Imagem"

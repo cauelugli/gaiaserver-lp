@@ -483,18 +483,6 @@ export default function PageModel(props) {
                       multiple={multiple}
                       selectedMultipleItems={selectedMultipleItems}
                       setSelectedMultipleItems={setSelectedMultipleItems}
-                      requestsApproverManager={
-                        props.configData["requests"].requestsApproverManager
-                      }
-                      stockApproverManager={
-                        props.configData["stock"].stockEntriesApproverManager
-                      }
-                      requestsApproverAlternate={
-                        props.configData["requests"].requestsApproverAlternate
-                      }
-                      stockApproverAlternate={
-                        props.configData["stock"].stockEntriesApproverAlternate
-                      }
                     />
                   ) : (
                     <Grid2 container spacing={2} sx={{ mt: 0.5 }}>
@@ -515,14 +503,6 @@ export default function PageModel(props) {
                             label={props.item.models[value]}
                             refreshData={refreshData}
                             setRefreshData={setRefreshData}
-                            requestsApproverManager={
-                              props.configData["requests"]
-                                .requestsApproverManager
-                            }
-                            stockApproverManager={
-                              props.configData["stock"]
-                                .stockEntriesApproverManager
-                            }
                             page={props.item.page}
                             tabIndex={
                               props.item.page === "customers" &&

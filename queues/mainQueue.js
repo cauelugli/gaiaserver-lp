@@ -12,20 +12,12 @@ const {
   addCounter,
   addFinanceOutcome,
   addFinanceIncome,
-  addOperator,
-  addUserRoutines,
 } = require("../controllers/functions/addFunctions");
 
 const {
-  checkNewStockEntryDefaultStatus,
-} = require("../controllers/functions/checkFunctions");
-
-const {
   addToStock,
-  approveRequest,
   archiveItem,
   removeFromStock,
-  requestApproval,
   resolveItem,
   markAllNotificationAsRead,
   markNotificationAsRead,
@@ -35,30 +27,24 @@ const {
 const {
   deleteRoutinesClient,
   deleteRoutinesCustomer,
-  deleteRoutinesGroup,
   deleteRoutinesJob,
-  deleteRoutinesOperator,
   deleteRoutinesProduct,
   deleteRoutinesSale,
   deleteRoutinesService,
   deleteRoutinesServicePlan,
   deleteRoutinesStockEntry,
-  deleteRoutinesUser,
   deleteRoutinesBaseProduct,
 } = require("../controllers/functions/deleteRoutines");
 
 const deleteRoutinesFunctions = {
   deleteRoutinesClient,
   deleteRoutinesCustomer,
-  deleteRoutinesGroup,
   deleteRoutinesJob,
-  deleteRoutinesOperator,
   deleteRoutinesProduct,
   deleteRoutinesSale,
   deleteRoutinesService,
   deleteRoutinesServicePlan,
   deleteRoutinesStockEntry,
-  deleteRoutinesUser,
   deleteRoutinesBaseProduct,
 };
 
@@ -98,12 +84,7 @@ mainQueue.process(async (job) => {
       case "addToStock":
         await handleAddToStock(data);
         break;
-      case "approveRequest":
-        await handleApproveRequest(data);
-        break;
-      case "checkNewStockEntryDefaultStatus":
-        await handleCheckNewStockEntryDefaultStatus(data);
-        break;
+
       case "deleteSingleItem":
         await handleDeleteSingleItem(data);
         break;
@@ -118,12 +99,6 @@ mainQueue.process(async (job) => {
         break;
       case "notifyAdmin":
         await handleNotifyAdmin(data, isAdmin);
-        break;
-      case "notifyApproverManager":
-        await handleNotifyApproverManager(data, isAdmin);
-        break;
-      case "requestApproval":
-        await handleRequestApproval(data, isAdmin);
         break;
       case "markAllNotificationAsRead":
         await handleMarkAllNotificationsAsRead(data);
@@ -224,20 +199,12 @@ const handleAddToStock = async (data) => {
   await addToStock(data.items);
 };
 
-const handleApproveRequest = async (data) => {
-  await approveRequest(data);
-};
-
 const handleRemoveFromStock = async (data) => {
   await removeFromStock(data.items);
 };
 
 const handleResolveItem = async (data) => {
   await resolveItem(data);
-};
-
-const handleCheckNewStockEntryDefaultStatus = async (data) => {
-  await checkNewStockEntryDefaultStatus(data);
 };
 
 const handleDeleteBaseProduct = async (data) => {
@@ -304,19 +271,6 @@ const handleNotifyAdmin = async (data, isAdmin) => {
     isFemaleGender: data.model === "Sale",
     isAdmin: isAdmin,
   });
-};
-
-const handleNotifyApproverManager = async (data) => {
-  socket.emit("notifyApproverManager", {
-    title: data.item,
-    source: data.requestedBy || "admin",
-    receiver: data.requestsApproverManager,
-    model: data.model,
-  });
-};
-
-const handleRequestApproval = async (data) => {
-  await requestApproval(data);
 };
 
 const handleNotifyAssignee = async (data) => {

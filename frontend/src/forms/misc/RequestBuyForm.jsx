@@ -23,7 +23,7 @@ const api = axios.create({
 const RequestBuyForm = (props) => {
   const [quantity, setQuantity] = useState(1);
 
-  const handleRequestApproval = async () => {
+  const handleRequestBuy = async () => {
     try {
       const res = await api.put(`/actions/requestBuy/`, {
         requestedBy: props.userId,
@@ -118,7 +118,7 @@ const RequestBuyForm = (props) => {
         <Button
           variant="contained"
           color="success"
-          onClick={handleRequestApproval}
+          onClick={handleRequestBuy}
           sx={{ mr: 2 }}
         >
           Confirmar

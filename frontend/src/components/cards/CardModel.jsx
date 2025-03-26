@@ -33,8 +33,6 @@ export default function CardModel({
   cardSize,
   page,
   tabIndex,
-  requestsApproverManager,
-  stockApproverManager,
   mainColor,
 }) {
   // const appData = useAppData();
@@ -198,8 +196,6 @@ export default function CardModel({
           {renderTypographies()}
           <RowButton
             userId={userId}
-            userIsRequestsApproverManager={userId === requestsApproverManager}
-            userIsStockApproverManager={userId === stockApproverManager}
             mainColor={mainColor}
             item={item}
             page={page}

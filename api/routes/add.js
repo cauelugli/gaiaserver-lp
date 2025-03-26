@@ -12,11 +12,7 @@ const {
   parseReqFields,
 } = require("../../controllers/functions/routeFunctions");
 
-const {
-  checkNewRequestDefaultStatus,
-  checkNewStockEntryDefaultStatus,
-  checkSameName,
-} = require("../../controllers/functions/checkFunctions");
+const { checkSameName } = require("../../controllers/functions/checkFunctions");
 
 // CREATE ITEM
 router.post("/", async (req, res) => {
@@ -66,21 +62,6 @@ router.post("/", async (req, res) => {
         return res.status(422).json({ error: err.message });
       }
       break;
-    case "Job":
-    case "Sale":
-      try {
-        await checkNewRequestDefaultStatus(fields, selectedProducts);
-      } catch (err) {
-        if (err.message === "Itens indisponíveis em estoque") {
-          return res.status(406).json({
-            error: "Itens indisponíveis em estoque",
-          });
-        }
-        return res.status(500).json({
-          error: "Erro ao verificar o status da requisição",
-        });
-      }
-      break;
     case "StockEntry":
       //change thiss
       fields.price = req.body.selectedProducts.reduce((total, product) => {
@@ -89,13 +70,6 @@ router.post("/", async (req, res) => {
         return total + buyValue * count;
       }, 0);
       fields.items = req.body.selectedProducts;
-      try {
-        await checkNewStockEntryDefaultStatus(fields);
-      } catch (err) {
-        return res.status(500).json({
-          error: "Erro ao verificar o status da requisição",
-        });
-      }
       break;
     default:
       break;
@@ -129,32 +103,11 @@ router.post("/", async (req, res) => {
           },
         });
 
-        if (config.requests.requestsNeedApproval === false) {
-          mainQueue.add({
-            type: "removeFromStock",
-            data: { items: savedItem.products },
-          });
-        }
-
         mainQueue.add({
-          type: "notifyAssignee",
-          data: {
-            target: {
-              customer: req.body.fields.customer,
-              service: req.body.fields.service,
-              scheduledTo:
-                req.body.fields.scheduledTo ||
-                req.body.fields.deliveryScheduledTo,
-              scheduleTime: req.body.fields.scheduleTime,
-              createdBy: req.body.createdBy,
-              title: req.body.fields.title || savedItem.number,
-            },
-            sourceId: createdBy,
-            receiver: req.body.fields.worker || req.body.fields.seller,
-            receiverName: req.body.fields.worker || req.body.fields.seller,
-            label: req.body.model === "Job" ? "Job" : "Venda",
-          },
+          type: "removeFromStock",
+          data: { items: savedItem.products },
         });
+
         break;
 
       case "StockEntry":

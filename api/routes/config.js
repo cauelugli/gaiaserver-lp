@@ -90,43 +90,14 @@ router.put("/customers", async (req, res) => {
 // REQUESTS
 router.put("/requests", async (req, res) => {
   try {
-    const {
-      prevData,
-      requestsNeedApproval,
-      canBeDeleted,
-      requestsApproverManager,
-      requestsApproverAlternate,
-      statuses,
-    } = req.body;
+    const { prevData, canBeDeleted, statuses } = req.body;
 
     const config = await Config.findOne();
 
-    config.requests.requestsNeedApproval = requestsNeedApproval;
     config.requests.canBeDeleted = canBeDeleted;
-    config.requests.requestsApproverManager = requestsApproverManager;
-    config.requests.requestsApproverAlternate = requestsApproverAlternate;
     config.requests.requestStatuses = statuses;
 
     await config.save();
-
-    if (prevData.requestsApproverManager !== requestsApproverManager) {
-      mainQueue.add({
-        type: "notifyNewConfiguredUser",
-        data: {
-          receiver: requestsApproverManager,
-          configuration: "requestApprover",
-        },
-      });
-    }
-    if (prevData.requestsApproverAlternate !== requestsApproverAlternate) {
-      mainQueue.add({
-        type: "notifyNewConfiguredUser",
-        data: {
-          receiver: requestsApproverAlternate,
-          configuration: "requestAlternate",
-        },
-      });
-    }
 
     res.status(200).json(config);
   } catch (err) {
@@ -138,43 +109,11 @@ router.put("/requests", async (req, res) => {
 // STOCK
 router.put("/stock", async (req, res) => {
   try {
-    const {
-      prevData,
-      stockEntriesApproverManager,
-      stockEntriesApproverAlternate,
-      stockEntriesNeedApproval,
-      stockEntriesCanBeChallenged,
-    } = req.body;
+    const { prevData } = req.body;
 
     const config = await Config.findOne();
 
-    config.stock.stockEntriesApproverManager = stockEntriesApproverManager;
-    config.stock.stockEntriesApproverAlternate = stockEntriesApproverAlternate;
-    config.stock.stockEntriesNeedApproval = stockEntriesNeedApproval;
-    config.stock.stockEntriesCanBeChallenged = stockEntriesCanBeChallenged;
-
     await config.save();
-
-    if (prevData.stockEntriesApproverManager !== stockEntriesApproverManager) {
-      mainQueue.add({
-        type: "notifyNewConfiguredUser",
-        data: {
-          receiver: stockEntriesApproverManager,
-          configuration: "stockApprover",
-        },
-      });
-    }
-    if (
-      prevData.stockEntriesApproverAlternate !== stockEntriesApproverAlternate
-    ) {
-      mainQueue.add({
-        type: "notifyNewConfiguredUser",
-        data: {
-          receiver: stockEntriesApproverAlternate,
-          configuration: "stockAlternate",
-        },
-      });
-    }
 
     res.status(200).json(config);
   } catch (err) {

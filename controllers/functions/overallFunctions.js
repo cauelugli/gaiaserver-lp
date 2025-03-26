@@ -61,10 +61,6 @@ export function isButtonDisabled(
   }
 }
 
-export function checkAvailability(item) {
-  return false;
-}
-
 export function isArray(data) {
   return Array.isArray(data) ? data : [];
 }

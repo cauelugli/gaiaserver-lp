@@ -11,15 +11,7 @@ import {
 } from "../../../../controllers/functions/overallFunctions";
 import dayjs from "dayjs";
 
-const DataTableCell = ({
-  item,
-  isRequestsApproverManager,
-  isStockApproverManager,
-  isRequestsApproverAlternate,
-  isStockApproverAlternate,
-  idIndexList,
-  column,
-}) => {
+const DataTableCell = ({ item, idIndexList, column }) => {
   const getNameById = (id) => {
     const found = idIndexList.find((obj) => obj.id === id);
     if (found && found.image) {
@@ -75,46 +67,6 @@ const DataTableCell = ({
                 height: 30,
               }}
             />
-            {isRequestsApproverManager && (
-              <Tooltip title="Gerente Aprovador de Solicitações">
-                <icons.StarIcon
-                  sx={{
-                    width: 14,
-                    height: 14,
-                  }}
-                />
-              </Tooltip>
-            )}
-            {isStockApproverManager && (
-              <Tooltip title="Gerente Aprovador de Estoque">
-                <icons.StarIcon
-                  sx={{
-                    width: 14,
-                    height: 14,
-                  }}
-                />
-              </Tooltip>
-            )}
-            {isRequestsApproverAlternate && (
-              <Tooltip title="Suplente Aprovador de Solicitações">
-                <icons.StarIcon
-                  sx={{
-                    width: 14,
-                    height: 14,
-                  }}
-                />
-              </Tooltip>
-            )}
-            {isStockApproverAlternate && (
-              <Tooltip title="Suplente Aprovador de Estoque">
-                <icons.StarIcon
-                  sx={{
-                    width: 14,
-                    height: 14,
-                  }}
-                />
-              </Tooltip>
-            )}
           </Grid2>
         </Grid2>
       ) : Array.isArray(item) ? (

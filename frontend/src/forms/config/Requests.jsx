@@ -37,11 +37,6 @@ import { icons } from "../../icons";
 
 export default function Requests({ onClose }) {
   const [configData, setConfigData] = React.useState([]);
-  const [requestsNeedApproval, setRequestsNeedApproval] = React.useState(null);
-  const [requestsApproverManager, setRequestsApproverManager] =
-    React.useState(null);
-  const [requestsApproverAlternate, setRequestsApproverAlternate] =
-    React.useState(null);
   const [canBeDeleted, setCanBeDeleted] = React.useState(null);
   const [statuses, setStatuses] = React.useState([]);
 
@@ -52,30 +47,13 @@ export default function Requests({ onClose }) {
     const fetchData = async () => {
       try {
         const configResponse = await api.get("/config");
-        const usersResponse = await api.get("/get", {
-          params: { model: "User" },
-        });
-        const managersData = usersResponse.data.filter(
-          (user) => user.isManager
-        );
         const configData = configResponse.data[0].requests;
 
         setConfigData(configData);
-        setRequestsNeedApproval(configData.requestsNeedApproval);
         setCanBeDeleted(configData.canBeDeleted);
         setStatuses(
           configData.requestStatuses.sort((a, b) => a.localeCompare(b))
         );
-
-        const approverManager = managersData.find(
-          (manager) => manager._id === configData.requestsApproverManager
-        );
-        setRequestsApproverManager(approverManager || null);
-
-        const approverManagerAlternate = usersResponse.data.find(
-          (user) => user._id === configData.requestsApproverAlternate
-        );
-        setRequestsApproverAlternate(approverManagerAlternate || null);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -88,13 +66,6 @@ export default function Requests({ onClose }) {
     try {
       const res = await api.put("/config/requests", {
         prevData: configData,
-        requestsNeedApproval,
-        requestsApproverManager: requestsApproverManager
-          ? requestsApproverManager._id
-          : "",
-        requestsApproverAlternate: requestsApproverAlternate
-          ? requestsApproverAlternate._id
-          : "none",
         canBeDeleted,
         statuses,
       });

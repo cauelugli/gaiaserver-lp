@@ -24,11 +24,8 @@ function LogTable(props) {
     { key: "archive", value: "Arquivamento" },
     { key: "unarchive", value: "Desarquivamento" },
     { key: "interaction", value: "Interação" },
-    { key: "challengeRequest", value: "Contestação" },
     { key: "resolve", value: "Resolução" },
     { key: "requestBuy", value: "Resquisição de Compra" },
-    { key: "requestApproval", value: "Resquisição de Aprovação" },
-    { key: "approveRequest", value: "Aprovação de Requisição" },
   ];
 
   const typeColors = [
@@ -39,11 +36,8 @@ function LogTable(props) {
     { key: "Arquivamento", value: "#dbdbdb" }, // lightgrey
     { key: "Desarquivamento", value: "#bbffbb" }, // green
     { key: "Interação", value: "#ffffff" }, // white
-    { key: "Contestação", value: "#ffffff" }, // white
     { key: "Resolução", value: "#bbffbb" }, // green
     { key: "Resquisição de Compra", value: "#ffffff" }, // white
-    { key: "Resquisição de Aprovação", value: "#ffffff" }, // white
-    { key: "Aprovação de Requisição", value: "#bbffff" }, // blue
   ];
 
   const translatedKeys = [

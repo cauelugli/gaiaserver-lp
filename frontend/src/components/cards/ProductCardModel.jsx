@@ -83,10 +83,8 @@ export default function ProductCardModel({
             </Typography>{" "}
             <RowButton
               userId={userId}
-              // userIsRequestsApproverManager={userId === requestsApproverManager}
-              // userIsStockApproverManager={userId === stockApproverManager}
-              // mainColor={mainColor}
               item={item}
+              // mainColor={mainColor}
               // page={page}
               // tabIndex={tabIndex}
               refreshData={refreshData}

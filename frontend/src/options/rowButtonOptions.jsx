@@ -120,22 +120,6 @@ const rowButtonOptions = (props) => [
     menus: {
       0: [
         {
-          label: "Solicitar Aprovação",
-          action: "requestApproval",
-          modal: "Job",
-          icon: <icons.FactCheckIcon />,
-        },
-        ...(props.userIsRequestsApproverManager
-          ? [
-              {
-                label: "Aprovar Solicitação",
-                action: "approveRequest",
-                modal: "Job",
-                icon: <icons.SpellcheckIcon />,
-              },
-            ]
-          : []),
-        {
           label: "Resolver",
           action: "resolve",
           modal: "Job",
@@ -185,22 +169,6 @@ const rowButtonOptions = (props) => [
           : []),
       ],
       1: [
-        {
-          label: "Solicitar Aprovação",
-          action: "requestApproval",
-          modal: "Sale",
-          icon: <icons.FactCheckIcon />,
-        },
-        ...(props.userIsRequestsApproverManager
-          ? [
-              {
-                label: "Aprovar Solicitação",
-                action: "approveRequest",
-                modal: "Sale",
-                icon: <icons.SpellcheckIcon />,
-              },
-            ]
-          : []),
         {
           label: "Resolver",
           action: "resolve",
@@ -257,22 +225,6 @@ const rowButtonOptions = (props) => [
     models: ["StockEntry"],
     menus: {
       0: [
-        {
-          label: "Solicitar Aprovação",
-          action: "requestApproval",
-          modal: "StockEntry",
-          icon: <icons.FactCheckIcon />,
-        },
-        ...(props.userIsStockApproverManager
-          ? [
-              {
-                label: "Aprovar Solicitação",
-                action: "approveRequest",
-                modal: "StockEntry",
-                icon: <icons.SpellcheckIcon />,
-              },
-            ]
-          : []),
         {
           label: "Editar",
           action: "edit",

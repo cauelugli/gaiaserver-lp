@@ -18,21 +18,6 @@ async function addToStock(items) {
   }
 }
 
-async function approveRequest(data) {
-  const Model = defineModel(data.model);
-  try {
-    await Model.findByIdAndUpdate(
-      data.modelId,
-      {
-        status: "Aprovado",
-      },
-      { new: true }
-    );
-  } catch (err) {
-    console.error("Erro ao aprovar solicitação:", err.message);
-    throw err;
-  }
-}
 
 async function archiveItem(data) {
   const Model = defineModel(data.model);
@@ -66,38 +51,6 @@ async function removeFromStock(items) {
     }
   } catch (err) {
     console.error("Erro ao remover itens do estoque:", err.message);
-    throw err;
-  }
-}
-
-async function requestApproval(data) {
-  const Model = defineModel(data.model);
-  try {
-    await Model.findByIdAndUpdate(
-      data.modelId,
-      {
-        status: "Aprovação Solicitada",
-        requester: data.requester,
-        $push: {
-          interactions: {
-            activity: "Solicitação de Aprovação",
-            attachments: [],
-            date: new Date(),
-            number: null,
-            reactions: {
-              dislike: { quantity: 0, usersReacted: [] },
-              haha: { quantity: 0, usersReacted: [] },
-              like: { quantity: 0, usersReacted: [] },
-              love: { quantity: 0, usersReacted: [] },
-            },
-            user: data.requester,
-          },
-        },
-      },
-      { new: true }
-    );
-  } catch (err) {
-    console.error("Erro ao solicitar aprovação:", err.message);
     throw err;
   }
 }
@@ -219,12 +172,10 @@ async function deleteNotification(data) {
 
 module.exports = {
   addToStock,
-  approveRequest,
   archiveItem,
   markAllNotificationAsRead,
   markNotificationAsRead,
   removeFromStock,
-  requestApproval,
   resolveItem,
   deleteNotification,
 };

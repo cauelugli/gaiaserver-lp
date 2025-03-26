@@ -73,17 +73,6 @@ const configSchema = new Schema({
     },
   },
   requests: {
-    requestsNeedApproval: {
-      type: Boolean,
-      default: true,
-    },
-    requestsApproverManager: {
-      type: String,
-    },
-    requestsApproverAlternate: {
-      type: String,
-      default: "none",
-    },
     canBeDeleted: {
       type: Boolean,
       default: true,
@@ -103,24 +92,7 @@ const configSchema = new Schema({
       default: [],
     },
   },
-  stock: {
-    stockEntriesApproverManager: {
-      type: String,
-      default: "",
-    },
-    stockEntriesApproverAlternate: {
-      type: String,
-      default: "none",
-    },
-    stockEntriesNeedApproval: {
-      type: Boolean,
-      default: true,
-    },
-    stockEntriesCanBeChallenged: {
-      type: Boolean,
-      default: true,
-    },
-  },
+  stock: {},
   tables: {
     customerCustomer: {
       type: Boolean,
