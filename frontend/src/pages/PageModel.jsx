@@ -56,7 +56,6 @@ export default function PageModel(props) {
   const [tableFilters, setTableFilters] = React.useState({});
   const [multiple, setMultiple] = React.useState(false);
   const [selectedMultipleItems, setSelectedMultipleItems] = React.useState([]);
-  const [highlightSelfUser, setHighlightSelfUser] = React.useState(false);
   const [highlightArchived, setHighlightArchived] = React.useState(false);
   const [highlightResolved, setHighlightResolved] = React.useState(false);
 
@@ -123,7 +122,6 @@ export default function PageModel(props) {
       setMultiple(false);
       setSelectedMultipleItems([]);
       setNewDataRefreshButton(true);
-      setHighlightSelfUser(false);
     }
 
     const fetchData = async () => {
@@ -349,8 +347,6 @@ export default function PageModel(props) {
                 props.item.models[props.item.page !== currentPage ? 0 : value]
               }
               page={props.item.page}
-              highlightSelfUser={highlightSelfUser}
-              setHighlightSelfUser={setHighlightSelfUser}
               highlightResolved={highlightResolved}
               setHighlightResolved={setHighlightResolved}
               useArchiveList={appData.useArchiveList?.includes(
