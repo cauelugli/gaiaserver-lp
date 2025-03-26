@@ -74,9 +74,6 @@ mainQueue.process(async (job) => {
       case "refreshIdIndexList":
         await handleRefreshIdIndexList();
         break;
-      case "addOperator":
-        await handleOperator(data);
-        break;
       case "addUserRoutines":
         await handleAddUserRoutines(data);
         break;

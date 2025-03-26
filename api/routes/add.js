@@ -86,10 +86,6 @@ router.post("/", async (req, res) => {
 
   try {
     let savedItem;
-    if (req.body.model !== "Operator") {
-      savedItem = await newItem.save();
-    }
-
     // ACTIONS THAT NEED TO BE DONE _AFTER_ ITEM IS CREATED
 
     switch (req.body.model) {

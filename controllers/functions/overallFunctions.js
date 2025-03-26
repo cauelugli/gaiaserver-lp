@@ -84,10 +84,6 @@ export function getDataForPage(itemsResponse, page, model) {
   let filteredItems = isArray(itemsResponse.data).filter(filterFunc);
   const baseItems = isArray(itemsResponse.data).filter((item) => !item.name);
 
-  if (model === "Operator") {
-    filteredItems = filteredItems.filter((user) => user.username);
-  }
-
   return { filteredItems, baseItems };
 }
 
