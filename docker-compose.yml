@@ -9,7 +9,7 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/app/frontend
-      - ./uploads:/app/frontend/public/static # Frontend acessa uploads
+      - ./uploads:/app/frontend/public/static
     working_dir: /app/frontend
     command: npm run dev
 
@@ -19,28 +19,42 @@ services:
       - "3000:3000"
     command: ["node", "api/index.js"]
     volumes:
-      - ./uploads:/app/uploads # API também acessa
+      - ./uploads:/app/uploads
+    depends_on:
+      - redis # Garante que o Redis esteja rodando antes da API
 
   nginx:
     image: nginx:alpine
     ports:
       - "8080:80"
     volumes:
-      - ./uploads:/usr/share/nginx/html/static # NGINX serve os arquivos
+      - ./uploads:/usr/share/nginx/html/static
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api
+      - frontend
 
   websocket:
     build: .
     ports:
       - "5002:5002"
     command: ["node", "websocket/index.js"]
+    depends_on:
+      - redis
 
   redis:
     image: redis:alpine
     ports:
-      - "6123:6379"
+      - "6123:6379" # Acesso externo na porta 6123, mas dentro do Docker ainda é 6379
     volumes:
       - redis_data:/data
+
+  queues:
+    build: .
+    command: ["node", "queues/index.js"] # Supondo que você tenha um worker BullJS aqui
+    depends_on:
+      - redis # Conecta-se ao serviço 'redis' interno
+    # Não precisa expor a porta 6379, pois ele usa o Redis interno
 
 volumes:
   redis_data:
