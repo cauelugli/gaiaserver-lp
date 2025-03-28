@@ -16,7 +16,7 @@ import {
 import {
   isButtonDisabled,
   loadPage,
-} from "../../../../controllers/functions/overallFunctions";
+} from "../../../../frontend/overallFunctions";
 
 import DialogHeader from "../../components/small/DialogHeader";
 import ImageTableCell from "../../components/tableCells/ImageTableCell";

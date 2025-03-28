@@ -26,7 +26,7 @@ import {
 import { icons } from "../../icons";
 
 import { handleCurrencyValueChange } from "../../../../controllers/handlers/handlers";
-import { loadPage } from "../../../../controllers/functions/overallFunctions";
+import { loadPage } from "../../../../frontend/overallFunctions";
 
 import DialogHeader from "../../components/small/DialogHeader";
 import CurrencyTableProductsCell from "../../components/tableCells/CurrencyTableProductsCell";
