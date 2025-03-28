@@ -4,7 +4,7 @@ import React from "react";
 
 import { InputAdornment, InputLabel, TextField } from "@mui/material";
 
-import { handleCurrencyValueChange } from "../../../../controllers/handlers/handlers";
+import { handleCurrencyValueChange } from "../../../../frontend/overallFunctions";
 
 const CurrencyTableCell = (props) => {
   const handleChange = (e) => {

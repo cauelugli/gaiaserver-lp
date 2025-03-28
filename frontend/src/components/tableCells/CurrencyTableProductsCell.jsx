@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import { InputAdornment, InputLabel, TextField } from "@mui/material";
-import { handleCurrencyValueChange } from "../../../../controllers/handlers/handlers";
+import { handleCurrencyValueChange } from "../../../../frontend/overallFunctions";
 
 const CurrencyTableProductsCell = (props) => {
   const handleChange = (e) => {
