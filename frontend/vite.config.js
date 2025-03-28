@@ -5,21 +5,26 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    allowedHosts: ["gaiaserver"],
     host: "0.0.0.0",
     port: 5173,
-    strictPort: true, // Adicione isso para evitar fallback
+    strictPort: true,
     hmr: {
-      clientPort: 5173, // Importante para Docker
+      clientPort: 8081,
+      protocol: "ws",
+      host: "localhost",
     },
+    watch: {
+      usePolling: true,
+    },
+    cors: true,
   },
   build: {
-    target: "esnext", // Adiciona suporte a top-level await
-    minify: true, // Mantém a minificação ativada
+    target: "esnext",
+    minify: true,
   },
   esbuild: {
     supported: {
-      "top-level-await": true, // Habilita explicitamente
+      "top-level-await": true,
     },
   },
 });
