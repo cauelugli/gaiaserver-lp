@@ -6,9 +6,6 @@ const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
 import { toast } from "react-toastify";
-import { io } from "socket.io-client";
-
-const socket = io("http://localhost:5002");
 
 import {
   Accordion,
@@ -86,7 +83,6 @@ export default function Agenda({ onClose }) {
         });
       }
       onClose();
-      socket.emit("forceRefresh");
     } catch (err) {
       console.log("erro", err);
       toast.error("Houve algum erro...", {

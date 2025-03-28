@@ -3,11 +3,7 @@
 import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { io } from "socket.io-client";
 import dayjs from "dayjs";
-
-const socket = io("http://localhost:5002");
-
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -87,7 +83,6 @@ export default function Products({
         });
       }
       onClose();
-      socket.emit("forceRefresh");
     } catch (err) {
       console.log("erro", err);
       toast.error("Houve algum erro...", {

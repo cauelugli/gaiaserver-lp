@@ -2,9 +2,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import axios from "axios";
-import { io } from "socket.io-client";
-
-const socket = io("http://localhost:5002");
 
 import {
   Button,
@@ -88,10 +85,6 @@ const ImportContacts = ({
       setRefreshData(!refreshData);
       setOpenAdd(!openAdd);
       toast.success("Dados enviados com sucesso!");
-      socket.emit("newDataRefreshButton", {
-        page: "customers",
-        userId: userId,
-      });
       api.post("/log", {
         source: userId,
         target: fileData,

@@ -2,10 +2,8 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
-import { io } from "socket.io-client";
 import { toast } from "react-toastify";
 
-const socket = io("http://localhost:5002");
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -26,7 +24,6 @@ const ArchiveItemForm = ({
   setRefreshData,
   openDialog,
   setOpenDialog,
-  page,
   label,
 }) => {
   const handleArchive = async () => {
@@ -48,13 +45,6 @@ const ArchiveItemForm = ({
             autoClose: 1200,
           }
         );
-
-        if (userId) {
-          socket.emit("newDataRefreshButton", {
-            page,
-            userId: userId,
-          });
-        }
       }
       setOpenDialog(false);
       setRefreshData(!refreshData);

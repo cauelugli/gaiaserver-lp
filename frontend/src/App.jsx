@@ -10,8 +10,6 @@ import {
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { io } from "socket.io-client";
-const socket = io("http://localhost:5002");
 
 import { Grid2, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
@@ -63,62 +61,7 @@ export default function App() {
     setShowSidebar(visibility);
   };
 
-  // force 10S TIMED refresh from websocket (for global changes)
-  useEffect(() => {
-    socket.on("forceRefresh", () => {
-      toast.info(
-        "Atualização necessária! Recarregando a página em 10 segundos",
-        {
-          closeOnClick: false,
-          pauseOnHover: false,
-          theme: "colored",
-          autoClose: 9500,
-        }
-      );
-
-      const timer = setTimeout(() => {
-        window.location.reload();
-      }, 10000);
-
-      return () => {
-        clearTimeout(timer);
-      };
-    });
-
-    return () => {
-      socket.off("forceRefresh");
-    };
-  }, []);
-
-  // force 1S TIMED refresh from websocket (for individual changes)
-  useEffect(() => {
-    socket.on("forceIndividualRefresh", (userId) => {
-      if (userId === userData._id) {
-        toast.info("Atualização necessária! Recarregando a página", {
-          closeOnClick: false,
-          pauseOnHover: false,
-          theme: "colored",
-          autoClose: 450,
-          color: "success",
-        });
-
-        const timer = setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-
-        return () => {
-          clearTimeout(timer);
-        };
-      }
-    });
-
-    return () => {
-      socket.off("forceIndividualRefresh");
-    };
-  }, []);
-
-  // Fetch initial data and check permissions for pages
-  // Fetch initial data and check permissions for pages
+  // Fetch initial data
   useEffect(() => {
     const fetchAndProcessData = async () => {
       try {
@@ -194,7 +137,6 @@ export default function App() {
               {login && (
                 <NavBar
                   api={api}
-                  socket={socket}
                   user={userData}
                   configData={configData}
                   barPosition={userPreferences.barPosition}
@@ -362,7 +304,6 @@ export default function App() {
                               isAuthenticated(login, userData) ? (
                                 <PageModel
                                   api={api}
-                                  socket={socket}
                                   item={option}
                                   palette={theme.palette}
                                   userId={userData._id}

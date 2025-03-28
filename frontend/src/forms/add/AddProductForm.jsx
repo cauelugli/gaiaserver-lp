@@ -2,10 +2,7 @@
 import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { io } from "socket.io-client";
 import InputMask from "react-input-mask";
-
-const socket = io("http://localhost:5002");
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -88,10 +85,6 @@ export default function AddProductForm({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
-        });
-        socket.emit("newDataRefreshButton", {
-          page: "products",
-          userId: userId,
         });
       }
       onClose();

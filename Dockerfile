@@ -15,15 +15,6 @@ COPY api/package.json api/package-lock.json ./
 RUN npm install --force
 COPY api .
 
-# Estágio 3: WebSocket
-FROM node:18 as websocket-builder
-
-WORKDIR /app
-COPY websocket/package.json websocket/package-lock.json ./
-RUN npm install --force
-COPY websocket .
-COPY .env.docker .env
-
 # Estágio final:
 FROM node:18
 WORKDIR /app
@@ -31,7 +22,6 @@ WORKDIR /app
 # Copia tudo (incluindo node_modules se necessário)
 COPY --from=frontend-builder /app/frontend ./frontend
 COPY --from=backend-builder /app ./api
-COPY --from=websocket-builder /app ./websocket
     
 # Copia o resto
 COPY controllers ./controllers
@@ -41,4 +31,4 @@ COPY .env.docker ./.env
     
 EXPOSE 3000 5002 5173
     
-CMD ["sh", "-c", "cd /app/frontend && npm run dev & cd /app/api && node index.js & cd /app/websocket && node index.js"]
+CMD ["sh", "-c", "cd /app/frontend && npm run dev & cd /app/api && node index.js "]

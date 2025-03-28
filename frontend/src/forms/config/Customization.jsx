@@ -5,9 +5,6 @@ import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { SketchPicker } from "react-color";
-import { io } from "socket.io-client";
-
-const socket = io("http://localhost:5002");
 
 import {
   Accordion,
@@ -117,7 +114,6 @@ export default function Customization({ onClose }) {
         });
       }
       onClose();
-      socket.emit("forceRefresh");
     } catch (err) {
       console.log("erro", err);
       toast.error("Houve algum erro...", {

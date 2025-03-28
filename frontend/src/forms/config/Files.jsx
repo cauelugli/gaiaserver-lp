@@ -2,9 +2,6 @@
 import React from "react";
 import axios from "axios";
 // import { toast } from "react-toastify";
-// import { io } from "socket.io-client";
-
-// const socket = io("http://localhost:5002");
 
 import {
   Button,

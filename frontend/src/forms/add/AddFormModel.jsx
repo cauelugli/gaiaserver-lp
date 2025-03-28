@@ -195,10 +195,6 @@ export default function AddFormModel(props) {
           theme: "colored",
           autoClose: 1200,
         });
-        props.socket.emit("newDataRefreshButton", {
-          page: props.page,
-          userId: props.userId,
-        });
       }
 
       props.setOpenAdd(!props.openAdd);

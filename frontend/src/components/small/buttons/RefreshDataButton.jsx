@@ -1,10 +1,6 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 
-import { io } from "socket.io-client";
-
-const socket = io("http://localhost:5002");
-
 import { Badge, Grid2 } from "@mui/material";
 
 import { icons } from "../../../icons";
@@ -15,24 +11,7 @@ export default function RefreshDataButton({
   configCustomization,
   newDataRefreshButton,
   setNewDataRefreshButton,
-  userId,
 }) {
-  const currentPath = window.location.pathname;
-
-  React.useEffect(() => {
-    const handleNewData = (data) => {
-      if (currentPath.endsWith(`/${data.page}`) && data.userId !== userId) {
-        setNewDataRefreshButton(false);
-      }
-    };
-
-    socket.on("newDataRefreshButton", handleNewData);
-
-    return () => {
-      socket.off("newDataRefreshButton", handleNewData);
-    };
-  }, [currentPath, setNewDataRefreshButton, userId]);
-
   return (
     <Grid2
       container

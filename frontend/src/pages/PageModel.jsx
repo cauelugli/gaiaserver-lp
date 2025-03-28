@@ -257,7 +257,6 @@ export default function PageModel(props) {
         {currentPage !== "finance" && currentPage !== "products" && (
           <PageButtonModel
             api={props.api}
-            socket={props.socket}
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             configCustomization={props.configCustomization}

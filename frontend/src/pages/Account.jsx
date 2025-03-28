@@ -4,11 +4,7 @@ import React from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-import { io } from "socket.io-client";
-
 import { useAppData } from "../../src/AppDataContext";
-
-const socket = io("http://localhost:5002");
 
 import {
   Avatar,
@@ -151,10 +147,6 @@ export default function Account({
         userId: user._id,
         paletteColor: newPaletteColor,
       });
-      if (response.data) {
-        setRefreshData(!refreshData);
-        socket.emit("forceIndividualRefresh", user._id);
-      }
     } catch (err) {
       toast.error("Houve algum erro...", {
         closeOnClick: true,
@@ -209,7 +201,6 @@ export default function Account({
 
       if (response.data) {
         setRefreshData(!refreshData);
-        socket.emit("forceIndividualRefresh", user._id);
         toast.success("Fonte Atualizada!", {
           closeOnClick: true,
           pauseOnHover: false,

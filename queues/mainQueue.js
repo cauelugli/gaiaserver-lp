@@ -1,6 +1,3 @@
-const io = require("../api/node_modules/socket.io-client");
-const socket = io("http://localhost:5002");
-
 const Queue = require("bull");
 
 const {
@@ -123,7 +120,7 @@ mainQueue.process(async (job) => {
 
 // HANDLERS
 const handleRefreshIdIndexList = async () => {
-  socket.emit("refreshIdIndexList");
+  "";
 };
 
 const handleAddCounter = async (data) => {
@@ -210,13 +207,7 @@ const handleDeleteNotification = async (data) => {
 };
 
 const handleNotifyAdmin = async (data, isAdmin) => {
-  socket.emit("notifyAdmin", {
-    target: data,
-    method: translateMethod(data.method),
-    model: translateModel(data.model),
-    isFemaleGender: data.model === "Sale",
-    isAdmin: isAdmin,
-  });
+  "";
 };
 
 // MONITORING (DEBUG)

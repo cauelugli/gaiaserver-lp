@@ -3,7 +3,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import axios from "axios";
-import { io } from "socket.io-client";
 import { toast } from "react-toastify";
 import {
   Button,
@@ -17,7 +16,6 @@ import {
   Typography,
 } from "@mui/material";
 
-const socket = io("http://localhost:5002");
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -53,10 +51,6 @@ const ResolveForm = ({
           theme: "colored",
           autoClose: 1200,
         });
-
-        if (userId) {
-          socket.emit("newDataRefreshButton", { page, userId });
-        }
       }
       setOpenDialog(false);
       setRefreshData(!refreshData);

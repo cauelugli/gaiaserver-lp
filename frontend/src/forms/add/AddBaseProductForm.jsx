@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
-import { io } from "socket.io-client";
 import {
   Button,
   Checkbox,
@@ -28,7 +27,6 @@ import {
 import { icons } from "../../icons";
 import DialogHeader from "../../components/small/DialogHeader";
 
-const socket = io("http://localhost:5002");
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -76,10 +74,6 @@ export default function AddBaseProductForm({
           pauseOnHover: false,
           theme: "colored",
           autoClose: 1200,
-        });
-        socket.emit("newDataRefreshButton", {
-          page: "stock",
-          userId: userId,
         });
       }
       onClose();

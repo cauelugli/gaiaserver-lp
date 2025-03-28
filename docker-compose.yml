@@ -34,14 +34,6 @@ services:
       - api
       - frontend
 
-  websocket:
-    build: .
-    ports:
-      - "5002:5002"
-    command: ["node", "websocket/index.js"]
-    depends_on:
-      - redis
-
   redis:
     image: redis:alpine
     ports:

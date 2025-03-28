@@ -2,8 +2,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
-import { io } from "socket.io-client";
-const socket = io("http://localhost:5002");
 
 const AppDataContext = createContext();
 
@@ -45,10 +43,6 @@ export const AppDataProvider = ({ children }) => {
       }
     };
     fetchIdIndexList();
-
-    socket.on("refreshIdIndexList", () => {
-      fetchIdIndexList();
-    });
   }, []);
 
   const contextValue = {

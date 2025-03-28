@@ -2,10 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import axios from "axios";
-import { io } from "socket.io-client";
 import { toast } from "react-toastify";
-
-const socket = io("http://localhost:5002");
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -39,13 +36,6 @@ const DeleteMultipleFormModel = (props) => {
             autoClose: 1200,
           }
         );
-
-        if (props.userId) {
-          socket.emit("newDataRefreshButton", {
-            page: props.page,
-            userId: props.userId,
-          });
-        }
       }
 
       props.setOpenDialog(false);

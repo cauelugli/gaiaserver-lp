@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 // import { toast } from "react-toastify";
-import { io } from "socket.io-client";
 import axios from "axios";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
@@ -20,8 +19,6 @@ import { icons } from "../../icons";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-const socket = io("http://localhost:5002");
-
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
@@ -33,24 +30,6 @@ const HomeRecentActivity = ({ userUsername, mainColor = "#000000" }) => {
   const [searchValue, setSearchValue] = React.useState("");
   const [searchDateInitial, setSearchDateInitial] = React.useState(null);
   const [searchDateFinal, setSearchDateFinal] = React.useState(null);
-
-  useEffect(() => {
-    socket.on("recentActivityRefresh", () => {
-      const fetchData = async () => {
-        try {
-          const recentActivities = await api.get("/recentActivity");
-          setRecentActivities(recentActivities.data.reverse());
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-      fetchData();
-    });
-
-    return () => {
-      socket.off("recentActivityRefresh");
-    };
-  }, []);
 
   useEffect(() => {
     const filtered = recentActivities.filter((activity) => {

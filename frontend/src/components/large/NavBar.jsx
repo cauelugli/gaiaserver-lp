@@ -6,11 +6,9 @@ import { Grid2, Tooltip, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
 
-import UserButton from "../small/buttons/UserButton";
-import NotificationsButton from "../small/buttons/NotificationsButton";
 import TopBar from "../large/TopBar";
 
-export default function NavBar({ user, api, socket, configData, barPosition }) {
+export default function NavBar({ user, api, configData, barPosition }) {
   const [notifications, setNotifications] = React.useState([]);
   const [missingCoreData, setMissingCoreData] = React.useState([]);
 
@@ -51,21 +49,6 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
       }
     }
   };
-
-  React.useEffect(() => {
-    const handleNewNotificationToAdmin = (notificationData) => {
-      // only to admin user
-      if (notificationData && user.username === "admin") {
-        fetchData();
-      }
-    };
-
-    socket.on("newNotificationToAdmin", handleNewNotificationToAdmin);
-
-    return () => {
-      socket.on("newNotificationToAdmin", handleNewNotificationToAdmin);
-    };
-  });
 
   return (
     <>
@@ -153,22 +136,6 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
               <TopBar configData={configData} user={user} />
             </Grid2>
           )}
-
-          <Grid2 item sx={{ mr: 2 }}>
-            <Grid2 container direction="row">
-              <NotificationsButton
-                api={api}
-                socket={socket}
-                user={user}
-                mainColor={configData.customization.mainColor}
-                notifications={notifications}
-                setNotifications={setNotifications}
-                fetchData={fetchData}
-                sx={{ mr: 3, color: "#333" }}
-              />
-              <UserButton user={user} />
-            </Grid2>
-          </Grid2>
         </Grid2>
       )}
     </>

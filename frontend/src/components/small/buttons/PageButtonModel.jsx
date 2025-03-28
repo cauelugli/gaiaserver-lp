@@ -117,7 +117,6 @@ export default function PageButtonModel(props) {
         >
           <AddFormModel
             api={props.api}
-            socket={props.socket}
             mainColor={props.configCustomization.mainColor}
             page={props.page}
             buttonProps={props}
