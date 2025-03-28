@@ -4,7 +4,7 @@ import React from "react";
 
 import { InputLabel, Grid2, Select, MenuItem } from "@mui/material";
 
-import { createScheduleSlots } from "../../../../controllers/functions/overallFunctions";
+import { createScheduleSlots } from "../../../../frontend/overallFunctions";
 
 const ScheduleTableCell = (props) => {
   const [minTime, setMinTime] = React.useState(0);

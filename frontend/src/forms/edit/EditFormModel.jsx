@@ -22,7 +22,7 @@ import ImageTableCell from "../../components/tableCells/ImageTableCell";
 import DialogHeader from "../../components/small/DialogHeader";
 
 import TableCellOptions from "../../options/tableCellOptions";
-import { loadPage } from "../../../../controllers/functions/overallFunctions";
+import { loadPage } from "../../../overallFunctions";
 import ProductFields from "./ProductFields";
 
 export default function EditFormModel(props) {

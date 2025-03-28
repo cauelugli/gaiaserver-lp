@@ -17,7 +17,7 @@ import {
 
 import { icons } from "../../icons";
 
-import { calculatePriceDifferences } from "../../../../controllers/functions/overallFunctions";
+import { calculatePriceDifferences } from "../../../overallFunctions";
 
 const PriceDifferenceTable = (props) => {
   const [confirmButton, setConfirmButton] = React.useState(false);

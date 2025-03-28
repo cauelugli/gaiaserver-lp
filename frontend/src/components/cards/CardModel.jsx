@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 
 import { options } from "../../options/cardOptions";
-import { isDate } from "../../../../controllers/functions/overallFunctions";
+import { isDate } from "../../../overallFunctions";
 import RowButton from "../small/buttons/RowButton";
 
 export default function CardModel({

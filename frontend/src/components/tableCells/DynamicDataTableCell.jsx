@@ -16,7 +16,7 @@ import {
   InputLabel,
 } from "@mui/material";
 
-import { createScheduleSlots } from "../../../../controllers/functions/overallFunctions";
+import { createScheduleSlots } from "../../../overallFunctions";
 
 const DynamicDataTableCell = (props) => {
   const [options, setOptions] = React.useState([]);

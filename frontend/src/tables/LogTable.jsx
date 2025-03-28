@@ -13,7 +13,7 @@ import {
   Button,
 } from "@mui/material";
 
-import { isId } from "../../../controllers/functions/overallFunctions";
+import { isId } from "../../../frontend/overallFunctions";
 
 function LogTable(props) {
   const translatedLogTypes = [

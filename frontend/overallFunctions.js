@@ -50,7 +50,6 @@ export function isButtonDisabled(
       case "Cliente Pessoa Física":
         return false;
 
-        return false;
       case "Venda":
         return false;
       case "Entrada de Estoque":

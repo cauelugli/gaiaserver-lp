@@ -8,7 +8,7 @@ import { icons } from "../../icons";
 import {
   isDate,
   isId,
-} from "../../../../controllers/functions/overallFunctions";
+} from "../../../../frontend/overallFunctions";
 import dayjs from "dayjs";
 
 const DataTableCell = ({ item, idIndexList, column }) => {
