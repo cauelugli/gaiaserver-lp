@@ -313,6 +313,12 @@ const rowButtonOptions = (props) => [
           modal: "FinanceIncome",
           icon: <icons.ArchiveIcon />,
         },
+        {
+          label: "Resolver",
+          action: "resolve",
+          modal: "FinanceIncome",
+          icon: <icons.CheckIcon />,
+        },
         ...(props.item.status !== "Resolvido"
           ? [
               {
@@ -333,6 +339,12 @@ const rowButtonOptions = (props) => [
               },
             ]
           : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "FinanceIncome",
+          icon: <icons.DeleteIcon />,
+        },
       ],
       1: [
         {
@@ -340,6 +352,12 @@ const rowButtonOptions = (props) => [
           action: "archive",
           modal: "FinanceOutcome",
           icon: <icons.ArchiveIcon />,
+        },
+        {
+          label: "Resolver",
+          action: "resolve",
+          modal: "FinanceOutcome",
+          icon: <icons.CheckIcon />,
         },
         ...(props.item.status !== "Resolvido"
           ? [
@@ -361,6 +379,12 @@ const rowButtonOptions = (props) => [
               },
             ]
           : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "FinanceOutcome",
+          icon: <icons.DeleteIcon />,
+        },
       ],
     },
   },
