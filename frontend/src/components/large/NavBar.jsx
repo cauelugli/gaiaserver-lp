@@ -7,6 +7,7 @@ import { Grid2, Tooltip, Typography } from "@mui/material";
 import { icons } from "../../icons";
 
 import TopBar from "../large/TopBar";
+import UserButton from "../small/buttons/UserButton";
 
 export default function NavBar({ user, api, configData, barPosition }) {
   const [missingCoreData, setMissingCoreData] = React.useState([]);
@@ -113,6 +114,9 @@ export default function NavBar({ user, api, configData, barPosition }) {
               <TopBar configData={configData} user={user} />
             </Grid2>
           )}
+          <Grid2 item sx={{ mr: 2 }}>
+            <UserButton user={user} />
+          </Grid2>
         </Grid2>
       )}
     </>
