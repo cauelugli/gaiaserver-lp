@@ -141,10 +141,10 @@ export default function App() {
                     api={api}
                     user={userData}
                     configData={configData}
-                    barPosition={userPreferences.barPosition}
+                    barPosition={userPreferences?.barPosition}
                   />
                 )}
-                {login && showSidebar && !userPreferences.barPosition && (
+                {login && showSidebar && !userPreferences?.barPosition && (
                   <Grid2
                     item
                     sx={{
@@ -166,9 +166,9 @@ export default function App() {
                           isAuthenticated(login, userData) ? (
                             <Home
                               api={api}
-                              layout={userPreferences.homePageLayout}
+                              layout={userPreferences?.homePageLayout}
                               homePagePreferences={
-                                userPreferences.homePagePreferences
+                                userPreferences?.homePagePreferences
                               }
                               userId={userData._id}
                               userName={userData.name}
@@ -203,7 +203,7 @@ export default function App() {
                               userPreferences={userPreferences}
                               refreshData={refreshData}
                               setRefreshData={setRefreshData}
-                              topBar={userPreferences.barPosition}
+                              topBar={userPreferences?.barPosition}
                             />
                           ) : (
                             <Navigate to="/login" />
@@ -219,7 +219,7 @@ export default function App() {
                               userId={userData._id}
                               userUsername={userData.username}
                               configCustomization={configData?.customization}
-                              topBar={userPreferences.barPosition}
+                              topBar={userPreferences?.barPosition}
                               api={api}
                               mainColor={configData?.customization?.mainColor}
                               windowSizeSetter={windowSizeSetter}
@@ -234,7 +234,7 @@ export default function App() {
                         element={
                           isAuthenticated(login, userData) ? (
                             <Config
-                              topBar={userPreferences.barPosition}
+                              topBar={userPreferences?.barPosition}
                               mainColor={
                                 configData?.customization?.mainColor ||
                                 "#f8ff00"
@@ -263,7 +263,7 @@ export default function App() {
                           userData.username === "admin" ? (
                             <Log
                               api={api}
-                              topBar={userPreferences.barPosition}
+                              topBar={userPreferences?.barPosition}
                               mainColor={configData?.customization?.mainColor}
                             />
                           ) : isAuthenticated(login, userData) ? (
@@ -281,7 +281,7 @@ export default function App() {
                         element={
                           isAuthenticated(login, userData) ? (
                             <Files
-                              topBar={userPreferences.barPosition}
+                              topBar={userPreferences?.barPosition}
                               userName={userData.name}
                               userId={userData._id}
                               refreshData={refreshData}
@@ -315,11 +315,11 @@ export default function App() {
                                     userName={userData.name}
                                     setUserPreferences={setUserPreferences}
                                     configData={configData}
-                                    topBar={userPreferences.barPosition}
+                                    topBar={userPreferences?.barPosition}
                                     tableOrCardView={
-                                      userPreferences.tableOrCardView
+                                      userPreferences?.tableOrCardView
                                     }
-                                    cardSize={userPreferences.cardSize}
+                                    cardSize={userPreferences?.cardSize}
                                     configCustomization={
                                       configData?.customization
                                     }

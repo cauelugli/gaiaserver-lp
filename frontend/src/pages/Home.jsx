@@ -43,7 +43,7 @@ const Home = ({
             layout={layout}
             // userUsername={userUsername}
             allowedLinks={allowedLinks}
-            configData={configData.customization}
+            configData={configData?.customization}
             currentWindowSize={currentWindowSize}
           />
         </Grid2>

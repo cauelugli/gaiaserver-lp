@@ -9,21 +9,12 @@ import { icons } from "../../icons";
 import TopBar from "../large/TopBar";
 
 export default function NavBar({ user, api, configData, barPosition }) {
-  const [notifications, setNotifications] = React.useState([]);
   const [missingCoreData, setMissingCoreData] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
-      let notifications;
       let missingCoreData = [];
       try {
-        user.username === "admin"
-          ? (notifications = await api.get("/admin/notifications/"))
-          : (notifications = await api.get(`/get/notifications/${user._id}`));
-        setNotifications(notifications.data);
-        user.username === "admin"
-          ? (missingCoreData = await api.get("/get/coreData"))
-          : "";
         setMissingCoreData(missingCoreData.data || "");
       } catch (error) {
         if (error.response?.status !== 404) {
@@ -35,20 +26,6 @@ export default function NavBar({ user, api, configData, barPosition }) {
     };
     fetchData();
   }, [api, user]);
-
-  const fetchData = async () => {
-    let notifications;
-    try {
-      user.username === "admin"
-        ? (notifications = await api.get("/admin/notifications/"))
-        : (notifications = await api.get(`/get/notifications/${user._id}`));
-      setNotifications(notifications.data);
-    } catch (error) {
-      if (error.response.status !== 404) {
-        console.error("Error fetching data:", error);
-      }
-    }
-  };
 
   return (
     <>

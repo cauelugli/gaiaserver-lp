@@ -15,8 +15,8 @@ services:
       - NODE_ENV=production
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - VITE_API_URL=http://localhost:8080/api
-      - MONGO_URL=mongodb://mongo:27017/gaiaserver
+      - VITE_API_URL=http://localhost:3000/api
+      - MONGO_URL=mongodb+srv://poka:bolacha102030@cluster0.b1umo.mongodb.net/solo?retryWrites=true&w=majority
     depends_on:
       - redis
       - mongo
@@ -33,7 +33,7 @@ services:
     command: redis-server --save 60 1 --loglevel warning
     networks:
       - app-network
-    restart: unless-stopped
+
 
   mongo:
     image: mongo:6
