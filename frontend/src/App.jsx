@@ -30,6 +30,7 @@ import PageModel from "./pages/PageModel";
 import Reports from "./pages/Reports";
 import { AppDataProvider } from "./AppDataContext";
 import Log from "./pages/Log";
+import ErrorBoundary from "./ErrorBoundary";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -124,235 +125,238 @@ export default function App() {
   }, []);
 
   return (
-    <AppDataProvider>
-      <ThemeProvider theme={theme}>
-        <Grid2
-          sx={{
-            m: -1,
-            backgroundColor: userPreferences?.paletteColor,
-          }}
-        >
-          <Router>
-            <Grid2 container>
-              {login && (
-                <NavBar
-                  api={api}
-                  user={userData}
-                  configData={configData}
-                  barPosition={userPreferences.barPosition}
-                />
-              )}
-              {login && showSidebar && !userPreferences.barPosition && (
-                <Grid2
-                  item
-                  sx={{
-                    textAlign: "center",
-                    height: "auto",
-                    maxWidth: 58,
-                  }}
-                >
-                  <SideBar configData={configData} user={userData} />
-                </Grid2>
-              )}
+    <ErrorBoundary>
+      <AppDataProvider>
+        <ThemeProvider theme={theme}>
+          <Grid2
+            sx={{
+              m: -1,
+              backgroundColor: userPreferences?.paletteColor,
+            }}
+          >
+            <Router>
+              <Grid2 container>
+                {login && (
+                  <NavBar
+                    api={api}
+                    user={userData}
+                    configData={configData}
+                    barPosition={userPreferences.barPosition}
+                  />
+                )}
+                {login && showSidebar && !userPreferences.barPosition && (
+                  <Grid2
+                    item
+                    sx={{
+                      textAlign: "center",
+                      height: "auto",
+                      maxWidth: 58,
+                    }}
+                  >
+                    <SideBar configData={configData} user={userData} />
+                  </Grid2>
+                )}
 
-              <Grid2 container sx={{ p: 1, minHeight: "55vw" }}>
-                <Grid2>
-                  <Routes>
-                    <Route
-                      path="/"
-                      element={
-                        isAuthenticated(login, userData) ? (
-                          <Home
-                            api={api}
-                            layout={userPreferences.homePageLayout}
-                            homePagePreferences={
-                              userPreferences.homePagePreferences
-                            }
-                            userId={userData._id}
-                            userName={userData.name}
-                            userUsername={userData.username}
-                            userAgenda={userAgenda}
-                            mainColor={
-                              configData?.customization &&
-                              configData?.customization?.mainColor
-                            }
-                            handleShortcutClick={"handleShortcutClick"}
-                            configData={configData}
-                            onMount={() => handleSidebarVisibility(false)}
-                            onUnmount={() => handleSidebarVisibility(true)}
-                            currentWindowSize={currentWindowSize}
-                            windowSizeSetter={windowSizeSetter}
-                          />
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/login"
-                      element={!login ? <Login /> : <Navigate to="/" />}
-                    />
-                    <Route
-                      path="/account"
-                      element={
-                        isAuthenticated(login, userData) ? (
-                          <Account
-                            user={userData}
-                            userPreferences={userPreferences}
-                            refreshData={refreshData}
-                            setRefreshData={setRefreshData}
-                            topBar={userPreferences.barPosition}
-                          />
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
+                <Grid2 container sx={{ p: 1, minHeight: "55vw" }}>
+                  <Grid2>
+                    <Routes>
+                      <Route
+                        path="/"
+                        element={
+                          isAuthenticated(login, userData) ? (
+                            <Home
+                              api={api}
+                              layout={userPreferences.homePageLayout}
+                              homePagePreferences={
+                                userPreferences.homePagePreferences
+                              }
+                              userId={userData._id}
+                              userName={userData.name}
+                              userUsername={userData.username}
+                              userAgenda={userAgenda}
+                              mainColor={
+                                configData?.customization &&
+                                configData?.customization?.mainColor
+                              }
+                              handleShortcutClick={"handleShortcutClick"}
+                              configData={configData}
+                              onMount={() => handleSidebarVisibility(false)}
+                              onUnmount={() => handleSidebarVisibility(true)}
+                              currentWindowSize={currentWindowSize}
+                              windowSizeSetter={windowSizeSetter}
+                            />
+                          ) : (
+                            <Navigate to="/login" />
+                          )
+                        }
+                      />
+                      <Route
+                        path="/login"
+                        element={!login ? <Login /> : <Navigate to="/" />}
+                      />
+                      <Route
+                        path="/account"
+                        element={
+                          isAuthenticated(login, userData) ? (
+                            <Account
+                              user={userData}
+                              userPreferences={userPreferences}
+                              refreshData={refreshData}
+                              setRefreshData={setRefreshData}
+                              topBar={userPreferences.barPosition}
+                            />
+                          ) : (
+                            <Navigate to="/login" />
+                          )
+                        }
+                      />
 
-                    <Route
-                      path="/reports"
-                      element={
-                        isAuthenticated(login, userData) ? (
-                          <Reports
-                            userId={userData._id}
-                            userUsername={userData.username}
-                            configCustomization={configData?.customization}
-                            topBar={userPreferences.barPosition}
-                            api={api}
-                            mainColor={configData?.customization?.mainColor}
-                            windowSizeSetter={windowSizeSetter}
-                          />
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/config"
-                      element={
-                        isAuthenticated(login, userData) ? (
-                          <Config
-                            topBar={userPreferences.barPosition}
-                            mainColor={
-                              configData?.customization?.mainColor || "#f8ff00"
-                            }
-                            userName={userData.name}
-                            userId={userData._id}
-                            refreshData={refreshData}
-                            setRefreshData={setRefreshData}
-                            configCustomization={configData?.customization}
-                            currentWindowSize={currentWindowSize}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
+                      <Route
+                        path="/reports"
+                        element={
+                          isAuthenticated(login, userData) ? (
+                            <Reports
+                              userId={userData._id}
+                              userUsername={userData.username}
+                              configCustomization={configData?.customization}
+                              topBar={userPreferences.barPosition}
+                              api={api}
+                              mainColor={configData?.customization?.mainColor}
+                              windowSizeSetter={windowSizeSetter}
+                            />
+                          ) : (
+                            <Navigate to="/login" />
+                          )
+                        }
+                      />
+                      <Route
+                        path="/config"
+                        element={
+                          isAuthenticated(login, userData) ? (
+                            <Config
+                              topBar={userPreferences.barPosition}
+                              mainColor={
+                                configData?.customization?.mainColor ||
+                                "#f8ff00"
+                              }
+                              userName={userData.name}
+                              userId={userData._id}
+                              refreshData={refreshData}
+                              setRefreshData={setRefreshData}
+                              configCustomization={configData?.customization}
+                              currentWindowSize={currentWindowSize}
+                            />
+                          ) : isAuthenticated(login, userData) ? (
+                            <Typography sx={{ m: 2, fontSize: 16 }}>
+                              Seu usuário não possui autorização à página.
+                            </Typography>
+                          ) : (
+                            <Navigate to="/login" />
+                          )
+                        }
+                      />
 
-                    <Route
-                      path="/log"
-                      element={
-                        isAuthenticated(login, userData) &&
-                        userData.username === "admin" ? (
-                          <Log
-                            api={api}
-                            topBar={userPreferences.barPosition}
-                            mainColor={configData?.customization?.mainColor}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
+                      <Route
+                        path="/log"
+                        element={
+                          isAuthenticated(login, userData) &&
+                          userData.username === "admin" ? (
+                            <Log
+                              api={api}
+                              topBar={userPreferences.barPosition}
+                              mainColor={configData?.customization?.mainColor}
+                            />
+                          ) : isAuthenticated(login, userData) ? (
+                            <Typography sx={{ m: 2, fontSize: 16 }}>
+                              Seu usuário não possui autorização à página.
+                            </Typography>
+                          ) : (
+                            <Navigate to="/login" />
+                          )
+                        }
+                      />
 
-                    <Route
-                      path="/files"
-                      element={
-                        isAuthenticated(login, userData) ? (
-                          <Files
-                            topBar={userPreferences.barPosition}
-                            userName={userData.name}
-                            userId={userData._id}
-                            refreshData={refreshData}
-                            setRefreshData={setRefreshData}
-                            configCustomization={configData?.customization}
-                          />
-                        ) : isAuthenticated(login, userData) ? (
-                          <Typography sx={{ m: 2, fontSize: 16 }}>
-                            Seu usuário não possui autorização à página.
-                          </Typography>
-                        ) : (
-                          <Navigate to="/login" />
-                        )
-                      }
-                    />
+                      <Route
+                        path="/files"
+                        element={
+                          isAuthenticated(login, userData) ? (
+                            <Files
+                              topBar={userPreferences.barPosition}
+                              userName={userData.name}
+                              userId={userData._id}
+                              refreshData={refreshData}
+                              setRefreshData={setRefreshData}
+                              configCustomization={configData?.customization}
+                            />
+                          ) : isAuthenticated(login, userData) ? (
+                            <Typography sx={{ m: 2, fontSize: 16 }}>
+                              Seu usuário não possui autorização à página.
+                            </Typography>
+                          ) : (
+                            <Navigate to="/login" />
+                          )
+                        }
+                      />
 
-                    {configData.customization
-                      ? pageOptions.map((option, index) => (
-                          <Route
-                            key={index}
-                            path={`/${option.page}`}
-                            element={
-                              isAuthenticated(login, userData) ? (
-                                <PageModel
-                                  api={api}
-                                  item={option}
-                                  palette={theme.palette}
-                                  userId={userData._id}
-                                  userUsername={userData.username}
-                                  isAdmin={userData.username === "admin"}
-                                  userName={userData.name}
-                                  setUserPreferences={setUserPreferences}
-                                  configData={configData}
-                                  topBar={userPreferences.barPosition}
-                                  tableOrCardView={
-                                    userPreferences.tableOrCardView
-                                  }
-                                  cardSize={userPreferences.cardSize}
-                                  configCustomization={
-                                    configData?.customization
-                                  }
-                                  currentWindowSize={currentWindowSize}
-                                  windowSizeSetter={windowSizeSetter}
-                                />
-                              ) : (
-                                <Navigate to="/login" />
-                              )
-                            }
-                          />
-                        ))
-                      : ""}
-                  </Routes>
+                      {configData?.customization
+                        ? pageOptions.map((option, index) => (
+                            <Route
+                              key={index}
+                              path={`/${option.page}`}
+                              element={
+                                isAuthenticated(login, userData) ? (
+                                  <PageModel
+                                    api={api}
+                                    item={option}
+                                    palette={theme.palette}
+                                    userId={userData._id}
+                                    userUsername={userData.username}
+                                    isAdmin={userData.username === "admin"}
+                                    userName={userData.name}
+                                    setUserPreferences={setUserPreferences}
+                                    configData={configData}
+                                    topBar={userPreferences.barPosition}
+                                    tableOrCardView={
+                                      userPreferences.tableOrCardView
+                                    }
+                                    cardSize={userPreferences.cardSize}
+                                    configCustomization={
+                                      configData?.customization
+                                    }
+                                    currentWindowSize={currentWindowSize}
+                                    windowSizeSetter={windowSizeSetter}
+                                  />
+                                ) : (
+                                  <Navigate to="/login" />
+                                )
+                              }
+                            />
+                          ))
+                        : ""}
+                    </Routes>
+                  </Grid2>
                 </Grid2>
               </Grid2>
-            </Grid2>
-            <ToastContainer />
-            {shortcutModalState.show && (
-              <ShortcutModals
-                {...shortcutModalState.props}
-                configData={configData}
-                configCustomization={configData?.customization}
-                configNotifications={configData.notifications}
-                user={userData}
-                toast={toast}
-                action={shortcutModalState.action}
-                fullWidth={shortcutModalState.fullWidth}
-                maxWidth={shortcutModalState.maxWidth}
-                selectedItem={shortcutModalState.selectedItem}
-                onClose={() => setShortcutModalState({ show: false })}
-              />
-            )}
-          </Router>
-        </Grid2>
-      </ThemeProvider>
-    </AppDataProvider>
+              <ToastContainer />
+              {shortcutModalState.show && (
+                <ShortcutModals
+                  {...shortcutModalState.props}
+                  configData={configData}
+                  configCustomization={configData?.customization}
+                  configNotifications={configData.notifications}
+                  user={userData}
+                  toast={toast}
+                  action={shortcutModalState.action}
+                  fullWidth={shortcutModalState.fullWidth}
+                  maxWidth={shortcutModalState.maxWidth}
+                  selectedItem={shortcutModalState.selectedItem}
+                  onClose={() => setShortcutModalState({ show: false })}
+                />
+              )}
+            </Router>
+          </Grid2>
+        </ThemeProvider>
+      </AppDataProvider>
+    </ErrorBoundary>
   );
 }

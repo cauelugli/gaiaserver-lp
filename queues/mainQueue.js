@@ -1,11 +1,6 @@
 const Queue = require("bull");
 
 const {
-  translateMethod,
-  translateModel,
-} = require("../controllers/notificationOptions");
-
-const {
   addCounter,
   addFinanceOutcome,
   addFinanceIncome,

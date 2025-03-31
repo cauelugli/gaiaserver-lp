@@ -166,7 +166,7 @@ const Login = () => {
             src={`http://localhost:8080/static/${
               loading ? "logo_dog_blue_thinking" : "logo_dog_blue"
             }.png`}
-            alt="Logo GaiaServer"
+            alt="8080 static"
             style={{ cursor: "pointer" }}
             onClick={() => alert("o GS é um sonho feito com muito amor")}
           />

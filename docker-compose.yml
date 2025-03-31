@@ -6,24 +6,52 @@ services:
       context: .
       target: production
     ports:
-      - "3000:3000" # API
-      - "5173:5173" # Frontend
+      - "8080:80"
+      - "3000:3000"
     volumes:
-      - ./uploads:/app/uploads
-      - ./frontend:/app/frontend
+      - ./uploads:/app/uploads:ro
+    working_dir: /app
     environment:
+      - NODE_ENV=production
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - VITE_API_URL=http://localhost:8080/api
+      - MONGO_URL=mongodb://mongo:27017/gaiaserver
     depends_on:
       - redis
+      - mongo
+    networks:
+      - app-network
+    restart: unless-stopped
 
   redis:
     image: redis:alpine
     ports:
-      - "6123:6379" # Expondo Redis na porta 6123 externamente
+      - "6123:6379"
     volumes:
       - redis_data:/data
     command: redis-server --save 60 1 --loglevel warning
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:6
+    command: mongod --quiet --logpath /dev/null
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=gaiaserver
+    networks:
+      - app-network
+    restart: unless-stopped
 
 volumes:
   redis_data:
+  mongo_data:
+
+networks:
+  app-network:
+    driver: bridge
