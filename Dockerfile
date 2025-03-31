@@ -20,7 +20,7 @@ COPY queues/package*.json ./queues/
 RUN npm install --prefix queues
 COPY queues ./queues
 
-# Instala Models (se existir package.json)
+# Instala Models
 COPY models/package*.json ./models/
 RUN if [ -f "models/package.json" ]; then npm install --prefix models; fi
 
@@ -28,20 +28,23 @@ RUN if [ -f "models/package.json" ]; then npm install --prefix models; fi
 COPY controllers ./controllers
 COPY models ./models
 COPY uploads ./uploads
+COPY nginx.conf ./nginx.conf 
 
 # ==================== ESTÁGIO 3: Imagem Final (Node.js + NGINX) ====================
 FROM node:18 as production
 
-# 1. Instala NGINX e remove configuração padrão
+# 1. Instala NGINX e limpa cache
 RUN apt-get update && \
     apt-get install -y nginx && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
     rm -f /etc/nginx/conf.d/default.conf
 
 # 2. Configura NGINX
 COPY --from=frontend-builder /app/frontend/dist /var/www/html
-COPY nginx.conf /etc/nginx/conf.d/app.conf
+COPY --from=backend-builder /app/nginx.conf /app/nginx.conf
 
-# 3. Configura permissões do NGINX
+# 3. Configura permissões
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html
 
@@ -54,12 +57,9 @@ RUN npm install --production --prefix api && \
     npm install --production --prefix queues && \
     if [ -f "models/package.json" ]; then npm install --production --prefix models; fi
 
-ARG MONGO_URL
-ENV MONGO_URL=${MONGO_URL}
+# 6. Variáveis de ambiente (Heroku injetará a MONGO_URL e PORT)
+ENV NODE_ENV=production
+EXPOSE $PORT
 
-# 6. Portas expostas (comentários removidos após EXPOSE)
-EXPOSE 80
-EXPOSE 3000
-
-# 7. Comando de inicialização otimizado
-CMD ["sh", "-c", "nginx -g 'daemon off;' & node api/index.js & node queues/mainQueue.js"]
+# 7. Comando de inicialização adaptado para Heroku
+CMD ["sh", "/app/start.sh"]
