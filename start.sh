@@ -1,16 +1,43 @@
 #!/bin/bash
 
-# Substitui a porta no nginx.conf
-sed -i "s/\$HEROKU_PORT/$PORT/g" /app/nginx.conf
+# Define porta (Heroku ou padrão)
+PORT=${PORT:-8080}
+CONFIG_FILE="/app/nginx-custom.conf"
 
-# Inicia NGINX
-nginx -c /app/nginx.conf &
+# Cria configuração NGINX dinâmica
+cat > $CONFIG_FILE <<EOF
+worker_processes auto;
+events { worker_connections 1024; }
 
-# Inicia a API Node.js
+http {
+    server {
+        listen $PORT;
+        server_name _;
+        root /var/www/html;
+
+        location / {
+            try_files \$uri \$uri/ /index.html;
+        }
+
+        location /api {
+            proxy_pass http://localhost:3000;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade \$http_upgrade;
+            proxy_set_header Connection 'upgrade';
+        }
+    }
+}
+EOF
+
+# Inicia serviços
+echo "✅ NGINX na porta: $PORT"
+nginx -c $CONFIG_FILE &
+
+echo "🔄 Iniciando API Node.js"
 node api/index.js &
 
-# Inicia as filas
+echo "🔄 Iniciando Queues"
 node queues/mainQueue.js &
 
-# Mantém o container vivo e exibe logs
-tail -f /app/api/logs/*.log 2>/dev/null || tail -f /dev/null
+# Mantém o container vivo
+tail -f /dev/null

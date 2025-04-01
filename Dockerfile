@@ -28,17 +28,15 @@ RUN if [ -f "models/package.json" ]; then npm install --prefix models; fi
 COPY controllers ./controllers
 COPY models ./models
 COPY uploads ./uploads
-COPY nginx.conf ./nginx.conf 
+COPY nginx.conf ./nginx.conf
+COPY start.sh ./start.sh
+COPY start.sh ./app/start.sh
 
 # ==================== ESTÁGIO 3: Imagem Final (Node.js + NGINX) ====================
 FROM node:18 as production
 
 # 1. Instala NGINX e limpa cache
-RUN apt-get update && \
-    apt-get install -y nginx && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -f /etc/nginx/conf.d/default.conf
+RUN apt-get update && apt-get install -y nginx && apt-get clean && rm -rf /var/lib/apt/lists/* && rm -f /etc/nginx/conf.d/default.conf
 
 # 2. Configura NGINX
 COPY --from=frontend-builder /app/frontend/dist /var/www/html
@@ -53,13 +51,15 @@ WORKDIR /app
 COPY --from=backend-builder /app .
 
 # 5. Instala dependências de produção
-RUN npm install --production --prefix api && \
-    npm install --production --prefix queues && \
-    if [ -f "models/package.json" ]; then npm install --production --prefix models; fi
+RUN npm install --production --prefix api && npm install --production --prefix queues && if [ -f "models/package.json" ]; then npm install --production --prefix models; fi
 
 # 6. Variáveis de ambiente (Heroku injetará a MONGO_URL e PORT)
 ENV NODE_ENV=production
-EXPOSE $PORT
+EXPOSE $PORT 
+
+RUN chown -R www-data:www-data /var/www/html && chmod +x /app/start.sh
+
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /etc/nginx/sites-enabled/*
 
 # 7. Comando de inicialização adaptado para Heroku
-CMD ["sh", "/app/start.sh"]
+CMD ["/bin/bash", "/app/start.sh"] 

@@ -19,6 +19,7 @@ export default defineConfig({
     outDir: "dist",
     emptyOutDir: true,
     sourcemap: true,
+    assetsInlineLimit: 0,
   },
   esbuild: {
     supported: {

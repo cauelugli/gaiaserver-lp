@@ -6,12 +6,13 @@ services:
       context: .
       target: production
     ports:
-      - "8080:80"
+      - "8080:8080"
       - "3000:3000"
     volumes:
       - ./uploads:/app/uploads
     working_dir: /app
     environment:
+      - PORT=8080
       - NODE_ENV=production
       - REDIS_HOST=redis
       - REDIS_PORT=6379
