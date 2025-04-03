@@ -2,7 +2,7 @@
 FROM node:18 as frontend-builder
 WORKDIR /app/frontend
 COPY frontend/package*.json ./
-RUN npm install
+RUN npm install --force && npm cache clean --force
 COPY frontend .
 RUN npm run build
 
@@ -36,15 +36,15 @@ COPY start.sh ./app/start.sh
 FROM node:18 as production
 
 # 1. Instala NGINX e limpa cache
-RUN apt-get update && apt-get install -y nginx && apt-get clean && rm -rf /var/lib/apt/lists/* && rm -f /etc/nginx/conf.d/default.conf
+RUN apt-get update && apt-get install -y nginx && apt-get clean && rm -rf /var/lib/apt/lists/* && rm -f /etc/nginx/conf.d/default.conf && cp /etc/nginx/mime.types /var/www/html/mime.types && chown -R www-data:www-data /var/www/html
+
 
 # 2. Configura NGINX
 COPY --from=frontend-builder /app/frontend/dist /var/www/html
 COPY --from=backend-builder /app/nginx.conf /app/nginx.conf
 
 # 3. Configura permissões
-RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html
+RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
 # 4. Copia o backend
 WORKDIR /app

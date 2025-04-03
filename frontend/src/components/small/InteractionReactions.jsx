@@ -4,7 +4,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { keyframes } from "@mui/system";
 
 import { Badge, IconButton, Stack, Tooltip, Typography } from "@mui/material";

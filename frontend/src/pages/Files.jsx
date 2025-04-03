@@ -3,8 +3,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",

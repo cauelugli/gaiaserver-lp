@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 import {
   Accordion,

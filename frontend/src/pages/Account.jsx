@@ -1,10 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
-import { toast } from "react-toastify";
 import axios from "axios";
-import "react-toastify/dist/ReactToastify.css";
 import { useAppData } from "../../src/AppDataContext";
+import toast from "react-hot-toast";
 
 import {
   Avatar,

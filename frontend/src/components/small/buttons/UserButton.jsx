@@ -6,7 +6,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
 });
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 import {
   Avatar,

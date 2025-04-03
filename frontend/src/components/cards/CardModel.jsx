@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import { useAppData } from "../../../src/AppDataContext";
 

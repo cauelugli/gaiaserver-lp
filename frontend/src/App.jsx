@@ -1,14 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 
 import { Grid2, Typography } from "@mui/material";
@@ -39,6 +37,8 @@ const api = axios.create({
 function isAuthenticated(login, userData) {
   return login && userData;
 }
+
+const notify = () => toast("Here is your toast.");
 
 export default function App() {
   const [configData, setConfigData] = useState([]);
@@ -337,7 +337,26 @@ export default function App() {
                   </Grid2>
                 </Grid2>
               </Grid2>
-              <ToastContainer />
+              <button onClick={notify}>Make me a toast</button>
+              <Toaster
+                gutter={8}
+                toastOptions={{
+                  duration: 1200,
+                  style: {
+                  },
+                  success: {
+                    duration: 1200,
+                    style: { background: "#4BB543", color: "white" },
+                  },
+                  error: {
+                    duration: 1200,
+                    style: { background: "#FF3333", color: "white" },
+                  },
+                  loading: {
+                    duration: 800,
+                  },
+                }}
+              />{" "}
               {shortcutModalState.show && (
                 <ShortcutModals
                   {...shortcutModalState.props}
