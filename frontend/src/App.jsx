@@ -38,8 +38,6 @@ function isAuthenticated(login, userData) {
   return login && userData;
 }
 
-const notify = () => toast("Here is your toast.");
-
 export default function App() {
   const [configData, setConfigData] = useState([]);
   const [userPreferences, setUserPreferences] = useState({});
@@ -337,7 +335,6 @@ export default function App() {
                   </Grid2>
                 </Grid2>
               </Grid2>
-              <button onClick={notify}>Make me a toast</button>
               <Toaster
                 gutter={8}
                 toastOptions={{
