@@ -19,7 +19,7 @@ function ProductsTable(props) {
               <TableCell align="left">
                 <Avatar
                   alt="Imagem do Produto"
-                  src={`http://localhost:8080/static${
+                  src={`api/files${
                     row.images ? row.images[0] : undefined
                   }`}
                   sx={{ width: 30, height: 30 }}

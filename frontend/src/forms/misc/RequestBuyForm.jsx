@@ -81,7 +81,7 @@ const RequestBuyForm = (props) => {
       </DialogTitle>
       <>
         <Avatar
-          src={`http://localhost:8080/static${props.selectedItem.images[0]}`}
+          src={`api/files${props.selectedItem.images[0]}`}
           sx={{ width: 128, height: 128, my: 1 }}
         />
         <Grid2

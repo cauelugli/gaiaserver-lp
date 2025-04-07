@@ -25,7 +25,7 @@ const DataTableCell = ({ item, idIndexList, column }) => {
           <Tooltip title={found.name}>
             <Avatar
               alt={found.name}
-              src={`http://localhost:8080/static${found.image}`}
+              src={`api/files${found.image}`}
               sx={{
                 width: 30,
                 height: 30,
@@ -108,8 +108,8 @@ const DataTableCell = ({ item, idIndexList, column }) => {
                         alt={idIndexList.find((user) => user.id === obj)?.name}
                         src={
                           obj.images
-                            ? `http://localhost:8080/static${obj.images[0]}`
-                            : `http://localhost:8080/static${
+                            ? `api/files${obj.images[0]}`
+                            : `api/files${
                                 idIndexList.find((user) => user.id === obj)
                                   ?.image
                               }`
