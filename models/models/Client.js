@@ -35,7 +35,7 @@ const clientSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    default: "/images/default_userPicture.png",
+    default: "/default_userPicture.png",
   },
   name: {
     type: String,

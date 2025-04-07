@@ -317,7 +317,7 @@ export default function Files({ topBar }) {
                     <Grid2 key={file._id} item xs={2}>
                       <img
                         alt="Imagem do Produto"
-                        src={`api/files/images/${file.name}`}
+                        src={`api/files/${file.name}`}
                         style={{
                           width: 100,
                           height: 100,

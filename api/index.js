@@ -20,7 +20,6 @@ app.use(
 );
 app.use(express.json());
 app.use("/attachments", express.static(__dirname + "/uploads/attachments"));
-app.use("/images", express.static(__dirname + "/uploads/images"));
 app.use("/static", express.static("../uploads"));
 app.use("/api", uploadRoutes);
 

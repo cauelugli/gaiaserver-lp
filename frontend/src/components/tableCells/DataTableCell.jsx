@@ -47,7 +47,7 @@ const DataTableCell = ({ item, idIndexList, column }) => {
     <>
       {item === null ? (
         ""
-      ) : item && typeof item === "string" && item.startsWith("/images") ? (
+      ) : item && typeof item === "string" && item.startsWith("/") ? (
         <Grid2
           sx={{
             maxWidth: 60,
@@ -61,7 +61,7 @@ const DataTableCell = ({ item, idIndexList, column }) => {
           >
             <Avatar
               alt="Imagem"
-              src={`http://localhost:8080/static${item}`}
+              src={`api/files${item}`}
               sx={{
                 width: 30,
                 height: 30,

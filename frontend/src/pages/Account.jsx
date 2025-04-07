@@ -323,7 +323,7 @@ export default function Account({
             >
               <Avatar
                 alt="Imagem do Usuário"
-                src={`api/files/${user.image}`}
+                src={`api/files${user.image}`}
                 sx={{
                   width: 230,
                   height: 230,
