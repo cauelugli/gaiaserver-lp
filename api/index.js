@@ -9,8 +9,11 @@ const cors = require("cors");
 const routes = require("./routeOptions");
 
 dotenv.config();
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: 'http://localhost:8080',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));app.use(express.json());
 app.use("/attachments", express.static(__dirname + "/uploads/attachments"));
 app.use("/images", express.static(__dirname + "/uploads/images"));
 app.use("/static", express.static("../uploads"));

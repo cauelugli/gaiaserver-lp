@@ -51,6 +51,7 @@ FROM nginx:alpine as nginx-production
 # Copia os arquivos buildados do frontend
 RUN chmod -R 755 /usr/share/nginx/html && chown -R nginx:nginx /usr/share/nginx/html
 COPY --from=frontend-builder /app/frontend/dist /usr/share/nginx/html
+COPY --from=backend-builder /app/uploads /usr/share/nginx/html/static
 COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
