@@ -296,7 +296,7 @@ export default function Customization({ onClose }) {
                       <label htmlFor="logoInput" style={{ cursor: "pointer" }}>
                         {logo && !newLogo ? (
                           <img
-                            src={`http://localhost:8080/static/${logo}`}
+                            src={`api/files/${logo}`}
                             alt="Logotipo"
                             style={{
                               width: "auto",
@@ -375,7 +375,7 @@ export default function Customization({ onClose }) {
                       >
                         {logoBlack && !newLogoBlack ? (
                           <img
-                            src={`http://localhost:8080/static/${logoBlack}`}
+                            src={`api/files/${logoBlack}`}
                             alt="Logotipo com Fundo"
                             style={{
                               width: "auto",

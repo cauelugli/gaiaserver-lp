@@ -17,6 +17,7 @@ COPY queues/package*.json ./queues/
 COPY models/package*.json ./models/
 COPY controllers/package*.json ./controllers/
 
+RUN npm install mongoose@8.2.1 mongodb@5.9.0 bson@6.2.0 --save-exact --legacy-peer-deps
 RUN npm install --prefix api && npm install --prefix queues && npm install --prefix models && npm install --prefix controllers
 
 # Copia todo o código fonte

@@ -52,12 +52,8 @@ export default function NavBar({ user, api, configData, barPosition }) {
           >
             <Link to={"/"}>
               <img
-                src={`http://localhost:8080/static/${
-                  configData && configData.customization
-                    ? configData.customization.logo
-                    : ""
-                }`}
-                alt="logo"
+                src={`api/files${configData.customization.logo}`}
+                alt="main logo"
                 style={{
                   width: "100%",
                 }}

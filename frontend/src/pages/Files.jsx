@@ -240,7 +240,7 @@ export default function Files({ topBar }) {
                       <Grid2 key={file._id} item xs={2}>
                         <img
                           alt="Imagem do Documento"
-                          src={`http://localhost:8080/static/pdf.png`}
+                          src={`api/files/pdf.png`}
                           style={{
                             width: 100,
                             height: 100,
@@ -317,7 +317,7 @@ export default function Files({ topBar }) {
                     <Grid2 key={file._id} item xs={2}>
                       <img
                         alt="Imagem do Produto"
-                        src={`http://localhost:8080/static/images/${file.name}`}
+                        src={`api/files/images/${file.name}`}
                         style={{
                           width: 100,
                           height: 100,
@@ -387,7 +387,7 @@ export default function Files({ topBar }) {
                     <Grid2 key={file._id} item xs={2}>
                       {isImage(file.name) ? (
                         <img
-                          src={`http://localhost:8080/static/attachments/${file.name}`}
+                          src={`api/files/attachments/${file.name}`}
                           alt="Pré-visualização"
                           style={{
                             width: "80px",
@@ -397,7 +397,7 @@ export default function Files({ topBar }) {
                         />
                       ) : (
                         <img
-                          src={`http://localhost:8080/static/doc.png`}
+                          src={`api/files/doc.png`}
                           alt="Other"
                           style={{
                             width: "80px",

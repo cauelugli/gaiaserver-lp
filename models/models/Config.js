@@ -37,7 +37,7 @@ const configSchema = new Schema({
     },
     logo: {
       type: String,
-      default: "/images/logo_text.png",
+      default: "/logo_text.png",
     },
     logoBlack: {
       type: String,

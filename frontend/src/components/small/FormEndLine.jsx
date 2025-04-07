@@ -10,7 +10,7 @@ const FormEndLine = ({ config, image }) => {
       {image && (
         <Avatar
           alt="Imagem do Cliente"
-          src={`http://localhost:8080/static/${image}`}
+          src={`api/files/${image}`}
           sx={{
             width: 250,
             height: 70,

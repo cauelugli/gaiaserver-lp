@@ -61,7 +61,7 @@ export default function ProductCardModel({
             <Grid2 container direction="row" justifyContent="center">
               <Avatar
                 alt=""
-                src={`http://localhost:8080/static/${item?.images?.[0] || ""}`}
+                src={`api/files/${item?.images?.[0] || ""}`}
                 sx={{
                   width: 40 + cardSize * 15,
                   height: 40 + cardSize * 15,

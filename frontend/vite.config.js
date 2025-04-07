@@ -3,19 +3,19 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: '/',
+  base: "/",
   build: {
-    outDir: './dist',
+    outDir: "./dist",
     emptyOutDir: true,
     manifest: true,
-    assetsDir: 'assets',
+    assetsDir: "assets",
     rollupOptions: {
       output: {
         entryFileNames: `assets/[name]-[hash].js`,
         chunkFileNames: `assets/[name]-[hash].js`,
-        assetFileNames: `assets/[name]-[hash].[ext]`
-      }
-    }
+        assetFileNames: `assets/[name]-[hash].[ext]`,
+      },
+    },
   },
   esbuild: {
     supported: {
@@ -24,8 +24,10 @@ export default defineConfig({
   },
   server: {
     fs: {
-      allow: ['..']
-    }
-  }
+      allow: [".."],
+    },
+    proxy: {
+      "/api": "http://localhost:8080",
+    },
+  },
 });
-

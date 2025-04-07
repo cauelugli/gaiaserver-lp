@@ -123,7 +123,7 @@ const CustomerSelect = (props) => {
               <Grid2 container direction="row" alignItems="center">
                 <Avatar
                   alt="Imagem do Cliente"
-                  src={`http://localhost:8080/static/${item.image}`}
+                  src={`api/files/${item.image}`}
                   sx={{ width: 24, height: 24, marginRight: 2 }}
                 />
                 <Typography id="ghostText" sx={{ color: "white" }}>

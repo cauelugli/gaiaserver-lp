@@ -69,7 +69,7 @@ const AttachmentsTableCell = ({ attachments, onUpload, onRemove }) => {
                     />
                   ) : (
                     <img
-                      src={`http://localhost:8080/static/doc.png`}
+                      src={`api/files/doc.png`}
                       alt="Documento"
                       style={{
                         width: "80px",

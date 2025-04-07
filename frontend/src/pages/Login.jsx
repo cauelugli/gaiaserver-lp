@@ -163,10 +163,10 @@ const Login = () => {
       >
         <Tooltip title={"o GS é um sonho feito com muito amor"}>
           <img
-            src={`http://localhost:8080/static/${
+            src={`api/files/${
               loading ? "logo_dog_blue_thinking" : "logo_dog_blue"
             }.png`}
-            alt="8080 static"
+            alt="api/files"
             style={{ cursor: "pointer" }}
             onClick={() => alert("o GS é um sonho feito com muito amor")}
           />

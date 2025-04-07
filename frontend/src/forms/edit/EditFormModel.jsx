@@ -29,7 +29,7 @@ export default function EditFormModel(props) {
   const [fields, setFields] = React.useState(props.options.fields);
   const [image, setImage] = React.useState(
     props.target.image
-      ? `http://localhost:8080/static/${props.target.image}`
+      ? `api/files/${props.target.image}`
       : ""
   );
   //fix this

@@ -133,7 +133,7 @@ const ChartDataDetail = ({
                     }
                   >
                     <Avatar
-                      src={`http://localhost:8080/static/${
+                      src={`api/files/${
                         idIndexList.find(
                           (customer) => customer.id === item.customer
                         )?.image || ""
@@ -164,7 +164,7 @@ const ChartDataDetail = ({
                         >
                           <Avatar
                             alt={product.name || "Product Image"}
-                            src={`http://localhost:8080/static/${
+                            src={`api/files/${
                               product.images?.[0] || product.image?.[0] || ""
                             }`}
                             sx={{ width: 32, height: 32, mr: 0.5 }}
@@ -189,7 +189,7 @@ const ChartDataDetail = ({
                         >
                           <Avatar
                             alt={item.name || "Product Image"}
-                            src={`http://localhost:8080/static/${
+                            src={`api/files/${
                               item.images?.[0] || item.image?.[0] || ""
                             }`}
                             sx={{ width: 32, height: 32, mr: 0.5 }}
@@ -218,7 +218,7 @@ const ChartDataDetail = ({
                             >
                               <Avatar
                                 alt={product.name || "Product Image"}
-                                src={`http://localhost:8080/static/${
+                                src={`api/files/${
                                   product.images?.[0] ||
                                   product.image?.[0] ||
                                   ""

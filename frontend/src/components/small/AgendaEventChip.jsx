@@ -42,7 +42,7 @@ const AgendaEventChip = (props) => {
           }
         >
           <Avatar
-            src={`http://localhost:8080/static/${
+            src={`api/files/${
               idIndexList.find((customer) => customer.id === detail.customer)
                 ?.image || ""
             }`}

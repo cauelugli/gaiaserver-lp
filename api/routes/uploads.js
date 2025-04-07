@@ -1,36 +1,60 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
-const Product = require("../../models/models/Product");
+const getGFS = require("../gridfs");
+const mongoose = require("mongoose");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../uploads/images"));
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
+const upload = multer({ storage: multer.memoryStorage() });
+const uploadDocs = multer({ storage: multer.memoryStorage() });
+
+const uploadToGridFS = (fileBuffer, filename, metadata = {}) => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = gfs.openUploadStream(filename, { metadata });
+    uploadStream.write(fileBuffer);
+    uploadStream.end((error) => {
+      if (error) return reject(error);
+      resolve(filename);
+    });
+  });
+};
+
+router.get('/files/:filename', async (req, res) => {
+  const gfs = getGFS();
+  
+  if (!gfs) {
+    return res.status(500).send('Sistema de arquivos não está pronto ainda');
+  }
+
+  try {
+    const files = await gfs.find({ filename: req.params.filename }).toArray();
+    if (!files.length) return res.status(404).send('Arquivo não existe');
+
+    const file = files[0]; // Pega o primeiro arquivo
+    const stream = gfs.openDownloadStream(file._id);
+    
+    stream.on('error', () => res.status(404).send());
+    stream.pipe(res);
+
+  } catch (err) {
+    console.error('Erro:', err);
+    res.status(500).send('Deu erro');
+  }
 });
-
-const storageDocs = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../uploads/attachments"));
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-
-const upload = multer({ storage });
-const uploadDocs = multer({ storage: storageDocs });
 
 // CREATE SINGLE FILE
-router.post("/singleFile", upload.single("image"), (req, res) => {
+router.post("/singleFile", upload.single("image"), async (req, res) => {
   try {
-    const imagePath = req.file ? "/images/" + req.file.filename : "";
-    return res.status(200).json({ imagePath });
+    if (!req.file) {
+      return res.status(400).json({ message: "Nenhum arquivo enviado." });
+    }
+
+    const filename = await uploadToGridFS(
+      req.file.buffer,
+      req.file.originalname,
+      { type: "image" }
+    );
+
+    return res.status(200).json({ imagePath: `/api/files/${filename}` });
   } catch (error) {
     console.error(error);
     return res
@@ -39,12 +63,20 @@ router.post("/singleFile", upload.single("image"), (req, res) => {
   }
 });
 
-// CREATE MULTIPLE (max 10) FILES
-router.post("/multipleFiles", upload.array("images", 10), (req, res) => {
+// CREATE MULTIPLE FILES
+router.post("/multipleFiles", upload.array("images", 10), async (req, res) => {
   try {
-    const imagePaths = req.files
-      ? req.files.map((file) => "/images/" + file.filename)
-      : [];
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "Nenhum arquivo enviado." });
+    }
+
+    const uploadPromises = req.files.map((file) =>
+      uploadToGridFS(file.buffer, file.originalname, { type: "image" })
+    );
+
+    const filenames = await Promise.all(uploadPromises);
+    const imagePaths = filenames.map((filename) => `/api/files/${filename}`);
+
     return res.status(200).json({ imagePaths });
   } catch (error) {
     console.error(error);
@@ -54,235 +86,119 @@ router.post("/multipleFiles", upload.array("images", 10), (req, res) => {
   }
 });
 
-// CREATE SINGLE ATTACHEMENT
+// CREATE SINGLE ATTACHMENT
 router.post(
   "/singleAttachment",
   uploadDocs.single("attachment"),
-  (req, res) => {
-    const itemId = req.body.itemId;
-    if (!req.file) {
-      return res.status(400).json({ message: "Nenhum arquivo enviado." });
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "Nenhum arquivo enviado." });
+      }
+
+      const filename = `${req.body.itemId}_${req.file.originalname}`;
+      await uploadToGridFS(req.file.buffer, filename, {
+        type: "attachment",
+        itemId: req.body.itemId,
+      });
+
+      return res.status(200).json({
+        attachmentPath: `/api/files/${filename}`,
+      });
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(500)
+        .json({ message: "Erro ao fazer o upload do anexo." });
     }
-
-    const attachmentsBasePath = path.join(
-      __dirname,
-      "../../uploads/attachments"
-    );
-    const newFilename = `${itemId}.${req.file.originalname}`;
-    const attachmentPath = path.join(attachmentsBasePath, newFilename);
-
-    fs.copyFileSync(req.file.path, attachmentPath);
-    fs.unlinkSync(req.file.path);
-
-    return res
-      .status(200)
-      .json({ attachmentPath: `/attachments/${newFilename}` });
   }
 );
 
-// GET ALL FILES
+// LIST ALL FILES
 router.get("/listFiles", async (req, res) => {
-  const directory = path.join(__dirname, "../../uploads/images");
-  fs.readdir(directory, async (err, files) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Erro ao listar os arquivos." });
-    }
-    // Coleta os IDs de imagens usadas nos modelos
-    const inUse = [];
+  try {
+    const files = await gfs.find({ "metadata.type": "image" }).toArray();
 
-    try {
-      const products = await Product.find();
-      inUse.push(...products.map((product) => product.image));
+    const filesWithSizes = files.map((file) => ({
+      name: file.filename,
+      sizeKB: Math.round(file.length / 1024),
+      uploadDate: file.uploadDate,
+      id: file._id,
+    }));
 
-      let totalSpace = 0;
+    const totalSpace = files.reduce((sum, file) => sum + file.length, 0);
+    const totalSpaceMB = (totalSpace / (1024 * 1024)).toFixed(2);
 
-      files.forEach((file) => {
-        const filePath = path.join(directory, file);
-        const stats = fs.statSync(filePath);
-        totalSpace += stats.size;
-      });
-
-      const totalSpaceInMB = (totalSpace / (1024 * 1024)).toFixed(2);
-
-      const filesWithSizes = files.map((file) => {
-        const filePath = path.join(directory, file);
-        const stats = fs.statSync(filePath);
-        const fileSizeInKB = Math.round(stats.size / 1024);
-
-        return {
-          name: file,
-          sizeKB: fileSizeInKB,
-        };
-      });
-
-      return res.status(200).json({
-        files: filesWithSizes,
-        totalSpaceMB: totalSpaceInMB,
-        inUse: inUse, // Lista de IDs das imagens em uso
-      });
-    } catch (error) {
-      console.error("Erro ao buscar imagens em uso:", error);
-      return res
-        .status(500)
-        .json({ message: "Erro ao buscar imagens em uso." });
-    }
-  });
-});
-
-// GET ALL DOCS
-router.get("/listDocs", async (req, res) => {
-  const directory = path.join(__dirname, "../../uploads/docs");
-  fs.readdir(directory, async (err, docs) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Erro ao listar os documentos" });
-    }
-    try {
-      let totalSpace = 0;
-
-      docs.forEach((doc) => {
-        const docPath = path.join(directory, doc);
-        const stats = fs.statSync(docPath);
-        totalSpace += stats.size;
-      });
-
-      const totalSpaceInMB = (totalSpace / (1024 * 1024)).toFixed(2);
-
-      const docsWithSizes = docs.map((doc) => {
-        const docPath = path.join(directory, doc);
-        const stats = fs.statSync(docPath);
-        const docSizeInKB = Math.round(stats.size / 1024);
-
-        return {
-          name: doc,
-          sizeKB: docSizeInKB,
-        };
-      });
-
-      return res.status(200).json({
-        docs: docsWithSizes,
-        totalSpaceMB: totalSpaceInMB,
-      });
-    } catch (error) {
-      console.error("Erro ao buscar documentos em uso:", error);
-      return res
-        .status(500)
-        .json({ message: "Erro ao buscar documentos em uso." });
-    }
-  });
-});
-
-// GET ALL ATTACHMENTS
-router.get("/listAttachments", async (req, res) => {
-  const directory = path.join(__dirname, "../../uploads/attachments");
-  fs.readdir(directory, async (err, docs) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Erro ao listar os documentos" });
-    }
-    try {
-      let totalSpace = 0;
-
-      docs.forEach((doc) => {
-        const docPath = path.join(directory, doc);
-        const stats = fs.statSync(docPath);
-        totalSpace += stats.size;
-      });
-
-      const totalSpaceInMB = (totalSpace / (1024 * 1024)).toFixed(2);
-
-      const docsWithSizes = docs.map((doc) => {
-        const docPath = path.join(directory, doc);
-        const stats = fs.statSync(docPath);
-        const docSizeInKB = Math.round(stats.size / 1024);
-
-        return {
-          name: doc,
-          sizeKB: docSizeInKB,
-        };
-      });
-
-      return res.status(200).json({
-        docs: docsWithSizes,
-        totalSpaceMB: totalSpaceInMB,
-      });
-    } catch (error) {
-      console.error("Erro ao buscar documentos em uso:", error);
-      return res
-        .status(500)
-        .json({ message: "Erro ao buscar documentos em uso." });
-    }
-  });
-});
-
-// DELETE SINGLE FILE
-router.delete("/deleteFile/:filename", (req, res) => {
-  const directory = path.join(__dirname, `../../uploads/images`);
-  const filePath = path.join(directory, req.params.filename);
-
-  if (fs.existsSync(filePath)) {
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Erro ao excluir o arquivo." });
-      }
-      return res.status(200).json({ message: "Arquivo excluído com sucesso." });
+    return res.status(200).json({
+      files: filesWithSizes,
+      totalSpaceMB,
+      inUse: [], // Você pode preencher isso com lógica adicional
     });
-  } else {
-    return res.status(404).json({ message: "Arquivo não encontrado." });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Erro ao listar arquivos." });
   }
 });
 
-// DELETE SINGLE ATTACHMENT
-router.delete("/deleteAttachment/:filename", (req, res) => {
-  const directory = path.join(__dirname, `../../uploads/attachments`);
-  const filePath = path.join(directory, req.params.filename);
+// LIST ALL ATTACHMENTS
+router.get("/listAttachments", async (req, res) => {
+  try {
+    const attachments = await gfs
+      .find({ "metadata.type": "attachment" })
+      .toArray();
 
-  if (fs.existsSync(filePath)) {
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Erro ao excluir o arquivo." });
-      }
-      return res.status(200).json({ message: "Arquivo excluído com sucesso." });
+    const attachmentsWithSizes = attachments.map((file) => ({
+      name: file.filename,
+      sizeKB: Math.round(file.length / 1024),
+      uploadDate: file.uploadDate,
+      id: file._id,
+      itemId: file.metadata.itemId,
+    }));
+
+    const totalSpace = attachments.reduce((sum, file) => sum + file.length, 0);
+    const totalSpaceMB = (totalSpace / (1024 * 1024)).toFixed(2);
+
+    return res.status(200).json({
+      docs: attachmentsWithSizes,
+      totalSpaceMB,
     });
-  } else {
-    return res.status(404).json({ message: "Arquivo não encontrado." });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Erro ao listar anexos." });
+  }
+});
+
+// DELETE FILE
+router.delete("/deleteFile/:filename", async (req, res) => {
+  try {
+    const file = await gfs.find({ filename: req.params.filename }).next();
+
+    if (!file) {
+      return res.status(404).json({ message: "Arquivo não encontrado." });
+    }
+
+    await gfs.delete(file._id);
+    return res.status(200).json({ message: "Arquivo excluído com sucesso." });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Erro ao excluir o arquivo." });
   }
 });
 
 // DELETE MULTIPLE FILES
-router.post("/deleteMultipleFiles", (req, res) => {
-  const { files } = req.body;
-  const directory = path.join(__dirname, `../../uploads/images`);
+router.post("/deleteMultipleFiles", async (req, res) => {
   try {
-    files.forEach((file) => {
-      const filePath = path.join(directory, file.name);
-      fs.unlinkSync(filePath);
-    });
+    const { files } = req.body;
 
-    return res.status(200).json({ message: "Imagens excluídas com sucesso." });
+    const deletePromises = files.map((file) =>
+      gfs.delete(mongoose.Types.ObjectId(file.id))
+    );
+
+    await Promise.all(deletePromises);
+    return res.status(200).json({ message: "Arquivos excluídos com sucesso." });
   } catch (error) {
-    console.error("Erro ao excluir as imagens:", error);
-    return res.status(500).json({ message: "Erro ao excluir as imagens." });
-  }
-});
-
-// DELETE MULTIPLE ATTACHMENTS
-router.post("/deleteMultipleAttachments", (req, res) => {
-  const { files } = req.body;
-  const directory = path.join(__dirname, `../../uploads/attachments`);
-  try {
-    files.forEach((file) => {
-      const filePath = path.join(directory, file.name);
-      fs.unlinkSync(filePath);
-    });
-
-    return res.status(200).json({ message: "Imagens excluídas com sucesso." });
-  } catch (error) {
-    console.error("Erro ao excluir as imagens:", error);
-    return res.status(500).json({ message: "Erro ao excluir as imagens." });
+    console.error(error);
+    return res.status(500).json({ message: "Erro ao excluir os arquivos." });
   }
 });
 

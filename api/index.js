@@ -4,19 +4,25 @@ const http = require("http");
 const app = express();
 const server = http.createServer(app);
 const mongoose = require("mongoose");
-const cors = require("cors");
+require("./gridfs");
 
+const cors = require("cors");
+const uploadRoutes = require("./routes/uploads");
 const routes = require("./routeOptions");
 
 dotenv.config();
-app.use(cors({
-  origin: 'http://localhost:8080',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
-}));app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:8080",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+app.use(express.json());
 app.use("/attachments", express.static(__dirname + "/uploads/attachments"));
 app.use("/images", express.static(__dirname + "/uploads/images"));
 app.use("/static", express.static("../uploads"));
+app.use("/api", uploadRoutes);
 
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -25,6 +31,9 @@ mongoose
   })
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
+  
+require("./gridfs");
+require("./routes/uploads");
 
 routes.forEach(({ path, route }) => {
   app.use(path, route);

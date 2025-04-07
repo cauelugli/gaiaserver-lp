@@ -149,7 +149,7 @@ const ChartRequestPerCustomer = ({
                       }
                     >
                       <Avatar
-                        src={`http://localhost:8080/static/${
+                        src={`api/files/${
                           idIndexList.find(
                             (customer) => customer.id === item.customerId
                           )?.image || ""
@@ -173,7 +173,7 @@ const ChartRequestPerCustomer = ({
               <Grid2 item sx={{ ml: 2, mt: -5 }}>
                 <Grid2 container alignItems="center">
                   <Avatar
-                    src={`http://localhost:8080/static/${
+                    src={`api/files/${
                       idIndexList.find(
                         (customer) =>
                           customer.id === selectedCustomer.customerId

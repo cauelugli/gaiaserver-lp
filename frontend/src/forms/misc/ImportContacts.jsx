@@ -189,7 +189,7 @@ const ImportContacts = ({
               startIcon={<icons.DownloadIcon />}
             >
               <a
-                href={`http://localhost:8080/static/exemplo.csv`}
+                href={`api/files/exemplo.csv`}
                 download
                 style={{ textDecoration: "none", color: "inherit" }}
               >
