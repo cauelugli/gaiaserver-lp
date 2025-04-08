@@ -93,7 +93,7 @@ export default function Account({
           theme: "colored",
           autoClose: 1200,
         });
-        toast.info("Realize Logout para aplicar a Alteração.", {
+        toast.success("Realize Logout para aplicar a Alteração.", {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",

@@ -26,7 +26,7 @@ export default function UserButton({ user }) {
 
   const handleLogout = () => {
     sessionStorage.clear();
-    toast.info("Realizando Logout", {
+    toast.success("Realizando Logout", {
       closeOnClick: true,
       pauseOnHover: false,
       theme: "colored",

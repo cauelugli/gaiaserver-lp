@@ -10,7 +10,7 @@ const actionsRoute = require("./routes/actions");
 const adminRoute = require("./routes/admin");
 const authRoute = require("./routes/auth");
 const configRoute = require("./routes/config");
-// const uploadsRoute = require("./routes/uploads");
+const uploadsRoute = require("./routes/uploads");
 const userPreferencesRoute = require("./routes/userPreferences");
 const productsRoute = require("./routes/products");
 const logsRoute = require("./routes/log");
@@ -30,7 +30,7 @@ const routes = [
   { path: "/api/login", route: authRoute },
   { path: "/api/config", route: configRoute },
   { path: "/api/products", route: productsRoute },
-  // { path: "/api/uploads", route: uploadsRoute },
+  { path: "/api/uploads", route: uploadsRoute },
   { path: "/api/userPreferences", route: userPreferencesRoute },
   { path: "/api/log", route: logsRoute },
 ];

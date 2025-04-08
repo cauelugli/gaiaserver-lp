@@ -8,6 +8,12 @@ const upload = multer({ storage: multer.memoryStorage() });
 const uploadDocs = multer({ storage: multer.memoryStorage() });
 
 const uploadToGridFS = (fileBuffer, filename, metadata = {}) => {
+  const gfs = getGFS();
+  
+  if (!gfs) {
+    return res.status(500).send('Sistema de arquivos não está pronto ainda');
+  }
+  
   return new Promise((resolve, reject) => {
     const uploadStream = gfs.openUploadStream(filename, { metadata });
     uploadStream.write(fileBuffer);
@@ -18,6 +24,7 @@ const uploadToGridFS = (fileBuffer, filename, metadata = {}) => {
   });
 };
 
+// GET FILES VIA GRIDFS
 router.get('/files/:filename', async (req, res) => {
   const gfs = getGFS();
   
@@ -54,7 +61,7 @@ router.post("/singleFile", upload.single("image"), async (req, res) => {
       { type: "image" }
     );
 
-    return res.status(200).json({ imagePath: `/api/files/${filename}` });
+    return res.status(200).json({ imagePath: `/${filename}` });
   } catch (error) {
     console.error(error);
     return res
@@ -75,7 +82,7 @@ router.post("/multipleFiles", upload.array("images", 10), async (req, res) => {
     );
 
     const filenames = await Promise.all(uploadPromises);
-    const imagePaths = filenames.map((filename) => `/api/files/${filename}`);
+    const imagePaths = filenames.map((filename) => `/${filename}`);
 
     return res.status(200).json({ imagePaths });
   } catch (error) {
@@ -103,7 +110,7 @@ router.post(
       });
 
       return res.status(200).json({
-        attachmentPath: `/api/files/${filename}`,
+        attachmentPath: `/${filename}`,
       });
     } catch (error) {
       console.error(error);
