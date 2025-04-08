@@ -9,11 +9,11 @@ const uploadDocs = multer({ storage: multer.memoryStorage() });
 
 const uploadToGridFS = (fileBuffer, filename, metadata = {}) => {
   const gfs = getGFS();
-  
+
   if (!gfs) {
-    return res.status(500).send('Sistema de arquivos não está pronto ainda');
+    return res.status(500).send("Sistema de arquivos não está pronto ainda");
   }
-  
+
   return new Promise((resolve, reject) => {
     const uploadStream = gfs.openUploadStream(filename, { metadata });
     uploadStream.write(fileBuffer);
@@ -25,26 +25,25 @@ const uploadToGridFS = (fileBuffer, filename, metadata = {}) => {
 };
 
 // GET FILES VIA GRIDFS
-router.get('/files/:filename', async (req, res) => {
+router.get("/files/:filename", async (req, res) => {
   const gfs = getGFS();
-  
+
   if (!gfs) {
-    return res.status(500).send('Sistema de arquivos não está pronto ainda');
+    return res.status(500).send("Sistema de arquivos não está pronto ainda");
   }
 
   try {
     const files = await gfs.find({ filename: req.params.filename }).toArray();
-    if (!files.length) return res.status(404).send('Arquivo não existe');
+    if (!files.length) return res.status(404).send("Arquivo não existe");
 
     const file = files[0]; // Pega o primeiro arquivo
     const stream = gfs.openDownloadStream(file._id);
-    
-    stream.on('error', () => res.status(404).send());
-    stream.pipe(res);
 
+    stream.on("error", () => res.status(404).send());
+    stream.pipe(res);
   } catch (err) {
-    console.error('Erro:', err);
-    res.status(500).send('Deu erro');
+    console.error("Erro:", err);
+    res.status(500).send("Deu erro");
   }
 });
 
@@ -52,16 +51,15 @@ router.get('/files/:filename', async (req, res) => {
 router.post("/singleFile", upload.single("image"), async (req, res) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ message: "Nenhum arquivo enviado." });
+      return res.status(204).json({ message: "Nenhum arquivo enviado." });
+    } else {
+      const filename = await uploadToGridFS(
+        req.file.buffer,
+        req.file.originalname,
+        { type: "image" }
+      );
+      return res.status(200).json({ imagePath: `/${filename}` });
     }
-
-    const filename = await uploadToGridFS(
-      req.file.buffer,
-      req.file.originalname,
-      { type: "image" }
-    );
-
-    return res.status(200).json({ imagePath: `/${filename}` });
   } catch (error) {
     console.error(error);
     return res

@@ -51,12 +51,7 @@ export default function AddFormModel(props) {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    priceDifference,
-    refreshData,
-    fields.customer,
-    fields.service,
-  ]);
+  }, [priceDifference, refreshData, fields.customer, fields.service]);
 
   const modalOptions = props.options.find(
     (option) => option.label === props.selectedOptionLabel
