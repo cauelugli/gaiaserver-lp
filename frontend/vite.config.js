@@ -22,12 +22,4 @@ export default defineConfig({
       "top-level-await": true,
     },
   },
-  server: {
-    fs: {
-      allow: [".."],
-    },
-    proxy: {
-      "/api": "http://localhost:8080",
-    },
-  },
 });
