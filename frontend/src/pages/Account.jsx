@@ -23,7 +23,7 @@ import { icons } from "../icons";
 import AccountPreferencesBox from "../components/small/AccountPreferencesBox";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "/api",
 });
 
 export default function Account({

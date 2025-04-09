@@ -2,7 +2,7 @@ import axios from "axios";
 import { createTheme } from "@mui/material/styles";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "/api",
 });
 
 const getUserPreferences = async () => {

@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import InputMask from "react-input-mask";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "/api",
 });
 
 import {

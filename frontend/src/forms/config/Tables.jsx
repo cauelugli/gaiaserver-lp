@@ -14,7 +14,7 @@ import {
 import TablesConfigTransferList from "../../components/small/TablesConfigTransferList";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "/api",
 });
 
 export default function Tables({ onClose }) {

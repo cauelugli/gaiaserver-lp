@@ -7,7 +7,7 @@ import { icons } from "../icons";
 const fetchStatuses = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:3000/api/config");
+      const response = await fetch("/api/config");
       const data = await response.json();
       const configData = data.requests;
       const sortedStatuses = configData.requestStatuses.sort((a, b) =>

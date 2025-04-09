@@ -11,7 +11,7 @@ import { icons } from "../../icons";
 import NewUserShortcutOptions from "./NewUserShortcutOptions";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "/api",
 });
 
 const NewUserShortcut = ({ userId, reloadShortcuts, allowedLinks }) => {

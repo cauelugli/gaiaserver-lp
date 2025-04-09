@@ -2,4 +2,4 @@ API (Backend) - Express Routing server: 3000
 Frontend - Vite React app: 5173
 Queues - BullJS Workers: 6379
 Redis - Workers and Stuff: 6123
-NGINX - Docker : 8080
+NGINX - Docker : 80 (Oracle VPS)

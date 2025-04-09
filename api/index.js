@@ -11,9 +11,12 @@ const uploadRoutes = require("./routes/uploads");
 const routes = require("./routeOptions");
 
 dotenv.config();
+const allowedOrigins = [
+  "http://167.234.237.230",  // IP VPS Oracle
+];
 app.use(
   cors({
-    origin: "http://localhost:8080",
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

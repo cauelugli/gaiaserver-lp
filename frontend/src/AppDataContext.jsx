@@ -30,9 +30,9 @@ export const AppDataProvider = ({ children }) => {
     const fetchIdIndexList = async () => {
       try {
         const { data: idIndexList } = await axios.get(
-          "http://localhost:3000/api/idIndexList"
+          "/api/idIndexList"
         );
-        const config = await axios.get("http://localhost:3000/api/config");
+        const config = await axios.get("/api/config");
 
         setConfigData(config.data);
         setIdIndexList(idIndexList);

@@ -31,7 +31,7 @@ import Log from "./pages/Log";
 import ErrorBoundary from "./ErrorBoundary";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "/api",
 });
 
 function isAuthenticated(login, userData) {

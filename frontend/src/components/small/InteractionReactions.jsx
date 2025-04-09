@@ -2,7 +2,7 @@
 import * as React from "react";
 import axios from "axios";
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "/api",
 });
 import toast from "react-hot-toast";
 import { keyframes } from "@mui/system";

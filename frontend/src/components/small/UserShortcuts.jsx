@@ -18,7 +18,7 @@ import NewUserShortcut from "./NewUserShortcut";
 import ShortcutItem from "./ShortcutItem";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "/api",
 });
 
 const UserShortcuts = ({ userId, onShortcutClick, allowedLinks }) => {
