@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
 
-import Features from "./components/Features";
-import Footer from "./components/Footer";
-import Hero from "./components/Hero";
-import LogoCollection from "./components/LogoCollection";
-import Navbar from "./components/Navbar";
-import Pricing from "./components/Pricing";
-import Testimonials from "./components/Testimonials";
+import Features from "./components/large/Features";
+import Footer from "./components/large/Footer";
+import Hero from "./components/large/Hero";
+import LogoCollection from "./components/large/LogoCollection";
+import Navbar from "./components/large/Navbar";
+import Pricing from "./components/large/Pricing";
+import Testimonials from "./components/large/Testimonials";
 
 function App() {
   return (
