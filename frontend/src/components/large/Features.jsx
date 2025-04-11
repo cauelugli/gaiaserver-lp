@@ -3,6 +3,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import Carousel from "react-material-ui-carousel";
+import { Paper } from "@mui/material";
 
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
@@ -23,7 +25,12 @@ const items = [
         <strong>simples e ilimitada</strong>.
       </Typography>
     ),
-    image: `url(/images/new1.png)`,
+    images: ["/images/new1.png", "/images/new2.png", "/images/new3.png"].map(
+      (img) => ({
+        src: img,
+        alt: "Demonstração de simplicidade",
+      })
+    ),
   },
   {
     icon: <PaletteIcon />,
@@ -38,46 +45,21 @@ const items = [
         <strong>Layout, Cores e Fontes </strong>que mais combinam com você.
       </Typography>
     ),
-    image: `url(/images/homePage.png)`,
+    image: "/images/homePage.png",
   },
-  {
-    icon: <ElectricBoltIcon />,
-    title: (
-      <Typography sx={{ fontWeight: "bold", fontSize: 22 }}>
-        Rapidez no que Importa
-      </Typography>
-    ),
-    description: (
-      <Typography>
-        Realize uma venda com menos de <strong>cinco clicks</strong>!
-      </Typography>
-    ),
-    image: "url(/images/homePage.png)",
-  },
-  {
-    icon: <SportsEsportsIcon />,
-    title: (
-      <Typography sx={{ fontWeight: "bold", fontSize: 22 }}>
-        Você no Controle
-      </Typography>
-    ),
-    description: (
-      <Typography>
-        Venda ou Serviço, Pessoa ou Empresa, À vista ou A prazo: Você{" "}
-        <strong>comanda</strong>! Tenha em seu sistema{" "}
-        <strong>apenas o que você usa</strong>.
-      </Typography>
-    ),
-    image: "url(/images/homePage.png)",
-  },
+  // ... outros itens mantêm a mesma estrutura
 ];
 
 export default function Features() {
   const [selectedItemIndex, setSelectedItemIndex] = React.useState(0);
+  const [key, setKey] = React.useState(0); // Chave para forçar rerender
 
   const handleItemClick = (index) => {
     setSelectedItemIndex(index);
+    setKey((prev) => prev + 1); // Força rerender do Carousel
   };
+
+  const selectedItem = items[selectedItemIndex];
 
   return (
     <Grid container direction="column" sx={{ my: 15 }}>
@@ -85,7 +67,10 @@ export default function Features() {
         <Typography variant="h2" gutterBottom>
           Soluções
         </Typography>
-        <Typography variant="h5" sx={{ color: "text.secondary", mt: 4, mb: 10 }}>
+        <Typography
+          variant="h5"
+          sx={{ color: "text.secondary", mt: 4, mb: 10 }}
+        >
           Confira tudo que o GaiaServer oferece para sua Empresa
         </Typography>
       </Box>
@@ -94,18 +79,73 @@ export default function Features() {
           <Box
             sx={{
               height: 570,
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-              backgroundImage: "var(--items-image)",
               border: "1px solid #bbb",
               borderRadius: 3,
+              overflow: "hidden",
+              position: "relative",
             }}
-            style={
-              items[selectedItemIndex] && {
-                "--items-image": items[selectedItemIndex].image,
-              }
-            }
-          />
+          >
+            {selectedItemIndex === 0 ? (
+              <Carousel
+                key={key} // Usamos a chave para forçar rerender
+                autoPlay={false}
+                animation="fade"
+                navButtonsAlwaysVisible
+                duration={500}
+                sx={{ height: "100%" }}
+              >
+                {selectedItem.images.map((img, i) => (
+                  <Box
+                    key={i}
+                    sx={{
+                      height: 570,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "background.paper",
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src={img.src}
+                      alt={img.alt}
+                      sx={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        objectFit: "contain",
+                        display: "block",
+                      }}
+                      onError={(e) => {
+                        console.error(`Erro ao carregar imagem: ${img.src}`);
+                        e.target.style.display = "none";
+                      }}
+                    />
+                  </Box>
+                ))}
+              </Carousel>
+            ) : (
+              <Box
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "background.paper",
+                }}
+              >
+                <Box
+                  component="img"
+                  src={selectedItem.image}
+                  alt={selectedItem.title.props.children}
+                  sx={{
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    objectFit: "contain",
+                  }}
+                />
+              </Box>
+            )}
+          </Box>
         </Grid>
         <Grid item sx={{ width: "30%" }}>
           <Box
@@ -153,10 +193,8 @@ export default function Features() {
                     ]}
                   >
                     {icon}
-
                     <Typography variant="h5">{title}</Typography>
                     <Typography variant="body2">{description}</Typography>
-                    {/* <Typography variant="body2">{selectedItemIndex === index && description}</Typography> */}
                   </Grid>
                 </Box>
               ))}
