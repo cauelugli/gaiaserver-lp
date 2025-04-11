@@ -3,9 +3,9 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import Carousel from "react-material-ui-carousel";
-import { Paper } from "@mui/material";
-
+import IconButton from "@mui/material/IconButton";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
 import PaletteIcon from "@mui/icons-material/Palette";
@@ -13,32 +13,21 @@ import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 
 const items = [
   {
+    itemIndex: 0,
     icon: <AutoAwesomeIcon />,
-    title: (
-      <Typography sx={{ fontWeight: "bold", fontSize: 22 }}>
-        Simplicidade
-      </Typography>
-    ),
+    title: "Simplicidade",
     description: (
       <Typography>
         Crie seus <strong> Clientes, Produtos e Vendas</strong> de forma{" "}
         <strong>simples e ilimitada</strong>.
       </Typography>
     ),
-    images: ["/images/new1.png", "/images/new2.png", "/images/new3.png"].map(
-      (img) => ({
-        src: img,
-        alt: "Demonstração de simplicidade",
-      })
-    ),
+    images: ["/images/new1.png", "/images/new2.png", "/images/new3.png"],
   },
   {
+    itemIndex: 1,
     icon: <PaletteIcon />,
-    title: (
-      <Typography sx={{ fontWeight: "bold", fontSize: 22 }}>
-        Personalização
-      </Typography>
-    ),
+    title: "Personalização",
     description: (
       <Typography>
         Deixe o aplicativo com <strong>a sua cara</strong>! Escolha o{" "}
@@ -50,32 +39,23 @@ const items = [
       "/images/custom2.png",
       "/images/custom3.png",
       "/images/custom4.png",
-    ].map((img) => ({
-      src: img,
-      alt: "Demonstração de simplicidade",
-    })),
+    ],
   },
   {
+    itemIndex: 2,
     icon: <ElectricBoltIcon />,
-    title: (
-      <Typography sx={{ fontWeight: "bold", fontSize: 22 }}>
-        Rapidez no que Importa
-      </Typography>
-    ),
+    title: "Rapidez no que Importa",
     description: (
       <Typography>
         Realize uma venda com menos de <strong>cinco clicks</strong>!
       </Typography>
     ),
-    image: "/images/homePage.png",
+    images: ["/images/homePage.png"],
   },
   {
+    itemIndex: 3,
     icon: <SportsEsportsIcon />,
-    title: (
-      <Typography sx={{ fontWeight: "bold", fontSize: 22 }}>
-        Você no Controle
-      </Typography>
-    ),
+    title: "Você no Controle",
     description: (
       <Typography>
         Venda ou Serviço, Pessoa ou Empresa, À vista ou A prazo: Você{" "}
@@ -83,18 +63,128 @@ const items = [
         <strong>apenas o que você usa</strong>.
       </Typography>
     ),
-    image: "/images/homePage.png",
+    images: ["/images/homePage.png"],
   },
 ];
+
+function SimpleCarousel({ images }) {
+  const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
+
+  const handleNext = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const handlePrev = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  return (
+    <Box
+      sx={{
+        position: "relative",
+        height: 570,
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#f5f5f5",
+        border: "1px solid #bbb",
+        borderRadius: 3,
+        overflow: "hidden",
+      }}
+    >
+      {/* Imagem atual */}
+      <img
+        src={images[currentImageIndex]}
+        alt={`Slide ${currentImageIndex}`}
+        style={{
+          maxWidth: "100%",
+          maxHeight: "100%",
+          objectFit: "contain",
+        }}
+      />
+
+      {/* Controles de navegação */}
+      {images.length > 1 && (
+        <>
+          <IconButton
+            onClick={handlePrev}
+            sx={{
+              position: "absolute",
+              left: 16,
+              backgroundColor: "rgba(0,0,0,0.3)",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "rgba(0,0,0,0.5)",
+              },
+            }}
+          >
+            <ArrowBackIosNewIcon />
+          </IconButton>
+
+          <IconButton
+            onClick={handleNext}
+            sx={{
+              position: "absolute",
+              right: 16,
+              backgroundColor: "rgba(0,0,0,0.3)",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "rgba(0,0,0,0.5)",
+              },
+            }}
+          >
+            <ArrowForwardIosIcon />
+          </IconButton>
+
+          {/* Indicadores */}
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 16,
+              display: "flex",
+              gap: 1,
+            }}
+          >
+            {images.map((_, index) => (
+              <Box
+                key={index}
+                onClick={() => setCurrentImageIndex(index)}
+                sx={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: "50%",
+                  backgroundColor:
+                    index === currentImageIndex
+                      ? "primary.main"
+                      : "rgba(255,255,255,0.5)",
+                  cursor: "pointer",
+                  "&:hover": {
+                    backgroundColor:
+                      index === currentImageIndex
+                        ? "primary.main"
+                        : "rgba(255,255,255,0.7)",
+                  },
+                }}
+              />
+            ))}
+          </Box>
+        </>
+      )}
+    </Box>
+  );
+}
 
 export default function Features() {
   const [selectedItemIndex, setSelectedItemIndex] = React.useState(0);
 
-  const handleItemClick = (index) => {
-    setSelectedItemIndex(index);
+  const handleItemClick = (itemIndex) => {
+    setSelectedItemIndex(itemIndex);
   };
-
-  const selectedItem = items[selectedItemIndex];
 
   return (
     <Grid container direction="column" sx={{ my: 15 }}>
@@ -109,73 +199,12 @@ export default function Features() {
           Confira tudo que o GaiaServer oferece para sua Empresa
         </Typography>
       </Box>
+
       <Grid container direction="row" sx={{ mx: 2 }}>
         <Grid item sx={{ width: "60%", mx: 3 }}>
-          <Box
-            sx={{
-              height: 570,
-              border: "1px solid #bbb",
-              borderRadius: 3,
-              overflow: "hidden",
-              position: "relative",
-              backgroundColor: "#f5f5f5",
-            }}
-          >
-            {selectedItemIndex !== null ? (
-              <Carousel
-                autoPlay={false}
-                animation="fade"
-                navButtonsAlwaysVisible
-                duration={500}
-                sx={{ height: "100%" }}
-              >
-                {selectedItem.images.map((img, i) => (
-                  <Box
-                    key={i}
-                    sx={{
-                      height: 570,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <img
-                      src={img.src}
-                      alt={img.alt}
-                      style={{
-                        maxWidth: "100%",
-                        maxHeight: "100%",
-                        objectFit: "contain",
-                        display: "block",
-                      }}
-                    />
-                  </Box>
-                ))}
-              </Carousel>
-            ) : (
-              <Box
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "background.paper",
-                }}
-              >
-                <Box
-                  component="img"
-                  src={selectedItem.image}
-                  alt={selectedItem.title.props.children}
-                  sx={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </Box>
-            )}
-          </Box>
+          <SimpleCarousel images={items[selectedItemIndex].images} />
         </Grid>
+
         <Grid item sx={{ width: "30%" }}>
           <Box
             sx={{
@@ -194,36 +223,46 @@ export default function Features() {
                 height: 570,
               }}
             >
-              {items.map(({ icon, title, description }, index) => (
+              {items.map((item, index) => (
                 <Box
                   key={index}
                   component={Button}
                   onClick={() => handleItemClick(index)}
                   sx={{
                     p: 2,
-                    backgroundColor: selectedItemIndex === index && "#32aacd",
+                    backgroundColor:
+                      selectedItemIndex === index ? "#32aacd" : "inherit",
+                    "&:hover": {
+                      backgroundColor:
+                        selectedItemIndex === index
+                          ? "#32aacd"
+                          : "rgba(0,0,0,0.04)",
+                    },
                   }}
                 >
                   <Grid
-                    sx={[
-                      {
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "left",
-                        gap: 0.5,
-                        textAlign: "left",
-                        textTransform: "none",
-                        color: "text.secondary",
-                      },
-                      selectedItemIndex === index && {
-                        color: "text.primary",
-                      },
-                    ]}
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "left",
+                      gap: 0.5,
+                      textAlign: "left",
+                      textTransform: "none",
+                      color:
+                        selectedItemIndex === index
+                          ? "text.primary"
+                          : "text.secondary",
+                    }}
                   >
-                    {icon}
-                    <Typography variant="h5">{title}</Typography>
-                    <Typography variant="body2">{description}</Typography>
+                    {item.icon}
+                    <Typography
+                      variant="h5"
+                      sx={{ fontWeight: "bold", fontSize: 22 }}
+                    >
+                      {item.title}
+                    </Typography>
+                    {item.description}
                   </Grid>
                 </Box>
               ))}
