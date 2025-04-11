@@ -45,18 +45,53 @@ const items = [
         <strong>Layout, Cores e Fontes </strong>que mais combinam com você.
       </Typography>
     ),
+    images: [
+      "/images/custom1.png",
+      "/images/custom2.png",
+      "/images/custom3.png",
+      "/images/custom4.png",
+    ].map((img) => ({
+      src: img,
+      alt: "Demonstração de simplicidade",
+    })),
+  },
+  {
+    icon: <ElectricBoltIcon />,
+    title: (
+      <Typography sx={{ fontWeight: "bold", fontSize: 22 }}>
+        Rapidez no que Importa
+      </Typography>
+    ),
+    description: (
+      <Typography>
+        Realize uma venda com menos de <strong>cinco clicks</strong>!
+      </Typography>
+    ),
     image: "/images/homePage.png",
   },
-  // ... outros itens mantêm a mesma estrutura
+  {
+    icon: <SportsEsportsIcon />,
+    title: (
+      <Typography sx={{ fontWeight: "bold", fontSize: 22 }}>
+        Você no Controle
+      </Typography>
+    ),
+    description: (
+      <Typography>
+        Venda ou Serviço, Pessoa ou Empresa, À vista ou A prazo: Você{" "}
+        <strong>comanda</strong>! Tenha em seu sistema{" "}
+        <strong>apenas o que você usa</strong>.
+      </Typography>
+    ),
+    image: "/images/homePage.png",
+  },
 ];
 
 export default function Features() {
   const [selectedItemIndex, setSelectedItemIndex] = React.useState(0);
-  const [key, setKey] = React.useState(0); // Chave para forçar rerender
 
   const handleItemClick = (index) => {
     setSelectedItemIndex(index);
-    setKey((prev) => prev + 1); // Força rerender do Carousel
   };
 
   const selectedItem = items[selectedItemIndex];
@@ -83,11 +118,11 @@ export default function Features() {
               borderRadius: 3,
               overflow: "hidden",
               position: "relative",
+              backgroundColor: "#f5f5f5",
             }}
           >
-            {selectedItemIndex === 0 ? (
+            {selectedItemIndex !== null ? (
               <Carousel
-                key={key} // Usamos a chave para forçar rerender
                 autoPlay={false}
                 animation="fade"
                 navButtonsAlwaysVisible
@@ -102,22 +137,16 @@ export default function Features() {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                      backgroundColor: "background.paper",
                     }}
                   >
-                    <Box
-                      component="img"
+                    <img
                       src={img.src}
                       alt={img.alt}
-                      sx={{
+                      style={{
                         maxWidth: "100%",
                         maxHeight: "100%",
                         objectFit: "contain",
                         display: "block",
-                      }}
-                      onError={(e) => {
-                        console.error(`Erro ao carregar imagem: ${img.src}`);
-                        e.target.style.display = "none";
                       }}
                     />
                   </Box>
