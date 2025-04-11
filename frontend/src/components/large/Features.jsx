@@ -3,69 +3,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-
 import Carousel from "../small/Carousel";
-
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
-import PaletteIcon from "@mui/icons-material/Palette";
-import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
-
-const items = [
-  {
-    itemIndex: 0,
-    icon: <AutoAwesomeIcon />,
-    title: "Simplicidade",
-    description: (
-      <Typography>
-        Crie seus <strong> Clientes, Produtos e Vendas</strong> de forma{" "}
-        <strong>simples e ilimitada</strong>.
-      </Typography>
-    ),
-    images: ["/images/new1.png", "/images/new2.png", "/images/new3.png"],
-  },
-  {
-    itemIndex: 1,
-    icon: <PaletteIcon />,
-    title: "Personalização",
-    description: (
-      <Typography>
-        Deixe o aplicativo com <strong>a sua cara</strong>! Escolha o{" "}
-        <strong>Layout, Cores e Fontes </strong>que mais combinam com você.
-      </Typography>
-    ),
-    images: [
-      "/images/custom1.png",
-      "/images/custom2.png",
-      "/images/custom3.png",
-      "/images/custom4.png",
-    ],
-  },
-  {
-    itemIndex: 2,
-    icon: <ElectricBoltIcon />,
-    title: "Rapidez no que Importa",
-    description: (
-      <Typography>
-        Realize uma venda com menos de <strong>cinco clicks</strong>!
-      </Typography>
-    ),
-    images: ["/images/homePage.png"],
-  },
-  {
-    itemIndex: 3,
-    icon: <SportsEsportsIcon />,
-    title: "Você no Controle",
-    description: (
-      <Typography>
-        Venda ou Serviço, Pessoa ou Empresa, À vista ou A prazo: Você{" "}
-        <strong>comanda</strong>! Tenha em seu sistema{" "}
-        <strong>apenas o que você usa</strong>.
-      </Typography>
-    ),
-    images: ["/images/homePage.png"],
-  },
-];
+import featureOptions from "../../options/featureOptions";
 
 export default function Features() {
   const [selectedItemIndex, setSelectedItemIndex] = React.useState(0);
@@ -90,7 +29,7 @@ export default function Features() {
 
       <Grid container direction="row" sx={{ mx: 2 }}>
         <Grid item sx={{ width: "60%", mx: 3 }}>
-          <Carousel images={items[selectedItemIndex].images} />
+          <Carousel images={featureOptions[selectedItemIndex].images} />
         </Grid>
 
         <Grid item sx={{ width: "30%" }}>
@@ -111,7 +50,7 @@ export default function Features() {
                 height: 570,
               }}
             >
-              {items.map((item, index) => (
+              {featureOptions.map((item, index) => (
                 <Box
                   key={index}
                   component={Button}
