@@ -55,12 +55,14 @@ export default function Hero() {
             "/images/hero2.png",
             "/images/hero3.png",
             "/images/hero4.png",
+            "/images/hero5.png",
           ]}
           captions={[
             "Interface Compacta: Acesse Facilmente todos os Módulos",
             "Gerencie seus Clientes: Adicione Rapidamente uma Nova Venda",
             "Visualize seus Itens: Layouts Diferenciados para melhor Experiência",
             "Controle seus Pedidos: Faça Alterações com Precisão",
+            "Finanças à Vista: Otimize seu Fluxo de Caixa",
           ]}
           fromHero
         />
