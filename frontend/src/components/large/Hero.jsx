@@ -55,6 +55,7 @@ export default function Hero() {
             "/images/hero2.png",
             "/images/hero3.png",
             "/images/hero4.png",
+            "/images/hero5.png",
             "/images/hero6.png",
           ]}
           captions={[
