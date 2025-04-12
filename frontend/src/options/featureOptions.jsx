@@ -17,6 +17,7 @@ const featureOptions = [
       </Typography>
     ),
     images: ["/images/new1.png", "/images/new2.png", "/images/new3.png"],
+    captions: ["new1", "new2", "new3"],
   },
   {
     itemIndex: 1,
@@ -34,6 +35,7 @@ const featureOptions = [
       "/images/custom3.png",
       "/images/custom4.png",
     ],
+    captions: ["new1", "new2", "new3", "new4"],
   },
   {
     itemIndex: 2,
@@ -45,6 +47,7 @@ const featureOptions = [
       </Typography>
     ),
     images: ["/images/homePage.png"],
+    captions: ["new1"],
   },
   {
     itemIndex: 3,
@@ -57,7 +60,12 @@ const featureOptions = [
         <strong>apenas o que você usa</strong>.
       </Typography>
     ),
-    images: ["/images/homePage.png"],
+    images: [
+      "/images/homePage.png",
+      "/images/homePage.png",
+      "/images/homePage.png",
+    ],
+    captions: ["new1", "new2", "new3"],
   },
 ];
 

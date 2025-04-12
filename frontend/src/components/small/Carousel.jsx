@@ -3,8 +3,9 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import Typography from "@mui/material/Typography";
 
-const Carousel = ({ images }) => {
+const Carousel = ({ images, captions, fromHero }) => {
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
 
   const handleNext = () => {
@@ -23,26 +24,46 @@ const Carousel = ({ images }) => {
     <Box
       sx={{
         position: "relative",
-        height: 570,
-        width: "100%",
+        height: fromHero ? 650 : 570,
+        width: fromHero ? "120%" : "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#f5f5f5",
-        border: "1px solid #bbb",
-        borderRadius: 3,
+        border: fromHero ? "" : "1px solid #bbb",
+        borderRadius: fromHero ? 2 : 3,
         overflow: "hidden",
+        pb: fromHero ? 10 : 0,
       }}
     >
       <img
         src={images[currentImageIndex]}
         alt={`Slide ${currentImageIndex}`}
         style={{
-          maxWidth: "90%",
+          maxWidth: fromHero ? "95%" : "90%",
           maxHeight: "100%",
           objectFit: "contain",
         }}
       />
+
+      {captions && captions[currentImageIndex] && (
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 10,
+            left: 0,
+            right: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+            color: "white",
+            padding: 2,
+            textAlign: "center",
+          }}
+        >
+          <Typography variant="subtitle1">
+            {captions[currentImageIndex]}
+          </Typography>
+        </Box>
+      )}
 
       {images.length > 1 && (
         <>
@@ -50,12 +71,13 @@ const Carousel = ({ images }) => {
             onClick={handlePrev}
             sx={{
               position: "absolute",
-              left: 16,
+              left: fromHero ? 6 : 16,
               backgroundColor: "rgba(0,0,0,0.3)",
               color: "white",
               "&:hover": {
                 backgroundColor: "rgba(0,0,0,0.5)",
               },
+              zIndex: 2,
             }}
           >
             <ArrowBackIosNewIcon />
@@ -65,48 +87,17 @@ const Carousel = ({ images }) => {
             onClick={handleNext}
             sx={{
               position: "absolute",
-              right: 16,
+              right: fromHero ? 6 : 16,
               backgroundColor: "rgba(0,0,0,0.3)",
               color: "white",
               "&:hover": {
                 backgroundColor: "rgba(0,0,0,0.5)",
               },
+              zIndex: 2,
             }}
           >
             <ArrowForwardIosIcon />
           </IconButton>
-
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: 16,
-              display: "flex",
-              gap: 1,
-            }}
-          >
-            {images.map((_, index) => (
-              <Box
-                key={index}
-                onClick={() => setCurrentImageIndex(index)}
-                sx={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: "50%",
-                  backgroundColor:
-                    index === currentImageIndex
-                      ? "primary.main"
-                      : "rgba(255,255,255,0.5)",
-                  cursor: "pointer",
-                  "&:hover": {
-                    backgroundColor:
-                      index === currentImageIndex
-                        ? "primary.main"
-                        : "rgba(255,255,255,0.7)",
-                  },
-                }}
-              />
-            ))}
-          </Box>
         </>
       )}
     </Box>

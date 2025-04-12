@@ -31,7 +31,10 @@ export default function Features() {
 
       <Grid container direction="row" sx={{ mx: 2 }}>
         <Grid item sx={{ width: "60%", mx: 3 }}>
-          <Carousel images={featureOptions[selectedItemIndex].images} />
+          <Carousel
+            images={featureOptions[selectedItemIndex].images}
+            captions={featureOptions[selectedItemIndex].captions}
+          />
         </Grid>
 
         <Grid item sx={{ width: "30%" }}>

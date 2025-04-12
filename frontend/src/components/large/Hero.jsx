@@ -1,30 +1,11 @@
 import * as React from "react";
+
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
 
-const StyledBox = styled("div")(({ theme }) => ({
-  alignSelf: "center",
-  width: "100%",
-  height: 400,
-  marginTop: theme.spacing(8),
-  borderRadius: (theme.vars || theme).shape.borderRadius,
-  outline: "6px solid",
-  outlineColor: "hsla(220, 25%, 80%, 0.2)",
-  border: "1px solid #ccc",
-  boxShadow: "0 0 12px 8px hsla(220, 25%, 80%, 0.2)",
-  backgroundImage: "url(/images/homePage.png)",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
-  [theme.breakpoints.up("sm")]: {
-    marginTop: theme.spacing(10),
-    height: 750,
-    width:1580
-  },
-}));
+import Carousel from "../small/Carousel";
 
 export default function Hero() {
   return (
@@ -38,30 +19,19 @@ export default function Hero() {
           pb: 8,
         }}
       >
-        <Stack
-          spacing={2}
-          sx={{ alignItems: "center", width: { xs: "100%", sm: "70%" } }}
-        >
+        <Stack>
           <Typography
             variant="h1"
             sx={{
               display: "flex",
-              flexDirection: { xs: "column", sm: "row" },
               alignItems: "center",
               fontSize: "clamp(3rem, 10vw, 3.5rem)",
             }}
           >
             Gerencie&nbsp;seu&nbsp;negócio&nbsp;
             <Typography
-              component="span"
               variant="h1"
-              sx={(theme) => ({
-                fontSize: "inherit",
-                color: "primary.main",
-                ...theme.applyStyles("dark", {
-                  color: "primary.light",
-                }),
-              })}
+              sx={{ fontSize: "inherit", color: "primary.main" }}
             >
               de&nbsp;forma&nbsp;Simples.
             </Typography>
@@ -69,16 +39,31 @@ export default function Hero() {
           <Typography
             sx={{
               textAlign: "center",
-              fontSize: 17,
+              fontSize: 18,
               color: "text.secondary",
-              mt: 1,
+              mt: 3,
+              mb: 6,
             }}
           >
             O GaiaServer é a solução <strong>completa</strong> para uma gestão{" "}
             <strong>simples, rápida </strong> e <strong>eficiente</strong>.
           </Typography>
         </Stack>
-        <StyledBox />
+        <Carousel
+          images={[
+            "/images/hero1.png",
+            "/images/hero2.png",
+            "/images/hero3.png",
+            "/images/hero4.png",
+          ]}
+          captions={[
+            "Interface Compacta: Acesse Facilmente todos os Módulos",
+            "Gerencie seus Clientes: Adicione Rapidamente uma Nova Venda",
+            "Visualize seus Itens: Layouts Diferenciados para melhor Experiência",
+            "Controle seus Pedidos: Faça Alterações com Precisão",
+          ]}
+          fromHero
+        />
       </Container>
     </Box>
   );
