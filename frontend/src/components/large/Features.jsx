@@ -1,8 +1,10 @@
 import * as React from "react";
+
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+
 import Carousel from "../small/Carousel";
 import featureOptions from "../../options/featureOptions";
 
