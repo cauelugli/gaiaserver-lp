@@ -4,7 +4,7 @@ import Features from "./components/large/Features";
 import Footer from "./components/large/Footer";
 import Hero from "./components/large/Hero";
 import Navbar from "./components/large/Navbar";
-import Pricing from "./components/large/Pricing";
+import Register from "./components/large/Register";
 
 function App() {
   return (
@@ -14,7 +14,8 @@ function App() {
       {/* <LogoCollection /> */}
       <Features />
       {/* <Testimonials /> */}
-      <Pricing />
+      {/* <Pricing /> */}
+      <Register />
       <Footer />
     </Box>
   );

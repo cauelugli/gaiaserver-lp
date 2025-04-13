@@ -20,6 +20,15 @@ const Carousel = ({ images, captions, fromHero }) => {
     );
   };
 
+  // Função para verificar se o arquivo é um vídeo
+  const isVideo = (url) => {
+    const videoExtensions = [".mp4", ".webm", ".ogg"];
+    return videoExtensions.some((ext) => url.toLowerCase().endsWith(ext));
+  };
+
+  const currentMedia = images[currentImageIndex];
+  const isCurrentVideo = isVideo(currentMedia);
+
   return (
     <Box
       sx={{
@@ -36,15 +45,34 @@ const Carousel = ({ images, captions, fromHero }) => {
         pb: fromHero ? 10 : 0,
       }}
     >
-      <img
-        src={images[currentImageIndex]}
-        alt={`Slide ${currentImageIndex}`}
-        style={{
-          maxWidth: fromHero ? "95%" : "90%",
-          maxHeight: "100%",
-          objectFit: "contain",
-        }}
-      />
+      {isCurrentVideo ? (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{
+            maxWidth: fromHero ? "95%" : "90%",
+            maxHeight: "100%",
+            objectFit: "contain",
+          }}
+        >
+          <source
+            src={currentMedia}
+            type={`video/${currentMedia.split(".").pop()}`}
+          />
+        </video>
+      ) : (
+        <img
+          src={currentMedia}
+          alt={`Slide ${currentImageIndex}`}
+          style={{
+            maxWidth: fromHero ? "95%" : "90%",
+            maxHeight: "100%",
+            objectFit: "contain",
+          }}
+        />
+      )}
 
       {captions && captions[currentImageIndex] && (
         <Box
@@ -65,7 +93,7 @@ const Carousel = ({ images, captions, fromHero }) => {
         </Box>
       )}
 
-      {images.length > 1 && (
+      {images.length > 1 && !isCurrentVideo && (
         <>
           <IconButton
             onClick={handlePrev}

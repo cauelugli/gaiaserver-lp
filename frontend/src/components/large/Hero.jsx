@@ -42,7 +42,7 @@ export default function Hero() {
               fontSize: 18,
               color: "text.secondary",
               mt: 3,
-              mb: 6,
+              mb: 4,
             }}
           >
             O GaiaServer é a solução <strong>completa</strong> para uma gestão{" "}

@@ -14,6 +14,9 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const goToSolutions = () => window.scrollTo({ top: 1150, behavior: "smooth" });
+  const goToRegister = () => window.scrollTo({ top: 2150, behavior: "smooth" });
+
   return (
     <Grid
       sx={{
@@ -47,15 +50,19 @@ export default function Navbar() {
           alignItems="center"
           justifyContent="center"
         >
-          <Button>Soluções</Button>
-          <Button>Módulos</Button>
+          <Button sx={{ fontSize: 16 }} onClick={goToSolutions}>
+            Soluções
+          </Button>
+          <Button sx={{ fontSize: 16, mx: 2 }} onClick={goToRegister}>
+            Registre-se
+          </Button>
         </Grid>
       </Grid>
 
       <Grid item>
         <Button variant="contained" sx={{ backgroundColor: "#36454F" }}>
           Acesse a Demo
-        </Button>{" "}
+        </Button>
       </Grid>
     </Grid>
   );

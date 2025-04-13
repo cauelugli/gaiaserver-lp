@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 
 const featureOptions = [
   {
-    itemIndex: 0,
     icon: <AutoAwesomeIcon />,
     title: "Simplicidade",
     description: (
@@ -17,10 +16,13 @@ const featureOptions = [
       </Typography>
     ),
     images: ["/images/new1.png", "/images/new2.png", "/images/new3.png"],
-    captions: ["new1", "new2", "new3"],
+    captions: [
+      "Formulários mais Simples: Use informações relevantes para Você!",
+      "Campos Personalizados: Crie os Produtos como Você quiser!",
+      "Foco nas Vendas: Com um fluxo suave, Você vende mais!",
+    ],
   },
   {
-    itemIndex: 1,
     icon: <PaletteIcon />,
     title: "Personalização",
     description: (
@@ -35,22 +37,24 @@ const featureOptions = [
       "/images/custom3.png",
       "/images/custom4.png",
     ],
-    captions: ["new1", "new2", "new3", "new4"],
+    captions: [
+      "Inúmeras Possibilidades de Customização",
+      "Inúmeras Possibilidades de Customização",
+      "Inúmeras Possibilidades de Customização",
+      "Inúmeras Possibilidades de Customização",
+    ],
   },
   {
-    itemIndex: 2,
     icon: <ElectricBoltIcon />,
     title: "Rapidez no que Importa",
     description: (
       <Typography>
-        Realize uma venda com menos de <strong>cinco clicks</strong>!
+        Realize uma venda com menos de <strong>nove clicks</strong>!
       </Typography>
     ),
-    images: ["/images/homePage.png"],
-    captions: ["new1"],
+    images: ["/images/addingSale.mp4"],
   },
   {
-    itemIndex: 3,
     icon: <SportsEsportsIcon />,
     title: "Você no Controle",
     description: (
@@ -60,11 +64,7 @@ const featureOptions = [
         <strong>apenas o que você usa</strong>.
       </Typography>
     ),
-    images: [
-      "/images/homePage.png",
-      "/images/homePage.png",
-      "/images/homePage.png",
-    ],
+    images: ["/images/new1.png", "/images/new1.png", "/images/new1.png"],
     captions: ["new1", "new2", "new3"],
   },
 ];
