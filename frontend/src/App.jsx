@@ -14,7 +14,6 @@ function App() {
       {/* <LogoCollection /> */}
       <Features />
       {/* <Testimonials /> */}
-      {/* <Pricing /> */}
       <Register />
       <Footer />
     </Box>
