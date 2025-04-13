@@ -5,25 +5,28 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Typography from "@mui/material/Typography";
 
-const Carousel = ({ images, captions, fromHero }) => {
-  const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
-
+const Carousel = ({
+  images,
+  captions,
+  fromHero,
+  currentImageIndex = 0,
+  onImageIndexChange,
+}) => {
   const handleNext = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
+    const newIndex =
+      currentImageIndex === images.length - 1 ? 0 : currentImageIndex + 1;
+    onImageIndexChange?.(newIndex);
   };
 
   const handlePrev = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
+    const newIndex =
+      currentImageIndex === 0 ? images.length - 1 : currentImageIndex - 1;
+    onImageIndexChange?.(newIndex);
   };
 
-  // Função para verificar se o arquivo é um vídeo
   const isVideo = (url) => {
     const videoExtensions = [".mp4", ".webm", ".ogg"];
-    return videoExtensions.some((ext) => url.toLowerCase().endsWith(ext));
+    return videoExtensions.some((ext) => url?.toLowerCase().endsWith(ext));
   };
 
   const currentMedia = images[currentImageIndex];

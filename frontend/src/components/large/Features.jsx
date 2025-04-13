@@ -1,18 +1,22 @@
 import * as React from "react";
-
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-
 import Carousel from "../small/Carousel";
 import featureOptions from "../../options/featureOptions";
 
 export default function Features() {
   const [selectedItemIndex, setSelectedItemIndex] = React.useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
 
   const handleItemClick = (itemIndex) => {
-    setSelectedItemIndex(itemIndex);
+    // Se estivermos mudando para um item diferente
+    if (selectedItemIndex !== itemIndex) {
+      setSelectedItemIndex(itemIndex);
+      // Resetamos para a primeira imagem
+      setCurrentImageIndex(0);
+    }
   };
 
   return (
@@ -34,6 +38,8 @@ export default function Features() {
           <Carousel
             images={featureOptions[selectedItemIndex].images}
             captions={featureOptions[selectedItemIndex].captions}
+            currentImageIndex={currentImageIndex}
+            onImageIndexChange={setCurrentImageIndex}
           />
         </Grid>
 
