@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -12,6 +13,8 @@ import Typography from "@mui/material/Typography";
 
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 
+import RegisterModal from "../small/RegisterModal";
+
 const tiers = [
   {
     title: "GaiaServer - Solo",
@@ -24,7 +27,7 @@ const tiers = [
   {
     title: "GaiaServer - Company",
     price: "0",
-    description: ["", ""],
+    description: ["", "", ""],
     buttonText: "Em Breve",
     buttonVariant: "none",
     buttonColor: "default",
@@ -32,24 +35,31 @@ const tiers = [
 ];
 
 export default function Register() {
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
   return (
     <Container
       sx={{
-        pt: { xs: 4, sm: 12 },
-        pb: { xs: 8, sm: 16 },
+        pt: 12,
+        pb: 16,
         position: "relative",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: { xs: 3, sm: 6 },
+        gap: 6,
       }}
     >
-      <Box
-        sx={{
-          width: { sm: "100%", md: "60%" },
-          textAlign: { sm: "left", md: "center" },
-        }}
-      >
+      <RegisterModal open={openModal} onClose={handleCloseModal} />
+
+      <Box sx={{}}>
         <Typography variant="h2" gutterBottom>
           Planos
         </Typography>
@@ -60,18 +70,18 @@ export default function Register() {
       </Box>
       <Grid
         container
-        spacing={3}
+        spacing={5}
         sx={{ alignItems: "center", justifyContent: "center", width: "100%" }}
       >
         {tiers.map((tier, index) => (
-          <Grid size={5} key={tier.title}>
+          <Grid item key={index}>
             <Card
               sx={[
                 {
-                  p: 2,
+                  p: 4,
                   display: "flex",
                   flexDirection: "column",
-                  gap: 2,
+                  gap: 5,
                   backgroundColor: index === 0 ? "" : "#32aacd",
                 },
               ]}
@@ -138,6 +148,7 @@ export default function Register() {
                   variant={tier.buttonVariant}
                   color={tier.buttonColor}
                   disabled={index === 1}
+                  onClick={index === 0 ? handleOpenModal : undefined}
                 >
                   {tier.buttonText}
                 </Button>
