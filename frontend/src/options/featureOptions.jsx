@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 
 const featureOptions = [
   {
-    itemIndex:0,
+    itemIndex: 0,
     icon: <AutoAwesomeIcon />,
     title: "Simplicidade",
     description: (
@@ -24,7 +24,7 @@ const featureOptions = [
     ],
   },
   {
-    itemIndex:1,
+    itemIndex: 1,
     icon: <PaletteIcon />,
     title: "Personalização",
     description: (
@@ -53,7 +53,7 @@ const featureOptions = [
     ],
   },
   {
-    itemIndex:2,
+    itemIndex: 2,
     icon: <ElectricBoltIcon />,
     title: "Rapidez no que Importa",
     description: (
@@ -64,7 +64,7 @@ const featureOptions = [
     images: ["/images/addingSale.mp4"],
   },
   {
-    itemIndex:3,
+    itemIndex: 3,
     icon: <SportsEsportsIcon />,
     title: "Você no Controle",
     description: (
@@ -74,8 +74,11 @@ const featureOptions = [
         <strong>apenas o que você usa</strong>.
       </Typography>
     ),
-    images: ["/images/new1.png", "/images/new1.png", "/images/new1.png"],
-    captions: ["new1", "new2", "new3"],
+    images: ["/images/config1.png", "/images/config1.png"],
+    captions: [
+      "Configurações que Otimizam o seu Trabalho",
+      "Configurações que Otimizam o seu Trabalho",
+    ],
   },
 ];
 

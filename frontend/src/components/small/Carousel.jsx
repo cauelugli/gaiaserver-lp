@@ -9,19 +9,33 @@ const Carousel = ({
   images,
   captions,
   fromHero,
-  currentImageIndex = 0,
+  currentImageIndex: externalImageIndex = 0,
   onImageIndexChange,
 }) => {
+  // Estado interno para quando fromHero é true
+  const [internalImageIndex, setInternalImageIndex] = React.useState(0);
+
+  // Decide qual índice usar
+  const currentImageIndex = fromHero ? internalImageIndex : externalImageIndex;
+
   const handleNext = () => {
     const newIndex =
       currentImageIndex === images.length - 1 ? 0 : currentImageIndex + 1;
-    onImageIndexChange?.(newIndex);
+    if (fromHero) {
+      setInternalImageIndex(newIndex);
+    } else {
+      onImageIndexChange?.(newIndex);
+    }
   };
 
   const handlePrev = () => {
     const newIndex =
       currentImageIndex === 0 ? images.length - 1 : currentImageIndex - 1;
-    onImageIndexChange?.(newIndex);
+    if (fromHero) {
+      setInternalImageIndex(newIndex);
+    } else {
+      onImageIndexChange?.(newIndex);
+    }
   };
 
   const isVideo = (url) => {

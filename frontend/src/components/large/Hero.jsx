@@ -30,7 +30,6 @@ export default function Hero() {
           >
             Gerencie&nbsp;seu&nbsp;negócio&nbsp;
             <Typography
-              variant="h1"
               sx={{ fontSize: "inherit", color: "primary.main" }}
             >
               de&nbsp;forma&nbsp;Simples.

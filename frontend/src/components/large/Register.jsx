@@ -94,20 +94,24 @@ export default function Register() {
                       display: "flex",
                       alignItems: "center",
                       gap: 1,
+                      width: 400,
                     },
                     index === 0 ? { color: "" } : { color: "white" },
                   ]}
                 >
-                  <img
-                    src="/images/logo.png"
-                    alt="Logo"
-                    style={{
-                      height: 50,
-                      marginRight: 5,
-                      filter: index === 0 ? "grayscale(100%)" : "",
-                    }}
-                  />
-                  <Typography variant="h5">{tier.title}</Typography>
+                  <Grid container alignItems="center">
+                    <Grid sx={{ mr: 3 }}>
+                      <img
+                        src="/images/logo.png"
+                        alt="Logo"
+                        style={{
+                          height: 50,
+                          filter: index === 0 ? "grayscale(100%)" : "",
+                        }}
+                      />
+                    </Grid>
+                    <Typography variant="h5">{tier.title}</Typography>
+                  </Grid>
                 </Box>
                 <Box
                   sx={[
@@ -122,9 +126,9 @@ export default function Register() {
                   <Typography variant="h6">&nbsp; por mês</Typography>
                 </Box>
                 <Divider sx={{ my: 2, opacity: 0.8, borderColor: "divider" }} />
-                {tier.description.map((line) => (
+                {tier.description.map((line, index) => (
                   <Box
-                    key={line}
+                    key={index}
                     sx={{
                       py: 2,
                       display: "flex",

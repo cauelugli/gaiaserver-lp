@@ -97,10 +97,10 @@ export default function Pricing() {
         spacing={3}
         sx={{ alignItems: "center", justifyContent: "center", width: "100%" }}
       >
-        {tiers.map((tier) => (
+        {tiers.map((tier, index) => (
           <Grid
             size={{ xs: 12, sm: tier.title === "Enterprise" ? 12 : 6, md: 4 }}
-            key={tier.title}
+            key={index}
           >
             <Card
               sx={[
