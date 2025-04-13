@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -6,8 +7,9 @@ import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+
+import FooterModal from "../small/FooterModal";
 
 function Copyright() {
   return (
@@ -23,6 +25,18 @@ function Copyright() {
 }
 
 export default function Footer() {
+  const [openModal, setOpenModal] = useState(false);
+  const [modalContent, setModalContent] = useState("");
+
+  const handleOpenModal = (content) => {
+    setModalContent(content);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
   return (
     <Container
       sx={{
@@ -33,6 +47,12 @@ export default function Footer() {
         py: 10,
       }}
     >
+      <FooterModal
+        open={openModal}
+        onClose={handleCloseModal}
+        content={modalContent}
+      />
+
       <Box
         sx={{
           display: "flex",
@@ -44,13 +64,31 @@ export default function Footer() {
         }}
       >
         <div>
-          <Link color="text.secondary" variant="body2" href="#">
+          <Link
+            color="text.secondary"
+            variant="body2"
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handleOpenModal("Política de Privacidade");
+            }}
+            sx={{ cursor: "pointer" }}
+          >
             Política de Privacidade
           </Link>
           <Typography sx={{ display: "inline", mx: 0.5, opacity: 0.5 }}>
             &nbsp;•&nbsp;
           </Typography>
-          <Link color="text.secondary" variant="body2" href="#">
+          <Link
+            color="text.secondary"
+            variant="body2"
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handleOpenModal("Termos de Serviço");
+            }}
+            sx={{ cursor: "pointer" }}
+          >
             Termos de Serviço
           </Link>
           <Copyright />
