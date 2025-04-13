@@ -1,25 +1,33 @@
 import * as React from "react";
+
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import Chip from "@mui/material/Chip";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 
 const tiers = [
   {
-    title: "Plano - PoC",
+    title: "GaiaServer - Solo",
     price: "0",
-    description: ["1 usuário", "2 GB de armazenamento", "Suporte 24/7"],
+    description: ["1 usuário", "2 GB de armazenamento", "Sem Limite de Vendas"],
     buttonText: "Registre-se Agora",
     buttonVariant: "outlined",
     buttonColor: "primary",
+  },
+  {
+    title: "GaiaServer - Company",
+    price: "0",
+    description: ["", ""],
+    buttonText: "Em Breve",
+    buttonVariant: "none",
+    buttonColor: "default",
   },
 ];
 
@@ -55,18 +63,16 @@ export default function Register() {
         spacing={3}
         sx={{ alignItems: "center", justifyContent: "center", width: "100%" }}
       >
-        {tiers.map((tier) => (
-          <Grid
-            size={{ xs: 12, sm: tier.title === "Enterprise" ? 12 : 6, md: 4 }}
-            key={tier.title}
-          >
+        {tiers.map((tier, index) => (
+          <Grid size={5} key={tier.title}>
             <Card
               sx={[
                 {
                   p: 2,
                   display: "flex",
                   flexDirection: "column",
-                  gap: 4,
+                  gap: 2,
+                  backgroundColor: index === 0 ? "" : "#32aacd",
                 },
               ]}
             >
@@ -74,23 +80,24 @@ export default function Register() {
                 <Box
                   sx={[
                     {
-                      mb: 1,
+                      mb: 4,
                       display: "flex",
-                      justifyContent: "space-between",
                       alignItems: "center",
-                      gap: 2,
+                      gap: 1,
                     },
-                    tier.title === "Professional"
-                      ? { color: "grey.100" }
-                      : { color: "" },
+                    index === 0 ? { color: "" } : { color: "white" },
                   ]}
                 >
-                  <Typography component="h3" variant="h6">
-                    {tier.title}
-                  </Typography>
-                  {tier.title === "Professional" && (
-                    <Chip icon={<AutoAwesomeIcon />} label={tier.subheader} />
-                  )}
+                  <img
+                    src="/images/logo.png"
+                    alt="Logo"
+                    style={{
+                      height: 50,
+                      marginRight: 5,
+                      filter: index === 0 ? "grayscale(100%)" : "",
+                    }}
+                  />
+                  <Typography variant="h5">{tier.title}</Typography>
                 </Box>
                 <Box
                   sx={[
@@ -98,50 +105,30 @@ export default function Register() {
                       display: "flex",
                       alignItems: "baseline",
                     },
-                    tier.title === "Professional"
-                      ? { color: "grey.50" }
-                      : { color: null },
+                    index === 0 ? { color: "" } : { color: "#32aacd" },
                   ]}
                 >
-                  <Typography component="h3" variant="h2">
-                    ${tier.price}
-                  </Typography>
-                  <Typography component="h3" variant="h6">
-                    &nbsp; por mês
-                  </Typography>
+                  <Typography variant="h2">${tier.price}</Typography>
+                  <Typography variant="h6">&nbsp; por mês</Typography>
                 </Box>
                 <Divider sx={{ my: 2, opacity: 0.8, borderColor: "divider" }} />
                 {tier.description.map((line) => (
                   <Box
                     key={line}
                     sx={{
-                      py: 1,
+                      py: 2,
                       display: "flex",
-                      gap: 1.5,
+                      gap: 2.5,
                       alignItems: "center",
                     }}
                   >
                     <CheckCircleRoundedIcon
-                      sx={[
-                        {
-                          width: 20,
-                        },
-                        tier.title === "Professional"
-                          ? { color: "primary.light" }
-                          : { color: "primary.main" },
-                      ]}
+                      sx={{
+                        width: 20,
+                        color: "primary.main",
+                      }}
                     />
-                    <Typography
-                      variant="subtitle2"
-                      component={"span"}
-                      sx={[
-                        tier.title === "Professional"
-                          ? { color: "grey.50" }
-                          : { color: null },
-                      ]}
-                    >
-                      {line}
-                    </Typography>
+                    <Typography>{line}</Typography>
                   </Box>
                 ))}
               </CardContent>
@@ -150,6 +137,7 @@ export default function Register() {
                   fullWidth
                   variant={tier.buttonVariant}
                   color={tier.buttonColor}
+                  disabled={index === 1}
                 >
                   {tier.buttonText}
                 </Button>

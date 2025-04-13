@@ -59,7 +59,7 @@ export default function Navbar() {
             Soluções
           </Button>
           <Button sx={{ fontSize: 16, mx: 2 }} onClick={goToRegister}>
-            Registre-se
+            Planos
           </Button>
         </Grid>
       </Grid>
