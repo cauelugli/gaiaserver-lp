@@ -41,7 +41,6 @@ const Carousel = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#f5f5f5",
         border: fromHero ? "" : "1px solid #bbb",
         borderRadius: fromHero ? 2 : 3,
         overflow: "hidden",
