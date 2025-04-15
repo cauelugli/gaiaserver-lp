@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+import { MongoClient } from "mongodb"; // Adicionamos a importação do MongoClient
 
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -13,32 +14,47 @@ import Typography from "@mui/material/Typography";
 export default function RegisterModal({ open, onClose }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Adicionamos estado para loading
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
+    // Dados do lead
     const leadData = {
       name,
       email,
       plan: "solo",
+      createdAt: new Date(), // Adicionamos data de criação
     };
 
-    // try {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(leadData),
-    //     mode: "cors",
-    //   });
+    let client;
+    try {
+      // Conecta ao MongoDB
+      client = new MongoClient(process.env.MONGO_URL);
+      await client.connect();
 
-    //   alert("Cadastro realizado com sucesso!");
-    //   onClose();
-    // } catch (error) {
-    //   console.error("Erro ao enviar lead:", error);
-    //   alert("Cadastro realizado com sucesso!");
-    //   onClose();
-    // }
+      // Acessa a coleção (se não existir, será criada automaticamente)
+      const db = client.db(); // Se precisar especificar o banco, use db('nome-do-banco')
+      const leadsCollection = db.collection("leads");
+
+      // Insere o novo documento
+      const result = await leadsCollection.insertOne(leadData);
+
+      console.log("Lead inserido com ID:", result.insertedId);
+      alert("Cadastro realizado com sucesso!");
+      onClose();
+    } catch (error) {
+      console.error("Erro ao salvar lead no MongoDB:", error);
+      alert(
+        "Ocorreu um erro ao realizar o cadastro. Por favor, tente novamente."
+      );
+    } finally {
+      if (client) {
+        await client.close(); // Fecha a conexão
+      }
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -69,14 +85,20 @@ export default function RegisterModal({ open, onClose }) {
           </Box>
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
-          <Button type="submit" variant="contained" color="success">
-            OK
+          <Button
+            type="submit"
+            variant="contained"
+            color="success"
+            disabled={isLoading}
+          >
+            {isLoading ? "Enviando..." : "OK"}
           </Button>
           <Button
             variant="contained"
             color="error"
             onClick={onClose}
             sx={{ mr: 2 }}
+            disabled={isLoading}
           >
             X
           </Button>
