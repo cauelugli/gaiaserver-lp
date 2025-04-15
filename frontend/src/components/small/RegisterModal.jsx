@@ -23,7 +23,7 @@ export default function RegisterModal({ open, onClose }) {
     setError(null);
 
     try {
-      const response = await fetch("/api/leads", {
+      const response = await fetch("/api/lead", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
