@@ -1,7 +1,5 @@
 import * as React from "react";
 import { useState } from "react";
-import dotenv from "dotenv";
-dotenv.config();
 
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -22,7 +20,7 @@ export default function RegisterModal({ open, onClose }) {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/lead", {
+      const response = await fetch("/api/leads", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
