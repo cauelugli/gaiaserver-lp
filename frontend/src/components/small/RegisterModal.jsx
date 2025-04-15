@@ -23,23 +23,22 @@ export default function RegisterModal({ open, onClose }) {
       plan: "solo",
     };
 
-    try {
-      fetch("http://144.22.129.139/leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(leadData),
-        mode: "cors",
-      });
+    // try {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(leadData),
+    //     mode: "cors",
+    //   });
 
-      alert("Cadastro realizado com sucesso!");
-      onClose();
-    } catch (error) {
-      console.error("Erro ao enviar lead:", error);
-      alert("Cadastro realizado com sucesso!");
-      onClose();
-    }
+    //   alert("Cadastro realizado com sucesso!");
+    //   onClose();
+    // } catch (error) {
+    //   console.error("Erro ao enviar lead:", error);
+    //   alert("Cadastro realizado com sucesso!");
+    //   onClose();
+    // }
   };
 
   return (
