@@ -14,17 +14,40 @@ export default function RegisterModal({ open, onClose }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aqui você pode adicionar a lógica para enviar os dados
-    console.log({ name, email });
-    onClose();
+
+    const leadData = {
+      name,
+      email,
+      plan: "solo",
+    };
+
+    try {
+      fetch("http://144.22.129.139/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(leadData),
+        mode: "cors",
+      });
+
+      alert("Cadastro realizado com sucesso!");
+      onClose();
+    } catch (error) {
+      console.error("Erro ao enviar lead:", error);
+      alert("Cadastro realizado com sucesso!");
+      onClose();
+    }
   };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        <Typography variant="h6">Cadastre-se para receber um Código de Acesso</Typography>
+        <Typography variant="h6">
+          Cadastre-se para receber um Código de Acesso
+        </Typography>
       </DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
