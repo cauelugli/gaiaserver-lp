@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useState } from "react";
-import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 dotenv.config();
 
