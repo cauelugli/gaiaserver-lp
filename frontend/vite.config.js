@@ -7,19 +7,9 @@ export default defineConfig({
     port: 5173,
     host: "0.0.0.0",
     strictPort: true,
-    hmr: {
-      protocol: "ws",
-      host: "localhost",
-      port: 5173,
-    },
   },
   build: {
     outDir: "dist",
     emptyOutDir: true,
-    rollupOptions: {
-      input: {
-        main: "./index.html",
-      },
-    },
   },
 });
