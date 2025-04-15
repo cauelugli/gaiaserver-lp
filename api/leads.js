@@ -1,33 +1,45 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 dotenv.config();
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    const { name, email } = req.body;
+  if (req.method !== "POST") {
+    return res
+      .status(405)
+      .json({ success: false, error: "Método não permitido" });
+  }
 
-    const leadData = {
+  const { name, email, plan } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({
+      success: false,
+      error: "Nome e e-mail são obrigatórios",
+    });
+  }
+
+  let client;
+  try {
+    client = await MongoClient.connect(process.env.MONGO_URL);
+    const db = client.db();
+    await db.collection("leads").insertOne({
       name,
       email,
-      plan: "solo",
-      createdAt: new Date()
-    };
+      plan: plan || "solo",
+      createdAt: new Date(),
+    });
 
-    let client;
-    try {
-      client = new MongoClient(process.env.MONGO_URL);
-      await client.connect();
-      
-      const db = client.db();
-      const result = await db.collection('leads').insertOne(leadData);
-      
-      res.status(200).json({ success: true, id: result.insertedId });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
-    } finally {
-      if (client) await client.close();
-    }
-  } else {
-    res.status(405).json({ error: 'Método não permitido' });
+    res.status(201).json({
+      success: true,
+      message: "Lead cadastrado com sucesso",
+    });
+  } catch (error) {
+    console.error("DB Error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Erro no servidor",
+    });
+  } finally {
+    if (client) await client.close();
   }
 }
