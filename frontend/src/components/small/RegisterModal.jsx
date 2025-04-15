@@ -8,62 +8,20 @@ import {
   TextField,
   Box,
   Typography,
-  CircularProgress,
 } from "@mui/material";
 
 export default function RegisterModal({ open, onClose }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+  const API_URL = "http://localhost:4000/leads";
 
-    try {
-      const response = await fetch("/api/lead", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          plan: "solo",
-        }),
-      });
-
-      // Verifica se o endpoint existe
-      if (response.status === 404) {
-        throw new Error(
-          "Endpoint não encontrado (404). Verifique a rota da API."
-        );
-      }
-
-      // Verifica outros erros HTTP
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Erro HTTP: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        alert("Cadastro realizado com sucesso!");
-        onClose();
-        setName("");
-        setEmail("");
-      } else {
-        throw new Error(data.error || "Erro desconhecido");
-      }
-    } catch (err) {
-      console.error("Erro no cadastro:", err);
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSubmit = async () => {
+    await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email }),
+    });
   };
 
   return (
@@ -84,7 +42,6 @@ export default function RegisterModal({ open, onClose }) {
               fullWidth
               value={name}
               onChange={(e) => setName(e.target.value)}
-              disabled={isLoading}
             />
 
             <TextField
@@ -95,34 +52,16 @@ export default function RegisterModal({ open, onClose }) {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              disabled={isLoading}
             />
-
-            {error && (
-              <Typography color="error" variant="body2">
-                Erro: {error}
-              </Typography>
-            )}
           </Box>
         </DialogContent>
 
         <DialogActions sx={{ p: 2 }}>
-          <Button
-            type="submit"
-            variant="contained"
-            color="success"
-            disabled={isLoading}
-            startIcon={isLoading ? <CircularProgress size={20} /> : null}
-          >
-            {isLoading ? "Enviando..." : "OK"}
+          <Button type="submit" variant="contained" color="success">
+            OK
           </Button>
 
-          <Button
-            variant="contained"
-            color="error"
-            onClick={onClose}
-            disabled={isLoading}
-          >
+          <Button variant="contained" color="error" onClick={onClose}>
             Cancelar
           </Button>
         </DialogActions>
