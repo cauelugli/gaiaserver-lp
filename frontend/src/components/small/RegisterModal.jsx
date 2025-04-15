@@ -1,9 +1,8 @@
 import * as React from "react";
 import { useState } from "react";
 import { MongoClient } from "mongodb";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
-
 
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -23,37 +22,27 @@ export default function RegisterModal({ open, onClose }) {
     e.preventDefault();
     setIsLoading(true);
 
-    const leadData = {
-      name,
-      email,
-      plan: "solo",
-      createdAt: new Date(),
-    };
-
-    let client;
     try {
-      // Verifica se a MONGO_URL está disponível
-      if (!process.env.MONGO_URL) {
-        throw new Error("Variável de ambiente MONGO_URL não configurada");
+      const response = await fetch("/api/lead", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Erro ao cadastrar");
       }
-
-      client = new MongoClient(process.env.MONGO_URL);
-      await client.connect();
-
-      const db = client.db();
-      const leadsCollection = db.collection("leads");
-
-      await leadsCollection.insertOne(leadData);
 
       alert("Cadastro realizado com sucesso!");
       onClose();
     } catch (error) {
-      console.error("Erro ao salvar lead:", error);
-      alert(`Erro: ${error.message}`);
+      console.error("Erro ao enviar lead:", error);
+      alert(error.message);
     } finally {
-      if (client) {
-        await client.close();
-      }
       setIsLoading(false);
     }
   };
