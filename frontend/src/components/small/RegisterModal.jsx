@@ -1,6 +1,9 @@
 import * as React from "react";
 import { useState } from "react";
-import { MongoClient } from "mongodb"; // Adicionamos a importação do MongoClient
+import { MongoClient } from "mongodb";
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -14,44 +17,42 @@ import Typography from "@mui/material/Typography";
 export default function RegisterModal({ open, onClose }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // Adicionamos estado para loading
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Dados do lead
     const leadData = {
       name,
       email,
       plan: "solo",
-      createdAt: new Date(), // Adicionamos data de criação
+      createdAt: new Date(),
     };
 
     let client;
     try {
-      // Conecta ao MongoDB
+      // Verifica se a MONGO_URL está disponível
+      if (!process.env.MONGO_URL) {
+        throw new Error("Variável de ambiente MONGO_URL não configurada");
+      }
+
       client = new MongoClient(process.env.MONGO_URL);
       await client.connect();
 
-      // Acessa a coleção (se não existir, será criada automaticamente)
-      const db = client.db(); // Se precisar especificar o banco, use db('nome-do-banco')
+      const db = client.db();
       const leadsCollection = db.collection("leads");
 
-      // Insere o novo documento
-      const result = await leadsCollection.insertOne(leadData);
+      await leadsCollection.insertOne(leadData);
 
-      console.log("Lead inserido com ID:", result.insertedId);
       alert("Cadastro realizado com sucesso!");
       onClose();
     } catch (error) {
-      console.error("Erro ao salvar lead no MongoDB:", error);
-      alert(
-        "Ocorreu um erro ao realizar o cadastro. Por favor, tente novamente."
-      );
+      console.error("Erro ao salvar lead:", error);
+      alert(`Erro: ${error.message}`);
     } finally {
       if (client) {
-        await client.close(); // Fecha a conexão
+        await client.close();
       }
       setIsLoading(false);
     }
